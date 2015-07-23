@@ -117,7 +117,7 @@ public static class ModLoader
     internal static string[] FindMods()
     {
         Directory.CreateDirectory(ModPath);
-        return Directory.GetFiles(ModPath, "*.tmod", SearchOption.AllDirectories);
+        return Directory.GetFiles(ModPath, "*.tmod", SearchOption.TopDirectoryOnly);
     }
 
     private static bool LoadMods()
@@ -127,8 +127,7 @@ public static class ModLoader
         List<string> enabledMods = new List<string>();
         foreach(string modFile in modFiles)
         {
-            string enablePath = Path.GetDirectoryName(modFile) + Path.DirectorySeparatorChar + "enabled.txt";
-            if (!File.Exists(enablePath) || File.ReadAllText(enablePath) != "false")
+            if (IsEnabled(modFile))
             {
                 enabledMods.Add(modFile);
             }
@@ -155,8 +154,22 @@ public static class ModLoader
 
     private static void LoadMod(string modFile)
     {
-        byte[] fileData = File.ReadAllBytes(modFile);
-        Assembly modCode = Assembly.Load(fileData);
+        Assembly modCode;
+        using(FileStream fileStream = File.OpenRead(modFile))
+        {
+            using(BinaryReader reader = new BinaryReader(fileStream))
+            {
+                modCode = Assembly.Load(reader.ReadBytes(reader.ReadInt32()));
+                for(string texturePath = reader.ReadString(); texturePath != "end"; texturePath = reader.ReadString())
+                {
+                    byte[] imageData = reader.ReadBytes(reader.ReadInt32());
+                    using(MemoryStream buffer = new MemoryStream(imageData))
+                    {
+                        textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+                    }
+                }
+            }
+        }
         Type[] classes = modCode.GetTypes();
         foreach(Type type in classes)
         {
@@ -167,13 +180,6 @@ public static class ModLoader
                 mod.Init();
                 mods[mod.Name] = mod;
             }
-        }
-        string[] images = Directory.GetFiles(Path.GetDirectoryName(modFile), "*.png", SearchOption.AllDirectories);
-        foreach(string image in images)
-        {
-            string imageName = image.Replace(ModPath + Path.DirectorySeparatorChar, null).Replace(Path.DirectorySeparatorChar, '/');
-            imageName = Path.ChangeExtension(imageName, null);
-            textures[imageName] = Texture2D.FromStream(Main.instance.GraphicsDevice, new FileStream(image, FileMode.Open));
         }
     }
 
@@ -196,12 +202,19 @@ public static class ModLoader
         Main.menuMode = Interface.loadModsID;
     }
 
+    internal static bool IsEnabled(string modFile)
+    {
+        string enablePath = Path.ChangeExtension(modFile, "enabled");
+        return !File.Exists(enablePath) || File.ReadAllText(enablePath) != "false";
+    }
+
     internal static void SetModActive(string modFile, bool active)
     {
-        string path = Path.GetDirectoryName(modFile) + Path.DirectorySeparatorChar + "enabled.txt";
-        StreamWriter writer = File.CreateText(path);
-        writer.Write(active ? "true" : "false");
-        writer.Close();
+        string path = Path.ChangeExtension(modFile, "enabled");
+        using(StreamWriter writer = File.CreateText(path))
+        {
+            writer.Write(active ? "true" : "false");
+        }
     }
 
     internal static void EnableMod(string modFile)
@@ -260,15 +273,29 @@ public static class ModLoader
             }
             return false;
         }
-        Interface.buildMod.SetImageText();
-        string[] images = Directory.GetFiles(modToBuild, "*.png", SearchOption.AllDirectories);
-        foreach (string image in images)
+        Interface.buildMod.SetBuildText();
+        string file = ModPath + Path.DirectorySeparatorChar + Path.GetFileName(modToBuild) + ".tmod";
+        byte[] buffer = File.ReadAllBytes(file);
+        using(FileStream fileStream = File.Create(file))
         {
-            string dest = image.Replace(ModSourcePath, ModPath);
-            Directory.CreateDirectory(Path.GetDirectoryName(dest));
-            File.Copy(image, dest, true);
+            using(BinaryWriter writer = new BinaryWriter(fileStream))
+            {
+                writer.Write(buffer.Length);
+                writer.Write(buffer);
+                string[] images = Directory.GetFiles(modToBuild, "*.png", SearchOption.AllDirectories);
+                foreach (string image in images)
+                {
+                    string texturePath = image.Replace(ModSourcePath + Path.DirectorySeparatorChar, null);
+                    texturePath = Path.ChangeExtension(texturePath.Replace(Path.DirectorySeparatorChar, '/'), null);
+                    buffer = File.ReadAllBytes(image);
+                    writer.Write(texturePath);
+                    writer.Write(buffer.Length);
+                    writer.Write(buffer);
+                }
+                writer.Write("end");
+            }
         }
-        EnableMod(modToBuild.Replace(ModSourcePath, ModPath) + Path.DirectorySeparatorChar + "enabled.txt");
+        EnableMod(file);
         if (!buildAll)
         {
             Main.menuMode = reloadAfterBuild ? Interface.loadModsID : 0;
@@ -278,13 +305,10 @@ public static class ModLoader
 
     private static bool CompileMod(string modDir)
     {
-        string name = Path.GetFileName(modDir);
-        string path = ModPath + Path.DirectorySeparatorChar + name;
-        Directory.CreateDirectory(path);
         CompilerParameters compileOptions = new CompilerParameters();
         compileOptions.GenerateExecutable = false;
         compileOptions.GenerateInMemory = false;
-        compileOptions.OutputAssembly = path + Path.DirectorySeparatorChar + name + ".tmod";
+        compileOptions.OutputAssembly = ModPath + Path.DirectorySeparatorChar + Path.GetFileName(modDir) + ".tmod";
         foreach(string reference in buildReferences)
         {
             compileOptions.ReferencedAssemblies.Add(reference);

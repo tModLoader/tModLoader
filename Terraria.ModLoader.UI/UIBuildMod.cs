@@ -29,8 +29,8 @@ internal class UIBuildMod : UIState
         loadProgress.SetProgress(0f);
     }
 
-    internal void SetImageText()
+    internal void SetBuildText()
     {
-        loadProgress.SetText("Copying Images: " + Path.GetFileName(ModLoader.modToBuild) + "...");
+        loadProgress.SetText("Building " + Path.GetFileName(ModLoader.modToBuild) + "...");
     }
 }}

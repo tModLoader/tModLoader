@@ -28,8 +28,7 @@ internal class UIModItem : UIPanel
         this.modName.Left.Set(10f, 0f);
         this.modName.Top.Set(5f, 0f);
         base.Append(this.modName);
-        string path = Path.GetDirectoryName(mod) + Path.DirectorySeparatorChar + "enabled.txt";
-        this.enabled = !File.Exists(path) || File.ReadAllText(path) != "false";
+        this.enabled = ModLoader.IsEnabled(mod);
     }
 
     private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)

@@ -16,36 +16,21 @@ The current released version is: 0.1.2
 
 Changelog:
 
--Mods that crash the game while loading are now auto-disabled
-
--Mods are now auto-enabled when they are built
-
--Added a button to the Mod Sources menu to open the Mod Sources folder
-
--In-game error messages now appear when the game would have crashed and when a build fails
-
--Item display names can now be separated from internal names in the SetDefault hook
-
--Added a ton of hooks for ModItem and GlobalItem
-
---CanUseItem, UseStyle, UseItemFrame, UseItem, and ConsumeItem
-
---HoldStyle, HoldItem, and HoldItemFrame
-
---Shoot, ConsumeAmmo, UseItemHitbox, and MeleeEffects
-
---ModifyHitNPC, OnHitNPC, ModifyHitPvp, and OnHitPvp
-
---UpdateInventory, UpdateEquip, UpdateAccessory, IsArmorSet, and UpdateArmorSet
-
---CanRightClick, RightClick, and Update
-
---VerticalWingSpeeds and HorizontalWingSpeeds
-
---GetAnimation (ModItem only), GetAlpha, PreDrawInWorld, and PostDrawInWorld
-
--Added support for armors and accessories
-
--Fixed decompile bug that caused minimaps to not save
-
--Updated to Terraria v1.3.0.6
+- Mods that crash the game while loading are now auto-disabled
+- Mods are now auto-enabled when they are built
+- Added a button to the Mod Sources menu to open the Mod Sources
+folder
+- In-game error messages now appear when the game would have crashed and when a build fails
+- Item display names can now be separated from internal names in the SetDefault hook
+- Added a ton of hooks for ModItem and GlobalItem
+  - CanUseItem, UseStyle, UseItemFrame, UseItem, and ConsumeItem
+  - HoldStyle, HoldItem, and HoldItemFrame
+  - Shoot, ConsumeAmmo, UseItemHitbox, and MeleeEffects
+  - ModifyHitNPC, OnHitNPC, ModifyHitPvp, and OnHitPvp
+  - UpdateInventory, UpdateEquip, UpdateAccessory, IsArmorSet, and UpdateArmorSet
+  - CanRightClick, RightClick, and Update
+  - VerticalWingSpeeds and HorizontalWingSpeeds
+  - GetAnimation (ModItem only), GetAlpha, PreDrawInWorld, and PostDrawInWorld
+- Added support for armors and accessories
+- Fixed decompile bug that caused minimaps to not save
+- Updated to Terraria v1.3.0.6
