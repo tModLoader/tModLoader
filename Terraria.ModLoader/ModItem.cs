@@ -30,6 +30,13 @@ public class ModItem
         item.modItem = this;
     }
 
+    public virtual bool Autoload(ref string name, ref string texture, ref EquipType? equip)
+    {
+        return mod.Properties.Autoload;
+    }
+
+    public virtual void AutoloadEquip(ref string texture, ref string armTexture, ref string femaleTexture) { }
+
     public virtual DrawAnimation GetAnimation()
     {
         return null;
@@ -139,6 +146,7 @@ public class ModItem
     internal void SetupItem(Item item)
     {
         SetupModItem(item);
+        EquipLoader.SetSlot(item);
         item.modItem.SetDefaults();
     }
 

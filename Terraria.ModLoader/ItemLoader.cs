@@ -184,7 +184,7 @@ public static class ItemLoader
         }
     }
 
-    //in Terraria.Player.PickAmmo before flag2 is checked add
+    //near end of Terraria.Player.PickAmmo before flag2 is checked add
     //  if(!ItemLoader.ConsumeAmmo(sItem, item, this)) { flag2 = true; }
     internal static bool ConsumeAmmo(Item item, Item ammo, Player player)
     {
@@ -349,7 +349,7 @@ public static class ItemLoader
         }
     }
 
-    //earn end of Terraria.Player.ItemCheck before consumable item is consumed
+    //near end of Terraria.Player.ItemCheck before flag22 is checked
     //  call ItemLoader.ConsumeItem(item, this, ref flag22)
     internal static void ConsumeItem(Item item, Player player, ref bool consume)
     {
@@ -549,7 +549,7 @@ public static class ItemLoader
 
     //in Terraria.Main.DrawPlayerHead in if statement after ItemLoader.DrawHair
     //and in Terraria.Main.DrawPlayer in if (!drawPlayer.invis && drawPlayer.head != 38 && drawPlayer.head != 135)
-    //  use && with ItemLoader.DrawHead(drawPlayer.armor[0])
+    //  use && with ItemLoader.DrawHead(drawPlayer)
     internal static bool DrawHead(Player player)
     {
         Item item = player.armor[10].headSlot >= 0 ? player.armor[10] : player.armor[0];

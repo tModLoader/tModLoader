@@ -15,6 +15,7 @@ public static class ModLoader
     //change Terraria.Main.SavePath to use "ModLoader" folder
     public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
     public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
+    private static bool referencesLoaded = false;
     private static readonly IList<string> buildReferences = new List<string>();
     internal const int earliestRelease = 149;
     internal static string modToBuild;
@@ -24,8 +25,12 @@ public static class ModLoader
     internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
     private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 
-    static ModLoader()
+    private static void LoadReferences()
     {
+        if(referencesLoaded)
+        {
+            return;
+        }
         Assembly current = Assembly.GetExecutingAssembly();
         buildReferences.Add(current.Location);
         AssemblyName[] references = current.GetReferencedAssemblies();
@@ -33,6 +38,7 @@ public static class ModLoader
         {
             buildReferences.Add(Assembly.Load(reference).Location);
         }
+        referencesLoaded = true;
     }
 
     internal static bool ModLoaded(string name)
@@ -68,6 +74,7 @@ public static class ModLoader
             try
             {
                 mod.Load();
+                mod.Autoload();
             }
             catch(Exception e)
             {
@@ -177,6 +184,7 @@ public static class ModLoader
             {
                 Mod mod = (Mod)Activator.CreateInstance(type);
                 mod.file = modFile;
+                mod.code = modCode;
                 mod.Init();
                 mods[mod.Name] = mod;
             }
@@ -264,6 +272,7 @@ public static class ModLoader
 
     internal static bool do_BuildMod(object threadContext)
     {
+        LoadReferences();
         Interface.buildMod.SetCompiling();
         if (!CompileMod(modToBuild))
         {
