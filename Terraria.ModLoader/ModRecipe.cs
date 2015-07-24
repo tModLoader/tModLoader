@@ -39,6 +39,11 @@ public class ModRecipe : Recipe
         this.SetResult(mod.ItemType(itemName), stack);
     }
 
+    public void SetResult(ModItem item, int stack = 1)
+    {
+        this.SetResult(item.item.type, stack);
+    }
+
     public void AddIngredient(int itemID, int stack = 1)
     {
         this.requiredItem[numIngredients].SetDefaults(itemID, false);
@@ -60,6 +65,11 @@ public class ModRecipe : Recipe
             mod = this.mod;
         }
         this.AddIngredient(mod.ItemType(itemName), stack);
+    }
+
+    public void AddIngredient(ModItem item, int stack = 1)
+    {
+        this.AddIngredient(item.item.type, stack);
     }
 
     public void AddTile(int tileID)

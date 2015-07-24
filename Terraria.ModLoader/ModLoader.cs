@@ -347,6 +347,10 @@ public static class ModLoader
             try
             {
                 mod.AddRecipes();
+                foreach(ModItem item in mod.items.Values)
+                {
+                    item.AddRecipes();
+                }
             }
             catch
             {

@@ -165,6 +165,8 @@ public class ModItem
         newItem.mod = mod;
     }
 
+    public virtual void AddRecipes() { }
+
     //modify saving in Terraria.IO.WorldFile.SaveChests and Terraria.Player.SavePlayer
     //replace netID writes with this
     internal static void WriteID(Item item, BinaryWriter writer)
