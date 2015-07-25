@@ -143,6 +143,11 @@ public class ModItem
 
     public virtual void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale) { }
 
+    public virtual bool CanEquipAccessory(Player player, int slot)
+    {
+        return true;
+    }
+
     internal void SetupItem(Item item)
     {
         SetupModItem(item);

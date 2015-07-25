@@ -29,6 +29,7 @@ public abstract class Mod
     internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
     internal GlobalItem globalItem;
     internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
+    internal GlobalNPC globalNPC;
 
     /*
      * Initializes the mod's information, such as its name.
@@ -168,6 +169,17 @@ public abstract class Mod
         {
             AddDust(name, dust, texture);
         }
+    }
+
+    public void SetGlobalNPC(GlobalNPC globalNPC)
+    {
+        globalNPC.mod = this;
+        this.globalNPC = globalNPC;
+    }
+
+    public GlobalNPC GetGlobalNPC()
+    {
+        return this.globalNPC;
     }
 
     internal void SetupContent()

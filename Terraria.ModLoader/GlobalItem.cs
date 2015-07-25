@@ -113,4 +113,9 @@ public class GlobalItem
     }
 
     public virtual void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale) { }
+
+    public virtual bool CanEquipAccessory(Item item, Player player, int slot)
+    {
+        return true;
+    }
 }}

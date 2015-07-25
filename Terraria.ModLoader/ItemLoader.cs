@@ -703,4 +703,23 @@ public static class ItemLoader
             }
         }
     }
+
+    //in Terraria.UI.ItemSlot.AccCheck replace 2nd and 3rd return false with
+    //  return !ItemLoader.CanEquipAccessory(item, slot)
+    internal static bool CanEquipAccessory(Item item, int slot)
+    {
+        Player player = Main.player[Main.myPlayer];
+        if(IsModItem(item) && !item.modItem.CanEquipAccessory(player, slot))
+        {
+            return false;
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalItem != null && !mod.globalItem.CanEquipAccessory(item, player, slot))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }}
