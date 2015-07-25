@@ -28,6 +28,7 @@ public abstract class Mod
     internal readonly List<ModRecipe> recipes = new List<ModRecipe>();
     internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
     internal GlobalItem globalItem;
+    internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
 
     /*
      * Initializes the mod's information, such as its name.
@@ -53,26 +54,11 @@ public abstract class Mod
         {
             if(type.IsSubclassOf(typeof(ModItem)))
             {
-                ModItem item = (ModItem)Activator.CreateInstance(type);
-                item.mod = this;
-                string name = type.Name;
-                string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-                EquipType? equip = null;
-                if(item.Autoload(ref name, ref texture, ref equip))
-                {
-                    ErrorLogger.Log(texture);
-                    AddItem(name, item, texture);
-                    if(equip.HasValue)
-                    {
-                        string equipTexture = texture + "_" + equip.Value;
-                        string armTexture = texture + "_Arms";
-                        string femaleTexture = texture + "_FemaleBody";
-                        item.AutoloadEquip(ref equipTexture, ref armTexture, ref femaleTexture);
-                        int slot = AddEquipTexture(equip.Value, equipTexture, armTexture, femaleTexture);
-                        EquipLoader.idToType[item.item.type] = equip.Value;
-                        EquipLoader.idToSlot[item.item.type] = slot;
-                    }
-                }
+                AutoloadItem(type);
+            }
+            if(type.IsSubclassOf(typeof(ModDust)))
+            {
+                AutoloadDust(type);
             }
         }
     }
@@ -133,6 +119,57 @@ public abstract class Mod
         return slot;
     }
 
+    private void AutoloadItem(Type type)
+    {
+        ModItem item = (ModItem)Activator.CreateInstance(type);
+        item.mod = this;
+        string name = type.Name;
+        string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+        EquipType? equip = null;
+        if (item.Autoload(ref name, ref texture, ref equip))
+        {
+            ErrorLogger.Log(texture);
+            AddItem(name, item, texture);
+            if (equip.HasValue)
+            {
+                string equipTexture = texture + "_" + equip.Value;
+                string armTexture = texture + "_Arms";
+                string femaleTexture = texture + "_FemaleBody";
+                item.AutoloadEquip(ref equipTexture, ref armTexture, ref femaleTexture);
+                int slot = AddEquipTexture(equip.Value, equipTexture, armTexture, femaleTexture);
+                EquipLoader.idToType[item.item.type] = equip.Value;
+                EquipLoader.idToSlot[item.item.type] = slot;
+            }
+        }
+    }
+
+    public void AddDust(string name, ModDust dust, string texture = "")
+    {
+        dust.Name = name;
+        if(texture.Length > 0)
+        {
+            dust.Texture = ModLoader.GetTexture(texture);
+        }
+        else
+        {
+            dust.Texture = Main.dustTexture;
+        }
+        dust.mod = this;
+        dusts[name] = dust;
+    }
+
+    private void AutoloadDust(Type type)
+    {
+        ModDust dust = (ModDust)Activator.CreateInstance(type);
+        dust.mod = this;
+        string name = type.Name;
+        string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+        if(dust.Autoload(ref name, ref texture))
+        {
+            AddDust(name, dust, texture);
+        }
+    }
+
     internal void SetupContent()
     {
         foreach(ModItem item in items.Values)
@@ -154,6 +191,7 @@ public abstract class Mod
     {
         recipes.Clear();
         items.Clear();
+        dusts.Clear();
         globalItem = null;
     }
 }}
