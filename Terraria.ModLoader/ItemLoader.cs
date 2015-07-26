@@ -77,13 +77,14 @@ public static class ItemLoader
             {
                 using (BinaryWriter customWriter = new BinaryWriter(memoryStream))
                 {
-                    item.modItem.SaveCustomData(writer);
+                    item.modItem.SaveCustomData(customWriter);
+                    customWriter.Flush();
+                    data = memoryStream.ToArray();
                 }
-                data = memoryStream.ToArray();
-                if (data.Length > 0)
-                {
-                    writeID -= 1;
-                }
+            }
+            if(data.Length > 0)
+            {
+                writeID -= 1;
             }
             writer.Write(writeID);
             writer.Write(item.modItem.mod.Name);

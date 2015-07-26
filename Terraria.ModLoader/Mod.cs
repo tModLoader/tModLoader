@@ -129,7 +129,6 @@ public abstract class Mod
         EquipType? equip = null;
         if (item.Autoload(ref name, ref texture, ref equip))
         {
-            ErrorLogger.Log(texture);
             AddItem(name, item, texture);
             if (equip.HasValue)
             {
