@@ -13,6 +13,30 @@ public class GlobalItem
         internal set;
     }
 
+    public void AddTooltip(Item item, string tooltip)
+    {
+        if (item.toolTip == null || item.toolTip.Length == 0)
+        {
+            item.toolTip = tooltip;
+        }
+        else
+        {
+            item.toolTip += Environment.NewLine + tooltip;
+        }
+    }
+
+    public void AddTooltip2(Item item, string tooltip)
+    {
+        if (item.toolTip2 == null || item.toolTip2.Length == 0)
+        {
+            item.toolTip2 = tooltip;
+        }
+        else
+        {
+            item.toolTip2 += Environment.NewLine + tooltip;
+        }
+    }
+
     public virtual void SetDefaults(Item item) { }
 
     public virtual bool CanUseItem(Item item, Player player)

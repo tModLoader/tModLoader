@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -62,6 +63,119 @@ public static class ItemLoader
     internal static bool IsModItem(Item item)
     {
         return item.type >= ItemID.Count;
+    }
+
+    //modify saving in Terraria.IO.WorldFile.SaveChests and Terraria.Player.SavePlayer
+    //replace netID writes with this
+    internal static void WriteID(Item item, BinaryWriter writer)
+    {
+        if (item.netID >= ItemID.Count)
+        {
+            int writeID = Int32.MaxValue;
+            byte[] data;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                using (BinaryWriter customWriter = new BinaryWriter(memoryStream))
+                {
+                    item.modItem.SaveCustomData(writer);
+                }
+                data = memoryStream.ToArray();
+                if (data.Length > 0)
+                {
+                    writeID -= 1;
+                }
+            }
+            writer.Write(writeID);
+            writer.Write(item.modItem.mod.Name);
+            writer.Write(Main.itemName[item.type]);
+            if(data.Length > 0)
+            {
+                writer.Write((short)data.Length);
+                writer.Write(data);
+            }
+        }
+        else
+        {
+            writer.Write(item.netID);
+        }
+    }
+
+    //modify loading in Terraria.IO.WorldFile.LoadChests and Terraria.Player.LoadPlayer
+    //replace netDefaults reads with this
+    internal static void ReadID(Item item, BinaryReader reader)
+    {
+        int type = reader.ReadInt32();
+        if (type >= Int32.MaxValue - 1)
+        {
+            bool hasCustomData = type == Int32.MaxValue - 1;
+            string modName = reader.ReadString();
+            string itemName = reader.ReadString();
+            Mod mod = ModLoader.GetMod(modName);
+            if (mod == null)
+            {
+                type = 0;
+            }
+            else
+            {
+                type = mod.ItemType(itemName);
+            }
+            item.netDefaults(type);
+            if(type != 0 && hasCustomData)
+            {
+                byte[] data = reader.ReadBytes(reader.ReadInt16());
+                using(MemoryStream memoryStream = new MemoryStream(data))
+                {
+                    using(BinaryReader customReader = new BinaryReader(memoryStream))
+                    {
+                        item.modItem.LoadCustomData(customReader);
+                    }
+                }
+            }
+        }
+        else
+        {
+            item.netDefaults(type);
+        }
+    }
+
+    //add to Terraria.Item.Prefix
+    internal static bool MeleePrefix(Item item)
+    {
+        if (item.modItem == null)
+        {
+            return false;
+        }
+        return item.damage > 0 && item.melee && !item.noUseGraphic;
+    }
+
+    //add to Terraria.Item.Prefix
+    internal static bool WeaponPrefix(Item item)
+    {
+        if (item.modItem == null)
+        {
+            return false;
+        }
+        return item.damage > 0 && item.melee && item.noUseGraphic;
+    }
+
+    //add to Terraria.Item.Prefix
+    internal static bool RangedPrefix(Item item)
+    {
+        if (item.modItem == null)
+        {
+            return false;
+        }
+        return item.damage > 0 && item.ranged;
+    }
+
+    //add to Terraria.Item.Prefix
+    internal static bool MagicPrefix(Item item)
+    {
+        if (item.modItem == null)
+        {
+            return false;
+        }
+        return item.damage > 0 && (item.magic || item.summon);
     }
 
     //in Terraria.Item.SetDefaults get rid of type-too-high check

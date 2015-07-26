@@ -30,6 +30,30 @@ public class ModItem
         item.modItem = this;
     }
 
+    public void AddTooltip(string tooltip)
+    {
+        if(item.toolTip == null || item.toolTip.Length == 0)
+        {
+            item.toolTip = tooltip;
+        }
+        else
+        {
+            item.toolTip += Environment.NewLine + tooltip;
+        }
+    }
+
+    public void AddTooltip2(string tooltip)
+    {
+        if(item.toolTip2 == null || item.toolTip2.Length == 0)
+        {
+            item.toolTip2 = tooltip;
+        }
+        else
+        {
+            item.toolTip2 += Environment.NewLine + tooltip;
+        }
+    }
+
     public virtual bool Autoload(ref string name, ref string texture, ref EquipType? equip)
     {
         return mod.Properties.Autoload;
@@ -170,80 +194,9 @@ public class ModItem
         newItem.mod = mod;
     }
 
+    public virtual void SaveCustomData(BinaryWriter writer) { }
+
+    public virtual void LoadCustomData(BinaryReader reader) { }
+
     public virtual void AddRecipes() { }
-
-    //modify saving in Terraria.IO.WorldFile.SaveChests and Terraria.Player.SavePlayer
-    //replace netID writes with this
-    internal static void WriteID(Item item, BinaryWriter writer)
-    {
-        if (item.netID >= ItemID.Count)
-        {
-            writer.Write(Int32.MaxValue);
-            writer.Write(item.modItem.mod.Name);
-            writer.Write(Main.itemName[item.type]);
-        }
-        else
-        {
-            writer.Write(item.netID);
-        }
-    }
-
-    //modify loading in Terraria.IO.WorldFile.LoadChests and Terraria.Player.LoadPlayer
-    //replace netDefaults reads with this
-    internal static int ReadID(BinaryReader reader)
-    {
-        int type = reader.ReadInt32();
-        if(type == Int32.MaxValue)
-        {
-            string modName = reader.ReadString();
-            string itemName = reader.ReadString();
-            Mod mod = ModLoader.GetMod(modName);
-            if(mod == null)
-            {
-                return 0;
-            }
-            return mod.ItemType(itemName);
-        }
-        return type;
-    }
-
-    //add to Terraria.Item.Prefix
-    internal static bool MeleePrefix(Item item)
-    {
-        if(item.modItem == null)
-        {
-            return false;
-        }
-        return item.damage > 0 && item.melee && !item.noUseGraphic;
-    }
-
-    //add to Terraria.Item.Prefix
-    internal static bool WeaponPrefix(Item item)
-    {
-        if(item.modItem == null)
-        {
-            return false;
-        }
-        return item.damage > 0 && item.melee && item.noUseGraphic;
-    }
-
-    //add to Terraria.Item.Prefix
-    internal static bool RangedPrefix(Item item)
-    {
-        if(item.modItem == null)
-        {
-            return false;
-        }
-        return item.damage > 0 && item.ranged;
-    }
-
-    //add to Terraria.Item.Prefix
-    internal static bool MagicPrefix(Item item)
-    {
-        if(item.modItem == null)
-        {
-            return false;
-        }
-        return item.damage > 0 && (item.magic || item.summon);
-    }
 }}
