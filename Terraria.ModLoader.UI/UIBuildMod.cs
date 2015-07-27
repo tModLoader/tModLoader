@@ -23,10 +23,14 @@ internal class UIBuildMod : UIState
         loadProgress.SetProgress((float)num / (float)max);
     }
 
+    internal void SetReading()
+    {
+        loadProgress.SetText("Reading Properties: " + Path.GetFileName(ModLoader.modToBuild));
+    }
+
     internal void SetCompiling()
     {
         loadProgress.SetText("Compiling " + Path.GetFileName(ModLoader.modToBuild) + "...");
-        loadProgress.SetProgress(0f);
     }
 
     internal void SetBuildText()

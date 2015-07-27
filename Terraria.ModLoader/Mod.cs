@@ -44,7 +44,7 @@ public abstract class Mod
 
     public abstract void SetModInfo(out string name, ref ModProperties properties);
 
-    public abstract void Load();
+    public virtual void Load() { }
 
     public virtual void AddRecipes() {}
 

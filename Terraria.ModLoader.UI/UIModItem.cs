@@ -24,7 +24,17 @@ internal class UIModItem : UIPanel
         this.Width.Set(0f, 1f);
         base.SetPadding(6f);
         base.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
-        this.modName = new UIText(Path.GetFileNameWithoutExtension(mod), 1f, false);
+        BuildProperties properties = ModLoader.LoadBuildProperties(mod);
+        string text = properties.displayName.Length > 0 ? properties.displayName : Path.GetFileNameWithoutExtension(mod);
+        if(properties.version.Length > 0)
+        {
+            text += " " + properties.version;
+        }
+        if(properties.author.Length > 0)
+        {
+            text += " - by " + properties.author;
+        }
+        this.modName = new UIText(text, 1f, false);
         this.modName.Left.Set(10f, 0f);
         this.modName.Top.Set(5f, 0f);
         base.Append(this.modName);

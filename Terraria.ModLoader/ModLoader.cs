@@ -2,6 +2,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Microsoft.CSharp;
@@ -139,22 +140,61 @@ public static class ModLoader
                 enabledMods.Add(modFile);
             }
         }
-        int num = 0;
+        IDictionary<string, BuildProperties> properties = new Dictionary<string, BuildProperties>();
+        List<string> modsToLoad = new List<string>();
         foreach(string modFile in enabledMods)
         {
-            Interface.loadMods.SetProgressReading(Path.GetFileNameWithoutExtension(modFile), num, enabledMods.Count);
-            try
+            properties[modFile] = LoadBuildProperties(modFile);
+            modsToLoad.Add(modFile);
+        }
+        int previousCount = 0;
+        int num = 0;
+        while(modsToLoad.Count > 0 && modsToLoad.Count != previousCount)
+        {
+            previousCount = modsToLoad.Count;
+            int k = 0;
+            while(k < modsToLoad.Count)
             {
-                LoadMod(modFile);
+                bool canLoad = true;
+                foreach(string reference in properties[modsToLoad[k]].modReferences)
+                {
+                    if(!ModLoaded(ModPath + Path.DirectorySeparatorChar + reference + ".tmod"))
+                    {
+                        canLoad = false;
+                        break;
+                    }
+                }
+                if(canLoad)
+                {
+                    Interface.loadMods.SetProgressReading(Path.GetFileNameWithoutExtension(modsToLoad[k]), num, enabledMods.Count);
+                    try
+                    {
+                        LoadMod(modsToLoad[k]);
+                    }
+                    catch (Exception e)
+                    {
+                        DisableMod(modsToLoad[k]);
+                        ErrorLogger.LogLoadingError(modsToLoad[k], e);
+                        return false;
+                    }
+                    loadedMods.Add(modsToLoad[k]);
+                    num++;
+                    modsToLoad.RemoveAt(k);
+                }
+                else
+                {
+                    k++;
+                }
             }
-            catch(Exception e)
+        }
+        if(modsToLoad.Count > 0)
+        {
+            foreach(string modFile in modsToLoad)
             {
                 DisableMod(modFile);
-                ErrorLogger.LogLoadingError(modFile, e);
-                return false;
             }
-            loadedMods.Add(modFile);
-            num++;
+            ErrorLogger.LogMissingLoadReference(modsToLoad);
+            return false;
         }
         return true;
     }
@@ -166,6 +206,7 @@ public static class ModLoader
         {
             using(BinaryReader reader = new BinaryReader(fileStream))
             {
+                fileStream.Seek(reader.ReadInt32(), SeekOrigin.Current);
                 modCode = Assembly.Load(reader.ReadBytes(reader.ReadInt32()));
                 for(string texturePath = reader.ReadString(); texturePath != "end"; texturePath = reader.ReadString())
                 {
@@ -189,6 +230,63 @@ public static class ModLoader
                 mods[mod.Name] = mod;
             }
         }
+    }
+
+    internal static BuildProperties LoadBuildProperties(string modFile)
+    {
+        BuildProperties properties = new BuildProperties();
+        byte[] data;
+        using(FileStream fileStream = File.OpenRead(modFile))
+        {
+            using(BinaryReader reader = new BinaryReader(fileStream))
+            {
+                data = reader.ReadBytes(reader.ReadInt32());
+            }
+        }
+        if(data.Length == 0)
+        {
+            return properties;
+        }
+        using(MemoryStream memoryStream = new MemoryStream(data))
+        {
+            using(BinaryReader reader = new BinaryReader(memoryStream))
+            {
+                for(string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString())
+                {
+                    if(tag == "dllReferences")
+                    {
+                        List<string> dllReferences = new List<string>();
+                        for(string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
+                        {
+                            dllReferences.Add(reference);
+                        }
+                        properties.dllReferences = dllReferences.ToArray();
+                    }
+                    if(tag == "modReferences")
+                    {
+                        List<string> modReferences = new List<string>();
+                        for(string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
+                        {
+                            modReferences.Add(reference);
+                        }
+                        properties.modReferences = modReferences.ToArray();
+                    }
+                    if(tag == "author")
+                    {
+                        properties.author = reader.ReadString();
+                    }
+                    if(tag == "version")
+                    {
+                        properties.version = reader.ReadString();
+                    }
+                    if(tag == "displayName")
+                    {
+                        properties.displayName = reader.ReadString();
+                    }
+                }
+            }
+        }
+        return properties;
     }
 
     internal static void Unload()
@@ -238,7 +336,7 @@ public static class ModLoader
     internal static string[] FindModSources()
     {
         Directory.CreateDirectory(ModSourcePath);
-        return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly);
+        return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => dir != ".vs").ToArray();
     }
 
     internal static void BuildAllMods()
@@ -272,9 +370,19 @@ public static class ModLoader
 
     internal static bool do_BuildMod(object threadContext)
     {
+        Interface.buildMod.SetReading();
+        BuildProperties properties = ReadBuildProperties(modToBuild);
+        if(properties == null)
+        {
+            if(!buildAll)
+            {
+                Main.menuMode = Interface.errorMessageID;
+            }
+            return false;
+        }
         LoadReferences();
         Interface.buildMod.SetCompiling();
-        if (!CompileMod(modToBuild))
+        if (!CompileMod(modToBuild, properties))
         {
             if (!buildAll)
             {
@@ -283,12 +391,15 @@ public static class ModLoader
             return false;
         }
         Interface.buildMod.SetBuildText();
+        byte[] propertiesData = PropertiesToBytes(properties);
         string file = ModPath + Path.DirectorySeparatorChar + Path.GetFileName(modToBuild) + ".tmod";
         byte[] buffer = File.ReadAllBytes(file);
         using(FileStream fileStream = File.Create(file))
         {
             using(BinaryWriter writer = new BinaryWriter(fileStream))
             {
+                writer.Write(propertiesData.Length);
+                writer.Write(propertiesData);
                 writer.Write(buffer.Length);
                 writer.Write(buffer);
                 string[] images = Directory.GetFiles(modToBuild, "*.png", SearchOption.AllDirectories);
@@ -312,7 +423,130 @@ public static class ModLoader
         return true;
     }
 
-    private static bool CompileMod(string modDir)
+    private static BuildProperties ReadBuildProperties(string modDir)
+    {
+        string propertiesFile = modDir + Path.DirectorySeparatorChar + "build.txt";
+        BuildProperties properties = new BuildProperties();
+        if(!File.Exists(propertiesFile))
+        {
+            return properties;
+        }
+        string[] lines = File.ReadAllLines(propertiesFile);
+        foreach (string line in lines)
+        {
+            if(line.Length == 0)
+            {
+                continue;
+            }
+            int split = line.IndexOf('=');
+            string property = line.Substring(0, split).Trim();
+            string value = line.Substring(split + 1).Trim();
+            switch (property)
+            {
+                case "dllReferences":
+                    string[] dllReferences = value.Split(',');
+                    for (int k = 0; k < dllReferences.Length; k++)
+                    {
+                        dllReferences[k] = dllReferences[k].Trim();
+                    }
+                    properties.dllReferences = dllReferences;
+                    break;
+                case "modReferences":
+                    string[] modReferences = value.Split(',');
+                    for (int k = 0; k < modReferences.Length; k++)
+                    {
+                        modReferences[k] = modReferences[k].Trim();
+                    }
+                    properties.modReferences = modReferences;
+                    break;
+                case "author":
+                    properties.author = value;
+                    break;
+                case "version":
+                    properties.version = value;
+                    break;
+                case "displayName":
+                    properties.displayName = value;
+                    break;
+            }
+        }
+        foreach(string modReference in properties.modReferences)
+        {
+            string path = ModPath + Path.DirectorySeparatorChar + modReference + ".tmod";
+            if(!File.Exists(path))
+            {
+                ErrorLogger.LogModReferenceError(modReference);
+                return null;
+            }
+            byte[] data;
+            using(FileStream fileStream = File.OpenRead(path))
+            {
+                using(BinaryReader reader = new BinaryReader(fileStream))
+                {
+                    fileStream.Seek(reader.ReadInt32(), SeekOrigin.Current);
+                    data = reader.ReadBytes(reader.ReadInt32());
+                }
+            }
+            using (FileStream writeStream = File.Create(ModSourcePath + Path.DirectorySeparatorChar + modReference + ".dll"))
+            {
+                using (BinaryWriter writer = new BinaryWriter(writeStream))
+                {
+                    writer.Write(data);
+                }
+            }
+        }
+        return properties;
+    }
+
+    private static byte[] PropertiesToBytes(BuildProperties properties)
+    {
+        byte[] data;
+        using(MemoryStream memoryStream = new MemoryStream())
+        {
+            using(BinaryWriter writer = new BinaryWriter(memoryStream))
+            {
+                if(properties.dllReferences.Length > 0)
+                {
+                    writer.Write("dllReferences");
+                    foreach(string reference in properties.dllReferences)
+                    {
+                        writer.Write(reference);
+                    }
+                    writer.Write("");
+                }
+                if(properties.modReferences.Length > 0)
+                {
+                    writer.Write("modReferences");
+                    foreach(string reference in properties.modReferences)
+                    {
+                        writer.Write(reference);
+                    }
+                    writer.Write("");
+                }
+                if(properties.author.Length > 0)
+                {
+                    writer.Write("author");
+                    writer.Write(properties.author);
+                }
+                if(properties.version.Length > 0)
+                {
+                    writer.Write("version");
+                    writer.Write(properties.version);
+                }
+                if(properties.displayName.Length > 0)
+                {
+                    writer.Write("displayName");
+                    writer.Write(properties.displayName);
+                }
+                writer.Write("");
+                writer.Flush();
+                data = memoryStream.ToArray();
+            }
+        }
+        return data;
+    }
+
+    private static bool CompileMod(string modDir, BuildProperties properties)
     {
         CompilerParameters compileOptions = new CompilerParameters();
         compileOptions.GenerateExecutable = false;
@@ -322,10 +556,22 @@ public static class ModLoader
         {
             compileOptions.ReferencedAssemblies.Add(reference);
         }
+        foreach(string reference in properties.dllReferences)
+        {
+            compileOptions.ReferencedAssemblies.Add(ModSourcePath + Path.DirectorySeparatorChar + reference + ".dll");
+        }
+        foreach(string reference in properties.modReferences)
+        {
+            compileOptions.ReferencedAssemblies.Add(ModSourcePath + Path.DirectorySeparatorChar + reference + ".dll");
+        }
 
         CodeDomProvider codeProvider = new CSharpCodeProvider();
         CompilerResults results = codeProvider.CompileAssemblyFromFile(compileOptions, Directory.GetFiles(modDir, "*.cs", SearchOption.AllDirectories));
         CompilerErrorCollection errors = results.Errors;
+        foreach(string reference in properties.modReferences)
+        {
+            File.Delete(ModSourcePath + Path.DirectorySeparatorChar + reference + ".dll");
+        }
         if(errors.HasErrors)
         {
             ErrorLogger.LogCompileErrors(errors);
