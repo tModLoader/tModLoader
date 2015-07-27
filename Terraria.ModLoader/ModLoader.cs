@@ -441,13 +441,21 @@ public static class ModLoader
             int split = line.IndexOf('=');
             string property = line.Substring(0, split).Trim();
             string value = line.Substring(split + 1).Trim();
+            if(value.Length == 0)
+            {
+                continue;
+            }
             switch (property)
             {
                 case "dllReferences":
                     string[] dllReferences = value.Split(',');
                     for (int k = 0; k < dllReferences.Length; k++)
                     {
-                        dllReferences[k] = dllReferences[k].Trim();
+                        string dllReference = dllReferences[k].Trim();
+                        if (dllReference.Length > 0)
+                        {
+                            dllReferences[k] = dllReference;
+                        }
                     }
                     properties.dllReferences = dllReferences;
                     break;
@@ -455,7 +463,11 @@ public static class ModLoader
                     string[] modReferences = value.Split(',');
                     for (int k = 0; k < modReferences.Length; k++)
                     {
-                        modReferences[k] = modReferences[k].Trim();
+                        string modReference = modReferences[k].Trim();
+                        if (modReference.Length > 0)
+                        {
+                            modReferences[k] = modReference;
+                        }
                     }
                     properties.modReferences = modReferences;
                     break;
