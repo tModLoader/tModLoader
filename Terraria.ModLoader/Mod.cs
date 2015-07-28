@@ -29,6 +29,8 @@ public abstract class Mod
     internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
     internal GlobalItem globalItem;
     internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
+    internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
+    internal GlobalTile globalTile;
     internal GlobalNPC globalNPC;
 
     /*
@@ -60,6 +62,10 @@ public abstract class Mod
             if(type.IsSubclassOf(typeof(ModDust)))
             {
                 AutoloadDust(type);
+            }
+            if(type.IsSubclassOf(typeof(ModTile)))
+            {
+                AutoloadTile(type);
             }
         }
     }
@@ -170,6 +176,62 @@ public abstract class Mod
         }
     }
 
+    public void AddTile(string name, ModTile tile, string texture)
+    {
+        int id = TileLoader.ReserveTileID();
+        tile.Name = name;
+        tile.Type = (ushort)id;
+        tiles[name] = tile;
+        TileLoader.tiles[id] = tile;
+        tile.texture = texture;
+        tile.mod = this;
+    }
+
+    public ModTile GetTile(string name)
+    {
+        if (tiles.ContainsKey(name))
+        {
+            return tiles[name];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public int TileType(string name)
+    {
+        ModTile tile = GetTile(name);
+        if (tile == null)
+        {
+            return 0;
+        }
+        return (int)tile.Type;
+    }
+
+    public void SetGlobalTile(GlobalTile globalTile)
+    {
+        globalTile.mod = this;
+        this.globalTile = globalTile;
+    }
+
+    public GlobalTile GetGlobalTile()
+    {
+        return this.globalTile;
+    }
+
+    private void AutoloadTile(Type type)
+    {
+        ModTile tile = (ModTile)Activator.CreateInstance(type);
+        tile.mod = this;
+        string name = type.Name;
+        string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+        if (tile.Autoload(ref name, ref texture))
+        {
+            AddTile(name, tile, texture);
+        }
+    }
+
     public void SetGlobalNPC(GlobalNPC globalNPC)
     {
         globalNPC.mod = this;
@@ -196,13 +258,24 @@ public abstract class Mod
                 ItemLoader.animations.Add(item.item.type);
             }
         }
+        foreach(ModTile tile in tiles.Values)
+        {
+            Main.tileTexture[tile.Type] = ModLoader.GetTexture(tile.texture);
+            tile.SetDefaults();
+        }
+        if(globalTile != null)
+        {
+            globalTile.SetDefaults();
+        }
     }
 
-    internal void Unload()
+    internal void Unload() //I'm not sure why I have this
     {
         recipes.Clear();
         items.Clear();
-        dusts.Clear();
         globalItem = null;
+        dusts.Clear();
+        tiles.Clear();
+        globalNPC = null;
     }
 }}

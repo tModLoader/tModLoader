@@ -87,9 +87,7 @@ public static class ModLoader
             num++;
         }
         Interface.loadMods.SetProgressSetup(0f);
-        ItemLoader.ResizeArrays();
-        EquipLoader.ResizeAndFillArrays();
-        Main.InitializeItemAnimations();
+        ResizeArrays();
         num = 0;
         foreach(Mod mod in mods.Values)
         {
@@ -120,6 +118,14 @@ public static class ModLoader
             return;
         }
         Main.menuMode = 0;
+    }
+
+    private static void ResizeArrays()
+    {
+        ItemLoader.ResizeArrays();
+        EquipLoader.ResizeAndFillArrays();
+        Main.InitializeItemAnimations();
+        TileLoader.ResizeArrays();
     }
 
     internal static string[] FindMods()
@@ -298,8 +304,10 @@ public static class ModLoader
         loadedMods.Clear();
         ItemLoader.Unload();
         EquipLoader.Unload();
+        TileLoader.Unload();
         textures.Clear();
         mods.Clear();
+        ResizeArrays();
     }
 
     internal static void Reload()
