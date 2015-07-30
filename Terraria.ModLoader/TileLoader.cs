@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Map;
 using Terraria.ObjectData;
@@ -256,8 +257,10 @@ public static class TileLoader
     }
 
     //in Terraria.IO.WorldFile.LoadWorldTiles replace tile.type = (ushort)num2; with
-    //  tile.type = TileLoader.ReadTileType(ref num2, modTiles);
-    internal static ushort ReadTileType(ref int type, IDictionary<int, int> table)
+    //  tile.type = TileLoader.ReadTileType(num2, modTiles);
+    //in Terraria.IO.WorldFile.LoadWorldTiles after if else with importance array add
+    //  num2 = (int)tile.type;
+    internal static ushort ReadTileType(int type, IDictionary<int, int> table)
     {
         if(table.ContainsKey(type))
         {
@@ -266,6 +269,78 @@ public static class TileLoader
         return (ushort)type;
     }
 
+    //in Terraria.WorldGen.TileFrame after if else chain inside frameImportant if statement before return add
+    //  else { TileLoader.CheckModTile(i, j, num); }
+    //in Terraria.TileObject.CanPlace add optional checkStay parameter as false to end
+    //  and add && !checkStay to if statement that sets flag4
+    internal static void CheckModTile(int i, int j, int type)
+    {
+        if(WorldGen.destroyObject)
+        {
+            return;
+        }
+        int style = 0;
+        TileObjectData tileData = TileObjectData.GetTileData(type, style, 0);
+        int frameX = Main.tile[i, j].frameX;
+        int frameY = Main.tile[i, j].frameY;
+        int partFrameX = frameX % tileData.CoordinateFullWidth;
+        int partFrameY = frameY % tileData.CoordinateFullHeight;
+        int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
+        int partY = 0;
+        int remainingFrameY = partFrameY;
+        while(remainingFrameY > 0)
+        {
+            remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
+            partY++;
+        }
+        i -= partX;
+        j -= partY;
+        int originX = i + tileData.Origin.X;
+        int originY = j + tileData.Origin.Y;
+        TileObject objectData;
+        bool partiallyDestroyed = false;
+        for(int x = i; x < i + tileData.Width; x++)
+        {
+            for(int y = j; y < j + tileData.Height; y++)
+            {
+                if(!Main.tile[x, y].active() || Main.tile[x, y].type != type)
+                {
+                    partiallyDestroyed = true;
+                    break;
+                }
+            }
+            if(partiallyDestroyed)
+            {
+                break;
+            }
+        }
+        if (partiallyDestroyed || !TileObject.CanPlace(originX, originY, type, style, 0, out objectData, true, true))
+        {
+            WorldGen.destroyObject = true;
+            for (int x = i; x < i + tileData.Width; x++)
+            {
+                for (int y = j; y < j + tileData.Height; y++)
+                {
+                    if (Main.tile[x, y].type == type && Main.tile[x, y].active())
+                    {
+                        WorldGen.KillTile(x, y, false, false, false);
+                    }
+                }
+            }
+            KillMultiTile(i, j, frameX - partFrameX, frameY - partFrameY, type);
+            WorldGen.destroyObject = false;
+            for (int x = i - 1; x < i + tileData.Width + 2; x++)
+            {
+                for (int y = j - 1; y < j + tileData.Height + 2; y++)
+                {
+                    WorldGen.TileFrame(x, y, false, false);
+                }
+            }
+        }
+    }
+
+    //in Terraria.ObjectData.TileObject data make the following public:
+    //  newTile, newSubTile, newAlternate, addTile, addSubTile, addAlternate
     internal static void SetDefaults(ModTile tile)
     {
         tile.SetDefaults();
@@ -377,7 +452,10 @@ public static class TileLoader
             {
                 return false;
             }
-            Item.NewItem(i * 16, j * 16, 16, 16, modTile.drop, 1, false, -1, false, false);
+            if(modTile.drop > 0)
+            {
+                Item.NewItem(i * 16, j * 16, 16, 16, modTile.drop, 1, false, -1, false, false);
+            }
             return false;
         }
         return true;
@@ -398,6 +476,15 @@ public static class TileLoader
             {
                 mod.globalTile.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
             }
+        }
+    }
+
+    internal static void KillMultiTile(int i, int j, int frameX, int frameY, int type)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.KillMultiTile(i, j, frameX, frameY);
         }
     }
 }}

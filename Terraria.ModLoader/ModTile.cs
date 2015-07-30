@@ -61,4 +61,6 @@ public class ModTile
     }
 
     public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) { }
+
+    public virtual void KillMultiTile(int i, int j, int frameX, int frameY) { }
 }}
