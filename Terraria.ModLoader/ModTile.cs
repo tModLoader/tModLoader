@@ -24,7 +24,6 @@ public class ModTile
 
     public int soundType = 0;
     public int soundStyle = 1;
-    public int numDust = 10;
     public int dustType = 0;
     public int drop = 0;
 
@@ -43,22 +42,22 @@ public class ModTile
 
     public virtual bool KillSound(int i, int j)
     {
-        return false;
+        return true;
     }
 
-    public virtual void NumDust(int i, int j, ref int num) { }
+    public virtual void NumDust(int i, int j, bool fail, ref int num) { }
 
     public virtual bool CreateDust(int i, int j, ref int type)
     {
         type = dustType;
-        return false;
+        return true;
     }
 
     public virtual void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) { }
 
     public virtual bool Drop(int i, int j)
     {
-        return false;
+        return true;
     }
 
     public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) { }

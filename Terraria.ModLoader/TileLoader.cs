@@ -8,7 +8,7 @@ using Terraria.Map;
 using Terraria.ObjectData;
 
 namespace Terraria.ModLoader {
-public class TileLoader
+public static class TileLoader
 {
     //make Terraria.ObjectData.TileObjectData._data internal
     //make all static Terraria.ObjectData.TileObjectData.StyleName fields public
@@ -280,44 +280,43 @@ public class TileLoader
     }
 
     //in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
-    //  add if(TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
+    //  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
     internal static bool KillSound(int i, int j, int type)
     {
         foreach(Mod mod in ModLoader.mods.Values)
         {
-            if(mod.globalTile != null && mod.globalTile.KillSound(i, j, type))
+            if(mod.globalTile != null && !mod.globalTile.KillSound(i, j, type))
             {
-                return true;
+                return false;
             }
         }
         ModTile modTile = GetTile(type);
         if(modTile != null)
         {
-            if(modTile.KillSound(i, j))
+            if(!modTile.KillSound(i, j))
             {
-                return true;
+                return false;
             }
             Main.PlaySound(modTile.soundType, i * 16, j * 16, modTile.soundStyle);
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     //in Terraria.WorldGen.KillTile before num14 (num dust iteration) is declared, add
     //  TileLoader.NumDust(i, j, tile.type, ref num13);
-    internal static void NumDust(int i, int j, int type, ref int numDust)
+    internal static void NumDust(int i, int j, int type, bool fail, ref int numDust)
     {
         ModTile modTile = GetTile(type);
         if(modTile != null)
         {
-            numDust = modTile.numDust;
-            modTile.NumDust(i, j, ref numDust);
+            modTile.NumDust(i, j, fail, ref numDust);
         }
         foreach(Mod mod in ModLoader.mods.Values)
         {
             if(mod.globalTile != null)
             {
-                mod.globalTile.NumDust(i, j, type, ref numDust);
+                mod.globalTile.NumDust(i, j, type, fail, ref numDust);
             }
         }
     }
@@ -328,9 +327,9 @@ public class TileLoader
     {
         foreach(Mod mod in ModLoader.mods.Values)
         {
-            if(mod.globalTile != null && mod.globalTile.CreateDust(i, j, type, ref dustType))
+            if(mod.globalTile != null && !mod.globalTile.CreateDust(i, j, type, ref dustType))
             {
-                return true;
+                return false;
             }
         }
         ModTile modTile = GetTile(type);
@@ -338,7 +337,7 @@ public class TileLoader
         {
             return modTile.CreateDust(i, j, ref dustType);
         }
-        return false;
+        return true;
     }
 
     //in Terraria.WorldGen.KillTile before if statement checking num43 call
@@ -360,28 +359,28 @@ public class TileLoader
     }
 
     //in Terraria.WorldGen.KillTile before if statements checking num49 and num50
-    //  add bool modDrop = TileLoader.Drop(i, j, tile.type);
-    //  add "!modDrop && " to beginning of these if statements
+    //  add bool vanillaDrop = TileLoader.Drop(i, j, tile.type);
+    //  add "vanillaDrop && " to beginning of these if statements
     internal static bool Drop(int i, int j, int type)
     {
         foreach(Mod mod in ModLoader.mods.Values)
         {
-            if(mod.globalTile != null && mod.globalTile.Drop(i, j, type))
+            if(mod.globalTile != null && !mod.globalTile.Drop(i, j, type))
             {
-                return true;
+                return false;
             }
         }
         ModTile modTile = GetTile(type);
         if(modTile != null)
         {
-            if(modTile.Drop(i, j))
+            if(!modTile.Drop(i, j))
             {
-                return true;
+                return false;
             }
             Item.NewItem(i * 16, j * 16, 16, 16, modTile.drop, 1, false, -1, false, false);
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     //in Terraria.WorldGen.KillTile before if (!effectOnly && !WorldGen.stopDrops) add
