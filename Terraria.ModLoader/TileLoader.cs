@@ -1,13 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Map;
 using Terraria.ObjectData;
 
 namespace Terraria.ModLoader {
 public class TileLoader
 {
+    //make Terraria.ObjectData.TileObjectData._data internal
+    //make all static Terraria.ObjectData.TileObjectData.StyleName fields public
+    //make Terraria.ObjectData.TileObjectData.LinkedAlternates public
+    //at end of Terraria.ObjectData.TileObjectData.Initialize remove TileObjectData.readOnlyData = true;
+    //at beginning of Terraria.WorldGen.PlaceTile remove type too high check
+    //at beginning of Terraria.WorldGen.PlaceObject remove type too high check
+    //in Terraria.WorldGen.Convert remove type too high checks
+    //in Terraria.WorldGen.StartRoomCheck change 419 to WorldGen.houseTile.Length
+    //at end of Terraria.WorldGen.KillWall remove type too high check
+    //in Terraria.Player change adjTile and oldAdjTile size to TileLoader.TileCount()
+    //in Terraria.Player.AdjTiles change 419 to adjTile.Length
+
     //in Terraria.IO.WorldFile.SaveFileFormatHeader set initial num to TileLoader.TileCount
     private static int nextTile = TileID.Count;
     internal static readonly IDictionary<int, ModTile> tiles = new Dictionary<int, ModTile>();
@@ -108,6 +122,9 @@ public class TileLoader
         Array.Resize(ref Main.tileFlame, nextTile);
         Array.Resize(ref Main.tileFrame, nextTile);
         Array.Resize(ref Main.tileFrameCounter, nextTile);
+        Array.Resize(ref WorldGen.tileCounts, nextTile);
+        Array.Resize(ref WorldGen.houseTile, nextTile);
+        Array.Resize(ref MapHelper.tileLookup, nextTile);
         Array.Resize(ref TileID.Sets.Conversion.Grass, nextTile);
         Array.Resize(ref TileID.Sets.Conversion.Stone, nextTile);
         Array.Resize(ref TileID.Sets.Conversion.Ice, nextTile);
@@ -150,6 +167,10 @@ public class TileLoader
         Array.Resize(ref TileID.Sets.TouchDamageOther, nextTile);
         Array.Resize(ref TileID.Sets.Falling, nextTile);
         Array.Resize(ref TileID.Sets.Ore, nextTile);
+        while(TileObjectData._data.Count < nextTile)
+        {
+            TileObjectData._data.Add(null);
+        }
     }
 
     internal static void Unload()
@@ -160,6 +181,10 @@ public class TileLoader
         Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
         Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);
         Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsDoor, vanillaDoorCount);
+        while(TileObjectData._data.Count > TileID.Count)
+        {
+            TileObjectData._data.RemoveAt(TileObjectData._data.Count - 1);
+        }
     }
 
     //add to beginning of Terraria.IO.WorldFile.SaveWorldTiles
@@ -197,6 +222,8 @@ public class TileLoader
 
     //add to beginning of Terraria.IO.WorldFile.LoadWorldTiles
     //  IDictionary<int, int> modTiles = TileLoader.ReadTable(reader);
+    //in Terraria.IO.WorldFile.ValidateWorld after baseStream.Position = (long)array2[1]; add
+    //  TileLoader.ReadTable(fileIO);
     internal static IDictionary<int, int> ReadTable(BinaryReader reader)
     {
         IDictionary<int, int> table = new Dictionary<int, int>();
@@ -237,5 +264,141 @@ public class TileLoader
             type = table[type];
         }
         return (ushort)type;
+    }
+
+    internal static void SetDefaults(ModTile tile)
+    {
+        tile.SetDefaults();
+        if(Main.tileLavaDeath[tile.Type])
+        {
+            Main.tileObsidianKill[tile.Type] = true;
+        }
+        if(Main.tileSolid[tile.Type])
+        {
+            Main.tileNoSunLight[tile.Type] = true;
+        }
+    }
+
+    //in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
+    //  add if(TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
+    internal static bool KillSound(int i, int j, int type)
+    {
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null && mod.globalTile.KillSound(i, j, type))
+            {
+                return true;
+            }
+        }
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            if(modTile.KillSound(i, j))
+            {
+                return true;
+            }
+            Main.PlaySound(modTile.soundType, i * 16, j * 16, modTile.soundStyle);
+            return true;
+        }
+        return false;
+    }
+
+    //in Terraria.WorldGen.KillTile before num14 (num dust iteration) is declared, add
+    //  TileLoader.NumDust(i, j, tile.type, ref num13);
+    internal static void NumDust(int i, int j, int type, ref int numDust)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            numDust = modTile.numDust;
+            modTile.NumDust(i, j, ref numDust);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                mod.globalTile.NumDust(i, j, type, ref numDust);
+            }
+        }
+    }
+
+    //in Terraria.WorldGen.KillTile replace if (num15 >= 0) with
+    //  if(TileLoader.CreateDust(i, j, tile.type, ref num15) && num15 >= 0)
+    internal static bool CreateDust(int i, int j, int type, ref int dustType)
+    {
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null && mod.globalTile.CreateDust(i, j, type, ref dustType))
+            {
+                return true;
+            }
+        }
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            return modTile.CreateDust(i, j, ref dustType);
+        }
+        return false;
+    }
+
+    //in Terraria.WorldGen.KillTile before if statement checking num43 call
+    //  TileLoader.DropCritterChance(i, j, tile.type, ref num43, ref num44, ref num45);
+    internal static void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.DropCritterChance(i, j, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                mod.globalTile.DropCritterChance(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
+            }
+        }
+    }
+
+    //in Terraria.WorldGen.KillTile before if statements checking num49 and num50
+    //  add bool modDrop = TileLoader.Drop(i, j, tile.type);
+    //  add "!modDrop && " to beginning of these if statements
+    internal static bool Drop(int i, int j, int type)
+    {
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null && mod.globalTile.Drop(i, j, type))
+            {
+                return true;
+            }
+        }
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            if(modTile.Drop(i, j))
+            {
+                return true;
+            }
+            Item.NewItem(i * 16, j * 16, 16, 16, modTile.drop, 1, false, -1, false, false);
+            return true;
+        }
+        return false;
+    }
+
+    //in Terraria.WorldGen.KillTile before if (!effectOnly && !WorldGen.stopDrops) add
+    //  TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem);
+    internal static void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                mod.globalTile.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
+            }
+        }
     }
 }}

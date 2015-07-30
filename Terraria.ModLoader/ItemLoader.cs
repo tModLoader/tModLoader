@@ -103,6 +103,7 @@ public static class ItemLoader
 
     //modify loading in Terraria.IO.WorldFile.LoadChests and Terraria.Player.LoadPlayer
     //replace netDefaults reads with this
+    //in Terraria.IO.WorldFile.ValidateWorld inside if (num10 > 0) replace fileIO.ReadInt32();
     internal static void ReadID(Item item, BinaryReader reader)
     {
         int type = reader.ReadInt32();

@@ -261,7 +261,7 @@ public abstract class Mod
         foreach(ModTile tile in tiles.Values)
         {
             Main.tileTexture[tile.Type] = ModLoader.GetTexture(tile.texture);
-            tile.SetDefaults();
+            TileLoader.SetDefaults(tile);
         }
         if(globalTile != null)
         {
