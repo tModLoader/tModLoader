@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -28,6 +29,8 @@ public class ModTile
     public int dustType = 0;
     public int drop = 0;
     public int animationFrameHeight = 0;
+    public Color? mapColor = null;
+    public string mapName = "";
 
     public void AddToArray(ref int[] array)
     {
@@ -78,4 +81,14 @@ public class ModTile
     }
 
     public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch) { }
+
+    public virtual Color? MapColor(int i, int j)
+    {
+        return mapColor;
+    }
+
+    public virtual string MapName(int frameX, int frameY)
+    {
+        return mapName;
+    }
 }}

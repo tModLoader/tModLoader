@@ -26,6 +26,7 @@ public static class TileLoader
     //in Terraria.IO.WorldFile.SaveFileFormatHeader set initial num to TileLoader.TileCount
     private static int nextTile = TileID.Count;
     internal static readonly IDictionary<int, ModTile> tiles = new Dictionary<int, ModTile>();
+    private static bool loaded = false;
     private static int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
     private static int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
     private static int vanillaTorchCount = TileID.Sets.RoomNeeds.CountsAsTorch.Length;
@@ -172,10 +173,12 @@ public static class TileLoader
         {
             TileObjectData._data.Add(null);
         }
+        loaded = true;
     }
 
     internal static void Unload()
     {
+        loaded = false;
         tiles.Clear();
         nextTile = TileID.Count;
         Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsChair, vanillaChairCount);
@@ -558,9 +561,12 @@ public static class TileLoader
     //in Terraria.Main.Update after vanilla tile animations call TileLoader.AnimateTiles();
     internal static void AnimateTiles()
     {
-        foreach(ModTile modTile in tiles.Values)
+        if(loaded)
         {
-            modTile.AnimateTile(ref Main.tileFrame[modTile.Type], ref Main.tileFrameCounter[modTile.Type]);
+            foreach(ModTile modTile in tiles.Values)
+            {
+                modTile.AnimateTile(ref Main.tileFrame[modTile.Type], ref Main.tileFrameCounter[modTile.Type]);
+            }
         }
     }
 
@@ -609,6 +615,31 @@ public static class TileLoader
             if(mod.globalTile != null)
             {
                 mod.globalTile.PostDraw(i, j, type, spriteBatch);
+            }
+        }
+    }
+
+    //add internal int x and internal int y fields to Terraria.Map.MapTile
+    //  change constructor, constructor uses, Equals, and EqualsWithoutLight to accomodate for this
+    //at beginning of Terraria.Map.WorldMap.SetTile add tile.x = x; tile.y = y;
+    //at end of Terraria.Map.MapHelper.CreateMapTile replace return with
+    //  MapTile mapTile = MapTile.Create((ushort)num16, (byte)num2, (byte)num);
+    //  mapTile.x = i; mapTile.y = j; return mapTile;
+    //at end of constructor for Terraria.Map.WorldMap add
+    //  for(int x = 0; x < maxWidth; x++) { for(int y = 0; y < maxHeight; y++)
+    //  { this._tiles[x, y].x = x; this._tiles[x, y].y = y; }}
+
+    //in Terraria.Map.MapHelper.GetMapTileXnaColor after result is initialized call
+    //  TileLoader.MapColor(tile, ref result);
+    internal static void MapColor(MapTile tile, ref Color color)
+    {
+        ModTile modTile = GetTile(Main.tile[tile.x, tile.y].type);
+        if(modTile != null)
+        {
+            Color? modColor = modTile.MapColor(tile.x, tile.y);
+            if(modColor.HasValue)
+            {
+                color = modColor.Value;
             }
         }
     }
