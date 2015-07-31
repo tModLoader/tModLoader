@@ -619,12 +619,13 @@ public static class TileLoader
         }
     }
 
-    //add internal int x and internal int y fields to Terraria.Map.MapTile
-    //  change constructor, constructor uses, Equals, and EqualsWithoutLight to accomodate for this
+    //add internal int x, internal int y, and internal ushort modType fields to Terraria.Map.MapTile
+    //  change constructor, constructor uses, Equals, EqualsWithoutLight, and Clear to accomodate for this
     //at beginning of Terraria.Map.WorldMap.SetTile add tile.x = x; tile.y = y;
+    //  tile.modType = Main.tile[x, y].type >= Terraria.ID.TileID.Count ? Main.tile[x, y].type : (ushort)0;
     //at end of Terraria.Map.MapHelper.CreateMapTile replace return with
-    //  MapTile mapTile = MapTile.Create((ushort)num16, (byte)num2, (byte)num);
-    //  mapTile.x = i; mapTile.y = j; return mapTile;
+    //  MapTile mapTile = MapTile.Create((ushort)num16, (byte)num2, (byte)num); mapTile.x = i; mapTile.y = j;
+    //  mapTile.modType = Main.tile[i, j].type >= Terraria.ID.TileID.Count ? Main.tile[i, j].type : (ushort)0; return mapTile;
     //at end of constructor for Terraria.Map.WorldMap add
     //  for(int x = 0; x < maxWidth; x++) { for(int y = 0; y < maxHeight; y++)
     //  { this._tiles[x, y].x = x; this._tiles[x, y].y = y; }}
