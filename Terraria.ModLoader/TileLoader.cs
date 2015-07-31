@@ -576,37 +576,39 @@ public static class TileLoader
     }
 
     //in Terraria.Main.Draw after calling SetAnimationFrame call
-    //  if(!TileLoader.PreDraw(j, i, type)) { TileLoader.PostDraw(j, i, type); continue; }
-    internal static bool PreDraw(int i, int j, int type)
+    //  if(!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
+    //  { TileLoader.PostDraw(j, i, type, Main.spriteBatch); continue; }
+    internal static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
     {
         foreach(Mod mod in ModLoader.mods.Values)
         {
-            if(mod.globalTile != null && !mod.globalTile.PreDraw(i, j, type))
+            if(mod.globalTile != null && !mod.globalTile.PreDraw(i, j, type, spriteBatch))
             {
                 return false;
             }
         }
         ModTile modTile = GetTile(type);
-        if(modTile != null && !modTile.PreDraw(i, j))
+        if(modTile != null && !modTile.PreDraw(i, j, spriteBatch))
         {
             return false;
         }
         return true;
     }
 
-    //in Terraria.Main.Draw after if statement checking whether texture2D is null call TileLoader.PostDraw(j, i, type);
-    internal static void PostDraw(int i, int j, int type)
+    //in Terraria.Main.Draw after if statement checking whether texture2D is null call
+    //  TileLoader.PostDraw(j, i, type, Main.spriteBatch);
+    internal static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
     {
         ModTile modTile = GetTile(type);
         if(modTile != null)
         {
-            modTile.PostDraw(i, j);
+            modTile.PostDraw(i, j, spriteBatch);
         }
         foreach(Mod mod in ModLoader.mods.Values)
         {
             if(mod.globalTile != null)
             {
-                mod.globalTile.PostDraw(i, j, type);
+                mod.globalTile.PostDraw(i, j, type, spriteBatch);
             }
         }
     }

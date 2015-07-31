@@ -72,10 +72,10 @@ public class ModTile
 
     public virtual void AnimateTile(ref int frame, ref int frameCounter) { }
 
-    public virtual bool PreDraw(int i, int j)
+    public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch)
     {
         return true;
     }
 
-    public virtual void PostDraw(int i, int j) { }
+    public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch) { }
 }}

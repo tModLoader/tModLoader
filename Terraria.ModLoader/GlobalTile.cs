@@ -44,10 +44,10 @@ public class GlobalTile
 
     public virtual void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) { }
 
-    public virtual bool PreDraw(int i, int j, int type)
+    public virtual bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
     {
         return true;
     }
 
-    public virtual void PostDraw(int i, int j, int type) { }
+    public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) { }
 }}
