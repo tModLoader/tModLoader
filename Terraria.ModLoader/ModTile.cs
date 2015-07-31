@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 
@@ -26,6 +27,7 @@ public class ModTile
     public int soundStyle = 1;
     public int dustType = 0;
     public int drop = 0;
+    public int animationFrameHeight = 0;
 
     public void AddToArray(ref int[] array)
     {
@@ -63,4 +65,17 @@ public class ModTile
     public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) { }
 
     public virtual void KillMultiTile(int i, int j, int frameX, int frameY) { }
+
+    public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) { }
+
+    public virtual void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) { }
+
+    public virtual void AnimateTile(ref int frame, ref int frameCounter) { }
+
+    public virtual bool PreDraw(int i, int j)
+    {
+        return true;
+    }
+
+    public virtual void PostDraw(int i, int j) { }
 }}

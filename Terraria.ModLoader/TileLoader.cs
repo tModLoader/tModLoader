@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Map;
 using Terraria.ObjectData;
@@ -281,6 +281,10 @@ public static class TileLoader
         }
         int style = 0;
         TileObjectData tileData = TileObjectData.GetTileData(type, style, 0);
+        if(tileData == null)
+        {
+            return;
+        }
         int frameX = Main.tile[i, j].frameX;
         int frameY = Main.tile[i, j].frameY;
         int partFrameX = frameX % tileData.CoordinateFullWidth;
@@ -485,6 +489,125 @@ public static class TileLoader
         if(modTile != null)
         {
             modTile.KillMultiTile(i, j, frameX, frameY);
+        }
+    }
+
+    //in Terraria.Lighting.PreRenderPhase after label after if statement checking Main.tileLighted call
+    //  TileLoader.ModifyLight(n, num17, tile.type, ref num18, ref num19, ref num20);
+    internal static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+    {
+        if(!Main.tileLighted[type])
+        {
+            return;
+        }
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.ModifyLight(i, j, ref r, ref g, ref b);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                mod.globalTile.ModifyLight(i, j, type, ref r, ref g, ref b);
+            }
+        }
+    }
+
+    //in Terraria.Main.DrawTiles after if statement setting effects call
+    //  TileLoader.SetSpriteEffects(j, i, type, ref effects);
+    internal static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.SetSpriteEffects(i, j, ref spriteEffects);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                mod.globalTile.SetSpriteEffects(i, j, type, ref spriteEffects);
+            }
+        }
+    }
+
+    //in Terraria.Main.DrawTiles after if statements setting num11 and num12 call
+    //  TileLoader.SetDrawPositions(tile, ref num9, ref num11, ref num12);
+    internal static void SetDrawPositions(Tile tile, ref int width, ref int offsetY, ref int height)
+    {
+        if(tile.type >= TileID.Count)
+        {
+            TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
+            if(tileData != null)
+            {
+                int partFrameY = tile.frameY % tileData.CoordinateFullHeight;
+                int partY = 0;
+                while (partFrameY > 0)
+                {
+                    partFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
+                    partY++;
+                }
+                width = tileData.CoordinateWidth;
+                offsetY = tileData.DrawYOffset;
+                height = tileData.CoordinateHeights[partY];
+            }
+        }
+    }
+
+    //in Terraria.Main.Update after vanilla tile animations call TileLoader.AnimateTiles();
+    internal static void AnimateTiles()
+    {
+        foreach(ModTile modTile in tiles.Values)
+        {
+            modTile.AnimateTile(ref Main.tileFrame[modTile.Type], ref Main.tileFrameCounter[modTile.Type]);
+        }
+    }
+
+    //in Terraria.Main.Draw after small if statements setting num15 call
+    //  TileLoader.SetAnimationFrame(type, ref num15);
+    internal static void SetAnimationFrame(int type, ref int frameY)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            frameY = modTile.animationFrameHeight * Main.tileFrame[type];
+        }
+    }
+
+    //in Terraria.Main.Draw after calling SetAnimationFrame call
+    //  if(!TileLoader.PreDraw(j, i, type)) { TileLoader.PostDraw(j, i, type); continue; }
+    internal static bool PreDraw(int i, int j, int type)
+    {
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null && !mod.globalTile.PreDraw(i, j, type))
+            {
+                return false;
+            }
+        }
+        ModTile modTile = GetTile(type);
+        if(modTile != null && !modTile.PreDraw(i, j))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    //in Terraria.Main.Draw after if statement checking whether texture2D is null call TileLoader.PostDraw(j, i, type);
+    internal static void PostDraw(int i, int j, int type)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.PostDraw(i, j);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                mod.globalTile.PostDraw(i, j, type);
+            }
         }
     }
 }}

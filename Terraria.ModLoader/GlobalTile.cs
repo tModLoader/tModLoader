@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 namespace Terraria.ModLoader {
@@ -38,4 +39,15 @@ public class GlobalTile
     }
 
     public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) { }
+
+    public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) { }
+
+    public virtual void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) { }
+
+    public virtual bool PreDraw(int i, int j, int type)
+    {
+        return true;
+    }
+
+    public virtual void PostDraw(int i, int j, int type) { }
 }}
