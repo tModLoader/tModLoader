@@ -31,6 +31,8 @@ public class ModTile
     public int animationFrameHeight = 0;
     public Color? mapColor = null;
     public string mapName = "";
+    public float mineResist = 1f;
+    public int minPick = 0;
 
     public void AddToArray(ref int[] array)
     {

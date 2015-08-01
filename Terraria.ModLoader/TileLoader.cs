@@ -683,4 +683,33 @@ public static class TileLoader
         }
         return flag;
     }
+
+    //in Terraria.Player.ItemCheck in if statements for mining
+    //  replace num222 += item.hammer; with TileLoader.MineDamage(item.hammer, ref num222);
+    //  replace num222 += item.axe; with TileLoader.MineDamage(item.axe, ref num222);
+    //in Terraria.Player.PickTile replace num += pickPower; with TileLoader.MineDamage(pickPower, ref num);
+    internal static void MineDamage(int minePower, ref int damage)
+    {
+        Tile target = Main.tile[Player.tileTargetX, Player.tileTargetY];
+        ModTile modTile = GetTile(target.type);
+        if(modTile != null)
+        {
+            damage = (int)(damage + minePower / modTile.mineResist);
+        }
+        else
+        {
+            damage += minePower;
+        }
+    }
+
+    //in Terraria.Player.ItemCheck at end of else if chain setting num to 0 add
+    //  else { TileLoader.PickPowerCheck(tile, pickPower, ref num); }
+    internal static void PickPowerCheck(Tile target, int pickPower, ref int damage)
+    {
+        ModTile modTile = GetTile(target.type);
+        if(modTile != null && pickPower < modTile.minPick)
+        {
+            damage = 0;
+        }
+    }
 }}
