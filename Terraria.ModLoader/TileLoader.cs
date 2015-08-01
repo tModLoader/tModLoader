@@ -644,4 +644,43 @@ public static class TileLoader
             }
         }
     }
+
+    //in Terraria.WorldGen.UpdateWorld in the while loops updating certain numbers of tiles at end of null check if statements
+    //  add TileLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].type; for the first loop
+    //  add TileLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].typel for the second loop
+    internal static void RandomUpdate(int i, int j, int type)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.RandomUpdate(i, j);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                mod.globalTile.RandomUpdate(i, j, type);
+            }
+        }
+    }
+
+    //in Terraria.WorldGen.TileFrame at beginning of block of if(tile.active()) add
+    //  if(!TileLoader.TileFrame(i, j, tile.type, ref resetFrame, ref noBreak)) { return; }
+    internal static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
+    {
+        ModTile modTile = GetTile(type);
+        bool flag = true;
+        if(modTile != null)
+        {
+            flag = modTile.TileFrame(i, j, ref resetFrame, ref noBreak);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                flag &= mod.globalTile.TileFrame(i, j, type, ref resetFrame, ref noBreak);
+            }
+        }
+        return flag;
+    }
 }}

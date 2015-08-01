@@ -91,4 +91,11 @@ public class ModTile
     {
         return mapName;
     }
+
+    public virtual void RandomUpdate(int i, int j) { }
+
+    public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
+    {
+        return true;
+    }
 }}

@@ -50,4 +50,11 @@ public class GlobalTile
     }
 
     public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) { }
+
+    public virtual void RandomUpdate(int i, int j, int type) { }
+
+    public virtual bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
+    {
+        return true;
+    }
 }}
