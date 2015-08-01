@@ -57,4 +57,14 @@ public class GlobalTile
     {
         return true;
     }
+
+    public virtual bool CanPlace(int i, int j, int type)
+    {
+        return true;
+    }
+
+    public virtual int[] AdjTiles(int type)
+    {
+        return new int[0];
+    }
 }}

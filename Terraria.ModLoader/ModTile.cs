@@ -33,6 +33,7 @@ public class ModTile
     public string mapName = "";
     public float mineResist = 1f;
     public int minPick = 0;
+    public int[] adjTiles = new int[0];
 
     public void AddToArray(ref int[] array)
     {
@@ -97,6 +98,11 @@ public class ModTile
     public virtual void RandomUpdate(int i, int j) { }
 
     public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
+    {
+        return true;
+    }
+
+    public virtual bool CanPlace(int i, int j)
     {
         return true;
     }

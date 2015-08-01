@@ -712,4 +712,49 @@ public static class TileLoader
             damage = 0;
         }
     }
+
+    //in Terraria.Player.PlaceThing after tileObject is initalized add else to if statement and before add
+    //  if(!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY)) { }
+    internal static bool CanPlace(int i, int j)
+    {
+        int type = Main.tile[i, j].type;
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null && !mod.globalTile.CanPlace(i, j, type))
+            {
+                return false;
+            }
+        }
+        ModTile modTile = GetTile(type);
+        if(modTile != null && !modTile.CanPlace(i, j))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    //in Terraria.Player.AdjTiles in end of if statement checking for tile's active
+    //  add TileLoader.AdjTiles(this, Main.tile[j, k].type);
+    internal static void AdjTiles(Player player, int type)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            foreach(int k in modTile.adjTiles)
+            {
+                player.adjTile[k] = true;
+            }
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                int[] adjTiles = mod.globalTile.AdjTiles(type);
+                foreach(int k in adjTiles)
+                {
+                    player.adjTile[k] = true;
+                }
+            }
+        }
+    }
 }}
