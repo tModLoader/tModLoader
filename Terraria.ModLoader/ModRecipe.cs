@@ -78,6 +78,20 @@ public class ModRecipe : Recipe
         numTiles++;
     }
 
+    public void AddTile(Mod mod, string tileName)
+    {
+        if(mod == null)
+        {
+            mod = this.mod;
+        }
+        this.AddTile(mod.TileType(tileName));
+    }
+
+    public void AddTile(ModTile tile)
+    {
+        this.AddTile(tile.Type);
+    }
+
     public void AddRecipe()
     {
         for(int k = 0; k < Recipe.maxRequirements; k++)
