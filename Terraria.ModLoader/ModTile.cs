@@ -106,4 +106,8 @@ public class ModTile
     {
         return true;
     }
+
+    public virtual void RightClick(int i, int j) { }
+
+    public virtual void HitWire(int i, int j) { }
 }}

@@ -67,4 +67,8 @@ public class GlobalTile
     {
         return new int[0];
     }
+
+    public virtual void RightClick(int i, int j, int type) { }
+
+    public virtual void HitWire(int i, int j, int type) { }
 }}

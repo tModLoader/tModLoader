@@ -757,4 +757,43 @@ public static class TileLoader
             }
         }
     }
+
+    //in Terraria.Player.Update in if statements involving controluseTile and releaseUseTile
+    //  at end of type-check if else chain add TileLoader.RightClick(Player.tileTargetX, Player.tileTargetY);
+    internal static void RightClick(int i, int j)
+    {
+        int type = Main.tile[i, j].type;
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.RightClick(i, j);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                mod.globalTile.RightClick(i, j, type);
+            }
+        }
+    }
+
+    //in Terraria.Wiring make the following public:
+    //  _toProcess, _teleport, _inPumpX, _inPumpY, _numInPump, _outPumpX, _outPumpY, _numOutPump CheckMech, TripWire
+    //at end of Terraria.Wiring.HitWireSingle inside if statement checking for tile active add
+    //  TileLoader.HitWire(i, j, type);
+    internal static void HitWire(int i, int j, int type)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.HitWire(i, j);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalTile != null)
+            {
+                mod.globalTile.HitWire(i, j, type);
+            }
+        }
+    }
 }}
