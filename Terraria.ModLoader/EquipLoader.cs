@@ -135,7 +135,9 @@ public static class EquipLoader
         }
         idToType.Clear();
         idToSlot.Clear();
-        slotToId.Clear();
+        slotToId[EquipType.Head].Clear();
+        slotToId[EquipType.Body].Clear();
+        slotToId[EquipType.Legs].Clear();
         femaleTextures.Clear();
         armTextures.Clear();
     }

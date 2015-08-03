@@ -602,6 +602,10 @@ public static class ModLoader
 
     public static Texture2D GetTexture(string name)
     {
+        if(!textures.ContainsKey(name))
+        {
+            throw new ArgumentException("Missing texture " + name);
+        }
         return textures[name];
     }
 
