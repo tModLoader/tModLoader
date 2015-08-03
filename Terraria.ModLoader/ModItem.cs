@@ -167,6 +167,15 @@ public class ModItem
 
     public virtual void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale) { }
 
+    public virtual bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,
+        Color itemColor, Vector2 origin, float scale)
+    {
+        return true;
+    }
+
+    public virtual void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,
+        Color itemColor, Vector2 origin, float scale) { }
+    
     public virtual bool CanEquipAccessory(Player player, int slot)
     {
         return true;

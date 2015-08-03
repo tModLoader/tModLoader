@@ -92,6 +92,14 @@ public class ModRecipe : Recipe
         this.AddTile(tile.Type);
     }
 
+    //in Terraria.Recipe.Create before alchemy table check add
+    //  ModRecipe modRecipe = this as ModRecipe;
+    //  if(modRecipe != null) { num = modRecipe.ConsumeItem(item.type, item.stack); }
+    public virtual int ConsumeItem(int type, int numRequired)
+    {
+        return numRequired;
+    }
+
     public void AddRecipe()
     {
         for(int k = 0; k < Recipe.maxRequirements; k++)

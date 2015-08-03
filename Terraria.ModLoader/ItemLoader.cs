@@ -820,6 +820,47 @@ public static class ItemLoader
         }
     }
 
+    //in Terraria.UI.ItemSlot.Draw place item-drawing code inside if statement
+    //  if(ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
+    //    item.GetColor(color), origin, num4 * num3))
+    internal static bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
+        Color drawColor, Color itemColor, Vector2 origin, float scale)
+    {
+        bool flag = true;
+        if(IsModItem(item) && !item.modItem.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale))
+        {
+            flag = false;
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalItem != null && !mod.globalItem.PreDrawInInventory(item, spriteBatch, position, frame, drawColor,
+                itemColor, origin, scale))
+            {
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
+    //in Terraria.UI.ItemSlot.Draw after if statement for PreDrawInInventory call
+    //  ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
+    //    item.GetColor(color), origin, num4 * num3);
+    internal static void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
+        Color drawColor, Color itemColor, Vector2 origin, float scale)
+    {
+        if(IsModItem(item))
+        {
+            item.modItem.PostDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        }
+        foreach(Mod mod in ModLoader.mods.Values)
+        {
+            if(mod.globalItem != null)
+            {
+                mod.globalItem.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+            }
+        }
+    }
+
     //in Terraria.UI.ItemSlot.AccCheck replace 2nd and 3rd return false with
     //  return !ItemLoader.CanEquipAccessory(item, slot)
     internal static bool CanEquipAccessory(Item item, int slot)
