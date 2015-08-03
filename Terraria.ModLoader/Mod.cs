@@ -114,7 +114,7 @@ public abstract class Mod
         return this.globalItem;
     }
 
-    public int AddEquipTexture(EquipType type, string texture, string armTexture = "", string femaleTexture = "")
+    public int AddEquipTexture(ModItem item, EquipType type, string texture, string armTexture = "", string femaleTexture = "")
     {
         int slot = EquipLoader.ReserveEquipID(type);
         EquipLoader.equips[type][texture] = slot;
@@ -122,6 +122,10 @@ public abstract class Mod
         {
             EquipLoader.armTextures[slot] = armTexture;
             EquipLoader.femaleTextures[slot] = femaleTexture.Length > 0 ? femaleTexture : texture;
+        }
+        if(type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
+        {
+            EquipLoader.slotToId[type][slot] = item.item.type;
         }
         return slot;
     }
@@ -142,7 +146,7 @@ public abstract class Mod
                 string armTexture = texture + "_Arms";
                 string femaleTexture = texture + "_FemaleBody";
                 item.AutoloadEquip(ref equipTexture, ref armTexture, ref femaleTexture);
-                int slot = AddEquipTexture(equip.Value, equipTexture, armTexture, femaleTexture);
+                int slot = AddEquipTexture(item, equip.Value, equipTexture, armTexture, femaleTexture);
                 EquipLoader.idToType[item.item.type] = equip.Value;
                 EquipLoader.idToSlot[item.item.type] = slot;
             }

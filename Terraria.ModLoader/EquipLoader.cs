@@ -11,6 +11,7 @@ public static class EquipLoader
     internal static readonly IDictionary<EquipType, IDictionary<string, int>> equips = new Dictionary<EquipType, IDictionary<string, int>>();
     internal static readonly IDictionary<int, EquipType> idToType = new Dictionary<int, EquipType>();
     internal static readonly IDictionary<int, int> idToSlot = new Dictionary<int, int>();
+    internal static readonly IDictionary<EquipType, IDictionary<int, int>> slotToId = new Dictionary<EquipType, IDictionary<int, int>>();
     internal static readonly IDictionary<int, string> femaleTextures = new Dictionary<int, string>();
     internal static readonly IDictionary<int, string> armTextures = new Dictionary<int, string>();
     static EquipLoader()
@@ -20,6 +21,9 @@ public static class EquipLoader
             nextEquip[type] = GetNumVanilla(type);
             equips[type] = new Dictionary<string, int>();
         }
+        slotToId[EquipType.Head] = new Dictionary<int, int>();
+        slotToId[EquipType.Body] = new Dictionary<int, int>();
+        slotToId[EquipType.Legs] = new Dictionary<int, int>();
     }
 
     internal static int ReserveEquipID(EquipType type)
@@ -105,6 +109,21 @@ public static class EquipLoader
                 }
             }
         }
+        Array.Resize(ref Item.headType, nextEquip[EquipType.Head]);
+        foreach(int slot in slotToId[EquipType.Head].Keys)
+        {
+            Item.headType[slot] = slotToId[EquipType.Head][slot];
+        }
+        Array.Resize(ref Item.bodyType, nextEquip[EquipType.Body]);
+        foreach(int slot in slotToId[EquipType.Body].Keys)
+        {
+            Item.bodyType[slot] = slotToId[EquipType.Body][slot];
+        }
+        Array.Resize(ref Item.legType, nextEquip[EquipType.Legs]);
+        foreach(int slot in slotToId[EquipType.Legs].Keys)
+        {
+            Item.legType[slot] = slotToId[EquipType.Legs][slot];
+        }
     }
 
     internal static void Unload()
@@ -116,6 +135,7 @@ public static class EquipLoader
         }
         idToType.Clear();
         idToSlot.Clear();
+        slotToId.Clear();
         femaleTextures.Clear();
         armTextures.Clear();
     }
