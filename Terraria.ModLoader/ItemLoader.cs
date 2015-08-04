@@ -181,7 +181,8 @@ public static class ItemLoader
     }
 
     //in Terraria.Item.SetDefaults get rid of type-too-high check
-    //add near end of Terraria.Item.SetDefaults before setting netID
+    //add near end of Terraria.Item.SetDefaults after setting netID
+    //in Terraria.Item.SetDefaults move Lang stuff before SetupItem
     internal static void SetupItem(Item item)
     {
         if (IsModItem(item))

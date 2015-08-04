@@ -778,7 +778,7 @@ public static class TileLoader
     }
 
     //in Terraria.Wiring make the following public:
-    //  _toProcess, _teleport, _inPumpX, _inPumpY, _numInPump, _outPumpX, _outPumpY, _numOutPump CheckMech, TripWire
+    //  _wireList, _toProcess, _teleport, _inPumpX, _inPumpY, _numInPump, _outPumpX, _outPumpY, _numOutPump CheckMech, TripWire
     //at end of Terraria.Wiring.HitWireSingle inside if statement checking for tile active add
     //  TileLoader.HitWire(i, j, type);
     internal static void HitWire(int i, int j, int type)
