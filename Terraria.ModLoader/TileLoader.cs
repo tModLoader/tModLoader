@@ -26,6 +26,7 @@ public static class TileLoader
     //in Terraria.IO.WorldFile.SaveFileFormatHeader set initial num to TileLoader.TileCount
     private static int nextTile = TileID.Count;
     internal static readonly IDictionary<int, ModTile> tiles = new Dictionary<int, ModTile>();
+    internal static readonly IList<GlobalTile> globalTiles = new List<GlobalTile>();
     private static bool loaded = false;
     private static int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
     private static int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -181,6 +182,7 @@ public static class TileLoader
         loaded = false;
         tiles.Clear();
         nextTile = TileID.Count;
+        globalTiles.Clear();
         Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsChair, vanillaChairCount);
         Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
         Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);
@@ -365,9 +367,9 @@ public static class TileLoader
     //  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
     internal static bool KillSound(int i, int j, int type)
     {
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null && !mod.globalTile.KillSound(i, j, type))
+            if(!globalTile.KillSound(i, j, type))
             {
                 return false;
             }
@@ -394,12 +396,9 @@ public static class TileLoader
         {
             modTile.NumDust(i, j, fail, ref numDust);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                mod.globalTile.NumDust(i, j, type, fail, ref numDust);
-            }
+            globalTile.NumDust(i, j, type, fail, ref numDust);
         }
     }
 
@@ -407,9 +406,9 @@ public static class TileLoader
     //  if(TileLoader.CreateDust(i, j, tile.type, ref num15) && num15 >= 0)
     internal static bool CreateDust(int i, int j, int type, ref int dustType)
     {
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null && !mod.globalTile.CreateDust(i, j, type, ref dustType))
+            if(!globalTile.CreateDust(i, j, type, ref dustType))
             {
                 return false;
             }
@@ -431,12 +430,9 @@ public static class TileLoader
         {
             modTile.DropCritterChance(i, j, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                mod.globalTile.DropCritterChance(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
-            }
+            globalTile.DropCritterChance(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
         }
     }
 
@@ -445,9 +441,9 @@ public static class TileLoader
     //  add "vanillaDrop && " to beginning of these if statements
     internal static bool Drop(int i, int j, int type)
     {
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null && !mod.globalTile.Drop(i, j, type))
+            if(!globalTile.Drop(i, j, type))
             {
                 return false;
             }
@@ -477,12 +473,9 @@ public static class TileLoader
         {
             modTile.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                mod.globalTile.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
-            }
+            globalTile.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
         }
     }
 
@@ -508,12 +501,9 @@ public static class TileLoader
         {
             modTile.ModifyLight(i, j, ref r, ref g, ref b);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                mod.globalTile.ModifyLight(i, j, type, ref r, ref g, ref b);
-            }
+            globalTile.ModifyLight(i, j, type, ref r, ref g, ref b);
         }
     }
 
@@ -526,12 +516,9 @@ public static class TileLoader
         {
             modTile.SetSpriteEffects(i, j, ref spriteEffects);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                mod.globalTile.SetSpriteEffects(i, j, type, ref spriteEffects);
-            }
+            globalTile.SetSpriteEffects(i, j, type, ref spriteEffects);
         }
     }
 
@@ -586,9 +573,9 @@ public static class TileLoader
     //  { TileLoader.PostDraw(j, i, type, Main.spriteBatch); continue; }
     internal static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
     {
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null && !mod.globalTile.PreDraw(i, j, type, spriteBatch))
+            if(!globalTile.PreDraw(i, j, type, spriteBatch))
             {
                 return false;
             }
@@ -610,12 +597,9 @@ public static class TileLoader
         {
             modTile.PostDraw(i, j, spriteBatch);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                mod.globalTile.PostDraw(i, j, type, spriteBatch);
-            }
+            globalTile.PostDraw(i, j, type, spriteBatch);
         }
     }
 
@@ -655,12 +639,9 @@ public static class TileLoader
         {
             modTile.RandomUpdate(i, j);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                mod.globalTile.RandomUpdate(i, j, type);
-            }
+            globalTile.RandomUpdate(i, j, type);
         }
     }
 
@@ -674,12 +655,9 @@ public static class TileLoader
         {
             flag = modTile.TileFrame(i, j, ref resetFrame, ref noBreak);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                flag &= mod.globalTile.TileFrame(i, j, type, ref resetFrame, ref noBreak);
-            }
+            flag &= globalTile.TileFrame(i, j, type, ref resetFrame, ref noBreak);
         }
         return flag;
     }
@@ -718,9 +696,9 @@ public static class TileLoader
     internal static bool CanPlace(int i, int j)
     {
         int type = Main.tile[i, j].type;
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null && !mod.globalTile.CanPlace(i, j, type))
+            if(!globalTile.CanPlace(i, j, type))
             {
                 return false;
             }
@@ -745,15 +723,12 @@ public static class TileLoader
                 player.adjTile[k] = true;
             }
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
+            int[] adjTiles = globalTile.AdjTiles(type);
+            foreach(int k in adjTiles)
             {
-                int[] adjTiles = mod.globalTile.AdjTiles(type);
-                foreach(int k in adjTiles)
-                {
-                    player.adjTile[k] = true;
-                }
+                player.adjTile[k] = true;
             }
         }
     }
@@ -768,12 +743,9 @@ public static class TileLoader
         {
             modTile.RightClick(i, j);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                mod.globalTile.RightClick(i, j, type);
-            }
+            globalTile.RightClick(i, j, type);
         }
     }
 
@@ -788,12 +760,9 @@ public static class TileLoader
         {
             modTile.HitWire(i, j);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalTile globalTile in globalTiles)
         {
-            if(mod.globalTile != null)
-            {
-                mod.globalTile.HitWire(i, j, type);
-            }
+            globalTile.HitWire(i, j, type);
         }
     }
 }}

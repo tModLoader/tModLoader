@@ -305,6 +305,7 @@ public static class ModLoader
         ItemLoader.Unload();
         EquipLoader.Unload();
         TileLoader.Unload();
+        NPCLoader.Unload();
         textures.Clear();
         mods.Clear();
         ResizeArrays();

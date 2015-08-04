@@ -27,11 +27,11 @@ public abstract class Mod
     }
     internal readonly List<ModRecipe> recipes = new List<ModRecipe>();
     internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
-    internal GlobalItem globalItem;
+    internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
     internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
     internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
-    internal GlobalTile globalTile;
-    internal GlobalNPC globalNPC;
+    internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
+    internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
 
     /*
      * Initializes the mod's information, such as its name.
@@ -103,15 +103,24 @@ public abstract class Mod
         return item.item.type;
     }
 
-    public void SetGlobalItem(GlobalItem globalItem)
+    public void AddGlobalItem(string name, GlobalItem globalItem)
     {
         globalItem.mod = this;
-        this.globalItem = globalItem;
+        globalItem.Name = name;
+        this.globalItems[name] = globalItem;
+        ItemLoader.globalItems.Add(globalItem);
     }
 
-    public GlobalItem GetGlobalItem()
+    public GlobalItem GetGlobalItem(string name)
     {
-        return this.globalItem;
+        if(this.globalItems.ContainsKey(name))
+        {
+            return this.globalItems[name];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public int AddEquipTexture(ModItem item, EquipType type, string texture, string armTexture = "", string femaleTexture = "")
@@ -213,15 +222,24 @@ public abstract class Mod
         return (int)tile.Type;
     }
 
-    public void SetGlobalTile(GlobalTile globalTile)
+    public void AddGlobalTile(string name, GlobalTile globalTile)
     {
         globalTile.mod = this;
-        this.globalTile = globalTile;
+        globalTile.Name = name;
+        this.globalTiles[name] = globalTile;
+        TileLoader.globalTiles.Add(globalTile);
     }
 
-    public GlobalTile GetGlobalTile()
+    public GlobalTile GetGlobalTile(string name)
     {
-        return this.globalTile;
+        if(this.globalTiles.ContainsKey(name))
+        {
+            return globalTiles[name];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     private void AutoloadTile(Type type)
@@ -236,15 +254,24 @@ public abstract class Mod
         }
     }
 
-    public void SetGlobalNPC(GlobalNPC globalNPC)
+    public void AddGlobalNPC(string name, GlobalNPC globalNPC)
     {
         globalNPC.mod = this;
-        this.globalNPC = globalNPC;
+        globalNPC.Name = name;
+        this.globalNPCs[name] = globalNPC;
+        NPCLoader.globalNPCs.Add(globalNPC);
     }
 
-    public GlobalNPC GetGlobalNPC()
+    public GlobalNPC GetGlobalNPC(string name)
     {
-        return this.globalNPC;
+        if(this.globalNPCs.ContainsKey(name))
+        {
+            return this.globalNPCs[name];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     internal void SetupContent()
@@ -267,7 +294,7 @@ public abstract class Mod
             Main.tileTexture[tile.Type] = ModLoader.GetTexture(tile.texture);
             TileLoader.SetDefaults(tile);
         }
-        if(globalTile != null)
+        foreach(GlobalTile globalTile in globalTiles.Values)
         {
             globalTile.SetDefaults();
         }
@@ -277,9 +304,10 @@ public abstract class Mod
     {
         recipes.Clear();
         items.Clear();
-        globalItem = null;
+        globalItems.Clear();
         dusts.Clear();
         tiles.Clear();
-        globalNPC = null;
+        globalTiles.Clear();
+        globalNPCs.Clear();
     }
 }}

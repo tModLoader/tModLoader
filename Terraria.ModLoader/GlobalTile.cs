@@ -10,6 +10,11 @@ public class GlobalTile
         get;
         internal set;
     }
+    public string Name
+    {
+        get;
+        internal set;
+    }
 
     public void AddToArray(ref int[] array, int type)
     {

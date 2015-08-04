@@ -11,6 +11,7 @@ public static class ItemLoader
 {
     private static int nextItem = ItemID.Count;
     internal static readonly IDictionary<int, ModItem> items = new Dictionary<int, ModItem>();
+    internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
     internal static readonly IList<int> animations = new List<int>();
 
     internal static int ReserveItemID()
@@ -57,6 +58,7 @@ public static class ItemLoader
     {
         items.Clear();
         nextItem = ItemID.Count;
+        globalItems.Clear();
         animations.Clear();
     }
 
@@ -194,12 +196,9 @@ public static class ItemLoader
 
     internal static void GlobalSetDefaults(Item item)
     {
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.SetDefaults(item);
-            }
+            globalItem.SetDefaults(item);
         }
     }
 
@@ -240,12 +239,9 @@ public static class ItemLoader
         {
             flag = flag && item.modItem.CanUseItem(player);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                flag = flag && mod.globalItem.CanUseItem(item, player);
-            }
+            flag = flag && globalItem.CanUseItem(item, player);
         }
         return flag;
     }
@@ -257,12 +253,9 @@ public static class ItemLoader
         {
             item.modItem.UseStyle(player);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.UseStyle(item, player);
-            }
+            globalItem.UseStyle(item, player);
         }
     }
 
@@ -275,12 +268,9 @@ public static class ItemLoader
             {
                 item.modItem.HoldStyle(player);
             }
-            foreach(Mod mod in ModLoader.mods.Values)
+            foreach(GlobalItem globalItem in globalItems)
             {
-                if(mod.globalItem != null)
-                {
-                    mod.globalItem.HoldStyle(item, player);
-                }
+                globalItem.HoldStyle(item, player);
             }
         }
     }
@@ -292,12 +282,9 @@ public static class ItemLoader
         {
             item.modItem.HoldItem(player);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.HoldItem(item, player);
-            }
+            globalItem.HoldItem(item, player);
         }
     }
 
@@ -313,14 +300,11 @@ public static class ItemLoader
         {
             return false;
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
+            if(!globalItem.ConsumeAmmo(item, player) || !globalItem.ConsumeAmmo(ammo, player))
             {
-                if(!mod.globalItem.ConsumeAmmo(item, player) || !mod.globalItem.ConsumeAmmo(ammo, player))
-                {
-                    return false;
-                }
+                return false;
             }
         }
         return true;
@@ -330,9 +314,9 @@ public static class ItemLoader
     //  if(ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
     internal static bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
     {
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null && !mod.globalItem.Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack))
+            if(!globalItem.Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack))
             {
                 return false;
             }
@@ -355,12 +339,9 @@ public static class ItemLoader
         {
             item.modItem.UseItemHitbox(player, ref hitbox, ref noHitbox);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.UseItemHitbox(item, player, ref hitbox, ref noHitbox);
-            }
+            globalItem.UseItemHitbox(item, player, ref hitbox, ref noHitbox);
         }
     }
 
@@ -372,12 +353,9 @@ public static class ItemLoader
         {
             item.modItem.MeleeEffects(player, hitbox);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.MeleeEffects(item, player, hitbox);
-            }
+            globalItem.MeleeEffects(item, player, hitbox);
         }
     }
 
@@ -389,12 +367,9 @@ public static class ItemLoader
         {
             item.modItem.ModifyHitNPC(player, target, ref damage, ref knockBack, ref crit);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.ModifyHitNPC(item, player, target, ref damage, ref knockBack, ref crit);
-            }
+            globalItem.ModifyHitNPC(item, player, target, ref damage, ref knockBack, ref crit);
         }
     }
 
@@ -406,12 +381,9 @@ public static class ItemLoader
         {
             item.modItem.OnHitNPC(player, target, damage, knockBack, crit);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.OnHitNPC(item, player, target, damage, knockBack, crit);
-            }
+            globalItem.OnHitNPC(item, player, target, damage, knockBack, crit);
         }
     }
 
@@ -423,12 +395,9 @@ public static class ItemLoader
         {
             item.modItem.ModifyHitPvp(player, target, ref damage, ref crit);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.ModifyHitPvp(item, player, target, ref damage, ref crit);
-            }
+            globalItem.ModifyHitPvp(item, player, target, ref damage, ref crit);
         }
     }
 
@@ -440,12 +409,9 @@ public static class ItemLoader
         {
             item.modItem.OnHitPvp(player, target, damage, crit);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.OnHitPvp(item, player, target, damage, crit);
-            }
+            globalItem.OnHitPvp(item, player, target, damage, crit);
         }
     }
 
@@ -457,9 +423,9 @@ public static class ItemLoader
         {
             player.itemTime = item.useTime;
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null && mod.globalItem.UseItem(item, player))
+            if(globalItem.UseItem(item, player))
             {
                 player.itemTime = item.useTime;
             }
@@ -474,9 +440,9 @@ public static class ItemLoader
         {
             consume = false;
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null && !mod.globalItem.ConsumeItem(item, player))
+            if(!globalItem.ConsumeItem(item, player))
             {
                 consume = false;
             }
@@ -491,9 +457,9 @@ public static class ItemLoader
         {
             return true;
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null && mod.globalItem.UseItemFrame(item, player))
+            if(globalItem.UseItemFrame(item, player))
             {
                 return true;
             }
@@ -509,9 +475,9 @@ public static class ItemLoader
         {
             return true;
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null && mod.globalItem.HoldItemFrame(item, player))
+            if(globalItem.HoldItemFrame(item, player))
             {
                 return true;
             }
@@ -527,12 +493,9 @@ public static class ItemLoader
         {
             item.modItem.UpdateInventory(player);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.UpdateInventory(item, player);
-            }
+            globalItem.UpdateInventory(item, player);
         }
     }
 
@@ -544,12 +507,9 @@ public static class ItemLoader
         {
             item.modItem.UpdateEquip(player);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.UpdateEquip(item, player);
-            }
+            globalItem.UpdateEquip(item, player);
         }
     }
 
@@ -561,12 +521,9 @@ public static class ItemLoader
         {
             item.modItem.UpdateAccessory(player);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.UpdateAccessory(item, player);
-            }
+            globalItem.UpdateAccessory(item, player);
         }
     }
 
@@ -585,15 +542,12 @@ public static class ItemLoader
         {
             legs.modItem.UpdateArmorSet(player);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
+            string set = globalItem.IsArmorSet(head, body, legs);
+            if(set.Length > 0)
             {
-                string set = mod.globalItem.IsArmorSet(head, body, legs);
-                if(set.Length > 0)
-                {
-                    mod.globalItem.UpdateArmorSet(player, set);
-                }
+                globalItem.UpdateArmorSet(player, set);
             }
         }
     }
@@ -606,9 +560,9 @@ public static class ItemLoader
         {
             return Main.mouseRight;
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null && mod.globalItem.CanRightClick(item))
+            if(globalItem.CanRightClick(item))
             {
                 return Main.mouseRight;
             }
@@ -625,12 +579,9 @@ public static class ItemLoader
             {
                 item.modItem.RightClick(player);
             }
-            foreach(Mod mod in ModLoader.mods.Values)
+            foreach(GlobalItem globalItem in globalItems)
             {
-                if(mod.globalItem != null)
-                {
-                    mod.globalItem.RightClick(item, player);
-                }
+                globalItem.RightClick(item, player);
             }
             item.stack--;
             if (item.stack == 0)
@@ -655,12 +606,9 @@ public static class ItemLoader
         {
             item.modItem.DrawHair(ref drawHair, ref drawAltHair);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.DrawHair(item, ref drawHair, ref drawAltHair);
-            }
+            globalItem.DrawHair(item, ref drawHair, ref drawAltHair);
         }
     }
 
@@ -674,9 +622,9 @@ public static class ItemLoader
         {
             return false;
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null && !mod.globalItem.DrawHead(item))
+            if(!globalItem.DrawHead(item))
             {
                 return false;
             }
@@ -712,13 +660,10 @@ public static class ItemLoader
             item.modItem.VerticalWingSpeeds(ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
                 ref maxAscentMultiplier, ref constantAscend);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.VerticalWingSpeeds(item, ref ascentWhenFalling, ref ascentWhenRising,
-                    ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
-            }
+            globalItem.VerticalWingSpeeds(item, ref ascentWhenFalling, ref ascentWhenRising,
+                ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
         }
     }
 
@@ -735,12 +680,9 @@ public static class ItemLoader
         {
             item.modItem.HorizontalWingSpeeds(ref player.accRunSpeed, ref player.runAcceleration);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.HorizontalWingSpeeds(item, ref player.accRunSpeed, ref player.runAcceleration);
-            }
+            globalItem.HorizontalWingSpeeds(item, ref player.accRunSpeed, ref player.runAcceleration);
         }
     }
 
@@ -752,12 +694,9 @@ public static class ItemLoader
         {
             item.modItem.Update(ref gravity, ref maxFallSpeed);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.Update(item, ref gravity, ref maxFallSpeed);
-            }
+            globalItem.Update(item, ref gravity, ref maxFallSpeed);
         }
     }
 
@@ -767,15 +706,12 @@ public static class ItemLoader
     //  if(modColor.HasValue) { return modColor.Value; }
     internal static Color? GetAlpha(Item item, Color lightColor)
     {
-        foreach (Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if (mod.globalItem != null)
+            Color? color = globalItem.GetAlpha(item, lightColor);
+            if (color.HasValue)
             {
-                Color? color = mod.globalItem.GetAlpha(item, lightColor);
-                if (color.HasValue)
-                {
-                    return color;
-                }
+                return color;
             }
         }
         if (IsModItem(item))
@@ -794,9 +730,9 @@ public static class ItemLoader
         {
             flag = false;
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null && !mod.globalItem.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale))
+            if(!globalItem.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale))
             {
                 flag = false;
             }
@@ -812,12 +748,9 @@ public static class ItemLoader
         {
             item.modItem.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.PostDrawInWorld(item, spriteBatch, lightColor, alphaColor, rotation, scale);
-            }
+            globalItem.PostDrawInWorld(item, spriteBatch, lightColor, alphaColor, rotation, scale);
         }
     }
 
@@ -828,17 +761,16 @@ public static class ItemLoader
         Color drawColor, Color itemColor, Vector2 origin, float scale)
     {
         bool flag = true;
-        if(IsModItem(item) && !item.modItem.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale))
+        foreach(GlobalItem globalItem in globalItems)
         {
-            flag = false;
-        }
-        foreach(Mod mod in ModLoader.mods.Values)
-        {
-            if(mod.globalItem != null && !mod.globalItem.PreDrawInInventory(item, spriteBatch, position, frame, drawColor,
-                itemColor, origin, scale))
+            if (!globalItem.PreDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale))
             {
                 flag = false;
             }
+        }
+        if(IsModItem(item) && !item.modItem.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale))
+        {
+            flag = false;
         }
         return flag;
     }
@@ -853,12 +785,9 @@ public static class ItemLoader
         {
             item.modItem.PostDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null)
-            {
-                mod.globalItem.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            }
+            globalItem.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
     }
 
@@ -871,9 +800,9 @@ public static class ItemLoader
         {
             return false;
         }
-        foreach(Mod mod in ModLoader.mods.Values)
+        foreach(GlobalItem globalItem in globalItems)
         {
-            if(mod.globalItem != null && !mod.globalItem.CanEquipAccessory(item, player, slot))
+            if(!globalItem.CanEquipAccessory(item, player, slot))
             {
                 return false;
             }

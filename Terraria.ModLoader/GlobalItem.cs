@@ -12,6 +12,11 @@ public class GlobalItem
         get;
         internal set;
     }
+    public string Name
+    {
+        get;
+        internal set;
+    }
 
     public void AddTooltip(Item item, string tooltip)
     {
