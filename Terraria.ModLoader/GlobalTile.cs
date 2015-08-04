@@ -22,6 +22,11 @@ public class GlobalTile
         array[array.Length - 1] = type;
     }
 
+    public virtual bool Autoload(ref string name)
+    {
+        return mod.Properties.Autoload;
+    }
+
     public virtual void SetDefaults() { }
 
     public virtual bool KillSound(int i, int j, int type)

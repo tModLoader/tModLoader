@@ -59,6 +59,10 @@ public abstract class Mod
             {
                 AutoloadItem(type);
             }
+            if(type.IsSubclassOf(typeof(GlobalItem)))
+            {
+                AutoloadGlobalItem(type);
+            }
             if(type.IsSubclassOf(typeof(ModDust)))
             {
                 AutoloadDust(type);
@@ -66,6 +70,14 @@ public abstract class Mod
             if(type.IsSubclassOf(typeof(ModTile)))
             {
                 AutoloadTile(type);
+            }
+            if(type.IsSubclassOf(typeof(GlobalTile)))
+            {
+                AutoloadGlobalTile(type);
+            }
+            if(type.IsSubclassOf(typeof(GlobalNPC)))
+            {
+                AutoloadGlobalNPC(type);
             }
         }
     }
@@ -162,6 +174,17 @@ public abstract class Mod
         }
     }
 
+    private void AutoloadGlobalItem(Type type)
+    {
+        GlobalItem globalItem = (GlobalItem)Activator.CreateInstance(type);
+        globalItem.mod = this;
+        string name = type.Name;
+        if(globalItem.Autoload(ref name))
+        {
+            AddGlobalItem(name, globalItem);
+        }
+    }
+
     public void AddDust(string name, ModDust dust, string texture = "")
     {
         dust.Name = name;
@@ -254,6 +277,17 @@ public abstract class Mod
         }
     }
 
+    private void AutoloadGlobalTile(Type type)
+    {
+        GlobalTile globalTile = (GlobalTile)Activator.CreateInstance(type);
+        globalTile.mod = this;
+        string name = type.Name;
+        if(globalTile.Autoload(ref name))
+        {
+            AddGlobalTile(name, globalTile);
+        }
+    }
+
     public void AddGlobalNPC(string name, GlobalNPC globalNPC)
     {
         globalNPC.mod = this;
@@ -271,6 +305,17 @@ public abstract class Mod
         else
         {
             return null;
+        }
+    }
+
+    private void AutoloadGlobalNPC(Type type)
+    {
+        GlobalNPC globalNPC = (GlobalNPC)Activator.CreateInstance(type);
+        globalNPC.mod = this;
+        string name = type.Name;
+        if(globalNPC.Autoload(ref name))
+        {
+            AddGlobalNPC(name, globalNPC);
         }
     }
 

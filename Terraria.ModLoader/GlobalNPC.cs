@@ -17,6 +17,11 @@ public class GlobalNPC
         internal set;
     }
 
+    public virtual bool Autoload(ref string name)
+    {
+        return mod.Properties.Autoload;
+    }
+
     public virtual bool PreNPCLoot(NPC npc)
     {
         return true;

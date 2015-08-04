@@ -42,6 +42,11 @@ public class GlobalItem
         }
     }
 
+    public virtual bool Autoload(ref string name)
+    {
+        return mod.Properties.Autoload;
+    }
+
     public virtual void SetDefaults(Item item) { }
 
     public virtual bool CanUseItem(Item item, Player player)
