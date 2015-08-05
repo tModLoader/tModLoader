@@ -127,6 +127,7 @@ public static class ModLoader
         EquipLoader.ResizeAndFillArrays();
         Main.InitializeItemAnimations();
         TileLoader.ResizeArrays();
+        WallLoader.ResizeArrays();
     }
 
     internal static string[] FindMods()
@@ -208,6 +209,7 @@ public static class ModLoader
 
     private static void LoadMod(string modFile, BuildProperties properties)
     {
+        Directory.CreateDirectory(DllPath);
         foreach(string dllReference in properties.dllReferences)
         {
             string dllFile = DllPath + Path.DirectorySeparatorChar + dllReference + ".dll";
@@ -311,6 +313,7 @@ public static class ModLoader
         ItemLoader.Unload();
         EquipLoader.Unload();
         TileLoader.Unload();
+        WallLoader.Unload();
         NPCLoader.Unload();
         textures.Clear();
         mods.Clear();

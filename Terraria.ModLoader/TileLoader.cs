@@ -194,10 +194,13 @@ public static class TileLoader
         }
     }
 
+    private const int magicTableNumber = 12;
+
     //add to beginning of Terraria.IO.WorldFile.SaveWorldTiles
     internal static void WriteTable(BinaryWriter writer)
     {
         HashSet<ushort> tiles = new HashSet<ushort>();
+        HashSet<ushort> walls = new HashSet<ushort>();
         for(int x = 0; x < Main.maxTilesX; x++)
         {
             for(int y = 0; y < Main.maxTilesY; y++)
@@ -207,59 +210,119 @@ public static class TileLoader
                 {
                     tiles.Add(type);
                 }
+                type = Main.tile[x, y].wall;
+                if(type >= WallID.Count)
+                {
+                    walls.Add(type);
+                }
             }
         }
-        if(tiles.Count == 0)
+        if(tiles.Count == 0 && walls.Count == 0)
         {
-            return;
+            return; //nothing if there's neither tiles nor walls
         }
-        for(int k = 0; k < 13; k++)
+        for(int k = 0; k < magicTableNumber; k++) //all we need to do is write 255 3 times, but it's nice to be safe
         {
             writer.Write((byte)255);
         }
-        writer.Write((ushort)tiles.Count);
-        foreach(ushort type in tiles)
+        byte identifier;
+        if(tiles.Count > 0 && walls.Count == 0)
         {
-            writer.Write(type);
-            ModTile tile = GetTile(type);
-            writer.Write(tile.mod.Name);
-            writer.Write(tile.Name);
+            identifier = 255;
+        }
+        else if(tiles.Count > 0 && walls.Count > 0)
+        {
+            identifier = 254;
+        }
+        else //tiles.Count == 0 && walls.Count > 0
+        {
+            identifier = 253;
+        }
+        writer.Write(identifier);
+        if(tiles.Count > 0)
+        {
+            writer.Write((ushort)tiles.Count);
+            foreach(ushort type in tiles)
+            {
+                writer.Write(type);
+                ModTile tile = GetTile(type);
+                writer.Write(tile.mod.Name);
+                writer.Write(tile.Name);
+            }
+        }
+        if(walls.Count > 0)
+        {
+            writer.Write((ushort)walls.Count);
+            foreach(ushort type in walls)
+            {
+                writer.Write(type);
+                ModWall wall = WallLoader.GetWall(type);
+                writer.Write(wall.mod.Name);
+                writer.Write(wall.Name);
+            }
         }
     }
 
     //add to beginning of Terraria.IO.WorldFile.LoadWorldTiles
-    //  IDictionary<int, int> modTiles = TileLoader.ReadTable(reader);
+    //  IDictionary<int, int> modTiles = new Dictionary<int, int>();
+    //  IDictionary<int, int> modWalls = new Dictionary<int, int>();
+    //  TileLoader.ReadTable(reader, modTiles, modWalls);
     //in Terraria.IO.WorldFile.ValidateWorld after baseStream.Position = (long)array2[1]; add
-    //  TileLoader.ReadTable(fileIO);
-    internal static IDictionary<int, int> ReadTable(BinaryReader reader)
+    //  TileLoader.ReadTable(fileIO, new Dictionary<int, int>(), new Dictionary<int, int>());
+    internal static void ReadTable(BinaryReader reader, IDictionary<int, int> tileTable, IDictionary<int, int> wallTable)
     {
-        IDictionary<int, int> table = new Dictionary<int, int>();
         long startPos = reader.BaseStream.Position;
-        for(int k = 0; k < 13; k++)
+        for(int k = 0; k < magicTableNumber; k++)
         {
             if(reader.ReadByte() != (byte)255)
             {
                 reader.BaseStream.Seek(startPos, SeekOrigin.Begin);
-                return table;
+                return;
             }
         }
-        ushort count = reader.ReadUInt16();
-        for(ushort k = 0; k < count; k++)
+        byte identifier = reader.ReadByte();
+        if(identifier < (byte)253)
         {
-            ushort type = reader.ReadUInt16();
-            string modName = reader.ReadString();
-            string tileName = reader.ReadString();
-            Mod mod = ModLoader.GetMod(modName);
-            if (mod == null)
+            return;
+        }
+        if(identifier >= 254)
+        {
+            ushort count = reader.ReadUInt16();
+            for(ushort k = 0; k < count; k++)
             {
-                table[(int)type] = 0;
-            }
-            else
-            {
-                table[(int)type] = mod.TileType(tileName);
+                ushort type = reader.ReadUInt16();
+                string modName = reader.ReadString();
+                string tileName = reader.ReadString();
+                Mod mod = ModLoader.GetMod(modName);
+                if(mod == null)
+                {
+                    tileTable[(int)type] = 0;
+                }
+                else
+                {
+                    tileTable[(int)type] = mod.TileType(tileName);
+                }
             }
         }
-        return table;
+        if(identifier <= 254)
+        {
+            ushort count = reader.ReadUInt16();
+            for(ushort k = 0; k < count; k++)
+            {
+                ushort type = reader.ReadUInt16();
+                string modName = reader.ReadString();
+                string wallname = reader.ReadString();
+                Mod mod = ModLoader.GetMod(modName);
+                if(mod == null)
+                {
+                    wallTable[(int)type] = 0;
+                }
+                else
+                {
+                    wallTable[(int)type] = mod.WallType(wallname);
+                }
+            }
+        }
     }
 
     //in Terraria.IO.WorldFile.LoadWorldTiles replace tile.type = (ushort)num2; with

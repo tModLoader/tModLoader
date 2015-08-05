@@ -31,6 +31,8 @@ public abstract class Mod
     internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
     internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
     internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
+    internal readonly IDictionary<string, ModWall> walls = new Dictionary<string, ModWall>();
+    internal readonly IDictionary<string, GlobalWall> globalWalls = new Dictionary<string, GlobalWall>();
     internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
 
     /*
@@ -74,6 +76,14 @@ public abstract class Mod
             if(type.IsSubclassOf(typeof(GlobalTile)))
             {
                 AutoloadGlobalTile(type);
+            }
+            if(type.IsSubclassOf(typeof(ModWall)))
+            {
+                AutoloadWall(type);
+            }
+            if(type.IsSubclassOf(typeof(GlobalWall)))
+            {
+                AutoloadGlobalWall(type);
             }
             if(type.IsSubclassOf(typeof(GlobalNPC)))
             {
@@ -291,6 +301,82 @@ public abstract class Mod
         }
     }
 
+    public void AddWall(string name, ModWall wall, string texture)
+    {
+        int id = WallLoader.ReserveWallID();
+        wall.Name = name;
+        wall.Type = (ushort)id;
+        walls[name] = wall;
+        WallLoader.walls[id] = wall;
+        wall.texture = texture;
+        wall.mod = this;
+    }
+
+    public ModWall GetWall(string name)
+    {
+        if (walls.ContainsKey(name))
+        {
+            return walls[name];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public int WallType(string name)
+    {
+        ModWall wall = GetWall(name);
+        if (wall == null)
+        {
+            return 0;
+        }
+        return (int)wall.Type;
+    }
+
+    public void AddGlobalWall(string name, GlobalWall globalWall)
+    {
+        globalWall.mod = this;
+        globalWall.Name = name;
+        this.globalWalls[name] = globalWall;
+        WallLoader.globalWalls.Add(globalWall);
+    }
+
+    public GlobalWall GetGlobalWall(string name)
+    {
+        if (this.globalWalls.ContainsKey(name))
+        {
+            return globalWalls[name];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private void AutoloadWall(Type type)
+    {
+        ModWall wall = (ModWall)Activator.CreateInstance(type);
+        wall.mod = this;
+        string name = type.Name;
+        string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+        if(wall.Autoload(ref name, ref texture))
+        {
+            AddWall(name, wall, texture);
+        }
+    }
+
+    private void AutoloadGlobalWall(Type type)
+    {
+        GlobalWall globalWall = (GlobalWall)Activator.CreateInstance(type);
+        globalWall.mod = this;
+        string name = type.Name;
+        if(globalWall.Autoload(ref name))
+        {
+            AddGlobalWall(name, globalWall);
+        }
+    }
+
     public void AddGlobalNPC(string name, GlobalNPC globalNPC)
     {
         globalNPC.mod = this;
@@ -345,6 +431,15 @@ public abstract class Mod
         foreach(GlobalTile globalTile in globalTiles.Values)
         {
             globalTile.SetDefaults();
+        }
+        foreach(ModWall wall in walls.Values)
+        {
+            Main.wallTexture[wall.Type] = ModLoader.GetTexture(wall.texture);
+            wall.SetDefaults();
+        }
+        foreach(GlobalWall globalWall in globalWalls.Values)
+        {
+            globalWall.SetDefaults();
         }
     }
 
