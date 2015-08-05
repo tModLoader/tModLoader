@@ -157,19 +157,22 @@ public abstract class Mod
         item.mod = this;
         string name = type.Name;
         string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-        EquipType? equip = null;
-        if (item.Autoload(ref name, ref texture, ref equip))
+        IList<EquipType> equips = new List<EquipType>();
+        if(item.Autoload(ref name, ref texture, equips))
         {
             AddItem(name, item, texture);
-            if (equip.HasValue)
+            if(equips.Count > 0)
             {
-                string equipTexture = texture + "_" + equip.Value;
-                string armTexture = texture + "_Arms";
-                string femaleTexture = texture + "_FemaleBody";
-                item.AutoloadEquip(ref equipTexture, ref armTexture, ref femaleTexture);
-                int slot = AddEquipTexture(item, equip.Value, equipTexture, armTexture, femaleTexture);
-                EquipLoader.idToType[item.item.type] = equip.Value;
-                EquipLoader.idToSlot[item.item.type] = slot;
+                EquipLoader.idToSlot[item.item.type] = new Dictionary<EquipType, int>();
+                foreach(EquipType equip in equips)
+                {
+                    string equipTexture = texture + "_" + equip.ToString();
+                    string armTexture = texture + "_Arms";
+                    string femaleTexture = texture + "_FemaleBody";
+                    item.AutoloadEquip(equip, ref equipTexture, ref armTexture, ref femaleTexture);
+                    int slot = AddEquipTexture(item, equip, equipTexture, armTexture, femaleTexture);
+                    EquipLoader.idToSlot[item.item.type][equip] = slot;
+                }
             }
         }
     }

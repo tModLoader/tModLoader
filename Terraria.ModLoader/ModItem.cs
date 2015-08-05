@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -54,12 +55,12 @@ public class ModItem
         }
     }
 
-    public virtual bool Autoload(ref string name, ref string texture, ref EquipType? equip)
+    public virtual bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
     {
         return mod.Properties.Autoload;
     }
 
-    public virtual void AutoloadEquip(ref string texture, ref string armTexture, ref string femaleTexture) { }
+    public virtual void AutoloadEquip(EquipType equip, ref string texture, ref string armTexture, ref string femaleTexture) { }
 
     public virtual DrawAnimation GetAnimation()
     {

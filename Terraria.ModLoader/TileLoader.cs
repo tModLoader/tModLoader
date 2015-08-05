@@ -22,6 +22,7 @@ public static class TileLoader
     //at end of Terraria.WorldGen.KillWall remove type too high check
     //in Terraria.Player change adjTile and oldAdjTile size to TileLoader.TileCount()
     //in Terraria.Player.AdjTiles change 419 to adjTile.Length
+    //make Terraria.WorldGen public
 
     //in Terraria.IO.WorldFile.SaveFileFormatHeader set initial num to TileLoader.TileCount
     private static int nextTile = TileID.Count;

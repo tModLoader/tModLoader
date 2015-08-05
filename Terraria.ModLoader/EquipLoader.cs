@@ -9,8 +9,7 @@ public static class EquipLoader
     //in Terraria.Main.DrawPlayer and Terraria.Main.DrawPlayerHead get rid of checks for slot too high (not necessary for loading)
     private static readonly IDictionary<EquipType, int> nextEquip = new Dictionary<EquipType, int>();
     internal static readonly IDictionary<EquipType, IDictionary<string, int>> equips = new Dictionary<EquipType, IDictionary<string, int>>();
-    internal static readonly IDictionary<int, EquipType> idToType = new Dictionary<int, EquipType>();
-    internal static readonly IDictionary<int, int> idToSlot = new Dictionary<int, int>();
+    internal static readonly IDictionary<int, IDictionary<EquipType, int>> idToSlot = new Dictionary<int, IDictionary<EquipType, int>>();
     internal static readonly IDictionary<EquipType, IDictionary<int, int>> slotToId = new Dictionary<EquipType, IDictionary<int, int>>();
     internal static readonly IDictionary<int, string> femaleTextures = new Dictionary<int, string>();
     internal static readonly IDictionary<int, string> armTextures = new Dictionary<int, string>();
@@ -133,7 +132,6 @@ public static class EquipLoader
             nextEquip[type] = GetNumVanilla(type);
             equips[type].Clear();
         }
-        idToType.Clear();
         idToSlot.Clear();
         slotToId[EquipType.Head].Clear();
         slotToId[EquipType.Body].Clear();
@@ -252,53 +250,57 @@ public static class EquipLoader
 
     internal static void SetSlot(Item item)
     {
-        if(idToType.ContainsKey(item.type))
+        if(idToSlot.ContainsKey(item.type))
         {
-            int slot = idToSlot[item.type];
-            switch(idToType[item.type])
+            IDictionary<EquipType, int> slots = idToSlot[item.type];
+            foreach(EquipType type in slots.Keys)
             {
-                case EquipType.Head:
-                    item.headSlot = slot;
-                    break;
-                case EquipType.Body:
-                    item.bodySlot = slot;
-                    break;
-                case EquipType.Legs:
-                    item.legSlot = slot;
-                    break;
-                case EquipType.HandsOn:
-                    item.handOnSlot = (sbyte)slot;
-                    break;
-                case EquipType.HandsOff:
-                    item.handOffSlot = (sbyte)slot;
-                    break;
-                case EquipType.Back:
-                    item.backSlot = (sbyte)slot;
-                    break;
-                case EquipType.Front:
-                    item.frontSlot = (sbyte)slot;
-                    break;
-                case EquipType.Shoes:
-                    item.shoeSlot = (sbyte)slot;
-                    break;
-                case EquipType.Waist:
-                    item.waistSlot = (sbyte)slot;
-                    break;
-                case EquipType.Wings:
-                    item.wingSlot = (sbyte)slot;
-                    break;
-                case EquipType.Shield:
-                    item.shieldSlot = (sbyte)slot;
-                    break;
-                case EquipType.Neck:
-                    item.neckSlot = (sbyte)slot;
-                    break;
-                case EquipType.Face:
-                    item.faceSlot = (sbyte)slot;
-                    break;
-                case EquipType.Balloon:
-                    item.balloonSlot = (sbyte)slot;
-                    break;
+                int slot = slots[type];
+                switch (type)
+                {
+                    case EquipType.Head:
+                        item.headSlot = slot;
+                        break;
+                    case EquipType.Body:
+                        item.bodySlot = slot;
+                        break;
+                    case EquipType.Legs:
+                        item.legSlot = slot;
+                        break;
+                    case EquipType.HandsOn:
+                        item.handOnSlot = (sbyte)slot;
+                        break;
+                    case EquipType.HandsOff:
+                        item.handOffSlot = (sbyte)slot;
+                        break;
+                    case EquipType.Back:
+                        item.backSlot = (sbyte)slot;
+                        break;
+                    case EquipType.Front:
+                        item.frontSlot = (sbyte)slot;
+                        break;
+                    case EquipType.Shoes:
+                        item.shoeSlot = (sbyte)slot;
+                        break;
+                    case EquipType.Waist:
+                        item.waistSlot = (sbyte)slot;
+                        break;
+                    case EquipType.Wings:
+                        item.wingSlot = (sbyte)slot;
+                        break;
+                    case EquipType.Shield:
+                        item.shieldSlot = (sbyte)slot;
+                        break;
+                    case EquipType.Neck:
+                        item.neckSlot = (sbyte)slot;
+                        break;
+                    case EquipType.Face:
+                        item.faceSlot = (sbyte)slot;
+                        break;
+                    case EquipType.Balloon:
+                        item.balloonSlot = (sbyte)slot;
+                        break;
+                }
             }
         }
     }
