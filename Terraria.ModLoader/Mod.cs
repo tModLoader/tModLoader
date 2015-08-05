@@ -149,10 +149,13 @@ public abstract class Mod
     {
         int slot = EquipLoader.ReserveEquipID(type);
         EquipLoader.equips[type][texture] = slot;
+        ModLoader.GetTexture(texture);
         if(type == EquipType.Body)
         {
             EquipLoader.armTextures[slot] = armTexture;
             EquipLoader.femaleTextures[slot] = femaleTexture.Length > 0 ? femaleTexture : texture;
+            ModLoader.GetTexture(armTexture);
+            ModLoader.GetTexture(femaleTexture);
         }
         if(type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
         {
