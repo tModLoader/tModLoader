@@ -12,8 +12,6 @@ public class ModItem
 {
     //add modItem property to Terraria.Item (internal set)
     //set modItem to null at beginning of Terraria.Item.ResetStats
-    //change Lang.tooltip, Lang.tooltip2, and Lang.itemName
-    //  if (l >= Terraria.ID.ItemID.Count) { return ItemLoader.GetItem(l).item.property; }
     public Item item
     {
         get;

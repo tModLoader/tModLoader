@@ -16,6 +16,7 @@ public static class ModLoader
     //change Terraria.Main.SavePath to use "ModLoader" folder
     public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
     public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
+    public static readonly string DllPath = Main.SavePath + Path.DirectorySeparatorChar + "dllReferences";
     private static bool referencesLoaded = false;
     private static readonly IList<string> buildReferences = new List<string>();
     internal const int earliestRelease = 149;
@@ -175,7 +176,7 @@ public static class ModLoader
                     Interface.loadMods.SetProgressReading(Path.GetFileNameWithoutExtension(modsToLoad[k]), num, enabledMods.Count);
                     try
                     {
-                        LoadMod(modsToLoad[k]);
+                        LoadMod(modsToLoad[k], properties[modsToLoad[k]]);
                     }
                     catch (Exception e)
                     {
@@ -205,8 +206,13 @@ public static class ModLoader
         return true;
     }
 
-    private static void LoadMod(string modFile)
+    private static void LoadMod(string modFile, BuildProperties properties)
     {
+        foreach(string dllReference in properties.dllReferences)
+        {
+            string dllFile = DllPath + Path.DirectorySeparatorChar + dllReference + ".dll";
+            Assembly.Load(File.ReadAllBytes(dllFile));
+        }
         Assembly modCode;
         using(FileStream fileStream = File.OpenRead(modFile))
         {
@@ -577,9 +583,10 @@ public static class ModLoader
         {
             compileOptions.ReferencedAssemblies.Add(reference);
         }
+        Directory.CreateDirectory(DllPath);
         foreach(string reference in properties.dllReferences)
         {
-            compileOptions.ReferencedAssemblies.Add(ModSourcePath + Path.DirectorySeparatorChar + reference + ".dll");
+            compileOptions.ReferencedAssemblies.Add(DllPath + Path.DirectorySeparatorChar + reference + ".dll");
         }
         foreach(string reference in properties.modReferences)
         {
