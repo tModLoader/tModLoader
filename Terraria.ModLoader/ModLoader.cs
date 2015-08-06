@@ -128,6 +128,7 @@ public static class ModLoader
         Main.InitializeItemAnimations();
         TileLoader.ResizeArrays(unloading);
         WallLoader.ResizeArrays(unloading);
+        ProjectileLoader.ResizeArrays();
     }
 
     internal static string[] FindMods()
@@ -314,6 +315,7 @@ public static class ModLoader
         EquipLoader.Unload();
         TileLoader.Unload();
         WallLoader.Unload();
+        ProjectileLoader.Unload();
         NPCLoader.Unload();
         textures.Clear();
         mods.Clear();

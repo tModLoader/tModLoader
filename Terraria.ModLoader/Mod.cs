@@ -33,6 +33,8 @@ public abstract class Mod
     internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
     internal readonly IDictionary<string, ModWall> walls = new Dictionary<string, ModWall>();
     internal readonly IDictionary<string, GlobalWall> globalWalls = new Dictionary<string, GlobalWall>();
+    internal readonly IDictionary<string, ModProjectile> projectiles = new Dictionary<string, ModProjectile>();
+    internal readonly IDictionary<string, GlobalProjectile> globalProjectiles = new Dictionary<string, GlobalProjectile>();
     internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
 
     /*
@@ -84,6 +86,14 @@ public abstract class Mod
             if(type.IsSubclassOf(typeof(GlobalWall)))
             {
                 AutoloadGlobalWall(type);
+            }
+            if(type.IsSubclassOf(typeof(ModProjectile)))
+            {
+                AutoloadProjectile(type);
+            }
+            if(type.IsSubclassOf(typeof(GlobalProjectile)))
+            {
+                AutoloadGlobalProjectile(type);
             }
             if(type.IsSubclassOf(typeof(GlobalNPC)))
             {
@@ -377,6 +387,82 @@ public abstract class Mod
         if(globalWall.Autoload(ref name))
         {
             AddGlobalWall(name, globalWall);
+        }
+    }
+
+    public void AddProjectile(string name, ModProjectile projectile, string texture)
+    {
+        int id = ProjectileLoader.ReserveProjectileID();
+        projectile.projectile.name = name;
+        projectile.projectile.type = id;
+        projectiles[name] = projectile;
+        ProjectileLoader.projectiles[id] = projectile;
+        projectile.texture = texture;
+        projectile.mod = this;
+    }
+
+    public ModProjectile GetProjectile(string name)
+    {
+        if(projectiles.ContainsKey(name))
+        {
+            return projectiles[name];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public int ProjectileType(string name)
+    {
+        ModProjectile projectile = GetProjectile(name);
+        if(projectile == null)
+        {
+            return 0;
+        }
+        return projectile.projectile.type;
+    }
+
+    public void AddGlobalProjectile(string name, GlobalProjectile globalProjectile)
+    {
+        globalProjectile.mod = this;
+        globalProjectile.Name = name;
+        this.globalProjectiles[name] = globalProjectile;
+        ProjectileLoader.globalProjectiles.Add(globalProjectile);
+    }
+
+    public GlobalProjectile GetGlobalProjectile(string name)
+    {
+        if(this.globalProjectiles.ContainsKey(name))
+        {
+            return this.globalProjectiles[name];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private void AutoloadProjectile(Type type)
+    {
+        ModProjectile projectile = (ModProjectile)Activator.CreateInstance(type);
+        projectile.mod = this;
+        string name = type.Name;
+        string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+        if(projectile.Autoload(ref name, ref texture))
+        {
+            AddProjectile(name, projectile, texture);
+        }
+    }
+
+    private void AutoloadGlobalProjectile(Type type)
+    {
+        GlobalProjectile globalProjectile = (GlobalProjectile)Activator.CreateInstance(type);
+        globalProjectile.mod = this;
+        string name = type.Name;
+        if (globalProjectile.Autoload(ref name))
+        {
+            AddGlobalProjectile(name, globalProjectile);
         }
     }
 

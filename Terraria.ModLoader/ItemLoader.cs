@@ -191,11 +191,6 @@ public static class ItemLoader
         {
             GetItem(item.type).SetupItem(item);
         }
-        GlobalSetDefaults(item);
-    }
-
-    internal static void GlobalSetDefaults(Item item)
-    {
         foreach(GlobalItem globalItem in globalItems)
         {
             globalItem.SetDefaults(item);

@@ -1,0 +1,41 @@
+﻿using System;
+using Terraria;
+
+namespace Terraria.ModLoader {
+public class ModProjectile
+{
+    //add modProjectile property to Terraria.Projectile (internal set)
+    //set modProjectile to null at beginning of Terraria.Projectile.SetDefaults
+    public Projectile projectile
+    {
+        get;
+        internal set;
+    }
+    public Mod mod
+    {
+        get;
+        internal set;
+    }
+    internal string texture;
+    public ModProjectile()
+    {
+        projectile = new Projectile();
+        projectile.modProjectile = this;
+    }
+
+    public virtual bool Autoload(ref string name, ref string texture)
+    {
+        return mod.Properties.Autoload;
+    }
+
+    internal void SetupProjectile(Projectile projectile)
+    {
+        ModProjectile newProjectile = (ModProjectile)Activator.CreateInstance(GetType());
+        newProjectile.projectile = projectile;
+        projectile.modProjectile = newProjectile;
+        newProjectile.mod = mod;
+        newProjectile.SetDefaults();
+    }
+
+    public virtual void SetDefaults() { }
+}}
