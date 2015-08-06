@@ -121,13 +121,13 @@ public static class ModLoader
         Main.menuMode = 0;
     }
 
-    private static void ResizeArrays()
+    private static void ResizeArrays(bool unloading = false)
     {
         ItemLoader.ResizeArrays();
         EquipLoader.ResizeAndFillArrays();
         Main.InitializeItemAnimations();
-        TileLoader.ResizeArrays();
-        WallLoader.ResizeArrays();
+        TileLoader.ResizeArrays(unloading);
+        WallLoader.ResizeArrays(unloading);
     }
 
     internal static string[] FindMods()
@@ -317,7 +317,7 @@ public static class ModLoader
         NPCLoader.Unload();
         textures.Clear();
         mods.Clear();
-        ResizeArrays();
+        ResizeArrays(true);
     }
 
     internal static void Reload()

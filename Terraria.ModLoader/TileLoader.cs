@@ -73,7 +73,7 @@ public static class TileLoader
         array = newArray;
     }
 
-    internal static void ResizeArrays()
+    internal static void ResizeArrays(bool unloading = false)
     {
         Array.Resize(ref Main.tileSetsLoaded, nextTile);
         for(int k = TileID.Count; k < nextTile; k++)
@@ -175,7 +175,10 @@ public static class TileLoader
         {
             TileObjectData._data.Add(null);
         }
-        loaded = true;
+        if(!unloading)
+        {
+            loaded = true;
+        }
     }
 
     internal static void Unload()
@@ -726,7 +729,7 @@ public static class TileLoader
 
     //in Terraria.WorldGen.UpdateWorld in the while loops updating certain numbers of tiles at end of null check if statements
     //  add TileLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].type; for the first loop
-    //  add TileLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].typel for the second loop
+    //  add TileLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].type; for the second loop
     internal static void RandomUpdate(int i, int j, int type)
     {
         ModTile modTile = GetTile(type);

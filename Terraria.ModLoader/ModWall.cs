@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 namespace Terraria.ModLoader {
@@ -61,4 +62,17 @@ public class ModWall
     {
         return mapColor;
     }
+
+    public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) { }
+
+    public virtual void RandomUpdate(int i, int j) { }
+
+    public virtual void AnimateWall(ref byte frame, ref byte frameCounter) { }
+
+    public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+    {
+        return true;
+    }
+
+    public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch) { }
 }}

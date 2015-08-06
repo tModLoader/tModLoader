@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.Map;
@@ -11,6 +12,7 @@ public static class WallLoader
     private static int nextWall = WallID.Count;
     internal static readonly IDictionary<int, ModWall> walls = new Dictionary<int, ModWall>();
     internal static readonly IList<GlobalWall> globalWalls = new List<GlobalWall>();
+    private static bool loaded = false;
 
     internal static int ReserveWallID()
     {
@@ -51,7 +53,7 @@ public static class WallLoader
         array = newArray;
     }
 
-    internal static void ResizeArrays()
+    internal static void ResizeArrays(bool unloading = false)
     {
         Array.Resize(ref Main.wallLoaded, nextWall);
         for (int k = WallID.Count; k < nextWall; k++)
@@ -78,10 +80,15 @@ public static class WallLoader
         Array.Resize(ref WallID.Sets.Corrupt, nextWall);
         Array.Resize(ref WallID.Sets.Crimson, nextWall);
         Array.Resize(ref WallID.Sets.Hallow, nextWall);
+        if(!unloading)
+        {
+            loaded = true;
+        }
     }
 
     internal static void Unload()
     {
+        loaded = false;
         walls.Clear();
         nextWall = WallID.Count;
         globalWalls.Clear();
@@ -207,6 +214,84 @@ public static class WallLoader
         foreach(GlobalWall globalWall in globalWalls)
         {
             globalWall.KillWall(i, j, type, ref fail);
+        }
+    }
+
+    //in Terraria.Lighting.PreRenderPhase after wall modifies light call
+    //  WallLoader.ModifyLight(n, num17, wall, ref num18, ref num19, ref num20);
+    internal static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+    {
+        ModWall modWall = GetWall(type);
+        if(modWall != null)
+        {
+            modWall.ModifyLight(i, j, ref r, ref g, ref b);
+        }
+        foreach(GlobalWall globalWall in globalWalls)
+        {
+            globalWall.ModifyLight(i, j, type, ref r, ref g, ref b);
+        }
+    }
+
+    //in Terraria.WorldGen.UpdateWorld after each call to TileLoader.RandomUpdate call
+    //  WallLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].wall);
+    //  WallLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].wall);
+    internal static void RandomUpdate(int i, int j, int type)
+    {
+        ModWall modWall = GetWall(type);
+        if(modWall != null)
+        {
+            modWall.RandomUpdate(i, j);
+        }
+        foreach(GlobalWall globalWall in globalWalls)
+        {
+            globalWall.RandomUpdate(i, j, type);
+        }
+    }
+
+    //in Terraria.Main.Update after vanilla wall animations call WallLoader.AnimateWalls();
+    internal static void AnimateWalls()
+    {
+        if(loaded)
+        {
+            foreach(ModWall modWall in walls.Values)
+            {
+                modWall.AnimateWall(ref Main.wallFrame[modWall.Type], ref Main.wallFrameCounter[modWall.Type]);
+            }
+        }
+    }
+
+    //in Terraria.Main.DrawWalls before if statements that do the drawing add
+    //  if(!WallLoader.PreDraw(j, i, wall, Main.spriteBatch))
+    //  { WallLoader.PostDraw(j, i, wall, Main.spriteBatch); continue; }
+    internal static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
+    {
+        foreach(GlobalWall globalWall in globalWalls)
+        {
+            if(!globalWall.PreDraw(i, j, type, spriteBatch))
+            {
+                return false;
+            }
+        }
+        ModWall modWall = GetWall(type);
+        if(modWall != null)
+        {
+            return modWall.PreDraw(i, j, spriteBatch);
+        }
+        return true;
+    }
+
+    //in Terraria.Main.DrawWalls after wall outlines are drawn call
+    //  WallLoader.PostDraw(j, i, wall, Main.spriteBatch);
+    internal static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
+    {
+        ModWall modWall = GetWall(type);
+        if(modWall != null)
+        {
+            modWall.PostDraw(i, j, spriteBatch);
+        }
+        foreach(GlobalWall globalWall in globalWalls)
+        {
+            globalWall.PostDraw(i, j, type, spriteBatch);
         }
     }
 }}

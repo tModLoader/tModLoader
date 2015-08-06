@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 namespace Terraria.ModLoader {
@@ -40,4 +41,15 @@ public class GlobalWall
     }
 
     public virtual void KillWall(int i, int j, int type, ref bool fail) { }
+
+    public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) { }
+
+    public virtual void RandomUpdate(int i, int j, int type) { }
+
+    public virtual bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
+    {
+        return true;
+    }
+
+    public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) { }
 }}
