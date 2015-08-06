@@ -80,5 +80,12 @@ public class GlobalTile
 
     public virtual void RightClick(int i, int j, int type) { }
 
+    public virtual void MouseOver(int i, int j, int type) { }
+
     public virtual void HitWire(int i, int j, int type) { }
+
+    public virtual bool Slope(int i, int j, int type)
+    {
+        return true;
+    }
 }}

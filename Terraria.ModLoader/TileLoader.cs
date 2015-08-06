@@ -847,6 +847,22 @@ public static class TileLoader
         }
     }
 
+    //in Terraria.Player.Update after if statements setting showItemIcon call
+    //  TileLoader.MouseOver(Player.tileTargetX, Player.tileTargetY);
+    internal static void MouseOver(int i, int j)
+    {
+        int type = Main.tile[i, j].type;
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            modTile.MouseOver(i, j);
+        }
+        foreach(GlobalTile globalTile in globalTiles)
+        {
+            globalTile.MouseOver(i, j, type);
+        }
+    }
+
     //in Terraria.Wiring make the following public:
     //  _wireList, _toProcess, _teleport, _inPumpX, _inPumpY, _numInPump, _outPumpX, _outPumpY, _numOutPump CheckMech, TripWire
     //at end of Terraria.Wiring.HitWireSingle inside if statement checking for tile active add
@@ -862,5 +878,24 @@ public static class TileLoader
         {
             globalTile.HitWire(i, j, type);
         }
+    }
+
+    //in Terraria.Player.ItemCheck in poundRelease if statement before sloping if statements add
+    //  if(TileLoader.Slope(num223, num224, Main.tile[num223, num224].type)) { } else
+    internal static bool Slope(int i, int j, int type)
+    {
+        foreach(GlobalTile globalTile in globalTiles)
+        {
+            if(!globalTile.Slope(i, j, type))
+            {
+                return true;
+            }
+        }
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            return !modTile.Slope(i, j);
+        }
+        return false;
     }
 }}

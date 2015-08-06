@@ -109,5 +109,12 @@ public class ModTile
 
     public virtual void RightClick(int i, int j) { }
 
+    public virtual void MouseOver(int i, int j) { }
+
     public virtual void HitWire(int i, int j) { }
+
+    public virtual bool Slope(int i, int j)
+    {
+        return true;
+    }
 }}
