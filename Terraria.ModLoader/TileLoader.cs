@@ -669,26 +669,57 @@ public static class TileLoader
 
     //add internal int x, internal int y, and internal ushort modType fields to Terraria.Map.MapTile
     //  change constructor, constructor uses, Equals, EqualsWithoutLight, and Clear to accomodate for this
-    //at beginning of Terraria.Map.WorldMap.SetTile add tile.x = x; tile.y = y;
-    //  tile.modType = Main.tile[x, y].type >= Terraria.ID.TileID.Count ? Main.tile[x, y].type : (ushort)0;
+    //at beginning of Terraria.Map.WorldMap.SetTile add tile.x = x; tile.y = y; tile.modType = TileLoader.MapModType(x, y);
     //at end of Terraria.Map.MapHelper.CreateMapTile replace return with
     //  MapTile mapTile = MapTile.Create((ushort)num16, (byte)num2, (byte)num); mapTile.x = i; mapTile.y = j;
-    //  mapTile.modType = Main.tile[i, j].type >= Terraria.ID.TileID.Count ? Main.tile[i, j].type : (ushort)0; return mapTile;
+    //  mapTile.modType = TileLoader.MapModType(i, j);
     //at end of constructor for Terraria.Map.WorldMap add
     //  for(int x = 0; x < maxWidth; x++) { for(int y = 0; y < maxHeight; y++)
     //  { this._tiles[x, y].x = x; this._tiles[x, y].y = y; }}
+    internal static ushort MapModType(int i, int j)
+    {
+        Tile tile = Main.tile[i, j];
+        if(tile.active())
+        {
+            if(tile.type >= TileID.Count)
+            {
+                return tile.type;
+            }
+        }
+        else if(tile.wall >= WallID.Count)
+        {
+            return (ushort)(TileCount() + tile.wall - WallID.Count);
+        }
+        return 0;
+    }
 
     //in Terraria.Map.MapHelper.GetMapTileXnaColor after result is initialized call
     //  TileLoader.MapColor(tile, ref result);
-    internal static void MapColor(MapTile tile, ref Color color)
+    internal static void MapColor(MapTile mapTile, ref Color color)
     {
-        ModTile modTile = GetTile(Main.tile[tile.x, tile.y].type);
-        if(modTile != null)
+        Tile tile = Main.tile[mapTile.x, mapTile.y];
+        if(tile.active())
         {
-            Color? modColor = modTile.MapColor(tile.x, tile.y);
-            if(modColor.HasValue)
+            ModTile modTile = GetTile(tile.type);
+            if(modTile != null)
             {
-                color = modColor.Value;
+                Color? modColor = modTile.MapColor(mapTile.x, mapTile.y);
+                if(modColor.HasValue)
+                {
+                    color = modColor.Value;
+                }
+            }
+        }
+        else
+        {
+            ModWall modWall = WallLoader.GetWall(tile.wall);
+            if(modWall != null)
+            {
+                Color? modColor = modWall.MapColor(mapTile.x, mapTile.y);
+                if(modColor.HasValue)
+                {
+                    color = modColor.Value;
+                }
             }
         }
     }

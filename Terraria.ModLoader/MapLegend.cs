@@ -56,9 +56,16 @@ public class MapLegend
         get
         {
             Tile tile = Main.tile[mapTile.x, mapTile.y];
-            if(tile.type >= TileID.Count)
+            if(tile.active())
             {
-                return TileLoader.GetTile(tile.type).MapName(tile.frameX, tile.frameY);
+                if(tile.type >= TileID.Count)
+                {
+                    return TileLoader.GetTile(tile.type).MapName(tile.frameX, tile.frameY);
+                }
+            }
+            else if(tile.wall >= WallID.Count)
+            {
+                return WallLoader.GetWall(tile.wall).mapName;
             }
             return legend[mapTile.Type];
         }

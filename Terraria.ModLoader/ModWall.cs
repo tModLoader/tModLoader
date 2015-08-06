@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 
 namespace Terraria.ModLoader {
@@ -25,6 +26,8 @@ public class ModWall
     public int soundStyle = 1;
     public int dustType = 0;
     public int drop = 0;
+    public Color? mapColor = null;
+    public string mapName = "";
 
     public virtual bool Autoload(ref string name, ref string texture)
     {
@@ -53,4 +56,9 @@ public class ModWall
     }
 
     public virtual void KillWall(int i, int j, ref bool fail) { }
+
+    public virtual Color? MapColor(int i, int j)
+    {
+        return mapColor;
+    }
 }}
