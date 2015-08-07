@@ -1,0 +1,16 @@
+--- src/decompiled\Terraria.csproj
++++ src/merged\Terraria.csproj
+@@ -24,6 +24,12 @@
+     <DebugSymbols>true</DebugSymbols>
+     <DebugType>pdbonly</DebugType>
+     <Optimize>true</Optimize>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
++    <DefineConstants>CLIENT</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
++    <DefineConstants>CLIENT</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="Microsoft.Xna.Framework.Game" />
+

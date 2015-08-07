@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terraria", "..\src\tModLoader\Terraria.csproj", "{F289741C-268A-484B-9216-822EBBA1A211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrariaServer", "..\src\tModLoader\TerrariaServer.csproj", "{BE8168B8-377A-4216-8252-7A302F07C8BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F289741C-268A-484B-9216-822EBBA1A211}.Debug|x86.ActiveCfg = Debug|x86
+		{F289741C-268A-484B-9216-822EBBA1A211}.Debug|x86.Build.0 = Debug|x86
+		{F289741C-268A-484B-9216-822EBBA1A211}.Release|x86.ActiveCfg = Release|x86
+		{F289741C-268A-484B-9216-822EBBA1A211}.Release|x86.Build.0 = Release|x86
+		{BE8168B8-377A-4216-8252-7A302F07C8BA}.Debug|x86.ActiveCfg = Debug|x86
+		{BE8168B8-377A-4216-8252-7A302F07C8BA}.Debug|x86.Build.0 = Debug|x86
+		{BE8168B8-377A-4216-8252-7A302F07C8BA}.Release|x86.ActiveCfg = Release|x86
+		{BE8168B8-377A-4216-8252-7A302F07C8BA}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

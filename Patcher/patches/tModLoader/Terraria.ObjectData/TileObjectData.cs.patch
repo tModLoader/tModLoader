@@ -1,0 +1,96 @@
+--- src/Terraria\Terraria.ObjectData\TileObjectData.cs
++++ src/tModLoader\Terraria.ObjectData\TileObjectData.cs
+@@ -34,33 +34,33 @@
+ 		private bool _hasOwnTileObjectDraw;
+ 		private bool _hasOwnTileObjectStyle;
+ 		private bool _hasOwnTileObjectCoords;
+-		private static List<TileObjectData> _data;
++		internal static List<TileObjectData> _data;
+ 		private static TileObjectData _baseObject;
+ 		private static bool readOnlyData;
+-		private static TileObjectData newTile;
+-		private static TileObjectData newSubTile;
+-		private static TileObjectData newAlternate;
+-		private static TileObjectData StyleSwitch;
+-		private static TileObjectData StyleTorch;
+-		private static TileObjectData Style4x2;
+-		private static TileObjectData Style2x2;
+-		private static TileObjectData Style1x2;
+-		private static TileObjectData Style1x1;
+-		private static TileObjectData StyleAlch;
+-		private static TileObjectData StyleDye;
+-		private static TileObjectData Style2x1;
+-		private static TileObjectData Style6x3;
+-		private static TileObjectData StyleSmallCage;
+-		private static TileObjectData StyleOnTable1x1;
+-		private static TileObjectData Style1x2Top;
+-		private static TileObjectData Style1xX;
+-		private static TileObjectData Style2xX;
+-		private static TileObjectData Style3x2;
+-		private static TileObjectData Style3x3;
+-		private static TileObjectData Style3x4;
+-		private static TileObjectData Style3x3Wall;
+-
+-		private bool LinkedAlternates
++		public static TileObjectData newTile;
++		public static TileObjectData newSubTile;
++		public static TileObjectData newAlternate;
++		public static TileObjectData StyleSwitch;
++		public static TileObjectData StyleTorch;
++		public static TileObjectData Style4x2;
++		public static TileObjectData Style2x2;
++		public static TileObjectData Style1x2;
++		public static TileObjectData Style1x1;
++		public static TileObjectData StyleAlch;
++		public static TileObjectData StyleDye;
++		public static TileObjectData Style2x1;
++		public static TileObjectData Style6x3;
++		public static TileObjectData StyleSmallCage;
++		public static TileObjectData StyleOnTable1x1;
++		public static TileObjectData Style1x2Top;
++		public static TileObjectData Style1xX;
++		public static TileObjectData Style2xX;
++		public static TileObjectData Style3x2;
++		public static TileObjectData Style3x3;
++		public static TileObjectData Style3x4;
++		public static TileObjectData Style3x3Wall;
++
++		public bool LinkedAlternates
+ 		{
+ 			get
+ 			{
+@@ -1655,14 +1655,14 @@
+ 			TileObjectData.newTile = new TileObjectData(TileObjectData._baseObject);
+ 		}
+ 
+-		private static void addTile(int tileType)
++		public static void addTile(int tileType)
+ 		{
+ 			TileObjectData.newTile.Calculate();
+ 			TileObjectData._data[tileType] = TileObjectData.newTile;
+ 			TileObjectData.newTile = new TileObjectData(TileObjectData._baseObject);
+ 		}
+ 
+-		private static void addSubTile(int style)
++		public static void addSubTile(int style)
+ 		{
+ 			TileObjectData.newSubTile.Calculate();
+ 			List<TileObjectData> list;
+@@ -1687,7 +1687,7 @@
+ 			TileObjectData.newSubTile = new TileObjectData(TileObjectData._baseObject);
+ 		}
+ 
+-		private static void addAlternate(int baseStyle)
++		public static void addAlternate(int baseStyle)
+ 		{
+ 			TileObjectData.newAlternate.Calculate();
+ 			if (!TileObjectData.newTile._hasOwnAlternates)
+@@ -3305,7 +3305,6 @@
+ 			};
+ 			TileObjectData.addAlternate(27);
+ 			TileObjectData.addTile(20);
+-			TileObjectData.readOnlyData = true;
+ 		}
+ 
+ 		public static bool CustomPlace(int type, int style)
+

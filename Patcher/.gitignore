@@ -1,0 +1,7 @@
+/decompiled
+/src
+/terraria
+*.user
+*.suo
+/setup/obj
+/logs

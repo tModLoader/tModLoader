@@ -1,0 +1,36 @@
+--- src/Terraria\Terraria\Lighting.cs
++++ src/tModLoader\Terraria\Lighting.cs
+@@ -5,6 +5,7 @@
+ using System.Threading;
+ using Terraria.DataStructures;
+ using Terraria.Graphics;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+@@ -768,7 +769,7 @@
+ 							lightingState3.b2 = num20;
+ 						}
+ 					}
+-					byte wall = tile.wall;
++					ushort wall = tile.wall;
+ 					if (wall <= 137)
+ 					{
+ 						if (wall != 33)
+@@ -875,6 +876,7 @@
+ 								break;
+ 						}
+ 					}
++					WallLoader.ModifyLight(n, num17, wall, ref num18, ref num19, ref num20);
+ 					if (tile.active())
+ 					{
+ 						if (n > num4 + num15 && n < num5 - num15 && num17 > num6 + num16 && num17 < num7 - num16)
+@@ -2375,6 +2377,7 @@
+ 						}
+ 					}
+ 					IL_304B:
++					TileLoader.ModifyLight(n, num17, tile.type, ref num18, ref num19, ref num20);
+ 					if (Lighting.RGB)
+ 					{
+ 						if (lightingState3.r2 < num18)
+

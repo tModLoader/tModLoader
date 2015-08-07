@@ -1,0 +1,360 @@
+--- src/Terraria\Terraria\WorldGen.cs
++++ src/tModLoader\Terraria\WorldGen.cs
+@@ -13,16 +13,15 @@
+ using Terraria.Graphics.Capture;
+ using Terraria.ID;
+ using Terraria.IO;
++using Terraria.Map;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ using Terraria.Utilities;
+ using Terraria.World.Generation;
+ 
+-#if CLIENT
+-using Terraria.Map;
+-#endif
+ namespace Terraria
+ {
+-	internal class WorldGen
++	public class WorldGen
+ 	{
+ 		public class Spread
+ 		{
+@@ -1644,7 +1643,7 @@
+ 			WorldGen.roomY1 = y;
+ 			WorldGen.roomY2 = y;
+ 			WorldGen.numRoomTiles = 0;
+-			for (int i = 0; i < 419; i++)
++			for (int i = 0; i < WorldGen.houseTile.Length; i++)
+ 			{
+ 				WorldGen.houseTile[i] = false;
+ 			}
+@@ -2037,6 +2036,18 @@
+ 
+ 		public static void worldGenCallBack(object threadContext)
+ 		{
++			try
++			{
++				do_worldGenCallBack(threadContext);
++			}
++			catch (Exception e)
++			{
++				ErrorLogger.LogException(e);
++			}
++		}
++
++		public static void do_worldGenCallBack(object threadContext)
++		{
+ 			Main.PlaySound(10, -1, -1, 1);
+ 			WorldGen.clearWorld();
+ 			WorldGen.generateWorld(-1, threadContext as GenerationProgress);
+@@ -2101,6 +2112,18 @@
+ 		}
+ 
+ 		public static void playWorldCallBack(object threadContext)
++		{
++			try
++			{
++				do_playWorldCallBack(threadContext);
++			}
++			catch (Exception e)
++			{
++				ErrorLogger.LogException(e);
++			}
++		}
++
++		public static void do_playWorldCallBack(object threadContext)
+ 		{
+ 			if (Main.rand == null)
+ 			{
+@@ -8774,17 +8797,18 @@
+ 					{
+ 						int num5;
+ 						int num6;
++						bool flag2;
+ 						int maxValue;
+-						bool flag2;
+ 						switch (k)
+ 						{
++							case 0:
+ 							default:
+ 								{
+ 									num5 = 5;
+ 									num6 = num4;
+ 									flag2 = false;
+ 									maxValue = num3;
+-									break;
++									goto IL_77;
+ 								}
+ 							case 1:
+ 								{
+@@ -8792,7 +8816,7 @@
+ 									num6 = Main.maxTilesX - num2;
+ 									flag2 = true;
+ 									maxValue = num;
+-									break;
++									goto IL_77;
+ 								}
+ 							case 2:
+ 								{
+@@ -8800,9 +8824,10 @@
+ 									num6 = Main.maxTilesX - 5;
+ 									flag2 = false;
+ 									maxValue = num3;
+-									break;
+-								}
+-						}
++									goto IL_77;
++								}
++						}
++						IL_77:
+ 						for (int l = num5; l < num6; l++)
+ 						{
+ 							if (WorldGen.genRand.Next(maxValue) == 0)
+@@ -13480,25 +13505,27 @@
+ 					int num38;
+ 					switch (num36)
+ 					{
++						case 0:
+ 						default:
+ 							{
+ 								num37 = 1;
+ 								num38 = 3;
+-								break;
++								goto IL_FAB;
+ 							}
+ 						case 1:
+ 							{
+ 								num37 = 3;
+ 								num38 = 3;
+-								break;
++								goto IL_FAB;
+ 							}
+ 						case 2:
+ 							{
+ 								num37 = 1;
+ 								num38 = 2;
+-								break;
+-							}
+-					}
++								goto IL_FAB;
++							}
++					}
++					IL_FAB:
+ 					for (int num39 = num34 - 1; num39 <= num34 + num37; num39++)
+ 					{
+ 						for (int num40 = num35; num40 <= num35 + num38; num40++)
+@@ -27223,10 +27250,6 @@
+ 
+ 		public static bool PlaceObject(int x, int y, int type, bool mute = false, int style = 0, int alternate = 0, int random = -1, int direction = -1)
+ 		{
+-			if (type >= 419)
+-			{
+-				return false;
+-			}
+ 			TileObject toBePlaced;
+ 			if (!TileObject.CanPlace(x, y, type, style, direction, out toBePlaced, false))
+ 			{
+@@ -29916,7 +29939,7 @@
+ 						int wall = (int)Main.tile[k, l].wall;
+ 						if (conversionType == 4)
+ 						{
+-							if (type <= 419 && wall <= 225)
++							if (wall <= 225)
+ 							{
+ 								if (WallID.Sets.Conversion.Grass[wall] && wall != 81)
+ 								{
+@@ -29994,7 +30017,7 @@
+ 						}
+ 						else if (conversionType == 2)
+ 						{
+-							if (type <= 419 && wall <= 225)
++							if (wall <= 225)
+ 							{
+ 								if (WallID.Sets.Conversion.Grass[wall] && wall != 70)
+ 								{
+@@ -30074,7 +30097,7 @@
+ 						}
+ 						else if (conversionType == 1)
+ 						{
+-							if (type <= 419 && wall <= 225)
++							if (wall <= 225)
+ 							{
+ 								if (WallID.Sets.Conversion.Grass[wall] && wall != 69)
+ 								{
+@@ -31668,10 +31691,6 @@
+ 
+ 		public static bool PlaceTile(int i, int j, int type, bool mute = false, bool forced = false, int plr = -1, int style = 0)
+ 		{
+-			if (type >= 419)
+-			{
+-				return false;
+-			}
+ 			bool result = false;
+ 			if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY)
+ 			{
+@@ -32309,7 +32328,11 @@
+ 					{
+ 						fail = true;
+ 					}
+-					if (tile.wall == 21 || tile.wall == 186 || tile.wall == 136 || tile.wall == 137 || tile.wall == 168 || tile.wall == 169 || tile.wall == 172)
++					WallLoader.KillWall(i, j, tile.wall, ref fail);
++					if (!WallLoader.KillSound(i, j, tile.wall))
++					{
++					}
++					else if (tile.wall == 21 || tile.wall == 186 || tile.wall == 136 || tile.wall == 137 || tile.wall == 168 || tile.wall == 169 || tile.wall == 172)
+ 					{
+ 						Main.PlaySound(13, i * 16, j * 16, 1);
+ 					}
+@@ -32326,6 +32349,7 @@
+ 					{
+ 						num = 3;
+ 					}
++					WallLoader.NumDust(i, j, tile.wall, fail, ref num);
+ 					for (int k = 0; k < num; k++)
+ 					{
+ 						int num2 = 0;
+@@ -32793,6 +32817,10 @@
+ 						if (tile.wall == 151 || tile.wall == 152)
+ 						{
+ 							num2 = 215;
++						}
++						if (!WallLoader.CreateDust(i, j, tile.wall, ref num2))
++						{
++							continue;
+ 						}
+ 						if (tile.wall == 44)
+ 						{
+@@ -33293,14 +33321,14 @@
+ 					{
+ 						num4 = 2210 + (int)tile.wall - 138;
+ 					}
+-					if (num4 > 0)
++					if (WallLoader.Drop(i, j, tile.wall, ref num4) && num4 > 0)
+ 					{
+ 						Item.NewItem(i * 16, j * 16, 16, 16, num4, 1, false, 0, false, false);
+ 					}
+ 					tile.wall = 0;
+ 					tile.wallColor(0);
+ 					WorldGen.SquareWallFrame(i, j, true);
+-					if (tile.type >= 0 && tile.type < 419 && TileID.Sets.FramesOnKillWall[(int)tile.type])
++					if (tile.type >= 0 && TileID.Sets.FramesOnKillWall[(int)tile.type])
+ 					{
+ 						WorldGen.TileFrame(i, j, false, false);
+ 					}
+@@ -33515,9 +33543,13 @@
+ 							}
+ 						}
+ 					}
++					TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem);
+ 					if (!effectOnly && !WorldGen.stopDrops)
+ 					{
+-						if (tile.type == 127)
++						if (!TileLoader.KillSound(i, j, tile.type))
++						{
++						}
++						else if (tile.type == 127)
+ 						{
+ 							Main.PlaySound(2, i * 16, j * 16, 27);
+ 						}
+@@ -33760,6 +33792,7 @@
+ 					{
+ 						num13 = 0;
+ 					}
++					TileLoader.NumDust(i, j, tile.type, fail, ref num13);
+ 					int num14 = 0;
+ 					while (num14 < num13)
+ 					{
+@@ -35593,7 +35626,7 @@
+ 						{
+ 							num15 = 215;
+ 						}
+-						if (num15 >= 0)
++						if (TileLoader.CreateDust(i, j, tile.type, ref num15) && num15 >= 0)
+ 						{
+ 							if (tile.type == 352 && num15 == 5)
+ 							{
+@@ -35783,6 +35816,7 @@
+ 						{
+ 							num45 = 10;
+ 						}
++						TileLoader.DropCritterChance(i, j, tile.type, ref num43, ref num44, ref num45);
+ 						if (num43 > 0 && NPC.CountNPCS(357) < 5 && WorldGen.genRand.Next(num43) == 0)
+ 						{
+ 							int type2 = 357;
+@@ -37390,7 +37424,8 @@
+ 						{
+ 							num49 = 2504;
+ 						}
+-						if (num49 > 0)
++						bool vanillaDrop = TileLoader.Drop(i, j, tile.type);
++						if (vanillaDrop && num49 > 0)
+ 						{
+ 							int num71 = 1;
+ 							if (flag)
+@@ -37399,7 +37434,7 @@
+ 							}
+ 							Item.NewItem(i * 16, j * 16, 16, 16, num49, num71, false, -1, false, false);
+ 						}
+-						if (num50 > 0)
++						if (vanillaDrop && num50 > 0)
+ 						{
+ 							Item.NewItem(i * 16, j * 16, 16, 16, num50, 1, false, -1, false, false);
+ 						}
+@@ -40012,6 +40047,8 @@
+ 							}
+ 						}
+ 					}
++					TileLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].type);
++					WallLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].wall);
+ 				}
+ 				num6++;
+ 			}
+@@ -40702,6 +40739,8 @@
+ 						}
+ 					}
+ 					WorldGen.SpreadDesertWalls(num, num64, num65);
++					TileLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].type);
++					WallLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].wall);
+ 				}
+ 				num63++;
+ 			}
+@@ -44909,7 +44948,6 @@
+ 		public static bool UpdateMapTile(int i, int j, bool addToList = true)
+ 		{
+ 			bool result = false;
+-#if CLIENT
+ 			if (Main.mapEnabled && !WorldGen.noMapUpdate && !WorldGen.gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList)
+ 			{
+ 				result = true;
+@@ -44924,7 +44962,6 @@
+ 					Main.refreshMap = true;
+ 				}
+ 			}
+-#endif
+ 			return result;
+ 		}
+ 
+@@ -45217,6 +45254,10 @@
+ 					}
+ 					if (tile.active())
+ 					{
++						if (!TileLoader.TileFrame(i, j, tile.type, ref resetFrame, ref noBreak))
++						{
++							return;
++						}
+ 						if (noBreak && Main.tileFrameImportant[(int)tile.type] && tile.type != 4)
+ 						{
+ 							return;
+@@ -46278,6 +46319,10 @@
+ 							{
+ 								WorldGen.CheckPalmTree(i, j);
+ 							}
++							else
++							{
++								TileLoader.CheckModTile(i, j, num);
++							}
+ 							return;
+ 						}
+ 						else
+

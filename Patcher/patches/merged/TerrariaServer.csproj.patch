@@ -1,0 +1,16 @@
+--- src/decompiled\TerrariaServer.csproj
++++ src/merged\TerrariaServer.csproj
+@@ -24,6 +24,12 @@
+     <DebugSymbols>true</DebugSymbols>
+     <DebugType>pdbonly</DebugType>
+     <Optimize>true</Optimize>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
++    <DefineConstants>SERVER</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
++    <DefineConstants>SERVER</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="System" />
+

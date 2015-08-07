@@ -1,0 +1,14 @@
+--- src/decompiled\Terraria\WindowsLaunch.cs
++++ src/merged\Terraria\WindowsLaunch.cs
+@@ -69,6 +69,10 @@
+ 				}
+ 				return result;
+ 			};
++#if SERVER
++			WindowsLaunch._handleRoutine = new WindowsLaunch.HandlerRoutine(WindowsLaunch.ConsoleCtrlCheck);
++			WindowsLaunch.SetConsoleCtrlHandler(WindowsLaunch._handleRoutine, true);
++#endif
+ 			Program.LaunchGame(args);
+ 		}
+ 	}
+

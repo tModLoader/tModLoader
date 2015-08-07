@@ -1,0 +1,81 @@
+--- src/decompiled\Terraria\Netplay.cs
++++ src/merged\Terraria\Netplay.cs
+@@ -7,6 +7,9 @@
+ using Terraria.Net;
+ using Terraria.Net.Sockets;
+ using Terraria.Social;
++#if SERVER
++using NATUPNPLib;
++#endif
+ 
+ namespace Terraria
+ {
+@@ -43,7 +46,11 @@
+ 		public static bool spamCheck = false;
+ 
+ 		public static bool anyClients = false;
+-
++#if SERVER
++		public static UPnPNAT upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
++
++		public static IStaticPortMappingCollection mappings = Netplay.upnpnat.StaticPortMappingCollection;
++#endif
+ 		public static string portForwardIP;
+ 
+ 		public static int portForwardPort;
+@@ -56,10 +63,33 @@
+ 		{
+ 			Netplay.portForwardIP = Netplay.GetLocalIPAddress();
+ 			Netplay.portForwardPort = Netplay.ListenPort;
++#if SERVER
++			if (Netplay.mappings != null)
++			{
++				foreach (IStaticPortMapping staticPortMapping in Netplay.mappings)
++				{
++					if (staticPortMapping.InternalPort == Netplay.portForwardPort && staticPortMapping.InternalClient == Netplay.portForwardIP && staticPortMapping.Protocol == "TCP")
++					{
++						Netplay.portForwardOpen = true;
++					}
++				}
++				if (!Netplay.portForwardOpen)
++				{
++					Netplay.mappings.Add(Netplay.portForwardPort, "TCP", Netplay.portForwardPort, Netplay.portForwardIP, true, "Terraria Server");
++					Netplay.portForwardOpen = true;
++				}
++			}
++#endif
+ 		}
+ 
+ 		public static void closePort()
+ 		{
++#if SERVER
++			if (Netplay.portForwardOpen)
++			{
++				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
++			}
++#endif
+ 		}
+ 
+ 		public static string GetLocalIPAddress()
+@@ -778,8 +808,20 @@
+ 
+ 		public static void Initialize()
+ 		{
++#if CLIENT
+ 			NetMessage.buffer[256] = new MessageBuffer();
+ 			NetMessage.buffer[256].whoAmI = 256;
++#else
++			for (int i = 0; i < 257; i++)
++			{
++				if (i < 256)
++				{
++					Netplay.Clients[i] = new RemoteClient();
++				}
++				NetMessage.buffer[i] = new MessageBuffer();
++				NetMessage.buffer[i].whoAmI = i;
++			}
++#endif
+ 		}
+ 
+ 		public static int GetSectionX(int x)
+

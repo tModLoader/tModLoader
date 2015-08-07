@@ -1,0 +1,54 @@
+--- src/Terraria\Terraria\Program.cs
++++ src/tModLoader\Terraria\Program.cs
+@@ -1,22 +1,15 @@
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
++using System.Windows.Forms;
+ using Terraria.Initializers;
+ using Terraria.Social;
+ 
+-#if CLIENT
+-using System.Windows.Forms;
+-#endif
+ namespace Terraria
+ {
+ 	public static class Program
+ 	{
+-		#if CLIENT
+ 		public const bool IsServer = false;
+-
+-#else
+-		public const bool IsServer = true;
+-		#endif
+ 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
+ 
+ 		public static void LaunchGame(string[] args)
+@@ -28,11 +21,7 @@
+ 				{
+ 					SocialAPI.Initialize(null);
+ 					LaunchInitializer.LoadParameters(main);
+-#if CLIENT
+ 					main.Run();
+-#else
+-					main.DedServ();
+-#endif
+ 				}
+ 				catch (Exception e)
+ 				{
+@@ -51,14 +40,7 @@
+ 					streamWriter.WriteLine(e);
+ 					streamWriter.WriteLine("");
+ 				}
+-#if CLIENT
+ 				MessageBox.Show(e.ToString(), "Terraria: Error");
+-#else
+-				Console.WriteLine("Server crash: " + DateTime.Now);
+-				Console.WriteLine(e);
+-				Console.WriteLine("");
+-				Console.WriteLine("Please send crashlog.txt to support@terraria.org");
+-#endif
+ 			}
+ 			catch
+ 			{
+

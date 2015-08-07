@@ -1,0 +1,26 @@
+--- src/merged\Terraria\MessageBuffer.cs
++++ src/Terraria\Terraria\MessageBuffer.cs
+@@ -773,7 +773,7 @@
+ 				if (bitsByte9[0])
+ 				{
+ 					player5.pulley = true;
+-					player5.pulleyDir = (bitsByte9[1] ? 2 : 1);
++					player5.pulleyDir = (byte)(bitsByte9[1] ? 2 : 1);
+ 				}
+ 				else
+ 				{
+@@ -1034,11 +1034,11 @@
+ 						bitsByte10 = this.reader.ReadByte();
+ 						bitsByte11 = this.reader.ReadByte();
+ 						tile.active(bitsByte10[0]);
+-						tile.wall = (bitsByte10[2] ? 1 : 0);
++						tile.wall = (byte)(bitsByte10[2] ? 1 : 0);
+ 						bool flag8 = bitsByte10[3];
+ 						if (Main.netMode != 2)
+ 						{
+-							tile.liquid = (flag8 ? 1 : 0);
++							tile.liquid = (byte)(flag8 ? 1 : 0);
+ 						}
+ 						tile.wire(bitsByte10[4]);
+ 						tile.halfBrick(bitsByte10[5]);
+

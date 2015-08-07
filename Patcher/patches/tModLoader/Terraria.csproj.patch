@@ -1,0 +1,55 @@
+--- src/Terraria\Terraria.csproj
++++ src/tModLoader\Terraria.csproj
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <PropertyGroup>
+-    <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
++    <ProjectGuid>{F289741C-268A-484B-9216-822EBBA1A211}</ProjectGuid>
+     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+     <OutputType>WinExe</OutputType>
+@@ -239,6 +239,42 @@
+     <Compile Include="Terraria.Map\MapHelper.cs" />
+     <Compile Include="Terraria.Map\MapTile.cs" />
+     <Compile Include="Terraria.Map\WorldMap.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIColorTextPanel.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIErrorMessage.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UILoadProgress.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIMessageBox.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModItem.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIMods.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModSourceItem.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModSources.cs" />
++    <Compile Include="Terraria.ModLoader\BuildProperties.cs" />
++    <Compile Include="Terraria.ModLoader\EquipLoader.cs" />
++    <Compile Include="Terraria.ModLoader\EquipType.cs" />
++    <Compile Include="Terraria.ModLoader\ErrorLogger.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalItem.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalNPC.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalProjectile.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalTile.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalWall.cs" />
++    <Compile Include="Terraria.ModLoader\Interface.cs" />
++    <Compile Include="Terraria.ModLoader\ItemLoader.cs" />
++    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
++    <Compile Include="Terraria.ModLoader\Mod.cs" />
++    <Compile Include="Terraria.ModLoader\ModDust.cs" />
++    <Compile Include="Terraria.ModLoader\ModItem.cs" />
++    <Compile Include="Terraria.ModLoader\ModLoader.cs" />
++    <Compile Include="Terraria.ModLoader\ModNPC.cs" />
++    <Compile Include="Terraria.ModLoader\ModProjectile.cs" />
++    <Compile Include="Terraria.ModLoader\ModProperties.cs" />
++    <Compile Include="Terraria.ModLoader\ModRecipe.cs" />
++    <Compile Include="Terraria.ModLoader\ModTile.cs" />
++    <Compile Include="Terraria.ModLoader\ModWall.cs" />
++    <Compile Include="Terraria.ModLoader\NPCLoader.cs" />
++    <Compile Include="Terraria.ModLoader\ProjectileLoader.cs" />
++    <Compile Include="Terraria.ModLoader\TileLoader.cs" />
++    <Compile Include="Terraria.ModLoader\WallLoader.cs" />
+     <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
+     <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
+     <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
+

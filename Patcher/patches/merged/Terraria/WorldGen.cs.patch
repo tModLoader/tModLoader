@@ -1,0 +1,33 @@
+--- src/decompiled\Terraria\WorldGen.cs
++++ src/merged\Terraria\WorldGen.cs
+@@ -13,10 +13,12 @@
+ using Terraria.Graphics.Capture;
+ using Terraria.ID;
+ using Terraria.IO;
+-using Terraria.Map;
+ using Terraria.ObjectData;
+ using Terraria.Utilities;
+ using Terraria.World.Generation;
++#if CLIENT
++using Terraria.Map;
++#endif
+ 
+ namespace Terraria
+ {
+@@ -45081,6 +45083,7 @@
+ 		public static bool UpdateMapTile(int i, int j, bool addToList = true)
+ 		{
+ 			bool result = false;
++#if CLIENT
+ 			if (Main.mapEnabled && !WorldGen.noMapUpdate && !WorldGen.gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList)
+ 			{
+ 				result = true;
+@@ -45095,6 +45098,7 @@
+ 					Main.refreshMap = true;
+ 				}
+ 			}
++#endif
+ 			return result;
+ 		}
+ 
+

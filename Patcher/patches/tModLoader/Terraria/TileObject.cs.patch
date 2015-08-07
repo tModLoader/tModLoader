@@ -1,0 +1,21 @@
+--- src/Terraria\Terraria\TileObject.cs
++++ src/tModLoader\Terraria\TileObject.cs
+@@ -160,7 +160,7 @@
+ 			return true;
+ 		}
+ 
+-		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false)
++		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, bool checkStay = false)
+ 		{
+ 			TileObjectData tileData = TileObjectData.GetTileData(type, style, 0);
+ 			objectData = TileObject.Empty;
+@@ -341,7 +341,7 @@
+ 								}
+ 							}
+ 							bool flag4 = false;
+-							if (tileSafely.active() && !Main.tileCut[(int)tileSafely.type])
++							if (tileSafely.active() && !Main.tileCut[(int)tileSafely.type] && !checkStay)
+ 							{
+ 								flag4 = true;
+ 							}
+

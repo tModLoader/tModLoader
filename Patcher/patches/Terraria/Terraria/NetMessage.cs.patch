@@ -1,0 +1,48 @@
+--- src/merged\Terraria\NetMessage.cs
++++ src/Terraria\Terraria\NetMessage.cs
+@@ -1499,7 +1499,7 @@
+ 								{
+ 									short[] arg_1FB_0 = array2;
+ 									short expr_1F3 = num2;
+-									num2 = expr_1F3 + 1;
++									num2 = (short)(expr_1F3 + 1);
+ 									arg_1FB_0[(int)expr_1F3] = num9;
+ 								}
+ 							}
+@@ -1510,7 +1510,7 @@
+ 								{
+ 									short[] arg_23C_0 = array2;
+ 									short expr_234 = num2;
+-									num2 = expr_234 + 1;
++									num2 = (short)(expr_234 + 1);
+ 									arg_23C_0[(int)expr_234] = num10;
+ 								}
+ 							}
+@@ -1521,7 +1521,7 @@
+ 								{
+ 									short[] arg_27C_0 = array3;
+ 									short expr_273 = num3;
+-									num3 = expr_273 + 1;
++									num3 = (short)(expr_273 + 1);
+ 									arg_27C_0[(int)expr_273] = (short)num11;
+ 								}
+ 							}
+@@ -1532,7 +1532,7 @@
+ 								{
+ 									short[] arg_2BC_0 = array3;
+ 									short expr_2B3 = num3;
+-									num3 = expr_2B3 + 1;
++									num3 = (short)(expr_2B3 + 1);
+ 									arg_2BC_0[(int)expr_2B3] = (short)num12;
+ 								}
+ 							}
+@@ -1834,7 +1834,7 @@
+ 								}
+ 								else
+ 								{
+-									tile.slope(b4 - 1);
++									tile.slope((byte)(b4 - 1));
+ 								}
+ 							}
+ 						}
+

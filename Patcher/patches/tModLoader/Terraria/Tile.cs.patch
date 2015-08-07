@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria\Tile.cs
++++ src/tModLoader\Terraria\Tile.cs
+@@ -15,7 +15,7 @@
+ 		public const int Liquid_Lava = 1;
+ 		public const int Liquid_Honey = 2;
+ 		public ushort type;
+-		public byte wall;
++		public ushort wall;
+ 		public byte liquid;
+ 		public short sTileHeader;
+ 		public byte bTileHeader;
+

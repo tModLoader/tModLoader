@@ -1,0 +1,16 @@
+--- src/decompiled\Terraria\NetMessage.cs
++++ src/merged\Terraria\NetMessage.cs
+@@ -1959,6 +1959,12 @@
+ 				}
+ 				catch
+ 				{
++#if SERVER
++					if (num < NetMessage.buffer.Length - 100)
++					{
++						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
++					}
++#endif
+ 					i = 0;
+ 					num = 0;
+ 				}
+

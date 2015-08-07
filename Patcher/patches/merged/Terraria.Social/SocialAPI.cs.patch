@@ -1,0 +1,30 @@
+--- src/decompiled\Terraria.Social\SocialAPI.cs
++++ src/merged\Terraria.Social\SocialAPI.cs
+@@ -32,7 +32,14 @@
+ 			if (!mode.HasValue)
+ 			{
+ 				mode = new SocialMode?(SocialMode.None);
++#if CLIENT
+ 				mode = new SocialMode?(SocialMode.Steam);
++#else
++				if (Program.LaunchParameters.ContainsKey("-steam"))
++				{
++					mode = new SocialMode?(SocialMode.Steam);
++				}
++#endif
+ 			}
+ 			SocialAPI._mode = mode.Value;
+ 			SocialAPI._modules = new List<ISocialModule>();
+@@ -75,7 +82,11 @@
+ 			SocialAPI.Friends = SocialAPI.LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
+ 			SocialAPI.Achievements = SocialAPI.LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
+ 			SocialAPI.Cloud = SocialAPI.LoadModule<Terraria.Social.Steam.CloudSocialModule>();
++#if CLIENT
+ 			SocialAPI.Network = SocialAPI.LoadModule<NetClientSocialModule>();
++#else
++			SocialAPI.Network = SocialAPI.LoadModule<NetServerSocialModule>();
++#endif
+ 		}
+ 	}
+ }
+

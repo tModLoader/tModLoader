@@ -1,0 +1,18 @@
+--- src/Terraria\Terraria.Social.Steam\NetClientSocialModule.cs
++++ src/tModLoader\Terraria.Social.Steam\NetClientSocialModule.cs
+@@ -33,10 +33,10 @@
+ 
+ 		private void CheckParameters()
+ 		{
+-			ulong ulSteamID;
+-			if (Program.LaunchParameters.ContainsKey("+connect_lobby") && ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out ulSteamID))
+-			{
+-				CSteamID lobbySteamId = new CSteamID(ulSteamID);
++			ulong num;
++			if (Program.LaunchParameters.ContainsKey("+connect_lobby") && ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out num))
++			{
++				CSteamID lobbySteamId = new CSteamID(num);
+ 				if (lobbySteamId.IsValid())
+ 				{
+ 					Main.OpenPlayerSelect(delegate(PlayerFileData playerData)
+

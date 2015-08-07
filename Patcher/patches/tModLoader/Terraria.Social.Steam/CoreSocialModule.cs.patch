@@ -1,0 +1,17 @@
+--- src/Terraria\Terraria.Social.Steam\CoreSocialModule.cs
++++ src/tModLoader\Terraria.Social.Steam\CoreSocialModule.cs
+@@ -19,13 +19,11 @@
+ 		public void Initialize()
+ 		{
+ 			CoreSocialModule._instance = this;
+-#if CLIENT
+ 			if (SteamAPI.RestartAppIfNecessary(new AppId_t(105600u)))
+ 			{
+ 				Environment.Exit(1);
+ 				return;
+ 			}
+-#endif
+ 			if (!SteamAPI.Init())
+ 			{
+ 				MessageBox.Show("Please launch the game from your Steam client.", "Error");
+

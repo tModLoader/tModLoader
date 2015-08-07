@@ -618,6 +618,7 @@ public abstract class Mod
         globalWalls.Clear();
         projectiles.Clear();
         globalProjectiles.Clear();
+        npcs.Clear();
         globalNPCs.Clear();
     }
 }}

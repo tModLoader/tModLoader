@@ -1,0 +1,461 @@
+--- src/Terraria\Terraria\Player.cs
++++ src/tModLoader\Terraria\Player.cs
+@@ -14,6 +14,7 @@
+ using Terraria.Graphics.Shaders;
+ using Terraria.ID;
+ using Terraria.IO;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ using Terraria.Social;
+ using Terraria.UI;
+@@ -581,8 +582,8 @@
+ 		public bool oldAdjWater;
+ 		public bool oldAdjHoney;
+ 		public bool oldAdjLava;
+-		public bool[] adjTile = new bool[419];
+-		public bool[] oldAdjTile = new bool[419];
++		public bool[] adjTile = new bool[TileLoader.TileCount()];
++		public bool[] oldAdjTile = new bool[TileLoader.TileCount()];
+ 		private static int defaultItemGrabRange = 38;
+ 		private static float itemGrabSpeed = 0.45f;
+ 		private static float itemGrabSpeedMax = 4f;
+@@ -6818,6 +6819,7 @@
+ 				{
+ 					this.accDreamCatcher = true;
+ 				}
++				ItemLoader.UpdateInventory(this.inventory[j], this);
+ 			}
+ 			for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
+ 			{
+@@ -7644,6 +7646,7 @@
+ 					{
+ 						this.meleeSpeed += 0.04f;
+ 					}
++					ItemLoader.UpdateEquip(this.armor[k], this);
+ 				}
+ 			}
+ 			bool flag = false;
+@@ -8783,6 +8786,7 @@
+ 							Main.musicBox2 = 37;
+ 						}
+ 					}
++					ItemLoader.UpdateAccessory(this.armor[l], this);
+ 				}
+ 			}
+ 			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
+@@ -9390,6 +9394,7 @@
+ 			{
+ 				this.DelBuff(this.HasBuff(187));
+ 			}
++			ItemLoader.UpdateArmorSet(this, this.armor[0], this.armor[1], this.armor[2]);
+ 		}
+ 
+ 		public void UpdateSocialShadow()
+@@ -14417,6 +14422,7 @@
+ 				num3 = 1.5f;
+ 				num = 0.125f;
+ 			}
++			ItemLoader.VerticalWingSpeeds(this, ref num2, ref num5, ref num4, ref num3, ref num);
+ 			this.velocity.Y = this.velocity.Y - num * this.gravDir;
+ 			if (this.gravDir == 1f)
+ 			{
+@@ -18139,6 +18145,7 @@
+ 					{
+ 						this.accRunSpeed = 7f;
+ 					}
++					ItemLoader.HorizontalWingSpeeds(this);
+ 				}
+ 				if (this.sticky)
+ 				{
+@@ -20501,6 +20508,7 @@
+ 							this.showItemIcon = true;
+ 							this.showItemIcon2 = (int)(583 + Main.tile[Player.tileTargetX, Player.tileTargetY].frameX / 18);
+ 						}
++						TileLoader.MouseOver(Player.tileTargetX, Player.tileTargetY);
+ 						if (this.controlUseTile)
+ 						{
+ 							if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 212 && this.launcherWait <= 0)
+@@ -21238,6 +21246,7 @@
+ 										Projectile.NewProjectile(vector4.X, vector4.Y, 0f, 0f, 403, 0, 0f, this.whoAmI, 0f, 0f);
+ 									}
+ 								}
++								TileLoader.RightClick(Player.tileTargetX, Player.tileTargetY);
+ 							}
+ 							this.releaseUseTile = false;
+ 						}
+@@ -23150,7 +23159,7 @@
+ 		{
+ 			int num = 4;
+ 			int num2 = 3;
+-			for (int i = 0; i < 419; i++)
++			for (int i = 0; i < adjTile.Length; i++)
+ 			{
+ 				this.oldAdjTile[i] = this.adjTile[i];
+ 				this.adjTile[i] = false;
+@@ -23198,6 +23207,7 @@
+ 							this.adjTile[14] = true;
+ 							this.alchemyTable = true;
+ 						}
++						TileLoader.AdjTiles(this, Main.tile[j, k].type);
+ 					}
+ 					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
+ 					{
+@@ -23843,6 +23853,10 @@
+ 							}
+ 						}
+ 					}
++					if (ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this))
++					{
++						return;
++					}
+ 				}
+ 			}
+ 			else
+@@ -23878,6 +23892,10 @@
+ 					if (this.inventory[this.selectedItem].holdStyle == 3)
+ 					{
+ 						this.bodyFrame.Y = this.bodyFrame.Height * 3;
++						return;
++					}
++					if (ItemLoader.HoldItemFrame(this.inventory[this.selectedItem], this))
++					{
+ 						return;
+ 					}
+ 					if (this.grappling[0] >= 0)
+@@ -25596,7 +25614,10 @@
+ 					bool flag3 = false;
+ 					bool flag4 = false;
+ 					TileObject tileObject = default(TileObject);
+-					if (TileObjectData.CustomPlace(this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle) && this.inventory[this.selectedItem].createTile != 82)
++					if (!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY))
++					{
++					}
++					else if (TileObjectData.CustomPlace(this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle) && this.inventory[this.selectedItem].createTile != 82)
+ 					{
+ 						flag4 = true;
+ 						flag3 = TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, (int)((ushort)this.inventory[this.selectedItem].createTile), this.inventory[this.selectedItem].placeStyle, this.direction, out tileObject, false);
+@@ -27320,7 +27341,7 @@
+ 				{
+ 					this.altFunctionUse = 2;
+ 				}
+-				bool flag2 = true;
++				bool flag2 = ItemLoader.CanUseItem(item, this);
+ 				if (item.shoot == 0)
+ 				{
+ 					this.itemRotation = 0f;
+@@ -28282,6 +28303,7 @@
+ 							this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
+ 						}
+ 					}
++					ItemLoader.UseStyle(item, this);
+ 				}
+ 			}
+ 			else if (item.holdStyle == 1 && !this.pulley)
+@@ -28478,6 +28500,7 @@
+ 				this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
+ 				this.itemRotation = 0f;
+ 			}
++			ItemLoader.HoldStyle(item, this);
+ 			if ((((item.type == 974 || item.type == 8 || item.type == 1245 || item.type == 2274 || item.type == 3004 || item.type == 3045 || item.type == 3114 || (item.type >= 427 && item.type <= 433)) && !this.wet) || item.type == 523 || item.type == 1333) && !this.pulley)
+ 			{
+ 				float num50 = 1f;
+@@ -28923,6 +28946,7 @@
+ 					Lighting.AddLight(position16, 1f, 0.6f, 0.85f);
+ 				}
+ 			}
++			ItemLoader.HoldItem(item, this);
+ 			if (this.controlUseItem)
+ 			{
+ 				this.releaseUseItem = false;
+@@ -30112,7 +30136,7 @@
+ 							}
+ 							Projectile.NewProjectile(vector2.X, vector2.Y - this.gravDir * 4f, num202, num203, num71, num73, num74, i, 0f, (float)Main.rand.Next(12) / 6f);
+ 						}
+-						else
++						else if (ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
+ 						{
+ 							int num204 = Projectile.NewProjectile(vector2.X, vector2.Y, num78, num79, num71, num73, num74, i, 0f, 0f);
+ 							if (item.type == 726)
+@@ -30481,7 +30505,7 @@
+ 								flag14 = false;
+ 								if (item.hammer > 0)
+ 								{
+-									num222 += item.hammer;
++									TileLoader.MineDamage(item.hammer, ref num222);
+ 									if (!WorldGen.CanKillTile(Player.tileTargetX, Player.tileTargetY))
+ 									{
+ 										num222 = 0;
+@@ -30525,7 +30549,7 @@
+ 								}
+ 								else
+ 								{
+-									num222 += item.axe;
++									TileLoader.MineDamage(item.axe, ref num222);
+ 								}
+ 								if (item.axe > 0)
+ 								{
+@@ -30589,7 +30613,10 @@
+ 									{
+ 										int num223 = Player.tileTargetX;
+ 										int num224 = Player.tileTargetY;
+-										if (Main.tile[num223, num224].type == 19)
++										if (TileLoader.Slope(num223, num224, Main.tile[num223, num224].type))
++										{
++										}
++										else if (Main.tile[num223, num224].type == 19)
+ 										{
+ 											if (Main.tile[num223, num224].halfBrick())
+ 											{
+@@ -31059,6 +31086,7 @@
+ 						r2.Height = (int)((double)r2.Height * 0.6);
+ 					}
+ 				}
++				ItemLoader.UseItemHitbox(item, this, ref r2, ref flag17);
+ 				float arg_BA93_0 = this.gravDir;
+ 				if (item.type == 1450 && Main.rand.Next(3) == 0)
+ 				{
+@@ -31418,6 +31446,7 @@
+ 						Dust expr_D7D2_cp_0 = Main.dust[num280];
+ 						expr_D7D2_cp_0.velocity.Y = expr_D7D2_cp_0.velocity.Y * 2f;
+ 					}
++					ItemLoader.MeleeEffects(item, this, r2);
+ 					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
+ 					{
+ 						for (int num281 = 0; num281 < 200; num281++)
+@@ -31543,6 +31572,7 @@
+ 												{
+ 													flag18 = true;
+ 												}
++												ItemLoader.ModifyHitNPC(item, this, Main.npc[num292], ref num282, ref num283, ref flag18);
+ 												int num293 = Item.NPCtoBanner(Main.npc[num292].BannerID());
+ 												if (num293 > 0 && this.NPCBannerBuff[num293])
+ 												{
+@@ -31630,6 +31660,7 @@
+ 														NetMessage.SendData(21, -1, -1, "", num300, 0f, 0f, 0f, 0, 0, 0);
+ 													}
+ 												}
++												ItemLoader.OnHitNPC(item, this, Main.npc[num292], num295, num283, flag18);
+ 												int num301 = Item.NPCtoBanner(Main.npc[num292].BannerID());
+ 												if (num301 >= 0)
+ 												{
+@@ -31681,6 +31712,7 @@
+ 											{
+ 												flag20 = true;
+ 											}
++											ItemLoader.ModifyHitPvp(item, this, Main.player[num302], ref num282, ref flag20);
+ 											int num303 = Main.DamageVar((float)num282);
+ 											this.StatusPvP(item.type, num302);
+ 											this.OnHit(Main.player[num302].Center.X, Main.player[num302].Center.Y, Main.player[num302]);
+@@ -31731,6 +31763,7 @@
+ 											{
+ 												this.pumpkinSword(num302, (int)((double)num282 * 1.5), num283);
+ 											}
++											ItemLoader.OnHitPvp(item, this, Main.player[num302], num304, flag20);
+ 											if (Main.netMode != 0)
+ 											{
+ 												if (flag20)
+@@ -31812,6 +31845,7 @@
+ 			}
+ 			if (this.itemTime == 0 && this.itemAnimation > 0)
+ 			{
++				ItemLoader.UseItem(item, this);
+ 				if (item.hairDye >= 0)
+ 				{
+ 					this.itemTime = item.useTime;
+@@ -32325,6 +32359,7 @@
+ 					{
+ 						flag22 = true;
+ 					}
++					ItemLoader.ConsumeItem(item, this, ref flag22);
+ 					if (flag22)
+ 					{
+ 						if (item.stack > 0)
+@@ -32649,6 +32684,10 @@
+ 				{
+ 					flag2 = true;
+ 				}
++				if (!ItemLoader.ConsumeAmmo(sItem, item, this))
++				{
++					flag2 = true;
++				}
+ 				if (!flag2 && item.consumable)
+ 				{
+ 					item.stack--;
+@@ -32701,7 +32740,7 @@
+ 			}
+ 			else
+ 			{
+-				num += pickPower;
++				TileLoader.MineDamage(pickPower, ref num);
+ 			}
+ 			if (tile.type == 211 && pickPower < 200)
+ 			{
+@@ -32769,6 +32808,10 @@
+ 			else if (tile.type == 223 && pickPower < 150)
+ 			{
+ 				num = 0;
++			}
++			else
++			{
++				TileLoader.PickPowerCheck(tile, pickPower, ref num);
+ 			}
+ 			if (tile.type == 147 || tile.type == 0 || tile.type == 40 || tile.type == 53 || tile.type == 57 || tile.type == 59 || tile.type == 123 || tile.type == 224 || tile.type == 397)
+ 			{
+@@ -32870,12 +32913,10 @@
+ 					int num4 = y;
+ 					bool flag3 = Main.tile[x, num4].active();
+ 					WorldGen.KillTile(x, num4, false, false, false);
+-#if CLIENT
+ 					if (flag3 && !Main.tile[x, num4].active())
+ 					{
+ 						AchievementsHelper.HandleMining();
+ 					}
+-#endif
+ 					if (Main.netMode == 1)
+ 					{
+ 						NetMessage.SendData(17, -1, -1, "", 0, (float)x, (float)num4, 0f, 0, 0, 0);
+@@ -33586,12 +33627,12 @@
+ 							{
+ 								player.armor[k].name = "";
+ 							}
+-							binaryWriter.Write(player.armor[k].netID);
++							ItemLoader.WriteID(player.armor[k], binaryWriter);
+ 							binaryWriter.Write(player.armor[k].prefix);
+ 						}
+ 						for (int l = 0; l < player.dye.Length; l++)
+ 						{
+-							binaryWriter.Write(player.dye[l].netID);
++							ItemLoader.WriteID(player.dye[l], binaryWriter);
+ 							binaryWriter.Write(player.dye[l].prefix);
+ 						}
+ 						for (int m = 0; m < 58; m++)
+@@ -33600,16 +33641,16 @@
+ 							{
+ 								player.inventory[m].name = "";
+ 							}
+-							binaryWriter.Write(player.inventory[m].netID);
++							ItemLoader.WriteID(player.inventory[m], binaryWriter);
+ 							binaryWriter.Write(player.inventory[m].stack);
+ 							binaryWriter.Write(player.inventory[m].prefix);
+ 							binaryWriter.Write(player.inventory[m].favorited);
+ 						}
+ 						for (int n = 0; n < player.miscEquips.Length; n++)
+ 						{
+-							binaryWriter.Write(player.miscEquips[n].netID);
++							ItemLoader.WriteID(player.miscEquips[n], binaryWriter);
+ 							binaryWriter.Write(player.miscEquips[n].prefix);
+-							binaryWriter.Write(player.miscDyes[n].netID);
++							ItemLoader.WriteID(player.miscDyes[n], binaryWriter);
+ 							binaryWriter.Write(player.miscDyes[n].prefix);
+ 						}
+ 						for (int num = 0; num < 40; num++)
+@@ -33618,7 +33659,7 @@
+ 							{
+ 								player.bank.item[num].name = "";
+ 							}
+-							binaryWriter.Write(player.bank.item[num].netID);
++							ItemLoader.WriteID(player.bank.item[num], binaryWriter);
+ 							binaryWriter.Write(player.bank.item[num].stack);
+ 							binaryWriter.Write(player.bank.item[num].prefix);
+ 						}
+@@ -33628,7 +33669,7 @@
+ 							{
+ 								player.bank2.item[num2].name = "";
+ 							}
+-							binaryWriter.Write(player.bank2.item[num2].netID);
++							ItemLoader.WriteID(player.bank2.item[num2], binaryWriter);
+ 							binaryWriter.Write(player.bank2.item[num2].stack);
+ 							binaryWriter.Write(player.bank2.item[num2].prefix);
+ 						}
+@@ -33848,7 +33889,7 @@
+ 									int num4 = 20;
+ 									for (int m = 0; m < num4; m++)
+ 									{
+-										player.armor[m].netDefaults(binaryReader.ReadInt32());
++										ItemLoader.ReadID(player.armor[m], binaryReader);
+ 										player.armor[m].Prefix((int)binaryReader.ReadByte());
+ 									}
+ 								}
+@@ -33866,7 +33907,7 @@
+ 									for (int n = 0; n < num5; n++)
+ 									{
+ 										int num6 = n;
+-										player.dye[num6].netDefaults(binaryReader.ReadInt32());
++										ItemLoader.ReadID(player.dye[num6], binaryReader);
+ 										player.dye[num6].Prefix((int)binaryReader.ReadByte());
+ 									}
+ 								}
+@@ -33874,20 +33915,12 @@
+ 								{
+ 									for (int num7 = 0; num7 < 58; num7++)
+ 									{
+-										int num8 = binaryReader.ReadInt32();
+-										if (num8 >= 3602)
++										ItemLoader.ReadID(player.inventory[num7], binaryReader);
++										player.inventory[num7].stack = binaryReader.ReadInt32();
++										player.inventory[num7].Prefix((int)binaryReader.ReadByte());
++										if (num >= 114)
+ 										{
+-											player.inventory[num7].netDefaults(0);
+-										}
+-										else
+-										{
+-											player.inventory[num7].netDefaults(num8);
+-											player.inventory[num7].stack = binaryReader.ReadInt32();
+-											player.inventory[num7].Prefix((int)binaryReader.ReadByte());
+-											if (num >= 114)
+-											{
+-												player.inventory[num7].favorited = binaryReader.ReadBoolean();
+-											}
++											player.inventory[num7].favorited = binaryReader.ReadBoolean();
+ 										}
+ 									}
+ 								}
+@@ -33943,26 +33976,10 @@
+ 									{
+ 										for (int num13 = 0; num13 < 5; num13++)
+ 										{
+-											int num14 = binaryReader.ReadInt32();
+-											if (num14 >= 3602)
+-											{
+-												player.miscEquips[num13].netDefaults(0);
+-											}
+-											else
+-											{
+-												player.miscEquips[num13].netDefaults(num14);
+-												player.miscEquips[num13].Prefix((int)binaryReader.ReadByte());
+-											}
+-											num14 = binaryReader.ReadInt32();
+-											if (num14 >= 3602)
+-											{
+-												player.miscDyes[num13].netDefaults(0);
+-											}
+-											else
+-											{
+-												player.miscDyes[num13].netDefaults(num14);
+-												player.miscDyes[num13].Prefix((int)binaryReader.ReadByte());
+-											}
++											ItemLoader.ReadID(player.miscEquips[num13], binaryReader);
++											player.miscEquips[num13].Prefix((int)binaryReader.ReadByte());
++											ItemLoader.ReadID(player.miscDyes[num13], binaryReader);
++											player.miscDyes[num13].Prefix((int)binaryReader.ReadByte());
+ 										}
+ 									}
+ 								}
+@@ -33970,13 +33987,13 @@
+ 								{
+ 									for (int num15 = 0; num15 < 40; num15++)
+ 									{
+-										player.bank.item[num15].netDefaults(binaryReader.ReadInt32());
++										ItemLoader.ReadID(player.bank.item[num15], binaryReader);
+ 										player.bank.item[num15].stack = binaryReader.ReadInt32();
+ 										player.bank.item[num15].Prefix((int)binaryReader.ReadByte());
+ 									}
+ 									for (int num16 = 0; num16 < 40; num16++)
+ 									{
+-										player.bank2.item[num16].netDefaults(binaryReader.ReadInt32());
++										ItemLoader.ReadID(player.bank2.item[num16], binaryReader);
+ 										player.bank2.item[num16].stack = binaryReader.ReadInt32();
+ 										player.bank2.item[num16].Prefix((int)binaryReader.ReadByte());
+ 									}
+

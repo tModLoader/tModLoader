@@ -1,0 +1,29 @@
+--- src/Terraria\Terraria.Utilities\CrashDump.cs
++++ src/tModLoader\Terraria.Utilities\CrashDump.cs
+@@ -34,11 +34,7 @@
+ 			DateTime dateTime = DateTime.Now.ToLocalTime();
+ 			string path = string.Concat(new string[]
+ 				{
+-#if CLIENT
+-				"Terraria ",
+-#else
+-					"TerrariaServer",
+-#endif
++					"Terraria ",
+ 					Main.versionNumber,
+ 					" ",
+ 					dateTime.Year.ToString("D4"),
+@@ -62,11 +58,7 @@
+ 			DateTime dateTime = DateTime.Now.ToLocalTime();
+ 			string path = string.Concat(new string[]
+ 				{
+-#if CLIENT
+-				"DMP-FULL Terraria ",
+-#else
+-					"DMP-FULL TerrariaServer",
+-#endif
++					"DMP-FULL Terraria ",
+ 					Main.versionNumber,
+ 					" ",
+ 					dateTime.Year.ToString("D4"),
+

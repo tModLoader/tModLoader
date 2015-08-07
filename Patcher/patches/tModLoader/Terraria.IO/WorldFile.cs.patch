@@ -1,0 +1,137 @@
+--- src/Terraria\Terraria.IO\WorldFile.cs
++++ src/tModLoader\Terraria.IO\WorldFile.cs
+@@ -5,6 +5,7 @@
+ using Terraria.DataStructures;
+ using Terraria.GameContent.Events;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.Utilities;
+ 
+@@ -855,7 +856,7 @@
+ 
+ 		private static int SaveFileFormatHeader(BinaryWriter writer)
+ 		{
+-			short num = 419;
++			short num = (short)TileLoader.TileCount();
+ 			short num2 = 10;
+ 			writer.Write(Main.curRelease);
+ 			Main.WorldFileMetadata.IncrementAndWrite(writer);
+@@ -1032,7 +1033,8 @@
+ 
+ 		private static int SaveWorldTiles(BinaryWriter writer)
+ 		{
+-			byte[] array = new byte[13];
++			TileLoader.WriteTable(writer);
++			byte[] array = new byte[14];
+ 			for (int i = 0; i < Main.maxTilesX; i++)
+ 			{
+ 				float num = (float)i / (float)Main.maxTilesX;
+@@ -1107,8 +1109,9 @@
+ 					if (tile.wall != 0)
+ 					{
+ 						b2 |= 4;
+-						array[num2] = tile.wall;
++						array[num2] = (byte)tile.wall;
+ 						num2++;
++						WallLoader.WriteType(tile.wall, array, ref num2, ref b3);
+ 						if (tile.wallColor() != 0)
+ 						{
+ 							b3 |= 16;
+@@ -1278,7 +1281,7 @@
+ 							writer.Write((short)item.stack);
+ 							if (item.stack > 0)
+ 							{
+-								writer.Write(item.netID);
++								ItemLoader.WriteID(item, writer);
+ 								writer.Write(item.prefix);
+ 							}
+ 						}
+@@ -1716,6 +1719,9 @@
+ 
+ 		private static void LoadWorldTiles(BinaryReader reader, bool[] importance)
+ 		{
++			IDictionary<int, int> modTiles = new Dictionary<int, int>();
++			IDictionary<int, int> modWalls = new Dictionary<int, int>();
++			TileLoader.ReadTable(reader, modTiles, modWalls);
+ 			for (int i = 0; i < Main.maxTilesX; i++)
+ 			{
+ 				float num = (float)i / (float)Main.maxTilesX;
+@@ -1755,7 +1761,7 @@
+ 						{
+ 							num2 = (int)reader.ReadByte();
+ 						}
+-						tile.type = (ushort)num2;
++						tile.type = TileLoader.ReadTileType(num2, modTiles);
+ 						if (importance[num2])
+ 						{
+ 							tile.frameX = reader.ReadInt16();
+@@ -1770,6 +1776,7 @@
+ 							tile.frameX = -1;
+ 							tile.frameY = -1;
+ 						}
++						num2 = (int)tile.type;
+ 						if ((b & 8) == 8)
+ 						{
+ 							tile.color(reader.ReadByte());
+@@ -1778,6 +1785,7 @@
+ 					if ((b3 & 4) == 4)
+ 					{
+ 						tile.wall = reader.ReadByte();
++						WallLoader.ReadType(ref tile.wall, reader, b, modWalls);
+ 						if ((b & 16) == 16)
+ 						{
+ 							tile.wallColor(reader.ReadByte());
+@@ -1915,13 +1923,13 @@
+ 					Item item = new Item();
+ 					if (num5 > 0)
+ 					{
+-						item.netDefaults(reader.ReadInt32());
++						ItemLoader.ReadID(item, reader);
+ 						item.stack = (int)num5;
+ 						item.Prefix((int)reader.ReadByte());
+ 					}
+ 					else if (num5 < 0)
+ 					{
+-						item.netDefaults(reader.ReadInt32());
++						ItemLoader.ReadID(item, reader);
+ 						item.Prefix((int)reader.ReadByte());
+ 						item.stack = 1;
+ 					}
+@@ -1932,7 +1940,7 @@
+ 					short num5 = reader.ReadInt16();
+ 					if (num5 > 0)
+ 					{
+-						reader.ReadInt32();
++						ItemLoader.ReadID(new Item(), reader);
+ 						reader.ReadByte();
+ 					}
+ 				}
+@@ -2111,6 +2119,7 @@
+ 						int num3 = fileIO.ReadInt32();
+ 						int num4 = fileIO.ReadInt32();
+ 						baseStream.Position = (long)array2[1];
++						TileLoader.ReadTable(fileIO, new Dictionary<int, int>(), new Dictionary<int, int>());
+ 						for (int i = 0; i < num4; i++)
+ 						{
+ 							float num5 = (float)i / (float)Main.maxTilesX;
+@@ -2159,7 +2168,8 @@
+ 								}
+ 								if ((b3 & 4) == 4)
+ 								{
+-									fileIO.ReadByte();
++									ushort wall = fileIO.ReadByte();
++									WallLoader.ReadType(ref wall, fileIO, b2, new Dictionary<int, int>());
+ 									if ((b2 & 16) == 16)
+ 									{
+ 										fileIO.ReadByte();
+@@ -2204,7 +2214,7 @@
+ 									int num10 = (int)fileIO.ReadInt16();
+ 									if (num10 > 0)
+ 									{
+-										fileIO.ReadInt32();
++										ItemLoader.ReadID(new Item(), fileIO);
+ 										fileIO.ReadByte();
+ 									}
+ 								}
+

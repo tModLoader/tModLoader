@@ -1,0 +1,30 @@
+--- src/Terraria\Terraria.IO\Preferences.cs
++++ src/tModLoader\Terraria.IO\Preferences.cs
+@@ -25,11 +25,10 @@
+ 			this.UseBson = useBson;
+ 			if (parseAllTypes)
+ 			{
+-				this._serializerSettings = new JsonSerializerSettings
+-				{
+-					TypeNameHandling = TypeNameHandling.Auto,
+-					MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
+-				};
++				JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();
++				jsonSerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
++				jsonSerializerSettings.MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead;
++				this._serializerSettings = jsonSerializerSettings;
+ 				return;
+ 			}
+ 			this._serializerSettings = new JsonSerializerSettings();
+@@ -50,8 +49,8 @@
+ 					{
+ 						if (!this.UseBson)
+ 						{
+-							string value = File.ReadAllText(this._path);
+-							this._data = JsonConvert.DeserializeObject<Dictionary<string, object>>(value, this._serializerSettings);
++							string text = File.ReadAllText(this._path);
++							this._data = JsonConvert.DeserializeObject<Dictionary<string, object>>(text, this._serializerSettings);
+ 						}
+ 						else
+ 						{
+

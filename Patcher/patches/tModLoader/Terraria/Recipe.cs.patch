@@ -1,0 +1,31 @@
+--- src/Terraria\Terraria\Recipe.cs
++++ src/tModLoader\Terraria\Recipe.cs
+@@ -1,6 +1,7 @@
+ using System;
+ using System.Collections.Generic;
+ using Terraria.GameContent.Achievements;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+@@ -42,6 +43,11 @@
+ 					break;
+ 				}
+ 				int num = item.stack;
++				ModRecipe modRecipe = this as ModRecipe;
++				if (modRecipe != null)
++				{
++					num = modRecipe.ConsumeItem(item.type, item.stack);
++				}
+ 				if (this.alchemy && Main.player[Main.myPlayer].alchemyTable)
+ 				{
+ 					if (num > 1)
+@@ -10128,6 +10134,7 @@
+ 			Recipe.AddRecipe();
+ 			Recipe.WallReturn();
+ 			Recipe.PlatformReturn();
++			Terraria.ModLoader.ModLoader.AddRecipes();
+ 			for (int m = 0; m < Recipe.numRecipes; m++)
+ 			{
+ 				int num = 0;
+

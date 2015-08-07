@@ -1,0 +1,41 @@
+--- src/Terraria\Terraria.Map\MapHelper.cs
++++ src/tModLoader\Terraria.Map\MapHelper.cs
+@@ -4,6 +4,7 @@
+ using System.Diagnostics;
+ using System.IO;
+ using Terraria.IO;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.Utilities;
+ 
+@@ -1109,6 +1110,7 @@
+ 		public static Color GetMapTileXnaColor(ref MapTile tile)
+ 		{
+ 			Color result = MapHelper.colorLookup[(int)tile.Type];
++			TileLoader.MapColor(tile, ref result);
+ 			byte color = tile.Color;
+ 			if (color > 0)
+ 			{
+@@ -1795,7 +1797,11 @@
+ 				}
+ 			}
+ 			int num16 = num3 + num4;
+-			return MapTile.Create((ushort)num16, (byte)num2, (byte)num);
++			MapTile mapTile = MapTile.Create((ushort)num16, (byte)num2, (byte)num);
++			mapTile.x = i;
++			mapTile.y = j;
++			mapTile.modType = TileLoader.MapModType(i, j);
++			return mapTile;
+ 		}
+ 
+ 		public static void SaveMap()
+@@ -1843,7 +1849,7 @@
+ 					{
+ 						using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
+ 						{
+-							using (DeflateStream deflateStream = new DeflateStream(memoryStream, CompressionMode.Compress))
++							using (DeflateStream deflateStream = new DeflateStream(memoryStream, 0))
+ 							{
+ 								int num = 0;
+ 								byte[] array = new byte[16384];
+

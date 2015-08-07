@@ -1,0 +1,36 @@
+--- src/Terraria\Terraria.Map\WorldMap.cs
++++ src/tModLoader\Terraria.Map\WorldMap.cs
+@@ -1,6 +1,7 @@
+ using System;
+ using System.IO;
+ using Terraria.IO;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.Utilities;
+ 
+@@ -25,6 +26,14 @@
+ 			this.MaxWidth = maxWidth;
+ 			this.MaxHeight = maxHeight;
+ 			this._tiles = new MapTile[this.MaxWidth, this.MaxHeight];
++			for (int x = 0; x < maxWidth; x++)
++			{
++				for (int y = 0; y < maxHeight; y++)
++				{
++					this._tiles[x, y].x = x;
++					this._tiles[x, y].y = y;
++				}
++			}
+ 		}
+ 
+ 		public void ConsumeUpdate(int x, int y)
+@@ -39,6 +48,9 @@
+ 
+ 		public void SetTile(int x, int y, ref MapTile tile)
+ 		{
++			tile.x = x;
++			tile.y = y;
++			tile.modType = TileLoader.MapModType(x, y);
+ 			this._tiles[x, y] = tile;
+ 		}
+ 
+

@@ -1,0 +1,19 @@
+--- src/decompiled\Terraria\NPC.cs
++++ src/merged\Terraria\NPC.cs
+@@ -38838,6 +38838,7 @@
+ 													31,
+ 													229
+ 												});
++#if CLIENT
+ 												if (flag159)
+ 												{
+ 													MoonlordDeathDrama.AddExplosion(vector201);
+@@ -38851,6 +38852,7 @@
+ 														dust14.scale = num1628;
+ 													}
+ 												}
++#endif
+ 												for (float num1631 = 0f; num1631 < this.ai[1] / 60f; num1631 += 1f)
+ 												{
+ 													Vector2 vector202 = Utils.RandomVector2(Main.rand, -1f, 1f);
+

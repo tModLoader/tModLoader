@@ -1,0 +1,19 @@
+--- src/decompiled\Terraria.Graphics\TextureManager.cs
++++ src/merged\Terraria.Graphics\TextureManager.cs
+@@ -40,6 +40,7 @@
+ 			if (!TextureManager._textures.ContainsKey(name))
+ 			{
+ 				Texture2D texture2D = TextureManager.BlankTexture;
++#if CLIENT
+ 				if (name != "" && name != null)
+ 				{
+ 					try
+@@ -51,6 +52,7 @@
+ 						texture2D = TextureManager.BlankTexture;
+ 					}
+ 				}
++#endif
+ 				TextureManager._textures[name] = texture2D;
+ 				return texture2D;
+ 			}
+

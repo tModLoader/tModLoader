@@ -1,0 +1,64 @@
+--- src/Terraria\Terraria\Dust.cs
++++ src/tModLoader\Terraria\Dust.cs
+@@ -2,11 +2,18 @@
+ using System;
+ using Terraria.GameContent;
+ using Terraria.Graphics.Shaders;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+ 	public class Dust
+ 	{
++		public ModDust modDust
++		{
++			get;
++			internal set;
++		}
++
+ 		public static float dCount;
+ 		public static int lavaBubbles;
+ 		public Vector2 position;
+@@ -111,6 +118,7 @@
+ 						num3 = 5;
+ 					}
+ 					result = i;
++					dust.modDust = null;
+ 					dust.fadeIn = 0f;
+ 					dust.active = true;
+ 					dust.type = Type;
+@@ -198,6 +206,7 @@
+ 		public static Dust CloneDust(Dust rf)
+ 		{
+ 			Dust dust = Main.dust[Dust.NewDust(rf.position, 0, 0, rf.type, 0f, 0f, 0, default(Color), 1f)];
++			dust.modDust = rf.modDust;
+ 			dust.position = rf.position;
+ 			dust.velocity = rf.velocity;
+ 			dust.fadeIn = rf.fadeIn;
+@@ -290,6 +299,10 @@
+ 					if (dust.active)
+ 					{
+ 						Dust.dCount += 1f;
++						if (dust.modDust != null && !dust.modDust.Update(dust))
++						{
++							continue;
++						}
+ 						if (dust.scale > 10f)
+ 						{
+ 							dust.active = false;
+@@ -1992,6 +2005,14 @@
+ 
+ 		public Color GetAlpha(Color newColor)
+ 		{
++			if (this.modDust != null)
++			{
++				Color? modColor = this.modDust.GetAlpha(this, newColor);
++				if (modColor.HasValue)
++				{
++					return modColor.Value;
++				}
++			}
+ 			float num = (float)(255 - this.alpha) / 255f;
+ 			if (this.type == 259)
+ 			{
+

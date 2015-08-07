@@ -1,0 +1,197 @@
+--- src/Terraria\Terraria\NPC.cs
++++ src/tModLoader\Terraria\NPC.cs
+@@ -9,11 +9,18 @@
+ using Terraria.GameContent.Tile_Entities;
+ using Terraria.GameContent.UI;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+ 	public class NPC : Entity
+ 	{
++		public ModNPC modNPC
++		{
++			get;
++			internal set;
++		}
++
+ 		public const int MaxMoonLordCountdown = 3600;
+ 		public const int maxBuffs = 5;
+ 		public const int breathMax = 200;
+@@ -3127,6 +3134,7 @@
+ 
+ 		public void SetDefaults(int Type, float scaleOverride = -1f)
+ 		{
++			this.modNPC = null;
+ 			this.takenDamageMultiplier = 1f;
+ 			this.extraValue = 0f;
+ 			for (int i = 0; i < this.playerInteraction.Length; i++)
+@@ -11532,6 +11540,8 @@
+ 				this.catchItem = 3564;
+ 				this.rarity = 3;
+ 			}
++			this.displayName = Lang.npcName(this.netID, false);
++			NPCLoader.SetupNPC(this);
+ 			if (flag)
+ 			{
+ 				for (int num2 = 0; num2 < 191; num2++)
+@@ -11584,7 +11594,6 @@
+ 			this.defDamage = this.damage;
+ 			this.defDefense = this.defense;
+ 			this.netID = this.type;
+-			this.displayName = Lang.npcName(this.netID, false);
+ 			if (Main.expertMode)
+ 			{
+ 				this.scaleStats();
+@@ -38635,7 +38644,6 @@
+ 														31,
+ 														229
+ 													});
+-#if CLIENT
+ 												if (flag159)
+ 												{
+ 													MoonlordDeathDrama.AddExplosion(vector201);
+@@ -38649,7 +38657,6 @@
+ 														dust14.scale = num1628;
+ 													}
+ 												}
+-#endif
+ 												for (float num1631 = 0f; num1631 < this.ai[1] / 60f; num1631 += 1f)
+ 												{
+ 													Vector2 vector202 = Utils.RandomVector2(Main.rand, -1f, 1f);
+@@ -45169,15 +45176,18 @@
+ 							case 2:
+ 							case 4:
+ 							case 5:
+-								break;
++								goto IL_97D;
++							case 3:
+ 							default:
+ 								if (num8 != 0)
+ 								{
+ 									this.frame.Y = 0;
+ 									this.frameCounter = 0.0;
+-								}
+-								break;
+-						}
++									goto IL_97D;
++								}
++								goto IL_97D;
++						}
++						IL_97D:
+ 						int num9;
+ 						if (this.frameCounter < 10.0)
+ 						{
+@@ -45309,15 +45319,18 @@
+ 							case 2:
+ 							case 4:
+ 							case 5:
+-								break;
++								goto IL_DC7;
++							case 3:
+ 							default:
+ 								if (num12 != 0)
+ 								{
+ 									this.frame.Y = 0;
+ 									this.frameCounter = 0.0;
+-								}
+-								break;
+-						}
++									goto IL_DC7;
++								}
++								goto IL_DC7;
++						}
++						IL_DC7:
+ 						int num13 = 0;
+ 						if (this.frameCounter < 16.0)
+ 						{
+@@ -45363,15 +45376,18 @@
+ 							case 2:
+ 							case 4:
+ 							case 5:
+-								break;
++								goto IL_F6F;
++							case 3:
+ 							default:
+ 								if (num14 != 0)
+ 								{
+ 									this.frame.Y = 0;
+ 									this.frameCounter = 0.0;
+-								}
+-								break;
+-						}
++									goto IL_F6F;
++								}
++								goto IL_F6F;
++						}
++						IL_F6F:
+ 						int num15;
+ 						if (this.frameCounter < 10.0)
+ 						{
+@@ -45540,15 +45556,18 @@
+ 							case 2:
+ 							case 4:
+ 							case 5:
+-								break;
++								goto IL_1396;
++							case 3:
+ 							default:
+ 								if (num28 != 0)
+ 								{
+ 									this.frame.Y = 0;
+ 									this.frameCounter = 0.0;
+-								}
+-								break;
+-						}
++									goto IL_1396;
++								}
++								goto IL_1396;
++						}
++						IL_1396:
+ 						bool flag = this.ai[0] == 3f;
+ 						int num29 = 0;
+ 						int num30 = 0;
+@@ -45661,15 +45680,18 @@
+ 							case 2:
+ 							case 4:
+ 							case 5:
+-								break;
++								goto IL_16FF;
++							case 3:
+ 							default:
+ 								if (num33 != 0)
+ 								{
+ 									this.frame.Y = 0;
+ 									this.frameCounter = 0.0;
+-								}
+-								break;
+-						}
++									goto IL_16FF;
++								}
++								goto IL_16FF;
++						}
++						IL_16FF:
+ 						bool flag2 = this.ai[0] == 16f;
+ 						int num34 = 0;
+ 						int num35 = -1;
+@@ -53919,6 +53941,10 @@
+ 			{
+ 				return;
+ 			}
++			if (!NPCLoader.PreNPCLoot(this))
++			{
++				return;
++			}
+ 			if ((this.type == 170 || this.type == 180 || this.type == 171) && Main.rand.Next(3) == 0)
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3532, 1, false, 0, false, false);
+@@ -57120,6 +57146,7 @@
+ 					NetMessage.SendData(25, -1, -1, Lang.misc[32], 255, 50f, 255f, 130f, 0, 0, 0);
+ 				}
+ 			}
++			NPCLoader.NPCLoot(this);
+ 			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
+ 			{
+ 				int num73 = (int)Player.FindClosest(this.position, this.width, this.height);
+

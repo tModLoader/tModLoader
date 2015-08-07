@@ -1,0 +1,19 @@
+--- src/Terraria\Terraria.Graphics\TextureManager.cs
++++ src/tModLoader\Terraria.Graphics\TextureManager.cs
+@@ -35,7 +35,6 @@
+ 			if (!TextureManager._textures.ContainsKey(name))
+ 			{
+ 				Texture2D texture2D = TextureManager.BlankTexture;
+-#if CLIENT
+ 				if (name != "" && name != null)
+ 				{
+ 					try
+@@ -47,7 +46,6 @@
+ 						texture2D = TextureManager.BlankTexture;
+ 					}
+ 				}
+-#endif
+ 				TextureManager._textures[name] = texture2D;
+ 				return texture2D;
+ 			}
+

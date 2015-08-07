@@ -1,0 +1,25 @@
+--- src/Terraria\Terraria.Graphics.Capture\CaptureManager.cs
++++ src/tModLoader\Terraria.Graphics.Capture\CaptureManager.cs
+@@ -14,11 +14,7 @@
+ 		{
+ 			get
+ 			{
+-#if CLIENT
+ 				return this._camera.IsCapturing;
+-#else
+-				return false;
+-#endif
+ 			}
+ 		}
+ 
+@@ -52,9 +48,7 @@
+ 		public CaptureManager()
+ 		{
+ 			this._interface = new CaptureInterface();
+-#if CLIENT
+ 			this._camera = new CaptureCamera(Main.instance.GraphicsDevice);
+-#endif
+ 		}
+ 
+ 		public void Scrolling()
+
