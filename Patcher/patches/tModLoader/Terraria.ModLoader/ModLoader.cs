@@ -229,6 +229,7 @@ namespace Terraria.ModLoader
 
 		private static void LoadMod(string modFile, BuildProperties properties)
 		{
+			AddAssemblyResolver();
 			Assembly modCode;
 			using (FileStream fileStream = File.OpenRead(modFile))
 			{
