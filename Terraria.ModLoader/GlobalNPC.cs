@@ -22,6 +22,8 @@ public class GlobalNPC
         return mod.Properties.Autoload;
     }
 
+    public virtual void SetDefaults(NPC npc) { }
+
     public virtual bool PreNPCLoot(NPC npc)
     {
         return true;

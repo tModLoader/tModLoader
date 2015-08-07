@@ -35,6 +35,7 @@ public abstract class Mod
     internal readonly IDictionary<string, GlobalWall> globalWalls = new Dictionary<string, GlobalWall>();
     internal readonly IDictionary<string, ModProjectile> projectiles = new Dictionary<string, ModProjectile>();
     internal readonly IDictionary<string, GlobalProjectile> globalProjectiles = new Dictionary<string, GlobalProjectile>();
+    internal readonly IDictionary<string, ModNPC> npcs = new Dictionary<string, ModNPC>();
     internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
 
     /*
@@ -94,6 +95,10 @@ public abstract class Mod
             if(type.IsSubclassOf(typeof(GlobalProjectile)))
             {
                 AutoloadGlobalProjectile(type);
+            }
+            if(type.IsSubclassOf(typeof(ModNPC)))
+            {
+                AutoloadNPC(type);
             }
             if(type.IsSubclassOf(typeof(GlobalNPC)))
             {
@@ -394,6 +399,7 @@ public abstract class Mod
     {
         int id = ProjectileLoader.ReserveProjectileID();
         projectile.projectile.name = name;
+        projectile.Name = name;
         projectile.projectile.type = id;
         projectiles[name] = projectile;
         ProjectileLoader.projectiles[id] = projectile;
@@ -466,6 +472,39 @@ public abstract class Mod
         }
     }
 
+    public void AddNPC(string name, ModNPC npc, string texture)
+    {
+        int id = NPCLoader.ReserveNPCID();
+        npc.npc.name = name;
+        npc.npc.type = id;
+        npcs[name] = npc;
+        NPCLoader.npcs[id] = npc;
+        npc.texture = texture;
+        npc.mod = this;
+    }
+
+    public ModNPC GetNPC(string name)
+    {
+        if (npcs.ContainsKey(name))
+        {
+            return npcs[name];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public int NPCType(string name)
+    {
+        ModNPC npc = GetNPC(name);
+        if (npc == null)
+        {
+            return 0;
+        }
+        return npc.npc.type;
+    }
+
     public void AddGlobalNPC(string name, GlobalNPC globalNPC)
     {
         globalNPC.mod = this;
@@ -483,6 +522,18 @@ public abstract class Mod
         else
         {
             return null;
+        }
+    }
+
+    private void AutoloadNPC(Type type)
+    {
+        ModNPC npc = (ModNPC)Activator.CreateInstance(type);
+        npc.mod = this;
+        string name = type.Name;
+        string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+        if(npc.Autoload(ref name, ref texture))
+        {
+            AddNPC(name, npc, texture);
         }
     }
 
@@ -530,6 +581,29 @@ public abstract class Mod
         {
             globalWall.SetDefaults();
         }
+        foreach(ModProjectile projectile in projectiles.Values)
+        {
+            Main.projectileTexture[projectile.projectile.type] = ModLoader.GetTexture(projectile.texture);
+            projectile.SetDefaults();
+        }
+        foreach(ModNPC npc in npcs.Values)
+        {
+            Main.npcTexture[npc.npc.type] = ModLoader.GetTexture(npc.texture);
+            Main.npcName[npc.npc.type] = npc.npc.name;
+            npc.SetDefaults();
+            if(npc.npc.lifeMax > 32767 || npc.npc.boss)
+            {
+                Main.npcLifeBytes[npc.npc.type] = 4;
+            }
+            else if(npc.npc.lifeMax > 127)
+            {
+                Main.npcLifeBytes[npc.npc.type] = 2;
+            }
+            else
+            {
+                Main.npcLifeBytes[npc.npc.type] = 1;
+            }
+        }
     }
 
     internal void Unload() //I'm not sure why I have this
@@ -540,6 +614,10 @@ public abstract class Mod
         dusts.Clear();
         tiles.Clear();
         globalTiles.Clear();
+        walls.Clear();
+        globalWalls.Clear();
+        projectiles.Clear();
+        globalProjectiles.Clear();
         globalNPCs.Clear();
     }
 }}

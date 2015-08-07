@@ -16,6 +16,11 @@ public class ModProjectile
         get;
         internal set;
     }
+    public string Name
+    {
+        get;
+        internal set;
+    }
     internal string texture;
     public ModProjectile()
     {

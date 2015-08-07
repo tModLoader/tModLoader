@@ -129,6 +129,7 @@ public static class ModLoader
         TileLoader.ResizeArrays(unloading);
         WallLoader.ResizeArrays(unloading);
         ProjectileLoader.ResizeArrays();
+        NPCLoader.ResizeArrays();
     }
 
     internal static string[] FindMods()
