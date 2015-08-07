@@ -18,6 +18,7 @@ public static class ModLoader
     public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
     public static readonly string DllPath = Main.SavePath + Path.DirectorySeparatorChar + "dllReferences";
     private static bool referencesLoaded = false;
+    private static bool assemblyResolverAdded = false;
     private static readonly IList<string> buildReferences = new List<string>();
     internal const int earliestRelease = 149;
     internal static string modToBuild;
@@ -41,6 +42,22 @@ public static class ModLoader
             buildReferences.Add(Assembly.Load(reference).Location);
         }
         referencesLoaded = true;
+    }
+
+    private static void AddAssemblyResolver()
+    {
+        if(assemblyResolverAdded)
+        {
+            return;
+        }
+        AppDomain.CurrentDomain.AssemblyResolve += ResolveDllReference;
+        assemblyResolverAdded = true;
+    }
+
+    private static Assembly ResolveDllReference(object sender, ResolveEventArgs args)
+    {
+        Directory.CreateDirectory(DllPath);
+        return Assembly.LoadFrom(DllPath + Path.DirectorySeparatorChar + args.Name + ".dll");
     }
 
     internal static bool ModLoaded(string name)
@@ -75,8 +92,8 @@ public static class ModLoader
             Interface.loadMods.SetProgressInit(mod.Name, num, mods.Count);
             try
             {
-                mod.Load();
                 mod.Autoload();
+                mod.Load();
             }
             catch(Exception e)
             {
@@ -211,12 +228,6 @@ public static class ModLoader
 
     private static void LoadMod(string modFile, BuildProperties properties)
     {
-        Directory.CreateDirectory(DllPath);
-        foreach(string dllReference in properties.dllReferences)
-        {
-            string dllFile = DllPath + Path.DirectorySeparatorChar + dllReference + ".dll";
-            Assembly.Load(File.ReadAllBytes(dllFile));
-        }
         Assembly modCode;
         using(FileStream fileStream = File.OpenRead(modFile))
         {
@@ -380,7 +391,7 @@ public static class ModLoader
             }
             num++;
         }
-        Main.menuMode = flag ? Interface.errorMessageID : ( reloadAfterBuild ? Interface.loadModsID : 0);
+        Main.menuMode = flag ? Interface.errorMessageID : ( reloadAfterBuild ? Interface.reloadModsID : 0);
     }
 
     internal static void BuildMod()
@@ -439,7 +450,7 @@ public static class ModLoader
         EnableMod(file);
         if (!buildAll)
         {
-            Main.menuMode = reloadAfterBuild ? Interface.loadModsID : 0;
+            Main.menuMode = reloadAfterBuild ? Interface.reloadModsID : 0;
         }
         return true;
     }

@@ -19,6 +19,7 @@ namespace Terraria.ModLoader
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
 		public static readonly string DllPath = Main.SavePath + Path.DirectorySeparatorChar + "dllReferences";
 		private static bool referencesLoaded = false;
+		private static bool assemblyResolverAdded = false;
 		private static readonly IList<string> buildReferences = new List<string>();
 		internal const int earliestRelease = 149;
 		internal static string modToBuild;
@@ -42,6 +43,22 @@ namespace Terraria.ModLoader
 				buildReferences.Add(Assembly.Load(reference).Location);
 			}
 			referencesLoaded = true;
+		}
+
+		private static void AddAssemblyResolver()
+		{
+			if (assemblyResolverAdded)
+			{
+				return;
+			}
+			AppDomain.CurrentDomain.AssemblyResolve += ResolveDllReference;
+			assemblyResolverAdded = true;
+		}
+
+		private static Assembly ResolveDllReference(object sender, ResolveEventArgs args)
+		{
+			Directory.CreateDirectory(DllPath);
+			return Assembly.LoadFrom(DllPath + Path.DirectorySeparatorChar + args.Name + ".dll");
 		}
 
 		internal static bool ModLoaded(string name)
@@ -76,8 +93,8 @@ namespace Terraria.ModLoader
 				Interface.loadMods.SetProgressInit(mod.Name, num, mods.Count);
 				try
 				{
-					mod.Load();
 					mod.Autoload();
+					mod.Load();
 				}
 				catch (Exception e)
 				{
@@ -212,12 +229,6 @@ namespace Terraria.ModLoader
 
 		private static void LoadMod(string modFile, BuildProperties properties)
 		{
-			Directory.CreateDirectory(DllPath);
-			foreach (string dllReference in properties.dllReferences)
-			{
-				string dllFile = DllPath + Path.DirectorySeparatorChar + dllReference + ".dll";
-				Assembly.Load(File.ReadAllBytes(dllFile));
-			}
 			Assembly modCode;
 			using (FileStream fileStream = File.OpenRead(modFile))
 			{
@@ -381,7 +392,7 @@ namespace Terraria.ModLoader
 				}
 				num++;
 			}
-			Main.menuMode = flag ? Interface.errorMessageID : (reloadAfterBuild ? Interface.loadModsID : 0);
+			Main.menuMode = flag ? Interface.errorMessageID : (reloadAfterBuild ? Interface.reloadModsID : 0);
 		}
 
 		internal static void BuildMod()
@@ -443,7 +454,7 @@ namespace Terraria.ModLoader
 			EnableMod(file);
 			if (!buildAll)
 			{
-				Main.menuMode = reloadAfterBuild ? Interface.loadModsID : 0;
+				Main.menuMode = reloadAfterBuild ? Interface.reloadModsID : 0;
 			}
 			return true;
 		}
