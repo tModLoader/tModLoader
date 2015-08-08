@@ -590,6 +590,30 @@ public static class ItemLoader
         }
     }
 
+    //in beginning of Terraria.Player.openBag methods add
+    //  if(!ItemLoader.PreOpenVanillaBag("bagName", this, arg)) { return; }
+    internal static bool PreOpenVanillaBag(string context, Player player, int arg)
+    {
+        foreach(GlobalItem globalItem in globalItems)
+        {
+            if(!globalItem.PreOpenVanillaBag(context, player, arg))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //in Terraria.Player.openBag methods after PreOpenVanillaBag if statements
+    //  add ItemLoader.OpenVanillaBag("bagname", this, arg);
+    internal static void OpenVanillaBag(string context, Player player, int arg)
+    {
+        foreach(GlobalItem globalItem in globalItems)
+        {
+            globalItem.OpenVanillaBag(context, player, arg);
+        }
+    }
+
     //in Terraria.Main.DrawPlayerHead after if statement that sets flag2 to true
     //  call ItemLoader.DrawHair(drawPlayer, ref flag, ref flag2)
     //in Terraria.Main.DrawPlayer after if statement that sets flag5 to true

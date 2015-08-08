@@ -122,6 +122,13 @@ public class GlobalItem
 
     public virtual void RightClick(Item item, Player player) { }
 
+    public virtual bool PreOpenVanillaBag(string context, Player player, int arg)
+    {
+        return true;
+    }
+
+    public virtual void OpenVanillaBag(string context, Player player, int arg) { }
+
     public virtual void DrawHair(Item item, ref bool drawHair, ref bool drawAltHair) { }
 
     public virtual bool DrawHead(Item item)

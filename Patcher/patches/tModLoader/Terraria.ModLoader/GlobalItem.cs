@@ -154,6 +154,15 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool PreOpenVanillaBag(string context, Player player, int arg)
+		{
+			return true;
+		}
+
+		public virtual void OpenVanillaBag(string context, Player player, int arg)
+		{
+		}
+
 		public virtual void DrawHair(Item item, ref bool drawHair, ref bool drawAltHair)
 		{
 		}
