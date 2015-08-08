@@ -9,7 +9,7 @@
      <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
      <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
      <OutputType>WinExe</OutputType>
-@@ -239,6 +239,42 @@
+@@ -239,6 +239,43 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -24,6 +24,7 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIModSourceItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModSources.cs" />
 +    <Compile Include="Terraria.ModLoader\BuildProperties.cs" />
++    <Compile Include="Terraria.ModLoader\CraftGroup.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipType.cs" />
 +    <Compile Include="Terraria.ModLoader\ErrorLogger.cs" />

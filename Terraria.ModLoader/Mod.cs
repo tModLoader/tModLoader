@@ -25,7 +25,8 @@ public abstract class Mod
             return properties;
         }
     }
-    internal readonly List<ModRecipe> recipes = new List<ModRecipe>();
+    internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
+    internal readonly IDictionary<string, CraftGroup> craftGroups = new Dictionary<string, CraftGroup>();
     internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
     internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
     internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
@@ -53,7 +54,27 @@ public abstract class Mod
 
     public virtual void Load() { }
 
-    public virtual void AddRecipes() {}
+    public virtual void AddCraftGroups() { }
+
+    public void AddCraftGroup(string name, string displayName, params int[] items)
+    {
+        CraftGroup group = new CraftGroup(name, displayName, items);
+        craftGroups[name] = group;
+    }
+
+    public CraftGroup GetCraftGroup(string name)
+    {
+        if(craftGroups.ContainsKey(name))
+        {
+            return craftGroups[name];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public virtual void AddRecipes() { }
 
     internal void Autoload()
     {
@@ -609,6 +630,7 @@ public abstract class Mod
     internal void Unload() //I'm not sure why I have this
     {
         recipes.Clear();
+        craftGroups.Clear();
         items.Clear();
         globalItems.Clear();
         dusts.Clear();

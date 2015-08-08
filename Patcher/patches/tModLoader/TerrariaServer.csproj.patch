@@ -9,7 +9,7 @@
      <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
      <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
      <OutputType>Exe</OutputType>
-@@ -243,6 +243,42 @@
+@@ -243,6 +243,43 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -24,6 +24,7 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIModSourceItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModSources.cs" />
 +    <Compile Include="Terraria.ModLoader\BuildProperties.cs" />
++    <Compile Include="Terraria.ModLoader\CraftGroup.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipType.cs" />
 +    <Compile Include="Terraria.ModLoader\ErrorLogger.cs" />
@@ -52,7 +53,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -350,6 +386,7 @@
+@@ -350,6 +387,7 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />
      <Compile Include="Terraria\ItemText.cs" />

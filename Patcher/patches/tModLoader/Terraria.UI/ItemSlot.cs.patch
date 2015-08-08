@@ -29,7 +29,7 @@
 -					spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetColor(color), 0f, origin, num4 * num3, SpriteEffects.None, 0f);
 -				}
 +				if (ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
-+					               item.GetColor(color), origin, num4 * num3))
++					    item.GetColor(color), origin, num4 * num3))
 +				{
 +					spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetAlpha(newColor), 0f, origin, num4 * num3, SpriteEffects.None, 0f);
 +					if (item.color != Color.Transparent)

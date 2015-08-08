@@ -30,7 +30,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal readonly List<ModRecipe> recipes = new List<ModRecipe>();
+		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
+		internal readonly IDictionary<string, CraftGroup> craftGroups = new Dictionary<string, CraftGroup>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
 		internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
@@ -57,6 +58,28 @@ namespace Terraria.ModLoader
 
 		public virtual void Load()
 		{
+		}
+
+		public virtual void AddCraftGroups()
+		{
+		}
+
+		public void AddCraftGroup(string name, string displayName, params int[] items)
+		{
+			CraftGroup group = new CraftGroup(name, displayName, items);
+			craftGroups[name] = group;
+		}
+
+		public CraftGroup GetCraftGroup(string name)
+		{
+			if (craftGroups.ContainsKey(name))
+			{
+				return craftGroups[name];
+			}
+			else
+			{
+				return null;
+			}
 		}
 
 		public virtual void AddRecipes()
@@ -617,6 +640,7 @@ namespace Terraria.ModLoader
 		internal void Unload() //I'm not sure why I have this
 		{
 			recipes.Clear();
+			craftGroups.Clear();
 			items.Clear();
 			globalItems.Clear();
 			dusts.Clear();

@@ -127,6 +127,8 @@ public static class ModLoader
         Recipe.numRecipes = 0;
         try
         {
+            CraftGroup.ResetVanillaGroups();
+            AddCraftGroups();
             Recipe.SetupRecipes();
         }
         catch(Exception e)
@@ -633,6 +635,22 @@ public static class ModLoader
             throw new ArgumentException("Missing texture " + name);
         }
         return textures[name];
+    }
+
+    private static void AddCraftGroups()
+    {
+        foreach(Mod mod in mods.Values)
+        {
+            try
+            {
+                mod.AddCraftGroups();
+            }
+            catch
+            {
+                DisableMod(mod.file);
+                throw;
+            }
+        }
     }
 
     //place near end of Terraria.Recipe.SetupRecipes before material checks

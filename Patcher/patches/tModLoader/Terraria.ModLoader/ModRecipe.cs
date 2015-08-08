@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Terraria;
 
 namespace Terraria.ModLoader
@@ -6,6 +7,7 @@ namespace Terraria.ModLoader
 	public class ModRecipe : Recipe
 	{
 		public readonly Mod mod;
+		internal readonly IList<CraftGroup> craftGroups = new List<CraftGroup>();
 		private int numIngredients = 0;
 		private int numTiles = 0;
 
@@ -74,6 +76,21 @@ namespace Terraria.ModLoader
 			this.AddIngredient(item.item.type, stack);
 		}
 
+		public void AddCraftGroup(CraftGroup group, int stack = 1)
+		{
+			this.AddIngredient(group.Items[0], stack);
+			this.craftGroups.Add(group);
+		}
+
+		public void AddCraftGroup(Mod mod, string name, int stack = 1)
+		{
+			if (mod == null)
+			{
+				mod = this.mod;
+			}
+			this.AddCraftGroup(mod.GetCraftGroup(name), stack);
+		}
+
 		public void AddTile(int tileID)
 		{
 			this.requiredTile[numTiles] = tileID;
@@ -99,6 +116,32 @@ namespace Terraria.ModLoader
 		public virtual int ConsumeItem(int type, int numRequired)
 		{
 			return numRequired;
+		}
+		//for Terraria.Recipe add public bool ItemMatches(Item invItem, Item reqItem)
+		//replace || chains with Terraria.Recipe.ItemMatches
+		//add this to the || chain in Terraria.Recipe.ItemMatches
+		public bool UseCraftGroup(int invType, int reqType)
+		{
+			foreach (CraftGroup group in craftGroups)
+			{
+				if (group.Items.Contains(invType) && group.Items.Contains(reqType))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		//add to craft group tooltip in Terraria.Main.DrawInventory
+		public void CraftGroupDisplayName(int reqIndex)
+		{
+			foreach (CraftGroup group in craftGroups)
+			{
+				if (group.Items.Contains(requiredItem[reqIndex].type))
+				{
+					Main.toolTip.name = group.DisplayName;
+					return;
+				}
+			}
 		}
 
 		public void AddRecipe()

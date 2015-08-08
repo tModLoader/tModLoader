@@ -20,7 +20,216 @@
  				if (this.alchemy && Main.player[Main.myPlayer].alchemyTable)
  				{
  					if (num > 1)
-@@ -10128,6 +10134,7 @@
+@@ -71,7 +77,7 @@
+ 						{
+ 							break;
+ 						}
+-						if (item2.IsTheSameAs(item) || this.useWood(item2.type, item.type) || this.useSand(item2.type, item.type) || this.useFragment(item2.type, item.type) || this.useIronBar(item2.type, item.type) || this.usePressurePlate(item2.type, item.type))
++						if (this.ItemMatches(item2, item))
+ 						{
+ 							if (item2.stack > num)
+ 							{
+@@ -106,7 +112,7 @@
+ 							{
+ 								break;
+ 							}
+-							if (item2.IsTheSameAs(item) || this.useWood(item2.type, item.type) || this.useSand(item2.type, item.type) || this.useIronBar(item2.type, item.type) || this.usePressurePlate(item2.type, item.type) || this.useFragment(item2.type, item.type))
++							if (this.ItemMatches(item2, item))
+ 							{
+ 								if (item2.stack > num)
+ 								{
+@@ -136,153 +142,42 @@
+ 			Recipe.FindRecipes();
+ 		}
+ 
++		public bool ItemMatches(Item invItem, Item reqItem)
++		{
++			return invItem.IsTheSameAs(reqItem) || this.useWood(invItem.type, reqItem.type)
++			|| this.useIronBar(invItem.type, reqItem.type) || this.useSand(invItem.type, reqItem.type)
++			|| this.useFragment(invItem.type, reqItem.type) || this.usePressurePlate(invItem.type, reqItem.type)
++			|| (this is ModRecipe && ((ModRecipe)this).UseCraftGroup(invItem.type, reqItem.type));
++		}
++
+ 		public bool useWood(int invType, int reqType)
+ 		{
+-			if (!this.anyWood)
+-			{
+-				return false;
+-			}
+-			if (reqType <= 621)
+-			{
+-				if (reqType == 9)
+-				{
+-					goto IL_59;
+-				}
+-				switch (reqType)
+-				{
+-					case 619:
+-					case 620:
+-					case 621:
+-						goto IL_59;
+-				}
+-			}
+-			else
+-			{
+-				if (reqType == 911 || reqType == 1729)
+-				{
+-					goto IL_59;
+-				}
+-				switch (reqType)
+-				{
+-					case 2503:
+-					case 2504:
+-						goto IL_59;
+-				}
+-			}
+-			return false;
+-			IL_59:
+-			if (invType <= 621)
+-			{
+-				if (invType == 9)
+-				{
+-					return true;
+-				}
+-				switch (invType)
+-				{
+-					case 619:
+-					case 620:
+-					case 621:
+-						return true;
+-				}
+-			}
+-			else
+-			{
+-				if (invType == 911 || invType == 1729)
+-				{
+-					return true;
+-				}
+-				switch (invType)
+-				{
+-					case 2503:
+-					case 2504:
+-						return true;
+-				}
+-			}
+-			return false;
++			CraftGroup group = CraftGroup.GetVanillaGroup("Wood");
++			return this.anyWood && group.Items.Contains(invType) && group.Items.Contains(reqType);
+ 		}
+ 
+ 		public bool useIronBar(int invType, int reqType)
+ 		{
+-			return this.anyIronBar && (reqType == 22 || reqType == 704) && (invType == 22 || invType == 704);
++			CraftGroup group = CraftGroup.GetVanillaGroup("IronBar");
++			return this.anyIronBar && group.Items.Contains(invType) && group.Items.Contains(reqType);
+ 		}
+ 
+ 		public bool useSand(int invType, int reqType)
+ 		{
+-			return (reqType == 169 || reqType == 408 || reqType == 1246 || reqType == 370 || reqType == 3272) && (this.anySand && (invType == 169 || invType == 408 || invType == 1246 || invType == 370 || invType == 3272));
++			CraftGroup group = CraftGroup.GetVanillaGroup("Sand");
++			return this.anySand && group.Items.Contains(invType) && group.Items.Contains(reqType);
+ 		}
+ 
+ 		public bool useFragment(int invType, int reqType)
+ 		{
+-			return (reqType == 3458 || reqType == 3456 || reqType == 3457 || reqType == 3459) && (this.anyFragment && (invType == 3458 || invType == 3456 || invType == 3457 || invType == 3459));
++			CraftGroup group = CraftGroup.GetVanillaGroup("Fragment");
++			return this.anyFragment && group.Items.Contains(invType) && group.Items.Contains(reqType);
+ 		}
+ 
+ 		public bool usePressurePlate(int invType, int reqType)
+ 		{
+-			if (!this.anyPressurePlate)
+-			{
+-				return false;
+-			}
+-			if (reqType <= 543)
+-			{
+-				if (reqType == 529)
+-				{
+-					goto IL_54;
+-				}
+-				switch (reqType)
+-				{
+-					case 541:
+-					case 542:
+-					case 543:
+-						goto IL_54;
+-				}
+-			}
+-			else
+-			{
+-				switch (reqType)
+-				{
+-					case 852:
+-					case 853:
+-						goto IL_54;
+-					default:
+-						if (reqType == 1151)
+-						{
+-							goto IL_54;
+-						}
+-						break;
+-				}
+-			}
+-			return false;
+-			IL_54:
+-			if (invType <= 543)
+-			{
+-				if (invType == 529)
+-				{
+-					return true;
+-				}
+-				switch (invType)
+-				{
+-					case 541:
+-					case 542:
+-					case 543:
+-						return true;
+-				}
+-			}
+-			else
+-			{
+-				switch (invType)
+-				{
+-					case 852:
+-					case 853:
+-						return true;
+-					default:
+-						if (invType == 1151)
+-						{
+-							return true;
+-						}
+-						break;
+-				}
+-			}
+-			return false;
++			CraftGroup group = CraftGroup.GetVanillaGroup("PressurePlate");
++			return this.anyPressurePlate && group.Items.Contains(invType) && group.Items.Contains(reqType);
+ 		}
+ 
+ 		public static void FindRecipes()
+@@ -306,7 +201,7 @@
+ 					int num3 = 0;
+ 					while (num3 < Recipe.maxRequirements && Main.recipe[j].requiredItem[num3].type != 0)
+ 					{
+-						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[num3]) || Main.recipe[j].useWood(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type) || Main.recipe[j].useSand(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type) || Main.recipe[j].useIronBar(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type) || Main.recipe[j].useFragment(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type) || Main.recipe[j].usePressurePlate(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type))
++						if (Main.recipe[j].ItemMatches(Main.guideItem, Main.recipe[j].requiredItem[num3]))
+ 						{
+ 							Main.availableRecipe[Main.numAvailableRecipes] = j;
+ 							Main.numAvailableRecipes++;
+@@ -400,7 +295,8 @@
+ 							bool flag3 = false;
+ 							foreach (int current in dictionary.Keys)
+ 							{
+-								if (Main.recipe[num4].useWood(current, item.type) || Main.recipe[num4].useSand(current, item.type) || Main.recipe[num4].useIronBar(current, item.type) || Main.recipe[num4].useFragment(current, item.type) || Main.recipe[num4].usePressurePlate(current, item.type))
++								if (Main.recipe[num4].useWood(current, item.type) || Main.recipe[num4].useSand(current, item.type) || Main.recipe[num4].useIronBar(current, item.type) || Main.recipe[num4].useFragment(current, item.type) || Main.recipe[num4].usePressurePlate(current, item.type)
++								    || (Main.recipe[num4] is ModRecipe && ((ModRecipe)Main.recipe[num4]).UseCraftGroup(current, item.type)))
+ 								{
+ 									num6 -= dictionary[current];
+ 									flag3 = true;
+@@ -10128,6 +10024,7 @@
  			Recipe.AddRecipe();
  			Recipe.WallReturn();
  			Recipe.PlatformReturn();
