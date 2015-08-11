@@ -154,6 +154,18 @@ public class ModItem
 
     public virtual void Update(ref float gravity, ref float maxFallSpeed) { }
 
+    public virtual void GrabRange(Player player, ref int grabRange) { }
+
+    public virtual bool GrabStyle(Player player)
+    {
+        return false;
+    }
+
+    public virtual bool OnPickup(Player player)
+    {
+        return true;
+    }
+
     public virtual Color? GetAlpha(Color lightColor)
     {
         return null;

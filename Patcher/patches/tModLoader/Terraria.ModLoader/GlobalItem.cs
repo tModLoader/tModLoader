@@ -185,6 +185,20 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void GrabRange(Item item, Player player, ref int grabRange)
+		{
+		}
+
+		public virtual bool GrabStyle(Item item, Player player)
+		{
+			return false;
+		}
+
+		public virtual bool OnPickup(Item item, Player player)
+		{
+			return true;
+		}
+
 		public virtual Color? GetAlpha(Item item, Color lightColor)
 		{
 			return null;

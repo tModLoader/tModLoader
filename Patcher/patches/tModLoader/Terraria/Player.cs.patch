@@ -178,7 +178,36 @@
  							}
  							this.releaseUseTile = false;
  						}
-@@ -23150,7 +23189,7 @@
+@@ -22357,10 +22396,16 @@
+ 					{
+ 						num += 100;
+ 					}
++					ItemLoader.GrabRange(Main.item[j], this, ref num);
+ 					if (new Rectangle((int)this.position.X, (int)this.position.Y, this.width, this.height).Intersects(new Rectangle((int)Main.item[j].position.X, (int)Main.item[j].position.Y, Main.item[j].width, Main.item[j].height)))
+ 					{
+ 						if (i == Main.myPlayer && (this.inventory[this.selectedItem].type != 0 || this.itemAnimation <= 0))
+ 						{
++							if (!ItemLoader.OnPickup(Main.item[j], this))
++							{
++								Main.item[j] = new Item();
++								continue;
++							}
+ 							if (ItemID.Sets.NebulaPickup[Main.item[j].type])
+ 							{
+ 								Main.PlaySound(7, (int)this.position.X, (int)this.position.Y, 1);
+@@ -22425,7 +22470,10 @@
+ 					else if (new Rectangle((int)this.position.X - num, (int)this.position.Y - num, this.width + num * 2, this.height + num * 2).Intersects(new Rectangle((int)Main.item[j].position.X, (int)Main.item[j].position.Y, Main.item[j].width, Main.item[j].height)) && this.ItemSpace(Main.item[j]))
+ 					{
+ 						Main.item[j].beingGrabbed = true;
+-						if (this.manaMagnet && (Main.item[j].type == 184 || Main.item[j].type == 1735 || Main.item[j].type == 1868))
++						if (ItemLoader.GrabStyle(Main.item[j], this))
++						{
++						}
++						else if (this.manaMagnet && (Main.item[j].type == 184 || Main.item[j].type == 1735 || Main.item[j].type == 1868))
+ 						{
+ 							float num3 = 12f;
+ 							Vector2 vector = new Vector2(Main.item[j].position.X + (float)(Main.item[j].width / 2), Main.item[j].position.Y + (float)(Main.item[j].height / 2));
+@@ -23150,7 +23198,7 @@
  		{
  			int num = 4;
  			int num2 = 3;
@@ -187,7 +216,7 @@
  			{
  				this.oldAdjTile[i] = this.adjTile[i];
  				this.adjTile[i] = false;
-@@ -23198,6 +23237,7 @@
+@@ -23198,6 +23246,7 @@
  							this.adjTile[14] = true;
  							this.alchemyTable = true;
  						}
@@ -195,7 +224,7 @@
  					}
  					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
  					{
-@@ -23843,6 +23883,10 @@
+@@ -23843,6 +23892,10 @@
  							}
  						}
  					}
@@ -206,7 +235,7 @@
  				}
  			}
  			else
-@@ -23878,6 +23922,10 @@
+@@ -23878,6 +23931,10 @@
  					if (this.inventory[this.selectedItem].holdStyle == 3)
  					{
  						this.bodyFrame.Y = this.bodyFrame.Height * 3;
@@ -217,7 +246,7 @@
  						return;
  					}
  					if (this.grappling[0] >= 0)
-@@ -25596,7 +25644,10 @@
+@@ -25596,7 +25653,10 @@
  					bool flag3 = false;
  					bool flag4 = false;
  					TileObject tileObject = default(TileObject);
@@ -229,7 +258,7 @@
  					{
  						flag4 = true;
  						flag3 = TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, (int)((ushort)this.inventory[this.selectedItem].createTile), this.inventory[this.selectedItem].placeStyle, this.direction, out tileObject, false);
-@@ -27320,7 +27371,7 @@
+@@ -27320,7 +27380,7 @@
  				{
  					this.altFunctionUse = 2;
  				}
@@ -238,7 +267,7 @@
  				if (item.shoot == 0)
  				{
  					this.itemRotation = 0f;
-@@ -28282,6 +28333,7 @@
+@@ -28282,6 +28342,7 @@
  							this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  						}
  					}
@@ -246,7 +275,7 @@
  				}
  			}
  			else if (item.holdStyle == 1 && !this.pulley)
-@@ -28478,6 +28530,7 @@
+@@ -28478,6 +28539,7 @@
  				this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  				this.itemRotation = 0f;
  			}
@@ -254,7 +283,7 @@
  			if ((((item.type == 974 || item.type == 8 || item.type == 1245 || item.type == 2274 || item.type == 3004 || item.type == 3045 || item.type == 3114 || (item.type >= 427 && item.type <= 433)) && !this.wet) || item.type == 523 || item.type == 1333) && !this.pulley)
  			{
  				float num50 = 1f;
-@@ -28923,6 +28976,7 @@
+@@ -28923,6 +28985,7 @@
  					Lighting.AddLight(position16, 1f, 0.6f, 0.85f);
  				}
  			}
@@ -262,7 +291,7 @@
  			if (this.controlUseItem)
  			{
  				this.releaseUseItem = false;
-@@ -30112,7 +30166,7 @@
+@@ -30112,7 +30175,7 @@
  							}
  							Projectile.NewProjectile(vector2.X, vector2.Y - this.gravDir * 4f, num202, num203, num71, num73, num74, i, 0f, (float)Main.rand.Next(12) / 6f);
  						}
@@ -271,7 +300,7 @@
  						{
  							int num204 = Projectile.NewProjectile(vector2.X, vector2.Y, num78, num79, num71, num73, num74, i, 0f, 0f);
  							if (item.type == 726)
-@@ -30481,7 +30535,7 @@
+@@ -30481,7 +30544,7 @@
  								flag14 = false;
  								if (item.hammer > 0)
  								{
@@ -280,7 +309,7 @@
  									if (!WorldGen.CanKillTile(Player.tileTargetX, Player.tileTargetY))
  									{
  										num222 = 0;
-@@ -30525,7 +30579,7 @@
+@@ -30525,7 +30588,7 @@
  								}
  								else
  								{
@@ -289,7 +318,7 @@
  								}
  								if (item.axe > 0)
  								{
-@@ -30589,7 +30643,10 @@
+@@ -30589,7 +30652,10 @@
  									{
  										int num223 = Player.tileTargetX;
  										int num224 = Player.tileTargetY;
@@ -301,7 +330,7 @@
  										{
  											if (Main.tile[num223, num224].halfBrick())
  											{
-@@ -31059,6 +31116,7 @@
+@@ -31059,6 +31125,7 @@
  						r2.Height = (int)((double)r2.Height * 0.6);
  					}
  				}
@@ -309,7 +338,7 @@
  				float arg_BA93_0 = this.gravDir;
  				if (item.type == 1450 && Main.rand.Next(3) == 0)
  				{
-@@ -31418,6 +31476,7 @@
+@@ -31418,6 +31485,7 @@
  						Dust expr_D7D2_cp_0 = Main.dust[num280];
  						expr_D7D2_cp_0.velocity.Y = expr_D7D2_cp_0.velocity.Y * 2f;
  					}
@@ -317,7 +346,7 @@
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num281 = 0; num281 < 200; num281++)
-@@ -31543,6 +31602,7 @@
+@@ -31543,6 +31611,7 @@
  												{
  													flag18 = true;
  												}
@@ -325,7 +354,7 @@
  												int num293 = Item.NPCtoBanner(Main.npc[num292].BannerID());
  												if (num293 > 0 && this.NPCBannerBuff[num293])
  												{
-@@ -31630,6 +31690,7 @@
+@@ -31630,6 +31699,7 @@
  														NetMessage.SendData(21, -1, -1, "", num300, 0f, 0f, 0f, 0, 0, 0);
  													}
  												}
@@ -333,7 +362,7 @@
  												int num301 = Item.NPCtoBanner(Main.npc[num292].BannerID());
  												if (num301 >= 0)
  												{
-@@ -31681,6 +31742,7 @@
+@@ -31681,6 +31751,7 @@
  											{
  												flag20 = true;
  											}
@@ -341,7 +370,7 @@
  											int num303 = Main.DamageVar((float)num282);
  											this.StatusPvP(item.type, num302);
  											this.OnHit(Main.player[num302].Center.X, Main.player[num302].Center.Y, Main.player[num302]);
-@@ -31731,6 +31793,7 @@
+@@ -31731,6 +31802,7 @@
  											{
  												this.pumpkinSword(num302, (int)((double)num282 * 1.5), num283);
  											}
@@ -349,7 +378,7 @@
  											if (Main.netMode != 0)
  											{
  												if (flag20)
-@@ -31812,6 +31875,7 @@
+@@ -31812,6 +31884,7 @@
  			}
  			if (this.itemTime == 0 && this.itemAnimation > 0)
  			{
@@ -357,7 +386,7 @@
  				if (item.hairDye >= 0)
  				{
  					this.itemTime = item.useTime;
-@@ -32325,6 +32389,7 @@
+@@ -32325,6 +32398,7 @@
  					{
  						flag22 = true;
  					}
@@ -365,7 +394,7 @@
  					if (flag22)
  					{
  						if (item.stack > 0)
-@@ -32649,6 +32714,10 @@
+@@ -32649,6 +32723,10 @@
  				{
  					flag2 = true;
  				}
@@ -376,7 +405,7 @@
  				if (!flag2 && item.consumable)
  				{
  					item.stack--;
-@@ -32701,7 +32770,7 @@
+@@ -32701,7 +32779,7 @@
  			}
  			else
  			{
@@ -385,7 +414,7 @@
  			}
  			if (tile.type == 211 && pickPower < 200)
  			{
-@@ -32769,6 +32838,10 @@
+@@ -32769,6 +32847,10 @@
  			else if (tile.type == 223 && pickPower < 150)
  			{
  				num = 0;
@@ -396,7 +425,7 @@
  			}
  			if (tile.type == 147 || tile.type == 0 || tile.type == 40 || tile.type == 53 || tile.type == 57 || tile.type == 59 || tile.type == 123 || tile.type == 224 || tile.type == 397)
  			{
-@@ -32870,12 +32943,10 @@
+@@ -32870,12 +32952,10 @@
  					int num4 = y;
  					bool flag3 = Main.tile[x, num4].active();
  					WorldGen.KillTile(x, num4, false, false, false);
@@ -409,7 +438,7 @@
  					if (Main.netMode == 1)
  					{
  						NetMessage.SendData(17, -1, -1, "", 0, (float)x, (float)num4, 0f, 0, 0, 0);
-@@ -33377,7 +33448,7 @@
+@@ -33377,7 +33457,7 @@
  			{
  				return false;
  			}
@@ -418,7 +447,7 @@
  			{
  				return false;
  			}
-@@ -33586,12 +33657,12 @@
+@@ -33586,12 +33666,12 @@
  							{
  								player.armor[k].name = "";
  							}
@@ -433,7 +462,7 @@
  							binaryWriter.Write(player.dye[l].prefix);
  						}
  						for (int m = 0; m < 58; m++)
-@@ -33600,16 +33671,16 @@
+@@ -33600,16 +33680,16 @@
  							{
  								player.inventory[m].name = "";
  							}
@@ -453,7 +482,7 @@
  							binaryWriter.Write(player.miscDyes[n].prefix);
  						}
  						for (int num = 0; num < 40; num++)
-@@ -33618,7 +33689,7 @@
+@@ -33618,7 +33698,7 @@
  							{
  								player.bank.item[num].name = "";
  							}
@@ -462,7 +491,7 @@
  							binaryWriter.Write(player.bank.item[num].stack);
  							binaryWriter.Write(player.bank.item[num].prefix);
  						}
-@@ -33628,7 +33699,7 @@
+@@ -33628,7 +33708,7 @@
  							{
  								player.bank2.item[num2].name = "";
  							}
@@ -471,7 +500,7 @@
  							binaryWriter.Write(player.bank2.item[num2].stack);
  							binaryWriter.Write(player.bank2.item[num2].prefix);
  						}
-@@ -33848,7 +33919,7 @@
+@@ -33848,7 +33928,7 @@
  									int num4 = 20;
  									for (int m = 0; m < num4; m++)
  									{
@@ -480,7 +509,7 @@
  										player.armor[m].Prefix((int)binaryReader.ReadByte());
  									}
  								}
-@@ -33866,7 +33937,7 @@
+@@ -33866,7 +33946,7 @@
  									for (int n = 0; n < num5; n++)
  									{
  										int num6 = n;
@@ -489,7 +518,7 @@
  										player.dye[num6].Prefix((int)binaryReader.ReadByte());
  									}
  								}
-@@ -33874,20 +33945,12 @@
+@@ -33874,20 +33954,12 @@
  								{
  									for (int num7 = 0; num7 < 58; num7++)
  									{
@@ -515,7 +544,7 @@
  										}
  									}
  								}
-@@ -33943,26 +34006,10 @@
+@@ -33943,26 +34015,10 @@
  									{
  										for (int num13 = 0; num13 < 5; num13++)
  										{
@@ -546,7 +575,7 @@
  										}
  									}
  								}
-@@ -33970,13 +34017,13 @@
+@@ -33970,13 +34026,13 @@
  								{
  									for (int num15 = 0; num15 < 40; num15++)
  									{

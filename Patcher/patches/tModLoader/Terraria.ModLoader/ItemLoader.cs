@@ -682,6 +682,53 @@ namespace Terraria.ModLoader
 				globalItem.Update(item, ref gravity, ref maxFallSpeed);
 			}
 		}
+		//in Terraria.Player.GrabItems after increasing grab range add
+		//  ItemLoader.GrabRange(Main.item[j], this, ref num);
+		internal static void GrabRange(Item item, Player player, ref int grabRange)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.GrabRange(player, ref grabRange);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.GrabRange(item, player, ref grabRange);
+			}
+		}
+		//in Terraria.Player.GrabItems between setting beingGrabbed to true and grab styles add
+		//  if(ItemLoader.GrabStyle(Main.item[j], this)) { } else
+		internal static bool GrabStyle(Item item, Player player)
+		{
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				if (globalItem.GrabStyle(item, player))
+				{
+					return true;
+				}
+			}
+			if (IsModItem(item))
+			{
+				return item.modItem.GrabStyle(player);
+			}
+			return false;
+		}
+		//in Terraria.Player.GrabItems before special pickup effects add
+		//  if(!ItemLoader.OnPickup(Main.item[j], this)) { Main.item[j] = new Item(); continue; }
+		internal static bool OnPickup(Item item, Player player)
+		{
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				if (!globalItem.OnPickup(item, player))
+				{
+					return false;
+				}
+			}
+			if (IsModItem(item))
+			{
+				return item.modItem.OnPickup(player);
+			}
+			return true;
+		}
 		//in Terraria.UI.ItemSlot.GetItemLight remove type too high check
 		//in beginning of Terraria.Item.GetAlpha call
 		//  Color? modColor = ItemLoader.GetAlpha(this, newColor);
