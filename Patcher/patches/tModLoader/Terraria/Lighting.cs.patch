@@ -33,4 +33,13 @@
  					if (Lighting.RGB)
  					{
  						if (lightingState3.r2 < num18)
+@@ -2518,7 +2521,7 @@
+ 			if (Main.player[Main.myPlayer].accOreFinder)
+ 			{
+ 				Main.player[Main.myPlayer].bestOre = -1;
+-				for (int num60 = 0; num60 < 419; num60++)
++				for (int num60 = 0; num60 < Main.tileValue.Length; num60++)
+ 				{
+ 					if (tileCounts[num60] > 0 && Main.tileValue[num60] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num60] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
+ 					{
 

@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Map;
 using Terraria.ObjectData;
@@ -14,6 +15,7 @@ public static class TileLoader
     //make Terraria.ObjectData.TileObjectData._data internal
     //make all static Terraria.ObjectData.TileObjectData.StyleName fields public
     //make Terraria.ObjectData.TileObjectData.LinkedAlternates public
+    //make Terraria.ObjectData.TileObjectData.SubTiles and Alternates internal
     //at end of Terraria.ObjectData.TileObjectData.Initialize remove TileObjectData.readOnlyData = true;
     //at beginning of Terraria.WorldGen.PlaceTile remove type too high check
     //at beginning of Terraria.WorldGen.PlaceObject remove type too high check
@@ -22,6 +24,7 @@ public static class TileLoader
     //at end of Terraria.WorldGen.KillWall remove type too high check
     //in Terraria.Player change adjTile and oldAdjTile size to TileLoader.TileCount()
     //in Terraria.Player.AdjTiles change 419 to adjTile.Length
+    //in Terraria.Lighting for accOreFinder replace 419 with Main.tileValue.Length
     //make Terraria.WorldGen public
 
     //in Terraria.IO.WorldFile.SaveFileFormatHeader set initial num to TileLoader.TileCount
@@ -351,14 +354,34 @@ public static class TileLoader
         {
             return;
         }
-        int style = 0;
-        TileObjectData tileData = TileObjectData.GetTileData(type, style, 0);
+        TileObjectData tileData = TileObjectData.GetTileData(type, 0, 0);
         if(tileData == null)
         {
             return;
         }
         int frameX = Main.tile[i, j].frameX;
         int frameY = Main.tile[i, j].frameY;
+
+        int subX = frameX / tileData.CoordinateFullWidth;
+        int subY = frameY / tileData.CoordinateFullHeight;
+        int wrap = tileData.StyleWrapLimit;
+        if(wrap == 0)
+        {
+            wrap = 1;
+        }
+        int subTile = tileData.StyleHorizontal ? subY * wrap + subX : subX * wrap + subY;
+        int style = subTile / tileData.StyleMultiplier;
+        int alternate = subTile % tileData.StyleMultiplier;
+        for(int k = 0; k < tileData.AlternatesCount; k++)
+        {
+            if(alternate >= tileData.Alternates[k].Style && alternate <= tileData.Alternates[k].Style + tileData.RandomStyleRange)
+            {
+                alternate = k;
+                break;
+            }
+        }
+        tileData = TileObjectData.GetTileData(type, style, alternate + 1);
+
         int partFrameX = frameX % tileData.CoordinateFullWidth;
         int partFrameY = frameY % tileData.CoordinateFullHeight;
         int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
@@ -373,6 +396,7 @@ public static class TileLoader
         j -= partY;
         int originX = i + tileData.Origin.X;
         int originY = j + tileData.Origin.Y;
+
         TileObject objectData;
         bool partiallyDestroyed = false;
         for(int x = i; x < i + tileData.Width; x++)
@@ -413,6 +437,72 @@ public static class TileLoader
                 }
             }
         }
+    }
+
+    //in Terraria.WorldGen.OpenDoor replace bad type check with TileLoader.OpenDoorID(Main.tile[i, j]) < 0
+    //in Terraria.WorldGen.OpenDoor replace 11 with (ushort)TileLoader.OpenDoorID
+    //replace all type checks before WorldGen.OpenDoor
+    internal static int OpenDoorID(Tile tile)
+    {
+        ModTile modTile = GetTile(tile.type);
+        if(modTile != null)
+        {
+            return modTile.openDoorID;
+        }
+        if(tile.type == TileID.ClosedDoor && (tile.frameX < 594 || tile.frameY > 646))
+        {
+            return TileID.OpenDoor;
+        }
+        return -1;
+    }
+
+    //in Terraria.WorldGen.CloseDoor replace bad type check with TileLoader.CloseDoorID(Main.tile[i, j]) < 0
+    //in Terraria.WorldGen.CloseDoor replace 10 with (ushort)TileLoader.CloseDoorID
+    //replace all type checks before WorldGen.CloseDoor
+    internal static int CloseDoorID(Tile tile)
+    {
+        ModTile modTile = GetTile(tile.type);
+        if(modTile != null)
+        {
+            return modTile.closeDoorID;
+        }
+        if(tile.type == TileID.OpenDoor)
+        {
+            return TileID.ClosedDoor;
+        }
+        return -1;
+    }
+
+    //replace chest checks (type == 21) with this
+    internal static bool IsChest(int type)
+    {
+        if(type == TileID.Containers)
+        {
+            return true;
+        }
+        return ModChestName(type).Length > 0;
+    }
+
+    //in Terraria.UI.ChestUI add this to Lang lookups
+    internal static string ModChestName(int type)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            return modTile.chest;
+        }
+        return "";
+    }
+
+    //in Terraria.Player.CheckSpawn add this to bed type check
+    internal static bool IsModBed(int type)
+    {
+        ModTile modTile = GetTile(type);
+        if(modTile == null)
+        {
+            return false;
+        }
+        return modTile.bed;
     }
 
     //in Terraria.ObjectData.TileObject data make the following public:
@@ -527,6 +617,25 @@ public static class TileLoader
                 Item.NewItem(i * 16, j * 16, 16, 16, modTile.drop, 1, false, -1, false, false);
             }
             return false;
+        }
+        return true;
+    }
+
+    //in Terraria.WorldGen.CanKillTile after check for tile.active() add
+    //  if(!TileLoader.CanKillTile(i, j, tile.type, ref blockDamaged)) { return false; }
+    internal static bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
+    {
+        foreach(GlobalTile globalTile in globalTiles)
+        {
+            if(!globalTile.CanKillTile(i, j, type, ref blockDamaged))
+            {
+                return false;
+            }
+        }
+        ModTile modTile = GetTile(type);
+        if(modTile != null)
+        {
+            return modTile.CanKillTile(i, j, ref blockDamaged);
         }
         return true;
     }

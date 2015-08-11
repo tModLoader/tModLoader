@@ -147,6 +147,29 @@
  						if (this.controlUseTile)
  						{
  							if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 212 && this.launcherWait <= 0)
+@@ -20934,11 +20972,11 @@
+ 										}
+ 									}
+ 								}
+-								else if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 10)
++								else if (TileLoader.OpenDoorID(Main.tile[Player.tileTargetX, Player.tileTargetY]) >= 0)
+ 								{
+ 									int num207 = Player.tileTargetX;
+ 									int num208 = Player.tileTargetY;
+-									if (Main.tile[num207, num208].frameY >= 594 && Main.tile[num207, num208].frameY <= 646)
++									if (Main.tile[num207, num208].type == TileID.ClosedDoor && Main.tile[num207, num208].frameY >= 594 && Main.tile[num207, num208].frameY <= 646)
+ 									{
+ 										int num209 = 1141;
+ 										for (int num210 = 0; num210 < 58; num210++)
+@@ -20964,7 +21002,7 @@
+ 										NetMessage.SendData(19, -1, -1, "", 0, (float)Player.tileTargetX, (float)Player.tileTargetY, (float)this.direction, 0, 0, 0);
+ 									}
+ 								}
+-								else if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 11 && WorldGen.CloseDoor(Player.tileTargetX, Player.tileTargetY, false))
++								else if (TileLoader.CloseDoorID(Main.tile[Player.tileTargetX, Player.tileTargetY]) >= 0 && WorldGen.CloseDoor(Player.tileTargetX, Player.tileTargetY, false))
+ 								{
+ 									NetMessage.SendData(19, -1, -1, "", 1, (float)Player.tileTargetX, (float)Player.tileTargetY, (float)this.direction, 0, 0, 0);
+ 								}
 @@ -21238,6 +21276,7 @@
  										Projectile.NewProjectile(vector4.X, vector4.Y, 0f, 0f, 403, 0, 0f, this.whoAmI, 0f, 0f);
  									}
@@ -386,6 +409,15 @@
  					if (Main.netMode == 1)
  					{
  						NetMessage.SendData(17, -1, -1, "", 0, (float)x, (float)num4, 0f, 0, 0, 0);
+@@ -33377,7 +33448,7 @@
+ 			{
+ 				return false;
+ 			}
+-			if (!Main.tile[x, y - 1].active() || Main.tile[x, y - 1].type != 79)
++			if (!Main.tile[x, y - 1].active() || (Main.tile[x, y - 1].type != 79 && !TileLoader.IsModBed(Main.tile[x, y - 1].type)))
+ 			{
+ 				return false;
+ 			}
 @@ -33586,12 +33657,12 @@
  							{
  								player.armor[k].name = "";

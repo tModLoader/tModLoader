@@ -48,6 +48,11 @@ public class GlobalTile
         return true;
     }
 
+    public virtual bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
+    {
+        return true;
+    }
+
     public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) { }
 
     public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) { }

@@ -44,6 +44,33 @@
  			if (Main.expertMode)
  			{
  				this.scaleStats();
+@@ -16744,7 +16753,7 @@
+ 								}
+ 								else
+ 								{
+-									if (Main.tile[num210, num211 - 1].type == 10)
++									if (TileLoader.OpenDoorID(Main.tile[num210, num211 - 1]) >= 0)
+ 									{
+ 										bool flag26 = WorldGen.OpenDoor(num210, num211 - 1, this.direction);
+ 										if (!flag26)
+@@ -20010,7 +20019,7 @@
+ 						if (this.closeDoor && ((this.position.X + (float)(this.width / 2)) / 16f > (float)(this.doorX + 2) || (this.position.X + (float)(this.width / 2)) / 16f < (float)(this.doorX - 2)))
+ 						{
+ 							Tile tileSafely = Framing.GetTileSafely(this.doorX, this.doorY);
+-							if (tileSafely.type == 11)
++							if (TileLoader.CloseDoorID(tileSafely) >= 0)
+ 							{
+ 								bool flag47 = WorldGen.CloseDoor(this.doorX, this.doorY, false);
+ 								if (flag47)
+@@ -20183,7 +20192,7 @@
+ 							Tile tileSafely3 = Framing.GetTileSafely(num398, num399);
+ 							Tile tileSafely4 = Framing.GetTileSafely(num398, num399 - 1);
+ 							Tile tileSafely5 = Framing.GetTileSafely(num398, num399 - 2);
+-							if (this.townNPC && tileSafely5.nactive() && (tileSafely5.type == 10 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag38))
++							if (this.townNPC && tileSafely5.nactive() && (TileLoader.OpenDoorID(tileSafely5) >= 0 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag38))
+ 							{
+ 								if (Main.netMode != 1)
+ 								{
 @@ -38635,7 +38644,6 @@
  														31,
  														229

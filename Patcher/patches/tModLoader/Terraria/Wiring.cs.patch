@@ -51,6 +51,24 @@
  		{
  			if (Main.netMode == 1)
  			{
+@@ -652,7 +653,7 @@
+ 						NetMessage.SendData(19, -1, -1, "", 4 + flag.ToInt(), (float)i, (float)j, 0f, 0, 0, 0);
+ 						return;
+ 					}
+-					if (type == 11)
++					if (TileLoader.CloseDoorID(Main.tile[i, j]) >= 0)
+ 					{
+ 						if (WorldGen.CloseDoor(i, j, true))
+ 						{
+@@ -660,7 +661,7 @@
+ 							return;
+ 						}
+ 					}
+-					else if (type == 10)
++					else if (TileLoader.OpenDoorID(Main.tile[i, j]) >= 0)
+ 					{
+ 						int num26 = 1;
+ 						if (Main.rand.Next(2) == 0)
 @@ -1450,6 +1451,7 @@
  						}
  					}

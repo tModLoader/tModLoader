@@ -34,6 +34,10 @@ public class ModTile
     public float mineResist = 1f;
     public int minPick = 0;
     public int[] adjTiles = new int[0];
+    public int closeDoorID = -1;
+    public int openDoorID = -1;
+    public string chest = "";
+    public bool bed = false;
 
     public void AddToArray(ref int[] array)
     {
@@ -64,6 +68,11 @@ public class ModTile
     public virtual void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) { }
 
     public virtual bool Drop(int i, int j)
+    {
+        return true;
+    }
+
+    public virtual bool CanKillTile(int i, int j, ref bool blockDamaged)
     {
         return true;
     }

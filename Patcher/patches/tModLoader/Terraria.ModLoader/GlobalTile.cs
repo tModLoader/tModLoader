@@ -56,6 +56,11 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		public virtual bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
+		{
+			return true;
+		}
+
 		public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
 		{
 		}
