@@ -202,17 +202,26 @@
  						bool flag2 = this.ai[0] == 16f;
  						int num34 = 0;
  						int num35 = -1;
-@@ -53919,6 +53941,10 @@
+@@ -53801,7 +53823,7 @@
+ 
+ 		public void NPCLoot()
+ 		{
+-			if (Main.netMode == 1 || this.type >= 540)
++			if (Main.netMode == 1)
  			{
  				return;
  			}
-+			if (!NPCLoader.PreNPCLoot(this))
+@@ -53916,6 +53938,10 @@
+ 				}
+ 			}
+ 			if (this.type == 23 && Main.hardMode)
 +			{
 +				return;
 +			}
- 			if ((this.type == 170 || this.type == 180 || this.type == 171) && Main.rand.Next(3) == 0)
++			if (!NPCLoader.PreNPCLoot(this))
  			{
- 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3532, 1, false, 0, false, false);
+ 				return;
+ 			}
 @@ -57120,6 +57146,7 @@
  					NetMessage.SendData(25, -1, -1, Lang.misc[32], 255, 50f, 255f, 130f, 0, 0, 0);
  				}

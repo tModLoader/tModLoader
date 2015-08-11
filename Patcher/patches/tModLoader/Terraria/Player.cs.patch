@@ -19,6 +19,17 @@
  		private static int defaultItemGrabRange = 38;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+@@ -720,8 +721,8 @@
+ 		public int cPet;
+ 		public int cLight;
+ 		public int cYorai;
+-		public int[] ownedProjectileCounts = new int[651];
+-		public bool[] npcTypeNoAggro = new bool[540];
++		public int[] ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount()];
++		public bool[] npcTypeNoAggro = new bool[NPCLoader.NPCCount()];
+ 		public int lastPortalColorIndex;
+ 		public int _portalPhysicsTime;
+ 		public bool portalPhysicsFlag;
 @@ -2423,6 +2424,11 @@
  
  		public void openPresent()

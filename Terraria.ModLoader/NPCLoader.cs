@@ -19,6 +19,11 @@ public static class NPCLoader
         return reserveID;
     }
 
+    internal static int NPCCount()
+    {
+        return nextNPC;
+    }
+
     public static ModNPC GetNPC(int type)
     {
         if(npcs.ContainsKey(type))
@@ -31,6 +36,8 @@ public static class NPCLoader
         }
     }
 
+    //change initial size of Terraria.Player.npcTypeNoAggro to NPCLoader.NPCCount()
+    //in Terraria.Main.DrawNPCs and Terraria.NPC.NPCLoot remove type too high check
     internal static void ResizeArrays()
     {
         Array.Resize(ref Main.NPCLoaded, nextNPC);
@@ -63,6 +70,7 @@ public static class NPCLoader
         for(int k = NPCID.Count; k < nextNPC; k++)
         {
             Main.NPCLoaded[k] = true;
+            Main.npcFrameCount[k] = 1;
             NPCID.Sets.TrailCacheLength[k] = 10;
             NPCID.Sets.DangerDetectRange[k] = -1;
             NPCID.Sets.AttackTime[k] = -1;

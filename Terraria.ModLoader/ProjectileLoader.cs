@@ -17,6 +17,11 @@ public static class ProjectileLoader
         return reserveID;
     }
 
+    internal static int ProjectileCount()
+    {
+        return nextProjectile;
+    }
+
     public static ModProjectile GetProjectile(int type)
     {
         if(projectiles.ContainsKey(type))
@@ -29,10 +34,15 @@ public static class ProjectileLoader
         }
     }
 
+    //change initial size of Terraria.Player.ownedProjectileCounts to ProjectileLoader.ProjectileCount()
     internal static void ResizeArrays()
     {
         Array.Resize(ref Main.projectileLoaded, nextProjectile);
         Array.Resize(ref Main.projectileTexture, nextProjectile);
+        Array.Resize(ref Main.projHostile, nextProjectile);
+        Array.Resize(ref Main.projHook, nextProjectile);
+        Array.Resize(ref Main.projFrames, nextProjectile);
+        Array.Resize(ref Main.projPet, nextProjectile);
         Array.Resize(ref ProjectileID.Sets.TrailingMode, nextProjectile);
         Array.Resize(ref ProjectileID.Sets.TrailCacheLength, nextProjectile);
         Array.Resize(ref ProjectileID.Sets.LightPet, nextProjectile);
@@ -44,6 +54,7 @@ public static class ProjectileLoader
         for(int k = ProjectileID.Count; k < nextProjectile; k++)
         {
             Main.projectileLoaded[k] = true;
+            Main.projFrames[k] = 1;
             ProjectileID.Sets.TrailingMode[k] = -1;
             ProjectileID.Sets.TrailCacheLength[k] = 10;
         }

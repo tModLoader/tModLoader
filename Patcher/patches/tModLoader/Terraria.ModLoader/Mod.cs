@@ -615,7 +615,16 @@ namespace Terraria.ModLoader
 			foreach (ModProjectile projectile in projectiles.Values)
 			{
 				Main.projectileTexture[projectile.projectile.type] = ModLoader.GetTexture(projectile.texture);
+				Main.projFrames[projectile.projectile.type] = 1;
 				projectile.SetDefaults();
+				if (projectile.projectile.hostile)
+				{
+					Main.projHostile[projectile.projectile.type] = true;
+				}
+				if (projectile.projectile.aiStyle == 7)
+				{
+					Main.projHook[projectile.projectile.type] = true;
+				}
 			}
 			foreach (ModNPC npc in npcs.Values)
 			{

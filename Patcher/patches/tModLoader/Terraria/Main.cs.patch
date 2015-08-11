@@ -404,6 +404,15 @@
  								position = new Vector2(player.position.X + num3, player.position.Y + player.gfxOffY + num4);
  								this.DrawPlayer(player, position, player.fullRotation, player.fullRotationOrigin, player.ghostFade);
  							}
+@@ -19347,7 +19335,7 @@
+ 			{
+ 				try
+ 				{
+-					if (Main.npc[i].active && Main.npc[i].type > 0 && Main.npc[i].type < 540 && !Main.npc[i].hide && Main.npc[i].behindTiles == behindTiles)
++					if (Main.npc[i].active && Main.npc[i].type > 0 && !Main.npc[i].hide && Main.npc[i].behindTiles == behindTiles)
+ 					{
+ 						if (Main.npc[i].type == 125 || Main.npc[i].type == 126)
+ 						{
 @@ -26543,7 +26531,7 @@
  			for (int i = 0; i < 16 + drawPlayer.extraAccessorySlots * 2; i++)
  			{
