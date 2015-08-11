@@ -51,13 +51,41 @@ public static class ModLoader
             return;
         }
         AppDomain.CurrentDomain.AssemblyResolve += ResolveDllReference;
+        AppDomain.CurrentDomain.AssemblyResolve += ResolveModReference;
         assemblyResolverAdded = true;
     }
 
     private static Assembly ResolveDllReference(object sender, ResolveEventArgs args)
     {
         Directory.CreateDirectory(DllPath);
-        return Assembly.LoadFrom(DllPath + Path.DirectorySeparatorChar + args.Name + ".dll");
+        string name = args.Name;
+        if(name.IndexOf(',') >= 0)
+        {
+            name = name.Substring(0, name.IndexOf(','));
+        }
+        try
+        {
+            return Assembly.LoadFrom(DllPath + Path.DirectorySeparatorChar + name + ".dll");
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static Assembly ResolveModReference(object sender, ResolveEventArgs args)
+    {
+        string name = args.Name;
+        if(name.IndexOf(',') >= 0)
+        {
+            name = name.Substring(0, name.IndexOf(','));
+        }
+        Mod mod = GetMod(name);
+        if(mod == null)
+        {
+            return null;
+        }
+        return mod.code;
     }
 
     internal static bool ModLoaded(string name)

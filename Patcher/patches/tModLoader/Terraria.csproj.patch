@@ -9,7 +9,17 @@
      <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
      <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
      <OutputType>WinExe</OutputType>
-@@ -239,6 +239,43 @@
+@@ -32,6 +32,9 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+     <DefineConstants>CLIENT</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup>
++    <ApplicationIcon>Icon.ico</ApplicationIcon>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="Microsoft.Xna.Framework.Game" />
+@@ -239,6 +242,43 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -53,4 +63,12 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-
+@@ -384,5 +424,8 @@
+     <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
+     <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
+   </ItemGroup>
++  <ItemGroup>
++    <Content Include="Icon.ico" />
++  </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+ </Project>
