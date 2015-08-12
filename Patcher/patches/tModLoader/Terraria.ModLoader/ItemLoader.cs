@@ -187,7 +187,15 @@ namespace Terraria.ModLoader
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				globalItem.SetDefaults(item);
+				try
+				{
+					globalItem.SetDefaults(item);
+				}
+				catch
+				{
+					ModLoader.DisableMod(globalItem.mod.file);
+					throw;
+				}
 			}
 		}
 		//near end of Terraria.Main.DrawItem before default drawing call

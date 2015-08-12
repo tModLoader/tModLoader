@@ -155,6 +155,18 @@ public class ModRecipe : Recipe
                 break;
             }
         }
+        if(Recipe.numRecipes >= Recipe.maxRecipes)
+        {
+            Recipe.maxRecipes += 500;
+            Array.Resize(ref Main.recipe, Recipe.maxRecipes);
+            Array.Resize(ref Main.availableRecipe, Recipe.maxRecipes);
+            Array.Resize(ref Main.availableRecipeY, Recipe.maxRecipes);
+            for(int k = Recipe.numRecipes; k < Recipe.maxRecipes; k++)
+            {
+                Main.recipe[k] = new Recipe();
+                Main.availableRecipeY[k] = 65f * k;
+            }
+        }
         Main.recipe[Recipe.numRecipes] = this;
         this.RecipeIndex = Recipe.numRecipes;
         mod.recipes.Add(this);

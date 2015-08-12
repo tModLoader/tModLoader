@@ -193,7 +193,15 @@ public static class ItemLoader
         }
         foreach(GlobalItem globalItem in globalItems)
         {
-            globalItem.SetDefaults(item);
+            try
+            {
+                globalItem.SetDefaults(item);
+            }
+            catch
+            {
+                ModLoader.DisableMod(globalItem.mod.file);
+                throw;
+            }
         }
     }
 
