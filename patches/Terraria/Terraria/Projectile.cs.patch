@@ -1,0 +1,158 @@
+--- src/merged\Terraria\Projectile.cs
++++ src/Terraria\Terraria\Projectile.cs
+@@ -11986,100 +11986,34 @@
+ 			string name;
+ 			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
+ 			{
+-				if (<PrivateImplementationDetails>{925BC6E4-7F2B-447A-92FB-BAE94A6960E5}.$$method0x6000740-1 == null)
+-				{
+-					<PrivateImplementationDetails>{925BC6E4-7F2B-447A-92FB-BAE94A6960E5}.$$method0x6000740-1 = new Dictionary<string, int>(14)
+-					{
+-						{
+-							"Tsuki",
+-							0
+-						},
+-						{
+-							"Yoraiz0r",
+-							1
+-						},
+-						{
+-							"Ghostar",
+-							2
+-						},
+-						{
+-							"Devalaous",
+-							3
+-						},
+-						{
+-							"Leinfors",
+-							4
+-						},
+-						{
+-							"Aeroblop",
+-							5
+-						},
+-						{
+-							"Doylee",
+-							6
+-						},
+-						{
+-							"Darkhalis",
+-							7
+-						},
+-						{
+-							"Arkhalis",
+-							8
+-						},
+-						{
+-							"Nike Leon",
+-							9
+-						},
+-						{
+-							"Suweeka",
+-							10
+-						},
+-						{
+-							"W1K",
+-							11
+-						},
+-						{
+-							"Grox The Great",
+-							12
+-						},
+-						{
+-							"Random",
+-							13
+-						}
+-					};
+-				}
+-				int num;
+-				if (<PrivateImplementationDetails>{925BC6E4-7F2B-447A-92FB-BAE94A6960E5}.$$method0x6000740-1.TryGetValue(name, out num))
+-				{
+-					switch (num)
+-					{
+-					case 0:
+-					case 1:
+-						return 0.85f;
+-					case 2:
+-						return 0.33f;
+-					case 3:
+-						return 0.66f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
+-					case 4:
+-						return 0.77f;
+-					case 5:
+-						return 0.25f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
+-					case 6:
+-						return 0f;
+-					case 7:
+-					case 8:
+-						return 0.75f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
+-					case 9:
+-						return 0.075f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
+-					case 10:
+-						return 0.5f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.18f;
+-					case 11:
+-						return 0.75f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.05f;
+-					case 12:
+-						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
+-					case 13:
+-						return Main.rand.NextFloat();
+-					}
++				switch (name)
++				{
++				case "Tsuki":
++				case "Yoraiz0r":
++					return 0.85f;
++				case "Ghostar":
++					return 0.33f;
++				case "Devalaous":
++					return 0.66f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
++				case "Leinfors":
++					return 0.77f;
++				case "Aeroblop":
++					return 0.25f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
++				case "Doylee":
++					return 0f;
++				case "Darkhalis":
++				case "Arkhalis":
++					return 0.75f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
++				case "Nike Leon":
++					return 0.075f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
++				case "Suweeka":
++					return 0.5f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.18f;
++				case "W1K":
++					return 0.75f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.05f;
++				case "Grox The Great":
++					return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
++				case "Random":
++					return Main.rand.NextFloat();
+ 				}
+ 			}
+ 			return (float)((int)indexing) / 6f;
+@@ -20764,7 +20698,7 @@
+ 																int num688 = (int)(this.position.Y + (float)this.height) / 16 + 1;
+ 																if (WorldGen.SolidTile(num687, num688) || Main.tile[num687, num688].halfBrick())
+ 																{
+-																	goto IL_1C179;
++																	goto Block_1933;
+ 																}
+ 																if (Main.tile[num687, num688].slope() > 0)
+ 																{
+@@ -20776,7 +20710,6 @@
+ 																Block_1933:
+ 																try
+ 																{
+-																	IL_1C179:
+ 																	num687 = (int)(this.position.X + (float)(this.width / 2)) / 16;
+ 																	num688 = (int)(this.position.Y + (float)(this.height / 2)) / 16;
+ 																	num687 += num681;
+@@ -34045,7 +33978,7 @@
+ 							for (int n = 0; n < 5; n++)
+ 							{
+ 								int num29 = this.width / 4;
+-								((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
++								Vector2 _ = ((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
+ 								int num30 = Dust.NewDust(base.Center - Vector2.One * (float)num29, num29 * 2, num29 * 2, 88, 0f, 0f, 0, default(Color), 1f);
+ 								Dust dust5 = Main.dust[num30];
+ 								Vector2 value3 = Vector2.Normalize(dust5.position - base.Center);
+

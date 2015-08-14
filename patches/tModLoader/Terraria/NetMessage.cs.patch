@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria\NetMessage.cs
++++ src/tModLoader\Terraria\NetMessage.cs
+@@ -1557,7 +1557,7 @@
+ 						if (tile2.wall != 0)
+ 						{
+ 							b |= 4;
+-							array4[num5] = tile2.wall;
++							array4[num5] = (byte)tile2.wall;
+ 							num5++;
+ 							if (tile2.wallColor() != 0)
+ 							{
+

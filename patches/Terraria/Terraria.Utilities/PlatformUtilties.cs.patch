@@ -1,0 +1,21 @@
+--- src/merged\Terraria.Utilities\PlatformUtilties.cs
++++ src/Terraria\Terraria.Utilities\PlatformUtilties.cs
+@@ -10,7 +10,7 @@
+ 		public static string GetClipboard()
+ 		{
+ 			string clipboardText = "";
+-			Thread thread = new Thread(delegate
++			Thread thread = new Thread((ThreadStart)delegate
+ 			{
+ 				clipboardText = Clipboard.GetText();
+ 			});
+@@ -31,7 +31,7 @@
+ 
+ 		public static void SetClipboard(string text)
+ 		{
+-			Thread thread = new Thread(delegate
++			Thread thread = new Thread((ThreadStart)delegate
+ 			{
+ 				if (text.Length > 0)
+ 				{
+

@@ -20,7 +20,7 @@ Note that this repository will usually be ahead of the current released version.
 
 ### Getting the tModLoader code
 
-If you want to contribute to this project, you'll have to download the code for tModLoader, including all the changes made to the Terraria source. This requires you to have purchased your own Terraria.exe first. In order to do this, first clone the repository, then open the Patcher folder. Run the setup.bat file. If setup.bat doesn't work, you may have to unblock the files in the Patcher folder. Once tModLoader Dev Setup is open, just click on the Setup button and select the location of your vanilla Terraria.exe. **Warning:** decompiling will probably freeze your computer for a couple of hours. So you'll need to find something to do in real life until that's done.
+If you want to contribute to this project, you'll have to download the code for tModLoader, including all the changes made to the Terraria source. This requires you to have purchased your own Terraria.exe first. In order to do get the tModLoader code, first clone the repository, then run the setup.bat file. If setup.bat doesn't work, you may have to unblock the files in the repository. Once tModLoader Dev Setup is open, just click on the Setup button and select the location of your vanilla Terraria.exe. **Warning:** decompiling will probably freeze your computer for a couple of hours. So you'll need to find something to do in real life until that's done.
 
 When that's all done, you should have the tModLoader source in the src folder. Open the solutions folder then open the tModLoader solution.
 

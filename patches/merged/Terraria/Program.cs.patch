@@ -1,0 +1,52 @@
+--- src/decompiled\Terraria\Program.cs
++++ src/merged\Terraria\Program.cs
+@@ -4,7 +4,9 @@
+ using System.Reflection;
+ using System.Runtime.CompilerServices;
+ using System.Threading;
++#if CLIENT
+ using System.Windows.Forms;
++#endif
+ using Terraria.Initializers;
+ using Terraria.Social;
+ 
+@@ -12,7 +14,11 @@
+ {
+ 	public static class Program
+ 	{
++#if CLIENT
+ 		public const bool IsServer = false;
++#else
++        public const bool IsServer = true;
++#endif
+ 
+ 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
+ 
+@@ -94,7 +100,11 @@
+ 					{
+ 						Program.ForceLoadAssembly(Assembly.GetExecutingAssembly(), true);
+ 					};
++#if CLIENT
+ 					main.Run();
++#else
++                    main.DedServ();
++#endif
+ 				}
+ 				catch (Exception e)
+ 				{
+@@ -113,7 +123,14 @@
+ 					streamWriter.WriteLine(e);
+ 					streamWriter.WriteLine("");
+ 				}
++#if CLIENT
+ 				MessageBox.Show(e.ToString(), "Terraria: Error");
++#else
++				Console.WriteLine("Server crash: " + DateTime.Now);
++				Console.WriteLine(e);
++				Console.WriteLine("");
++				Console.WriteLine("Please send crashlog.txt to support@terraria.org");
++#endif
+ 			}
+ 			catch
+ 			{
+

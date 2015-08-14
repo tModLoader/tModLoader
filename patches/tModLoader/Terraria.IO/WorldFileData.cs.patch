@@ -1,0 +1,26 @@
+--- src/Terraria\Terraria.IO\WorldFileData.cs
++++ src/tModLoader\Terraria.IO\WorldFileData.cs
+@@ -1,5 +1,6 @@
+ using System;
+ using System.IO;
++using Terraria.ModLoader.IO;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.IO
+@@ -106,6 +107,7 @@
+ 				this._isCloudSave = true;
+ 				this._path = worldPathFromName;
+ 				Main.CloudFavoritesData.SaveFavorite(this);
++				WorldIO.MoveToCloud(base.Path, worldPathFromName);
+ 			}
+ 		}
+ 
+@@ -122,6 +124,7 @@
+ 				this._isCloudSave = false;
+ 				this._path = worldPathFromName;
+ 				Main.LocalFavoriteData.SaveFavorite(this);
++				WorldIO.MoveToLocal(base.Path, worldPathFromName);
+ 			}
+ 		}
+ 	}
+

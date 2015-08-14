@@ -1,0 +1,27 @@
+--- src/Terraria\Terraria\Lang.cs
++++ src/tModLoader\Terraria\Lang.cs
+@@ -1,4 +1,5 @@
+ using System;
++using Terraria.ModLoader;
+ 
+ #if CLIENT
+ using Terraria.Map;
+@@ -17,7 +18,7 @@
+ 		public static string[] dt = new string[4];
+ 		public static string[] chestType = new string[52];
+ 		public static string[] dresserType = new string[28];
+-		public static string[] mapLegend;
++		public static MapLegend mapLegend;
+ 		public static string[] prefix = new string[84];
+ 		public static string the;
+ 
+@@ -32679,7 +32680,7 @@
+ #if CLIENT
+ 				if (Lang.mapLegend == null)
+ 				{
+-					Lang.mapLegend = new string[MapHelper.LookupCount()];
++					Lang.mapLegend = new MapLegend(MapHelper.LookupCount());
+ 				}
+ 				Lang.mapLegend[MapHelper.TileToLookup(4, 0)] = "Torch";
+ 				Lang.mapLegend[MapHelper.TileToLookup(4, 1)] = "Torch";
+

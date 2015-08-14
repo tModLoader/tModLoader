@@ -1,0 +1,19 @@
+--- src/decompiled\Terraria.Graphics.Capture\CaptureCamera.cs
++++ src/merged\Terraria.Graphics.Capture\CaptureCamera.cs
+@@ -334,6 +334,7 @@
+ 
+ 		public void Dispose()
+ 		{
++#if CLIENT
+ 			Monitor.Enter(this._captureLock);
+ 			if (this._isDisposed)
+ 			{
+@@ -348,6 +349,7 @@
+ 			CaptureCamera.CameraExists = false;
+ 			this._isDisposed = true;
+ 			Monitor.Exit(this._captureLock);
++#endif
+ 		}
+ 	}
+ }
+

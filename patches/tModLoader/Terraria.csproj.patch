@@ -1,0 +1,69 @@
+--- src/Terraria\Terraria.csproj
++++ src/tModLoader\Terraria.csproj
+@@ -31,6 +31,9 @@
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+     <DefineConstants>CLIENT</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup>
++    <ApplicationIcon>Icon.ico</ApplicationIcon>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
+@@ -238,6 +241,47 @@
+     <Compile Include="Terraria.Map\MapHelper.cs" />
+     <Compile Include="Terraria.Map\MapTile.cs" />
+     <Compile Include="Terraria.Map\WorldMap.cs" />
++    <Compile Include="Terraria.ModLoader.IO\ItemIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TileIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\WorldIO.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIColorTextPanel.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIErrorMessage.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UILoadProgress.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIMessageBox.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModItem.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIMods.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModSourceItem.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModSources.cs" />
++    <Compile Include="Terraria.ModLoader\BuildProperties.cs" />
++    <Compile Include="Terraria.ModLoader\CraftGroup.cs" />
++    <Compile Include="Terraria.ModLoader\EquipLoader.cs" />
++    <Compile Include="Terraria.ModLoader\EquipType.cs" />
++    <Compile Include="Terraria.ModLoader\ErrorLogger.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalItem.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalNPC.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalProjectile.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalTile.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalWall.cs" />
++    <Compile Include="Terraria.ModLoader\Interface.cs" />
++    <Compile Include="Terraria.ModLoader\ItemLoader.cs" />
++    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
++    <Compile Include="Terraria.ModLoader\Mod.cs" />
++    <Compile Include="Terraria.ModLoader\ModDust.cs" />
++    <Compile Include="Terraria.ModLoader\ModItem.cs" />
++    <Compile Include="Terraria.ModLoader\ModLoader.cs" />
++    <Compile Include="Terraria.ModLoader\ModNPC.cs" />
++    <Compile Include="Terraria.ModLoader\ModProjectile.cs" />
++    <Compile Include="Terraria.ModLoader\ModProperties.cs" />
++    <Compile Include="Terraria.ModLoader\ModRecipe.cs" />
++    <Compile Include="Terraria.ModLoader\ModTile.cs" />
++    <Compile Include="Terraria.ModLoader\ModWall.cs" />
++    <Compile Include="Terraria.ModLoader\NPCLoader.cs" />
++    <Compile Include="Terraria.ModLoader.IO\PlayerIO.cs" />
++    <Compile Include="Terraria.ModLoader\ProjectileLoader.cs" />
++    <Compile Include="Terraria.ModLoader\TileLoader.cs" />
++    <Compile Include="Terraria.ModLoader\WallLoader.cs" />
+     <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
+     <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
+     <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
+@@ -384,5 +428,8 @@
+     <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
+     <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
+   </ItemGroup>
++  <ItemGroup>
++    <Content Include="Icon.ico" />
++  </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+ </Project>

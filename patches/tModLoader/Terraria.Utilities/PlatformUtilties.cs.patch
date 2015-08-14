@@ -1,0 +1,13 @@
+--- src/Terraria\Terraria.Utilities\PlatformUtilties.cs
++++ src/tModLoader\Terraria.Utilities\PlatformUtilties.cs
+@@ -46,7 +46,8 @@
+ 		public static string GetStoragePath()
+ 		{
+ 			string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "My Games");
+-			return Path.Combine(path, "Terraria");
++			path = Path.Combine(path, "Terraria");
++			return Path.Combine(path, "ModLoader");
+ 		}
+ 	}
+ }
+

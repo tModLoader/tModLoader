@@ -1,0 +1,25 @@
+--- src/merged\Terraria.csproj
++++ src/Terraria\Terraria.csproj
+@@ -27,11 +27,21 @@
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+     <DefineConstants>CLIENT</DefineConstants>
++    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+     <DefineConstants>CLIENT</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
++    <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
++      <HintPath>Terraria\Libraries.DotNetZip.Ionic.Zip.CF.dll</HintPath>
++    </Reference>
++    <Reference Include="Libraries.JSON.NET.Newtonsoft.Json">
++      <HintPath>Terraria\Libraries.JSON.NET.Newtonsoft.Json.dll</HintPath>
++    </Reference>
++    <Reference Include="Libraries.Steamworks.NET.Steamworks.NET">
++      <HintPath>Terraria\Libraries.Steamworks.NET.Steamworks.NET.dll</HintPath>
++    </Reference>
+     <Reference Include="Microsoft.Xna.Framework.Game" />
+     <Reference Include="System.Windows.Forms" />
+     <Reference Include="Microsoft.Xna.Framework" />
+

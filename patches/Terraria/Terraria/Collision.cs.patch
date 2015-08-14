@@ -1,0 +1,74 @@
+--- src/merged\Terraria\Collision.cs
++++ src/Terraria\Terraria\Collision.cs
+@@ -301,17 +301,15 @@
+ 			{
+ 				num4 = 1;
+ 			}
+-			if (num4 < Main.maxTilesY)
+-			{
+-				goto IL_AA;
+-			}
+-			num4 = Main.maxTilesY - 1;
++			if (num4 >= Main.maxTilesY)
++			{
++                num4 = Main.maxTilesY - 1;
++			}
+ 			bool result;
+ 			try
+ 			{
+ 				while (true)
+ 				{
+-					IL_AA:
+ 					int num5 = Math.Abs(num - num3);
+ 					int num6 = Math.Abs(num2 - num4);
+ 					if (num == num3 && num2 == num4)
+@@ -440,17 +438,15 @@
+ 			{
+ 				num4 = 1;
+ 			}
+-			if (num4 < Main.maxTilesY)
+-			{
+-				goto IL_AA;
+-			}
+-			num4 = Main.maxTilesY - 1;
++			if (num4 >= Main.maxTilesY)
++			{
++                num4 = Main.maxTilesY - 1;
++			}
+ 			bool result;
+ 			try
+ 			{
+ 				while (true)
+ 				{
+-					IL_AA:
+ 					int num5 = Math.Abs(num - num3);
+ 					int num6 = Math.Abs(num2 - num4);
+ 					if (num == num3 && num2 == num4)
+@@ -1091,7 +1087,7 @@
+ 						num9 %= 1f;
+ 						for (int i = 0; i < num16; i++)
+ 						{
+-							Main.tile[num, num2];
++							Tile _ = Main.tile[num, num2];
+ 							if (Collision.HitWallSubstep(num, num2))
+ 							{
+ 								goto Block_18;
+@@ -1120,7 +1116,7 @@
+ 						num10 %= 1f;
+ 						for (int j = 0; j < num17; j++)
+ 						{
+-							Main.tile[num, num2];
++							Tile _ = Main.tile[num, num2];
+ 							if (Collision.HitWallSubstep(num, num2))
+ 							{
+ 								goto Block_26;
+@@ -1146,7 +1142,7 @@
+ 					{
+ 						goto Block_33;
+ 					}
+-					Main.tile[num, num2];
++					Tile _0 = Main.tile[num, num2];
+ 					if (Collision.HitWallSubstep(num, num2))
+ 					{
+ 						goto Block_34;
+

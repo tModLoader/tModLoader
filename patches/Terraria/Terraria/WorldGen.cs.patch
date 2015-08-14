@@ -1,0 +1,597 @@
+--- src/merged\Terraria\WorldGen.cs
++++ src/Terraria\Terraria\WorldGen.cs
+@@ -6391,7 +6391,7 @@
+ 				progress.Message = Lang.gen[21];
+ 				for (int k = 0; k < WorldGen.numMCaves; k++)
+ 				{
+-					int i2 = WorldGen.mCaveX[k];
++					i2 = WorldGen.mCaveX[k];
+ 					int j2 = WorldGen.mCaveY[k];
+ 					WorldGen.CaveOpenater(i2, j2);
+ 					WorldGen.Cavinator(i2, j2, WorldGen.genRand.Next(40, 50));
+@@ -8940,6 +8940,8 @@
+ 				int num2 = 400;
+ 				int num3 = 4;
+ 				int num4 = 275;
++                bool flag2;
++                int maxValue;
+ 				for (int k = 0; k < 3; k++)
+ 				{
+ 					int num5;
+@@ -8947,36 +8949,34 @@
+ 					switch (k)
+ 					{
+ 					case 0:
+-					{
+-						IL_3D:
++                    default:
++					{
+ 						num5 = 5;
+ 						num6 = num4;
+-						bool flag2 = false;
+-						int maxValue = num3;
++						flag2 = false;
++						maxValue = num3;
+ 						goto IL_77;
+ 					}
+ 					case 1:
+ 					{
+ 						num5 = num2;
+ 						num6 = Main.maxTilesX - num2;
+-						bool flag2 = true;
+-						int maxValue = num;
++						flag2 = true;
++						maxValue = num;
+ 						goto IL_77;
+ 					}
+ 					case 2:
+ 					{
+ 						num5 = Main.maxTilesX - num4;
+ 						num6 = Main.maxTilesX - 5;
+-						bool flag2 = false;
+-						int maxValue = num3;
++						flag2 = false;
++						maxValue = num3;
+ 						goto IL_77;
+ 					}
+ 					}
+-					goto IL_3D;
+ 					IL_77:
+ 					for (int l = num5; l < num6; l++)
+ 					{
+-						int maxValue;
+ 						if (WorldGen.genRand.Next(maxValue) == 0)
+ 						{
+ 							int num7 = 0;
+@@ -8988,7 +8988,6 @@
+ 									Tile tile2 = Main.tile[l, num7 - 1];
+ 									if (!tile2.active() && tile2.wall == 0)
+ 									{
+-										bool flag2;
+ 										if (flag2)
+ 										{
+ 											WorldGen.PlantCactus(l, num7);
+@@ -10263,7 +10262,7 @@
+ 						if (flag)
+ 						{
+ 							short num6 = (short)Math.Sign(num3);
+-							num4 += num6 * 2;
++							num4 += (short)(num6 * 2);
+ 						}
+ 					}
+ 					tile.active(true);
+@@ -13167,7 +13166,7 @@
+ 			Main.tile[x - 1, y - 1].frameY = 0;
+ 			Main.tile[x, y - 1].active(true);
+ 			Main.tile[x, y - 1].type = 31;
+-			Main.tile[x, y - 1].frameX = 18 + num;
++			Main.tile[x, y - 1].frameX = (short)(18 + num);
+ 			Main.tile[x, y - 1].frameY = 0;
+ 			Main.tile[x - 1, y].active(true);
+ 			Main.tile[x - 1, y].type = 31;
+@@ -13175,7 +13174,7 @@
+ 			Main.tile[x - 1, y].frameY = 18;
+ 			Main.tile[x, y].active(true);
+ 			Main.tile[x, y].type = 31;
+-			Main.tile[x, y].frameX = 18 + num;
++			Main.tile[x, y].frameX = (short)(18 + num);
+ 			Main.tile[x, y].frameY = 18;
+ 		}
+ 
+@@ -13649,33 +13648,32 @@
+ 					int style16 = 32;
+ 					int style17 = 32;
+ 					int num37;
++                    int num38;
+ 					switch (num36)
+ 					{
+ 					case 0:
+-					{
+-						IL_F95:
++                    default:
++					{
+ 						num37 = 1;
+-						int num38 = 3;
++						num38 = 3;
+ 						goto IL_FAB;
+ 					}
+ 					case 1:
+ 					{
+ 						num37 = 3;
+-						int num38 = 3;
++						num38 = 3;
+ 						goto IL_FAB;
+ 					}
+ 					case 2:
+ 					{
+ 						num37 = 1;
+-						int num38 = 2;
++						num38 = 2;
+ 						goto IL_FAB;
+ 					}
+ 					}
+-					goto IL_F95;
+ 					IL_FAB:
+ 					for (int num39 = num34 - 1; num39 <= num34 + num37; num39++)
+ 					{
+-						int num38;
+ 						for (int num40 = num35; num40 <= num35 + num38; num40++)
+ 						{
+ 							Tile tile = Main.tile[num34, num35];
+@@ -19802,7 +19800,7 @@
+ 			Main.tile[num4 + 1, num2].active(true);
+ 			Main.tile[num4 + 1, num2].type = 11;
+ 			Main.tile[num4 + 1, num2].frameY = (short)num6;
+-			Main.tile[num4 + 1, num2].frameX = num3 + 18;
++			Main.tile[num4 + 1, num2].frameX = (short)(num3 + 18);
+ 			Main.tile[num4 + 1, num2].color(color);
+ 			if (Main.tile[num4, num2 + 1] == null)
+ 			{
+@@ -19820,7 +19818,7 @@
+ 			Main.tile[num4 + 1, num2 + 1].active(true);
+ 			Main.tile[num4 + 1, num2 + 1].type = 11;
+ 			Main.tile[num4 + 1, num2 + 1].frameY = (short)(num6 + 18);
+-			Main.tile[num4 + 1, num2 + 1].frameX = num3 + 18;
++			Main.tile[num4 + 1, num2 + 1].frameX = (short)(num3 + 18);
+ 			Main.tile[num4 + 1, num2 + 1].color(color2);
+ 			if (Main.tile[num4, num2 + 2] == null)
+ 			{
+@@ -19838,7 +19836,7 @@
+ 			Main.tile[num4 + 1, num2 + 2].active(true);
+ 			Main.tile[num4 + 1, num2 + 2].type = 11;
+ 			Main.tile[num4 + 1, num2 + 2].frameY = (short)(num6 + 36);
+-			Main.tile[num4 + 1, num2 + 2].frameX = num3 + 18;
++			Main.tile[num4 + 1, num2 + 2].frameX = (short)(num3 + 18);
+ 			Main.tile[num4 + 1, num2 + 2].color(color3);
+ 			for (int m = num4 - 1; m <= num4 + 2; m++)
+ 			{
+@@ -21083,7 +21081,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -2);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -2);
+ 				}
+ 				if ((style & 2) == 2)
+ 				{
+@@ -21092,7 +21090,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -3);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -3);
+ 				}
+ 				if ((style & 4) == 4)
+ 				{
+@@ -21101,7 +21099,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -5);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -5);
+ 				}
+ 			}
+ 			if (obj == 1)
+@@ -21113,7 +21111,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -9);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -9);
+ 				}
+ 				if ((style & 2) == 2)
+ 				{
+@@ -21122,7 +21120,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -17);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -17);
+ 				}
+ 				if ((style & 4) == 4)
+ 				{
+@@ -21131,7 +21129,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -33);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -33);
+ 				}
+ 			}
+ 			if (obj == 2)
+@@ -21143,7 +21141,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -65);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -65);
+ 				}
+ 				if ((style & 2) == 2)
+ 				{
+@@ -21152,7 +21150,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -129);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -129);
+ 				}
+ 				if ((style & 4) == 4)
+ 				{
+@@ -21161,7 +21159,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -257);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -257);
+ 				}
+ 				if ((style & 8) == 8)
+ 				{
+@@ -21170,7 +21168,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -513);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -513);
+ 				}
+ 			}
+ 			if (obj == 3)
+@@ -21182,7 +21180,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -1025);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -1025);
+ 				}
+ 				if ((style & 2) == 2)
+ 				{
+@@ -21191,7 +21189,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -2049);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -2049);
+ 				}
+ 				if ((style & 4) == 4)
+ 				{
+@@ -21200,7 +21198,7 @@
+ 				}
+ 				else
+ 				{
+-					Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -4097);
++					Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -4097);
+ 				}
+ 				if ((style & 8) == 8)
+ 				{
+@@ -21208,7 +21206,7 @@
+ 					expr_443.frameY |= 8192;
+ 					return;
+ 				}
+-				Main.tile[num, num2].frameY = (Main.tile[num, num2].frameY & -8193);
++				Main.tile[num, num2].frameY = (short)(Main.tile[num, num2].frameY & -8193);
+ 			}
+ 		}
+ 
+@@ -22112,7 +22110,7 @@
+ 			return white;
+ 		}
+ 
+-		public static void paintEffect(int x, int y, byte color, byte oldColor)
++		public static void paintEffect(int x, int y, byte? color, byte? oldColor)
+ 		{
+ 			int color2 = (int)(color ?? oldColor);
+ 			Color newColor = WorldGen.paintColor(color2);
+@@ -23791,7 +23789,7 @@
+ 				Main.tile[x, y - 1].frameX = frameX;
+ 				Main.tile[x, y - 1].type = type;
+ 				Main.tile[x, y].active(true);
+-				Main.tile[x, y].frameY = num + 18;
++				Main.tile[x, y].frameY = (short)(num + 18);
+ 				Main.tile[x, y].frameX = frameX;
+ 				Main.tile[x, y].type = type;
+ 			}
+@@ -23816,7 +23814,7 @@
+ 				Main.tile[x, y].frameX = frameX;
+ 				Main.tile[x, y].type = type;
+ 				Main.tile[x, y + 1].active(true);
+-				Main.tile[x, y + 1].frameY = num + 18;
++				Main.tile[x, y + 1].frameY = (short)(num + 18);
+ 				Main.tile[x, y + 1].frameX = frameX;
+ 				Main.tile[x, y + 1].type = type;
+ 			}
+@@ -24046,7 +24044,7 @@
+ 					Main.tile[i, j].type = type;
+ 					Main.tile[i + 1, j].active(true);
+ 					Main.tile[i + 1, j].frameY = frameY;
+-					Main.tile[i + 1, j].frameX = num + 18;
++					Main.tile[i + 1, j].frameX = (short)(num + 18);
+ 					Main.tile[i + 1, j].type = type;
+ 					return true;
+ 				}
+@@ -24738,15 +24736,15 @@
+ 					Main.tile[X2 - 1, num - 1].type = type;
+ 					Main.tile[X2, num - 1].active(true);
+ 					Main.tile[X2, num - 1].frameY = num2;
+-					Main.tile[X2, num - 1].frameX = 18 + num3;
++					Main.tile[X2, num - 1].frameX = (short)(18 + num3);
+ 					Main.tile[X2, num - 1].type = type;
+ 					Main.tile[X2 - 1, num].active(true);
+-					Main.tile[X2 - 1, num].frameY = num2 + 18;
++					Main.tile[X2 - 1, num].frameY = (short)(num2 + 18);
+ 					Main.tile[X2 - 1, num].frameX = num3;
+ 					Main.tile[X2 - 1, num].type = type;
+ 					Main.tile[X2, num].active(true);
+-					Main.tile[X2, num].frameY = num2 + 18;
+-					Main.tile[X2, num].frameX = 18 + num3;
++					Main.tile[X2, num].frameY = (short)(num2 + 18);
++					Main.tile[X2, num].frameX = (short)(18 + num3);
+ 					Main.tile[X2, num].type = type;
+ 					return;
+ 				}
+@@ -24789,11 +24787,11 @@
+ 					Main.tile[X2 - 1, Y2 - 1].type = type;
+ 					Main.tile[X2, Y2 - 1].active(true);
+ 					Main.tile[X2, Y2 - 1].frameY = 0;
+-					Main.tile[X2, Y2 - 1].frameX = num4 + 18;
++					Main.tile[X2, Y2 - 1].frameX = (short)(num4 + 18);
+ 					Main.tile[X2, Y2 - 1].type = type;
+ 					Main.tile[X2 + 1, Y2 - 1].active(true);
+ 					Main.tile[X2 + 1, Y2 - 1].frameY = 0;
+-					Main.tile[X2 + 1, Y2 - 1].frameX = num4 + 36;
++					Main.tile[X2 + 1, Y2 - 1].frameX = (short)(num4 + 36);
+ 					Main.tile[X2 + 1, Y2 - 1].type = type;
+ 					Main.tile[X2 - 1, Y2].active(true);
+ 					Main.tile[X2 - 1, Y2].frameY = 18;
+@@ -24801,11 +24799,11 @@
+ 					Main.tile[X2 - 1, Y2].type = type;
+ 					Main.tile[X2, Y2].active(true);
+ 					Main.tile[X2, Y2].frameY = 18;
+-					Main.tile[X2, Y2].frameX = num4 + 18;
++					Main.tile[X2, Y2].frameX = (short)(num4 + 18);
+ 					Main.tile[X2, Y2].type = type;
+ 					Main.tile[X2 + 1, Y2].active(true);
+ 					Main.tile[X2 + 1, Y2].frameY = 18;
+-					Main.tile[X2 + 1, Y2].frameX = num4 + 36;
++					Main.tile[X2 + 1, Y2].frameX = (short)(num4 + 36);
+ 					Main.tile[X2 + 1, Y2].type = type;
+ 				}
+ 			}
+@@ -26749,15 +26747,15 @@
+ 				Main.tile[x - 1, y - 1].type = type;
+ 				Main.tile[x, y - 1].active(true);
+ 				Main.tile[x, y - 1].frameY = (short)num2;
+-				Main.tile[x, y - 1].frameX = 18 + num;
++				Main.tile[x, y - 1].frameX = (short)(18 + num);
+ 				Main.tile[x, y - 1].type = type;
+ 				Main.tile[x + 1, y - 1].active(true);
+ 				Main.tile[x + 1, y - 1].frameY = (short)num2;
+-				Main.tile[x + 1, y - 1].frameX = 36 + num;
++				Main.tile[x + 1, y - 1].frameX = (short)(36 + num);
+ 				Main.tile[x + 1, y - 1].type = type;
+ 				Main.tile[x + 2, y - 1].active(true);
+ 				Main.tile[x + 2, y - 1].frameY = (short)num2;
+-				Main.tile[x + 2, y - 1].frameX = 54 + num;
++				Main.tile[x + 2, y - 1].frameX = (short)(54 + num);
+ 				Main.tile[x + 2, y - 1].type = type;
+ 				Main.tile[x - 1, y].active(true);
+ 				Main.tile[x - 1, y].frameY = (short)(num2 + 18);
+@@ -26765,15 +26763,15 @@
+ 				Main.tile[x - 1, y].type = type;
+ 				Main.tile[x, y].active(true);
+ 				Main.tile[x, y].frameY = (short)(num2 + 18);
+-				Main.tile[x, y].frameX = 18 + num;
++				Main.tile[x, y].frameX = (short)(18 + num);
+ 				Main.tile[x, y].type = type;
+ 				Main.tile[x + 1, y].active(true);
+ 				Main.tile[x + 1, y].frameY = (short)(num2 + 18);
+-				Main.tile[x + 1, y].frameX = 36 + num;
++				Main.tile[x + 1, y].frameX = (short)(36 + num);
+ 				Main.tile[x + 1, y].type = type;
+ 				Main.tile[x + 2, y].active(true);
+ 				Main.tile[x + 2, y].frameY = (short)(num2 + 18);
+-				Main.tile[x + 2, y].frameX = 54 + num;
++				Main.tile[x + 2, y].frameX = (short)(54 + num);
+ 				Main.tile[x + 2, y].type = type;
+ 			}
+ 		}
+@@ -27670,8 +27668,8 @@
+ 
+ 		public static bool ShiftTallGate(int x, int y, bool closing)
+ 		{
+-			ushort type = closing ? 388 : 389;
+-			ushort num = closing ? 389 : 388;
++			ushort type = closing ? (ushort)388 : (ushort)389;
++			ushort num = closing ? (ushort)389 : (ushort)388;
+ 			Tile tileSafely = Framing.GetTileSafely(x, y);
+ 			if (tileSafely.type != num)
+ 			{
+@@ -27950,11 +27948,11 @@
+ 				Main.tile[x - 1, y].type = type;
+ 				Main.tile[x, y].active(true);
+ 				Main.tile[x, y].frameY = 0;
+-				Main.tile[x, y].frameX = num + 18;
++				Main.tile[x, y].frameX = (short)(num + 18);
+ 				Main.tile[x, y].type = type;
+ 				Main.tile[x + 1, y].active(true);
+ 				Main.tile[x + 1, y].frameY = 0;
+-				Main.tile[x + 1, y].frameX = num + 36;
++				Main.tile[x + 1, y].frameX = (short)(num + 36);
+ 				Main.tile[x + 1, y].type = type;
+ 			}
+ 		}
+@@ -28032,11 +28030,11 @@
+ 					Main.tile[x - 1, y].type = type;
+ 					Main.tile[x, y].active(true);
+ 					Main.tile[x, y].frameY = 0;
+-					Main.tile[x, y].frameX = num3 + 18;
++					Main.tile[x, y].frameX = (short)(num3 + 18);
+ 					Main.tile[x, y].type = type;
+ 					Main.tile[x + 1, y].active(true);
+ 					Main.tile[x + 1, y].frameY = 0;
+-					Main.tile[x + 1, y].frameX = num3 + 36;
++					Main.tile[x + 1, y].frameX = (short)(num3 + 36);
+ 					Main.tile[x + 1, y].type = type;
+ 					return;
+ 				}
+@@ -28046,11 +28044,11 @@
+ 				Main.tile[x - 1, y - 1].type = type;
+ 				Main.tile[x, y - 1].active(true);
+ 				Main.tile[x, y - 1].frameY = 0;
+-				Main.tile[x, y - 1].frameX = num3 + 18;
++				Main.tile[x, y - 1].frameX = (short)(num3 + 18);
+ 				Main.tile[x, y - 1].type = type;
+ 				Main.tile[x + 1, y - 1].active(true);
+ 				Main.tile[x + 1, y - 1].frameY = 0;
+-				Main.tile[x + 1, y - 1].frameX = num3 + 36;
++				Main.tile[x + 1, y - 1].frameX = (short)(num3 + 36);
+ 				Main.tile[x + 1, y - 1].type = type;
+ 				Main.tile[x - 1, y].active(true);
+ 				Main.tile[x - 1, y].frameY = 18;
+@@ -28058,11 +28056,11 @@
+ 				Main.tile[x - 1, y].type = type;
+ 				Main.tile[x, y].active(true);
+ 				Main.tile[x, y].frameY = 18;
+-				Main.tile[x, y].frameX = num3 + 18;
++				Main.tile[x, y].frameX = (short)(num3 + 18);
+ 				Main.tile[x, y].type = type;
+ 				Main.tile[x + 1, y].active(true);
+ 				Main.tile[x + 1, y].frameY = 18;
+-				Main.tile[x + 1, y].frameX = num3 + 36;
++				Main.tile[x + 1, y].frameX = (short)(num3 + 36);
+ 				Main.tile[x + 1, y].type = type;
+ 			}
+ 		}
+@@ -28115,15 +28113,15 @@
+ 				Main.tile[x - 1, y - 1].type = type;
+ 				Main.tile[x, y - 1].active(true);
+ 				Main.tile[x, y - 1].frameY = num;
+-				Main.tile[x, y - 1].frameX = num2 + 18;
++				Main.tile[x, y - 1].frameX = (short)(num2 + 18);
+ 				Main.tile[x, y - 1].type = type;
+ 				Main.tile[x - 1, y].active(true);
+-				Main.tile[x - 1, y].frameY = num + 18;
++				Main.tile[x - 1, y].frameY = (short)(num + 18);
+ 				Main.tile[x - 1, y].frameX = num2;
+ 				Main.tile[x - 1, y].type = type;
+ 				Main.tile[x, y].active(true);
+-				Main.tile[x, y].frameY = num + 18;
+-				Main.tile[x, y].frameX = num2 + 18;
++				Main.tile[x, y].frameY = (short)(num + 18);
++				Main.tile[x, y].frameX = (short)(num2 + 18);
+ 				Main.tile[x, y].type = type;
+ 			}
+ 		}
+@@ -31633,11 +31631,11 @@
+ 			Main.tile[x - 1, y - 1].type = type;
+ 			Main.tile[x, y - 1].active(true);
+ 			Main.tile[x, y - 1].frameY = 0;
+-			Main.tile[x, y - 1].frameX = num + 18;
++			Main.tile[x, y - 1].frameX = (short)(num + 18);
+ 			Main.tile[x, y - 1].type = type;
+ 			Main.tile[x + 1, y - 1].active(true);
+ 			Main.tile[x + 1, y - 1].frameY = 0;
+-			Main.tile[x + 1, y - 1].frameX = num + 36;
++			Main.tile[x + 1, y - 1].frameX = (short)(num + 36);
+ 			Main.tile[x + 1, y - 1].type = type;
+ 			Main.tile[x - 1, y].active(true);
+ 			Main.tile[x - 1, y].frameY = 18;
+@@ -31645,11 +31643,11 @@
+ 			Main.tile[x - 1, y].type = type;
+ 			Main.tile[x, y].active(true);
+ 			Main.tile[x, y].frameY = 18;
+-			Main.tile[x, y].frameX = num + 18;
++			Main.tile[x, y].frameX = (short)(num + 18);
+ 			Main.tile[x, y].type = type;
+ 			Main.tile[x + 1, y].active(true);
+ 			Main.tile[x + 1, y].frameY = 18;
+-			Main.tile[x + 1, y].frameX = num + 36;
++			Main.tile[x + 1, y].frameX = (short)(num + 36);
+ 			Main.tile[x + 1, y].type = type;
+ 		}
+ 
+@@ -45465,11 +45463,11 @@
+ 								}
+ 								else if ((num4 >= 0 && Main.tileSolid[num4] && !Main.tileNoAttach[num4]) || num4 == 124 || (num4 == 5 && num8 == 5 && num6 == 5))
+ 								{
+-									tile.frameX = 22 + num2;
++									tile.frameX = (short)(22 + num2);
+ 								}
+ 								else if ((num5 >= 0 && Main.tileSolid[num5] && !Main.tileNoAttach[num5]) || num5 == 124 || (num5 == 5 && num9 == 5 && num7 == 5))
+ 								{
+-									tile.frameX = 44 + num2;
++									tile.frameX = (short)(44 + num2);
+ 								}
+ 								else if (tile.wall > 0)
+ 								{
+@@ -45645,21 +45643,21 @@
+ 								{
+ 									if (tile.frameY < 108 || tile.frameY > 54)
+ 									{
+-										tile.frameY = 108 + num25;
++										tile.frameY = (short)(108 + num25);
+ 									}
+ 								}
+ 								else if (num24 >= 0 && Main.tileSolid[num24] && !Main.tileSolidTop[num24])
+ 								{
+ 									if (tile.frameY < 162 || tile.frameY > 198)
+ 									{
+-										tile.frameY = 162 + num25;
++										tile.frameY = (short)(162 + num25);
+ 									}
+ 								}
+ 								else if (num22 >= 0 && Main.tileSolid[num22] && !Main.tileSolidTop[num22])
+ 								{
+ 									if (tile.frameY < 54 || tile.frameY > 90)
+ 									{
+-										tile.frameY = 54 + num25;
++										tile.frameY = (short)(54 + num25);
+ 									}
+ 								}
+ 								else
+@@ -45721,7 +45719,7 @@
+ 									}
+ 									if (tile.frameY < 54 || tile.frameY > 90)
+ 									{
+-										tile.frameY = 54 + num30;
++										tile.frameY = (short)(54 + num30);
+ 									}
+ 								}
+ 								else if (num28 >= 0 && Main.tileMoss[num28])
+@@ -45736,7 +45734,7 @@
+ 									}
+ 									if (tile.frameY < 108 || tile.frameY > 54)
+ 									{
+-										tile.frameY = 108 + num30;
++										tile.frameY = (short)(108 + num30);
+ 									}
+ 								}
+ 								else if (num29 >= 0 && Main.tileMoss[num29])
+@@ -45751,7 +45749,7 @@
+ 									}
+ 									if (tile.frameY < 162 || tile.frameY > 198)
+ 									{
+-										tile.frameY = 162 + num30;
++										tile.frameY = (short)(162 + num30);
+ 									}
+ 								}
+ 								else
+

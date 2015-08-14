@@ -1,0 +1,29 @@
+--- src/merged\Terraria\Player.cs
++++ src/Terraria\Terraria\Player.cs
+@@ -11162,7 +11162,7 @@
+ 						{
+ 							list9.Add(tuple8);
+ 						}
+-						Main.tile[tuple8.Item1, tuple8.Item2];
++						Tile _ = Main.tile[tuple8.Item1, tuple8.Item2];
+ 						if (Collision.HitWallSubstep(tuple8.Item1, tuple8.Item2))
+ 						{
+ 							list9.Add(tuple8);
+@@ -34210,7 +34210,7 @@
+ 				FileUtilities.Copy(path, path + ".bak", isCloudSave, true);
+ 			}
+ 			RijndaelManaged rijndaelManaged = new RijndaelManaged();
+-			using (Stream stream = isCloudSave ? new MemoryStream(2000) : new FileStream(path, FileMode.Create))
++			using (Stream stream = isCloudSave ? (Stream)new MemoryStream(2000) : (Stream)new FileStream(path, FileMode.Create))
+ 			{
+ 				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(Player.ENCRYPTION_KEY, Player.ENCRYPTION_KEY), CryptoStreamMode.Write))
+ 				{
+@@ -34938,7 +34938,6 @@
+ 		{
+ 			int[] array = new int[2];
+ 			this.hurtCooldowns = array;
+-			base..ctor();
+ 			this.width = 20;
+ 			this.height = 42;
+ 			this.name = string.Empty;
+

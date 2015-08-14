@@ -1,0 +1,44 @@
+--- src/merged\Terraria\HitTile.cs
++++ src/Terraria\Terraria\HitTile.cs
+@@ -136,7 +136,6 @@
+ 				{
+ 					if (this.order[i] == tileId)
+ 					{
+-						IL_E1:
+ 						while (i > 1)
+ 						{
+ 							int num = this.order[i - 1];
+@@ -148,7 +147,14 @@
+ 						goto IL_EE;
+ 					}
+ 				}
+-				goto IL_E1;
++                for (int k = 20; k > 1; k--)
++                {
++                    int num = this.order[k - 1];
++                    this.order[k - 1] = this.order[k];
++                    this.order[k] = num;
++                }
++                this.order[1] = tileId;
++                goto IL_EE;
+ 			}
+ 			this.bufferLocation = this.order[20];
+ 			this.data[this.bufferLocation].Clear();
+@@ -172,7 +178,6 @@
+ 			{
+ 				if (this.order[i] == tileId)
+ 				{
+-					IL_47:
+ 					while (i < 20)
+ 					{
+ 						this.order[i] = this.order[i + 1];
+@@ -182,7 +187,7 @@
+ 					return;
+ 				}
+ 			}
+-			goto IL_47;
++            this.order[20] = tileId;
+ 		}
+ 
+ 		public void Prune()
+

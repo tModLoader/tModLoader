@@ -1,0 +1,220 @@
+--- src/decompiled\Terraria\Main.cs
++++ src/merged\Terraria\Main.cs
+@@ -38,10 +38,17 @@
+ using Terraria.UI.Chat;
+ using Terraria.Utilities;
+ using Terraria.World.Generation;
++#if SERVER
++using Terraria.Server;
++#endif
+ 
+ namespace Terraria
+ {
++#if CLIENT
+ 	public class Main : Game
++#else
++	public class Main : Terraria.Server.Game
++#endif
+ 	{
+ 		public delegate void OnPlayerSelected(PlayerFileData player);
+ 
+@@ -3704,11 +3711,13 @@
+ 			Main.mouseColor.R = Main.Configuration.Get<byte>("MouseColorR", Main.mouseColor.R);
+ 			Main.mouseColor.G = Main.Configuration.Get<byte>("MouseColorG", Main.mouseColor.G);
+ 			Main.mouseColor.B = Main.Configuration.Get<byte>("MouseColorB", Main.mouseColor.B);
++#if CLIENT
+ 			if (Main.screenMaximized)
+ 			{
+ 				Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
+ 				form.WindowState = FormWindowState.Maximized;
+ 			}
++#endif
+ 			Main.SetDisplayMode(preferredBackBufferWidth, preferredBackBufferHeight, fullscreen);
+ 			int num = 0;
+ 			Main.Configuration.Get<int>("LastLaunchedVersion", ref num);
+@@ -3780,8 +3789,10 @@
+ 								}
+ 								if (num >= 91 && binaryReader.ReadBoolean())
+ 								{
++#if CLIENT
+ 									Form form = (Form)Control.FromHandle(base.Window.Handle);
+ 									form.WindowState = FormWindowState.Maximized;
++#endif
+ 								}
+ 								if (num >= 4)
+ 								{
+@@ -5185,17 +5196,21 @@
+ 		public Main()
+ 		{
+ 			Main.instance = this;
++#if CLIENT
+ 			Main.graphics = new GraphicsDeviceManager((Game)this);
+ 			base.Content.RootDirectory = "Content";
++#endif
+ 		}
+ 
+ 		protected void SetTitle()
+ 		{
++#if CLIENT
+ 			if (Main._cachedTitle == null)
+ 			{
+ 				Main._cachedTitle = Lang.title();
+ 			}
+ 			base.Window.Title = Main._cachedTitle;
++#endif
+ 		}
+ 
+ 		public static void InitLifeBytes()
+@@ -5251,6 +5266,9 @@
+ 
+ 		protected override void Initialize()
+ 		{
++#if SERVER
++			Main.netMode = 2;
++#endif
+ 			Main.LocalFavoriteData.Load();
+ 			Main.CloudFavoritesData.Load();
+ 			TileObjectData.Initialize();
+@@ -5261,9 +5279,14 @@
+ 			ItemRarity.Initialize();
+ 			TileEntity.InitializeAll();
+ 			Main.InitializeItemAnimations();
++#if CLIENT
+ 			Lighting.Initialize(false);
+ 			MapHelper.Initialize();
+ 			TimeLogger.Initialize();
++#else
++			Mount.Initialize();
++			Minecart.Initialize();
++#endif
+ 			WorldGen.RandomizeBackgrounds();
+ 			WorldGen.RandomizeCaveBackgrounds();
+ 			WorldGen.RandomizeMoonState();
+@@ -7597,17 +7620,20 @@
+ 				Main.ActivePlayerFileData.StartPlayTimer();
+ 				Player.EnterWorld(Main.player[Main.myPlayer]);
+ 			}
++#if CLIENT
+ 			else
+ 			{
+ 				IntPtr systemMenu = Main.GetSystemMenu(base.Window.Handle, false);
+ 				int menuItemCount = Main.GetMenuItemCount(systemMenu);
+ 				Main.RemoveMenu(systemMenu, menuItemCount - 1, 1024);
+ 			}
++#endif
+ 			if (Main.dedServ)
+ 			{
+ 				return;
+ 			}
+ 			Main.clientUUID = Guid.NewGuid().ToString();
++#if CLIENT
+ 			keyBoardInput.newKeyEvent += delegate(char keyStroke)
+ 			{
+ 				if (Main.keyCount < 10)
+@@ -7617,6 +7643,7 @@
+ 					Main.keyCount++;
+ 				}
+ 			};
++#endif
+ 			base.Initialize();
+ 			base.Window.AllowUserResizing = true;
+ 			this.OpenSettings();
+@@ -7642,12 +7669,14 @@
+ 			this.OpenRecent();
+ 			Star.SpawnStars();
+ 			WorldGen.RandomizeWeather();
++#if CLIENT
+ 			this._achievements = new AchievementManager();
+ 			AchievementInitializer.Load();
+ 			DyeInitializer.Load();
+ 			ScreenEffectInitializer.Load();
+ 			ChatInitializer.Load();
+ 			AchievementCompleteUI.Initialize();
++#endif
+ 			foreach (DisplayMode current in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
+ 			{
+ 				if (current.Width >= Main.minScreenW && current.Height >= Main.minScreenH && current.Width <= Main.maxScreenW && current.Height <= Main.maxScreenH)
+@@ -11799,10 +11828,12 @@
+ 
+ 		protected override void Update(GameTime gameTime)
+ 		{
++#if CLIENT
+ 			if (Main.OnTick != null)
+ 			{
+ 				Main.OnTick();
+ 			}
++#endif
+ 			if (Main._hasPendingNetmodeChange)
+ 			{
+ 				Main.netMode = Main._targetNetMode;
+@@ -13894,6 +13925,7 @@
+ 
+ 		public static string GetInputText(string oldString)
+ 		{
++#if CLIENT
+ 			Main.<>c__DisplayClass6 <>c__DisplayClass = new Main.<>c__DisplayClass6();
+ 			<>c__DisplayClass.oldString = oldString;
+ 			if (!Main.hasFocus)
+@@ -14034,6 +14066,9 @@
+ 				}
+ 			}
+ 			return text;
++#else
++			return "";
++#endif
+ 		}
+ 
+ 		public void MouseText(string cursorText, int rare = 0, byte diff = 0)
+@@ -37579,7 +37614,9 @@
+ 		protected void QuitGame()
+ 		{
+ 			Main.SaveSettings();
++#if CLIENT
+ 			SocialAPI.Shutdown();
++#endif
+ 			base.Exit();
+ 		}
+ 
+@@ -49958,6 +49995,7 @@
+ 
+ 		private static void CheckMonoliths()
+ 		{
++#if CLIENT
+ 			bool flag = Main.player[Main.myPlayer].ZoneTowerVortex || Main.player[Main.myPlayer].ZoneTowerNebula || Main.player[Main.myPlayer].ZoneTowerStardust || Main.player[Main.myPlayer].ZoneTowerSolar;
+ 			for (int i = 0; i < Main.MonolithFilterNames.Length; i++)
+ 			{
+@@ -49984,6 +50022,7 @@
+ 					}
+ 				}
+ 			}
++#endif
+ 		}
+ 
+ 		protected override void Draw(GameTime gameTime)
+@@ -50032,7 +50071,9 @@
+ 			{
+ 				Main.maxQ = true;
+ 			}
++#if CLIENT
+ 			this.UpdateDisplaySettings();
++#endif
+ 			Main.drawTime++;
+ 			Main.screenLastPosition = Main.screenPosition;
+ 			if (Main.stackSplit == 0)
+@@ -52962,6 +53003,7 @@
+ 			Main.UpdateSundial();
+ 			Main.time += (double)Main.dayRate;
+ 			CultistRitual.UpdateTime();
++#if CLIENT
+ 			if (NPC.MoonLordCountdown > 0)
+ 			{
+ 				float num5 = MathHelper.Clamp((float)Math.Sin((double)((float)NPC.MoonLordCountdown / 60f * 0.5f)) * 2f, 0f, 1f);
+@@ -52976,6 +53018,7 @@
+ 			{
+ 				Filters.Scene.Deactivate("MoonLordShake", new object[0]);
+ 			}
++#endif
+ 			if (NPC.MoonLordCountdown > 0)
+ 			{
+ 				NPC.MoonLordCountdown--;
+

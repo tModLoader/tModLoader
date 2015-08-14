@@ -1,0 +1,14 @@
+--- src/Terraria\Terraria\Program.cs
++++ src/tModLoader\Terraria\Program.cs
+@@ -89,6 +89,10 @@
+ 		public static void LaunchGame(string[] args)
+ 		{
+ 			Program.LaunchParameters = Utils.ParseArguements(args);
++			if (Program.LaunchParameters.ContainsKey("-savedirectory"))
++			{
++				Program.LaunchParameters["-savedirectory"] = Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader");
++			}
+ 			ThreadPool.SetMinThreads(8, 8);
+ 			using (Main main = new Main())
+ 			{
+
