@@ -197,7 +197,6 @@ namespace Terraria.ModLoader.IO
 				FileUtilities.MoveToCloud(localPath, cloudPath);
 			}
 		}
-
 		//add to end of Terraria.IO.WorldFileData.MoveToLocal
 		internal static void MoveToLocal(string cloudPath, string localPath)
 		{
