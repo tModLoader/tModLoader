@@ -44,7 +44,19 @@
  			if (Main.expertMode)
  			{
  				this.scaleStats();
-@@ -16744,7 +16753,7 @@
+@@ -11901,6 +11910,11 @@
+ 		}
+ 
+ 		public void AI()
++		{
++			NPCLoader.NPCAI(this);
++		}
++
++		public void VanillaAI()
+ 		{
+ 			if (this.aiStyle == 0)
+ 			{
+@@ -16744,7 +16758,7 @@
  								}
  								else
  								{
@@ -53,7 +65,7 @@
  									{
  										bool flag26 = WorldGen.OpenDoor(num210, num211 - 1, this.direction);
  										if (!flag26)
-@@ -20010,7 +20019,7 @@
+@@ -20010,7 +20024,7 @@
  						if (this.closeDoor && ((this.position.X + (float)(this.width / 2)) / 16f > (float)(this.doorX + 2) || (this.position.X + (float)(this.width / 2)) / 16f < (float)(this.doorX - 2)))
  						{
  							Tile tileSafely = Framing.GetTileSafely(this.doorX, this.doorY);
@@ -62,7 +74,7 @@
  							{
  								bool flag47 = WorldGen.CloseDoor(this.doorX, this.doorY, false);
  								if (flag47)
-@@ -20183,7 +20192,7 @@
+@@ -20183,7 +20197,7 @@
  							Tile tileSafely3 = Framing.GetTileSafely(num398, num399);
  							Tile tileSafely4 = Framing.GetTileSafely(num398, num399 - 1);
  							Tile tileSafely5 = Framing.GetTileSafely(num398, num399 - 2);
@@ -71,7 +83,7 @@
  							{
  								if (Main.netMode != 1)
  								{
-@@ -53816,7 +53825,7 @@
+@@ -53816,7 +53830,7 @@
  
  		public void NPCLoot()
  		{
@@ -80,7 +92,7 @@
  			{
  				return;
  			}
-@@ -53931,6 +53940,10 @@
+@@ -53931,6 +53945,10 @@
  				}
  			}
  			if (this.type == 23 && Main.hardMode)
@@ -91,7 +103,7 @@
  			{
  				return;
  			}
-@@ -57135,6 +57148,7 @@
+@@ -57135,6 +57153,7 @@
  					NetMessage.SendData(25, -1, -1, Lang.misc[32], 255, 50f, 255f, 130f, 0, 0, 0);
  				}
  			}

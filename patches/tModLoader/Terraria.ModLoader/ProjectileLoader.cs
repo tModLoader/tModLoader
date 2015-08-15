@@ -84,5 +84,55 @@ namespace Terraria.ModLoader
 				globalProjectile.SetDefaults(projectile);
 			}
 		}
+		//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
+		internal static void ProjectileAI(Projectile projectile)
+		{
+			if (PreAI(projectile))
+			{
+				projectile.VanillaAI();
+				AI(projectile);
+			}
+			PostAI(projectile);
+		}
+
+		internal static bool PreAI(Projectile projectile)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				if (!globalProjectile.PreAI(projectile))
+				{
+					return false;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.PreAI();
+			}
+			return true;
+		}
+
+		internal static void AI(Projectile projectile)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.AI();
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.AI(projectile);
+			}
+		}
+
+		internal static void PostAI(Projectile projectile)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.PostAI();
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.PostAI(projectile);
+			}
+		}
 	}
 }

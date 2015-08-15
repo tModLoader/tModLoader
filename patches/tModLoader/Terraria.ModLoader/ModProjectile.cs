@@ -50,5 +50,18 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults()
 		{
 		}
+
+		public virtual bool PreAI()
+		{
+			return true;
+		}
+
+		public virtual void AI()
+		{
+		}
+
+		public virtual void PostAI()
+		{
+		}
 	}
 }

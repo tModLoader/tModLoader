@@ -25,5 +25,18 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults(Projectile projectile)
 		{
 		}
+
+		public virtual bool PreAI(Projectile projectile)
+		{
+			return true;
+		}
+
+		public virtual void AI(Projectile projectile)
+		{
+		}
+
+		public virtual void PostAI(Projectile projectile)
+		{
+		}
 	}
 }

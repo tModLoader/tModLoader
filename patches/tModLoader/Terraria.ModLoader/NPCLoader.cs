@@ -110,6 +110,56 @@ namespace Terraria.ModLoader
 				globalNPC.SetDefaults(npc);
 			}
 		}
+		//in Terraria.NPC rename AI to VanillaAI then make AI call NPCLoader.NPCAI(this)
+		internal static void NPCAI(NPC npc)
+		{
+			if (PreAI(npc))
+			{
+				npc.VanillaAI();
+				AI(npc);
+			}
+			PostAI(npc);
+		}
+
+		internal static bool PreAI(NPC npc)
+		{
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				if (!globalNPC.PreAI(npc))
+				{
+					return false;
+				}
+			}
+			if (IsModNPC(npc))
+			{
+				return npc.modNPC.PreAI();
+			}
+			return true;
+		}
+
+		internal static void AI(NPC npc)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.AI();
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.AI(npc);
+			}
+		}
+
+		internal static void PostAI(NPC npc)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.PostAI();
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.PostAI(npc);
+			}
+		}
 		//in Terraria.NPC.NPCLoot after hardmode meteor head check add
 		//  if(!NPCLoader.PreNPCLoot(this)) { return; }
 		internal static bool PreNPCLoot(NPC npc)

@@ -48,4 +48,16 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
+@@ -12009,6 +12016,11 @@
+ 		}
+ 
+ 		public void AI()
++		{
++			ProjectileLoader.ProjectileAI(this);
++		}
++
++		public void VanillaAI()
+ 		{
+ 			if (this.aiStyle == 1)
+ 			{
 

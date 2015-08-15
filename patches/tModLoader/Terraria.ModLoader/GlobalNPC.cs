@@ -28,6 +28,19 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool PreAI(NPC npc)
+		{
+			return true;
+		}
+
+		public virtual void AI(NPC npc)
+		{
+		}
+
+		public virtual void PostAI(NPC npc)
+		{
+		}
+
 		public virtual bool PreNPCLoot(NPC npc)
 		{
 			return true;
