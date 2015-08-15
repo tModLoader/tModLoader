@@ -89,7 +89,13 @@ namespace Terraria.ModLoader
 		{
 			if (PreAI(projectile))
 			{
+				int type = projectile.type;
+				if (IsModProjectile(projectile) && projectile.modProjectile.aiType > 0)
+				{
+					projectile.type = projectile.modProjectile.aiType;
+				}
 				projectile.VanillaAI();
+				projectile.type = type;
 				AI(projectile);
 			}
 			PostAI(projectile);

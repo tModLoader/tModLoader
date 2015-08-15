@@ -26,6 +26,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal string texture;
+		public int aiType = 0;
 
 		public ModProjectile()
 		{

@@ -22,6 +22,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal string texture;
+		public int aiType = 0;
+		public int animationType = 0;
 
 		public ModNPC()
 		{

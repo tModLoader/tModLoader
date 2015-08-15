@@ -115,7 +115,13 @@ namespace Terraria.ModLoader
 		{
 			if (PreAI(npc))
 			{
+				int type = npc.type;
+				if (IsModNPC(npc) && npc.modNPC.aiType > 0)
+				{
+					npc.type = npc.modNPC.aiType;
+				}
 				npc.VanillaAI();
+				npc.type = type;
 				AI(npc);
 			}
 			PostAI(npc);
@@ -163,7 +169,13 @@ namespace Terraria.ModLoader
 		//in Terraria.NPC split VanillaFindFrame from FindFrame and make FindFrame call this
 		internal static void FindFrame(NPC npc, int frameHeight)
 		{
+			int type = npc.type;
+			if (IsModNPC(npc) && npc.modNPC.animationType > 0)
+			{
+				npc.type = npc.modNPC.animationType;
+			}
 			npc.VanillaFindFrame(frameHeight);
+			npc.type = type;
 			if (IsModNPC(npc))
 			{
 				npc.modNPC.FindFrame(frameHeight);
