@@ -122,7 +122,18 @@
  					if (ItemID.Sets.ItemNoGravity[this.type])
  					{
  						this.velocity.X = this.velocity.X * 0.95f;
-@@ -46401,7 +46412,12 @@
+@@ -46259,6 +46270,10 @@
+ 			}
+ 			int num = 400;
+ 			Main.item[400] = new Item();
++			if (NPCLoader.blockLoot.Contains(Type))
++			{
++				return num;
++			}
+ 			if (Main.halloween)
+ 			{
+ 				if (Type == 58)
+@@ -46401,7 +46416,12 @@
  
  		public Item Clone()
  		{

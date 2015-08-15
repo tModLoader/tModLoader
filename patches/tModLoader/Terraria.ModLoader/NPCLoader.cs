@@ -12,6 +12,9 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<int, ModNPC> npcs = new Dictionary<int, ModNPC>();
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
 		private static int vanillaSkeletonCount = NPCID.Sets.Skeletons.Count;
+		//in Terraria.Item.NewItem after setting Main.item[400] add
+		//  if(NPCLoader.blockLoot.Contains(Type)) { return num; }
+		public static readonly IList<int> blockLoot = new List<int>();
 
 		internal static int ReserveNPCID()
 		{
@@ -206,12 +209,14 @@ namespace Terraria.ModLoader
 			{
 				if (!globalNPC.PreNPCLoot(npc))
 				{
+					blockLoot.Clear();
 					return false;
 				}
 			}
-			if (IsModNPC(npc))
+			if (IsModNPC(npc) && !npc.modNPC.PreNPCLoot())
 			{
-				return npc.modNPC.PreNPCLoot();
+				blockLoot.Clear();
+				return false;
 			}
 			return true;
 		}
@@ -226,6 +231,7 @@ namespace Terraria.ModLoader
 			{
 				globalNPC.NPCLoot(npc);
 			}
+			blockLoot.Clear();
 		}
 		//in Terraria.NPC.NPCLoot after determing potion type call
 		//  NPCLoader.BossLoot(this, ref name, ref num70);
