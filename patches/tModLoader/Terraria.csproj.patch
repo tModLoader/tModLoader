@@ -10,7 +10,7 @@
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
-@@ -238,6 +241,47 @@
+@@ -238,6 +241,48 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -42,6 +42,7 @@
 +    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
 +    <Compile Include="Terraria.ModLoader\Mod.cs" />
 +    <Compile Include="Terraria.ModLoader\ModDust.cs" />
++    <Compile Include="Terraria.ModLoader\ModGore.cs" />
 +    <Compile Include="Terraria.ModLoader\ModItem.cs" />
 +    <Compile Include="Terraria.ModLoader\ModLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\ModNPC.cs" />
@@ -58,7 +59,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -384,5 +428,8 @@
+@@ -384,5 +429,8 @@
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
    </ItemGroup>

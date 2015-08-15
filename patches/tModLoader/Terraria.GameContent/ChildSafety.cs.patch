@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent\ChildSafety.cs
++++ src/tModLoader\Terraria.GameContent\ChildSafety.cs
+@@ -7,7 +7,7 @@
+ 	{
+ 		private static SetFactory factoryDust = new SetFactory(268);
+ 		private static SetFactory factoryGore = new SetFactory(907);
+-		private static readonly bool[] SafeGore = ChildSafety.factoryGore.CreateBoolSet(new int[]
++		internal static bool[] SafeGore = ChildSafety.factoryGore.CreateBoolSet(new int[]
+ 			{
+ 				11,
+ 				12,
+

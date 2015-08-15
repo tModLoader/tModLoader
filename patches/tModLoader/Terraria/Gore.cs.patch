@@ -1,0 +1,56 @@
+--- src/Terraria\Terraria\Gore.cs
++++ src/tModLoader\Terraria\Gore.cs
+@@ -1,11 +1,18 @@
+ using Microsoft.Xna.Framework;
+ using System;
+ using Terraria.GameContent;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+ 	public class Gore
+ 	{
++		public ModGore modGore
++		{
++			get;
++			internal set;
++		}
++
+ 		public static int goreTime = 600;
+ 		public Vector2 position;
+ 		public Vector2 velocity;
+@@ -30,6 +37,10 @@
+ 			}
+ 			if (this.active)
+ 			{
++				if (this.modGore != null && !this.modGore.Update(this))
++				{
++					return;
++				}
+ 				if (this.type >= 276 && this.type <= 282)
+ 				{
+ 					this.velocity.X = this.velocity.X * 0.98f;
+@@ -673,6 +684,7 @@
+ 			Main.gore[num].alpha = 0;
+ 			Main.gore[num].rotation = 0f;
+ 			Main.gore[num].scale = Scale;
++			ModGore.SetupGore(Main.gore[num]);
+ 			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type))
+ 			{
+ 				Main.gore[num].type = Main.rand.Next(11, 14);
+@@ -742,6 +754,14 @@
+ 
+ 		public Color GetAlpha(Color newColor)
+ 		{
++			if (this.modGore != null)
++			{
++				Color? modColor = this.modGore.GetAlpha(this, newColor);
++				if (modColor.HasValue)
++				{
++					return modColor.Value;
++				}
++			}
+ 			float num = (float)(255 - this.alpha) / 255f;
+ 			int r;
+ 			int g;
+

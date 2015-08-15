@@ -180,6 +180,7 @@ namespace Terraria.ModLoader
 			WallLoader.ResizeArrays(unloading);
 			ProjectileLoader.ResizeArrays();
 			NPCLoader.ResizeArrays();
+			ModGore.ResizeArrays();
 		}
 
 		internal static string[] FindMods()
@@ -363,6 +364,7 @@ namespace Terraria.ModLoader
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
+			ModGore.Unload();
 			textures.Clear();
 			mods.Clear();
 			ResizeArrays(true);

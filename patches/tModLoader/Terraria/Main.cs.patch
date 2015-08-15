@@ -90,6 +90,24 @@
  						}
  					}
  				}
+@@ -18589,7 +18614,7 @@
+ 		{
+ 			for (int i = 0; i < 500; i++)
+ 			{
+-				if (Main.gore[i].active && Main.gore[i].type > 0 && Main.gore[i].type >= 706 && Main.gore[i].type <= 717 && (Main.gore[i].frame < 7 || Main.gore[i].frame > 9))
++				if (Main.gore[i].active && Main.gore[i].type > 0 && ModGore.DrawBackGore(Main.gore[i]))
+ 				{
+ 					this.LoadGore(Main.gore[i].type);
+ 					if (Main.gore[i].numFrames > 1)
+@@ -18614,7 +18639,7 @@
+ 			{
+ 				if (Main.gore[i].active && Main.gore[i].type > 0)
+ 				{
+-					if (Main.gore[i].type >= 706 && Main.gore[i].type <= 717 && (Main.gore[i].frame < 7 || Main.gore[i].frame > 9))
++					if (ModGore.DrawBackGore(Main.gore[i]))
+ 					{
+ 						Main.drawBackGore = true;
+ 					}
 @@ -19304,7 +19329,7 @@
  			{
  				try

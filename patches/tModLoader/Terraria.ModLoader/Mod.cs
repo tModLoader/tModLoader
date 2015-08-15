@@ -43,9 +43,10 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, GlobalProjectile> globalProjectiles = new Dictionary<string, GlobalProjectile>();
 		internal readonly IDictionary<string, ModNPC> npcs = new Dictionary<string, ModNPC>();
 		internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
+		internal readonly IDictionary<string, ModGore> gores = new Dictionary<string, ModGore>();
 		/*
-     * Initializes the mod's information, such as its name.
-     */
+         * Initializes the mod's information, such as its name.
+         */
 		internal void Init()
 		{
 			ModProperties properties = new ModProperties();
@@ -134,6 +135,10 @@ namespace Terraria.ModLoader
 				if (type.IsSubclassOf(typeof(GlobalNPC)))
 				{
 					AutoloadGlobalNPC(type);
+				}
+				if (type.IsSubclassOf(typeof(ModGore)))
+				{
+					AutoloadGore(type);
 				}
 			}
 		}
@@ -579,6 +584,51 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddGore(string name, ModGore gore, string texture)
+		{
+			int id = ModGore.ReserveGoreID();
+			gore.Name = name;
+			gore.Type = id;
+			gores[name] = gore;
+			ModGore.gores[id] = gore;
+			gore.texture = texture;
+			gore.mod = this;
+		}
+
+		public ModGore GetGore(string name)
+		{
+			if (gores.ContainsKey(name))
+			{
+				return gores[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		public int GoreType(string name)
+		{
+			ModGore gore = GetGore(name);
+			if (gore == null)
+			{
+				return 0;
+			}
+			return gore.Type;
+		}
+
+		private void AutoloadGore(Type type)
+		{
+			ModGore gore = (ModGore)Activator.CreateInstance(type);
+			gore.mod = this;
+			string name = type.Name;
+			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+			if (gore.Autoload(ref name, ref texture))
+			{
+				AddGore(name, gore, texture);
+			}
+		}
+
 		internal void SetupContent()
 		{
 			foreach (ModItem item in items.Values)
@@ -644,6 +694,10 @@ namespace Terraria.ModLoader
 					Main.npcLifeBytes[npc.npc.type] = 1;
 				}
 			}
+			foreach (ModGore gore in gores.Values)
+			{
+				Main.goreTexture[gore.Type] = ModLoader.GetTexture(gore.texture);
+			}
 		}
 
 		internal void Unload() //I'm not sure why I have this
@@ -661,6 +715,7 @@ namespace Terraria.ModLoader
 			globalProjectiles.Clear();
 			npcs.Clear();
 			globalNPCs.Clear();
+			gores.Clear();
 		}
 	}
 }
