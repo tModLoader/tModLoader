@@ -115,7 +115,15 @@
  			{
  				return;
  			}
-@@ -57135,6 +57158,7 @@
+@@ -57065,6 +57088,7 @@
+ 				{
+ 					num70 = 499;
+ 				}
++				NPCLoader.BossLoot(this, ref name, ref num70);
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, num70, stack5, false, 0, false, false);
+ 				int num71 = Main.rand.Next(5) + 5;
+ 				for (int num72 = 0; num72 < num71; num72++)
+@@ -57135,6 +57159,7 @@
  					NetMessage.SendData(25, -1, -1, Lang.misc[32], 255, 50f, 255f, 130f, 0, 0, 0);
  				}
  			}
@@ -123,7 +131,15 @@
  			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
  			{
  				int num73 = (int)Player.FindClosest(this.position, this.width, this.height);
-@@ -62274,6 +62298,11 @@
+@@ -57329,6 +57354,7 @@
+ 			{
+ 				num = 3332;
+ 			}
++			NPCLoader.BossBag(this, ref num);
+ 			if (num > 0)
+ 			{
+ 				if (Main.netMode == 2)
+@@ -62274,6 +62300,11 @@
  
  		public void HitEffect(int hitDirection = 0, double dmg = 10.0)
  		{

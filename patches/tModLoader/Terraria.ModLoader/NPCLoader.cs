@@ -209,14 +209,40 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
+			if (IsModNPC(npc))
+			{
+				return npc.modNPC.PreNPCLoot();
+			}
 			return true;
 		}
 		//in Terraria.NPC.NPCLoot before heart and star drops add NPCLoader.NPCLoot(this);
 		internal static void NPCLoot(NPC npc)
 		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.NPCLoot();
+			}
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
 				globalNPC.NPCLoot(npc);
+			}
+		}
+		//in Terraria.NPC.NPCLoot after determing potion type call
+		//  NPCLoader.BossLoot(this, ref name, ref num70);
+		internal static void BossLoot(NPC npc, ref string name, ref int potionType)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.BossLoot(ref name, ref potionType);
+			}
+		}
+		//in Terraria.NPC.DropBossBags after if statements setting bag type call
+		//  NPCLoader.BossBag(this, ref num);
+		internal static void BossBag(NPC npc, ref int bagType)
+		{
+			if (IsModNPC(npc))
+			{
+				bagType = npc.modNPC.bossBag;
 			}
 		}
 	}

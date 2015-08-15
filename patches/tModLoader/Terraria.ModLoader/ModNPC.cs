@@ -24,6 +24,7 @@ namespace Terraria.ModLoader
 		internal string texture;
 		public int aiType = 0;
 		public int animationType = 0;
+		public int bossBag = -1;
 
 		public ModNPC()
 		{
@@ -66,6 +67,19 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void HitEffect(int hitDirection, double damage)
+		{
+		}
+
+		public virtual bool PreNPCLoot()
+		{
+			return true;
+		}
+
+		public virtual void NPCLoot()
+		{
+		}
+
+		public virtual void BossLoot(ref string name, ref int potionType)
 		{
 		}
 	}
