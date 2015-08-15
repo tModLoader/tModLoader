@@ -83,7 +83,19 @@
  							{
  								if (Main.netMode != 1)
  								{
-@@ -53816,7 +53830,7 @@
+@@ -45054,6 +45068,11 @@
+ 				}
+ 				num = Main.npcTexture[this.type].Height / Main.npcFrameCount[this.type];
+ 			}
++			NPCLoader.FindFrame(this, num);
++		}
++
++		public void VanillaFindFrame(int num)
++		{
+ 			int num2 = 0;
+ 			if (this.aiAction == 0)
+ 			{
+@@ -53816,7 +53835,7 @@
  
  		public void NPCLoot()
  		{
@@ -92,7 +104,7 @@
  			{
  				return;
  			}
-@@ -53931,6 +53945,10 @@
+@@ -53931,6 +53950,10 @@
  				}
  			}
  			if (this.type == 23 && Main.hardMode)
@@ -103,7 +115,7 @@
  			{
  				return;
  			}
-@@ -57135,6 +57153,7 @@
+@@ -57135,6 +57158,7 @@
  					NetMessage.SendData(25, -1, -1, Lang.misc[32], 255, 50f, 255f, 130f, 0, 0, 0);
  				}
  			}
@@ -111,4 +123,16 @@
  			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
  			{
  				int num73 = (int)Player.FindClosest(this.position, this.width, this.height);
+@@ -62274,6 +62298,11 @@
+ 
+ 		public void HitEffect(int hitDirection = 0, double dmg = 10.0)
+ 		{
++			NPCLoader.HitEffect(this, hitDirection, dmg);
++		}
++
++		public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0)
++		{
+ 			if (!this.active)
+ 			{
+ 				return;
 

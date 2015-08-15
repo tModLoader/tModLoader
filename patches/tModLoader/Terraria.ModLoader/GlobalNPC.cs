@@ -41,6 +41,14 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void FindFrame(NPC npc, int frameHeight)
+		{
+		}
+
+		public virtual void HitEffect(NPC npc, int hitDirection, double damage)
+		{
+		}
+
 		public virtual bool PreNPCLoot(NPC npc)
 		{
 			return true;

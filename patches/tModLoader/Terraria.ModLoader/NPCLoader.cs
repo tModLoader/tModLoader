@@ -160,6 +160,32 @@ namespace Terraria.ModLoader
 				globalNPC.PostAI(npc);
 			}
 		}
+		//in Terraria.NPC split VanillaFindFrame from FindFrame and make FindFrame call this
+		internal static void FindFrame(NPC npc, int frameHeight)
+		{
+			npc.VanillaFindFrame(frameHeight);
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.FindFrame(frameHeight);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.FindFrame(npc, frameHeight);
+			}
+		}
+		//in Terraria.NPC rename HitEffect to vanillaHitEffect and make HitEffect call this
+		internal static void HitEffect(NPC npc, int hitDirection, double damage)
+		{
+			npc.VanillaHitEffect(hitDirection, damage);
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.HitEffect(hitDirection, damage);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.HitEffect(npc, hitDirection, damage);
+			}
+		}
 		//in Terraria.NPC.NPCLoot after hardmode meteor head check add
 		//  if(!NPCLoader.PreNPCLoot(this)) { return; }
 		internal static bool PreNPCLoot(NPC npc)

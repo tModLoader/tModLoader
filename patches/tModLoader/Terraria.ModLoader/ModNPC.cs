@@ -58,5 +58,13 @@ namespace Terraria.ModLoader
 		public virtual void PostAI()
 		{
 		}
+
+		public virtual void FindFrame(int frameHeight)
+		{
+		}
+
+		public virtual void HitEffect(int hitDirection, double damage)
+		{
+		}
 	}
 }
