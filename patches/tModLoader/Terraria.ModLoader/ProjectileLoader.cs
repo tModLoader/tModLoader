@@ -171,5 +171,35 @@ namespace Terraria.ModLoader
 			}
 			return true;
 		}
+		//in Terraria.Projectile.Kill before if statements determining kill behavior add
+		//  if(!ProjectileLoader.PreKill(this, num)) { this.active = false; return; }
+		internal static bool PreKill(Projectile projectile, int timeLeft)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				if (!globalProjectile.PreKill(projectile, timeLeft))
+				{
+					return false;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.PreKill(timeLeft);
+			}
+			return true;
+		}
+		//at end of Terraria.Projectile.Kill before setting active to false add
+		//  ProjectileLoader.Kill(this, num);
+		internal static void Kill(Projectile projectile, int timeLeft)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.Kill(timeLeft);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.Kill(projectile, timeLeft);
+			}
+		}
 	}
 }

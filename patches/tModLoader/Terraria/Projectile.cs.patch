@@ -80,4 +80,24 @@
  		{
  			if (this.aiStyle == 1)
  			{
+@@ -35510,6 +35526,11 @@
+ 			Main.projectileIdentity[this.owner, this.identity] = -1;
+ 			int num = this.timeLeft;
+ 			this.timeLeft = 0;
++			if (!ProjectileLoader.PreKill(this, num))
++			{
++				this.active = false;
++				return;
++			}
+ 			if (this.type == 634 || this.type == 635)
+ 			{
+ 				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
+@@ -40434,6 +40455,7 @@
+ 					}
+ 				}
+ 			}
++			ProjectileLoader.Kill(this, num);
+ 			this.active = false;
+ 		}
+ 
 
