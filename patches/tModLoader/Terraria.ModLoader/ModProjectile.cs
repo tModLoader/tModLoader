@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 
 namespace Terraria.ModLoader
@@ -63,6 +64,15 @@ namespace Terraria.ModLoader
 
 		public virtual void PostAI()
 		{
+		}
+
+		public virtual void TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
+		{
+		}
+
+		public virtual bool OnTileCollide(Vector2 oldVelocity)
+		{
+			return true;
 		}
 	}
 }

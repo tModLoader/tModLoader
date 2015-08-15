@@ -39,7 +39,27 @@
  			this.width = (int)((float)this.width * this.scale);
  			this.height = (int)((float)this.height * this.scale);
  			this.maxPenetrate = this.penetrate;
-@@ -11954,6 +11959,8 @@
+@@ -10111,6 +10116,7 @@
+ 							num25 = (int)(20f * this.scale);
+ 							num26 = (int)(20f * this.scale);
+ 						}
++						ProjectileLoader.TileCollideStyle(this, ref num25, ref num26, ref flag4);
+ 						if (((this.type != 440 && this.type != 449 && this.type != 606) || this.ai[1] != 1f) && (this.type != 466 || this.localAI[1] != 1f) && (this.type != 580 || this.localAI[1] <= 0f) && (this.type != 640 || this.localAI[1] <= 0f))
+ 						{
+ 							if (this.aiStyle == 10)
+@@ -10202,7 +10208,10 @@
+ 						}
+ 						if (flag3)
+ 						{
+-							if (this.type == 434)
++							if (!ProjectileLoader.OnTileCollide(this, velocity))
++							{
++							}
++							else if (this.type == 434)
+ 							{
+ 								this.position += this.velocity;
+ 								this.numUpdates = 0;
+@@ -11954,6 +11963,8 @@
  						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
  					case "Random":
  						return Main.rand.NextFloat();
@@ -48,7 +68,7 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -12009,6 +12016,11 @@
+@@ -12009,6 +12020,11 @@
  		}
  
  		public void AI()

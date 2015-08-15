@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 
@@ -139,6 +140,36 @@ namespace Terraria.ModLoader
 			{
 				globalProjectile.PostAI(projectile);
 			}
+		}
+		//in Terraria.Projectile.Update before adjusting velocity to tile collisions add
+		//  ProjectileLoader.TileCollideStyle(this, ref num25, ref num26, ref flag4);
+		internal static void TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.TileCollideStyle(ref width, ref height, ref fallThrough);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.TileCollideStyle(projectile, ref width, ref height, ref fallThrough);
+			}
+		}
+		//in Terraria.Projectile.Update before if/else chain for tile collide behavior add
+		//  if(!ProjectileLoader.OnTileCollide(this, velocity)) { } else
+		internal static bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				if (!globalProjectile.OnTileCollide(projectile, oldVelocity))
+				{
+					return false;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.OnTileCollide(oldVelocity);
+			}
+			return true;
 		}
 	}
 }
