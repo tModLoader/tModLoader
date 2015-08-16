@@ -110,12 +110,22 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool? CanHitNPC(Player player, NPC target)
+		{
+			return null;
+		}
+
 		public virtual void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
 		{
 		}
 
 		public virtual void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
 		{
+		}
+
+		public virtual bool CanHitPvp(Player player, Player target)
+		{
+			return true;
 		}
 
 		public virtual void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit)

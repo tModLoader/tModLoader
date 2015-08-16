@@ -367,7 +367,21 @@
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num281 = 0; num281 < 200; num281++)
-@@ -31543,6 +31612,7 @@
+@@ -31533,7 +31602,12 @@
+ 								{
+ 									if (!Main.npc[num292].dontTakeDamage)
+ 									{
+-										if (!Main.npc[num292].friendly || (Main.npc[num292].type == 22 && this.killGuide) || (Main.npc[num292].type == 54 && this.killClothier))
++										bool? modCanHit = ItemLoader.CanHitNPC(item, this, Main.npc[num292]);
++										if (modCanHit.HasValue && !modCanHit.Value)
++										{
++											continue;
++										}
++										if (!Main.npc[num292].friendly || (Main.npc[num292].type == 22 && this.killGuide) || (Main.npc[num292].type == 54 && this.killClothier) || (modCanHit.HasValue && modCanHit.Value))
+ 										{
+ 											Rectangle value12 = new Rectangle((int)Main.npc[num292].position.X, (int)Main.npc[num292].position.Y, Main.npc[num292].width, Main.npc[num292].height);
+ 											if (r2.Intersects(value12) && (Main.npc[num292].noTileCollide || Collision.CanHit(this.position, this.width, this.height, Main.npc[num292].position, Main.npc[num292].width, Main.npc[num292].height)))
+@@ -31543,6 +31617,7 @@
  												{
  													flag18 = true;
  												}
@@ -375,7 +389,7 @@
  												int num293 = Item.NPCtoBanner(Main.npc[num292].BannerID());
  												if (num293 > 0 && this.NPCBannerBuff[num293])
  												{
-@@ -31630,6 +31700,7 @@
+@@ -31630,6 +31705,7 @@
  														NetMessage.SendData(21, -1, -1, "", num300, 0f, 0f, 0f, 0, 0, 0);
  													}
  												}
@@ -383,7 +397,15 @@
  												int num301 = Item.NPCtoBanner(Main.npc[num292].BannerID());
  												if (num301 >= 0)
  												{
-@@ -31681,6 +31752,7 @@
+@@ -31674,13 +31750,14 @@
+ 									if (num302 != i && Main.player[num302].active && Main.player[num302].hostile && !Main.player[num302].immune && !Main.player[num302].dead && (Main.player[i].team == 0 || Main.player[i].team != Main.player[num302].team))
+ 									{
+ 										Rectangle value16 = new Rectangle((int)Main.player[num302].position.X, (int)Main.player[num302].position.Y, Main.player[num302].width, Main.player[num302].height);
+-										if (r2.Intersects(value16) && Collision.CanHit(this.position, this.width, this.height, Main.player[num302].position, Main.player[num302].width, Main.player[num302].height))
++										if (ItemLoader.CanHitPvp(item, this, Main.player[num302]) && r2.Intersects(value16) && Collision.CanHit(this.position, this.width, this.height, Main.player[num302].position, Main.player[num302].width, Main.player[num302].height))
+ 										{
+ 											bool flag20 = false;
+ 											if (Main.rand.Next(1, 101) <= 10)
  											{
  												flag20 = true;
  											}
@@ -391,7 +413,7 @@
  											int num303 = Main.DamageVar((float)num282);
  											this.StatusPvP(item.type, num302);
  											this.OnHit(Main.player[num302].Center.X, Main.player[num302].Center.Y, Main.player[num302]);
-@@ -31731,6 +31803,7 @@
+@@ -31731,6 +31808,7 @@
  											{
  												this.pumpkinSword(num302, (int)((double)num282 * 1.5), num283);
  											}
@@ -399,7 +421,7 @@
  											if (Main.netMode != 0)
  											{
  												if (flag20)
-@@ -31812,6 +31885,7 @@
+@@ -31812,6 +31890,7 @@
  			}
  			if (this.itemTime == 0 && this.itemAnimation > 0)
  			{
@@ -407,7 +429,7 @@
  				if (item.hairDye >= 0)
  				{
  					this.itemTime = item.useTime;
-@@ -32325,6 +32399,7 @@
+@@ -32325,6 +32404,7 @@
  					{
  						flag22 = true;
  					}
@@ -415,7 +437,7 @@
  					if (flag22)
  					{
  						if (item.stack > 0)
-@@ -32649,6 +32724,10 @@
+@@ -32649,6 +32729,10 @@
  				{
  					flag2 = true;
  				}
@@ -426,7 +448,7 @@
  				if (!flag2 && item.consumable)
  				{
  					item.stack--;
-@@ -32701,7 +32780,7 @@
+@@ -32701,7 +32785,7 @@
  			}
  			else
  			{
@@ -435,7 +457,7 @@
  			}
  			if (tile.type == 211 && pickPower < 200)
  			{
-@@ -32769,6 +32848,10 @@
+@@ -32769,6 +32853,10 @@
  			else if (tile.type == 223 && pickPower < 150)
  			{
  				num = 0;
@@ -446,7 +468,7 @@
  			}
  			if (tile.type == 147 || tile.type == 0 || tile.type == 40 || tile.type == 53 || tile.type == 57 || tile.type == 59 || tile.type == 123 || tile.type == 224 || tile.type == 397)
  			{
-@@ -33377,7 +33460,7 @@
+@@ -33377,7 +33465,7 @@
  			{
  				return false;
  			}
@@ -455,7 +477,7 @@
  			{
  				return false;
  			}
-@@ -33586,12 +33669,12 @@
+@@ -33586,12 +33674,12 @@
  							{
  								player.armor[k].name = "";
  							}
@@ -470,7 +492,7 @@
  							binaryWriter.Write(player.dye[l].prefix);
  						}
  						for (int m = 0; m < 58; m++)
-@@ -33600,16 +33683,16 @@
+@@ -33600,16 +33688,16 @@
  							{
  								player.inventory[m].name = "";
  							}
@@ -490,7 +512,7 @@
  							binaryWriter.Write(player.miscDyes[n].prefix);
  						}
  						for (int num = 0; num < 40; num++)
-@@ -33618,7 +33701,7 @@
+@@ -33618,7 +33706,7 @@
  							{
  								player.bank.item[num].name = "";
  							}
@@ -499,7 +521,7 @@
  							binaryWriter.Write(player.bank.item[num].stack);
  							binaryWriter.Write(player.bank.item[num].prefix);
  						}
-@@ -33628,7 +33711,7 @@
+@@ -33628,7 +33716,7 @@
  							{
  								player.bank2.item[num2].name = "";
  							}
@@ -508,7 +530,7 @@
  							binaryWriter.Write(player.bank2.item[num2].stack);
  							binaryWriter.Write(player.bank2.item[num2].prefix);
  						}
-@@ -33673,6 +33756,7 @@
+@@ -33673,6 +33761,7 @@
  					}
  				}
  			}
@@ -516,7 +538,7 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
-@@ -34116,6 +34200,7 @@
+@@ -34116,6 +34205,7 @@
  								player.anglerQuestsFinished = binaryReader.ReadInt32();
  							}
  							player.skinVariant = (int)MathHelper.Clamp((float)player.skinVariant, 0f, 7f);
@@ -524,7 +546,7 @@
  							for (int num32 = 3; num32 < 8 + player.extraAccessorySlots; num32++)
  							{
  								int type = player.armor[num32].type;
-@@ -34184,6 +34269,7 @@
+@@ -34184,6 +34274,7 @@
  					if (FileUtilities.Exists(file + ".bak", cloudSave))
  					{
  						FileUtilities.Move(file + ".bak", file, cloudSave, true);

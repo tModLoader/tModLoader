@@ -273,6 +273,42 @@ namespace Terraria.ModLoader
 				globalItem.MeleeEffects(item, player, hitbox);
 			}
 		}
+		//in Terraria.Player.ItemCheck before checking whether npc type can be hit add
+		//  bool? modCanHit = ItemLoader.CanHitNPC(item, this, Main.npc[num292]);
+		//  if(modCanHit.HasValue && !modCanHit.Value) { continue; }
+		//in if statement afterwards add || (modCanHit.HasValue && modCanHit.Value)
+		internal static bool? CanHitNPC(Item item, Player player, NPC target)
+		{
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				bool? canHit = globalItem.CanHitNPC(item, player, target);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+			}
+			if (IsModItem(item))
+			{
+				return item.modItem.CanHitNPC(player, target);
+			}
+			return null;
+		}
+		//in Terraria.Player.ItemCheck add to beginning of pvp collision check
+		internal static bool CanHitPvp(Item item, Player player, Player target)
+		{
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				if (!globalItem.CanHitPvp(item, player, target))
+				{
+					return false;
+				}
+			}
+			if (IsModItem(item))
+			{
+				return item.modItem.CanHitPvp(player, target);
+			}
+			return true;
+		}
 		//in Terraria.Player.ItemCheck for melee attacks between crit determination and banner damage
 		//  call ItemLoader.ModifyHitNPC(item, this, Main.npc[num292], ref num282, ref num283, ref flag18)
 		internal static void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
