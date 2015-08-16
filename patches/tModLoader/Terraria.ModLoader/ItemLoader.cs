@@ -293,23 +293,7 @@ namespace Terraria.ModLoader
 			}
 			return null;
 		}
-		//in Terraria.Player.ItemCheck add to beginning of pvp collision check
-		internal static bool CanHitPvp(Item item, Player player, Player target)
-		{
-			foreach (GlobalItem globalItem in globalItems)
-			{
-				if (!globalItem.CanHitPvp(item, player, target))
-				{
-					return false;
-				}
-			}
-			if (IsModItem(item))
-			{
-				return item.modItem.CanHitPvp(player, target);
-			}
-			return true;
-		}
-		//in Terraria.Player.ItemCheck for melee attacks between crit determination and banner damage
+		//in Terraria.Player.ItemCheck for melee attacks after damage variation
 		//  call ItemLoader.ModifyHitNPC(item, this, Main.npc[num292], ref num282, ref num283, ref flag18)
 		internal static void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
 		{
@@ -335,7 +319,23 @@ namespace Terraria.ModLoader
 				globalItem.OnHitNPC(item, player, target, damage, knockBack, crit);
 			}
 		}
-		//in Terraria.Player.ItemCheck for pvp melee attacks between crit determination and damage var
+		//in Terraria.Player.ItemCheck add to beginning of pvp collision check
+		internal static bool CanHitPvp(Item item, Player player, Player target)
+		{
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				if (!globalItem.CanHitPvp(item, player, target))
+				{
+					return false;
+				}
+			}
+			if (IsModItem(item))
+			{
+				return item.modItem.CanHitPvp(player, target);
+			}
+			return true;
+		}
+		//in Terraria.Player.ItemCheck for pvp melee attacks after damage variation
 		//  call ItemLoader.ModifyHitPvp(item, this, Main.player[num302], ref num282, ref flag20)
 		internal static void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
 		{

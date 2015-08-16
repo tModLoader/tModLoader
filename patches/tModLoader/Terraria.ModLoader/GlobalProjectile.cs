@@ -57,5 +57,44 @@ namespace Terraria.ModLoader
 		public virtual void Kill(Projectile projectile, int timeLeft)
 		{
 		}
+
+		public virtual bool? CanHitNPC(Projectile projectile, NPC target)
+		{
+			return null;
+		}
+
+		public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit)
+		{
+		}
+
+		public virtual void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
+		{
+		}
+
+		public virtual bool CanHitPvp(Projectile projectile, Player target)
+		{
+			return true;
+		}
+
+		public virtual void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
+		{
+		}
+
+		public virtual void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
+		{
+		}
+
+		public virtual bool CanHitPlayer(Projectile projectile, Player target)
+		{
+			return true;
+		}
+
+		public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit, ref int cooldownCounter)
+		{
+		}
+
+		public virtual void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
+		{
+		}
 	}
 }

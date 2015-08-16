@@ -1,6 +1,10 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -31,6 +31,9 @@
+@@ -28,9 +28,13 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+     <DefineConstants>CLIENT</DefineConstants>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
++    <Optimize>true</Optimize>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
      <DefineConstants>CLIENT</DefineConstants>
@@ -10,7 +14,7 @@
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
-@@ -238,6 +241,48 @@
+@@ -238,6 +242,48 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -59,7 +63,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -384,5 +429,8 @@
+@@ -384,5 +430,8 @@
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
    </ItemGroup>

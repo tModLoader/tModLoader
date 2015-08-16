@@ -201,5 +201,127 @@ namespace Terraria.ModLoader
 				globalProjectile.Kill(projectile, timeLeft);
 			}
 		}
+		//in Terraria.Projectile.Damage for damaging NPCs before flag2 is checked... just check the patch files
+		internal static bool? CanHitNPC(Projectile projectile, NPC target)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				bool? canHit = globalProjectile.CanHitNPC(projectile, target);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.CanHitNPC(target);
+			}
+			return null;
+		}
+		//in Terraria.Projectile.Damage before calling StatusNPC call this and add local knockback variable
+		internal static void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.ModifyHitNPC(target, ref damage, ref knockback, ref crit);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.ModifyHitNPC(projectile, target, ref damage, ref knockback, ref crit);
+			}
+		}
+		//in Terraria.Projectile.Damage before penetration check for NPCs call this
+		internal static void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.OnHitNPC(target, damage, knockback, crit);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.OnHitNPC(projectile, target, damage, knockback, crit);
+			}
+		}
+		//in Terraria.Projectile.Damage add this before collision check for pvp damage
+		internal static bool CanHitPvp(Projectile projectile, Player target)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				if (!globalProjectile.CanHitPvp(projectile, target))
+				{
+					return false;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.CanHitPvp(target);
+			}
+			return true;
+		}
+		//in Terraria.Projectile.Damage for pvp damage call this after damage var
+		internal static void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.ModifyHitPvp(target, ref damage, ref crit);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.ModifyHitPvp(projectile, target, ref damage, ref crit);
+			}
+		}
+		//in Terraria.Projectile.Damage for pvp damage call this before net message stuff
+		internal static void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.OnHitPvp(target, damage, crit);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.OnHitPvp(projectile, target, damage, crit);
+			}
+		}
+		//in Terraria.Projectile.Damage for damaging my player, add this before collision check
+		internal static bool CanHitPlayer(Projectile projectile, Player target)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				if (!globalProjectile.CanHitPlayer(projectile, target))
+				{
+					return false;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.CanHitPlayer(target);
+			}
+			return true;
+		}
+		//in Terraria.Projectile.Damage for damaging my player, call this after damage variation and add local crit variable
+		internal static void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit, ref int cooldownCounter)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.ModifyHitPlayer(target, ref damage, ref crit, ref cooldownCounter);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.ModifyHitPlayer(projectile, target, ref damage, ref crit, ref cooldownCounter);
+			}
+		}
+		//in Terraria.Projectile.Damage for damaging my player before decreasing projectile penetration call this
+		//  and assign return value from Player.Hurt to local variable to pass as a parameter
+		internal static void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.OnHitPlayer(target, damage, crit);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.OnHitPlayer(projectile, target, damage, crit);
+			}
+		}
 	}
 }
