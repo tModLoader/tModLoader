@@ -252,19 +252,19 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Player.Update for damage from NPCs in if statement checking immunities, etc.
-		//  add NPCLoader.CanHitPlayer(Main.npc[num249], this) &&
-		internal static bool CanHitPlayer(NPC npc, Player target)
+		//  add NPCLoader.CanHitPlayer(Main.npc[num249], this, ref num250) &&
+		internal static bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
-				if (!globalNPC.CanHitPlayer(npc, target))
+				if (!globalNPC.CanHitPlayer(npc, target, ref cooldownSlot))
 				{
 					return false;
 				}
 			}
 			if (IsModNPC(npc))
 			{
-				return npc.modNPC.CanHitPlayer(target);
+				return npc.modNPC.CanHitPlayer(target, ref cooldownSlot);
 			}
 			return true;
 		}

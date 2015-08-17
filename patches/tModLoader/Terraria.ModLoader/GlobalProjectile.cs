@@ -84,12 +84,12 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual bool CanHitPlayer(Projectile projectile, Player target)
+		public virtual bool CanHitPlayer(Projectile projectile, Player target, ref int cooldownSlot)
 		{
 			return true;
 		}
 
-		public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit, ref int cooldownCounter)
+		public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
 		{
 		}
 

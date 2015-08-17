@@ -204,7 +204,7 @@
  							num250 = 1;
  						}
 -						if ((num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
-+						if (NPCLoader.CanHitPlayer(Main.npc[num249], this) && (num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
++						if (NPCLoader.CanHitPlayer(Main.npc[num249], this, ref num250) && (num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
  						{
  							float num251 = 1f;
  							Rectangle value6 = new Rectangle((int)Main.npc[num249].position.X, (int)Main.npc[num249].position.Y, Main.npc[num249].width, Main.npc[num249].height);

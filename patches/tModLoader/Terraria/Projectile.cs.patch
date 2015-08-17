@@ -133,7 +133,7 @@
  				{
  					bool flag8 = this.Colliding(myRect, Main.player[myPlayer2].getRect());
 -					if (flag8)
-+					if (ProjectileLoader.CanHitPlayer(this, Main.player[myPlayer2]) && flag8)
++					if (ProjectileLoader.CanHitPlayer(this, Main.player[myPlayer2], ref num41) && flag8)
  					{
  						int hitDirection = this.direction;
  						if (Main.player[myPlayer2].position.X + (float)(Main.player[myPlayer2].width / 2) < this.position.X + (float)(this.width / 2))
@@ -142,7 +142,7 @@
  						}
  						int num42 = Main.DamageVar((float)this.damage);
 +						bool crit = false;
-+						ProjectileLoader.ModifyHitPlayer(this, Main.player[myPlayer2], ref num42, ref crit, ref num41);
++						ProjectileLoader.ModifyHitPlayer(this, Main.player[myPlayer2], ref num42, ref crit);
  						if (!Main.player[myPlayer2].immune)
  						{
  							this.StatusPlayer(myPlayer2);

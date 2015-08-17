@@ -296,31 +296,31 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Projectile.Damage for damaging my player, add this before collision check
-		internal static bool CanHitPlayer(Projectile projectile, Player target)
+		internal static bool CanHitPlayer(Projectile projectile, Player target, ref int cooldownSlot)
 		{
 			foreach (GlobalProjectile globalProjectile in globalProjectiles)
 			{
-				if (!globalProjectile.CanHitPlayer(projectile, target))
+				if (!globalProjectile.CanHitPlayer(projectile, target, ref cooldownSlot))
 				{
 					return false;
 				}
 			}
 			if (IsModProjectile(projectile))
 			{
-				return projectile.modProjectile.CanHitPlayer(target);
+				return projectile.modProjectile.CanHitPlayer(target, ref cooldownSlot);
 			}
 			return true;
 		}
 		//in Terraria.Projectile.Damage for damaging my player, call this after damage variation and add local crit variable
-		internal static void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit, ref int cooldownCounter)
+		internal static void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
 		{
 			if (IsModProjectile(projectile))
 			{
-				projectile.modProjectile.ModifyHitPlayer(target, ref damage, ref crit, ref cooldownCounter);
+				projectile.modProjectile.ModifyHitPlayer(target, ref damage, ref crit);
 			}
 			foreach (GlobalProjectile globalProjectile in globalProjectiles)
 			{
-				globalProjectile.ModifyHitPlayer(projectile, target, ref damage, ref crit, ref cooldownCounter);
+				globalProjectile.ModifyHitPlayer(projectile, target, ref damage, ref crit);
 			}
 		}
 		//in Terraria.Projectile.Damage for damaging my player before decreasing projectile penetration call this
