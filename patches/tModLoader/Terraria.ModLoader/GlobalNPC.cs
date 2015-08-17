@@ -83,5 +83,31 @@ namespace Terraria.ModLoader
 		public virtual void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
 		{
 		}
+
+		public virtual bool? CanBeHitByItem(NPC npc, Player player, Item item)
+		{
+			return null;
+		}
+
+		public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+		{
+		}
+
+		public virtual void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+		{
+		}
+
+		public virtual bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
+		{
+			return null;
+		}
+
+		public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit)
+		{
+		}
+
+		public virtual void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+		{
+		}
 	}
 }

@@ -395,7 +395,7 @@
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num281 = 0; num281 < 200; num281++)
-@@ -31533,7 +31605,12 @@
+@@ -31533,7 +31605,18 @@
  								{
  									if (!Main.npc[num292].dontTakeDamage)
  									{
@@ -405,27 +405,35 @@
 +										{
 +											continue;
 +										}
-+										if (!Main.npc[num292].friendly || (Main.npc[num292].type == 22 && this.killGuide) || (Main.npc[num292].type == 54 && this.killClothier) || (modCanHit.HasValue && modCanHit.Value))
++										bool? modCanBeHit = NPCLoader.CanBeHitByItem(Main.npc[num292], this, item);
++										if (modCanBeHit.HasValue && !modCanBeHit.Value)
++										{
++											continue;
++										}
++										bool canHitFlag = (modCanHit.HasValue && modCanHit.Value) || (modCanBeHit.HasValue && modCanBeHit.Value);
++										if (!Main.npc[num292].friendly || (Main.npc[num292].type == 22 && this.killGuide) || (Main.npc[num292].type == 54 && this.killClothier) || canHitFlag)
  										{
  											Rectangle value12 = new Rectangle((int)Main.npc[num292].position.X, (int)Main.npc[num292].position.Y, Main.npc[num292].width, Main.npc[num292].height);
  											if (r2.Intersects(value12) && (Main.npc[num292].noTileCollide || Collision.CanHit(this.position, this.width, this.height, Main.npc[num292].position, Main.npc[num292].width, Main.npc[num292].height)))
-@@ -31556,6 +31633,7 @@
+@@ -31556,6 +31639,8 @@
  													}
  												}
  												int num294 = Main.DamageVar((float)num282);
 +												ItemLoader.ModifyHitNPC(item, this, Main.npc[num292], ref num282, ref num283, ref flag18);
++												NPCLoader.ModifyHitByItem(Main.npc[num292], this, item, ref num282, ref num283, ref flag18);
  												this.StatusNPC(item.type, num292);
  												this.OnHit(Main.npc[num292].Center.X, Main.npc[num292].Center.Y, Main.npc[num292]);
  												if (this.armorPenetration > 0)
-@@ -31630,6 +31708,7 @@
+@@ -31630,6 +31715,8 @@
  														NetMessage.SendData(21, -1, -1, "", num300, 0f, 0f, 0f, 0, 0, 0);
  													}
  												}
 +												ItemLoader.OnHitNPC(item, this, Main.npc[num292], num295, num283, flag18);
++												NPCLoader.OnHitByItem(Main.npc[num292], this, item, num295, num283, flag18);
  												int num301 = Item.NPCtoBanner(Main.npc[num292].BannerID());
  												if (num301 >= 0)
  												{
-@@ -31674,7 +31753,7 @@
+@@ -31674,7 +31761,7 @@
  									if (num302 != i && Main.player[num302].active && Main.player[num302].hostile && !Main.player[num302].immune && !Main.player[num302].dead && (Main.player[i].team == 0 || Main.player[i].team != Main.player[num302].team))
  									{
  										Rectangle value16 = new Rectangle((int)Main.player[num302].position.X, (int)Main.player[num302].position.Y, Main.player[num302].width, Main.player[num302].height);
@@ -434,7 +442,7 @@
  										{
  											bool flag20 = false;
  											if (Main.rand.Next(1, 101) <= 10)
-@@ -31682,6 +31761,7 @@
+@@ -31682,6 +31769,7 @@
  												flag20 = true;
  											}
  											int num303 = Main.DamageVar((float)num282);
@@ -442,7 +450,7 @@
  											this.StatusPvP(item.type, num302);
  											this.OnHit(Main.player[num302].Center.X, Main.player[num302].Center.Y, Main.player[num302]);
  											int num304 = (int)Main.player[num302].Hurt(num303, this.direction, true, false, "", flag20, -1);
-@@ -31731,6 +31811,7 @@
+@@ -31731,6 +31819,7 @@
  											{
  												this.pumpkinSword(num302, (int)((double)num282 * 1.5), num283);
  											}
@@ -450,7 +458,7 @@
  											if (Main.netMode != 0)
  											{
  												if (flag20)
-@@ -31812,6 +31893,7 @@
+@@ -31812,6 +31901,7 @@
  			}
  			if (this.itemTime == 0 && this.itemAnimation > 0)
  			{
@@ -458,7 +466,7 @@
  				if (item.hairDye >= 0)
  				{
  					this.itemTime = item.useTime;
-@@ -32325,6 +32407,7 @@
+@@ -32325,6 +32415,7 @@
  					{
  						flag22 = true;
  					}
@@ -466,7 +474,7 @@
  					if (flag22)
  					{
  						if (item.stack > 0)
-@@ -32649,6 +32732,10 @@
+@@ -32649,6 +32740,10 @@
  				{
  					flag2 = true;
  				}
@@ -477,7 +485,7 @@
  				if (!flag2 && item.consumable)
  				{
  					item.stack--;
-@@ -32701,7 +32788,7 @@
+@@ -32701,7 +32796,7 @@
  			}
  			else
  			{
@@ -486,7 +494,7 @@
  			}
  			if (tile.type == 211 && pickPower < 200)
  			{
-@@ -32769,6 +32856,10 @@
+@@ -32769,6 +32864,10 @@
  			else if (tile.type == 223 && pickPower < 150)
  			{
  				num = 0;
@@ -497,7 +505,7 @@
  			}
  			if (tile.type == 147 || tile.type == 0 || tile.type == 40 || tile.type == 53 || tile.type == 57 || tile.type == 59 || tile.type == 123 || tile.type == 224 || tile.type == 397)
  			{
-@@ -33377,7 +33468,7 @@
+@@ -33377,7 +33476,7 @@
  			{
  				return false;
  			}
@@ -506,7 +514,7 @@
  			{
  				return false;
  			}
-@@ -33586,12 +33677,12 @@
+@@ -33586,12 +33685,12 @@
  							{
  								player.armor[k].name = "";
  							}
@@ -521,7 +529,7 @@
  							binaryWriter.Write(player.dye[l].prefix);
  						}
  						for (int m = 0; m < 58; m++)
-@@ -33600,16 +33691,16 @@
+@@ -33600,16 +33699,16 @@
  							{
  								player.inventory[m].name = "";
  							}
@@ -541,7 +549,7 @@
  							binaryWriter.Write(player.miscDyes[n].prefix);
  						}
  						for (int num = 0; num < 40; num++)
-@@ -33618,7 +33709,7 @@
+@@ -33618,7 +33717,7 @@
  							{
  								player.bank.item[num].name = "";
  							}
@@ -550,7 +558,7 @@
  							binaryWriter.Write(player.bank.item[num].stack);
  							binaryWriter.Write(player.bank.item[num].prefix);
  						}
-@@ -33628,7 +33719,7 @@
+@@ -33628,7 +33727,7 @@
  							{
  								player.bank2.item[num2].name = "";
  							}
@@ -559,7 +567,7 @@
  							binaryWriter.Write(player.bank2.item[num2].stack);
  							binaryWriter.Write(player.bank2.item[num2].prefix);
  						}
-@@ -33673,6 +33764,7 @@
+@@ -33673,6 +33772,7 @@
  					}
  				}
  			}
@@ -567,7 +575,7 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
-@@ -34116,6 +34208,7 @@
+@@ -34116,6 +34216,7 @@
  								player.anglerQuestsFinished = binaryReader.ReadInt32();
  							}
  							player.skinVariant = (int)MathHelper.Clamp((float)player.skinVariant, 0f, 7f);
@@ -575,7 +583,7 @@
  							for (int num32 = 3; num32 < 8 + player.extraAccessorySlots; num32++)
  							{
  								int type = player.armor[num32].type;
-@@ -34184,6 +34277,7 @@
+@@ -34184,6 +34285,7 @@
  					if (FileUtilities.Exists(file + ".bak", cloudSave))
  					{
  						FileUtilities.Move(file + ".bak", file, cloudSave, true);

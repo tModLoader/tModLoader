@@ -348,5 +348,113 @@ namespace Terraria.ModLoader
 				globalNPC.OnHitNPC(npc, target, damage, knockback, crit);
 			}
 		}
+		//in Terraria.Player.ItemCheck call after ItemLoader.CanHitNPC
+		internal static bool? CanBeHitByItem(NPC npc, Player player, Item item)
+		{
+			bool? flag = null;
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				bool? canHit = globalNPC.CanBeHitByItem(npc, player, item);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
+			}
+			if (IsModNPC(npc))
+			{
+				bool? canHit = npc.modNPC.CanBeHitByItem(player, item);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
+			}
+			return flag;
+		}
+		//in Terraria.Player.ItemCheck call after ItemLoader.ModifyHitNPC
+		internal static void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.ModifyHitByItem(player, item, ref damage, ref knockback, ref crit);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.ModifyHitByItem(npc, player, item, ref damage, ref knockback, ref crit);
+			}
+		}
+		//in Terraria.Player.ItemCheck call after ItemLoader.OnHitNPC
+		internal static void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.OnHitByItem(player, item, damage, knockback, crit);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.OnHitByItem(npc, player, item, damage, knockback, crit);
+			}
+		}
+		//in Terraria.Projectile.Damage call after ProjectileLoader.CanHitNPC
+		internal static bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
+		{
+			bool? flag = null;
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				bool? canHit = globalNPC.CanBeHitByProjectile(npc, projectile);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
+			}
+			if (IsModNPC(npc))
+			{
+				bool? canHit = npc.modNPC.CanBeHitByProjectile(projectile);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
+			}
+			return flag;
+		}
+		//in Terraria.Projectile.Damage call after ProjectileLoader.ModifyHitNPC
+		internal static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.ModifyHitByProjectile(npc, projectile, ref damage, ref knockback, ref crit);
+			}
+		}
+		//in Terraria.Projectile.Damage call after ProjectileLoader.OnHitNPC
+		internal static void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.OnHitByProjectile(projectile, damage, knockback, crit);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.OnHitByProjectile(npc, projectile, damage, knockback, crit);
+			}
+		}
 	}
 }
