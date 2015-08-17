@@ -204,6 +204,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Projectile.Damage for damaging NPCs before flag2 is checked... just check the patch files
 		internal static bool? CanHitNPC(Projectile projectile, NPC target)
 		{
+			bool? flag = null;
 			foreach (GlobalProjectile globalProjectile in globalProjectiles)
 			{
 				bool? canHit = globalProjectile.CanHitNPC(projectile, target);
@@ -211,12 +212,24 @@ namespace Terraria.ModLoader
 				{
 					return false;
 				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
 			}
 			if (IsModProjectile(projectile))
 			{
-				return projectile.modProjectile.CanHitNPC(target);
+				bool? canHit = projectile.modProjectile.CanHitNPC(target);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
 			}
-			return null;
+			return flag;
 		}
 		//in Terraria.Projectile.Damage before calling StatusNPC call this and add local knockback variable
 		internal static void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit)

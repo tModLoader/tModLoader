@@ -251,5 +251,102 @@ namespace Terraria.ModLoader
 				bagType = npc.modNPC.bossBag;
 			}
 		}
+		//in Terraria.Player.Update for damage from NPCs in if statement checking immunities, etc.
+		//  add NPCLoader.CanHitPlayer(Main.npc[num249], this) &&
+		internal static bool CanHitPlayer(NPC npc, Player target)
+		{
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				if (!globalNPC.CanHitPlayer(npc, target))
+				{
+					return false;
+				}
+			}
+			if (IsModNPC(npc))
+			{
+				return npc.modNPC.CanHitPlayer(target);
+			}
+			return true;
+		}
+		//in Terraria.Player.Update for damage from NPCs after applying banner buff
+		//  add local crit variable and call this
+		internal static void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.ModifyHitPlayer(target, ref damage, ref crit);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.ModifyHitPlayer(npc, target, ref damage, ref crit);
+			}
+		}
+		//in Terraria.Player.Update for damage from NPCs
+		//  assign return value from Player.Hurt to local variable then call this
+		internal static void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.OnHitPlayer(target, damage, crit);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.OnHitPlayer(npc, target, damage, crit);
+			}
+		}
+		//Terraria.NPC.UpdateNPC for friendly NPC taking damage (check patch files)
+		internal static bool? CanHitNPC(NPC npc, NPC target)
+		{
+			bool? flag = null;
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				bool? canHit = globalNPC.CanHitNPC(npc, target);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
+			}
+			if (IsModNPC(npc))
+			{
+				bool? canHit = npc.modNPC.CanHitNPC(target);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
+			}
+			return flag;
+		}
+		//in Terraria.NPC.UpdateNPC for friendly NPC taking damage add local crit variable then call this
+		internal static void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.ModifyHitNPC(target, ref damage, ref knockback, ref crit);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.ModifyHitNPC(npc, target, ref damage, ref knockback, ref crit);
+			}
+		}
+		//in Terraria.NPC.UpdateNPC for friendly NPC taking damage before dryad ward call this
+		internal static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.OnHitNPC(target, damage, knockback, crit);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.OnHitNPC(npc, target, damage, knockback, crit);
+			}
+		}
 	}
 }

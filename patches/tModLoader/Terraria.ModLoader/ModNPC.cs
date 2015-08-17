@@ -82,5 +82,31 @@ namespace Terraria.ModLoader
 		public virtual void BossLoot(ref string name, ref int potionType)
 		{
 		}
+
+		public virtual bool CanHitPlayer(Player target)
+		{
+			return true;
+		}
+
+		public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+		{
+		}
+
+		public virtual void OnHitPlayer(Player target, int damage, bool crit)
+		{
+		}
+
+		public virtual bool? CanHitNPC(NPC target)
+		{
+			return null;
+		}
+
+		public virtual void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit)
+		{
+		}
+
+		public virtual void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+		}
 	}
 }

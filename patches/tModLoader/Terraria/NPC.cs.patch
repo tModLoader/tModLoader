@@ -151,4 +151,38 @@
  			if (!this.active)
  			{
  				return;
+@@ -70451,22 +70482,30 @@
+ 							if (Main.npc[num39].active && !Main.npc[num39].friendly && Main.npc[num39].damage > 0)
+ 							{
+ 								Rectangle rectangle2 = new Rectangle((int)Main.npc[num39].position.X, (int)Main.npc[num39].position.Y, Main.npc[num39].width, Main.npc[num39].height);
+-								if (rectangle.Intersects(rectangle2) && (this.type != 453 || !NPCID.Sets.Skeletons.Contains(Main.npc[num39].netID)))
++								bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[num39], this);
++								if (modCanHit.HasValue && !modCanHit.Value)
++								{
++									continue;
++								}
++								if (rectangle.Intersects(rectangle2) && ((modCanHit.HasValue && modCanHit.Value) || this.type != 453 || !NPCID.Sets.Skeletons.Contains(Main.npc[num39].netID)))
+ 								{
+ 									int num40 = Main.npc[num39].damage;
+-									int num41 = 6;
++									float num41 = 6;
+ 									int num42 = 1;
+ 									if (Main.npc[num39].position.X + (float)(Main.npc[num39].width / 2) > this.position.X + (float)(this.width / 2))
+ 									{
+ 										num42 = -1;
+ 									}
++									bool crit = false;
++									NPCLoader.ModifyHitNPC(Main.npc[num39], this, ref num40, ref num41, ref crit);
+ 									double num43 = Main.npc[i].StrikeNPCNoInteraction(num40, (float)num41, num42, false, false, false);
+ 									if (Main.netMode != 0)
+ 									{
+-										NetMessage.SendData(28, -1, -1, "", i, (float)num40, (float)num41, (float)num42, 0, 0, 0);
++										NetMessage.SendData(28, -1, -1, "", i, (float)num40, (float)num41, (float)num42, crit ? 1 : 0, 0, 0);
+ 									}
+ 									this.netUpdate = true;
+ 									this.immune[255] = 30;
++									NPCLoader.OnHitNPC(Main.npc[num39], this, (int)num43, num41, crit);
+ 									if (this.dryadWard)
+ 									{
+ 										num40 = (int)num43 / 3;
 

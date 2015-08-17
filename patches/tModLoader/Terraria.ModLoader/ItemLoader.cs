@@ -279,6 +279,7 @@ namespace Terraria.ModLoader
 		//in if statement afterwards add || (modCanHit.HasValue && modCanHit.Value)
 		internal static bool? CanHitNPC(Item item, Player player, NPC target)
 		{
+			bool? flag = null;
 			foreach (GlobalItem globalItem in globalItems)
 			{
 				bool? canHit = globalItem.CanHitNPC(item, player, target);
@@ -286,12 +287,24 @@ namespace Terraria.ModLoader
 				{
 					return false;
 				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
 			}
 			if (IsModItem(item))
 			{
-				return item.modItem.CanHitNPC(player, target);
+				bool? canHit = item.modItem.CanHitNPC(player, target);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
 			}
-			return null;
+			return flag;
 		}
 		//in Terraria.Player.ItemCheck for melee attacks after damage variation
 		//  call ItemLoader.ModifyHitNPC(item, this, Main.npc[num292], ref num282, ref num283, ref flag18)
