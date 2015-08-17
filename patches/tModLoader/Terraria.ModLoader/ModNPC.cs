@@ -134,5 +134,10 @@ namespace Terraria.ModLoader
 		public virtual void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
 		{
 		}
+
+		public virtual bool StrikeNPC(ref double damage, ref float knockback, int hitDirection, ref bool crit)
+		{
+			return true;
+		}
 	}
 }

@@ -139,19 +139,45 @@
  			if (num > 0)
  			{
  				if (Main.netMode == 2)
-@@ -62274,6 +62300,11 @@
+@@ -62016,14 +62042,17 @@
+ 			{
+ 				num2 = 0;
+ 			}
+-			num = Main.CalculateDamage((int)num, num2);
+-			if (crit)
+-			{
+-				num *= 2.0;
+-			}
+-			if (this.takenDamageMultiplier > 1f)
+-			{
+-				num *= (double)this.takenDamageMultiplier;
++			if (NPCLoader.StrikeNPC(this, ref num, ref knockBack, hitDirection, ref crit))
++			{
++				num = Main.CalculateDamage((int)num, num2);
++				if (crit)
++				{
++					num *= 2.0;
++				}
++				if (this.takenDamageMultiplier > 1f)
++				{
++					num *= (double)this.takenDamageMultiplier;
++				}
+ 			}
+ 			if ((this.takenDamageMultiplier > 1f || Damage != 9999) && this.lifeMax > 1)
+ 			{
+@@ -62273,6 +62302,11 @@
+ 		}
  
  		public void HitEffect(int hitDirection = 0, double dmg = 10.0)
- 		{
++		{
 +			NPCLoader.HitEffect(this, hitDirection, dmg);
 +		}
 +
 +		public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0)
-+		{
+ 		{
  			if (!this.active)
  			{
- 				return;
-@@ -70451,22 +70482,30 @@
+@@ -70451,22 +70485,30 @@
  							if (Main.npc[num39].active && !Main.npc[num39].friendly && Main.npc[num39].damage > 0)
  							{
  								Rectangle rectangle2 = new Rectangle((int)Main.npc[num39].position.X, (int)Main.npc[num39].position.Y, Main.npc[num39].width, Main.npc[num39].height);

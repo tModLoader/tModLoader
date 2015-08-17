@@ -456,5 +456,22 @@ namespace Terraria.ModLoader
 				globalNPC.OnHitByProjectile(npc, projectile, damage, knockback, crit);
 			}
 		}
+		//in Terraria.NPC.StrikeNPC place modifications to num in if statement checking this
+		internal static bool StrikeNPC(NPC npc, ref double damage, ref float knockback, int hitDirection, ref bool crit)
+		{
+			bool flag = true;
+			if (IsModNPC(npc))
+			{
+				flag = npc.modNPC.StrikeNPC(ref damage, ref knockback, hitDirection, ref crit);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				if (!globalNPC.StrikeNPC(npc, ref damage, ref knockback, hitDirection, ref crit))
+				{
+					flag = false;
+				}
+			}
+			return flag;
+		}
 	}
 }

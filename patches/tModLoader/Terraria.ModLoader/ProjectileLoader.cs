@@ -336,5 +336,24 @@ namespace Terraria.ModLoader
 				globalProjectile.OnHitPlayer(projectile, target, damage, crit);
 			}
 		}
+		//in Terraria.Projectile.Colliding after modifying myRect add
+		//  bool? modColliding = ProjectileLoader.Colliding(this, myRect, targetRect);
+		//  if(modColliding.HasValue) { return modColliding.Value; }
+		internal static bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				bool? colliding = globalProjectile.Colliding(projectile, projHitbox, targetHitbox);
+				if (colliding.HasValue)
+				{
+					return colliding.Value;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.Colliding(projHitbox, targetHitbox);
+			}
+			return null;
+		}
 	}
 }

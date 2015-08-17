@@ -96,5 +96,10 @@ namespace Terraria.ModLoader
 		public virtual void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
 		{
 		}
+
+		public virtual bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox)
+		{
+			return null;
+		}
 	}
 }

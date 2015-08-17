@@ -163,7 +163,19 @@
  						if (this.type == 435)
  						{
  							this.penetrate--;
-@@ -10111,6 +10141,7 @@
+@@ -9082,6 +9112,11 @@
+ 			{
+ 				myRect.X += (int)this.velocity.X;
+ 				myRect.Y += (int)this.velocity.Y;
++			}
++			bool? modColliding = ProjectileLoader.Colliding(this, myRect, targetRect);
++			if (modColliding.HasValue)
++			{
++				return modColliding.Value;
+ 			}
+ 			if (myRect.Intersects(targetRect))
+ 			{
+@@ -10111,6 +10146,7 @@
  							num25 = (int)(20f * this.scale);
  							num26 = (int)(20f * this.scale);
  						}
@@ -171,7 +183,7 @@
  						if (((this.type != 440 && this.type != 449 && this.type != 606) || this.ai[1] != 1f) && (this.type != 466 || this.localAI[1] != 1f) && (this.type != 580 || this.localAI[1] <= 0f) && (this.type != 640 || this.localAI[1] <= 0f))
  						{
  							if (this.aiStyle == 10)
-@@ -10202,7 +10233,10 @@
+@@ -10202,7 +10238,10 @@
  						}
  						if (flag3)
  						{
@@ -183,7 +195,7 @@
  							{
  								this.position += this.velocity;
  								this.numUpdates = 0;
-@@ -11954,6 +11988,8 @@
+@@ -11954,6 +11993,8 @@
  						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
  					case "Random":
  						return Main.rand.NextFloat();
@@ -192,7 +204,7 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -12009,6 +12045,11 @@
+@@ -12009,6 +12050,11 @@
  		}
  
  		public void AI()
@@ -204,7 +216,7 @@
  		{
  			if (this.aiStyle == 1)
  			{
-@@ -35510,6 +35551,11 @@
+@@ -35510,6 +35556,11 @@
  			Main.projectileIdentity[this.owner, this.identity] = -1;
  			int num = this.timeLeft;
  			this.timeLeft = 0;
@@ -216,7 +228,7 @@
  			if (this.type == 634 || this.type == 635)
  			{
  				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
-@@ -40434,6 +40480,7 @@
+@@ -40434,6 +40485,7 @@
  					}
  				}
  			}
