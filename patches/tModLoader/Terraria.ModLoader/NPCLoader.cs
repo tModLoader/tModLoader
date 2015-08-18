@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 
@@ -472,6 +473,42 @@ namespace Terraria.ModLoader
 				}
 			}
 			return flag;
+		}
+		//in Terraria.NPC.GetBossHeadTextureIndex call this before returning
+		internal static void BossHeadSlot(NPC npc, ref int index)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.BossHeadSlot(ref index);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.BossHeadSlot(npc, ref index);
+			}
+		}
+		//in Terraria.NPC.GetBossHeadRotation call this before returning
+		internal static void BossHeadRotation(NPC npc, ref float rotation)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.BossHeadRotation(ref rotation);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.BossHeadRotation(npc, ref rotation);
+			}
+		}
+		//in Terraria.NPC.GetBossHeadSpriteEffects call this before returning
+		internal static void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.BossHeadSpriteEffects(ref spriteEffects);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.BossHeadSpriteEffects(npc, ref spriteEffects);
+			}
 		}
 	}
 }

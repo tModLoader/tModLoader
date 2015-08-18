@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 
 namespace Terraria.ModLoader
 {
@@ -142,6 +141,18 @@ namespace Terraria.ModLoader
 		public virtual bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
 		{
 			return true;
+		}
+
+		public virtual void BossHeadSlot(ref int index)
+		{
+		}
+
+		public virtual void BossHeadRotation(ref float rotation)
+		{
+		}
+
+		public virtual void BossHeadSpriteEffects(ref SpriteEffects spriteEffects)
+		{
 		}
 	}
 }
