@@ -510,5 +510,53 @@ namespace Terraria.ModLoader
 				globalNPC.BossHeadSpriteEffects(npc, ref spriteEffects);
 			}
 		}
+		//at beginning of Terraria.NPC.GetAlpha add
+		//  Color? modColor = NPCLoader.GetAlpha(this, new Color); if(modColor.HasValue) { return modColor.Value; }
+		internal static Color? GetAlpha(NPC npc, Color lightColor)
+		{
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				Color? color = globalNPC.GetAlpha(npc, lightColor);
+				if (color.HasValue)
+				{
+					return color.Value;
+				}
+			}
+			if (IsModNPC(npc))
+			{
+				return npc.modNPC.GetAlpha(lightColor);
+			}
+			return null;
+		}
+		//in Terraria.Main.DrawNPC after modifying draw color add
+		//  if(!NPCLoader.PreDraw(Main.npc[i], Main.spriteBatch, color9))
+		//  { NPCLoader.PostDraw(Main.npc[k], Main.spriteBatch, color9); return; }
+		internal static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
+		{
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				if (!globalNPC.PreDraw(npc, spriteBatch, drawColor))
+				{
+					return false;
+				}
+			}
+			if (IsModNPC(npc))
+			{
+				return npc.modNPC.PreDraw(spriteBatch, drawColor);
+			}
+			return true;
+		}
+		//call this at end of Terraria.Main.DrawNPC
+		internal static void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.PostDraw(spriteBatch, drawColor);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.PostDraw(npc, spriteBatch, drawColor);
+			}
+		}
 	}
 }

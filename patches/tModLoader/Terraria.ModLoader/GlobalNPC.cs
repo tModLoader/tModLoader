@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
@@ -123,6 +124,20 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects)
+		{
+		}
+
+		public virtual Color? GetAlpha(NPC npc, Color drawColor)
+		{
+			return null;
+		}
+
+		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
+		{
+			return true;
+		}
+
+		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
 		{
 		}
 	}

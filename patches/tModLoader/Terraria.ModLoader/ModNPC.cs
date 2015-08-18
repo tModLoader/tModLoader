@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
@@ -24,6 +25,11 @@ namespace Terraria.ModLoader
 		public int aiType = 0;
 		public int animationType = 0;
 		public int bossBag = -1;
+		//make changes to Terraria.Main.UpdateMusic (see patch files)
+		public int music = -1;
+		//in Terraria.Main.NPCAddHeight at end of else if chain add
+		//  else if(Main.npc[i].modNPC != null) { num = Main.npc[i].modNPC.drawOffsetY; }
+		public float drawOffsetY = 0f;
 
 		public ModNPC()
 		{
@@ -152,6 +158,20 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void BossHeadSpriteEffects(ref SpriteEffects spriteEffects)
+		{
+		}
+
+		public virtual Color? GetAlpha(Color drawColor)
+		{
+			return null;
+		}
+
+		public virtual bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
+		{
+			return true;
+		}
+
+		public virtual void PostDraw(SpriteBatch spriteBatch, Color drawColor)
 		{
 		}
 	}

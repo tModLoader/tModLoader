@@ -253,4 +253,16 @@
  									if (this.dryadWard)
  									{
  										num40 = (int)num43 / 3;
+@@ -71275,6 +71320,11 @@
+ 
+ 		public Color GetAlpha(Color newColor)
+ 		{
++			Color? modColor = NPCLoader.GetAlpha(this, newColor);
++			if (modColor.HasValue)
++			{
++				return modColor.Value;
++			}
+ 			float num = (float)(255 - this.alpha) / 255f;
+ 			int num2 = (int)((float)newColor.R * num);
+ 			int num3 = (int)((float)newColor.G * num);
 
