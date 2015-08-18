@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 namespace Terraria.ModLoader
@@ -28,6 +29,9 @@ namespace Terraria.ModLoader
 
 		internal string texture;
 		public int aiType = 0;
+		public int drawOffsetX = 0;
+		public int drawOriginOffsetY = 0;
+		public float drawOriginOffsetX = 0f;
 
 		public ModProjectile()
 		{
@@ -126,6 +130,20 @@ namespace Terraria.ModLoader
 		public virtual bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
 			return null;
+		}
+
+		public virtual Color? GetAlpha(Color lightColor)
+		{
+			return null;
+		}
+
+		public virtual bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+		{
+			return true;
+		}
+
+		public virtual void PostDraw(SpriteBatch spriteBatch, Color lightColor)
+		{
 		}
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 namespace Terraria.ModLoader
@@ -100,6 +101,20 @@ namespace Terraria.ModLoader
 		public virtual bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox)
 		{
 			return null;
+		}
+
+		public virtual Color? GetAlpha(Projectile projectile, Color lightColor)
+		{
+			return null;
+		}
+
+		public virtual bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor)
+		{
+			return true;
+		}
+
+		public virtual void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor)
+		{
 		}
 	}
 }

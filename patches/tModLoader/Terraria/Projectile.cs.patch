@@ -228,7 +228,7 @@
  			if (this.type == 634 || this.type == 635)
  			{
  				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
-@@ -40434,6 +40485,7 @@
+@@ -40434,11 +40485,17 @@
  					}
  				}
  			}
@@ -236,4 +236,14 @@
  			this.active = false;
  		}
  
+ 		public Color GetAlpha(Color newColor)
+ 		{
++			Color? modColor = ProjectileLoader.GetAlpha(this, newColor);
++			if (modColor.HasValue)
++			{
++				return modColor.Value;
++			}
+ 			if (this.type == 270)
+ 			{
+ 				return new Color(255, 255, 255, Main.rand.Next(0, 255));
 

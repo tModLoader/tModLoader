@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 
@@ -354,6 +355,66 @@ namespace Terraria.ModLoader
 				return projectile.modProjectile.Colliding(projHitbox, targetHitbox);
 			}
 			return null;
+		}
+		//at beginning of Terraria.Projectile.GetAlpha add
+		//  Color? modColor = ProjectileLoader.GetAlpha(this, newColor);
+		//  if(modColor.HasValue) { return modColor.Value; }
+		internal static Color? GetAlpha(Projectile projectile, Color lightColor)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				Color? color = globalProjectile.GetAlpha(projectile, lightColor);
+				if (color.HasValue)
+				{
+					return color;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.GetAlpha(lightColor);
+			}
+			return null;
+		}
+		//in Terraria.Main.DrawProj after setting offsets call
+		//  ProjectileLoader.DrawOffset(projectile, ref num148, ref num149);
+		internal static void DrawOffset(Projectile projectile, ref int offsetX, ref int offsetY, ref float originX)
+		{
+			if (IsModProjectile(projectile))
+			{
+				offsetX = projectile.modProjectile.drawOffsetX;
+				offsetY = -projectile.modProjectile.drawOriginOffsetY;
+				originX += projectile.modProjectile.drawOriginOffsetX;
+			}
+		}
+		//in Terraria.Main.DrawProj after modifying light color add
+		//  if(!ProjectileLoader.PreDraw(projectile, Main.spriteBatch, color25))
+		//  { ProjectileLoader.PostDraw(projectile, Main.spriteBatch, color25); return; }
+		internal static bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				if (!globalProjectile.PreDraw(projectile, spriteBatch, lightColor))
+				{
+					return false;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.PreDraw(spriteBatch, lightColor);
+			}
+			return true;
+		}
+		//at end of Terraria.Main.DrawProj call ProjectileLoader.PostDraw(projectile, Main.spriteBatch, color25);
+		internal static void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.PostDraw(spriteBatch, lightColor);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.PostDraw(projectile, spriteBatch, lightColor);
+			}
 		}
 	}
 }
