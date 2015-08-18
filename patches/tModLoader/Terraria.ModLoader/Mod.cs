@@ -561,15 +561,44 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddNPCHeadTexture(int npcType, string texture)
+		{
+			int slot = NPCHeadLoader.ReserveHeadSlot();
+			NPCHeadLoader.heads[texture] = slot;
+			ModLoader.GetTexture(texture);
+			NPCHeadLoader.npcToHead[npcType] = slot;
+			NPCHeadLoader.headToNPC[slot] = npcType;
+		}
+
+		public void AddBossHeadTexture(string texture)
+		{
+			int slot = NPCHeadLoader.ReserveBossHeadSlot(texture);
+			NPCHeadLoader.bossHeads[texture] = slot;
+			ModLoader.GetTexture(texture);
+		}
+
 		private void AutoloadNPC(Type type)
 		{
 			ModNPC npc = (ModNPC)Activator.CreateInstance(type);
 			npc.mod = this;
 			string name = type.Name;
 			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+			string defaultTexture = texture;
 			if (npc.Autoload(ref name, ref texture))
 			{
 				AddNPC(name, npc, texture);
+				string headTexture = defaultTexture + "_Head";
+				string bossHeadTexture = headTexture + "_Boss";
+				npc.AutoloadHead(ref headTexture, ref bossHeadTexture);
+				if (ModLoader.TextureExists(headTexture))
+				{
+					AddNPCHeadTexture(npc.npc.type, headTexture);
+				}
+				if (ModLoader.TextureExists(bossHeadTexture))
+				{
+					AddBossHeadTexture(bossHeadTexture);
+					NPCHeadLoader.npcToBossHead[npc.npc.type] = NPCHeadLoader.bossHeads[bossHeadTexture];
+				}
 			}
 		}
 

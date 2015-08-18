@@ -110,7 +110,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual bool StrikeNPC(NPC npc, ref double damage, ref float knockback, int hitDirection, ref bool crit)
+		public virtual bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
 		{
 			return true;
 		}

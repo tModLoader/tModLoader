@@ -19,6 +19,24 @@
  		public const int MaxMoonLordCountdown = 3600;
  		public const int maxBuffs = 5;
  		public const int breathMax = 200;
+@@ -1684,7 +1691,7 @@
+ 			{
+ 				return 23;
+ 			}
+-			return -1;
++			return NPCHeadLoader.GetNPCHeadSlot(type);
+ 		}
+ 
+ 		public static int NumToType(int type)
+@@ -1781,7 +1788,7 @@
+ 			{
+ 				return 441;
+ 			}
+-			return -1;
++			return NPCHeadLoader.GetNPCFromHeadSlot(type);
+ 		}
+ 
+ 		public int GetBossHeadTextureIndex()
 @@ -3127,6 +3134,7 @@
  
  		public void SetDefaults(int Type, float scaleOverride = -1f)
@@ -151,7 +169,7 @@
 -			if (this.takenDamageMultiplier > 1f)
 -			{
 -				num *= (double)this.takenDamageMultiplier;
-+			if (NPCLoader.StrikeNPC(this, ref num, ref knockBack, hitDirection, ref crit))
++			if (NPCLoader.StrikeNPC(this, ref num, num2, ref knockBack, hitDirection, ref crit))
 +			{
 +				num = Main.CalculateDamage((int)num, num2);
 +				if (crit)

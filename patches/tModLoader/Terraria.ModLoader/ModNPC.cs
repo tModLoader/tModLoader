@@ -36,6 +36,10 @@ namespace Terraria.ModLoader
 			return mod.Properties.Autoload;
 		}
 
+		public virtual void AutoloadHead(ref string headTexture, ref string bossHeadTexture)
+		{
+		}
+
 		internal void SetupNPC(NPC npc)
 		{
 			ModNPC newNPC = (ModNPC)Activator.CreateInstance(GetType());
@@ -135,7 +139,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual bool StrikeNPC(ref double damage, ref float knockback, int hitDirection, ref bool crit)
+		public virtual bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
 		{
 			return true;
 		}

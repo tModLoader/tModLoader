@@ -181,6 +181,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.ResizeArrays();
 			NPCLoader.ResizeArrays();
 			ModGore.ResizeArrays();
+			NPCHeadLoader.ResizeAndFillArrays();
 		}
 
 		internal static string[] FindMods()
@@ -365,6 +366,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
 			ModGore.Unload();
+			NPCHeadLoader.Unload();
 			textures.Clear();
 			mods.Clear();
 			ResizeArrays(true);
@@ -665,11 +667,16 @@ namespace Terraria.ModLoader
 
 		public static Texture2D GetTexture(string name)
 		{
-			if (!textures.ContainsKey(name))
+			if (!TextureExists(name))
 			{
 				throw new ArgumentException("Missing texture " + name);
 			}
 			return textures[name];
+		}
+
+		public static bool TextureExists(string name)
+		{
+			return textures.ContainsKey(name);
 		}
 
 		private static void AddCraftGroups()
