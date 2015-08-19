@@ -1,6 +1,39 @@
 --- src/Terraria\Terraria\NetMessage.cs
 +++ src/tModLoader\Terraria\NetMessage.cs
-@@ -1557,7 +1557,7 @@
+@@ -6,6 +6,7 @@
+ using Terraria.GameContent.Tile_Entities;
+ using Terraria.ID;
+ using Terraria.IO;
++using Terraria.ModLoader;
+ using Terraria.Net.Sockets;
+ using Terraria.Social;
+ 
+@@ -496,6 +497,7 @@
+ 							{
+ 								writer.Write((byte)nPC.releaseOwner);
+ 							}
++							NPCLoader.SendExtraAI(nPC, writer);
+ 							break;
+ 						}
+ 					case 24:
+@@ -541,7 +543,7 @@
+ 									bb14[num10] = true;
+ 								}
+ 							}
+-							if (projectile.type > 0 && projectile.type < 651 && ProjectileID.Sets.NeedsUUID[projectile.type])
++							if (projectile.type > 0 && ProjectileID.Sets.NeedsUUID[projectile.type])
+ 							{
+ 								bb14[Projectile.maxAI] = true;
+ 							}
+@@ -557,6 +559,7 @@
+ 							{
+ 								writer.Write((short)projectile.projUUID);
+ 							}
++							ProjectileLoader.SendExtraAI(projectile, writer, ref bb14);
+ 							break;
+ 						}
+ 					case 28:
+@@ -1557,7 +1560,7 @@
  						if (tile2.wall != 0)
  						{
  							b |= 4;

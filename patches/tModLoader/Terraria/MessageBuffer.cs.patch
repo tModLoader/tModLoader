@@ -1,0 +1,38 @@
+--- src/Terraria\Terraria\MessageBuffer.cs
++++ src/tModLoader\Terraria\MessageBuffer.cs
+@@ -9,6 +9,7 @@
+ using Terraria.GameContent.UI;
+ using Terraria.GameContent.UI.Chat;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.Net;
+ using Terraria.UI;
+ 
+@@ -1292,8 +1293,8 @@
+ 						if (Main.npcCatchable[nPC.type])
+ 						{
+ 							nPC.releaseOwner = (short)this.reader.ReadByte();
+-							return;
+-						}
++						}
++						NPCLoader.ReceiveExtraAI(nPC, reader);
+ 						return;
+ 					}
+ 				case 24:
+@@ -1472,6 +1473,7 @@
+ 						{
+ 							num84 = -1;
+ 						}
++						byte[] extraAI = ProjectileLoader.ReadExtraAI(reader, bitsByte14);
+ 						if (Main.netMode == 2)
+ 						{
+ 							num81 = this.whoAmI;
+@@ -1525,6 +1527,7 @@
+ 							projectile.projUUID = num84;
+ 							Main.projectileIdentity[num81, num84] = num85;
+ 						}
++						ProjectileLoader.ReceiveExtraAI(projectile, extraAI);
+ 						projectile.ProjectileFixDesperation();
+ 						if (Main.netMode == 2)
+ 						{
+

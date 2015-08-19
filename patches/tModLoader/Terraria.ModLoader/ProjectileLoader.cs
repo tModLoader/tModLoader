@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -140,6 +141,55 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile globalProjectile in globalProjectiles)
 			{
 				globalProjectile.PostAI(projectile);
+			}
+		}
+		//in Terraria.NetMessage.SendData at end of case 27 call
+		//  ProjectileLoader.SendExtraAI(projectile, writer, ref bb14);
+		internal static void SendExtraAI(Projectile projectile, BinaryWriter writer, ref BitsByte flags)
+		{
+			if (IsModProjectile(projectile))
+			{
+				byte[] data;
+				using (MemoryStream stream = new MemoryStream())
+				{
+					using (BinaryWriter modWriter = new BinaryWriter(stream))
+					{
+						projectile.modProjectile.SendExtraAI(modWriter);
+						modWriter.Flush();
+						data = stream.ToArray();
+					}
+				}
+				if (data.Length > 0)
+				{
+					flags[Projectile.maxAI + 1] = true;
+					writer.Write((byte)data.Length);
+					writer.Write(data);
+				}
+			}
+		}
+		//in Terraria.MessageBuffer.GetData for case 27 after reading all data add
+		//  byte[] extraAI = ProjectileLoader.ReadExtraAI(reader, bitsByte14);
+		internal static byte[] ReadExtraAI(BinaryReader reader, BitsByte flags)
+		{
+			if (flags[Projectile.maxAI + 1])
+			{
+				return reader.ReadBytes(reader.ReadByte());
+			}
+			return new byte[0];
+		}
+		//in Terraria.MessageBuffer.GetData for case 27 before calling ProjectileFixDesperation add
+		//  ProjectileLoader.ReceiveExtraAI(projectile, extraAI);
+		internal static void ReceiveExtraAI(Projectile projectile, byte[] extraAI)
+		{
+			if (extraAI.Length > 0 && IsModProjectile(projectile))
+			{
+				using (MemoryStream stream = new MemoryStream(extraAI))
+				{
+					using (BinaryReader reader = new BinaryReader(stream))
+					{
+						projectile.modProjectile.ReceiveExtraAI(reader);
+					}
+				}
 			}
 		}
 		//in Terraria.Projectile.Update before adjusting velocity to tile collisions add

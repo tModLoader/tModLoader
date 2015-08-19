@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -168,6 +169,45 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
 				globalNPC.PostAI(npc);
+			}
+		}
+		//in Terraria.NetMessage.SendData at end of case 23 call
+		//  NPCLoader.SendExtraAI(nPC, writer);
+		internal static void SendExtraAI(NPC npc, BinaryWriter writer)
+		{
+			if (IsModNPC(npc))
+			{
+				byte[] data;
+				using (MemoryStream stream = new MemoryStream())
+				{
+					using (BinaryWriter modWriter = new BinaryWriter(stream))
+					{
+						npc.modNPC.SendExtraAI(modWriter);
+						modWriter.Flush();
+						data = stream.ToArray();
+					}
+				}
+				writer.Write((byte)data.Length);
+				if (data.Length > 0)
+				{
+					writer.Write(data);
+				}
+			}
+		}
+		//in Terraria.MessageBuffer.GetData at end of case 27 add
+		//  NPCLoader.ReceiveExtraAI(nPC, reader);
+		internal static void ReceiveExtraAI(NPC npc, BinaryReader reader)
+		{
+			byte[] extraAI = reader.ReadBytes(reader.ReadByte());
+			if (extraAI.Length > 0 && IsModNPC(npc))
+			{
+				using (MemoryStream stream = new MemoryStream(extraAI))
+				{
+					using (BinaryReader modReader = new BinaryReader(stream))
+					{
+						npc.modNPC.ReceiveExtraAI(modReader);
+					}
+				}
 			}
 		}
 		//in Terraria.NPC split VanillaFindFrame from FindFrame and make FindFrame call this

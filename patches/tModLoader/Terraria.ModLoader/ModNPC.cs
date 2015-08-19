@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -68,6 +69,14 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void PostAI()
+		{
+		}
+
+		public virtual void SendExtraAI(BinaryWriter writer)
+		{
+		}
+
+		public virtual void ReceiveExtraAI(BinaryReader reader)
 		{
 		}
 
