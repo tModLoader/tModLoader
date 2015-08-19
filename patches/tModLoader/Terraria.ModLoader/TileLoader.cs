@@ -199,147 +199,6 @@ namespace Terraria.ModLoader
 				TileObjectData._data.RemoveAt(TileObjectData._data.Count - 1);
 			}
 		}
-
-		private const int magicTableNumber = 12;
-		//add to beginning of Terraria.IO.WorldFile.SaveWorldTiles
-		internal static void WriteTable(BinaryWriter writer)
-		{
-			HashSet<ushort> tiles = new HashSet<ushort>();
-			HashSet<ushort> walls = new HashSet<ushort>();
-			for (int x = 0; x < Main.maxTilesX; x++)
-			{
-				for (int y = 0; y < Main.maxTilesY; y++)
-				{
-					ushort type = Main.tile[x, y].type;
-					if (type >= TileID.Count)
-					{
-						tiles.Add(type);
-					}
-					type = Main.tile[x, y].wall;
-					if (type >= WallID.Count)
-					{
-						walls.Add(type);
-					}
-				}
-			}
-			if (tiles.Count == 0 && walls.Count == 0)
-			{
-				return; //nothing if there's neither tiles nor walls
-			}
-			for (int k = 0; k < magicTableNumber; k++) //all we need to do is write 255 3 times, but it's nice to be safe
-			{
-				writer.Write((byte)255);
-			}
-			byte identifier;
-			if (tiles.Count > 0 && walls.Count == 0)
-			{
-				identifier = 255;
-			}
-			else if (tiles.Count > 0 && walls.Count > 0)
-			{
-				identifier = 254;
-			}
-			else //tiles.Count == 0 && walls.Count > 0
-			{
-				identifier = 253;
-			}
-			writer.Write(identifier);
-			if (tiles.Count > 0)
-			{
-				writer.Write((ushort)tiles.Count);
-				foreach (ushort type in tiles)
-				{
-					writer.Write(type);
-					ModTile tile = GetTile(type);
-					writer.Write(tile.mod.Name);
-					writer.Write(tile.Name);
-				}
-			}
-			if (walls.Count > 0)
-			{
-				writer.Write((ushort)walls.Count);
-				foreach (ushort type in walls)
-				{
-					writer.Write(type);
-					ModWall wall = WallLoader.GetWall(type);
-					writer.Write(wall.mod.Name);
-					writer.Write(wall.Name);
-				}
-			}
-		}
-		//add to beginning of Terraria.IO.WorldFile.LoadWorldTiles
-		//  IDictionary<int, int> modTiles = new Dictionary<int, int>();
-		//  IDictionary<int, int> modWalls = new Dictionary<int, int>();
-		//  TileLoader.ReadTable(reader, modTiles, modWalls);
-		//in Terraria.IO.WorldFile.ValidateWorld after baseStream.Position = (long)array2[1]; add
-		//  TileLoader.ReadTable(fileIO, new Dictionary<int, int>(), new Dictionary<int, int>());
-		internal static void ReadTable(BinaryReader reader, IDictionary<int, int> tileTable, IDictionary<int, int> wallTable)
-		{
-			long startPos = reader.BaseStream.Position;
-			for (int k = 0; k < magicTableNumber; k++)
-			{
-				if (reader.ReadByte() != (byte)255)
-				{
-					reader.BaseStream.Seek(startPos, SeekOrigin.Begin);
-					return;
-				}
-			}
-			byte identifier = reader.ReadByte();
-			if (identifier < (byte)253)
-			{
-				return;
-			}
-			if (identifier >= 254)
-			{
-				ushort count = reader.ReadUInt16();
-				for (ushort k = 0; k < count; k++)
-				{
-					ushort type = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string tileName = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-					if (mod == null)
-					{
-						tileTable[(int)type] = 0;
-					}
-					else
-					{
-						tileTable[(int)type] = mod.TileType(tileName);
-					}
-				}
-			}
-			if (identifier <= 254)
-			{
-				ushort count = reader.ReadUInt16();
-				for (ushort k = 0; k < count; k++)
-				{
-					ushort type = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string wallname = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-					if (mod == null)
-					{
-						wallTable[(int)type] = 0;
-					}
-					else
-					{
-						wallTable[(int)type] = mod.WallType(wallname);
-					}
-				}
-			}
-		}
-		//in Terraria.IO.WorldFile.LoadWorldTiles replace tile.type = (ushort)num2; with
-		//  tile.type = TileLoader.ReadTileType(num2, modTiles);
-		//in Terraria.IO.WorldFile.LoadWorldTiles after if else with importance array add
-		//  num2 = (int)tile.type;
-		internal static ushort ReadTileType(int type, IDictionary<int, int> table)
-		{
-			if (table.ContainsKey(type))
-			{
-				type = table[type];
-			}
-			return (ushort)type;
-		}
 		//in Terraria.WorldGen.TileFrame after if else chain inside frameImportant if statement before return add
 		//  else { TileLoader.CheckModTile(i, j, num); }
 		//in Terraria.TileObject.CanPlace add optional checkStay parameter as false to end
@@ -641,6 +500,20 @@ namespace Terraria.ModLoader
 			if (modTile != null)
 			{
 				modTile.KillMultiTile(i, j, frameX, frameY);
+			}
+		}
+		//in Terraria.Lighting.PreRenderPhase add local closer variable and after setting music box
+		//  call TileLoader.NearbyEffects(n, num17, type, closer);
+		internal static void NearbyEffects(int i, int j, int type, bool closer)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile != null)
+			{
+				modTile.NearbyEffects(i, j, closer);
+			}
+			foreach (GlobalTile globalTile in globalTiles)
+			{
+				globalTile.NearbyEffects(i, j, type, closer);
 			}
 		}
 		//in Terraria.Lighting.PreRenderPhase after label after if statement checking Main.tileLighted call

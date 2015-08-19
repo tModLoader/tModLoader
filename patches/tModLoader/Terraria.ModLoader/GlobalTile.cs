@@ -65,6 +65,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void NearbyEffects(int i, int j, int type, bool closer)
+		{
+		}
+
 		public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
 		{
 		}
