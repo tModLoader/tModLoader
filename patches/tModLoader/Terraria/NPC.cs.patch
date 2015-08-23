@@ -86,7 +86,14 @@
  			if (Main.expertMode)
  			{
  				this.scaleStats();
-@@ -11901,6 +11913,11 @@
+@@ -11895,12 +11907,18 @@
+ 					this.damage = (int)((double)this.damage * 0.75);
+ 					break;
+ 			}
++			NPCLoader.ScaleExpertStats(this, num4, num5);
+ 			this.defDefense = this.defense;
+ 			this.defDamage = this.damage;
+ 			this.life = this.lifeMax;
  		}
  
  		public void AI()
@@ -98,7 +105,7 @@
  		{
  			if (this.aiStyle == 0)
  			{
-@@ -16744,7 +16761,7 @@
+@@ -16744,7 +16762,7 @@
  								}
  								else
  								{
@@ -107,7 +114,7 @@
  									{
  										bool flag26 = WorldGen.OpenDoor(num210, num211 - 1, this.direction);
  										if (!flag26)
-@@ -20010,7 +20027,7 @@
+@@ -20010,7 +20028,7 @@
  						if (this.closeDoor && ((this.position.X + (float)(this.width / 2)) / 16f > (float)(this.doorX + 2) || (this.position.X + (float)(this.width / 2)) / 16f < (float)(this.doorX - 2)))
  						{
  							Tile tileSafely = Framing.GetTileSafely(this.doorX, this.doorY);
@@ -116,7 +123,7 @@
  							{
  								bool flag47 = WorldGen.CloseDoor(this.doorX, this.doorY, false);
  								if (flag47)
-@@ -20183,7 +20200,7 @@
+@@ -20183,7 +20201,7 @@
  							Tile tileSafely3 = Framing.GetTileSafely(num398, num399);
  							Tile tileSafely4 = Framing.GetTileSafely(num398, num399 - 1);
  							Tile tileSafely5 = Framing.GetTileSafely(num398, num399 - 2);
@@ -125,7 +132,7 @@
  							{
  								if (Main.netMode != 1)
  								{
-@@ -45054,6 +45071,11 @@
+@@ -45054,6 +45072,11 @@
  				}
  				num = Main.npcTexture[this.type].Height / Main.npcFrameCount[this.type];
  			}
@@ -137,7 +144,7 @@
  			int num2 = 0;
  			if (this.aiAction == 0)
  			{
-@@ -53816,7 +53838,7 @@
+@@ -53816,7 +53839,7 @@
  
  		public void NPCLoot()
  		{
@@ -146,7 +153,7 @@
  			{
  				return;
  			}
-@@ -53931,6 +53953,10 @@
+@@ -53931,6 +53954,10 @@
  				}
  			}
  			if (this.type == 23 && Main.hardMode)
@@ -157,7 +164,7 @@
  			{
  				return;
  			}
-@@ -57065,6 +57091,7 @@
+@@ -57065,6 +57092,7 @@
  				{
  					num70 = 499;
  				}
@@ -165,7 +172,7 @@
  				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, num70, stack5, false, 0, false, false);
  				int num71 = Main.rand.Next(5) + 5;
  				for (int num72 = 0; num72 < num71; num72++)
-@@ -57135,6 +57162,7 @@
+@@ -57135,6 +57163,7 @@
  					NetMessage.SendData(25, -1, -1, Lang.misc[32], 255, 50f, 255f, 130f, 0, 0, 0);
  				}
  			}
@@ -173,7 +180,7 @@
  			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
  			{
  				int num73 = (int)Player.FindClosest(this.position, this.width, this.height);
-@@ -57329,6 +57357,7 @@
+@@ -57329,6 +57358,7 @@
  			{
  				num = 3332;
  			}
@@ -181,7 +188,82 @@
  			if (num > 0)
  			{
  				if (Main.netMode == 2)
-@@ -62016,14 +62045,17 @@
+@@ -57908,6 +57938,7 @@
+ 							NPC.maxSpawns = (int)((double)((float)NPC.maxSpawns) * 0.6);
+ 						}
+ 					}
++					NPCLoader.EditSpawnRate(Main.player[j], ref NPC.spawnRate, ref NPC.maxSpawns);
+ 					int num6 = (int)(Main.player[j].position.X + (float)(Main.player[j].width / 2)) / 16;
+ 					int num7 = (int)(Main.player[j].position.Y + (float)(Main.player[j].height / 2)) / 16;
+ 					if (Main.wallHouse[(int)Main.tile[num6, num7].wall])
+@@ -57949,6 +57980,8 @@
+ 							NPC.safeRangeX += (int)((double)(NPC.sWidth / 16) * 0.5 / (double)num8);
+ 							NPC.safeRangeY += (int)((double)(NPC.sHeight / 16) * 0.5 / (double)num8);
+ 						}
++						NPCLoader.EditSpawnRange(Main.player[j], ref NPC.spawnRangeX, ref NPC.spawnRangeY,
++							ref NPC.safeRangeX, ref NPC.safeRangeY);
+ 						int num9 = (int)(Main.player[j].position.X / 16f) - NPC.spawnRangeX;
+ 						int num10 = (int)(Main.player[j].position.X / 16f) + NPC.spawnRangeX;
+ 						int num11 = (int)(Main.player[j].position.Y / 16f) - NPC.spawnRangeY;
+@@ -58099,6 +58132,7 @@
+ 							}
+ 						}
+ 					}
++					NPCSpawnInfo spawnInfo = new NPCSpawnInfo();
+ 					if (flag13)
+ 					{
+ 						if (Main.player[j].ZoneDungeon && (!Main.tileDungeon[(int)Main.tile[num, num2].type] || Main.tile[num, num2 - 1].wall == 0))
+@@ -58203,6 +58237,8 @@
+ 								}
+ 							}
+ 						}
++						spawnInfo.playerFloorX = num25;
++						spawnInfo.playerFloorY = num26;
+ 					}
+ 					if (flag6)
+ 					{
+@@ -58268,8 +58304,28 @@
+ 								}
+ 							}
+ 						}
++						spawnInfo.spawnTileX = num;
++						spawnInfo.spawnTileY = num2;
++						spawnInfo.player = Main.player[j];
++						spawnInfo.sky = flag;
++						spawnInfo.lihzahrd = flag2;
++						spawnInfo.playerSafe = flag3;
++						spawnInfo.invasion = flag4;
++						spawnInfo.water = flag5;
++						spawnInfo.granite = flag7;
++						spawnInfo.marble = flag8;
++						spawnInfo.spiderCave = flag9;
++						spawnInfo.playerInTown = flag10;
++						spawnInfo.desertCave = flag11;
++						spawnInfo.planteraDefeated = flag12;
++						spawnInfo.safeRangeX = flag14;
+ 						int num45 = (int)Main.tile[num, num2].type;
+ 						int num46 = 200;
++						int spawn = NPCLoader.ChooseSpawn(spawnInfo);
++						if (spawn != 0)
++						{
++							goto endVanillaSpawn;
++						}
+ 						if (Main.player[j].ZoneTowerNebula)
+ 						{
+ 							bool flag15 = true;
+@@ -61228,6 +61284,11 @@
+ 						{
+ 							num46 = NPC.NewNPC(num * 16 + 8, num2 * 16, 49, 0, 0f, 0f, 0f, 0f, 255);
+ 						}
++						endVanillaSpawn: //this ugly code is just to minimize the diff file
++						if (spawn != 0)
++						{
++							num46 = NPCLoader.SpawnNPC(spawn, num, num2);
++						}
+ 						if (Main.npc[num46].type == 1 && Main.rand.Next(180) == 0)
+ 						{
+ 							Main.npc[num46].SetDefaults("Pinky");
+@@ -62016,14 +62077,17 @@
  			{
  				num2 = 0;
  			}
@@ -207,7 +289,7 @@
  			}
  			if ((this.takenDamageMultiplier > 1f || Damage != 9999) && this.lifeMax > 1)
  			{
-@@ -62273,6 +62305,11 @@
+@@ -62273,6 +62337,11 @@
  		}
  
  		public void HitEffect(int hitDirection = 0, double dmg = 10.0)
@@ -219,7 +301,7 @@
  		{
  			if (!this.active)
  			{
-@@ -70451,22 +70488,30 @@
+@@ -70451,22 +70520,30 @@
  							if (Main.npc[num39].active && !Main.npc[num39].friendly && Main.npc[num39].damage > 0)
  							{
  								Rectangle rectangle2 = new Rectangle((int)Main.npc[num39].position.X, (int)Main.npc[num39].position.Y, Main.npc[num39].width, Main.npc[num39].height);
@@ -253,7 +335,7 @@
  									if (this.dryadWard)
  									{
  										num40 = (int)num43 / 3;
-@@ -71275,6 +71320,11 @@
+@@ -71275,6 +71352,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{

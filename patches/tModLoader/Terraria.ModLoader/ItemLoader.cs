@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.damage > 0 && item.melee && !item.noUseGraphic;
+			return item.maxStack == 1 && item.damage > 0 && item.melee && !item.noUseGraphic;
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool WeaponPrefix(Item item)
@@ -83,7 +83,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.damage > 0 && item.melee && item.noUseGraphic;
+			return item.maxStack == 1 && item.damage > 0 && item.melee && item.noUseGraphic;
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool RangedPrefix(Item item)
@@ -92,7 +92,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.damage > 0 && item.ranged;
+			return item.maxStack == 1 && item.damage > 0 && item.ranged;
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool MagicPrefix(Item item)
@@ -101,7 +101,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.damage > 0 && (item.magic || item.summon);
+			return item.maxStack == 1 && item.damage > 0 && (item.magic || item.summon);
 		}
 		//in Terraria.Item.SetDefaults get rid of type-too-high check
 		//add near end of Terraria.Item.SetDefaults after setting netID

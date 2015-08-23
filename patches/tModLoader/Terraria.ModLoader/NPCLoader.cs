@@ -115,6 +115,19 @@ namespace Terraria.ModLoader
 				globalNPC.SetDefaults(npc);
 			}
 		}
+		//in Terraria.NPC.scaleStats before setting def fields call
+		//  NPCLoader.ScaleExpertStats(this, num4, num5);
+		internal static void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.ScaleExpertStats(numPlayers, bossLifeScale);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.ScaleExpertStats(npc, numPlayers, bossLifeScale);
+			}
+		}
 		//in Terraria.NPC rename AI to VanillaAI then make AI call NPCLoader.NPCAI(this)
 		internal static void NPCAI(NPC npc)
 		{
@@ -597,6 +610,81 @@ namespace Terraria.ModLoader
 			{
 				globalNPC.PostDraw(npc, spriteBatch, drawColor);
 			}
+		}
+		//in Terraria.NPC.SpawnNPC after modifying NPC.spawnRate and NPC.maxSpawns call
+		//  NPCLoader.EditSpawnRate(Main.player[j], ref NPC.spawnRate, ref NPC.maxSpawns);
+		internal static void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+		{
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
+			}
+		}
+		//in Terraria.NPC.SpawnNPC after modifying spawn ranges call
+		//  NPCLoader.EditSpawnRange(Main.player[j], ref NPC.spawnRangeX, ref NPC.spawnRangeY,
+		//  ref NPC.safeRangeX, ref NPC.safeRangeY);
+		internal static void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
+			ref int safeRangeX, ref int safeRangeY)
+		{
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.EditSpawnRange(player, ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
+			}
+		}
+		//in Terraria.NPC.SpawnNPC after initializing variables and before actual spawning add
+		//  int spawn = NPCLoader.ChooseSpawn(spawnInfo);
+		//  if(spawn != 0) { goto endVanillaSpawn; }
+		internal static int ChooseSpawn(NPCSpawnInfo spawnInfo)
+		{
+			IDictionary<int, float> pool = new Dictionary<int, float>();
+			pool[0] = 1f;
+			foreach (ModNPC npc in npcs.Values)
+			{
+				float weight = npc.CanSpawn(spawnInfo);
+				if (weight > 0f)
+				{
+					pool[npc.npc.type] = weight;
+				}
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.EditSpawnPool(pool, spawnInfo);
+			}
+			float totalWeight = 0f;
+			foreach (int type in pool.Keys)
+			{
+				totalWeight += pool[type];
+			}
+			float choice = (float)Main.rand.NextDouble() * totalWeight;
+			foreach (int type in pool.Keys)
+			{
+				float weight = pool[type];
+				if (choice < weight)
+				{
+					return type;
+				}
+				choice -= weight;
+			}
+			return 0;
+		}
+		//in Terraria.NPC.SpawnNPC before spawning pinky add
+		//  endVanillaSpawn: if(spawn != 0) { num46 = NPCLoader.SpawnNPC(spawn, num, num2); }
+		internal static int SpawnNPC(int type, int tileX, int tileY)
+		{
+			int npc;
+			if (type >= NPCID.Count)
+			{
+				npc = NPCLoader.npcs[type].SpawnNPC(tileX, tileY);
+			}
+			else
+			{
+				npc = NPC.NewNPC(tileX * 16 + 8, tileY * 16, type);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.SpawnNPC(npc, tileX, tileY);
+			}
+			return npc;
 		}
 	}
 }

@@ -59,6 +59,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void ScaleExpertStats(int numPlayers, float bossLifeScale)
+		{
+		}
+
 		public virtual bool PreAI()
 		{
 			return true;
@@ -182,6 +186,16 @@ namespace Terraria.ModLoader
 
 		public virtual void PostDraw(SpriteBatch spriteBatch, Color drawColor)
 		{
+		}
+
+		public virtual float CanSpawn(NPCSpawnInfo spawnInfo)
+		{
+			return 0f;
+		}
+
+		public virtual int SpawnNPC(int tileX, int tileY)
+		{
+			return NPC.NewNPC(tileX * 16 + 8, tileY * 16, npc.type);
 		}
 	}
 }

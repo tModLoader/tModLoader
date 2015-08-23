@@ -39,6 +39,15 @@
  			this.width = (int)((float)this.width * this.scale);
  			this.height = (int)((float)this.height * this.scale);
  			this.maxPenetrate = this.penetrate;
+@@ -7027,7 +7032,7 @@
+ 				projectile.ai[0] = projectile.position.X;
+ 				projectile.ai[1] = projectile.position.Y;
+ 			}
+-			if (Type > 0 && Type < 651)
++			if (Type > 0)
+ 			{
+ 				if (ProjectileID.Sets.NeedsUUID[Type])
+ 				{
 @@ -8091,7 +8096,18 @@
  					for (int k = 0; k < 200; k++)
  					{

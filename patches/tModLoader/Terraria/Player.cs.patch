@@ -316,6 +316,15 @@
  				if (item.shoot == 0)
  				{
  					this.itemRotation = 0f;
+@@ -27898,7 +27962,7 @@
+ 						Main.PlaySound(2, (int)this.position.X, (int)this.position.Y, item.useSound);
+ 					}
+ 				}
+-				if (flag2 && this.whoAmI == Main.myPlayer && item.shoot >= 0 && item.shoot < 651 && (ProjectileID.Sets.LightPet[item.shoot] || Main.projPet[item.shoot]))
++				if (flag2 && this.whoAmI == Main.myPlayer && item.shoot >= 0 && (ProjectileID.Sets.LightPet[item.shoot] || Main.projPet[item.shoot]))
+ 				{
+ 					if (ProjectileID.Sets.MinionSacrificable[item.shoot])
+ 					{
 @@ -28282,6 +28346,7 @@
  							this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  						}
