@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Social;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.IO
@@ -242,6 +243,21 @@ namespace Terraria.ModLoader.IO
 			{
 				FileUtilities.Copy(path + ".bad", path, cloudSave, true);
 				FileUtilities.Delete(path + ".bad", cloudSave);
+			}
+		}
+		//in Terraria.Main.EraseWorld before reloading worlds add
+		//  WorldIO.EraseWorld(Main.WorldList[i].Path, Main.WorldList[i].IsCloudSave);
+		internal static void EraseWorld(string path, bool cloudSave)
+		{
+			path = Path.ChangeExtension(path, ".twld");
+			if (!cloudSave)
+			{
+				FileOperationAPIWrapper.MoveToRecycleBin(path);
+				FileOperationAPIWrapper.MoveToRecycleBin(path + ".bak");
+			}
+			else if (SocialAPI.Cloud != null)
+			{
+				SocialAPI.Cloud.Delete(path);
 			}
 		}
 	}

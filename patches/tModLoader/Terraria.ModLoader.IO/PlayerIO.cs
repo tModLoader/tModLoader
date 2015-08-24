@@ -226,5 +226,20 @@ namespace Terraria.ModLoader.IO
 				FileUtilities.Move(path + ".bak", path, cloudSave, true);
 			}
 		}
+		//in Terraria.Main.ErasePlayer between the two try catches add
+		//  PlayerIO.ErasePlayer(Main.PlayerList[i].Path, Main.PlayerList[i].IsCloudSave);
+		internal static void ErasePlayer(string path, bool cloudSave)
+		{
+			path = Path.ChangeExtension(path, ".tplr");
+			try
+			{
+				FileUtilities.Delete(path, cloudSave);
+				FileUtilities.Delete(path + ".bak", cloudSave);
+			}
+			catch
+			{
+				//just copying the Terraria code which also has an empty catch
+			}
+		}
 	}
 }

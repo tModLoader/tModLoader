@@ -8,6 +8,15 @@
  using Terraria.UI.Chat;
  
  namespace Terraria.UI
+@@ -731,7 +732,7 @@
+ 			if (context == 0)
+ 			{
+ 				flag = true;
+-				if (Main.mouseRight && inv[slot].type >= 3318 && inv[slot].type <= 3332)
++				if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || ItemLoader.IsModBossBag(inv[slot])))
+ 				{
+ 					if (Main.mouseRightRelease)
+ 					{
 @@ -848,6 +849,10 @@
  						inv[slot].stack = Main.rand.Next(20, 50);
  					}

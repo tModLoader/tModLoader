@@ -26,6 +26,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal string texture;
+		public int bossBagNPC;
 
 		public ModItem()
 		{
@@ -183,6 +184,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void RightClick(Player player)
+		{
+		}
+
+		public virtual void OpenBossBag(Player player)
 		{
 		}
 

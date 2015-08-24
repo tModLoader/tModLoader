@@ -260,15 +260,7 @@ namespace Terraria.ModLoader.IO
 		internal static void ReadModTile(ref int i, ref int j, Tables tables, BinaryReader reader, ref bool nextModTile)
 		{
 			byte flags;
-			try
-			{
-				flags = reader.ReadByte();
-			}
-			catch
-			{
-				ErrorLogger.Log(i + " " + j);
-				throw;
-			}
+			flags = reader.ReadByte();
 			Tile tile = Main.tile[i, j];
 			if ((flags & 1) == 1)
 			{

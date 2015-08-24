@@ -103,7 +103,7 @@ namespace Terraria.ModLoader
 			return npc.type >= NPCID.Count;
 		}
 		//in Terraria.NPC.SetDefaults after if else setting properties call NPCLoader.SetupNPC(this);
-		//in Terraria.NPC.SetDefaults move Lang stuff before SetupNPC
+		//in Terraria.NPC.SetDefaults move Lang stuff before SetupNPC and replace this.netID with this.type
 		internal static void SetupNPC(NPC npc)
 		{
 			if (IsModNPC(npc))
@@ -134,12 +134,16 @@ namespace Terraria.ModLoader
 			if (PreAI(npc))
 			{
 				int type = npc.type;
-				if (IsModNPC(npc) && npc.modNPC.aiType > 0)
+				bool useAiType = IsModNPC(npc) && npc.modNPC.aiType > 0;
+				if (useAiType)
 				{
 					npc.type = npc.modNPC.aiType;
 				}
 				npc.VanillaAI();
-				npc.type = type;
+				if (useAiType)
+				{
+					npc.type = type;
+				}
 				AI(npc);
 			}
 			PostAI(npc);
@@ -632,9 +636,9 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.NPC.SpawnNPC after initializing variables and before actual spawning add
-		//  int spawn = NPCLoader.ChooseSpawn(spawnInfo);
-		//  if(spawn != 0) { goto endVanillaSpawn; }
-		internal static int ChooseSpawn(NPCSpawnInfo spawnInfo)
+		//  int? spawnChoice = NPCLoader.ChooseSpawn(spawnInfo); if(!spawnChoice.HasValue) { return; }
+		//  int spawn = spawnChoice.Value; if(spawn != 0) { goto endVanillaSpawn; }
+		internal static int? ChooseSpawn(NPCSpawnInfo spawnInfo)
 		{
 			IDictionary<int, float> pool = new Dictionary<int, float>();
 			pool[0] = 1f;
@@ -665,7 +669,7 @@ namespace Terraria.ModLoader
 				}
 				choice -= weight;
 			}
-			return 0;
+			return null;
 		}
 		//in Terraria.NPC.SpawnNPC before spawning pinky add
 		//  endVanillaSpawn: if(spawn != 0) { num46 = NPCLoader.SpawnNPC(spawn, num, num2); }

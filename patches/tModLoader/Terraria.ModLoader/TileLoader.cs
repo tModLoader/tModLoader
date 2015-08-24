@@ -309,6 +309,7 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.CloseDoor replace bad type check with TileLoader.CloseDoorID(Main.tile[i, j]) < 0
 		//in Terraria.WorldGen.CloseDoor replace 10 with (ushort)TileLoader.CloseDoorID
 		//replace all type checks before WorldGen.CloseDoor
+		//replace type check in WorldGen.CheckRoom
 		internal static int CloseDoorID(Tile tile)
 		{
 			ModTile modTile = GetTile(tile.type);

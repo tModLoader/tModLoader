@@ -32,7 +32,6 @@ namespace Terraria.ModLoader
 			}
 			int reserve = nextBossHead;
 			nextBossHead++;
-			ErrorLogger.Log("" + reserve);
 			return reserve;
 		}
 

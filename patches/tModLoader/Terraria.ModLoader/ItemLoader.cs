@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.maxStack == 1 && item.damage > 0 && item.melee && !item.noUseGraphic;
+			return item.maxStack == 1 && item.damage > 0 && item.melee && !item.noUseGraphic && !item.accessory;
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool WeaponPrefix(Item item)
@@ -83,7 +83,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.maxStack == 1 && item.damage > 0 && item.melee && item.noUseGraphic;
+			return item.maxStack == 1 && item.damage > 0 && item.melee && item.noUseGraphic && !item.accessory;
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool RangedPrefix(Item item)
@@ -92,7 +92,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.maxStack == 1 && item.damage > 0 && item.ranged;
+			return item.maxStack == 1 && item.damage > 0 && item.ranged && !item.accessory;
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool MagicPrefix(Item item)
@@ -101,7 +101,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.maxStack == 1 && item.damage > 0 && (item.magic || item.summon);
+			return item.maxStack == 1 && item.damage > 0 && (item.magic || item.summon) && !item.accessory;
 		}
 		//in Terraria.Item.SetDefaults get rid of type-too-high check
 		//add near end of Terraria.Item.SetDefaults after setting netID
@@ -542,6 +542,25 @@ namespace Terraria.ModLoader
 				Main.stackSplit = 30;
 				Main.mouseRightRelease = false;
 				Recipe.FindRecipes();
+			}
+		}
+		//in Terraria.UI.ItemSlot add this to boss bag check
+		internal static bool IsModBossBag(Item item)
+		{
+			if (IsModItem(item))
+			{
+				return item.modItem.bossBagNPC > 0;
+			}
+			return false;
+		}
+		//in Terraria.Player.OpenBossBag after setting num14 call
+		//  ItemLoader.OpenBossBag(type, this, ref num14);
+		internal static void OpenBossBag(int type, Player player, ref int npc)
+		{
+			if (type >= ItemID.Count && items[type].bossBagNPC > 0)
+			{
+				items[type].OpenBossBag(player);
+				npc = items[type].bossBagNPC;
 			}
 		}
 		//in beginning of Terraria.Player.openBag methods add

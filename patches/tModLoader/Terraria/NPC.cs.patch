@@ -73,7 +73,7 @@
  				this.catchItem = 3564;
  				this.rarity = 3;
  			}
-+			this.displayName = Lang.npcName(this.netID, false);
++			this.displayName = Lang.npcName(this.type, false);
 +			NPCLoader.SetupNPC(this);
  			if (flag)
  			{
@@ -222,7 +222,7 @@
  					}
  					if (flag6)
  					{
-@@ -58268,8 +58304,28 @@
+@@ -58268,8 +58304,33 @@
  								}
  							}
  						}
@@ -243,7 +243,12 @@
 +						spawnInfo.safeRangeX = flag14;
  						int num45 = (int)Main.tile[num, num2].type;
  						int num46 = 200;
-+						int spawn = NPCLoader.ChooseSpawn(spawnInfo);
++						int? spawnChoice = NPCLoader.ChooseSpawn(spawnInfo);
++						if (!spawnChoice.HasValue)
++						{
++							return;
++						}
++						int spawn = spawnChoice.Value;
 +						if (spawn != 0)
 +						{
 +							goto endVanillaSpawn;
@@ -251,7 +256,7 @@
  						if (Main.player[j].ZoneTowerNebula)
  						{
  							bool flag15 = true;
-@@ -61228,6 +61284,11 @@
+@@ -61228,6 +61289,11 @@
  						{
  							num46 = NPC.NewNPC(num * 16 + 8, num2 * 16, 49, 0, 0f, 0f, 0f, 0f, 255);
  						}
@@ -263,7 +268,7 @@
  						if (Main.npc[num46].type == 1 && Main.rand.Next(180) == 0)
  						{
  							Main.npc[num46].SetDefaults("Pinky");
-@@ -62016,14 +62077,17 @@
+@@ -62016,14 +62082,17 @@
  			{
  				num2 = 0;
  			}
@@ -289,7 +294,7 @@
  			}
  			if ((this.takenDamageMultiplier > 1f || Damage != 9999) && this.lifeMax > 1)
  			{
-@@ -62273,6 +62337,11 @@
+@@ -62273,6 +62342,11 @@
  		}
  
  		public void HitEffect(int hitDirection = 0, double dmg = 10.0)
@@ -301,7 +306,7 @@
  		{
  			if (!this.active)
  			{
-@@ -70451,22 +70520,30 @@
+@@ -70451,22 +70525,30 @@
  							if (Main.npc[num39].active && !Main.npc[num39].friendly && Main.npc[num39].damage > 0)
  							{
  								Rectangle rectangle2 = new Rectangle((int)Main.npc[num39].position.X, (int)Main.npc[num39].position.Y, Main.npc[num39].width, Main.npc[num39].height);
@@ -335,7 +340,7 @@
  									if (this.dryadWard)
  									{
  										num40 = (int)num43 / 3;
-@@ -71275,6 +71352,11 @@
+@@ -71275,6 +71357,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{
