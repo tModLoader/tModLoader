@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO
 {
@@ -77,18 +78,41 @@ namespace Terraria.ModLoader.IO
 			string itemName = reader.ReadString();
 			Mod mod = ModLoader.GetMod(modName);
 			int type = mod == null ? 0 : mod.ItemType(itemName);
-			item.netDefaults(type);
-			int dataLength = reader.ReadUInt16();
-			if (dataLength > 0)
+			if (type != 0)
 			{
-				byte[] data = reader.ReadBytes(dataLength);
-				using (MemoryStream memoryStream = new MemoryStream(data))
+				item.netDefaults(type);
+				int dataLength = reader.ReadUInt16();
+				if (dataLength > 0)
 				{
-					using (BinaryReader customReader = new BinaryReader(memoryStream))
+					byte[] data = reader.ReadBytes(dataLength);
+					using (MemoryStream memoryStream = new MemoryStream(data))
 					{
-						item.modItem.LoadCustomData(customReader);
+						using (BinaryReader customReader = new BinaryReader(memoryStream))
+						{
+							item.modItem.LoadCustomData(customReader);
+						}
 					}
 				}
+				if (type == ModLoader.GetMod("ModLoader").ItemType("MysteryItem"))
+				{
+					MysteryItem mystery = item.modItem as MysteryItem;
+					modName = mystery.GetModName();
+					itemName = mystery.GetItemName();
+					mod = ModLoader.GetMod(modName);
+					type = mod == null ? 0 : mod.ItemType(itemName);
+					if (type != 0)
+					{
+						item.netDefaults(type);
+					}
+				}
+			}
+			else
+			{
+				item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
+				MysteryItem mystery = item.modItem as MysteryItem;
+				mystery.SetModName(modName);
+				mystery.SetItemName(itemName);
+				reader.ReadBytes(reader.ReadUInt16());
 			}
 			item.Prefix(reader.ReadByte());
 		}

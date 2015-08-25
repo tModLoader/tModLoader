@@ -9,6 +9,7 @@ using Microsoft.CSharp;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader
 {
@@ -20,6 +21,7 @@ namespace Terraria.ModLoader
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
 		public static readonly string DllPath = Main.SavePath + Path.DirectorySeparatorChar + "dllReferences";
+		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
 		private static bool referencesLoaded = false;
 		private static bool assemblyResolverAdded = false;
 		private static readonly IList<string> buildReferences = new List<string>();
@@ -155,6 +157,10 @@ namespace Terraria.ModLoader
 				num++;
 			}
 			Interface.loadMods.SetProgressRecipes();
+			for (int k = 0; k < Recipe.maxRecipes; k++)
+			{
+				Main.recipe[k] = new Recipe();
+			}
 			Recipe.numRecipes = 0;
 			try
 			{
@@ -211,6 +217,10 @@ namespace Terraria.ModLoader
 			}
 			int previousCount = 0;
 			int num = 0;
+			Mod defaultMod = new ModLoaderMod();
+			defaultMod.Init();
+			mods[defaultMod.Name] = defaultMod;
+			loadedMods.Add(defaultMod.Name);
 			while (modsToLoad.Count > 0 && modsToLoad.Count != previousCount)
 			{
 				previousCount = modsToLoad.Count;
@@ -290,6 +300,10 @@ namespace Terraria.ModLoader
 					mod.file = modFile;
 					mod.code = modCode;
 					mod.Init();
+					if (mods.ContainsKey(mod.Name))
+					{
+						throw new Exception("Two mods share the internal name " + mod.Name);
+					}
 					mods[mod.Name] = mod;
 				}
 			}
@@ -380,12 +394,20 @@ namespace Terraria.ModLoader
 
 		internal static bool IsEnabled(string modFile)
 		{
+			if (modFile == "ModLoader")
+			{
+				return true;
+			}
 			string enablePath = Path.ChangeExtension(modFile, "enabled");
 			return !File.Exists(enablePath) || File.ReadAllText(enablePath) != "false";
 		}
 
 		internal static void SetModActive(string modFile, bool active)
 		{
+			if (modFile == "ModLoader")
+			{
+				return;
+			}
 			string path = Path.ChangeExtension(modFile, "enabled");
 			using (StreamWriter writer = File.CreateText(path))
 			{
@@ -671,12 +693,31 @@ namespace Terraria.ModLoader
 			{
 				throw new ArgumentException("Missing texture " + name);
 			}
+			if (name.IndexOf("Terraria/") == 0)
+			{
+				name = name.Substring(9);
+				return Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + name);
+			}
 			return textures[name];
 		}
 
 		public static bool TextureExists(string name)
 		{
+			if (name.IndexOf("Terraria/") == 0)
+			{
+				name = name.Substring(9);
+				return File.Exists(ImagePath + Path.DirectorySeparatorChar + name + ".xnb");
+			}
 			return textures.ContainsKey(name);
+		}
+
+		public static void AddTexture(string name, Texture2D texture)
+		{
+			if (TextureExists(name))
+			{
+				throw new ArgumentException("Texture already exist: " + name);
+			}
+			textures[name] = texture;
 		}
 
 		private static void AddCraftGroups()

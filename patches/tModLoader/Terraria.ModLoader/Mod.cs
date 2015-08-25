@@ -89,6 +89,10 @@ namespace Terraria.ModLoader
 
 		internal void Autoload()
 		{
+			if (code == null)
+			{
+				return;
+			}
 			Type[] classes = code.GetTypes();
 			foreach (Type type in classes)
 			{
