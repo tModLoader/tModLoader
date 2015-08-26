@@ -31,6 +31,14 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.NPCAddHeight at end of else if chain add
 		//  else if(Main.npc[i].modNPC != null) { num = Main.npc[i].modNPC.drawOffsetY; }
 		public float drawOffsetY = 0f;
+		//in Terraria.Item.NPCToBanner before returning 0 add
+		//  if(i >= NPCID.Count) { return NPCLoader.npcs[i].banner; }
+		//in Terraria.Item.BannerToNPC before returning 0 add
+		//  if(i >= NPCID.Count) { return i; }
+		public int banner = 0;
+		//in Terraria.NPC.NPCLoot after if statements setting num6 add
+		//  if(num3 >= NPCID.Count) { num6 = NPCLoader.npcs[num3].bannerItem; }
+		public int bannerItem = 0;
 
 		public ModNPC()
 		{

@@ -92,6 +92,10 @@ namespace Terraria.ModLoader.IO
 			{
 				flags[0] |= 2;
 			}
+			if (WriteNPCKillCounts(writer))
+			{
+				flags[0] |= 4;
+			}
 			return flags;
 		}
 
@@ -104,6 +108,10 @@ namespace Terraria.ModLoader.IO
 			if ((flags[0] & 2) == 2)
 			{
 				TileIO.ReadTiles(reader);
+			}
+			if ((flags[0] & 4) == 4)
+			{
+				ReadNPCKillCounts(reader);
 			}
 		}
 
@@ -186,6 +194,54 @@ namespace Terraria.ModLoader.IO
 			else
 			{
 				PlayerIO.ReadInventory(new Item[40], reader, true);
+			}
+		}
+
+		internal static bool WriteNPCKillCounts(BinaryWriter writer)
+		{
+			byte[] data;
+			ushort numCounts = 0;
+			using (MemoryStream stream = new MemoryStream())
+			{
+				using (BinaryWriter countWriter = new BinaryWriter(stream))
+				{
+					foreach (int type in NPCLoader.npcs.Keys)
+					{
+						if (NPC.killCount[type] > 0)
+						{
+							countWriter.Write(NPCLoader.GetNPC(type).mod.Name);
+							countWriter.Write(Main.npcName[type]);
+							countWriter.Write(NPC.killCount[type]);
+							numCounts++;
+						}
+					}
+					countWriter.Flush();
+					data = stream.ToArray();
+				}
+			}
+			if (numCounts > 0)
+			{
+				writer.Write(numCounts);
+				writer.Write(data);
+				return true;
+			}
+			return false;
+		}
+
+		internal static void ReadNPCKillCounts(BinaryReader reader)
+		{
+			ushort numCounts = reader.ReadUInt16();
+			for (ushort k = 0; k < numCounts; k++)
+			{
+				string modName = reader.ReadString();
+				string name = reader.ReadString();
+				int count = reader.ReadInt32();
+				Mod mod = ModLoader.GetMod(modName);
+				int type = mod == null ? 0 : mod.NPCType(name);
+				if (type > 0)
+				{
+					NPC.killCount[type] = count;
+				}
 			}
 		}
 		//add to end of Terraria.IO.WorldFileData.MoveToCloud

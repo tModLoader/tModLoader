@@ -41,7 +41,8 @@ namespace Terraria.ModLoader
 				return null;
 			}
 		}
-		//change initial size of Terraria.Player.npcTypeNoAggro to NPCLoader.NPCCount()
+		//change initial size of Terraria.Player.npcTypeNoAggro and NPCBannerBuff to NPCLoader.NPCCount()
+		//in Terraria.Main.MouseText replace 251 with NPCLoader.NPCCount()
 		//in Terraria.Main.DrawNPCs and Terraria.NPC.NPCLoot remove type too high check
 		internal static void ResizeArrays()
 		{
@@ -114,6 +115,29 @@ namespace Terraria.ModLoader
 			{
 				globalNPC.SetDefaults(npc);
 			}
+		}
+		//at beginning of Terraria.Lang.npcName add
+		//  if (l >= Main.maxNPCTypes) { return NPCLoader.DisplayName(l); }
+		internal static string DisplayName(int type)
+		{
+			ModNPC npc = GetNPC(type);
+			string name = "";
+			if (npc != null)
+			{
+				if (npc.npc.displayName != null)
+				{
+					name = npc.npc.displayName;
+				}
+				if (name == "" && npc.npc.name != null)
+				{
+					name = npc.npc.name;
+				}
+			}
+			if (name == "" && Main.npcName[type] != null)
+			{
+				name = Main.npcName[type];
+			}
+			return name;
 		}
 		//in Terraria.NPC.scaleStats before setting def fields call
 		//  NPCLoader.ScaleExpertStats(this, num4, num5);

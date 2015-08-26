@@ -18,6 +18,15 @@
  		public Player.OverheadMessage chatOverhead = default(Player.OverheadMessage);
  		public bool alchemyTable;
  		private bool GoingDownWithGrapple;
+@@ -78,7 +80,7 @@
+ 		public static int taxRate = 3600;
+ 		public static int crystalLeafDamage = 100;
+ 		public static int crystalLeafKB = 10;
+-		public bool[] NPCBannerBuff = new bool[251];
++		public bool[] NPCBannerBuff = new bool[NPCLoader.NPCCount()];
+ 		public bool hasBanner;
+ 		public Vector2 lastDeathPostion;
+ 		public DateTime lastDeathTime;
 @@ -581,8 +583,8 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;

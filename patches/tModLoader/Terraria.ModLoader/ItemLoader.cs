@@ -151,6 +151,13 @@ namespace Terraria.ModLoader
 				Main.spriteBatch.Draw(Main.itemTexture[item.type], new Vector2(item.position.X - Main.screenPosition.X + (float)(frame.Width / 2) + offX, item.position.Y - Main.screenPosition.Y + (float)(frame.Height / 2) + offY), new Rectangle?(frame), item.GetColor(color), rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
 			}
 		}
+
+		private static Rectangle AnimatedItemFrame(Item item)
+		{
+			int frameCount = Main.itemAnimations[item.type].FrameCount;
+			int frameDuration = Main.itemAnimations[item.type].TicksPerFrame;
+			return Main.itemAnimations[item.type].GetFrame(Main.itemTexture[item.type]);
+		}
 		//in Terraria.Player.ItemCheck
 		//  inside block if (this.controlUseItem && this.itemAnimation == 0 && this.releaseUseItem && item.useStyle > 0)
 		//  set initial flag2 to ItemLoader.CanUseItem(item, this)
