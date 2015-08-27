@@ -65,7 +65,29 @@
  					{
  						int num13 = Main.rand.Next(14);
  						if (num13 == 0)
-@@ -44763,10 +44770,6 @@
+@@ -3968,6 +3975,10 @@
+ 				case 537:
+ 					return 249;
+ 			}
++			if (i >= NPCID.Count)
++			{
++				return NPCLoader.npcs[i].banner;
++			}
+ 			return 0;
+ 		}
+ 
+@@ -4461,6 +4472,10 @@
+ 					return 537;
+ 				case 250:
+ 					return 220;
++			}
++			if (i >= NPCID.Count)
++			{
++				return i;
+ 			}
+ 			return 0;
+ 		}
+@@ -44763,10 +44778,6 @@
  				this.owner = Main.myPlayer;
  			}
  			this.ResetStats(Type);
@@ -76,7 +98,7 @@
  			if (this.type == 0)
  			{
  				this.netID = 0;
-@@ -44973,12 +44976,13 @@
+@@ -44973,12 +44984,13 @@
  				this.maxStack = 999;
  			}
  			this.netID = this.type;
@@ -94,7 +116,7 @@
  			if (this.type > 0 && this.type < 3602 && ItemID.Sets.Deprecated[this.type])
  			{
  				this.netID = 0;
-@@ -44990,6 +44994,7 @@
+@@ -44990,6 +45002,7 @@
  
  		public void ResetStats(int Type)
  		{
@@ -102,7 +124,7 @@
  			this.expert = false;
  			this.expertOnly = false;
  			this.instanced = false;
-@@ -45148,6 +45153,11 @@
+@@ -45148,6 +45161,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{
@@ -114,7 +136,7 @@
  			int num = this.type;
  			if (num <= 1306)
  			{
-@@ -45714,6 +45724,7 @@
+@@ -45714,6 +45732,7 @@
  							}
  						}
  					}
@@ -122,7 +144,7 @@
  					if (ItemID.Sets.ItemNoGravity[this.type])
  					{
  						this.velocity.X = this.velocity.X * 0.95f;
-@@ -46259,6 +46270,10 @@
+@@ -46259,6 +46278,10 @@
  			}
  			int num = 400;
  			Main.item[400] = new Item();
@@ -133,7 +155,7 @@
  			if (Main.halloween)
  			{
  				if (Type == 58)
-@@ -46401,7 +46416,12 @@
+@@ -46401,7 +46424,12 @@
  
  		public Item Clone()
  		{

@@ -750,5 +750,9 @@ namespace Terraria.ModLoader
 			globalNPCs.Clear();
 			gores.Clear();
 		}
+
+		public virtual void ChatInput(string text)
+		{
+		}
 	}
 }
