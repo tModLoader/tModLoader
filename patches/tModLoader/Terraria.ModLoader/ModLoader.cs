@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Terraria.ModLoader
 {
@@ -32,6 +33,7 @@ namespace Terraria.ModLoader
 		private static readonly IList<string> loadedMods = new List<string>();
 		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
 		private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+		private static readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
 
 		private static void LoadReferences()
 		{
@@ -188,6 +190,7 @@ namespace Terraria.ModLoader
 			NPCLoader.ResizeArrays();
 			ModGore.ResizeArrays();
 			NPCHeadLoader.ResizeAndFillArrays();
+			ModSound.ResizeArrays();
 		}
 
 		internal static string[] FindMods()
@@ -281,12 +284,21 @@ namespace Terraria.ModLoader
 				{
 					fileStream.Seek(reader.ReadInt32(), SeekOrigin.Current);
 					modCode = Assembly.Load(reader.ReadBytes(reader.ReadInt32()));
-					for (string texturePath = reader.ReadString(); texturePath != "end"; texturePath = reader.ReadString())
+					for (string texturePath = reader.ReadString(); texturePath != "endImages"; texturePath = reader.ReadString())
 					{
 						byte[] imageData = reader.ReadBytes(reader.ReadInt32());
 						using (MemoryStream buffer = new MemoryStream(imageData))
 						{
 							textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+						}
+					}
+					for (string soundPath = reader.ReadString(); soundPath != "endSounds"; soundPath = reader.ReadString())
+					{
+						byte[] imageData = reader.ReadBytes(reader.ReadInt32());
+						//      ErrorLogger.Log("sound data: "+ soundPath +" "+imageData.Length);
+						using (MemoryStream buffer = new MemoryStream(imageData))
+						{
+							sounds[soundPath] = SoundEffect.FromStream(buffer);
 						}
 					}
 				}
@@ -381,7 +393,9 @@ namespace Terraria.ModLoader
 			NPCLoader.Unload();
 			ModGore.Unload();
 			NPCHeadLoader.Unload();
+			ModSound.Unload();
 			textures.Clear();
+			sounds.Clear();
 			mods.Clear();
 			ResizeArrays(true);
 		}
@@ -507,7 +521,18 @@ namespace Terraria.ModLoader
 						writer.Write(buffer.Length);
 						writer.Write(buffer);
 					}
-					writer.Write("end");
+					writer.Write("endImages");
+					string[] audios = Directory.GetFiles(modToBuild, "*.wav", SearchOption.AllDirectories);
+					foreach (string audio in audios)
+					{
+						string audioPath = audio.Replace(ModSourcePath + Path.DirectorySeparatorChar, null);
+						audioPath = Path.ChangeExtension(audioPath.Replace(Path.DirectorySeparatorChar, '/'), null);
+						buffer = File.ReadAllBytes(audio);
+						writer.Write(audioPath);
+						writer.Write(buffer.Length);
+						writer.Write(buffer);
+					}
+					writer.Write("endSounds");
 				}
 			}
 			EnableMod(file);
@@ -718,6 +743,20 @@ namespace Terraria.ModLoader
 				throw new ArgumentException("Texture already exist: " + name);
 			}
 			textures[name] = texture;
+		}
+
+		public static SoundEffect GetSound(string name)
+		{
+			if (!SoundExists(name))
+			{
+				throw new ArgumentException("Missing sound " + name);
+			}
+			return sounds[name];
+		}
+
+		public static bool SoundExists(string name)
+		{
+			return sounds.ContainsKey(name);
 		}
 
 		private static void AddCraftGroups()
