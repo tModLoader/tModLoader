@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -28,9 +28,13 @@
+@@ -28,9 +28,14 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
      <DefineConstants>CLIENT</DefineConstants>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -8,13 +8,14 @@
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
      <DefineConstants>CLIENT</DefineConstants>
++    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
-     <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
-@@ -238,6 +242,53 @@
+     <Reference Include="Ionic.Zip.CF">
+@@ -235,6 +240,54 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -56,6 +57,7 @@
 +    <Compile Include="Terraria.ModLoader\ModProjectile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModProperties.cs" />
 +    <Compile Include="Terraria.ModLoader\ModRecipe.cs" />
++    <Compile Include="Terraria.ModLoader\ModSound.cs" />
 +    <Compile Include="Terraria.ModLoader\ModTile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCHeadLoader.cs" />
@@ -68,7 +70,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -384,5 +435,8 @@
+@@ -381,6 +434,9 @@
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
    </ItemGroup>
@@ -76,4 +78,6 @@
 +    <Content Include="Icon.ico" />
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
- </Project>
+   <PropertyGroup>
+     <PostBuildEvent>copy $(TargetPath) "C:\Program Files (x86)\Steam\steamapps\common\terraria"</PostBuildEvent>
+
