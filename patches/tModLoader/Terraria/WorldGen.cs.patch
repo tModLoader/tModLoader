@@ -18,6 +18,15 @@
  	{
  		public class Spread
  		{
+@@ -871,7 +873,7 @@
+ 					return true;
+ 				}
+ 			}
+-			for (int j = 0; j < 540; j++)
++			for (int j = 0; j < Main.nextNPC.Length; j++)
+ 			{
+ 				if (Main.nextNPC[j] && WorldGen.CheckConditions(j))
+ 				{
 @@ -1587,7 +1589,7 @@
  												}
  											}

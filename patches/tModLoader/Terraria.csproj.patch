@@ -14,8 +14,8 @@
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
-     <Reference Include="Ionic.Zip.CF">
-@@ -235,6 +240,54 @@
+     <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
+@@ -238,6 +243,54 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -70,7 +70,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -381,6 +434,9 @@
+@@ -384,5 +437,8 @@
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
    </ItemGroup>
@@ -78,6 +78,4 @@
 +    <Content Include="Icon.ico" />
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-   <PropertyGroup>
-     <PostBuildEvent>copy $(TargetPath) "C:\Program Files (x86)\Steam\steamapps\common\terraria"</PostBuildEvent>
-
+ </Project>

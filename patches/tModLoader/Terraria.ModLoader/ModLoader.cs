@@ -294,9 +294,9 @@ namespace Terraria.ModLoader
 					}
 					for (string soundPath = reader.ReadString(); soundPath != "endSounds"; soundPath = reader.ReadString())
 					{
-						byte[] imageData = reader.ReadBytes(reader.ReadInt32());
+						byte[] soundData = reader.ReadBytes(reader.ReadInt32());
 						//      ErrorLogger.Log("sound data: "+ soundPath +" "+imageData.Length);
-						using (MemoryStream buffer = new MemoryStream(imageData))
+						using (MemoryStream buffer = new MemoryStream(soundData))
 						{
 							sounds[soundPath] = SoundEffect.FromStream(buffer);
 						}

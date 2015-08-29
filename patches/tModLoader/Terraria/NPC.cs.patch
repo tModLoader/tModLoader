@@ -61,6 +61,15 @@
  			return result;
  		}
  
+@@ -3086,7 +3096,7 @@
+ 			}
+ 			else if (Name != "")
+ 			{
+-				for (int i = 1; i < 540; i++)
++				for (int i = 1; i < NPCLoader.NPCCount(); i++)
+ 				{
+ 					if (Main.npcName[i] == Name)
+ 					{
 @@ -3127,6 +3137,7 @@
  
  		public void SetDefaults(int Type, float scaleOverride = -1f)
@@ -114,6 +123,15 @@
  									{
  										bool flag26 = WorldGen.OpenDoor(num210, num211 - 1, this.direction);
  										if (!flag26)
+@@ -19579,7 +19597,7 @@
+ 				{
+ 					NPC.savedStylist = true;
+ 				}
+-				if (this.type >= 0 && this.type < 540 && NPCID.Sets.TownCritter[this.type] && this.target == 255)
++				if (this.type >= 0 && NPCID.Sets.TownCritter[this.type] && this.target == 255)
+ 				{
+ 					this.TargetClosest(true);
+ 					if (this.position.X < Main.player[this.target].position.X)
 @@ -20010,7 +20028,7 @@
  						if (this.closeDoor && ((this.position.X + (float)(this.width / 2)) / 16f > (float)(this.doorX + 2) || (this.position.X + (float)(this.width / 2)) / 16f < (float)(this.doorX - 2)))
  						{
@@ -144,6 +162,15 @@
  			int num2 = 0;
  			if (this.aiAction == 0)
  			{
+@@ -53786,7 +53809,7 @@
+ 
+ 		public static void ResetKillCount()
+ 		{
+-			for (int i = 0; i < 540; i++)
++			for (int i = 0; i < NPC.killCount.Length; i++)
+ 			{
+ 				NPC.killCount[i] = 0;
+ 			}
 @@ -53816,7 +53839,7 @@
  
  		public void NPCLoot()

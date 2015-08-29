@@ -720,4 +720,13 @@
  		{
  			if (Main._drawCycleCounter == 0uL)
  			{
+@@ -52180,7 +52291,7 @@
+ 								num14++;
+ 							}
+ 						}
+-						for (int num16 = 0; num16 < 540; num16++)
++						for (int num16 = 0; num16 < Main.nextNPC.Length; num16++)
+ 						{
+ 							Main.nextNPC[num16] = false;
+ 						}
 
