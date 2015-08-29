@@ -729,4 +729,15 @@
  						{
  							Main.nextNPC[num16] = false;
  						}
+@@ -52691,6 +52802,10 @@
+ 								}
+ 								if (num2 > 0f || (type >= 30 && type <= 35) || type == 39)
+ 								{
++									if (SoundLoader.PlayModSound(type, num, num2, num3))
++									{
++										return;
++									}
+ 									if (type == 0)
+ 									{
+ 										int num7 = Main.rand.Next(3);
 

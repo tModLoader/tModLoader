@@ -190,7 +190,7 @@ namespace Terraria.ModLoader
 			NPCLoader.ResizeArrays();
 			ModGore.ResizeArrays();
 			NPCHeadLoader.ResizeAndFillArrays();
-			ModSound.ResizeArrays();
+			SoundLoader.ResizeAndFillArrays();
 		}
 
 		internal static string[] FindMods()
@@ -393,7 +393,7 @@ namespace Terraria.ModLoader
 			NPCLoader.Unload();
 			ModGore.Unload();
 			NPCHeadLoader.Unload();
-			ModSound.Unload();
+			SoundLoader.Unload();
 			textures.Clear();
 			sounds.Clear();
 			mods.Clear();

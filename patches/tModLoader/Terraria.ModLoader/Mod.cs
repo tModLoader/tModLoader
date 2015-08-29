@@ -44,7 +44,6 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModNPC> npcs = new Dictionary<string, ModNPC>();
 		internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
 		internal readonly IDictionary<string, ModGore> gores = new Dictionary<string, ModGore>();
-		internal readonly IDictionary<string, ModSound> sounds = new Dictionary<string, ModSound>();
 		/*
          * Initializes the mod's information, such as its name.
          */
@@ -144,10 +143,6 @@ namespace Terraria.ModLoader
 				if (type.IsSubclassOf(typeof(ModGore)))
 				{
 					AutoloadGore(type);
-				}
-				if (type.IsSubclassOf(typeof(ModSound)))
-				{
-					AutoloadSound(type);
 				}
 			}
 		}
@@ -667,48 +662,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public void AddSound(string name, ModSound sound, string audioFilename)
+		public void AddSound(SoundType type, string soundPath, ModSound modSound = null)
 		{
-			int id = ModSound.ReserveSoundID();
-			sound.Name = name;
-			sound.Type = id;
-			sounds[name] = sound;
-			ModSound.sounds[id] = sound;
-			sound.audioFilename = audioFilename; 
-			sound.mod = this;
-		}
-
-		public ModSound GetSound(string name)
-		{
-			if (sounds.ContainsKey(name))
+			int id = SoundLoader.ReserveSoundID(type);
+			SoundLoader.sounds[type][soundPath] = id;
+			if (modSound != null)
 			{
-				return sounds[name];
-			}
-			else
-			{
-				return null;
-			}
-		}
-
-		public int SoundType(string name)
-		{
-			ModSound sound = GetSound(name);
-			if (sound == null)
-			{
-				return 0;
-			}
-			return sound.Type;
-		}
-
-		private void AutoloadSound(Type type)
-		{
-			ModSound sound = (ModSound)Activator.CreateInstance(type);
-			sound.mod = this;
-			string name = type.Name;
-			string audioFilename = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (sound.Autoload(ref name, ref audioFilename))
-			{
-				AddSound(name, sound, audioFilename);
+				SoundLoader.modSounds[type][id] = modSound;
+				modSound.sound = ModLoader.GetSound(soundPath);
 			}
 		}
 
@@ -781,11 +742,6 @@ namespace Terraria.ModLoader
 			{
 				Main.goreTexture[gore.Type] = ModLoader.GetTexture(gore.texture);
 			}
-			foreach (ModSound sound in sounds.Values)
-			{
-				Main.soundItem[sound.Type] = ModLoader.GetSound(sound.audioFilename);
-				Main.soundInstanceItem[sound.Type] = Main.soundItem[sound.Type].CreateInstance();
-			}
 		}
 
 		internal void Unload() //I'm not sure why I have this
@@ -804,7 +760,6 @@ namespace Terraria.ModLoader
 			npcs.Clear();
 			globalNPCs.Clear();
 			gores.Clear();
-			sounds.Clear();
 		}
 
 		public virtual void ChatInput(string text)
