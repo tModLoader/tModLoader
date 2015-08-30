@@ -1,0 +1,89 @@
+--- src/Terraria\Terraria\Mount.cs
++++ src/tModLoader\Terraria\Mount.cs
+@@ -6,6 +6,7 @@
+ using Terraria.GameContent.Achievements;
+ using Terraria.Graphics.Shaders;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+@@ -42,8 +43,18 @@
+ 			}
+ 		}
+ 
+-		private class MountData
+-		{
++		public class MountData
++		{
++			public ModMountData modMountData
++			{
++				get;
++                // internal set;
++				set;
++			}
++
++			public string Name { get; internal set; }
++
++			public int type;
+ 			public Texture2D backTexture;
+ 			public Texture2D backTextureGlow;
+ 			public Texture2D backTextureExtra;
+@@ -107,6 +118,7 @@
+ 			public Action<Vector2> MinecartDust;
+ 			public Vector3 lightColor = Vector3.One;
+ 			public bool emitsLight;
++            
+ 		}
+ 
+ 		public const int None = -1;
+@@ -140,7 +152,7 @@
+ 		public const float drillRotationChange = 0.05235988f;
+ 		public const float maxDrillLength = 48f;
+ 		public static int currentShader = 0;
+-		private static Mount.MountData[] mounts;
++		public static Mount.MountData[] mounts;
+ 		private static Vector2[] scutlixEyePositions;
+ 		private static Vector2 scutlixTextureSize;
+ 		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
+@@ -150,7 +162,7 @@
+ 		public static int drillPickTime = 6;
+ 		public static int drillBeamCooldownMax = 1;
+ 		private Mount.MountData _data;
+-		private int _type;
++		public int _type;
+ 		private bool _flipDraw;
+ 		private int _frame;
+ 		private float _frameCounter;
+@@ -2901,7 +2913,9 @@
+ 
+ 		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
+ 		{
+-			if (this._type == m || m <= -1 || m >= 14)
++			ErrorLogger.Log("SetMount called " + this._type + " " + m);
++			//if (this._type == m || m <= -1 || m >= 14)
++			if (this._type == m || m <= -1 || m >= mounts.Length)
+ 			{
+ 				return;
+ 			}
+@@ -3010,8 +3024,19 @@
+ 
+ 		public bool CanMount(int m, Player mountingPlayer)
+ 		{
++			ErrorLogger.Log("CanModunt(int m, Player mountingPlayer)" + m);
++			ErrorLogger.Log("CanMOunt Mountmounstlength " + Mount.mounts.Length);
++			for (int i = 0; i < 30; i++)
++			{
++				if (Mount.mounts[i] != null)
++				{
++					ErrorLogger.Log("For: " + i + " " + Mount.mounts[i].buff);
++				}
++			}
+ 			int num = 42 + Mount.mounts[m].heightBoost;
++			ErrorLogger.Log("Mount.mounts[m].heightBoost" + Mount.mounts[m].heightBoost);
+ 			Vector2 position = mountingPlayer.position + new Vector2(0f, (float)(mountingPlayer.height - num)) + mountingPlayer.velocity;
++			ErrorLogger.Log("position" + position);
+ 			return Collision.IsClearSpotHack(position, 16f, mountingPlayer.width, num, false, false, 1, true, false);
+ 		}
+ 
+

@@ -45,6 +45,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
 		internal readonly IDictionary<string, ModGore> gores = new Dictionary<string, ModGore>();
 		internal readonly IDictionary<string, ModSound> sounds = new Dictionary<string, ModSound>();
+		internal readonly IDictionary<string, ModMountData> mountDatas = new Dictionary<string, ModMountData>();
 		/*
          * Initializes the mod's information, such as its name.
          */
@@ -148,6 +149,10 @@ namespace Terraria.ModLoader
 				if (type.IsSubclassOf(typeof(ModSound)))
 				{
 					AutoloadSound(type);
+				}
+				if (type.IsSubclassOf(typeof(ModMountData)))
+				{
+					AutoloadMountData(type);
 				}
 			}
 		}
@@ -667,6 +672,63 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddMount(string name, ModMountData mount, string texture)
+		{
+			int id = 20;
+			mount.mountData.Name = name;
+			mount.mountData.type = id;
+			mountDatas[name] = mount;
+			MountLoader.mountDatas[id] = mount;
+			mount.texture = texture;
+			mount.mod = this;
+			ErrorLogger.Log("AddMount:" + name);
+			ErrorLogger.Log("AddMount: reserve ID" + id);
+			mount.mountData.backTexture = ModLoader.GetTexture(texture + "_back");
+			ErrorLogger.Log("Loaded Texture:");
+			//public Texture2D backTextureGlow;
+			//public Texture2D backTextureExtra;
+			//public Texture2D backTextureExtraGlow;
+			//public Texture2D frontTexture;
+			//public Texture2D frontTextureGlow;
+			//public Texture2D frontTextureExtra;
+			//public Texture2D frontTextureExtraGlow;
+		}
+
+		public ModMountData GetMount(string name)
+		{
+			if (mountDatas.ContainsKey(name))
+			{
+				return mountDatas[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		public int MountType(string name)
+		{
+			ModMountData mountData = GetMount(name);
+			if (mountData == null)
+			{
+				return 0;
+			}
+			return mountData.mountData.type;
+		}
+
+		private void AutoloadMountData(Type type)
+		{
+			ErrorLogger.Log("Autoloading");
+			ModMountData mount = (ModMountData)Activator.CreateInstance(type);
+			mount.mod = this;
+			string name = type.Name;
+			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+			if (mount.Autoload(ref name, ref texture))
+			{
+				AddMount(name, mount, texture);
+			}
+		}
+
 		public void AddSound(string name, ModSound sound, string audioFilename)
 		{
 			int id = ModSound.ReserveSoundID();
@@ -785,6 +847,22 @@ namespace Terraria.ModLoader
 			{
 				Main.soundItem[sound.Type] = ModLoader.GetSound(sound.audioFilename);
 				Main.soundInstanceItem[sound.Type] = Main.soundItem[sound.Type].CreateInstance();
+			}
+			foreach (ModMountData modMountData in mountDatas.Values)
+			{
+				Mount.MountData temp = modMountData.mountData;
+				temp.modMountData = modMountData;
+				if (temp == null)
+				{
+					ErrorLogger.Log("temp null!!");
+				}
+				MountLoader.SetupMount(modMountData.mountData);
+              
+				ErrorLogger.Log("!!" + temp.type);
+				Mount.mounts[temp.type] = temp;
+				ErrorLogger.Log("!!!" + temp.type);
+                
+				// Main.goreTexture[gore.Type] = ModLoader.GetTexture(gore.texture);
 			}
 		}
 

@@ -191,6 +191,7 @@ namespace Terraria.ModLoader
 			ModGore.ResizeArrays();
 			NPCHeadLoader.ResizeAndFillArrays();
 			ModSound.ResizeArrays();
+			MountLoader.ResizeArrays();
 		}
 
 		internal static string[] FindMods()
