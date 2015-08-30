@@ -29,15 +29,8 @@ namespace Terraria.ModLoader
 
 		internal static void ResizeArrays()
 		{
-			//Array.Resize(ref Main.itemTexture, nextItem);
-			ErrorLogger.Log("Array.Resize( " + Mount.mounts.Length);
-			//ErrorLogger.Log(MountID.Sets.Cart[0].ToString());
-			//ErrorLogger.Log(Mount.mounts[0].ToString());
-			Array.Resize(ref MountID.Sets.Cart, 30); // nextMount
+			Array.Resize(ref MountID.Sets.Cart, nextMount);
 			Array.Resize(ref Mount.mounts, nextMount);
-			ErrorLogger.Log("Array.Resize( " + Mount.mounts.Length);
-			//ErrorLogger.Log(MountID.Sets.Cart[0].ToString());
-			//ErrorLogger.Log(Mount.mounts[0].ToString());
 		}
 
 		internal static void Unload()
@@ -49,14 +42,13 @@ namespace Terraria.ModLoader
 		internal static bool IsModMountData(Mount.MountData mountData)
 		{
 			return mountData.modMountData != null;
-			//return Mount._type >= MountID.Count;
 		}
 
 		internal static void SetupMount(Mount.MountData mount)
 		{
 			if (IsModMountData(mount))
 			{
-				GetMount(mount.type).SetupMount(mount);
+				GetMount(mount.modMountData.Type).SetupMount(mount);
 			}
 		}
 	}

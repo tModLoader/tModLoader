@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -42,8 +43,18 @@
+@@ -42,8 +43,14 @@
  			}
  		}
  
@@ -16,20 +16,16 @@
 -		{
 +		public class MountData
 +		{
-+			public int type;
-+
 +			public ModMountData modMountData
 +			{
 +				get;
 +				set;
 +			}
 +
-+			public string Name{ get; internal set; }
-+
  			public Texture2D backTexture;
  			public Texture2D backTextureGlow;
  			public Texture2D backTextureExtra;
-@@ -140,7 +151,7 @@
+@@ -140,7 +147,7 @@
  		public const float drillRotationChange = 0.05235988f;
  		public const float maxDrillLength = 48f;
  		public static int currentShader = 0;

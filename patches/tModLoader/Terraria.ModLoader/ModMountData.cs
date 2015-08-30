@@ -23,11 +23,19 @@ namespace Terraria.ModLoader
 			get;
 			internal set;
 		}
-		//public string Name
-		//{
-		//    get;
-		//    set;
-		//}
+
+		public int Type
+		{
+			get;
+			internal set;
+		}
+
+		public string Name
+		{
+			get;
+			internal set;
+		}
+
 		public ModMountData()
 		{
 			mountData = new Mount.MountData();

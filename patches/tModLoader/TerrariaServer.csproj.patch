@@ -1,6 +1,6 @@
 --- src/Terraria\TerrariaServer.csproj
 +++ src/tModLoader\TerrariaServer.csproj
-@@ -242,6 +242,56 @@
+@@ -242,6 +242,58 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -39,6 +39,7 @@
 +    <Compile Include="Terraria.ModLoader\ModHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\ModItem.cs" />
 +    <Compile Include="Terraria.ModLoader\ModLoader.cs" />
++    <Compile Include="Terraria.ModLoader\ModMountData.cs" />
 +    <Compile Include="Terraria.ModLoader\ModNPC.cs" />
 +    <Compile Include="Terraria.ModLoader\ModProjectile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModProperties.cs" />
@@ -46,6 +47,7 @@
 +    <Compile Include="Terraria.ModLoader\ModSound.cs" />
 +    <Compile Include="Terraria.ModLoader\ModTile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
++    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCHeadLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCSpawnInfo.cs" />

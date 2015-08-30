@@ -680,7 +680,6 @@ namespace Terraria.ModLoader
 
 		private void AutoloadMountData(Type type)
 		{
-			ErrorLogger.Log("Autoloading");
 			ModMountData mount = (ModMountData)Activator.CreateInstance(type);
 			mount.mod = this;
 			string name = type.Name;
@@ -700,8 +699,8 @@ namespace Terraria.ModLoader
 			}
 			id = MountLoader.ReserveMountID();
 			ErrorLogger.Log("id = " + id);
-			mount.mountData.Name = name;
-			mount.mountData.type = id;
+			mount.Name = name;
+			mount.Type = id;
 			mountDatas[name] = mount;
 			MountLoader.mountDatas[id] = mount;
 			mount.texture = texture;
@@ -730,7 +729,7 @@ namespace Terraria.ModLoader
 			{
 				return 0;
 			}
-			return mountData.mountData.type;
+			return mountData.Type;
 		}
 
 		internal void SetupContent()
@@ -806,13 +805,8 @@ namespace Terraria.ModLoader
 			{
 				Mount.MountData temp = modMountData.mountData;
 				temp.modMountData = modMountData;
-				if (temp == null)
-				{
-					ErrorLogger.Log("temp null!!");
-				}
 				MountLoader.SetupMount(modMountData.mountData);
-                
-				Mount.mounts[temp.type] = temp;
+				Mount.mounts[modMountData.Type] = temp;
                 
                 
 			}
