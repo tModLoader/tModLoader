@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 	public static class ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
-		public static readonly string version = "tModLoader v0.4.1";
+		public static readonly string version = "tModLoader v0.5";
 		//change Terraria.Main.SavePath to use "ModLoader" folder
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
@@ -188,7 +188,7 @@ namespace Terraria.ModLoader
 			WallLoader.ResizeArrays(unloading);
 			ProjectileLoader.ResizeArrays();
 			NPCLoader.ResizeArrays();
-			ModGore.ResizeArrays();
+			ModGore.ResizeAndFillArrays();
 			NPCHeadLoader.ResizeAndFillArrays();
 			SoundLoader.ResizeAndFillArrays();
 			MountLoader.ResizeArrays();

@@ -10,7 +10,8 @@ namespace Terraria.ModLoader
 	public class ModGore
 	{
 		private static int nextGore = GoreID.Count;
-		internal static readonly IDictionary<int, ModGore> gores = new Dictionary<int, ModGore>();
+		internal static readonly IDictionary<string, int> gores = new Dictionary<string, int>();
+		internal static readonly IDictionary<int, ModGore> modGores = new Dictionary<int, ModGore>();
 
 		internal static int ReserveGoreID()
 		{
@@ -19,19 +20,19 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		public static ModGore GetGore(int type)
+		public static int GetGoreSlot(string texture)
 		{
-			if (gores.ContainsKey(type))
+			if (gores.ContainsKey(texture))
 			{
-				return gores[type];
+				return gores[texture];
 			}
 			else
 			{
-				return null;
+				return 0;
 			}
 		}
 		//in Terraria.GameContent.ChildSafety make SafeGore internal and not readonly
-		internal static void ResizeArrays()
+		internal static void ResizeAndFillArrays()
 		{
 			Array.Resize(ref Main.goreLoaded, nextGore);
 			Array.Resize(ref Main.goreTexture, nextGore);
@@ -39,6 +40,10 @@ namespace Terraria.ModLoader
 			for (int k = GoreID.Count; k < nextGore; k++)
 			{
 				Main.goreLoaded[k] = true;
+			}
+			foreach (string texture in gores.Keys)
+			{
+				Main.goreTexture[gores[texture]] = ModLoader.GetTexture(texture);
 			}
 		}
 
@@ -51,9 +56,9 @@ namespace Terraria.ModLoader
 		//in Terraria.Gore.NewGore after resetting properties call ModGore.SetupGore(Main.gore[num]);
 		internal static void SetupGore(Gore gore)
 		{
-			if (gore.type >= GoreID.Count)
+			if (modGores.ContainsKey(gore.type))
 			{
-				gore.modGore = gores[gore.type];
+				gore.modGore = modGores[gore.type];
 				gore.modGore.OnSpawn(gore);
 			}
 			else
@@ -69,31 +74,6 @@ namespace Terraria.ModLoader
 				return gore.modGore.DrawBehind(gore);
 			}
 			return gore.type >= 706 && gore.type <= 717 && (gore.frame < 7 || gore.frame > 9);
-		}
-
-		public string Name
-		{
-			get;
-			internal set;
-		}
-
-		public int Type
-		{
-			get;
-			internal set;
-		}
-
-		public Mod mod
-		{
-			get;
-			internal set;
-		}
-
-		internal string texture;
-
-		public virtual bool Autoload(ref string name, ref string texture)
-		{
-			return mod.Properties.Autoload;
 		}
 
 		public virtual void OnSpawn(Gore gore)

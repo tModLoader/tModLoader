@@ -43,7 +43,6 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, GlobalProjectile> globalProjectiles = new Dictionary<string, GlobalProjectile>();
 		internal readonly IDictionary<string, ModNPC> npcs = new Dictionary<string, ModNPC>();
 		internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
-		internal readonly IDictionary<string, ModGore> gores = new Dictionary<string, ModGore>();
 		internal readonly IDictionary<string, ModMountData> mountDatas = new Dictionary<string, ModMountData>();
 		/*
          * Initializes the mod's information, such as its name.
@@ -140,10 +139,6 @@ namespace Terraria.ModLoader
 				if (type.IsSubclassOf(typeof(GlobalNPC)))
 				{
 					AutoloadGlobalNPC(type);
-				}
-				if (type.IsSubclassOf(typeof(ModGore)))
-				{
-					AutoloadGore(type);
 				}
 				if (type.IsSubclassOf(typeof(ModMountData)))
 				{
@@ -622,48 +617,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public void AddGore(string name, ModGore gore, string texture)
+		public void AddGore(string texture, ModGore modGore = null)
 		{
 			int id = ModGore.ReserveGoreID();
-			gore.Name = name;
-			gore.Type = id;
-			gores[name] = gore;
-			ModGore.gores[id] = gore;
-			gore.texture = texture;
-			gore.mod = this;
-		}
-
-		public ModGore GetGore(string name)
-		{
-			if (gores.ContainsKey(name))
+			ModGore.gores[texture] = id;
+			if (modGore != null)
 			{
-				return gores[name];
-			}
-			else
-			{
-				return null;
-			}
-		}
-
-		public int GoreType(string name)
-		{
-			ModGore gore = GetGore(name);
-			if (gore == null)
-			{
-				return 0;
-			}
-			return gore.Type;
-		}
-
-		private void AutoloadGore(Type type)
-		{
-			ModGore gore = (ModGore)Activator.CreateInstance(type);
-			gore.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (gore.Autoload(ref name, ref texture))
-			{
-				AddGore(name, gore, texture);
+				ModGore.modGores[id] = modGore;
 			}
 		}
 
@@ -698,14 +658,12 @@ namespace Terraria.ModLoader
 				Mount.Initialize();
 			}
 			id = MountLoader.ReserveMountID();
-			ErrorLogger.Log("id = " + id);
 			mount.Name = name;
 			mount.Type = id;
 			mountDatas[name] = mount;
 			MountLoader.mountDatas[id] = mount;
 			mount.texture = texture;
 			mount.mod = this;
-            
 			mount.mountData.backTexture = ModLoader.GetTexture(texture + "_back");
             
 		}
@@ -797,10 +755,6 @@ namespace Terraria.ModLoader
 					Main.npcLifeBytes[npc.npc.type] = 1;
 				}
 			}
-			foreach (ModGore gore in gores.Values)
-			{
-				Main.goreTexture[gore.Type] = ModLoader.GetTexture(gore.texture);
-			}
 			foreach (ModMountData modMountData in mountDatas.Values)
 			{
 				Mount.MountData temp = modMountData.mountData;
@@ -827,7 +781,6 @@ namespace Terraria.ModLoader
 			globalProjectiles.Clear();
 			npcs.Clear();
 			globalNPCs.Clear();
-			gores.Clear();
 		}
 
 		public virtual void ChatInput(string text)

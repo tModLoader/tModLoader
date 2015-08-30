@@ -21,7 +21,6 @@ namespace Terraria.ModLoader
 
 		internal static int ReserveMountID()
 		{
-			ErrorLogger.Log("reserve " + Mount.mounts.Length);
 			int reserveID = nextMount;
 			nextMount++;
 			return reserveID;
