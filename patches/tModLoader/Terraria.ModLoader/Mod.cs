@@ -693,15 +693,22 @@ namespace Terraria.ModLoader
 
 		public void AddMount(string name, ModMountData mount, string texture)
 		{
-			int id = 20;
+			int id;
+			if (Mount.mounts == null || Mount.mounts.Length == 14)
+			{
+				Mount.Initialize();
+                
+			}
+			id = MountLoader.ReserveMountID();
+			ErrorLogger.Log("id = " + id);
 			mount.mountData.Name = name;
 			mount.mountData.type = id;
 			mountDatas[name] = mount;
 			MountLoader.mountDatas[id] = mount;
 			mount.texture = texture;
 			mount.mod = this;
-			ErrorLogger.Log("AddMount:" + name);
-			ErrorLogger.Log("AddMount: reserve ID" + id);
+			ErrorLogger.Log("AddMount: " + name);
+			ErrorLogger.Log("AddMount: reserve ID " + id);
 			mount.mountData.backTexture = ModLoader.GetTexture(texture + "_back");
 			ErrorLogger.Log("Loaded Texture:");
 			//public Texture2D backTextureGlow;
@@ -835,6 +842,7 @@ namespace Terraria.ModLoader
 			globalProjectiles.Clear();
 			npcs.Clear();
 			globalNPCs.Clear();
+			mountDatas.Clear();
 			gores.Clear();
 		}
 

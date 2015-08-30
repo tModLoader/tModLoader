@@ -29,7 +29,15 @@
  			public Texture2D backTexture;
  			public Texture2D backTextureGlow;
  			public Texture2D backTextureExtra;
-@@ -107,6 +118,7 @@
+@@ -53,6 +64,7 @@
+ 			public Texture2D frontTextureExtra;
+ 			public Texture2D frontTextureExtraGlow;
+ 			public int textureWidth;
++			public bool noFall;
+ 			public int textureHeight;
+ 			public int xOffset;
+ 			public int yOffset;
+@@ -107,6 +119,7 @@
  			public Action<Vector2> MinecartDust;
  			public Vector3 lightColor = Vector3.One;
  			public bool emitsLight;
@@ -37,7 +45,7 @@
  		}
  
  		public const int None = -1;
-@@ -140,7 +152,7 @@
+@@ -140,7 +153,7 @@
  		public const float drillRotationChange = 0.05235988f;
  		public const float maxDrillLength = 48f;
  		public static int currentShader = 0;
@@ -46,7 +54,7 @@
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
  		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
-@@ -150,7 +162,7 @@
+@@ -150,7 +163,7 @@
  		public static int drillPickTime = 6;
  		public static int drillBeamCooldownMax = 1;
  		private Mount.MountData _data;
@@ -55,7 +63,29 @@
  		private bool _flipDraw;
  		private int _frame;
  		private float _frameCounter;
-@@ -2901,7 +2913,9 @@
+@@ -1692,7 +1705,7 @@
+ 				mountedPlayer.velocity.Y = num6;
+ 				mountedPlayer.fallStart = (int)(mountedPlayer.position.Y / 16f);
+ 			}
+-			else if (this._type != 7 && this._type != 8 && this._type != 12)
++			else if (this._type != 7 && this._type != 8 && this._type != 12 && !this._data.noFall)
+ 			{
+ 				mountedPlayer.velocity.Y = mountedPlayer.velocity.Y + mountedPlayer.gravity * mountedPlayer.gravDir;
+ 			}
+@@ -2170,7 +2183,11 @@
+ 
+ 		public void UpdateEffects(Player mountedPlayer)
+ 		{
+-			mountedPlayer.autoJump = this.AutoJump;
++			if (this._type
++			             >= 14)
++			{
++				mounts[Type].modMountData.UpdateEffects(mountedPlayer);
++			}
+ 			switch (this._type)
+ 			{
+ 				case 8:
+@@ -2901,7 +2918,9 @@
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
  		{
@@ -66,23 +96,33 @@
  			{
  				return;
  			}
-@@ -3010,8 +3024,19 @@
+@@ -3010,8 +3029,29 @@
  
  		public bool CanMount(int m, Player mountingPlayer)
  		{
-+			ErrorLogger.Log("CanModunt(int m, Player mountingPlayer)" + m);
++			ErrorLogger.Log("CanModMount(int m, Player mountingPlayer)" + m);
 +			ErrorLogger.Log("CanMOunt Mountmounstlength " + Mount.mounts.Length);
-+			for (int i = 0; i < 30; i++)
++			ErrorLogger.Log("height " + Mount.mounts[m].heightBoost);
++			int num1 = 42 + Mount.mounts[m].heightBoost;
++			if (m >= 14)
++			{
++				this._data = Mount.mounts[m];
++			}
++			Vector2 position1 = mountingPlayer.position + new Vector2(0f, (float)(mountingPlayer.height - num1)) + mountingPlayer.velocity;
++			ErrorLogger.Log("" + Collision.IsClearSpotHack(position1, 16f, mountingPlayer.width, num1, false, false, 1, true, false));
++			for (int i = 0; i < Mount.mounts.Length; i++)
 +			{
 +				if (Mount.mounts[i] != null)
 +				{
-+					ErrorLogger.Log("For: " + i + " " + Mount.mounts[i].buff);
++					//ErrorLogger.Log("For: " + i + " " + Mount.mounts[i].buff);
 +				}
 +			}
++            
  			int num = 42 + Mount.mounts[m].heightBoost;
 +			ErrorLogger.Log("Mount.mounts[m].heightBoost" + Mount.mounts[m].heightBoost);
  			Vector2 position = mountingPlayer.position + new Vector2(0f, (float)(mountingPlayer.height - num)) + mountingPlayer.velocity;
 +			ErrorLogger.Log("position" + position);
++			ErrorLogger.Log("" + Collision.IsClearSpotHack(position, 16f, mountingPlayer.width, num, false, false, 1, true, false));
  			return Collision.IsClearSpotHack(position, 16f, mountingPlayer.width, num, false, false, 1, true, false);
  		}
  
