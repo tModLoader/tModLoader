@@ -1,0 +1,41 @@
+--- src/Terraria\Terraria\Mount.cs
++++ src/tModLoader\Terraria\Mount.cs
+@@ -6,6 +6,7 @@
+ using Terraria.GameContent.Achievements;
+ using Terraria.Graphics.Shaders;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+@@ -42,8 +43,18 @@
+ 			}
+ 		}
+ 
+-		private class MountData
+-		{
++		public class MountData
++		{
++			public int type;
++
++			public ModMountData modMountData
++			{
++				get;
++				set;
++			}
++
++			public string Name{ get; internal set; }
++
+ 			public Texture2D backTexture;
+ 			public Texture2D backTextureGlow;
+ 			public Texture2D backTextureExtra;
+@@ -140,7 +151,7 @@
+ 		public const float drillRotationChange = 0.05235988f;
+ 		public const float maxDrillLength = 48f;
+ 		public static int currentShader = 0;
+-		private static Mount.MountData[] mounts;
++		public static Mount.MountData[] mounts;
+ 		private static Vector2[] scutlixEyePositions;
+ 		private static Vector2 scutlixTextureSize;
+ 		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
+

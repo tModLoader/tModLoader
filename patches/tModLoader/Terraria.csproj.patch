@@ -15,7 +15,28 @@
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
-@@ -238,6 +243,56 @@
+@@ -48,11 +53,17 @@
+     <Reference Include="Microsoft.Xna.Framework.Graphics" />
+     <Reference Include="System" />
+     <Reference Include="Microsoft.Xna.Framework.Xact" />
+-    <Reference Include="Steamworks.NET" />
+-    <Reference Include="Newtonsoft.Json" />
++    <Reference Include="Steamworks.NET">
++      <HintPath>..\..\..\..\..\Desktop\Terraria\Steamworks.NET.dll</HintPath>
++    </Reference>
++    <Reference Include="Newtonsoft.Json">
++      <HintPath>..\..\..\..\..\Desktop\Terraria\Newtonsoft.Json.dll</HintPath>
++    </Reference>
+     <Reference Include="System.Core" />
+     <Reference Include="System.Drawing" />
+-    <Reference Include="Ionic.Zip.CF" />
++    <Reference Include="Ionic.Zip.CF">
++      <HintPath>..\..\..\..\..\Desktop\Terraria\Ionic.Zip.CF.dll</HintPath>
++    </Reference>
+     <Reference Include="WindowsBase" />
+   </ItemGroup>
+   <ItemGroup>
+@@ -238,6 +249,58 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -53,6 +74,7 @@
 +    <Compile Include="Terraria.ModLoader\ModHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\ModItem.cs" />
 +    <Compile Include="Terraria.ModLoader\ModLoader.cs" />
++    <Compile Include="Terraria.ModLoader\ModMountData.cs" />
 +    <Compile Include="Terraria.ModLoader\ModNPC.cs" />
 +    <Compile Include="Terraria.ModLoader\ModProjectile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModProperties.cs" />
@@ -60,6 +82,7 @@
 +    <Compile Include="Terraria.ModLoader\ModSound.cs" />
 +    <Compile Include="Terraria.ModLoader\ModTile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
++    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCHeadLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCLoader.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\PlayerIO.cs" />
@@ -72,7 +95,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -384,5 +439,8 @@
+@@ -384,5 +447,8 @@
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
    </ItemGroup>
