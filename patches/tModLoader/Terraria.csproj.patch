@@ -35,7 +35,7 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -238,6 +248,56 @@
+@@ -238,6 +248,58 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -87,12 +87,14 @@
 +    <Compile Include="Terraria.ModLoader.IO\PlayerIO.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCSpawnInfo.cs" />
 +    <Compile Include="Terraria.ModLoader\ProjectileLoader.cs" />
++    <Compile Include="Terraria.ModLoader\SoundLoader.cs" />
++    <Compile Include="Terraria.ModLoader\SoundType.cs" />
 +    <Compile Include="Terraria.ModLoader\TileLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\WallLoader.cs" />
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -384,5 +444,8 @@
+@@ -384,5 +446,8 @@
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
    </ItemGroup>

@@ -61,7 +61,6 @@ namespace Terraria.ModLoader
 		//public int dashingFrameStart;
 		//public int dashingFrameCount;
 		//public int dashingFrameDelay;
-
 		internal string texture;
 
 		public Mount.MountData mountData
