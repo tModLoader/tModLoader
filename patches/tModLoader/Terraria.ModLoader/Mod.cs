@@ -44,7 +44,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModNPC> npcs = new Dictionary<string, ModNPC>();
 		internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
 		internal readonly IDictionary<string, ModGore> gores = new Dictionary<string, ModGore>();
-		internal readonly IDictionary<string, ModMountData> mountDatas = new Dictionary<string, ModMountData>();
+		
 		/*
          * Initializes the mod's information, such as its name.
          */
@@ -145,10 +145,8 @@ namespace Terraria.ModLoader
 				{
 					AutoloadGore(type);
 				}
-				if (type.IsSubclassOf(typeof(ModMountData)))
-				{
-					AutoloadMountData(type);
-				}
+				
+                
 			}
 		}
 
@@ -667,80 +665,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public void AddSound(SoundType type, string soundPath, ModSound modSound = null)
-		{
-			int id = SoundLoader.ReserveSoundID(type);
-			SoundLoader.sounds[type][soundPath] = id;
-			if (modSound != null)
-			{
-				SoundLoader.modSounds[type][id] = modSound;
-				modSound.sound = ModLoader.GetSound(soundPath);
-			}
-		}
+		
 
-		private void AutoloadMountData(Type type)
-		{
-			ErrorLogger.Log("Autoloading");
-			ModMountData mount = (ModMountData)Activator.CreateInstance(type);
-			mount.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (mount.Autoload(ref name, ref texture))
-			{
-				AddMount(name, mount, texture);
-			}
-		}
 
-		public void AddMount(string name, ModMountData mount, string texture)
-		{
-			int id;
-			if (Mount.mounts == null || Mount.mounts.Length == 14)
-			{
-				Mount.Initialize();
-                
-			}
-			id = MountLoader.ReserveMountID();
-			ErrorLogger.Log("id = " + id);
-			mount.mountData.Name = name;
-			mount.mountData.type = id;
-			mountDatas[name] = mount;
-			MountLoader.mountDatas[id] = mount;
-			mount.texture = texture;
-			mount.mod = this;
-			ErrorLogger.Log("AddMount: " + name);
-			ErrorLogger.Log("AddMount: reserve ID " + id);
-			mount.mountData.backTexture = ModLoader.GetTexture(texture + "_back");
-			ErrorLogger.Log("Loaded Texture:");
-			//public Texture2D backTextureGlow;
-			//public Texture2D backTextureExtra;
-			//public Texture2D backTextureExtraGlow;
-			//public Texture2D frontTexture;
-			//public Texture2D frontTextureGlow;
-			//public Texture2D frontTextureExtra;
-			//public Texture2D frontTextureExtraGlow;
-		}
 
-		public ModMountData GetMount(string name)
-		{
-			if (mountDatas.ContainsKey(name))
-			{
-				return mountDatas[name];
-			}
-			else
-			{
-				return null;
-			}
-		}
 
-		public int MountType(string name)
-		{
-			ModMountData mountData = GetMount(name);
-			if (mountData == null)
-			{
-				return 0;
-			}
-			return mountData.mountData.type;
-		}
 
 		internal void SetupContent()
 		{
@@ -811,20 +740,7 @@ namespace Terraria.ModLoader
 			{
 				Main.goreTexture[gore.Type] = ModLoader.GetTexture(gore.texture);
 			}
-			foreach (ModMountData modMountData in mountDatas.Values)
-			{
-				Mount.MountData temp = modMountData.mountData;
-				temp.modMountData = modMountData;
-				if (temp == null)
-				{
-					ErrorLogger.Log("temp null!!");
-				}
-				MountLoader.SetupMount(modMountData.mountData);
-				ErrorLogger.Log("!!" + temp.type);
-				Mount.mounts[temp.type] = temp;
-				ErrorLogger.Log("!!!" + temp.type);
-				// Main.goreTexture[gore.Type] = ModLoader.GetTexture(gore.texture);
-			}
+			
 		}
 
 		internal void Unload() //I'm not sure why I have this
@@ -842,7 +758,6 @@ namespace Terraria.ModLoader
 			globalProjectiles.Clear();
 			npcs.Clear();
 			globalNPCs.Clear();
-			mountDatas.Clear();
 			gores.Clear();
 		}
 

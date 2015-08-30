@@ -33,7 +33,6 @@ namespace Terraria.ModLoader
 		private static readonly IList<string> loadedMods = new List<string>();
 		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
 		private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
-		private static readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
 
 		private static void LoadReferences()
 		{
@@ -190,8 +189,8 @@ namespace Terraria.ModLoader
 			NPCLoader.ResizeArrays();
 			ModGore.ResizeArrays();
 			NPCHeadLoader.ResizeAndFillArrays();
-			SoundLoader.ResizeAndFillArrays();
-			MountLoader.ResizeArrays();
+			
+			
 		}
 
 		internal static string[] FindMods()
@@ -293,15 +292,7 @@ namespace Terraria.ModLoader
 							textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
 						}
 					}
-					for (string soundPath = reader.ReadString(); soundPath != "endSounds"; soundPath = reader.ReadString())
-					{
-						byte[] soundData = reader.ReadBytes(reader.ReadInt32());
-						//      ErrorLogger.Log("sound data: "+ soundPath +" "+imageData.Length);
-						using (MemoryStream buffer = new MemoryStream(soundData))
-						{
-							sounds[soundPath] = SoundEffect.FromStream(buffer);
-						}
-					}
+					
 				}
 			}
 			Type[] classes = modCode.GetTypes();
@@ -394,10 +385,9 @@ namespace Terraria.ModLoader
 			NPCLoader.Unload();
 			ModGore.Unload();
 			NPCHeadLoader.Unload();
-			SoundLoader.Unload();
-			MountLoader.Unload();
+			
 			textures.Clear();
-			sounds.Clear();
+			
 			mods.Clear();
 			ResizeArrays(true);
 		}
@@ -745,20 +735,6 @@ namespace Terraria.ModLoader
 				throw new ArgumentException("Texture already exist: " + name);
 			}
 			textures[name] = texture;
-		}
-
-		public static SoundEffect GetSound(string name)
-		{
-			if (!SoundExists(name))
-			{
-				throw new ArgumentException("Missing sound " + name);
-			}
-			return sounds[name];
-		}
-
-		public static bool SoundExists(string name)
-		{
-			return sounds.ContainsKey(name);
 		}
 
 		private static void AddCraftGroups()

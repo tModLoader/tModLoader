@@ -13,7 +13,7 @@
  		public static Texture2D[] miniMapButtonTexture = new Texture2D[3];
  		public static Texture2D[] destTexture = new Texture2D[3];
  		public static Texture2D[] gemTexture = new Texture2D[6];
-+		public static Texture2D[] ModMountTextures = new Texture2D[15];
++		
  		public static Texture2D[] rudolphMountTexture = new Texture2D[3];
  		public static Texture2D bunnyMountTexture;
  		public static Texture2D pigronMountTexture;

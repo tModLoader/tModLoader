@@ -44,7 +44,6 @@ namespace Terraria.ModLoader
 		//change initial size of Terraria.Player.npcTypeNoAggro and NPCBannerBuff to NPCLoader.NPCCount()
 		//in Terraria.Main.MouseText replace 251 with NPCLoader.NPCCount()
 		//in Terraria.Main.DrawNPCs and Terraria.NPC.NPCLoot remove type too high check
-		//replace a lot of 540 immediates
 		internal static void ResizeArrays()
 		{
 			Array.Resize(ref Main.NPCLoaded, nextNPC);
