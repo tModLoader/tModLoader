@@ -731,13 +731,20 @@ namespace Terraria.ModLoader
 			return files.ContainsKey(name);
 		}
 
-		public static Texture2D GetTexture(string name)
-		{
-			if (!TextureExists(name))
-			{
-				throw new ArgumentException("Missing texture " + name);
-			}
-			if (name.IndexOf("Terraria/") == 0)
+        public static Texture2D GetTexture(string name, bool ignoreException = false)
+        {
+            if (!TextureExists(name))
+            {
+                if (!ignoreException)
+                {
+                    throw new ArgumentException("Missing texture " + name);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            if (name.IndexOf("Terraria/") == 0)
 			{
 				name = name.Substring(9);
 				return Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + name);

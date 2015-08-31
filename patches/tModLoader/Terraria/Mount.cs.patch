@@ -34,4 +34,13 @@
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
  		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
+@@ -2901,7 +2908,7 @@
+ 
+ 		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
+ 		{
+-			if (this._type == m || m <= -1 || m >= 14)
++			if (this._type == m || m <= -1 || m >= mounts.Length)
+ 			{
+ 				return;
+ 			}
 
