@@ -530,6 +530,10 @@ namespace Terraria.ModLoader
 					string[] resources = Directory.GetFiles(modToBuild, "*", SearchOption.AllDirectories);
 					foreach (string resource in resources)
 					{
+						if (resource.Substring(modToBuild.Length + 1) == "build.txt")
+						{
+							continue;
+						}
 						string resourcePath = resource.Replace(ModSourcePath + Path.DirectorySeparatorChar, null);
 						resourcePath = resourcePath.Replace(Path.DirectorySeparatorChar, '/');
 						buffer = File.ReadAllBytes(resource);

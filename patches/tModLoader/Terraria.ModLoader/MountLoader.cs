@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 {
 	public static class MountLoader
 	{
-		private static int nextMount = 14;
+		private static int nextMount = MountID.Count;
 		internal static readonly IDictionary<int, ModMountData> mountDatas = new Dictionary<int, ModMountData>();
 
 		public static ModMountData GetMount(int type)

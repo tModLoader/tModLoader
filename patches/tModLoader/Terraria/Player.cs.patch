@@ -142,7 +142,7 @@
  							this.buffTime[k] = 18000;
  						}
  					}
-+					else if (mount.Type >= ID.MountID.Count)
++					else if (mount.Type >= MountID.Count)
 +					{
 +						// TODO: Fix this once Buff support in.
 +						this.mount.SetMount(mount.Type, this, false);

@@ -6,7 +6,6 @@ namespace Terraria.ModLoader
 {
 	public class ModMountData
 	{
-		
 		internal string texture;
 
 		public Mount.MountData mountData
@@ -38,7 +37,7 @@ namespace Terraria.ModLoader
 			mountData = new Mount.MountData();
 		}
 
-		public virtual bool Autoload(ref string name, ref string textures, IDictionary<MountTextureType, string> extraTextures)
+		public virtual bool Autoload(ref string name, ref string texture, IDictionary<MountTextureType, string> extraTextures)
 		{
 			return mod.Properties.Autoload;
 		}
@@ -58,8 +57,6 @@ namespace Terraria.ModLoader
 
 		public virtual void UpdateEffects(Player player)
 		{
-            
 		}
-        
 	}
 }
