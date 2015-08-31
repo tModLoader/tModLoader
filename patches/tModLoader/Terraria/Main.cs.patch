@@ -729,7 +729,15 @@
  						{
  							Main.nextNPC[num16] = false;
  						}
-@@ -52691,6 +52802,10 @@
+@@ -52573,6 +52684,7 @@
+ 							{
+ 								WorldGen.spawnNPC = 142;
+ 							}
++							NPCLoader.CanTownNPCSpawn(num40, num42);
+ 						}
+ 					}
+ 				}
+@@ -52691,6 +52803,10 @@
  								}
  								if (num2 > 0f || (type >= 30 && type <= 35) || type == 39)
  								{

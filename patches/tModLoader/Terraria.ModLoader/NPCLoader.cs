@@ -715,5 +715,30 @@ namespace Terraria.ModLoader
 			}
 			return npc;
 		}
+		//at end of Terraria.Main.UpdateTime inside blocks add NPCLoader.CanTownNPCSpawn(num40, num42);
+		internal static void CanTownNPCSpawn(int numTownNPCs, int money)
+		{
+			foreach (ModNPC npc in npcs.Values)
+			{
+				if (npc.npc.townNPC && !NPC.AnyNPCs(npc.npc.type) && npc.CanTownNPCSpawn(numTownNPCs, money))
+				{
+					Main.nextNPC[npc.npc.type] = true;
+					if (WorldGen.spawnNPC == 0)
+					{
+						WorldGen.spawnNPC = npc.npc.type;
+					}
+				}
+			}
+		}
+		//at beginning of Terraria.WorldGen.CheckConditions add
+		//  if(!NPCLoader.CheckConditions(type)) { return false; }
+		internal static bool CheckConditions(int type)
+		{
+			if (type < NPCID.Count)
+			{
+				return true;
+			}
+			return GetNPC(type).CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2);
+		}
 	}
 }

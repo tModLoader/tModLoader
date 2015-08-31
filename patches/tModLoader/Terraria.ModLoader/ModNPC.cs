@@ -205,5 +205,15 @@ namespace Terraria.ModLoader
 		{
 			return NPC.NewNPC(tileX * 16 + 8, tileY * 16, npc.type);
 		}
+
+		public virtual bool CanTownNPCSpawn(int numTownNPCs, int money)
+		{
+			return false;
+		}
+
+		public virtual bool CheckConditions(int left, int right, int top, int bottom)
+		{
+			return true;
+		}
 	}
 }
