@@ -138,21 +138,19 @@
  			if (Main.rand.Next(150) == 0)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1810, 1, false, 0, false, false);
-@@ -5810,7 +5843,13 @@
+@@ -5810,6 +5843,12 @@
  							this.buffTime[k] = 18000;
  						}
  					}
--					else if (this.buffType[k] == 90)
-+                    else if (mount.Type >= ID.MountID.Count)
-+                    {
-+                        // TODO: Fix this once Buff support in.
-+                        this.mount.SetMount(mount.Type, this, false);
-+                        // this.buffTime[mount.BuffType] = 10;
-+                    }
-+                    else if (this.buffType[k] == 90)
++					else if (mount.Type >= ID.MountID.Count)
++					{
++						// TODO: Fix this once Buff support in.
++						this.mount.SetMount(mount.Type, this, false);
++						// this.buffTime[mount.BuffType] = 10;
++					}
+ 					else if (this.buffType[k] == 90)
  					{
  						this.mount.SetMount(0, this, false);
- 						this.buffTime[k] = 10;
 @@ -6818,6 +6857,7 @@
  				{
  					this.accDreamCatcher = true;

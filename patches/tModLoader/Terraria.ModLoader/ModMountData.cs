@@ -1,9 +1,6 @@
 using System;
-using System.IO;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace Terraria.ModLoader
 {
@@ -41,20 +38,18 @@ namespace Terraria.ModLoader
 			mountData = new Mount.MountData();
 		}
 
-		public virtual bool Autoload(ref string name, ref string textures)
+		public virtual bool Autoload(ref string name, ref string textures, IDictionary<MountTextureType, string> extraTextures)
 		{
 			return mod.Properties.Autoload;
 		}
 
 		internal void SetupMount(Mount.MountData mountData)
 		{
-			
 			ModMountData newMountData = (ModMountData)Activator.CreateInstance(GetType());
 			newMountData.mountData = mountData;
 			mountData.modMountData = newMountData;
 			newMountData.mod = mod;
 			newMountData.SetDefaults();
-			
 		}
 
 		public virtual void SetDefaults()

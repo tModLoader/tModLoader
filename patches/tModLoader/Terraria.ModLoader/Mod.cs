@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -664,16 +665,22 @@ namespace Terraria.ModLoader
 			mount.mod = this;
 			string name = type.Name;
 			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (mount.Autoload(ref name, ref texture))
+			IDictionary<MountTextureType, string> extraTextures = new Dictionary<MountTextureType, string>();
+			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType)))
 			{
-				AddMount(name, mount, texture);
+				extraTextures[textureType] = texture + "_" + textureType.ToString();
+			}
+			if (mount.Autoload(ref name, ref texture, extraTextures))
+			{
+				AddMount(name, mount, texture, extraTextures);
 			}
 		}
 
-		public void AddMount(string name, ModMountData mount, string texture)
+		public void AddMount(string name, ModMountData mount, string texture,
+			IDictionary<MountTextureType, string> extraTextures = null)
 		{
 			int id;
-			if (Mount.mounts == null || Mount.mounts.Length == 14)
+			if (Mount.mounts == null || Mount.mounts.Length == MountID.Count)
 			{
 				Mount.Initialize();
 			}
@@ -684,16 +691,44 @@ namespace Terraria.ModLoader
 			MountLoader.mountDatas[id] = mount;
 			mount.texture = texture;
 			mount.mod = this;
-            mount.mountData.backTexture = ModLoader.GetTexture(texture + "_back", true);
-            mount.mountData.backTextureGlow = ModLoader.GetTexture(texture + "_backGlow", true);
-            mount.mountData.backTextureExtra = ModLoader.GetTexture(texture + "_backExtra", true);
-            mount.mountData.backTextureExtraGlow = ModLoader.GetTexture(texture + "_backExtraGlow", true);
-            mount.mountData.frontTexture = ModLoader.GetTexture(texture + "_front", true);
-            mount.mountData.frontTextureGlow = ModLoader.GetTexture(texture + "_frontGlow", true);
-            mount.mountData.frontTextureExtra = ModLoader.GetTexture(texture + "_frontExtra", true);
-            mount.mountData.frontTextureExtraGlow = ModLoader.GetTexture(texture + "_frontExtraGlow", true);
-
-        }
+			if (extraTextures != null)
+			{
+				foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType)))
+				{
+					if (extraTextures.ContainsKey(textureType) && ModLoader.TextureExists(extraTextures[textureType]))
+					{
+						Texture2D extraTexture = ModLoader.GetTexture(extraTextures[textureType]);
+						switch (textureType)
+						{
+							case MountTextureType.Back:
+								mount.mountData.backTexture = extraTexture;
+								break;
+							case MountTextureType.BackGlow:
+								mount.mountData.backTextureGlow = extraTexture;
+								break;
+							case MountTextureType.BackExtra:
+								mount.mountData.backTextureExtra = extraTexture;
+								break;
+							case MountTextureType.BackExtraGlow:
+								mount.mountData.backTextureExtraGlow = extraTexture;
+								break;
+							case MountTextureType.Front:
+								mount.mountData.frontTexture = extraTexture;
+								break;
+							case MountTextureType.FrontGlow:
+								mount.mountData.frontTextureGlow = extraTexture;
+								break;
+							case MountTextureType.FrontExtra:
+								mount.mountData.frontTextureExtra = extraTexture;
+								break;
+							case MountTextureType.FrontExtraGlow:
+								mount.mountData.frontTextureExtraGlow = extraTexture;
+								break;
+						}
+					}
+				}
+			}
+		}
 
 		public ModMountData GetMount(string name)
 		{
