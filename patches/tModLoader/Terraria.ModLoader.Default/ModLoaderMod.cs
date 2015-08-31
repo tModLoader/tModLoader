@@ -23,8 +23,8 @@ namespace Terraria.ModLoader.Default
 		public override void Load()
 		{
 			LoadTextures();
-			ModLoader.AddTexture("ModLoader/MysteryItem", mysteryItemTexture);
-			AddItem("MysteryItem", new MysteryItem(), "ModLoader/MysteryItem");
+			AddTexture("MysteryItem", mysteryItemTexture);
+			AddItem("MysteryItem", new MysteryItem(), FileName("MysteryItem"));
 		}
 
 		private static void LoadTextures()

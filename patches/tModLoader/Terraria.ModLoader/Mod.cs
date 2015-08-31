@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.DataStructures;
 
@@ -94,56 +96,74 @@ namespace Terraria.ModLoader
 				return;
 			}
 			Type[] classes = code.GetTypes();
+			IList<Type> modGores = new List<Type>();
+			IList<Type> modSounds = new List<Type>();
 			foreach (Type type in classes)
 			{
 				if (type.IsSubclassOf(typeof(ModItem)))
 				{
 					AutoloadItem(type);
 				}
-				if (type.IsSubclassOf(typeof(GlobalItem)))
+				else if (type.IsSubclassOf(typeof(GlobalItem)))
 				{
 					AutoloadGlobalItem(type);
 				}
-				if (type.IsSubclassOf(typeof(ModDust)))
+				else if (type.IsSubclassOf(typeof(ModDust)))
 				{
 					AutoloadDust(type);
 				}
-				if (type.IsSubclassOf(typeof(ModTile)))
+				else if (type.IsSubclassOf(typeof(ModTile)))
 				{
 					AutoloadTile(type);
 				}
-				if (type.IsSubclassOf(typeof(GlobalTile)))
+				else if (type.IsSubclassOf(typeof(GlobalTile)))
 				{
 					AutoloadGlobalTile(type);
 				}
-				if (type.IsSubclassOf(typeof(ModWall)))
+				else if (type.IsSubclassOf(typeof(ModWall)))
 				{
 					AutoloadWall(type);
 				}
-				if (type.IsSubclassOf(typeof(GlobalWall)))
+				else if (type.IsSubclassOf(typeof(GlobalWall)))
 				{
 					AutoloadGlobalWall(type);
 				}
-				if (type.IsSubclassOf(typeof(ModProjectile)))
+				else if (type.IsSubclassOf(typeof(ModProjectile)))
 				{
 					AutoloadProjectile(type);
 				}
-				if (type.IsSubclassOf(typeof(GlobalProjectile)))
+				else if (type.IsSubclassOf(typeof(GlobalProjectile)))
 				{
 					AutoloadGlobalProjectile(type);
 				}
-				if (type.IsSubclassOf(typeof(ModNPC)))
+				else if (type.IsSubclassOf(typeof(ModNPC)))
 				{
 					AutoloadNPC(type);
 				}
-				if (type.IsSubclassOf(typeof(GlobalNPC)))
+				else if (type.IsSubclassOf(typeof(GlobalNPC)))
 				{
 					AutoloadGlobalNPC(type);
 				}
-				if (type.IsSubclassOf(typeof(ModMountData)))
+				else if (type.IsSubclassOf(typeof(ModMountData)))
 				{
 					AutoloadMountData(type);
 				}
+				else if (type.IsSubclassOf(typeof(ModGore)))
+				{
+					modGores.Add(type);
+				}
+				else if (type.IsSubclassOf(typeof(ModSound)))
+				{
+					modSounds.Add(type);
+				}
+			}
+			if (Properties.AutoloadGores)
+			{
+				AutoloadGores(modGores);
+			}
+			if (Properties.AutoloadSounds)
+			{
+				AutoloadSounds(modSounds);
 			}
 		}
 
@@ -690,6 +710,80 @@ namespace Terraria.ModLoader
 			return mountData.Type;
 		}
 
+		public int GetGoreSlot(string name)
+		{
+			return ModGore.GetGoreSlot(FileName(name));
+		}
+
+		private void AutoloadGores(IList<Type> modGores)
+		{
+			IList<string> textures = ModLoader.GetTextures(this);
+			string goreDir = Name + "/Gores/";
+			IDictionary<string, Type> modGoreNames = new Dictionary<string, Type>();
+			foreach (Type type in modGores)
+			{
+				string modGoreName = (type.Namespace + "." + type.Name).Replace('.', '/');
+				modGoreNames[modGoreName] = type;
+			}
+			foreach (string texture in textures)
+			{
+				if (texture.IndexOf(goreDir) == 0)
+				{
+					string className = texture.Replace('/', '.');
+					ModGore modGore = null;
+					if (modGoreNames.ContainsKey(className))
+					{
+						modGore = (ModGore)Activator.CreateInstance(modGoreNames[className]);
+					}
+					AddGore(texture, modGore);
+				}
+			}
+		}
+
+		public int GetSoundSlot(SoundType type, string name)
+		{
+			return SoundLoader.GetSoundSlot(type, FileName(name));
+		}
+
+		private void AutoloadSounds(IList<Type> modSounds)
+		{
+			IList<string> sounds = ModLoader.GetSounds(this);
+			string soundDir = Name + "/Sounds/";
+			IDictionary<string, Type> modSoundNames = new Dictionary<string, Type>();
+			foreach (Type type in modSounds)
+			{
+				string modSoundName = (type.Namespace + "." + type.Name).Replace('.', '/');
+				modSoundNames[modSoundName] = type;
+			}
+			foreach (string sound in sounds)
+			{
+				if (sound.IndexOf(soundDir) == 0)
+				{
+					string substring = sound.Substring(soundDir.Length);
+					SoundType soundType = SoundType.Custom;
+					if (substring.IndexOf("Item/") == 0)
+					{
+						soundType = SoundType.Item;
+					}
+					else if (substring.IndexOf("NPCHit/") == 0)
+					{
+						soundType = SoundType.NPCHit;
+					}
+					else if (substring.IndexOf("NPCKilled/") == 0)
+					{
+						soundType = SoundType.NPCKilled;
+					}
+					string className = sound.Replace('/', '.');
+					ModSound modSound = null;
+					if (modSoundNames.ContainsKey(className))
+					{
+						modSound = (ModSound)Activator.CreateInstance(modSoundNames[className]);
+					}
+					AddSound(soundType, sound, modSound);
+				}
+			}
+		}
+
 		internal void SetupContent()
 		{
 			foreach (ModItem item in items.Values)
@@ -761,8 +855,6 @@ namespace Terraria.ModLoader
 				temp.modMountData = modMountData;
 				MountLoader.SetupMount(modMountData.mountData);
 				Mount.mounts[modMountData.Type] = temp;
-                
-                
 			}
 		}
 
@@ -781,6 +873,46 @@ namespace Terraria.ModLoader
 			globalProjectiles.Clear();
 			npcs.Clear();
 			globalNPCs.Clear();
+		}
+
+		public string FileName(string fileName)
+		{
+			return Name + "/" + fileName;
+		}
+
+		public byte[] GetFileBytes(string name)
+		{
+			return ModLoader.GetFileBytes(FileName(name));
+		}
+
+		public bool FileExists(string name)
+		{
+			return ModLoader.FileExists(FileName(name));
+		}
+
+		public Texture2D GetTexture(string name)
+		{
+			return ModLoader.GetTexture(FileName(name));
+		}
+
+		public bool TextureExists(string name)
+		{
+			return ModLoader.TextureExists(FileName(name));
+		}
+
+		public void AddTexture(string name, Texture2D texture)
+		{
+			ModLoader.AddTexture(FileName(name), texture);
+		}
+
+		public SoundEffect GetSound(string name)
+		{
+			return ModLoader.GetSound(FileName(name));
+		}
+
+		public bool SoundExists(string name)
+		{
+			return ModLoader.SoundExists(FileName(name));
 		}
 
 		public virtual void ChatInput(string text)

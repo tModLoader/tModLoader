@@ -32,6 +32,7 @@ namespace Terraria.ModLoader
 		internal static bool buildAll = false;
 		private static readonly IList<string> loadedMods = new List<string>();
 		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
+		private static readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 		private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		private static readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
 
@@ -279,27 +280,35 @@ namespace Terraria.ModLoader
 		{
 			AddAssemblyResolver();
 			Assembly modCode;
+			string rootDirectory;
 			using (FileStream fileStream = File.OpenRead(modFile))
 			{
 				using (BinaryReader reader = new BinaryReader(fileStream))
 				{
 					fileStream.Seek(reader.ReadInt32(), SeekOrigin.Current);
 					modCode = Assembly.Load(reader.ReadBytes(reader.ReadInt32()));
-					for (string texturePath = reader.ReadString(); texturePath != "endImages"; texturePath = reader.ReadString())
+					rootDirectory = reader.ReadString();
+					for (string path = reader.ReadString(); path != "end"; path = reader.ReadString())
 					{
-						byte[] imageData = reader.ReadBytes(reader.ReadInt32());
-						using (MemoryStream buffer = new MemoryStream(imageData))
+						byte[] data = reader.ReadBytes(reader.ReadInt32());
+						files[path] = data;
+						string extension = Path.GetExtension(path);
+						switch (extension)
 						{
-							textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
-						}
-					}
-					for (string soundPath = reader.ReadString(); soundPath != "endSounds"; soundPath = reader.ReadString())
-					{
-						byte[] soundData = reader.ReadBytes(reader.ReadInt32());
-						//      ErrorLogger.Log("sound data: "+ soundPath +" "+imageData.Length);
-						using (MemoryStream buffer = new MemoryStream(soundData))
-						{
-							sounds[soundPath] = SoundEffect.FromStream(buffer);
+							case ".png":
+								string texturePath = Path.ChangeExtension(path, null);
+								using (MemoryStream buffer = new MemoryStream(data))
+								{
+									textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+								}
+								break;
+							case ".wav":
+								string soundPath = Path.ChangeExtension(path, null);
+								using (MemoryStream buffer = new MemoryStream(data))
+								{
+									sounds[soundPath] = SoundEffect.FromStream(buffer);
+								}
+								break;
 						}
 					}
 				}
@@ -316,6 +325,10 @@ namespace Terraria.ModLoader
 					if (mods.ContainsKey(mod.Name))
 					{
 						throw new Exception("Two mods share the internal name " + mod.Name);
+					}
+					if (rootDirectory != mod.Name)
+					{
+						throw new Exception("Mod name " + mod.Name + " does not match source directory name " + rootDirectory);
 					}
 					mods[mod.Name] = mod;
 				}
@@ -513,28 +526,18 @@ namespace Terraria.ModLoader
 					writer.Write(propertiesData);
 					writer.Write(buffer.Length);
 					writer.Write(buffer);
-					string[] images = Directory.GetFiles(modToBuild, "*.png", SearchOption.AllDirectories);
-					foreach (string image in images)
+					writer.Write(Path.GetFileName(modToBuild));
+					string[] resources = Directory.GetFiles(modToBuild, "*", SearchOption.AllDirectories);
+					foreach (string resource in resources)
 					{
-						string texturePath = image.Replace(ModSourcePath + Path.DirectorySeparatorChar, null);
-						texturePath = Path.ChangeExtension(texturePath.Replace(Path.DirectorySeparatorChar, '/'), null);
-						buffer = File.ReadAllBytes(image);
-						writer.Write(texturePath);
+						string resourcePath = resource.Replace(ModSourcePath + Path.DirectorySeparatorChar, null);
+						resourcePath = resourcePath.Replace(Path.DirectorySeparatorChar, '/');
+						buffer = File.ReadAllBytes(resource);
+						writer.Write(resourcePath);
 						writer.Write(buffer.Length);
 						writer.Write(buffer);
 					}
-					writer.Write("endImages");
-					string[] audios = Directory.GetFiles(modToBuild, "*.wav", SearchOption.AllDirectories);
-					foreach (string audio in audios)
-					{
-						string audioPath = audio.Replace(ModSourcePath + Path.DirectorySeparatorChar, null);
-						audioPath = Path.ChangeExtension(audioPath.Replace(Path.DirectorySeparatorChar, '/'), null);
-						buffer = File.ReadAllBytes(audio);
-						writer.Write(audioPath);
-						writer.Write(buffer.Length);
-						writer.Write(buffer);
-					}
-					writer.Write("endSounds");
+					writer.Write("end");
 				}
 			}
 			EnableMod(file);
@@ -714,6 +717,20 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		public static byte[] GetFileBytes(string name)
+		{
+			if (!FileExists(name))
+			{
+				throw new ArgumentException("Missing file " + name);
+			}
+			return files[name];
+		}
+
+		public static bool FileExists(string name)
+		{
+			return files.ContainsKey(name);
+		}
+
 		public static Texture2D GetTexture(string name)
 		{
 			if (!TextureExists(name))
@@ -747,6 +764,19 @@ namespace Terraria.ModLoader
 			textures[name] = texture;
 		}
 
+		internal static IList<string> GetTextures(Mod mod)
+		{
+			IList<string> modTextures = new List<string>();
+			foreach (string texture in textures.Keys)
+			{
+				if (texture.IndexOf(mod.Name + "/") == 0)
+				{
+					modTextures.Add(texture);
+				}
+			}
+			return modTextures;
+		}
+
 		public static SoundEffect GetSound(string name)
 		{
 			if (!SoundExists(name))
@@ -759,6 +789,19 @@ namespace Terraria.ModLoader
 		public static bool SoundExists(string name)
 		{
 			return sounds.ContainsKey(name);
+		}
+
+		internal static IList<string> GetSounds(Mod mod)
+		{
+			IList<string> modSounds = new List<string>();
+			foreach (string sound in sounds.Keys)
+			{
+				if (sound.IndexOf(mod.Name + "/") == 0)
+				{
+					modSounds.Add(sound);
+				}
+			}
+			return modSounds;
 		}
 
 		private static void AddCraftGroups()
