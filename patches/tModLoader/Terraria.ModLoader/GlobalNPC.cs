@@ -162,5 +162,9 @@ namespace Terraria.ModLoader
 		public virtual void SpawnNPC(int npc, int tileX, int tileY)
 		{
 		}
+
+		public virtual void GetChat(NPC npc, ref string chat)
+		{
+		}
 	}
 }

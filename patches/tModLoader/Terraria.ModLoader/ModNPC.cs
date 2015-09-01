@@ -215,5 +215,15 @@ namespace Terraria.ModLoader
 		{
 			return true;
 		}
+
+		public virtual string TownNPCName()
+		{
+			return "No-Name";
+		}
+
+		public virtual string GetChat()
+		{
+			return "My modder forgot to give me a chat message.";
+		}
 	}
 }

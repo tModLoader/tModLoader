@@ -740,5 +740,26 @@ namespace Terraria.ModLoader
 			}
 			return GetNPC(type).CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2);
 		}
+		//in Terraria.NPC.getNewNPCName replace final return with return NPCLoader.TownNPCName(npcType);
+		internal static string TownNPCName(int type)
+		{
+			if (type < NPCID.Count)
+			{
+				return "";
+			}
+			return GetNPC(type).TownNPCName();
+		}
+		//in Terraria.NPC.GetChat before returning result add NPCLoader.GetChat(this, ref result);
+		internal static void GetChat(NPC npc, ref string chat)
+		{
+			if (IsModNPC(npc))
+			{
+				chat = npc.modNPC.GetChat();
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.GetChat(npc, ref chat);
+			}
+		}
 	}
 }

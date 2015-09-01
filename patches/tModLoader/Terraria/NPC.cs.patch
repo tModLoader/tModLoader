@@ -19,6 +19,15 @@
  		public const int MaxMoonLordCountdown = 3600;
  		public const int maxBuffs = 5;
  		public const int breathMax = 200;
+@@ -1524,7 +1531,7 @@
+ 						return "Agnew";
+ 				}
+ 			}
+-			return "";
++			return NPCLoader.TownNPCName(npcType);
+ 		}
+ 
+ 		public static void setNPCName(string newName, int npcType, bool resetExtras = false)
 @@ -1684,7 +1691,7 @@
  			{
  				return 23;
@@ -390,4 +399,12 @@
  			float num = (float)(255 - this.alpha) / 255f;
  			int num2 = (int)((float)newColor.R * num);
  			int num3 = (int)((float)newColor.G * num);
+@@ -72927,6 +73018,7 @@
+ 					result = Lang.dialog(Main.rand.Next(364, 370), false);
+ 				}
+ 			}
++			NPCLoader.GetChat(this, ref result);
+ 			return result;
+ 		}
+ 
 
