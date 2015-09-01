@@ -1,0 +1,158 @@
+using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace ExampleMod.NPCs {
+//ported from my tAPI mod because I'm lazy
+public class Sarcophagus : Hover
+{
+    public Sarcophagus()
+    {
+        speedY = 1f;
+        accelerationY = 0.1f;
+    }
+
+    public override bool Autoload(ref string name, ref string texture)
+    {
+        return mod.Properties.Autoload;
+    }
+
+    public override void SetDefaults()
+    {
+        npc.name = "Sarcophagus";
+        npc.lifeMax = 1100;
+        npc.damage = 140;
+        npc.defense = 100;
+        npc.knockBackResist = 0.3f;
+        npc.width = 26;
+        npc.height = 56;
+        npc.aiStyle = -1;
+        npc.noGravity = true;
+        npc.soundHit = 1;
+        npc.soundKilled = 6;
+        npc.value = Item.buyPrice(0, 0, 15, 0);
+        npc.buffImmune[BuffID.Poisoned] = true;
+        npc.buffImmune[BuffID.Venom] = true;
+        banner = npc.type;
+        bannerItem = mod.ItemType("SarcophagusBanner");
+    }
+
+    public override void CustomBehavior(ref float ai)
+    {
+        Player player = Main.player[npc.target];
+        ai += 1f;
+        if(Math.Abs(npc.Center.X - player.Center.X) < 16f * 30f && Math.Abs(npc.Center.Y - player.Center.Y) < 16f * 20f)
+        {
+            if(!player.buffImmune[BuffID.Cursed] && ai >= 120f)
+            {
+                ai = -60f;
+                npc.netUpdate = true;
+            }
+            else if(ai >= 180f)
+            {
+                ai = -120f;
+                if(Main.netMode != 1)
+                {
+                    int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("ShadowArm"), npc.damage / 2, 0f, Main.myPlayer, player.Center.X, player.Center.Y);
+                }
+                npc.netUpdate = true;
+            }
+        }
+        else if(ai > 300f)
+        {
+            ai = 300f;
+        }
+        if(ai < 0f)
+        {
+            if(Math.Abs(npc.velocity.X) >= 0.01f)
+            {
+                npc.velocity *= 0.95f;
+            }
+            else
+            {
+                npc.velocity.X = 0.01f * npc.direction;
+            }
+            if(ai == -60f || ai == -120f)
+            {
+                Main.PlaySound(4, (int)npc.position.X, (int)npc.position.Y, 6);
+            }
+            if(ai == -1f)
+            {
+                for(int k = 0; k < 255; k++)
+                {
+                    Player target = Main.player[k];
+                    if(Math.Abs(npc.Center.X - target.Center.X) < 16f * 30f && Math.Abs(npc.Center.Y - target.Center.Y) < 16f * 20f)
+                    {
+                        target.AddBuff(BuffID.Cursed, 240, true);
+                        target.AddBuff(BuffID.Slow, 240, true);
+                        target.AddBuff(BuffID.Darkness, 240, true);
+                        if(target.HasBuff(BuffID.Cursed) >= 0 || target.HasBuff(BuffID.Slow) >= 0 || target.HasBuff(BuffID.Darkness) >= 0)
+                        {
+                            //target.GetSubClass<BluemagicPlayer>().lockTime = 60;
+                        }
+                    }
+                }
+            }
+            if(ai == -61f)
+            {
+                ai = -1f;
+            }
+        }
+
+        for(int k = 0; k < 2; k++)
+        {
+            int dust = ModDust.NewDust(npc.position - new Vector2(8f, 8f), npc.width + 16, npc.height + 16, mod, "Smoke", 0f, 0f, 0, Color.Black);
+            Main.dust[dust].velocity += npc.velocity * 0.25f;
+        }
+    }
+
+    public override bool ShouldMove(float ai)
+    {
+        return ai >= 0;
+    }
+
+    public override void FindFrame(int frameHeight)
+    {
+        npc.frameCounter += 1;
+        if(npc.frameCounter >= 30)
+        {
+            npc.rotation = Main.rand.Next(-2, 3) * (float)Math.PI / 32f;
+            npc.frameCounter = 0;
+        }
+        npc.spriteDirection = npc.direction;
+    }
+
+    public override void NPCLoot()
+    {
+        if(Main.rand.Next(50) == 0)
+        {
+            Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Nazar);
+        }
+    }
+
+    public override void OnHitPlayer(Player player, int damage, bool crit)
+    {
+        if(Main.rand.Next(3) == 0)
+        {
+            player.AddBuff(BuffID.Cursed, 240, true);
+        }
+    }
+
+    public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
+    {
+        if(npc.ai[3] < 0f && npc.ai[3] >= -60f)
+        {
+            float angle = npc.ai[3] / 30f * (float)Math.PI;
+            spriteBatch.Draw(mod.GetTexture("NPCs/Seal"), npc.Center - Main.screenPosition + new Vector2(0f, 10f), null, Lighting.GetColor((int)(npc.Center.X / 16f), (int)(npc.Center.Y / 16f)) * 0.9f, angle, new Vector2(16f, 16f), 1f, SpriteEffects.None, 0f);
+        }
+    }
+
+    public override float CanSpawn(NPCSpawnInfo spawnInfo)
+    {
+        Tile tile = Main.tile[spawnInfo.spawnTileX, spawnInfo.spawnTileY];
+        return ExampleMod.NoZoneNormalSpawn(spawnInfo) && (tile.type == 53 || tile.type == 112 || tile.type == 116 || tile.type == 234 || spawnInfo.desertCave) && !spawnInfo.playerSafe && NPC.downedGolemBoss ? 0.5f : 0f;
+    }
+}}
