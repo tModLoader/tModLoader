@@ -225,5 +225,17 @@ namespace Terraria.ModLoader
 		{
 			return "My modder forgot to give me a chat message.";
 		}
+
+		public virtual void SetChatButtons(ref string button, ref string button2)
+		{
+		}
+
+		public virtual void OnChatButtonClicked(bool firstButton, ref bool shop)
+		{
+		}
+
+		public virtual void SetupShop(Chest shop, ref int nextSlot)
+		{
+		}
 	}
 }

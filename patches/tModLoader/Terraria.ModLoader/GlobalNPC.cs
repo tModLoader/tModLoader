@@ -166,5 +166,13 @@ namespace Terraria.ModLoader
 		public virtual void GetChat(NPC npc, ref string chat)
 		{
 		}
+
+		public virtual void SetupShop(int type, Chest shop, ref int nextSlot)
+		{
+		}
+
+		public virtual void SetupTravelShop(int[] shop, ref int nextSlot)
+		{
+		}
 	}
 }

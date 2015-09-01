@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -14,9 +15,34 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<int, ModNPC> npcs = new Dictionary<int, ModNPC>();
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
 		private static int vanillaSkeletonCount = NPCID.Sets.Skeletons.Count;
+		private static readonly int[] shopToNPC = new int[Main.numShops - 1];
 		//in Terraria.Item.NewItem after setting Main.item[400] add
 		//  if(NPCLoader.blockLoot.Contains(Type)) { return num; }
 		public static readonly IList<int> blockLoot = new List<int>();
+
+		static NPCLoader()
+		{
+			shopToNPC[1] = NPCID.Merchant;
+			shopToNPC[2] = NPCID.ArmsDealer;
+			shopToNPC[3] = NPCID.Dryad;
+			shopToNPC[4] = NPCID.Demolitionist;
+			shopToNPC[5] = NPCID.Clothier;
+			shopToNPC[6] = NPCID.GoblinTinkerer;
+			shopToNPC[7] = NPCID.Wizard;
+			shopToNPC[8] = NPCID.Mechanic;
+			shopToNPC[9] = NPCID.SantaClaus;
+			shopToNPC[10] = NPCID.Truffle;
+			shopToNPC[11] = NPCID.Steampunker;
+			shopToNPC[12] = NPCID.DyeTrader;
+			shopToNPC[13] = NPCID.PartyGirl;
+			shopToNPC[14] = NPCID.Cyborg;
+			shopToNPC[15] = NPCID.Painter;
+			shopToNPC[16] = NPCID.WitchDoctor;
+			shopToNPC[17] = NPCID.Pirate;
+			shopToNPC[18] = NPCID.Stylist;
+			shopToNPC[19] = NPCID.TravellingMerchant;
+			shopToNPC[20] = NPCID.SkeletonMerchant;
+		}
 
 		internal static int ReserveNPCID()
 		{
@@ -45,6 +71,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.MouseText replace 251 with NPCLoader.NPCCount()
 		//in Terraria.Main.DrawNPCs and Terraria.NPC.NPCLoot remove type too high check
 		//replace a lot of 540 immediates
+		//in Terraria.GameContent.UI.EmoteBubble make CountNPCs internal
 		internal static void ResizeArrays()
 		{
 			Array.Resize(ref Main.NPCLoaded, nextNPC);
@@ -55,6 +82,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.npcName, nextNPC);
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
+			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
 			Array.Resize(ref NPCID.Sets.NeedsExpertScaling, nextNPC);
 			Array.Resize(ref NPCID.Sets.ProjectileNPC, nextNPC);
 			Array.Resize(ref NPCID.Sets.SavesAndLoads, nextNPC);
@@ -759,6 +787,61 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
 				globalNPC.GetChat(npc, ref chat);
+			}
+		}
+		//in Terraria.Main.GUIChatDrawInner after if/else chain setting text and text2 call
+		//  NPCLoader.SetChatButtons(ref text, ref text2);
+		internal static void SetChatButtons(ref string button, ref string button2)
+		{
+			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.SetChatButtons(ref button, ref button2);
+			}
+		}
+		//add 1 to Terraria.Main.numShops
+		//in Terraria.Main.GUIChatDrawInner after type checks for first button click call
+		//  NPCLoader.OnChatButtonClicked(true);
+		//  after type checks for second button click call NPCLoader.OnChatButtonClicked(false);
+		internal static void OnChatButtonClicked(bool firstButton)
+		{
+			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
+			if (IsModNPC(npc))
+			{
+				bool shop = false;
+				npc.modNPC.OnChatButtonClicked(firstButton, ref shop);
+				Main.PlaySound(12, -1, -1, 1);
+				if (shop)
+				{
+					Main.playerInventory = true;
+					Main.npcChatText = "";
+					Main.npcShop = Main.numShops - 1;
+					Main.instance.shop[Main.npcShop].SetupShop(npc.type);
+				}
+			}
+		}
+		//in Terraria.Chest.SetupShop before discount call NPCLoader.SetupShop(type, this, ref num);
+		internal static void SetupShop(int type, Chest shop, ref int nextSlot)
+		{
+			if (type < shopToNPC.Length)
+			{
+				type = shopToNPC[type];
+			}
+			else if (type >= NPCID.Count)
+			{
+				GetNPC(type).SetupShop(shop, ref nextSlot);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.SetupShop(type, shop, ref nextSlot);
+			}
+		}
+		//at end of Terraria.Chest.SetupTravelShop call NPCLoader.SetupTravelShop(Main.travelShop, ref num2);
+		internal static void SetupTravelShop(int[] shop, ref int nextSlot)
+		{
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.SetupTravelShop(shop, ref nextSlot);
 			}
 		}
 	}

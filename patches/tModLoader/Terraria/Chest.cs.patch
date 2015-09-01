@@ -1,0 +1,27 @@
+--- src/Terraria\Terraria\Chest.cs
++++ src/tModLoader\Terraria\Chest.cs
+@@ -2,6 +2,7 @@
+ using System;
+ using Terraria.DataStructures;
+ using Terraria.GameContent.Achievements;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ 
+ namespace Terraria
+@@ -787,6 +788,7 @@
+ 					}
+ 				}
+ 			}
++			NPCLoader.SetupTravelShop(Main.travelShop, ref num2);
+ 		}
+ 
+ 		public void SetupShop(int type)
+@@ -1891,6 +1893,7 @@
+ 					num++;
+ 				}
+ 			}
++			NPCLoader.SetupShop(type, this, ref num);
+ 			if (Main.player[Main.myPlayer].discount)
+ 			{
+ 				for (int num7 = 0; num7 < num; num7++)
+
