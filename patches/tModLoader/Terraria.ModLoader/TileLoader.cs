@@ -685,6 +685,10 @@ namespace Terraria.ModLoader
 		//  add TileLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].type; for the second loop
 		internal static void RandomUpdate(int i, int j, int type)
 		{
+			if (!Main.tile[i, j].active())
+			{
+				return;
+			}
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
 			{

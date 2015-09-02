@@ -312,23 +312,17 @@
  					}
  					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
  					{
-@@ -23839,9 +23899,13 @@
- 							if (this.gravDir == -1f)
- 							{
- 								this.bodyFrame.Y = this.bodyFrame.Height * 2;
--								return;
--							}
--						}
-+								//return;
-+							}
-+						}
-+					}
-+					if (ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this))
+@@ -23843,6 +23903,10 @@
+ 							}
+ 						}
+ 					}
++					else if (ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this))
 +					{
 +						return;
- 					}
++					}
  				}
  			}
+ 			else
 @@ -23878,6 +23942,10 @@
  					if (this.inventory[this.selectedItem].holdStyle == 3)
  					{

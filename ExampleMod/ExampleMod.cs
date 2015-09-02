@@ -18,6 +18,7 @@ public class ExampleMod : Mod
         name = "ExampleMod";
         properties.Autoload = true;
         properties.AutoloadGores = true;
+        properties.AutoloadSounds = true;
     }
 
     public override void Load()
@@ -89,9 +90,13 @@ public class ExampleMod : Mod
         {
             NPCCommand(args);
         }
-        if(command == "npcType")
+        else if(command == "npcType")
         {
             NPCTypeCommand(args);
+        }
+        else if(command == "addTime")
+        {
+            AddTimeCommand(args);
         }
     }
 
@@ -177,6 +182,17 @@ public class ExampleMod : Mod
         Mod mod = ModLoader.GetMod(args[0]);
         int type = mod == null ? 0 : mod.NPCType(args[1]);
         Main.NewText(type.ToString(), 255, 255, 0);
+    }
+
+    private void AddTimeCommand(string[] args)
+    {
+        int amount;
+        if(args.Length == 0 || !Int32.TryParse(args[0], out amount))
+        {
+            Main.NewText("Usage: /addTime numTicks");
+            return;
+        }
+        Main.time += amount;
     }
 
     //spawning helper methods imported from my tAPI mod
