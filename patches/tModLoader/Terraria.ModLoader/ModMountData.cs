@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -57,6 +58,16 @@ namespace Terraria.ModLoader
 
 		public virtual void UpdateEffects(Player player)
 		{
+		}
+
+		public virtual bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
+		{
+			return true;
+		}
+
+		public virtual bool CustomBodyFrame()
+		{
+			return false;
 		}
 	}
 }

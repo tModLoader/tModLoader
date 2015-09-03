@@ -628,7 +628,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static Item GetWing(Player player)
+		private static Item GetWing(Player player, bool social = false)
 		{
 			Item item = null;
 			for (int k = 3; k < 8 + player.extraAccessorySlots; k++)
@@ -636,6 +636,16 @@ namespace Terraria.ModLoader
 				if (player.armor[k].wingSlot > 0)
 				{
 					item = player.armor[k];
+				}
+			}
+			if (social)
+			{
+				for (int k = 13; k < 18 + player.extraAccessorySlots; k++)
+				{
+					if (player.armor[k].wingSlot > 0)
+					{
+						item = player.armor[k];
+					}
 				}
 			}
 			return item;
@@ -679,6 +689,24 @@ namespace Terraria.ModLoader
 				globalItem.HorizontalWingSpeeds(item, ref player.accRunSpeed, ref player.runAcceleration);
 			}
 		}
+
+		internal static void WingUpdate(Player player, bool inUse)
+		{
+			Item item = GetWing(player, true);
+			if (item == null)
+			{
+				return;
+			}
+			if (IsModItem(item))
+			{
+				item.modItem.WingUpdate(player, inUse);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.WingUpdate(item, player, inUse);
+			}
+		}
+		
 		//in Terraria.Item.UpdateItem before item movement (denoted by ItemID.Sets.ItemNoGravity)
 		//  call ItemLoader.Update(this, ref num, ref num2)
 		internal static void Update(Item item, ref float gravity, ref float maxFallSpeed)

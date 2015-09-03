@@ -34,7 +34,35 @@
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
  		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
-@@ -2901,7 +2908,7 @@
+@@ -152,7 +159,7 @@
+ 		private Mount.MountData _data;
+ 		private int _type;
+ 		private bool _flipDraw;
+-		private int _frame;
++		public int _frame;
+ 		private float _frameCounter;
+ 		private int _frameExtra;
+ 		private float _frameExtraCounter;
+@@ -1747,6 +1754,10 @@
+ 
+ 		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
+ 		{
++			if (!MountLoader.UpdateFrame(mountedPlayer, state, velocity))
++			{
++				return;
++			}
+ 			if (this._frameState != state)
+ 			{
+ 				this._frameState = state;
+@@ -2171,6 +2182,7 @@
+ 		public void UpdateEffects(Player mountedPlayer)
+ 		{
+ 			mountedPlayer.autoJump = this.AutoJump;
++			MountLoader.UpdateEffects(mountedPlayer);
+ 			switch (this._type)
+ 			{
+ 				case 8:
+@@ -2901,7 +2913,7 @@
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
  		{

@@ -191,6 +191,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void WingUpdate(Item item, Player player, bool inUse)
+		{
+		}
+
 		public virtual void Update(Item item, ref float gravity, ref float maxFallSpeed)
 		{
 		}

@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -49,6 +50,32 @@ namespace Terraria.ModLoader
 			{
 				GetMount(mount.modMountData.Type).SetupMount(mount);
 			}
+		}
+
+		internal static void UpdateEffects(Player mountedPlayer)
+		{
+			if (IsModMountData(Mount.mounts[mountedPlayer.mount.Type]))
+			{
+				GetMount(mountedPlayer.mount.Type).UpdateEffects(mountedPlayer);
+			}
+		}
+
+		internal static bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
+		{
+			if (IsModMountData(Mount.mounts[mountedPlayer.mount.Type]))
+			{
+				return GetMount(mountedPlayer.mount.Type).UpdateFrame(mountedPlayer, state, velocity);
+			}
+			return true;
+		}
+
+		internal static bool CustomBodyFrame(Mount.MountData mount)
+		{
+			if (IsModMountData(mount) && mount.modMountData.CustomBodyFrame())
+			{
+				return true;
+			}
+			return false;
 		}
 	}
 }
