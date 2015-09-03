@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -28,9 +28,14 @@
+@@ -28,31 +28,33 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
      <DefineConstants>CLIENT</DefineConstants>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -14,29 +14,38 @@
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
-     <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
-@@ -48,11 +53,17 @@
+-    <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
+-      <HintPath>Terraria\Libraries.DotNetZip.Ionic.Zip.CF.dll</HintPath>
+-    </Reference>
+-    <Reference Include="Libraries.JSON.NET.Newtonsoft.Json">
+-      <HintPath>Terraria\Libraries.JSON.NET.Newtonsoft.Json.dll</HintPath>
+-    </Reference>
+-    <Reference Include="Libraries.Steamworks.NET.Steamworks.NET">
+-      <HintPath>Terraria\Libraries.Steamworks.NET.Steamworks.NET.dll</HintPath>
++    <Reference Include="Ionic.Zip.CF">
++      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
+     </Reference>
+     <Reference Include="Microsoft.Xna.Framework.Game" />
++    <Reference Include="Newtonsoft.Json">
++      <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
++    </Reference>
++    <Reference Include="Steamworks.NET">
++      <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
++    </Reference>
+     <Reference Include="System.Windows.Forms" />
+     <Reference Include="Microsoft.Xna.Framework" />
      <Reference Include="Microsoft.Xna.Framework.Graphics" />
      <Reference Include="System" />
      <Reference Include="Microsoft.Xna.Framework.Xact" />
 -    <Reference Include="Steamworks.NET" />
 -    <Reference Include="Newtonsoft.Json" />
-+    <Reference Include="Steamworks.NET">
-+      <HintPath>..\..\..\..\..\Desktop\Terraria\Steamworks.NET.dll</HintPath>
-+    </Reference>
-+    <Reference Include="Newtonsoft.Json">
-+      <HintPath>..\..\..\..\..\Desktop\Terraria\Newtonsoft.Json.dll</HintPath>
-+    </Reference>
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
 -    <Reference Include="Ionic.Zip.CF" />
-+    <Reference Include="Ionic.Zip.CF">
-+      <HintPath>..\..\..\..\..\Desktop\Terraria\Ionic.Zip.CF.dll</HintPath>
-+    </Reference>
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -238,6 +249,59 @@
+@@ -238,6 +240,59 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -96,7 +105,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -384,5 +448,8 @@
+@@ -384,5 +439,11 @@
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
    </ItemGroup>
@@ -104,4 +113,7 @@
 +    <Content Include="Icon.ico" />
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
++  <PropertyGroup>
++    <PostBuildEvent>if "$(TerrariaSteamFolder)" == "" (copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\terraria") else (copy "$(TargetPath)" "$(TerrariaSteamFolder)")</PostBuildEvent>
++  </PropertyGroup>
  </Project>
