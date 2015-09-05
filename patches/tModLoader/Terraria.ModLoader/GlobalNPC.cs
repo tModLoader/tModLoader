@@ -174,5 +174,9 @@ namespace Terraria.ModLoader
 		public virtual void SetupTravelShop(int[] shop, ref int nextSlot)
 		{
 		}
+
+		public virtual void BuffTownNPC(ref float damageMult, ref int defense)
+		{
+		}
 	}
 }

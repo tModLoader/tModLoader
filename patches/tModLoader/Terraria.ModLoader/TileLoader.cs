@@ -300,7 +300,7 @@ namespace Terraria.ModLoader
 			{
 				return modTile.openDoorID;
 			}
-			if (tile.type == TileID.ClosedDoor && (tile.frameX < 594 || tile.frameY > 646))
+			if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646))
 			{
 				return TileID.OpenDoor;
 			}

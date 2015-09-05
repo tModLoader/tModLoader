@@ -406,6 +406,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//Terraria.NPC.UpdateNPC for friendly NPC taking damage (check patch files)
+		//Terraria.NPC.AI in aiStyle 7 for detecting threats (check patch files)
 		internal static bool? CanHitNPC(NPC npc, NPC target)
 		{
 			bool? flag = null;
@@ -845,5 +846,29 @@ namespace Terraria.ModLoader
 				globalNPC.SetupTravelShop(shop, ref nextSlot);
 			}
 		}
+		//in Terraria.NPC.AI in aiStyle 7 after buffing damage multiplier and defense add
+		//  NPCLoader.BuffTownNPC(ref num378, ref this.defense);
+		internal static void BuffTownNPC(ref float damageMult, ref int defense)
+		{
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.BuffTownNPC(ref damageMult, ref defense);
+			}
+		}
+		//attack type 0 = throwing
+		//  num405 = type, num406 = damage, knockBack, scaleFactor7 = speed multiplier, num407 = attack delay
+		//  num408 = unknown, maxValue3 = unknown, num409 = gravity correction factor, num411 = random speed offset
+		//attack type 1 = shooting
+		//  num413 = type, num414 = damage, scaleFactor8 = speed multiplier, num415 = attack delay,
+		//  num416 = unknown, maxValue4 = unknown, knockBack2, num417 = gravity correction,
+		//  flag53 = in between shots, num418 = random speed offset
+		//attack type 2 = magic
+		//  num423 = type, num424 = damage, scaleFactor9 = speed multiplier, num425 = attack delay,
+		//  num426 = unknown, maxValue5 = unknown, knockBack3, num427 = gravity correction factor,
+		//  num429 = aura light multiplier, num430 = random speed offset
+		//attack type 3 = swinging
+		//  num439 = unknown, maxValue6 = unknown, num440 = damage, num441 = knockback,
+		//  num442 = item width, num443 = item height
+		//unknowns are associated with ai[1], localAI[1], and localAI[3] when ai[0] is either 0 or 8
 	}
 }
