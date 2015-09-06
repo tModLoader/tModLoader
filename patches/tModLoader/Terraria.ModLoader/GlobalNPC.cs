@@ -178,5 +178,34 @@ namespace Terraria.ModLoader
 		public virtual void BuffTownNPC(ref float damageMult, ref int defense)
 		{
 		}
+
+		public virtual void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
+		{
+		}
+
+		public virtual void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown)
+		{
+		}
+
+		public virtual void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay)
+		{
+		}
+
+		public virtual void TownNPCAttackProjSpeed(NPC npc, ref float multiplier, ref float gravityCorrection,
+			ref float randomOffset)
+		{
+		}
+
+		public virtual void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots)
+		{
+		}
+
+		public virtual void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier)
+		{
+		}
+
+		public virtual void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight)
+		{
+		}
 	}
 }

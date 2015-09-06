@@ -26,8 +26,13 @@ public class ExamplePerson : ModNPC
         npc.soundHit = 1;
         npc.soundKilled = 1;
         npc.knockBackResist = 0.5f;
-        Main.npcFrameCount[npc.type] = 21;
-        NPCID.Sets.ExtraFramesCount[npc.type] = 5;
+        Main.npcFrameCount[npc.type] = 25;
+        NPCID.Sets.ExtraFramesCount[npc.type] = 9;
+        NPCID.Sets.AttackFrameCount[npc.type] = 4;
+        NPCID.Sets.DangerDetectRange[npc.type] = 700;
+        NPCID.Sets.AttackType[npc.type] = 0;
+        NPCID.Sets.AttackTime[npc.type] = 90;
+        NPCID.Sets.AttackAverageChance[npc.type] = 30;
         animationType = NPCID.Guide;
     }
 
@@ -168,5 +173,29 @@ public class ExamplePerson : ModNPC
         else
         {
         }
+    }
+
+    public override void TownNPCAttackStrength(ref int damage, ref float knockback)
+    {
+        damage = 20;
+        knockback = 4f;
+    }
+
+    public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown)
+    {
+        cooldown = 30;
+        randExtraCooldown = 30;
+    }
+
+    public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
+    {
+        projType = mod.ProjectileType("SparklingBall");
+        attackDelay = 1;
+    }
+
+    public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)
+    {
+        multiplier = 12f;
+        randomOffset = 2f;
     }
 }}

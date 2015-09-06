@@ -237,5 +237,33 @@ namespace Terraria.ModLoader
 		public virtual void SetupShop(Chest shop, ref int nextSlot)
 		{
 		}
+
+		public virtual void TownNPCAttackStrength(ref int damage, ref float knockback)
+		{
+		}
+
+		public virtual void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown)
+		{
+		}
+
+		public virtual void TownNPCAttackProj(ref int projType, ref int attackDelay)
+		{
+		}
+
+		public virtual void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)
+		{
+		}
+
+		public virtual void TownNPCAttackShoot(ref bool inBetweenShots)
+		{
+		}
+
+		public virtual void TownNPCAttackMagic(ref float auraLightMultiplier)
+		{
+		}
+
+		public virtual void TownNPCAttackSwing(ref int itemWidth, ref int itemHeight)
+		{
+		}
 	}
 }

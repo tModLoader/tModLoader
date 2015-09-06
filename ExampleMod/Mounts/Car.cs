@@ -10,7 +10,7 @@ public class Car : ModMountData
     {
         mountData.spawnDust = 57;
         mountData.buff = 118;
-        mountData.heightBoost = 2;
+        mountData.heightBoost = 20;
         mountData.fallDamage = 0.5f;
         mountData.runSpeed = 11f;
         mountData.dashSpeed = 8f;
@@ -60,9 +60,9 @@ public class Car : ModMountData
 
     public override void UpdateEffects(Player player)
     {
-        Rectangle rect = player.getRect();
-        if (Main.rand.Next(5) == 0)
+        if (Math.Abs(player.velocity.X) > 4f)
         {
+            Rectangle rect = player.getRect();
             int dust = ModDust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, mod, "Smoke");
         }
     }

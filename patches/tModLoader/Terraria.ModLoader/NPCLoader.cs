@@ -870,5 +870,90 @@ namespace Terraria.ModLoader
 		//  num439 = unknown, maxValue6 = unknown, num440 = damage, num441 = knockback,
 		//  num442 = item width, num443 = item height
 		//unknowns are associated with ai[1], localAI[1], and localAI[3] when ai[0] is either 0 or 8
+		//check patch files for town NPC attacks
+		internal static void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.TownNPCAttackStrength(ref damage, ref knockback);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.TownNPCAttackStrength(npc, ref damage, ref knockback);
+			}
+		}
+
+		internal static void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.TownNPCAttackCooldown(ref cooldown, ref randExtraCooldown);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.TownNPCAttackCooldown(npc, ref cooldown, ref randExtraCooldown);
+			}
+		}
+
+		internal static void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.TownNPCAttackProj(ref projType, ref attackDelay);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.TownNPCAttackProj(npc, ref projType, ref attackDelay);
+			}
+		}
+
+		internal static void TownNPCAttackProjSpeed(NPC npc, ref float multiplier, ref float gravityCorrection,
+			ref float randomOffset)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.TownNPCAttackProjSpeed(ref multiplier, ref gravityCorrection, ref randomOffset);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.TownNPCAttackProjSpeed(npc, ref multiplier, ref gravityCorrection, ref randomOffset);
+			}
+		}
+
+		internal static void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.TownNPCAttackShoot(ref inBetweenShots);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.TownNPCAttackShoot(npc, ref inBetweenShots);
+			}
+		}
+
+		internal static void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.TownNPCAttackMagic(ref auraLightMultiplier);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.TownNPCAttackMagic(npc, ref auraLightMultiplier);
+			}
+		}
+
+		internal static void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.TownNPCAttackSwing(ref itemWidth, ref itemHeight);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.TownNPCAttackSwing(npc, ref itemWidth, ref itemHeight);
+			}
+		}
 	}
 }
