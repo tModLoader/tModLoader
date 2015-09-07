@@ -207,5 +207,13 @@ namespace Terraria.ModLoader
 		public virtual void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight)
 		{
 		}
+
+		public virtual void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+		{
+		}
+
+		public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+		{
+		}
 	}
 }

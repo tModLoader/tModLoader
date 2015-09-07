@@ -955,5 +955,31 @@ namespace Terraria.ModLoader
 				globalNPC.TownNPCAttackSwing(npc, ref itemWidth, ref itemHeight);
 			}
 		}
+		//in Terraria.Main.DrawNPCExtras for attack type 1 after if else chain setting num2-4 call
+		//  NPCLoader.DrawTownAttackGun(n, ref num2, ref num3, ref num4);
+		internal static void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.DrawTownAttackGun(ref scale, ref item, ref closeness);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.DrawTownAttackGun(npc, ref scale, ref item, ref closeness);
+			}
+		}
+		//in Terraria.Main.DrawNPCExtras for attack type 3 after if else chain call
+		//  NPCLoader.DrawTownAttackSwing(n, ref texture2D5, ref num6, ref scaleFactor, ref zero);
+		internal static void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.DrawTownAttackSwing(ref item, ref itemSize, ref scale, ref offset);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
+			}
+		}
 	}
 }

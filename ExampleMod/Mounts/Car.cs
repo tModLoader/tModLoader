@@ -53,7 +53,7 @@ public class Car : ModMountData
         mountData.swimFrameStart = mountData.inAirFrameStart;
         if (Main.netMode != 2)
         {
-            mountData.textureWidth = mountData.backTexture.Width+20;
+            mountData.textureWidth = mountData.backTexture.Width + 20;
             mountData.textureHeight = mountData.backTexture.Height;
         }
     }
