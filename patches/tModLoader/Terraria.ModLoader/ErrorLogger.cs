@@ -68,7 +68,11 @@ namespace Terraria.ModLoader
 				writer.WriteLine(e.StackTrace);
 			}
 			string message = "An error occurred while loading " + Path.GetFileNameWithoutExtension(modFile);
-			if (modFile != "recipes")
+			if (modFile == "recipes")
+			{
+				message += "\nThe offending mod should have been automatically disabled.";
+			}
+			else
 			{
 				message += "\nThis mod has automatically been disabled.";
 			}

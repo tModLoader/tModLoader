@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Exceptions;
 using Microsoft.Xna.Framework.Audio;
 
 namespace Terraria.ModLoader
@@ -324,11 +325,11 @@ namespace Terraria.ModLoader
 					mod.Init();
 					if (mods.ContainsKey(mod.Name))
 					{
-						throw new Exception("Two mods share the internal name " + mod.Name);
+						throw new DuplicateNameException("Two mods share the internal name " + mod.Name);
 					}
 					if (rootDirectory != mod.Name)
 					{
-						throw new Exception("Mod name " + mod.Name + " does not match source directory name " + rootDirectory);
+						throw new MissingResourceException("Mod name " + mod.Name + " does not match source directory name " + rootDirectory);
 					}
 					mods[mod.Name] = mod;
 				}
@@ -725,7 +726,7 @@ namespace Terraria.ModLoader
 		{
 			if (!FileExists(name))
 			{
-				throw new ArgumentException("Missing file " + name);
+				throw new MissingResourceException("Missing file " + name);
 			}
 			return files[name];
 		}
@@ -739,7 +740,7 @@ namespace Terraria.ModLoader
 		{
 			if (!TextureExists(name))
 			{
-				throw new ArgumentException("Missing texture " + name);
+				throw new MissingResourceException("Missing texture " + name);
 			}
 			if (name.IndexOf("Terraria/") == 0)
 			{
@@ -763,7 +764,7 @@ namespace Terraria.ModLoader
 		{
 			if (TextureExists(name))
 			{
-				throw new ArgumentException("Texture already exist: " + name);
+				throw new DuplicateNameException("Texture already exist: " + name);
 			}
 			textures[name] = texture;
 		}
@@ -785,7 +786,7 @@ namespace Terraria.ModLoader
 		{
 			if (!SoundExists(name))
 			{
-				throw new ArgumentException("Missing sound " + name);
+				throw new MissingResourceException("Missing sound " + name);
 			}
 			return sounds[name];
 		}

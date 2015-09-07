@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
@@ -31,6 +33,10 @@ namespace Terraria.ModLoader
 		public void SetResult(string itemName, int stack = 1)
 		{
 			this.createItem.SetDefaults(itemName);
+			if (this.createItem.type == 0)
+			{
+				throw new RecipeException("A vanilla item with the name " + itemName + " does not exist.");
+			}
 			this.createItem.stack = stack;
 		}
 
@@ -40,7 +46,14 @@ namespace Terraria.ModLoader
 			{
 				mod = this.mod;
 			}
-			this.SetResult(mod.ItemType(itemName), stack);
+			int type = mod.ItemType(itemName);
+			if (type == 0)
+			{
+				string message = "The item " + itemName + " does not exist in the mod " + mod.Name + "." + Environment.NewLine;
+				message += "If you are trying to use a vanilla item, try removing the first argument.";
+				throw new RecipeException(message);
+			}
+			this.SetResult(type, stack);
 		}
 
 		public void SetResult(ModItem item, int stack = 1)
@@ -58,6 +71,10 @@ namespace Terraria.ModLoader
 		public void AddIngredient(string itemName, int stack = 1)
 		{
 			this.requiredItem[numIngredients].SetDefaults(itemName);
+			if (this.requiredItem[numIngredients].type == 0)
+			{
+				throw new RecipeException("A vanilla item with the name " + itemName + " does not exist.");
+			}
 			this.requiredItem[numIngredients].stack = stack;
 			numIngredients++;
 		}
@@ -68,7 +85,14 @@ namespace Terraria.ModLoader
 			{
 				mod = this.mod;
 			}
-			this.AddIngredient(mod.ItemType(itemName), stack);
+			int type = mod.ItemType(itemName);
+			if (type == 0)
+			{
+				string message = "The item " + itemName + " does not exist in the mod " + mod.Name + "." + Environment.NewLine;
+				message += "If you are trying to use a vanilla item, try removing the first argument.";
+				throw new RecipeException(message);
+			}
+			this.AddIngredient(type, stack);
 		}
 
 		public void AddIngredient(ModItem item, int stack = 1)
@@ -103,7 +127,14 @@ namespace Terraria.ModLoader
 			{
 				mod = this.mod;
 			}
-			this.AddTile(mod.TileType(tileName));
+			int type = mod.TileType(tileName);
+			if (type == 0)
+			{
+				string message = "The tile " + tileName + " does not exist in the mod " + mod.Name + "." + Environment.NewLine;
+				message += "If you are trying to use a vanilla tile, try using ModRecipe.AddTile(tileID).";
+				throw new RecipeException(message);
+			}
+			this.AddTile(type);
 		}
 
 		public void AddTile(ModTile tile)
@@ -146,9 +177,13 @@ namespace Terraria.ModLoader
 
 		public void AddRecipe()
 		{
+			if (this.createItem == null || this.createItem.type == 0)
+			{
+				throw new RecipeException("A recipe without any result has been added.");
+			}
 			for (int k = 0; k < Recipe.maxRequirements; k++)
 			{
-				if (this.requiredTile[k] == 13)
+				if (this.requiredTile[k] == TileID.Bottles)
 				{
 					this.alchemy = true;
 					break;

@@ -1,11 +1,14 @@
 --- src/Terraria\TerrariaServer.csproj
 +++ src/tModLoader\TerrariaServer.csproj
-@@ -242,6 +242,59 @@
+@@ -242,6 +242,62 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\ModLoaderMod.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\MysteryItem.cs" />
++    <Compile Include="Terraria.ModLoader.Exceptions\DuplicateNameException.cs" />
++    <Compile Include="Terraria.ModLoader.Exceptions\MissingResourceException.cs" />
++    <Compile Include="Terraria.ModLoader.Exceptions\RecipeException.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\ItemIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\PlayerIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TileIO.cs" />
