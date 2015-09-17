@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -125,8 +126,8 @@ namespace Terraria.ModLoader.UI
 		{
 			modList.Clear();
 			items.Clear();
-			string[] mods = ModLoader.FindMods();
-			foreach (string mod in mods)
+			TmodFile[] mods = ModLoader.FindMods();
+			foreach (TmodFile mod in mods)
 			{
 				UIModItem modItem = new UIModItem(mod);
 				modList.Add(modItem);

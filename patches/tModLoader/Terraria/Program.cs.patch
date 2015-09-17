@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Program.cs
 +++ src/tModLoader\Terraria\Program.cs
-@@ -89,6 +89,10 @@
+@@ -97,6 +97,10 @@
  		public static void LaunchGame(string[] args)
  		{
  			Program.LaunchParameters = Utils.ParseArguements(args);

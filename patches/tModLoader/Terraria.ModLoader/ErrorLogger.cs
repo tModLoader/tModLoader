@@ -2,6 +2,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -40,14 +41,14 @@ namespace Terraria.ModLoader
 			Interface.errorMessage.SetFile(file);
 		}
 
-		internal static void LogMissingLoadReference(List<string> mods)
+		internal static void LogMissingLoadReference(IList<TmodFile> mods)
 		{
 			Directory.CreateDirectory(LogPath);
 			string file = LogPath + Path.DirectorySeparatorChar + "Loading Errors.txt";
 			string message = "The following mods were missing mod dependencies. They have been automatically disabled.\n";
-			foreach (string modFile in mods)
+			foreach (TmodFile modFile in mods)
 			{
-				message += Path.GetFileNameWithoutExtension(modFile) + "\n";
+				message += Path.GetFileNameWithoutExtension(modFile.Name) + "\n";
 			}
 			using (StreamWriter writer = File.CreateText(file))
 			{

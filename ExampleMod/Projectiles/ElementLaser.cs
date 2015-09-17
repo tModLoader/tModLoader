@@ -29,12 +29,12 @@ public class ElementLaser : ModProjectile
         }
         projectile.Center = Main.npc[(int)projectile.ai[0]].Center;
         projectile.localAI[0] += 1f;
-        projectile.alpha = (int)projectile.localAI[0] * 4;
-        if(projectile.localAI[0] > 30f)
+        projectile.alpha = (int)projectile.localAI[0] * 2;
+        if(projectile.localAI[0] > 90f)
         {
             projectile.damage = 0;
         }
-        if(projectile.localAI[0] > 60f)
+        if(projectile.localAI[0] > 120f)
         {
             projectile.Kill();
         }

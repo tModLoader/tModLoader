@@ -1,42 +1,103 @@
 --- src/merged\Terraria\HitTile.cs
 +++ src/Terraria\Terraria\HitTile.cs
-@@ -136,7 +136,6 @@
- 				{
- 					if (this.order[i] == tileId)
- 					{
+@@ -130,35 +130,36 @@
+ 			}
+ 			hitTileObject.damage += damageAmount;
+ 			hitTileObject.timeToLive = 60;
+-			if (tileId != this.bufferLocation)
+-			{
+-				for (int i = 0; i <= 20; i++)
+-				{
+-					if (this.order[i] == tileId)
+-					{
 -						IL_E1:
- 						while (i > 1)
- 						{
- 							int num = this.order[i - 1];
-@@ -148,7 +147,14 @@
- 						goto IL_EE;
- 					}
- 				}
+-						while (i > 1)
+-						{
+-							int num = this.order[i - 1];
+-							this.order[i - 1] = this.order[i];
+-							this.order[i] = num;
+-							i--;
+-						}
+-						this.order[1] = tileId;
+-						goto IL_EE;
+-					}
+-				}
 -				goto IL_E1;
-+                for (int k = 20; k > 1; k--)
+-			}
+-			this.bufferLocation = this.order[20];
+-			this.data[this.bufferLocation].Clear();
+-			for (int i = 20; i > 0; i--)
+-			{
+-				this.order[i] = this.order[i - 1];
+-			}
+-			this.order[0] = this.bufferLocation;
+-			IL_EE:
+-			return hitTileObject.damage;
++            if (tileId == this.bufferLocation)
++            {
++                this.bufferLocation = this.order[20];
++                this.data[this.bufferLocation].Clear();
++                for (int i = 20; i > 0; i--)
 +                {
-+                    int num = this.order[k - 1];
-+                    this.order[k - 1] = this.order[k];
-+                    this.order[k] = num;
++                    this.order[i] = this.order[i - 1];
++                }
++                this.order[0] = this.bufferLocation;
++            }
++            else
++            {
++                int i;
++                for (i = 0; i <= 20; i++)
++                {
++                    if (this.order[i] == tileId)
++                    {
++                        break;
++                    }
++                }
++                while (i > 1)
++                {
++                    int num = this.order[i - 1];
++                    this.order[i - 1] = this.order[i];
++                    this.order[i] = num;
++                    i--;
 +                }
 +                this.order[1] = tileId;
-+                goto IL_EE;
++            }
++            return hitTileObject.damage;
+ 		}
+ 
+ 		public void Clear(int tileId)
+@@ -168,21 +169,20 @@
+ 				return;
  			}
- 			this.bufferLocation = this.order[20];
- 			this.data[this.bufferLocation].Clear();
-@@ -172,7 +178,6 @@
- 			{
- 				if (this.order[i] == tileId)
- 				{
+ 			this.data[tileId].Clear();
+-			for (int i = 0; i < 20; i++)
+-			{
+-				if (this.order[i] == tileId)
+-				{
 -					IL_47:
- 					while (i < 20)
- 					{
- 						this.order[i] = this.order[i + 1];
-@@ -182,7 +187,7 @@
- 					return;
- 				}
- 			}
+-					while (i < 20)
+-					{
+-						this.order[i] = this.order[i + 1];
+-						i++;
+-					}
+-					this.order[20] = tileId;
+-					return;
+-				}
+-			}
 -			goto IL_47;
++            int i;
++            for (i = 0; i < 20; i++)
++            {
++                if (this.order[i] == tileId)
++                {
++                    break;
++                }
++            }
++            while (i < 20)
++            {
++                this.order[i] = this.order[i + 1];
++                i++;
++            }
 +            this.order[20] = tileId;
  		}
  

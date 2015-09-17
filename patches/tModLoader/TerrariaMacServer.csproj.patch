@@ -1,6 +1,23 @@
---- src/Terraria\TerrariaServer.csproj
-+++ src/tModLoader\TerrariaServer.csproj
-@@ -242,6 +242,63 @@
+--- src/Terraria\TerrariaMacServer.csproj
++++ src/tModLoader\TerrariaMacServer.csproj
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <PropertyGroup>
+-    <ProjectGuid>{29CB3D60-A55D-41D5-B2CA-7A54AB3515F9}</ProjectGuid>
++    <ProjectGuid>{2790886F-7C81-438F-AD89-E8CA2B1BAD71}</ProjectGuid>
+     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+     <OutputType>Exe</OutputType>
+@@ -27,6 +27,7 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+     <DefineConstants>SERVER; MAC</DefineConstants>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
++    <Optimize>true</Optimize>
+     <PlatformTarget>x86</PlatformTarget>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+@@ -242,6 +243,63 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />

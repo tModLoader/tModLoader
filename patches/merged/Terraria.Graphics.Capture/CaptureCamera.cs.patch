@@ -1,6 +1,83 @@
 --- src/decompiled\Terraria.Graphics.Capture\CaptureCamera.cs
 +++ src/merged\Terraria.Graphics.Capture\CaptureCamera.cs
-@@ -334,6 +334,7 @@
+@@ -5,8 +5,13 @@
+ using System.Drawing;
+ using System.Drawing.Imaging;
+ using System.IO;
++#if WINDOWS
+ using System.Runtime.InteropServices;
++#endif
+ using System.Threading;
++#if MAC
++using Terraria.Utilities;
++#endif
+ 
+ namespace Terraria.Graphics.Capture
+ {
+@@ -233,6 +238,7 @@
+ 					"Captures",
+ 					Path.DirectorySeparatorChar
+ 				}));
++#if WINDOWS
+ 				using (Bitmap bitmap = new Bitmap(width, height))
+ 				{
+ 					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
+@@ -243,7 +249,13 @@
+ 					bitmap.Save(filename, imageFormat);
+ 					bitmap.Dispose();
+ 				}
+-				result = true;
++#else
++				using (FileStream fileStream = File.Create(filename))
++				{
++					PlatformUtilties.SavePng(fileStream, width, height, width, height, this._outputData);
++ 				}
++#endif
++                result = true;
+ 			}
+ 			catch (Exception value)
+ 			{
+@@ -265,6 +277,7 @@
+ 			});
+ 			string filename2 = Path.Combine(text, filename);
+ 			Directory.CreateDirectory(text);
++#if WINDOWS
+ 			using (Bitmap bitmap = new Bitmap(width, height))
+ 			{
+ 				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
+@@ -292,7 +305,30 @@
+ 				bitmap.UnlockBits(bitmapData);
+ 				bitmap.Save(filename2, imageFormat);
+ 			}
+-		}
++#else
++			int elementCount = texture.Width * texture.Height * 4;
++			texture.GetData<byte>(this._outputData, 0, elementCount);
++			int num = 0;
++			int num2 = 0;
++			for (int i = 0; i < height; i++)
++			{
++				for (int j = 0; j < width; j++)
++				{
++					this._outputData[num2] = this._outputData[num];
++					this._outputData[num2 + 1] = this._outputData[num + 1];
++					this._outputData[num2 + 2] = this._outputData[num + 2];
++					this._outputData[num2 + 3] = this._outputData[num + 3];
++					num += 4;
++					num2 += 4;
++				}
++				num += texture.Width - width << 2;
++			}
++			using (FileStream fileStream = File.Create(filename2))
++			{
++				PlatformUtilties.SavePng(fileStream, width, height, width, height, this._outputData);
++ 			}
++#endif
++        }
+ 
+ 		private void FinishCapture()
+ 		{
+@@ -334,6 +370,7 @@
  
  		public void Dispose()
  		{
@@ -8,7 +85,7 @@
  			Monitor.Enter(this._captureLock);
  			if (this._isDisposed)
  			{
-@@ -348,6 +349,7 @@
+@@ -348,6 +385,7 @@
  			CaptureCamera.CameraExists = false;
  			this._isDisposed = true;
  			Monitor.Exit(this._captureLock);

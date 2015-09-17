@@ -6,11 +6,19 @@
      <Optimize>true</Optimize>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-+    <DefineConstants>CLIENT</DefineConstants>
++    <DefineConstants>CLIENT; WINDOWS</DefineConstants>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-+    <DefineConstants>CLIENT</DefineConstants>
++    <DefineConstants>CLIENT; WINDOWS</DefineConstants>
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="Microsoft.Xna.Framework.Game" />
+@@ -334,6 +340,7 @@
+     <Compile Include="Terraria\Lighting.cs" />
+     <Compile Include="Terraria\Liquid.cs" />
+     <Compile Include="Terraria\LiquidBuffer.cs" />
++    <Compile Include="Terraria\MacLaunch.cs" />
+     <Compile Include="Terraria\Main.cs" />
+     <Compile Include="Terraria\MessageBuffer.cs" />
+     <Compile Include="Terraria\Minecart.cs" />
 

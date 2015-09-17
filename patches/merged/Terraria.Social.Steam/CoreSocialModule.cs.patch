@@ -14,4 +14,31 @@
  			if (!SteamAPI.Init())
  			{
  				MessageBox.Show("Please launch the game from your Steam client.", "Error");
+@@ -39,7 +41,10 @@
+ 			ThreadPool.QueueUserWorkItem(new WaitCallback(this.SteamTickLoop), null);
+ 			Main.OnTick += new Action(this.PulseSteamTick);
+ 			Main.OnTick += new Action(this.PulseSteamCallback);
+-		}
++#if MAC
++            this._onOverlayActivated = Callback<GameOverlayActivated_t>.Create(new Callback<GameOverlayActivated_t>.DispatchDelegate(this.OnOverlayActivated));
++#endif
++        }
+ 
+ 		public void PulseSteamTick()
+ 		{
+@@ -93,8 +98,13 @@
+ 
+ 		public void Shutdown()
+ 		{
++#if WINDOWS
+ 			Application.ApplicationExit += delegate(object obj, EventArgs evt)
+-			{
++#else
++            this.IsSteamValid = false;
++            AppDomain.CurrentDomain.ProcessExit += delegate(object obj, EventArgs evt)
++#endif
++            {
+ 				this.IsSteamValid = false;
+ 			};
+ 		}
 

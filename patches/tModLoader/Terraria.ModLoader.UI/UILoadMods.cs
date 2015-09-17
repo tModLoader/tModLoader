@@ -25,10 +25,15 @@ namespace Terraria.ModLoader.UI
 			loadProgress.SetProgress(0f);
 		}
 
-		internal void SetProgressReading(string mod, int num, int max)
+		internal void SetProgressCompatibility(string mod, int num, int max)
+		{
+			loadProgress.SetText("Compatibilizing: " + mod);
+			loadProgress.SetProgress((float)num / (float)max);
+		}
+
+		internal void SetProgressReading(string mod)
 		{
 			loadProgress.SetText("Reading: " + mod);
-			loadProgress.SetProgress((float)num / (float)max);
 		}
 
 		internal void SetProgressInit(string mod, int num, int max)

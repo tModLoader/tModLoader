@@ -1,0 +1,13 @@
+--- src/decompiled\Terraria\Lighting.cs
++++ src/merged\Terraria\Lighting.cs
+@@ -2,6 +2,9 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Diagnostics;
++#if MAC
++using System.Runtime.CompilerServices;
++#endif
+ using System.Threading;
+ using Terraria.DataStructures;
+ using Terraria.Graphics;
+

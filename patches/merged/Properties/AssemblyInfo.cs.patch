@@ -1,0 +1,36 @@
+--- src/decompiled\Properties\AssemblyInfo.cs
++++ src/merged\Properties\AssemblyInfo.cs
+@@ -1,12 +1,17 @@
+ using System;
++#if WINDOWS
+ using System.Diagnostics;
++#endif
+ using System.Reflection;
+ using System.Runtime.CompilerServices;
++#if WINDOWS
+ using System.Runtime.InteropServices;
+ using System.Runtime.Versioning;
++#endif
+ using System.Security;
+ using System.Security.Permissions;
+ 
++#if WINDOWS
+ [assembly: AssemblyVersion("1.3.0.7")]
+ [assembly: Debuggable(DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
+ [assembly: AssemblyCompany("Re-Logic")]
+@@ -17,9 +22,14 @@
+ [assembly: AssemblyTitle("Terraria")]
+ [assembly: AssemblyTrademark("")]
+ [assembly: CompilationRelaxations(8)]
++#else
++[assembly: AssemblyVersion("0.0.0.0")]
++#endif
+ [assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
++#if WINDOWS
+ [assembly: ComVisible(false)]
+ [assembly: Guid("f571b16a-2c9b-44ab-b115-7c762c9e4e7e")]
+ [assembly: TargetFramework(".NETFramework,Version=v4.0,Profile=Client", FrameworkDisplayName = ".NET Framework 4 Client Profile")]
++#endif
+ [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
+ [module: UnverifiableCode]
+

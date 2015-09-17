@@ -22,7 +22,33 @@
  
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
-@@ -94,7 +100,11 @@
+@@ -25,15 +31,23 @@
+ 			for (int i = 0; i < array.Length; i++)
+ 			{
+ 				Type type = array[i];
++#if WINDOWS
+ 				MethodInfo[] methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+-				MethodInfo[] array2 = methods;
++#else
++                MethodInfo[] methods = type.GetMethods();
++#endif
++                MethodInfo[] array2 = methods;
+ 				for (int j = 0; j < array2.Length; j++)
+ 				{
+ 					MethodInfo methodInfo = array2[j];
+ 					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
+ 					{
++#if WINDOWS
+ 						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
+-					}
++#else
++                        Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
++#endif
++                    }
+ 				}
+ 			}
+ 		}
+@@ -94,7 +108,11 @@
  					{
  						Program.ForceLoadAssembly(Assembly.GetExecutingAssembly(), true);
  					};
@@ -34,7 +60,7 @@
  				}
  				catch (Exception e)
  				{
-@@ -113,7 +123,14 @@
+@@ -113,7 +131,14 @@
  					streamWriter.WriteLine(e);
  					streamWriter.WriteLine("");
  				}

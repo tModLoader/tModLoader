@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -16,9 +17,9 @@ namespace Terraria.ModLoader.UI
 		private UIText modName;
 		internal bool enabled;
 
-		public UIModItem(string mod)
+		public UIModItem(TmodFile mod)
 		{
-			this.mod = mod;
+			this.mod = mod.Name;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
@@ -27,7 +28,7 @@ namespace Terraria.ModLoader.UI
 			base.SetPadding(6f);
 			base.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
 			BuildProperties properties = ModLoader.LoadBuildProperties(mod);
-			string text = properties.displayName.Length > 0 ? properties.displayName : Path.GetFileNameWithoutExtension(mod);
+			string text = properties.displayName.Length > 0 ? properties.displayName : Path.GetFileNameWithoutExtension(mod.Name);
 			if (properties.version.Length > 0)
 			{
 				text += " " + properties.version;
@@ -40,7 +41,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			this.enabled = ModLoader.IsEnabled(mod);
+			this.enabled = ModLoader.IsEnabled(mod.Name);
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)

@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terraria", "..\src\tModLoad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrariaServer", "..\src\tModLoader\TerrariaServer.csproj", "{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrariaMac", "..\src\tModLoader\TerrariaMac.csproj", "{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrariaMacServer", "..\src\tModLoader\TerrariaMacServer.csproj", "{2790886F-7C81-438F-AD89-E8CA2B1BAD71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -21,6 +25,14 @@ Global
 		{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}.Debug|x86.Build.0 = Debug|x86
 		{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}.Release|x86.ActiveCfg = Release|x86
 		{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}.Release|x86.Build.0 = Release|x86
+		{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}.Debug|x86.ActiveCfg = Debug|x86
+		{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}.Debug|x86.Build.0 = Debug|x86
+		{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}.Release|x86.ActiveCfg = Release|x86
+		{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}.Release|x86.Build.0 = Release|x86
+		{2790886F-7C81-438F-AD89-E8CA2B1BAD71}.Debug|x86.ActiveCfg = Debug|x86
+		{2790886F-7C81-438F-AD89-E8CA2B1BAD71}.Debug|x86.Build.0 = Debug|x86
+		{2790886F-7C81-438F-AD89-E8CA2B1BAD71}.Release|x86.ActiveCfg = Release|x86
+		{2790886F-7C81-438F-AD89-E8CA2B1BAD71}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

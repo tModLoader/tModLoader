@@ -1,6 +1,23 @@
---- src/Terraria\TerrariaServer.csproj
-+++ src/tModLoader\TerrariaServer.csproj
-@@ -242,6 +242,63 @@
+--- src/Terraria\TerrariaMac.csproj
++++ src/tModLoader\TerrariaMac.csproj
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <PropertyGroup>
+-    <ProjectGuid>{E3BD64F8-9FAE-4778-9C5D-692E041180D0}</ProjectGuid>
++    <ProjectGuid>{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}</ProjectGuid>
+     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+     <OutputType>Exe</OutputType>
+@@ -28,6 +28,7 @@
+     <DefineConstants>CLIENT; MAC</DefineConstants>
+     <PlatformTarget>x86</PlatformTarget>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
++    <Optimize>true</Optimize>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+     <DefineConstants>CLIENT; MAC</DefineConstants>
+@@ -238,6 +239,63 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -64,4 +81,11 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-
+@@ -377,4 +435,7 @@
+     <Compile Include="Terraria\WorldSections.cs" />
+   </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
++  <PropertyGroup>
++    <PostBuildEvent>if "$(TerrariaSteamFolder)" == "" (copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\terraria") else (copy "$(TargetPath)" "$(TerrariaSteamFolder)")</PostBuildEvent>
++  </PropertyGroup>
+ </Project>

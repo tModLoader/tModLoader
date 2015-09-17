@@ -308,8 +308,13 @@ namespace Terraria.ModLoader.IO
 			path = Path.ChangeExtension(path, ".twld");
 			if (!cloudSave)
 			{
+#if WINDOWS
 				FileOperationAPIWrapper.MoveToRecycleBin(path);
 				FileOperationAPIWrapper.MoveToRecycleBin(path + ".bak");
+#else
+				File.Delete(path);
+				File.Delete(path + ".bak");
+#endif
 			}
 			else if (SocialAPI.Cloud != null)
 			{

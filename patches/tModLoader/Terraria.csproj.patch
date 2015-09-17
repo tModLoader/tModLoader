@@ -1,51 +1,36 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -28,31 +28,33 @@
+@@ -28,12 +28,18 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-     <DefineConstants>CLIENT</DefineConstants>
+     <DefineConstants>CLIENT; WINDOWS</DefineConstants>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <Optimize>true</Optimize>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-     <DefineConstants>CLIENT</DefineConstants>
+     <DefineConstants>CLIENT; WINDOWS</DefineConstants>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
    </PropertyGroup>
    <ItemGroup>
--    <Reference Include="Libraries.DotNetZip.Ionic.Zip.CF">
--      <HintPath>Terraria\Libraries.DotNetZip.Ionic.Zip.CF.dll</HintPath>
--    </Reference>
--    <Reference Include="Libraries.JSON.NET.Newtonsoft.Json">
--      <HintPath>Terraria\Libraries.JSON.NET.Newtonsoft.Json.dll</HintPath>
--    </Reference>
--    <Reference Include="Libraries.Steamworks.NET.Steamworks.NET">
--      <HintPath>Terraria\Libraries.Steamworks.NET.Steamworks.NET.dll</HintPath>
-+    <Reference Include="Ionic.Zip.CF">
-+      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
+-    <Reference Include="Ionic.Zip.CF">
++    <Reference Include="Ionic.Zip.CF, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
++      <SpecificVersion>False</SpecificVersion>
+       <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
      </Reference>
      <Reference Include="Microsoft.Xna.Framework.Game" />
-+    <Reference Include="Newtonsoft.Json">
-+      <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
-+    </Reference>
-+    <Reference Include="Steamworks.NET">
-+      <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
-+    </Reference>
+@@ -41,7 +47,8 @@
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
+     </Reference>
+-    <Reference Include="Steamworks.NET">
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86">
++      <SpecificVersion>False</SpecificVersion>
+       <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
+     </Reference>
      <Reference Include="System.Windows.Forms" />
-     <Reference Include="Microsoft.Xna.Framework" />
-     <Reference Include="Microsoft.Xna.Framework.Graphics" />
-     <Reference Include="System" />
-     <Reference Include="Microsoft.Xna.Framework.Xact" />
--    <Reference Include="Steamworks.NET" />
--    <Reference Include="Newtonsoft.Json" />
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
--    <Reference Include="Ionic.Zip.CF" />
-     <Reference Include="WindowsBase" />
-   </ItemGroup>
-   <ItemGroup>
-@@ -238,6 +240,62 @@
+@@ -236,6 +243,63 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -56,6 +41,7 @@
 +    <Compile Include="Terraria.ModLoader.Exceptions\RecipeException.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\ItemIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TileIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TmodFile.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\WorldIO.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIColorTextPanel.cs" />
@@ -108,7 +94,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -384,5 +442,11 @@
+@@ -383,5 +447,11 @@
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
    </ItemGroup>

@@ -294,7 +294,7 @@ public class CaptiveElement : ModNPC
     public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
     {
         Abomination abomination = Main.npc[center].modNPC as Abomination;
-        if(Main.expertMode && abomination.laserTimer <= 60 && (abomination.laser1 == captiveType || abomination.laser2 == captiveType))
+        if(Main.expertMode && abomination != null && abomination.npc.active && abomination.laserTimer <= 60 && (abomination.laser1 == captiveType || abomination.laser2 == captiveType))
         {
             Color? color = GetColor();
             if(!color.HasValue)
