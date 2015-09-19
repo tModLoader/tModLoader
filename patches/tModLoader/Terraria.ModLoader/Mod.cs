@@ -64,6 +64,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void Unload()
+		{
+		}
+
 		public virtual void AddCraftGroups()
 		{
 		}
@@ -900,8 +904,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal void Unload() //I'm not sure why I have this
+		internal void UnloadContent()
 		{
+			Unload();
 			recipes.Clear();
 			craftGroups.Clear();
 			items.Clear();

@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.UI
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
 			base.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
-			BuildProperties properties = ModLoader.LoadBuildProperties(mod);
+			BuildProperties properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : Path.GetFileNameWithoutExtension(mod.Name);
 			if (properties.version.Length > 0)
 			{

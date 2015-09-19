@@ -9,6 +9,13 @@ namespace Terraria.ModLoader
 	public static class ErrorLogger
 	{
 		public static readonly string LogPath = Main.SavePath + Path.DirectorySeparatorChar + "Logs";
+		private static readonly string[] buildDllLines = new string[]
+		{
+			"Must have either All.dll or both of Windows.dll and Other.dll",
+			"All.dll must not have any references to Microsoft.Xna.Framework or FNA",
+			"Windows.dll must reference the windows Terraria.exe and Microsoft.Xna.Framework.dll",
+			"Other.dll must reference a non-windows Terraria.exe and FNA.dll"
+		};
 
 		internal static void LogModReferenceError(string reference)
 		{
@@ -36,7 +43,30 @@ namespace Terraria.ModLoader
 					writer.WriteLine();
 				}
 			}
-			Interface.errorMessage.SetMessage("An error occurred while compiling a mod.\n\n" + errors[0]);
+			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
+			Interface.errorMessage.SetMessage(errorHeader + errors[0]);
+			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
+			Interface.errorMessage.SetFile(file);
+		}
+
+		internal static void LogDllBuildError(string modDir)
+		{
+			Directory.CreateDirectory(LogPath);
+			string file = LogPath + Path.DirectorySeparatorChar + "Compile Errors.txt";
+			string errorText = "";
+			using (StreamWriter writer = File.CreateText(file))
+			{
+				writer.WriteLine("Missing dll files for " + Path.GetFileName(modDir));
+				errorText += "Missing dll files for " + Path.GetFileName(modDir) + Environment.NewLine;
+				writer.WriteLine();
+				errorText += Environment.NewLine;
+				foreach (string line in buildDllLines)
+				{
+					writer.WriteLine(line);
+					errorText += line + Environment.NewLine;
+				}
+			}
+			Interface.errorMessage.SetMessage(errorText);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 			Interface.errorMessage.SetFile(file);
 		}

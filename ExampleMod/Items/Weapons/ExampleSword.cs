@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Weapons {
@@ -43,6 +44,6 @@ public class ExampleSword : ModItem
 
     public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit)
     {
-        target.AddBuff(24, 60);
+        target.AddBuff(BuffID.OnFire, 60);
     }
 }}

@@ -237,7 +237,7 @@ namespace Terraria.ModLoader
 			List<TmodFile> modsToLoad = new List<TmodFile>();
 			foreach (TmodFile modFile in enabledMods)
 			{
-				properties[modFile.Name] = LoadBuildProperties(modFile);
+				properties[modFile.Name] = BuildProperties.ReadModFile(modFile);
 				modsToLoad.Add(modFile);
 			}
 			int previousCount = 0;
@@ -302,7 +302,14 @@ namespace Terraria.ModLoader
 			Interface.loadMods.SetProgressReading(Path.GetFileNameWithoutExtension(modFile.Name));
 			Assembly modCode;
 			string rootDirectory;
-			modCode = Assembly.Load(modFile.GetFile(windows ? "Windows" : "Other"));
+			if (modFile.HasFile("All"))
+			{
+				modCode = Assembly.Load(modFile.GetFile("All"));
+			}
+			else
+			{
+				modCode = Assembly.Load(modFile.GetFile(windows ? "Windows" : "Other"));
+			}
 			using (MemoryStream memoryStream = new MemoryStream(modFile.GetFile("Resources")))
 			{
 				using (BinaryReader reader = new BinaryReader(memoryStream))
@@ -356,68 +363,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static BuildProperties LoadBuildProperties(TmodFile modFile)
-		{
-			BuildProperties properties = new BuildProperties();
-			byte[] data;
-			using (MemoryStream memoryStream = new MemoryStream(modFile.GetFile("Resources")))
-			{
-				using (BinaryReader reader = new BinaryReader(memoryStream))
-				{
-					data = reader.ReadBytes(reader.ReadInt32());
-				}
-			}
-			if (data.Length == 0)
-			{
-				return properties;
-			}
-			using (MemoryStream memoryStream = new MemoryStream(data))
-			{
-				using (BinaryReader reader = new BinaryReader(memoryStream))
-				{
-					for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString())
-					{
-						if (tag == "dllReferences")
-						{
-							List<string> dllReferences = new List<string>();
-							for (string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
-							{
-								dllReferences.Add(reference);
-							}
-							properties.dllReferences = dllReferences.ToArray();
-						}
-						if (tag == "modReferences")
-						{
-							List<string> modReferences = new List<string>();
-							for (string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
-							{
-								modReferences.Add(reference);
-							}
-							properties.modReferences = modReferences.ToArray();
-						}
-						if (tag == "author")
-						{
-							properties.author = reader.ReadString();
-						}
-						if (tag == "version")
-						{
-							properties.version = reader.ReadString();
-						}
-						if (tag == "displayName")
-						{
-							properties.displayName = reader.ReadString();
-						}
-					}
-				}
-			}
-			return properties;
-		}
-
 		internal static void Unload()
 		{
 			foreach (Mod mod in mods.Values)
 			{
-				mod.Unload();
+				mod.UnloadContent();
 			}
 			loadedMods.Clear();
 			ItemLoader.Unload();
@@ -523,8 +473,8 @@ namespace Terraria.ModLoader
 		internal static bool do_BuildMod(object threadContext)
 		{
 			Interface.buildMod.SetReading();
-			BuildProperties properties = ReadBuildProperties(modToBuild);
-			if (properties == null)
+			BuildProperties properties = BuildProperties.ReadBuildFile(modToBuild);
+			if (!CreateModReferenceDlls(properties))
 			{
 				if (!buildAll)
 				{
@@ -533,22 +483,48 @@ namespace Terraria.ModLoader
 				return false;
 			}
 			LoadReferences();
-			string file1 = ModPath + Path.DirectorySeparatorChar + Path.GetFileName(modToBuild) + ".tmod1";
-			string file2 = ModPath + Path.DirectorySeparatorChar + Path.GetFileName(modToBuild) + ".tmod2";
 			Interface.buildMod.SetCompiling();
-			if (!CompileMod(modToBuild, properties, true) || !CompileMod(modToBuild, properties, false))
+			byte[] windowsData;
+			byte[] otherData;
+			if (properties.noCompile)
 			{
-				File.Delete(file1);
-				File.Delete(file2);
-				if (!buildAll)
+				string modDir = modToBuild + Path.DirectorySeparatorChar;
+				if (File.Exists(modDir + "All.dll"))
 				{
-					Main.menuMode = Interface.errorMessageID;
+					windowsData = File.ReadAllBytes(modDir + "All.dll");
+					otherData = File.ReadAllBytes(modDir + "All.dll");
 				}
-				return false;
+				else if (File.Exists(modDir + "Windows.dll") && File.Exists(modDir + "Other.dll"))
+				{
+					windowsData = File.ReadAllBytes(modDir + "Windows.dll");
+					otherData = File.ReadAllBytes(modDir + "Other.dll");
+				}
+				else
+				{
+					ErrorLogger.LogDllBuildError(modToBuild);
+					if (!buildAll)
+					{
+						Main.menuMode = Interface.errorMessageID;
+					}
+					return false;
+				}
+			}
+			else
+			{
+				windowsData = CompileMod(modToBuild, properties, true);
+				otherData = CompileMod(modToBuild, properties, false);
+				if (windowsData == null || otherData == null)
+				{
+					if (!buildAll)
+					{
+						Main.menuMode = Interface.errorMessageID;
+					}
+					return false;
+				}
 			}
 			Interface.buildMod.SetBuildText();
 			string file = ModPath + Path.DirectorySeparatorChar + Path.GetFileName(modToBuild) + ".tmod";
-			byte[] propertiesData = PropertiesToBytes(properties);
+			byte[] propertiesData = properties.ToBytes();
 			TmodFile modFile = new TmodFile(file);
 			using (MemoryStream memoryStream = new MemoryStream())
 			{
@@ -580,11 +556,28 @@ namespace Terraria.ModLoader
 					modFile.AddFile("Resources", memoryStream.ToArray());
 				}
 			}
-			modFile.AddFile("Windows", File.ReadAllBytes(file1));
-			modFile.AddFile("Other", File.ReadAllBytes(file2));
+			bool same = windowsData.Length == otherData.Length;
+			if (same)
+			{
+				for (int k = 0; k < windowsData.Length; k++)
+				{
+					if (windowsData[k] != otherData[k])
+					{
+						same = false;
+						break;
+					}
+				}
+			}
+			if (same)
+			{
+				modFile.AddFile("All", windowsData);
+			}
+			else
+			{
+				modFile.AddFile("Windows", windowsData);
+				modFile.AddFile("Other", otherData);
+			}
 			modFile.Save();
-			File.Delete(file1);
-			File.Delete(file2);
 			EnableMod(file);
 			if (!buildAll)
 			{
@@ -593,138 +586,53 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static BuildProperties ReadBuildProperties(string modDir)
+		internal static bool CreateModReferenceDlls(BuildProperties properties)
 		{
-			string propertiesFile = modDir + Path.DirectorySeparatorChar + "build.txt";
-			BuildProperties properties = new BuildProperties();
-			if (!File.Exists(propertiesFile))
+			TmodFile[] refFiles = new TmodFile[properties.modReferences.Length];
+			for (int k = 0; k < properties.modReferences.Length; k++)
 			{
-				return properties;
-			}
-			string[] lines = File.ReadAllLines(propertiesFile);
-			foreach (string line in lines)
-			{
-				if (line.Length == 0)
-				{
-					continue;
-				}
-				int split = line.IndexOf('=');
-				string property = line.Substring(0, split).Trim();
-				string value = line.Substring(split + 1).Trim();
-				if (value.Length == 0)
-				{
-					continue;
-				}
-				switch (property)
-				{
-					case "dllReferences":
-						string[] dllReferences = value.Split(',');
-						for (int k = 0; k < dllReferences.Length; k++)
-						{
-							string dllReference = dllReferences[k].Trim();
-							if (dllReference.Length > 0)
-							{
-								dllReferences[k] = dllReference;
-							}
-						}
-						properties.dllReferences = dllReferences;
-						break;
-					case "modReferences":
-						string[] modReferences = value.Split(',');
-						for (int k = 0; k < modReferences.Length; k++)
-						{
-							string modReference = modReferences[k].Trim();
-							if (modReference.Length > 0)
-							{
-								modReferences[k] = modReference;
-							}
-						}
-						properties.modReferences = modReferences;
-						break;
-					case "author":
-						properties.author = value;
-						break;
-					case "version":
-						properties.version = value;
-						break;
-					case "displayName":
-						properties.displayName = value;
-						break;
-				}
-			}
-			foreach (string modReference in properties.modReferences)
-			{
-				TmodFile refFile = new TmodFile(ModPath + Path.DirectorySeparatorChar + modReference + ".tmod");
+				string modReference = properties.modReferences[k];
+				string filePath = ModLoader.ModPath + Path.DirectorySeparatorChar + modReference + ".tmod";
+				TmodFile refFile = new TmodFile(filePath);
+				refFile = new TmodFile(filePath);
 				refFile.Read();
 				if (!refFile.ValidMod())
 				{
 					ErrorLogger.LogModReferenceError(refFile.Name);
-					return null;
+					return false;
 				}
-				byte[] data1 = refFile.GetFile("Windows");
-				byte[] data2 = refFile.GetFile("Other");
-				string refFileName = ModSourcePath + Path.DirectorySeparatorChar + modReference;
-				File.WriteAllBytes(refFileName + "1.dll", refFile.GetFile("Windows"));
-				File.WriteAllBytes(refFileName + "2.dll", refFile.GetFile("Other"));
+				refFiles[k] = refFile;
 			}
-			return properties;
-		}
-
-		private static byte[] PropertiesToBytes(BuildProperties properties)
-		{
-			byte[] data;
-			using (MemoryStream memoryStream = new MemoryStream())
+			for (int k = 0; k < refFiles.Length; k++)
 			{
-				using (BinaryWriter writer = new BinaryWriter(memoryStream))
+				TmodFile refFile = refFiles[k];
+				string modReference = properties.modReferences[k];
+				byte[] data1;
+				byte[] data2;
+				if (refFile.HasFile("All"))
 				{
-					if (properties.dllReferences.Length > 0)
-					{
-						writer.Write("dllReferences");
-						foreach (string reference in properties.dllReferences)
-						{
-							writer.Write(reference);
-						}
-						writer.Write("");
-					}
-					if (properties.modReferences.Length > 0)
-					{
-						writer.Write("modReferences");
-						foreach (string reference in properties.modReferences)
-						{
-							writer.Write(reference);
-						}
-						writer.Write("");
-					}
-					if (properties.author.Length > 0)
-					{
-						writer.Write("author");
-						writer.Write(properties.author);
-					}
-					if (properties.version.Length > 0)
-					{
-						writer.Write("version");
-						writer.Write(properties.version);
-					}
-					if (properties.displayName.Length > 0)
-					{
-						writer.Write("displayName");
-						writer.Write(properties.displayName);
-					}
-					writer.Write("");
-					writer.Flush();
-					data = memoryStream.ToArray();
+					data1 = refFile.GetFile("All");
+					data2 = refFile.GetFile("All");
 				}
+				else
+				{
+					data1 = refFile.GetFile("Windows");
+					data2 = refFile.GetFile("Other");
+				}
+				string refFileName = ModLoader.ModSourcePath + Path.DirectorySeparatorChar + modReference;
+				File.WriteAllBytes(refFileName + "1.dll", data1);
+				File.WriteAllBytes(refFileName + "2.dll", data2);
 			}
-			return data;
+			return true;
 		}
 
-		private static bool CompileMod(string modDir, BuildProperties properties, bool forWindows)
+		private static byte[] CompileMod(string modDir, BuildProperties properties, bool forWindows)
 		{
 			CompilerParameters compileOptions = new CompilerParameters();
 			compileOptions.GenerateExecutable = false;
 			compileOptions.GenerateInMemory = false;
-			compileOptions.OutputAssembly = ModPath + Path.DirectorySeparatorChar + Path.GetFileName(modDir);
-			compileOptions.OutputAssembly += forWindows ? ".tmod1" : ".tmod2";
+			string outFile = ModPath + Path.DirectorySeparatorChar + Path.GetFileName(modDir) + ".dll";
+			compileOptions.OutputAssembly = outFile;
 			bool flag = false;
 			foreach (string reference in buildReferences)
 			{
@@ -786,9 +694,11 @@ namespace Terraria.ModLoader
 			if (errors.HasErrors)
 			{
 				ErrorLogger.LogCompileErrors(errors);
-				return false;
+				return null;
 			}
-			return true;
+			byte[] data = File.ReadAllBytes(outFile);
+			File.Delete(outFile);
+			return data;
 		}
 
 		public static byte[] GetFileBytes(string name)
