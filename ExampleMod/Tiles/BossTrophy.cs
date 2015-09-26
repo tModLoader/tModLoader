@@ -17,8 +17,7 @@ public class BossTrophy : ModTile
         TileObjectData.newTile.StyleWrapLimit = 36;
         TileObjectData.addTile(Type);
         dustType = 7;
-        mapColor = new Color(120, 85, 60);
-        mapName = "Trophy";
+        AddMapEntry(new Color(120, 85, 60), "Trophy");
     }
 
     public override void KillMultiTile(int i, int j, int frameX, int frameY)

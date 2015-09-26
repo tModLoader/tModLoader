@@ -59,8 +59,7 @@ public class ExampleDoorOpen : ModTile
 
         AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
         TileID.Sets.HousingWalls[Type] = true; //needed for non-solid blocks to count as walls
-        mapColor = new Color(200, 200, 200);
-        mapName = "Example Door";
+        AddMapEntry(new Color(200, 200, 200), "Example Door");
         adjTiles = new int[]{TileID.OpenDoor};
         closeDoorID = mod.TileType("ExampleDoorClosed");
     }

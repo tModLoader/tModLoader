@@ -14,7 +14,7 @@ public class ExampleBlock : ModTile
         Main.tileBlockLight[Type] = true;
         Main.tileLighted[Type] = true;
         drop = mod.ItemType("ExampleBlock");
-        mapColor = new Color(200, 200, 200);
+        AddMapEntry(new Color(200, 200,200));
     }
 
     public override void NumDust(int i, int j, bool fail, ref int num)

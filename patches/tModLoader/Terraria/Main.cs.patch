@@ -716,7 +716,7 @@
  					else
  					{
 -						text = Lang.mapLegend[type];
-+						text = Lang.mapLegend[Main.Map[num91, num92]];
++						text = Lang.mapLegend.FromTile(Main.Map[num91, num92], num91, num92);
  					}
  				}
  				float num103 = (num16 * 0.25f * 2f + 1f) / 3f;

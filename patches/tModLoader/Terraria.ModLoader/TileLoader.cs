@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Enums;
 using Terraria.ID;
-using Terraria.Map;
 using Terraria.ObjectData;
 
 namespace Terraria.ModLoader
@@ -131,7 +130,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileFrameCounter, nextTile);
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
-			Array.Resize(ref MapHelper.tileLookup, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Grass, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Stone, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Ice, nextTile);
@@ -623,61 +621,6 @@ namespace Terraria.ModLoader
 			foreach (GlobalTile globalTile in globalTiles)
 			{
 				globalTile.PostDraw(i, j, type, spriteBatch);
-			}
-		}
-		//add internal int x, internal int y, and internal ushort modType fields to Terraria.Map.MapTile
-		//  change constructor, constructor uses, Equals, EqualsWithoutLight, and Clear to accomodate for this
-		//at beginning of Terraria.Map.WorldMap.SetTile add tile.x = x; tile.y = y; tile.modType = TileLoader.MapModType(x, y);
-		//at end of Terraria.Map.MapHelper.CreateMapTile replace return with
-		//  MapTile mapTile = MapTile.Create((ushort)num16, (byte)num2, (byte)num); mapTile.x = i; mapTile.y = j;
-		//  mapTile.modType = TileLoader.MapModType(i, j);
-		//at end of constructor for Terraria.Map.WorldMap add
-		//  for(int x = 0; x < maxWidth; x++) { for(int y = 0; y < maxHeight; y++)
-		//  { this._tiles[x, y].x = x; this._tiles[x, y].y = y; }}
-		internal static ushort MapModType(int i, int j)
-		{
-			Tile tile = Main.tile[i, j];
-			if (tile.active())
-			{
-				if (tile.type >= TileID.Count)
-				{
-					return tile.type;
-				}
-			}
-			else if (tile.wall >= WallID.Count)
-			{
-				return (ushort)(TileCount() + tile.wall - WallID.Count);
-			}
-			return 0;
-		}
-		//in Terraria.Map.MapHelper.GetMapTileXnaColor after result is initialized call
-		//  TileLoader.MapColor(tile, ref result);
-		internal static void MapColor(MapTile mapTile, ref Color color)
-		{
-			Tile tile = Main.tile[mapTile.x, mapTile.y];
-			if (tile.active())
-			{
-				ModTile modTile = GetTile(tile.type);
-				if (modTile != null)
-				{
-					Color? modColor = modTile.MapColor(mapTile.x, mapTile.y);
-					if (modColor.HasValue)
-					{
-						color = modColor.Value;
-					}
-				}
-			}
-			else
-			{
-				ModWall modWall = WallLoader.GetWall(tile.wall);
-				if (modWall != null)
-				{
-					Color? modColor = modWall.MapColor(mapTile.x, mapTile.y);
-					if (modColor.HasValue)
-					{
-						color = modColor.Value;
-					}
-				}
 			}
 		}
 		//in Terraria.WorldGen.UpdateWorld in the while loops updating certain numbers of tiles at end of null check if statements

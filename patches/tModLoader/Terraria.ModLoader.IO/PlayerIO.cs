@@ -208,6 +208,9 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 		//add to end of Terraria.IO.PlayerFileData.MoveToLocal
+		//in Terraria.IO.PlayerFileData.MoveToLocal before iterating through map files add
+		//  matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.tmap";
+		//  files.AddRange(SocialAPI.Cloud.GetFiles(matchPattern));
 		internal static void MoveToLocal(string cloudPath, string localPath)
 		{
 			cloudPath = Path.ChangeExtension(cloudPath, ".tplr");

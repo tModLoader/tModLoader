@@ -15,8 +15,7 @@ public class ExampleBed : ModTile
         TileObjectData.newTile.CopyFrom(TileObjectData.Style4x2); //this style already takes care of direction for us
         TileObjectData.newTile.CoordinateHeights = new int[]{16, 18};
         TileObjectData.addTile(Type);
-        mapColor = new Color(200, 200, 200);
-        mapName = "Example Bed";
+        AddMapEntry(new Color(200, 200, 200), "Example Bed");
         adjTiles = new int[]{TileID.Beds};
         bed = true;
     }

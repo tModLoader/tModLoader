@@ -37,8 +37,7 @@ public class ExampleDoorClosed : ModTile
         TileObjectData.addTile(Type);
 
         AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
-        mapColor = new Color(200, 200, 200);
-        mapName = "Example Door";
+        AddMapEntry(new Color(200, 200, 200), "Example Door");
         adjTiles = new int[]{TileID.ClosedDoor};
         openDoorID = mod.TileType("ExampleDoorOpen");
     }

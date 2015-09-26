@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -30,8 +31,32 @@ namespace Terraria.ModLoader
 		public int soundStyle = 1;
 		public int dustType = 0;
 		public int drop = 0;
-		public Color? mapColor = null;
-		public string mapName = "";
+
+		public void AddMapEntry(Color color, string name = "")
+		{
+			if (!MapLoader.initialized)
+			{
+				MapEntry entry = new MapEntry(color, name);
+				if (!MapLoader.wallEntries.Keys.Contains(Type))
+				{
+					MapLoader.wallEntries[Type] = new List<MapEntry>();
+				}
+				MapLoader.wallEntries[Type].Add(entry);
+			}
+		}
+
+		public void AddMapEntry(Color color, string name, Func<string, int, int, string> nameFunc)
+		{
+			if (!MapLoader.initialized)
+			{
+				MapEntry entry = new MapEntry(color, name, nameFunc);
+				if (!MapLoader.wallEntries.Keys.Contains(Type))
+				{
+					MapLoader.wallEntries[Type] = new List<MapEntry>();
+				}
+				MapLoader.wallEntries[Type].Add(entry);
+			}
+		}
 
 		public virtual bool Autoload(ref string name, ref string texture)
 		{
@@ -67,9 +92,9 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual Color? MapColor(int i, int j)
+		public virtual ushort GetMapOption(int i, int j)
 		{
-			return mapColor;
+			return 0;
 		}
 
 		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b)

@@ -28,8 +28,8 @@ namespace Terraria.ModLoader.IO
 
 		internal static bool WriteTiles(BinaryWriter writer)
 		{
-			IList<ushort> types = new List<ushort>();
-			IList<ushort> walls = new List<ushort>();
+			ISet<ushort> types = new HashSet<ushort>();
+			ISet<ushort> walls = new HashSet<ushort>();
 			for (int i = 0; i < Main.maxTilesX; i++)
 			{
 				for (int j = 0; j < Main.maxTilesY; j++)

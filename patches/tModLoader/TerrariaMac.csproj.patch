@@ -17,7 +17,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
      <DefineConstants>CLIENT; MAC</DefineConstants>
-@@ -238,6 +239,63 @@
+@@ -238,6 +239,66 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -27,6 +27,7 @@
 +    <Compile Include="Terraria.ModLoader.Exceptions\MissingResourceException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\RecipeException.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\ItemIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\MapIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\PlayerIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TileIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TmodFile.cs" />
@@ -53,7 +54,9 @@
 +    <Compile Include="Terraria.ModLoader\GlobalWall.cs" />
 +    <Compile Include="Terraria.ModLoader\Interface.cs" />
 +    <Compile Include="Terraria.ModLoader\ItemLoader.cs" />
++    <Compile Include="Terraria.ModLoader\MapEntry.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
++    <Compile Include="Terraria.ModLoader\MapLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\Mod.cs" />
 +    <Compile Include="Terraria.ModLoader\ModDust.cs" />
 +    <Compile Include="Terraria.ModLoader\ModGore.cs" />
@@ -81,7 +84,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -377,4 +435,7 @@
+@@ -377,4 +438,7 @@
      <Compile Include="Terraria\WorldSections.cs" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

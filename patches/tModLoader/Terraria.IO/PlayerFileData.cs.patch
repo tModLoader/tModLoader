@@ -16,7 +16,16 @@
  			}
  		}
  
-@@ -128,6 +130,7 @@
+@@ -112,6 +114,8 @@
+ 				char directorySeparatorChar = System.IO.Path.DirectorySeparatorChar;
+ 				string matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.map";
+ 				List<string> files = SocialAPI.Cloud.GetFiles(matchPattern);
++				matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.tmap";
++				files.AddRange(SocialAPI.Cloud.GetFiles(matchPattern));
+ 				for (int i = 0; i < files.Count; i++)
+ 				{
+ 					string localPath = string.Concat(new object[]
+@@ -128,6 +132,7 @@
  				this._isCloudSave = false;
  				this._path = playerPathFromName;
  				Main.LocalFavoriteData.SaveFavorite(this);

@@ -23,6 +23,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal void Resize(int newSize)
+		{
+			Array.Resize(ref legend, newSize);
+		}
+
 		public string this[int i]
 		{
 			get
@@ -41,32 +46,18 @@ namespace Terraria.ModLoader
 		//  with Lang.mapLegend.FromType(Main.player[Main.myPlayer].bestOre)
 		public string FromType(int type)
 		{
-			if (type >= TileID.Count)
-			{
-				return TileLoader.GetTile(type).MapName(0, 0);
-			}
 			return this[MapHelper.TileToLookup(type, 0)];
 		}
 		//in Terraria.Main.DrawMap replace text = Lang.mapLegend[type]; with
-		//  text = Lang.mapLegend[Main.Map[num91, num92]];
-		public string this[MapTile mapTile]
+		//  text = Lang.mapLegend.FromTile(Main.Map[num91, num92], num91, num92);
+		public string FromTile(MapTile mapTile, int x, int y)
 		{
-			get
+			string name = legend[mapTile.Type];
+			if (MapLoader.nameFuncs.ContainsKey(mapTile.Type))
 			{
-				Tile tile = Main.tile[mapTile.x, mapTile.y];
-				if (tile.active())
-				{
-					if (tile.type >= TileID.Count)
-					{
-						return TileLoader.GetTile(tile.type).MapName(tile.frameX, tile.frameY);
-					}
-				}
-				else if (tile.wall >= WallID.Count)
-				{
-					return WallLoader.GetWall(tile.wall).mapName;
-				}
-				return legend[mapTile.Type];
+				name = MapLoader.nameFuncs[mapTile.Type](name, x, y);
 			}
+			return name;
 		}
 	}
 }

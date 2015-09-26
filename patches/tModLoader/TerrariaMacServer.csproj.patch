@@ -17,7 +17,7 @@
      <PlatformTarget>x86</PlatformTarget>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-@@ -242,6 +243,63 @@
+@@ -242,6 +243,66 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -27,6 +27,7 @@
 +    <Compile Include="Terraria.ModLoader.Exceptions\MissingResourceException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\RecipeException.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\ItemIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\MapIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\PlayerIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TileIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TmodFile.cs" />
@@ -53,7 +54,9 @@
 +    <Compile Include="Terraria.ModLoader\GlobalWall.cs" />
 +    <Compile Include="Terraria.ModLoader\Interface.cs" />
 +    <Compile Include="Terraria.ModLoader\ItemLoader.cs" />
++    <Compile Include="Terraria.ModLoader\MapEntry.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
++    <Compile Include="Terraria.ModLoader\MapLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\Mod.cs" />
 +    <Compile Include="Terraria.ModLoader\ModDust.cs" />
 +    <Compile Include="Terraria.ModLoader\ModGore.cs" />

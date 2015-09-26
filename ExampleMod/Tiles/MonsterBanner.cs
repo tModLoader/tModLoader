@@ -20,8 +20,7 @@ public class MonsterBanner : ModTile
         TileObjectData.newTile.StyleWrapLimit = 111;
         TileObjectData.addTile(Type);
         dustType = -1;
-        mapColor = new Color(13, 88, 130);
-        mapName = "Banner";
+        AddMapEntry(new Color(13, 88, 130), "Banner");
     }
 
     public override void KillMultiTile(int i, int j, int frameX, int frameY)

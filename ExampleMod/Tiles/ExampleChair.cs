@@ -25,8 +25,7 @@ public class ExampleChair : ModTile
         TileObjectData.addAlternate(1); //facing right will use the second texture style
         TileObjectData.addTile(Type);
         AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
-        mapColor = new Color(200, 200, 200);
-        mapName = "Example Chair";
+        AddMapEntry(new Color(200, 200, 200), "Example Chair");
         adjTiles = new int[]{TileID.Chairs};
     }
 

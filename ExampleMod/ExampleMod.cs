@@ -98,6 +98,10 @@ public class ExampleMod : Mod
         {
             AddTimeCommand(args);
         }
+        else if(command == "item")
+        {
+            ItemCommand(args);
+        }
     }
 
     private void NPCCommand(string[] args)
@@ -193,6 +197,42 @@ public class ExampleMod : Mod
             return;
         }
         Main.time += amount;
+    }
+
+    private void ItemCommand(string[] args)
+    {
+        if(args.Length == 0)
+        {
+            Main.NewText("Usage: /item [type|name] [stack]");
+            return;
+        }
+        try
+        {
+            Player player = Main.player[Main.myPlayer];
+            int type;
+            if(!Int32.TryParse(args[0], out type))
+            {
+                args[0] = args[0].Replace("_", " ");
+                for(int k = 0; k < Main.itemName.Length; k++)
+                {
+                    if(args[0] == Main.itemName[k])
+                    {
+                        type = k;
+                        break;
+                    }
+                }
+            }
+            int stack;
+            if(args.Length < 2 || !Int32.TryParse(args[1], out stack))
+            {
+                stack = 1;
+            }
+            Item.NewItem((int)player.position.X, (int)player.position.Y, player.width, player.height, type, stack);
+        }
+        catch
+        {
+            Main.NewText("Usage: /item [type|name] [stack]");
+        }
     }
 
     //spawning helper methods imported from my tAPI mod

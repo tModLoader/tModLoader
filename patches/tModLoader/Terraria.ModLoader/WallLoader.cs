@@ -4,7 +4,6 @@ using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
-using Terraria.Map;
 
 namespace Terraria.ModLoader
 {
@@ -72,7 +71,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.wallLargeFrames, nextWall);
 			Array.Resize(ref Main.wallFrame, nextWall);
 			Array.Resize(ref Main.wallFrameCounter, nextWall);
-			Array.Resize(ref MapHelper.wallLookup, nextWall);
 			Array.Resize(ref WallID.Sets.Conversion.Grass, nextWall);
 			Array.Resize(ref WallID.Sets.Conversion.Stone, nextWall);
 			Array.Resize(ref WallID.Sets.Conversion.Sandstone, nextWall);

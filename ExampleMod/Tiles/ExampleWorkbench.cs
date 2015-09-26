@@ -19,8 +19,7 @@ public class ExampleWorkbench : ModTile
         TileObjectData.newTile.CoordinateHeights = new int[]{18};
         TileObjectData.addTile(Type);
         AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
-        mapColor = new Color(200, 200, 200);
-        mapName = "Example Workbench";
+        AddMapEntry(new Color(200, 200, 200), "Example Workbench");
         adjTiles = new int[]{TileID.WorkBenches};
     }
 

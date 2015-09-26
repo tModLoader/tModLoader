@@ -168,6 +168,7 @@ namespace Terraria.ModLoader
 				}
 				num++;
 			}
+			MapLoader.SetupModMap();
 			Interface.loadMods.SetProgressRecipes();
 			for (int k = 0; k < Recipe.maxRecipes; k++)
 			{
@@ -384,6 +385,7 @@ namespace Terraria.ModLoader
 			mods.Clear();
 			MountLoader.Unload();
 			ResizeArrays(true);
+			MapLoader.UnloadModMap();
 		}
 
 		internal static void Reload()

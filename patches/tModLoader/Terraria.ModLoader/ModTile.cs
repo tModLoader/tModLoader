@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -32,8 +33,6 @@ namespace Terraria.ModLoader
 		public int dustType = 0;
 		public int drop = 0;
 		public int animationFrameHeight = 0;
-		public Color? mapColor = null;
-		public string mapName = "";
 		public float mineResist = 1f;
 		public int minPick = 0;
 		public int[] adjTiles = new int[0];
@@ -46,6 +45,32 @@ namespace Terraria.ModLoader
 		{
 			Array.Resize(ref array, array.Length + 1);
 			array[array.Length - 1] = Type;
+		}
+
+		public void AddMapEntry(Color color, string name = "")
+		{
+			if (!MapLoader.initialized)
+			{
+				MapEntry entry = new MapEntry(color, name);
+				if (!MapLoader.tileEntries.Keys.Contains(Type))
+				{
+					MapLoader.tileEntries[Type] = new List<MapEntry>();
+				}
+				MapLoader.tileEntries[Type].Add(entry);
+			}
+		}
+
+		public void AddMapEntry(Color color, string name, Func<string, int, int, string> nameFunc)
+		{
+			if (!MapLoader.initialized)
+			{
+				MapEntry entry = new MapEntry(color, name, nameFunc);
+				if (!MapLoader.tileEntries.Keys.Contains(Type))
+				{
+					MapLoader.tileEntries[Type] = new List<MapEntry>();
+				}
+				MapLoader.tileEntries[Type].Add(entry);
+			}
 		}
 
 		public virtual bool Autoload(ref string name, ref string texture)
@@ -119,14 +144,9 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual Color? MapColor(int i, int j)
+		public virtual ushort GetMapOption(int i, int j)
 		{
-			return mapColor;
-		}
-
-		public virtual string MapName(int frameX, int frameY)
-		{
-			return mapName;
+			return 0;
 		}
 
 		public virtual void RandomUpdate(int i, int j)

@@ -29,8 +29,7 @@ public class ExampleChest : ModTile
         TileObjectData.newTile.LavaDeath = false;
         TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
         TileObjectData.addTile(Type);
-        mapColor = new Color(200, 200, 200);
-        mapName = "Chest";
+        AddMapEntry(new Color(200, 200, 200), "Chest");
         adjTiles = new int[]{TileID.Containers};
         chest = "Example Chest";
     }

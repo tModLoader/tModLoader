@@ -1,32 +1,55 @@
 --- src/Terraria\Terraria.Map\MapHelper.cs
 +++ src/tModLoader\Terraria.Map\MapHelper.cs
-@@ -4,6 +4,7 @@
+@@ -4,6 +4,8 @@
  using System.Diagnostics;
  using System.IO;
  using Terraria.IO;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -1109,6 +1110,7 @@
- 		public static Color GetMapTileXnaColor(ref MapTile tile)
- 		{
- 			Color result = MapHelper.colorLookup[(int)tile.Type];
-+			TileLoader.MapColor(tile, ref result);
- 			byte color = tile.Color;
- 			if (color > 0)
- 			{
-@@ -1795,7 +1797,11 @@
+@@ -106,7 +108,8 @@
+ 		private static ushort dirtPosition;
+ 		private static ushort rockPosition;
+ 		private static ushort hellPosition;
+-		private static Color[] colorLookup;
++		internal static ushort modPosition;
++		internal static Color[] colorLookup;
+ 		private static ushort[] snowTypes;
+ 		private static ushort wallRangeStart;
+ 		private static ushort wallRangeEnd;
+@@ -1042,6 +1045,7 @@
+ 			}
+ 			MapHelper.hellPosition = num11;
+ 			MapHelper.colorLookup[(int)num11] = color7;
++			MapHelper.modPosition = (ushort)(num11 + 1);
+ 			MapHelper.snowTypes = new ushort[6];
+ 			MapHelper.snowTypes[0] = MapHelper.tileLookup[147];
+ 			MapHelper.snowTypes[1] = MapHelper.tileLookup[161];
+@@ -1795,6 +1799,7 @@
  				}
  			}
  			int num16 = num3 + num4;
--			return MapTile.Create((ushort)num16, (byte)num2, (byte)num);
-+			MapTile mapTile = MapTile.Create((ushort)num16, (byte)num2, (byte)num);
-+			mapTile.x = i;
-+			mapTile.y = j;
-+			mapTile.modType = TileLoader.MapModType(i, j);
-+			return mapTile;
++			MapLoader.ModMapOption(ref num16, i, j);
+ 			return MapTile.Create((ushort)num16, (byte)num2, (byte)num);
  		}
  
- 		public static void SaveMap()
+@@ -1949,7 +1954,7 @@
+ 										int num5;
+ 										ushort num6;
+ 										int num7;
+-										if (mapTile.Light <= 18)
++										if (mapTile.Light <= 18 || mapTile.Type >= MapHelper.modPosition)
+ 										{
+ 											flag4 = false;
+ 											flag3 = false;
+@@ -2134,6 +2139,7 @@
+ 							}
+ 						}
+ 					}
++					MapIO.WriteModFile(text, isCloudSave);
+ 				}
+ 				catch (Exception value)
+ 				{
 
