@@ -795,10 +795,13 @@ namespace Terraria.ModLoader
 		//  NPCLoader.SetChatButtons(ref text, ref text2);
 		internal static void SetChatButtons(ref string button, ref string button2)
 		{
-			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-			if (IsModNPC(npc))
+			if (Main.player[Main.myPlayer].talkNPC >= 0)
 			{
-				npc.modNPC.SetChatButtons(ref button, ref button2);
+				NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
+				if (IsModNPC(npc))
+				{
+					npc.modNPC.SetChatButtons(ref button, ref button2);
+				}
 			}
 		}
 		//add 1 to Terraria.Main.numShops

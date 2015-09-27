@@ -30,7 +30,7 @@
        <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
      </Reference>
      <Reference Include="System.Windows.Forms" />
-@@ -51,6 +58,7 @@
+@@ -51,11 +58,17 @@
      <Reference Include="Microsoft.Xna.Framework.Xact" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
@@ -38,7 +38,17 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -236,6 +244,72 @@
+     <Compile Include="Extensions\EnumerationExtensions.cs" />
+     <Compile Include="Properties\AssemblyInfo.cs" />
++    <Compile Include="Properties\Resources.Designer.cs">
++      <AutoGen>True</AutoGen>
++      <DesignTime>True</DesignTime>
++      <DependentUpon>Resources.resx</DependentUpon>
++    </Compile>
+     <Compile Include="Terraria.Achievements\Achievement.cs" />
+     <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
+     <Compile Include="Terraria.Achievements\AchievementCondition.cs" />
+@@ -236,6 +249,72 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -111,12 +121,21 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -383,5 +457,11 @@
+@@ -379,9 +458,20 @@
+   </ItemGroup>
+   <ItemGroup>
+     <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
++    <EmbeddedResource Include="Properties\Resources.resx">
++      <Generator>ResXFileCodeGenerator</Generator>
++      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
++    </EmbeddedResource>
+     <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <None Include="Terraria.ModLoader.Default\MysteryItem.png" />
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 +  <PropertyGroup>

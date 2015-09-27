@@ -247,7 +247,7 @@
  									}
  								}
 -								else if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 10)
-+								else if (TileLoader.OpenDoorID(Main.tile[Player.tileTargetX, Player.tileTargetY]) >= 0)
++								else if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == TileID.ClosedDoor || TileLoader.OpenDoorID(Main.tile[Player.tileTargetX, Player.tileTargetY]) >= 0)
  								{
  									int num207 = Player.tileTargetX;
  									int num208 = Player.tileTargetY;

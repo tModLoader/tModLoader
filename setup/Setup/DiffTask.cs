@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Setup
 {
     public class DiffTask : Task
     {
-        public static string[] extensions = {".cs", ".csproj", ".ico"};
+        public static string[] extensions = {".cs", ".csproj", ".ico", ".resx", ".png"};
         public static string[] excluded = {"bin" + Path.DirectorySeparatorChar, "obj" + Path.DirectorySeparatorChar};
 
         public readonly string baseDir;

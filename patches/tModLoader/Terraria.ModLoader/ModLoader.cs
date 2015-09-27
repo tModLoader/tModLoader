@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
 #else
 		private const bool windows = false;
 		#endif
-		//change Terraria.Main.SavePath to use "ModLoader" folder
+		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
 		public static readonly string DllPath = Main.SavePath + Path.DirectorySeparatorChar + "dllReferences";

@@ -19,6 +19,17 @@
  		public bool arrow;
  		public int numHits;
  		public bool bobber;
+@@ -36,8 +43,8 @@
+ 		public float knockBack;
+ 		public bool friendly;
+ 		public int penetrate = 1;
+-		private int[] npcImmune = new int[200];
+-		private bool updatedNPCImmunity;
++		public int[] npcImmune = new int[200];
++		public bool updatedNPCImmunity;
+ 		public int maxPenetrate = 1;
+ 		public int identity;
+ 		public float light;
 @@ -98,6 +105,7 @@
  
  		public void SetDefaults(int Type)
