@@ -5,6 +5,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.UI;
+using System.Net;
+using System.Collections.Generic;
+using System.Text;
+using System.Collections.Specialized;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI
 {
@@ -45,6 +50,21 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button2.OnClick += new UIElement.MouseEvent(this.BuildAndReload);
 			base.Append(button2);
+			TmodFile[] modFiles = ModLoader.FindMods();
+			foreach (TmodFile file in modFiles)
+			{
+				if (Path.GetFileNameWithoutExtension(file.Name).Equals(Path.GetFileName(mod)))
+				{
+					UITextPanel button3 = new UITextPanel("Publish", 1f, false);
+					button3.CopyStyle(button2);
+					button3.Width.Set(100f, 0f);
+					button3.Left.Set(390f, 0f);
+					button3.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+					button3.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+					button3.OnClick += new UIElement.MouseEvent(this.Publish);
+					base.Append(button3);
+				}
+			}
 			base.OnDoubleClick += new UIElement.MouseEvent(this.BuildAndReload);
 		}
 
@@ -97,6 +117,61 @@ namespace Terraria.ModLoader.UI
 			ModLoader.reloadAfterBuild = true;
 			ModLoader.buildAll = false;
 			Main.menuMode = Interface.buildModID;
+		}
+
+		private void Publish(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(10, -1, -1, 1);
+			try
+			{
+				TmodFile[] modFiles = ModLoader.FindMods();
+				bool ok = false;
+				TmodFile theTModFile = null;
+				foreach (TmodFile tModFile in modFiles)
+				{
+					if (Path.GetFileName(tModFile.Name).Equals(@Path.GetFileName(mod) + @".tmod"))
+					{
+						ok = true;
+						theTModFile = tModFile;
+					}
+				}
+				if (!ok)
+				{
+					throw new Exception();
+				}
+				System.Net.ServicePointManager.Expect100Continue = false;
+				string filename = @ModLoader.ModPath + @Path.DirectorySeparatorChar + @Path.GetFileName(mod) + @".tmod";
+				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
+				using (var stream = File.Open(filename, FileMode.Open))
+				{
+					var files = new[]
+					{
+						new IO.UploadFile
+						{
+							Name = "file",
+							Filename = Path.GetFileName(filename),
+							//    ContentType = "text/plain",
+							Stream = stream
+						}
+					};
+					BuildProperties bp = BuildProperties.ReadModFile(theTModFile);
+					var values = new NameValueCollection
+					{
+						{ "displayname", bp.displayName },
+						{ "name", Path.GetFileNameWithoutExtension(filename) },
+						{ "version", bp.version },
+						{ "author", bp.author },
+						{ "description", "Coming Soon" },
+					};
+					byte[] result = IO.UploadFile.UploadFiles(url, files, values);
+					string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
+					ErrorLogger.Log(s);
+				}
+			}
+			catch (WebException e)
+			{
+				ErrorLogger.LogException(e);
+			}
 		}
 	}
 }

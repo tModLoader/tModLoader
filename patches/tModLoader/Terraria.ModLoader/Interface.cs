@@ -14,11 +14,15 @@ namespace Terraria.ModLoader
 		internal const int buildAllModsID = 10004;
 		internal const int errorMessageID = 10005;
 		internal const int reloadModsID = 10006;
+		internal const int modBrowserID = 10007;
+		internal const int modInfoID = 10008;
 		private static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
 		internal static UIBuildMod buildMod = new UIBuildMod();
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
+		internal static UIModBrowser modBrowser = new UIModBrowser();
+		private static UIModInfo modInfo = new UIModInfo();
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num9, ref num4);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
@@ -36,6 +40,14 @@ namespace Terraria.ModLoader
 			{
 				Main.PlaySound(10, -1, -1, 1);
 				Main.menuMode = modSourcesID;
+			}
+			buttonIndex++;
+			numButtons++;
+			buttonNames[buttonIndex] = "Mod Browser (Alpha)";
+			if (selectedMenu == buttonIndex)
+			{
+				Main.PlaySound(10, -1, -1, 1);
+				Main.menuMode = modBrowserID;
 			}
 			buttonIndex++;
 			numButtons++;
@@ -86,6 +98,16 @@ namespace Terraria.ModLoader
 			else if (Main.menuMode == reloadModsID)
 			{
 				ModLoader.Reload();
+			}
+			else if (Main.menuMode == modBrowserID)
+			{
+				Main.MenuUI.SetState(modBrowser);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == modInfoID)
+			{
+				Main.MenuUI.SetState(modInfo);
+				Main.menuMode = 888;
 			}
 		}
 	}

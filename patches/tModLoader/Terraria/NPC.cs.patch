@@ -19,6 +19,15 @@
  		public const int MaxMoonLordCountdown = 3600;
  		public const int maxBuffs = 5;
  		public const int breathMax = 200;
+@@ -81,7 +88,7 @@
+ 		public bool dontCountMe;
+ 		public int[] buffType = new int[5];
+ 		public int[] buffTime = new int[5];
+-		public bool[] buffImmune = new bool[191];
++		public bool[] buffImmune = new bool[BuffLoader.BuffCount()];
+ 		public bool midas;
+ 		public bool ichor;
+ 		public bool onFire;
 @@ -1524,7 +1531,7 @@
  						return "Agnew";
  				}
@@ -87,7 +96,16 @@
  			this.takenDamageMultiplier = 1f;
  			this.extraValue = 0f;
  			for (int i = 0; i < this.playerInteraction.Length; i++)
-@@ -11532,6 +11543,8 @@
+@@ -3164,7 +3175,7 @@
+ 				this.buffTime[k] = 0;
+ 				this.buffType[k] = 0;
+ 			}
+-			for (int l = 0; l < 191; l++)
++			for (int l = 0; l < BuffLoader.BuffCount(); l++)
+ 			{
+ 				this.buffImmune[l] = false;
+ 			}
+@@ -11532,9 +11543,11 @@
  				this.catchItem = 3564;
  				this.rarity = 3;
  			}
@@ -95,7 +113,11 @@
 +			NPCLoader.SetupNPC(this);
  			if (flag)
  			{
- 				for (int num2 = 0; num2 < 191; num2++)
+-				for (int num2 = 0; num2 < 191; num2++)
++				for (int num2 = 0; num2 < BuffLoader.BuffCount(); num2++)
+ 				{
+ 					this.buffImmune[num2] = true;
+ 				}
 @@ -11584,7 +11597,6 @@
  			this.defDamage = this.damage;
  			this.defDefense = this.defense;

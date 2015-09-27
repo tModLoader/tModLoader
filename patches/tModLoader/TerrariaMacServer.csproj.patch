@@ -17,7 +17,15 @@
      <PlatformTarget>x86</PlatformTarget>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-@@ -242,6 +243,66 @@
+@@ -52,6 +53,7 @@
+     <Reference Include="System.Core" />
+     <Reference Include="System" />
+     <Reference Include="System.Drawing" />
++    <Reference Include="System.XML" />
+     <Reference Include="WindowsBase" />
+     <Reference Include="System.Windows.Forms" />
+   </ItemGroup>
+@@ -242,6 +244,72 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -31,6 +39,7 @@
 +    <Compile Include="Terraria.ModLoader.IO\PlayerIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TileIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TmodFile.cs" />
++    <Compile Include="Terraria.ModLoader.IO\UploadFile.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\WorldIO.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIColorTextPanel.cs" />
@@ -38,10 +47,14 @@
 +    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadProgress.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIMessageBox.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModBrowser.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModDownloadItem.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModInfo.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIMods.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModSourceItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModSources.cs" />
++    <Compile Include="Terraria.ModLoader\BuffLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\BuildProperties.cs" />
 +    <Compile Include="Terraria.ModLoader\CraftGroup.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipLoader.cs" />
@@ -58,6 +71,7 @@
 +    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\Mod.cs" />
++    <Compile Include="Terraria.ModLoader\ModBuff.cs" />
 +    <Compile Include="Terraria.ModLoader\ModDust.cs" />
 +    <Compile Include="Terraria.ModLoader\ModGore.cs" />
 +    <Compile Include="Terraria.ModLoader\ModHooks.cs" />
