@@ -141,7 +141,6 @@ namespace Terraria.ModLoader.UI
 				}
 				loaded = true;
 			}
-
 		}
 	}
 }

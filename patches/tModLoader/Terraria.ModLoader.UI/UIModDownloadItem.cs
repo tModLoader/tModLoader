@@ -64,9 +64,6 @@ namespace Terraria.ModLoader.UI
 				button2.OnClick += new UIElement.MouseEvent(this.DownloadMod);
 				base.Append(button2);
 			}
-			else
-			{
-			}
 			base.OnDoubleClick += new UIElement.MouseEvent(this.Moreinfo);
 		}
 
@@ -108,7 +105,7 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(12, -1, -1, 1);
 			try
 			{
-				using (var client = new WebClient())
+				using (WebClient client = new WebClient())
 				{
 					client.DownloadFile(download, ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod");
 				}
@@ -124,7 +121,7 @@ namespace Terraria.ModLoader.UI
 				base.RemoveChild(button2);
 				ModLoader.Reload();
 			}
-			catch (WebException ex)
+			catch (WebException)
 			{
 				Main.menuMode = Interface.errorMessageID;
 			}

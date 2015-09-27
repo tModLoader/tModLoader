@@ -147,15 +147,7 @@
  			if (Main.rand.Next(150) == 0)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1810, 1, false, 0, false, false);
-@@ -5043,6 +5076,7 @@
- 					{
- 						this.buffTime[k]--;
- 					}
-+					BuffLoader.UpdateBuffs(this.buffType[k], k, i);
- 					if (this.buffType[k] == 1)
- 					{
- 						this.lavaImmune = true;
-@@ -5810,6 +5844,13 @@
+@@ -5810,6 +5843,13 @@
  							this.buffTime[k] = 18000;
  						}
  					}
@@ -169,6 +161,14 @@
  					else if (this.buffType[k] == 90)
  					{
  						this.mount.SetMount(0, this, false);
+@@ -6584,6 +6624,7 @@
+ 					{
+ 						this.meleeEnchant = 8;
+ 					}
++					BuffLoader.Update(this.buffType[k], this, ref k);
+ 				}
+ 			}
+ 		}
 @@ -6818,6 +6859,7 @@
  				{
  					this.accDreamCatcher = true;

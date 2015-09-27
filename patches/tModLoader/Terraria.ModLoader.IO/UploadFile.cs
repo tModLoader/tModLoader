@@ -67,6 +67,5 @@ namespace Terraria.ModLoader.IO
 				return stream.ToArray();
 			}
 		}
-
 	}
 }

@@ -37,19 +37,11 @@ namespace Terraria.ModLoader
 			return mod.Properties.Autoload;
 		}
 
-		//internal void SetupBuff(Projectile projectile)
-		//{
-		//    ModProjectile newProjectile = (ModProjectile)Activator.CreateInstance(GetType());
-		//    newProjectile.projectile = projectile;
-		//    projectile.modProjectile = newProjectile;
-		//    newProjectile.mod = mod;
-		//    newProjectile.SetDefaults();
-		//}
-		public virtual void UpdateBuffs(int k, int i)
+		public virtual void SetDefaults()
 		{
 		}
 
-		public virtual void SetDefaults()
+		public virtual void Update(Player player, ref int buffIndex)
 		{
 		}
 	}

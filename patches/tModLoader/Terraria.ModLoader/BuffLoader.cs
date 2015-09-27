@@ -13,7 +13,6 @@ namespace Terraria.ModLoader
 		private static int nextBuff = BuffID.Count;
 		internal static readonly IDictionary<int, ModBuff> buffs = new Dictionary<int, ModBuff>();
 		//   internal static readonly IList<GlobalBuff> globalBuffs = new List<GlobalBuff>();
-
 		internal static int ReserveBuffID()
 		{
 			int reserveID = nextBuff;
@@ -53,8 +52,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.buffDoubleApply, nextBuff);
 			Array.Resize(ref Main.buffAlpha, nextBuff);
 			Array.Resize(ref Main.buffTexture, nextBuff);
-			//Array.Resize(ref NPC.buffImune, nextBuff);
-			//Array.Resize(ref Player.buffImune., nextBuff);
 		}
 
 		internal static void Unload()
@@ -80,11 +77,12 @@ namespace Terraria.ModLoader
 		//    }
 		//}
 		// TODO hooks here
-		internal static void UpdateBuffs(int type, int k, int i)
+		//in Terraria.Player.UpdateBuffs at end of if else chain add BuffLoader.Update(this.buffType[k], this, ref k);
+		internal static void Update(int buff, Player player, ref int buffIndex)
 		{
-			if (IsModBuff(type))
+			if (IsModBuff(buff))
 			{
-				GetBuff(type).UpdateBuffs(k, i);
+				GetBuff(buff).Update(player, ref buffIndex);
 			}
 		}
 	}
