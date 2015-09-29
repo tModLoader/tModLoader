@@ -107,7 +107,17 @@ namespace Terraria.ModLoader.UI
 			{
 				using (WebClient client = new WebClient())
 				{
-					client.DownloadFile(download, ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod");
+					Interface.modBrowser.selectedItem = this;
+					client.DownloadProgressChanged += (s, e) =>
+					{
+						Interface.downloadMod.SetProgress(e);
+					};
+					client.DownloadFileCompleted += (s, e) =>
+					{
+						Main.menuMode = Interface.modBrowserID;
+					};
+					client.DownloadFileAsync(new Uri(download), ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod");
+					//client.DownloadFile(download, ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod");
 				}
 				if (!update)
 				{
@@ -117,13 +127,12 @@ namespace Terraria.ModLoader.UI
 						writer.Write("false");
 					}
 				}
-				//Interface.modBrowser.modList.Remove(this);
 				base.RemoveChild(button2);
-				ModLoader.Reload();
+				Main.menuMode = Interface.downloadModID;
 			}
-			catch (WebException)
+			catch (WebException e)
 			{
-				Main.menuMode = Interface.errorMessageID;
+				ErrorLogger.LogModBrowserException(e);
 			}
 		}
 

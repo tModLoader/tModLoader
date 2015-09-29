@@ -165,12 +165,12 @@ namespace Terraria.ModLoader.UI
 					};
 					byte[] result = IO.UploadFile.UploadFiles(url, files, values);
 					string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
-					ErrorLogger.Log(s);
+					ErrorLogger.LogModPublish(s);
 				}
 			}
 			catch (WebException e)
 			{
-				ErrorLogger.LogException(e);
+				ErrorLogger.LogModBrowserException(e);
 			}
 		}
 	}

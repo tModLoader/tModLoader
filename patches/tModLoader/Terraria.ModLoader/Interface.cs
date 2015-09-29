@@ -16,6 +16,7 @@ namespace Terraria.ModLoader
 		internal const int reloadModsID = 10006;
 		internal const int modBrowserID = 10007;
 		internal const int modInfoID = 10008;
+		internal const int downloadModID = 10009;
 		private static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -23,6 +24,7 @@ namespace Terraria.ModLoader
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
 		private static UIModInfo modInfo = new UIModInfo();
+		internal static UIDownloadMod downloadMod = new UIDownloadMod();
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num9, ref num4);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
@@ -107,6 +109,11 @@ namespace Terraria.ModLoader
 			else if (Main.menuMode == modInfoID)
 			{
 				Main.MenuUI.SetState(modInfo);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == downloadModID)
+			{
+				Main.MenuUI.SetState(downloadMod);
 				Main.menuMode = 888;
 			}
 		}

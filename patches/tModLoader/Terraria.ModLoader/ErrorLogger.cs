@@ -132,6 +132,32 @@ namespace Terraria.ModLoader
 			Main.menuMode = Interface.errorMessageID;
 		}
 
+		internal static void LogModBrowserException(Exception e)
+		{
+			Directory.CreateDirectory(LogPath);
+			string file = LogPath + Path.DirectorySeparatorChar + "Runtime Error.txt";
+			using (StreamWriter writer = File.CreateText(file))
+			{
+				writer.WriteLine(e.Message);
+				writer.WriteLine(e.StackTrace);
+			}
+			Interface.errorMessage.SetMessage("The game has crashed accessing Web Resources!\n\n" + e.Message + "\n" + e.StackTrace);
+			Interface.errorMessage.SetGotoMenu(0);
+			Interface.errorMessage.SetFile(file);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
+		}
+
+		internal static void LogModPublish(string message)
+		{
+			ErrorLogger.Log(message);
+			Interface.errorMessage.SetMessage("The Mod Browser server response:\n\n" + message);
+			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
+			Interface.errorMessage.SetFile(LogPath + Path.DirectorySeparatorChar + "Logs.txt");
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
+		}
+
 		public static void Log(string message)
 		{
 			Directory.CreateDirectory(LogPath);

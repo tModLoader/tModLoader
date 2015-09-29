@@ -107,9 +107,9 @@ namespace Terraria.ModLoader.UI
 				{
 					xmlDoc.Load("http://javid.ddns.net/tModLoader/listmods.php");
 				}
-				catch
+				catch (Exception e)
 				{
-					Main.menuMode = Interface.errorMessageID;
+					ErrorLogger.LogModBrowserException(e);
 					return;
 				}
 				foreach (XmlNode xmlNode in xmlDoc.DocumentElement)
