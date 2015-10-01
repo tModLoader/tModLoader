@@ -32,6 +32,12 @@ public class ExampleBlock : ModItem
         recipe = new ModRecipe(mod);
         recipe.AddIngredient(null, "ExampleWall", 4);
         recipe.SetResult(this);
+        recipe.AddTile(null, "ExampleWorkbench");
+        recipe.AddRecipe();
+
+        recipe = new ModRecipe(mod);
+        recipe.AddIngredient(null, "ExamplePlatform", 2);
+        recipe.SetResult(this);
         recipe.AddRecipe();
     }
 }}

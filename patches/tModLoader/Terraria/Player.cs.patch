@@ -201,6 +201,29 @@
  		}
  
  		public void UpdateSocialShadow()
+@@ -10577,11 +10622,11 @@
+ 				}
+ 				list11.Clear();
+ 			}
+-			if (item.createTile == 19 && num8 == -1 && num9 == -1)
++			if (TileLoader.IsPlatform(item.createTile) && num8 == -1 && num9 == -1)
+ 			{
+ 				List<Tuple<int, int>> list12 = new List<Tuple<int, int>>();
+ 				bool flag3 = false;
+-				if (Main.tile[num, num2].active() && Main.tile[num, num2].type == 19)
++				if (Main.tile[num, num2].active() && TileLoader.IsPlatform(Main.tile[num, num2].type))
+ 				{
+ 					flag3 = true;
+ 				}
+@@ -10592,7 +10637,7 @@
+ 						for (int num61 = num6; num61 <= num7; num61++)
+ 						{
+ 							Tile tile4 = Main.tile[num60, num61];
+-							if (tile4.active() && tile4.type == 19)
++							if (tile4.active() && TileLoader.IsPlatform(tile4.type))
+ 							{
+ 								int num62 = (int)tile4.slope();
+ 								if (num62 != 2 && !Main.tile[num60 - 1, num61 - 1].active())
 @@ -14417,6 +14462,7 @@
  				num3 = 1.5f;
  				num = 0.125f;
@@ -381,6 +404,210 @@
  					{
  						flag4 = true;
  						flag3 = TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, (int)((ushort)this.inventory[this.selectedItem].createTile), this.inventory[this.selectedItem].placeStyle, this.direction, out tileObject, false);
+@@ -25649,7 +25723,7 @@
+ 								{
+ 									if (!WorldGen.SolidTileNoAttach(Player.tileTargetX, Player.tileTargetY + 1) && (Main.tile[Player.tileTargetX, Player.tileTargetY + 1].halfBrick() || Main.tile[Player.tileTargetX, Player.tileTargetY + 1].slope() != 0))
+ 									{
+-										if (Main.tile[Player.tileTargetX, Player.tileTargetY + 1].type != 19)
++										if (!TileLoader.IsPlatform(Main.tile[Player.tileTargetX, Player.tileTargetY + 1].type))
+ 										{
+ 											WorldGen.SlopeTile(Player.tileTargetX, Player.tileTargetY + 1, 0);
+ 											if (Main.netMode == 1)
+@@ -25660,7 +25734,7 @@
+ 									}
+ 									else if (!WorldGen.SolidTileNoAttach(Player.tileTargetX, Player.tileTargetY + 1) && !WorldGen.SolidTileNoAttach(Player.tileTargetX - 1, Player.tileTargetY) && (Main.tile[Player.tileTargetX - 1, Player.tileTargetY].halfBrick() || Main.tile[Player.tileTargetX - 1, Player.tileTargetY].slope() != 0))
+ 									{
+-										if (Main.tile[Player.tileTargetX, Player.tileTargetY + 1].type != 19)
++										if (!TileLoader.IsPlatform(Main.tile[Player.tileTargetX, Player.tileTargetY + 1].type))
+ 										{
+ 											WorldGen.SlopeTile(Player.tileTargetX - 1, Player.tileTargetY, 0);
+ 											if (Main.netMode == 1)
+@@ -25669,7 +25743,7 @@
+ 											}
+ 										}
+ 									}
+-									else if (!WorldGen.SolidTileNoAttach(Player.tileTargetX, Player.tileTargetY + 1) && !WorldGen.SolidTileNoAttach(Player.tileTargetX - 1, Player.tileTargetY) && !WorldGen.SolidTileNoAttach(Player.tileTargetX + 1, Player.tileTargetY) && (Main.tile[Player.tileTargetX + 1, Player.tileTargetY].halfBrick() || Main.tile[Player.tileTargetX + 1, Player.tileTargetY].slope() != 0) && Main.tile[Player.tileTargetX, Player.tileTargetY + 1].type != 19)
++									else if (!WorldGen.SolidTileNoAttach(Player.tileTargetX, Player.tileTargetY + 1) && !WorldGen.SolidTileNoAttach(Player.tileTargetX - 1, Player.tileTargetY) && !WorldGen.SolidTileNoAttach(Player.tileTargetX + 1, Player.tileTargetY) && (Main.tile[Player.tileTargetX + 1, Player.tileTargetY].halfBrick() || Main.tile[Player.tileTargetX + 1, Player.tileTargetY].slope() != 0) && !TileLoader.IsPlatform(Main.tile[Player.tileTargetX, Player.tileTargetY + 1].type))
+ 									{
+ 										WorldGen.SlopeTile(Player.tileTargetX + 1, Player.tileTargetY, 0);
+ 										if (Main.netMode == 1)
+@@ -25717,7 +25791,7 @@
+ 								{
+ 									num44 = -1;
+ 								}
+-								if (num38 >= 0 && Main.tileSolid[num38] && (!Main.tileNoAttach[num38] || num38 == 19))
++								if (num38 >= 0 && Main.tileSolid[num38] && (!Main.tileNoAttach[num38] || TileLoader.IsPlatform(num38)))
+ 								{
+ 									flag3 = true;
+ 								}
+@@ -25851,7 +25925,7 @@
+ 								flag3 = false;
+ 							}
+ 						}
+-						if (!flag3 && this.inventory[this.selectedItem].createTile == 19)
++						if (!flag3 && TileLoader.IsPlatform(this.inventory[this.selectedItem].createTile))
+ 						{
+ 							for (int num49 = Player.tileTargetX - 1; num49 <= Player.tileTargetX + 1; num49++)
+ 							{
+@@ -26026,7 +26100,7 @@
+ 									NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1);
+ 								}
+ 							}
+-							if (this.inventory[this.selectedItem].createTile == 19 && Main.smartDigEnabled)
++							if (TileLoader.IsPlatform(this.inventory[this.selectedItem].createTile) && Main.smartDigEnabled)
+ 							{
+ 								int num58 = Player.tileTargetX;
+ 								int num59 = Player.tileTargetY;
+@@ -26038,7 +26112,7 @@
+ 								{
+ 									for (int num64 = -1; num64 < 2; num64++)
+ 									{
+-										if ((num63 != 0 || num64 != 0) && Main.tile[num58 + num63, num59 + num64].type == 19)
++										if ((num63 != 0 || num64 != 0) && TileLoader.IsPlatform(Main.tile[num58 + num63, num59 + num64].type))
+ 										{
+ 											flag7 = false;
+ 										}
+@@ -26047,22 +26121,22 @@
+ 								if (!flag7)
+ 								{
+ 									Tile tile6 = Main.tile[num58 - 1, num59 - 1];
+-									if (tile6.active() && tile6.type == 19 && tile6.slope() != 2)
++									if (tile6.active() && TileLoader.IsPlatform(tile6.type) && tile6.slope() != 2)
+ 									{
+ 										num61++;
+ 									}
+ 									tile6 = Main.tile[num58 - 1, num59 + 1];
+-									if (tile6.active() && tile6.type == 19 && tile6.slope() != 1)
++									if (tile6.active() && TileLoader.IsPlatform(tile6.type) && tile6.slope() != 1)
+ 									{
+ 										num62++;
+ 									}
+ 									tile6 = Main.tile[num58 + 1, num59 - 1];
+-									if (tile6.active() && tile6.type == 19 && tile6.slope() != 1)
++									if (tile6.active() && TileLoader.IsPlatform(tile6.type) && tile6.slope() != 1)
+ 									{
+ 										num62++;
+ 									}
+ 									tile6 = Main.tile[num58 + 1, num59 + 1];
+-									if (tile6.active() && tile6.type == 19 && tile6.slope() != 2)
++									if (tile6.active() && TileLoader.IsPlatform(tile6.type) && tile6.slope() != 2)
+ 									{
+ 										num61++;
+ 									}
+@@ -26070,7 +26144,7 @@
+ 									if (WorldGen.SolidTile(tile6))
+ 									{
+ 										num61++;
+-										if (tile6.type == 19 && tile6.slope() == 0)
++										if (TileLoader.IsPlatform(tile6.type) && tile6.slope() == 0)
+ 										{
+ 											num61++;
+ 										}
+@@ -26079,7 +26153,7 @@
+ 									if (WorldGen.SolidTile(tile6))
+ 									{
+ 										num62++;
+-										if (tile6.type == 19 && tile6.slope() == 0)
++										if (TileLoader.IsPlatform(tile6.type) && tile6.slope() == 0)
+ 										{
+ 											num62++;
+ 										}
+@@ -26093,12 +26167,12 @@
+ 										num60 = 2;
+ 									}
+ 									tile6 = Main.tile[num58 - 1, num59];
+-									if (tile6.active() && tile6.type == 19)
++									if (tile6.active() && TileLoader.IsPlatform(tile6.type))
+ 									{
+ 										num60 = 0;
+ 									}
+ 									tile6 = Main.tile[num58 + 1, num59];
+-									if (tile6.active() && tile6.type == 19)
++									if (tile6.active() && TileLoader.IsPlatform(tile6.type))
+ 									{
+ 										num60 = 0;
+ 									}
+@@ -26123,7 +26197,7 @@
+ 											num67 = -1;
+ 										}
+ 										tile6 = Main.tile[num58 + num66, num59 + num67];
+-										if (tile6.active() && tile6.type == 19 && tile6.slope() == 0 && (!Main.tile[num58 + num66 + num66, num59 + num67].active() || Main.tile[num58 + num66 + num66, num59 + num67].type != 19 || !Main.tile[num58 + num66 + num66, num59 + num67].halfBrick()))
++										if (tile6.active() && TileLoader.IsPlatform(tile6.type) && tile6.slope() == 0 && (!Main.tile[num58 + num66 + num66, num59 + num67].active() || !TileLoader.IsPlatform(Main.tile[num58 + num66 + num66, num59 + num67].type) || !Main.tile[num58 + num66 + num66, num59 + num67].halfBrick()))
+ 										{
+ 											WorldGen.SlopeTile(num58 + num66, num59 + num67, num60);
+ 											num65 = (int)tile6.slope();
+@@ -26143,7 +26217,7 @@
+ 											num67 = 1;
+ 										}
+ 										tile6 = Main.tile[num58 + num66, num59 + num67];
+-										if (tile6.active() && tile6.type == 19 && tile6.slope() == 0 && WorldGen.PlatformProperSides(num58 + num66, num59 + num67, true) <= 0)
++										if (tile6.active() && TileLoader.IsPlatform(tile6.type) && tile6.slope() == 0 && WorldGen.PlatformProperSides(num58 + num66, num59 + num67, true) <= 0)
+ 										{
+ 											WorldGen.SlopeTile(num58 + num66, num59 + num67, num60);
+ 											num65 = (int)tile6.slope();
+@@ -26157,16 +26231,16 @@
+ 									{
+ 										int num66 = -1;
+ 										tile6 = Main.tile[num58 + num66, num59];
+-										if (tile6.active() && tile6.type == 19 && tile6.slope() != 0)
++										if (tile6.active() && TileLoader.IsPlatform(tile6.type) && tile6.slope() != 0)
+ 										{
+ 											int num68 = (tile6.slope() == 1).ToDirectionInt() * num66;
+ 											num60 = (int)((num68 == -1) ? 0 : tile6.slope());
+ 											bool flag8 = true;
+-											if (Main.tile[num58 + num66 * 2, num59 + num68].active() && Main.tile[num58 + num66 * 2, num59].type == 19 && num60 == (int)Main.tile[num58 + num66 * 2, num59 + num68].slope())
++											if (Main.tile[num58 + num66 * 2, num59 + num68].active() && TileLoader.IsPlatform(Main.tile[num58 + num66 * 2, num59].type) && num60 == (int)Main.tile[num58 + num66 * 2, num59 + num68].slope())
+ 											{
+ 												flag8 = false;
+ 											}
+-											if (Main.tile[num58, num59 - num68].active() && Main.tile[num58, num59 - num68].type == 19 && tile6.slope() == Main.tile[num58, num59 - num68].slope())
++											if (Main.tile[num58, num59 - num68].active() && TileLoader.IsPlatform(Main.tile[num58, num59 - num68].type) && tile6.slope() == Main.tile[num58, num59 - num68].slope())
+ 											{
+ 												flag8 = false;
+ 											}
+@@ -26183,16 +26257,16 @@
+ 										num66 = 1;
+ 										int num67 = 0;
+ 										tile6 = Main.tile[num58 + num66, num59 + num67];
+-										if (tile6.active() && tile6.type == 19 && tile6.slope() != 0)
++										if (tile6.active() && TileLoader.IsPlatform(tile6.type) && tile6.slope() != 0)
+ 										{
+ 											int num70 = (tile6.slope() == 1).ToDirectionInt() * num66;
+ 											num60 = (int)((num70 == -1) ? 0 : tile6.slope());
+ 											bool flag9 = true;
+-											if (Main.tile[num58 + num66 * 2, num59 + num70].active() && Main.tile[num58 + num66 * 2, num59].type == 19 && num60 == (int)Main.tile[num58 + num66 * 2, num59 + num70].slope())
++											if (Main.tile[num58 + num66 * 2, num59 + num70].active() && TileLoader.IsPlatform(Main.tile[num58 + num66 * 2, num59].type) && num60 == (int)Main.tile[num58 + num66 * 2, num59 + num70].slope())
+ 											{
+ 												flag9 = false;
+ 											}
+-											if (Main.tile[num58, num59 - num70].active() && Main.tile[num58, num59 - num70].type == 19 && tile6.slope() == Main.tile[num58, num59 - num70].slope())
++											if (Main.tile[num58, num59 - num70].active() && TileLoader.IsPlatform(Main.tile[num58, num59 - num70].type) && tile6.slope() == Main.tile[num58, num59 - num70].slope())
+ 											{
+ 												flag9 = false;
+ 											}
+@@ -26223,11 +26297,11 @@
+ 									}
+ 								}
+ 							}
+-							if (Main.tileSolid[this.inventory[this.selectedItem].createTile] && this.inventory[this.selectedItem].createTile != 19)
++							if (Main.tileSolid[this.inventory[this.selectedItem].createTile] && !TileLoader.IsPlatform(this.inventory[this.selectedItem].createTile))
+ 							{
+ 								int num71 = Player.tileTargetX;
+ 								int num72 = Player.tileTargetY + 1;
+-								if (Main.tile[num71, num72] != null && Main.tile[num71, num72].type != 19 && (Main.tile[num71, num72].topSlope() || Main.tile[num71, num72].halfBrick()))
++								if (Main.tile[num71, num72] != null && !TileLoader.IsPlatform(Main.tile[num71, num72].type) && (Main.tile[num71, num72].topSlope() || Main.tile[num71, num72].halfBrick()))
+ 								{
+ 									WorldGen.SlopeTile(num71, num72, 0);
+ 									if (Main.netMode == 1)
+@@ -26237,7 +26311,7 @@
+ 								}
+ 								num71 = Player.tileTargetX;
+ 								num72 = Player.tileTargetY - 1;
+-								if (Main.tile[num71, num72] != null && Main.tile[num71, num72].type != 19 && Main.tile[num71, num72].bottomSlope())
++								if (Main.tile[num71, num72] != null && !TileLoader.IsPlatform(Main.tile[num71, num72].type) && Main.tile[num71, num72].bottomSlope())
+ 								{
+ 									WorldGen.SlopeTile(num71, num72, 0);
+ 									if (Main.netMode == 1)
 @@ -27320,7 +27394,7 @@
  				{
  					this.altFunctionUse = 2;
@@ -458,10 +685,19 @@
 +										if (TileLoader.Slope(num223, num224, Main.tile[num223, num224].type))
 +										{
 +										}
-+										else if (Main.tile[num223, num224].type == 19)
++										else if (TileLoader.IsPlatform(Main.tile[num223, num224].type))
  										{
  											if (Main.tile[num223, num224].halfBrick())
  											{
+@@ -30603,7 +30683,7 @@
+ 											{
+ 												int num225 = 1;
+ 												int slope = 2;
+-												if (Main.tile[num223 + 1, num224 - 1].type == 19 || Main.tile[num223 - 1, num224 + 1].type == 19 || (WorldGen.SolidTile(num223 + 1, num224) && !WorldGen.SolidTile(num223 - 1, num224)))
++												if (TileLoader.IsPlatform(Main.tile[num223 + 1, num224 - 1].type) || TileLoader.IsPlatform(Main.tile[num223 - 1, num224 + 1].type) || (WorldGen.SolidTile(num223 + 1, num224) && !WorldGen.SolidTile(num223 - 1, num224)))
+ 												{
+ 													num225 = 2;
+ 													slope = 1;
 @@ -31059,6 +31139,7 @@
  						r2.Height = (int)((double)r2.Height * 0.6);
  					}

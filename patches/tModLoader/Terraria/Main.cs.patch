@@ -193,6 +193,42 @@
  						}
  						if (type == 373 || type == 374 || type == 375)
  						{
+@@ -16689,7 +16725,7 @@
+ 									{
+ 										color = Main.shine(color, (int)type);
+ 									}
+-									if (tile.type == 19)
++									if (TileLoader.IsPlatform(tile.type))
+ 									{
+ 										if (Main.canDrawColorTile(j, i))
+ 										{
+@@ -16701,7 +16737,7 @@
+ 										}
+ 										if (tile.slope() == 1 && Main.tile[j + 1, i + 1].active() && Main.tile[j + 1, i + 1].slope() != 2 && !Main.tile[j + 1, i + 1].halfBrick() && !TileID.Sets.BlocksStairs[(int)Main.tile[j + 1, i + 1].type] && !TileID.Sets.BlocksStairsAbove[(int)Main.tile[j, i + 1].type])
+ 										{
+-											if (Main.tile[j + 1, i + 1].type == 19 && Main.tile[j + 1, i + 1].slope() == 0)
++											if (TileLoader.IsPlatform(Main.tile[j + 1, i + 1].type) && Main.tile[j + 1, i + 1].slope() == 0)
+ 											{
+ 												if (Main.canDrawColorTile(j, i))
+ 												{
+@@ -16723,7 +16759,7 @@
+ 										}
+ 										else if (tile.slope() == 2 && Main.tile[j - 1, i + 1].active() && Main.tile[j - 1, i + 1].slope() != 1 && !Main.tile[j - 1, i + 1].halfBrick() && !TileID.Sets.BlocksStairs[(int)Main.tile[j - 1, i + 1].type] && !TileID.Sets.BlocksStairsAbove[(int)Main.tile[j, i + 1].type])
+ 										{
+-											if (Main.tile[j - 1, i + 1].type == 19 && Main.tile[j - 1, i + 1].slope() == 0)
++											if (TileLoader.IsPlatform(Main.tile[j - 1, i + 1].type) && Main.tile[j - 1, i + 1].slope() == 0)
+ 											{
+ 												if (Main.canDrawColorTile(j, i))
+ 												{
+@@ -17431,7 +17467,7 @@
+ 												{
+ 													texture = Main.tileTexture[(int)type];
+ 												}
+-												if (type == 19)
++												if (TileLoader.IsPlatform(type))
+ 												{
+ 													Main.spriteBatch.Draw(texture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num9 - 16f) / 2f, (float)(i * 16 - (int)Main.screenPosition.Y + num11 + num14)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle((int)num10, (int)frameY, num9, num12)), color, 0f, default(Vector2), 1f, effects, 0f);
+ 												}
 @@ -17966,6 +18002,7 @@
  								int num281 = 0;
  								Main.spriteBatch.Draw(texture2D, new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num9 - 16f) / 2f + (float)num280, (float)(i * 16 - (int)Main.screenPosition.Y + num11 + num281)) + zero, new Microsoft.Xna.Framework.Rectangle?(empty), color2, 0f, default(Vector2), 1f, effects, 0f);

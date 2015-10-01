@@ -223,6 +223,33 @@
  			Main.tile[num4 + 1, num2 + 2].frameY = (short)(num6 + 36);
  			Main.tile[num4 + 1, num2 + 2].frameX = (short)(num3 + 18);
  			Main.tile[num4 + 1, num2 + 2].color(color3);
+@@ -21263,7 +21293,7 @@
+ 			{
+ 				Main.tile[x, num + 2] = new Tile();
+ 			}
+-			if (!WorldGen.SolidTileAllowBottomSlope(x, num + 2) && Main.tile[x, num + 2].type != 19)
++			if (!WorldGen.SolidTileAllowBottomSlope(x, num + 2) && !TileLoader.IsPlatform(Main.tile[x, num + 2].type))
+ 			{
+ 				flag = true;
+ 			}
+@@ -23216,7 +23246,7 @@
+ 			{
+ 				flag = true;
+ 			}
+-			if ((!Main.tile[x, i - 1].topSlope() && !Main.tile[x, i - 1].halfBrick() && !Main.tileSolid[(int)Main.tile[x, i - 1].type]) || (Main.tileSolidTop[(int)Main.tile[x, i - 1].type] && (Main.tile[x, i - 1].type != 19 || (!Main.tile[x, i - 1].halfBrick() && !Main.tile[x, i - 1].topSlope()))) || TileID.Sets.NotReallySolid[(int)Main.tile[x, i - 1].type] || Main.tile[x, i - 1].bottomSlope())
++			if ((!Main.tile[x, i - 1].topSlope() && !Main.tile[x, i - 1].halfBrick() && !Main.tileSolid[(int)Main.tile[x, i - 1].type]) || (Main.tileSolidTop[(int)Main.tile[x, i - 1].type] && (!TileLoader.IsPlatform(Main.tile[x, i - 1].type) || (!Main.tile[x, i - 1].halfBrick() && !Main.tile[x, i - 1].topSlope()))) || TileID.Sets.NotReallySolid[(int)Main.tile[x, i - 1].type] || Main.tile[x, i - 1].bottomSlope())
+ 			{
+ 				flag = true;
+ 			}
+@@ -24331,7 +24361,7 @@
+ 				{
+ 					Main.tile[l, k + 2] = new Tile();
+ 				}
+-				if (!WorldGen.SolidTileAllowBottomSlope(l, k + 2) && (!Main.tile[l, k + 2].active() || Main.tile[l, k + 2].type != 19))
++				if (!WorldGen.SolidTileAllowBottomSlope(l, k + 2) && (!Main.tile[l, k + 2].active() || !TileLoader.IsPlatform(Main.tile[l, k + 2].type)))
+ 				{
+ 					flag = true;
+ 				}
 @@ -25249,7 +25279,7 @@
  			{
  			}
@@ -241,6 +268,21 @@
  				{
  					return;
  				}
+@@ -25589,12 +25619,12 @@
+ 				}
+ 				if (type == 285 || type == 286 || type == 298 || type == 299 || type == 310 || type == 339 || (type >= 361 && type <= 364))
+ 				{
+-					if (!WorldGen.SolidTileAllowBottomSlope(l, num7) && (!Main.tile[l, num7].nactive() || !Main.tileSolidTop[(int)Main.tile[l, num7].type] || Main.tile[l, num7].frameY != 0) && (!Main.tile[l, num7].active() || Main.tile[l, num7].type != 19))
++					if (!WorldGen.SolidTileAllowBottomSlope(l, num7) && (!Main.tile[l, num7].nactive() || !Main.tileSolidTop[(int)Main.tile[l, num7].type] || Main.tile[l, num7].frameY != 0) && (!Main.tile[l, num7].active() || !TileLoader.IsPlatform(Main.tile[l, num7].type)))
+ 					{
+ 						flag = true;
+ 					}
+ 				}
+-				else if (!WorldGen.SolidTileAllowBottomSlope(l, num7) && (!Main.tile[l, num7].active() || Main.tile[l, num7].type != 19))
++				else if (!WorldGen.SolidTileAllowBottomSlope(l, num7) && (!Main.tile[l, num7].active() || !TileLoader.IsPlatform(Main.tile[l, num7].type)))
+ 				{
+ 					flag = true;
+ 				}
 @@ -27227,10 +27257,6 @@
  
  		public static bool PlaceObject(int x, int y, int type, bool mute = false, int style = 0, int alternate = 0, int random = -1, int direction = -1)
@@ -252,6 +294,40 @@
  			TileObject toBePlaced;
  			if (!TileObject.CanPlace(x, y, type, style, direction, out toBePlaced, false))
  			{
+@@ -27624,13 +27650,13 @@
+ 				{
+ 					flag = true;
+ 				}
+-				if ((anchor & AnchorType.SolidBottom) == AnchorType.SolidBottom && !Main.tileNoAttach[(int)tileCache.type] && ((Main.tileSolid[(int)tileCache.type] && (!Main.tileSolidTop[(int)tileCache.type] || (tileCache.type == 19 && (tileCache.halfBrick() || tileCache.topSlope())))) || tileCache.topSlope() || tileCache.halfBrick()) && !TileID.Sets.NotReallySolid[(int)tileCache.type] && !tileCache.bottomSlope())
++				if ((anchor & AnchorType.SolidBottom) == AnchorType.SolidBottom && !Main.tileNoAttach[(int)tileCache.type] && ((Main.tileSolid[(int)tileCache.type] && (!Main.tileSolidTop[(int)tileCache.type] || (TileLoader.IsPlatform(tileCache.type) && (tileCache.halfBrick() || tileCache.topSlope())))) || tileCache.topSlope() || tileCache.halfBrick()) && !TileID.Sets.NotReallySolid[(int)tileCache.type] && !tileCache.bottomSlope())
+ 				{
+ 					flag = true;
+ 				}
+ 				if (!flag && ((anchor & AnchorType.SolidWithTop) == AnchorType.SolidWithTop || (anchor & AnchorType.Table) == AnchorType.Table))
+ 				{
+-					if (tileCache.type == 19)
++					if (TileLoader.IsPlatform(tileCache.type))
+ 					{
+ 						int num = (int)tileCache.frameX / TileObjectData.PlatformFrameWidth();
+ 						if ((!tileCache.halfBrick() && num >= 0 && num <= 7) || (num >= 12 && num <= 16) || (num >= 25 && num <= 26))
+@@ -27643,7 +27669,7 @@
+ 						flag = true;
+ 					}
+ 				}
+-				if (!flag && (anchor & AnchorType.Table) == AnchorType.Table && tileCache.type != 19 && Main.tileTable[(int)tileCache.type] && tileCache.blockType() == 0)
++				if (!flag && (anchor & AnchorType.Table) == AnchorType.Table && !TileLoader.IsPlatform(tileCache.type) && Main.tileTable[(int)tileCache.type] && tileCache.blockType() == 0)
+ 				{
+ 					flag = true;
+ 				}
+@@ -28680,7 +28706,7 @@
+ 					{
+ 						Main.tile[n, num6 + 3] = new Tile();
+ 					}
+-					if (!WorldGen.SolidTileAllowBottomSlope(n, num6 + 3) && (!Main.tile[n, num6 + 3].active() || Main.tile[n, num6 + 3].type != 19))
++					if (!WorldGen.SolidTileAllowBottomSlope(n, num6 + 3) && (!Main.tile[n, num6 + 3].active() || !TileLoader.IsPlatform(Main.tile[n, num6 + 3].type)))
+ 					{
+ 						flag = true;
+ 						break;
 @@ -29920,7 +29946,7 @@
  						int wall = (int)Main.tile[k, l].wall;
  						if (conversionType == 4)
@@ -290,6 +366,15 @@
  			bool result = false;
  			if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY)
  			{
+@@ -31945,7 +31967,7 @@
+ 						Tile tile2 = Main.tile[i - 1, j];
+ 						Tile tile3 = Main.tile[i + 1, j];
+ 						Tile tile4 = Main.tile[i, j + 1];
+-						if (tile.wall > 0 || (tile2.active() && (tile2.slope() == 0 || tile2.slope() % 2 != 1) && ((Main.tileSolid[(int)tile2.type] && !Main.tileSolidTop[(int)tile2.type] && !TileID.Sets.NotReallySolid[(int)tile2.type]) || tile2.type == 124 || (tile2.type == 5 && Main.tile[i - 1, j - 1].type == 5 && Main.tile[i - 1, j + 1].type == 5))) || (tile3.active() && (tile3.slope() == 0 || tile3.slope() % 2 != 0) && ((Main.tileSolid[(int)tile3.type] && !Main.tileSolidTop[(int)tile3.type] && !TileID.Sets.NotReallySolid[(int)tile3.type]) || tile3.type == 124 || (tile3.type == 5 && Main.tile[i + 1, j - 1].type == 5 && Main.tile[i + 1, j + 1].type == 5))) || (tile4.active() && Main.tileSolid[(int)tile4.type] && (!Main.tileSolidTop[(int)tile4.type] || (tile4.type == 19 && tile4.slope() == 0)) && !TileID.Sets.NotReallySolid[(int)tile4.type] && !tile4.halfBrick() && tile4.slope() == 0))
++						if (tile.wall > 0 || (tile2.active() && (tile2.slope() == 0 || tile2.slope() % 2 != 1) && ((Main.tileSolid[(int)tile2.type] && !Main.tileSolidTop[(int)tile2.type] && !TileID.Sets.NotReallySolid[(int)tile2.type]) || tile2.type == 124 || (tile2.type == 5 && Main.tile[i - 1, j - 1].type == 5 && Main.tile[i - 1, j + 1].type == 5))) || (tile3.active() && (tile3.slope() == 0 || tile3.slope() % 2 != 0) && ((Main.tileSolid[(int)tile3.type] && !Main.tileSolidTop[(int)tile3.type] && !TileID.Sets.NotReallySolid[(int)tile3.type]) || tile3.type == 124 || (tile3.type == 5 && Main.tile[i + 1, j - 1].type == 5 && Main.tile[i + 1, j + 1].type == 5))) || (tile4.active() && Main.tileSolid[(int)tile4.type] && (!Main.tileSolidTop[(int)tile4.type] || (TileLoader.IsPlatform(tile4.type) && tile4.slope() == 0)) && !TileID.Sets.NotReallySolid[(int)tile4.type] && !tile4.halfBrick() && tile4.slope() == 0))
+ 						{
+ 							tile.active(true);
+ 							tile.type = (ushort)type;
 @@ -32313,7 +32335,11 @@
  					{
  						fail = true;
@@ -453,6 +538,54 @@
  				}
  				num63++;
  			}
+@@ -44813,7 +44859,7 @@
+ 			{
+ 				int num = 1;
+ 				int slope = 2;
+-				if (Main.tile[x + 1, y - 1].type == 19 || Main.tile[x - 1, y + 1].type == 19 || (WorldGen.SolidTile(x + 1, y) && !WorldGen.SolidTile(x - 1, y)))
++				if (TileLoader.IsPlatform(Main.tile[x + 1, y - 1].type) || TileLoader.IsPlatform(Main.tile[x - 1, y + 1].type) || (WorldGen.SolidTile(x + 1, y) && !WorldGen.SolidTile(x - 1, y)))
+ 				{
+ 					num = 2;
+ 					slope = 1;
+@@ -44858,7 +44904,7 @@
+ 		public static int PlatformProperSides(int x, int y, bool acceptNonOpposing = false)
+ 		{
+ 			Tile tile = Main.tile[x, y];
+-			if (!tile.active() || tile.type != 19)
++			if (!tile.active() || !TileLoader.IsPlatform(tile.type))
+ 			{
+ 				return 0;
+ 			}
+@@ -44885,12 +44931,12 @@
+ 			}
+ 			if (acceptNonOpposing)
+ 			{
+-				if (Main.tile[x + num4, y + num5].active() && Main.tile[x + num4, y + num5].type == 19 && (int)Main.tile[x + num4, y + num5].slope() != num2)
++				if (Main.tile[x + num4, y + num5].active() && TileLoader.IsPlatform(Main.tile[x + num4, y + num5].type) && (int)Main.tile[x + num4, y + num5].slope() != num2)
+ 				{
+ 					num3++;
+ 				}
+ 			}
+-			else if (Main.tile[x + num4, y + num5].active() && Main.tile[x + num4, y + num5].type == 19 && (int)Main.tile[x + num4, y + num5].slope() == num)
++			else if (Main.tile[x + num4, y + num5].active() && TileLoader.IsPlatform(Main.tile[x + num4, y + num5].type) && (int)Main.tile[x + num4, y + num5].slope() == num)
+ 			{
+ 				num3++;
+ 			}
+@@ -44898,12 +44944,12 @@
+ 			num5 *= -1;
+ 			if (acceptNonOpposing)
+ 			{
+-				if (Main.tile[x + num4, y + num5].active() && Main.tile[x + num4, y + num5].type == 19 && (int)Main.tile[x + num4, y + num5].slope() != num2)
++				if (Main.tile[x + num4, y + num5].active() && TileLoader.IsPlatform(Main.tile[x + num4, y + num5].type) && (int)Main.tile[x + num4, y + num5].slope() != num2)
+ 				{
+ 					num3++;
+ 				}
+ 			}
+-			else if (Main.tile[x + num4, y + num5].active() && Main.tile[x + num4, y + num5].type == 19 && (int)Main.tile[x + num4, y + num5].slope() == num)
++			else if (Main.tile[x + num4, y + num5].active() && TileLoader.IsPlatform(Main.tile[x + num4, y + num5].type) && (int)Main.tile[x + num4, y + num5].slope() == num)
+ 			{
+ 				num3++;
+ 			}
 @@ -45221,6 +45267,10 @@
  					}
  					if (tile.active())
@@ -464,6 +597,76 @@
  						if (noBreak && Main.tileFrameImportant[(int)tile.type] && tile.type != 4)
  						{
  							return;
+@@ -45289,7 +45339,7 @@
+ 								{
+ 									num9 = (int)tile9.type;
+ 								}
+-								if (num3 >= 0 && Main.tileSolid[num3] && (!Main.tileNoAttach[num3] || num3 == 19))
++								if (num3 >= 0 && Main.tileSolid[num3] && (!Main.tileNoAttach[num3] || TileLoader.IsPlatform(num3)))
+ 								{
+ 									tile.frameX = num2;
+ 								}
+@@ -45854,7 +45904,7 @@
+ 									}
+ 								}
+ 							}
+-							else if (num == 19)
++							else if (TileLoader.IsPlatform(num))
+ 							{
+ 								Tile tile4 = Main.tile[i - 1, j];
+ 								if (tile4 != null)
+@@ -45940,13 +45990,13 @@
+ 														}
+ 														if (tile.slope() == 1)
+ 														{
+-															if (tile5.type == 19 && tile5.slope() == 0)
++															if (TileLoader.IsPlatform(tile5.type) && tile5.slope() == 0)
+ 															{
+ 																rectangle.X = 468;
+ 															}
+-															else if (!tile7.active() && (tile7.type != 19 || tile7.slope() == 2))
++															else if (!tile7.active() && (!TileLoader.IsPlatform(tile7.type) || tile7.slope() == 2))
+ 															{
+-																if (!tile4.active() && (tile8.type != 19 || tile8.slope() != 1))
++																if (!tile4.active() && (!TileLoader.IsPlatform(tile8.type) || tile8.slope() != 1))
+ 																{
+ 																	rectangle.X = 432;
+ 																}
+@@ -45955,7 +46005,7 @@
+ 																	rectangle.X = 360;
+ 																}
+ 															}
+-															else if (!tile4.active() && (tile8.type != 19 || tile8.slope() != 1))
++															else if (!tile4.active() && (!TileLoader.IsPlatform(tile8.type) || tile8.slope() != 1))
+ 															{
+ 																rectangle.X = 396;
+ 															}
+@@ -45966,13 +46016,13 @@
+ 														}
+ 														else if (tile.slope() == 2)
+ 														{
+-															if (tile4.type == 19 && tile4.slope() == 0)
++															if (TileLoader.IsPlatform(tile4.type) && tile4.slope() == 0)
+ 															{
+ 																rectangle.X = 450;
+ 															}
+-															else if (!tile6.active() && (tile6.type != 19 || tile6.slope() == 1))
++															else if (!tile6.active() && (!TileLoader.IsPlatform(tile6.type) || tile6.slope() == 1))
+ 															{
+-																if (!tile5.active() && (tile9.type != 19 || tile9.slope() != 2))
++																if (!tile5.active() && (!TileLoader.IsPlatform(tile9.type) || tile9.slope() != 2))
+ 																{
+ 																	rectangle.X = 414;
+ 																}
+@@ -45981,7 +46031,7 @@
+ 																	rectangle.X = 342;
+ 																}
+ 															}
+-															else if (!tile5.active() && (tile9.type != 19 || tile9.slope() != 2))
++															else if (!tile5.active() && (!TileLoader.IsPlatform(tile9.type) || tile9.slope() != 2))
+ 															{
+ 																rectangle.X = 378;
+ 															}
 @@ -46282,6 +46332,10 @@
  							{
  								WorldGen.CheckPalmTree(i, j);
@@ -475,6 +678,39 @@
  							return;
  						}
  						else
+@@ -46495,19 +46549,19 @@
+ 							{
+ 								num50 = num;
+ 							}
+-							if ((tile.slope() == 1 || tile.slope() == 2) && num50 > -1 && num50 != 19)
++							if ((tile.slope() == 1 || tile.slope() == 2) && num50 > -1 && !TileLoader.IsPlatform(num50))
+ 							{
+ 								num50 = num;
+ 							}
+-							if (num45 > -1 && (tile2.slope() == 1 || tile2.slope() == 2) && num45 != 19)
++							if (num45 > -1 && (tile2.slope() == 1 || tile2.slope() == 2) && !TileLoader.IsPlatform(num45))
+ 							{
+ 								num45 = num;
+ 							}
+-							if ((tile.slope() == 3 || tile.slope() == 4) && num45 > -1 && num45 != 19)
++							if ((tile.slope() == 3 || tile.slope() == 4) && num45 > -1 && !TileLoader.IsPlatform(num45))
+ 							{
+ 								num45 = num;
+ 							}
+-							if (num50 > -1 && (tile3.slope() == 3 || tile3.slope() == 4) && num50 != 19)
++							if (num50 > -1 && (tile3.slope() == 3 || tile3.slope() == 4) && !TileLoader.IsPlatform(num50))
+ 							{
+ 								num50 = num;
+ 							}
+@@ -46522,7 +46576,7 @@
+ 									num50 = num;
+ 								}
+ 							}
+-							if (num45 > -1 && tile2.halfBrick() && num45 != 19)
++							if (num45 > -1 && tile2.halfBrick() && !TileLoader.IsPlatform(num45))
+ 							{
+ 								num45 = num;
+ 							}
 @@ -49473,7 +49527,7 @@
  									if (tile3 != null && !tile3.active())
  									{

@@ -40,6 +40,7 @@ namespace Terraria.ModLoader
 		public int openDoorID = -1;
 		public string chest = "";
 		public bool bed = false;
+		public bool platform = false;
 
 		public void AddToArray(ref int[] array)
 		{
@@ -79,6 +80,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void SetDefaults()
+		{
+		}
+
+		public virtual void PostSetDefaults()
 		{
 		}
 

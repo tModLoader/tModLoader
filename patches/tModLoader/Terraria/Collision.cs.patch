@@ -1,0 +1,119 @@
+--- src/Terraria\Terraria\Collision.cs
++++ src/tModLoader\Terraria\Collision.cs
+@@ -1,6 +1,7 @@
+ using Microsoft.Xna.Framework;
+ using System;
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+@@ -1571,7 +1572,7 @@
+ 									}
+ 								}
+ 							}
+-							if (Main.tile[num11, num12].type == 19)
++							if (TileLoader.IsPlatform(Main.tile[num11, num12].type))
+ 							{
+ 								if (Velocity.Y < 0f)
+ 								{
+@@ -1585,7 +1586,7 @@
+ 							if (flag)
+ 							{
+ 								bool flag2 = false;
+-								if (fall && Main.tile[num11, num12].type == 19)
++								if (fall && TileLoader.IsPlatform(Main.tile[num11, num12].type))
+ 								{
+ 									flag2 = true;
+ 								}
+@@ -1658,7 +1659,7 @@
+ 													}
+ 													else
+ 													{
+-														if (Main.tile[num11, num12].type == 19)
++														if (TileLoader.IsPlatform(Main.tile[num11, num12].type))
+ 														{
+ 															Collision.stair = true;
+ 														}
+@@ -1677,7 +1678,7 @@
+ 												}
+ 											}
+ 										}
+-										else if (Main.tile[num11, num12].type == 19 && Position.Y + (float)Height - 4f - Math.Abs(Velocity.X) > vector4.Y)
++										else if (TileLoader.IsPlatform(Main.tile[num11, num12].type) && Position.Y + (float)Height - 4f - Math.Abs(Velocity.X) > vector4.Y)
+ 										{
+ 											if (flag2)
+ 											{
+@@ -1695,7 +1696,7 @@
+ 												}
+ 												else
+ 												{
+-													if (Main.tile[num11, num12].type == 19)
++													if (TileLoader.IsPlatform(Main.tile[num11, num12].type))
+ 													{
+ 														Collision.stair = true;
+ 													}
+@@ -1817,7 +1818,7 @@
+ 									}
+ 								}
+ 							}
+-							if (Main.tile[i, j].type == 19)
++							if (TileLoader.IsPlatform(Main.tile[i, j].type))
+ 							{
+ 								if (Velocity.Y < 0f)
+ 								{
+@@ -1831,7 +1832,7 @@
+ 							if (flag)
+ 							{
+ 								bool flag2 = false;
+-								if (fall && Main.tile[i, j].type == 19)
++								if (fall && TileLoader.IsPlatform(Main.tile[i, j].type))
+ 								{
+ 									flag2 = true;
+ 								}
+@@ -1904,7 +1905,7 @@
+ 													}
+ 													else
+ 													{
+-														if (Main.tile[i, j].type == 19)
++														if (TileLoader.IsPlatform(Main.tile[i, j].type))
+ 														{
+ 															Collision.stair = true;
+ 														}
+@@ -1923,7 +1924,7 @@
+ 												}
+ 											}
+ 										}
+-										else if (Main.tile[i, j].type == 19 && Position.Y + (float)Height - 4f - Math.Abs(Velocity.X) > vector4.Y)
++										else if (TileLoader.IsPlatform(Main.tile[i, j].type) && Position.Y + (float)Height - 4f - Math.Abs(Velocity.X) > vector4.Y)
+ 										{
+ 											if (flag2)
+ 											{
+@@ -1941,7 +1942,7 @@
+ 												}
+ 												else
+ 												{
+-													if (Main.tile[i, j].type == 19)
++													if (TileLoader.IsPlatform(Main.tile[i, j].type))
+ 													{
+ 														Collision.stair = true;
+ 													}
+@@ -3063,7 +3064,7 @@
+ 				{
+ 					flag5 = (tile.type != 16 && tile.type != 18 && tile.type != 134);
+ 				}
+-				flag4 = (flag4 && ((tile.nactive() && (!tile.topSlope() || (tile.slope() == 1 && position.X + (float)(width / 2) < (float)(num2 * 16)) || (tile.slope() == 2 && position.X + (float)(width / 2) > (float)(num2 * 16 + 16))) && (!tile.topSlope() || position.Y + (float)height > (float)(num3 * 16)) && ((Main.tileSolid[(int)tile.type] && !Main.tileSolidTop[(int)tile.type]) || (holdsMatching && ((Main.tileSolidTop[(int)tile.type] && tile.frameY == 0) || tile.type == 19) && (!Main.tileSolid[(int)tile2.type] || !tile2.nactive()) && flag5))) || (tile2.halfBrick() && tile2.nactive())));
++				flag4 = (flag4 && ((tile.nactive() && (!tile.topSlope() || (tile.slope() == 1 && position.X + (float)(width / 2) < (float)(num2 * 16)) || (tile.slope() == 2 && position.X + (float)(width / 2) > (float)(num2 * 16 + 16))) && (!tile.topSlope() || position.Y + (float)height > (float)(num3 * 16)) && ((Main.tileSolid[(int)tile.type] && !Main.tileSolidTop[(int)tile.type]) || (holdsMatching && ((Main.tileSolidTop[(int)tile.type] && tile.frameY == 0) || TileLoader.IsPlatform(tile.type)) && (!Main.tileSolid[(int)tile2.type] || !tile2.nactive()) && flag5))) || (tile2.halfBrick() && tile2.nactive())));
+ 				flag4 &= (!Main.tileSolidTop[(int)tile.type] || !Main.tileSolidTop[(int)tile2.type]);
+ 			}
+ 			else
+@@ -3150,7 +3151,7 @@
+ 					if (Main.tileSolid[(int)tile.type])
+ 					{
+ 						int num4 = tile.blockType();
+-						if (tile.type == 19)
++						if (TileLoader.IsPlatform(tile.type))
+ 						{
+ 							int num5 = (int)(tile.frameX / 18);
+ 							if (((num5 >= 0 && num5 <= 7) || (num5 >= 12 && num5 <= 16)) && (num == 0f || flag))
+

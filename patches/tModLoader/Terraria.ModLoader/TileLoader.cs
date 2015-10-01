@@ -350,6 +350,17 @@ namespace Terraria.ModLoader
 			}
 			return modTile.bed;
 		}
+		//replace tile type checks for 19 in Terraria.Player, some places in Terraria.WorldGen,
+		//  Terraria.Main.DrawTiles, and Terraria.Collision
+		internal static bool IsPlatform(int type)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile == null)
+			{
+				return type == TileID.Platforms;
+			}
+			return modTile.platform;
+		}
 		//in Terraria.ObjectData.TileObject data make the following public:
 		//  newTile, newSubTile, newAlternate, addTile, addSubTile, addAlternate
 		internal static void SetDefaults(ModTile tile)
@@ -363,6 +374,7 @@ namespace Terraria.ModLoader
 			{
 				Main.tileNoSunLight[tile.Type] = true;
 			}
+			tile.PostSetDefaults();
 		}
 		//in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
 		//  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
