@@ -96,6 +96,10 @@ namespace Terraria.ModLoader.IO
 			{
 				flags[0] |= 4;
 			}
+			if (TileIO.WriteArmorStands(writer))
+			{
+				flags[0] |= 8;
+			}
 			return flags;
 		}
 
@@ -112,6 +116,10 @@ namespace Terraria.ModLoader.IO
 			if ((flags[0] & 4) == 4)
 			{
 				ReadNPCKillCounts(reader);
+			}
+			if ((flags[0] & 8) == 8)
+			{
+				TileIO.ReadArmorStands(reader);
 			}
 		}
 

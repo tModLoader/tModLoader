@@ -89,6 +89,9 @@ namespace Terraria.ModLoader
 				case 4:
 					soundType = SoundType.NPCKilled;
 					break;
+				case customSoundType:
+					soundType = SoundType.Custom;
+					break;
 				default:
 					return false;
 			}

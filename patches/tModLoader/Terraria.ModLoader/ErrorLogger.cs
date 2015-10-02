@@ -150,10 +150,14 @@ namespace Terraria.ModLoader
 
 		internal static void LogModPublish(string message)
 		{
-			ErrorLogger.Log(message);
+			string file = LogPath + Path.DirectorySeparatorChar + "Network Error.txt";
+			using (StreamWriter writer = File.CreateText(file))
+			{
+				writer.WriteLine(message);
+			}
 			Interface.errorMessage.SetMessage("The Mod Browser server response:\n\n" + message);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Interface.errorMessage.SetFile(LogPath + Path.DirectorySeparatorChar + "Logs.txt");
+			Interface.errorMessage.SetFile(file);
 			Main.gameMenu = true;
 			Main.menuMode = Interface.errorMessageID;
 		}

@@ -34,7 +34,21 @@
  					{
  						flag = true;
  						if (tile.type == 127)
-@@ -1103,10 +1107,10 @@
+@@ -1087,9 +1091,11 @@
+ 						}
+ 						if (Main.tileFrameImportant[(int)tile.type])
+ 						{
+-							array[num2] = (byte)(tile.frameX & 255);
++							short frameX = tile.frameX;
++							TileIO.VanillaSaveFrames(tile, ref frameX);
++							array[num2] = (byte)(frameX & 255);
+ 							num2++;
+-							array[num2] = (byte)(((int)tile.frameX & 65280) >> 8);
++							array[num2] = (byte)(((int)frameX & 65280) >> 8);
+ 							num2++;
+ 							array[num2] = (byte)(tile.frameY & 255);
+ 							num2++;
+@@ -1103,10 +1109,10 @@
  							num2++;
  						}
  					}
@@ -47,7 +61,7 @@
  						num2++;
  						if (tile.wallColor() != 0)
  						{
-@@ -1260,7 +1264,7 @@
+@@ -1260,7 +1266,7 @@
  					for (int l = 0; l < 40; l++)
  					{
  						Item item = chest.item[l];

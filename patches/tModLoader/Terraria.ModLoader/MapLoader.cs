@@ -67,7 +67,6 @@ namespace Terraria.ModLoader
 			{
 				MapHelper.colorLookup[MapHelper.modPosition + k] = colors[k];
 				Lang.mapLegend[MapHelper.modPosition + k] = names[k];
-				ErrorLogger.Log((MapHelper.modPosition + k) + " " + colors[k]);
 			}
 			initialized = true;
 		}
