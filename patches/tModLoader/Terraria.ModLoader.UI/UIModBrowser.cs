@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.ModLoader.IO;
+using System.Net;
 
 namespace Terraria.ModLoader.UI
 {
@@ -14,6 +15,7 @@ namespace Terraria.ModLoader.UI
 	{
 		public UIList modList;
 		public UIModDownloadItem selectedItem;
+		public UITextPanel uITextPanel;
 		public bool loaded = false;
 
 		public override void OnInitialize()
@@ -40,7 +42,7 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			modList.SetScrollbar(uIScrollbar);
-			UITextPanel uITextPanel = new UITextPanel("Mod Browser", 0.8f, true);
+			uITextPanel = new UITextPanel("Mod Browser", 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
@@ -105,7 +107,15 @@ namespace Terraria.ModLoader.UI
 				XmlDocument xmlDoc = new XmlDocument();
 				try
 				{
-					xmlDoc.Load("http://javid.ddns.net/tModLoader/listmods.php");
+					xmlDoc = GetDataFromUrl("http://javid.ddns.net/tModLoader/listmods.php");
+				}
+				catch (WebException e)
+				{
+					if (e.Status == WebExceptionStatus.Timeout)
+					{
+						uITextPanel.SetText("Mod Browser OFFLINE", 0.8f, true);
+						return;
+					}
 				}
 				catch (Exception e)
 				{
@@ -141,6 +151,20 @@ namespace Terraria.ModLoader.UI
 				}
 				loaded = true;
 			}
+		}
+
+		public XmlDocument GetDataFromUrl(string url)
+		{
+			XmlDocument urlData = new XmlDocument();
+			HttpWebRequest rq = (HttpWebRequest)WebRequest.Create(url);
+			rq.Timeout = 5000;
+			HttpWebResponse response = rq.GetResponse() as HttpWebResponse;
+			using (Stream responseStream = response.GetResponseStream())
+			{
+				XmlTextReader reader = new XmlTextReader(responseStream);
+				urlData.Load(reader);
+			}
+			return urlData;
 		}
 	}
 }
