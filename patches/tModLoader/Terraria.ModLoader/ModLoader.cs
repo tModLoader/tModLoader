@@ -667,7 +667,7 @@ namespace Terraria.ModLoader
 						}
 						continue;
 					}
-					else if (windows && reference.IndexOf("Terraria.exe") >= 0)
+					else if (windows && reference.IndexOf(System.AppDomain.CurrentDomain.FriendlyName) >= 0)
 					{
 						compileOptions.ReferencedAssemblies.Add("TerrariaMac.exe");
 						continue;
