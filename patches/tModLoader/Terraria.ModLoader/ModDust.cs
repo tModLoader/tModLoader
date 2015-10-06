@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
 	public class ModDust
 	{
+		private static int nextDust = DustID.Count;
+		internal static readonly IDictionary<int, ModDust> dusts = new Dictionary<int, ModDust>();
 		//in Terraria.Dust add ModDust property (internal set)
 		//in Terraria.Dust.NewDust set dust.modDust to null
 		//in Terraria.Dust.CloneDust copy modDust property
@@ -26,6 +30,42 @@ namespace Terraria.ModLoader
 		{
 			get;
 			internal set;
+		}
+
+		public int Type
+		{
+			get;
+			internal set;
+		}
+
+		public static ModDust GetDust(int type)
+		{
+			if (dusts.ContainsKey(type))
+			{
+				return dusts[type];
+			}
+			return null;
+		}
+
+		internal static int ReserveItemID()
+		{
+			int reserveID = nextDust;
+			nextDust++;
+			return reserveID;
+		}
+
+		internal static void Unload()
+		{
+			dusts.Clear();
+			nextDust = DustID.Count;
+		}
+
+		public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
+		{
+			int dust = Dust.NewDust(Position, Width, Height, 0, SpeedX, SpeedY, Alpha, newColor, Scale);
+			Main.dust[dust].modDust = ModDust.GetDust(Type);
+			ModDust.GetDust(Type).OnSpawn(Main.dust[dust]);
+			return dust;
 		}
 
 		public static int NewDust(Vector2 Position, int Width, int Height, Mod mod, string name, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)

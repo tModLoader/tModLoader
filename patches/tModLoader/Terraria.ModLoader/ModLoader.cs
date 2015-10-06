@@ -379,6 +379,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
 			ModGore.Unload();
+			ModDust.Unload();
 			NPCHeadLoader.Unload();
 			SoundLoader.Unload();
 			textures.Clear();

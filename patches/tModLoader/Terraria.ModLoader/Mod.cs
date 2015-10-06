@@ -288,6 +288,9 @@ namespace Terraria.ModLoader
 
 		public void AddDust(string name, ModDust dust, string texture = "")
 		{
+			int id = ModDust.ReserveItemID();
+			ModDust.dusts[id] = dust;
+			dust.Type = id;
 			dust.Name = name;
 			if (texture.Length > 0)
 			{
@@ -299,6 +302,28 @@ namespace Terraria.ModLoader
 			}
 			dust.mod = this;
 			dusts[name] = dust;
+		}
+
+		public ModDust GetDust(string name)
+		{
+			if (dusts.ContainsKey(name))
+			{
+				return dusts[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		public int DustType(string name)
+		{
+			ModDust dust = GetDust(name);
+			if (dust == null)
+			{
+				return 0;
+			}
+			return dust.Type;
 		}
 
 		private void AutoloadDust(Type type)
