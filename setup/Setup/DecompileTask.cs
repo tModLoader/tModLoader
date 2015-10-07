@@ -303,6 +303,8 @@ namespace Terraria.ModLoader.Setup
 
             using (var w = new StreamWriter(path))
                 WriteProjectFile(w, files, module);
+            using (var w = new StreamWriter(path, true))
+                w.Write(Environment.NewLine);
         }
 
         private static void WriteProjectUserFile(ModuleDefinition module, string debugWorkingDir, DecompilationOptions options) {
