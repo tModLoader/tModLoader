@@ -27,18 +27,13 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
 			AddMapEntry(new Color(200, 200, 200), "Example Chair");
+			dustType = mod.DustType("Sparkle");
 			adjTiles = new int[]{ TileID.Chairs };
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;
-		}
-
-		public override bool CreateDust(int i, int j, ref int type)
-		{
-			ModDust.NewDust(new Vector2(i, j) * 16f, 16, 16, mod, "Sparkle");
-			return false;
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)

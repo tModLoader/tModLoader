@@ -9,4 +9,13 @@
  			{
  				11,
  				12,
+@@ -193,7 +193,7 @@
+ 				898,
+ 				899
+ 			});
+-		private static readonly bool[] SafeDust = ChildSafety.factoryDust.CreateBoolSet(true, new int[]
++		public static bool[] SafeDust = ChildSafety.factoryDust.CreateBoolSet(true, new int[]
+ 			{
+ 				5,
+ 				227
 

@@ -59,6 +59,7 @@ namespace ExampleMod.Tiles
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 			TileID.Sets.HousingWalls[Type] = true; //needed for non-solid blocks to count as walls
 			AddMapEntry(new Color(200, 200, 200), "Example Door");
+			dustType = mod.DustType("Sparkle");
 			adjTiles = new int[]{ TileID.OpenDoor };
 			closeDoorID = mod.TileType("ExampleDoorClosed");
 		}
@@ -66,12 +67,6 @@ namespace ExampleMod.Tiles
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = 1;
-		}
-
-		public override bool CreateDust(int i, int j, ref int type)
-		{
-			ModDust.NewDust(new Vector2(i, j) * 16f, 16, 16, mod, "Sparkle");
-			return false;
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)

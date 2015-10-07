@@ -31,6 +31,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 			TileObjectData.addTile(Type);
 			AddMapEntry(new Color(200, 200, 200), "Chest");
+			dustType = mod.DustType("Sparkle");
 			adjTiles = new int[]{ TileID.Containers };
 			chest = "Example Chest";
 		}
@@ -38,12 +39,6 @@ namespace ExampleMod.Tiles
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = 1;
-		}
-
-		public override bool CreateDust(int i, int j, ref int type)
-		{
-			ModDust.NewDust(new Vector2(i, j) * 16f, 16, 16, mod, "Sparkle");
-			return false;
 		}
 
 		public override bool CanKillTile(int i, int j, ref bool blockDamaged)

@@ -29,6 +29,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(19);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 			AddMapEntry(new Color(200, 200, 200));
+			dustType = mod.DustType("Sparkle");
 			drop = mod.ItemType("ExamplePlatform");
 			adjTiles = new int[]{ TileID.Platforms };
 			platform = true;
@@ -42,12 +43,6 @@ namespace ExampleMod.Tiles
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;
-		}
-
-		public override bool CreateDust(int i, int j, ref int type)
-		{
-			ModDust.NewDust(new Vector2(i, j) * 16f, 16, 16, mod, "Sparkle");
-			return false;
 		}
 	}
 }

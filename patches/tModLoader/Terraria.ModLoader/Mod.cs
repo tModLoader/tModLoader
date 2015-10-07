@@ -288,7 +288,7 @@ namespace Terraria.ModLoader
 
 		public void AddDust(string name, ModDust dust, string texture = "")
 		{
-			int id = ModDust.ReserveItemID();
+			int id = ModDust.ReserveDustID();
 			ModDust.dusts[id] = dust;
 			dust.Type = id;
 			dust.Name = name;
@@ -920,6 +920,10 @@ namespace Terraria.ModLoader
 					Main.RegisterItemAnimation(item.item.type, animation);
 					ItemLoader.animations.Add(item.item.type);
 				}
+			}
+			foreach (ModDust dust in dusts.Values)
+			{
+				dust.SetDefaults();
 			}
 			foreach (ModTile tile in tiles.Values)
 			{

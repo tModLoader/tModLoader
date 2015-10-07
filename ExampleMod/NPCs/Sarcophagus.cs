@@ -104,7 +104,7 @@ namespace ExampleMod.NPCs
 			}
 			for (int k = 0; k < 2; k++)
 			{
-				int dust = ModDust.NewDust(npc.position - new Vector2(8f, 8f), npc.width + 16, npc.height + 16, mod, "Smoke", 0f, 0f, 0, Color.Black);
+				int dust = Dust.NewDust(npc.position - new Vector2(8f, 8f), npc.width + 16, npc.height + 16, mod.DustType("Smoke"), 0f, 0f, 0, Color.Black);
 				Main.dust[dust].velocity += npc.velocity * 0.25f;
 			}
 		}

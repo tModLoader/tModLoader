@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Buffs
 {
-	public class CarBuff : ModBuff
+	public class CarMount : ModBuff
 	{
 		public override void SetDefaults()
 		{

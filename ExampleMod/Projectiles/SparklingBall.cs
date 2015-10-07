@@ -23,7 +23,7 @@ namespace ExampleMod.Projectiles
 			projectile.velocity.Y += projectile.ai[0];
 			if (Main.rand.Next(3) == 0)
 			{
-				ModDust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, mod, "Sparkle", projectile.velocity.X * 0.5f, projectile.velocity.Y * 0.5f);
+				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, mod.DustType("Sparkle"), projectile.velocity.X * 0.5f, projectile.velocity.Y * 0.5f);
 			}
 		}
 
@@ -55,7 +55,7 @@ namespace ExampleMod.Projectiles
 		{
 			for (int k = 0; k < 5; k++)
 			{
-				ModDust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, mod, "Sparkle", projectile.oldVelocity.X * 0.5f, projectile.oldVelocity.Y * 0.5f);
+				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, mod.DustType("Sparkle"), projectile.oldVelocity.X * 0.5f, projectile.oldVelocity.Y * 0.5f);
 			}
 			Main.PlaySound(2, (int)projectile.position.X, (int)projectile.position.Y, 25);
 		}

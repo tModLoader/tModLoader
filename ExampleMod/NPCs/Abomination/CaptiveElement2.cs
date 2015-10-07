@@ -327,7 +327,7 @@ namespace ExampleMod.NPCs.Abomination
 				Vector2 center = npc.Center;
 				for (int k = 0; k < 4; k++)
 				{
-					int dust = ModDust.NewDust(npc.position, npc.width, npc.height, mod, "Pixel", 0f, 0f, 0, color.Value);
+					int dust = Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("Pixel"), 0f, 0f, 0, color.Value);
 					Vector2 offset = Main.dust[dust].position - center;
 					offset.X = (offset.X - (float)npc.width / 2f) / 2f;
 					Main.dust[dust].position = center + new Vector2(unit.X * offset.X - unit.Y * offset.Y, unit.Y * offset.X + unit.X * offset.Y);
@@ -379,7 +379,7 @@ namespace ExampleMod.NPCs.Abomination
 					{
 						for (int k = 0; k < 75; k++)
 						{
-							ModDust.NewDust(npc.position, npc.width, npc.height, mod, "PixelHurt", 0f, 0f, 0, color.Value);
+							Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("PixelHurt"), 0f, 0f, 0, color.Value);
 						}
 					}
 				}

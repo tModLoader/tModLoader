@@ -9,8 +9,8 @@ namespace ExampleMod.Mounts
 	{
 		public override void SetDefaults()
 		{
-			mountData.spawnDust = 57;
-			mountData.buff = mod.BuffType("CarBuff");
+			mountData.spawnDust = mod.DustType("Smoke");
+			mountData.buff = mod.BuffType("CarMount");
 			mountData.heightBoost = 20;
 			mountData.fallDamage = 0.5f;
 			mountData.runSpeed = 11f;
@@ -64,7 +64,7 @@ namespace ExampleMod.Mounts
 			if (Math.Abs(player.velocity.X) > 4f)
 			{
 				Rectangle rect = player.getRect();
-				int dust = ModDust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, mod, "Smoke");
+				Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, mod.DustType("Smoke"));
 			}
 		}
 	}

@@ -153,7 +153,7 @@ namespace ExampleMod.NPCs.Abomination
 			{
 				for (int k = 0; k < 5; k++)
 				{
-					int dust = ModDust.NewDust(npc.position, npc.width, npc.height, mod, "Pixel", 0f, 0f, 0, color.Value);
+					int dust = Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("Pixel"), 0f, 0f, 0, color.Value);
 					double angle = Main.rand.NextDouble() * 2.0 * Math.PI;
 					Main.dust[dust].velocity = 3f * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
 				}
@@ -162,7 +162,7 @@ namespace ExampleMod.NPCs.Abomination
 			{
 				for (int k = 0; k < 1; k++)
 				{
-					int dust = ModDust.NewDust(npc.position, npc.width, npc.height, mod, "Bubble", 0f, 0f, 0);
+					int dust = Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("Bubble"), 0f, 0f, 0);
 					double angle = Main.rand.NextDouble() * 2.0 * Math.PI;
 					Main.dust[dust].velocity = 2f * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
 				}

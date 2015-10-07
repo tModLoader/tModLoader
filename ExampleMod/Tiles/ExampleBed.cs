@@ -17,6 +17,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new int[]{ 16, 18 };
 			TileObjectData.addTile(Type);
 			AddMapEntry(new Color(200, 200, 200), "Example Bed");
+			dustType = mod.DustType("Sparkle");
 			adjTiles = new int[]{ TileID.Beds };
 			bed = true;
 		}
@@ -24,12 +25,6 @@ namespace ExampleMod.Tiles
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = 1;
-		}
-
-		public override bool CreateDust(int i, int j, ref int type)
-		{
-			ModDust.NewDust(new Vector2(i, j) * 16f, 16, 16, mod, "Sparkle");
-			return false;
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)

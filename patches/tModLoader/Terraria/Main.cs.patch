@@ -658,19 +658,20 @@
  						{
  							color5 = Microsoft.Xna.Framework.Color.White;
  						}
-@@ -29148,6 +29222,11 @@
+@@ -29148,6 +29222,12 @@
  						if (dust.type == 213)
  						{
  							scale = 1f;
 +						}
-+						if (dust.modDust != null)
++						ModDust modDust = ModDust.GetDust(dust.type);
++						if (modDust != null)
 +						{
-+							dust.modDust.Draw(dust, color5, scale);
++							modDust.Draw(dust, color5, scale);
 +							continue;
  						}
  						Main.spriteBatch.Draw(Main.dustTexture, dust.position - Main.screenPosition, new Microsoft.Xna.Framework.Rectangle?(dust.frame), color5, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
  						if (dust.color != default(Microsoft.Xna.Framework.Color))
-@@ -30027,6 +30106,7 @@
+@@ -30027,6 +30107,7 @@
  					text = Lang.inter[54] + " (" + text4 + ")";
  				}
  			}
@@ -678,7 +679,7 @@
  			int num18 = 180 + (Main.screenWidth - 800) / 2;
  			int num19 = 130 + num2 * 30;
  			float scale = 0.9f;
-@@ -30518,6 +30598,7 @@
+@@ -30518,6 +30599,7 @@
  								}
  							}
  						}
@@ -686,7 +687,7 @@
  					}
  				}
  				else if (Main.npcChatFocus3 && Main.player[Main.myPlayer].talkNPC >= 0)
-@@ -30568,6 +30649,7 @@
+@@ -30568,6 +30650,7 @@
  						}
  						Main.npcChatText = Lang.DyeTraderQuestChat(gotDye);
  					}
@@ -694,7 +695,7 @@
  				}
  			}
  		}
-@@ -31783,7 +31865,7 @@
+@@ -31783,7 +31866,7 @@
  							else
  							{
  								num61++;
@@ -703,7 +704,7 @@
  								num62++;
  							}
  						}
-@@ -32034,6 +32116,14 @@
+@@ -32034,6 +32117,14 @@
  							else if (Main.recipe[Main.availableRecipe[Main.focusRecipe]].anyPressurePlate && Main.recipe[Main.availableRecipe[Main.focusRecipe]].requiredItem[num72].type == 542)
  							{
  								Main.toolTip.name = Lang.misc[37] + " " + Lang.misc[38];
@@ -718,7 +719,7 @@
  							}
  							if (Main.recipe[Main.availableRecipe[Main.focusRecipe]].requiredItem[num72].stack > 1)
  							{
-@@ -35607,7 +35697,7 @@
+@@ -35607,7 +35698,7 @@
  						}
  						else
  						{
@@ -727,7 +728,7 @@
  						}
  						flag10 = true;
  					}
-@@ -37213,6 +37303,7 @@
+@@ -37213,6 +37304,7 @@
  						if (FileUtilities.Exists(Main.worldPathName + ".bak", Main.ActiveWorldFileData.IsCloudSave))
  						{
  							FileUtilities.Move(Main.worldPathName + ".bak", Main.worldPathName, Main.ActiveWorldFileData.IsCloudSave, true);
@@ -735,7 +736,7 @@
  							Main.PlaySound(10, -1, -1, 1);
  							WorldGen.playWorld();
  							Main.menuMode = 10;
-@@ -37351,6 +37442,7 @@
+@@ -37351,6 +37443,7 @@
  						Main.menuMode = 888;
  					}
  					num9++;
@@ -743,7 +744,7 @@
  					array9[num9] = Lang.menu[14];
  					if (this.selectedMenu == num9)
  					{
-@@ -39061,6 +39153,10 @@
+@@ -39061,6 +39154,10 @@
  							WorldGen.setWorldSize();
  						}
  					}
@@ -754,7 +755,7 @@
  				}
  			}
  			IL_4287:
-@@ -39811,10 +39907,11 @@
+@@ -39811,10 +39908,11 @@
  				{
  					num98 = 2;
  				}
@@ -768,7 +769,7 @@
  			}
  			Vector2 value = Main.DrawThickCursor(false);
  			Main.spriteBatch.Draw(Main.cursorTextures[0], new Vector2((float)Main.mouseX, (float)Main.mouseY) + value + Vector2.One, null, new Microsoft.Xna.Framework.Color((int)((float)Main.cursorColor.R * 0.2f), (int)((float)Main.cursorColor.G * 0.2f), (int)((float)Main.cursorColor.B * 0.2f), (int)((float)Main.cursorColor.A * 0.5f)), 0f, default(Vector2), Main.cursorScale * 1.1f, SpriteEffects.None, 0f);
-@@ -43457,7 +43554,7 @@
+@@ -43457,7 +43555,7 @@
  					}
  					else
  					{
@@ -777,7 +778,7 @@
  					}
  				}
  				float num103 = (num16 * 0.25f * 2f + 1f) / 3f;
-@@ -45976,7 +46073,7 @@
+@@ -45976,7 +46074,7 @@
  						tile = new Tile();
  						Main.tile[j, i] = tile;
  					}
@@ -786,7 +787,7 @@
  					if (wall > 0 && !this.FullTile(j, i))
  					{
  						Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
-@@ -45984,6 +46081,11 @@
+@@ -45984,6 +46082,11 @@
  						{
  							this.LoadWall((int)wall);
  							int num8 = (int)(Main.wallFrame[(int)wall] * 180);
@@ -798,7 +799,7 @@
  							if (Lighting.lightMode < 2 && !Main.wallLight[(int)wall] && (tile.wall < 88 || tile.wall > 93) && !WorldGen.SolidTile(tile))
  							{
  								Texture2D texture;
-@@ -46055,6 +46157,7 @@
+@@ -46055,6 +46158,7 @@
  									Main.spriteBatch.Draw(Main.wallOutlineTexture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X), (float)(i * 16 - (int)Main.screenPosition.Y + 14)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 14, 16, 2)), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  								}
  							}
@@ -806,7 +807,7 @@
  						}
  					}
  				}
-@@ -48842,6 +48945,19 @@
+@@ -48842,6 +48946,19 @@
  		}
  
  		protected override void Draw(GameTime gameTime)
@@ -826,7 +827,7 @@
  		{
  			if (Main._drawCycleCounter == 0uL)
  			{
-@@ -52232,7 +52348,7 @@
+@@ -52232,7 +52349,7 @@
  								num14++;
  							}
  						}
@@ -835,7 +836,7 @@
  						{
  							Main.nextNPC[num16] = false;
  						}
-@@ -52625,6 +52741,7 @@
+@@ -52625,6 +52742,7 @@
  							{
  								WorldGen.spawnNPC = 142;
  							}
@@ -843,7 +844,7 @@
  						}
  					}
  				}
-@@ -52743,6 +52860,10 @@
+@@ -52743,6 +52861,10 @@
  								}
  								if (num2 > 0f || (type >= 30 && type <= 35) || type == 39)
  								{

@@ -11,6 +11,7 @@ namespace ExampleMod.Walls
 		public override void SetDefaults()
 		{
 			Main.wallHouse[Type] = true;
+			dustType = mod.DustType("Sparkle");
 			drop = mod.ItemType("ExampleWall");
 			AddMapEntry(new Color(150, 150, 150));
 		}
@@ -18,12 +19,6 @@ namespace ExampleMod.Walls
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;
-		}
-
-		public override bool CreateDust(int i, int j, ref int type)
-		{
-			ModDust.NewDust(new Vector2(i, j) * 16f, 16, 16, mod, "Sparkle");
-			return false;
 		}
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)

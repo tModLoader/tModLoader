@@ -231,7 +231,7 @@ namespace ExampleMod.NPCs.Abomination
 			{
 				float radius = (float)Math.Sqrt(Main.rand.Next(sphereRadius * sphereRadius));
 				double angle = Main.rand.NextDouble() * 2.0 * Math.PI;
-				ModDust.NewDust(new Vector2(npc.Center.X + radius * (float)Math.Cos(angle), npc.Center.Y + radius * (float)Math.Sin(angle)), 0, 0, mod, "Sparkle", 0f, 0f, 0, default(Color), 1.5f);
+				Dust.NewDust(new Vector2(npc.Center.X + radius * (float)Math.Cos(angle), npc.Center.Y + radius * (float)Math.Sin(angle)), 0, 0, mod.DustType("Sparkle"), 0f, 0f, 0, default(Color), 1.5f);
 			}
 		}
 

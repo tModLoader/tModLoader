@@ -116,7 +116,7 @@ namespace ExampleMod.NPCs.Abomination
 				{
 					for (int x = 0; x < 5; x++)
 					{
-						int dust = ModDust.NewDust(npc.position, npc.width, npc.height, mod, "Pixel", 0f, 0f, 0, color.Value);
+						int dust = Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("Pixel"), 0f, 0f, 0, color.Value);
 						double angle = Main.rand.NextDouble() * 2.0 * Math.PI;
 						Main.dust[dust].velocity = 3f * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
 					}

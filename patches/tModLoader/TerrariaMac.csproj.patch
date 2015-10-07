@@ -17,7 +17,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
      <DefineConstants>CLIENT; MAC</DefineConstants>
-@@ -53,11 +54,13 @@
+@@ -53,11 +54,17 @@
      <Reference Include="System" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Windows.Forms" />
@@ -27,11 +27,15 @@
    <ItemGroup>
      <Compile Include="Extensions\EnumerationExtensions.cs" />
      <Compile Include="Properties\AssemblyInfo.cs" />
-+    <Compile Include="Properties\Resources.Designer.cs" />
++    <Compile Include="Properties\Resources.Designer.cs">
++      <AutoGen>True</AutoGen>
++      <DesignTime>True</DesignTime>
++      <DependentUpon>Resources.resx</DependentUpon>
++    </Compile>
      <Compile Include="Terraria.Achievements\Achievement.cs" />
      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
      <Compile Include="Terraria.Achievements\AchievementCondition.cs" />
-@@ -238,6 +241,73 @@
+@@ -238,6 +245,73 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -105,16 +109,18 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -376,5 +446,11 @@
+@@ -376,5 +450,14 @@
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
    </ItemGroup>
 +  <ItemGroup>
-+    <EmbeddedResource Include="Properties\Resources.resx" />
++    <EmbeddedResource Include="Properties\Resources.resx">
++      <Generator>PublicResXFileCodeGenerator</Generator>
++      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
++    </EmbeddedResource>
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 +  <PropertyGroup>
 +    <PostBuildEvent>if "$(TerrariaSteamFolder)" == "" (copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\terraria") else (copy "$(TargetPath)" "$(TerrariaSteamFolder)")</PostBuildEvent>
 +  </PropertyGroup>
  </Project>
-

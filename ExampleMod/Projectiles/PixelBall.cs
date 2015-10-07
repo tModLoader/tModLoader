@@ -24,7 +24,7 @@ namespace ExampleMod.Projectiles
 			Color? color = GetColor();
 			if (color.HasValue)
 			{
-				int dust = ModDust.NewDust(projectile.position, projectile.width, projectile.height, mod, "Pixel", 0f, 0f, 0, color.Value);
+				int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, mod.DustType("Pixel"), 0f, 0f, 0, color.Value);
 				Main.dust[dust].velocity += projectile.velocity;
 				Main.dust[dust].scale = 0.9f;
 			}

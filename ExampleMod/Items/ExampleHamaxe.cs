@@ -40,7 +40,7 @@ namespace ExampleMod.Items
 		{
 			if (Main.rand.Next(10) == 0)
 			{
-				int dust = ModDust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, mod, "Sparkle");
+				int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, mod.DustType("Sparkle"));
 			}
 		}
 	}

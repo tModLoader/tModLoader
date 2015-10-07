@@ -160,7 +160,7 @@ namespace ExampleMod.Projectiles
 		{
 			if (Main.rand.Next(5) == 0)
 			{
-				int dust = ModDust.NewDust(pos, 16, 16, mod, "Smoke", 0f, 0f, 0, Color.Black);
+				int dust = Dust.NewDust(pos, 16, 16, mod.DustType("Smoke"), 0f, 0f, 0, Color.Black);
 				Main.dust[dust].scale = 2f;
 				Main.dust[dust].velocity *= 0.5f;
 			}
