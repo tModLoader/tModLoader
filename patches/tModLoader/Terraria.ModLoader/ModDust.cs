@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -12,8 +11,9 @@ namespace Terraria.ModLoader
 	{
 		private static int nextDust = DustID.Count;
 		internal static readonly IDictionary<int, ModDust> dusts = new Dictionary<int, ModDust>();
-		public int updateType = -1;
-
+		//in Terraria.Dust add ModDust property (internal set)
+		//in Terraria.Dust.NewDust set dust.modDust to null
+		//in Terraria.Dust.CloneDust copy modDust property
 		public string Name
 		{
 			get;
@@ -47,20 +47,11 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		internal static int ReserveDustID()
+		internal static int ReserveItemID()
 		{
 			int reserveID = nextDust;
 			nextDust++;
 			return reserveID;
-		}
-		//make Terraria.GameContent.ChildSafety.SafeDust public and not readonly
-		internal static void ResizeArrays()
-		{
-			Array.Resize(ref ChildSafety.SafeDust, nextDust);
-			for (int k = DustID.Count; k < nextDust; k++)
-			{
-				ChildSafety.SafeDust[k] = true;
-			}
 		}
 
 		internal static void Unload()
@@ -68,39 +59,24 @@ namespace Terraria.ModLoader
 			dusts.Clear();
 			nextDust = DustID.Count;
 		}
-		//in Terraria.Dust.NewDust after initializing dust properties call ModDust.SetupDust(dust);
-		internal static void SetupDust(Dust dust)
+
+		public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
 		{
-			ModDust modDust = GetDust(dust.type);
-			if (modDust != null)
-			{
-				dust.frame.X = 0;
-				dust.frame.Y %= 30;
-				modDust.OnSpawn(dust);
-			}
+			int dust = Dust.NewDust(Position, Width, Height, 0, SpeedX, SpeedY, Alpha, newColor, Scale);
+			Main.dust[dust].modDust = ModDust.GetDust(Type);
+			ModDust.GetDust(Type).OnSpawn(Main.dust[dust]);
+			return dust;
 		}
-		//in Terraria.Dust.UpdateDust after incrementing Dust.dCount call this
-		internal static void SetupUpdateType(Dust dust)
+
+		public static int NewDust(Vector2 Position, int Width, int Height, Mod mod, string name, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
 		{
-			ModDust modDust = GetDust(dust.type);
-			if (modDust != null && modDust.updateType >= 0)
-			{
-				dust.realType = dust.type;
-				dust.type = modDust.updateType;
-			}
-		}
-		//in Terraria.Dust.UdpateDust at end of dust update code call this
-		internal static void TakeDownUpdateType(Dust dust)
-		{
-			if (dust.realType >= 0)
-			{
-				dust.type = dust.realType;
-				dust.realType = -1;
-			}
+			int dust = Dust.NewDust(Position, Width, Height, 0, SpeedX, SpeedY, Alpha, newColor, Scale);
+			Main.dust[dust].modDust = mod.dusts[name];
+			mod.dusts[name].OnSpawn(Main.dust[dust]);
+			return dust;
 		}
 		//in Terraria.Main.DrawDust before universal dust drawing call
-		//  ModDust modDust = ModDust.GetDust(dust.type);
-		//  if(modDust != null) { modDust.Draw(dust, color5, scale); continue; }
+		//  if(dust.modDust != null) { dust.modDust.Draw(dust, color5, scale); continue; }
 		internal void Draw(Dust dust, Color alpha, float scale)
 		{
 			Main.spriteBatch.Draw(Texture, dust.position - Main.screenPosition, new Microsoft.Xna.Framework.Rectangle?(dust.frame), alpha, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
@@ -119,25 +95,19 @@ namespace Terraria.ModLoader
 			return mod.Properties.Autoload;
 		}
 
-		public virtual void SetDefaults()
-		{
-		}
-
 		public virtual void OnSpawn(Dust dust)
 		{
 		}
-		//in Terraria.Dust.UpdateDust after setting up update type add
-		//  ModDust modDust = ModDust.GetDust(dust.type);
-		//  if(modDust != null && !modDust.Update(dust)) { ModDust.TakeDownUpdateType(dust); continue; }
+		//in Terraria.Dust.UpdateDust after incrementing Dust.dCount call
+		//  if(dust.modDust != null && !dust.modDust.Update(dust)) { continue; }
 		public virtual bool Update(Dust dust)
 		{
 			return true;
 		}
 		//in beginning of Terraria.Dust.GetAlpha add
-		//  ModDust modDust = ModDust.GetDust(this.type);
-		//  if(modDust != null)
+		//  if(this.modDust != null)
 		//  {
-		//      Color? modColor = modDust.GetAlpha(this, newColor);
+		//      Color? modColor = this.modDust.GetAlpha(this, newColor);
 		//      if(modColor.HasValue)
 		//      {
 		//          return modColor.Value;

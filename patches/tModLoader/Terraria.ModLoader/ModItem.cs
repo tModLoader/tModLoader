@@ -178,6 +178,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+        public virtual void UpdateArmorSetShadows(Player player, ref bool shadow1, ref bool shadow2, ref bool shadow3, ref bool shadow4)
+        {
+        }
+
 		public virtual bool CanRightClick()
 		{
 			return false;

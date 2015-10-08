@@ -195,7 +195,6 @@ namespace Terraria.ModLoader
 			ItemLoader.ResizeArrays();
 			EquipLoader.ResizeAndFillArrays();
 			Main.InitializeItemAnimations();
-			ModDust.ResizeArrays();
 			TileLoader.ResizeArrays(unloading);
 			WallLoader.ResizeArrays(unloading);
 			ProjectileLoader.ResizeArrays();

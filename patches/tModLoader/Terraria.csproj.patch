@@ -127,7 +127,7 @@
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
 +    <EmbeddedResource Include="Properties\Resources.resx">
-+      <Generator>PublicResXFileCodeGenerator</Generator>
++      <Generator>ResXFileCodeGenerator</Generator>
 +      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
 +    </EmbeddedResource>
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
