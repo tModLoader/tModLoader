@@ -510,6 +510,30 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		internal static void UpdateArmorSetShadows(Player player, Item head, Item body, Item legs, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
+		{
+			if (IsModItem(head) && head.modItem.IsArmorSet(head, body, legs))
+			{
+				head.modItem.UpdateArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+			}
+			if (IsModItem(body) && body.modItem.IsArmorSet(head, body, legs))
+			{
+				body.modItem.UpdateArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+			}
+			if (IsModItem(legs) && legs.modItem.IsArmorSet(head, body, legs))
+			{
+				legs.modItem.UpdateArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				string set = globalItem.IsArmorSet(head, body, legs);
+				if (set.Length > 0)
+				{
+					globalItem.UpdateArmorSetShadows(player, set, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				}
+			}
+		}
 		//in Terraria.UI.ItemSlot.RightClick in end of item-opening if/else chain before final else
 		//  make else if(ItemLoader.CanRightClick(inv[slot]))
 		internal static bool CanRightClick(Item item)
@@ -706,7 +730,6 @@ namespace Terraria.ModLoader
 				globalItem.WingUpdate(item, player, inUse);
 			}
 		}
-		
 		//in Terraria.Item.UpdateItem before item movement (denoted by ItemID.Sets.ItemNoGravity)
 		//  call ItemLoader.Update(this, ref num, ref num2)
 		internal static void Update(Item item, ref float gravity, ref float maxFallSpeed)
