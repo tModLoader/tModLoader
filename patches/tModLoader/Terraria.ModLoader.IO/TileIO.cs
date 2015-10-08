@@ -505,8 +505,8 @@ namespace Terraria.ModLoader.IO
 				Tile left = Main.tile[i, j];
 				Tile right = Main.tile[i + 1, j];
 				if (left.active() && right.active() && (left.type == TileID.Mannequin || left.type == TileID.Womannequin)
-				    && left.type == right.type && (left.frameX == 0 || left.frameX == 36) && right.frameX == left.frameX + 18
-				    && left.frameY / 18 == position && left.frameY == right.frameY)
+				               && left.type == right.type && (left.frameX == 0 || left.frameX == 36) && right.frameX == left.frameX + 18
+				               && left.frameY / 18 == position && left.frameY == right.frameY)
 				{
 					if (position == 0)
 					{

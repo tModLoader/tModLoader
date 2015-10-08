@@ -510,6 +510,30 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+        internal static void UpdateArmorSetShadows(Player player, Item head, Item body, Item legs, ref bool shadow1, ref bool shadow2, ref bool shadow3, ref bool shadow4)
+        {
+            if (IsModItem(head) && head.modItem.IsArmorSet(head, body, legs))
+            {
+                head.modItem.UpdateArmorSetShadows(player, ref shadow1, ref shadow2, ref shadow3, ref shadow4);
+            }
+            if (IsModItem(body) && body.modItem.IsArmorSet(head, body, legs))
+            {
+                body.modItem.UpdateArmorSetShadows(player, ref shadow1, ref shadow2, ref shadow3, ref shadow4);
+            }
+            if (IsModItem(legs) && legs.modItem.IsArmorSet(head, body, legs))
+            {
+                legs.modItem.UpdateArmorSetShadows(player, ref shadow1, ref shadow2, ref shadow3, ref shadow4);
+            }
+            foreach (GlobalItem globalItem in globalItems)
+            {
+                string set = globalItem.IsArmorSet(head, body, legs);
+                if (set.Length > 0)
+                {
+                    globalItem.UpdateArmorSetShadows(player, ref shadow1, ref shadow2, ref shadow3, ref shadow4);
+                }
+            }
+        }
 		//in Terraria.UI.ItemSlot.RightClick in end of item-opening if/else chain before final else
 		//  make else if(ItemLoader.CanRightClick(inv[slot]))
 		internal static bool CanRightClick(Item item)
