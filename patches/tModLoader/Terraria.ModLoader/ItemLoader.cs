@@ -511,26 +511,88 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void UpdateArmorSetShadows(Player player, Item head, Item body, Item legs, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
+		private static void GetVanityArmor(Player player, out Item head, out Item body, out Item legs)
 		{
-			if (IsModItem(head) && head.modItem.IsArmorSet(head, body, legs))
+			head = player.armor[10].headSlot >= 0 ? player.armor[10] : player.armor[0];
+			body = player.armor[11].bodySlot >= 0 ? player.armor[11] : player.armor[1];
+			legs = player.armor[12].legSlot >= 0 ? player.armor[12] : player.armor[2];
+		}
+		//in Terraria.Player.PlayerFrame after setting armor effects fields call this
+		internal static void PreUpdateVanitySet(Player player)
+		{
+			Item head, body, legs;
+			GetVanityArmor(player, out head, out body, out legs);
+			if (IsModItem(head) && head.modItem.IsVanitySet(head, body, legs))
 			{
-				head.modItem.UpdateArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				head.modItem.PreUpdateVanitySet(player);
 			}
-			if (IsModItem(body) && body.modItem.IsArmorSet(head, body, legs))
+			if (IsModItem(body) && body.modItem.IsVanitySet(head, body, legs))
 			{
-				body.modItem.UpdateArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				body.modItem.PreUpdateVanitySet(player);
 			}
-			if (IsModItem(legs) && legs.modItem.IsArmorSet(head, body, legs))
+			if (IsModItem(legs) && legs.modItem.IsVanitySet(head, body, legs))
 			{
-				legs.modItem.UpdateArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				legs.modItem.PreUpdateVanitySet(player);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				string set = globalItem.IsArmorSet(head, body, legs);
+				string set = globalItem.IsVanitySet(head, body, legs);
 				if (set.Length > 0)
 				{
-					globalItem.UpdateArmorSetShadows(player, set, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+					globalItem.PreUpdateVanitySet(player, set);
+				}
+			}
+		}
+		//in Terraria.Player.PlayerFrame after armor sets creating dust call this
+		internal static void UpdateVanitySet(Player player)
+		{
+			Item head, body, legs;
+			GetVanityArmor(player, out head, out body, out legs);
+			if (IsModItem(head) && head.modItem.IsVanitySet(head, body, legs))
+			{
+				head.modItem.UpdateVanitySet(player);
+			}
+			if (IsModItem(body) && body.modItem.IsVanitySet(head, body, legs))
+			{
+				body.modItem.UpdateVanitySet(player);
+			}
+			if (IsModItem(legs) && legs.modItem.IsVanitySet(head, body, legs))
+			{
+				legs.modItem.UpdateVanitySet(player);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				string set = globalItem.IsVanitySet(head, body, legs);
+				if (set.Length > 0)
+				{
+					globalItem.UpdateVanitySet(player, set);
+				}
+			}
+		}
+		//in Terraria.Main.DrawPlayers after armor combinations setting flags call
+		//  ItemLoader.ArmorSetShadows(player, ref flag, ref flag2, ref flag3, ref flag4);
+		internal static void ArmorSetShadows(Player player, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
+		{
+			Item head, body, legs;
+			GetVanityArmor(player, out head, out body, out legs);
+			if (IsModItem(head) && head.modItem.IsVanitySet(head, body, legs))
+			{
+				head.modItem.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+			}
+			if (IsModItem(body) && body.modItem.IsVanitySet(head, body, legs))
+			{
+				body.modItem.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+			}
+			if (IsModItem(legs) && legs.modItem.IsVanitySet(head, body, legs))
+			{
+				legs.modItem.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				string set = globalItem.IsVanitySet(head, body, legs);
+				if (set.Length > 0)
+				{
+					globalItem.ArmorSetShadows(player, set, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
 				}
 			}
 		}

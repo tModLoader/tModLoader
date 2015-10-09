@@ -270,7 +270,7 @@
  						{
  							flag3 = true;
  						}
-+						ItemLoader.UpdateArmorSetShadows(player, player.armor[0], player.armor[1], player.armor[2], ref flag, ref flag2, ref flag3, ref flag4);
++						ItemLoader.ArmorSetShadows(player, ref flag, ref flag2, ref flag3, ref flag4);
  						if (player.stoned || player.stealth != 1f)
  						{
  							flag3 = false;

@@ -155,7 +155,20 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void UpdateArmorSetShadows(Player player, string set, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
+		public virtual string IsVanitySet(Item head, Item body, Item legs)
+		{
+			return IsArmorSet(head, body, legs);
+		}
+
+		public virtual void PreUpdateVanitySet(Player player, string set)
+		{
+		}
+
+		public virtual void UpdateVanitySet(Player player, string set)
+		{
+		}
+
+		public virtual void ArmorSetShadows(Player player, string set, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
 		{
 		}
 
