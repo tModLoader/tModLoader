@@ -29,6 +29,13 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElementHead + k);
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
+			Main.music[23].modMusic = ModLoader.GetSound("ExampleMod/ExampleMusic").CreateInstance();
+			Main.music[23].modMusic.IsLooped= true;
+		}
+		
+		public override void Unload()
+		{
+			Main.music[23].modMusic = null;
 		}
 
 		public override void AddCraftGroups()
@@ -58,6 +65,10 @@ namespace ExampleMod
 			recipe = new ModRecipe(this);
 			recipe.AddIngredient(null, "ExampleItem");
 			recipe.SetResult(ItemID.GoldChest);
+			recipe.AddRecipe();
+			recipe = new ModRecipe(this);
+			recipe.AddIngredient(null, "ExampleItem");
+			recipe.SetResult(ItemID.MusicBoxDungeon);
 			recipe.AddRecipe();
 			RecipeHelper.AddBossRecipes(this);
 		}
