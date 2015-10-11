@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -356,27 +358,31 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal struct ArmorTables
+		internal struct ContainerTables
 		{
 			internal IDictionary<int, int> headSlots;
 			internal IDictionary<int, int> bodySlots;
 			internal IDictionary<int, int> legSlots;
 
-			internal static ArmorTables Create()
+			internal static ContainerTables Create()
 			{
-				ArmorTables tables = new ArmorTables();
+				ContainerTables tables = new ContainerTables();
 				tables.headSlots = new Dictionary<int, int>();
 				tables.bodySlots = new Dictionary<int, int>();
 				tables.legSlots = new Dictionary<int, int>();
 				return tables;
 			}
 		}
-
-		internal static bool WriteArmorStands(BinaryWriter writer)
+		//in Terraria.GameContent.Tile_Entities.TEItemFrame.WriteExtraData
+		//  if item is a mod item write 0 as the ID
+		internal static bool WriteContainers(BinaryWriter writer)
 		{
+			byte[] flags = new byte[1];
+			byte numFlags = 0;
 			ISet<int> headSlots = new HashSet<int>();
 			ISet<int> bodySlots = new HashSet<int>();
 			ISet<int> legSlots = new HashSet<int>();
+			IDictionary<int, int> itemFrames = new Dictionary<int, int>();
 			for (int i = 0; i < Main.maxTilesX; i++)
 			{
 				for (int j = 0; j < Main.maxTilesY; j++)
@@ -400,11 +406,31 @@ namespace Terraria.ModLoader.IO
 							{
 								legSlots.Add(slot);
 							}
+							flags[0] |= 1;
+							numFlags = 1;
 						}
 					}
 				}
 			}
-			if (headSlots.Count > 0 || bodySlots.Count > 0 || legSlots.Count > 0)
+			int tileEntity = 0;
+			foreach (KeyValuePair<int, TileEntity> entity in TileEntity.ByID)
+			{
+				TEItemFrame itemFrame = entity.Value as TEItemFrame;
+				if (itemFrame != null && itemFrame.item.netID >= ItemID.Count)
+				{
+					itemFrames.Add(itemFrame.ID, tileEntity);
+					flags[0] |= 2;
+					numFlags = 1;
+				}
+				tileEntity++;
+			}
+			if (numFlags == 0)
+			{
+				return false;
+			}
+			writer.Write(numFlags);
+			writer.Write(flags, 0, numFlags);
+			if ((flags[0] & 1) == 1)
 			{
 				writer.Write((ushort)headSlots.Count);
 				foreach (int slot in headSlots)
@@ -430,46 +456,72 @@ namespace Terraria.ModLoader.IO
 					writer.Write(item.mod.Name);
 					writer.Write(Main.itemName[item.item.type]);
 				}
-				WriteArmorStandData(writer);
-				return true;
+				WriteContainerData(writer);
 			}
-			return false;
+			if ((flags[0] & 2) == 2)
+			{
+				writer.Write(itemFrames.Count);
+				foreach (int oldID in itemFrames.Keys)
+				{
+					TEItemFrame itemFrame = TileEntity.ByID[oldID] as TEItemFrame;
+					writer.Write(itemFrames[oldID]);
+					ItemIO.WriteModItem(itemFrame.item, writer);
+					writer.Write(itemFrame.item.stack);
+				}
+			}
+			return true;
 		}
 
-		internal static void ReadArmorStands(BinaryReader reader)
+		internal static void ReadContainers(BinaryReader reader)
 		{
-			ArmorTables tables = ArmorTables.Create();
-			int count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++)
+			byte[] flags = new byte[1];
+			reader.Read(flags, 0, reader.ReadByte());
+			if ((flags[0] & 1) == 1)
 			{
-				int slot = reader.ReadUInt16();
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				Mod mod = ModLoader.GetMod(modName);
-				tables.headSlots[slot] = mod == null ? 0 : mod.GetItem(name).item.headSlot;
+				ContainerTables tables = ContainerTables.Create();
+				int count = reader.ReadUInt16();
+				for (int k = 0; k < count; k++)
+				{
+					int slot = reader.ReadUInt16();
+					string modName = reader.ReadString();
+					string name = reader.ReadString();
+					Mod mod = ModLoader.GetMod(modName);
+					tables.headSlots[slot] = mod == null ? 0 : mod.GetItem(name).item.headSlot;
+				}
+				count = reader.ReadUInt16();
+				for (int k = 0; k < count; k++)
+				{
+					int slot = reader.ReadUInt16();
+					string modName = reader.ReadString();
+					string name = reader.ReadString();
+					Mod mod = ModLoader.GetMod(modName);
+					tables.bodySlots[slot] = mod == null ? 0 : mod.GetItem(name).item.bodySlot;
+				}
+				count = reader.ReadUInt16();
+				for (int k = 0; k < count; k++)
+				{
+					int slot = reader.ReadUInt16();
+					string modName = reader.ReadString();
+					string name = reader.ReadString();
+					Mod mod = ModLoader.GetMod(modName);
+					tables.legSlots[slot] = mod == null ? 0 : mod.GetItem(name).item.legSlot;
+				}
+				ReadContainerData(reader, tables);
 			}
-			count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++)
+			if ((flags[0] & 2) == 2)
 			{
-				int slot = reader.ReadUInt16();
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				Mod mod = ModLoader.GetMod(modName);
-				tables.bodySlots[slot] = mod == null ? 0 : mod.GetItem(name).item.bodySlot;
+				int count = reader.ReadInt32();
+				for (int k = 0; k < count; k++)
+				{
+					int id = reader.ReadInt32();
+					TEItemFrame itemFrame = TileEntity.ByID[id] as TEItemFrame;
+					ItemIO.ReadModItem(itemFrame.item, reader);
+					itemFrame.item.stack = reader.ReadInt32();
+				}
 			}
-			count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++)
-			{
-				int slot = reader.ReadUInt16();
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				Mod mod = ModLoader.GetMod(modName);
-				tables.legSlots[slot] = mod == null ? 0 : mod.GetItem(name).item.legSlot;
-			}
-			ReadArmorStandData(reader, tables);
 		}
 
-		internal static void WriteArmorStandData(BinaryWriter writer)
+		internal static void WriteContainerData(BinaryWriter writer)
 		{
 			for (int i = 0; i < Main.maxTilesX; i++)
 			{
@@ -494,7 +546,7 @@ namespace Terraria.ModLoader.IO
 			writer.Write(-1);
 		}
 
-		internal static void ReadArmorStandData(BinaryReader reader, ArmorTables tables)
+		internal static void ReadContainerData(BinaryReader reader, ContainerTables tables)
 		{
 			int i = reader.ReadInt32();
 			while (i > 0)

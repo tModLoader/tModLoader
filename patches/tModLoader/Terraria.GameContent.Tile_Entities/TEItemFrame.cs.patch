@@ -1,0 +1,20 @@
+--- src/Terraria\Terraria.GameContent.Tile_Entities\TEItemFrame.cs
++++ src/tModLoader\Terraria.GameContent.Tile_Entities\TEItemFrame.cs
+@@ -1,6 +1,7 @@
+ using System;
+ using System.IO;
+ using Terraria.DataStructures;
++using Terraria.ID;
+ 
+ namespace Terraria.GameContent.Tile_Entities
+ {
+@@ -62,7 +63,7 @@
+ 
+ 		public override void WriteExtraData(BinaryWriter writer)
+ 		{
+-			writer.Write((short)this.item.netID);
++			writer.Write((short)(this.item.netID >= ItemID.Count ? 0 : this.item.netID));
+ 			writer.Write(this.item.prefix);
+ 			writer.Write((short)this.item.stack);
+ 		}
+

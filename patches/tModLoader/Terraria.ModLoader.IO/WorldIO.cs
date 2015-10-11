@@ -96,7 +96,7 @@ namespace Terraria.ModLoader.IO
 			{
 				flags[0] |= 4;
 			}
-			if (TileIO.WriteArmorStands(writer))
+			if (TileIO.WriteContainers(writer))
 			{
 				flags[0] |= 8;
 			}
@@ -119,7 +119,7 @@ namespace Terraria.ModLoader.IO
 			}
 			if ((flags[0] & 8) == 8)
 			{
-				TileIO.ReadArmorStands(reader);
+				TileIO.ReadContainers(reader);
 			}
 		}
 
