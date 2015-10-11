@@ -1,6 +1,17 @@
 --- src/Terraria\TerrariaServer.csproj
 +++ src/tModLoader\TerrariaServer.csproj
-@@ -53,6 +53,7 @@
+@@ -36,6 +36,10 @@
+     <Reference Include="Ionic.Zip.CF, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
++    </Reference>
++    <Reference Include="MP3Sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>Terraria.Libraries\MP3Sharp\MP3Sharp.dll</HintPath>
+     </Reference>
+     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+@@ -53,6 +57,7 @@
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Windows.Forms" />
@@ -8,7 +19,7 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -242,6 +243,73 @@
+@@ -242,6 +247,74 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -71,6 +82,7 @@
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\MountTextureType.cs" />
++    <Compile Include="Terraria.ModLoader\MusicWrapper.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCHeadLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCSpawnInfo.cs" />
@@ -82,4 +94,12 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-
+@@ -387,5 +460,8 @@
+     <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
+     <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
+   </ItemGroup>
++  <ItemGroup>
++    <EmbeddedResource Include="Terraria.Libraries\MP3Sharp\MP3Sharp.dll" />
++  </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+ </Project>

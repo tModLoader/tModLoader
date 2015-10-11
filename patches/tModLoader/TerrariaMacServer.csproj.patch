@@ -17,7 +17,18 @@
      <PlatformTarget>x86</PlatformTarget>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-@@ -52,6 +53,7 @@
+@@ -40,6 +41,10 @@
+     <Reference Include="Ionic.Zip.CF, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>..\..\references\Ionic.Zip.CF.dll</HintPath>
++    </Reference>
++    <Reference Include="MP3Sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>Terraria.Libraries\MP3Sharp\MP3Sharp.dll</HintPath>
+     </Reference>
+     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+@@ -52,6 +57,7 @@
      <Reference Include="System.Core" />
      <Reference Include="System" />
      <Reference Include="System.Drawing" />
@@ -25,7 +36,7 @@
      <Reference Include="WindowsBase" />
      <Reference Include="System.Windows.Forms" />
    </ItemGroup>
-@@ -242,6 +244,73 @@
+@@ -242,6 +248,74 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -88,6 +99,7 @@
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\MountTextureType.cs" />
++    <Compile Include="Terraria.ModLoader\MusicWrapper.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCHeadLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCSpawnInfo.cs" />

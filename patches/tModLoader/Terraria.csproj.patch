@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -28,12 +28,18 @@
+@@ -28,20 +28,30 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
      <DefineConstants>CLIENT; WINDOWS</DefineConstants>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -20,7 +20,10 @@
        <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
      </Reference>
      <Reference Include="Microsoft.Xna.Framework.Game" />
-@@ -41,7 +47,8 @@
++    <Reference Include="MP3Sharp">
++      <HintPath>Terraria.Libraries\MP3Sharp\MP3Sharp.dll</HintPath>
++    </Reference>
+     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
        <SpecificVersion>False</SpecificVersion>
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
@@ -30,7 +33,7 @@
        <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
      </Reference>
      <Reference Include="System.Windows.Forms" />
-@@ -51,11 +58,17 @@
+@@ -51,11 +61,17 @@
      <Reference Include="Microsoft.Xna.Framework.Xact" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
@@ -48,7 +51,7 @@
      <Compile Include="Terraria.Achievements\Achievement.cs" />
      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
      <Compile Include="Terraria.Achievements\AchievementCondition.cs" />
-@@ -236,6 +249,73 @@
+@@ -236,6 +252,74 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -110,6 +113,7 @@
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\MountTextureType.cs" />
++    <Compile Include="Terraria.ModLoader\MusicWrapper.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCHeadLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCLoader.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\PlayerIO.cs" />
@@ -122,7 +126,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -379,9 +459,20 @@
+@@ -379,9 +463,21 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -136,10 +140,12 @@
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.Libraries\Mp3Sharp\MP3Sharp.dll" />
 +    <None Include="Terraria.ModLoader.Default\MysteryItem.png" />
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>if "$(TerrariaSteamFolder)" == "" (copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\terraria") else (copy "$(TargetPath)" "$(TerrariaSteamFolder)")</PostBuildEvent>
 +  </PropertyGroup>
- </Project>
++</Project>

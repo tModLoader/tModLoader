@@ -147,21 +147,7 @@
  			if (Main.rand.Next(150) == 0)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1810, 1, false, 0, false, false);
-@@ -5810,6 +5843,13 @@
- 							this.buffTime[k] = 18000;
- 						}
- 					}
-+					// This should work now automatically.
-+					//else if (mount.Type >= MountID.Count)
-+					//{
-+					//	// TODO: Fix this once Buff support in.
-+					//	this.mount.SetMount(mount.Type, this, false);
-+					//	// this.buffTime[mount.BuffType] = 10;
-+					//}
- 					else if (this.buffType[k] == 90)
- 					{
- 						this.mount.SetMount(0, this, false);
-@@ -6584,6 +6624,7 @@
+@@ -6584,6 +6617,7 @@
  					{
  						this.meleeEnchant = 8;
  					}
@@ -169,7 +155,7 @@
  				}
  			}
  		}
-@@ -6818,6 +6859,7 @@
+@@ -6818,6 +6852,7 @@
  				{
  					this.accDreamCatcher = true;
  				}
@@ -177,7 +163,7 @@
  			}
  			for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
  			{
-@@ -7644,6 +7686,7 @@
+@@ -7644,6 +7679,7 @@
  					{
  						this.meleeSpeed += 0.04f;
  					}
@@ -185,7 +171,7 @@
  				}
  			}
  			bool flag = false;
-@@ -8783,6 +8826,7 @@
+@@ -8783,6 +8819,7 @@
  							Main.musicBox2 = 37;
  						}
  					}
@@ -193,7 +179,7 @@
  				}
  			}
  			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
-@@ -9390,6 +9434,7 @@
+@@ -9390,6 +9427,7 @@
  			{
  				this.DelBuff(this.HasBuff(187));
  			}
@@ -201,7 +187,7 @@
  		}
  
  		public void UpdateSocialShadow()
-@@ -10577,11 +10622,11 @@
+@@ -10577,11 +10615,11 @@
  				}
  				list11.Clear();
  			}
@@ -215,7 +201,7 @@
  				{
  					flag3 = true;
  				}
-@@ -10592,7 +10637,7 @@
+@@ -10592,7 +10630,7 @@
  						for (int num61 = num6; num61 <= num7; num61++)
  						{
  							Tile tile4 = Main.tile[num60, num61];
@@ -224,7 +210,7 @@
  							{
  								int num62 = (int)tile4.slope();
  								if (num62 != 2 && !Main.tile[num60 - 1, num61 - 1].active())
-@@ -14417,6 +14462,7 @@
+@@ -14417,6 +14455,7 @@
  				num3 = 1.5f;
  				num = 0.125f;
  			}
@@ -232,7 +218,7 @@
  			this.velocity.Y = this.velocity.Y - num * this.gravDir;
  			if (this.gravDir == 1f)
  			{
-@@ -17081,7 +17127,7 @@
+@@ -17081,7 +17120,7 @@
  					this.AddBuff(147, 2, false);
  				}
  			}
@@ -241,7 +227,7 @@
  			{
  				this.buffImmune[num29] = false;
  			}
-@@ -18139,6 +18185,7 @@
+@@ -18139,6 +18178,7 @@
  					{
  						this.accRunSpeed = 7f;
  					}
@@ -249,7 +235,7 @@
  				}
  				if (this.sticky)
  				{
-@@ -18379,6 +18426,7 @@
+@@ -18379,6 +18419,7 @@
  				}
  				else
  				{
@@ -257,7 +243,7 @@
  					if (flag24)
  					{
  						if (this.wings == 10 && Main.rand.Next(2) == 0)
-@@ -20501,6 +20549,7 @@
+@@ -20501,6 +20542,7 @@
  							this.showItemIcon = true;
  							this.showItemIcon2 = (int)(583 + Main.tile[Player.tileTargetX, Player.tileTargetY].frameX / 18);
  						}
@@ -265,7 +251,7 @@
  						if (this.controlUseTile)
  						{
  							if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 212 && this.launcherWait <= 0)
-@@ -20934,11 +20983,11 @@
+@@ -20934,11 +20976,11 @@
  										}
  									}
  								}
@@ -279,7 +265,7 @@
  									{
  										int num209 = 1141;
  										for (int num210 = 0; num210 < 58; num210++)
-@@ -20964,7 +21013,7 @@
+@@ -20964,7 +21006,7 @@
  										NetMessage.SendData(19, -1, -1, "", 0, (float)Player.tileTargetX, (float)Player.tileTargetY, (float)this.direction, 0, 0, 0);
  									}
  								}
@@ -288,7 +274,7 @@
  								{
  									NetMessage.SendData(19, -1, -1, "", 1, (float)Player.tileTargetX, (float)Player.tileTargetY, (float)this.direction, 0, 0, 0);
  								}
-@@ -21238,6 +21287,7 @@
+@@ -21238,6 +21280,7 @@
  										Projectile.NewProjectile(vector4.X, vector4.Y, 0f, 0f, 403, 0, 0f, this.whoAmI, 0f, 0f);
  									}
  								}
@@ -296,7 +282,7 @@
  							}
  							this.releaseUseTile = false;
  						}
-@@ -21587,7 +21637,7 @@
+@@ -21587,7 +21630,7 @@
  						{
  							num250 = 1;
  						}
@@ -305,7 +291,7 @@
  						{
  							float num251 = 1f;
  							Rectangle value6 = new Rectangle((int)Main.npc[num249].position.X, (int)Main.npc[num249].position.Y, Main.npc[num249].width, Main.npc[num249].height);
-@@ -21678,6 +21728,8 @@
+@@ -21678,6 +21721,8 @@
  										num255 = (int)((double)num255 * 0.75);
  									}
  								}
@@ -314,7 +300,7 @@
  								if (this.whoAmI == Main.myPlayer && this.thorns > 0f && !this.immune && !Main.npc[num249].dontTakeDamage)
  								{
  									int num257 = (int)((float)num255 * this.thorns);
-@@ -21700,7 +21752,8 @@
+@@ -21700,7 +21745,8 @@
  								{
  									this.StatusPlayer(Main.npc[num249]);
  								}
@@ -324,7 +310,7 @@
  							}
  						}
  					}
-@@ -22357,10 +22410,16 @@
+@@ -22357,10 +22403,16 @@
  					{
  						num += 100;
  					}
@@ -341,7 +327,7 @@
  							if (ItemID.Sets.NebulaPickup[Main.item[j].type])
  							{
  								Main.PlaySound(7, (int)this.position.X, (int)this.position.Y, 1);
-@@ -22425,7 +22484,10 @@
+@@ -22425,7 +22477,10 @@
  					else if (new Rectangle((int)this.position.X - num, (int)this.position.Y - num, this.width + num * 2, this.height + num * 2).Intersects(new Rectangle((int)Main.item[j].position.X, (int)Main.item[j].position.Y, Main.item[j].width, Main.item[j].height)) && this.ItemSpace(Main.item[j]))
  					{
  						Main.item[j].beingGrabbed = true;
@@ -353,7 +339,7 @@
  						{
  							float num3 = 12f;
  							Vector2 vector = new Vector2(Main.item[j].position.X + (float)(Main.item[j].width / 2), Main.item[j].position.Y + (float)(Main.item[j].height / 2));
-@@ -23150,7 +23212,7 @@
+@@ -23150,7 +23205,7 @@
  		{
  			int num = 4;
  			int num2 = 3;
@@ -362,7 +348,7 @@
  			{
  				this.oldAdjTile[i] = this.adjTile[i];
  				this.adjTile[i] = false;
-@@ -23198,6 +23260,7 @@
+@@ -23198,6 +23253,7 @@
  							this.adjTile[14] = true;
  							this.alchemyTable = true;
  						}
@@ -370,7 +356,7 @@
  					}
  					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
  					{
-@@ -23467,6 +23530,7 @@
+@@ -23467,6 +23523,7 @@
  			{
  				this.boneArmor = true;
  			}
@@ -378,7 +364,7 @@
  			if (this.wings > 0)
  			{
  				this.back = -1;
-@@ -23623,6 +23687,7 @@
+@@ -23623,6 +23680,7 @@
  					}
  				}
  			}
@@ -386,7 +372,7 @@
  			this.bodyFrame.Width = 40;
  			this.bodyFrame.Height = 56;
  			this.legFrame.Width = 40;
-@@ -23843,6 +23908,10 @@
+@@ -23843,6 +23901,10 @@
  							}
  						}
  					}
@@ -397,7 +383,7 @@
  				}
  			}
  			else
-@@ -23878,6 +23947,10 @@
+@@ -23878,6 +23940,10 @@
  					if (this.inventory[this.selectedItem].holdStyle == 3)
  					{
  						this.bodyFrame.Y = this.bodyFrame.Height * 3;
@@ -408,7 +394,7 @@
  						return;
  					}
  					if (this.grappling[0] >= 0)
-@@ -25596,7 +25669,10 @@
+@@ -25596,7 +25662,10 @@
  					bool flag3 = false;
  					bool flag4 = false;
  					TileObject tileObject = default(TileObject);
@@ -420,7 +406,7 @@
  					{
  						flag4 = true;
  						flag3 = TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, (int)((ushort)this.inventory[this.selectedItem].createTile), this.inventory[this.selectedItem].placeStyle, this.direction, out tileObject, false);
-@@ -25649,7 +25725,7 @@
+@@ -25649,7 +25718,7 @@
  								{
  									if (!WorldGen.SolidTileNoAttach(Player.tileTargetX, Player.tileTargetY + 1) && (Main.tile[Player.tileTargetX, Player.tileTargetY + 1].halfBrick() || Main.tile[Player.tileTargetX, Player.tileTargetY + 1].slope() != 0))
  									{
@@ -429,7 +415,7 @@
  										{
  											WorldGen.SlopeTile(Player.tileTargetX, Player.tileTargetY + 1, 0);
  											if (Main.netMode == 1)
-@@ -25660,7 +25736,7 @@
+@@ -25660,7 +25729,7 @@
  									}
  									else if (!WorldGen.SolidTileNoAttach(Player.tileTargetX, Player.tileTargetY + 1) && !WorldGen.SolidTileNoAttach(Player.tileTargetX - 1, Player.tileTargetY) && (Main.tile[Player.tileTargetX - 1, Player.tileTargetY].halfBrick() || Main.tile[Player.tileTargetX - 1, Player.tileTargetY].slope() != 0))
  									{
@@ -438,7 +424,7 @@
  										{
  											WorldGen.SlopeTile(Player.tileTargetX - 1, Player.tileTargetY, 0);
  											if (Main.netMode == 1)
-@@ -25669,7 +25745,7 @@
+@@ -25669,7 +25738,7 @@
  											}
  										}
  									}
@@ -447,7 +433,7 @@
  									{
  										WorldGen.SlopeTile(Player.tileTargetX + 1, Player.tileTargetY, 0);
  										if (Main.netMode == 1)
-@@ -25717,7 +25793,7 @@
+@@ -25717,7 +25786,7 @@
  								{
  									num44 = -1;
  								}
@@ -456,7 +442,7 @@
  								{
  									flag3 = true;
  								}
-@@ -25851,7 +25927,7 @@
+@@ -25851,7 +25920,7 @@
  								flag3 = false;
  							}
  						}
@@ -465,7 +451,7 @@
  						{
  							for (int num49 = Player.tileTargetX - 1; num49 <= Player.tileTargetX + 1; num49++)
  							{
-@@ -26026,7 +26102,7 @@
+@@ -26026,7 +26095,7 @@
  									NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1);
  								}
  							}
@@ -474,7 +460,7 @@
  							{
  								int num58 = Player.tileTargetX;
  								int num59 = Player.tileTargetY;
-@@ -26038,7 +26114,7 @@
+@@ -26038,7 +26107,7 @@
  								{
  									for (int num64 = -1; num64 < 2; num64++)
  									{
@@ -483,7 +469,7 @@
  										{
  											flag7 = false;
  										}
-@@ -26047,22 +26123,22 @@
+@@ -26047,22 +26116,22 @@
  								if (!flag7)
  								{
  									Tile tile6 = Main.tile[num58 - 1, num59 - 1];
@@ -510,7 +496,7 @@
  									{
  										num61++;
  									}
-@@ -26070,7 +26146,7 @@
+@@ -26070,7 +26139,7 @@
  									if (WorldGen.SolidTile(tile6))
  									{
  										num61++;
@@ -519,7 +505,7 @@
  										{
  											num61++;
  										}
-@@ -26079,7 +26155,7 @@
+@@ -26079,7 +26148,7 @@
  									if (WorldGen.SolidTile(tile6))
  									{
  										num62++;
@@ -528,7 +514,7 @@
  										{
  											num62++;
  										}
-@@ -26093,12 +26169,12 @@
+@@ -26093,12 +26162,12 @@
  										num60 = 2;
  									}
  									tile6 = Main.tile[num58 - 1, num59];
@@ -543,7 +529,7 @@
  									{
  										num60 = 0;
  									}
-@@ -26123,7 +26199,7 @@
+@@ -26123,7 +26192,7 @@
  											num67 = -1;
  										}
  										tile6 = Main.tile[num58 + num66, num59 + num67];
@@ -552,7 +538,7 @@
  										{
  											WorldGen.SlopeTile(num58 + num66, num59 + num67, num60);
  											num65 = (int)tile6.slope();
-@@ -26143,7 +26219,7 @@
+@@ -26143,7 +26212,7 @@
  											num67 = 1;
  										}
  										tile6 = Main.tile[num58 + num66, num59 + num67];
@@ -561,7 +547,7 @@
  										{
  											WorldGen.SlopeTile(num58 + num66, num59 + num67, num60);
  											num65 = (int)tile6.slope();
-@@ -26157,16 +26233,16 @@
+@@ -26157,16 +26226,16 @@
  									{
  										int num66 = -1;
  										tile6 = Main.tile[num58 + num66, num59];
@@ -581,7 +567,7 @@
  											{
  												flag8 = false;
  											}
-@@ -26183,16 +26259,16 @@
+@@ -26183,16 +26252,16 @@
  										num66 = 1;
  										int num67 = 0;
  										tile6 = Main.tile[num58 + num66, num59 + num67];
@@ -601,7 +587,7 @@
  											{
  												flag9 = false;
  											}
-@@ -26223,11 +26299,11 @@
+@@ -26223,11 +26292,11 @@
  									}
  								}
  							}
@@ -615,7 +601,7 @@
  								{
  									WorldGen.SlopeTile(num71, num72, 0);
  									if (Main.netMode == 1)
-@@ -26237,7 +26313,7 @@
+@@ -26237,7 +26306,7 @@
  								}
  								num71 = Player.tileTargetX;
  								num72 = Player.tileTargetY - 1;
@@ -624,7 +610,7 @@
  								{
  									WorldGen.SlopeTile(num71, num72, 0);
  									if (Main.netMode == 1)
-@@ -27320,7 +27396,7 @@
+@@ -27320,7 +27389,7 @@
  				{
  					this.altFunctionUse = 2;
  				}
@@ -633,7 +619,7 @@
  				if (item.shoot == 0)
  				{
  					this.itemRotation = 0f;
-@@ -27898,7 +27974,7 @@
+@@ -27898,7 +27967,7 @@
  						Main.PlaySound(2, (int)this.position.X, (int)this.position.Y, item.useSound);
  					}
  				}
@@ -642,7 +628,7 @@
  				{
  					if (ProjectileID.Sets.MinionSacrificable[item.shoot])
  					{
-@@ -28282,6 +28358,7 @@
+@@ -28282,6 +28351,7 @@
  							this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  						}
  					}
@@ -650,7 +636,7 @@
  				}
  			}
  			else if (item.holdStyle == 1 && !this.pulley)
-@@ -28478,6 +28555,7 @@
+@@ -28478,6 +28548,7 @@
  				this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  				this.itemRotation = 0f;
  			}
@@ -658,7 +644,7 @@
  			if ((((item.type == 974 || item.type == 8 || item.type == 1245 || item.type == 2274 || item.type == 3004 || item.type == 3045 || item.type == 3114 || (item.type >= 427 && item.type <= 433)) && !this.wet) || item.type == 523 || item.type == 1333) && !this.pulley)
  			{
  				float num50 = 1f;
-@@ -28923,6 +29001,7 @@
+@@ -28923,6 +28994,7 @@
  					Lighting.AddLight(position16, 1f, 0.6f, 0.85f);
  				}
  			}
@@ -666,7 +652,7 @@
  			if (this.controlUseItem)
  			{
  				this.releaseUseItem = false;
-@@ -30112,7 +30191,7 @@
+@@ -30112,7 +30184,7 @@
  							}
  							Projectile.NewProjectile(vector2.X, vector2.Y - this.gravDir * 4f, num202, num203, num71, num73, num74, i, 0f, (float)Main.rand.Next(12) / 6f);
  						}
@@ -675,7 +661,7 @@
  						{
  							int num204 = Projectile.NewProjectile(vector2.X, vector2.Y, num78, num79, num71, num73, num74, i, 0f, 0f);
  							if (item.type == 726)
-@@ -30481,7 +30560,7 @@
+@@ -30481,7 +30553,7 @@
  								flag14 = false;
  								if (item.hammer > 0)
  								{
@@ -684,7 +670,7 @@
  									if (!WorldGen.CanKillTile(Player.tileTargetX, Player.tileTargetY))
  									{
  										num222 = 0;
-@@ -30525,7 +30604,7 @@
+@@ -30525,7 +30597,7 @@
  								}
  								else
  								{
@@ -693,7 +679,7 @@
  								}
  								if (item.axe > 0)
  								{
-@@ -30589,7 +30668,10 @@
+@@ -30589,7 +30661,10 @@
  									{
  										int num223 = Player.tileTargetX;
  										int num224 = Player.tileTargetY;
@@ -705,7 +691,7 @@
  										{
  											if (Main.tile[num223, num224].halfBrick())
  											{
-@@ -30603,7 +30685,7 @@
+@@ -30603,7 +30678,7 @@
  											{
  												int num225 = 1;
  												int slope = 2;
@@ -714,7 +700,7 @@
  												{
  													num225 = 2;
  													slope = 1;
-@@ -31059,6 +31141,7 @@
+@@ -31059,6 +31134,7 @@
  						r2.Height = (int)((double)r2.Height * 0.6);
  					}
  				}
@@ -722,7 +708,7 @@
  				float arg_BA93_0 = this.gravDir;
  				if (item.type == 1450 && Main.rand.Next(3) == 0)
  				{
-@@ -31418,6 +31501,7 @@
+@@ -31418,6 +31494,7 @@
  						Dust expr_D7D2_cp_0 = Main.dust[num280];
  						expr_D7D2_cp_0.velocity.Y = expr_D7D2_cp_0.velocity.Y * 2f;
  					}
@@ -730,7 +716,7 @@
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num281 = 0; num281 < 200; num281++)
-@@ -31533,7 +31617,18 @@
+@@ -31533,7 +31610,18 @@
  								{
  									if (!Main.npc[num292].dontTakeDamage)
  									{
@@ -750,7 +736,7 @@
  										{
  											Rectangle value12 = new Rectangle((int)Main.npc[num292].position.X, (int)Main.npc[num292].position.Y, Main.npc[num292].width, Main.npc[num292].height);
  											if (r2.Intersects(value12) && (Main.npc[num292].noTileCollide || Collision.CanHit(this.position, this.width, this.height, Main.npc[num292].position, Main.npc[num292].width, Main.npc[num292].height)))
-@@ -31556,6 +31651,8 @@
+@@ -31556,6 +31644,8 @@
  													}
  												}
  												int num294 = Main.DamageVar((float)num282);
@@ -759,7 +745,7 @@
  												this.StatusNPC(item.type, num292);
  												this.OnHit(Main.npc[num292].Center.X, Main.npc[num292].Center.Y, Main.npc[num292]);
  												if (this.armorPenetration > 0)
-@@ -31630,6 +31727,8 @@
+@@ -31630,6 +31720,8 @@
  														NetMessage.SendData(21, -1, -1, "", num300, 0f, 0f, 0f, 0, 0, 0);
  													}
  												}
@@ -768,7 +754,7 @@
  												int num301 = Item.NPCtoBanner(Main.npc[num292].BannerID());
  												if (num301 >= 0)
  												{
-@@ -31674,7 +31773,7 @@
+@@ -31674,7 +31766,7 @@
  									if (num302 != i && Main.player[num302].active && Main.player[num302].hostile && !Main.player[num302].immune && !Main.player[num302].dead && (Main.player[i].team == 0 || Main.player[i].team != Main.player[num302].team))
  									{
  										Rectangle value16 = new Rectangle((int)Main.player[num302].position.X, (int)Main.player[num302].position.Y, Main.player[num302].width, Main.player[num302].height);
@@ -777,7 +763,7 @@
  										{
  											bool flag20 = false;
  											if (Main.rand.Next(1, 101) <= 10)
-@@ -31682,6 +31781,7 @@
+@@ -31682,6 +31774,7 @@
  												flag20 = true;
  											}
  											int num303 = Main.DamageVar((float)num282);
@@ -785,7 +771,7 @@
  											this.StatusPvP(item.type, num302);
  											this.OnHit(Main.player[num302].Center.X, Main.player[num302].Center.Y, Main.player[num302]);
  											int num304 = (int)Main.player[num302].Hurt(num303, this.direction, true, false, "", flag20, -1);
-@@ -31731,6 +31831,7 @@
+@@ -31731,6 +31824,7 @@
  											{
  												this.pumpkinSword(num302, (int)((double)num282 * 1.5), num283);
  											}
@@ -793,7 +779,7 @@
  											if (Main.netMode != 0)
  											{
  												if (flag20)
-@@ -31812,6 +31913,7 @@
+@@ -31812,6 +31906,7 @@
  			}
  			if (this.itemTime == 0 && this.itemAnimation > 0)
  			{
@@ -801,7 +787,7 @@
  				if (item.hairDye >= 0)
  				{
  					this.itemTime = item.useTime;
-@@ -32325,6 +32427,7 @@
+@@ -32325,6 +32420,7 @@
  					{
  						flag22 = true;
  					}
@@ -809,7 +795,7 @@
  					if (flag22)
  					{
  						if (item.stack > 0)
-@@ -32649,6 +32752,10 @@
+@@ -32649,6 +32745,10 @@
  				{
  					flag2 = true;
  				}
@@ -820,7 +806,7 @@
  				if (!flag2 && item.consumable)
  				{
  					item.stack--;
-@@ -32701,7 +32808,7 @@
+@@ -32701,7 +32801,7 @@
  			}
  			else
  			{
@@ -829,7 +815,7 @@
  			}
  			if (tile.type == 211 && pickPower < 200)
  			{
-@@ -32769,6 +32876,10 @@
+@@ -32769,6 +32869,10 @@
  			else if (tile.type == 223 && pickPower < 150)
  			{
  				num = 0;
@@ -840,7 +826,7 @@
  			}
  			if (tile.type == 147 || tile.type == 0 || tile.type == 40 || tile.type == 53 || tile.type == 57 || tile.type == 59 || tile.type == 123 || tile.type == 224 || tile.type == 397)
  			{
-@@ -33377,7 +33488,7 @@
+@@ -33377,7 +33481,7 @@
  			{
  				return false;
  			}
@@ -849,7 +835,7 @@
  			{
  				return false;
  			}
-@@ -33586,12 +33697,12 @@
+@@ -33586,12 +33690,12 @@
  							{
  								player.armor[k].name = "";
  							}
@@ -864,7 +850,7 @@
  							binaryWriter.Write(player.dye[l].prefix);
  						}
  						for (int m = 0; m < 58; m++)
-@@ -33600,16 +33711,16 @@
+@@ -33600,16 +33704,16 @@
  							{
  								player.inventory[m].name = "";
  							}
@@ -884,7 +870,7 @@
  							binaryWriter.Write(player.miscDyes[n].prefix);
  						}
  						for (int num = 0; num < 40; num++)
-@@ -33618,7 +33729,7 @@
+@@ -33618,7 +33722,7 @@
  							{
  								player.bank.item[num].name = "";
  							}
@@ -893,7 +879,7 @@
  							binaryWriter.Write(player.bank.item[num].stack);
  							binaryWriter.Write(player.bank.item[num].prefix);
  						}
-@@ -33628,7 +33739,7 @@
+@@ -33628,7 +33732,7 @@
  							{
  								player.bank2.item[num2].name = "";
  							}
@@ -902,7 +888,7 @@
  							binaryWriter.Write(player.bank2.item[num2].stack);
  							binaryWriter.Write(player.bank2.item[num2].prefix);
  						}
-@@ -33673,6 +33784,7 @@
+@@ -33673,6 +33777,7 @@
  					}
  				}
  			}
@@ -910,7 +896,7 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
-@@ -34116,6 +34228,7 @@
+@@ -34116,6 +34221,7 @@
  								player.anglerQuestsFinished = binaryReader.ReadInt32();
  							}
  							player.skinVariant = (int)MathHelper.Clamp((float)player.skinVariant, 0f, 7f);
@@ -918,7 +904,7 @@
  							for (int num32 = 3; num32 < 8 + player.extraAccessorySlots; num32++)
  							{
  								int type = player.armor[num32].type;
-@@ -34184,6 +34297,7 @@
+@@ -34184,6 +34290,7 @@
  					if (FileUtilities.Exists(file + ".bak", cloudSave))
  					{
  						FileUtilities.Move(file + ".bak", file, cloudSave, true);

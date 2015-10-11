@@ -18,7 +18,17 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		private AchievementManager _achievements;
-@@ -1193,7 +1195,7 @@
+@@ -1002,7 +1004,8 @@
+ 		public static AudioEngine engine;
+ 		public static SoundBank soundBank;
+ 		public static WaveBank waveBank;
+-		public static Cue[] music = new Cue[40];
++		public static MusicWrapper[] music = new MusicWrapper[40];
++		// TODO, Resize these arrays
+ 		public static float[] musicFade = new float[40];
+ 		public static float musicVolume = 0.75f;
+ 		public static float ambientVolume = 0.75f;
+@@ -1193,7 +1196,7 @@
  		public static bool npcChatFocus2 = false;
  		public static bool npcChatFocus3 = false;
  		public static int npcShop = 0;
@@ -27,7 +37,7 @@
  		public static int npcChatCornerItem = 0;
  		public Chest[] shop = new Chest[Main.numShops];
  		public static int[] travelShop = new int[40];
-@@ -1260,9 +1262,9 @@
+@@ -1260,9 +1263,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
  		public static string WorldPath = Main.SavePath + Path.DirectorySeparatorChar + "Worlds";
@@ -39,7 +49,7 @@
  		public static Preferences Configuration = new Preferences(Main.SavePath + Path.DirectorySeparatorChar + "config.json", false, false);
  		public static string[] itemName = new string[3602];
  		public static string[] npcName = new string[540];
-@@ -1921,7 +1923,7 @@
+@@ -1921,7 +1924,7 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
  		public static int selectedWorld = 0;
@@ -48,7 +58,7 @@
  		public static int menuSkip = 0;
  		private static Item cpItem = new Item();
  		public int textBlinkerCount;
-@@ -2670,6 +2672,7 @@
+@@ -2670,6 +2673,7 @@
  			catch
  			{
  			}
@@ -56,7 +66,7 @@
  			try
  			{
  				string path = Main.PlayerList[i].Path.Substring(0, Main.PlayerList[i].Path.Length - 4);
-@@ -2702,6 +2705,7 @@
+@@ -2702,6 +2706,7 @@
  				{
  					SocialAPI.Cloud.Delete(Main.WorldList[i].Path);
  				}
@@ -64,7 +74,16 @@
  				Main.LoadWorlds();
  			}
  			catch
-@@ -7415,6 +7419,7 @@
+@@ -6516,7 +6521,7 @@
+ 				Main.waveBank = new WaveBank(Main.engine, "Content" + Path.DirectorySeparatorChar + "Wave Bank.xwb");
+ 				for (int i = 1; i < 40; i++)
+ 				{
+-					Main.music[i] = Main.soundBank.GetCue("Music_" + i);
++					Main.music[i] = new MusicWrapper(Main.soundBank.GetCue("Music_" + i));
+ 				}
+ 				Main.soundMech[0] = base.Content.Load<SoundEffect>("Sounds" + Path.DirectorySeparatorChar + "Mech_0");
+ 				Main.soundInstanceMech[0] = Main.soundMech[0].CreateInstance();
+@@ -7415,6 +7420,7 @@
  					bool flag11 = false;
  					Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
  					int num = 5000;
@@ -72,7 +91,7 @@
  					for (int k = 0; k < 200; k++)
  					{
  						if (Main.npc[k].active)
-@@ -7625,7 +7630,7 @@
+@@ -7625,7 +7631,7 @@
  							{
  								num2 = 1;
  							}
@@ -81,7 +100,7 @@
  							{
  								goto IL_488;
  							}
-@@ -7633,6 +7638,10 @@
+@@ -7633,6 +7639,10 @@
  							if (!rectangle.Intersects(value))
  							{
  								goto IL_488;
@@ -92,7 +111,7 @@
  							}
  							if (num2 == 1)
  							{
-@@ -7724,6 +7733,10 @@
+@@ -7724,6 +7734,10 @@
  						if (flag7)
  						{
  							this.newMusic = 38;
@@ -103,7 +122,25 @@
  						}
  						else if (flag9)
  						{
-@@ -10642,6 +10655,18 @@
+@@ -8140,7 +8154,7 @@
+ 								}
+ 								else if (!Main.music[l].IsPlaying)
+ 								{
+-									Main.music[l] = Main.soundBank.GetCue("Music_" + l);
++									Main.music[l].cue = Main.soundBank.GetCue("Music_" + l);
+ 									Main.music[l].Play();
+ 									Main.music[l].SetVariable("Volume", Main.musicFade[l] * Main.ambientVolume);
+ 								}
+@@ -8187,7 +8201,7 @@
+ 						{
+ 							if (!Main.music[l].IsPlaying)
+ 							{
+-								Main.music[l] = Main.soundBank.GetCue("Music_" + l);
++								Main.music[l].cue = Main.soundBank.GetCue("Music_" + l);
+ 								Main.music[l].Play();
+ 								Main.music[l].SetVariable("Volume", Main.musicFade[l] * Main.musicVolume * num8);
+ 							}
+@@ -10642,6 +10656,18 @@
  
  		protected override void Update(GameTime gameTime)
  		{
@@ -122,7 +159,7 @@
  #if CLIENT
  			if (Main.OnTick != null)
  			{
-@@ -11319,6 +11344,7 @@
+@@ -11319,6 +11345,7 @@
  						Main.wallFrameCounter[144] = 0;
  					}
  				}
@@ -130,7 +167,7 @@
  				Main.tileFrameCounter[12]++;
  				if (Main.tileFrameCounter[12] > 5)
  				{
-@@ -11794,6 +11820,7 @@
+@@ -11794,6 +11821,7 @@
  						Main.tileFrame[410] = 0;
  					}
  				}
@@ -138,7 +175,7 @@
  				Main.CritterCages();
  				Main.UpdateDrawAnimations();
  				if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F10) && !Main.chatMode && !Main.editSign && !Main.editChest)
-@@ -12015,6 +12042,7 @@
+@@ -12015,6 +12043,7 @@
  							Main.player[Main.myPlayer].chatOverhead.NewMessage(Main.chatText, Main.chatLength / 2);
  							Main.NewText(newText, white.R, white.G, white.B, false);
  						}
@@ -146,7 +183,7 @@
  						Main.chatText = "";
  						Main.chatMode = false;
  						Main.chatRelease = false;
-@@ -12023,7 +12051,7 @@
+@@ -12023,7 +12052,7 @@
  						Main.PlaySound(11, -1, -1, 1);
  					}
  				}
@@ -155,7 +192,7 @@
  				{
  					if (Main.chatRelease && !Main.chatMode && !Main.editSign && !Main.editChest && !Main.gameMenu && !Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
  					{
-@@ -13898,7 +13926,7 @@
+@@ -13898,7 +13927,7 @@
  				if (Main.bannerMouseOver)
  				{
  					int num37 = 0;
@@ -164,7 +201,7 @@
  					{
  						if (Item.BannerToNPC(num38) != 0 && Main.player[Main.myPlayer].NPCBannerBuff[num38])
  						{
-@@ -14288,6 +14316,7 @@
+@@ -14288,6 +14317,7 @@
  						{
  							effects = SpriteEffects.FlipHorizontally;
  						}
@@ -172,7 +209,7 @@
  						Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
  						int num11 = 0;
  						int num12 = 16;
-@@ -14527,6 +14556,7 @@
+@@ -14527,6 +14557,7 @@
  						{
  							num11 = 2;
  						}
@@ -180,7 +217,7 @@
  						int num14 = 0;
  						if (tile.halfBrick())
  						{
-@@ -14703,6 +14733,12 @@
+@@ -14703,6 +14734,12 @@
  							}
  							num16 = k * 18;
  							num15 = 0;
@@ -193,7 +230,7 @@
  						}
  						if (type == 373 || type == 374 || type == 375)
  						{
-@@ -16689,7 +16725,7 @@
+@@ -16689,7 +16726,7 @@
  									{
  										color = Main.shine(color, (int)type);
  									}
@@ -202,7 +239,7 @@
  									{
  										if (Main.canDrawColorTile(j, i))
  										{
-@@ -16701,7 +16737,7 @@
+@@ -16701,7 +16738,7 @@
  										}
  										if (tile.slope() == 1 && Main.tile[j + 1, i + 1].active() && Main.tile[j + 1, i + 1].slope() != 2 && !Main.tile[j + 1, i + 1].halfBrick() && !TileID.Sets.BlocksStairs[(int)Main.tile[j + 1, i + 1].type] && !TileID.Sets.BlocksStairsAbove[(int)Main.tile[j, i + 1].type])
  										{
@@ -211,7 +248,7 @@
  											{
  												if (Main.canDrawColorTile(j, i))
  												{
-@@ -16723,7 +16759,7 @@
+@@ -16723,7 +16760,7 @@
  										}
  										else if (tile.slope() == 2 && Main.tile[j - 1, i + 1].active() && Main.tile[j - 1, i + 1].slope() != 1 && !Main.tile[j - 1, i + 1].halfBrick() && !TileID.Sets.BlocksStairs[(int)Main.tile[j - 1, i + 1].type] && !TileID.Sets.BlocksStairsAbove[(int)Main.tile[j, i + 1].type])
  										{
@@ -220,7 +257,7 @@
  											{
  												if (Main.canDrawColorTile(j, i))
  												{
-@@ -17431,7 +17467,7 @@
+@@ -17431,7 +17468,7 @@
  												{
  													texture = Main.tileTexture[(int)type];
  												}
@@ -229,7 +266,7 @@
  												{
  													Main.spriteBatch.Draw(texture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num9 - 16f) / 2f, (float)(i * 16 - (int)Main.screenPosition.Y + num11 + num14)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle((int)num10, (int)frameY, num9, num12)), color, 0f, default(Vector2), 1f, effects, 0f);
  												}
-@@ -17966,6 +18002,7 @@
+@@ -17966,6 +18003,7 @@
  								int num281 = 0;
  								Main.spriteBatch.Draw(texture2D, new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num9 - 16f) / 2f + (float)num280, (float)(i * 16 - (int)Main.screenPosition.Y + num11 + num281)) + zero, new Microsoft.Xna.Framework.Rectangle?(empty), color2, 0f, default(Vector2), 1f, effects, 0f);
  							}
@@ -237,7 +274,7 @@
  						}
  					}
  				}
-@@ -18641,7 +18678,7 @@
+@@ -18641,7 +18679,7 @@
  		{
  			for (int i = 0; i < 500; i++)
  			{
@@ -246,7 +283,7 @@
  				{
  					this.LoadGore(Main.gore[i].type);
  					if (Main.gore[i].numFrames > 1)
-@@ -18666,7 +18703,7 @@
+@@ -18666,7 +18704,7 @@
  			{
  				if (Main.gore[i].active && Main.gore[i].type > 0)
  				{
@@ -255,7 +292,7 @@
  					{
  						Main.drawBackGore = true;
  					}
-@@ -18931,6 +18968,10 @@
+@@ -18931,6 +18969,10 @@
  			else if (Main.npc[i].type == 376)
  			{
  				num = 6f;
@@ -266,7 +303,7 @@
  			}
  			if (Main.npc[i].townNPC && Main.npc[i].ai[0] == 5f)
  			{
-@@ -19212,6 +19253,7 @@
+@@ -19212,6 +19254,7 @@
  						{
  							flag3 = true;
  						}
@@ -274,7 +311,7 @@
  						if (player.stoned || player.stealth != 1f)
  						{
  							flag3 = false;
-@@ -19356,7 +19398,7 @@
+@@ -19356,7 +19399,7 @@
  			{
  				try
  				{
@@ -283,7 +320,7 @@
  					{
  						if (Main.npc[i].type == 125 || Main.npc[i].type == 126)
  						{
-@@ -19477,7 +19519,7 @@
+@@ -19477,7 +19520,7 @@
  			}
  		}
  
@@ -292,7 +329,7 @@
  		{
  			int type = Main.npc[i].type;
  			this.LoadNPC(type);
-@@ -20109,6 +20151,11 @@
+@@ -20109,6 +20152,11 @@
  				{
  					color9.B = b3;
  				}
@@ -304,7 +341,7 @@
  			}
  			if (type == 50)
  			{
-@@ -22113,6 +22160,7 @@
+@@ -22113,6 +22161,7 @@
  					}
  				}
  			}
@@ -312,7 +349,7 @@
  		}
  
  		protected void DrawNPCExtras(NPC n, bool beforeDraw, float addHeight, float addY, Microsoft.Xna.Framework.Color npcColor, Vector2 halfSize, SpriteEffects npcSpriteEffect)
-@@ -22186,6 +22234,7 @@
+@@ -22186,6 +22235,7 @@
  						num2 = 0.75f;
  					}
  				}
@@ -320,7 +357,7 @@
  				Texture2D texture2D = Main.itemTexture[num3];
  				int num5 = (int)this.DrawPlayerItemPos(1f, num3).X - num4;
  				Vector2 origin = new Vector2((float)(-(float)num5), (float)(texture2D.Height / 2));
-@@ -22261,6 +22310,7 @@
+@@ -22261,6 +22311,7 @@
  						zero.Y = 12f;
  					}
  				}
@@ -328,7 +365,7 @@
  				Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num6, num6);
  				Vector2 vector3 = swingStats.Item1 + (swingStats.Item1 - n.Center) * scaleFactor + zero;
  				Vector2 origin3 = texture2D5.Size() * new Vector2((float)((n.spriteDirection == 1) ? 0 : 1), 1f);
-@@ -23828,6 +23878,11 @@
+@@ -23828,6 +23879,11 @@
  			{
  				color25 = Microsoft.Xna.Framework.Color.White;
  			}
@@ -340,7 +377,7 @@
  			int num148 = 0;
  			int num149 = 0;
  			if (projectile.type == 175)
-@@ -24123,6 +24178,7 @@
+@@ -24123,6 +24179,7 @@
  			{
  				num148 = 8;
  			}
@@ -348,7 +385,7 @@
  			SpriteEffects spriteEffects = SpriteEffects.None;
  			if (projectile.spriteDirection == -1)
  			{
-@@ -25802,6 +25858,7 @@
+@@ -25802,6 +25859,7 @@
  					}
  				}
  			}
@@ -356,7 +393,7 @@
  		}
  
  		private static Microsoft.Xna.Framework.Color buffColor(Microsoft.Xna.Framework.Color newColor, float R, float G, float B, float A)
-@@ -26552,7 +26609,7 @@
+@@ -26552,7 +26610,7 @@
  			for (int i = 0; i < 16 + drawPlayer.extraAccessorySlots * 2; i++)
  			{
  				int num2 = i % 10;
@@ -365,7 +402,7 @@
  				{
  					byte arg_81_0 = drawPlayer.dye[num2].dye;
  				}
-@@ -26605,7 +26662,8 @@
+@@ -26605,7 +26663,8 @@
  			{
  				flag2 = true;
  			}
@@ -375,7 +412,7 @@
  			{
  				Main.spriteBatch.Draw(Main.playerTextures[skinVariant, 0], new Vector2(drawPlayer.position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2), drawPlayer.position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f) + drawPlayer.headPosition + vector, new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color4, drawPlayer.headRotation, vector, Scale, spriteEffects, 0f);
  				Main.spriteBatch.Draw(Main.playerTextures[skinVariant, 1], new Vector2(drawPlayer.position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2), drawPlayer.position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f) + drawPlayer.headPosition + vector, new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color, drawPlayer.headRotation, vector, Scale, spriteEffects, 0f);
-@@ -26718,7 +26776,7 @@
+@@ -26718,7 +26777,7 @@
  				value4.Draw(Main.spriteBatch);
  				Main.pixelShader.CurrentTechnique.Passes[0].Apply();
  			}
@@ -384,7 +421,7 @@
  			{
  				DrawData value5 = new DrawData(Main.armorHeadTexture[drawPlayer.head], new Vector2(drawPlayer.position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2), drawPlayer.position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f) + drawPlayer.headPosition + vector, new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color5, drawPlayer.headRotation, vector, Scale, spriteEffects, 0);
  				GameShaders.Armor.Apply(shaderId, drawPlayer, new DrawData?(value5));
-@@ -26738,7 +26796,7 @@
+@@ -26738,7 +26797,7 @@
  				value6.Draw(Main.spriteBatch);
  				Main.pixelShader.CurrentTechnique.Passes[0].Apply();
  			}
@@ -393,7 +430,7 @@
  			{
  				DrawData value7;
  				if (drawPlayer.face == 7)
-@@ -26815,6 +26873,7 @@
+@@ -26815,6 +26874,7 @@
  			{
  				flag5 = true;
  			}
@@ -401,7 +438,7 @@
  			bool flag6 = false;
  			if (drawPlayer.face == 4 || drawPlayer.face == 3 || drawPlayer.face == 2)
  			{
-@@ -26863,47 +26922,47 @@
+@@ -26863,47 +26923,47 @@
  				int num8 = i % 10;
  				if (drawPlayer.dye[num8] != null && drawPlayer.armor[i].type > 0 && drawPlayer.armor[i].stack > 0 && (i / 10 >= 1 || !drawPlayer.hideVisual[num8] || drawPlayer.armor[i].wingSlot > 0 || drawPlayer.armor[i].type == 934))
  				{
@@ -460,7 +497,7 @@
  					{
  						shader12 = (int)drawPlayer.dye[num8].dye;
  					}
-@@ -27928,9 +27987,9 @@
+@@ -27928,9 +27988,9 @@
  					Main.playerDrawData.Add(value);
  				}
  			}
@@ -473,7 +510,7 @@
  				{
  					int num54 = drawPlayer.bodyFrame.Y / 56;
  					if (num54 < 1 || num54 > 5)
-@@ -28170,7 +28229,7 @@
+@@ -28170,7 +28230,7 @@
  				goto IL_5B88;
  			}
  			IL_5852:
@@ -482,7 +519,7 @@
  			{
  				if (!drawPlayer.invis)
  				{
-@@ -28197,7 +28256,7 @@
+@@ -28197,7 +28257,7 @@
  				goto IL_5C63;
  			}
  			IL_5B88:
@@ -491,7 +528,7 @@
  			{
  				value = new DrawData(Main.accShoesTexture[(int)drawPlayer.shoe], new Vector2((float)((int)(Position.X - Main.screenPosition.X - (float)(drawPlayer.legFrame.Width / 2) + (float)(drawPlayer.width / 2))), (float)((int)(Position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.legFrame.Height + 4f))) + drawPlayer.legPosition + vector2, new Microsoft.Xna.Framework.Rectangle?(drawPlayer.legFrame), color14, drawPlayer.legRotation, vector2, 1f, spriteEffects, 0);
  				value.shader = shader6;
-@@ -28208,12 +28267,12 @@
+@@ -28208,12 +28268,12 @@
  				goto IL_5852;
  			}
  			IL_5C63:
@@ -506,7 +543,7 @@
  			{
  				Microsoft.Xna.Framework.Rectangle bodyFrame2 = drawPlayer.bodyFrame;
  				int num61 = num2;
-@@ -28269,13 +28328,13 @@
+@@ -28269,13 +28329,13 @@
  				value = new DrawData(Main.playerTextures[skinVariant, 5], new Vector2((float)((int)(Position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2))), (float)((int)(Position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f))) + drawPlayer.bodyPosition + new Vector2((float)(drawPlayer.bodyFrame.Width / 2), (float)(drawPlayer.bodyFrame.Height / 2)), new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color5, drawPlayer.bodyRotation, origin, 1f, spriteEffects, 0);
  				Main.playerDrawData.Add(value);
  			}
@@ -522,7 +559,7 @@
  			{
  				Microsoft.Xna.Framework.Rectangle legFrame = drawPlayer.legFrame;
  				if (legFrame.Y >= 1064)
-@@ -28286,13 +28345,13 @@
+@@ -28286,13 +28346,13 @@
  				value.shader = shader7;
  				Main.playerDrawData.Add(value);
  			}
@@ -538,7 +575,7 @@
  			{
  				value = new DrawData(Main.playerTextures[skinVariant, 0], new Vector2((float)((int)(Position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2))), (float)((int)(Position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f))) + drawPlayer.headPosition + vector3, new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color4, drawPlayer.headRotation, vector3, 1f, spriteEffects, 0);
  				Main.playerDrawData.Add(value);
-@@ -28359,7 +28418,7 @@
+@@ -28359,7 +28419,7 @@
  				value.shader = num6;
  				Main.playerDrawData.Add(value);
  			}
@@ -547,7 +584,7 @@
  			{
  				if (!drawPlayer.invis || (drawPlayer.head != 39 && drawPlayer.head != 38))
  				{
-@@ -28421,7 +28480,7 @@
+@@ -28421,7 +28481,7 @@
  					Main.playerDrawData.Add(value);
  				}
  			}
@@ -556,7 +593,7 @@
  			{
  				if (drawPlayer.face == 7)
  				{
-@@ -28460,7 +28519,7 @@
+@@ -28460,7 +28520,7 @@
  					Main.playerDrawData.Add(value);
  				}
  			}
@@ -565,7 +602,7 @@
  			{
  				value = new DrawData(Main.accShieldTexture[(int)drawPlayer.shield], new Vector2((float)((int)(Position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2))), (float)((int)(Position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f))) + drawPlayer.bodyPosition + new Vector2((float)(drawPlayer.bodyFrame.Width / 2), (float)(drawPlayer.bodyFrame.Height / 2)), new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color12, drawPlayer.bodyRotation, origin, 1f, spriteEffects, 0);
  				value.shader = shader8;
-@@ -28669,7 +28728,7 @@
+@@ -28669,7 +28729,7 @@
  					}
  				}
  			}
@@ -574,7 +611,7 @@
  			{
  				Microsoft.Xna.Framework.Rectangle bodyFrame4 = drawPlayer.bodyFrame;
  				int num82 = num2;
-@@ -28712,7 +28771,7 @@
+@@ -28712,7 +28772,7 @@
  				value = new DrawData(Main.playerTextures[skinVariant, 13], new Vector2((float)((int)(Position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2))), (float)((int)(Position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f))) + drawPlayer.bodyPosition + new Vector2((float)(drawPlayer.bodyFrame.Width / 2), (float)(drawPlayer.bodyFrame.Height / 2)), new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color7, drawPlayer.bodyRotation, origin, 1f, spriteEffects, 0);
  				Main.playerDrawData.Add(value);
  			}
@@ -583,7 +620,7 @@
  			{
  				value = new DrawData(Main.accHandsOnTexture[(int)drawPlayer.handon], new Vector2((float)((int)(Position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2))), (float)((int)(Position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f))) + drawPlayer.bodyPosition + new Vector2((float)(drawPlayer.bodyFrame.Width / 2), (float)(drawPlayer.bodyFrame.Height / 2)), new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color12, drawPlayer.bodyRotation, origin, 1f, spriteEffects, 0);
  				value.shader = shader2;
-@@ -28736,7 +28795,7 @@
+@@ -28736,7 +28796,7 @@
  			{
  				num = Main.playerDrawData.Count;
  			}
@@ -592,7 +629,7 @@
  			{
  				value = new DrawData(Main.accFrontTexture[(int)drawPlayer.front], new Vector2((float)((int)(Position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2))), (float)((int)(Position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f))) + drawPlayer.bodyPosition + new Vector2((float)(drawPlayer.bodyFrame.Width / 2), (float)(drawPlayer.bodyFrame.Height / 2)), new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color12, drawPlayer.bodyRotation, origin, 1f, spriteEffects, 0);
  				value.shader = shader5;
-@@ -28897,7 +28956,7 @@
+@@ -28897,7 +28957,7 @@
  			}
  		}
  
@@ -601,7 +638,7 @@
  		{
  			int arg_22_0 = (int)((double)item.position.X + (double)item.width * 0.5) / 16;
  			int arg_28_0 = Lighting.offScreenTiles;
-@@ -28924,6 +28983,11 @@
+@@ -28924,6 +28984,11 @@
  			float scale = 1f;
  			Microsoft.Xna.Framework.Color alpha = item.GetAlpha(color);
  			ItemSlot.GetItemLight(ref alpha, ref scale, item, false);
@@ -613,7 +650,7 @@
  			float num4 = (float)(item.height - Main.itemTexture[item.type].Height);
  			float num5 = (float)(item.width / 2 - Main.itemTexture[item.type].Width / 2);
  			if (item.type >= 71 && item.type <= 74)
-@@ -28943,6 +29007,7 @@
+@@ -28943,6 +29008,7 @@
  				int num7 = Main.coinTexture[num6].Height / 8;
  				num5 = (float)(item.width / 2 - Main.coinTexture[num6].Width / 2);
  				Main.spriteBatch.Draw(Main.coinTexture[num6], new Vector2(item.position.X - Main.screenPosition.X + (float)(width / 2) + num5, item.position.Y - Main.screenPosition.Y + (float)(num7 / 2) + num4), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, Main.itemFrame[whoami] * num7 + 1, Main.itemTexture[item.type].Width, num7)), alpha, rotation, new Vector2((float)(width / 2), (float)(num7 / 2)), scale, SpriteEffects.None, 0f);
@@ -621,7 +658,7 @@
  				return;
  			}
  			if (ItemID.Sets.NebulaPickup[item.type])
-@@ -28961,6 +29026,7 @@
+@@ -28961,6 +29027,7 @@
  				num5 = (float)(item.width / 2 - rectangle.Width / 2);
  				num4 = (float)(item.height - rectangle.Height);
  				Main.spriteBatch.Draw(Main.itemTexture[item.type], new Vector2(item.position.X - Main.screenPosition.X + (float)(rectangle.Width / 2) + num5, item.position.Y - Main.screenPosition.Y + (float)(rectangle.Height / 2) + num4), new Microsoft.Xna.Framework.Rectangle?(rectangle), alpha, rotation, rectangle.Size() / 2f, scale, SpriteEffects.None, 0f);
@@ -629,7 +666,7 @@
  				return;
  			}
  			if (ItemID.Sets.AnimatesAsSoul[item.type])
-@@ -28979,11 +29045,19 @@
+@@ -28979,11 +29046,19 @@
  				num5 = (float)(item.width / 2 - rectangle2.Width / 2);
  				num4 = (float)(item.height - rectangle2.Height);
  				Main.spriteBatch.Draw(Main.itemTexture[item.type], new Vector2(item.position.X - Main.screenPosition.X + (float)(rectangle2.Width / 2) + num5, item.position.Y - Main.screenPosition.Y + (float)(rectangle2.Height / 2) + num4), new Microsoft.Xna.Framework.Rectangle?(rectangle2), alpha, rotation, rectangle2.Size() / 2f, scale, SpriteEffects.None, 0f);
@@ -649,7 +686,7 @@
  				return;
  			}
  			Main.spriteBatch.Draw(Main.itemTexture[item.type], new Vector2(item.position.X - Main.screenPosition.X + (float)(Main.itemTexture[item.type].Width / 2) + num5, item.position.Y - Main.screenPosition.Y + (float)(Main.itemTexture[item.type].Height / 2) + num4 + 2f), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.itemTexture[item.type].Width, Main.itemTexture[item.type].Height)), alpha, rotation, new Vector2((float)(Main.itemTexture[item.type].Width / 2), (float)(Main.itemTexture[item.type].Height / 2)), scale, SpriteEffects.None, 0f);
-@@ -28995,6 +29069,7 @@
+@@ -28995,6 +29070,7 @@
  			{
  				Main.spriteBatch.Draw(Main.glowMaskTexture[(int)item.glowMask], new Vector2(item.position.X - Main.screenPosition.X + (float)(Main.itemTexture[item.type].Width / 2) + num5, item.position.Y - Main.screenPosition.Y + (float)(Main.itemTexture[item.type].Height / 2) + num4 + 2f), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.itemTexture[item.type].Width, Main.itemTexture[item.type].Height)), new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), rotation, new Vector2((float)(Main.itemTexture[item.type].Width / 2), (float)(Main.itemTexture[item.type].Height / 2)), scale, SpriteEffects.None, 0f);
  			}
@@ -657,7 +694,7 @@
  		}
  
  		protected void DrawRain()
-@@ -29140,7 +29215,7 @@
+@@ -29140,7 +29216,7 @@
  							}
  						}
  						Microsoft.Xna.Framework.Color color5 = Lighting.GetColor((int)((double)dust.position.X + 4.0) / 16, (int)((double)dust.position.Y + 4.0) / 16);
@@ -666,7 +703,7 @@
  						{
  							color5 = Microsoft.Xna.Framework.Color.White;
  						}
-@@ -29148,6 +29223,12 @@
+@@ -29148,6 +29224,12 @@
  						if (dust.type == 213)
  						{
  							scale = 1f;
@@ -679,7 +716,7 @@
  						}
  						Main.spriteBatch.Draw(Main.dustTexture, dust.position - Main.screenPosition, new Microsoft.Xna.Framework.Rectangle?(dust.frame), color5, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
  						if (dust.color != default(Microsoft.Xna.Framework.Color))
-@@ -30027,6 +30108,7 @@
+@@ -30027,6 +30109,7 @@
  					text = Lang.inter[54] + " (" + text4 + ")";
  				}
  			}
@@ -687,7 +724,7 @@
  			int num18 = 180 + (Main.screenWidth - 800) / 2;
  			int num19 = 130 + num2 * 30;
  			float scale = 0.9f;
-@@ -30518,6 +30600,7 @@
+@@ -30518,6 +30601,7 @@
  								}
  							}
  						}
@@ -695,7 +732,7 @@
  					}
  				}
  				else if (Main.npcChatFocus3 && Main.player[Main.myPlayer].talkNPC >= 0)
-@@ -30568,6 +30651,7 @@
+@@ -30568,6 +30652,7 @@
  						}
  						Main.npcChatText = Lang.DyeTraderQuestChat(gotDye);
  					}
@@ -703,7 +740,7 @@
  				}
  			}
  		}
-@@ -31783,7 +31867,7 @@
+@@ -31783,7 +31868,7 @@
  							else
  							{
  								num61++;
@@ -712,7 +749,7 @@
  								num62++;
  							}
  						}
-@@ -32034,6 +32118,14 @@
+@@ -32034,6 +32119,14 @@
  							else if (Main.recipe[Main.availableRecipe[Main.focusRecipe]].anyPressurePlate && Main.recipe[Main.availableRecipe[Main.focusRecipe]].requiredItem[num72].type == 542)
  							{
  								Main.toolTip.name = Lang.misc[37] + " " + Lang.misc[38];
@@ -727,7 +764,7 @@
  							}
  							if (Main.recipe[Main.availableRecipe[Main.focusRecipe]].requiredItem[num72].stack > 1)
  							{
-@@ -35607,7 +35699,7 @@
+@@ -35607,7 +35700,7 @@
  						}
  						else
  						{
@@ -736,7 +773,7 @@
  						}
  						flag10 = true;
  					}
-@@ -37213,6 +37305,7 @@
+@@ -37213,6 +37306,7 @@
  						if (FileUtilities.Exists(Main.worldPathName + ".bak", Main.ActiveWorldFileData.IsCloudSave))
  						{
  							FileUtilities.Move(Main.worldPathName + ".bak", Main.worldPathName, Main.ActiveWorldFileData.IsCloudSave, true);
@@ -744,7 +781,7 @@
  							Main.PlaySound(10, -1, -1, 1);
  							WorldGen.playWorld();
  							Main.menuMode = 10;
-@@ -37351,6 +37444,7 @@
+@@ -37351,6 +37445,7 @@
  						Main.menuMode = 888;
  					}
  					num9++;
@@ -752,7 +789,7 @@
  					array9[num9] = Lang.menu[14];
  					if (this.selectedMenu == num9)
  					{
-@@ -39061,6 +39155,10 @@
+@@ -39061,6 +39156,10 @@
  							WorldGen.setWorldSize();
  						}
  					}
@@ -763,7 +800,7 @@
  				}
  			}
  			IL_4287:
-@@ -39811,10 +39909,11 @@
+@@ -39811,10 +39910,11 @@
  				{
  					num98 = 2;
  				}
@@ -777,7 +814,7 @@
  			}
  			Vector2 value = Main.DrawThickCursor(false);
  			Main.spriteBatch.Draw(Main.cursorTextures[0], new Vector2((float)Main.mouseX, (float)Main.mouseY) + value + Vector2.One, null, new Microsoft.Xna.Framework.Color((int)((float)Main.cursorColor.R * 0.2f), (int)((float)Main.cursorColor.G * 0.2f), (int)((float)Main.cursorColor.B * 0.2f), (int)((float)Main.cursorColor.A * 0.5f)), 0f, default(Vector2), Main.cursorScale * 1.1f, SpriteEffects.None, 0f);
-@@ -43457,7 +43556,7 @@
+@@ -43457,7 +43557,7 @@
  					}
  					else
  					{
@@ -786,7 +823,7 @@
  					}
  				}
  				float num103 = (num16 * 0.25f * 2f + 1f) / 3f;
-@@ -45976,7 +46075,7 @@
+@@ -45976,7 +46076,7 @@
  						tile = new Tile();
  						Main.tile[j, i] = tile;
  					}
@@ -795,7 +832,7 @@
  					if (wall > 0 && !this.FullTile(j, i))
  					{
  						Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
-@@ -45984,6 +46083,11 @@
+@@ -45984,6 +46084,11 @@
  						{
  							this.LoadWall((int)wall);
  							int num8 = (int)(Main.wallFrame[(int)wall] * 180);
@@ -807,7 +844,7 @@
  							if (Lighting.lightMode < 2 && !Main.wallLight[(int)wall] && (tile.wall < 88 || tile.wall > 93) && !WorldGen.SolidTile(tile))
  							{
  								Texture2D texture;
-@@ -46055,6 +46159,7 @@
+@@ -46055,6 +46160,7 @@
  									Main.spriteBatch.Draw(Main.wallOutlineTexture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X), (float)(i * 16 - (int)Main.screenPosition.Y + 14)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 14, 16, 2)), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  								}
  							}
@@ -815,7 +852,7 @@
  						}
  					}
  				}
-@@ -48842,6 +48947,19 @@
+@@ -48842,6 +48948,19 @@
  		}
  
  		protected override void Draw(GameTime gameTime)
@@ -835,7 +872,7 @@
  		{
  			if (Main._drawCycleCounter == 0uL)
  			{
-@@ -52232,7 +52350,7 @@
+@@ -52232,7 +52351,7 @@
  								num14++;
  							}
  						}
@@ -844,7 +881,7 @@
  						{
  							Main.nextNPC[num16] = false;
  						}
-@@ -52625,6 +52743,7 @@
+@@ -52625,6 +52744,7 @@
  							{
  								WorldGen.spawnNPC = 142;
  							}
@@ -852,7 +889,7 @@
  						}
  					}
  				}
-@@ -52743,6 +52862,10 @@
+@@ -52743,6 +52863,10 @@
  								}
  								if (num2 > 0f || (type >= 30 && type <= 35) || type == 39)
  								{

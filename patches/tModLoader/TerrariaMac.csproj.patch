@@ -17,7 +17,18 @@
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
      <DefineConstants>CLIENT; MAC</DefineConstants>
-@@ -53,11 +54,17 @@
+@@ -40,6 +41,10 @@
+     <Reference Include="Ionic.Zip.CF, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>..\..\references\Ionic.Zip.CF.dll</HintPath>
++    </Reference>
++    <Reference Include="MP3Sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>Terraria.Libraries\MP3Sharp\MP3Sharp.dll</HintPath>
+     </Reference>
+     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+       <SpecificVersion>False</SpecificVersion>
+@@ -53,11 +58,17 @@
      <Reference Include="System" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Windows.Forms" />
@@ -35,7 +46,7 @@
      <Compile Include="Terraria.Achievements\Achievement.cs" />
      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
      <Compile Include="Terraria.Achievements\AchievementCondition.cs" />
-@@ -238,6 +245,73 @@
+@@ -238,6 +249,74 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -98,6 +109,7 @@
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\MountTextureType.cs" />
++    <Compile Include="Terraria.ModLoader\MusicWrapper.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCHeadLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCSpawnInfo.cs" />
@@ -109,7 +121,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -376,5 +450,14 @@
+@@ -376,5 +455,14 @@
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
    </ItemGroup>
@@ -120,8 +132,8 @@
 +    </EmbeddedResource>
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>if "$(TerrariaSteamFolder)" == "" (copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\terraria") else (copy "$(TargetPath)" "$(TerrariaSteamFolder)")</PostBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>

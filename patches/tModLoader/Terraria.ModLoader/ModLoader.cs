@@ -340,6 +340,50 @@ namespace Terraria.ModLoader
 									sounds[soundPath] = SoundEffect.FromStream(buffer);
 								}
 								break;
+							case ".mp3":
+                                // TODO, better way to do this?
+								string mp3Path = Path.ChangeExtension(path, null);
+								MemoryStream wavData = new MemoryStream();
+								MemoryStream wavFile = new MemoryStream();
+								ushort wFormatTag = 1;
+								ushort nChannels;
+								uint nSamplesPerSec;
+								uint nAvgBytesPerSec;
+								ushort nBlockAlign;
+								ushort wBitsPerSample = 16;
+								using (MemoryStream buffer = new MemoryStream(data))
+								{
+									using (MP3Sharp.MP3Stream s = new MP3Sharp.MP3Stream(buffer))
+									{
+										s.CopyTo(wavData);
+										nChannels = (ushort)s.ChannelCount;
+										nSamplesPerSec = (uint)s.Frequency;
+									}
+								}
+								nBlockAlign = (ushort)(nChannels * (wBitsPerSample / 8));
+								nAvgBytesPerSec = (uint)(nSamplesPerSec * nChannels * (wBitsPerSample / 8));
+								using (BinaryWriter bw = new BinaryWriter(wavFile))
+								{
+									bw.Write("RIFF".ToCharArray());
+									bw.Write((UInt32)(wavData.Length + 36));
+									bw.Write("WAVE".ToCharArray());
+									bw.Write("fmt ".ToCharArray());
+									bw.Write(16);
+									bw.Write(wFormatTag);
+									bw.Write(nChannels);
+									bw.Write(nSamplesPerSec);
+									bw.Write(nAvgBytesPerSec);
+									bw.Write(nBlockAlign);
+									bw.Write(wBitsPerSample);
+									bw.Write("data".ToCharArray());
+									bw.Write((UInt32)(wavData.Length));
+									bw.Write(wavData.ToArray());
+								}
+								using (MemoryStream buffer = new MemoryStream(wavFile.ToArray()))
+								{
+									sounds[mp3Path] = SoundEffect.FromStream(buffer);
+								}
+								break;
 						}
 					}
 				}
@@ -463,7 +507,7 @@ namespace Terraria.ModLoader
 		internal static void BuildMod()
 		{
 			Interface.buildMod.SetProgress(0, 1);
-			ThreadPool.QueueUserWorkItem(new WaitCallback(delegate(object threadContext)
+			ThreadPool.QueueUserWorkItem(new WaitCallback(delegate (object threadContext)
 					{
 						try
 						{
