@@ -1,7 +1,7 @@
 --- src/decompiled\Terraria\keyBoardInput.cs
 +++ src/merged\Terraria\keyBoardInput.cs
 @@ -1,11 +1,19 @@
-+#if MAC
++#if !WINDOWS
 +using Microsoft.Xna.Framework.Input;
 +#endif
  using System;
@@ -44,7 +44,7 @@
 +#endif
 +        }
 +
-+#if MAC
++#if !WINDOWS
 +        private static void onTextInput(char key)
 +        {
 +            keyBoardInput.newKeyEvent(key);

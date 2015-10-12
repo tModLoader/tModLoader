@@ -15,7 +15,20 @@
  			}
  			SocialAPI._mode = mode.Value;
  			SocialAPI._modules = new List<ISocialModule>();
-@@ -75,7 +82,11 @@
+@@ -58,7 +65,11 @@
+ 
+ 		private static T LoadModule<T>() where T : ISocialModule, new()
+ 		{
+-			T t = (default(T) == null) ? Activator.CreateInstance<T>() : default(T);
++#if MAC
++            T t = Activator.CreateInstance<T>();
++#else
++            T t = (default(T) == null) ? Activator.CreateInstance<T>() : default(T);
++#endif
+ 			SocialAPI._modules.Add(t);
+ 			return t;
+ 		}
+@@ -75,7 +86,11 @@
  			SocialAPI.Friends = SocialAPI.LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
  			SocialAPI.Achievements = SocialAPI.LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
  			SocialAPI.Cloud = SocialAPI.LoadModule<Terraria.Social.Steam.CloudSocialModule>();

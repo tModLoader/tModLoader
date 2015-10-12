@@ -7,10 +7,10 @@
 -			return Path.Combine(path, "Terraria");
 +			path = Path.Combine(path, "Terraria");
 +			return Path.Combine(path, "ModLoader");
- #else
+ #endif
+ #if MAC
  			string text = Environment.GetEnvironmentVariable("HOME");
- 			if (string.IsNullOrEmpty(text))
-@@ -95,7 +96,8 @@
+@@ -96,7 +97,8 @@
  				return ".";
  			}
  			text += "/Library/Application Support";
@@ -18,6 +18,16 @@
 +			text = Path.Combine(text, "Terraria");
 +			return Path.Combine(text, "ModLoader");
  #endif
+ #if LINUX
+ 			string text = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+@@ -109,7 +111,8 @@
+ 				}
+ 				text += "/.local/share";
+  			}
+- 			return Path.Combine(text, "Terraria");
++ 			text = Path.Combine(text, "Terraria");
++			return Path.Combine(text, "ModLoader");
+ #endif
  		}
- 		#if MAC
+ 		#if !WINDOWS
 

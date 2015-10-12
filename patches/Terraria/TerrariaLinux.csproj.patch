@@ -1,0 +1,47 @@
+--- src/merged\TerrariaLinux.csproj
++++ src/Terraria\TerrariaLinux.csproj
+@@ -1,11 +1,11 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <PropertyGroup>
+-    <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
++    <ProjectGuid>{3134CA9C-99FE-45D3-9872-B21FB19A38C1}</ProjectGuid>
+     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+     <OutputType>Exe</OutputType>
+-    <AssemblyName>Terraria</AssemblyName>
++    <AssemblyName>TerrariaLinux</AssemblyName>
+     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+@@ -27,19 +27,26 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+     <DefineConstants>CLIENT; LINUX</DefineConstants>
+     <PlatformTarget>x86</PlatformTarget>
++    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+     <DefineConstants>CLIENT; LINUX</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
+-    <Reference Include="FNA" />
++    <Reference Include="FNA">
++      <HintPath>..\..\references\FNA.dll</HintPath>
++    </Reference>
++    <Reference Include="Ionic.Zip.CF">
++      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
++    </Reference>
++    <Reference Include="Steamworks.NET">
++      <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
++    </Reference>
+     <Reference Include="System.Core" />
+     <Reference Include="System" />
+     <Reference Include="Newtonsoft.Json" />
+     <Reference Include="System.Drawing" />
+-    <Reference Include="Steamworks.NET" />
+     <Reference Include="System.Windows.Forms" />
+-    <Reference Include="Ionic.Zip.CF" />
+     <Reference Include="WindowsBase" />
+   </ItemGroup>
+   <ItemGroup>
+

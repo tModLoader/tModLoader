@@ -8,7 +8,7 @@
  using System.Runtime.InteropServices;
 +#endif
  using System.Threading;
-+#if MAC
++#if !WINDOWS
 +using Terraria.Utilities;
 +#endif
  

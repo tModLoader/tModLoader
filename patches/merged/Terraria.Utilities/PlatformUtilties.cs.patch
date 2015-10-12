@@ -1,7 +1,7 @@
 --- src/decompiled\Terraria.Utilities\PlatformUtilties.cs
 +++ src/merged\Terraria.Utilities\PlatformUtilties.cs
 @@ -1,14 +1,51 @@
-+#if MAC
++#if !WINDOWS
 +using SDL2;
 +#endif
  using System;
@@ -18,7 +18,7 @@
  	public static class PlatformUtilties
  	{
 -		public static string GetClipboard()
-+#if MAC
++#if !WINDOWS
 +		private struct SDL_Surface
  		{
 +			private uint flags;
@@ -80,7 +80,7 @@
  			Thread thread = new Thread(delegate
  			{
  				if (text.Length > 0)
-@@ -41,12 +91,48 @@
+@@ -41,12 +91,62 @@
  			thread.SetApartmentState(ApartmentState.STA);
  			thread.Start();
  			thread.Join();
@@ -94,7 +94,8 @@
  			return Path.Combine(path, "Terraria");
 -		}
 -	}
-+#else
++#endif
++#if MAC
 +			string text = Environment.GetEnvironmentVariable("HOME");
 +			if (string.IsNullOrEmpty(text))
 +			{
@@ -103,9 +104,22 @@
 +			text += "/Library/Application Support";
 +			return Path.Combine(text, "Terraria");
 +#endif
++#if LINUX
++			string text = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
++ 			if (string.IsNullOrEmpty(text))
++ 			{
++				text = Environment.GetEnvironmentVariable("HOME");
++				if (string.IsNullOrEmpty(text))
++				{
++					return ".";
++				}
++				text += "/.local/share";
++ 			}
++ 			return Path.Combine(text, "Terraria");
++#endif
 +        }
 +
-+#if MAC
++#if !WINDOWS
 +		public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
 +		{
 +			IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, imgWidth, imgHeight, 32, 255u, 65280u, 16711680u, 4278190080u);

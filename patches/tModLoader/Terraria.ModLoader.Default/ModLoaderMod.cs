@@ -3,14 +3,12 @@ using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader;
 
-#if CLIENT
-using Properties;
-#endif
 namespace Terraria.ModLoader.Default
 {
 	public class ModLoaderMod : Mod
 	{
 		private static bool texturesLoaded = false;
+		private static readonly string ContentPath = "Content" + Path.DirectorySeparatorChar + "ModLoader";
 		private static Texture2D mysteryItemTexture;
 
 		public ModLoaderMod()
@@ -37,12 +35,7 @@ namespace Terraria.ModLoader.Default
 			{
 				return;
 			}
-            byte[] data;
-            using(MemoryStream stream = new MemoryStream())
-            {
-                Resources.MysteryItem.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-                data = stream.ToArray();
-            }
+            byte[] data = File.ReadAllBytes(ContentPath + Path.DirectorySeparatorChar + "MysteryItem.png");
 			using (MemoryStream stream = new MemoryStream(data))
 			{
 				mysteryItemTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, stream);

@@ -24,6 +24,8 @@ In order to do get the tModLoader code, first clone the repository, then run the
 
 When that's all done, you should have the tModLoader source in the src folder. Open the solutions folder then open the tModLoader solution.
 
+Do note that if you want to run tModLoader, you will need to navigate to Terraria's Content folder, create a new folder there called ModLoader, then copy the Terraria.ModLoader.Default/MysteryItem.png file to there.
+
 ### Committing changes
 
 So you've made some changes to Terraria and want to commit them. Run setup.bat again, then *(Important) click on Format Code*. Select the src/tModLoader folder, then wait a bit for it to format. When that's done, click on Diff tModLoader. This will create patch files with the changes you've made. Finally, all you'll need to do is commit the patches folder.

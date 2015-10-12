@@ -1,42 +1,24 @@
---- src/Terraria\TerrariaMac.csproj
-+++ src/tModLoader\TerrariaMac.csproj
-@@ -1,7 +1,7 @@
- <?xml version="1.0" encoding="utf-8"?>
- <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-   <PropertyGroup>
--    <ProjectGuid>{E3BD64F8-9FAE-4778-9C5D-692E041180D0}</ProjectGuid>
-+    <ProjectGuid>{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}</ProjectGuid>
-     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-     <OutputType>Exe</OutputType>
-@@ -28,6 +28,7 @@
-     <DefineConstants>CLIENT; MAC</DefineConstants>
-     <PlatformTarget>x86</PlatformTarget>
-     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-+    <Optimize>true</Optimize>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-     <DefineConstants>CLIENT; MAC</DefineConstants>
-@@ -40,6 +41,10 @@
-     <Reference Include="Ionic.Zip.CF, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-       <SpecificVersion>False</SpecificVersion>
-       <HintPath>..\..\references\Ionic.Zip.CF.dll</HintPath>
-+    </Reference>
-+    <Reference Include="MP3Sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-+      <SpecificVersion>False</SpecificVersion>
-+      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
+--- src/Terraria\TerrariaLinux.csproj
++++ src/tModLoader\TerrariaLinux.csproj
+@@ -39,6 +39,9 @@
+     <Reference Include="Ionic.Zip.CF">
+       <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
      </Reference>
-     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-       <SpecificVersion>False</SpecificVersion>
-@@ -53,6 +58,7 @@
-     <Reference Include="System" />
++    <Reference Include="MP3Sharp">
++      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
++    </Reference>
+     <Reference Include="Steamworks.NET">
+       <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
+     </Reference>
+@@ -47,6 +50,7 @@
+     <Reference Include="Newtonsoft.Json" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Windows.Forms" />
 +    <Reference Include="System.XML" />
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -238,6 +244,74 @@
+@@ -232,6 +236,74 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -111,9 +93,13 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -377,4 +451,7 @@
+@@ -371,5 +443,11 @@
+     <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
    </ItemGroup>
++  <ItemGroup>
++    <Content Include="Terraria.ModLoader.Default\MysteryItem.png" />
++  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 -</Project>
 +  <PropertyGroup>

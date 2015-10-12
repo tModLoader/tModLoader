@@ -1,0 +1,55 @@
+--- src/merged\TerrariaLinuxServer.csproj
++++ src/Terraria\TerrariaLinuxServer.csproj
+@@ -1,11 +1,11 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <PropertyGroup>
+-    <ProjectGuid>{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}</ProjectGuid>
++    <ProjectGuid>{E04611C6-316A-4D9B-A6D6-CCD5D417FE6D}</ProjectGuid>
+     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+     <OutputType>Exe</OutputType>
+-    <AssemblyName>TerrariaServer</AssemblyName>
++    <AssemblyName>TerrariaLinuxServer</AssemblyName>
+     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+@@ -26,23 +26,34 @@
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+     <DefineConstants>SERVER; LINUX</DefineConstants>
++    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+     <DefineConstants>SERVER; LINUX</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
+-    <Reference Include="FNA" />
++    <Reference Include="FNA">
++      <HintPath>..\..\references\FNA.dll</HintPath>
++    </Reference>
++    <Reference Include="Ionic.Zip.CF">
++      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
++    </Reference>
++    <Reference Include="Steamworks.NET">
++      <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
++    </Reference>
+     <Reference Include="System.Core" />
+     <Reference Include="System" />
+     <Reference Include="Newtonsoft.Json" />
+     <Reference Include="System.Drawing" />
+-    <Reference Include="Steamworks.NET" />
+-    <Reference Include="Ionic.Zip.CF" />
+     <Reference Include="WindowsBase" />
+     <Reference Include="System.Windows.Forms" />
+   </ItemGroup>
+   <ItemGroup>
+     <Compile Include="Extensions\EnumerationExtensions.cs" />
++    <Compile Include="NATUPNPLib\IStaticPortMapping.cs" />
++    <Compile Include="NATUPNPLib\IStaticPortMappingCollection.cs" />
++    <Compile Include="NATUPNPLib\IUPnPNAT.cs" />
++    <Compile Include="NATUPNPLib\UPnPNAT.cs" />
+     <Compile Include="Properties\AssemblyInfo.cs" />
+     <Compile Include="Terraria.Achievements\Achievement.cs" />
+     <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
+

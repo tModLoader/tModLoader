@@ -166,6 +166,5 @@ namespace Terraria.ModLoader
 		//public void Apply3D(AudioListener listener, AudioEmitter emitter);
 		//public void Dispose();
 		//public float GetVariable(string name);
-
 	}
 }

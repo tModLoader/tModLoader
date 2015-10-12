@@ -1,9 +1,9 @@
 --- src/merged\Properties\AssemblyInfo.cs
 +++ src/Terraria\Properties\AssemblyInfo.cs
-@@ -29,7 +29,7 @@
- #if WINDOWS
- [assembly: ComVisible(false)]
+@@ -40,7 +40,7 @@
  [assembly: Guid("f571b16a-2c9b-44ab-b115-7c762c9e4e7e")]
+ #endif
+ #if WINDOWS
 -[assembly: TargetFramework(".NETFramework,Version=v4.0,Profile=Client", FrameworkDisplayName = ".NET Framework 4 Client Profile")]
 +//[assembly: TargetFramework(".NETFramework,Version=v4.0,Profile=Client", FrameworkDisplayName = ".NET Framework 4 Client Profile")]
  #endif

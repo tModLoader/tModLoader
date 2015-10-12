@@ -4,7 +4,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using System;
-+#if MAC
++#if !WINDOWS
 +using System.Collections.Generic;
 +#endif
  

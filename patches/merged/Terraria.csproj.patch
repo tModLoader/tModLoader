@@ -13,8 +13,11 @@
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="Microsoft.Xna.Framework.Game" />
-@@ -334,6 +340,7 @@
+@@ -332,8 +338,10 @@
+     <Compile Include="Terraria\keyBoardInput.cs" />
+     <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
++    <Compile Include="Terraria\LinuxLaunch.cs" />
      <Compile Include="Terraria\Liquid.cs" />
      <Compile Include="Terraria\LiquidBuffer.cs" />
 +    <Compile Include="Terraria\MacLaunch.cs" />

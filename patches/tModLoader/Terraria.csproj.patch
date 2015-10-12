@@ -21,7 +21,7 @@
      </Reference>
      <Reference Include="Microsoft.Xna.Framework.Game" />
 +    <Reference Include="MP3Sharp">
-+      <HintPath>Terraria.Libraries\MP3Sharp\MP3Sharp.dll</HintPath>
++      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
 +    </Reference>
      <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
        <SpecificVersion>False</SpecificVersion>
@@ -33,7 +33,7 @@
        <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
      </Reference>
      <Reference Include="System.Windows.Forms" />
-@@ -51,11 +61,17 @@
+@@ -51,6 +61,7 @@
      <Reference Include="Microsoft.Xna.Framework.Xact" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
@@ -41,17 +41,7 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-     <Compile Include="Extensions\EnumerationExtensions.cs" />
-     <Compile Include="Properties\AssemblyInfo.cs" />
-+    <Compile Include="Properties\Resources.Designer.cs">
-+      <AutoGen>True</AutoGen>
-+      <DesignTime>True</DesignTime>
-+      <DependentUpon>Resources.resx</DependentUpon>
-+    </Compile>
-     <Compile Include="Terraria.Achievements\Achievement.cs" />
-     <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
-     <Compile Include="Terraria.Achievements\AchievementCondition.cs" />
-@@ -236,6 +252,74 @@
+@@ -236,6 +247,74 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -126,26 +116,17 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -379,9 +463,21 @@
-   </ItemGroup>
-   <ItemGroup>
-     <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
-+    <EmbeddedResource Include="Properties\Resources.resx">
-+      <Generator>PublicResXFileCodeGenerator</Generator>
-+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-+    </EmbeddedResource>
+@@ -383,6 +462,13 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
-   </ItemGroup>
++    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
++  </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
-+    <EmbeddedResource Include="Terraria.Libraries\Mp3Sharp\MP3Sharp.dll" />
-+    <None Include="Terraria.ModLoader.Default\MysteryItem.png" />
-+  </ItemGroup>
+   </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>if "$(TerrariaSteamFolder)" == "" (copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\terraria") else (copy "$(TargetPath)" "$(TerrariaSteamFolder)")</PostBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>

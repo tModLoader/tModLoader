@@ -7,7 +7,7 @@
 +    </Reference>
 +    <Reference Include="MP3Sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
 +      <SpecificVersion>False</SpecificVersion>
-+      <HintPath>Terraria.Libraries\MP3Sharp\MP3Sharp.dll</HintPath>
++      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
      </Reference>
      <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
        <SpecificVersion>False</SpecificVersion>
@@ -94,12 +94,11 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -387,5 +460,8 @@
+@@ -386,6 +459,7 @@
+     <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
++    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
    </ItemGroup>
-+  <ItemGroup>
-+    <EmbeddedResource Include="Terraria.Libraries\MP3Sharp\MP3Sharp.dll" />
-+  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
  </Project>
