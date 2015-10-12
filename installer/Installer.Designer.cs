@@ -35,6 +35,8 @@
             this.restoreVanilla = new System.Windows.Forms.Button();
             this.restoreMod = new System.Windows.Forms.Button();
             this.setup = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.message = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // install
@@ -109,11 +111,35 @@
             this.setup.UseVisualStyleBackColor = true;
             this.setup.Click += new System.EventHandler(this.Setup);
             // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(12, 226);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(260, 23);
+            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar.TabIndex = 6;
+            this.progressBar.Visible = false;
+            // 
+            // message
+            // 
+            this.message.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.message.AutoSize = true;
+            this.message.Location = new System.Drawing.Point(12, 207);
+            this.message.Name = "message";
+            this.message.Size = new System.Drawing.Size(0, 13);
+            this.message.TabIndex = 7;
+            this.message.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
             // Installer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.message);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.setup);
             this.Controls.Add(this.restoreMod);
             this.Controls.Add(this.restoreVanilla);
@@ -121,11 +147,12 @@
             this.Controls.Add(this.devSetup);
             this.Controls.Add(this.install);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(200, 200);
+            this.MinimumSize = new System.Drawing.Size(200, 300);
             this.Name = "Installer";
             this.Text = "tModLoader Installer";
             this.Load += new System.EventHandler(this.Init);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -137,6 +164,8 @@
         private System.Windows.Forms.Button restoreVanilla;
         private System.Windows.Forms.Button restoreMod;
         private System.Windows.Forms.Button setup;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Label message;
     }
 }
 

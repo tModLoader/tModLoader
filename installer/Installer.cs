@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Installer
@@ -51,7 +52,61 @@ namespace Installer
 
         private void Setup(object sender, EventArgs e)
         {
-            SetupTask.Setup();
+            new SetupTask().Run(this);
+        }
+
+        public void SetProgressVisible(bool visible)
+        {
+            this.progressBar.Visible = visible;
+        }
+
+        public int GetProgress()
+        {
+            return this.progressBar.Value;
+        }
+
+        public void SetProgress(int progress)
+        {
+            this.progressBar.Value = progress;
+        }
+
+        public void IncrementProgress()
+        {
+            this.SetProgress(this.GetProgress() + 1);
+        }
+
+        public void SetMaxProgress(int maxProgress)
+        {
+            this.progressBar.Maximum = maxProgress;
+        }
+
+        public void SetMessage(string text)
+        {
+            this.message.Text = text;
+        }
+
+        private IList<Button> reenable = new List<Button>();
+
+        public void DisableButtons()
+        {
+            foreach(Control control in this.Controls)
+            {
+                Button button = control as Button;
+                if(button != null && button.Enabled)
+                {
+                    button.Enabled = false;
+                    reenable.Add(button);
+                }
+            }
+        }
+
+        public void ReenableButtons()
+        {
+            foreach(Button button in reenable)
+            {
+                button.Enabled = true;
+            }
+            reenable.Clear();
         }
     }
 }
