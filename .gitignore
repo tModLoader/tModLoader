@@ -5,3 +5,5 @@
 *.suo
 /setup/obj
 /logs
+/installer/bin
+/installer/obj
