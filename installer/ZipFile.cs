@@ -26,7 +26,7 @@ namespace Installer
             }
         }
 
-        public void Write()
+        public void Write(Task task = null, DoWorkArgs progress = default(DoWorkArgs))
         {
             using(FileStream fileStream = File.Create(this.name))
             {
@@ -40,6 +40,10 @@ namespace Installer
                             writer.Write(file);
                             writer.Write(this.files[file].Length);
                             writer.Write(this.files[file]);
+                            if(task != null)
+                            {
+                                task.ReportProgress(progress);
+                            }
                         }
                     }
                 }

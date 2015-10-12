@@ -67,7 +67,15 @@ namespace Installer
 
         public void SetProgress(int progress)
         {
-            this.progressBar.Value = progress;
+            if (progress + 1 <= this.progressBar.Maximum)
+            {
+                this.progressBar.Value = progress + 1;
+                this.progressBar.Value = progress;
+            }
+            else
+            {
+                this.progressBar.Maximum = this.progressBar.Value;
+            }
         }
 
         public void IncrementProgress()

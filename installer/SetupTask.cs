@@ -8,48 +8,7 @@ namespace Installer
 {
     class SetupTask : Task
     {
-        private bool? result;
-        private bool updating;
-
-        public override bool DoTask(Installer main)
-        {
-            result = null;
-            BackgroundWorker background = new BackgroundWorker();
-            background.WorkerReportsProgress = true;
-            background.DoWork += DoWork;
-            background.ProgressChanged += ProgressChanged;
-            background.RunWorkerCompleted += RunWorkerCompleted;
-            DoWorkArgs args = new DoWorkArgs();
-            args.background = background;
-            args.main = main;
-            background.RunWorkerAsync(args);
-            while (background.IsBusy)
-            {
-                Application.DoEvents();
-            }
-            return result.Value;
-        }
-
-        private void DoWork(object sender, DoWorkEventArgs e)
-        {
-            e.Result = Setup((DoWorkArgs)e.Argument);
-        }
-
-        private void ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            ProgressChangedArgs args = (ProgressChangedArgs)e.UserState;
-            args.main.SetMaxProgress(args.maxProgress);
-            args.main.SetMessage(args.message);
-            args.main.SetProgress(e.ProgressPercentage);
-            updating = false;
-        }
-
-        private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            result = (bool)e.Result;
-        }
-
-        private bool Setup(DoWorkArgs args)
+        protected override bool DoTask(DoWorkArgs args)
         {
             ProgressChangedArgs pass = new ProgressChangedArgs();
             pass.maxProgress = 1;
@@ -82,7 +41,7 @@ namespace Installer
                     return false;
                 }
             }
-            pass.maxProgress = files.Length + 2;
+            pass.maxProgress = 2 * files.Length + 1;
             Directory.CreateDirectory("Resources");
             try
             {
@@ -98,7 +57,7 @@ namespace Installer
                 pass.message = "Saving installation resources...";
                 progress++;
                 ReportProgress(args.background, progress, pass);
-                zip.Write();
+                zip.Write(this, args);
             }
             catch(Exception e)
             {
@@ -108,26 +67,6 @@ namespace Installer
             }
             MessageBox.Show("Success!", "Setup", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return true;
-        }
-
-        private void ReportProgress(BackgroundWorker background, int progress, ProgressChangedArgs args)
-        {
-            updating = true;
-            background.ReportProgress(progress, args);
-            while (updating) ;
-        }
-
-        private struct DoWorkArgs
-        {
-            public BackgroundWorker background;
-            public Installer main;
-        }
-
-        private struct ProgressChangedArgs
-        {
-            public int maxProgress;
-            public string message;
-            public Installer main;
         }
     }
 }

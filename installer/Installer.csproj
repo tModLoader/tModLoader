@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundArgs.cs" />
     <Compile Include="Installer.cs">
       <SubType>Form</SubType>
     </Compile>
