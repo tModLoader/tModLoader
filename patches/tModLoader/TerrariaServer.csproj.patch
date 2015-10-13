@@ -19,7 +19,15 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -242,6 +247,74 @@
+@@ -215,6 +220,7 @@
+     <Compile Include="Terraria.ID\ItemID.cs" />
+     <Compile Include="Terraria.ID\MessageID.cs" />
+     <Compile Include="Terraria.ID\MountID.cs" />
++    <Compile Include="Terraria.ID\MusicID.cs" />
+     <Compile Include="Terraria.ID\NPCID.cs" />
+     <Compile Include="Terraria.ID\PlayerTextureID.cs" />
+     <Compile Include="Terraria.ID\PlayerVariantID.cs" />
+@@ -242,6 +248,74 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -94,7 +102,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -386,6 +459,7 @@
+@@ -386,6 +460,7 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />

@@ -36,7 +36,15 @@
      <Reference Include="WindowsBase" />
      <Reference Include="System.Windows.Forms" />
    </ItemGroup>
-@@ -242,6 +248,74 @@
+@@ -215,6 +221,7 @@
+     <Compile Include="Terraria.ID\ItemID.cs" />
+     <Compile Include="Terraria.ID\MessageID.cs" />
+     <Compile Include="Terraria.ID\MountID.cs" />
++    <Compile Include="Terraria.ID\MusicID.cs" />
+     <Compile Include="Terraria.ID\NPCID.cs" />
+     <Compile Include="Terraria.ID\PlayerTextureID.cs" />
+     <Compile Include="Terraria.ID\PlayerVariantID.cs" />
+@@ -242,6 +249,74 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />

@@ -29,13 +29,12 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElementHead + k);
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
-			Main.music[23].modMusic = ModLoader.GetSound("ExampleMod/ExampleMusic").CreateInstance();
-			Main.music[23].modMusic.IsLooped= true;
+			Main.music[MusicID.Dungeon].ModMusic = ModLoader.GetSound("ExampleMod/ExampleMusic").CreateInstance();
 		}
 		
 		public override void Unload()
 		{
-			Main.music[23].modMusic = null;
+			Main.music[MusicID.Dungeon].ModMusic = null;
 		}
 
 		public override void AddCraftGroups()

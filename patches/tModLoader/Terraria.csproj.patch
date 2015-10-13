@@ -41,7 +41,15 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -236,6 +247,74 @@
+@@ -209,6 +220,7 @@
+     <Compile Include="Terraria.ID\ItemID.cs" />
+     <Compile Include="Terraria.ID\MessageID.cs" />
+     <Compile Include="Terraria.ID\MountID.cs" />
++    <Compile Include="Terraria.ID\MusicID.cs" />
+     <Compile Include="Terraria.ID\NPCID.cs" />
+     <Compile Include="Terraria.ID\PlayerTextureID.cs" />
+     <Compile Include="Terraria.ID\PlayerVariantID.cs" />
+@@ -236,6 +248,74 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -116,7 +124,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -383,6 +462,13 @@
+@@ -383,6 +463,13 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
@@ -126,7 +134,8 @@
 +    <Content Include="Icon.ico" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>if "$(TerrariaSteamFolder)" == "" (copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\terraria") else (copy "$(TargetPath)" "$(TerrariaSteamFolder)")</PostBuildEvent>
 +  </PropertyGroup>
- </Project>
++</Project>
