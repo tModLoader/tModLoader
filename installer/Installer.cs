@@ -6,6 +6,8 @@ namespace Installer
 {
     public partial class Installer : Form
     {
+        public const string version = "v1.3.0.8";
+
         public Installer()
         {
             InitializeComponent();
@@ -13,6 +15,8 @@ namespace Installer
 
         private void Init(object sender, EventArgs e)
         {
+            this.header.Text = "";
+            this.message.Text = "";
 #if SETUP
             this.choosePath.Enabled = false;
             this.install.Enabled = false;
@@ -86,6 +90,11 @@ namespace Installer
         public void SetMaxProgress(int maxProgress)
         {
             this.progressBar.Maximum = maxProgress;
+        }
+
+        public void SetHeader(string text)
+        {
+            this.header.Text = text;
         }
 
         public void SetMessage(string text)

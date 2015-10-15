@@ -37,6 +37,7 @@
             this.setup = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.message = new System.Windows.Forms.Label();
+            this.header = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // install
@@ -129,15 +130,28 @@
             this.message.AutoSize = true;
             this.message.Location = new System.Drawing.Point(12, 207);
             this.message.Name = "message";
-            this.message.Size = new System.Drawing.Size(0, 13);
+            this.message.Size = new System.Drawing.Size(50, 13);
             this.message.TabIndex = 7;
+            this.message.Text = "Message";
             this.message.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // header
+            // 
+            this.header.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.header.AutoSize = true;
+            this.header.Location = new System.Drawing.Point(12, 194);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(42, 13);
+            this.header.TabIndex = 8;
+            this.header.Text = "Header";
+            this.header.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // Installer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.header);
             this.Controls.Add(this.message);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.setup);
@@ -166,6 +180,7 @@
         private System.Windows.Forms.Button setup;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label message;
+        private System.Windows.Forms.Label header;
     }
 }
 

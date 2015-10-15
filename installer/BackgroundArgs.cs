@@ -12,6 +12,7 @@ namespace Installer
     struct ProgressChangedArgs
     {
         public int maxProgress;
+        public string header;
         public string message;
         public Installer main;
     }

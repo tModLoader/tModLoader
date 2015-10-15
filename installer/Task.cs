@@ -31,6 +31,7 @@ namespace Installer
             }
 
             main.SetProgressVisible(false);
+            main.SetHeader("");
             main.SetMessage("");
             main.ReenableButtons();
         }
@@ -48,7 +49,14 @@ namespace Installer
             {
                 ProgressChangedArgs args = (ProgressChangedArgs)e.UserState;
                 args.main.SetMaxProgress(args.maxProgress);
-                args.main.SetMessage(args.message);
+                if(args.header.Length > 0)
+                {
+                    args.main.SetHeader(args.header);
+                }
+                if (args.message.Length > 0)
+                {
+                    args.main.SetMessage(args.message);
+                }
                 args.main.SetProgress(e.ProgressPercentage);
             }
             else if (e.UserState is Installer)
