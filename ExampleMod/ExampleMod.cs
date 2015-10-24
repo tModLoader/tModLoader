@@ -30,11 +30,17 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
 			Main.music[MusicID.Dungeon].ModMusic = ModLoader.GetSound("ExampleMod/ExampleMusic").CreateInstance();
+			
+			Main.instance.LoadTiles(TileID.Loom);
+			Main.tileTexture[TileID.Loom] = ModLoader.GetTexture("ExampleMod/Tiles/AnimatedLoom");
 		}
 		
 		public override void Unload()
 		{
 			Main.music[MusicID.Dungeon].ModMusic = null;
+			
+			Main.tileFrame[TileID.Loom] = 0;
+			Main.backgroundLoaded[TileID.Loom] = false;
 		}
 
 		public override void AddCraftGroups()
