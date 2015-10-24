@@ -40,7 +40,7 @@ namespace ExampleMod
 			Main.music[MusicID.Dungeon].ModMusic = null;
 			
 			Main.tileFrame[TileID.Loom] = 0;
-			Main.backgroundLoaded[TileID.Loom] = false;
+			Main.tileSetsLoaded[TileID.Loom] = false;
 		}
 
 		public override void AddCraftGroups()
