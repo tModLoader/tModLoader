@@ -121,5 +121,9 @@ namespace Terraria.ModLoader
 		{
 			return true;
 		}
+
+		public virtual void AnimateTile()
+		{
+		}
 	}
 }

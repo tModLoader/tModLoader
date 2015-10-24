@@ -590,6 +590,10 @@ namespace Terraria.ModLoader
 				{
 					modTile.AnimateTile(ref Main.tileFrame[modTile.Type], ref Main.tileFrameCounter[modTile.Type]);
 				}
+				foreach (GlobalTile globalTile in globalTiles)
+				{
+					globalTile.AnimateTile();
+				}
 			}
 		}
 		//in Terraria.Main.Draw after small if statements setting num15 call

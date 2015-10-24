@@ -852,6 +852,15 @@
  						}
  					}
  				}
+@@ -47155,7 +47261,7 @@
+ 			}
+ 		}
+ 
+-		protected void LoadTiles(int i)
++		public void LoadTiles(int i)
+ 		{
+ 			if (!Main.tileSetsLoaded[i])
+ 			{
 @@ -48855,6 +48961,19 @@
  		}
  
