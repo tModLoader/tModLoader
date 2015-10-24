@@ -61,11 +61,10 @@ namespace Installer
 
 		private bool CreateResources(DoWorkArgs args, ProgressChangedArgs pass, string platform, string[] files)
 		{
-			int progress = 0;
 			pass.maxProgress = 2 * files.Length + 1;
 			pass.header = "Creating " + platform + " installation resources";
 			pass.message = "Finding files...";
-			ReportProgress(args.background, progress, pass);
+			ReportProgress(args.background, 0, pass);
 			string prefix = "Setup" + Path.DirectorySeparatorChar;
 			for (int k = 0; k < files.Length; k++)
 			{
@@ -83,17 +82,13 @@ namespace Installer
 				ZipFile zip = new ZipFile("Resources" + Path.DirectorySeparatorChar + "Install_" + platform);
 				foreach (string file in files)
 				{
-					string fileName = file.Substring(prefix.Length + 1);
+					string fileName = file.Substring(prefix.Length);
 					fileName = fileName.Replace(Path.DirectorySeparatorChar, '/');
 					pass.message = "Packing " + fileName + "...";
-					progress++;
-					ReportProgress(args.background, progress, pass);
+					ReportProgress(args.background, -1, pass);
 					zip[fileName] = File.ReadAllBytes(file);
 				}
-				pass.message = "Saving installation resources...";
-				progress++;
-				ReportProgress(args.background, progress, pass);
-				zip.Write(this, args);
+				zip.Write(this, args, pass);
 			}
 			catch (Exception e)
 			{

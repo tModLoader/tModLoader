@@ -55,7 +55,14 @@ namespace Installer
 				{
 					args.main.SetMessage(args.message);
 				}
-				args.main.SetProgress(e.ProgressPercentage);
+				if (e.ProgressPercentage < 0)
+				{
+					args.main.IncrementProgress();
+				}
+				else
+				{
+					args.main.SetProgress(e.ProgressPercentage);
+				}
 			}
 			else if (e.UserState is Installer)
 			{

@@ -51,18 +51,22 @@ namespace Installer
 
 		private void Install(object sender, EventArgs e)
 		{
+			new InstallTask().Run(this);
 		}
 
 		private void SetupDevEnv(object sender, EventArgs e)
 		{
+			new DevSetupTask().Run(this);
 		}
 
 		private void RestoreVanilla(object sender, EventArgs e)
 		{
+			new RestoreTask(true).Run(this);
 		}
 
 		private void RestoreMod(object sender, EventArgs e)
 		{
+			new RestoreTask(false).Run(this);
 		}
 
 		private void Setup(object sender, EventArgs e)
@@ -190,10 +194,6 @@ namespace Installer
 				path = Path.Combine(path, "Library", "Application Support");
 				path = Path.Combine(path, "Steam", "steamapps", "common", "Terraria");
 				path = Path.Combine(path, "Terraria.app", "Contents", "MacOS", "Terraria.exe");
-				if (!File.Exists(path))
-				{
-					return ".";
-				}
 				return path;
 			}
 			else if (platform == Platform.LINUX)
@@ -209,10 +209,6 @@ namespace Installer
 					path = Path.Combine(path, ".local", "share");
 				}
 				path = Path.Combine(path, "Steam", "steamapps", "common", "Terraria", "Terraria.exe");
-				if (!File.Exists(path))
-				{
-					return ".";
-				}
 				return path;
 			}
 			else
@@ -241,10 +237,6 @@ namespace Installer
 					}
 					path = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 					path = Path.Combine(path, "Steam", "steamapps", "common", "Terraria", "Terraria.exe");
-					if (!File.Exists(path))
-					{
-						return ".";
-					}
 				}
 				return path;
 			}

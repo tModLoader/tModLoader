@@ -5,7 +5,7 @@ using Ionic.Zlib;
 
 namespace Installer
 {
-	class ZipFile
+	public class ZipFile
 	{
 		public readonly string name;
 		private IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
@@ -27,7 +27,17 @@ namespace Installer
 			}
 		}
 
-		public void Write(Task task = null, DoWorkArgs progress = default(DoWorkArgs))
+		public bool HasFile(string file)
+		{
+			return this.files.ContainsKey(file);
+		}
+
+		public void Write()
+		{
+			this.Write(null, default(DoWorkArgs), default(ProgressChangedArgs));
+		}
+
+		internal void Write(Task task, DoWorkArgs progress, ProgressChangedArgs args)
 		{
 			using (FileStream fileStream = File.Create(this.name))
 			{
@@ -38,13 +48,19 @@ namespace Installer
 						writer.Write((byte)this.files.Count);
 						foreach (string file in this.files.Keys)
 						{
+							if (task != null)
+							{
+								args.message = "Saving " + file + "...";
+								task.ReportProgress(progress.background, -1, args);
+							}
 							writer.Write(file);
 							writer.Write(this.files[file].Length);
 							writer.Write(this.files[file]);
-							if (task != null)
-							{
-								task.ReportProgress(progress);
-							}
+						}
+						if (task != null)
+						{
+							args.message = "Done";
+							task.ReportProgress(progress.background, -1, args);
 						}
 					}
 				}
@@ -52,6 +68,11 @@ namespace Installer
 		}
 
 		public static ZipFile Read(string name)
+		{
+			return Read(name, null, default(DoWorkArgs), default(ProgressChangedArgs));
+		}
+
+		internal static ZipFile Read(string name, Task task, DoWorkArgs progress, ProgressChangedArgs args)
 		{
 			ZipFile zip = new ZipFile(name);
 			using (FileStream fileStream = File.OpenRead(name))
@@ -64,6 +85,11 @@ namespace Installer
 						for (int k = 0; k < count; k++)
 						{
 							string fileName = reader.ReadString();
+							if (task != null)
+							{
+								args.message = "Reading " + fileName + "...";
+								task.ReportProgress(progress.background, -1, args);
+							}
 							byte[] buffer = reader.ReadBytes(reader.ReadInt32());
 							zip[fileName] = buffer;
 						}
