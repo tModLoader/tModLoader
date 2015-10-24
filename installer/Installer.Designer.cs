@@ -51,6 +51,7 @@ namespace Installer
 			this.install.Size = new System.Drawing.Size(260, 23);
 			this.install.TabIndex = 0;
 			this.install.Text = "Install tModLoader";
+			this.toolTip.SetToolTip(this.install, "Copies tModLoader and necessary files to your Terraria directory.");
 			this.install.UseVisualStyleBackColor = true;
 			this.install.Click += new System.EventHandler(this.Install);
 			// 
@@ -63,6 +64,7 @@ namespace Installer
 			this.devSetup.Size = new System.Drawing.Size(260, 23);
 			this.devSetup.TabIndex = 1;
 			this.devSetup.Text = "Setup Modder Environment";
+			this.toolTip.SetToolTip(this.devSetup, "Copies files necessary for building mods to your Terraria directory.");
 			this.devSetup.UseVisualStyleBackColor = true;
 			this.devSetup.Click += new System.EventHandler(this.SetupDevEnv);
 			// 
@@ -75,8 +77,7 @@ namespace Installer
 			this.choosePath.Size = new System.Drawing.Size(260, 23);
 			this.choosePath.TabIndex = 2;
 			this.choosePath.Text = "Choose Terraria File";
-			this.toolTip.SetToolTip(this.choosePath, "Allows you to choose which Terraria file to replace with tModLoader.\r\nYou can als" +
-				"o drag and drop the file onto this window if this button does not work.");
+			this.toolTip.SetToolTip(this.choosePath, "Allows you to choose which Terraria file to replace with tModLoader.");
 			this.choosePath.UseVisualStyleBackColor = true;
 			this.choosePath.Click += new System.EventHandler(this.ChoosePath);
 			// 
@@ -89,6 +90,7 @@ namespace Installer
 			this.restoreVanilla.Size = new System.Drawing.Size(260, 23);
 			this.restoreVanilla.TabIndex = 3;
 			this.restoreVanilla.Text = "Restore Vanilla Terraria";
+			this.toolTip.SetToolTip(this.restoreVanilla, "Replaces tModLoader with vanilla Terraria.");
 			this.restoreVanilla.UseVisualStyleBackColor = true;
 			this.restoreVanilla.Click += new System.EventHandler(this.RestoreVanilla);
 			// 
@@ -101,6 +103,7 @@ namespace Installer
 			this.restoreMod.Size = new System.Drawing.Size(260, 23);
 			this.restoreMod.TabIndex = 4;
 			this.restoreMod.Text = "Restore tModLoader";
+			this.toolTip.SetToolTip(this.restoreMod, "Replaces vanilla Terraria with tModLoader if you have already restored vanilla.");
 			this.restoreMod.UseVisualStyleBackColor = true;
 			this.restoreMod.Click += new System.EventHandler(this.RestoreMod);
 			// 

@@ -80,7 +80,7 @@ namespace ExampleMod.NPCs.Abomination
 			npc.noTileCollide = true;
 			npc.soundHit = 1;
 			npc.soundKilled = 1;
-			music = 12;
+			music = MusicID.Boss2;
 		}
 
 		public override void ScaleExpertStats(int numPlayers, float bossLifeScale)

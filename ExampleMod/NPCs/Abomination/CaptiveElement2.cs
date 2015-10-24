@@ -86,7 +86,7 @@ namespace ExampleMod.NPCs.Abomination
 			npc.noTileCollide = true;
 			npc.soundHit = 5;
 			npc.soundKilled = 7;
-			music = 12;
+			music = MusicID.Boss2;
 			bossBag = mod.ItemType("AbominationBag");
 		}
 

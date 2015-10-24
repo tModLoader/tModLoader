@@ -42,7 +42,7 @@ namespace ExampleMod.NPCs.Abomination
 			npc.soundHit = 1;
 			npc.soundKilled = 1;
 			npc.buffImmune[24] = true;
-			music = 12;
+			music = MusicID.Boss2;
 		}
 
 		public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
