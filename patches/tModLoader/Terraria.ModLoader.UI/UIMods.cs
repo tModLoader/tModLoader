@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.IO;
@@ -43,7 +45,7 @@ namespace Terraria.ModLoader.UI
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
 			UIColorTextPanel button = new UIColorTextPanel("Enable All", Color.Green, 1f, false);
-			button.Width.Set(-10f, 0.5f);
+			button.Width.Set(-10f, 1f / 3f);
 			button.Height.Set(25f, 0f);
 			button.VAlign = 1f;
 			button.Top.Set(-65f, 0f);
@@ -53,25 +55,33 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(button);
 			UIColorTextPanel button2 = new UIColorTextPanel("Disable All", Color.Red, 1f, false);
 			button2.CopyStyle(button);
-			button2.HAlign = 1f;
+			button2.HAlign = 0.5f;
 			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
 			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button2.OnClick += new UIElement.MouseEvent(this.DisableAll);
 			uIElement.Append(button2);
-			UITextPanel uITextPanel2 = new UITextPanel("Back", 1f, false);
-			uITextPanel2.CopyStyle(button);
-			uITextPanel2.Top.Set(-20f, 0f);
-			uITextPanel2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			uITextPanel2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			uITextPanel2.OnClick += new UIElement.MouseEvent(BackClick);
-			uIElement.Append(uITextPanel2);
-			UITextPanel uITextPanel3 = new UITextPanel("Reload Mods", 1f, false);
-			uITextPanel3.CopyStyle(uITextPanel2);
-			uITextPanel3.HAlign = 1f;
-			uITextPanel3.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			uITextPanel3.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			uITextPanel3.OnClick += new UIElement.MouseEvent(ReloadMods);
-			uIElement.Append(uITextPanel3);
+			UITextPanel button3 = new UITextPanel("Reload Mods", 1f, false);
+			button3.CopyStyle(button);
+			button3.HAlign = 1f;
+			button3.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+			button3.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+			button3.OnClick += new UIElement.MouseEvent(ReloadMods);
+			uIElement.Append(button3);
+			UITextPanel button4 = new UITextPanel("Back", 1f, false);
+			button4.CopyStyle(button);
+			button4.Width.Set(-10f, 0.5f);
+			button4.Top.Set(-20f, 0f);
+			button4.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+			button4.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+			button4.OnClick += new UIElement.MouseEvent(BackClick);
+			uIElement.Append(button4);
+			UITextPanel button5 = new UITextPanel("Open Mods Folder", 1f, false);
+			button5.CopyStyle(button4);
+			button5.HAlign = 1f;
+			button5.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+			button5.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+			button5.OnClick += new UIElement.MouseEvent(OpenModsFolder);
+			uIElement.Append(button5);
 			base.Append(uIElement);
 		}
 
@@ -96,6 +106,13 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(10, -1, -1, 1);
 			ModLoader.Reload();
+		}
+
+		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(10, -1, -1, 1);
+			Directory.CreateDirectory(ModLoader.ModPath);
+			Process.Start(ModLoader.ModPath);
 		}
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement)

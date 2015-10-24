@@ -729,17 +729,21 @@ namespace Terraria.ModLoader
 			foreach (string reference in properties.modReferences)
 			{
 				string refFile = ModSourcePath + Path.DirectorySeparatorChar + reference;
+				string realRefFile = refFile + ".dll";
 				refFile += forWindows ? "1.dll" : "2.dll";
-				compileOptions.ReferencedAssemblies.Add(refFile);
+				if (File.Exists(realRefFile))
+				{
+					File.Delete(realRefFile);
+				}
+				File.Move(refFile, realRefFile);
+				compileOptions.ReferencedAssemblies.Add(realRefFile);
 			}
 			CodeDomProvider codeProvider = new CSharpCodeProvider();
 			CompilerResults results = codeProvider.CompileAssemblyFromFile(compileOptions, Directory.GetFiles(modDir, "*.cs", SearchOption.AllDirectories));
 			CompilerErrorCollection errors = results.Errors;
 			foreach (string reference in properties.modReferences)
 			{
-				string refFile = ModSourcePath + Path.DirectorySeparatorChar + reference;
-				refFile += forWindows ? "1.dll" : "2.dll";
-				File.Delete(refFile);
+				File.Delete(ModSourcePath + Path.DirectorySeparatorChar + reference + ".dll");
 			}
 			if (errors.HasErrors)
 			{
