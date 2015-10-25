@@ -2,6 +2,17 @@ using System;
 
 namespace Terraria.ModLoader
 {
+	public abstract partial class Mod
+	{
+		public virtual void ChatInput(string text)
+		{
+		}
+
+		public virtual void UpdateMusic(ref int music)
+		{
+		}
+	}
+
 	internal static class ModHooks
 	{
 		//in Terraria.Main.do_Update after processing chat input call ModHooks.ChatText(Main.chatText);
@@ -14,6 +25,14 @@ namespace Terraria.ModLoader
 				{
 					mod.ChatInput(text);
 				}
+			}
+		}
+		//in Terraria.Main.UpdateMusic before updating music boxes call ModHooks.UpdateMusic(ref this.newMusic);
+		internal static void UpdateMusic(ref int music)
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.UpdateMusic(ref music);
 			}
 		}
 	}

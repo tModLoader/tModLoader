@@ -9,7 +9,7 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
-	public abstract class Mod
+	public abstract partial class Mod
 	{
 		internal string file;
 		internal Assembly code;
@@ -1047,10 +1047,6 @@ namespace Terraria.ModLoader
 		public bool SoundExists(string name)
 		{
 			return ModLoader.SoundExists(FileName(name));
-		}
-
-		public virtual void ChatInput(string text)
-		{
 		}
 	}
 }
