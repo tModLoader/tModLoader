@@ -12,6 +12,10 @@ namespace Terraria.ModLoader
 			this.cue = cue;
 		}
 
+		public MusicWrapper()
+		{
+		}
+
 		public bool IsDisposed
 		{
 			get
@@ -50,9 +54,13 @@ namespace Terraria.ModLoader
 				{
 					return modMusic.State != SoundState.Stopped;
 				}
-				else
+				else if (cue != null)
 				{
 					return cue.IsPlaying;
+				}
+				else
+				{
+					return false;
 				}
 			}
 		}

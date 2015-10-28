@@ -849,6 +849,10 @@ namespace Terraria.ModLoader
 					{
 						soundType = SoundType.NPCKilled;
 					}
+					else if (substring.IndexOf("Music/") == 0)
+					{
+						soundType = SoundType.Music;
+					}
 					string className = sound.Replace('/', '.');
 					ModSound modSound = null;
 					if (modSoundNames.ContainsKey(className))

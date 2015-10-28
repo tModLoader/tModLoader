@@ -29,16 +29,14 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElementHead + k);
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
-			Main.music[MusicID.Dungeon].ModMusic = ModLoader.GetSound("ExampleMod/ExampleMusic").CreateInstance();
-			
+			Main.music[MusicID.Dungeon].ModMusic = ModLoader.GetSound("ExampleMod/Sounds/Music/ExampleMusic").CreateInstance();
 			Main.instance.LoadTiles(TileID.Loom);
 			Main.tileTexture[TileID.Loom] = ModLoader.GetTexture("ExampleMod/Tiles/AnimatedLoom");
 		}
-		
+
 		public override void Unload()
 		{
 			Main.music[MusicID.Dungeon].ModMusic = null;
-			
 			Main.tileFrame[TileID.Loom] = 0;
 			Main.tileSetsLoaded[TileID.Loom] = false;
 		}
@@ -76,6 +74,17 @@ namespace ExampleMod
 			recipe.SetResult(ItemID.MusicBoxDungeon);
 			recipe.AddRecipe();
 			RecipeHelper.AddBossRecipes(this);
+		}
+
+		public override void UpdateMusic(ref int music)
+		{
+			if (Main.myPlayer != -1 && !Main.gameMenu)
+			{
+				if (Main.player[Main.myPlayer].active && Main.player[Main.myPlayer].HasBuff(this.BuffType("CarMount")) != -1)
+				{
+					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+				}
+			}
 		}
 
 		public override void ChatInput(string text)

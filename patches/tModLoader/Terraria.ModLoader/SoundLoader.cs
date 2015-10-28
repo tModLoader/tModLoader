@@ -53,19 +53,36 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.soundInstanceNPCHit, nextSound[SoundType.NPCHit]);
 			Array.Resize(ref Main.soundNPCKilled, nextSound[SoundType.NPCKilled]);
 			Array.Resize(ref Main.soundInstanceNPCKilled, nextSound[SoundType.NPCKilled]);
+			Array.Resize(ref Main.music, nextSound[SoundType.Music]);
+			Array.Resize(ref Main.musicFade, nextSound[SoundType.Music]);
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType)))
 			{
 				foreach (string sound in sounds[type].Keys)
 				{
 					int slot = GetSoundSlot(type, sound);
-					GetSoundArray(type)[slot] = ModLoader.GetSound(sound);
-					GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot].CreateInstance();
+					if (type != SoundType.Music)
+					{
+						GetSoundArray(type)[slot] = ModLoader.GetSound(sound);
+						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot].CreateInstance();
+					}
+					else
+					{
+						if (Main.music[slot] == null)
+						{
+							Main.music[slot] = new MusicWrapper();
+						}
+						Main.music[slot].ModMusic = ModLoader.GetSound(sound).CreateInstance();
+					}
 				}
 			}
 		}
 
 		internal static void Unload()
 		{
+			for (int i = Main.maxMusic; i < Main.music.Length; i++)
+			{
+				Main.music[i].Stop(true);
+			}
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType)))
 			{
 				nextSound[type] = GetNumVanilla(type);
@@ -115,6 +132,8 @@ namespace Terraria.ModLoader
 					return Main.maxNPCHitSounds + 1;
 				case SoundType.NPCKilled:
 					return Main.maxNPCKilledSounds + 1;
+				case SoundType.Music:
+					return Main.maxMusic;
 			}
 			return 0;
 		}
