@@ -740,8 +740,8 @@
  													}
  												}
  												int num294 = Main.DamageVar((float)num282);
-+												ItemLoader.ModifyHitNPC(item, this, Main.npc[num292], ref num282, ref num283, ref flag18);
-+												NPCLoader.ModifyHitByItem(Main.npc[num292], this, item, ref num282, ref num283, ref flag18);
++												ItemLoader.ModifyHitNPC(item, this, Main.npc[num292], ref num294, ref num283, ref flag18);
++												NPCLoader.ModifyHitByItem(Main.npc[num292], this, item, ref num294, ref num283, ref flag18);
  												this.StatusNPC(item.type, num292);
  												this.OnHit(Main.npc[num292].Center.X, Main.npc[num292].Center.Y, Main.npc[num292]);
  												if (this.armorPenetration > 0)
