@@ -41,6 +41,7 @@ namespace Terraria.ModLoader
 		internal static bool buildAll = false;
 		private static readonly IList<string> loadedMods = new List<string>();
 		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
+		private static readonly Stack<string> loadOrder = new Stack<string>();
 		private static readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 		private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		private static readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
@@ -402,15 +403,16 @@ namespace Terraria.ModLoader
 						throw new MissingResourceException("Mod name " + mod.Name + " does not match source directory name " + rootDirectory);
 					}
 					mods[mod.Name] = mod;
+					loadOrder.Push(mod.Name);
 				}
 			}
 		}
 
 		internal static void Unload()
 		{
-			foreach (Mod mod in mods.Values)
+			while (loadOrder.Count > 0)
 			{
-				mod.UnloadContent();
+				GetMod(loadOrder.Pop()).UnloadContent();
 			}
 			loadedMods.Clear();
 			ItemLoader.Unload();
