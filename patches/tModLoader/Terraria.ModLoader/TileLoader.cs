@@ -361,6 +361,12 @@ namespace Terraria.ModLoader
 			}
 			return modTile.platform;
 		}
+
+		internal static bool IsModMusicBox(Tile tile)
+		{
+			return SoundLoader.tileToMusic.ContainsKey(tile.type)
+			&& SoundLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
+		}
 		//in Terraria.ObjectData.TileObject data make the following public:
 		//  newTile, newSubTile, newAlternate, addTile, addSubTile, addAlternate
 		internal static void SetDefaults(ModTile tile)

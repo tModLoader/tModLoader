@@ -69,6 +69,15 @@
  					{
  						int num26 = 1;
  						if (Main.rand.Next(2) == 0)
+@@ -1108,7 +1109,7 @@
+ 								}
+ 								else
+ 								{
+-									if (type == 139 || type == 35)
++									if (type == 139 || type == 35 || TileLoader.IsModMusicBox(tile))
+ 									{
+ 										WorldGen.SwitchMB(i, j);
+ 										return;
 @@ -1454,6 +1455,7 @@
  						}
  					}

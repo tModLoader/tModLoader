@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Placeable
 {
-	class ExampleMusicBox : ModItem
+	public class ExampleMusicBox : ModItem
 	{
 		public override void SetDefaults()
 		{
@@ -22,11 +22,6 @@ namespace ExampleMod.Items.Placeable
 			item.rare = 4;
 			item.value = 100000;
 			item.accessory = true;
-		}
-
-		public override void UpdateAccessory(Player player)
-		{
-			Main.musicBox2 = mod.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
 		}
 	}
 }

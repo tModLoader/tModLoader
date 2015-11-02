@@ -65,6 +65,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void PostSetupContent()
+		{
+		}
+
 		public virtual void Unload()
 		{
 		}
@@ -672,27 +676,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public void AddGore(string texture, ModGore modGore = null)
-		{
-			int id = ModGore.ReserveGoreID();
-			ModGore.gores[texture] = id;
-			if (modGore != null)
-			{
-				ModGore.modGores[id] = modGore;
-			}
-		}
-
-		public void AddSound(SoundType type, string soundPath, ModSound modSound = null)
-		{
-			int id = SoundLoader.ReserveSoundID(type);
-			SoundLoader.sounds[type][soundPath] = id;
-			if (modSound != null)
-			{
-				SoundLoader.modSounds[type][id] = modSound;
-				modSound.sound = ModLoader.GetSound(soundPath);
-			}
-		}
-
 		private void AutoloadMountData(Type type)
 		{
 			ModMountData mount = (ModMountData)Activator.CreateInstance(type);
@@ -786,6 +769,27 @@ namespace Terraria.ModLoader
 			return mountData.Type;
 		}
 
+		public void AddGore(string texture, ModGore modGore = null)
+		{
+			int id = ModGore.ReserveGoreID();
+			ModGore.gores[texture] = id;
+			if (modGore != null)
+			{
+				ModGore.modGores[id] = modGore;
+			}
+		}
+
+		public void AddSound(SoundType type, string soundPath, ModSound modSound = null)
+		{
+			int id = SoundLoader.ReserveSoundID(type);
+			SoundLoader.sounds[type][soundPath] = id;
+			if (modSound != null)
+			{
+				SoundLoader.modSounds[type][id] = modSound;
+				modSound.sound = ModLoader.GetSound(soundPath);
+			}
+		}
+
 		public int GetGoreSlot(string name)
 		{
 			return ModGore.GetGoreSlot(FileName(name));
@@ -862,6 +866,58 @@ namespace Terraria.ModLoader
 					AddSound(soundType, sound, modSound);
 				}
 			}
+		}
+
+		public void AddMusicBox(int musicSlot, int itemType, int tileType, int tileFrameY = 0)
+		{
+			if (musicSlot < Main.maxMusic)
+			{
+				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);
+			}
+			if (musicSlot >= Main.music.Length)
+			{
+				throw new ArgumentOutOfRangeException("Music ID " + musicSlot + " does not exist");
+			}
+			if (itemType < ItemID.Count)
+			{
+				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla item ID " + itemType);
+			}
+			if (ItemLoader.GetItem(itemType) == null)
+			{
+				throw new ArgumentOutOfRangeException("Item ID " + itemType + " does not exist");
+			}
+			if (tileType < TileID.Count)
+			{
+				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla tile ID " + tileType);
+			}
+			if (TileLoader.GetTile(tileType) == null)
+			{
+				throw new ArgumentOutOfRangeException("Tile ID " + tileType + " does not exist");
+			}
+			if (SoundLoader.musicToItem.ContainsKey(musicSlot))
+			{
+				throw new ArgumentException("Music ID " + musicSlot + " has already been assigned a music box");
+			}
+			if (SoundLoader.itemToMusic.ContainsKey(itemType))
+			{
+				throw new ArgumentException("Item ID " + itemType + " has already been assigned a music");
+			}
+			if (!SoundLoader.tileToMusic.ContainsKey(tileType))
+			{
+				SoundLoader.tileToMusic[tileType] = new Dictionary<int, int>();
+			}
+			if (SoundLoader.tileToMusic[tileType].ContainsKey(tileFrameY))
+			{
+				string message = "Y-frame " + tileFrameY + " of tile type " + tileType + " has already been assigned a music";
+				throw new ArgumentException(message);
+			}
+			if (tileFrameY % 36 != 0)
+			{
+				throw new ArgumentException("Y-frame must be divisible by 36");
+			}
+			SoundLoader.musicToItem[musicSlot] = itemType;
+			SoundLoader.itemToMusic[itemType] = musicSlot;
+			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
 		}
 
 		public void AddBuff(string name, ModBuff buff, string texture)

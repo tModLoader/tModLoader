@@ -4,15 +4,15 @@ namespace Terraria.ModLoader
 {
 	public class MusicWrapper
 	{
-		public Cue cue;
+		internal Cue cue;
 		private SoundEffectInstance modMusic;
 
-		public MusicWrapper(Cue cue)
+		internal MusicWrapper(Cue cue)
 		{
 			this.cue = cue;
 		}
 
-		public MusicWrapper()
+		internal MusicWrapper()
 		{
 		}
 

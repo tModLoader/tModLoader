@@ -159,6 +159,7 @@ namespace Terraria.ModLoader
 				try
 				{
 					mod.SetupContent();
+					mod.PostSetupContent();
 				}
 				catch (Exception e)
 				{

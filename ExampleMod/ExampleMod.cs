@@ -29,9 +29,14 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElementHead + k);
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
-			Main.music[MusicID.Dungeon].ModMusic = ModLoader.GetSound("ExampleMod/Sounds/Music/ExampleMusic").CreateInstance();
+			Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
 			Main.instance.LoadTiles(TileID.Loom);
-			Main.tileTexture[TileID.Loom] = ModLoader.GetTexture("ExampleMod/Tiles/AnimatedLoom");
+			Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom");
+		}
+
+		public override void PostSetupContent()
+		{
+			AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 		}
 
 		public override void Unload()
