@@ -874,7 +874,7 @@ namespace Terraria.ModLoader
 			{
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);
 			}
-			if (musicSlot >= Main.music.Length)
+			if (musicSlot >= SoundLoader.SoundCount(SoundType.Music))
 			{
 				throw new ArgumentOutOfRangeException("Music ID " + musicSlot + " does not exist");
 			}

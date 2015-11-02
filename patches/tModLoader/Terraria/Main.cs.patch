@@ -727,7 +727,7 @@
 +			}
 +			if (ItemLoader.animations.Contains(item.type))
 +			{
-+				ItemLoader.DrawAnimatedItem(item, color, alpha, rotation, scale);
++				ItemLoader.DrawAnimatedItem(item, whoami, color, alpha, rotation, scale);
 +				ItemLoader.PostDrawInWorld(item, Main.spriteBatch, color, alpha, rotation, scale);
  				return;
  			}

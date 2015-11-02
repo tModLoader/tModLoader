@@ -34,6 +34,11 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
+		internal static int SoundCount(SoundType type)
+		{
+			return nextSound[type];
+		}
+
 		public static int GetSoundSlot(SoundType type, string sound)
 		{
 			if (sounds[type].ContainsKey(sound))
