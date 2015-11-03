@@ -13,6 +13,9 @@ namespace Terraria.ModLoader
 		internal static SoundEffect[] customSounds = new SoundEffect[0];
 		internal static SoundEffectInstance[] customSoundInstances = new SoundEffectInstance[0];
 		public const int customSoundType = 50;
+		internal static readonly IDictionary<int, int> musicToItem = new Dictionary<int, int>();
+		internal static readonly IDictionary<int, int> itemToMusic = new Dictionary<int, int>();
+		internal static readonly IDictionary<int, IDictionary<int, int>> tileToMusic = new Dictionary<int, IDictionary<int, int>>();
 
 		static SoundLoader()
 		{
@@ -29,6 +32,11 @@ namespace Terraria.ModLoader
 			int reserveID = nextSound[type];
 			nextSound[type]++;
 			return reserveID;
+		}
+
+		internal static int SoundCount(SoundType type)
+		{
+			return nextSound[type];
 		}
 
 		public static int GetSoundSlot(SoundType type, string sound)
@@ -53,25 +61,45 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.soundInstanceNPCHit, nextSound[SoundType.NPCHit]);
 			Array.Resize(ref Main.soundNPCKilled, nextSound[SoundType.NPCKilled]);
 			Array.Resize(ref Main.soundInstanceNPCKilled, nextSound[SoundType.NPCKilled]);
+			Array.Resize(ref Main.music, nextSound[SoundType.Music]);
+			Array.Resize(ref Main.musicFade, nextSound[SoundType.Music]);
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType)))
 			{
 				foreach (string sound in sounds[type].Keys)
 				{
 					int slot = GetSoundSlot(type, sound);
-					GetSoundArray(type)[slot] = ModLoader.GetSound(sound);
-					GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot].CreateInstance();
+					if (type != SoundType.Music)
+					{
+						GetSoundArray(type)[slot] = ModLoader.GetSound(sound);
+						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot].CreateInstance();
+					}
+					else
+					{
+						if (Main.music[slot] == null)
+						{
+							Main.music[slot] = new MusicWrapper();
+						}
+						Main.music[slot].ModMusic = ModLoader.GetSound(sound).CreateInstance();
+					}
 				}
 			}
 		}
 
 		internal static void Unload()
 		{
+			for (int i = Main.maxMusic; i < Main.music.Length; i++)
+			{
+				Main.music[i].Stop(true);
+			}
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType)))
 			{
 				nextSound[type] = GetNumVanilla(type);
 				sounds[type].Clear();
 				modSounds[type].Clear();
 			}
+			musicToItem.Clear();
+			itemToMusic.Clear();
+			tileToMusic.Clear();
 		}
 		//in Terraria.Main.PlaySound before checking type to play sound add
 		//  if (SoundLoader.PlayModSound(type, num, num2, num3)) { return; }
@@ -115,6 +143,8 @@ namespace Terraria.ModLoader
 					return Main.maxNPCHitSounds + 1;
 				case SoundType.NPCKilled:
 					return Main.maxNPCKilledSounds + 1;
+				case SoundType.Music:
+					return Main.maxMusic;
 			}
 			return 0;
 		}

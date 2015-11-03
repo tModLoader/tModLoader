@@ -7,6 +7,7 @@ namespace Terraria.ModLoader
 		Custom,
 		Item,
 		NPCHit,
-		NPCKilled
+		NPCKilled,
+		Music
 	}
 }

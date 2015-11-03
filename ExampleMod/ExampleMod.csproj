@@ -44,11 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Angle.cs" />
-    <Compile Include="Buffs\CarBuff.cs" />
-    <Compile Include="Buffs\LightPetTestBuff.cs" />
-    <Compile Include="Buffs\MinionTestBuff.cs" />
-    <Compile Include="Buffs\PetTestBuff.cs" />
-    <Compile Include="Buffs\TestBuff.cs" />
+    <Compile Include="Buffs\CarMount.cs" />
     <Compile Include="Dusts\Bubble.cs" />
     <Compile Include="Dusts\Flame.cs" />
     <Compile Include="Dusts\NyanTrail.cs" />
@@ -86,8 +82,10 @@
     <Compile Include="Items\Placeable\ExampleChair.cs" />
     <Compile Include="Items\Placeable\ExampleChest.cs" />
     <Compile Include="Items\Placeable\ExampleDoor.cs" />
+    <Compile Include="Items\Placeable\ExampleMusicBox.cs" />
     <Compile Include="Items\Placeable\ExampleWall.cs" />
     <Compile Include="Items\Placeable\ExampleWorkbench.cs" />
+    <Compile Include="Items\MusicBox.cs" />
     <Compile Include="Items\PlanteraItem.cs" />
     <Compile Include="Items\SixColorShield.cs" />
     <Compile Include="Items\SparklingSphere.cs" />
@@ -128,6 +126,7 @@
     <Compile Include="Tiles\ExampleChest.cs" />
     <Compile Include="Tiles\ExampleDoorClosed.cs" />
     <Compile Include="Tiles\ExampleDoorOpen.cs" />
+    <Compile Include="Tiles\ExampleMusicBox.cs" />
     <Compile Include="Tiles\ExampleWorkbench.cs" />
     <Compile Include="Tiles\MonsterBanner.cs" />
     <Compile Include="Walls\ExampleWall.cs" />

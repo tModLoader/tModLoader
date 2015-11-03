@@ -36,15 +36,19 @@
  						}
  						ushort type = tile.type;
  						if (type != 139)
-@@ -964,6 +968,7 @@
+@@ -964,6 +968,11 @@
  						{
  							Main.musicBox = (int)(tile.frameY / 36);
  						}
++						if (TileLoader.IsModMusicBox(tile) && tile.frameX >= 36)
++						{
++							Main.musicBox = SoundLoader.tileToMusic[tile.type][tile.frameY / 36 * 36];
++						}
 +						TileLoader.NearbyEffects(n, num17, type, closer);
  						if (Main.tileBlockLight[(int)tile.type] && (Lighting.lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
  						{
  							lightingState3.stopLight = true;
-@@ -2379,6 +2384,7 @@
+@@ -2379,6 +2388,7 @@
  						}
  					}
  					IL_304B:
@@ -52,7 +56,7 @@
  					if (Lighting.RGB)
  					{
  						if (lightingState3.r2 < num18)
-@@ -2522,7 +2528,7 @@
+@@ -2522,7 +2532,7 @@
  			if (Main.player[Main.myPlayer].accOreFinder)
  			{
  				Main.player[Main.myPlayer].bestOre = -1;

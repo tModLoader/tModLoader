@@ -127,22 +127,22 @@ namespace Terraria.ModLoader
 		}
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))
-		//  { ItemLoader.DrawAnimatedItem(item, color, alpha, rotation, scale); return; }
-		internal static void DrawAnimatedItem(Item item, Color color, Color alpha, float rotation, float scale)
+		//  { ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale); return; }
+		internal static void DrawAnimatedItem(Item item, int whoAmI, Color color, Color alpha, float rotation, float scale)
 		{
 			int frameCount = Main.itemAnimations[item.type].FrameCount;
 			int frameDuration = Main.itemAnimations[item.type].TicksPerFrame;
-			Main.itemFrameCounter[item.whoAmI]++;
-			if (Main.itemFrameCounter[item.whoAmI] >= frameDuration)
+			Main.itemFrameCounter[whoAmI]++;
+			if (Main.itemFrameCounter[whoAmI] >= frameDuration)
 			{
-				Main.itemFrameCounter[item.whoAmI] = 0;
-				Main.itemFrame[item.whoAmI]++;
+				Main.itemFrameCounter[whoAmI] = 0;
+				Main.itemFrame[whoAmI]++;
 			}
-			if (Main.itemFrame[item.whoAmI] >= frameCount)
+			if (Main.itemFrame[whoAmI] >= frameCount)
 			{
-				Main.itemFrame[item.whoAmI] = 0;
+				Main.itemFrame[whoAmI] = 0;
 			}
-			Rectangle frame = Main.itemTexture[item.type].Frame(1, frameCount, 0, Main.itemFrame[item.whoAmI]);
+			Rectangle frame = Main.itemTexture[item.type].Frame(1, frameCount, 0, Main.itemFrame[whoAmI]);
 			float offX = (float)(item.width / 2 - frame.Width / 2);
 			float offY = (float)(item.height - frame.Height);
 			Main.spriteBatch.Draw(Main.itemTexture[item.type], new Vector2(item.position.X - Main.screenPosition.X + (float)(frame.Width / 2) + offX, item.position.Y - Main.screenPosition.Y + (float)(frame.Height / 2) + offY), new Rectangle?(frame), alpha, rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
