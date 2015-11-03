@@ -46,6 +46,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, GlobalProjectile> globalProjectiles = new Dictionary<string, GlobalProjectile>();
 		internal readonly IDictionary<string, ModNPC> npcs = new Dictionary<string, ModNPC>();
 		internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
+		internal readonly IDictionary<string, ModPlayer> players = new Dictionary<string, ModPlayer>();
 		internal readonly IDictionary<string, ModMountData> mountDatas = new Dictionary<string, ModMountData>();
 		internal readonly IDictionary<string, ModBuff> buffs = new Dictionary<string, ModBuff>();
 		/*
@@ -154,6 +155,14 @@ namespace Terraria.ModLoader
 				{
 					AutoloadGlobalNPC(type);
 				}
+				else if (type.IsSubclassOf(typeof(ModPlayer)))
+				{
+					AutoloadPlayer(type);
+				}
+				else if (type.IsSubclassOf(typeof(ModBuff)))
+				{
+					AutoloadBuff(type);
+				}
 				else if (type.IsSubclassOf(typeof(ModMountData)))
 				{
 					AutoloadMountData(type);
@@ -165,10 +174,6 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(ModSound)))
 				{
 					modSounds.Add(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModBuff)))
-				{
-					AutoloadBuff(type);
 				}
 			}
 			if (Properties.AutoloadGores)
@@ -676,6 +681,71 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddPlayer(string name, ModPlayer player)
+		{
+			player.Name = name;
+			players[name] = player;
+			player.mod = this;
+			PlayerHooks.Add(player);
+		}
+
+		private void AutoloadPlayer(Type type)
+		{
+			ModPlayer player = (ModPlayer)Activator.CreateInstance(type);
+			player.mod = this;
+			string name = type.Name;
+			if (player.Autoload(ref name))
+			{
+				AddPlayer(name, player);
+			}
+		}
+
+		public void AddBuff(string name, ModBuff buff, string texture)
+		{
+			int id = BuffLoader.ReserveBuffID();
+			buff.Name = name;
+			buff.Type = id;
+			buffs[name] = buff;
+			BuffLoader.buffs[id] = buff;
+			buff.texture = texture;
+			buff.mod = this;
+		}
+
+		public ModBuff GetBuff(string name)
+		{
+			if (buffs.ContainsKey(name))
+			{
+				return buffs[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		public int BuffType(string name)
+		{
+			ModBuff buff = GetBuff(name);
+			if (buff == null)
+			{
+				return 0;
+			}
+			return buff.Type;
+		}
+		// AddGloabalBuff??
+		// GetGlobalBuff??
+		private void AutoloadBuff(Type type)
+		{
+			ModBuff buff = (ModBuff)Activator.CreateInstance(type);
+			buff.mod = this;
+			string name = type.Name;
+			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+			if (buff.Autoload(ref name, ref texture))
+			{
+				AddBuff(name, buff, texture);
+			}
+		}
+		// AutoloadGlobalBuff??
 		private void AutoloadMountData(Type type)
 		{
 			ModMountData mount = (ModMountData)Activator.CreateInstance(type);
@@ -920,52 +990,6 @@ namespace Terraria.ModLoader
 			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
 		}
 
-		public void AddBuff(string name, ModBuff buff, string texture)
-		{
-			int id = BuffLoader.ReserveBuffID();
-			buff.Name = name;
-			buff.Type = id;
-			buffs[name] = buff;
-			BuffLoader.buffs[id] = buff;
-			buff.texture = texture;
-			buff.mod = this;
-		}
-
-		public ModBuff GetBuff(string name)
-		{
-			if (buffs.ContainsKey(name))
-			{
-				return buffs[name];
-			}
-			else
-			{
-				return null;
-			}
-		}
-
-		public int BuffType(string name)
-		{
-			ModBuff buff = GetBuff(name);
-			if (buff == null)
-			{
-				return 0;
-			}
-			return buff.Type;
-		}
-		// AddGloabalBuff??
-		// GetGlobalBuff??
-		private void AutoloadBuff(Type type)
-		{
-			ModBuff buff = (ModBuff)Activator.CreateInstance(type);
-			buff.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (buff.Autoload(ref name, ref texture))
-			{
-				AddBuff(name, buff, texture);
-			}
-		}
-		// AutoloadGlobalBuff??
 		internal void SetupContent()
 		{
 			foreach (ModItem item in items.Values)

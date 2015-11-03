@@ -958,4 +958,21 @@
  					}
  					playerFileData = Player.LoadPlayer(file, cloudSave);
  					if (playerFileData.Player == null)
+@@ -34250,8 +34366,16 @@
+ 			return -1;
+ 		}
+ 
++		internal IList<ModPlayer> players = new List<ModPlayer>();
++
++		public ModPlayer GetModPlayer(Mod mod, string name)
++		{
++			return PlayerHooks.GetModPlayer(this, mod, name);
++		}
++
+ 		public Player()
+ 		{
++			PlayerHooks.SetupPlayer(this);
+ 			int[] array = new int[2];
+ 			this.hurtCooldowns = array;
+ 			this.width = 20;
 

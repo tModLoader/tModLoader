@@ -202,8 +202,8 @@ namespace Terraria.ModLoader
 			WallLoader.ResizeArrays(unloading);
 			ProjectileLoader.ResizeArrays();
 			NPCLoader.ResizeArrays();
-			ModGore.ResizeAndFillArrays();
 			NPCHeadLoader.ResizeAndFillArrays();
+			ModGore.ResizeAndFillArrays();
 			SoundLoader.ResizeAndFillArrays();
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
@@ -418,19 +418,20 @@ namespace Terraria.ModLoader
 			loadedMods.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
+			ModDust.Unload();
 			TileLoader.Unload();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
 			NPCLoader.Unload();
-			ModGore.Unload();
-			ModDust.Unload();
 			NPCHeadLoader.Unload();
+			PlayerHooks.Unload();
+			BuffLoader.Unload();
+			MountLoader.Unload();
+			ModGore.Unload();
 			SoundLoader.Unload();
 			textures.Clear();
 			sounds.Clear();
 			mods.Clear();
-			MountLoader.Unload();
-			BuffLoader.Unload();
 			ResizeArrays(true);
 			MapLoader.UnloadModMap();
 		}
