@@ -53,6 +53,11 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ItemID.Sets.NebulaPickup, nextItem);
 			Array.Resize(ref ItemID.Sets.AnimatesAsSoul, nextItem);
 			Array.Resize(ref ItemID.Sets.gunProj, nextItem);
+			for (int k = ItemID.Count; k < nextItem; k++)
+			{
+				ItemID.Sets.ExtractinatorMode[k] = -1;
+				ItemID.Sets.StaffMinionSlotsRequired[k] = 1;
+			}
 		}
 
 		internal static void Unload()

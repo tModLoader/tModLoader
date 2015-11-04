@@ -299,6 +299,21 @@ namespace Terraria.ModLoader
 			newItem.mod = mod;
 		}
 
+		internal void SetupClone(Item clone)
+		{
+			ModItem newItem = Clone();
+			newItem.item = clone;
+			newItem.mod = mod;
+			newItem.texture = texture;
+			newItem.bossBagNPC = bossBagNPC;
+			clone.modItem = newItem;
+		}
+
+		public virtual ModItem Clone()
+		{
+			return (ModItem)MemberwiseClone();
+		}
+
 		public virtual void SaveCustomData(BinaryWriter writer)
 		{
 		}
