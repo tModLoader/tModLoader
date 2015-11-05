@@ -279,6 +279,15 @@
  					if (flag24)
  					{
  						if (this.wings == 10 && Main.rand.Next(2) == 0)
+@@ -20175,7 +20224,7 @@
+ 							this.showItemIcon = true;
+ 							this.showItemIcon2 = 2738;
+ 						}
+-						if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 219 && (this.inventory[this.selectedItem].type == 424 || this.inventory[this.selectedItem].type == 1103))
++						if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 219 && ItemID.Sets.ExtractinatorMode[this.inventory[this.selectedItem].type] > -1)
+ 						{
+ 							this.noThrow = 2;
+ 							this.showItemIcon = true;
 @@ -20501,6 +20550,7 @@
  							this.showItemIcon = true;
  							this.showItemIcon2 = (int)(583 + Main.tile[Player.tileTargetX, Player.tileTargetY].frameX / 18);
