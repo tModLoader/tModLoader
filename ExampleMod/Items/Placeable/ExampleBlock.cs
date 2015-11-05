@@ -21,6 +21,7 @@ namespace ExampleMod.Items.Placeable
 			item.useStyle = 1;
 			item.consumable = true;
 			item.createTile = mod.TileType("ExampleBlock");
+			ItemID.Sets.ExtractinatorMode[item.type] = mod.GetExtractinatorType("ExampleExtractinatorType");
 		}
 
 		public override void AddRecipes()

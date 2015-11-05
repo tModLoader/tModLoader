@@ -14,6 +14,26 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<int, ModItem> items = new Dictionary<int, ModItem>();
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
 		internal static readonly IList<int> animations = new List<int>();
+		private static int nextExtractinatorType = 2;
+		internal static readonly IDictionary<string, int> extractinatorTypes = new Dictionary<string, int>();
+
+		internal static void RegisterExtractinatorType(string extractinatorTypeName)
+		{
+			extractinatorTypes[extractinatorTypeName] = nextExtractinatorType;
+			nextExtractinatorType++;
+		}
+
+		public static int GetExtractinatorType(string extractinatorTypeName)
+		{
+			if (extractinatorTypes.ContainsKey(extractinatorTypeName))
+			{
+				return extractinatorTypes[extractinatorTypeName];
+			}
+			else
+			{
+				return 0;
+			}
+		}
 
 		internal static int ReserveItemID()
 		{
@@ -66,6 +86,8 @@ namespace Terraria.ModLoader
 			nextItem = ItemID.Count;
 			globalItems.Clear();
 			animations.Clear();
+			nextExtractinatorType = 2;
+			extractinatorTypes.Clear();
 		}
 
 		internal static bool IsModItem(Item item)

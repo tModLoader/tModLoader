@@ -29,6 +29,7 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElementHead + k);
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
+			RegisterExtractinatorType("ExampleExtractinatorType");
 			Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
 			AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 			Main.instance.LoadTiles(TileID.Loom);
@@ -84,6 +85,64 @@ namespace ExampleMod
 				if (Main.player[Main.myPlayer].active && Main.player[Main.myPlayer].HasBuff(this.BuffType("CarMount")) != -1)
 				{
 					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+				}
+			}
+		}
+
+		public override void ExtractinatorUse(ref int resultType, ref int resultStack, ref int extractType)
+		{
+			if (extractType == this.GetExtractinatorType("ExampleExtractinatorType"))
+			{
+				if (Main.rand.Next(30) == 0)
+				{
+					resultType = this.ItemType("FoulOrb");
+					if (Main.rand.Next(5) == 0)
+					{
+						resultStack += Main.rand.Next(2);
+					}
+				}
+				else if (Main.rand.Next(3) == 0)
+				{
+					resultType = ItemID.OldShoe;
+					if (Main.rand.Next(5) == 0)
+					{
+						resultStack += Main.rand.Next(2);
+					}
+				}
+				else if (Main.rand.Next(2) == 0)
+				{
+					resultType = ItemID.TinCan;
+					if (Main.rand.Next(5) == 0)
+					{
+						resultStack += Main.rand.Next(2);
+					}
+				}
+				else
+				{
+					resultType = ItemID.Acorn;
+					if (Main.rand.Next(5) == 0)
+					{
+						resultStack += Main.rand.Next(2);
+					}
+				}
+			}
+			else
+			{
+				if (Main.rand.Next(30) == 0)
+				{
+					resultType = this.ItemType("ExamplePlatform");
+					if (Main.rand.Next(5) == 0)
+					{
+						resultStack += Main.rand.Next(2);
+					}
+				}
+				else if (Main.rand.Next(30) == 0)
+				{
+					resultType = this.ItemType("ExampleBlock");
+					if (Main.rand.Next(5) == 0)
+					{
+						resultStack += Main.rand.Next(2);
+					}
 				}
 			}
 		}
