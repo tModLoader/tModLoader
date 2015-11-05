@@ -45,6 +45,7 @@ namespace Terraria.ModLoader
 		private static readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 		private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		private static readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+		internal static readonly IDictionary<string, Tuple<string,string>> modHotKeys = new Dictionary<string, Tuple<string, string>>();
 
 		private static void LoadReferences()
 		{
@@ -434,6 +435,7 @@ namespace Terraria.ModLoader
 			mods.Clear();
 			ResizeArrays(true);
 			MapLoader.UnloadModMap();
+			modHotKeys.Clear();
 		}
 
 		internal static void Reload()
@@ -840,6 +842,11 @@ namespace Terraria.ModLoader
 				}
 			}
 			return modSounds;
+		}
+
+		public static void RegisterHotKey(string name, string defaultKey)
+		{
+			modHotKeys[name] = new Tuple<string, string>(defaultKey, defaultKey);
 		}
 
 		private static void AddCraftGroups()
