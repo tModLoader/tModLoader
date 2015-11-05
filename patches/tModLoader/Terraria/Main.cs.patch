@@ -835,7 +835,15 @@
  					array9[num9] = Lang.menu[14];
  					if (this.selectedMenu == num9)
  					{
-@@ -39074,6 +39177,10 @@
+@@ -38325,6 +38428,7 @@
+ 							Main.PlaySound(11, -1, -1, 1);
+ 							Main.menuMode = 272727;
+ 						}
++						Interface.AddSettingsMenuButtons(this, this.selectedMenu, array9, array7, array4, ref num, ref num3, ref num20, ref num4);
+ 						num20++;
+ 						array9[num20] = Lang.menu[103];
+ 						if (this.selectedMenu == num20)
+@@ -39074,6 +39178,10 @@
  							WorldGen.setWorldSize();
  						}
  					}
@@ -846,7 +854,7 @@
  				}
  			}
  			IL_4287:
-@@ -39824,10 +39931,11 @@
+@@ -39824,10 +39932,11 @@
  				{
  					num98 = 2;
  				}
@@ -860,7 +868,7 @@
  			}
  			Vector2 value = Main.DrawThickCursor(false);
  			Main.spriteBatch.Draw(Main.cursorTextures[0], new Vector2((float)Main.mouseX, (float)Main.mouseY) + value + Vector2.One, null, new Microsoft.Xna.Framework.Color((int)((float)Main.cursorColor.R * 0.2f), (int)((float)Main.cursorColor.G * 0.2f), (int)((float)Main.cursorColor.B * 0.2f), (int)((float)Main.cursorColor.A * 0.5f)), 0f, default(Vector2), Main.cursorScale * 1.1f, SpriteEffects.None, 0f);
-@@ -43470,7 +43578,7 @@
+@@ -43470,7 +43579,7 @@
  					}
  					else
  					{
@@ -869,7 +877,7 @@
  					}
  				}
  				float num103 = (num16 * 0.25f * 2f + 1f) / 3f;
-@@ -45989,7 +46097,7 @@
+@@ -45989,7 +46098,7 @@
  						tile = new Tile();
  						Main.tile[j, i] = tile;
  					}
@@ -878,7 +886,7 @@
  					if (wall > 0 && !this.FullTile(j, i))
  					{
  						Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
-@@ -45997,6 +46105,11 @@
+@@ -45997,6 +46106,11 @@
  						{
  							this.LoadWall((int)wall);
  							int num8 = (int)(Main.wallFrame[(int)wall] * 180);
@@ -890,7 +898,7 @@
  							if (Lighting.lightMode < 2 && !Main.wallLight[(int)wall] && (tile.wall < 88 || tile.wall > 93) && !WorldGen.SolidTile(tile))
  							{
  								Texture2D texture;
-@@ -46068,6 +46181,7 @@
+@@ -46068,6 +46182,7 @@
  									Main.spriteBatch.Draw(Main.wallOutlineTexture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X), (float)(i * 16 - (int)Main.screenPosition.Y + 14)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 14, 16, 2)), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  								}
  							}
@@ -898,7 +906,7 @@
  						}
  					}
  				}
-@@ -47155,7 +47269,7 @@
+@@ -47155,7 +47270,7 @@
  			}
  		}
  
@@ -907,7 +915,7 @@
  		{
  			if (!Main.tileSetsLoaded[i])
  			{
-@@ -48855,6 +48969,19 @@
+@@ -48855,6 +48970,19 @@
  		}
  
  		protected override void Draw(GameTime gameTime)
@@ -927,7 +935,7 @@
  		{
  			if (Main._drawCycleCounter == 0uL)
  			{
-@@ -52245,7 +52372,7 @@
+@@ -52245,7 +52373,7 @@
  								num14++;
  							}
  						}
@@ -936,7 +944,7 @@
  						{
  							Main.nextNPC[num16] = false;
  						}
-@@ -52638,6 +52765,7 @@
+@@ -52638,6 +52766,7 @@
  							{
  								WorldGen.spawnNPC = 142;
  							}
@@ -944,7 +952,7 @@
  						}
  					}
  				}
-@@ -52756,6 +52884,10 @@
+@@ -52756,6 +52885,10 @@
  								}
  								if (num2 > 0f || (type >= 30 && type <= 35) || type == 39)
  								{

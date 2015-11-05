@@ -13,6 +13,7 @@ namespace ExampleMod
 	{
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
+		private double pressedRandomBuffHotKeyTime;
 
 		public override void SetModInfo(out string name, ref ModProperties properties)
 		{
@@ -30,6 +31,7 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
 			RegisterExtractinatorType("ExampleExtractinatorType");
+			RegisterHotKey("Random Buff", "P");
 			Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
 			AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 			Main.instance.LoadTiles(TileID.Loom);
@@ -143,6 +145,19 @@ namespace ExampleMod
 					{
 						resultStack += Main.rand.Next(2);
 					}
+				}
+			}
+		}
+
+		public override void HotKeyPressed(string name)
+		{
+			if (name == "Random Buff")
+			{
+				if (Math.Abs(Main.time - pressedRandomBuffHotKeyTime) > 60)
+				{
+					pressedRandomBuffHotKeyTime = Main.time;
+					int buff = Main.rand.Next(BuffID.Count);
+					Main.player[Main.myPlayer].AddBuff(buff, 600);
 				}
 			}
 		}

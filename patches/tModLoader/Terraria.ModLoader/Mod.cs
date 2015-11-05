@@ -990,6 +990,11 @@ namespace Terraria.ModLoader
 			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
 		}
 
+		public void RegisterHotKey(string name, string defaultKey)
+		{
+			ModLoader.RegisterHotKey(name, defaultKey);
+		}
+
 		public void RegisterExtractinatorType(string extractinatorTypeName)
 		{
 			ItemLoader.RegisterExtractinatorType(extractinatorTypeName);

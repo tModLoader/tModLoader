@@ -15,6 +15,10 @@ namespace Terraria.ModLoader
 		public virtual void ExtractinatorUse(ref int resultType, ref int resultStack, ref int extractType)
 		{
 		}
+
+		public virtual void HotKeyPressed(string name)
+		{
+		}
 	}
 
 	internal static class ModHooks
@@ -45,6 +49,21 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.ExtractinatorUse(ref resultType, ref resultStack, ref extractType);
+			}
+		}
+
+		internal static void HotKeyPressed(string key)
+		{
+			// Key is name, value is keycode
+			foreach (var item in ModLoader.modHotKeys)
+			{
+				if (item.Value.Item1.Equals(key))
+				{
+					foreach (Mod mod in ModLoader.mods.Values)
+					{
+						mod.HotKeyPressed(item.Key);
+					}
+				}
 			}
 		}
 	}
