@@ -44,12 +44,13 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -242,6 +249,76 @@
+@@ -242,6 +249,77 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\ModLoaderMod.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\MysteryItem.cs" />
++    <Compile Include="Terraria.ModLoader.Default\MysteryPlayer.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\DuplicateNameException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\MissingResourceException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\RecipeException.cs" />

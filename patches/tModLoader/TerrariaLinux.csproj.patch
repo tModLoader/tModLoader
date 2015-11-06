@@ -32,6 +32,7 @@
      <Compile Include="Terraria.Map\WorldMap.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\ModLoaderMod.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\MysteryItem.cs" />
++    <Compile Include="Terraria.ModLoader.Default\MysteryPlayer.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\DuplicateNameException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\MissingResourceException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\RecipeException.cs" />

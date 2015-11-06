@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using Terraria;
+using Terraria.ModLoader.Default;
 using Terraria.Social;
 using Terraria.Utilities;
 
@@ -126,6 +127,10 @@ namespace Terraria.ModLoader.IO
 			{
 				flags[0] |= 64;
 			}
+			if (WriteCustomData(player, writer))
+			{
+				flags[0] |= 128;
+			}
 			return flags;
 		}
 
@@ -158,6 +163,10 @@ namespace Terraria.ModLoader.IO
 			if ((flags[0] & 64) == 64)
 			{
 				ReadInventory(player.bank2.item, reader, true);
+			}
+			if ((flags[0] & 128) == 128)
+			{
+				ReadCustomData(player, reader);
 			}
 		}
 
@@ -195,6 +204,89 @@ namespace Terraria.ModLoader.IO
 			for (int k = 0; k < count; k++)
 			{
 				ItemIO.ReadModItemSlot(inv, reader, readStack, readFavorite);
+			}
+		}
+
+		internal static bool WriteCustomData(Player player, BinaryWriter writer)
+		{
+			ushort count = 0;
+			byte[] data;
+			using (MemoryStream stream = new MemoryStream())
+			{
+				using (BinaryWriter customWriter = new BinaryWriter(stream))
+				{
+					foreach (ModPlayer modPlayer in player.modPlayers)
+					{
+						if (WriteCustomData(modPlayer, customWriter))
+						{
+							count++;
+						}
+					}
+					customWriter.Flush();
+					data = stream.ToArray();
+				}
+			}
+			if (count > 0)
+			{
+				writer.Write(count);
+				writer.Write(data);
+				return true;
+			}
+			return false;
+		}
+
+		internal static bool WriteCustomData(ModPlayer modPlayer, BinaryWriter writer)
+		{
+			byte[] data;
+			using (MemoryStream stream = new MemoryStream())
+			{
+				using (BinaryWriter customWriter = new BinaryWriter(stream))
+				{
+					modPlayer.SaveCustomData(customWriter);
+					customWriter.Flush();
+					data = stream.ToArray();
+				}
+			}
+			if (data.Length > 0)
+			{
+				writer.Write(modPlayer.mod.Name);
+				writer.Write(modPlayer.Name);
+				writer.Write((ushort)data.Length);
+				writer.Write(data);
+				return true;
+			}
+			return false;
+		}
+
+		internal static void ReadCustomData(Player player, BinaryReader reader)
+		{
+			int count = reader.ReadUInt16();
+			for (int k = 0; k < count; k++)
+			{
+				string modName = reader.ReadString();
+				string name = reader.ReadString();
+				byte[] data = reader.ReadBytes(reader.ReadUInt16());
+				Mod mod = ModLoader.GetMod(modName);
+				ModPlayer modPlayer = mod == null ? null : player.GetModPlayer(mod, name);
+				if (modPlayer != null)
+				{
+					using (MemoryStream stream = new MemoryStream(data))
+					{
+						using (BinaryReader customReader = new BinaryReader(stream))
+						{
+							modPlayer.LoadCustomData(customReader);
+						}
+					}
+					if (modName == "ModLoader" && name == "MysteryPlayer")
+					{
+						((MysteryPlayer)modPlayer).RestoreData(player);
+					}
+				}
+				else
+				{
+					ModPlayer mystery = player.GetModPlayer(ModLoader.GetMod("ModLoader"), "MysteryPlayer");
+					((MysteryPlayer)mystery).AddData(modName, name, data);
+				}
 			}
 		}
 		//add to end of Terraria.IO.PlayerFileData.MoveToCloud

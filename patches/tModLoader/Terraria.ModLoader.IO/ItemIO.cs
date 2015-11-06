@@ -6,7 +6,7 @@ using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO
 {
-	internal static class ItemIO
+	public static class ItemIO
 	{
 		//replace netID writes in Terraria.Player.SavePlayer
 		//in Terraria.IO.WorldFile.SaveChests include IsModItem for no-item check
@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.IO
 			writer.Write(ItemLoader.IsModItem(item) ? 0 : item.netID);
 		}
 
-		internal static bool WriteModItemSlot(Item[] inv, int slot, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false)
+		public static bool WriteModItemSlot(Item[] inv, int slot, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false)
 		{
 			Item item = inv[slot];
 			if (ItemLoader.IsModItem(item))
@@ -35,7 +35,7 @@ namespace Terraria.ModLoader.IO
 			return false;
 		}
 
-		internal static void ReadModItemSlot(Item[] inv, BinaryReader reader, bool readStack = false, bool readFavorite = false)
+		public static void ReadModItemSlot(Item[] inv, BinaryReader reader, bool readStack = false, bool readFavorite = false)
 		{
 			int slot = reader.ReadUInt16();
 			Item item = inv[slot];
@@ -50,7 +50,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static void WriteModItem(Item item, BinaryWriter writer)
+		public static void WriteModItem(Item item, BinaryWriter writer)
 		{
 			writer.Write(item.modItem.mod.Name);
 			writer.Write(Main.itemName[item.type]);
@@ -72,7 +72,7 @@ namespace Terraria.ModLoader.IO
 			writer.Write(item.prefix);
 		}
 
-		internal static void ReadModItem(Item item, BinaryReader reader)
+		public static void ReadModItem(Item item, BinaryReader reader)
 		{
 			string modName = reader.ReadString();
 			string itemName = reader.ReadString();
@@ -103,6 +103,17 @@ namespace Terraria.ModLoader.IO
 					if (type != 0)
 					{
 						item.netDefaults(type);
+						byte[] data = mystery.GetData();
+						if (data.Length > 0)
+						{
+							using (MemoryStream memoryStream = new MemoryStream(data))
+							{
+								using (BinaryReader customReader = new BinaryReader(memoryStream))
+								{
+									item.modItem.LoadCustomData(customReader);
+								}
+							}
+						}
 					}
 				}
 			}
@@ -112,7 +123,7 @@ namespace Terraria.ModLoader.IO
 				MysteryItem mystery = item.modItem as MysteryItem;
 				mystery.SetModName(modName);
 				mystery.SetItemName(itemName);
-				reader.ReadBytes(reader.ReadUInt16());
+				mystery.SetData(reader.ReadBytes(reader.ReadUInt16()));
 			}
 			item.Prefix(reader.ReadByte());
 		}

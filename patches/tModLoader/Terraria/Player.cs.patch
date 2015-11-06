@@ -246,7 +246,15 @@
  							{
  								int num62 = (int)tile4.slope();
  								if (num62 != 2 && !Main.tile[num60 - 1, num61 - 1].active())
-@@ -14417,6 +14463,7 @@
+@@ -12204,6 +12250,7 @@
+ 				Player.tileRangeY = 4;
+ 			}
+ 			this.mount.CheckMountBuff(this);
++			PlayerHooks.ResetEffects(this);
+ 		}
+ 
+ 		public void UpdateImmunity()
+@@ -14417,6 +14464,7 @@
  				num3 = 1.5f;
  				num = 0.125f;
  			}
@@ -1010,7 +1018,19 @@
  			return -1;
  		}
  
-+		internal IList<ModPlayer> players = new List<ModPlayer>();
++		private IList<ModPlayer> players = null;
++
++		internal IList<ModPlayer> modPlayers
++		{
++			get
++			{
++				if (players == null)
++				{
++					players = new List<ModPlayer>();
++				}
++				return players;
++			}
++		}
 +
 +		public ModPlayer GetModPlayer(Mod mod, string name)
 +		{
