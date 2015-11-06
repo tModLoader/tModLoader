@@ -61,6 +61,7 @@ namespace Terraria.ModLoader
 			}
 			spacing = 45;
 		}
+
 		internal static void AddSettingsMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] virticalSpacing, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 		{
 			buttonIndex++;
@@ -137,7 +138,7 @@ namespace Terraria.ModLoader
 			else if (Main.menuMode == modControlsID)
 			{
 				UIModControls.ModLoaderMenus(main, selectedMenu, buttonNames, buttonScales, ref offY, ref spacing, ref numButtons);
-            }
+			}
 		}
 	}
 }

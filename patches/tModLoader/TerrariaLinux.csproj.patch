@@ -26,7 +26,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -232,6 +237,77 @@
+@@ -232,6 +237,78 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -105,7 +105,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -371,5 +447,11 @@
+@@ -371,5 +448,11 @@
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
    </ItemGroup>

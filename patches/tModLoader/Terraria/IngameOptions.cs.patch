@@ -84,7 +84,7 @@
  			}
  			Vector2 anchor2 = new Vector2(value3.X + value2.X * 3f / 4f, value3.Y + (float)(num * 5 / 2));
  			Vector2 offset2 = new Vector2(0f, value2.Y - (float)(num * 3)) / (float)(num8 + 1);
-@@ -1147,6 +1164,75 @@
+@@ -1147,6 +1164,73 @@
  							Main.setKey = -1;
  							Main.blockKey = pressedKeys2[0];
  							Main.blockInput = false;
@@ -97,7 +97,6 @@
 +				int num13 = 0;
 +				anchor2.X -= 30f;
 +				int num14 = 0;
-+
 +				string[] currentBinding = new string[ModLoader.ModLoader.modHotKeys.Count];
 +				int j = 0;
 +				foreach (var a in ModLoader.ModLoader.modHotKeys.Values)
@@ -106,7 +105,6 @@
 +					j++;
 +				}
 +				string[] hotKeyName = ModLoader.ModLoader.modHotKeys.Keys.ToArray<string>();
-+
 +				for (int i = 0; i < hotKeyName.Length; i++)
 +				{
 +					if (IngameOptions.DrawRightSide(sb, hotKeyName[i] + (hotKeyName[i].Length <= 18 ? "                    ".Substring(hotKeyName[i].Length) : "  "), num13, anchor2, offset2, IngameOptions.rightScale[num13], (IngameOptions.rightScale[num13] - num2) / (num3 - num2), (Main.setKey == num14) ? Color.Gold : default(Color)))
