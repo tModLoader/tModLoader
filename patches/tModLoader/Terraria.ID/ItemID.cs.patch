@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.ID\ItemID.cs
++++ src/tModLoader\Terraria.ID\ItemID.cs
+@@ -82,7 +82,7 @@
+ 					1103,
+ 					0,
+ 					3347,
+-					1
++					3347
+ 				});
+ 			public static int[] StaffMinionSlotsRequired = ItemID.Sets.Factory.CreateIntSet(1, new int[0]);
+ 			public static bool[] ExoticPlantsForDyeTrade = ItemID.Sets.Factory.CreateBoolSet(new int[]
+

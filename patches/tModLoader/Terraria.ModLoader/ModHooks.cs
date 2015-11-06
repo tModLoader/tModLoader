@@ -12,10 +12,6 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void ExtractinatorUse(ref int resultType, ref int resultStack, ref int extractType)
-		{
-		}
-
 		public virtual void HotKeyPressed(string name)
 		{
 		}
@@ -41,14 +37,6 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.UpdateMusic(ref music);
-			}
-		}
-
-		internal static void ExtractinatorUse(ref int resultType, ref int resultStack, ref int extractType)
-		{
-			foreach (Mod mod in ModLoader.mods.Values)
-			{
-				mod.ExtractinatorUse(ref resultType, ref resultStack, ref extractType);
 			}
 		}
 

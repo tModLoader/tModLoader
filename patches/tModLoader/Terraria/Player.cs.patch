@@ -673,13 +673,22 @@
  								{
  									WorldGen.SlopeTile(num71, num72, 0);
  									if (Main.netMode == 1)
+@@ -26476,7 +26555,7 @@
+ 			int num2 = 25;
+ 			int num3 = 50;
+ 			int num4 = -1;
+-			if (extractType == 1)
++			if (extractType == 3347)
+ 			{
+ 				num /= 3;
+ 				num2 *= 2;
 @@ -26484,7 +26563,12 @@
  				num4 = 10;
  			}
  			int num5 = 1;
 -			int num6;
 +			int num6 = 0;
-+			ModHooks.ExtractinatorUse(ref num6, ref num5, ref extractType);
++			ItemLoader.ExtractinatorUse(ref num6, ref num5, extractType);
 +			if (num6 != 0)
 +			{
 +				goto endVanillaExtractinatorUse;

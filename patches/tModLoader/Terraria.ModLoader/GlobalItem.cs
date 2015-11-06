@@ -259,5 +259,9 @@ namespace Terraria.ModLoader
 		{
 			return true;
 		}
+
+		public virtual void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
+		{
+		}
 	}
 }

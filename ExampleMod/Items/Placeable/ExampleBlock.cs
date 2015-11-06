@@ -21,7 +21,7 @@ namespace ExampleMod.Items.Placeable
 			item.useStyle = 1;
 			item.consumable = true;
 			item.createTile = mod.TileType("ExampleBlock");
-			ItemID.Sets.ExtractinatorMode[item.type] = mod.GetExtractinatorType("ExampleExtractinatorType");
+			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
 		}
 
 		public override void AddRecipes()
@@ -39,6 +39,21 @@ namespace ExampleMod.Items.Placeable
 			recipe.AddIngredient(null, "ExamplePlatform", 2);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
+		}
+
+		public override void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
+		{
+			if (extractType == item.type)
+			{
+				if (Main.rand.Next(30) == 0)
+				{
+					resultType = mod.ItemType("FoulOrb");
+					if (Main.rand.Next(5) == 0)
+					{
+						resultStack += Main.rand.Next(2);
+					}
+				}
+			}
 		}
 	}
 }

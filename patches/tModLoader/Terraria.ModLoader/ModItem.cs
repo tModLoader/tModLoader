@@ -325,5 +325,9 @@ namespace Terraria.ModLoader
 		public virtual void AddRecipes()
 		{
 		}
+
+		public virtual void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
+		{
+		}
 	}
 }
