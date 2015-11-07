@@ -41,17 +41,14 @@ namespace ExampleMod.Items.Placeable
 			recipe.AddRecipe();
 		}
 
-		public override void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
+		public override void ExtractinatorUse(ref int resultType, ref int resultStack)
 		{
-			if (extractType == item.type)
+			if (Main.rand.Next(30) == 0)
 			{
-				if (Main.rand.Next(30) == 0)
+				resultType = mod.ItemType("FoulOrb");
+				if (Main.rand.Next(5) == 0)
 				{
-					resultType = mod.ItemType("FoulOrb");
-					if (Main.rand.Next(5) == 0)
-					{
-						resultStack += Main.rand.Next(2);
-					}
+					resultStack += Main.rand.Next(2);
 				}
 			}
 		}

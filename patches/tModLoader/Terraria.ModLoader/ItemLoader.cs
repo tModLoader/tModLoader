@@ -964,13 +964,14 @@ namespace Terraria.ModLoader
 
 		internal static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
 		{
-			foreach (ModItem modItem in items.Values)
+			ModItem modItem = GetItem(extractType);
+			if (modItem != null)
 			{
-				modItem.ExtractinatorUse(ref resultType, ref resultStack, extractType);
+				modItem.ExtractinatorUse(ref resultType, ref resultStack);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				globalItem.ExtractinatorUse(ref resultType, ref resultStack, extractType);
+				globalItem.ExtractinatorUse(extractType, ref resultType, ref resultStack);
 			}
 		}
 	}

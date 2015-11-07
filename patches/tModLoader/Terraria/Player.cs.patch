@@ -686,7 +686,7 @@
  			int num3 = 50;
  			int num4 = -1;
 -			if (extractType == 1)
-+			if (extractType == 3347)
++			if (extractType == ItemID.DesertFossil)
  			{
  				num /= 3;
  				num2 *= 2;

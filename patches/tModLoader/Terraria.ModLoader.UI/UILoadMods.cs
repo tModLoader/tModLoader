@@ -31,9 +31,10 @@ namespace Terraria.ModLoader.UI
 			loadProgress.SetProgress((float)num / (float)max);
 		}
 
-		internal void SetProgressReading(string mod)
+		internal void SetProgressReading(string mod, int num, int max)
 		{
 			loadProgress.SetText("Reading: " + mod);
+			loadProgress.SetProgress((float)num / (float)max);
 		}
 
 		internal void SetProgressInit(string mod, int num, int max)

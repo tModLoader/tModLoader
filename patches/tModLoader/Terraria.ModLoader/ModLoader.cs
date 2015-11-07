@@ -305,7 +305,8 @@ namespace Terraria.ModLoader
 		private static void LoadMod(TmodFile modFile, BuildProperties properties)
 		{
 			AddAssemblyResolver();
-			Interface.loadMods.SetProgressReading(Path.GetFileNameWithoutExtension(modFile.Name));
+			string fileName = Path.GetFileNameWithoutExtension(modFile.Name);
+			Interface.loadMods.SetProgressReading(fileName, 0, 2);
 			Assembly modCode;
 			string rootDirectory;
 			if (modFile.HasFile("All"))
@@ -316,6 +317,7 @@ namespace Terraria.ModLoader
 			{
 				modCode = Assembly.Load(modFile.GetFile(windows ? "Windows" : "Other"));
 			}
+			Interface.loadMods.SetProgressReading(fileName, 1, 2);
 			using (MemoryStream memoryStream = new MemoryStream(modFile.GetFile("Resources")))
 			{
 				using (BinaryReader reader = new BinaryReader(memoryStream))

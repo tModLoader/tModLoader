@@ -24,6 +24,11 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal ModPlayer Clone()
+		{
+			return (ModPlayer)MemberwiseClone();
+		}
+
 		public bool TypeEquals(ModPlayer other)
 		{
 			return mod == other.mod && Name == other.Name;

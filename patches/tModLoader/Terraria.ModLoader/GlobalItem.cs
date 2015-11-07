@@ -260,7 +260,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		public virtual void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
+		public virtual void ExtractinatorUse(int extractType, ref int resultType, ref int resultStack)
 		{
 		}
 	}

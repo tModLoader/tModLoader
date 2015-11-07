@@ -278,6 +278,10 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		public virtual void ExtractinatorUse(ref int resultType, ref int resultStack)
+		{
+		}
+
 		internal void SetupItem(Item item)
 		{
 			SetupModItem(item);
@@ -323,10 +327,6 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void AddRecipes()
-		{
-		}
-
-		public virtual void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
 		{
 		}
 	}

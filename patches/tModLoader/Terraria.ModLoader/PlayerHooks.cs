@@ -30,7 +30,9 @@ namespace Terraria.ModLoader
 		{
 			foreach (ModPlayer modPlayer in players)
 			{
-				player.modPlayers.Add((ModPlayer)Activator.CreateInstance(modPlayer.GetType()));
+				ModPlayer newPlayer = modPlayer.Clone();
+				newPlayer.player = player;
+				player.modPlayers.Add(newPlayer);
 			}
 		}
 
