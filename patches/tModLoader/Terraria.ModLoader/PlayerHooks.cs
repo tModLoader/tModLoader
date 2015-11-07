@@ -94,5 +94,13 @@ namespace Terraria.ModLoader
 				modPlayer.UpdateBiomeVisuals(biomeName, inZone, activationSource);
 			}
 		}
+
+		internal static void UpdateDead(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.UpdateDead();
+			}
+		}
 	}
 }

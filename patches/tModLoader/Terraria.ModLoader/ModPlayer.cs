@@ -68,5 +68,9 @@ namespace Terraria.ModLoader
 		public virtual void UpdateBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource)
 		{
 		}
+
+		public virtual void UpdateDead()
+		{
+		}
 	}
 }
