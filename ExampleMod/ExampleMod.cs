@@ -13,6 +13,7 @@ namespace ExampleMod
 	{
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
+		private double pressedRandomBuffHotKeyTime;
 
 		public override void SetModInfo(out string name, ref ModProperties properties)
 		{
@@ -29,6 +30,7 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElementHead + k);
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
+			RegisterHotKey("Random Buff", "P");
 			Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
 			AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 			Main.instance.LoadTiles(TileID.Loom);
@@ -88,6 +90,19 @@ namespace ExampleMod
 			}
 		}
 
+		public override void HotKeyPressed(string name)
+		{
+			if (name == "Random Buff")
+			{
+				if (Math.Abs(Main.time - pressedRandomBuffHotKeyTime) > 60)
+				{
+					pressedRandomBuffHotKeyTime = Main.time;
+					int buff = Main.rand.Next(BuffID.Count);
+					Main.player[Main.myPlayer].AddBuff(buff, 600);
+				}
+			}
+		}
+
 		public override void ChatInput(string text)
 		{
 			if (text[0] != '/')
@@ -123,6 +138,10 @@ namespace ExampleMod
 			else if (command == "item")
 			{
 				ItemCommand(args);
+			}
+			else if (command == "score")
+			{
+				ScoreCommand(args);
 			}
 		}
 
@@ -255,6 +274,60 @@ namespace ExampleMod
 			{
 				Main.NewText("Usage: /item [type|name] [stack]");
 			}
+		}
+
+		private void ScoreCommand(string[] args)
+		{
+			if (args.Length < 2 || (args[1] != "add" && args[1] != "set" && args[1] != "reset" && args[1] != "get"))
+			{
+				Main.NewText("Usage: /score playerName <get|add|set|reset>");
+				return;
+			}
+			int player;
+			for (player = 0; player < 255; player++)
+			{
+				if (Main.player[player].active && Main.player[player].name == args[0])
+				{
+					break;
+				}
+			}
+			if (player == 255)
+			{
+				Main.NewText("Could not find player: " + args[0]);
+				return;
+			}
+			ExamplePlayer modPlayer = (ExamplePlayer)Main.player[player].GetModPlayer(this, "ExamplePlayer");
+			if (args[1] == "get")
+			{
+				Main.NewText(args[0] + "'s score is " + modPlayer.score);
+				return;
+			}
+			if (args[1] == "reset")
+			{
+				modPlayer.score = 0;
+				Main.NewText(args[0] + "'s score is now " + modPlayer.score);
+				return;
+			}
+			if (args.Length < 3)
+			{
+				Main.NewText("Usage: /score playerName <add|set> amount");
+				return;
+			}
+			int arg;
+			if (!Int32.TryParse(args[2], out arg))
+			{
+				Main.NewText(args[2] + " is not an integer");
+				return;
+			}
+			if (args[1] == "add")
+			{
+				modPlayer.score += arg;
+			}
+			else
+			{
+				modPlayer.score = arg;
+			}
+			Main.NewText(args[0] + "'s score is now " + modPlayer.score);
 		}
 		//spawning helper methods imported from my tAPI mod
 		public static bool NoInvasion(NPCSpawnInfo spawnInfo)

@@ -161,9 +161,9 @@
  		{
 -			return (Item)base.MemberwiseClone();
 +			Item newItem = (Item)base.MemberwiseClone();
-+			if (newItem.type >= ItemID.Count)
++			if (this.modItem != null)
 +			{
-+				ItemLoader.GetItem(newItem.type).SetupModItem(newItem);
++				this.modItem.SetupClone(newItem);
 +			}
 +			return newItem;
  		}

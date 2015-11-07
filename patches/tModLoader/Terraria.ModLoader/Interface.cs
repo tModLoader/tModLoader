@@ -17,6 +17,7 @@ namespace Terraria.ModLoader
 		internal const int modBrowserID = 10007;
 		internal const int modInfoID = 10008;
 		internal const int downloadModID = 10009;
+		internal const int modControlsID = 10010;
 		private static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -59,6 +60,24 @@ namespace Terraria.ModLoader
 				buttonScales[k] = 0.82f;
 			}
 			spacing = 45;
+		}
+
+		internal static void AddSettingsMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] virticalSpacing, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
+		{
+			buttonIndex++;
+			numButtons++;
+			buttonNames[buttonIndex] = "Mod " + Lang.menu[66];
+			if (selectedMenu == buttonIndex)
+			{
+				Main.PlaySound(10, -1, -1, 1);
+				Main.menuMode = modControlsID;
+			}
+			for (int k = 0; k < numButtons; k++)
+			{
+				buttonScales[k] = 0.73f;
+				virticalSpacing[k] = 0;
+			}
+			virticalSpacing[numButtons - 1] = 8;
 		}
 		//add to end of if else chain of Main.menuMode in Terraria.Main.DrawMenu
 		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num4);
@@ -115,6 +134,10 @@ namespace Terraria.ModLoader
 			{
 				Main.MenuUI.SetState(downloadMod);
 				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == modControlsID)
+			{
+				UIModControls.ModLoaderMenus(main, selectedMenu, buttonNames, buttonScales, ref offY, ref spacing, ref numButtons);
 			}
 		}
 	}

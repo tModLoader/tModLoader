@@ -45,6 +45,7 @@ namespace Terraria.ModLoader
 		private static readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 		private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		private static readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+		internal static readonly IDictionary<string, Tuple<string,string>> modHotKeys = new Dictionary<string, Tuple<string, string>>();
 
 		private static void LoadReferences()
 		{
@@ -304,7 +305,8 @@ namespace Terraria.ModLoader
 		private static void LoadMod(TmodFile modFile, BuildProperties properties)
 		{
 			AddAssemblyResolver();
-			Interface.loadMods.SetProgressReading(Path.GetFileNameWithoutExtension(modFile.Name));
+			string fileName = Path.GetFileNameWithoutExtension(modFile.Name);
+			Interface.loadMods.SetProgressReading(fileName, 0, 2);
 			Assembly modCode;
 			string rootDirectory;
 			if (modFile.HasFile("All"))
@@ -315,6 +317,7 @@ namespace Terraria.ModLoader
 			{
 				modCode = Assembly.Load(modFile.GetFile(windows ? "Windows" : "Other"));
 			}
+			Interface.loadMods.SetProgressReading(fileName, 1, 2);
 			using (MemoryStream memoryStream = new MemoryStream(modFile.GetFile("Resources")))
 			{
 				using (BinaryReader reader = new BinaryReader(memoryStream))
@@ -434,6 +437,7 @@ namespace Terraria.ModLoader
 			mods.Clear();
 			ResizeArrays(true);
 			MapLoader.UnloadModMap();
+			modHotKeys.Clear();
 		}
 
 		internal static void Reload()
@@ -840,6 +844,11 @@ namespace Terraria.ModLoader
 				}
 			}
 			return modSounds;
+		}
+
+		public static void RegisterHotKey(string name, string defaultKey)
+		{
+			modHotKeys[name] = new Tuple<string, string>(defaultKey, defaultKey);
 		}
 
 		private static void AddCraftGroups()

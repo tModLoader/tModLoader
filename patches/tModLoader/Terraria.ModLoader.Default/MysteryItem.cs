@@ -8,6 +8,7 @@ namespace Terraria.ModLoader.Default
 	{
 		private string modName;
 		private string itemName;
+		private byte[] data;
 
 		public override void SetDefaults()
 		{
@@ -39,16 +40,32 @@ namespace Terraria.ModLoader.Default
 			item.toolTip2 = "Item: " + name;
 		}
 
+		internal byte[] GetData()
+		{
+			return data;
+		}
+
+		internal void SetData(byte[] data)
+		{
+			this.data = data;
+		}
+
 		public override void SaveCustomData(BinaryWriter writer)
 		{
 			writer.Write(modName);
 			writer.Write(itemName);
+			writer.Write((ushort)data.Length);
+			if (data.Length > 0)
+			{
+				writer.Write(data);
+			}
 		}
 
 		public override void LoadCustomData(BinaryReader reader)
 		{
 			SetModName(reader.ReadString());
 			SetItemName(reader.ReadString());
+			SetData(reader.ReadBytes(reader.ReadUInt16()));
 		}
 	}
 }

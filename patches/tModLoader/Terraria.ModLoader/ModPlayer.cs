@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Terraria;
 
 namespace Terraria.ModLoader
@@ -23,9 +24,31 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal ModPlayer Clone()
+		{
+			return (ModPlayer)MemberwiseClone();
+		}
+
+		public bool TypeEquals(ModPlayer other)
+		{
+			return mod == other.mod && Name == other.Name;
+		}
+
 		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
+		}
+
+		public virtual void ResetEffects()
+		{
+		}
+
+		public virtual void SaveCustomData(BinaryWriter writer)
+		{
+		}
+
+		public virtual void LoadCustomData(BinaryReader reader)
+		{
 		}
 	}
 }

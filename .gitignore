@@ -7,3 +7,4 @@
 /logs
 /installer/bin
 /installer/obj
+*.cache

@@ -273,7 +273,7 @@ namespace ExampleMod.NPCs.Abomination
 						}
 					}
 					Vector2 pos = Main.npc[laser1Index].Center;
-					int damage = (Main.npc[laser1Index].damage - 20) / 2;
+					int damage = Main.npc[laser1Index].damage / 2;
 					if (Main.expertMode)
 					{
 						damage = (int)(damage / Main.expertDamage);

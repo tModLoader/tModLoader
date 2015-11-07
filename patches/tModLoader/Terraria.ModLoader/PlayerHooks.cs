@@ -30,7 +30,9 @@ namespace Terraria.ModLoader
 		{
 			foreach (ModPlayer modPlayer in players)
 			{
-				player.players.Add((ModPlayer)Activator.CreateInstance(modPlayer.GetType()));
+				ModPlayer newPlayer = modPlayer.Clone();
+				newPlayer.player = player;
+				player.modPlayers.Add(newPlayer);
 			}
 		}
 
@@ -41,7 +43,15 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
-			return player.players[modIndexes[name]];
+			return player.modPlayers[modIndexes[name]];
+		}
+
+		internal static void ResetEffects(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ResetEffects();
+			}
 		}
 	}
 }

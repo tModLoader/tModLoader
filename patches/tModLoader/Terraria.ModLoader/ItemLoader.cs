@@ -53,6 +53,11 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ItemID.Sets.NebulaPickup, nextItem);
 			Array.Resize(ref ItemID.Sets.AnimatesAsSoul, nextItem);
 			Array.Resize(ref ItemID.Sets.gunProj, nextItem);
+			for (int k = ItemID.Count; k < nextItem; k++)
+			{
+				ItemID.Sets.ExtractinatorMode[k] = -1;
+				ItemID.Sets.StaffMinionSlotsRequired[k] = 1;
+			}
 		}
 
 		internal static void Unload()
@@ -955,6 +960,19 @@ namespace Terraria.ModLoader
 				}
 			}
 			return true;
+		}
+
+		internal static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
+		{
+			ModItem modItem = GetItem(extractType);
+			if (modItem != null)
+			{
+				modItem.ExtractinatorUse(ref resultType, ref resultStack);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.ExtractinatorUse(extractType, ref resultType, ref resultStack);
+			}
 		}
 	}
 }

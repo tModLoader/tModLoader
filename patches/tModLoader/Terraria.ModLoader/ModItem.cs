@@ -278,6 +278,10 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		public virtual void ExtractinatorUse(ref int resultType, ref int resultStack)
+		{
+		}
+
 		internal void SetupItem(Item item)
 		{
 			SetupModItem(item);
@@ -297,6 +301,21 @@ namespace Terraria.ModLoader
 			newItem.item = item;
 			item.modItem = newItem;
 			newItem.mod = mod;
+		}
+
+		internal void SetupClone(Item clone)
+		{
+			ModItem newItem = Clone();
+			newItem.item = clone;
+			newItem.mod = mod;
+			newItem.texture = texture;
+			newItem.bossBagNPC = bossBagNPC;
+			clone.modItem = newItem;
+		}
+
+		public virtual ModItem Clone()
+		{
+			return (ModItem)MemberwiseClone();
 		}
 
 		public virtual void SaveCustomData(BinaryWriter writer)

@@ -11,6 +11,10 @@ namespace Terraria.ModLoader
 		public virtual void UpdateMusic(ref int music)
 		{
 		}
+
+		public virtual void HotKeyPressed(string name)
+		{
+		}
 	}
 
 	internal static class ModHooks
@@ -33,6 +37,21 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.UpdateMusic(ref music);
+			}
+		}
+
+		internal static void HotKeyPressed(string key)
+		{
+			// Key is name, value is keycode
+			foreach (var item in ModLoader.modHotKeys)
+			{
+				if (item.Value.Item1.Equals(key))
+				{
+					foreach (Mod mod in ModLoader.mods.Values)
+					{
+						mod.HotKeyPressed(item.Key);
+					}
+				}
 			}
 		}
 	}

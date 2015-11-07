@@ -26,6 +26,7 @@ namespace Terraria.ModLoader.Default
 			LoadTextures();
 			AddTexture("MysteryItem", mysteryItemTexture);
 			AddItem("MysteryItem", new MysteryItem(), FileName("MysteryItem"));
+			AddPlayer("MysteryPlayer", new MysteryPlayer());
 		}
 
 		private static void LoadTextures()
