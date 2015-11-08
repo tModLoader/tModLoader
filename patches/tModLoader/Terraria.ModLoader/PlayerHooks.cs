@@ -1,4 +1,3 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -52,54 +51,6 @@ namespace Terraria.ModLoader
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				modPlayer.ResetEffects();
-			}
-		}
-
-		internal static void OnHitNPC(Player player, float x, float y, Entity victim)
-		{
-			foreach (ModPlayer modPlayer in player.modPlayers)
-			{
-				if (CanHitNPC(player, (NPC)victim))
-				{
-					modPlayer.OnHitNPC(x, y, victim);
-				}
-			}
-		}
-
-		internal static bool CanHitNPC(Player player, NPC npc)
-		{
-			bool flag = true;
-			foreach (ModPlayer modPlayer in player.modPlayers)
-			{
-				if (!modPlayer.CanHitNPC(npc))
-				{
-					flag = false;
-				}
-			}
-			return flag;
-		}
-
-		internal static void UpdateBiomes(Player player)
-		{
-			foreach (ModPlayer modPlayer in player.modPlayers)
-			{
-				modPlayer.UpdateBiomes();
-			}
-		}
-
-		internal static void UpdateBiomeVisuals(Player player, string biomeName, bool inZone, Vector2 activationSource)
-		{
-			foreach (ModPlayer modPlayer in player.modPlayers)
-			{
-				modPlayer.UpdateBiomeVisuals(biomeName, inZone, activationSource);
-			}
-		}
-
-		internal static void UpdateDead(Player player)
-		{
-			foreach (ModPlayer modPlayer in player.modPlayers)
-			{
-				modPlayer.UpdateDead();
 			}
 		}
 	}

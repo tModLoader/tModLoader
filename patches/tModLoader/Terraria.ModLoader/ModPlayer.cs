@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using Microsoft.Xna.Framework;
 using Terraria;
 
 namespace Terraria.ModLoader
@@ -49,27 +48,6 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void LoadCustomData(BinaryReader reader)
-		{
-		}
-
-		public virtual void OnHitNPC(float x, float y, Entity victim)
-		{
-		}
-
-		public virtual bool CanHitNPC(NPC npc)
-		{
-			return true;
-		}
-
-		public virtual void UpdateBiomes()
-		{
-		}
-
-		public virtual void UpdateBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource)
-		{
-		}
-
-		public virtual void UpdateDead()
 		{
 		}
 	}
