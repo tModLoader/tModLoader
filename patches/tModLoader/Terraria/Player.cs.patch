@@ -62,7 +62,7 @@
  					}
  				}
  			}
-+			//TODO - ModPlayer.CanHitAnything
++			//TODO - ModPlayer.OnHitAnything
  		}
  
  		public void openPresent()
