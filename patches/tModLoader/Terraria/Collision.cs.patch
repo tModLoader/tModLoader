@@ -98,7 +98,15 @@
  													{
  														Collision.stair = true;
  													}
-@@ -3063,7 +3064,7 @@
+@@ -2733,6 +2734,7 @@
+ 							return new Vector2((float)num9, (float)num5);
+ 						}
+ 					}
++					//TODO - ModTile.HurtPlayer
+ 				}
+ 			}
+ 			return default(Vector2);
+@@ -3063,7 +3065,7 @@
  				{
  					flag5 = (tile.type != 16 && tile.type != 18 && tile.type != 134);
  				}
@@ -107,7 +115,7 @@
  				flag4 &= (!Main.tileSolidTop[(int)tile.type] || !Main.tileSolidTop[(int)tile2.type]);
  			}
  			else
-@@ -3150,7 +3151,7 @@
+@@ -3150,7 +3152,7 @@
  					if (Main.tileSolid[(int)tile.type])
  					{
  						int num4 = tile.blockType();

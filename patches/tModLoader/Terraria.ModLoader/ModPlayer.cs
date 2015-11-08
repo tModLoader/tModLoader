@@ -50,5 +50,11 @@ namespace Terraria.ModLoader
 		public virtual void LoadCustomData(BinaryReader reader)
 		{
 		}
+		//TODO
+		//PreItemCheck, PostItemCheck
+		//GetWeaponDamage, PreShoot
+		//SetupStartInventory
+		//OnFishSelected, GetFishingLevel, AnglerQuestReward
+		//hooks for grappling hooks
 	}
 }
