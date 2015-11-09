@@ -1,12 +1,18 @@
 using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.NPCs
+namespace ExampleMod.NPCs.PuritySpirit
 {
 	public class PuritySpirit : ModNPC
 	{
+		private const int size = 120;
+		private const int particleSize = 12;
+
 		public override void SetDefaults()
 		{
 			npc.name = "PuritySpirit";
@@ -16,8 +22,8 @@ namespace ExampleMod.NPCs
 			npc.damage = 0;
 			npc.defense = 70;
 			npc.knockBackResist = 0f;
-			npc.width = 80;
-			npc.height = 80;
+			npc.width = size;
+			npc.height = size;
 			npc.value = Item.buyPrice(0, 50, 0, 0);
 			npc.npcSlots = 50f;
 			npc.boss = true;
@@ -26,7 +32,7 @@ namespace ExampleMod.NPCs
 			npc.noTileCollide = true;
 			npc.soundHit = 1;
 			npc.soundKilled = 0;
-			npc.hide = true;
+			npc.alpha = 255;
 			for (int k = 0; k < npc.buffImmune.Length; k++)
 			{
 				npc.buffImmune[k] = true;
@@ -38,11 +44,6 @@ namespace ExampleMod.NPCs
 		{
 			npc.lifeMax = (int)(npc.lifeMax / Main.expertLife * 1.2f * bossLifeScale);
 			npc.defense = 72;
-		}
-
-		public override bool Autoload(ref string name, ref string texture) //remove when ready for testing
-		{
-			return false;
 		}
 
 		private int difficulty
@@ -107,8 +108,15 @@ namespace ExampleMod.NPCs
 			}
 		}
 
+		private IList<Particle> particles = new List<Particle>();
+		private float[,] aura = new float[size, size];
+
 		public override void AI()
 		{
+			if (!Main.dedServ)
+			{
+				UpdateParticles();
+			}
 			if (Main.netMode == 1)
 			{
 				return;
@@ -117,6 +125,55 @@ namespace ExampleMod.NPCs
 
 		public void Initialize()
 		{
+		}
+
+		private void UpdateParticles()
+		{
+			foreach (Particle particle in particles)
+			{
+				particle.Update();
+			}
+			Vector2 newPos = new Vector2(Main.rand.Next(3 * size / 8, 5 * size / 8), Main.rand.Next(3 * size / 8, 5 * size / 8));
+			double newAngle = 2 * Math.PI * Main.rand.NextDouble();
+			Vector2 newVel = new Vector2((float)Math.Cos(newAngle), (float)Math.Sin(newAngle));
+			newVel *= 0.5f * (1f + (float)Main.rand.NextDouble());
+			particles.Add(new Particle(newPos, newVel));
+			if (particles[0].strength <= 0f)
+			{
+				particles.RemoveAt(0);
+			}
+			for (int x = 0; x < size; x++)
+			{
+				for (int y = 0; y < size; y++)
+				{
+					aura[x, y] *= 0.97f;
+				}
+			}
+			foreach (Particle particle in particles)
+			{
+				int minX = (int)particle.position.X - particleSize / 2;
+				int minY = (int)particle.position.Y - particleSize / 2;
+				int maxX = minX + particleSize;
+				int maxY = minY + particleSize;
+				for (int x = minX; x <= maxX; x++)
+				{
+					for (int y = minY; y <= maxY; y++)
+					{
+						if (x >= 0 && x < size && y >= 0 && y < size)
+						{
+							float strength = particle.strength;
+							float offX = particle.position.X - x;
+							float offY = particle.position.Y - y;
+							strength *= 1f - (float)Math.Sqrt(offX * offX + offY * offY) / particleSize * 2;
+							if (strength < 0f)
+							{
+								strength = 0f;
+							}
+							aura[x, y] = 1f - (1f - aura[x, y]) * (1f - strength);
+						}
+					}
+				}
+			}
 		}
 
 		public void FindPlayers()
@@ -149,6 +206,42 @@ namespace ExampleMod.NPCs
 
 		private void GiveDebuffs()
 		{
+		}
+
+		public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
+		{
+			for (int x = 0; x < size; x++)
+			{
+				for (int y = 0; y < size; y++)
+				{
+					Vector2 drawPos = npc.position - Main.screenPosition;
+					drawPos.X += x * 2 - size / 2;
+					drawPos.Y += y * 2 - size / 2;
+					spriteBatch.Draw(mod.GetTexture("NPCs/PuritySpirit/PurityParticle"), drawPos, null, Color.White * aura[x, y], 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+				}
+			}
+			spriteBatch.Draw(mod.GetTexture("NPCs/PuritySpirit/PurityEyes"), npc.position - Main.screenPosition, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			return false;
+		}
+	}
+
+	class Particle
+	{
+		internal Vector2 position;
+		internal Vector2 velocity;
+		internal float strength;
+
+		internal Particle(Vector2 pos, Vector2 vel)
+		{
+			this.position = pos;
+			this.velocity = vel;
+			this.strength = 0.75f;
+		}
+
+		internal void Update()
+		{
+			this.position += this.velocity * this.strength;
+			this.strength -= 0.01f;
 		}
 	}
 }

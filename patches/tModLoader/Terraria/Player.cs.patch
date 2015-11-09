@@ -306,7 +306,7 @@
  			this.trapDebuffSource = false;
  			this.yoraiz0rEye = 0;
  			this.yoraiz0rDarkness = false;
-+			//TODO - ModPlayer.UpdateDead
++			PlayerHooks.UpdateDead(this);
  			this.gravDir = 1f;
  			for (int i = 0; i < 22; i++)
  			{
@@ -1229,7 +1229,67 @@
  			}
  			if (tile.type == 147 || tile.type == 0 || tile.type == 40 || tile.type == 53 || tile.type == 57 || tile.type == 59 || tile.type == 123 || tile.type == 224 || tile.type == 397)
  			{
-@@ -33377,7 +33535,7 @@
+@@ -33197,14 +33355,31 @@
+ 
+ 		public void DropItems()
+ 		{
++			IList<Item> startInventory = PlayerHooks.SetupStartInventory(this);
++			IDictionary<int, int> startCounts = new Dictionary<int, int>();
++			foreach (Item item in startInventory)
++			{
++				if (!startCounts.ContainsKey(item.netID))
++				{
++					startCounts[item.netID] = 0;
++				}
++				startCounts[item.netID] += item.stack;
++			}
+ 			for (int i = 0; i < 59; i++)
+ 			{
+-				if (this.inventory[i].stack > 0 && this.inventory[i].name != "Copper Pickaxe" && this.inventory[i].name != "Copper Axe" && this.inventory[i].name != "Copper Shortsword")
+-				{
++				Item item = this.inventory[i];
++				if (item.stack > 0 && (!startCounts.ContainsKey(item.netID) || startCounts[item.netID] < item.stack) && item.type != ModLoader.ModLoader.GetMod("ModLoader").ItemType("StartBag"))
++				{
++					int stack = item.stack;
++					if (startCounts.ContainsKey(item.netID))
++					{
++						stack -= startCounts[item.netID];
++						startCounts[item.netID] = 0;
++					}
+ 					int num = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, this.inventory[i].type, 1, false, 0, false, false);
+ 					Main.item[num].netDefaults(this.inventory[i].netID);
+ 					Main.item[num].Prefix((int)this.inventory[i].prefix);
+-					Main.item[num].stack = this.inventory[i].stack;
++					Main.item[num].stack = stack;
+ 					Main.item[num].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
+ 					Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+ 					Main.item[num].noGrabDelay = 100;
+@@ -33213,6 +33388,10 @@
+ 					{
+ 						NetMessage.SendData(21, -1, -1, "", num, 0f, 0f, 0f, 0, 0, 0);
+ 					}
++				}
++				else if (item.stack > 0 && startCounts.ContainsKey(item.netID))
++				{
++					startCounts[item.netID] -= item.stack;
+ 				}
+ 				this.inventory[i] = new Item();
+ 				if (i < this.armor.Length)
+@@ -33292,12 +33471,7 @@
+ 					this.miscDyes[i] = new Item();
+ 				}
+ 			}
+-			this.inventory[0].SetDefaults("Copper Shortsword");
+-			this.inventory[0].Prefix(-1);
+-			this.inventory[1].SetDefaults("Copper Pickaxe");
+-			this.inventory[1].Prefix(-1);
+-			this.inventory[2].SetDefaults("Copper Axe");
+-			this.inventory[2].Prefix(-1);
++			PlayerHooks.SetStartInventory(this, startInventory);
+ 			Main.mouseItem = new Item();
+ 		}
+ 
+@@ -33377,7 +33551,7 @@
  			{
  				return false;
  			}
@@ -1238,7 +1298,7 @@
  			{
  				return false;
  			}
-@@ -33586,12 +33744,12 @@
+@@ -33586,12 +33760,12 @@
  							{
  								player.armor[k].name = "";
  							}
@@ -1253,7 +1313,7 @@
  							binaryWriter.Write(player.dye[l].prefix);
  						}
  						for (int m = 0; m < 58; m++)
-@@ -33600,16 +33758,16 @@
+@@ -33600,16 +33774,16 @@
  							{
  								player.inventory[m].name = "";
  							}
@@ -1273,7 +1333,7 @@
  							binaryWriter.Write(player.miscDyes[n].prefix);
  						}
  						for (int num = 0; num < 40; num++)
-@@ -33618,7 +33776,7 @@
+@@ -33618,7 +33792,7 @@
  							{
  								player.bank.item[num].name = "";
  							}
@@ -1282,7 +1342,7 @@
  							binaryWriter.Write(player.bank.item[num].stack);
  							binaryWriter.Write(player.bank.item[num].prefix);
  						}
-@@ -33628,7 +33786,7 @@
+@@ -33628,7 +33802,7 @@
  							{
  								player.bank2.item[num2].name = "";
  							}
@@ -1291,7 +1351,7 @@
  							binaryWriter.Write(player.bank2.item[num2].stack);
  							binaryWriter.Write(player.bank2.item[num2].prefix);
  						}
-@@ -33673,6 +33831,7 @@
+@@ -33673,6 +33847,7 @@
  					}
  				}
  			}
@@ -1299,7 +1359,7 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
-@@ -34116,6 +34275,7 @@
+@@ -34116,6 +34291,7 @@
  								player.anglerQuestsFinished = binaryReader.ReadInt32();
  							}
  							player.skinVariant = (int)MathHelper.Clamp((float)player.skinVariant, 0f, 7f);
@@ -1307,7 +1367,7 @@
  							for (int num32 = 3; num32 < 8 + player.extraAccessorySlots; num32++)
  							{
  								int type = player.armor[num32].type;
-@@ -34184,6 +34344,7 @@
+@@ -34184,6 +34360,7 @@
  					if (FileUtilities.Exists(file + ".bak", cloudSave))
  					{
  						FileUtilities.Move(file + ".bak", file, cloudSave, true);
@@ -1315,7 +1375,7 @@
  					}
  					playerFileData = Player.LoadPlayer(file, cloudSave);
  					if (playerFileData.Player == null)
-@@ -34250,8 +34411,28 @@
+@@ -34250,8 +34427,28 @@
  			return -1;
  		}
  
@@ -1344,4 +1404,15 @@
  			int[] array = new int[2];
  			this.hurtCooldowns = array;
  			this.width = 20;
+@@ -34288,9 +34485,7 @@
+ 			}
+ 			this.trashItem = new Item();
+ 			this.grappling[0] = -1;
+-			this.inventory[0].SetDefaults("Copper Shortsword");
+-			this.inventory[1].SetDefaults("Copper Pickaxe");
+-			this.inventory[2].SetDefaults("Copper Axe");
++			PlayerHooks.SetStartInventory(this);
+ 			this.statManaMax = 20;
+ 			this.extraAccessory = false;
+ 			if (Main.cEd)
 

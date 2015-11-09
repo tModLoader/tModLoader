@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader
 {
@@ -52,6 +53,102 @@ namespace Terraria.ModLoader
 			{
 				modPlayer.ResetEffects();
 			}
+		}
+
+		internal static void UpdateDead(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.UpdateDead();
+			}
+		}
+
+		internal static IList<Item> SetupStartInventory(Player player)
+		{
+			IList<Item> items = new List<Item>();
+			Item item = new Item();
+			item.SetDefaults("Copper Shortsword");
+			item.Prefix(-1);
+			items.Add(item);
+			item = new Item();
+			item.SetDefaults("Copper Pickaxe");
+			item.Prefix(-1);
+			items.Add(item);
+			item = new Item();
+			item.SetDefaults("Copper Axe");
+			item.Prefix(-1);
+			items.Add(item);
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.SetupStartInventory(items);
+			}
+			IDictionary<int, int> counts = new Dictionary<int, int>();
+			foreach (Item item0 in items)
+			{
+				if (item0.maxStack > 1)
+				{
+					if (!counts.ContainsKey(item0.netID))
+					{
+						counts[item0.netID] = 0;
+					}
+					counts[item0.netID] += item0.stack;
+				}
+			}
+			int k = 0;
+			while (k < items.Count)
+			{
+				bool flag = true;
+				int id = items[k].netID;
+				if (counts.ContainsKey(id))
+				{
+					items[k].stack = counts[id];
+					if (items[k].stack > items[k].maxStack)
+					{
+						items[k].stack = items[k].maxStack;
+					}
+					counts[id] -= items[k].stack;
+					if (items[k].stack <= 0)
+					{
+						items.RemoveAt(k);
+						flag = false;
+					}
+				}
+				if (flag)
+				{
+					k++;
+				}
+			}
+			return items;
+		}
+
+		internal static void SetStartInventory(Player player, IList<Item> items)
+		{
+			if (items.Count <= 50)
+			{
+				for (int k = 0; k < items.Count; k++)
+				{
+					player.inventory[k] = items[k];
+				}
+			}
+			else
+			{
+				for (int k = 0; k < 49; k++)
+				{
+					player.inventory[k] = items[k];
+				}
+				Item bag = new Item();
+				bag.SetDefaults(ModLoader.GetMod("ModLoader").ItemType("StartBag"));
+				for (int k = 49; k < items.Count; k++)
+				{
+					((StartBag)bag.modItem).AddItem(items[k]);
+				}
+				player.inventory[49] = bag;
+			}
+		}
+
+		internal static void SetStartInventory(Player player)
+		{
+			SetStartInventory(player, SetupStartInventory(player));
 		}
 	}
 }

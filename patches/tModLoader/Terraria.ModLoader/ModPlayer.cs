@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 
@@ -43,11 +44,19 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void UpdateDead()
+		{
+		}
+
 		public virtual void SaveCustomData(BinaryWriter writer)
 		{
 		}
 
 		public virtual void LoadCustomData(BinaryReader reader)
+		{
+		}
+
+		public virtual void SetupStartInventory(IList<Item> items)
 		{
 		}
 		//TODO

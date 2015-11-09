@@ -10,6 +10,7 @@ namespace Terraria.ModLoader.Default
 		private static bool texturesLoaded = false;
 		private static readonly string ContentPath = "Content" + Path.DirectorySeparatorChar + "ModLoader";
 		private static Texture2D mysteryItemTexture;
+		private static Texture2D startBagTexture;
 
 		public ModLoaderMod()
 		{
@@ -25,7 +26,9 @@ namespace Terraria.ModLoader.Default
 		{
 			LoadTextures();
 			AddTexture("MysteryItem", mysteryItemTexture);
+			AddTexture("StartBag", startBagTexture);
 			AddItem("MysteryItem", new MysteryItem(), FileName("MysteryItem"));
+			AddItem("StartBag", new StartBag(), FileName("StartBag"));
 			AddPlayer("MysteryPlayer", new MysteryPlayer());
 		}
 
@@ -41,6 +44,11 @@ namespace Terraria.ModLoader.Default
 			{
 				mysteryItemTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
 			}
+            data = File.ReadAllBytes(ContentPath + Path.DirectorySeparatorChar + "StartBag.png");
+            using(MemoryStream stream = new MemoryStream(data))
+            {
+                startBagTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
+            }
 			texturesLoaded = true;
 #endif
 		}

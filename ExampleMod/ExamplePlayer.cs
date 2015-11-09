@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
@@ -20,6 +21,14 @@ namespace ExampleMod
 		{
 			int loadVersion = reader.ReadInt32();
 			score = reader.ReadInt32();
+		}
+
+		public override void SetupStartInventory(IList<Item> items)
+		{
+			Item item = new Item();
+			item.SetDefaults(mod.ItemType("ExampleItem"));
+			item.stack = 5;
+			items.Add(item);
 		}
 	}
 }
