@@ -59,7 +59,7 @@
  			{
  				if (ProjectileID.Sets.NeedsUUID[Type])
  				{
-@@ -8091,7 +8096,18 @@
+@@ -8091,7 +8096,19 @@
  					for (int k = 0; k < 200; k++)
  					{
  						bool flag = !this.updatedNPCImmunity || this.npcImmune[k] == 0;
@@ -69,6 +69,7 @@
 +						{
 +							continue;
 +						}
++						//TODO - ModPlayer.CanHitNPCWithProj
 +						bool? modCanBeHit = NPCLoader.CanBeHitByProjectile(Main.npc[k], this);
 +						if (modCanBeHit.HasValue && !modCanBeHit.Value)
 +						{
@@ -79,7 +80,7 @@
  						{
  							bool flag2 = false;
  							if (this.type == 11 && (Main.npc[k].type == 47 || Main.npc[k].type == 57))
-@@ -8109,6 +8125,10 @@
+@@ -8109,6 +8126,10 @@
  							else if (Main.npc[k].immortal && this.npcProj)
  							{
  								flag2 = true;
@@ -90,17 +91,18 @@
  							}
  							if (!flag2 && (Main.npc[k].noTileCollide || !this.ownerHitCheck || Collision.CanHit(Main.player[this.owner].position, Main.player[this.owner].width, Main.player[this.owner].height, Main.npc[k].position, Main.npc[k].width, Main.npc[k].height)))
  							{
-@@ -8455,6 +8475,9 @@
+@@ -8455,6 +8476,10 @@
  										}
  										num12 = (int)((float)num12 * num24 / 8f);
  									}
 +									float knockback = this.knockBack;
 +									ProjectileLoader.ModifyHitNPC(this, Main.npc[k], ref num12, ref knockback, ref flag5);
++									//TODO - ModPlayer.ModifyHitNPCWithProj
 +									NPCLoader.ModifyHitByProjectile(Main.npc[k], this, ref num12, ref knockback, ref flag5);
  									this.StatusNPC(k);
  									if (flag4 && this.type != 221 && this.type != 227 && this.type != 614)
  									{
-@@ -8472,11 +8495,11 @@
+@@ -8472,11 +8497,11 @@
  									int num25;
  									if (flag4)
  									{
@@ -114,59 +116,65 @@
  									}
  									if (flag4 && Main.player[this.owner].accDreamCatcher)
  									{
-@@ -8724,6 +8747,8 @@
+@@ -8724,6 +8749,9 @@
  											Main.npc[k].immune[this.owner] = 10;
  										}
  									}
 +									ProjectileLoader.OnHitNPC(this, Main.npc[k], num25, knockback, flag5);
++									//TODO - ModPlayer.OnHitNPCWithProj
 +									NPCLoader.OnHitByProjectile(Main.npc[k], this, num25, knockback, flag5);
  									if (this.penetrate > 0 && this.type != 317)
  									{
  										if (this.type == 357)
-@@ -8809,7 +8834,7 @@
+@@ -8809,7 +8837,8 @@
  						if (num35 != this.owner && Main.player[num35].active && !Main.player[num35].dead && !Main.player[num35].immune && Main.player[num35].hostile && this.playerImmune[num35] <= 0 && (Main.player[Main.myPlayer].team == 0 || Main.player[Main.myPlayer].team != Main.player[num35].team) && (!this.ownerHitCheck || Collision.CanHit(Main.player[this.owner].position, Main.player[this.owner].width, Main.player[this.owner].height, Main.player[num35].position, Main.player[num35].width, Main.player[num35].height)))
  						{
  							bool flag6 = this.Colliding(myRect, Main.player[num35].getRect());
 -							if (flag6)
++							//TODO - ModPlayer.CanHitPvpWithProj
 +							if (ProjectileLoader.CanHitPvp(this, Main.player[num35]) && flag6)
  							{
  								if (this.aiStyle == 3)
  								{
-@@ -8861,6 +8886,7 @@
+@@ -8861,6 +8890,8 @@
  									flag7 = true;
  								}
  								int num36 = Main.DamageVar((float)this.damage);
 +								ProjectileLoader.ModifyHitPvp(this, Main.player[num35], ref num36, ref flag7);
++								//TODO - ModPlayer.ModifyHitPvpWithProj
  								if (!Main.player[num35].immune)
  								{
  									this.StatusPvP(num35);
-@@ -8882,6 +8908,7 @@
+@@ -8882,6 +8913,8 @@
  								{
  									Projectile.NewProjectile(Main.player[num35].Center.X, Main.player[num35].Center.Y, Main.player[num35].velocity.X, Main.player[num35].velocity.Y, 289, 0, 0f, this.owner, 0f, 0f);
  								}
 +								ProjectileLoader.OnHitPvp(this, Main.player[num35], num37, flag7);
++								//TODO - ModPlayer.OnHitPvpWithProj
  								if (Main.netMode != 0)
  								{
  									if (flag7)
-@@ -9014,7 +9041,7 @@
+@@ -9014,7 +9047,8 @@
  				if (Main.player[myPlayer2].active && !Main.player[myPlayer2].dead && (!Main.player[myPlayer2].immune || num41 != -1))
  				{
  					bool flag8 = this.Colliding(myRect, Main.player[myPlayer2].getRect());
 -					if (flag8)
++					//TODO - ModPlayer.CanBeHitByProjectile
 +					if (ProjectileLoader.CanHitPlayer(this, Main.player[myPlayer2], ref num41) && flag8)
  					{
  						int hitDirection = this.direction;
  						if (Main.player[myPlayer2].position.X + (float)(Main.player[myPlayer2].width / 2) < this.position.X + (float)(this.width / 2))
-@@ -9026,6 +9053,8 @@
+@@ -9026,6 +9060,9 @@
  							hitDirection = 1;
  						}
  						int num42 = Main.DamageVar((float)this.damage);
 +						bool crit = false;
 +						ProjectileLoader.ModifyHitPlayer(this, Main.player[myPlayer2], ref num42, ref crit);
++						//TODO - ModPlayer.ModifyHitByProjectile
  						if (!Main.player[myPlayer2].immune)
  						{
  							this.StatusPlayer(myPlayer2);
-@@ -9038,7 +9067,7 @@
+@@ -9038,7 +9075,7 @@
  						{
  							num42 = (int)((float)num42 * Main.expertDamage);
  						}
@@ -175,15 +183,16 @@
  						if (this.trap)
  						{
  							Main.player[myPlayer2].trapDebuffSource = true;
-@@ -9047,6 +9076,7 @@
+@@ -9047,6 +9084,8 @@
  								AchievementsHelper.HandleSpecialEvent(Main.player[myPlayer2], 4);
  							}
  						}
 +						ProjectileLoader.OnHitPlayer(this, Main.player[myPlayer2], realDamage, crit);
++						//TODO - ModPlayer.OnHitByProjectile
  						if (this.type == 435)
  						{
  							this.penetrate--;
-@@ -9082,6 +9112,11 @@
+@@ -9082,6 +9121,11 @@
  			{
  				myRect.X += (int)this.velocity.X;
  				myRect.Y += (int)this.velocity.Y;
@@ -195,7 +204,7 @@
  			}
  			if (myRect.Intersects(targetRect))
  			{
-@@ -10111,6 +10146,7 @@
+@@ -10111,6 +10155,7 @@
  							num25 = (int)(20f * this.scale);
  							num26 = (int)(20f * this.scale);
  						}
@@ -203,7 +212,7 @@
  						if (((this.type != 440 && this.type != 449 && this.type != 606) || this.ai[1] != 1f) && (this.type != 466 || this.localAI[1] != 1f) && (this.type != 580 || this.localAI[1] <= 0f) && (this.type != 640 || this.localAI[1] <= 0f))
  						{
  							if (this.aiStyle == 10)
-@@ -10202,7 +10238,10 @@
+@@ -10202,7 +10247,10 @@
  						}
  						if (flag3)
  						{
@@ -215,7 +224,7 @@
  							{
  								this.position += this.velocity;
  								this.numUpdates = 0;
-@@ -11954,6 +11993,8 @@
+@@ -11954,6 +12002,8 @@
  						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
  					case "Random":
  						return Main.rand.NextFloat();
@@ -224,7 +233,7 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -12009,6 +12050,11 @@
+@@ -12009,6 +12059,11 @@
  		}
  
  		public void AI()
@@ -236,7 +245,7 @@
  		{
  			if (this.aiStyle == 1)
  			{
-@@ -35510,6 +35556,11 @@
+@@ -35510,6 +35565,11 @@
  			Main.projectileIdentity[this.owner, this.identity] = -1;
  			int num = this.timeLeft;
  			this.timeLeft = 0;
@@ -248,7 +257,7 @@
  			if (this.type == 634 || this.type == 635)
  			{
  				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
-@@ -40434,11 +40485,17 @@
+@@ -40434,11 +40494,17 @@
  					}
  				}
  			}

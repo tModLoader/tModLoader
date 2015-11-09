@@ -51,10 +51,7 @@ namespace Terraria.ModLoader
 		{
 		}
 		//TODO
-		//PreItemCheck, PostItemCheck
-		//GetWeaponDamage, PreShoot
-		//SetupStartInventory
-		//OnFishSelected, GetFishingLevel, AnglerQuestReward
+		//OnFishSelected, GetFishingLevel, GetAnglerReward, GetDyeTraderReward
 		//hooks for grappling hooks
 	}
 }
