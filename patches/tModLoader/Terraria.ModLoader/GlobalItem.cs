@@ -216,6 +216,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void PostUpdate(Item item)
+		{
+		}
+
 		public virtual void GrabRange(Item item, Player player, ref int grabRange)
 		{
 		}

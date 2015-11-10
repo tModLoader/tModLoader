@@ -288,6 +288,18 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		internal static void DisableSmartCursor(Tile tile, ref bool disable)
+		{
+			if (tile.active())
+			{
+				ModTile modTile = GetTile(tile.type);
+				if (modTile != null)
+				{
+					disable = modTile.disableSmartCursor;
+				}
+			}
+		}
 		//in Terraria.WorldGen.OpenDoor replace bad type check with TileLoader.OpenDoorID(Main.tile[i, j]) < 0
 		//in Terraria.WorldGen.OpenDoor replace 11 with (ushort)TileLoader.OpenDoorID
 		//replace all type checks before WorldGen.OpenDoor
@@ -360,6 +372,16 @@ namespace Terraria.ModLoader
 				return type == TileID.Platforms;
 			}
 			return modTile.platform;
+		}
+
+		internal static bool IsTorch(int type)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile == null)
+			{
+				return type == TileID.Torches;
+			}
+			return modTile.torch;
 		}
 
 		internal static bool IsModMusicBox(Tile tile)
@@ -566,9 +588,10 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Main.DrawTiles after if statements setting num11 and num12 call
-		//  TileLoader.SetDrawPositions(tile, ref num9, ref num11, ref num12);
-		internal static void SetDrawPositions(Tile tile, ref int width, ref int offsetY, ref int height)
+		//  TileLoader.SetDrawPositions(j, i, ref num9, ref num11, ref num12);
+		internal static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height)
 		{
+			Tile tile = Main.tile[i, j];
 			if (tile.type >= TileID.Count)
 			{
 				TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
@@ -585,6 +608,7 @@ namespace Terraria.ModLoader
 					offsetY = tileData.DrawYOffset;
 					height = tileData.CoordinateHeights[partY];
 				}
+				GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height);
 			}
 		}
 		//in Terraria.Main.Update after vanilla tile animations call TileLoader.AnimateTiles();
@@ -776,6 +800,28 @@ namespace Terraria.ModLoader
 			{
 				globalTile.MouseOver(i, j, type);
 			}
+		}
+
+		internal static bool AutoSelect(int i, int j, Item item)
+		{
+			if (!Main.tile[i, j].active())
+			{
+				return false;
+			}
+			int type = Main.tile[i, j].type;
+			ModTile modTile = GetTile(type);
+			if (modTile != null && modTile.AutoSelect(i, j, item))
+			{
+				return true;
+			}
+			foreach (GlobalTile globalTile in globalTiles)
+			{
+				if (globalTile.AutoSelect(i, j, type, item))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 		//in Terraria.Wiring make the following public:
 		//  _wireList, _toProcess, _teleport, _inPumpX, _inPumpY, _numInPump, _outPumpX, _outPumpY, _numOutPump CheckMech, TripWire

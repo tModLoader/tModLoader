@@ -60,6 +60,7 @@ namespace ExampleMod.Tiles
 			TileID.Sets.HousingWalls[Type] = true; //needed for non-solid blocks to count as walls
 			AddMapEntry(new Color(200, 200, 200), "Example Door");
 			dustType = mod.DustType("Sparkle");
+			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.OpenDoor };
 			closeDoorID = mod.TileType("ExampleDoorClosed");
 		}

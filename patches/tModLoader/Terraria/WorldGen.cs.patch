@@ -128,6 +128,15 @@
  								Console.WriteLine("Load failed!");
  								return;
  							}
+@@ -7061,7 +7093,7 @@
+ 									int num12 = WorldGen.genRand.Next(num - m, num + m + 1);
+ 									int num13 = WorldGen.genRand.Next(num2 - num6, num2 + num6 - 2);
+ 									WorldGen.PlaceTile(num12, num13, 4, true, false, -1, 3);
+-									if (Main.tile[num12, num13].type == 4)
++									if (TileLoader.IsTorch(Main.tile[num12, num13].type))
+ 									{
+ 										flag3 = true;
+ 									}
 @@ -12813,7 +12845,7 @@
  				Main.tile[i, j] = new Tile();
  			}
@@ -154,6 +163,15 @@
  						Main.tile[m, n].frameX = (short)(WorldGen.genRand.Next(3) * 18);
  					}
  					else
+@@ -13068,7 +13101,7 @@
+ 							{
+ 								for (int k = num8 - 8; k < num8 + 8; k++)
+ 								{
+-									if (Main.tile[j, k].active() && Main.tile[j, k].type == 4)
++									if (Main.tile[j, k].active() && TileLoader.IsTorch(Main.tile[j, k].type))
+ 									{
+ 										flag2 = true;
+ 										break;
 @@ -19553,11 +19586,7 @@
  			{
  				Main.tile[i, j] = new Tile();
@@ -376,6 +394,15 @@
  			bool result = false;
  			if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY)
  			{
+@@ -31928,7 +31951,7 @@
+ 							WorldGen.SquareTileFrame(i, j, true);
+ 						}
+ 					}
+-					else if (type == 4)
++					else if (TileLoader.IsTorch(type))
+ 					{
+ 						if (Main.tile[i - 1, j] == null)
+ 						{
 @@ -31945,7 +31968,7 @@
  						Tile tile2 = Main.tile[i - 1, j];
  						Tile tile3 = Main.tile[i + 1, j];
@@ -596,17 +623,28 @@
  			{
  				num3++;
  			}
-@@ -45221,6 +45268,10 @@
+@@ -45221,7 +45268,11 @@
  					}
  					if (tile.active())
  					{
+-						if (noBreak && Main.tileFrameImportant[(int)tile.type] && tile.type != 4)
 +						if (!TileLoader.TileFrame(i, j, tile.type, ref resetFrame, ref noBreak))
 +						{
 +							return;
 +						}
- 						if (noBreak && Main.tileFrameImportant[(int)tile.type] && tile.type != 4)
++						if (noBreak && Main.tileFrameImportant[(int)tile.type] && !TileLoader.IsTorch(tile.type))
  						{
  							return;
+ 						}
+@@ -45235,7 +45286,7 @@
+ 						Rectangle rectangle = new Rectangle(-1, -1, 0, 0);
+ 						if (Main.tileFrameImportant[(int)tile.type])
+ 						{
+-							if (num == 4)
++							if (TileLoader.IsTorch(num))
+ 							{
+ 								Tile tile2 = Main.tile[i, j - 1];
+ 								Tile tile3 = Main.tile[i, j + 1];
 @@ -45289,7 +45340,7 @@
  								{
  									num9 = (int)tile9.type;

@@ -258,6 +258,12 @@ namespace Terraria.ModLoader
 			return slot;
 		}
 
+		public void AddFlameTexture(ModItem item, string texture)
+		{
+			ModLoader.GetTexture(texture);
+			item.flameTexture = texture;
+		}
+
 		private void AutoloadItem(Type type)
 		{
 			ModItem item = (ModItem)Activator.CreateInstance(type);
@@ -280,6 +286,12 @@ namespace Terraria.ModLoader
 						int slot = AddEquipTexture(item, equip, equipTexture, armTexture, femaleTexture);
 						EquipLoader.idToSlot[item.item.type][equip] = slot;
 					}
+				}
+				string flameTexture = texture + "_" + "Flame";
+				item.AutoloadFlame(ref flameTexture);
+				if (ModLoader.TextureExists(flameTexture))
+				{
+					AddFlameTexture(item, flameTexture);
 				}
 			}
 		}
@@ -1008,6 +1020,10 @@ namespace Terraria.ModLoader
 				{
 					Main.RegisterItemAnimation(item.item.type, animation);
 					ItemLoader.animations.Add(item.item.type);
+				}
+				if (item.flameTexture.Length > 0)
+				{
+					Main.itemFlameTexture[item.item.type] = ModLoader.GetTexture(item.flameTexture);
 				}
 			}
 			foreach (ModDust dust in dusts.Values)

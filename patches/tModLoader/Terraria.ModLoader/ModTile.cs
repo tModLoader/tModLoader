@@ -35,12 +35,14 @@ namespace Terraria.ModLoader
 		public int animationFrameHeight = 0;
 		public float mineResist = 1f;
 		public int minPick = 0;
+		public bool disableSmartCursor = false;
 		public int[] adjTiles = new int[0];
 		public int closeDoorID = -1;
 		public int openDoorID = -1;
 		public string chest = "";
 		public bool bed = false;
 		public bool platform = false;
+		public bool torch = false;
 
 		public void AddToArray(ref int[] array)
 		{
@@ -136,6 +138,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height)
+		{
+		}
+
 		public virtual void AnimateTile(ref int frame, ref int frameCounter)
 		{
 		}
@@ -174,6 +180,11 @@ namespace Terraria.ModLoader
 
 		public virtual void MouseOver(int i, int j)
 		{
+		}
+
+		public virtual bool AutoSelect(int i, int j, Item item)
+		{
+			return false;
 		}
 
 		public virtual void HitWire(int i, int j)

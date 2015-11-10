@@ -19,6 +19,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.addTile(Type);
+			disableSmartCursor = true;
 			AddMapEntry(new Color(200, 200, 200), "Music Box");
 		}
 

@@ -810,6 +810,18 @@ namespace Terraria.ModLoader
 				globalItem.Update(item, ref gravity, ref maxFallSpeed);
 			}
 		}
+
+		internal static void PostUpdate(Item item)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.PostUpdate();
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.PostUpdate(item);
+			}
+		}
 		//in Terraria.Player.GrabItems after increasing grab range add
 		//  ItemLoader.GrabRange(Main.item[j], this, ref num);
 		internal static void GrabRange(Item item, Player player, ref int grabRange)
@@ -972,6 +984,23 @@ namespace Terraria.ModLoader
 			foreach (GlobalItem globalItem in globalItems)
 			{
 				globalItem.ExtractinatorUse(extractType, ref resultType, ref resultStack);
+			}
+		}
+
+		internal static void AutoLightSelect(Item item, ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
+				if (wetTorch)
+				{
+					dryTorch = false;
+					glowstick = false;
+				}
+				if (dryTorch)
+				{
+					glowstick = false;
+				}
 			}
 		}
 	}

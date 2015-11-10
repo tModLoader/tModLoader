@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,6 +22,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.StyleWrapLimit = 111;
 			TileObjectData.addTile(Type);
 			dustType = -1;
+			disableSmartCursor = true;
 			AddMapEntry(new Color(13, 88, 130), "Banner");
 		}
 
@@ -62,6 +64,14 @@ namespace ExampleMod.Tiles
 				}
 				player.NPCBannerBuff[mod.NPCType(type)] = true;
 				player.hasBanner = true;
+			}
+		}
+
+		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects)
+		{
+			if (i % 2 == 1)
+			{
+				spriteEffects = SpriteEffects.FlipHorizontally;
 			}
 		}
 	}

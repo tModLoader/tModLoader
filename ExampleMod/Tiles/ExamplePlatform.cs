@@ -31,6 +31,7 @@ namespace ExampleMod.Tiles
 			AddMapEntry(new Color(200, 200, 200));
 			dustType = mod.DustType("Sparkle");
 			drop = mod.ItemType("ExamplePlatform");
+			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.Platforms };
 			platform = true;
 		}

@@ -22,6 +22,7 @@ namespace ExampleMod.Tiles
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 			AddMapEntry(new Color(200, 200, 200), "Example Workbench");
 			dustType = mod.DustType("Sparkle");
+			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.WorkBenches };
 		}
 

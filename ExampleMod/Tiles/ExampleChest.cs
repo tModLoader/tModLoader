@@ -32,6 +32,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 			AddMapEntry(new Color(200, 200, 200), "Chest");
 			dustType = mod.DustType("Sparkle");
+			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.Containers };
 			chest = "Example Chest";
 		}

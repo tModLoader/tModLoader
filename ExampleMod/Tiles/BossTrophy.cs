@@ -18,6 +18,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.StyleWrapLimit = 36;
 			TileObjectData.addTile(Type);
 			dustType = 7;
+			disableSmartCursor = true;
 			AddMapEntry(new Color(120, 85, 60), "Trophy");
 		}
 

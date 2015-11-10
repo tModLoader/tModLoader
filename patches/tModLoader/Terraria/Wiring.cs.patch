@@ -69,6 +69,15 @@
  					{
  						int num26 = 1;
  						if (Main.rand.Next(2) == 0)
+@@ -762,7 +763,7 @@
+ 						}
+ 						else
+ 						{
+-							if (type == 4)
++							if (TileLoader.IsTorch(type))
+ 							{
+ 								if (tile.frameX < 66)
+ 								{
 @@ -1108,7 +1109,7 @@
  								}
  								else

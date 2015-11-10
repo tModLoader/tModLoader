@@ -113,6 +113,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool AutoSelect(int i, int j, int type, Item item)
+		{
+			return false;
+		}
+
 		public virtual void HitWire(int i, int j, int type)
 		{
 		}

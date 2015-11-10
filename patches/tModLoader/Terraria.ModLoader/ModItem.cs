@@ -26,6 +26,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal string texture;
+		internal string flameTexture = "";
 		public int bossBagNPC;
 
 		public ModItem()
@@ -64,6 +65,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void AutoloadEquip(EquipType equip, ref string texture, ref string armTexture, ref string femaleTexture)
+		{
+		}
+
+		public virtual void AutoloadFlame(ref string texture)
 		{
 		}
 
@@ -234,6 +239,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void PostUpdate()
+		{
+		}
+
 		public virtual void GrabRange(Player player, ref int grabRange)
 		{
 		}
@@ -279,6 +288,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void ExtractinatorUse(ref int resultType, ref int resultStack)
+		{
+		}
+
+		public virtual void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
 		{
 		}
 

@@ -144,7 +144,15 @@
  					if (ItemID.Sets.ItemNoGravity[this.type])
  					{
  						this.velocity.X = this.velocity.X * 0.95f;
-@@ -46259,6 +46278,10 @@
+@@ -46223,6 +46242,7 @@
+ 					}
+ 					this.spawnTime++;
+ 				}
++				ItemLoader.PostUpdate(this);
+ 				if (Main.netMode == 2 && this.owner != Main.myPlayer)
+ 				{
+ 					this.release++;
+@@ -46259,6 +46279,10 @@
  			}
  			int num = 400;
  			Main.item[400] = new Item();
@@ -155,7 +163,7 @@
  			if (Main.halloween)
  			{
  				if (Type == 58)
-@@ -46401,7 +46424,12 @@
+@@ -46401,7 +46425,12 @@
  
  		public Item Clone()
  		{
