@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Items.Abomination
 {
 	//imported from my tAPI mod because I'm lazy
 	public class FoulOrb : ModItem
@@ -38,6 +38,15 @@ namespace ExampleMod.Items
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.BeetleHusk);
+			recipe.AddIngredient(null, "ScytheBlade");
+			recipe.AddIngredient(null, "Icicle");
+			recipe.AddIngredient(null, "Bubble");
+			recipe.AddIngredient(ItemID.Ectoplasm, 5);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+			recipe = new ModRecipe(mod);
 			recipe.AddIngredient(null, "BossItem", 10);
 			recipe.AddTile(null, "ExampleWorkbench");
 			recipe.SetResult(this, 20);

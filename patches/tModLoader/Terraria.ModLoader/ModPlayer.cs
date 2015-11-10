@@ -67,6 +67,18 @@ namespace Terraria.ModLoader
 		public virtual void UpdateBiomeVisuals()
 		{
 		}
+
+		public virtual void UpdateBadLifeRegen()
+		{
+		}
+
+		public virtual void UpdateLifeRegen()
+		{
+		}
+
+		public virtual void NaturalLifeRegen(ref float regen)
+		{
+		}
 		//TODO
 		//OnFishSelected, GetFishingLevel, GetAnglerReward, GetDyeTraderReward
 		//hooks for grappling hooks

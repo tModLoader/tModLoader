@@ -460,7 +460,7 @@
  				this.lifeRegenTime = 0;
  				this.lifeRegen -= 100;
  			}
-+			//TODO - ModPlayer.UpdateBadLifeRegen
++			PlayerHooks.UpdateBadLifeRegen(this);
  			if (this.honey && this.lifeRegen < 0)
  			{
  				this.lifeRegen += 4;
@@ -468,7 +468,7 @@
  			{
  				this.lifeRegen += 2;
  			}
-+			//TODO - ModPlayer.UpdateLifeRegen
++			PlayerHooks.UpdateLifeRegen(this);
  			if (this.bleed)
  			{
  				this.lifeRegenTime = 0;
@@ -476,7 +476,7 @@
  					num2 /= 2f;
  				}
  			}
-+			//TODO - ModPlayer.NaturalLifeRegen
++			PlayerHooks.NaturalLifeRegen(this, ref num2);
  			float num4 = (float)this.statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			this.lifeRegen += (int)Math.Round((double)num2);

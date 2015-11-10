@@ -166,5 +166,29 @@ namespace Terraria.ModLoader
 				modPlayer.UpdateBiomeVisuals();
 			}
 		}
+
+		internal static void UpdateBadLifeRegen(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.UpdateBadLifeRegen();
+			}
+		}
+
+		internal static void UpdateLifeRegen(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.UpdateLifeRegen();
+			}
+		}
+
+		internal static void NaturalLifeRegen(Player player, ref float regen)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.NaturalLifeRegen(ref regen);
+			}
+		}
 	}
 }

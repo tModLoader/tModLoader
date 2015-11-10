@@ -2,7 +2,7 @@ using System;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Items.Abomination
 {
 	//ported from my tAPI mod because I don't want to make more artwork
 	public class MoltenDrill : ModItem

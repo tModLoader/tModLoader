@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Items.Abomination
 {
 	public class AbominationBag : ModItem
 	{
