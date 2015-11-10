@@ -1,11 +1,13 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Items;
 using ExampleMod.Items.Armor;
 using ExampleMod.NPCs;
+using ExampleMod.NPCs.PuritySpirit;
 
 namespace ExampleMod
 {
@@ -35,6 +37,9 @@ namespace ExampleMod
 			AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 			Main.instance.LoadTiles(TileID.Loom);
 			Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom");
+			Filters.Scene["ExampleMod:PuritySpirit"] = new Filter(new PuritySpiritScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.9f, 0.4f).UseOpacity(0.7f), EffectPriority.VeryHigh);
+			SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
+			
 		}
 
 		public override void Unload()

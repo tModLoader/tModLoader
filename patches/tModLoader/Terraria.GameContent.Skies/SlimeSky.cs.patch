@@ -1,0 +1,20 @@
+--- src/Terraria\Terraria.GameContent.Skies\SlimeSky.cs
++++ src/tModLoader\Terraria.GameContent.Skies\SlimeSky.cs
+@@ -219,14 +219,14 @@
+ 			}
+ 		}
+ 
+-		internal override void Activate(Vector2 position, params object[] args)
++		public override void Activate(Vector2 position, params object[] args)
+ 		{
+ 			this.GenerateSlimes();
+ 			this._isActive = true;
+ 			this._isLeaving = false;
+ 		}
+ 
+-		internal override void Deactivate(params object[] args)
++		public override void Deactivate(params object[] args)
+ 		{
+ 			this._isLeaving = true;
+ 		}
+

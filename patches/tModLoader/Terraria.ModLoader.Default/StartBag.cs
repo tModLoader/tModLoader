@@ -35,7 +35,7 @@ namespace Terraria.ModLoader.Default
 			foreach (Item item in items)
 			{
 				int k = Item.NewItem((int)player.position.X, (int)player.position.Y, player.width, player.height,
-					                    item.type, item.stack, false, item.prefix, false, false);
+					        item.type, item.stack, false, item.prefix, false, false);
 				if (Main.netMode == 1)
 				{
 					NetMessage.SendData(21, -1, -1, "", k, 1f);

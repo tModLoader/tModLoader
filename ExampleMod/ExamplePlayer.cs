@@ -30,5 +30,10 @@ namespace ExampleMod
 			item.stack = 5;
 			items.Add(item);
 		}
+
+		public override void UpdateBiomeVisuals()
+		{
+			player.ManageSpecialBiomeVisuals("ExampleMod:PuritySpirit", NPC.AnyNPCs(mod.NPCType("PuritySpirit")));
+		}
 	}
 }

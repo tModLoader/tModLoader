@@ -59,6 +59,14 @@ namespace Terraria.ModLoader
 		public virtual void SetupStartInventory(IList<Item> items)
 		{
 		}
+
+		public virtual void UpdateBiomes()
+		{
+		}
+
+		public virtual void UpdateBiomeVisuals()
+		{
+		}
 		//TODO
 		//OnFishSelected, GetFishingLevel, GetAnglerReward, GetDyeTraderReward
 		//hooks for grappling hooks

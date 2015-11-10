@@ -150,5 +150,21 @@ namespace Terraria.ModLoader
 		{
 			SetStartInventory(player, SetupStartInventory(player));
 		}
+
+		internal static void UpdateBiomes(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.UpdateBiomes();
+			}
+		}
+
+		internal static void UpdateBiomeVisuals(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.UpdateBiomeVisuals();
+			}
+		}
 	}
 }

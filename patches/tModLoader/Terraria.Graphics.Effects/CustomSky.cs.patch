@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.Graphics.Effects\CustomSky.cs
++++ src/tModLoader\Terraria.Graphics.Effects\CustomSky.cs
+@@ -4,7 +4,7 @@
+ 
+ namespace Terraria.Graphics.Effects
+ {
+-	internal abstract class CustomSky : GameEffect
++	public abstract class CustomSky : GameEffect
+ 	{
+ 		public abstract void Update();
+ 
+

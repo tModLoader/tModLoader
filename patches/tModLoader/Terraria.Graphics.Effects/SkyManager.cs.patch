@@ -1,0 +1,29 @@
+--- src/Terraria\Terraria.Graphics.Effects\SkyManager.cs
++++ src/tModLoader\Terraria.Graphics.Effects\SkyManager.cs
+@@ -5,7 +5,7 @@
+ 
+ namespace Terraria.Graphics.Effects
+ {
+-	internal class SkyManager : EffectManager<CustomSky>
++	public class SkyManager : EffectManager<CustomSky>
+ 	{
+ 		public static SkyManager Instance = new SkyManager();
+ 		private float _lastDepth;
+@@ -97,5 +97,16 @@
+ 			}
+ 			return MathHelper.Clamp(num, 0f, 1f);
+ 		}
++
++		internal void DeactivateAll()
++		{
++			foreach (string key in this._effects.Keys)
++			{
++				if (this[key].IsActive())
++				{
++					this[key].Deactivate(new object[0]);
++				}
++			}
++		}
+ 	}
+ }
+

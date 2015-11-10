@@ -291,14 +291,14 @@
  					}
  				}
  			}
-+			//TODO - ModPlayer.UpdateBiomes
++			PlayerHooks.UpdateBiomes(this);
  			this.ManageSpecialBiomeVisuals("Stardust", this.ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			this.ManageSpecialBiomeVisuals("Nebula", this.ZoneTowerNebula, value3 - new Vector2(0f, 10f));
  			this.ManageSpecialBiomeVisuals("Vortex", this.ZoneTowerVortex, value2 - new Vector2(0f, 10f));
  			this.ManageSpecialBiomeVisuals("Solar", this.ZoneTowerSolar, value - new Vector2(0f, 10f));
  			this.ManageSpecialBiomeVisuals("MoonLord", NPC.AnyNPCs(398), default(Vector2));
  			this.ManageSpecialBiomeVisuals("BloodMoon", Main.bloodMoon, default(Vector2));
-+			//TODO - ModPlayer.UpdateBiomeVisuals
++			PlayerHooks.UpdateBiomeVisuals(this);
  			if (!this.dead)
  			{
  				Point point2 = base.Center.ToTileCoordinates();
