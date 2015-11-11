@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -42,6 +43,21 @@ namespace ExampleMod.NPCs
 			if (npc.type == NPCID.DukeFishron && !Main.expertMode)
 			{
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("Bubble"), Main.rand.Next(5, 8));
+			}
+			if (npc.type == NPCID.Bunny)
+			{
+				Vector2 pos = npc.Center;
+				int i = (int)pos.X / 16;
+				int j = (int)pos.Y / 16;
+				Tile tile = Main.tile[i, j];
+				if (tile.active() && tile.type == mod.TileType("ElementalPurge") && !NPC.AnyNPCs(mod.NPCType("PuritySpirit")))
+				{
+					i -= Main.tile[i, j].frameX % 18;
+					j -= Main.tile[i, j].frameY % 18;
+					i = (i * 16) + 16;
+					j = (j * 16) - 8 + 60;
+					int index = NPC.NewNPC(i, j, mod.NPCType("PuritySpirit"));
+				}
 			}
 		}
 	}

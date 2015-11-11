@@ -500,7 +500,7 @@
  			{
  				return;
  			}
-+			//TODO - ModPlayer.PreUpdate
++			PlayerHooks.PreUpdate(this);
  			this.miscCounter++;
  			if (this.miscCounter >= 300)
  			{
@@ -516,7 +516,7 @@
  					{
  						this.controlUseTile = true;
  					}
-+					//TODO - ModPlayer.SetControls
++					PlayerHooks.SetControls(this);
  					if (this.controlInv)
  					{
  						if (this.releaseInventory)
@@ -525,13 +525,13 @@
  				}
  			}
 -			for (int num29 = 0; num29 < 191; num29++)
-+			//TODO - ModPlayer.PreUpdateBuffs
++			PlayerHooks.PreUpdateBuffs(this);
 +			for (int num29 = 0; num29 < BuffLoader.BuffCount(); num29++)
  			{
  				this.buffImmune[num29] = false;
  			}
  			this.UpdateBuffs(i);
-+			//TODO - ModPlayer.PostUpdateBuffs
++			PlayerHooks.PostUpdateBuffs(this);
  			if (this.whoAmI == Main.myPlayer)
  			{
  				if (!this.onFire && !this.poisoned)
@@ -539,7 +539,7 @@
  				}
  			}
  			this.UpdateArmorSets(i);
-+			//TODO - ModPlayer.PostUpdateEquips
++			PlayerHooks.PostUpdateEquips(this);
  			if ((this.merman || this.forceMerman) && flag18)
  			{
  				this.wings = 0;
@@ -547,7 +547,7 @@
  				this.moveSpeed *= 0.75f;
  			}
  			this.meleeSpeed = 1f / this.meleeSpeed;
-+			//TODO - PostUpdateMiscEffects
++			PlayerHooks.PostUpdateMiscEffects(this);
  			this.UpdateLifeRegen();
  			this.soulDrain = 0;
  			this.UpdateManaRegen();
@@ -563,7 +563,7 @@
  						this.mount.UpdateDrill(this, this.controlUp, this.controlDown);
  					}
  				}
-+				//TODO - ModPlayer.PostUpdateRunSpeeds
++				PlayerHooks.PostUpdateRunSpeeds(this);
  				this.HorizontalMovement();
  				if (this.gravControl)
  				{
@@ -685,7 +685,7 @@
  			}
  			this.grappling[0] = -1;
  			this.grapCount = 0;
-+			//TODO - ModPlayer.PostUpdate
++			PlayerHooks.PostUpdate(this);
  		}
  
  		private void TryLandingOnDetonator()

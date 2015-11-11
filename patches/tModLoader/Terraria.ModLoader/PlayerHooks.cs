@@ -190,5 +190,69 @@ namespace Terraria.ModLoader
 				modPlayer.NaturalLifeRegen(ref regen);
 			}
 		}
+
+		internal static void PreUpdate(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PreUpdate();
+			}
+		}
+
+		internal static void SetControls(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.SetControls();
+			}
+		}
+
+		internal static void PreUpdateBuffs(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PreUpdateBuffs();
+			}
+		}
+
+		internal static void PostUpdateBuffs(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PostUpdateBuffs();
+			}
+		}
+
+		internal static void PostUpdateEquips(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PostUpdateEquips();
+			}
+		}
+
+		internal static void PostUpdateMiscEffects(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PostUpdateMiscEffects();
+			}
+		}
+
+		internal static void PostUpdateRunSpeeds(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PostUpdateRunSpeeds();
+			}
+		}
+
+		internal static void PostUpdate(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PostUpdate();
+			}
+		}
 	}
 }

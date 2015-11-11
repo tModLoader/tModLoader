@@ -33,6 +33,7 @@ namespace ExampleMod.Items.Abomination
 				player.QuickSpawnItem(mod.ItemType("AbominationMask"));
 			}
 			player.QuickSpawnItem(mod.ItemType("MoltenDrill"));
+			player.QuickSpawnItem(mod.ItemType("ElementResidue"));
 			player.QuickSpawnItem(mod.ItemType("SixColorShield"));
 		}
 	}

@@ -443,7 +443,7 @@ namespace ExampleMod.NPCs.Abomination
 					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("AbominationMask"));
 				}
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MoltenDrill"));
-				//rules[5] = new LootRule(null).Item("Bluemagic:DimensionalChest");
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ElementResidue"));
 			}
 		}
 

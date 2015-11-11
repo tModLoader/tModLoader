@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -10,6 +12,18 @@ namespace ExampleMod
 	{
 		private const int saveVersion = 0;
 		public int score = 0;
+		public bool elementShield = false;
+		private int elementShields = 0;
+		public int voidMonolith = 0;
+
+		public override void ResetEffects()
+		{
+			elementShield = false;
+			if (voidMonolith > 0)
+			{
+				voidMonolith--; //this is a very bad hack until I create ModWorld
+			}
+		}
 
 		public override void SaveCustomData(BinaryWriter writer)
 		{
@@ -33,7 +47,10 @@ namespace ExampleMod
 
 		public override void UpdateBiomeVisuals()
 		{
-			player.ManageSpecialBiomeVisuals("ExampleMod:PuritySpirit", NPC.AnyNPCs(mod.NPCType("PuritySpirit")));
+			bool usePurity = NPC.AnyNPCs(mod.NPCType("PuritySpirit"));
+			player.ManageSpecialBiomeVisuals("ExampleMod:PuritySpirit", usePurity);
+			bool useVoidMonolith = voidMonolith > 0 && !usePurity && !NPC.AnyNPCs(NPCID.MoonLordCore);
+			player.ManageSpecialBiomeVisuals("ExampleMod:MonolithVoid", useVoidMonolith, player.Center);
 		}
 	}
 }

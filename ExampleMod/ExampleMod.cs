@@ -2,12 +2,14 @@ using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Items;
 using ExampleMod.Items.Armor;
 using ExampleMod.NPCs;
 using ExampleMod.NPCs.PuritySpirit;
+using ExampleMod.Tiles;
 
 namespace ExampleMod
 {
@@ -39,7 +41,8 @@ namespace ExampleMod
 			Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom");
 			Filters.Scene["ExampleMod:PuritySpirit"] = new Filter(new PuritySpiritScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.9f, 0.4f).UseOpacity(0.7f), EffectPriority.VeryHigh);
 			SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
-			
+			Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
+			SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
 		}
 
 		public override void Unload()

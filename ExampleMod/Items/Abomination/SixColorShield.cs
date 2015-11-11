@@ -4,9 +4,8 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Items.Abomination
 {
-	//WIP - need to add player support first
 	public class SixColorShield : ModItem
 	{
 		public override void SetDefaults()
@@ -15,7 +14,6 @@ namespace ExampleMod.Items
 			item.width = 24;
 			item.height = 24;
 			item.toolTip = "Creates elemental energy to protect you when damaged.";
-			item.toolTip2 = "WIP - need to add player support";
 			item.value = Item.buyPrice(0, 10, 0, 0);
 			item.rare = 9;
 			item.expert = true;
@@ -29,6 +27,11 @@ namespace ExampleMod.Items
 		public override DrawAnimation GetAnimation()
 		{
 			return new DrawAnimationVertical(10, 4);
+		}
+
+		public override void UpdateAccessory(Player player)
+		{
+			((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).elementShield = true;
 		}
 
 		public override Color? GetAlpha(Color lightColor)

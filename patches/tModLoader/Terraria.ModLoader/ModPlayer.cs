@@ -79,6 +79,38 @@ namespace Terraria.ModLoader
 		public virtual void NaturalLifeRegen(ref float regen)
 		{
 		}
+
+		public virtual void PreUpdate()
+		{
+		}
+
+		public virtual void SetControls()
+		{
+		}
+
+		public virtual void PreUpdateBuffs()
+		{
+		}
+
+		public virtual void PostUpdateBuffs()
+		{
+		}
+
+		public virtual void PostUpdateEquips()
+		{
+		}
+
+		public virtual void PostUpdateMiscEffects()
+		{
+		}
+
+		public virtual void PostUpdateRunSpeeds()
+		{
+		}
+
+		public virtual void PostUpdate()
+		{
+		}
 		//TODO
 		//OnFishSelected, GetFishingLevel, GetAnglerReward, GetDyeTraderReward
 		//hooks for grappling hooks
