@@ -172,6 +172,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void SetMatch(int type, ref int equipSlot, ref bool robes)
+		{
+		}
+
 		public virtual bool CanRightClick(Item item)
 		{
 			return false;

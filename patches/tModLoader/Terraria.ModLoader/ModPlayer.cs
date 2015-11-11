@@ -111,6 +111,10 @@ namespace Terraria.ModLoader
 		public virtual void PostUpdate()
 		{
 		}
+
+		public virtual void FrameEffects()
+		{
+		}
 		//TODO
 		//OnFishSelected, GetFishingLevel, GetAnglerReward, GetDyeTraderReward
 		//hooks for grappling hooks

@@ -254,5 +254,13 @@ namespace Terraria.ModLoader
 				modPlayer.PostUpdate();
 			}
 		}
+
+		internal static void FrameEffects(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.FrameEffects();
+			}
+		}
 	}
 }

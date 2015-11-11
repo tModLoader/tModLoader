@@ -12,6 +12,8 @@ namespace ExampleMod.NPCs.PuritySpirit
 	{
 		private const int size = 120;
 		private const int particleSize = 12;
+		public static readonly int arenaWidth = 2 * NPC.sWidth;
+		public static readonly int arenaHeight = 2 * NPC.sHeight;
 
 		public override void SetDefaults()
 		{
@@ -22,6 +24,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			npc.damage = 0;
 			npc.defense = 70;
 			npc.knockBackResist = 0f;
+			npc.dontTakeDamage = true;
 			npc.width = size;
 			npc.height = size;
 			npc.value = Item.buyPrice(0, 50, 0, 0);
@@ -110,6 +113,11 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		private IList<Particle> particles = new List<Particle>();
 		private float[,] aura = new float[size, size];
+		private const int dpsCap = 4000;
+		private int damageTotal = 0;
+		private bool saidRushMessage = false;
+		private readonly IList<int> targets = new List<int>();
+		public int[] attackWeights = new int[]{ 2000, 2000, 2000, 2000, 3000 };
 
 		public override void AI()
 		{
@@ -117,14 +125,26 @@ namespace ExampleMod.NPCs.PuritySpirit
 			{
 				UpdateParticles();
 			}
+			npc.dontTakeDamage = stage == 0;
+			FindPlayers();
+			damageTotal -= dpsCap;
+			if (damageTotal < 0)
+			{
+				damageTotal = 0;
+			}
 			if (Main.netMode == 1)
 			{
 				return;
 			}
-		}
-
-		public void Initialize()
-		{
+			switch (stage)
+			{
+				case 0:
+					Initialize();
+					break;
+				case 1:
+					DoAttack();
+					break;
+			}
 		}
 
 		private void UpdateParticles()
@@ -178,6 +198,19 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public void FindPlayers()
 		{
+			targets.Clear();
+			for (int k = 0; k < 255; k++)
+			{
+				if (Main.player[k].active)
+				{
+					targets.Add(k);
+				}
+			}
+		}
+
+		public void Initialize()
+		{
+			stage++;
 		}
 
 		private void SetupCrystals(int radius)
@@ -185,6 +218,10 @@ namespace ExampleMod.NPCs.PuritySpirit
 		}
 
 		private void UltimateAttack()
+		{
+		}
+
+		private void DoAttack()
 		{
 		}
 
@@ -206,6 +243,74 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		private void GiveDebuffs()
 		{
+		}
+
+		public override bool? CanBeHitByItem(Player player, Item item)
+		{
+			return CanBeHitByPlayer(player);
+		}
+
+		public override void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+		{
+			ModifyHit(ref damage);
+		}
+
+		public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+		{
+			OnHit(damage);
+		}
+
+		public override bool? CanBeHitByProjectile(Projectile projectile)
+		{
+			return CanBeHitByPlayer(Main.player[projectile.owner]);
+		}
+
+		public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit)
+		{
+			ModifyHit(ref damage);
+		}
+
+		public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+		{
+			OnHit(damage);
+		}
+
+		private bool? CanBeHitByPlayer(Player player)
+		{
+			if (!targets.Contains(player.whoAmI))
+			{
+				return false;
+			}
+			return null;
+		}
+
+		private void ModifyHit(ref int damage)
+		{
+			if (damage > npc.lifeMax / 8)
+			{
+				damage = npc.lifeMax / 8;
+			}
+		}
+
+		private void OnHit(int damage)
+		{
+			damageTotal += damage * 60;
+			//TODO - send information when server support is finished
+		}
+
+		public override bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+		{
+			if (damageTotal >= dpsCap)
+			{
+				if (!saidRushMessage)
+				{
+					Main.NewText("<Spirit of Purity> Oh, in a rush now, are we?", 150, 250, 150);
+					saidRushMessage = true;
+				}
+				damage = 0;
+				return false;
+			}
+			return true;
 		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)

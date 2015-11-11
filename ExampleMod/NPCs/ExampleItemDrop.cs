@@ -44,7 +44,7 @@ namespace ExampleMod.NPCs
 			{
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("Bubble"), Main.rand.Next(5, 8));
 			}
-			if (npc.type == NPCID.Bunny)
+			if (npc.type == NPCID.Bunny && npc.AnyInteractions())
 			{
 				Vector2 pos = npc.Center;
 				int i = (int)pos.X / 16;
@@ -56,7 +56,20 @@ namespace ExampleMod.NPCs
 					j -= Main.tile[i, j].frameY % 18;
 					i = (i * 16) + 16;
 					j = (j * 16) - 8 + 60;
-					int index = NPC.NewNPC(i, j, mod.NPCType("PuritySpirit"));
+					bool flag = false;
+					for (int k = 0; k < 255; k++)
+					{
+						Player player = Main.player[k];
+						if (player.active && player.position.X > i - NPC.sWidth / 2 && player.position.X + player.width < i + NPC.sWidth / 2 && player.position.Y > j - NPC.sHeight / 2 && player.position.Y < j + NPC.sHeight / 2)
+						{
+							flag = true;
+							break;
+						}
+					}
+					if (flag)
+					{
+						NPC.NewNPC(i, j, mod.NPCType("PuritySpirit"));
+					}
 				}
 			}
 		}

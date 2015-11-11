@@ -802,26 +802,34 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool AutoSelect(int i, int j, Item item)
+		internal static int AutoSelect(int i, int j, Player player)
 		{
 			if (!Main.tile[i, j].active())
 			{
-				return false;
+				return -1;
 			}
 			int type = Main.tile[i, j].type;
 			ModTile modTile = GetTile(type);
-			if (modTile != null && modTile.AutoSelect(i, j, item))
+			for (int k = 0; k < 50; k++)
 			{
-				return true;
-			}
-			foreach (GlobalTile globalTile in globalTiles)
-			{
-				if (globalTile.AutoSelect(i, j, type, item))
+				Item item = player.inventory[k];
+				if (item.type == 0 || item.stack == 0)
 				{
-					return true;
+					continue;
+				}
+				if (modTile != null && modTile.AutoSelect(i, j, item))
+				{
+					return k;
+				}
+				foreach (GlobalTile globalTile in globalTiles)
+				{
+					if (globalTile.AutoSelect(i, j, type, item))
+					{
+						return k;
+					}
 				}
 			}
-			return false;
+			return -1;
 		}
 		//in Terraria.Wiring make the following public:
 		//  _wireList, _toProcess, _teleport, _inPumpX, _inPumpY, _numInPump, _outPumpX, _outPumpY, _numOutPump CheckMech, TripWire
