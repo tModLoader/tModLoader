@@ -1002,6 +1002,12 @@ namespace Terraria.ModLoader
 			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
 		}
 
+		public void AddQuestFish(int itemType)
+		{
+			Array.Resize(ref Main.anglerQuestItemNetIDs, Main.anglerQuestItemNetIDs.Length + 1);
+			Main.anglerQuestItemNetIDs[Main.anglerQuestItemNetIDs.Length - 1] = itemType;
+		}
+
 		public void RegisterHotKey(string name, string defaultKey)
 		{
 			ModLoader.RegisterHotKey(name, defaultKey);

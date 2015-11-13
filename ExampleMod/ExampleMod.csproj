@@ -75,6 +75,7 @@
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleItem.cs" />
     <Compile Include="Items\ExamplePickaxe.cs" />
+    <Compile Include="Items\ExampleQuestFish.cs" />
     <Compile Include="Items\ExampleShield.cs" />
     <Compile Include="Items\ExampleWings.cs" />
     <Compile Include="Items\ExplorerBag.cs" />

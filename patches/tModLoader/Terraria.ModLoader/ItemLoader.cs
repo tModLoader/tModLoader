@@ -66,6 +66,7 @@ namespace Terraria.ModLoader
 			nextItem = ItemID.Count;
 			globalItems.Clear();
 			animations.Clear();
+			Array.Resize(ref Main.anglerQuestItemNetIDs, 39);
 		}
 
 		internal static bool IsModItem(Item item)
@@ -1014,6 +1015,32 @@ namespace Terraria.ModLoader
 				{
 					glowstick = false;
 				}
+			}
+		}
+
+		internal static void IsAnglerQuestAvailable(int itemID, ref bool notAvailable)
+		{
+			ModItem modItem = GetItem(itemID);
+			if (modItem != null)
+			{
+				notAvailable = !modItem.IsAnglerQuestAvailable();
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				notAvailable = !globalItem.IsAnglerQuestAvailable(itemID);
+			}
+		}
+
+		internal static void AnglerQuestChat(bool gotFish, bool anglerQuestFinished, int type, ref string description, ref string catchLocation)
+		{
+			ModItem modItem = GetItem(type);
+			if (modItem != null && !Main.anglerQuestFinished && !gotFish)
+			{
+				modItem.AnglerQuestChat(ref description, ref catchLocation);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.AnglerQuestChat(gotFish, anglerQuestFinished, type, ref description, ref catchLocation);
 			}
 		}
 	}

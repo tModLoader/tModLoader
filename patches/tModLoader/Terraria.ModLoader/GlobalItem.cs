@@ -271,5 +271,14 @@ namespace Terraria.ModLoader
 		public virtual void ExtractinatorUse(int extractType, ref int resultType, ref int resultStack)
 		{
 		}
+
+		public virtual bool IsAnglerQuestAvailable(int type)
+		{
+			return true;
+		}
+
+		public virtual void AnglerQuestChat(bool gotFish, bool anglerQuestFinished, int type, ref string description, ref string catchLocation)
+		{
+		}
 	}
 }

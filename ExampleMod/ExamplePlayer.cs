@@ -87,6 +87,10 @@ namespace ExampleMod
 			{
 				caughtType = mod.ItemType("SparklingSphere");
 			}
+			if (player.gravDir == -1f && questFish == mod.ItemType("ExampleQuestFish") && Main.rand.Next(2) == 0)
+			{
+				caughtType = mod.ItemType("ExampleQuestFish");
+			}
 		}
 
 		public override void GetDyeTraderReward(List<int> dyeItemIDsPool)

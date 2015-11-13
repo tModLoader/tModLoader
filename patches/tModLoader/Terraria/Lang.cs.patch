@@ -26,7 +26,27 @@
  			if (Lang.lang <= 1 || english)
  			{
  				switch (l)
-@@ -32679,7 +32684,7 @@
+@@ -31781,8 +31786,19 @@
+ 							text = "\n(Caught Jungle Surface)";
+ 						}
+ 						break;
++					default:
++						if (gotFish)
++						{
++							array = array2;
++						}
++						else
++						{
++							flag = true;
++						}
++						break;
+ 				}
+ 			}
++			ItemLoader.AnglerQuestChat(gotFish, Main.anglerQuestFinished, Main.anglerQuestItemNetIDs[Main.anglerQuest], ref array[0], ref text);
+ 			string text2 = array[0];
+ 			for (int i = 1; i < array.Length; i++)
+ 			{
+@@ -32679,7 +32695,7 @@
  #if CLIENT
  				if (Lang.mapLegend == null)
  				{

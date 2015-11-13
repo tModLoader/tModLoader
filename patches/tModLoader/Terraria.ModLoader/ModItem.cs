@@ -346,5 +346,14 @@ namespace Terraria.ModLoader
 		public virtual void AddRecipes()
 		{
 		}
+
+		public virtual bool IsAnglerQuestAvailable()
+		{
+			return true;
+		}
+
+		public virtual void AnglerQuestChat(ref string description, ref string catchLocation)
+		{
+		}
 	}
 }

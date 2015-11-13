@@ -70,4 +70,13 @@
  						{
  							writer.Write((short)0);
  						}
+@@ -1619,6 +1625,8 @@
+ 				return;
+ 			}
+ 			Main.anglerQuest = reader.ReadInt32();
++			if (Main.anglerQuest >= Main.anglerQuestItemNetIDs.Length)
++				Main.AnglerQuestSwap();
+ 			if (num < 104)
+ 			{
+ 				return;
 
