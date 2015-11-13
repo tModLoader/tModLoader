@@ -115,8 +115,23 @@ namespace Terraria.ModLoader
 		public virtual void FrameEffects()
 		{
 		}
+
+		public virtual void OnFishSelected(Item fishingRod, Item bait, int liquidType, int poolCount, int worldLayer, int questFish, ref int caughtType)
+		{
+		}
+
+		public virtual void GetFishingLevel(Item fishingRod, Item bait, ref int fishingLevel)
+		{
+		}
+
+		public virtual void AnglerQuestReward(float quality, List<Item> rewardItems)
+		{
+		}
+
+		public virtual void GetDyeTraderReward(List<int> dyeItemIDsPool)
+		{
+		}
 		//TODO
-		//OnFishSelected, GetFishingLevel, GetAnglerReward, GetDyeTraderReward
 		//hooks for grappling hooks
 	}
 }

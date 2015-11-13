@@ -262,5 +262,49 @@ namespace Terraria.ModLoader
 				modPlayer.FrameEffects();
 			}
 		}
+
+		internal static void OnFishSelected(Player player, Item fishingRod, int liquidType, int poolCount, int worldLayer, int questFish, ref int caughtType)
+		{
+			int j = 0;
+			while (j < 58)
+			{
+				if (player.inventory[j].stack > 0 && player.inventory[j].bait > 0)
+				{
+					break;
+				}
+				else
+				{
+					j++;
+				}
+			}
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnFishSelected(fishingRod, player.inventory[j], liquidType, poolCount, worldLayer, questFish, ref caughtType);
+			}
+		}
+
+		internal static void GetFishingLevel(Player player, Item fishingRod, Item bait, ref int fishingLevel)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.GetFishingLevel(fishingRod, bait, ref fishingLevel);
+			}
+		}
+
+		internal static void AnglerQuestReward(Player player, float quality, List<Item> rewardItems)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.AnglerQuestReward(quality, rewardItems);
+			}
+		}
+
+		internal static void GetDyeTraderReward(Player player, List<int> dyeItemIDsPool)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.GetDyeTraderReward(dyeItemIDsPool);
+			}
+		}
 	}
 }
