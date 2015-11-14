@@ -131,6 +131,14 @@ namespace Terraria.ModLoader
 		public virtual void GetDyeTraderReward(List<int> dyeItemIDsPool)
 		{
 		}
+
+		public virtual void OnHitNPC(Item item, NPC target, int damage, float knockBack, bool crit)
+		{
+		}
+
+		public virtual void OnHitByNPC(NPC target, int damage, bool crit)
+		{
+		}
 		//TODO
 		//hooks for grappling hooks
 	}
