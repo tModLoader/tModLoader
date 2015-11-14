@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader.Default;
 
@@ -307,20 +308,168 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockBack, bool crit)
+		internal static bool CanBeHitByNPC(Player player, NPC npc)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				modPlayer.OnHitNPC(item, target, damage, knockBack, crit);
+				if (modPlayer.CanBeHitByNPC(npc))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		internal static void ModifyHitByNPC(NPC npc, Player player, ref int damage, ref bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyHitByNPC(npc, damage, crit);
 			}
 		}
 
-		internal static void OnHitByNPC(Player player, NPC target, int damage, bool crit)
+		internal static void OnHitByNPC(Player player, NPC npc, int damage, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				modPlayer.OnHitByNPC(target, damage, crit);
+				modPlayer.OnHitByNPC(npc, damage, crit);
 			}
+		}
+
+		internal static bool? CanHitNPC(Player player, NPC target)
+		{
+			bool? flag = null;
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				bool? canHit = modPlayer.CanHitNPC(target);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
+			}
+			return flag;
+		}
+
+		internal static void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitNPC(target, damage, knockBack, crit);
+			}
+		}
+
+		internal static void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockback, ref bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyHitNPC(target, damage, knockback, crit);
+			}
+		}
+
+		internal static void OnHitAnything(Player player, float x, float y, Entity victim)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitAnything(x, y, victim);
+			}
+		}
+
+		internal static void PreHurt(Player player, int Damage, int hitDirection, bool pvp = false, bool quiet = false, bool Crit = false)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PreHurt(Damage, hitDirection, pvp, quiet, Crit);
+			}
+		}
+
+		internal static void Hurt(Player player, int Damage, int hitDirection, bool pvp = false, bool quiet = false, bool Crit = false)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.Hurt(Damage, hitDirection, pvp, quiet, Crit);
+			}
+		}
+
+		internal static bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockback)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (modPlayer.Shoot(position, speedX, speedY, type, damage, knockback))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		internal static void MeleeEffects(Item item, Player player, Rectangle hitbox)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.MeleeEffects(item, hitbox);
+			}
+		}
+
+		internal static bool CanHitPvp(Player player, Player attacked)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (modPlayer.CanHitPvp(attacked))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		internal static void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyHitPvp(target, damage, crit);
+			}
+		}
+
+		internal static void OnHitPvp(Player player, Player target, int damage, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitPvp(target, damage, crit);
+			}
+		}
+
+		internal static float GetWeaponKnockback(Item sItem, Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				return modPlayer.GetWeaponKnockback(sItem);
+			}
+			return 0f;
+		}
+
+		internal static int GetWeaponDamage(Item sItem, Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				return modPlayer.GetWeaponDamage(sItem);
+			}
+			return 1;
+		}
+
+		internal static bool ConsumeAmmo(Player player, Item item)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (modPlayer.ConsumeAmmo(item))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

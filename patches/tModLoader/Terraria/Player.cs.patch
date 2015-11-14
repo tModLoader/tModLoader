@@ -58,10 +58,11 @@
  		public int lastPortalColorIndex;
  		public int _portalPhysicsTime;
  		public bool portalPhysicsFlag;
-@@ -2419,10 +2421,16 @@
+@@ -2419,10 +2421,17 @@
  					}
  				}
  			}
++			PlayerHooks.OnHitAnything(this, x, y, victim);
 +			//TODO - ModPlayer.OnHitAnything
  		}
  
@@ -75,7 +76,7 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 602, 1, false, 0, false, false);
-@@ -2698,6 +2706,11 @@
+@@ -2698,6 +2707,11 @@
  
  		public void OpenBossBag(int type)
  		{
@@ -87,7 +88,7 @@
  			if (type == 3318)
  			{
  				if (Main.rand.Next(2) == 0)
-@@ -3142,6 +3155,7 @@
+@@ -3142,6 +3156,7 @@
  			{
  				num14 = 398;
  			}
@@ -95,7 +96,7 @@
  			if (num14 > 0)
  			{
  				NPC nPC = new NPC();
-@@ -3198,7 +3212,7 @@
+@@ -3198,7 +3213,7 @@
  			}
  		}
  
@@ -104,7 +105,7 @@
  		{
  			if (Main.rand.Next(20) != 0)
  			{
-@@ -3287,6 +3301,11 @@
+@@ -3287,6 +3302,11 @@
  
  		public void openCrate(int type)
  		{
@@ -116,7 +117,7 @@
  			int num = type - 2334;
  			if (type >= 3203)
  			{
-@@ -4320,6 +4339,11 @@
+@@ -4320,6 +4340,11 @@
  
  		public void openLockBox()
  		{
@@ -128,7 +129,7 @@
  			bool flag = true;
  			while (flag)
  			{
-@@ -4454,6 +4478,11 @@
+@@ -4454,6 +4479,11 @@
  
  		public void openHerbBag()
  		{
@@ -140,7 +141,7 @@
  			int num = Main.rand.Next(2, 5);
  			if (Main.rand.Next(3) == 0)
  			{
-@@ -4533,6 +4562,11 @@
+@@ -4533,6 +4563,11 @@
  
  		public void openGoodieBag()
  		{
@@ -152,7 +153,7 @@
  			if (Main.rand.Next(150) == 0)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1810, 1, false, 0, false, false);
-@@ -4954,47 +4988,47 @@
+@@ -4954,47 +4989,47 @@
  				int num = i % 10;
  				if (this.dye[num] != null && this.armor[i].type > 0 && this.armor[i].stack > 0 && (i / 10 >= 1 || !this.hideVisual[num] || this.armor[i].wingSlot > 0 || this.armor[i].type == 934))
  				{
@@ -211,7 +212,7 @@
  					{
  						this.cWings = (int)this.dye[num].dye;
  					}
-@@ -6584,6 +6618,7 @@
+@@ -6584,6 +6619,7 @@
  					{
  						this.meleeEnchant = 8;
  					}
@@ -219,7 +220,7 @@
  				}
  			}
  		}
-@@ -6818,6 +6853,7 @@
+@@ -6818,6 +6854,7 @@
  				{
  					this.accDreamCatcher = true;
  				}
@@ -227,7 +228,7 @@
  			}
  			for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
  			{
-@@ -7644,6 +7680,7 @@
+@@ -7644,6 +7681,7 @@
  					{
  						this.meleeSpeed += 0.04f;
  					}
@@ -235,7 +236,7 @@
  				}
  			}
  			bool flag = false;
-@@ -8618,7 +8655,7 @@
+@@ -8618,7 +8656,7 @@
  					}
  					if (Main.myPlayer == this.whoAmI)
  					{
@@ -244,7 +245,7 @@
  						{
  							int num6 = 0;
  							if (Main.curMusic == 1)
-@@ -8721,14 +8758,18 @@
+@@ -8721,14 +8759,18 @@
  							{
  								this.armor[l].SetDefaults(3371, false);
  							}
@@ -265,7 +266,7 @@
  						}
  						if (this.armor[l].type >= 562 && this.armor[l].type <= 574)
  						{
-@@ -8782,7 +8823,12 @@
+@@ -8782,7 +8824,12 @@
  						{
  							Main.musicBox2 = 37;
  						}
@@ -279,7 +280,7 @@
  				}
  			}
  			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
-@@ -9390,6 +9436,7 @@
+@@ -9390,6 +9437,7 @@
  			{
  				this.DelBuff(this.HasBuff(187));
  			}
@@ -287,7 +288,7 @@
  		}
  
  		public void UpdateSocialShadow()
-@@ -9550,12 +9597,14 @@
+@@ -9550,12 +9598,14 @@
  					}
  				}
  			}
@@ -302,7 +303,7 @@
  			if (!this.dead)
  			{
  				Point point2 = base.Center.ToTileCoordinates();
-@@ -9664,6 +9713,7 @@
+@@ -9664,6 +9714,7 @@
  			this.trapDebuffSource = false;
  			this.yoraiz0rEye = 0;
  			this.yoraiz0rDarkness = false;
@@ -310,7 +311,7 @@
  			this.gravDir = 1f;
  			for (int i = 0; i < 22; i++)
  			{
-@@ -10040,6 +10090,7 @@
+@@ -10040,6 +10091,7 @@
  				flag = true;
  			}
  			IL_360:
@@ -318,7 +319,7 @@
  			int tileBoost = item.tileBoost;
  			int num3 = 0;
  			if (item.type == 1071 || item.type == 1543 || item.type == 1072 || item.type == 1544)
-@@ -10577,11 +10628,11 @@
+@@ -10577,11 +10629,11 @@
  				}
  				list11.Clear();
  			}
@@ -332,7 +333,7 @@
  				{
  					flag3 = true;
  				}
-@@ -10592,7 +10643,7 @@
+@@ -10592,7 +10644,7 @@
  						for (int num61 = num6; num61 <= num7; num61++)
  						{
  							Tile tile4 = Main.tile[num60, num61];
@@ -341,7 +342,7 @@
  							{
  								int num62 = (int)tile4.slope();
  								if (num62 != 2 && !Main.tile[num60 - 1, num61 - 1].active())
-@@ -11648,7 +11699,7 @@
+@@ -11648,7 +11700,7 @@
  					{
  						num7 = this.inventory[i].tileBoost;
  					}
@@ -350,7 +351,7 @@
  					{
  						num8 = this.inventory[i].tileBoost;
  					}
-@@ -11728,12 +11779,26 @@
+@@ -11728,12 +11780,26 @@
  						num = 5;
  					}
  				}
@@ -378,7 +379,7 @@
  						{
  							if (this.nonTorch == -1)
  							{
-@@ -11742,7 +11807,7 @@
+@@ -11742,7 +11808,7 @@
  							this.selectedItem = j;
  							return;
  						}
@@ -387,7 +388,7 @@
  						{
  							if (this.nonTorch == -1)
  							{
-@@ -11789,20 +11854,20 @@
+@@ -11789,20 +11855,20 @@
  					}
  					else if (num == 4)
  					{
@@ -411,7 +412,7 @@
  							{
  								if (this.nonTorch == -1)
  								{
-@@ -11832,7 +11897,7 @@
+@@ -11832,7 +11898,7 @@
  									return;
  								}
  							}
@@ -420,7 +421,7 @@
  							{
  								if (this.nonTorch == -1)
  								{
-@@ -11845,13 +11910,13 @@
+@@ -11845,13 +11911,13 @@
  					}
  					else if (num == 5)
  					{
@@ -436,7 +437,7 @@
  							{
  								this.selectedItem = j;
  							}
-@@ -11877,7 +11942,7 @@
+@@ -11877,7 +11943,7 @@
  								return;
  							}
  						}
@@ -445,7 +446,7 @@
  						{
  							if (this.nonTorch == -1)
  							{
-@@ -12204,6 +12269,7 @@
+@@ -12204,6 +12270,7 @@
  				Player.tileRangeY = 4;
  			}
  			this.mount.CheckMountBuff(this);
@@ -453,7 +454,7 @@
  		}
  
  		public void UpdateImmunity()
-@@ -12331,6 +12397,7 @@
+@@ -12331,6 +12398,7 @@
  				this.lifeRegenTime = 0;
  				this.lifeRegen -= 100;
  			}
@@ -461,7 +462,7 @@
  			if (this.honey && this.lifeRegen < 0)
  			{
  				this.lifeRegen += 4;
-@@ -12384,6 +12451,7 @@
+@@ -12384,6 +12452,7 @@
  			{
  				this.lifeRegen += 2;
  			}
@@ -469,7 +470,7 @@
  			if (this.bleed)
  			{
  				this.lifeRegenTime = 0;
-@@ -12481,6 +12549,7 @@
+@@ -12481,6 +12550,7 @@
  					num2 /= 2f;
  				}
  			}
@@ -477,7 +478,7 @@
  			float num4 = (float)this.statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			this.lifeRegen += (int)Math.Round((double)num2);
-@@ -14417,6 +14486,7 @@
+@@ -14417,6 +14487,7 @@
  				num3 = 1.5f;
  				num = 0.125f;
  			}
@@ -485,7 +486,7 @@
  			this.velocity.Y = this.velocity.Y - num * this.gravDir;
  			if (this.gravDir == 1f)
  			{
-@@ -15624,6 +15694,7 @@
+@@ -15624,6 +15695,7 @@
  					{
  						newColor = new Color(97, 200, 255, 100);
  					}
@@ -493,7 +494,7 @@
  					if (!Falling)
  					{
  						float num6 = Math.Abs(this.velocity.X) / 3f;
-@@ -15930,6 +16001,7 @@
+@@ -15930,6 +16002,7 @@
  			{
  				return;
  			}
@@ -501,7 +502,7 @@
  			this.miscCounter++;
  			if (this.miscCounter >= 300)
  			{
-@@ -16141,6 +16213,7 @@
+@@ -16141,6 +16214,7 @@
  										this.mapStyle = true;
  									}
  								}
@@ -509,7 +510,7 @@
  							}
  						}
  						if (Main.gamePad)
-@@ -16460,6 +16533,7 @@
+@@ -16460,6 +16534,7 @@
  					{
  						this.controlUseTile = true;
  					}
@@ -517,7 +518,7 @@
  					if (this.controlInv)
  					{
  						if (this.releaseInventory)
-@@ -17081,11 +17155,13 @@
+@@ -17081,11 +17156,13 @@
  					this.AddBuff(147, 2, false);
  				}
  			}
@@ -532,7 +533,7 @@
  			if (this.whoAmI == Main.myPlayer)
  			{
  				if (!this.onFire && !this.poisoned)
-@@ -17367,6 +17443,7 @@
+@@ -17367,6 +17444,7 @@
  				}
  			}
  			this.UpdateArmorSets(i);
@@ -540,7 +541,7 @@
  			if ((this.merman || this.forceMerman) && flag18)
  			{
  				this.wings = 0;
-@@ -17600,6 +17677,7 @@
+@@ -17600,6 +17678,7 @@
  				this.moveSpeed *= 0.75f;
  			}
  			this.meleeSpeed = 1f / this.meleeSpeed;
@@ -548,7 +549,7 @@
  			this.UpdateLifeRegen();
  			this.soulDrain = 0;
  			this.UpdateManaRegen();
-@@ -18139,6 +18217,7 @@
+@@ -18139,6 +18218,7 @@
  					{
  						this.accRunSpeed = 7f;
  					}
@@ -556,7 +557,7 @@
  				}
  				if (this.sticky)
  				{
-@@ -18256,6 +18335,7 @@
+@@ -18256,6 +18336,7 @@
  						this.mount.UpdateDrill(this, this.controlUp, this.controlDown);
  					}
  				}
@@ -564,7 +565,7 @@
  				this.HorizontalMovement();
  				if (this.gravControl)
  				{
-@@ -18379,6 +18459,7 @@
+@@ -18379,6 +18460,7 @@
  				}
  				else
  				{
@@ -572,7 +573,7 @@
  					if (flag24)
  					{
  						if (this.wings == 10 && Main.rand.Next(2) == 0)
-@@ -20175,7 +20256,7 @@
+@@ -20175,7 +20257,7 @@
  							this.showItemIcon = true;
  							this.showItemIcon2 = 2738;
  						}
@@ -581,7 +582,7 @@
  						{
  							this.noThrow = 2;
  							this.showItemIcon = true;
-@@ -20501,6 +20582,7 @@
+@@ -20501,6 +20583,7 @@
  							this.showItemIcon = true;
  							this.showItemIcon2 = (int)(583 + Main.tile[Player.tileTargetX, Player.tileTargetY].frameX / 18);
  						}
@@ -589,7 +590,7 @@
  						if (this.controlUseTile)
  						{
  							if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 212 && this.launcherWait <= 0)
-@@ -20570,7 +20652,8 @@
+@@ -20570,7 +20653,8 @@
  									Wiring.HitSwitch(Player.tileTargetX, Player.tileTargetY);
  									NetMessage.SendData(59, -1, -1, "", Player.tileTargetX, (float)Player.tileTargetY, 0f, 0f, 0, 0, 0);
  								}
@@ -599,7 +600,7 @@
  								{
  									Main.PlaySound(28, Player.tileTargetX * 16, Player.tileTargetY * 16, 0);
  									WorldGen.SwitchMB(Player.tileTargetX, Player.tileTargetY);
-@@ -20660,7 +20743,7 @@
+@@ -20660,7 +20744,7 @@
  										Projectile.NewProjectile((float)(num182 * 16 + 8), (float)(num183 * 16 + 2), 0f, 0f, 419 + Main.rand.Next(4), 0, 0f, this.whoAmI, (float)num182, (float)num183);
  									}
  								}
@@ -608,7 +609,7 @@
  								{
  									WorldGen.KillTile(Player.tileTargetX, Player.tileTargetY, false, false, false);
  									if (Main.netMode == 1)
-@@ -20934,11 +21017,11 @@
+@@ -20934,11 +21018,11 @@
  										}
  									}
  								}
@@ -622,7 +623,7 @@
  									{
  										int num209 = 1141;
  										for (int num210 = 0; num210 < 58; num210++)
-@@ -20964,7 +21047,7 @@
+@@ -20964,7 +21048,7 @@
  										NetMessage.SendData(19, -1, -1, "", 0, (float)Player.tileTargetX, (float)Player.tileTargetY, (float)this.direction, 0, 0, 0);
  									}
  								}
@@ -631,7 +632,7 @@
  								{
  									NetMessage.SendData(19, -1, -1, "", 1, (float)Player.tileTargetX, (float)Player.tileTargetY, (float)this.direction, 0, 0, 0);
  								}
-@@ -21238,6 +21321,7 @@
+@@ -21238,6 +21322,7 @@
  										Projectile.NewProjectile(vector4.X, vector4.Y, 0f, 0f, 403, 0, 0f, this.whoAmI, 0f, 0f);
  									}
  								}
@@ -639,7 +640,7 @@
  							}
  							this.releaseUseTile = false;
  						}
-@@ -21355,6 +21439,7 @@
+@@ -21355,6 +21440,7 @@
  							this.showItemIcon2 = -1;
  						}
  					}
@@ -647,27 +648,28 @@
  				}
  			}
  			if (this.tongued)
-@@ -21587,7 +21672,8 @@
+@@ -21587,7 +21673,8 @@
  						{
  							num250 = 1;
  						}
 -						if ((num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
 +						//TODO - ModPlayer.CanBeHitByNPC
-+						if (NPCLoader.CanHitPlayer(Main.npc[num249], this, ref num250) && (num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
++						if (PlayerHooks.CanBeHitByNPC(this, Main.npc[num249]) && NPCLoader.CanHitPlayer(Main.npc[num249], this, ref num250) && (num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
  						{
  							float num251 = 1f;
  							Rectangle value6 = new Rectangle((int)Main.npc[num249].position.X, (int)Main.npc[num249].position.Y, Main.npc[num249].width, Main.npc[num249].height);
-@@ -21678,6 +21764,9 @@
+@@ -21678,6 +21765,10 @@
  										num255 = (int)((double)num255 * 0.75);
  									}
  								}
 +								bool crit = false;
 +								NPCLoader.ModifyHitPlayer(Main.npc[num249], this, ref num255, ref crit);
++								PlayerHooks.ModifyHitByNPC(Main.npc[num249], this, ref num255, ref crit);
 +								//TODO - ModPlayer.ModifyHitByNPC
  								if (this.whoAmI == Main.myPlayer && this.thorns > 0f && !this.immune && !Main.npc[num249].dontTakeDamage)
  								{
  									int num257 = (int)((float)num255 * this.thorns);
-@@ -21700,7 +21789,9 @@
+@@ -21700,7 +21791,9 @@
  								{
  									this.StatusPlayer(Main.npc[num249]);
  								}
@@ -678,7 +680,7 @@
  							}
  						}
  					}
-@@ -22280,6 +22371,7 @@
+@@ -22280,6 +22373,7 @@
  			}
  			this.grappling[0] = -1;
  			this.grapCount = 0;
@@ -686,7 +688,7 @@
  		}
  
  		private void TryLandingOnDetonator()
-@@ -22357,10 +22449,16 @@
+@@ -22357,10 +22451,16 @@
  					{
  						num += 100;
  					}
@@ -703,7 +705,7 @@
  							if (ItemID.Sets.NebulaPickup[Main.item[j].type])
  							{
  								Main.PlaySound(7, (int)this.position.X, (int)this.position.Y, 1);
-@@ -22425,7 +22523,10 @@
+@@ -22425,7 +22525,10 @@
  					else if (new Rectangle((int)this.position.X - num, (int)this.position.Y - num, this.width + num * 2, this.height + num * 2).Intersects(new Rectangle((int)Main.item[j].position.X, (int)Main.item[j].position.Y, Main.item[j].width, Main.item[j].height)) && this.ItemSpace(Main.item[j]))
  					{
  						Main.item[j].beingGrabbed = true;
@@ -715,7 +717,7 @@
  						{
  							float num3 = 12f;
  							Vector2 vector = new Vector2(Main.item[j].position.X + (float)(Main.item[j].width / 2), Main.item[j].position.Y + (float)(Main.item[j].height / 2));
-@@ -23150,7 +23251,7 @@
+@@ -23150,7 +23253,7 @@
  		{
  			int num = 4;
  			int num2 = 3;
@@ -724,7 +726,7 @@
  			{
  				this.oldAdjTile[i] = this.adjTile[i];
  				this.adjTile[i] = false;
-@@ -23198,6 +23299,7 @@
+@@ -23198,6 +23301,7 @@
  							this.adjTile[14] = true;
  							this.alchemyTable = true;
  						}
@@ -732,7 +734,7 @@
  					}
  					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
  					{
-@@ -23467,6 +23569,7 @@
+@@ -23467,6 +23571,7 @@
  			{
  				this.boneArmor = true;
  			}
@@ -740,7 +742,7 @@
  			if (this.wings > 0)
  			{
  				this.back = -1;
-@@ -23484,6 +23587,7 @@
+@@ -23484,6 +23589,7 @@
  			{
  				return;
  			}
@@ -748,7 +750,7 @@
  			if (((this.body == 68 && this.legs == 57 && this.head == 106) || (this.body == 74 && this.legs == 63 && this.head == 106)) && Main.rand.Next(10) == 0)
  			{
  				int num2 = Dust.NewDust(new Vector2(this.position.X - this.velocity.X * 2f, this.position.Y - 2f - this.velocity.Y * 2f), this.width, this.height, 43, 0f, 0f, 100, new Color(255, 0, 255), 0.3f);
-@@ -23623,6 +23727,7 @@
+@@ -23623,6 +23729,7 @@
  					}
  				}
  			}
@@ -756,7 +758,7 @@
  			this.bodyFrame.Width = 40;
  			this.bodyFrame.Height = 56;
  			this.legFrame.Width = 40;
-@@ -23843,6 +23948,10 @@
+@@ -23843,6 +23950,10 @@
  							}
  						}
  					}
@@ -767,7 +769,7 @@
  				}
  			}
  			else
-@@ -23878,6 +23987,10 @@
+@@ -23878,6 +23989,10 @@
  					if (this.inventory[this.selectedItem].holdStyle == 3)
  					{
  						this.bodyFrame.Y = this.bodyFrame.Height * 3;
@@ -778,7 +780,7 @@
  						return;
  					}
  					if (this.grappling[0] >= 0)
-@@ -24144,6 +24257,7 @@
+@@ -24144,6 +24259,7 @@
  						break;
  				}
  			}
@@ -786,23 +788,25 @@
  			return num;
  		}
  
-@@ -24433,6 +24547,7 @@
+@@ -24433,6 +24549,8 @@
  				this.ShadowDodge();
  				return 0.0;
  			}
++			PlayerHooks.PreHurt(this, Damage, hitDirection, pvp, quiet, Crit);
 +			//TODO - ModPlayer.PreHurt
  			if (this.whoAmI == Main.myPlayer && this.panic)
  			{
  				this.AddBuff(63, 300, true);
-@@ -24564,6 +24679,7 @@
+@@ -24564,6 +24682,8 @@
  					}
  					Projectile.NewProjectile(base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), this.velocity.X * 0.3f, this.velocity.Y * 0.3f, 565, 0, 0f, this.whoAmI, 0f, 0f);
  				}
++				PlayerHooks.Hurt(this, Damage, hitDirection, pvp, quiet, Crit);
 +				//TODO - ModPlayer.Hurt
  				if (Main.netMode == 1 && this.whoAmI == Main.myPlayer && !quiet)
  				{
  					int number = 0;
-@@ -24765,6 +24881,7 @@
+@@ -24765,6 +24885,7 @@
  			{
  				return;
  			}
@@ -810,7 +814,7 @@
  			if (pvp)
  			{
  				this.pvpDeath = true;
-@@ -24880,6 +24997,7 @@
+@@ -24880,6 +25001,7 @@
  			{
  				this.respawnTimer = (int)((double)this.respawnTimer * 1.5);
  			}
@@ -818,7 +822,7 @@
  			this.immuneAlpha = 0;
  			this.palladiumRegen = false;
  			this.iceBarrier = false;
-@@ -25596,7 +25714,10 @@
+@@ -25596,7 +25718,10 @@
  					bool flag3 = false;
  					bool flag4 = false;
  					TileObject tileObject = default(TileObject);
@@ -830,7 +834,7 @@
  					{
  						flag4 = true;
  						flag3 = TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, (int)((ushort)this.inventory[this.selectedItem].createTile), this.inventory[this.selectedItem].placeStyle, this.direction, out tileObject, false);
-@@ -25637,7 +25758,7 @@
+@@ -25637,7 +25762,7 @@
  								flag3 = true;
  							}
  						}
@@ -839,7 +843,7 @@
  						{
  							if (Main.tile[Player.tileTargetX, Player.tileTargetY].wall > 0)
  							{
-@@ -25649,7 +25770,7 @@
+@@ -25649,7 +25774,7 @@
  								{
  									if (!WorldGen.SolidTileNoAttach(Player.tileTargetX, Player.tileTargetY + 1) && (Main.tile[Player.tileTargetX, Player.tileTargetY + 1].halfBrick() || Main.tile[Player.tileTargetX, Player.tileTargetY + 1].slope() != 0))
  									{
@@ -848,7 +852,7 @@
  										{
  											WorldGen.SlopeTile(Player.tileTargetX, Player.tileTargetY + 1, 0);
  											if (Main.netMode == 1)
-@@ -25660,7 +25781,7 @@
+@@ -25660,7 +25785,7 @@
  									}
  									else if (!WorldGen.SolidTileNoAttach(Player.tileTargetX, Player.tileTargetY + 1) && !WorldGen.SolidTileNoAttach(Player.tileTargetX - 1, Player.tileTargetY) && (Main.tile[Player.tileTargetX - 1, Player.tileTargetY].halfBrick() || Main.tile[Player.tileTargetX - 1, Player.tileTargetY].slope() != 0))
  									{
@@ -857,7 +861,7 @@
  										{
  											WorldGen.SlopeTile(Player.tileTargetX - 1, Player.tileTargetY, 0);
  											if (Main.netMode == 1)
-@@ -25669,7 +25790,7 @@
+@@ -25669,7 +25794,7 @@
  											}
  										}
  									}
@@ -866,7 +870,7 @@
  									{
  										WorldGen.SlopeTile(Player.tileTargetX + 1, Player.tileTargetY, 0);
  										if (Main.netMode == 1)
-@@ -25717,7 +25838,7 @@
+@@ -25717,7 +25842,7 @@
  								{
  									num44 = -1;
  								}
@@ -875,7 +879,7 @@
  								{
  									flag3 = true;
  								}
-@@ -25851,7 +25972,7 @@
+@@ -25851,7 +25976,7 @@
  								flag3 = false;
  							}
  						}
@@ -884,7 +888,7 @@
  						{
  							for (int num49 = Player.tileTargetX - 1; num49 <= Player.tileTargetX + 1; num49++)
  							{
-@@ -26026,7 +26147,7 @@
+@@ -26026,7 +26151,7 @@
  									NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1);
  								}
  							}
@@ -893,7 +897,7 @@
  							{
  								int num58 = Player.tileTargetX;
  								int num59 = Player.tileTargetY;
-@@ -26038,7 +26159,7 @@
+@@ -26038,7 +26163,7 @@
  								{
  									for (int num64 = -1; num64 < 2; num64++)
  									{
@@ -902,7 +906,7 @@
  										{
  											flag7 = false;
  										}
-@@ -26047,22 +26168,22 @@
+@@ -26047,22 +26172,22 @@
  								if (!flag7)
  								{
  									Tile tile6 = Main.tile[num58 - 1, num59 - 1];
@@ -929,7 +933,7 @@
  									{
  										num61++;
  									}
-@@ -26070,7 +26191,7 @@
+@@ -26070,7 +26195,7 @@
  									if (WorldGen.SolidTile(tile6))
  									{
  										num61++;
@@ -938,7 +942,7 @@
  										{
  											num61++;
  										}
-@@ -26079,7 +26200,7 @@
+@@ -26079,7 +26204,7 @@
  									if (WorldGen.SolidTile(tile6))
  									{
  										num62++;
@@ -947,7 +951,7 @@
  										{
  											num62++;
  										}
-@@ -26093,12 +26214,12 @@
+@@ -26093,12 +26218,12 @@
  										num60 = 2;
  									}
  									tile6 = Main.tile[num58 - 1, num59];
@@ -962,7 +966,7 @@
  									{
  										num60 = 0;
  									}
-@@ -26123,7 +26244,7 @@
+@@ -26123,7 +26248,7 @@
  											num67 = -1;
  										}
  										tile6 = Main.tile[num58 + num66, num59 + num67];
@@ -971,7 +975,7 @@
  										{
  											WorldGen.SlopeTile(num58 + num66, num59 + num67, num60);
  											num65 = (int)tile6.slope();
-@@ -26143,7 +26264,7 @@
+@@ -26143,7 +26268,7 @@
  											num67 = 1;
  										}
  										tile6 = Main.tile[num58 + num66, num59 + num67];
@@ -980,7 +984,7 @@
  										{
  											WorldGen.SlopeTile(num58 + num66, num59 + num67, num60);
  											num65 = (int)tile6.slope();
-@@ -26157,16 +26278,16 @@
+@@ -26157,16 +26282,16 @@
  									{
  										int num66 = -1;
  										tile6 = Main.tile[num58 + num66, num59];
@@ -1000,7 +1004,7 @@
  											{
  												flag8 = false;
  											}
-@@ -26183,16 +26304,16 @@
+@@ -26183,16 +26308,16 @@
  										num66 = 1;
  										int num67 = 0;
  										tile6 = Main.tile[num58 + num66, num59 + num67];
@@ -1020,7 +1024,7 @@
  											{
  												flag9 = false;
  											}
-@@ -26223,11 +26344,11 @@
+@@ -26223,11 +26348,11 @@
  									}
  								}
  							}
@@ -1034,7 +1038,7 @@
  								{
  									WorldGen.SlopeTile(num71, num72, 0);
  									if (Main.netMode == 1)
-@@ -26237,7 +26358,7 @@
+@@ -26237,7 +26362,7 @@
  								}
  								num71 = Player.tileTargetX;
  								num72 = Player.tileTargetY - 1;
@@ -1043,7 +1047,7 @@
  								{
  									WorldGen.SlopeTile(num71, num72, 0);
  									if (Main.netMode == 1)
-@@ -26476,7 +26597,7 @@
+@@ -26476,7 +26601,7 @@
  			int num2 = 25;
  			int num3 = 50;
  			int num4 = -1;
@@ -1052,7 +1056,7 @@
  			{
  				num /= 3;
  				num2 *= 2;
-@@ -26484,7 +26605,7 @@
+@@ -26484,7 +26609,7 @@
  				num4 = 10;
  			}
  			int num5 = 1;
@@ -1061,7 +1065,7 @@
  			if (num4 != -1 && Main.rand.Next(num4) == 0)
  			{
  				num6 = 3380;
-@@ -26807,6 +26928,7 @@
+@@ -26807,6 +26932,7 @@
  					num5 += Main.rand.Next(0, 6);
  				}
  			}
@@ -1069,7 +1073,7 @@
  			if (num6 > 0)
  			{
  				Vector2 vector = Main.ReverseGravitySupport(Main.MouseScreen, 0f) + Main.screenPosition;
-@@ -26934,6 +27056,7 @@
+@@ -26934,6 +27060,7 @@
  		{
  			int num = 0;
  			int fishingPole = this.inventory[this.selectedItem].fishingPole;
@@ -1077,7 +1081,7 @@
  			if (fishingPole == 0)
  			{
  				for (int i = 0; i < 58; i++)
-@@ -26941,6 +27064,7 @@
+@@ -26941,6 +27068,7 @@
  					if (this.inventory[i].fishingPole > fishingPole)
  					{
  						fishingPole = this.inventory[i].fishingPole;
@@ -1085,7 +1089,7 @@
  					}
  				}
  			}
-@@ -27002,6 +27126,7 @@
+@@ -27002,6 +27130,7 @@
  			{
  				num2 = (int)((float)num2 * 0.9f);
  			}
@@ -1093,7 +1097,7 @@
  			return num2;
  		}
  
-@@ -27118,6 +27243,7 @@
+@@ -27118,6 +27247,7 @@
  
  		public void ItemCheck(int i)
  		{
@@ -1101,7 +1105,7 @@
  			if (this.webbed || this.frozen || this.stoned)
  			{
  				return;
-@@ -27320,7 +27446,7 @@
+@@ -27320,7 +27450,7 @@
  				{
  					this.altFunctionUse = 2;
  				}
@@ -1110,7 +1114,7 @@
  				if (item.shoot == 0)
  				{
  					this.itemRotation = 0f;
-@@ -27898,7 +28024,7 @@
+@@ -27898,7 +28028,7 @@
  						Main.PlaySound(2, (int)this.position.X, (int)this.position.Y, item.useSound);
  					}
  				}
@@ -1119,7 +1123,7 @@
  				{
  					if (ProjectileID.Sets.MinionSacrificable[item.shoot])
  					{
-@@ -28282,6 +28408,7 @@
+@@ -28282,6 +28412,7 @@
  							this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  						}
  					}
@@ -1127,7 +1131,7 @@
  				}
  			}
  			else if (item.holdStyle == 1 && !this.pulley)
-@@ -28478,6 +28605,7 @@
+@@ -28478,6 +28609,7 @@
  				this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  				this.itemRotation = 0f;
  			}
@@ -1135,7 +1139,7 @@
  			if ((((item.type == 974 || item.type == 8 || item.type == 1245 || item.type == 2274 || item.type == 3004 || item.type == 3045 || item.type == 3114 || (item.type >= 427 && item.type <= 433)) && !this.wet) || item.type == 523 || item.type == 1333) && !this.pulley)
  			{
  				float num50 = 1f;
-@@ -28923,6 +29051,7 @@
+@@ -28923,6 +29055,7 @@
  					Lighting.AddLight(position16, 1f, 0.6f, 0.85f);
  				}
  			}
@@ -1143,7 +1147,7 @@
  			if (this.controlUseItem)
  			{
  				this.releaseUseItem = false;
-@@ -28954,6 +29083,7 @@
+@@ -28954,6 +29087,7 @@
  			{
  				bool flag8 = true;
  				int type4 = item.type;
@@ -1151,17 +1155,17 @@
  				if ((type4 == 65 || type4 == 676 || type4 == 723 || type4 == 724 || type4 == 757 || type4 == 674 || type4 == 675 || type4 == 989 || type4 == 1226 || type4 == 1227) && this.itemAnimation != this.itemAnimationMax - 1)
  				{
  					flag8 = false;
-@@ -30112,7 +30242,8 @@
+@@ -30112,7 +30246,8 @@
  							}
  							Projectile.NewProjectile(vector2.X, vector2.Y - this.gravDir * 4f, num202, num203, num71, num73, num74, i, 0f, (float)Main.rand.Next(12) / 6f);
  						}
 -						else
 +                        //TODO - ModPlayer.Shoot
-+						else if (ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
++						else if (ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74) && PlayerHooks.Shoot(this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
  						{
  							int num204 = Projectile.NewProjectile(vector2.X, vector2.Y, num78, num79, num71, num73, num74, i, 0f, 0f);
  							if (item.type == 726)
-@@ -30481,7 +30612,7 @@
+@@ -30481,7 +30616,7 @@
  								flag14 = false;
  								if (item.hammer > 0)
  								{
@@ -1170,7 +1174,7 @@
  									if (!WorldGen.CanKillTile(Player.tileTargetX, Player.tileTargetY))
  									{
  										num222 = 0;
-@@ -30525,7 +30656,7 @@
+@@ -30525,7 +30660,7 @@
  								}
  								else
  								{
@@ -1179,7 +1183,7 @@
  								}
  								if (item.axe > 0)
  								{
-@@ -30589,7 +30720,10 @@
+@@ -30589,7 +30724,10 @@
  									{
  										int num223 = Player.tileTargetX;
  										int num224 = Player.tileTargetY;
@@ -1191,7 +1195,7 @@
  										{
  											if (Main.tile[num223, num224].halfBrick())
  											{
-@@ -30603,7 +30737,7 @@
+@@ -30603,7 +30741,7 @@
  											{
  												int num225 = 1;
  												int slope = 2;
@@ -1200,7 +1204,7 @@
  												{
  													num225 = 2;
  													slope = 1;
-@@ -31059,6 +31193,7 @@
+@@ -31059,6 +31197,7 @@
  						r2.Height = (int)((double)r2.Height * 0.6);
  					}
  				}
@@ -1208,23 +1212,25 @@
  				float arg_BA93_0 = this.gravDir;
  				if (item.type == 1450 && Main.rand.Next(3) == 0)
  				{
-@@ -31418,6 +31553,8 @@
+@@ -31418,6 +31557,9 @@
  						Dust expr_D7D2_cp_0 = Main.dust[num280];
  						expr_D7D2_cp_0.velocity.Y = expr_D7D2_cp_0.velocity.Y * 2f;
  					}
 +					ItemLoader.MeleeEffects(item, this, r2);
++					PlayerHooks.MeleeEffects(item, this, r2);
 +					//TODO - ModPlayer.MeleeEffects
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num281 = 0; num281 < 200; num281++)
-@@ -31533,7 +31670,19 @@
+@@ -31533,7 +31675,20 @@
  								{
  									if (!Main.npc[num292].dontTakeDamage)
  									{
 -										if (!Main.npc[num292].friendly || (Main.npc[num292].type == 22 && this.killGuide) || (Main.npc[num292].type == 54 && this.killClothier))
 +										//TODO - ModPlayer.CanHitNPC
 +										bool? modCanHit = ItemLoader.CanHitNPC(item, this, Main.npc[num292]);
-+										if (modCanHit.HasValue && !modCanHit.Value)
++										bool? modCanHitPlayer = PlayerHooks.CanHitNPC(this, Main.npc[num292]);
++										if (modCanHit.HasValue && !modCanHit.Value && modCanHitPlayer.HasValue && !modCanHitPlayer.Value)
 +										{
 +											continue;
 +										}
@@ -1238,55 +1244,58 @@
  										{
  											Rectangle value12 = new Rectangle((int)Main.npc[num292].position.X, (int)Main.npc[num292].position.Y, Main.npc[num292].width, Main.npc[num292].height);
  											if (r2.Intersects(value12) && (Main.npc[num292].noTileCollide || Collision.CanHit(this.position, this.width, this.height, Main.npc[num292].position, Main.npc[num292].width, Main.npc[num292].height)))
-@@ -31556,6 +31705,9 @@
+@@ -31556,6 +31711,10 @@
  													}
  												}
  												int num294 = Main.DamageVar((float)num282);
 +												//TODO - ModPlayer.ModifyHitNPC
++												PlayerHooks.ModifyHitNPC(this, Main.npc[num292], ref num294, ref num283, ref flag18);
 +												ItemLoader.ModifyHitNPC(item, this, Main.npc[num292], ref num294, ref num283, ref flag18);
 +												NPCLoader.ModifyHitByItem(Main.npc[num292], this, item, ref num294, ref num283, ref flag18);
  												this.StatusNPC(item.type, num292);
  												this.OnHit(Main.npc[num292].Center.X, Main.npc[num292].Center.Y, Main.npc[num292]);
  												if (this.armorPenetration > 0)
-@@ -31630,6 +31782,9 @@
+@@ -31630,6 +31789,9 @@
  														NetMessage.SendData(21, -1, -1, "", num300, 0f, 0f, 0f, 0, 0, 0);
  													}
  												}
-+												PlayerHooks.OnHitNPC(this, item, Main.npc[num292], num295, num283, flag18);
++												PlayerHooks.OnHitNPC(this, Main.npc[num292], num295, num283, flag18);
 +												ItemLoader.OnHitNPC(item, this, Main.npc[num292], num295, num283, flag18);
 +												NPCLoader.OnHitByItem(Main.npc[num292], this, item, num295, num283, flag18);
  												int num301 = Item.NPCtoBanner(Main.npc[num292].BannerID());
  												if (num301 >= 0)
  												{
-@@ -31674,7 +31829,8 @@
+@@ -31674,7 +31836,8 @@
  									if (num302 != i && Main.player[num302].active && Main.player[num302].hostile && !Main.player[num302].immune && !Main.player[num302].dead && (Main.player[i].team == 0 || Main.player[i].team != Main.player[num302].team))
  									{
  										Rectangle value16 = new Rectangle((int)Main.player[num302].position.X, (int)Main.player[num302].position.Y, Main.player[num302].width, Main.player[num302].height);
 -										if (r2.Intersects(value16) && Collision.CanHit(this.position, this.width, this.height, Main.player[num302].position, Main.player[num302].width, Main.player[num302].height))
 +										//TODO - ModPlayer.CanHitPvp
-+										if (ItemLoader.CanHitPvp(item, this, Main.player[num302]) && r2.Intersects(value16) && Collision.CanHit(this.position, this.width, this.height, Main.player[num302].position, Main.player[num302].width, Main.player[num302].height))
++										if (PlayerHooks.CanHitPvp(this, Main.player[num302]) && ItemLoader.CanHitPvp(item, this, Main.player[num302]) && r2.Intersects(value16) && Collision.CanHit(this.position, this.width, this.height, Main.player[num302].position, Main.player[num302].width, Main.player[num302].height))
  										{
  											bool flag20 = false;
  											if (Main.rand.Next(1, 101) <= 10)
-@@ -31682,6 +31838,8 @@
+@@ -31682,6 +31845,9 @@
  												flag20 = true;
  											}
  											int num303 = Main.DamageVar((float)num282);
 +											//TODO - ModPlayer.ModifyHitPvp
++											PlayerHooks.ModifyHitPvp(this, Main.player[num302], ref num282, ref flag20);
 +											ItemLoader.ModifyHitPvp(item, this, Main.player[num302], ref num282, ref flag20);
  											this.StatusPvP(item.type, num302);
  											this.OnHit(Main.player[num302].Center.X, Main.player[num302].Center.Y, Main.player[num302]);
  											int num304 = (int)Main.player[num302].Hurt(num303, this.direction, true, false, "", flag20, -1);
-@@ -31731,6 +31889,8 @@
+@@ -31731,6 +31897,9 @@
  											{
  												this.pumpkinSword(num302, (int)((double)num282 * 1.5), num283);
  											}
 +											//TODO - ModPlayer.OnHitPvp
++											PlayerHooks.OnHitPvp(this, Main.player[num302], num304, flag20);
 +											ItemLoader.OnHitPvp(item, this, Main.player[num302], num304, flag20);
  											if (Main.netMode != 0)
  											{
  												if (flag20)
-@@ -31812,6 +31972,7 @@
+@@ -31812,6 +31981,7 @@
  			}
  			if (this.itemTime == 0 && this.itemAnimation > 0)
  			{
@@ -1294,7 +1303,7 @@
  				if (item.hairDye >= 0)
  				{
  					this.itemTime = item.useTime;
-@@ -32325,6 +32486,7 @@
+@@ -32325,6 +32495,7 @@
  					{
  						flag22 = true;
  					}
@@ -1302,35 +1311,45 @@
  					if (flag22)
  					{
  						if (item.stack > 0)
-@@ -32375,6 +32537,7 @@
+@@ -32375,6 +32546,11 @@
  			{
  				KnockBack *= 1f + (1f - this.stealth) * 0.5f;
  			}
++			if (ItemLoader.IsModItem(sItem))
++			{
++				KnockBack *= PlayerHooks.GetWeaponKnockback(sItem, this);
++			}
 +			//TODO - ModPlayer.GetWeaponKnockback
  			return KnockBack;
  		}
  
-@@ -32416,6 +32579,7 @@
+@@ -32415,7 +32591,12 @@
+ 				{
  					num = (int)((float)num * this.minionDamage);
  				}
- 			}
+-			}
++				if (ItemLoader.IsModItem(sItem))
++				{
++					num = PlayerHooks.GetWeaponDamage(sItem, this);
++				}
++			}
 +			//TODO - ModPlayer.GetWeaponDamage
  			return num;
  		}
  
-@@ -32649,6 +32813,11 @@
+@@ -32649,6 +32830,11 @@
  				{
  					flag2 = true;
  				}
 +				//TODO - ModPlayer.ConsumeAmmo
-+				if (!ItemLoader.ConsumeAmmo(sItem, item, this))
++				if (!ItemLoader.ConsumeAmmo(sItem, item, this) && !PlayerHooks.ConsumeAmmo(this, item))
 +				{
 +					flag2 = true;
 +				}
  				if (!flag2 && item.consumable)
  				{
  					item.stack--;
-@@ -32701,7 +32870,7 @@
+@@ -32701,7 +32887,7 @@
  			}
  			else
  			{
@@ -1339,7 +1358,7 @@
  			}
  			if (tile.type == 211 && pickPower < 200)
  			{
-@@ -32769,6 +32938,10 @@
+@@ -32769,6 +32955,10 @@
  			else if (tile.type == 223 && pickPower < 150)
  			{
  				num = 0;
@@ -1350,7 +1369,7 @@
  			}
  			if (tile.type == 147 || tile.type == 0 || tile.type == 40 || tile.type == 53 || tile.type == 57 || tile.type == 59 || tile.type == 123 || tile.type == 224 || tile.type == 397)
  			{
-@@ -33197,14 +33370,31 @@
+@@ -33197,14 +33387,31 @@
  
  		public void DropItems()
  		{
@@ -1385,7 +1404,7 @@
  					Main.item[num].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  					Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  					Main.item[num].noGrabDelay = 100;
-@@ -33213,6 +33403,10 @@
+@@ -33213,6 +33420,10 @@
  					{
  						NetMessage.SendData(21, -1, -1, "", num, 0f, 0f, 0f, 0, 0, 0);
  					}
@@ -1396,7 +1415,7 @@
  				}
  				this.inventory[i] = new Item();
  				if (i < this.armor.Length)
-@@ -33292,12 +33486,7 @@
+@@ -33292,12 +33503,7 @@
  					this.miscDyes[i] = new Item();
  				}
  			}
@@ -1410,7 +1429,7 @@
  			Main.mouseItem = new Item();
  		}
  
-@@ -33377,7 +33566,7 @@
+@@ -33377,7 +33583,7 @@
  			{
  				return false;
  			}
@@ -1419,7 +1438,7 @@
  			{
  				return false;
  			}
-@@ -33586,12 +33775,12 @@
+@@ -33586,12 +33792,12 @@
  							{
  								player.armor[k].name = "";
  							}
@@ -1434,7 +1453,7 @@
  							binaryWriter.Write(player.dye[l].prefix);
  						}
  						for (int m = 0; m < 58; m++)
-@@ -33600,16 +33789,16 @@
+@@ -33600,16 +33806,16 @@
  							{
  								player.inventory[m].name = "";
  							}
@@ -1454,7 +1473,7 @@
  							binaryWriter.Write(player.miscDyes[n].prefix);
  						}
  						for (int num = 0; num < 40; num++)
-@@ -33618,7 +33807,7 @@
+@@ -33618,7 +33824,7 @@
  							{
  								player.bank.item[num].name = "";
  							}
@@ -1463,7 +1482,7 @@
  							binaryWriter.Write(player.bank.item[num].stack);
  							binaryWriter.Write(player.bank.item[num].prefix);
  						}
-@@ -33628,7 +33817,7 @@
+@@ -33628,7 +33834,7 @@
  							{
  								player.bank2.item[num2].name = "";
  							}
@@ -1472,7 +1491,7 @@
  							binaryWriter.Write(player.bank2.item[num2].stack);
  							binaryWriter.Write(player.bank2.item[num2].prefix);
  						}
-@@ -33673,6 +33862,7 @@
+@@ -33673,6 +33879,7 @@
  					}
  				}
  			}
@@ -1480,7 +1499,7 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
-@@ -34116,6 +34306,7 @@
+@@ -34116,6 +34323,7 @@
  								player.anglerQuestsFinished = binaryReader.ReadInt32();
  							}
  							player.skinVariant = (int)MathHelper.Clamp((float)player.skinVariant, 0f, 7f);
@@ -1488,7 +1507,7 @@
  							for (int num32 = 3; num32 < 8 + player.extraAccessorySlots; num32++)
  							{
  								int type = player.armor[num32].type;
-@@ -34184,6 +34375,7 @@
+@@ -34184,6 +34392,7 @@
  					if (FileUtilities.Exists(file + ".bak", cloudSave))
  					{
  						FileUtilities.Move(file + ".bak", file, cloudSave, true);
@@ -1496,7 +1515,7 @@
  					}
  					playerFileData = Player.LoadPlayer(file, cloudSave);
  					if (playerFileData.Player == null)
-@@ -34250,8 +34442,28 @@
+@@ -34250,8 +34459,28 @@
  			return -1;
  		}
  
@@ -1525,7 +1544,7 @@
  			int[] array = new int[2];
  			this.hurtCooldowns = array;
  			this.width = 20;
-@@ -34288,9 +34500,7 @@
+@@ -34288,9 +34517,7 @@
  			}
  			this.trashItem = new Item();
  			this.grappling[0] = -1;
@@ -1536,7 +1555,7 @@
  			this.statManaMax = 20;
  			this.extraAccessory = false;
  			if (Main.cEd)
-@@ -34400,6 +34610,7 @@
+@@ -34400,6 +34627,7 @@
  
  		public void GetAnglerReward()
  		{
@@ -1544,7 +1563,7 @@
  			Item item = new Item();
  			item.type = 0;
  			float num = 1f;
-@@ -34571,69 +34782,24 @@
+@@ -34571,69 +34799,24 @@
  					}
  				}
  			}
@@ -1619,7 +1638,7 @@
  			}
  			Item item7 = new Item();
  			int num4 = (this.anglerQuestsFinished + 50) / 2;
-@@ -34670,16 +34836,7 @@
+@@ -34670,16 +34853,7 @@
  				item7.SetDefaults(72, false);
  				item7.stack = num4;
  			}
@@ -1637,7 +1656,7 @@
  			if (Main.rand.Next((int)(100f * num)) <= 50)
  			{
  				Item item8 = new Item();
-@@ -34719,14 +34876,19 @@
+@@ -34719,14 +34893,19 @@
  				{
  					item8.stack++;
  				}
@@ -1663,7 +1682,7 @@
  					}
  				}
  			}
-@@ -34785,6 +34947,7 @@
+@@ -34785,6 +34964,7 @@
  					list.Add(3024);
  				}
  			}
