@@ -674,7 +674,7 @@
 -								this.Hurt(num255, num254, false, false, Lang.deathMsg(-1, num249, -1, -1), false, num250);
 +								int realDamage = (int)this.Hurt(num255, num254, false, false, Lang.deathMsg(-1, num249, -1, -1), crit, num250);
 +								NPCLoader.OnHitPlayer(Main.npc[num249], this, realDamage, crit);
-+								//TODO - ModPlayer.OnHitByNPC
++								PlayerHooks.OnHitByNPC(this, Main.npc[num249], realDamage, crit);
  							}
  						}
  					}
@@ -1252,7 +1252,7 @@
  														NetMessage.SendData(21, -1, -1, "", num300, 0f, 0f, 0f, 0, 0, 0);
  													}
  												}
-+												//TODO - ModPlayer.OnHitNPC
++												PlayerHooks.OnHitNPC(this, item, Main.npc[num292], num295, num283, flag18);
 +												ItemLoader.OnHitNPC(item, this, Main.npc[num292], num295, num283, flag18);
 +												NPCLoader.OnHitByItem(Main.npc[num292], this, item, num295, num283, flag18);
  												int num301 = Item.NPCtoBanner(Main.npc[num292].BannerID());

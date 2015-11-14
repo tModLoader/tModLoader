@@ -306,5 +306,21 @@ namespace Terraria.ModLoader
 				modPlayer.GetDyeTraderReward(dyeItemIDsPool);
 			}
 		}
+
+		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockBack, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitNPC(item, target, damage, knockBack, crit);
+			}
+		}
+
+		internal static void OnHitByNPC(Player player, NPC target, int damage, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitByNPC(target, damage, crit);
+			}
+		}
 	}
 }
