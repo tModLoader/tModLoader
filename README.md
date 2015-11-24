@@ -24,7 +24,7 @@ In order to do get the tModLoader code, first clone the repository, then run the
 
 When that's all done, you should have the tModLoader source in the src folder. Open the solutions folder then open the tModLoader solution.
 
-Do note that if you want to run tModLoader, you will need to navigate to Terraria's Content folder, create a new folder there called ModLoader, then copy the Terraria.ModLoader.Default/MysteryItem.png file to there.
+Do note that if you want to run tModLoader, you will need to navigate to Terraria's Content folder, create a new folder there called ModLoader, then copy the Terraria.ModLoader.Default/MysteryItem.png and Terraria.ModLoader.Default/StartBag.png files to there.
 
 ### Committing changes
 
