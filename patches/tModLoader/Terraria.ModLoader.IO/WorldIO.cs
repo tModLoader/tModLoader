@@ -100,11 +100,19 @@ namespace Terraria.ModLoader.IO
 			{
 				flags[0] |= 8;
 			}
+			if (WriteAnglerQuest(writer))
+			{
+				flags[0] |= 16;
+			}
 			return flags;
 		}
 
 		internal static void ReadModWorld(byte[] flags, BinaryReader reader)
 		{
+			if (flags.Length == 0)
+			{
+				return;
+			}
 			if ((flags[0] & 1) == 1)
 			{
 				ReadChests(reader);
@@ -120,6 +128,10 @@ namespace Terraria.ModLoader.IO
 			if ((flags[0] & 8) == 8)
 			{
 				TileIO.ReadContainers(reader);
+			}
+			if ((flags[0] & 16) == 16)
+			{
+				ReadAnglerQuest(reader);
 			}
 		}
 
@@ -250,6 +262,48 @@ namespace Terraria.ModLoader.IO
 				{
 					NPC.killCount[type] = count;
 				}
+			}
+		}
+
+		internal static bool WriteAnglerQuest(BinaryWriter writer)
+		{
+			if (Main.anglerQuest >= ItemLoader.vanillaQuestFishCount)
+			{
+				int type = Main.anglerQuestItemNetIDs[Main.anglerQuest];
+				ModItem modItem = ItemLoader.GetItem(type);
+				writer.Write(modItem.mod.Name);
+				writer.Write(Main.itemName[type]);
+				return true;
+			}
+			return false;
+		}
+
+		internal static void ReadAnglerQuest(BinaryReader reader)
+		{
+			string modName = reader.ReadString();
+			string name = reader.ReadString();
+			Mod mod = ModLoader.GetMod(modName);
+			int type = 0;
+			if (mod != null)
+			{
+				type = mod.ItemType(name);
+			}
+			bool flag = false;
+			if (type > 0)
+			{
+				for (int k = 0; k < Main.anglerQuestItemNetIDs.Length; k++)
+				{
+					if (Main.anglerQuestItemNetIDs[k] == type)
+					{
+						Main.anglerQuest = k;
+						flag = true;
+						break;
+					}
+				}
+			}
+			if (!flag)
+			{
+				Main.AnglerQuestSwap();
 			}
 		}
 		//add to end of Terraria.IO.WorldFileData.MoveToCloud

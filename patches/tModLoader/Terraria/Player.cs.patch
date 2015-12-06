@@ -1073,7 +1073,7 @@
  		{
  			int num = 0;
  			int fishingPole = this.inventory[this.selectedItem].fishingPole;
-+			int bestFisingPoleInventoryIndex = this.selectedItem;
++			int bestFishingPoleIndex = this.selectedItem;
  			if (fishingPole == 0)
  			{
  				for (int i = 0; i < 58; i++)
@@ -1081,7 +1081,7 @@
  					if (this.inventory[i].fishingPole > fishingPole)
  					{
  						fishingPole = this.inventory[i].fishingPole;
-+						bestFisingPoleInventoryIndex = i;
++						bestFishingPoleIndex = i;
  					}
  				}
  			}
@@ -1089,7 +1089,7 @@
  			{
  				num2 = (int)((float)num2 * 0.9f);
  			}
-+			PlayerHooks.GetFishingLevel(this, this.inventory[bestFisingPoleInventoryIndex], this.inventory[j], ref num2);
++			PlayerHooks.GetFishingLevel(this, this.inventory[bestFishingPoleIndex], this.inventory[j], ref num2);
  			return num2;
  		}
  
@@ -1544,7 +1544,18 @@
  			Item item = new Item();
  			item.type = 0;
  			float num = 1f;
-@@ -34571,69 +34782,24 @@
+@@ -34415,6 +34626,10 @@
+ 			{
+ 				num = 0.25f - (float)(this.anglerQuestsFinished - 100) * 0.002f;
+ 			}
++			else
++			{
++				num = 0.15f;
++			}
+ 			if (this.anglerQuestsFinished == 5)
+ 			{
+ 				item.SetDefaults(2428, false);
+@@ -34571,69 +34786,24 @@
  					}
  				}
  			}
@@ -1619,7 +1630,7 @@
  			}
  			Item item7 = new Item();
  			int num4 = (this.anglerQuestsFinished + 50) / 2;
-@@ -34670,16 +34836,7 @@
+@@ -34670,16 +34840,7 @@
  				item7.SetDefaults(72, false);
  				item7.stack = num4;
  			}
@@ -1637,7 +1648,7 @@
  			if (Main.rand.Next((int)(100f * num)) <= 50)
  			{
  				Item item8 = new Item();
-@@ -34719,14 +34876,19 @@
+@@ -34719,14 +34880,19 @@
  				{
  					item8.stack++;
  				}
@@ -1663,7 +1674,7 @@
  					}
  				}
  			}
-@@ -34785,6 +34947,7 @@
+@@ -34785,6 +34951,7 @@
  					list.Add(3024);
  				}
  			}

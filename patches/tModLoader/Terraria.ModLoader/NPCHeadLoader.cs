@@ -7,8 +7,8 @@ namespace Terraria.ModLoader
 {
 	public static class NPCHeadLoader
 	{
-		public const int vanillaHeadCount = 24;
-		public const int vanillaBossHeadCount = 31;
+		public static readonly int vanillaHeadCount = Main.npcHeadTexture.Length;
+		public static readonly int vanillaBossHeadCount = Main.npcHeadBossTexture.Length;
 		private static int nextHead = vanillaHeadCount;
 		private static int nextBossHead = vanillaBossHeadCount;
 		internal static IDictionary<string, int> heads = new Dictionary<string, int>();

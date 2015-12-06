@@ -475,7 +475,7 @@
  				if (projectile.bobber)
  				{
 -					if (projectile.ai[1] > 0f && projectile.ai[1] < 3602f && projectile.ai[0] == 1f)
-+					if (projectile.ai[1] > 0f && projectile.ai[1] < (float)itemName.Length && projectile.ai[0] == 1f)
++					if (projectile.ai[1] > 0f && projectile.ai[1] < (float)ItemLoader.ItemCount() && projectile.ai[0] == 1f)
  					{
  						int num263 = (int)projectile.ai[1];
  						Vector2 center = projectile.Center;

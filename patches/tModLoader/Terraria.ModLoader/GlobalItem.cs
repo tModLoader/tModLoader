@@ -272,12 +272,16 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void CaughtFishStack(int type, ref int stack)
+		{
+		}
+
 		public virtual bool IsAnglerQuestAvailable(int type)
 		{
 			return true;
 		}
 
-		public virtual void AnglerQuestChat(bool gotFish, bool anglerQuestFinished, int type, ref string description, ref string catchLocation)
+		public virtual void AnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation)
 		{
 		}
 	}

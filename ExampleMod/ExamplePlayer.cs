@@ -73,16 +73,12 @@ namespace ExampleMod
 			}
 		}
 
-		public override void GetFishingLevel(Item fishingRod, Item bait, ref int fishingLevel)
+		public override void CatchFish(Item fishingRod, Item bait, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
 		{
-			if (player.HasBuff(mod.BuffType("CarMount")) > -1)
+			if (junk)
 			{
-				fishingLevel = (int)(fishingLevel * 1.1f);
+				return;
 			}
-		}
-
-		public override void OnFishSelected(Item fishingRod, Item bait, int liquidType, int poolCount, int worldLayer, int questFish, ref int caughtType)
-		{
 			if (player.HasBuff(BuffID.TwinEyesMinion) > -1 && liquidType == 0 && Main.rand.Next(3) == 0)
 			{
 				caughtType = mod.ItemType("SparklingSphere");
@@ -90,6 +86,14 @@ namespace ExampleMod
 			if (player.gravDir == -1f && questFish == mod.ItemType("ExampleQuestFish") && Main.rand.Next(2) == 0)
 			{
 				caughtType = mod.ItemType("ExampleQuestFish");
+			}
+		}
+
+		public override void GetFishingLevel(Item fishingRod, Item bait, ref int fishingLevel)
+		{
+			if (player.HasBuff(mod.BuffType("CarMount")) > -1)
+			{
+				fishingLevel = (int)(fishingLevel * 1.1f);
 			}
 		}
 

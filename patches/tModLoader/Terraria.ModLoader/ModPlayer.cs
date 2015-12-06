@@ -116,7 +116,15 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void OnFishSelected(Item fishingRod, Item bait, int liquidType, int poolCount, int worldLayer, int questFish, ref int caughtType)
+		public virtual void OnHitNPC(Item item, NPC target, int damage, float knockBack, bool crit)
+		{
+		}
+
+		public virtual void OnHitByNPC(NPC npc, int damage, bool crit)
+		{
+		}
+
+		public virtual void CatchFish(Item fishingRod, Item bait, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
 		{
 		}
 
@@ -124,19 +132,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void AnglerQuestReward(float quality, List<Item> rewardItems)
+		public virtual void AnglerQuestReward(float rareMultiplier, List<Item> rewardItems)
 		{
 		}
 
-		public virtual void GetDyeTraderReward(List<int> dyeItemIDsPool)
-		{
-		}
-
-		public virtual void OnHitNPC(Item item, NPC target, int damage, float knockBack, bool crit)
-		{
-		}
-
-		public virtual void OnHitByNPC(NPC target, int damage, bool crit)
+		public virtual void GetDyeTraderReward(List<int> rewardPool)
 		{
 		}
 		//TODO

@@ -195,6 +195,10 @@ namespace Terraria.ModLoader
 			ItemLoader.items[id] = item;
 			item.texture = texture;
 			item.mod = this;
+			if (item.IsQuestFish())
+			{
+				ItemLoader.questFish.Add(id);
+			}
 		}
 
 		public ModItem GetItem(string name)
@@ -1000,12 +1004,6 @@ namespace Terraria.ModLoader
 			SoundLoader.musicToItem[musicSlot] = itemType;
 			SoundLoader.itemToMusic[itemType] = musicSlot;
 			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
-		}
-
-		public void AddQuestFish(int itemType)
-		{
-			Array.Resize(ref Main.anglerQuestItemNetIDs, Main.anglerQuestItemNetIDs.Length + 1);
-			Main.anglerQuestItemNetIDs[Main.anglerQuestItemNetIDs.Length - 1] = itemType;
 		}
 
 		public void RegisterHotKey(string name, string defaultKey)

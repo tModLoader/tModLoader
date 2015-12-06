@@ -263,23 +263,36 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnFishSelected(Player player, Item fishingRod, int liquidType, int poolCount, int worldLayer, int questFish, ref int caughtType)
+		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockBack, bool crit)
 		{
-			int j = 0;
-			while (j < 58)
+			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				if (player.inventory[j].stack > 0 && player.inventory[j].bait > 0)
+				modPlayer.OnHitNPC(item, target, damage, knockBack, crit);
+			}
+		}
+
+		internal static void OnHitByNPC(Player player, NPC npc, int damage, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitByNPC(npc, damage, crit);
+			}
+		}
+
+		internal static void CatchFish(Player player, Item fishingRod, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
+		{
+			int i = 0;
+			while (i < 58)
+			{
+				if (player.inventory[i].stack > 0 && player.inventory[i].bait > 0)
 				{
 					break;
 				}
-				else
-				{
-					j++;
-				}
+				i++;
 			}
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				modPlayer.OnFishSelected(fishingRod, player.inventory[j], liquidType, poolCount, worldLayer, questFish, ref caughtType);
+				modPlayer.CatchFish(fishingRod, player.inventory[i], liquidType, poolSize, worldLayer, questFish, ref caughtType, ref junk);
 			}
 		}
 
@@ -291,35 +304,19 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void AnglerQuestReward(Player player, float quality, List<Item> rewardItems)
+		internal static void AnglerQuestReward(Player player, float rareMultiplier, List<Item> rewardItems)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				modPlayer.AnglerQuestReward(quality, rewardItems);
+				modPlayer.AnglerQuestReward(rareMultiplier, rewardItems);
 			}
 		}
 
-		internal static void GetDyeTraderReward(Player player, List<int> dyeItemIDsPool)
+		internal static void GetDyeTraderReward(Player player, List<int> rewardPool)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				modPlayer.GetDyeTraderReward(dyeItemIDsPool);
-			}
-		}
-
-		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockBack, bool crit)
-		{
-			foreach (ModPlayer modPlayer in player.modPlayers)
-			{
-				modPlayer.OnHitNPC(item, target, damage, knockBack, crit);
-			}
-		}
-
-		internal static void OnHitByNPC(Player player, NPC target, int damage, bool crit)
-		{
-			foreach (ModPlayer modPlayer in player.modPlayers)
-			{
-				modPlayer.OnHitByNPC(target, damage, crit);
+				modPlayer.GetDyeTraderReward(rewardPool);
 			}
 		}
 	}

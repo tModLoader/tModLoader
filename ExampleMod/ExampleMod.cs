@@ -43,7 +43,6 @@ namespace ExampleMod
 			SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
 			Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 			SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
-			AddQuestFish(ItemType("ExampleQuestFish"));
 		}
 
 		public override void Unload()

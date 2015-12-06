@@ -14,6 +14,8 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<int, ModItem> items = new Dictionary<int, ModItem>();
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
 		internal static readonly IList<int> animations = new List<int>();
+		internal static readonly int vanillaQuestFishCount = Main.anglerQuestItemNetIDs.Length;
+		internal static readonly IList<int> questFish = new List<int>();
 
 		internal static int ReserveItemID()
 		{
@@ -32,6 +34,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		internal static int ItemCount()
+		{
+			return nextItem;
 		}
 
 		internal static void ResizeArrays()
@@ -58,6 +65,11 @@ namespace Terraria.ModLoader
 				ItemID.Sets.ExtractinatorMode[k] = -1;
 				ItemID.Sets.StaffMinionSlotsRequired[k] = 1;
 			}
+			Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount + questFish.Count);
+			for (int k = 0; k < questFish.Count; k++)
+			{
+				Main.anglerQuestItemNetIDs[vanillaQuestFishCount + k] = questFish[k];
+			}
 		}
 
 		internal static void Unload()
@@ -66,7 +78,7 @@ namespace Terraria.ModLoader
 			nextItem = ItemID.Count;
 			globalItems.Clear();
 			animations.Clear();
-			Array.Resize(ref Main.anglerQuestItemNetIDs, 39);
+			questFish.Clear();
 		}
 
 		internal static bool IsModItem(Item item)
@@ -1018,6 +1030,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void CaughtFishStack(Item item)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.CaughtFishStack(ref item.stack);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.CaughtFishStack(item.type, ref item.stack);
+			}
+		}
+
 		internal static void IsAnglerQuestAvailable(int itemID, ref bool notAvailable)
 		{
 			ModItem modItem = GetItem(itemID);
@@ -1031,16 +1055,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void AnglerQuestChat(bool gotFish, bool anglerQuestFinished, int type, ref string description, ref string catchLocation)
+		internal static void AnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation)
 		{
 			ModItem modItem = GetItem(type);
-			if (modItem != null && !Main.anglerQuestFinished && !gotFish)
+			if (modItem != null && !Main.anglerQuestFinished && !turningInFish)
 			{
-				modItem.AnglerQuestChat(ref description, ref catchLocation);
+				modItem.AnglerQuestChat(ref chat, ref catchLocation);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				globalItem.AnglerQuestChat(gotFish, anglerQuestFinished, type, ref description, ref catchLocation);
+				globalItem.AnglerChat(turningInFish, anglerQuestFinished, type, ref chat, ref catchLocation);
 			}
 		}
 	}

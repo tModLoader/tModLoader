@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -18,6 +18,11 @@ namespace ExampleMod.Items
 			item.height = 26;
 			item.uniqueStack = true;
 			item.rare = -11;
+		}
+
+		public override bool IsQuestFish()
+		{
+			return true;
 		}
 
 		public override bool IsAnglerQuestAvailable()

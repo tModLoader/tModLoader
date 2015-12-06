@@ -299,6 +299,24 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void CaughtFishStack(ref int stack)
+		{
+		}
+
+		public virtual bool IsQuestFish()
+		{
+			return false;
+		}
+
+		public virtual bool IsAnglerQuestAvailable()
+		{
+			return true;
+		}
+
+		public virtual void AnglerQuestChat(ref string description, ref string catchLocation)
+		{
+		}
+
 		internal void SetupItem(Item item)
 		{
 			SetupModItem(item);
@@ -344,15 +362,6 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void AddRecipes()
-		{
-		}
-
-		public virtual bool IsAnglerQuestAvailable()
-		{
-			return true;
-		}
-
-		public virtual void AnglerQuestChat(ref string description, ref string catchLocation)
 		{
 		}
 	}

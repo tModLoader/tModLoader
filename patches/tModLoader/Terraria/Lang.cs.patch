@@ -26,7 +26,7 @@
  			if (Lang.lang <= 1 || english)
  			{
  				switch (l)
-@@ -31781,8 +31786,19 @@
+@@ -31781,6 +31786,16 @@
  							text = "\n(Caught Jungle Surface)";
  						}
  						break;
@@ -42,10 +42,15 @@
 +						break;
  				}
  			}
-+			ItemLoader.AnglerQuestChat(gotFish, Main.anglerQuestFinished, Main.anglerQuestItemNetIDs[Main.anglerQuest], ref array[0], ref text);
  			string text2 = array[0];
- 			for (int i = 1; i < array.Length; i++)
+@@ -31791,6 +31806,7 @@
+ 					text2 = text2 + " " + array[i];
+ 				}
+ 			}
++			ItemLoader.AnglerChat(gotFish, Main.anglerQuestFinished, Main.anglerQuestItemNetIDs[Main.anglerQuest], ref text2, ref text);
+ 			if (text.Length > 0)
  			{
+ 				text2 = text2 + "\n" + text;
 @@ -32679,7 +32695,7 @@
  #if CLIENT
  				if (Lang.mapLegend == null)
