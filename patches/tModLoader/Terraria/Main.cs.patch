@@ -963,6 +963,42 @@
  						}
  					}
  				}
+@@ -47095,7 +47223,7 @@
+ 			}
+ 		}
+ 
+-		protected void LoadNPC(int i)
++		public void LoadNPC(int i)
+ 		{
+ 			if (!Main.NPCLoaded[i] || Main.npcTexture[i] == null)
+ 			{
+@@ -47110,7 +47238,7 @@
+ 			}
+ 		}
+ 
+-		protected void LoadProjectile(int i)
++		public void LoadProjectile(int i)
+ 		{
+ 			if (!Main.projectileLoaded[i])
+ 			{
+@@ -47125,7 +47253,7 @@
+ 			}
+ 		}
+ 
+-		protected void LoadGore(int i)
++		public void LoadGore(int i)
+ 		{
+ 			if (!Main.goreLoaded[i])
+ 			{
+@@ -47140,7 +47268,7 @@
+ 			}
+ 		}
+ 
+-		protected void LoadWall(int i)
++		public void LoadWall(int i)
+ 		{
+ 			if (!Main.wallLoaded[i])
+ 			{
 @@ -47155,7 +47283,7 @@
  			}
  		}

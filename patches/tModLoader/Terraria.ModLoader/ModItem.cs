@@ -174,6 +174,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void UpdateVanity(Player player)
+		{
+		}
+
 		public virtual bool IsArmorSet(Item head, Item body, Item legs)
 		{
 			return false;
@@ -183,9 +187,15 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual bool IsVanitySet(Item head, Item body, Item legs)
+		public virtual bool IsVanitySet(int head, int body, int legs)
 		{
-			return IsArmorSet(head, body, legs);
+			Item headItem = new Item();
+			headItem.SetDefaults(Item.headType[head]);
+			Item bodyItem = new Item();
+			bodyItem.SetDefaults(Item.bodyType[body]);
+			Item legItem = new Item();
+			legItem.SetDefaults(Item.legType[legs]);
+			return IsArmorSet(headItem, bodyItem, legItem);
 		}
 
 		public virtual void PreUpdateVanitySet(Player player)

@@ -20,7 +20,7 @@ namespace Terraria.ModLoader
 	public static class ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
-		public static readonly string version = "tModLoader v0.6";
+		public static readonly string version = "tModLoader v0.7";
 		#if WINDOWS
         private const bool windows = true;
 

@@ -240,15 +240,16 @@
  			}
  			else if (Main.rand.Next(100) < num21)
  			{
-@@ -11900,6 +11950,7 @@
+@@ -11900,6 +11950,8 @@
  					}
  				}
  			}
-+			PlayerHooks.CatchFish(Main.player[this.owner], Main.player[this.owner].inventory[Main.player[this.owner].selectedItem], (flag ? 1 : (flag2 ? 2 : 0)), num5, num14, num22, ref num13, ref junk);
++			PlayerHooks.CatchFish(Main.player[this.owner], Main.player[this.owner].inventory[Main.player[this.owner].selectedItem],
++				(flag ? 1 : (flag2 ? 2 : 0)), num5, num14, num22, ref num13, ref junk);
  			if (num13 > 0)
  			{
  				if (Main.player[this.owner].sonarPotion)
-@@ -11954,6 +12005,8 @@
+@@ -11954,6 +12006,8 @@
  						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
  					case "Random":
  						return Main.rand.NextFloat();
@@ -257,7 +258,7 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -12009,6 +12062,11 @@
+@@ -12009,6 +12063,11 @@
  		}
  
  		public void AI()
@@ -269,7 +270,7 @@
  		{
  			if (this.aiStyle == 1)
  			{
-@@ -19191,7 +19249,7 @@
+@@ -19191,7 +19250,7 @@
  														Rectangle value13 = new Rectangle((int)Main.player[this.owner].position.X, (int)Main.player[this.owner].position.Y, Main.player[this.owner].width, Main.player[this.owner].height);
  														if (rectangle5.Intersects(value13))
  														{
@@ -278,7 +279,7 @@
  															{
  																int num594 = (int)this.ai[1];
  																Item item = new Item();
-@@ -35510,6 +35568,11 @@
+@@ -35510,6 +35569,11 @@
  			Main.projectileIdentity[this.owner, this.identity] = -1;
  			int num = this.timeLeft;
  			this.timeLeft = 0;
@@ -290,7 +291,7 @@
  			if (this.type == 634 || this.type == 635)
  			{
  				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
-@@ -40434,11 +40497,17 @@
+@@ -40434,11 +40498,17 @@
  					}
  				}
  			}

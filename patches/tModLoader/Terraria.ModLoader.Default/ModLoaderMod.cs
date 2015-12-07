@@ -34,23 +34,21 @@ namespace Terraria.ModLoader.Default
 
 		private static void LoadTextures()
 		{
-#if CLIENT
-			if (texturesLoaded)
+			if (Main.dedServ || texturesLoaded)
 			{
 				return;
 			}
-            byte[] data = File.ReadAllBytes(ContentPath + Path.DirectorySeparatorChar + "MysteryItem.png");
+			byte[] data = File.ReadAllBytes(ContentPath + Path.DirectorySeparatorChar + "MysteryItem.png");
 			using (MemoryStream stream = new MemoryStream(data))
 			{
 				mysteryItemTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
 			}
-            data = File.ReadAllBytes(ContentPath + Path.DirectorySeparatorChar + "StartBag.png");
-            using(MemoryStream stream = new MemoryStream(data))
-            {
-                startBagTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
-            }
+			data = File.ReadAllBytes(ContentPath + Path.DirectorySeparatorChar + "StartBag.png");
+			using (MemoryStream stream = new MemoryStream(data))
+			{
+				startBagTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
+			}
 			texturesLoaded = true;
-#endif
 		}
 	}
 }

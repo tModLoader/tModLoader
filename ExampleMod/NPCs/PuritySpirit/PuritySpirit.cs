@@ -12,8 +12,8 @@ namespace ExampleMod.NPCs.PuritySpirit
 	{
 		private const int size = 120;
 		private const int particleSize = 12;
-		public static readonly int arenaWidth = 2 * NPC.sWidth;
-		public static readonly int arenaHeight = 2 * NPC.sHeight;
+		public static readonly int arenaWidth = (int)(1.3f * NPC.sWidth);
+		public static readonly int arenaHeight = (int)(1.3f * NPC.sHeight);
 
 		public override void SetDefaults()
 		{
@@ -40,6 +40,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			{
 				npc.buffImmune[k] = true;
 			}
+			NPCID.Sets.MustAlwaysDraw[npc.type] = true;
 			music = MusicID.Title;
 		}
 
@@ -111,6 +112,18 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 		}
 
+		private int portalFrame
+		{
+			get
+			{
+				return (int)npc.localAI[0];
+			}
+			set
+			{
+				npc.localAI[0] = value;
+			}
+		}
+
 		private IList<Particle> particles = new List<Particle>();
 		private float[,] aura = new float[size, size];
 		private const int dpsCap = 4000;
@@ -124,9 +137,14 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (!Main.dedServ)
 			{
 				UpdateParticles();
+				portalFrame++;
+				portalFrame %= 6 * Main.projFrames[ProjectileID.PortalGunGate];
 			}
-			npc.dontTakeDamage = stage == 0;
 			FindPlayers();
+			if (targets.Count > 0 && npc.timeLeft < NPC.activeTime)
+			{
+				npc.timeLeft = NPC.activeTime;
+			}
 			damageTotal -= dpsCap;
 			if (damageTotal < 0)
 			{
@@ -142,6 +160,13 @@ namespace ExampleMod.NPCs.PuritySpirit
 					Initialize();
 					break;
 				case 1:
+					UltimateAttack();
+					if (attackProgress == 0)
+					{
+						stage++;
+					}
+					break;
+				case 2:
 					DoAttack();
 					break;
 			}
@@ -210,15 +235,54 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public void Initialize()
 		{
-			stage++;
+			attackProgress++;
+			if (attackProgress == 60)
+			{
+				Talk("You, who have challenged me...");
+			}
+			if (attackProgress == 180)
+			{
+				SetupCrystals(arenaWidth / 6, true);
+			}
+			if (attackProgress >= 420)
+			{
+				Talk("Show me the power that has saved Terraria!");
+				attackProgress = 0;
+				stage++;
+				npc.dontTakeDamage = false;
+			}
 		}
 
-		private void SetupCrystals(int radius)
+		private void SetupCrystals(int radius, bool clockwise)
 		{
+			if (Main.netMode == 1)
+			{
+				return;
+			}
+			Vector2 center = npc.Center;
+			for (int k = 0; k < 10; k++)
+			{
+				float angle = 2f * (float)Math.PI / 10f * k;
+				Vector2 pos = center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+				int damage = 80;
+				if (Main.expertMode)
+				{
+					damage = (int)(100 / Main.expertDamage);
+				}
+				int proj = Projectile.NewProjectile(pos.X, pos.Y, 0f, 0f, mod.ProjectileType("PureCrystal"), damage, 0f, Main.myPlayer, npc.whoAmI, angle);
+				Main.projectile[proj].localAI[0] = radius;
+				Main.projectile[proj].localAI[1] = clockwise ? 1 : -1;
+				Main.projectile[proj].netUpdate = true;
+			}
 		}
 
 		private void UltimateAttack()
 		{
+			attackProgress++;
+			if (attackProgress >= 300)
+			{
+				attackProgress = 0;
+			}
 		}
 
 		private void DoAttack()
@@ -304,7 +368,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			{
 				if (!saidRushMessage)
 				{
-					Main.NewText("<Spirit of Purity> Oh, in a rush now, are we?", 150, 250, 150);
+					Talk("Oh, in a rush now, are we?");
 					saidRushMessage = true;
 				}
 				damage = 0;
@@ -327,6 +391,39 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 			spriteBatch.Draw(mod.GetTexture("NPCs/PuritySpirit/PurityEyes"), npc.position - Main.screenPosition, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 			return false;
+		}
+
+		public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
+		{
+			int portalWidth = 48;
+			int portalDepth = 18;
+			Color color = new Color(64, 255, 64);
+			int centerX = (int)npc.Center.X;
+			int centerY = (int)npc.Center.Y;
+			Main.instance.LoadProjectile(ProjectileID.PortalGunGate);
+			for (int x = centerX - arenaWidth / 2; x < centerX + arenaWidth / 2; x += portalWidth)
+			{
+				int frameNum = (portalFrame / 6 + x / portalWidth) % Main.projFrames[ProjectileID.PortalGunGate];
+				Rectangle frame = new Rectangle(0, frameNum * (portalWidth + 2), portalDepth, portalWidth);
+				Vector2 drawPos = new Vector2(x + portalWidth / 2, centerY - arenaHeight / 2) - Main.screenPosition;
+				spriteBatch.Draw(Main.projectileTexture[ProjectileID.PortalGunGate], drawPos, frame, color, (float)-Math.PI / 2f, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
+				drawPos.Y += arenaHeight;
+				spriteBatch.Draw(Main.projectileTexture[ProjectileID.PortalGunGate], drawPos, frame, color, (float)Math.PI / 2f, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
+			}
+			for (int y = centerY - arenaHeight / 2; y < centerY + arenaHeight / 2; y += portalWidth)
+			{
+				int frameNum = (portalFrame / 6 + y / portalWidth) % Main.projFrames[ProjectileID.PortalGunGate];
+				Rectangle frame = new Rectangle(0, frameNum * (portalWidth + 2), portalDepth, portalWidth);
+				Vector2 drawPos = new Vector2(centerX - arenaWidth / 2, y + portalWidth / 2) - Main.screenPosition;
+				spriteBatch.Draw(Main.projectileTexture[ProjectileID.PortalGunGate], drawPos, frame, color, (float)Math.PI, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
+				drawPos.X += arenaWidth;
+				spriteBatch.Draw(Main.projectileTexture[ProjectileID.PortalGunGate], drawPos, frame, color, 0f, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
+			}
+		}
+
+		private void Talk(string message)
+		{
+			Main.NewText("<Spirit of Purity> " + message, 150, 250, 150);
 		}
 	}
 

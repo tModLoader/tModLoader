@@ -504,6 +504,14 @@ namespace Terraria.ModLoader
 				globalItem.UpdateAccessory(item, player);
 			}
 		}
+
+		internal static void UpdateVanity(Item item, Player player)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.UpdateVanity(player);
+			}
+		}
 		//at end of Terraria.Player.UpdateArmorSets call ItemLoader.UpdateArmorSet(this, this.armor[0], this.armor[1], this.armor[2])
 		internal static void UpdateArmorSet(Player player, Item head, Item body, Item legs)
 		{
@@ -528,33 +536,27 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
-
-		private static void GetVanityArmor(Player player, out Item head, out Item body, out Item legs)
-		{
-			head = player.armor[10].headSlot >= 0 ? player.armor[10] : player.armor[0];
-			body = player.armor[11].bodySlot >= 0 ? player.armor[11] : player.armor[1];
-			legs = player.armor[12].legSlot >= 0 ? player.armor[12] : player.armor[2];
-		}
 		//in Terraria.Player.PlayerFrame after setting armor effects fields call this
 		internal static void PreUpdateVanitySet(Player player)
 		{
-			Item head, body, legs;
-			GetVanityArmor(player, out head, out body, out legs);
-			if (IsModItem(head) && head.modItem.IsVanitySet(head, body, legs))
+			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
+			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				head.modItem.PreUpdateVanitySet(player);
+				headTexture.PreUpdateVanitySet(player);
 			}
-			if (IsModItem(body) && body.modItem.IsVanitySet(head, body, legs))
+			if (bodyTexture != null && bodyTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				body.modItem.PreUpdateVanitySet(player);
+				bodyTexture.PreUpdateVanitySet(player);
 			}
-			if (IsModItem(legs) && legs.modItem.IsVanitySet(head, body, legs))
+			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				legs.modItem.PreUpdateVanitySet(player);
+				legTexture.PreUpdateVanitySet(player);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				string set = globalItem.IsVanitySet(head, body, legs);
+				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (set.Length > 0)
 				{
 					globalItem.PreUpdateVanitySet(player, set);
@@ -564,23 +566,24 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.PlayerFrame after armor sets creating dust call this
 		internal static void UpdateVanitySet(Player player)
 		{
-			Item head, body, legs;
-			GetVanityArmor(player, out head, out body, out legs);
-			if (IsModItem(head) && head.modItem.IsVanitySet(head, body, legs))
+			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
+			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				head.modItem.UpdateVanitySet(player);
+				headTexture.UpdateVanitySet(player);
 			}
-			if (IsModItem(body) && body.modItem.IsVanitySet(head, body, legs))
+			if (bodyTexture != null && bodyTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				body.modItem.UpdateVanitySet(player);
+				bodyTexture.UpdateVanitySet(player);
 			}
-			if (IsModItem(legs) && legs.modItem.IsVanitySet(head, body, legs))
+			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				legs.modItem.UpdateVanitySet(player);
+				legTexture.UpdateVanitySet(player);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				string set = globalItem.IsVanitySet(head, body, legs);
+				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (set.Length > 0)
 				{
 					globalItem.UpdateVanitySet(player, set);
@@ -591,23 +594,24 @@ namespace Terraria.ModLoader
 		//  ItemLoader.ArmorSetShadows(player, ref flag, ref flag2, ref flag3, ref flag4);
 		internal static void ArmorSetShadows(Player player, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
 		{
-			Item head, body, legs;
-			GetVanityArmor(player, out head, out body, out legs);
-			if (IsModItem(head) && head.modItem.IsVanitySet(head, body, legs))
+			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
+			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				head.modItem.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				headTexture.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
 			}
-			if (IsModItem(body) && body.modItem.IsVanitySet(head, body, legs))
+			if (bodyTexture != null && bodyTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				body.modItem.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				bodyTexture.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
 			}
-			if (IsModItem(legs) && legs.modItem.IsVanitySet(head, body, legs))
+			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				legs.modItem.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				legTexture.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				string set = globalItem.IsVanitySet(head, body, legs);
+				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (set.Length > 0)
 				{
 					globalItem.ArmorSetShadows(player, set, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);

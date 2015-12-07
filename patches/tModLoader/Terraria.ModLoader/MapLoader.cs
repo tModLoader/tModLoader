@@ -62,7 +62,6 @@ namespace Terraria.ModLoader
 			}
 			Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition + colors.Count);
 			Lang.mapLegend.Resize(MapHelper.modPosition + names.Count);
-			ErrorLogger.ClearLog();
 			for (int k = 0; k < colors.Count; k++)
 			{
 				MapHelper.colorLookup[MapHelper.modPosition + k] = colors[k];

@@ -9,9 +9,12 @@ namespace Terraria.ModLoader
 	{
 		//in Terraria.Main.DrawPlayer and Terraria.Main.DrawPlayerHead get rid of checks for slot too high (not necessary for loading)
 		private static readonly IDictionary<EquipType, int> nextEquip = new Dictionary<EquipType, int>();
-		internal static readonly IDictionary<EquipType, IDictionary<string, int>> equips = new Dictionary<EquipType, IDictionary<string, int>>();
-		internal static readonly IDictionary<int, IDictionary<EquipType, int>> idToSlot = new Dictionary<int, IDictionary<EquipType, int>>();
-		internal static readonly IDictionary<EquipType, IDictionary<int, int>> slotToId = new Dictionary<EquipType, IDictionary<int, int>>();
+		internal static readonly IDictionary<EquipType, IDictionary<int, EquipTexture>> equipTextures =
+			new Dictionary<EquipType, IDictionary<int, EquipTexture>>();
+		internal static readonly IDictionary<int, IDictionary<EquipType, int>> idToSlot =
+			new Dictionary<int, IDictionary<EquipType, int>>();
+		internal static readonly IDictionary<EquipType, IDictionary<int, int>> slotToId =
+			new Dictionary<EquipType, IDictionary<int, int>>();
 		internal static readonly IDictionary<int, string> femaleTextures = new Dictionary<int, string>();
 		internal static readonly IDictionary<int, string> armTextures = new Dictionary<int, string>();
 
@@ -20,7 +23,7 @@ namespace Terraria.ModLoader
 			foreach (EquipType type in Enum.GetValues(typeof(EquipType)))
 			{
 				nextEquip[type] = GetNumVanilla(type);
-				equips[type] = new Dictionary<string, int>();
+				equipTextures[type] = new Dictionary<int, EquipTexture>();
 			}
 			slotToId[EquipType.Head] = new Dictionary<int, int>();
 			slotToId[EquipType.Body] = new Dictionary<int, int>();
@@ -34,21 +37,16 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		public static int GetEquipSlot(EquipType type, string texture)
+		public static EquipTexture GetEquipTexture(EquipType type, int slot)
 		{
-			if (equips[type].ContainsKey(texture))
+			if (equipTextures[type].ContainsKey(slot))
 			{
-				return equips[type][texture];
+				return equipTextures[type][slot];
 			}
 			else
 			{
-				return 0;
+				return null;
 			}
-		}
-
-		public static sbyte GetAccessorySlot(EquipType type, string texture)
-		{
-			return (sbyte)GetEquipSlot(type, texture);
 		}
 
 		internal static void ResizeAndFillArrays()
@@ -92,10 +90,10 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.accBalloonTexture, nextEquip[EquipType.Balloon]);
 			foreach (EquipType type in Enum.GetValues(typeof(EquipType)))
 			{
-				foreach (string texture in equips[type].Keys)
+				foreach (int slot in equipTextures[type].Keys)
 				{
-					int slot = GetEquipSlot(type, texture);
-					GetTextureArray(type)[slot] = ModLoader.GetTexture(texture);
+					EquipTexture texture = GetEquipTexture(type, slot);
+					GetTextureArray(type)[slot] = ModLoader.GetTexture(texture.Texture);
 					if (type == EquipType.Body)
 					{
 						if (femaleTextures.ContainsKey(slot))
@@ -132,7 +130,7 @@ namespace Terraria.ModLoader
 			foreach (EquipType type in Enum.GetValues(typeof(EquipType)))
 			{
 				nextEquip[type] = GetNumVanilla(type);
-				equips[type].Clear();
+				equipTextures[type].Clear();
 			}
 			idToSlot.Clear();
 			slotToId[EquipType.Head].Clear();

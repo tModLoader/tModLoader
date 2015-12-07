@@ -37,6 +37,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, CraftGroup> craftGroups = new Dictionary<string, CraftGroup>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
+		internal readonly IDictionary<string, EquipTexture> equipTextures = new Dictionary<string, EquipTexture>();
 		internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
 		internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
 		internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
@@ -243,10 +244,23 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public int AddEquipTexture(ModItem item, EquipType type, string texture, string armTexture = "", string femaleTexture = "")
+		public int AddEquipTexture(ModItem item, EquipType type, string name, string texture,
+			string armTexture = "", string femaleTexture = "")
+		{
+			return AddEquipTexture(new EquipTexture(), item, type, name, texture, armTexture, femaleTexture);
+		}
+
+		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string name, string texture,
+			string armTexture = "", string femaleTexture = "")
 		{
 			int slot = EquipLoader.ReserveEquipID(type);
-			EquipLoader.equips[type][texture] = slot;
+			equipTexture.Texture = texture;
+			equipTexture.mod = this;
+			equipTexture.Name = name;
+			equipTexture.Type = type;
+			equipTexture.Slot = slot;
+			equipTexture.item = item;
+			EquipLoader.equipTextures[type][slot] = equipTexture;
 			ModLoader.GetTexture(texture);
 			if (type == EquipType.Body)
 			{
@@ -255,7 +269,7 @@ namespace Terraria.ModLoader
 				ModLoader.GetTexture(armTexture);
 				ModLoader.GetTexture(femaleTexture);
 			}
-			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
+			if (item != null && (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs))
 			{
 				EquipLoader.slotToId[type][slot] = item.item.type;
 			}
@@ -287,7 +301,7 @@ namespace Terraria.ModLoader
 						string armTexture = texture + "_Arms";
 						string femaleTexture = texture + "_FemaleBody";
 						item.AutoloadEquip(equip, ref equipTexture, ref armTexture, ref femaleTexture);
-						int slot = AddEquipTexture(item, equip, equipTexture, armTexture, femaleTexture);
+						int slot = AddEquipTexture(item, equip, name, equipTexture, armTexture, femaleTexture);
 						EquipLoader.idToSlot[item.item.type][equip] = slot;
 					}
 				}
@@ -1106,6 +1120,7 @@ namespace Terraria.ModLoader
 			craftGroups.Clear();
 			items.Clear();
 			globalItems.Clear();
+			equipTextures.Clear();
 			dusts.Clear();
 			tiles.Clear();
 			globalTiles.Clear();

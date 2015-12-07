@@ -19,7 +19,14 @@
  		public const int MaxMoonLordCountdown = 3600;
  		public const int maxBuffs = 5;
  		public const int breathMax = 200;
-@@ -81,7 +88,7 @@
+@@ -75,13 +82,13 @@
+ 		private static int townRangeY = NPC.sHeight;
+ 		public float npcSlots = 1f;
+ 		private static bool noSpawnCycle = false;
+-		private static int activeTime = 750;
++		public static int activeTime = 750;
+ 		private static int defaultSpawnRate = 600;
+ 		private static int defaultMaxSpawns = 5;
  		public bool dontCountMe;
  		public int[] buffType = new int[5];
  		public int[] buffTime = new int[5];
