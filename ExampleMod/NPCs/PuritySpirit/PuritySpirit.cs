@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.Projectiles.PuritySpirit;
 
 namespace ExampleMod.NPCs.PuritySpirit
 {
@@ -64,6 +65,24 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 		}
 
+		private float difficultyGradient
+		{
+			get
+			{
+				double strength = (double)npc.life / (double)npc.lifeMax;
+				double difficulty = 4.0 * (1.0 - strength);
+				return (float)(difficulty % 1.0);
+			}
+		}
+
+		private float timeMultiplier
+		{
+			get
+			{
+				return 1f - (difficulty + difficultyGradient) * 0.2f;
+			}
+		}
+
 		private int stage
 		{
 			get
@@ -88,11 +107,11 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 		}
 
-		private float debuffTimer
+		private int attack
 		{
 			get
 			{
-				return npc.ai[2];
+				return (int)npc.ai[2];
 			}
 			set
 			{
@@ -131,6 +150,8 @@ namespace ExampleMod.NPCs.PuritySpirit
 		private bool saidRushMessage = false;
 		private readonly IList<int> targets = new List<int>();
 		public int[] attackWeights = new int[]{ 2000, 2000, 2000, 2000, 3000 };
+		private const int minAttackWeight = 1000;
+		private const int maxAttackWeight = 4000;
 
 		public override void AI()
 		{
@@ -164,10 +185,18 @@ namespace ExampleMod.NPCs.PuritySpirit
 					if (attackProgress == 0)
 					{
 						stage++;
+						attackTimer = 160f * timeMultiplier;
+						attack = -1;
 					}
 					break;
 				case 2:
-					DoAttack();
+				case 4:
+				case 6:
+				case 8:
+					DoAttack(4);
+					break;
+				case 10:
+					DoAttack(5);
 					break;
 			}
 		}
@@ -236,7 +265,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		public void Initialize()
 		{
 			attackProgress++;
-			if (attackProgress == 60)
+			if (attackProgress == 90)
 			{
 				Talk("You, who have challenged me...");
 			}
@@ -247,6 +276,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (attackProgress >= 420)
 			{
 				Talk("Show me the power that has saved Terraria!");
+				Main.PlaySound(15, -1, -1, 0);
 				attackProgress = 0;
 				stage++;
 				npc.dontTakeDamage = false;
@@ -279,18 +309,146 @@ namespace ExampleMod.NPCs.PuritySpirit
 		private void UltimateAttack()
 		{
 			attackProgress++;
-			if (attackProgress >= 300)
+			if (attackProgress <= 300 && Main.netMode != 1)
+			{
+				const int interval = 60;
+				float x, y;
+				if (attackProgress == 100)
+				{
+					int k = targets[Main.rand.Next(targets.Count)];
+					x = Main.player[k].Center.X;
+					y = Main.player[k].Center.Y;
+				}
+				else if (Main.rand.Next(5) == 0)
+				{
+					int k = targets[Main.rand.Next(targets.Count)];
+					x = Main.player[k].Center.X + interval * Main.rand.Next(-5, 6);
+					y = Main.player[k].Center.Y + interval * Main.rand.Next(-5, 6);
+					if (x < npc.Center.X - arenaWidth / 2)
+					{
+						x += arenaWidth;
+					}
+					else if (x > npc.Center.X + arenaWidth / 2)
+					{
+						x -= arenaWidth;
+					}
+					if (y < npc.Center.Y - arenaHeight / 2)
+					{
+						y += arenaHeight;
+					}
+					else if (y > npc.Center.Y + arenaHeight / 2)
+					{
+						y -= arenaHeight;
+					}
+				}
+				else
+				{
+					int leftBound = (-arenaWidth / 2 + 40) / interval;
+					int rightBound = (arenaWidth / 2 - 40) / interval + 1;
+					int upperBound = (-arenaHeight / 2 + 40) / interval;
+					int lowerBound = (arenaHeight / 2 - 40) / interval + 1;
+					x = npc.Center.X + interval * Main.rand.Next(leftBound, rightBound);
+					y = npc.Center.Y + interval * Main.rand.Next(upperBound, lowerBound);
+				}
+				int damage = 500;
+				int proj = Projectile.NewProjectile(x, y, 0f, 0f, mod.ProjectileType("VoidWorld"), damage, 0f, Main.myPlayer, 0f, 2 * Main.rand.Next(2) - 1);
+				if (Main.rand.Next(10) == 0)
+				{
+					Main.projectile[proj].localAI[0] = 1f;
+				}
+			}
+			if (attackProgress >= 480)
 			{
 				attackProgress = 0;
 			}
 		}
 
-		private void DoAttack()
+		private void DoAttack(int numAttacks)
 		{
+			if (attackTimer > 0f)
+			{
+				attackTimer -= 1f;
+				return;
+			}
+			if (attack < 0)
+			{
+				int totalWeight = 0;
+				for (int k = 0; k < numAttacks; k++)
+				{
+					totalWeight += attackWeights[k];
+				}
+				int choice = Main.rand.Next(totalWeight);
+				for (attack = 0; attack < numAttacks; attack++)
+				{
+					if (choice < attackWeights[attack])
+					{
+						break;
+					}
+					choice -= attackWeights[attack];
+				}
+				attack = 0;
+				npc.netUpdate = true;
+			}
+			switch (attack)
+			{
+				case 0:
+					BeamAttack();
+					break;
+				case 1:
+					SnakeAttack();
+					break;
+				case 2:
+					LaserAttack();
+					break;
+				case 3:
+					SphereAttack();
+					break;
+				case 4:
+					UltimateAttack();
+					break;
+			}
+			if (attackProgress == 0)
+			{
+				attackTimer += 160f * timeMultiplier;
+				attack = -1;
+			}
 		}
 
 		private void BeamAttack()
 		{
+			if (attackProgress == 0)
+			{
+				float y = npc.Center.Y;
+				int damage = 250;
+				for (int k = 0; k < targets.Count; k++)
+				{
+					float x = Main.player[targets[k]].Center.X;
+					Projectile.NewProjectile(x, y, 0f, 0f, mod.ProjectileType("PurityBeam"), damage, 0f, Main.myPlayer, arenaHeight);
+					for (int j = -1; j <= 1; j += 2)
+					{
+						float spawnX = x + j * Main.rand.Next(200, 401);
+						if (spawnX > npc.Center.X + arenaWidth / 2)
+						{
+							spawnX -= arenaWidth;
+						}
+						else if (spawnX < npc.Center.X - arenaWidth / 2)
+						{
+							spawnX += arenaWidth;
+						}
+						Projectile.NewProjectile(spawnX, y, 0f, 0f, mod.ProjectileType("PurityBeam"), damage, 0f, Main.myPlayer, arenaHeight);
+					}
+				}
+				for (int k = 0; k < 2 * (difficulty + 1); k++)
+				{
+					Projectile.NewProjectile(npc.Center.X + Main.rand.Next(-arenaWidth / 2 + 50, arenaWidth / 2 - 50 + 1), y, 0f, 0f, mod.ProjectileType("PurityBeam"), damage, 0f, Main.myPlayer, arenaHeight);
+				}
+				attackProgress = (int)(PurityBeam.charge + 60f);
+			}
+			attackProgress--;
+			if (attackProgress < 0)
+			{
+				attackProgress = 0;
+			}
 		}
 
 		private void SnakeAttack()

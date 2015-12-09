@@ -43,10 +43,12 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			}
 			if (timer < 120)
 			{
+				projectile.alpha = (120 - timer) * 255 / 120;
 				timer++;
 			}
 			else
 			{
+				projectile.alpha = 0;
 				projectile.hostile = true;
 			}
 			projectile.timeLeft = 2;
@@ -54,10 +56,6 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.ai[1] %= 2f * (float)Math.PI;
 			projectile.rotation -= 2f * (float)Math.PI / 120f * projectile.localAI[1];
 			projectile.Center = center.Center + projectile.localAI[0] * new Vector2((float)Math.Cos(projectile.ai[1]), (float)Math.Sin(projectile.ai[1]));
-			if (!projectile.hostile)
-			{
-				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, mod.DustType("Sparkle"), projectile.velocity.X, projectile.velocity.Y);
-			}
 		}
 
 		public override void OnHitPlayer(Player target, int damage, bool crit)
@@ -74,13 +72,17 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return Color.White;
+			return Color.White * ((255 - projectile.alpha) / 255f);
 		}
 
 		public override void PostDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
 			//Vector2 drawPos = projectile.position - Main.screenPosition;
 			//spriteBatch.Draw(mod.GetTexture("Projectiles/PuritySpirit/PureCrystalShield"), drawPos, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			if (!projectile.hostile)
+			{
+				return;
+			}
 			Vector2 drawPos = projectile.Center - Main.screenPosition;
 			Vector2 drawCenter = new Vector2(24f, 24f);
 			for (int k = 2; k <= 24; k += 2)

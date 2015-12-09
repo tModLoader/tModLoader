@@ -151,6 +151,10 @@ namespace ExampleMod
 			{
 				ScoreCommand(args);
 			}
+			else if (command == "sound")
+			{
+				SoundCommand(args);
+			}
 		}
 
 		private void NPCCommand(string[] args)
@@ -336,6 +340,28 @@ namespace ExampleMod
 				modPlayer.score = arg;
 			}
 			Main.NewText(args[0] + "'s score is now " + modPlayer.score);
+		}
+
+		private void SoundCommand(string[] args)
+		{
+			if (args.Length < 2)
+			{
+				Main.NewText("Usage: /sound type style");
+				return;
+			}
+			int type;
+			if (!Int32.TryParse(args[0], out type))
+			{
+				Main.NewText(args[0] + " is not an integer");
+				return;
+			}
+			int style;
+			if (!Int32.TryParse(args[1], out style))
+			{
+				Main.NewText(args[1] + " is not an integer");
+				return;
+			}
+			Main.PlaySound(type, -1, -1, style);
 		}
 		//spawning helper methods imported from my tAPI mod
 		public static bool NoInvasion(NPCSpawnInfo spawnInfo)
