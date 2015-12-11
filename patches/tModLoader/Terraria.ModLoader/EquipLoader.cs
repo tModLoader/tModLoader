@@ -304,5 +304,41 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		internal static int GetPlayerEquip(Player player, EquipType type)
+		{
+			switch (type)
+			{
+				case EquipType.Head:
+					return player.head;
+				case EquipType.Body:
+					return player.body;
+				case EquipType.Legs:
+					return player.legs;
+				case EquipType.HandsOn:
+					return player.handon;
+				case EquipType.HandsOff:
+					return player.handoff;
+				case EquipType.Back:
+					return player.back;
+				case EquipType.Front:
+					return player.front;
+				case EquipType.Shoes:
+					return player.shoe;
+				case EquipType.Waist:
+					return player.waist;
+				case EquipType.Wings:
+					return player.wings;
+				case EquipType.Shield:
+					return player.shield;
+				case EquipType.Neck:
+					return player.neck;
+				case EquipType.Face:
+					return player.face;
+				case EquipType.Balloon:
+					return player.balloon;
+			}
+			return 0;
+		}
 	}
 }

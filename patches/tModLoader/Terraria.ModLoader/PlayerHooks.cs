@@ -263,6 +263,29 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static bool PreHurt(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
+			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText)
+		{
+			bool flag = true;
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
+					                ref playSound, ref genGore, ref deathText))
+				{
+					flag = false;
+				}
+			}
+			return flag;
+		}
+
+		internal static void Hurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit);
+			}
+		}
+
 		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockBack, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)

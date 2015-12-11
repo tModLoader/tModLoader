@@ -116,6 +116,16 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText)
+		{
+			return true;
+		}
+
+		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit)
+		{
+		}
+
 		public virtual void OnHitNPC(Item item, NPC target, int damage, float knockBack, bool crit)
 		{
 		}

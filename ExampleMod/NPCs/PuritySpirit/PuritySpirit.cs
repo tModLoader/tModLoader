@@ -350,7 +350,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 					x = npc.Center.X + interval * Main.rand.Next(leftBound, rightBound);
 					y = npc.Center.Y + interval * Main.rand.Next(upperBound, lowerBound);
 				}
-				int damage = 500;
+				int damage = Main.expertMode ? 720 : 600;
 				int proj = Projectile.NewProjectile(x, y, 0f, 0f, mod.ProjectileType("VoidWorld"), damage, 0f, Main.myPlayer, 0f, 2 * Main.rand.Next(2) - 1);
 				if (Main.rand.Next(10) == 0)
 				{
@@ -419,7 +419,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (attackProgress == 0)
 			{
 				float y = npc.Center.Y;
-				int damage = 250;
+				int damage = Main.expertMode ? 360 : 300;
 				for (int k = 0; k < targets.Count; k++)
 				{
 					float x = Main.player[targets[k]].Center.X;

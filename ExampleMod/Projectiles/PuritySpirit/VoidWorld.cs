@@ -81,6 +81,22 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			}
 		}
 
+		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+		{
+			cooldownSlot = 1;
+			return base.CanHitPlayer(target, ref cooldownSlot);
+		}
+
+		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+		{
+			if (target.hurtCooldowns[1] <= 0)
+			{
+				ExamplePlayer modPlayer = (ExamplePlayer)target.GetModPlayer(mod, "ExamplePlayer");
+				modPlayer.constantDamage = projectile.damage;
+				modPlayer.percentDamage = Main.expertMode ? 1.2f : 1f;
+			}
+		}
+
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
 			Vector2 ellipseCenter = new Vector2(projHitbox.X, projHitbox.Y) + 0.5f * new Vector2(projHitbox.Width, projHitbox.Height);

@@ -13,7 +13,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public override void SetDefaults()
 		{
-			projectile.name = "Wipe-Out Light";
+			projectile.name = "Purifying Column";
 			projectile.width = 80;
 			projectile.height = 14;
 			projectile.penetrate = -1;
@@ -48,6 +48,22 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			if (projectile.ai[1] >= charge + 60f)
 			{
 				projectile.Kill();
+			}
+		}
+
+		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+		{
+			cooldownSlot = 1;
+			return base.CanHitPlayer(target, ref cooldownSlot);
+		}
+
+		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+		{
+			if (target.hurtCooldowns[1] <= 0)
+			{
+				ExamplePlayer modPlayer = (ExamplePlayer)target.GetModPlayer(mod, "ExamplePlayer");
+				modPlayer.constantDamage = projectile.damage;
+				modPlayer.percentDamage = Main.expertMode ? 0.6f : 0.5f;
 			}
 		}
 

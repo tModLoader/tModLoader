@@ -41,6 +41,14 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		public virtual void UpdateVanity(Player player, EquipType type)
+		{
+			if (item != null)
+			{
+				item.UpdateVanity(player, type);
+			}
+		}
+
 		public virtual bool IsVanitySet(int head, int body, int legs)
 		{
 			if (item == null)

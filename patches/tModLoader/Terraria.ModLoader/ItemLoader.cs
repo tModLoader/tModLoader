@@ -505,11 +505,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void UpdateVanity(Item item, Player player)
+		internal static void UpdateVanity(Player player)
 		{
-			if (IsModItem(item))
+			foreach (EquipType type in Enum.GetValues(typeof(EquipType)))
 			{
-				item.modItem.UpdateVanity(player);
+				int slot = EquipLoader.GetPlayerEquip(player, type);
+				EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
+				if (texture != null)
+				{
+					texture.UpdateVanity(player, type);
+				}
 			}
 		}
 		//at end of Terraria.Player.UpdateArmorSets call ItemLoader.UpdateArmorSet(this, this.armor[0], this.armor[1], this.armor[2])

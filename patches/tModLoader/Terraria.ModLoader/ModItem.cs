@@ -174,7 +174,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void UpdateVanity(Player player)
+		public virtual void UpdateVanity(Player player, EquipType type)
 		{
 		}
 

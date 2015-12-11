@@ -15,6 +15,8 @@ namespace ExampleMod
 		public bool elementShield = false;
 		private int elementShields = 0;
 		public int voidMonolith = 0;
+		public int constantDamage = 0;
+		public float percentDamage = 0f;
 
 		public override void ResetEffects()
 		{
@@ -51,6 +53,21 @@ namespace ExampleMod
 			player.ManageSpecialBiomeVisuals("ExampleMod:PuritySpirit", usePurity);
 			bool useVoidMonolith = voidMonolith > 0 && !usePurity && !NPC.AnyNPCs(NPCID.MoonLordCore);
 			player.ManageSpecialBiomeVisuals("ExampleMod:MonolithVoid", useVoidMonolith, player.Center);
+		}
+
+		public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText)
+		{
+			if (constantDamage > 0 || percentDamage > 0f)
+			{
+				int damageFromPercent = (int)(player.statLifeMax2 * percentDamage);
+				damage = Math.Max(constantDamage, damageFromPercent);
+				customDamage = true;
+			}
+			constantDamage = 0;
+			percentDamage = 0f;
+			return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
+				ref playSound, ref genGore, ref deathText);
 		}
 
 		public override void AnglerQuestReward(float quality, List<Item> rewardItems)
