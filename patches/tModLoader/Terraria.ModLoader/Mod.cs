@@ -278,12 +278,24 @@ namespace Terraria.ModLoader
 
 		public EquipTexture GetEquipTexture(string name)
 		{
-			return equipTextures[name];
+			if (equipTextures.ContainsKey(name))
+			{
+				return equipTextures[name];
+			}
+			else
+			{
+				return null;
+			}
 		}
 
 		public int GetEquipSlot(string name)
 		{
-			return GetEquipTexture(name).Slot;
+			EquipTexture texture = GetEquipTexture(name);
+			if (texture == null)
+			{
+				return -1;
+			}
+			return texture.Slot;
 		}
 
 		public sbyte GetAccessorySlot(string name)
