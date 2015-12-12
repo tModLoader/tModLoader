@@ -34,6 +34,10 @@ namespace ExampleMod.Projectiles
 				{
 					projectile.coldDamage = true;
 				}
+				if (projectile.ai[0] < 0f && Main.expertMode)
+				{
+					cooldownSlot = 1;
+				}
 				projectile.name = GetName();
 				projectile.localAI[0] = 1f;
 			}
@@ -54,15 +58,6 @@ namespace ExampleMod.Projectiles
 				Main.dust[dust].velocity *= 0.4f;
 				Main.dust[dust].velocity += projectile.velocity;
 			}
-		}
-
-		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
-		{
-			if (projectile.ai[0] < 0f && Main.expertMode)
-			{
-				cooldownSlot = 1;
-			}
-			return true;
 		}
 
 		public override void OnHitPlayer(Player target, int damage, bool crit)

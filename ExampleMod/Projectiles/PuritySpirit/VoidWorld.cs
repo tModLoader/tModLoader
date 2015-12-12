@@ -19,6 +19,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
 			Main.projFrames[projectile.type] = 5;
+			cooldownSlot = 1;
 		}
 
 		public override void SendExtraAI(BinaryWriter writer)
@@ -79,12 +80,6 @@ namespace ExampleMod.Projectiles.PuritySpirit
 					projectile.frame %= 4;
 				}
 			}
-		}
-
-		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
-		{
-			cooldownSlot = 1;
-			return base.CanHitPlayer(target, ref cooldownSlot);
 		}
 
 		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)

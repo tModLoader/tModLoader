@@ -20,7 +20,7 @@ namespace ExampleMod.Items.Abomination
 			item.accessory = true;
 			item.damage = 120;
 			item.magic = true;
-			item.knockBack = 3f;
+			item.knockBack = 2f;
 			item.defense = 6;
 		}
 

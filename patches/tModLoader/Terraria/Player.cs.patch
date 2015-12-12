@@ -1556,7 +1556,7 @@
  							binaryWriter.Write(player.bank.item[num].stack);
  							binaryWriter.Write(player.bank.item[num].prefix);
  						}
-@@ -33628,7 +33849,7 @@
+@@ -33628,13 +33849,13 @@
  							{
  								player.bank2.item[num2].name = "";
  							}
@@ -1565,6 +1565,13 @@
  							binaryWriter.Write(player.bank2.item[num2].stack);
  							binaryWriter.Write(player.bank2.item[num2].prefix);
  						}
+ 						for (int num3 = 0; num3 < 22; num3++)
+ 						{
+-							if (Main.buffNoSave[player.buffType[num3]])
++							if (Main.buffNoSave[player.buffType[num3]] || BuffLoader.IsModBuff(player.buffType[num3]))
+ 							{
+ 								binaryWriter.Write(0);
+ 								binaryWriter.Write(0);
 @@ -33673,6 +33894,7 @@
  					}
  				}

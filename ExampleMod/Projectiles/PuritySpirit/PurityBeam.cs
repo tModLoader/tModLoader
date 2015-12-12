@@ -21,6 +21,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
 			Main.projFrames[projectile.type] = 3;
+			cooldownSlot = 1;
 		}
 
 		public override void AI()
@@ -49,12 +50,6 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			{
 				projectile.Kill();
 			}
-		}
-
-		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
-		{
-			cooldownSlot = 1;
-			return base.CanHitPlayer(target, ref cooldownSlot);
 		}
 
 		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)

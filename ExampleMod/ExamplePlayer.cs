@@ -13,7 +13,9 @@ namespace ExampleMod
 		private const int saveVersion = 0;
 		public int score = 0;
 		public bool elementShield = false;
-		private int elementShields = 0;
+		public int elementShields = 0;
+		private int elementShieldTimer = 0;
+		public int elementShieldPos = 0;
 		public int voidMonolith = 0;
 		public int constantDamage = 0;
 		public float percentDamage = 0f;
@@ -55,6 +57,29 @@ namespace ExampleMod
 			player.ManageSpecialBiomeVisuals("ExampleMod:MonolithVoid", useVoidMonolith, player.Center);
 		}
 
+		public override void PostUpdateEquips()
+		{
+			if (elementShield)
+			{
+				if (elementShields > 0)
+				{
+					elementShieldTimer--;
+					if (elementShieldTimer < 0)
+					{
+						elementShields--;
+						elementShieldTimer = 600;
+					}
+				}
+			}
+			else
+			{
+				elementShields = 0;
+				elementShieldTimer = 0;
+			}
+			elementShieldPos++;
+			elementShieldPos %= 300;
+		}
+
 		public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
 			ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText)
 		{
@@ -66,8 +91,32 @@ namespace ExampleMod
 			}
 			constantDamage = 0;
 			percentDamage = 0f;
-			return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
-				ref playSound, ref genGore, ref deathText);
+			return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref deathText);
+		}
+
+		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit)
+		{
+			if (elementShield && damage > 1.0)
+			{
+				if (elementShields < 6)
+				{
+					int k;
+					bool flag = false;
+					for (k = 3; k < 8 + player.extraAccessorySlots; k++)
+					{
+						if (player.armor[k].type == mod.ItemType("SixColorShield"))
+						{
+							flag = true;
+							break;
+						}
+					}
+					if (flag)
+					{
+						Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, mod.ProjectileType("ElementShield"), player.GetWeaponDamage(player.armor[k]), player.GetWeaponKnockback(player.armor[k], 2f), player.whoAmI, elementShields++);
+					}
+				}
+				elementShieldTimer = 600;
+			}
 		}
 
 		public override void AnglerQuestReward(float quality, List<Item> rewardItems)

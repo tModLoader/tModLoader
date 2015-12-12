@@ -28,10 +28,6 @@ namespace Terraria.ModLoader
 
 		internal string texture;
 
-		public ModBuff()
-		{
-		}
-
 		public virtual bool Autoload(ref string name, ref string texture)
 		{
 			return mod.Properties.Autoload;

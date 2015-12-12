@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.IO
 {
 	internal static class PlayerIO
 	{
-		private const byte numFlagBytes = 1;
+		private const byte numFlagBytes = 2;
 		//make Terraria.Player.ENCRYPTION_KEY internal
 		//add to end of Terraria.Player.SavePlayer
 		internal static void WriteModFile(Player player, string path, bool isCloudSave)
@@ -131,6 +131,10 @@ namespace Terraria.ModLoader.IO
 			{
 				flags[0] |= 128;
 			}
+			if (WriteModBuffs(player, writer))
+			{
+				flags[1] |= 1;
+			}
 			return flags;
 		}
 
@@ -167,6 +171,10 @@ namespace Terraria.ModLoader.IO
 			if ((flags[0] & 128) == 128)
 			{
 				ReadCustomData(player, reader);
+			}
+			if ((flags[1] & 1) == 1)
+			{
+				ReadModBuffs(player, reader);
 			}
 		}
 
@@ -286,6 +294,89 @@ namespace Terraria.ModLoader.IO
 				{
 					ModPlayer mystery = player.GetModPlayer(ModLoader.GetMod("ModLoader"), "MysteryPlayer");
 					((MysteryPlayer)mystery).AddData(modName, name, data);
+				}
+			}
+		}
+
+		internal static bool WriteModBuffs(Player player, BinaryWriter writer)
+		{
+			byte[] data;
+			byte num = 0;
+			using (MemoryStream buffer = new MemoryStream())
+			{
+				using (BinaryWriter customWriter = new BinaryWriter(buffer))
+				{
+					byte index = 0;
+					for (int k = 0; k < Player.maxBuffs; k++)
+					{
+						int buff = player.buffType[k];
+						if (!Main.buffNoSave[buff])
+						{
+							if (BuffLoader.IsModBuff(buff))
+							{
+								customWriter.Write(index);
+								ModBuff modBuff = BuffLoader.GetBuff(buff);
+								customWriter.Write(modBuff.mod.Name);
+								customWriter.Write(modBuff.Name);
+								customWriter.Write(player.buffTime[k]);
+								num++;
+							}
+							index++;
+						}
+					}
+					customWriter.Flush();
+					data = buffer.ToArray();
+				}
+			}
+			if (num > 0)
+			{
+				writer.Write(num);
+				writer.Write(data);
+				return true;
+			}
+			return false;
+		}
+
+		internal static void ReadModBuffs(Player player, BinaryReader reader)
+		{
+			int num = reader.ReadByte();
+			int minusIndex = 0;
+			for (int k = 0; k < num; k++)
+			{
+				int index = reader.ReadByte() - minusIndex;
+				string modName = reader.ReadString();
+				string name = reader.ReadString();
+				int time = reader.ReadInt32();
+				Mod mod = ModLoader.GetMod(modName);
+				int type = mod == null ? 0 : mod.BuffType(name);
+				if (type > 0)
+				{
+					for (int j = Player.maxBuffs - 1; j > index; j--)
+					{
+						player.buffType[j] = player.buffType[j - 1];
+						player.buffTime[j] = player.buffTime[j - 1];
+					}
+					player.buffType[index] = type;
+					player.buffTime[index] = time;
+				}
+				else
+				{
+					minusIndex++;
+				}
+			}
+			for (int k = 1; k < Player.maxBuffs; k++)
+			{
+				if (player.buffType[k] > 0)
+				{
+					int j = k - 1;
+					while (player.buffType[j] == 0)
+					{
+						player.buffType[j] = player.buffType[j + 1];
+						player.buffTime[j] = player.buffTime[j + 1];
+						player.buffType[j + 1] = 0;
+						player.buffTime[j + 1] = 0;
+						j--;
+					}
 				}
 			}
 		}

@@ -24,11 +24,16 @@ namespace ExampleMod.Projectiles
 
 		public override void AI()
 		{
+			NPC npc = Main.npc[(int)projectile.ai[0]];
 			if (projectile.localAI[0] == 0f)
 			{
+				if (npc.type == mod.NPCType("CaptiveElement") && npc.ai[1] == 2f && Main.expertMode)
+				{
+					cooldownSlot = 1;
+				}
 				projectile.name = GetName();
 			}
-			projectile.Center = Main.npc[(int)projectile.ai[0]].Center;
+			projectile.Center = npc.Center;
 			projectile.localAI[0] += 1f;
 			projectile.alpha = (int)projectile.localAI[0] * 2;
 			if (projectile.localAI[0] > 90f)
@@ -39,16 +44,6 @@ namespace ExampleMod.Projectiles
 			{
 				projectile.Kill();
 			}
-		}
-
-		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
-		{
-			NPC npc = Main.npc[(int)projectile.ai[0]];
-			if (npc.type == mod.NPCType("CaptiveElement") && npc.ai[1] == 2f && Main.expertMode)
-			{
-				cooldownSlot = 1;
-			}
-			return true;
 		}
 
 		public override void OnHitPlayer(Player target, int damage, bool crit)

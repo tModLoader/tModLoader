@@ -41,8 +41,8 @@ namespace Terraria.ModLoader
 		{
 			Array.Resize(ref Main.pvpBuff, nextBuff);
 			Array.Resize(ref Main.persistentBuff, nextBuff);
-			Array.Resize(ref Main.vanityPet, nextBuff); // just a pet
-			Array.Resize(ref Main.lightPet, nextBuff);  // can be light pet
+			Array.Resize(ref Main.vanityPet, nextBuff);
+			Array.Resize(ref Main.lightPet, nextBuff);
 			Array.Resize(ref Main.meleeBuff, nextBuff);
 			Array.Resize(ref Main.debuff, nextBuff);
 			Array.Resize(ref Main.buffName, nextBuff);
