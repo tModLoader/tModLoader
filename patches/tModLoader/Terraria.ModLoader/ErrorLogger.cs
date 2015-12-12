@@ -162,6 +162,20 @@ namespace Terraria.ModLoader
 			Main.menuMode = Interface.errorMessageID;
 		}
 
+		internal static void LogModUnPublish(string message)
+		{
+			string file = LogPath + Path.DirectorySeparatorChar + "Network Error.txt";
+			using (StreamWriter writer = File.CreateText(file))
+			{
+				writer.WriteLine(message);
+			}
+			Interface.errorMessage.SetMessage("The Mod Browser server response:\n\n" + message);
+			Interface.errorMessage.SetGotoMenu(Interface.managePublishedID);
+			Interface.errorMessage.SetFile(file);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
+		}
+
 		public static void Log(string message)
 		{
 			Directory.CreateDirectory(LogPath);

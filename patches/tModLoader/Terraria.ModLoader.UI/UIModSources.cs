@@ -59,6 +59,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(button2);
 			UITextPanel button3 = new UITextPanel("Back", 1f, false);
 			button3.CopyStyle(button);
+			button3.Width.Set(-10f, 1f / 3f);
 			button3.Top.Set(-20f, 0f);
 			button3.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
 			button3.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
@@ -66,12 +67,25 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(button3);
 			UITextPanel button4 = new UITextPanel("Open Sources", 1f, false);
 			button4.CopyStyle(button3);
-			button4.HAlign = 1f;
+			button4.HAlign = .5f;
 			button4.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
 			button4.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button4.OnClick += new UIElement.MouseEvent(OpenSources);
 			uIElement.Append(button4);
+			UITextPanel button5 = new UITextPanel("Manage Published", 1f, false);
+			button5.CopyStyle(button3);
+			button5.HAlign = 1f;
+			button5.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+			button5.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+			button5.OnClick += new UIElement.MouseEvent(ManagePublished);
+			uIElement.Append(button5);
 			base.Append(uIElement);
+		}
+
+		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(11, -1, -1, 1);
+			Main.menuMode = Interface.managePublishedID;
 		}
 
 		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
