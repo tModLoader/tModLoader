@@ -270,7 +270,7 @@ namespace Terraria.ModLoader
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
-					                ref playSound, ref genGore, ref deathText))
+					    ref playSound, ref genGore, ref deathText))
 				{
 					flag = false;
 				}
@@ -283,6 +283,36 @@ namespace Terraria.ModLoader
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit);
+			}
+		}
+
+		internal static void PostHurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PostHurt(pvp, quiet, damage, hitDirection, crit);
+			}
+		}
+
+		internal static bool PreKill(Player player, double damage, int hitDirection, bool pvp, ref bool playSound,
+			ref bool genGore, ref string deathText)
+		{
+			bool flag = true;
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref deathText))
+				{
+					flag = false;
+				}
+			}
+			return flag;
+		}
+
+		internal static void Kill(Player player, double damage, int hitDirection, bool pvp, string deathText)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.Kill(damage, hitDirection, pvp, deathText);
 			}
 		}
 

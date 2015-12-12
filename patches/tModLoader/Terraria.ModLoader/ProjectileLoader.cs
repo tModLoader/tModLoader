@@ -351,18 +351,18 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Projectile.Damage for damaging my player, add this before collision check
-		internal static bool CanHitPlayer(Projectile projectile, Player target, ref int cooldownSlot)
+		internal static bool CanHitPlayer(Projectile projectile, Player target)
 		{
 			foreach (GlobalProjectile globalProjectile in globalProjectiles)
 			{
-				if (!globalProjectile.CanHitPlayer(projectile, target, ref cooldownSlot))
+				if (!globalProjectile.CanHitPlayer(projectile, target))
 				{
 					return false;
 				}
 			}
 			if (IsModProjectile(projectile))
 			{
-				return projectile.modProjectile.CanHitPlayer(target, ref cooldownSlot);
+				return projectile.modProjectile.CanHitPlayer(target);
 			}
 			return true;
 		}

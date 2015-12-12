@@ -30,6 +30,7 @@ namespace Terraria.ModLoader
 
 		internal string texture;
 		public int aiType = 0;
+		public int cooldownSlot = -1;
 		public int drawOffsetX = 0;
 		public int drawOriginOffsetY = 0;
 		public float drawOriginOffsetX = 0f;
@@ -123,7 +124,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual bool CanHitPlayer(Player target, ref int cooldownSlot)
+		public virtual bool CanHitPlayer(Player target)
 		{
 			return true;
 		}

@@ -276,6 +276,21 @@ namespace Terraria.ModLoader
 			return slot;
 		}
 
+		public EquipTexture GetEquipTexture(string name)
+		{
+			return equipTextures[name];
+		}
+
+		public int GetEquipSlot(string name)
+		{
+			return GetEquipTexture(name).Slot;
+		}
+
+		public sbyte GetAccessorySlot(string name)
+		{
+			return (sbyte)GetEquipSlot(name);
+		}
+
 		public void AddFlameTexture(ModItem item, string texture)
 		{
 			ModLoader.GetTexture(texture);
