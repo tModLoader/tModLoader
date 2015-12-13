@@ -134,7 +134,7 @@ namespace ExampleMod.Projectiles
 			}
 			if (npc.ai[1] == 1f)
 			{
-				return BuffID.Frostburn;//ethereal flames
+				return mod.BuffType("EtherealFlames");
 			}
 			if (npc.ai[1] == 3f)
 			{
@@ -160,7 +160,7 @@ namespace ExampleMod.Projectiles
 			}
 			if (npc.ai[1] == 1f)
 			{
-				return 200;
+				return 150;
 			}
 			if (npc.ai[1] == 3f)
 			{

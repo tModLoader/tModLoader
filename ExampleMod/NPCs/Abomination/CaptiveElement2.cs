@@ -291,7 +291,12 @@ namespace ExampleMod.NPCs.Abomination
 						{
 							damage = (int)(damage / Main.expertDamage);
 						}
-						Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 5f * (float)Math.Cos(npc.rotation), 5f * (float)Math.Sin(npc.rotation), mod.ProjectileType("PixelBall"), damage, 3f, Main.myPlayer, GetDebuff(), GetDebuffTime());
+						float speed = 5f;
+						if (captiveType != 1)
+						{
+							speed = Main.expertMode ? 9f : 7f;
+						}
+						Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 5f * (float)Math.Cos(npc.rotation), speed * (float)Math.Sin(npc.rotation), mod.ProjectileType("PixelBall"), damage, 3f, Main.myPlayer, GetDebuff(), GetDebuffTime());
 					}
 					npc.TargetClosest(false);
 					npc.netUpdate = true;
@@ -481,7 +486,7 @@ namespace ExampleMod.NPCs.Abomination
 				case 0:
 					return BuffID.Frostburn;
 				case 1:
-					return BuffID.Frostburn;//BuffDef.byName["Bluemagic:EtherealFlames"];
+					return mod.BuffType("EtherealFlames");
 				case 3:
 					return BuffID.Venom;
 				case 4:
@@ -500,7 +505,7 @@ namespace ExampleMod.NPCs.Abomination
 					time = 400;
 					break;
 				case 1:
-					time = 400;//300;
+					time = 300;
 					break;
 				case 3:
 					time = 400;

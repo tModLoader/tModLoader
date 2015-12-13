@@ -231,7 +231,7 @@ namespace ExampleMod.NPCs.Abomination
 				case 0:
 					return BuffID.Frostburn;
 				case 1:
-					return BuffID.Frostburn;//BuffDef.byName["Bluemagic:EtherealFlames"];
+					return mod.BuffType("EtherealFlames");
 				case 3:
 					return BuffID.Venom;
 				case 4:
@@ -250,7 +250,7 @@ namespace ExampleMod.NPCs.Abomination
 					time = 400;
 					break;
 				case 1:
-					time = 400;//300;
+					time = 300;
 					break;
 				case 3:
 					time = 400;

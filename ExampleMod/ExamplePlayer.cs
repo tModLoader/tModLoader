@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.NPCs.PuritySpirit;
 
 namespace ExampleMod
 {
@@ -12,16 +13,20 @@ namespace ExampleMod
 	{
 		private const int saveVersion = 0;
 		public int score = 0;
+		public bool eFlames = false;
 		public bool elementShield = false;
 		public int elementShields = 0;
 		private int elementShieldTimer = 0;
 		public int elementShieldPos = 0;
 		public int voidMonolith = 0;
+		public int heroLives = 0;
 		public int constantDamage = 0;
 		public float percentDamage = 0f;
+		public float defenseEffect = -1f;
 
 		public override void ResetEffects()
 		{
+			eFlames = false;
 			elementShield = false;
 			if (voidMonolith > 0)
 			{
@@ -57,6 +62,126 @@ namespace ExampleMod
 			player.ManageSpecialBiomeVisuals("ExampleMod:MonolithVoid", useVoidMonolith, player.Center);
 		}
 
+		public override void UpdateBadLifeRegen()
+		{
+			if (eFlames)
+			{
+				if (player.lifeRegen > 0)
+				{
+					player.lifeRegen = 0;
+				}
+				player.lifeRegenTime = 0;
+				player.lifeRegen -= 16;
+			}
+		}
+
+		public override void PreUpdateBuffs()
+		{
+			if (heroLives > 0)
+			{
+				bool flag = false;
+				for (int k = 0; k < 200; k++)
+				{
+					NPC npc = Main.npc[k];
+					if (npc.active && npc.type == mod.NPCType("PuritySpirit"))
+					{
+						flag = true;
+						PuritySpiritTeleport(npc);
+						break;
+					}
+				}
+				if (!flag)
+				{
+					heroLives = 0;
+				}
+				if (heroLives == 1)
+				{
+					player.AddBuff(mod.BuffType("HeroOne"), 2);
+				}
+				else if (heroLives == 2)
+				{
+					player.AddBuff(mod.BuffType("HeroTwo"), 2);
+				}
+				else if (heroLives == 3)
+				{
+					player.AddBuff(mod.BuffType("HeroThree"), 3);
+				}
+			}
+		}
+
+		private void PuritySpiritTeleport(NPC npc)
+		{
+			int halfWidth = PuritySpirit.arenaWidth / 2;
+			int halfHeight = PuritySpirit.arenaHeight / 2;
+			Vector2 newPosition = player.position;
+			if (player.position.X <= npc.Center.X - halfWidth)
+			{
+				newPosition.X = npc.Center.X + halfWidth - player.width - 1;
+				while (Collision.SolidCollision(newPosition, player.width, player.height))
+				{
+					newPosition.X -= 16f;
+				}
+			}
+			else if (player.position.X + player.width >= npc.Center.X + halfWidth)
+			{
+				newPosition.X = npc.Center.X - halfWidth + 1;
+				while (Collision.SolidCollision(newPosition, player.width, player.height))
+				{
+					newPosition.X += 16f;
+				}
+			}
+			else if (player.position.Y <= npc.Center.Y - halfHeight)
+			{
+				newPosition.Y = npc.Center.Y + halfHeight - player.height - 1;
+				while (Collision.SolidCollision(newPosition, player.width, player.height))
+				{
+					newPosition.Y -= 16f;
+				}
+			}
+			else if (player.position.Y + player.height >= npc.Center.Y + halfHeight)
+			{
+				newPosition.Y = npc.Center.Y - halfHeight + 1;
+				while (Collision.SolidCollision(newPosition, player.width, player.height))
+				{
+					newPosition.Y += 16f;
+				}
+			}
+			if (newPosition != player.position)
+			{
+				player.Teleport(newPosition, 1, 0);
+				NetMessage.SendData(65, -1, -1, "", 0, player.whoAmI, newPosition.X, newPosition.Y, 1, 0, 0);
+				PuritySpiritDebuff();
+			}
+		}
+
+		private void PuritySpiritDebuff()
+		{
+			if (Main.rand.Next(2) == 0)
+			{
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						player.AddBuff(BuffID.Darkness, 1800);
+						break;
+					case 1:
+						player.AddBuff(BuffID.Cursed, 900);
+						break;
+					case 2:
+						player.AddBuff(BuffID.Confused, 1800);
+						break;
+					case 3:
+						player.AddBuff(BuffID.Slow, 1800);
+						break;
+					case 4:
+						player.AddBuff(BuffID.Silenced, 900);
+						break;
+				}
+			}
+			else
+			{
+			}
+		}
+
 		public override void PostUpdateEquips()
 		{
 			if (elementShield)
@@ -89,8 +214,22 @@ namespace ExampleMod
 				damage = Math.Max(constantDamage, damageFromPercent);
 				customDamage = true;
 			}
+			else if (defenseEffect >= 0f)
+			{
+				if (Main.expertMode)
+				{
+					defenseEffect *= 1.5f;
+				}
+				damage -= (int)(player.statDefense * defenseEffect);
+				if (damage < 0)
+				{
+					damage = 1;
+				}
+				customDamage = true;
+			}
 			constantDamage = 0;
 			percentDamage = 0f;
+			defenseEffect = -1f;
 			return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref deathText);
 		}
 
@@ -117,6 +256,28 @@ namespace ExampleMod
 				}
 				elementShieldTimer = 600;
 			}
+		}
+
+		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref string deathText)
+		{
+			if (heroLives > 0)
+			{
+				heroLives--;
+				if (heroLives > 0)
+				{
+					player.statLife = player.statLifeMax2;
+					player.HealEffect(player.statLifeMax2);
+					player.immune = true;
+					player.immuneTime = player.longInvince ? 180 : 120;
+					for (int k = 0; k < player.hurtCooldowns.Length; k++)
+					{
+						player.hurtCooldowns[k] = player.longInvince ? 180 : 120;
+					}
+					Main.PlaySound(2, (int)player.position.X, (int)player.position.Y, 29);
+					return false;
+				}
+			}
+			return true;
 		}
 
 		public override void AnglerQuestReward(float quality, List<Item> rewardItems)

@@ -45,10 +45,10 @@ namespace ExampleMod.Projectiles
 			{
 				return "Frost Sprite";
 			}
-			/*if(projectile.ai[0] == BuffDef.byName["Bluemagic:EtherealFlames"])
-        {
-            return "Spirit Sprite";
-        }*/
+			if (projectile.ai[0] == mod.BuffType("EtherealFlames"))
+			{
+				return "Spirit Sprite";
+			}
 			if (projectile.ai[0] == 70f)
 			{
 				return "Infestation Sprite";

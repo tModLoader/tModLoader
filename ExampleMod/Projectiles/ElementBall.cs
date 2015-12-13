@@ -78,10 +78,10 @@ namespace ExampleMod.Projectiles
 			{
 				return "Frost Ball";
 			}
-			/*if(projectile.ai[0] == BuffDef.byName["Bluemagic:EtherealFlames"])
-        {
-            return "Ethereal Fireball";
-        }*/
+			if (projectile.ai[0] == mod.BuffType("EtherealFlames"))
+			{
+				return "Ethereal Fireball";
+			}
 			if (projectile.ai[0] == 70f)
 			{
 				return "Venom Ball";
@@ -103,10 +103,10 @@ namespace ExampleMod.Projectiles
 			{
 				return new Color(0, 230, 230);
 			}
-			/*if(projectile.ai[0] == BuffDef.byName["Bluemagic:EtherealFlames"])
-        {
-            return new Color(0, 153, 230);
-        }*/
+			if (projectile.ai[0] == mod.BuffType("EtherealFlames"))
+			{
+				return new Color(0, 153, 230);
+			}
 			if (projectile.ai[0] == 70f)
 			{
 				return new Color(0, 178, 0);

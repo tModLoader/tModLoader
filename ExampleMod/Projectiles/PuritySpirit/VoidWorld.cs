@@ -47,8 +47,8 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			{
 				if (!Main.dedServ && projectile.localAI[0] == 1f)
 				{
-					Player player = Main.player[Main.myPlayer];
-					if (true)
+					ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
+					if (modPlayer.heroLives > 0)
 					{
 						Main.PlaySound(2, -1, -1, 14);
 					}
@@ -60,7 +60,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 				projectile.hostile = true;
 				projectile.frame = 4;
 			}
-			if (projectile.ai[0] >= 181f)
+			if (projectile.ai[0] >= 185f)
 			{
 				projectile.hostile = false;
 			}

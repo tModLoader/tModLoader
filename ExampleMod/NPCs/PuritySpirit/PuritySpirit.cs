@@ -148,7 +148,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		private const int dpsCap = 4000;
 		private int damageTotal = 0;
 		private bool saidRushMessage = false;
-		private readonly IList<int> targets = new List<int>();
+		public readonly IList<int> targets = new List<int>();
 		public int[] attackWeights = new int[]{ 2000, 2000, 2000, 2000, 3000 };
 		private const int minAttackWeight = 1000;
 		private const int maxAttackWeight = 4000;
@@ -162,9 +162,11 @@ namespace ExampleMod.NPCs.PuritySpirit
 				portalFrame %= 6 * Main.projFrames[ProjectileID.PortalGunGate];
 			}
 			FindPlayers();
-			if (targets.Count > 0 && npc.timeLeft < NPC.activeTime)
+			npc.timeLeft = NPC.activeTime;
+			if (stage > 0 && targets.Count == 0)
 			{
-				npc.timeLeft = NPC.activeTime;
+				attackProgress = 0;
+				stage = -1;
 			}
 			damageTotal -= dpsCap;
 			if (damageTotal < 0)
@@ -175,12 +177,33 @@ namespace ExampleMod.NPCs.PuritySpirit
 			{
 				return;
 			}
+			if (stage == 2 && difficulty > 0)
+			{
+				stage++;
+			}
+			if (stage == 3 && difficulty > 1)
+			{
+				SetupCrystals(arenaWidth / 3, false);
+				stage++;
+			}
+			if (stage == 4 && difficulty > 2)
+			{
+				stage++;
+			}
+			if (stage == 5 && difficulty > 3)
+			{
+				stage++;
+			}
 			switch (stage)
 			{
+				case -1:
+					RunAway();
+					break;
 				case 0:
 					Initialize();
 					break;
 				case 1:
+					attack = 4;
 					UltimateAttack();
 					if (attackProgress == 0)
 					{
@@ -190,12 +213,12 @@ namespace ExampleMod.NPCs.PuritySpirit
 					}
 					break;
 				case 2:
+				case 3:
 				case 4:
-				case 6:
-				case 8:
+				case 5:
 					DoAttack(4);
 					break;
-				case 10:
+				case 6:
 					DoAttack(5);
 					break;
 			}
@@ -255,15 +278,40 @@ namespace ExampleMod.NPCs.PuritySpirit
 			targets.Clear();
 			for (int k = 0; k < 255; k++)
 			{
-				if (Main.player[k].active)
+				if (Main.player[k].active && ((ExamplePlayer)Main.player[k].GetModPlayer(mod, "ExamplePlayer")).heroLives > 0)
 				{
 					targets.Add(k);
 				}
 			}
 		}
 
+		public void RunAway()
+		{
+			attackProgress++;
+			if (attackProgress == 180)
+			{
+				Talk("Hmph. Was that the extent of your power?");
+			}
+			if (attackProgress >= 360)
+			{
+				npc.active = false;
+			}
+		}
+
 		public void Initialize()
 		{
+			if (attackProgress == 0)
+			{
+				Vector2 center = npc.Center;
+				for (int k = 0; k < 255; k++)
+				{
+					Player player = Main.player[k];
+					if (player.active && player.position.X > center.X - arenaWidth / 2 && player.position.X + player.width < center.X + arenaWidth / 2 && player.position.Y > center.Y - arenaHeight / 2 && player.position.Y + player.height < center.Y + arenaHeight / 2)
+					{
+						((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).heroLives = 3;
+					}
+				}
+			}
 			attackProgress++;
 			if (attackProgress == 90)
 			{
@@ -313,7 +361,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			{
 				const int interval = 60;
 				float x, y;
-				if (attackProgress == 100)
+				if (attackProgress % 100 == 0 || (Main.expertMode && attackProgress % 50 == 0))
 				{
 					int k = targets[Main.rand.Next(targets.Count)];
 					x = Main.player[k].Center.X;
@@ -386,7 +434,6 @@ namespace ExampleMod.NPCs.PuritySpirit
 					}
 					choice -= attackWeights[attack];
 				}
-				attack = 0;
 				npc.netUpdate = true;
 			}
 			switch (attack)
@@ -438,7 +485,8 @@ namespace ExampleMod.NPCs.PuritySpirit
 						Projectile.NewProjectile(spawnX, y, 0f, 0f, mod.ProjectileType("PurityBeam"), damage, 0f, Main.myPlayer, arenaHeight);
 					}
 				}
-				for (int k = 0; k < 2 * (difficulty + 1); k++)
+				int numExtra = 2 * (difficulty + 1) - 2 * (targets.Count - 1);
+				for (int k = 0; k < numExtra; k++)
 				{
 					Projectile.NewProjectile(npc.Center.X + Main.rand.Next(-arenaWidth / 2 + 50, arenaWidth / 2 - 50 + 1), y, 0f, 0f, mod.ProjectileType("PurityBeam"), damage, 0f, Main.myPlayer, arenaHeight);
 				}
@@ -453,10 +501,53 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		private void SnakeAttack()
 		{
+			if (attackProgress == 0)
+			{
+				int damage = Main.expertMode ? 60 : 80;
+				Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("PuritySnake"), damage, 0f, Main.myPlayer, npc.whoAmI, timeMultiplier);
+				attackProgress = 240;
+			}
+			attackProgress--;
+			if (attackProgress < 0)
+			{
+				attackProgress = 0;
+			}
 		}
 
 		private void LaserAttack()
 		{
+			if (attackProgress == 0)
+			{
+				int numAttacks = 3 + difficulty / 2;
+				float timer = 30f + 20f * timeMultiplier;
+				float totalTime = numAttacks * timer + 120f;
+				int damage = Main.expertMode ? 55 : 80;
+				for (int k = 0; k < numAttacks; k++)
+				{
+					int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("NullLaser"), damage, 0f, Main.myPlayer, npc.whoAmI, (int)(60f + k * timer));
+					Main.projectile[proj].localAI[0] = (int)totalTime;
+					Main.projectile[proj].netUpdate = true;
+					((NullLaser)Main.projectile[proj].modProjectile).warningTime = timer;
+				}
+				attackProgress = (int)totalTime;
+			}
+			if (attackProgress % 20 == 0)
+			{
+				if (targets.Contains(Main.myPlayer))
+				{
+					Main.PlaySound(2, -1, -1, 15);
+				}
+				else
+				{
+					Main.PlaySound(2, (int)npc.position.X, (int)npc.position.Y, 15);
+				}
+			}
+			Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("Sparkle"), 0f, 0f, 0, new Color(0, 180, 0), 1.5f);
+			attackProgress--;
+			if (attackProgress < 0)
+			{
+				attackProgress = 0;
+			}
 		}
 
 		private void SphereAttack()

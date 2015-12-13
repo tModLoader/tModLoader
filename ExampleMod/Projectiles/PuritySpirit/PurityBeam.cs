@@ -35,8 +35,8 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.ai[1] += 1f;
 			if (projectile.ai[1] == charge)
 			{
-				Player player = Main.player[Main.myPlayer];
-				if (true)
+				ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
+				if (modPlayer.heroLives > 0)
 				{
 					Main.PlaySound(29, -1, -1, 104);
 				}
