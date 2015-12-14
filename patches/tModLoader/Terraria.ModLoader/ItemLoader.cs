@@ -255,6 +255,17 @@ namespace Terraria.ModLoader
 				globalItem.GetWeaponKnockback(item, player, ref knockback);
 			}
 		}
+
+		internal static void CheckProjOnSwing(Player player, Item item, ref bool canShoot)
+		{
+			if (IsModItem(item))
+			{
+				if (item.modItem.projOnSwing && player.itemAnimation != player.itemAnimationMax - 1)
+				{
+					canShoot = false;
+				}
+			}
+		}
 		//near end of Terraria.Player.PickAmmo before flag2 is checked add
 		//  if(!ItemLoader.ConsumeAmmo(sItem, item, this)) { flag2 = true; }
 		internal static bool ConsumeAmmo(Item item, Item ammo, Player player)

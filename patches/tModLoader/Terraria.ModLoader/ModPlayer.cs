@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
 
 namespace Terraria.ModLoader
@@ -154,6 +155,20 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void GetWeaponKnockback(Item item, ref float knockback)
+		{
+		}
+
+		public virtual bool ConsumeAmmo(Item weapon, Item ammo)
+		{
+			return true;
+		}
+
+		public virtual bool Shoot(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		{
+			return true;
+		}
+
+		public virtual void MeleeEffects(Item item, Rectangle hitbox)
 		{
 		}
 

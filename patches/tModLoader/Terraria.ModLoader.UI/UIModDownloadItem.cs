@@ -81,10 +81,10 @@ namespace Terraria.ModLoader.UI
 					return this.downloads.CompareTo((obj as UIModDownloadItem).downloads);
 				case SortModes.DownloadsDescending:
 					return -1 * this.downloads.CompareTo((obj as UIModDownloadItem).downloads);
-					//case SortModes.UpdatedNewest:
-					//	return -1 * this.displayname.CompareTo((obj as UIModDownloadItem).displayname);
-					//case SortModes.UpdatedOldest:
-					//	return -1 * this.displayname.CompareTo((obj as UIModDownloadItem).displayname);
+			//case SortModes.UpdatedNewest:
+			//	return -1 * this.displayname.CompareTo((obj as UIModDownloadItem).displayname);
+			//case SortModes.UpdatedOldest:
+			//	return -1 * this.displayname.CompareTo((obj as UIModDownloadItem).displayname);
 			}
 			return base.CompareTo(obj);
 		}

@@ -19,9 +19,7 @@ namespace Terraria.ModLoader.UI
 		public UIModDownloadItem selectedItem;
 		public UITextPanel uITextPanel;
 		private List<UICycleImage> _categoryButtons = new List<UICycleImage>();
-
 		public bool loaded = false;
-
 		public SortModes sortMode = SortModes.DisplayNameAtoZ;
 
 		public override void OnInitialize()
@@ -99,7 +97,6 @@ namespace Terraria.ModLoader.UI
 		public override void Draw(SpriteBatch spriteBatch)
 		{
 			base.Draw(spriteBatch);
-
 			for (int i = 0; i < this._categoryButtons.Count; i++)
 			{
 				if (this._categoryButtons[i].IsMouseHovering)

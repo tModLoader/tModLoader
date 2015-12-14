@@ -27,6 +27,7 @@ namespace Terraria.ModLoader
 
 		internal string texture;
 		internal string flameTexture = "";
+		public bool projOnSwing = false;
 		public int bossBagNPC;
 
 		public ModItem()
@@ -362,6 +363,8 @@ namespace Terraria.ModLoader
 			newItem.item = clone;
 			newItem.mod = mod;
 			newItem.texture = texture;
+			newItem.flameTexture = flameTexture;
+			newItem.projOnSwing = projOnSwing;
 			newItem.bossBagNPC = bossBagNPC;
 			clone.modItem = newItem;
 		}

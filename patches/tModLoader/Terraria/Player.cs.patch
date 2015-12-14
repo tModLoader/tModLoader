@@ -1239,21 +1239,21 @@
  			if (this.controlUseItem)
  			{
  				this.releaseUseItem = false;
-@@ -28954,6 +29118,7 @@
- 			{
- 				bool flag8 = true;
- 				int type4 = item.type;
-+				//TODO - ModItem.projOnSwing
- 				if ((type4 == 65 || type4 == 676 || type4 == 723 || type4 == 724 || type4 == 757 || type4 == 674 || type4 == 675 || type4 == 989 || type4 == 1226 || type4 == 1227) && this.itemAnimation != this.itemAnimationMax - 1)
+@@ -28958,6 +29122,7 @@
  				{
  					flag8 = false;
+ 				}
++				ItemLoader.CheckProjOnSwing(this, item, ref flag8);
+ 				if (item.shoot > 0 && this.itemAnimation > 0 && this.itemTime == 0 && flag8)
+ 				{
+ 					int num71 = item.shoot;
 @@ -30112,7 +30277,8 @@
  							}
  							Projectile.NewProjectile(vector2.X, vector2.Y - this.gravDir * 4f, num202, num203, num71, num73, num74, i, 0f, (float)Main.rand.Next(12) / 6f);
  						}
 -						else
-+                        //TODO - ModPlayer.Shoot
-+						else if (ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
++						else if (PlayerHooks.Shoot(this, item, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74)
++						         && ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
  						{
  							int num204 = Projectile.NewProjectile(vector2.X, vector2.Y, num78, num79, num71, num73, num74, i, 0f, 0f);
  							if (item.type == 726)
@@ -1309,7 +1309,7 @@
  						expr_D7D2_cp_0.velocity.Y = expr_D7D2_cp_0.velocity.Y * 2f;
  					}
 +					ItemLoader.MeleeEffects(item, this, r2);
-+					//TODO - ModPlayer.MeleeEffects
++					PlayerHooks.MeleeEffects(this, item, r2);
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num281 = 0; num281 < 200; num281++)
@@ -1424,11 +1424,14 @@
  			return num;
  		}
  
-@@ -32649,6 +32851,11 @@
+@@ -32649,6 +32851,14 @@
  				{
  					flag2 = true;
  				}
-+				//TODO - ModPlayer.ConsumeAmmo
++				if (!PlayerHooks.ConsumeAmmo(this, sItem, item))
++				{
++					flag2 = true;
++				}
 +				if (!ItemLoader.ConsumeAmmo(sItem, item, this))
 +				{
 +					flag2 = true;
@@ -1436,7 +1439,7 @@
  				if (!flag2 && item.consumable)
  				{
  					item.stack--;
-@@ -32701,7 +32908,7 @@
+@@ -32701,7 +32911,7 @@
  			}
  			else
  			{
@@ -1445,7 +1448,7 @@
  			}
  			if (tile.type == 211 && pickPower < 200)
  			{
-@@ -32769,6 +32976,10 @@
+@@ -32769,6 +32979,10 @@
  			else if (tile.type == 223 && pickPower < 150)
  			{
  				num = 0;
@@ -1456,7 +1459,7 @@
  			}
  			if (tile.type == 147 || tile.type == 0 || tile.type == 40 || tile.type == 53 || tile.type == 57 || tile.type == 59 || tile.type == 123 || tile.type == 224 || tile.type == 397)
  			{
-@@ -33197,14 +33408,31 @@
+@@ -33197,14 +33411,31 @@
  
  		public void DropItems()
  		{
@@ -1491,7 +1494,7 @@
  					Main.item[num].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  					Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  					Main.item[num].noGrabDelay = 100;
-@@ -33213,6 +33441,10 @@
+@@ -33213,6 +33444,10 @@
  					{
  						NetMessage.SendData(21, -1, -1, "", num, 0f, 0f, 0f, 0, 0, 0);
  					}
@@ -1502,7 +1505,7 @@
  				}
  				this.inventory[i] = new Item();
  				if (i < this.armor.Length)
-@@ -33292,12 +33524,7 @@
+@@ -33292,12 +33527,7 @@
  					this.miscDyes[i] = new Item();
  				}
  			}
@@ -1516,7 +1519,7 @@
  			Main.mouseItem = new Item();
  		}
  
-@@ -33377,7 +33604,7 @@
+@@ -33377,7 +33607,7 @@
  			{
  				return false;
  			}
@@ -1525,7 +1528,7 @@
  			{
  				return false;
  			}
-@@ -33586,12 +33813,12 @@
+@@ -33586,12 +33816,12 @@
  							{
  								player.armor[k].name = "";
  							}
@@ -1540,7 +1543,7 @@
  							binaryWriter.Write(player.dye[l].prefix);
  						}
  						for (int m = 0; m < 58; m++)
-@@ -33600,16 +33827,16 @@
+@@ -33600,16 +33830,16 @@
  							{
  								player.inventory[m].name = "";
  							}
@@ -1560,7 +1563,7 @@
  							binaryWriter.Write(player.miscDyes[n].prefix);
  						}
  						for (int num = 0; num < 40; num++)
-@@ -33618,7 +33845,7 @@
+@@ -33618,7 +33848,7 @@
  							{
  								player.bank.item[num].name = "";
  							}
@@ -1569,7 +1572,7 @@
  							binaryWriter.Write(player.bank.item[num].stack);
  							binaryWriter.Write(player.bank.item[num].prefix);
  						}
-@@ -33628,13 +33855,13 @@
+@@ -33628,13 +33858,13 @@
  							{
  								player.bank2.item[num2].name = "";
  							}
@@ -1585,7 +1588,7 @@
  							{
  								binaryWriter.Write(0);
  								binaryWriter.Write(0);
-@@ -33673,6 +33900,7 @@
+@@ -33673,6 +33903,7 @@
  					}
  				}
  			}
@@ -1593,7 +1596,7 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
-@@ -34116,6 +34344,7 @@
+@@ -34116,6 +34347,7 @@
  								player.anglerQuestsFinished = binaryReader.ReadInt32();
  							}
  							player.skinVariant = (int)MathHelper.Clamp((float)player.skinVariant, 0f, 7f);
@@ -1601,7 +1604,7 @@
  							for (int num32 = 3; num32 < 8 + player.extraAccessorySlots; num32++)
  							{
  								int type = player.armor[num32].type;
-@@ -34184,6 +34413,7 @@
+@@ -34184,6 +34416,7 @@
  					if (FileUtilities.Exists(file + ".bak", cloudSave))
  					{
  						FileUtilities.Move(file + ".bak", file, cloudSave, true);
@@ -1609,7 +1612,7 @@
  					}
  					playerFileData = Player.LoadPlayer(file, cloudSave);
  					if (playerFileData.Player == null)
-@@ -34250,8 +34480,28 @@
+@@ -34250,8 +34483,28 @@
  			return -1;
  		}
  
@@ -1638,7 +1641,7 @@
  			int[] array = new int[2];
  			this.hurtCooldowns = array;
  			this.width = 20;
-@@ -34288,9 +34538,7 @@
+@@ -34288,9 +34541,7 @@
  			}
  			this.trashItem = new Item();
  			this.grappling[0] = -1;
@@ -1649,7 +1652,7 @@
  			this.statManaMax = 20;
  			this.extraAccessory = false;
  			if (Main.cEd)
-@@ -34400,6 +34648,7 @@
+@@ -34400,6 +34651,7 @@
  
  		public void GetAnglerReward()
  		{
@@ -1657,7 +1660,7 @@
  			Item item = new Item();
  			item.type = 0;
  			float num = 1f;
-@@ -34415,6 +34664,10 @@
+@@ -34415,6 +34667,10 @@
  			{
  				num = 0.25f - (float)(this.anglerQuestsFinished - 100) * 0.002f;
  			}
@@ -1668,7 +1671,7 @@
  			if (this.anglerQuestsFinished == 5)
  			{
  				item.SetDefaults(2428, false);
-@@ -34571,69 +34824,24 @@
+@@ -34571,69 +34827,24 @@
  					}
  				}
  			}
@@ -1743,7 +1746,7 @@
  			}
  			Item item7 = new Item();
  			int num4 = (this.anglerQuestsFinished + 50) / 2;
-@@ -34670,16 +34878,7 @@
+@@ -34670,16 +34881,7 @@
  				item7.SetDefaults(72, false);
  				item7.stack = num4;
  			}
@@ -1761,7 +1764,7 @@
  			if (Main.rand.Next((int)(100f * num)) <= 50)
  			{
  				Item item8 = new Item();
-@@ -34719,14 +34918,19 @@
+@@ -34719,14 +34921,19 @@
  				{
  					item8.stack++;
  				}
@@ -1787,7 +1790,7 @@
  					}
  				}
  			}
-@@ -34785,6 +34989,7 @@
+@@ -34785,6 +34992,7 @@
  					list.Add(3024);
  				}
  			}

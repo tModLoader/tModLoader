@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader.Default;
 
@@ -349,6 +350,38 @@ namespace Terraria.ModLoader
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				modPlayer.GetWeaponKnockback(item, ref knockback);
+			}
+		}
+
+		internal static bool ConsumeAmmo(Player player, Item weapon, Item ammo)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.ConsumeAmmo(weapon, ammo))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		internal static bool Shoot(Player player, Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.Shoot(item, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		internal static void MeleeEffects(Player player, Item item, Rectangle hitbox)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.MeleeEffects(item, hitbox);
 			}
 		}
 
