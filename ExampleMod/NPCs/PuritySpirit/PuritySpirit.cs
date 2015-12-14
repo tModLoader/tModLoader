@@ -145,7 +145,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		private IList<Particle> particles = new List<Particle>();
 		private float[,] aura = new float[size, size];
-		private const int dpsCap = 4000;
+		private const int dpsCap = 5000;
 		private int damageTotal = 0;
 		private bool saidRushMessage = false;
 		public readonly IList<int> targets = new List<int>();
@@ -203,6 +203,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 					Initialize();
 					break;
 				case 1:
+				case 11:
 					attack = 4;
 					UltimateAttack();
 					if (attackProgress == 0)
@@ -220,6 +221,12 @@ namespace ExampleMod.NPCs.PuritySpirit
 					break;
 				case 6:
 					DoAttack(5);
+					break;
+				case 10:
+					FinishFight1();
+					break;
+				case 12:
+					FinishFight2();
 					break;
 			}
 		}
@@ -324,7 +331,6 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (attackProgress >= 420)
 			{
 				Talk("Show me the power that has saved Terraria!");
-				Main.PlaySound(15, -1, -1, 0);
 				attackProgress = 0;
 				stage++;
 				npc.dontTakeDamage = false;
@@ -356,6 +362,10 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		private void UltimateAttack()
 		{
+			if (attackProgress == 0)
+			{
+				Main.PlaySound(15, -1, -1, 0);
+			}
 			attackProgress++;
 			if (attackProgress <= 300 && Main.netMode != 1)
 			{
@@ -526,8 +536,8 @@ namespace ExampleMod.NPCs.PuritySpirit
 				{
 					int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("NullLaser"), damage, 0f, Main.myPlayer, npc.whoAmI, (int)(60f + k * timer));
 					Main.projectile[proj].localAI[0] = (int)totalTime;
-					Main.projectile[proj].netUpdate = true;
 					((NullLaser)Main.projectile[proj].modProjectile).warningTime = timer;
+					Main.projectile[proj].netUpdate = true;
 				}
 				attackProgress = (int)totalTime;
 			}
@@ -552,10 +562,101 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		private void SphereAttack()
 		{
+			if (attackProgress == 0)
+			{
+				int damage = Main.expertMode ? 60 : 80;
+				float time = 60f + 60f * timeMultiplier;
+				int rotationSpeed = Main.rand.Next(2) * 2 - 1;
+				int numSpheres = 3 + difficulty / 2;
+				int numGroups = 4 + difficulty / 3;
+				float radius = PuritySphere.radius;
+				for (int j = 0; j < numGroups || j < targets.Count; j++)
+				{
+					int target;
+					Vector2 center;
+					if (j < targets.Count)
+					{
+						target = targets[j];
+						center = Main.player[target].Center;
+					}
+					else
+					{
+						target = 255;
+						center = npc.Center + new Vector2(Main.rand.Next(-arenaWidth / 2 + (int)radius, arenaWidth / 2 - (int)radius + 1), Main.rand.Next(-arenaWidth / 2 + (int)radius, arenaWidth / 2 - (int)radius + 1));
+					}
+					float angle = (float)(Main.rand.NextDouble() * 2 * Math.PI / numSpheres);
+					for (int k = 0; k < numSpheres; k++)
+					{
+						Vector2 pos = center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+						angle += 2f * (float)Math.PI / numSpheres;
+						int proj = Projectile.NewProjectile(pos.X, pos.Y, 0f, 0f, mod.ProjectileType("PuritySphere"), damage, 0f, Main.myPlayer, center.X, center.Y);
+						Main.projectile[proj].localAI[0] = target;
+						Main.projectile[proj].localAI[1] = rotationSpeed;
+						((PuritySphere)Main.projectile[proj].modProjectile).maxTimer = (int)time;
+						Main.projectile[proj].netUpdate = true;
+					}
+				}
+				attackProgress = 60 + (int)time + PuritySphere.strikeTime;
+			}
+			attackProgress--;
+			if (attackProgress < 0)
+			{
+				attackProgress = 0;
+			}
 		}
 
-		private void GiveDebuffs()
+		public override bool PreNPCLoot()
 		{
+			if (stage < 10)
+			{
+				npc.active = true;
+				npc.life = 1;
+				npc.dontTakeDamage = true;
+				stage = 10;
+				attackProgress = 0;
+				return false;
+			}
+			return true;
+		}
+
+		public void FinishFight1()
+		{
+			attackProgress++;
+			if (attackProgress >= 60)
+			{
+				Talk("This is... I thank you for demonstrating your power.");
+			}
+			if (attackProgress >= 180)
+			{
+				Talk("Please take this as a farewell gift.");
+				stage++;
+				attackProgress = 0;
+			}
+		}
+
+		public void FinishFight2()
+		{
+			attackProgress++;
+			if (attackProgress >= 120)
+			{
+				Talk("I wish you luck in your future endeavors.");
+			}
+			if (attackProgress >= 180)
+			{
+				npc.dontTakeDamage = false;
+				npc.StrikeNPCNoInteraction(9999, 0f, 0);
+			}
+		}
+
+		public override void NPCLoot()
+		{
+			
+		}
+
+		public override void BossLoot(ref string name, ref int potionType)
+		{
+			name = "The " + npc.displayName;
+			potionType = ItemID.SuperHealingPotion;
 		}
 
 		public override bool? CanBeHitByItem(Player player, Item item)

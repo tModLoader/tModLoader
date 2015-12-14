@@ -12,8 +12,8 @@ namespace ExampleMod.Projectiles
 		public override void SetDefaults()
 		{
 			projectile.name = "Elemental Laser";
-			projectile.width = 2;
-			projectile.height = 2;
+			projectile.width = 4;
+			projectile.height = 4;
 			projectile.timeLeft = 60;
 			projectile.penetrate = -1;
 			projectile.hostile = true;

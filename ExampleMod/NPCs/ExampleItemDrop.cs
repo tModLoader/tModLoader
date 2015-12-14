@@ -52,10 +52,10 @@ namespace ExampleMod.NPCs
 				Tile tile = Main.tile[i, j];
 				if (tile.active() && tile.type == mod.TileType("ElementalPurge") && !NPC.AnyNPCs(mod.NPCType("PuritySpirit")))
 				{
-					i -= Main.tile[i, j].frameX % 18;
-					j -= Main.tile[i, j].frameY % 18;
+					i -= Main.tile[i, j].frameX / 18;
+					j -= Main.tile[i, j].frameY / 18;
 					i = (i * 16) + 16;
-					j = (j * 16) - 8 + 60;
+					j = (j * 16) + 24 + 60;
 					bool flag = false;
 					for (int k = 0; k < 255; k++)
 					{
