@@ -98,6 +98,14 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void GetWeaponDamage(Player player, ref int damage)
+		{
+		}
+
+		public virtual void GetWeaponKnockback(Player player, ref float knockback)
+		{
+		}
+
 		public virtual bool ConsumeAmmo(Player player)
 		{
 			return true;

@@ -136,6 +136,10 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		public virtual void Kill(double damage, int hitDirection, bool pvp, string deathText)
+		{
+		}
+
 		public virtual bool PreItemCheck()
 		{
 			return true;
@@ -145,7 +149,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void Kill(double damage, int hitDirection, bool pvp, string deathText)
+		public virtual void GetWeaponDamage(Item item, ref int damage)
+		{
+		}
+
+		public virtual void GetWeaponKnockback(Item item, ref float knockback)
 		{
 		}
 

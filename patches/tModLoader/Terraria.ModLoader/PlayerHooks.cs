@@ -336,6 +336,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void GetWeaponDamage(Player player, Item item, ref int damage)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.GetWeaponDamage(item, ref damage);
+			}
+		}
+
+		internal static void GetWeaponKnockback(Player player, Item item, ref float knockback)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.GetWeaponKnockback(item, ref knockback);
+			}
+		}
+
 		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockBack, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)

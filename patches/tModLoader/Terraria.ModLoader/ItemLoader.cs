@@ -231,6 +231,30 @@ namespace Terraria.ModLoader
 				globalItem.HoldItem(item, player);
 			}
 		}
+
+		internal static void GetWeaponDamage(Item item, Player player, ref int damage)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.GetWeaponDamage(player, ref damage);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.GetWeaponDamage(item, player, ref damage);
+			}
+		}
+
+		internal static void GetWeaponKnockback(Item item, Player player, ref float knockback)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.GetWeaponKnockback(player, ref knockback);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.GetWeaponKnockback(item, player, ref knockback);
+			}
+		}
 		//near end of Terraria.Player.PickAmmo before flag2 is checked add
 		//  if(!ItemLoader.ConsumeAmmo(sItem, item, this)) { flag2 = true; }
 		internal static bool ConsumeAmmo(Item item, Item ammo, Player player)
