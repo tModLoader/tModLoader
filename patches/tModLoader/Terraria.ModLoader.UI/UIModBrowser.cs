@@ -8,6 +8,10 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.ModLoader.IO;
 using System.Net;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.Graphics;
+//using System.Drawing;
+using System.Reflection;
 
 namespace Terraria.ModLoader.UI
 {
@@ -16,7 +20,11 @@ namespace Terraria.ModLoader.UI
 		public UIList modList;
 		public UIModDownloadItem selectedItem;
 		public UITextPanel uITextPanel;
+		private List<UICycleImage> _categoryButtons = new List<UICycleImage>();
+
 		public bool loaded = false;
+
+		public SortModes sortMode = SortModes.DisplayNameAtoZ;
 
 		public override void OnInitialize()
 		{
@@ -33,12 +41,16 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(uIPanel);
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
-			modList.Height.Set(0f, 1f);
+			//modList.Height.Set(0f, 1f);
+			modList.Height.Set(-50f, 1f);
+			modList.Top.Set(50f, 0f);
 			modList.ListPadding = 5f;
 			uIPanel.Append(modList);
 			UIScrollbar uIScrollbar = new UIScrollbar();
 			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(0f, 1f);
+			//uIScrollbar.Height.Set(0f, 1f);
+			uIScrollbar.Height.Set(-50f, 1f);
+			uIScrollbar.Top.Set(50f, 0f);
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			modList.SetScrollbar(uIScrollbar);
@@ -67,6 +79,64 @@ namespace Terraria.ModLoader.UI
 			button3.OnClick += new UIElement.MouseEvent(BackClick);
 			uIElement.Append(button3);
 			base.Append(uIElement);
+			UIElement uIElement2 = new UIElement();
+			uIElement2.Width.Set(0f, 1f);
+			uIElement2.Height.Set(32f, 0f);
+			uIElement2.Top.Set(10f, 0f);
+			//Texture2D texture = TextureManager.Load("Images/UI/Achievement_Categories");
+			Texture2D texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
+			//Texture2D texture = Main.instance.BitmapToTexture2D(new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png")));
+			for (int j = 0; j < 1; j++)
+			{
+				UICycleImage uIToggleImage = new UICycleImage(texture, 4, 32, 32, 0, 0);
+				uIToggleImage.Left.Set((float)(j * 36 + 8), 0f);
+			//	uIToggleImage.SetState(true);
+				//uIToggleImage
+				uIToggleImage.OnClick += new UIElement.MouseEvent(this.SortList);
+				_categoryButtons.Add(uIToggleImage);
+				uIElement2.Append(uIToggleImage);
+			}
+			uIPanel.Append(uIElement2);
+		}
+
+		private void SortList(UIMouseEvent evt, UIElement listeningElement)
+		{
+			modList.UpdateOrder();
+		//	this.Recalculate();
+		}
+
+		public override void Draw(SpriteBatch spriteBatch)
+		{
+			base.Draw(spriteBatch);
+
+			for (int i = 0; i < this._categoryButtons.Count; i++)
+			{
+				if (this._categoryButtons[i].IsMouseHovering)
+				{
+					string text;
+					switch (i)
+					{
+						case 0:
+							text = Interface.modBrowser.sortMode.ToFriendlyString();
+							break;
+						default:
+							text = "None";
+							break;
+					}
+					float x = Main.fontMouseText.MeasureString(text).X;
+					Vector2 vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
+					if (vector.Y > (float)(Main.screenHeight - 30))
+					{
+						vector.Y = (float)(Main.screenHeight - 30);
+					}
+					if (vector.X > (float)Main.screenWidth - x)
+					{
+						vector.X = (float)(Main.screenWidth - 460);
+					}
+					Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+					return;
+				}
+			}
 		}
 
 		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
@@ -130,6 +200,8 @@ namespace Terraria.ModLoader.UI
 					string author = xmlNode.SelectSingleNode("author").InnerText;
 					string description = xmlNode.SelectSingleNode("description").InnerText;
 					string download = xmlNode.SelectSingleNode("download").InnerText;
+					int downloads;
+					Int32.TryParse(xmlNode.SelectSingleNode("downloads").InnerText, out downloads);
 					bool exists = false;
 					bool update = false;
 					foreach (BuildProperties bp in modBuildProperties)
@@ -145,7 +217,7 @@ namespace Terraria.ModLoader.UI
 					}
 					//   if (!exists || update)
 					//   {
-					UIModDownloadItem modItem = new UIModDownloadItem(/*this, */displayname, name, version, author, description, download, update, exists);
+					UIModDownloadItem modItem = new UIModDownloadItem(/*this, */displayname, name, version, author, description, download, downloads, update, exists);
 					modList.Add(modItem);
 					//  }
 				}
@@ -166,5 +238,50 @@ namespace Terraria.ModLoader.UI
 			}
 			return urlData;
 		}
+	}
+
+	public static class SortModesExtensions
+	{
+		public static SortModes Next(this SortModes sortmode)
+		{
+			switch (sortmode)
+			{
+				case SortModes.DisplayNameAtoZ:
+					return SortModes.DisplayNameZtoA;
+				case SortModes.DisplayNameZtoA:
+					return SortModes.DownloadsDescending;
+				case SortModes.DownloadsDescending:
+					return SortModes.DownloadsAscending;
+				case SortModes.DownloadsAscending:
+					return SortModes.DisplayNameAtoZ;
+			}
+			return SortModes.DisplayNameAtoZ;
+		}
+
+		public static string ToFriendlyString(this SortModes sortmode)
+		{
+			switch (sortmode)
+			{
+				case SortModes.DisplayNameAtoZ:
+					return "Sort mod names alphabetically";
+				case SortModes.DisplayNameZtoA:
+					return "Sort mod names reverse-alphabetically";
+				case SortModes.DownloadsDescending:
+					return "Sort by downloads descending";
+				case SortModes.DownloadsAscending:
+					return "Sort by downloads ascending";
+			}
+			return "Unknown Sort";
+		}
+	}
+
+	public enum SortModes
+	{
+		DisplayNameAtoZ,
+		DisplayNameZtoA,
+		UpdatedNewest,
+		UpdatedOldest,
+		DownloadsDescending,
+		DownloadsAscending,
 	}
 }
