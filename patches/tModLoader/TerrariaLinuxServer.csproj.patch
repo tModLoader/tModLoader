@@ -27,7 +27,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -235,6 +241,82 @@
+@@ -235,6 +241,83 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -47,6 +47,7 @@
 +    <Compile Include="Terraria.ModLoader.IO\WorldIO.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIColorTextPanel.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UICycleImage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIDownloadMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIErrorMessage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
@@ -110,12 +111,13 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -374,5 +456,8 @@
+@@ -374,5 +457,9 @@
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Terraria.ModLoader.Default\MysteryItem.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
  </Project>

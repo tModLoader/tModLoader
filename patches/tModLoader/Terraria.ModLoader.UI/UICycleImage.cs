@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.UI
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
 			CalculatedStyle dimensions = base.GetDimensions();
-			Point point = new Point(textureOffsetX, textureOffsetY + ((padding + _drawHeight) *currentState));
+			Point point = new Point(textureOffsetX, textureOffsetY + ((padding + _drawHeight) * currentState));
 			Color color = base.IsMouseHovering ? Color.White : Color.Silver;
 			spriteBatch.Draw(texture, new Rectangle((int)dimensions.X, (int)dimensions.Y, this._drawWidth, this._drawHeight), new Rectangle?(new Rectangle(point.X, point.Y, this._drawWidth, this._drawHeight)), color);
 		}
@@ -41,8 +41,7 @@ namespace Terraria.ModLoader.UI
 		{
 			currentState = (currentState + 1) % states;
 			Interface.modBrowser.sortMode = Interface.modBrowser.sortMode.Next();
-            base.Click(evt);
+			base.Click(evt);
 		}
-	
 	}
 }

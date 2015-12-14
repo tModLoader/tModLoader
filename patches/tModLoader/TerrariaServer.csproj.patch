@@ -27,7 +27,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -242,6 +248,82 @@
+@@ -242,6 +248,83 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -47,6 +47,7 @@
 +    <Compile Include="Terraria.ModLoader.IO\WorldIO.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIColorTextPanel.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UICycleImage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIDownloadMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIErrorMessage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
@@ -110,11 +111,14 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -386,6 +468,7 @@
+@@ -386,6 +469,10 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
++  </ItemGroup>
++  <ItemGroup>
++    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
  </Project>

@@ -9,8 +9,6 @@ using Terraria.UI;
 using Terraria.ModLoader.IO;
 using System.Net;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.Graphics;
-//using System.Drawing;
 using System.Reflection;
 
 namespace Terraria.ModLoader.UI
@@ -41,14 +39,12 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(uIPanel);
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
-			//modList.Height.Set(0f, 1f);
 			modList.Height.Set(-50f, 1f);
 			modList.Top.Set(50f, 0f);
 			modList.ListPadding = 5f;
 			uIPanel.Append(modList);
 			UIScrollbar uIScrollbar = new UIScrollbar();
 			uIScrollbar.SetView(100f, 1000f);
-			//uIScrollbar.Height.Set(0f, 1f);
 			uIScrollbar.Height.Set(-50f, 1f);
 			uIScrollbar.Top.Set(50f, 0f);
 			uIScrollbar.HAlign = 1f;
@@ -83,15 +79,11 @@ namespace Terraria.ModLoader.UI
 			uIElement2.Width.Set(0f, 1f);
 			uIElement2.Height.Set(32f, 0f);
 			uIElement2.Top.Set(10f, 0f);
-			//Texture2D texture = TextureManager.Load("Images/UI/Achievement_Categories");
 			Texture2D texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
-			//Texture2D texture = Main.instance.BitmapToTexture2D(new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png")));
 			for (int j = 0; j < 1; j++)
 			{
 				UICycleImage uIToggleImage = new UICycleImage(texture, 4, 32, 32, 0, 0);
 				uIToggleImage.Left.Set((float)(j * 36 + 8), 0f);
-			//	uIToggleImage.SetState(true);
-				//uIToggleImage
 				uIToggleImage.OnClick += new UIElement.MouseEvent(this.SortList);
 				_categoryButtons.Add(uIToggleImage);
 				uIElement2.Append(uIToggleImage);
@@ -102,7 +94,6 @@ namespace Terraria.ModLoader.UI
 		private void SortList(UIMouseEvent evt, UIElement listeningElement)
 		{
 			modList.UpdateOrder();
-		//	this.Recalculate();
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
