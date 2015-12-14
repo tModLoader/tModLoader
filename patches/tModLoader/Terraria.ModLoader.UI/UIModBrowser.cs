@@ -20,7 +20,7 @@ namespace Terraria.ModLoader.UI
 		public UITextPanel uITextPanel;
 		private List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		public bool loaded = false;
-		public SortModes sortMode = SortModes.DisplayNameAtoZ;
+		public SortModes sortMode = SortModes.RecentlyUpdated;
 
 		public override void OnInitialize()
 		{
@@ -34,6 +34,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Width.Set(0f, 1f);
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
@@ -80,7 +81,7 @@ namespace Terraria.ModLoader.UI
 			Texture2D texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
 			for (int j = 0; j < 1; j++)
 			{
-				UICycleImage uIToggleImage = new UICycleImage(texture, 4, 32, 32, 0, 0);
+				UICycleImage uIToggleImage = new UICycleImage(texture, 5, 32, 32, 0, 0);
 				uIToggleImage.Left.Set((float)(j * 36 + 8), 0f);
 				uIToggleImage.OnClick += new UIElement.MouseEvent(this.SortList);
 				_categoryButtons.Add(uIToggleImage);
@@ -188,6 +189,7 @@ namespace Terraria.ModLoader.UI
 					string author = xmlNode.SelectSingleNode("author").InnerText;
 					string description = xmlNode.SelectSingleNode("description").InnerText;
 					string download = xmlNode.SelectSingleNode("download").InnerText;
+					string timeStamp = xmlNode.SelectSingleNode("updateTimeStamp").InnerText;
 					int downloads;
 					Int32.TryParse(xmlNode.SelectSingleNode("downloads").InnerText, out downloads);
 					bool exists = false;
@@ -205,7 +207,7 @@ namespace Terraria.ModLoader.UI
 					}
 					//   if (!exists || update)
 					//   {
-					UIModDownloadItem modItem = new UIModDownloadItem(/*this, */displayname, name, version, author, description, download, downloads, update, exists);
+					UIModDownloadItem modItem = new UIModDownloadItem(/*this, */displayname, name, version, author, description, download, downloads, timeStamp, update, exists);
 					modList.Add(modItem);
 					//  }
 				}
@@ -241,6 +243,8 @@ namespace Terraria.ModLoader.UI
 				case SortModes.DownloadsDescending:
 					return SortModes.DownloadsAscending;
 				case SortModes.DownloadsAscending:
+					return SortModes.RecentlyUpdated;
+				case SortModes.RecentlyUpdated:
 					return SortModes.DisplayNameAtoZ;
 			}
 			return SortModes.DisplayNameAtoZ;
@@ -258,6 +262,8 @@ namespace Terraria.ModLoader.UI
 					return "Sort by downloads descending";
 				case SortModes.DownloadsAscending:
 					return "Sort by downloads ascending";
+				case SortModes.RecentlyUpdated:
+					return "Sort by recently updated";
 			}
 			return "Unknown Sort";
 		}
@@ -267,8 +273,7 @@ namespace Terraria.ModLoader.UI
 	{
 		DisplayNameAtoZ,
 		DisplayNameZtoA,
-		UpdatedNewest,
-		UpdatedOldest,
+		RecentlyUpdated,
 		DownloadsDescending,
 		DownloadsAscending,
 	}

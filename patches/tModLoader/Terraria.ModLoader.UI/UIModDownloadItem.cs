@@ -18,13 +18,14 @@ namespace Terraria.ModLoader.UI
 		public string author;
 		public string description;
 		public string download;
+		public string timeStamp;
 		public int downloads;
 		private Texture2D dividerTexture;
 		private UIText modName;
 		UITextPanel button2;
 		private bool update = false;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string description, string download, int downloads, bool update, bool exists)
+		public UIModDownloadItem(string displayname, string name, string version, string author, string description, string download, int downloads, string timeStamp, bool update, bool exists)
 		{
 			this.displayname = displayname;
 			this.mod = name;
@@ -33,6 +34,7 @@ namespace Terraria.ModLoader.UI
 			this.description = description;
 			this.download = download;
 			this.downloads = downloads;
+			this.timeStamp = timeStamp;
 			this.update = update;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
@@ -81,10 +83,8 @@ namespace Terraria.ModLoader.UI
 					return this.downloads.CompareTo((obj as UIModDownloadItem).downloads);
 				case SortModes.DownloadsDescending:
 					return -1 * this.downloads.CompareTo((obj as UIModDownloadItem).downloads);
-			//case SortModes.UpdatedNewest:
-			//	return -1 * this.displayname.CompareTo((obj as UIModDownloadItem).displayname);
-			//case SortModes.UpdatedOldest:
-			//	return -1 * this.displayname.CompareTo((obj as UIModDownloadItem).displayname);
+				case SortModes.RecentlyUpdated:
+					return -1 * this.timeStamp.CompareTo((obj as UIModDownloadItem).timeStamp);
 			}
 			return base.CompareTo(obj);
 		}
