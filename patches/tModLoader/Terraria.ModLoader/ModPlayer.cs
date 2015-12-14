@@ -136,6 +136,15 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		public virtual bool PreItemCheck()
+		{
+			return true;
+		}
+
+		public virtual void PostItemCheck()
+		{
+		}
+
 		public virtual void Kill(double damage, int hitDirection, bool pvp, string deathText)
 		{
 		}

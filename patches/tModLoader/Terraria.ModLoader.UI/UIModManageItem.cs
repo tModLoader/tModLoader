@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +18,6 @@ namespace Terraria.ModLoader.UI
 		public string displayname;
 		public string version;
 		public string author;
-
 		private Texture2D dividerTexture;
 		private UIText modName;
 		UITextPanel button2;
@@ -29,7 +28,6 @@ namespace Terraria.ModLoader.UI
 			this.version = version;
 			this.author = author;
 			this.name = name; 
-
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.Height.Set(90f, 0f);
@@ -47,8 +45,8 @@ namespace Terraria.ModLoader.UI
 			button.Top.Set(40f, 0f);
 			button.PaddingTop -= 2f;
 			button.PaddingBottom -= 2f;
-		//	button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-		//	button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+			//	button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+			//	button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			base.Append(button);
 			button2 = new UITextPanel("Unpublish", 1f, false);
 			button2.CopyStyle(button);
@@ -102,11 +100,11 @@ namespace Terraria.ModLoader.UI
 				string url = "http://javid.ddns.net/tModLoader/unpublishmymod.php";
 				IO.UploadFile[] files = new IO.UploadFile[0];
 				var values = new NameValueCollection
-					{
-						{ "name", this.name},
-						{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
-						{ "modloaderversion", ModLoader.version },
-					};
+				{
+					{ "name", this.name },
+					{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
+					{ "modloaderversion", ModLoader.version },
+				};
 				byte[] result = IO.UploadFile.UploadFiles(url, files, values);
 				string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
 				ErrorLogger.LogModUnPublish(s);

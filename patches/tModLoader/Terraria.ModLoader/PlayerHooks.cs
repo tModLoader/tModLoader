@@ -316,6 +316,26 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static bool PreItemCheck(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.PreItemCheck())
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		internal static void PostItemCheck(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PostItemCheck();
+			}
+		}
+
 		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockBack, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)

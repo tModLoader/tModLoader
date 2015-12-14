@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
@@ -85,10 +85,10 @@ namespace Terraria.ModLoader.UI
 				string url = "http://javid.ddns.net/tModLoader/listmymods.php";
 				IO.UploadFile[] files = new IO.UploadFile[0];
 				var values = new NameValueCollection
-					{
-						{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
-						{ "modloaderversion", ModLoader.version },
-					};
+				{
+					{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
+					{ "modloaderversion", ModLoader.version },
+				};
 				byte[] result = IO.UploadFile.UploadFiles(url, files, values);
 				xmlText = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
 			}
@@ -105,10 +105,10 @@ namespace Terraria.ModLoader.UI
 				ErrorLogger.LogModBrowserException(e);
 				return;
 			}
-			try {
+			try
+			{
 				XmlDocument xmlDoc = new XmlDocument();
 				xmlDoc.LoadXml(xmlText);
-
 				foreach (XmlNode xmlNode in xmlDoc.DocumentElement)
 				{
 					string displayname = xmlNode.SelectSingleNode("displayname").InnerText;
@@ -116,7 +116,6 @@ namespace Terraria.ModLoader.UI
 					string version = xmlNode.SelectSingleNode("version").InnerText;
 					string author = xmlNode.SelectSingleNode("author").InnerText;
 					string downloads = xmlNode.SelectSingleNode("downloads").InnerText;
-
 					UIModManageItem modItem = new UIModManageItem(displayname, name, version, author, downloads);
 					myPublishedMods.Add(modItem);
 				}

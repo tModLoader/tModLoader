@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIModInfo : UIState
 	{
-		public UITextPanel modInfo;
+		public UIMessageBox modInfo;
 		public UITextPanel uITextPanel;
 
 		public override void OnInitialize()
@@ -28,8 +28,8 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
-			modInfo = new UITextPanel("This is a test of mod info here.");
-			modInfo.Width.Set(-25f, 1f);
+			modInfo = new UIMessageBox("This is a test of mod info here.");
+			modInfo.Width.Set(0f, 1f);
 			modInfo.Height.Set(0f, 1f);
 			uIPanel.Append(modInfo);
 			uITextPanel = new UITextPanel("Mod Info", 0.8f, true);
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate()
 		{
 			uITextPanel.SetText("Mod Info: " + Interface.modBrowser.selectedItem.displayname, 0.8f, true);
-			modInfo.SetText(Interface.modBrowser.selectedItem.description, 1, false);
+			modInfo.SetText(Interface.modBrowser.selectedItem.description);
 		}
 	}
 }
