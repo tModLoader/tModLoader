@@ -83,6 +83,7 @@ namespace Terraria.ModLoader.UI
 			{
 				UICycleImage uIToggleImage = new UICycleImage(texture, 5, 32, 32, 0, 0);
 				uIToggleImage.Left.Set((float)(j * 36 + 8), 0f);
+				uIToggleImage.setCurrentState((int)sortMode);
 				uIToggleImage.OnClick += new UIElement.MouseEvent(this.SortList);
 				_categoryButtons.Add(uIToggleImage);
 				uIElement2.Append(uIToggleImage);
@@ -273,8 +274,8 @@ namespace Terraria.ModLoader.UI
 	{
 		DisplayNameAtoZ,
 		DisplayNameZtoA,
-		RecentlyUpdated,
 		DownloadsDescending,
 		DownloadsAscending,
+		RecentlyUpdated,
 	}
 }

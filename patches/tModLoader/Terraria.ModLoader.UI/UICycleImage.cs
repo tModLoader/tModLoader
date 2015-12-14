@@ -43,5 +43,10 @@ namespace Terraria.ModLoader.UI
 			Interface.modBrowser.sortMode = Interface.modBrowser.sortMode.Next();
 			base.Click(evt);
 		}
+
+		internal void setCurrentState(int sortMode)
+		{
+			currentState = sortMode;
+		}
 	}
 }
