@@ -385,11 +385,153 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockBack, bool crit)
+		internal static void OnHitAnything(Player player, float x, float y, Entity victim)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				modPlayer.OnHitNPC(item, target, damage, knockBack, crit);
+				modPlayer.OnHitAnything(x, y, victim);
+			}
+		}
+
+		internal static bool? CanHitNPC(Player player, Item item, NPC target)
+		{
+			bool? flag = null;
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				bool? canHit = modPlayer.CanHitNPC(item, target);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
+			}
+			return flag;
+		}
+
+		internal static void ModifyHitNPC(Player player, Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
+			}
+		}
+
+		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockback, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitNPC(item, target, damage, knockback, crit);
+			}
+		}
+
+		internal static bool? CanHitNPCWithProj(Projectile proj, NPC target)
+		{
+			if (proj.npcProj || proj.trap)
+			{
+				return null;
+			}
+			Player player = Main.player[proj.owner];
+			bool? flag = null;
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				bool? canHit = modPlayer.CanHitNPCWithProj(proj, target);
+				if (canHit.HasValue && !canHit.Value)
+				{
+					return false;
+				}
+				if (canHit.HasValue)
+				{
+					flag = canHit.Value;
+				}
+			}
+			return flag;
+		}
+
+		internal static void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit)
+		{
+			if (proj.npcProj || proj.trap)
+			{
+				return;
+			}
+			Player player = Main.player[proj.owner];
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit);
+			}
+		}
+
+		internal static void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+		{
+			if (proj.npcProj || proj.trap)
+			{
+				return;
+			}
+			Player player = Main.player[proj.owner];
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitNPCWithProj(proj, target, damage, knockback, crit);
+			}
+		}
+
+		internal static bool CanHitPvp(Player player, Item item, Player target)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.CanHitPvp(item, target))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		internal static void ModifyHitPvp(Player player, Item item, Player target, ref int damage, ref bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyHitPvp(item, target, ref damage, ref crit);
+			}
+		}
+
+		internal static void OnHitPvp(Player player, Item item, Player target, int damage, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitPvp(item, target, damage, crit);
+			}
+		}
+
+		internal static bool CanHitPvpWithProj(Projectile proj, Player target)
+		{
+			Player player = Main.player[proj.owner];
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.CanHitPvpWithProj(proj, target))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		internal static void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit)
+		{
+			Player player = Main.player[proj.owner];
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyHitPvpWithProj(proj, target, ref damage, ref crit);
+			}
+		}
+
+		internal static void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)
+		{
+			Player player = Main.player[proj.owner];
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitPvpWithProj(proj, target, damage, crit);
 			}
 		}
 
