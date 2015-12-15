@@ -20,11 +20,11 @@ namespace Terraria.ModLoader.Setup
 
 			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
 			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/decompiled", "src/merged", "patches/merged", 0);
-			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/decompiled", "src/merged", "patches/merged");
+			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/decompiled", "src/merged", "patches/merged", 0);
 			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/merged", "src/Terraria", "patches/Terraria", 1);
-			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria");
+			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria", 1);
 			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", 2, FormatTask.tModLoaderFormat);
-			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", FormatTask.tModLoaderFormat);
+			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", 2, FormatTask.tModLoaderFormat);
 			taskButtons[buttonFormat] = () => new FormatTask(this, FormatTask.tModLoaderFormat);
 			taskButtons[buttonSetup] = () =>
 				new SetupTask(this, new[] { buttonDecompile, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader }
