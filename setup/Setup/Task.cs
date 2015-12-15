@@ -84,7 +84,7 @@ namespace Terraria.ModLoader.Setup
 
         public static void Copy(string from, string to) {
             CreateParentDirectory(to);
-            File.Copy(from, to);
+            File.Copy(from, to, true);
         }
                 
 

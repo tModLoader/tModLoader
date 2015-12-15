@@ -1,4 +1,6 @@
-﻿namespace Terraria.ModLoader.Setup
+﻿using System;
+
+namespace Terraria.ModLoader.Setup
 {
     partial class MainForm
     {
@@ -45,6 +47,7 @@
 			this.menuItemTerraria = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuItemWarnings = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuItemSingleDecompileThread = new System.Windows.Forms.ToolStripMenuItem();
+			this.resetTimeStampOptimizationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -226,7 +229,8 @@
 			this.menuItemOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemTerraria,
             this.menuItemWarnings,
-            this.menuItemSingleDecompileThread});
+            this.menuItemSingleDecompileThread,
+            this.resetTimeStampOptimizationsToolStripMenuItem});
 			this.menuItemOptions.Name = "menuItemOptions";
 			this.menuItemOptions.Size = new System.Drawing.Size(61, 20);
 			this.menuItemOptions.Text = "Options";
@@ -234,7 +238,7 @@
 			// menuItemTerraria
 			// 
 			this.menuItemTerraria.Name = "menuItemTerraria";
-			this.menuItemTerraria.Size = new System.Drawing.Size(206, 22);
+			this.menuItemTerraria.Size = new System.Drawing.Size(243, 22);
 			this.menuItemTerraria.Text = "Select Terraria";
 			this.menuItemTerraria.Click += new System.EventHandler(this.menuItemTerraria_Click);
 			// 
@@ -242,7 +246,7 @@
 			// 
 			this.menuItemWarnings.CheckOnClick = true;
 			this.menuItemWarnings.Name = "menuItemWarnings";
-			this.menuItemWarnings.Size = new System.Drawing.Size(206, 22);
+			this.menuItemWarnings.Size = new System.Drawing.Size(243, 22);
 			this.menuItemWarnings.Text = "Suppress Warnings";
 			this.menuItemWarnings.Click += new System.EventHandler(this.menuItemWarnings_Click);
 			// 
@@ -250,9 +254,16 @@
 			// 
 			this.menuItemSingleDecompileThread.CheckOnClick = true;
 			this.menuItemSingleDecompileThread.Name = "menuItemSingleDecompileThread";
-			this.menuItemSingleDecompileThread.Size = new System.Drawing.Size(206, 22);
+			this.menuItemSingleDecompileThread.Size = new System.Drawing.Size(243, 22);
 			this.menuItemSingleDecompileThread.Text = "Single Decompile Thread";
 			this.menuItemSingleDecompileThread.Click += new System.EventHandler(this.menuItemSingleDecompileThread_Click);
+			// 
+			// resetTimeStampOptimizationsToolStripMenuItem
+			// 
+			this.resetTimeStampOptimizationsToolStripMenuItem.Name = "resetTimeStampOptimizationsToolStripMenuItem";
+			this.resetTimeStampOptimizationsToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+			this.resetTimeStampOptimizationsToolStripMenuItem.Text = "Reset TimeStamp Optimizations";
+			this.menuItemTerraria.Click += new System.EventHandler(this.menuItemResetTimeStampOptmizations_Click);
 			// 
 			// MainForm
 			// 
@@ -282,9 +293,9 @@
 
         }
 
-        #endregion
+		#endregion
 
-        private System.Windows.Forms.Button buttonCancel;
+		private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.Button buttonSetup;
@@ -302,6 +313,7 @@
         private System.Windows.Forms.Button buttonDiffMerged;
         private System.Windows.Forms.Button buttonPatchMerged;
         private System.Windows.Forms.ToolStripMenuItem menuItemSingleDecompileThread;
-    }
+		private System.Windows.Forms.ToolStripMenuItem resetTimeStampOptimizationsToolStripMenuItem;
+	}
 }
 
