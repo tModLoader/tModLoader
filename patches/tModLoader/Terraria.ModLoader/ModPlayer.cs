@@ -228,7 +228,29 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool CanBeHitByNPC(NPC npc, ref int cooldownSlot)
+		{
+			return true;
+		}
+
+		public virtual void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
+		{
+		}
+
 		public virtual void OnHitByNPC(NPC npc, int damage, bool crit)
+		{
+		}
+
+		public virtual bool CanBeHitByProjectile(Projectile proj)
+		{
+			return true;
+		}
+
+		public virtual void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
+		{
+		}
+
+		public virtual void OnHitByProjectile(Projectile proj, int damage, bool crit)
 		{
 		}
 

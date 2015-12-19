@@ -652,8 +652,8 @@
  							num250 = 1;
  						}
 -						if ((num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
-+						//TODO - ModPlayer.CanBeHitByNPC
-+						if (NPCLoader.CanHitPlayer(Main.npc[num249], this, ref num250) && (num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
++						if (NPCLoader.CanHitPlayer(Main.npc[num249], this, ref num250) && PlayerHooks.CanBeHitByNPC(this, Main.npc[num249], ref num250)
++						    && (num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
  						{
  							float num251 = 1f;
  							Rectangle value6 = new Rectangle((int)Main.npc[num249].position.X, (int)Main.npc[num249].position.Y, Main.npc[num249].width, Main.npc[num249].height);
@@ -663,7 +663,7 @@
  								}
 +								bool crit = false;
 +								NPCLoader.ModifyHitPlayer(Main.npc[num249], this, ref num255, ref crit);
-+								//TODO - ModPlayer.ModifyHitByNPC
++								PlayerHooks.ModifyHitByNPC(this, Main.npc[num249], ref num255, ref crit);
  								if (this.whoAmI == Main.myPlayer && this.thorns > 0f && !this.immune && !Main.npc[num249].dontTakeDamage)
  								{
  									int num257 = (int)((float)num255 * this.thorns);

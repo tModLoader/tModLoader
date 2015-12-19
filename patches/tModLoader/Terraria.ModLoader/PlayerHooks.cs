@@ -535,11 +535,59 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static bool CanBeHitByNPC(Player player, NPC npc, ref int cooldownSlot)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.CanBeHitByNPC(npc, ref cooldownSlot))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		internal static void ModifyHitByNPC(Player player, NPC npc, ref int damage, ref bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyHitByNPC(npc, ref damage, ref crit);
+			}
+		}
+
 		internal static void OnHitByNPC(Player player, NPC npc, int damage, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				modPlayer.OnHitByNPC(npc, damage, crit);
+			}
+		}
+
+		internal static bool CanBeHitByProjectile(Player player, Projectile proj)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.CanBeHitByProjectile(proj))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		internal static void ModifyHitByProjectile(Player player, Projectile proj, ref int damage, ref bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyHitByProjectile(proj, ref damage, ref crit);
+			}
+		}
+
+		internal static void OnHitByProjectile(Player player, Projectile proj, int damage, bool crit)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnHitByProjectile(proj, damage, crit);
 			}
 		}
 

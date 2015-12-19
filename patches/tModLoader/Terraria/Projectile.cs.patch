@@ -157,7 +157,7 @@
  								if (Main.netMode != 0)
  								{
  									if (flag7)
-@@ -9010,11 +9046,16 @@
+@@ -9010,11 +9046,15 @@
  				{
  					num41 = 1;
  				}
@@ -170,22 +170,21 @@
  				{
  					bool flag8 = this.Colliding(myRect, Main.player[myPlayer2].getRect());
 -					if (flag8)
-+					//TODO - ModPlayer.CanBeHitByProjectile
-+					if (ProjectileLoader.CanHitPlayer(this, Main.player[myPlayer2]) && flag8)
++					if (ProjectileLoader.CanHitPlayer(this, Main.player[myPlayer2]) && PlayerHooks.CanBeHitByProjectile(Main.player[myPlayer2], this) && flag8)
  					{
  						int hitDirection = this.direction;
  						if (Main.player[myPlayer2].position.X + (float)(Main.player[myPlayer2].width / 2) < this.position.X + (float)(this.width / 2))
-@@ -9026,6 +9067,9 @@
+@@ -9026,6 +9066,9 @@
  							hitDirection = 1;
  						}
  						int num42 = Main.DamageVar((float)this.damage);
 +						bool crit = false;
 +						ProjectileLoader.ModifyHitPlayer(this, Main.player[myPlayer2], ref num42, ref crit);
-+						//TODO - ModPlayer.ModifyHitByProjectile
++						PlayerHooks.ModifyHitByProjectile(Main.player[myPlayer2], this, ref num42, ref crit);
  						if (!Main.player[myPlayer2].immune)
  						{
  							this.StatusPlayer(myPlayer2);
-@@ -9038,7 +9082,7 @@
+@@ -9038,7 +9081,7 @@
  						{
  							num42 = (int)((float)num42 * Main.expertDamage);
  						}
@@ -194,16 +193,16 @@
  						if (this.trap)
  						{
  							Main.player[myPlayer2].trapDebuffSource = true;
-@@ -9047,6 +9091,8 @@
+@@ -9047,6 +9090,8 @@
  								AchievementsHelper.HandleSpecialEvent(Main.player[myPlayer2], 4);
  							}
  						}
 +						ProjectileLoader.OnHitPlayer(this, Main.player[myPlayer2], realDamage, crit);
-+						//TODO - ModPlayer.OnHitByProjectile
++						PlayerHooks.OnHitByProjectile(Main.player[myPlayer2], this, realDamage, crit);
  						if (this.type == 435)
  						{
  							this.penetrate--;
-@@ -9082,6 +9128,11 @@
+@@ -9082,6 +9127,11 @@
  			{
  				myRect.X += (int)this.velocity.X;
  				myRect.Y += (int)this.velocity.Y;
@@ -215,7 +214,7 @@
  			}
  			if (myRect.Intersects(targetRect))
  			{
-@@ -10111,6 +10162,7 @@
+@@ -10111,6 +10161,7 @@
  							num25 = (int)(20f * this.scale);
  							num26 = (int)(20f * this.scale);
  						}
@@ -223,7 +222,7 @@
  						if (((this.type != 440 && this.type != 449 && this.type != 606) || this.ai[1] != 1f) && (this.type != 466 || this.localAI[1] != 1f) && (this.type != 580 || this.localAI[1] <= 0f) && (this.type != 640 || this.localAI[1] <= 0f))
  						{
  							if (this.aiStyle == 10)
-@@ -10202,7 +10254,10 @@
+@@ -10202,7 +10253,10 @@
  						}
  						if (flag3)
  						{
@@ -235,7 +234,7 @@
  							{
  								this.position += this.velocity;
  								this.numUpdates = 0;
-@@ -11453,6 +11508,7 @@
+@@ -11453,6 +11507,7 @@
  			{
  				num22 = -1;
  			}
@@ -243,7 +242,7 @@
  			if (flag)
  			{
  				if (Main.player[this.owner].inventory[Main.player[this.owner].selectedItem].type != 2422)
-@@ -11486,6 +11542,7 @@
+@@ -11486,6 +11541,7 @@
  			else if (Main.rand.Next(50) > num7 && Main.rand.Next(50) > num7 && num5 < num8)
  			{
  				num13 = Main.rand.Next(2337, 2340);
@@ -251,7 +250,7 @@
  			}
  			else if (Main.rand.Next(100) < num21)
  			{
-@@ -11900,6 +11957,8 @@
+@@ -11900,6 +11956,8 @@
  					}
  				}
  			}
@@ -260,7 +259,7 @@
  			if (num13 > 0)
  			{
  				if (Main.player[this.owner].sonarPotion)
-@@ -11954,6 +12013,8 @@
+@@ -11954,6 +12012,8 @@
  						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
  					case "Random":
  						return Main.rand.NextFloat();
@@ -269,7 +268,7 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -12009,6 +12070,11 @@
+@@ -12009,6 +12069,11 @@
  		}
  
  		public void AI()
@@ -281,7 +280,7 @@
  		{
  			if (this.aiStyle == 1)
  			{
-@@ -19191,7 +19257,7 @@
+@@ -19191,7 +19256,7 @@
  														Rectangle value13 = new Rectangle((int)Main.player[this.owner].position.X, (int)Main.player[this.owner].position.Y, Main.player[this.owner].width, Main.player[this.owner].height);
  														if (rectangle5.Intersects(value13))
  														{
@@ -290,7 +289,7 @@
  															{
  																int num594 = (int)this.ai[1];
  																Item item = new Item();
-@@ -35510,6 +35576,11 @@
+@@ -35510,6 +35575,11 @@
  			Main.projectileIdentity[this.owner, this.identity] = -1;
  			int num = this.timeLeft;
  			this.timeLeft = 0;
@@ -302,7 +301,7 @@
  			if (this.type == 634 || this.type == 635)
  			{
  				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
-@@ -40434,11 +40505,17 @@
+@@ -40434,11 +40504,17 @@
  					}
  				}
  			}
