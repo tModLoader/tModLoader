@@ -485,11 +485,20 @@
  			this.velocity.Y = this.velocity.Y - num * this.gravDir;
  			if (this.gravDir == 1f)
  			{
+@@ -15524,7 +15594,7 @@
+ 			{
+ 				num3 = -1;
+ 			}
+-			if (!this.wet && !this.mount.Cart && (num3 == 147 || num3 == 25 || num3 == 53 || num3 == 189 || num3 == 0 || num3 == 123 || num3 == 57 || num3 == 112 || num3 == 116 || num3 == 196 || num3 == 193 || num3 == 195 || num3 == 197 || num3 == 199 || num3 == 229 || num3 == 371))
++			if (!this.wet && !this.mount.Cart && (num3 == 147 || num3 == 25 || num3 == 53 || num3 == 189 || num3 == 0 || num3 == 123 || num3 == 57 || num3 == 112 || num3 == 116 || num3 == 196 || num3 == 193 || num3 == 195 || num3 == 197 || num3 == 199 || num3 == 229 || num3 == 371 || TileLoader.HasWalkDust(num3)))
+ 			{
+ 				int num4 = 1;
+ 				if (Falling)
 @@ -15624,6 +15694,7 @@
  					{
  						newColor = new Color(97, 200, 255, 100);
  					}
-+					//TODO - ModTile.WalkDust
++					TileLoader.WalkDust(num3, ref num5, ref flag, ref newColor);
  					if (!Falling)
  					{
  						float num6 = Math.Abs(this.velocity.X) / 3f;
@@ -643,7 +652,7 @@
  							this.showItemIcon2 = -1;
  						}
  					}
-+					//TODO - ModTile.MouseOverFar
++					TileLoader.MouseOverFar(Player.tileTargetX, Player.tileTargetY);
  				}
  			}
  			if (this.tongued)

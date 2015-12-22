@@ -182,6 +182,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void MouseOverFar(int i, int j)
+		{
+		}
+
 		public virtual bool AutoSelect(int i, int j, Item item)
 		{
 			return false;
@@ -194,6 +198,15 @@ namespace Terraria.ModLoader
 		public virtual bool Slope(int i, int j)
 		{
 			return true;
+		}
+
+		public virtual bool HasWalkDust()
+		{
+			return false;
+		}
+
+		public virtual void WalkDust(ref int dustType, ref bool makeDust, ref Color color)
+		{
 		}
 	}
 }

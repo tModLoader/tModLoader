@@ -168,5 +168,16 @@ namespace ExampleMod.Tiles
 			player.noThrow = 2;
 			player.showItemIcon = true;
 		}
+
+		public override void MouseOverFar(int i, int j)
+		{
+			MouseOver(i, j);
+			Player player = Main.player[Main.myPlayer];
+			if (player.showItemIconText == "")
+			{
+				player.showItemIcon = false;
+				player.showItemIcon2 = 0;
+			}
+		}
 	}
 }

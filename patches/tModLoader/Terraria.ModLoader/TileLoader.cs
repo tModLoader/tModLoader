@@ -802,6 +802,20 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void MouseOverFar(int i, int j)
+		{
+			int type = Main.tile[i, j].type;
+			ModTile modTile = GetTile(type);
+			if (modTile != null)
+			{
+				modTile.MouseOverFar(i, j);
+			}
+			foreach (GlobalTile globalTile in globalTiles)
+			{
+				globalTile.MouseOverFar(i, j, type);
+			}
+		}
+
 		internal static int AutoSelect(int i, int j, Player player)
 		{
 			if (!Main.tile[i, j].active())
@@ -864,6 +878,25 @@ namespace Terraria.ModLoader
 				return !modTile.Slope(i, j);
 			}
 			return false;
+		}
+
+		internal static bool HasWalkDust(int type)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile != null)
+			{
+				return modTile.HasWalkDust();
+			}
+			return true;
+		}
+
+		internal static void WalkDust(int type, ref int dustType, ref bool makeDust, ref Color color)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile != null)
+			{
+				modTile.WalkDust(ref dustType, ref makeDust, ref color);
+			}
 		}
 	}
 }

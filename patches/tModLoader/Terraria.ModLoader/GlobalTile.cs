@@ -77,6 +77,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void AnimateTile()
+		{
+		}
+
 		public virtual bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
 		{
 			return true;
@@ -113,6 +117,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void MouseOverFar(int i, int j, int type)
+		{
+		}
+
 		public virtual bool AutoSelect(int i, int j, int type, Item item)
 		{
 			return false;
@@ -125,10 +133,6 @@ namespace Terraria.ModLoader
 		public virtual bool Slope(int i, int j, int type)
 		{
 			return true;
-		}
-
-		public virtual void AnimateTile()
-		{
 		}
 	}
 }
