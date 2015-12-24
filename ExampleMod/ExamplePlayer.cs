@@ -23,6 +23,8 @@ namespace ExampleMod
 		public int constantDamage = 0;
 		public float percentDamage = 0f;
 		public float defenseEffect = -1f;
+		public bool badHeal = false;
+		public int healHurt = 0;
 
 		public override void ResetEffects()
 		{
@@ -32,6 +34,11 @@ namespace ExampleMod
 			{
 				voidMonolith--; //this is a very bad hack until I create ModWorld
 			}
+			constantDamage = 0;
+			percentDamage = 0f;
+			defenseEffect = -1f;
+			badHeal = false;
+			healHurt = 0;
 		}
 
 		public override void SaveCustomData(BinaryWriter writer)
@@ -72,6 +79,15 @@ namespace ExampleMod
 				}
 				player.lifeRegenTime = 0;
 				player.lifeRegen -= 16;
+			}
+			if (healHurt > 0)
+			{
+				if (player.lifeRegen > 0)
+				{
+					player.lifeRegen = 0;
+				}
+				player.lifeRegenTime = 0;
+				player.lifeRegen -= 120 * healHurt;
 			}
 		}
 
@@ -179,6 +195,7 @@ namespace ExampleMod
 			}
 			else
 			{
+				player.AddBuff(mod.BuffType("Undead"), 1800, false);
 			}
 		}
 
@@ -276,6 +293,10 @@ namespace ExampleMod
 					Main.PlaySound(2, (int)player.position.X, (int)player.position.Y, 29);
 					return false;
 				}
+			}
+			if (healHurt > 0 && damage == 10.0 && hitDirection == 0 && deathText == " " + Lang.dt[1])
+			{
+				deathText = " was dissolved by holy powers";
 			}
 			return true;
 		}

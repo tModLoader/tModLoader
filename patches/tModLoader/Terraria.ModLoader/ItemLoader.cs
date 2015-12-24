@@ -434,21 +434,19 @@ namespace Terraria.ModLoader
 				globalItem.OnHitPvp(item, player, target, damage, crit);
 			}
 		}
-		//in Terraria.Player.ItemCheck inside block if (this.itemTime == 0 && this.itemAnimation > 0) before hairDye
-		//  call ItemLoader.UseItem(item, this)
-		internal static void UseItem(Item item, Player player)
+
+		internal static bool UseItem(Item item, Player player)
 		{
-			if (IsModItem(item) && item.modItem.UseItem(player))
+			bool flag = false;
+			if (IsModItem(item))
 			{
-				player.itemTime = item.useTime;
+				flag = item.modItem.UseItem(player);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				if (globalItem.UseItem(item, player))
-				{
-					player.itemTime = item.useTime;
-				}
+				flag = flag || globalItem.UseItem(item, player);
 			}
+			return flag;
 		}
 		//near end of Terraria.Player.ItemCheck before flag22 is checked
 		//  call ItemLoader.ConsumeItem(item, this, ref flag22)

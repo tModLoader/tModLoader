@@ -887,7 +887,7 @@ namespace Terraria.ModLoader
 			{
 				return modTile.HasWalkDust();
 			}
-			return true;
+			return false;
 		}
 
 		internal static void WalkDust(int type, ref int dustType, ref bool makeDust, ref Color color)
