@@ -54,6 +54,16 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool CheckActive(NPC npc)
+		{
+			return true;
+		}
+
+		public virtual bool CheckDead(NPC npc)
+		{
+			return true;
+		}
+
 		public virtual bool PreNPCLoot(NPC npc)
 		{
 			return true;

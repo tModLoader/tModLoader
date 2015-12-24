@@ -312,6 +312,38 @@ namespace Terraria.ModLoader
 				globalNPC.HitEffect(npc, hitDirection, damage);
 			}
 		}
+
+		internal static bool CheckActive(NPC npc)
+		{
+			if (IsModNPC(npc) && !npc.modNPC.CheckActive())
+			{
+				return false;
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				if (!globalNPC.CheckActive(npc))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		internal static bool CheckDead(NPC npc)
+		{
+			if (IsModNPC(npc) && !npc.modNPC.CheckDead())
+			{
+				return false;
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				if (!globalNPC.CheckDead(npc))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
 		//in Terraria.NPC.NPCLoot after hardmode meteor head check add
 		//  if(!NPCLoader.PreNPCLoot(this)) { return; }
 		internal static bool PreNPCLoot(NPC npc)

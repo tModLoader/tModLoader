@@ -605,7 +605,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 		}
 
-		public override bool PreNPCLoot()
+		public override bool CheckDead()
 		{
 			if (stage < 10)
 			{
@@ -622,11 +622,11 @@ namespace ExampleMod.NPCs.PuritySpirit
 		public void FinishFight1()
 		{
 			attackProgress++;
-			if (attackProgress >= 60)
+			if (attackProgress == 60)
 			{
 				Talk("This is... I thank you for demonstrating your power.");
 			}
-			if (attackProgress >= 180)
+			if (attackProgress >= 240)
 			{
 				Talk("Please take this as a farewell gift.");
 				stage++;
@@ -637,7 +637,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		public void FinishFight2()
 		{
 			attackProgress++;
-			if (attackProgress >= 120)
+			if (attackProgress == 120)
 			{
 				Talk("I wish you luck in your future endeavors.");
 			}
