@@ -1023,6 +1023,54 @@ namespace Terraria.ModLoader
 				globalItem.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 			}
 		}
+
+		internal static void HoldoutOffset(float gravDir, int type, ref Vector2 offset)
+		{
+			ModItem modItem = GetItem(type);
+			if (modItem != null)
+			{
+				Vector2? modOffset = modItem.HoldoutOffset();
+				if (modOffset.HasValue)
+				{
+					offset.X = modOffset.Value.X;
+					offset.Y += gravDir * modOffset.Value.Y;
+				}
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				Vector2? modOffset = globalItem.HoldoutOffset(type);
+				if (modOffset.HasValue)
+				{
+					offset.X = modOffset.Value.X;
+					offset.Y = Main.itemTexture[type].Height / 2f + gravDir * modOffset.Value.Y;
+				}
+			}
+		}
+
+		internal static void HoldoutOrigin(Player player, ref Vector2 origin)
+		{
+			Item item = player.inventory[player.selectedItem];
+			Vector2 modOrigin = Vector2.Zero;
+			if (IsModItem(item))
+			{
+				Vector2? modOrigin2 = item.modItem.HoldoutOrigin();
+				if (modOrigin2.HasValue)
+				{
+					modOrigin = modOrigin2.Value;
+				}
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				Vector2? modOrigin2 = globalItem.HoldoutOrigin(item.type);
+				if (modOrigin2.HasValue)
+				{
+					modOrigin = modOrigin2.Value;
+				}
+			}
+			modOrigin.X *= player.direction;
+			modOrigin.Y *= -player.gravDir;
+			origin += modOrigin;
+		}
 		//in Terraria.UI.ItemSlot.AccCheck replace 2nd and 3rd return false with
 		//  return !ItemLoader.CanEquipAccessory(item, slot)
 		internal static bool CanEquipAccessory(Item item, int slot)

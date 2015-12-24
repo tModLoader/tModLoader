@@ -286,6 +286,16 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual Vector2? HoldoutOffset(int type)
+		{
+			return null;
+		}
+
+		public virtual Vector2? HoldoutOrigin(int type)
+		{
+			return null;
+		}
+
 		public virtual bool CanEquipAccessory(Item item, Player player, int slot)
 		{
 			return true;
