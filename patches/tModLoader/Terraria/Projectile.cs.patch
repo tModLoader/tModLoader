@@ -280,7 +280,37 @@
  		{
  			if (this.aiStyle == 1)
  			{
-@@ -19191,7 +19256,7 @@
+@@ -13172,7 +13237,12 @@
+ 						if (num71 > (float)num72)
+ 						{
+ 							this.ai[0] = 1f;
+-						}
++							//this comment includes num71 in the diff in case the name changes
++						}
++					}
++					else if (ProjectileLoader.GrappleOutOfRange(num71, this))
++					{
++						this.ai[0] = 1f;
+ 					}
+ 					Vector2 value4 = base.Center - new Vector2(5f);
+ 					Vector2 value5 = base.Center + new Vector2(5f);
+@@ -13251,6 +13321,7 @@
+ 										{
+ 											num83 = 4;
+ 										}
++										ProjectileLoader.NumGrappleHooks(this, Main.player[this.owner], ref num83);
+ 										for (int num84 = 0; num84 < 1000; num84++)
+ 										{
+ 											if (Main.projectile[num84].active && Main.projectile[num84].owner == this.owner && Main.projectile[num84].aiStyle == 7)
+@@ -13336,6 +13407,7 @@
+ 					{
+ 						num85 = 17f;
+ 					}
++					ProjectileLoader.GrappleRetreatSpeed(this, Main.player[this.owner], ref num85);
+ 					if (num71 < 24f)
+ 					{
+ 						this.Kill();
+@@ -19191,7 +19263,7 @@
  														Rectangle value13 = new Rectangle((int)Main.player[this.owner].position.X, (int)Main.player[this.owner].position.Y, Main.player[this.owner].width, Main.player[this.owner].height);
  														if (rectangle5.Intersects(value13))
  														{
@@ -289,7 +319,7 @@
  															{
  																int num594 = (int)this.ai[1];
  																Item item = new Item();
-@@ -35510,6 +35575,11 @@
+@@ -35510,6 +35582,11 @@
  			Main.projectileIdentity[this.owner, this.identity] = -1;
  			int num = this.timeLeft;
  			this.timeLeft = 0;
@@ -301,7 +331,7 @@
  			if (this.type == 634 || this.type == 635)
  			{
  				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
-@@ -40434,11 +40504,17 @@
+@@ -40434,11 +40511,17 @@
  					}
  				}
  			}

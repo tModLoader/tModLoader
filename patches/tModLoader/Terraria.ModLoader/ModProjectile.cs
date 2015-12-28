@@ -147,12 +147,44 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
+		public virtual bool PreDrawExtras(SpriteBatch spriteBatch)
+		{
+			return true;
+		}
+
 		public virtual bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
 			return true;
 		}
 
 		public virtual void PostDraw(SpriteBatch spriteBatch, Color lightColor)
+		{
+		}
+
+		public virtual bool? CanUseGrapple(Player player)
+		{
+			return null;
+		}
+
+		public virtual bool? SingleGrappleHook(Player player)
+		{
+			return null;
+		}
+
+		public virtual void UseGrapple(Player player, ref int type)
+		{
+		}
+
+		public virtual float GrappleRange()
+		{
+			return 300f;
+		}
+
+		public virtual void NumGrappleHooks(Player player, ref int numHooks)
+		{
+		}
+
+		public virtual void GrappleRetreatSpeed(Player player, ref float speed)
 		{
 		}
 	}

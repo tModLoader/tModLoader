@@ -440,6 +440,22 @@ namespace Terraria.ModLoader
 				originX += projectile.modProjectile.drawOriginOffsetX;
 			}
 		}
+
+		internal static bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch)
+		{
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				if (!globalProjectile.PreDrawExtras(projectile, spriteBatch))
+				{
+					return false;
+				}
+			}
+			if (IsModProjectile(projectile))
+			{
+				return projectile.modProjectile.PreDrawExtras(spriteBatch);
+			}
+			return true;
+		}
 		//in Terraria.Main.DrawProj after modifying light color add
 		//  if(!ProjectileLoader.PreDraw(projectile, Main.spriteBatch, color25))
 		//  { ProjectileLoader.PostDraw(projectile, Main.spriteBatch, color25); return; }
@@ -468,6 +484,90 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile globalProjectile in globalProjectiles)
 			{
 				globalProjectile.PostDraw(projectile, spriteBatch, lightColor);
+			}
+		}
+
+		internal static bool? CanUseGrapple(int type, Player player)
+		{
+			bool? flag = null;
+			ModProjectile modProjectile = GetProjectile(type);
+			if (modProjectile != null)
+			{
+				flag = modProjectile.CanUseGrapple(player);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				bool? canGrapple = globalProjectile.CanUseGrapple(type, player);
+				if (canGrapple.HasValue)
+				{
+					flag = canGrapple;
+				}
+			}
+			return flag;
+		}
+
+		internal static bool? SingleGrappleHook(int type, Player player)
+		{
+			bool? flag = null;
+			ModProjectile modProjectile = GetProjectile(type);
+			if (modProjectile != null)
+			{
+				flag = modProjectile.SingleGrappleHook(player);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				bool? singleHook = globalProjectile.SingleGrappleHook(type, player);
+				if (singleHook.HasValue)
+				{
+					flag = singleHook;
+				}
+			}
+			return flag;
+		}
+
+		internal static void UseGrapple(Player player, ref int type)
+		{
+			ModProjectile modProjectile = GetProjectile(type);
+			if (modProjectile != null)
+			{
+				modProjectile.UseGrapple(player, ref type);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.UseGrapple(player, ref type);
+			}
+		}
+
+		internal static bool GrappleOutOfRange(float distance, Projectile projectile)
+		{
+			if (IsModProjectile(projectile))
+			{
+				return distance > projectile.modProjectile.GrappleRange();
+			}
+			return false;
+		}
+
+		internal static void NumGrappleHooks(Projectile projectile, Player player, ref int numHooks)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.NumGrappleHooks(player, ref numHooks);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.NumGrappleHooks(projectile, player, ref numHooks);
+			}
+		}
+
+		internal static void GrappleRetreatSpeed(Projectile projectile, Player player, ref float speed)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.GrappleRetreatSpeed(player, ref speed);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.GrappleRetreatSpeed(projectile, player, ref speed);
 			}
 		}
 	}
