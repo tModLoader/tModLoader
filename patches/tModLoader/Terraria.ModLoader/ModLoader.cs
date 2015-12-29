@@ -21,12 +21,12 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		public static readonly string version = "tModLoader v0.7";
-		#if WINDOWS
-        private const bool windows = true;
+#if WINDOWS
+		private const bool windows = true;
 
 #else
 		private const bool windows = false;
-		#endif
+#endif
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 		private static readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 		private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		private static readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-		internal static readonly IDictionary<string, Tuple<string,string>> modHotKeys = new Dictionary<string, Tuple<string, string>>();
+		internal static readonly IDictionary<string, Tuple<string, string>> modHotKeys = new Dictionary<string, Tuple<string, string>>();
 
 		private static void LoadReferences()
 		{
@@ -591,6 +591,10 @@ namespace Terraria.ModLoader
 					foreach (string resource in resources)
 					{
 						if (Path.GetExtension(resource) == ".cs")
+						{
+							continue;
+						}
+						if (Path.GetFileName(resource) == "Thumbs.db")
 						{
 							continue;
 						}
