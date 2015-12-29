@@ -97,6 +97,24 @@
  				Main.LoadWorlds();
  			}
  			catch
+@@ -3126,7 +3140,7 @@
+ 			}
+ 			else
+ 			{
+-				Console.Title = "Terraria Server " + Main.versionNumber2;
++				Console.Title = "Terraria Server " + Main.versionNumber2 + " - " + ModLoader.ModLoader.version;
+ 			}
+ 			Main.dedServ = true;
+ 			Main.showSplash = false;
+@@ -3148,7 +3162,7 @@
+ 				while (flag)
+ 				{
+ 					Main.LoadWorlds();
+-					Console.WriteLine("Terraria Server " + Main.versionNumber2);
++					Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.ModLoader.version);
+ 					Console.WriteLine("");
+ 					for (int j = 0; j < Main.WorldList.Count; j++)
+ 					{
 @@ -6428,7 +6442,7 @@
  			}
  			Main.clientUUID = Guid.NewGuid().ToString();
@@ -951,6 +969,15 @@
  						}
  						flag10 = true;
  					}
+@@ -37092,7 +37227,7 @@
+ 						{
+ 							text = text + " -world \"" + Main.worldPathName + "\"";
+ 						}
+-						this.tServer.StartInfo.FileName = "TerrariaServer.exe";
++						this.tServer.StartInfo.FileName = "tModLoaderServer.exe";
+ 						this.tServer.StartInfo.Arguments = text;
+ 						if (Main.libPath != "")
+ 						{
 @@ -37226,6 +37361,7 @@
  						if (FileUtilities.Exists(Main.worldPathName + ".bak", Main.ActiveWorldFileData.IsCloudSave))
  						{

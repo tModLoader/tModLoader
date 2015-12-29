@@ -33,6 +33,15 @@
  							break;
  						}
  					case 28:
+@@ -1426,7 +1429,7 @@
+ 			int num5 = 0;
+ 			int num6 = 0;
+ 			byte b = 0;
+-			byte[] array4 = new byte[13];
++			byte[] array4 = new byte[14];
+ 			Tile tile = null;
+ 			for (int i = yStart; i < yStart + height; i++)
+ 			{
 @@ -1557,7 +1560,10 @@
  						if (tile2.wall != 0)
  						{
