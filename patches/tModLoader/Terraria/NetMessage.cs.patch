@@ -33,13 +33,25 @@
  							break;
  						}
  					case 28:
-@@ -1557,7 +1560,7 @@
+@@ -1557,7 +1560,10 @@
  						if (tile2.wall != 0)
  						{
  							b |= 4;
 -							array4[num5] = tile2.wall;
-+							array4[num5] = (byte)tile2.wall;
++							byte[] wallBytes = BitConverter.GetBytes(tile2.wall);
++							array4[num5] = wallBytes[0];
++							num5++;
++							array4[num5] = wallBytes[1];
  							num5++;
  							if (tile2.wallColor() != 0)
  							{
+@@ -1789,7 +1795,7 @@
+ 						}
+ 						if ((b3 & 4) == 4)
+ 						{
+-							tile.wall = reader.ReadByte();
++							tile.wall = reader.ReadUInt16();
+ 							if ((b & 16) == 16)
+ 							{
+ 								tile.wallColor(reader.ReadByte());
 
