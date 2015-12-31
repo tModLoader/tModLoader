@@ -40,5 +40,9 @@ namespace Terraria.ModLoader
 		public virtual void Update(Player player, ref int buffIndex)
 		{
 		}
+
+		public virtual void Update(NPC npc, ref int buffIndex)
+		{
+		}
 	}
 }

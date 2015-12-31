@@ -71,6 +71,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void ResetEffects()
+		{
+		}
+
 		public virtual bool PreAI()
 		{
 			return true;

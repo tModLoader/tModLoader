@@ -181,6 +181,18 @@ namespace Terraria.ModLoader
 				globalNPC.ScaleExpertStats(npc, numPlayers, bossLifeScale);
 			}
 		}
+
+		internal static void ResetEffects(NPC npc)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.ResetEffects();
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.ResetEffects(npc);
+			}
+		}
 		//in Terraria.NPC rename AI to VanillaAI then make AI call NPCLoader.NPCAI(this)
 		internal static void NPCAI(NPC npc)
 		{

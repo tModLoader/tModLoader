@@ -33,6 +33,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void ResetEffects(NPC npc)
+		{
+		}
+
 		public virtual bool PreAI(NPC npc)
 		{
 			return true;

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,7 +20,6 @@ namespace ExampleMod.NPCs
 			npc.soundKilled = 2;
 			npc.value = 60f;
 			npc.knockBackResist = 0.5f;
-
 			npc.aiStyle = 3;
 			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.Zombie];
 			aiType = NPCID.Zombie;
@@ -29,7 +28,7 @@ namespace ExampleMod.NPCs
 
 		public override float CanSpawn(NPCSpawnInfo spawnInfo)
 		{
-			return 1f;
+			return spawnInfo.spawnTileY < Main.rockLayer && !Main.dayTime ? 0.5f : 0f;
 		}
 
 		public override void HitEffect(int hitDirection, double damage)

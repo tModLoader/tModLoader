@@ -12,7 +12,8 @@ namespace Terraria.ModLoader
 	{
 		private static int nextBuff = BuffID.Count;
 		internal static readonly IDictionary<int, ModBuff> buffs = new Dictionary<int, ModBuff>();
-		//   internal static readonly IList<GlobalBuff> globalBuffs = new List<GlobalBuff>();
+		internal static readonly IList<GlobalBuff> globalBuffs = new List<GlobalBuff>();
+
 		internal static int ReserveBuffID()
 		{
 			int reserveID = nextBuff;
@@ -58,31 +59,35 @@ namespace Terraria.ModLoader
 		{
 			buffs.Clear();
 			nextBuff = BuffID.Count;
-			//   globalBuffs.Clear();
+			globalBuffs.Clear();
 		}
 
 		internal static bool IsModBuff(int type)
 		{
 			return type >= BuffID.Count;
 		}
-		//internal static void SetupBuff(Buff buff)
-		//{
-		//    if (IsModBuff(buff))
-		//    {
-		//        GetBuff(buff.type).SetupBuff(buff);
-		//    }
-		//    foreach (GlobalBuff globalBuff in globalBuffs)
-		//    {
-		//        globalBuff.SetDefaults(buff);
-		//    }
-		//}
-		// TODO hooks here
 		//in Terraria.Player.UpdateBuffs at end of if else chain add BuffLoader.Update(this.buffType[k], this, ref k);
 		internal static void Update(int buff, Player player, ref int buffIndex)
 		{
 			if (IsModBuff(buff))
 			{
 				GetBuff(buff).Update(player, ref buffIndex);
+			}
+			foreach (GlobalBuff globalBuff in globalBuffs)
+			{
+				globalBuff.Update(buff, player, ref buffIndex);
+			}
+		}
+
+		internal static void Update(int buff, NPC npc, ref int buffIndex)
+		{
+			if (IsModBuff(buff))
+			{
+				GetBuff(buff).Update(npc, ref buffIndex);
+			}
+			foreach (GlobalBuff globalBuff in globalBuffs)
+			{
+				globalBuff.Update(buff, npc, ref buffIndex);
 			}
 		}
 	}

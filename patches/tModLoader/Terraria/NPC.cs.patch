@@ -481,7 +481,23 @@
  		{
  			if (!this.active)
  			{
-@@ -70451,22 +70561,30 @@
+@@ -69820,6 +69930,7 @@
+ 				this.javelined = false;
+ 				this.celled = false;
+ 				this.dryadBane = false;
++				NPCLoader.ResetEffects(this);
+ 				for (int k = 0; k < 5; k++)
+ 				{
+ 					if (this.buffType[k] > 0 && this.buffTime[k] > 0)
+@@ -69901,6 +70012,7 @@
+ 						{
+ 							this.daybreak = true;
+ 						}
++						BuffLoader.Update(this.buffType[k], this, ref k);
+ 					}
+ 				}
+ 				if (this.soulDrain)
+@@ -70451,22 +70563,30 @@
  							if (Main.npc[num39].active && !Main.npc[num39].friendly && Main.npc[num39].damage > 0)
  							{
  								Rectangle rectangle2 = new Rectangle((int)Main.npc[num39].position.X, (int)Main.npc[num39].position.Y, Main.npc[num39].width, Main.npc[num39].height);
@@ -515,7 +531,7 @@
  									if (this.dryadWard)
  									{
  										num40 = (int)num43 / 3;
-@@ -71275,6 +71393,11 @@
+@@ -71275,6 +71395,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{
@@ -527,7 +543,7 @@
  			float num = (float)(255 - this.alpha) / 255f;
  			int num2 = (int)((float)newColor.R * num);
  			int num3 = (int)((float)newColor.G * num);
-@@ -72927,6 +73050,7 @@
+@@ -72927,6 +73052,7 @@
  					result = Lang.dialog(Main.rand.Next(364, 370), false);
  				}
  			}

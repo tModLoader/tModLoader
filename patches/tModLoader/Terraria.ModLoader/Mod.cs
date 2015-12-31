@@ -50,6 +50,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModPlayer> players = new Dictionary<string, ModPlayer>();
 		internal readonly IDictionary<string, ModMountData> mountDatas = new Dictionary<string, ModMountData>();
 		internal readonly IDictionary<string, ModBuff> buffs = new Dictionary<string, ModBuff>();
+		internal readonly IDictionary<string, GlobalBuff> globalBuffs = new Dictionary<string, GlobalBuff>();
 		/*
          * Initializes the mod's information, such as its name.
          */
@@ -163,6 +164,10 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(ModBuff)))
 				{
 					AutoloadBuff(type);
+				}
+				else if (type.IsSubclassOf(typeof(GlobalBuff)))
+				{
+					AutoloadGlobalBuff(type);
 				}
 				else if (type.IsSubclassOf(typeof(ModMountData)))
 				{
@@ -789,8 +794,27 @@ namespace Terraria.ModLoader
 			}
 			return buff.Type;
 		}
-		// AddGloabalBuff??
-		// GetGlobalBuff??
+
+		public void AddGlobalBuff(string name, GlobalBuff globalBuff)
+		{
+			globalBuff.mod = this;
+			globalBuff.Name = name;
+			this.globalBuffs[name] = globalBuff;
+			BuffLoader.globalBuffs.Add(globalBuff);
+		}
+
+		public GlobalBuff GetGlobalBuff(string name)
+		{
+			if (this.globalBuffs.ContainsKey(name))
+			{
+				return globalBuffs[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 		private void AutoloadBuff(Type type)
 		{
 			ModBuff buff = (ModBuff)Activator.CreateInstance(type);
@@ -802,7 +826,18 @@ namespace Terraria.ModLoader
 				AddBuff(name, buff, texture);
 			}
 		}
-		// AutoloadGlobalBuff??
+
+		private void AutoloadGlobalBuff(Type type)
+		{
+			GlobalBuff globalBuff = (GlobalBuff)Activator.CreateInstance(type);
+			globalBuff.mod = this;
+			string name = type.Name;
+			if (globalBuff.Autoload(ref name))
+			{
+				AddGlobalBuff(name, globalBuff);
+			}
+		}
+
 		private void AutoloadMountData(Type type)
 		{
 			ModMountData mount = (ModMountData)Activator.CreateInstance(type);
@@ -1158,6 +1193,7 @@ namespace Terraria.ModLoader
 			npcs.Clear();
 			globalNPCs.Clear();
 			buffs.Clear();
+			globalBuffs.Clear();
 		}
 
 		public string FileName(string fileName)
