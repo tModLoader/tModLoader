@@ -87,24 +87,25 @@
  			}
  			return 0;
  		}
-@@ -44752,6 +44767,16 @@
+@@ -44752,6 +44767,17 @@
  			}
  		}
  
 +		public void CloneDefaults(int TypeToClone)
 +		{
 +			int originalType = this.type;
++			int originalNetID = this.netID;
 +			ModItem originalModItem = this.modItem;
 +			SetDefaults(TypeToClone);
 +			this.type = originalType;
-+			this.netID = originalType;
++			this.netID = originalNetID;
 +			this.modItem = originalModItem;
 +		}
 +
  		public void SetDefaults(int Type = 0, bool noMatCheck = false)
  		{
  			if (Main.netMode == 1 || Main.netMode == 2)
-@@ -44763,10 +44788,6 @@
+@@ -44763,10 +44789,6 @@
  				this.owner = Main.myPlayer;
  			}
  			this.ResetStats(Type);
@@ -115,7 +116,7 @@
  			if (this.type == 0)
  			{
  				this.netID = 0;
-@@ -44973,12 +44994,13 @@
+@@ -44973,12 +44995,13 @@
  				this.maxStack = 999;
  			}
  			this.netID = this.type;
@@ -133,7 +134,7 @@
  			if (this.type > 0 && this.type < 3602 && ItemID.Sets.Deprecated[this.type])
  			{
  				this.netID = 0;
-@@ -44990,6 +45012,7 @@
+@@ -44990,6 +45013,7 @@
  
  		public void ResetStats(int Type)
  		{
@@ -141,7 +142,7 @@
  			this.expert = false;
  			this.expertOnly = false;
  			this.instanced = false;
-@@ -45148,6 +45171,11 @@
+@@ -45148,6 +45172,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{
@@ -153,7 +154,7 @@
  			int num = this.type;
  			if (num <= 1306)
  			{
-@@ -45714,6 +45742,7 @@
+@@ -45714,6 +45743,7 @@
  							}
  						}
  					}
@@ -161,7 +162,7 @@
  					if (ItemID.Sets.ItemNoGravity[this.type])
  					{
  						this.velocity.X = this.velocity.X * 0.95f;
-@@ -46223,6 +46252,7 @@
+@@ -46223,6 +46253,7 @@
  					}
  					this.spawnTime++;
  				}
@@ -169,7 +170,7 @@
  				if (Main.netMode == 2 && this.owner != Main.myPlayer)
  				{
  					this.release++;
-@@ -46259,6 +46289,10 @@
+@@ -46259,6 +46290,10 @@
  			}
  			int num = 400;
  			Main.item[400] = new Item();
@@ -180,7 +181,7 @@
  			if (Main.halloween)
  			{
  				if (Type == 58)
-@@ -46401,7 +46435,12 @@
+@@ -46401,7 +46436,12 @@
  
  		public Item Clone()
  		{

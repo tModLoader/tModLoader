@@ -325,6 +325,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void UpdateLifeRegen(NPC npc, ref int damage)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.UpdateLifeRegen(ref damage);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.UpdateLifeRegen(npc, ref damage);
+			}
+		}
+
 		internal static bool CheckActive(NPC npc)
 		{
 			if (IsModNPC(npc) && !npc.modNPC.CheckActive())

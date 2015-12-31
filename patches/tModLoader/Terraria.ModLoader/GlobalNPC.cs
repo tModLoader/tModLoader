@@ -58,6 +58,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void UpdateLifeRegen(NPC npc, ref int damage)
+		{
+		}
+
 		public virtual bool CheckActive(NPC npc)
 		{
 			return true;

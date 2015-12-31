@@ -104,6 +104,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void UpdateLifeRegen(ref int damage)
+		{
+		}
+
 		public virtual bool CheckActive()
 		{
 			return true;
