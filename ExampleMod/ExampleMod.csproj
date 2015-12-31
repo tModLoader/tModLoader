@@ -96,6 +96,7 @@
     <Compile Include="Items\PlanteraItem.cs" />
     <Compile Include="Items\SparklingSphere.cs" />
     <Compile Include="Items\Weapons\ExampleBullet.cs" />
+    <Compile Include="Items\Weapons\ExampleCloneItem.cs" />
     <Compile Include="Items\Weapons\ExampleGun.cs" />
     <Compile Include="Items\Weapons\ExampleStaff.cs" />
     <Compile Include="Items\Weapons\ExampleSword.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Projectiles\ElementBall.cs" />
     <Compile Include="Projectiles\ElementLaser.cs" />
     <Compile Include="Projectiles\ExampleBullet.cs" />
+    <Compile Include="Projectiles\ExampleCloneProjectile.cs" />
     <Compile Include="Projectiles\MoltenDrill.cs" />
     <Compile Include="Projectiles\OctopusArm.cs" />
     <Compile Include="Projectiles\PixelBall.cs" />
