@@ -18,6 +18,20 @@ namespace Terraria.ModLoader
 		internal static readonly IList<int> animations = new List<int>();
 		internal static readonly int vanillaQuestFishCount = Main.anglerQuestItemNetIDs.Length;
 		internal static readonly IList<int> questFish = new List<int>();
+		internal static readonly int[] vanillaWings = new int[Main.maxWings];
+
+		static ItemLoader()
+		{
+			for (int k = 0; k < ItemID.Count; k++)
+			{
+				Item item = new Item();
+				item.SetDefaults(k);
+				if (item.wingSlot > 0)
+				{
+					vanillaWings[item.wingSlot] = k;
+				}
+			}
+		}
 
 		internal static int ReserveItemID()
 		{
@@ -771,14 +785,14 @@ namespace Terraria.ModLoader
 		//  call ItemLoader.DrawHair(drawPlayer, ref flag4, ref flag5)
 		public static void DrawHair(Player player, ref bool drawHair, ref bool drawAltHair)
 		{
-			Item item = player.armor[10].headSlot >= 0 ? player.armor[10] : player.armor[0];
-			if (IsModItem(item))
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
+			if (texture != null)
 			{
-				item.modItem.DrawHair(ref drawHair, ref drawAltHair);
+				texture.DrawHair(ref drawHair, ref drawAltHair);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				globalItem.DrawHair(item, ref drawHair, ref drawAltHair);
+				globalItem.DrawHair(player.head, ref drawHair, ref drawAltHair);
 			}
 		}
 		//in Terraria.Main.DrawPlayerHead in if statement after ItemLoader.DrawHair
@@ -786,14 +800,14 @@ namespace Terraria.ModLoader
 		//  use && with ItemLoader.DrawHead(drawPlayer)
 		public static bool DrawHead(Player player)
 		{
-			Item item = player.armor[10].headSlot >= 0 ? player.armor[10] : player.armor[0];
-			if (IsModItem(item) && !item.modItem.DrawHead())
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
+			if (texture != null && !texture.DrawHead())
 			{
 				return false;
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				if (!globalItem.DrawHead(item))
+				if (!globalItem.DrawHead(player.head))
 				{
 					return false;
 				}
@@ -801,27 +815,35 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		public static Item GetWing(Player player, bool social = false)
+		public static Item GetWing(Player player)
 		{
 			Item item = null;
 			for (int k = 3; k < 8 + player.extraAccessorySlots; k++)
 			{
-				if (player.armor[k].wingSlot > 0)
+				if (player.armor[k].wingSlot == player.wingsLogic)
 				{
 					item = player.armor[k];
 				}
 			}
-			if (social)
+			if (item != null)
 			{
-				for (int k = 13; k < 18 + player.extraAccessorySlots; k++)
+				return item;
+			}
+			if (player.wingsLogic > 0 && player.wingsLogic < Main.maxWings)
+			{
+				item = new Item();
+				item.SetDefaults(vanillaWings[player.wingsLogic]);
+				return item;
+			}
+			if (player.wingsLogic >= Main.maxWings)
+			{
+				EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic);
+				if (texture != null)
 				{
-					if (player.armor[k].wingSlot > 0)
-					{
-						item = player.armor[k];
-					}
+					return texture.item.item;
 				}
 			}
-			return item;
+			return null;
 		}
 		//in Terraria.Player.WingMovement after if statements that set num1-5
 		//  call ItemLoader.VerticalWingSpeeds(this, ref num2, ref num5, ref num4, ref num3, ref num)
@@ -865,18 +887,18 @@ namespace Terraria.ModLoader
 
 		public static void WingUpdate(Player player, bool inUse)
 		{
-			Item item = GetWing(player, true);
-			if (item == null)
+			if (player.wings <= 0)
 			{
 				return;
 			}
-			if (IsModItem(item))
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wings);
+			if (texture != null)
 			{
-				item.modItem.WingUpdate(player, inUse);
+				texture.WingUpdate(player, inUse);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				globalItem.WingUpdate(item, player, inUse);
+				globalItem.WingUpdate(player.wings, player, inUse);
 			}
 		}
 		//in Terraria.Item.UpdateItem before item movement (denoted by ItemID.Sets.ItemNoGravity)

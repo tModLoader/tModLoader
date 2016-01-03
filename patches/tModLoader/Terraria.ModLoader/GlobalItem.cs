@@ -217,11 +217,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void DrawHair(Item item, ref bool drawHair, ref bool drawAltHair)
+		public virtual void DrawHair(int head, ref bool drawHair, ref bool drawAltHair)
 		{
 		}
 
-		public virtual bool DrawHead(Item item)
+		public virtual bool DrawHead(int head)
 		{
 			return true;
 		}
@@ -235,7 +235,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void WingUpdate(Item item, Player player, bool inUse)
+		public virtual void WingUpdate(int wings, Player player, bool inUse)
 		{
 		}
 

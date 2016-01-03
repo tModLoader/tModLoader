@@ -81,5 +81,26 @@ namespace Terraria.ModLoader
 				item.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
 			}
 		}
+
+		public virtual void DrawHair(ref bool drawHair, ref bool drawAltHair)
+		{
+			if (item != null)
+			{
+				item.DrawHair(ref drawHair, ref drawAltHair);
+			}
+		}
+
+		public virtual bool DrawHead()
+		{
+			return item == null || item.DrawHead();
+		}
+
+		public virtual void WingUpdate(Player player, bool inUse)
+		{
+			if (item != null)
+			{
+				item.WingUpdate(player, inUse);
+			}
+		}
 	}
 }
