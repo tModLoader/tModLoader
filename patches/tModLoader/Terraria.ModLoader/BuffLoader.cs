@@ -67,7 +67,7 @@ namespace Terraria.ModLoader
 			return type >= BuffID.Count;
 		}
 		//in Terraria.Player.UpdateBuffs at end of if else chain add BuffLoader.Update(this.buffType[k], this, ref k);
-		internal static void Update(int buff, Player player, ref int buffIndex)
+		public static void Update(int buff, Player player, ref int buffIndex)
 		{
 			if (IsModBuff(buff))
 			{
@@ -79,7 +79,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void Update(int buff, NPC npc, ref int buffIndex)
+		public static void Update(int buff, NPC npc, ref int buffIndex)
 		{
 			if (IsModBuff(buff))
 			{

@@ -13,6 +13,8 @@ namespace Terraria.ModLoader
 		private static int nextItem = ItemID.Count;
 		internal static readonly IDictionary<int, ModItem> items = new Dictionary<int, ModItem>();
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
+		internal static readonly IList<ItemInfo> infoList = new List<ItemInfo>();
+		internal static readonly IDictionary<string, IDictionary<string, int>> infoIndexes = new Dictionary<string, IDictionary<string, int>>();
 		internal static readonly IList<int> animations = new List<int>();
 		internal static readonly int vanillaQuestFishCount = Main.anglerQuestItemNetIDs.Length;
 		internal static readonly IList<int> questFish = new List<int>();
@@ -77,6 +79,8 @@ namespace Terraria.ModLoader
 			items.Clear();
 			nextItem = ItemID.Count;
 			globalItems.Clear();
+			infoList.Clear();
+			infoIndexes.Clear();
 			animations.Clear();
 			questFish.Clear();
 		}
@@ -126,22 +130,32 @@ namespace Terraria.ModLoader
 		//in Terraria.Item.SetDefaults move Lang stuff before SetupItem
 		internal static void SetupItem(Item item)
 		{
+			item.itemInfo.Clear();
+			foreach (ItemInfo info in infoList)
+			{
+				item.itemInfo.Add(info.Clone());
+			}
 			if (IsModItem(item))
 			{
 				GetItem(item.type).SetupItem(item);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				try
-				{
-					globalItem.SetDefaults(item);
-				}
-				catch
-				{
-					ModLoader.DisableMod(globalItem.mod.file);
-					throw;
-				}
+				globalItem.SetDefaults(item);
 			}
+		}
+
+		internal static ItemInfo GetItemInfo(Item item, Mod mod, string name)
+		{
+			if (!infoIndexes.ContainsKey(mod.Name))
+			{
+				return null;
+			}
+			if (!infoIndexes[mod.Name].ContainsKey(name))
+			{
+				return null;
+			}
+			return item.itemInfo[infoIndexes[mod.Name][name]];
 		}
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))
@@ -179,7 +193,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.ItemCheck
 		//  inside block if (this.controlUseItem && this.itemAnimation == 0 && this.releaseUseItem && item.useStyle > 0)
 		//  set initial flag2 to ItemLoader.CanUseItem(item, this)
-		internal static bool CanUseItem(Item item, Player player)
+		public static bool CanUseItem(Item item, Player player)
 		{
 			bool flag = true;
 			if (IsModItem(item))
@@ -193,7 +207,7 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 		//in Terraria.Player.ItemCheck after useStyle if/else chain call ItemLoader.UseStyle(item, this)
-		internal static void UseStyle(Item item, Player player)
+		public static void UseStyle(Item item, Player player)
 		{
 			if (IsModItem(item))
 			{
@@ -205,7 +219,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Player.ItemCheck after holdStyle if/else chain call ItemLoader.HoldStyle(item, this)
-		internal static void HoldStyle(Item item, Player player)
+		public static void HoldStyle(Item item, Player player)
 		{
 			if (!player.pulley && player.itemAnimation <= 0)
 			{
@@ -220,7 +234,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Player.ItemCheck before this.controlUseItem setting this.releaseUseItem call ItemLoader.HoldItem(item, this)
-		internal static void HoldItem(Item item, Player player)
+		public static void HoldItem(Item item, Player player)
 		{
 			if (IsModItem(item))
 			{
@@ -232,7 +246,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void GetWeaponDamage(Item item, Player player, ref int damage)
+		public static void GetWeaponDamage(Item item, Player player, ref int damage)
 		{
 			if (IsModItem(item))
 			{
@@ -244,7 +258,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void GetWeaponKnockback(Item item, Player player, ref float knockback)
+		public static void GetWeaponKnockback(Item item, Player player, ref float knockback)
 		{
 			if (IsModItem(item))
 			{
@@ -256,7 +270,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void CheckProjOnSwing(Player player, Item item, ref bool canShoot)
+		public static void CheckProjOnSwing(Player player, Item item, ref bool canShoot)
 		{
 			if (IsModItem(item))
 			{
@@ -268,7 +282,7 @@ namespace Terraria.ModLoader
 		}
 		//near end of Terraria.Player.PickAmmo before flag2 is checked add
 		//  if(!ItemLoader.ConsumeAmmo(sItem, item, this)) { flag2 = true; }
-		internal static bool ConsumeAmmo(Item item, Item ammo, Player player)
+		public static bool ConsumeAmmo(Item item, Item ammo, Player player)
 		{
 			if (IsModItem(item) && !item.modItem.ConsumeAmmo(player))
 			{
@@ -289,7 +303,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.ItemCheck at end of if/else chain for shooting place if on last else
 		//  if(ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
-		internal static bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		public static bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
 		{
 			foreach (GlobalItem globalItem in globalItems)
 			{
@@ -309,7 +323,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.ItemCheck after end of useStyle if/else chain for melee hitbox
 		//  call ItemLoader.UseItemHitbox(item, this, ref r2, ref flag17)
-		internal static void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
+		public static void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
 		{
 			if (IsModItem(item))
 			{
@@ -322,7 +336,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.ItemCheck after magma stone dust effect for melee weapons
 		//  call ItemLoader.MeleeEffects(item, this, r2)
-		internal static void MeleeEffects(Item item, Player player, Rectangle hitbox)
+		public static void MeleeEffects(Item item, Player player, Rectangle hitbox)
 		{
 			if (IsModItem(item))
 			{
@@ -337,7 +351,7 @@ namespace Terraria.ModLoader
 		//  bool? modCanHit = ItemLoader.CanHitNPC(item, this, Main.npc[num292]);
 		//  if(modCanHit.HasValue && !modCanHit.Value) { continue; }
 		//in if statement afterwards add || (modCanHit.HasValue && modCanHit.Value)
-		internal static bool? CanHitNPC(Item item, Player player, NPC target)
+		public static bool? CanHitNPC(Item item, Player player, NPC target)
 		{
 			bool? flag = null;
 			foreach (GlobalItem globalItem in globalItems)
@@ -368,7 +382,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.ItemCheck for melee attacks after damage variation
 		//  call ItemLoader.ModifyHitNPC(item, this, Main.npc[num292], ref num282, ref num283, ref flag18)
-		internal static void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+		public static void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
 		{
 			if (IsModItem(item))
 			{
@@ -381,7 +395,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.ItemCheck for melee attacks before updating informational accessories
 		//  call ItemLoader.OnHitNPC(item, this, Main.npc[num292], num295, num283, flag18)
-		internal static void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit)
+		public static void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit)
 		{
 			if (IsModItem(item))
 			{
@@ -393,7 +407,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Player.ItemCheck add to beginning of pvp collision check
-		internal static bool CanHitPvp(Item item, Player player, Player target)
+		public static bool CanHitPvp(Item item, Player player, Player target)
 		{
 			foreach (GlobalItem globalItem in globalItems)
 			{
@@ -410,7 +424,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.ItemCheck for pvp melee attacks after damage variation
 		//  call ItemLoader.ModifyHitPvp(item, this, Main.player[num302], ref num282, ref flag20)
-		internal static void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
+		public static void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
 		{
 			if (IsModItem(item))
 			{
@@ -423,7 +437,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.ItemCheck for pvp melee attacks before NetMessage stuff
 		//  call ItemLoader.OnHitPvp(item, this, Main.player[num302], num304, flag20)
-		internal static void OnHitPvp(Item item, Player player, Player target, int damage, bool crit)
+		public static void OnHitPvp(Item item, Player player, Player target, int damage, bool crit)
 		{
 			if (IsModItem(item))
 			{
@@ -435,7 +449,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool UseItem(Item item, Player player)
+		public static bool UseItem(Item item, Player player)
 		{
 			bool flag = false;
 			if (IsModItem(item))
@@ -450,7 +464,7 @@ namespace Terraria.ModLoader
 		}
 		//near end of Terraria.Player.ItemCheck before flag22 is checked
 		//  call ItemLoader.ConsumeItem(item, this, ref flag22)
-		internal static void ConsumeItem(Item item, Player player, ref bool consume)
+		public static void ConsumeItem(Item item, Player player, ref bool consume)
 		{
 			if (IsModItem(item) && !item.modItem.ConsumeItem(player))
 			{
@@ -466,7 +480,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.PlayerFrame at end of useStyle if/else chain
 		//  call if(ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this)) { return; }
-		internal static bool UseItemFrame(Item item, Player player)
+		public static bool UseItemFrame(Item item, Player player)
 		{
 			if (IsModItem(item) && item.modItem.UseItemFrame(player))
 			{
@@ -483,7 +497,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.PlayerFrame at end of holdStyle if statements
 		//  call if(ItemLoader.HoldItemFrame(this.inventory[this.selectedItem], this)) { return; }
-		internal static bool HoldItemFrame(Item item, Player player)
+		public static bool HoldItemFrame(Item item, Player player)
 		{
 			if (IsModItem(item) && item.modItem.HoldItemFrame(player))
 			{
@@ -500,7 +514,7 @@ namespace Terraria.ModLoader
 		}
 		//place at end of first for loop in Terraria.Player.UpdateEquips
 		//  call ItemLoader.UpdateInventory(this.inventory[j], this)
-		internal static void UpdateInventory(Item item, Player player)
+		public static void UpdateInventory(Item item, Player player)
 		{
 			if (IsModItem(item))
 			{
@@ -513,7 +527,7 @@ namespace Terraria.ModLoader
 		}
 		//place in second for loop of Terraria.Player.UpdateEquips before prefix checking
 		//  call ItemLoader.UpdateEquip(this.armor[k], this)
-		internal static void UpdateEquip(Item item, Player player)
+		public static void UpdateEquip(Item item, Player player)
 		{
 			if (IsModItem(item))
 			{
@@ -526,7 +540,7 @@ namespace Terraria.ModLoader
 		}
 		//place at end of third for loop of Terraria.Player.UpdateEquips
 		//  call ItemLoader.UpdateAccessory(this.armor[l], this)
-		internal static void UpdateAccessory(Item item, Player player)
+		public static void UpdateAccessory(Item item, Player player)
 		{
 			if (IsModItem(item))
 			{
@@ -538,7 +552,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void UpdateVanity(Player player)
+		public static void UpdateVanity(Player player)
 		{
 			foreach (EquipType type in Enum.GetValues(typeof(EquipType)))
 			{
@@ -551,7 +565,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//at end of Terraria.Player.UpdateArmorSets call ItemLoader.UpdateArmorSet(this, this.armor[0], this.armor[1], this.armor[2])
-		internal static void UpdateArmorSet(Player player, Item head, Item body, Item legs)
+		public static void UpdateArmorSet(Player player, Item head, Item body, Item legs)
 		{
 			if (IsModItem(head) && head.modItem.IsArmorSet(head, body, legs))
 			{
@@ -575,7 +589,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Player.PlayerFrame after setting armor effects fields call this
-		internal static void PreUpdateVanitySet(Player player)
+		public static void PreUpdateVanitySet(Player player)
 		{
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
@@ -602,7 +616,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Player.PlayerFrame after armor sets creating dust call this
-		internal static void UpdateVanitySet(Player player)
+		public static void UpdateVanitySet(Player player)
 		{
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
@@ -630,7 +644,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawPlayers after armor combinations setting flags call
 		//  ItemLoader.ArmorSetShadows(player, ref flag, ref flag2, ref flag3, ref flag4);
-		internal static void ArmorSetShadows(Player player, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
+		public static void ArmorSetShadows(Player player, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
 		{
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
@@ -657,7 +671,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void SetMatch(int type, ref int equipSlot, ref bool robes)
+		public static void SetMatch(int type, ref int equipSlot, ref bool robes)
 		{
 			ModItem modItem = GetItem(type);
 			if (modItem != null)
@@ -671,7 +685,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.UI.ItemSlot.RightClick in end of item-opening if/else chain before final else
 		//  make else if(ItemLoader.CanRightClick(inv[slot]))
-		internal static bool CanRightClick(Item item)
+		public static bool CanRightClick(Item item)
 		{
 			if (IsModItem(item) && item.modItem.CanRightClick())
 			{
@@ -687,7 +701,7 @@ namespace Terraria.ModLoader
 			return false;
 		}
 		//in Terraria.UI.ItemSlot in block from CanRightClick call ItemLoader.RightClick(inv[slot], player)
-		internal static void RightClick(Item item, Player player)
+		public static void RightClick(Item item, Player player)
 		{
 			if (Main.mouseRightRelease)
 			{
@@ -711,7 +725,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.UI.ItemSlot add this to boss bag check
-		internal static bool IsModBossBag(Item item)
+		public static bool IsModBossBag(Item item)
 		{
 			if (IsModItem(item))
 			{
@@ -721,7 +735,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.OpenBossBag after setting num14 call
 		//  ItemLoader.OpenBossBag(type, this, ref num14);
-		internal static void OpenBossBag(int type, Player player, ref int npc)
+		public static void OpenBossBag(int type, Player player, ref int npc)
 		{
 			if (type >= ItemID.Count && items[type].bossBagNPC > 0)
 			{
@@ -731,7 +745,7 @@ namespace Terraria.ModLoader
 		}
 		//in beginning of Terraria.Player.openBag methods add
 		//  if(!ItemLoader.PreOpenVanillaBag("bagName", this, arg)) { return; }
-		internal static bool PreOpenVanillaBag(string context, Player player, int arg)
+		public static bool PreOpenVanillaBag(string context, Player player, int arg)
 		{
 			foreach (GlobalItem globalItem in globalItems)
 			{
@@ -744,7 +758,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.openBag methods after PreOpenVanillaBag if statements
 		//  add ItemLoader.OpenVanillaBag("bagname", this, arg);
-		internal static void OpenVanillaBag(string context, Player player, int arg)
+		public static void OpenVanillaBag(string context, Player player, int arg)
 		{
 			foreach (GlobalItem globalItem in globalItems)
 			{
@@ -755,7 +769,7 @@ namespace Terraria.ModLoader
 		//  call ItemLoader.DrawHair(drawPlayer, ref flag, ref flag2)
 		//in Terraria.Main.DrawPlayer after if statement that sets flag5 to true
 		//  call ItemLoader.DrawHair(drawPlayer, ref flag4, ref flag5)
-		internal static void DrawHair(Player player, ref bool drawHair, ref bool drawAltHair)
+		public static void DrawHair(Player player, ref bool drawHair, ref bool drawAltHair)
 		{
 			Item item = player.armor[10].headSlot >= 0 ? player.armor[10] : player.armor[0];
 			if (IsModItem(item))
@@ -770,7 +784,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.DrawPlayerHead in if statement after ItemLoader.DrawHair
 		//and in Terraria.Main.DrawPlayer in if (!drawPlayer.invis && drawPlayer.head != 38 && drawPlayer.head != 135)
 		//  use && with ItemLoader.DrawHead(drawPlayer)
-		internal static bool DrawHead(Player player)
+		public static bool DrawHead(Player player)
 		{
 			Item item = player.armor[10].headSlot >= 0 ? player.armor[10] : player.armor[0];
 			if (IsModItem(item) && !item.modItem.DrawHead())
@@ -787,7 +801,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static Item GetWing(Player player, bool social = false)
+		public static Item GetWing(Player player, bool social = false)
 		{
 			Item item = null;
 			for (int k = 3; k < 8 + player.extraAccessorySlots; k++)
@@ -811,7 +825,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.WingMovement after if statements that set num1-5
 		//  call ItemLoader.VerticalWingSpeeds(this, ref num2, ref num5, ref num4, ref num3, ref num)
-		internal static void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
+		public static void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
 			Item item = GetWing(player);
@@ -832,7 +846,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.Update after wingsLogic if statements modifying accRunSpeed and runAcceleration
 		//  call ItemLoader.HorizontalWingSpeeds(this)
-		internal static void HorizontalWingSpeeds(Player player)
+		public static void HorizontalWingSpeeds(Player player)
 		{
 			Item item = GetWing(player);
 			if (item == null)
@@ -849,7 +863,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void WingUpdate(Player player, bool inUse)
+		public static void WingUpdate(Player player, bool inUse)
 		{
 			Item item = GetWing(player, true);
 			if (item == null)
@@ -867,7 +881,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Item.UpdateItem before item movement (denoted by ItemID.Sets.ItemNoGravity)
 		//  call ItemLoader.Update(this, ref num, ref num2)
-		internal static void Update(Item item, ref float gravity, ref float maxFallSpeed)
+		public static void Update(Item item, ref float gravity, ref float maxFallSpeed)
 		{
 			if (IsModItem(item))
 			{
@@ -879,7 +893,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PostUpdate(Item item)
+		public static void PostUpdate(Item item)
 		{
 			if (IsModItem(item))
 			{
@@ -892,7 +906,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.GrabItems after increasing grab range add
 		//  ItemLoader.GrabRange(Main.item[j], this, ref num);
-		internal static void GrabRange(Item item, Player player, ref int grabRange)
+		public static void GrabRange(Item item, Player player, ref int grabRange)
 		{
 			if (IsModItem(item))
 			{
@@ -905,7 +919,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.GrabItems between setting beingGrabbed to true and grab styles add
 		//  if(ItemLoader.GrabStyle(Main.item[j], this)) { } else
-		internal static bool GrabStyle(Item item, Player player)
+		public static bool GrabStyle(Item item, Player player)
 		{
 			foreach (GlobalItem globalItem in globalItems)
 			{
@@ -922,7 +936,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.GrabItems before special pickup effects add
 		//  if(!ItemLoader.OnPickup(Main.item[j], this)) { Main.item[j] = new Item(); continue; }
-		internal static bool OnPickup(Item item, Player player)
+		public static bool OnPickup(Item item, Player player)
 		{
 			foreach (GlobalItem globalItem in globalItems)
 			{
@@ -941,7 +955,7 @@ namespace Terraria.ModLoader
 		//in beginning of Terraria.Item.GetAlpha call
 		//  Color? modColor = ItemLoader.GetAlpha(this, newColor);
 		//  if(modColor.HasValue) { return modColor.Value; }
-		internal static Color? GetAlpha(Item item, Color lightColor)
+		public static Color? GetAlpha(Item item, Color lightColor)
 		{
 			foreach (GlobalItem globalItem in globalItems)
 			{
@@ -959,7 +973,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawItem after ItemSlot.GetItemLight call
 		//  if(!ItemLoader.PreDrawInWorld(item, Main.spriteBatch, color, alpha, ref rotation, ref scale)) { return; }
-		internal static bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale)
+		public static bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale)
 		{
 			bool flag = true;
 			if (IsModItem(item) && !item.modItem.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale))
@@ -977,7 +991,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawItem before every return (including for PreDrawInWorld) and at end of method call
 		//  ItemLoader.PostDrawInWorld(item, Main.spriteBatch, color, alpha, rotation, scale)
-		internal static void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale)
+		public static void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale)
 		{
 			if (IsModItem(item))
 			{
@@ -991,7 +1005,7 @@ namespace Terraria.ModLoader
 		//in Terraria.UI.ItemSlot.Draw place item-drawing code inside if statement
 		//  if(ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
 		//    item.GetColor(color), origin, num4 * num3))
-		internal static bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
+		public static bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
 			Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
 			bool flag = true;
@@ -1011,7 +1025,7 @@ namespace Terraria.ModLoader
 		//in Terraria.UI.ItemSlot.Draw after if statement for PreDrawInInventory call
 		//  ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
 		//    item.GetColor(color), origin, num4 * num3);
-		internal static void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
+		public static void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
 			Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
 			if (IsModItem(item))
@@ -1024,7 +1038,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void HoldoutOffset(float gravDir, int type, ref Vector2 offset)
+		public static void HoldoutOffset(float gravDir, int type, ref Vector2 offset)
 		{
 			ModItem modItem = GetItem(type);
 			if (modItem != null)
@@ -1047,7 +1061,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void HoldoutOrigin(Player player, ref Vector2 origin)
+		public static void HoldoutOrigin(Player player, ref Vector2 origin)
 		{
 			Item item = player.inventory[player.selectedItem];
 			Vector2 modOrigin = Vector2.Zero;
@@ -1073,7 +1087,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.UI.ItemSlot.AccCheck replace 2nd and 3rd return false with
 		//  return !ItemLoader.CanEquipAccessory(item, slot)
-		internal static bool CanEquipAccessory(Item item, int slot)
+		public static bool CanEquipAccessory(Item item, int slot)
 		{
 			Player player = Main.player[Main.myPlayer];
 			if (IsModItem(item) && !item.modItem.CanEquipAccessory(player, slot))
@@ -1090,7 +1104,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
+		public static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType)
 		{
 			ModItem modItem = GetItem(extractType);
 			if (modItem != null)
@@ -1103,7 +1117,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void AutoLightSelect(Item item, ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
+		public static void AutoLightSelect(Item item, ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
 		{
 			if (IsModItem(item))
 			{
@@ -1120,7 +1134,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void CaughtFishStack(Item item)
+		public static void CaughtFishStack(Item item)
 		{
 			if (IsModItem(item))
 			{
@@ -1132,7 +1146,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void IsAnglerQuestAvailable(int itemID, ref bool notAvailable)
+		public static void IsAnglerQuestAvailable(int itemID, ref bool notAvailable)
 		{
 			ModItem modItem = GetItem(itemID);
 			if (modItem != null)
@@ -1145,7 +1159,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void AnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation)
+		public static void AnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation)
 		{
 			ModItem modItem = GetItem(type);
 			if (modItem != null && !Main.anglerQuestFinished && !turningInFish)

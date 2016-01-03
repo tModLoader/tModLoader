@@ -1808,19 +1808,21 @@
  					}
  					playerFileData = Player.LoadPlayer(file, cloudSave);
  					if (playerFileData.Player == null)
-@@ -34250,8 +34531,28 @@
+@@ -34250,8 +34531,30 @@
  			return -1;
  		}
  
 +		private IList<ModPlayer> players = null;
++		private int lastLoad = -1;
 +
 +		internal IList<ModPlayer> modPlayers
 +		{
 +			get
 +			{
-+				if (players == null)
++				if (players == null || lastLoad != ModLoader.ModLoader.numLoads)
 +				{
 +					players = new List<ModPlayer>();
++					lastLoad = ModLoader.ModLoader.numLoads;
 +				}
 +				return players;
 +			}
@@ -1837,7 +1839,7 @@
  			int[] array = new int[2];
  			this.hurtCooldowns = array;
  			this.width = 20;
-@@ -34288,9 +34589,7 @@
+@@ -34288,9 +34591,7 @@
  			}
  			this.trashItem = new Item();
  			this.grappling[0] = -1;
@@ -1848,7 +1850,7 @@
  			this.statManaMax = 20;
  			this.extraAccessory = false;
  			if (Main.cEd)
-@@ -34400,6 +34699,7 @@
+@@ -34400,6 +34701,7 @@
  
  		public void GetAnglerReward()
  		{
@@ -1856,7 +1858,7 @@
  			Item item = new Item();
  			item.type = 0;
  			float num = 1f;
-@@ -34415,6 +34715,10 @@
+@@ -34415,6 +34717,10 @@
  			{
  				num = 0.25f - (float)(this.anglerQuestsFinished - 100) * 0.002f;
  			}
@@ -1867,7 +1869,7 @@
  			if (this.anglerQuestsFinished == 5)
  			{
  				item.SetDefaults(2428, false);
-@@ -34571,69 +34875,24 @@
+@@ -34571,69 +34877,24 @@
  					}
  				}
  			}
@@ -1942,7 +1944,7 @@
  			}
  			Item item7 = new Item();
  			int num4 = (this.anglerQuestsFinished + 50) / 2;
-@@ -34670,16 +34929,7 @@
+@@ -34670,16 +34931,7 @@
  				item7.SetDefaults(72, false);
  				item7.stack = num4;
  			}
@@ -1960,7 +1962,7 @@
  			if (Main.rand.Next((int)(100f * num)) <= 50)
  			{
  				Item item8 = new Item();
-@@ -34719,14 +34969,19 @@
+@@ -34719,14 +34971,19 @@
  				{
  					item8.stack++;
  				}
@@ -1986,7 +1988,7 @@
  					}
  				}
  			}
-@@ -34785,6 +35040,7 @@
+@@ -34785,6 +35042,7 @@
  					list.Add(3024);
  				}
  			}

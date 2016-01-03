@@ -39,6 +39,7 @@ namespace Terraria.ModLoader
 		internal static string modToBuild;
 		internal static bool reloadAfterBuild = false;
 		internal static bool buildAll = false;
+		internal static int numLoads = 0;
 		private static readonly IList<string> loadedMods = new List<string>();
 		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
 		private static readonly Stack<string> loadOrder = new Stack<string>();
@@ -191,6 +192,7 @@ namespace Terraria.ModLoader
 				return;
 			}
 			Main.menuMode = 0;
+			numLoads++;
 		}
 
 		private static void ResizeArrays(bool unloading = false)

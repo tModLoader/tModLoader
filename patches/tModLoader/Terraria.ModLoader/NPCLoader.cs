@@ -14,6 +14,8 @@ namespace Terraria.ModLoader
 		private static int nextNPC = NPCID.Count;
 		internal static readonly IDictionary<int, ModNPC> npcs = new Dictionary<int, ModNPC>();
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
+		internal static readonly IList<NPCInfo> infoList = new List<NPCInfo>();
+		internal static readonly IDictionary<string, IDictionary<string, int>> infoIndexes = new Dictionary<string, IDictionary<string, int>>();
 		private static int vanillaSkeletonCount = NPCID.Sets.Skeletons.Count;
 		private static readonly int[] shopToNPC = new int[Main.numShops - 1];
 		//in Terraria.Item.NewItem after setting Main.item[400] add
@@ -122,6 +124,8 @@ namespace Terraria.ModLoader
 			npcs.Clear();
 			nextNPC = NPCID.Count;
 			globalNPCs.Clear();
+			infoList.Clear();
+			infoIndexes.Clear();
 			while (NPCID.Sets.Skeletons.Count > vanillaSkeletonCount)
 			{
 				NPCID.Sets.Skeletons.RemoveAt(NPCID.Sets.Skeletons.Count - 1);
@@ -136,6 +140,11 @@ namespace Terraria.ModLoader
 		//in Terraria.NPC.SetDefaults move Lang stuff before SetupNPC and replace this.netID with this.type
 		internal static void SetupNPC(NPC npc)
 		{
+			npc.npcInfo.Clear();
+			foreach (NPCInfo info in infoList)
+			{
+				npc.npcInfo.Add(info.Clone());
+			}
 			if (IsModNPC(npc))
 			{
 				GetNPC(npc.type).SetupNPC(npc);
@@ -145,9 +154,22 @@ namespace Terraria.ModLoader
 				globalNPC.SetDefaults(npc);
 			}
 		}
+
+		internal static NPCInfo GetNPCInfo(NPC npc, Mod mod, string name)
+		{
+			if (!infoIndexes.ContainsKey(mod.Name))
+			{
+				return null;
+			}
+			if (!infoIndexes[mod.Name].ContainsKey(name))
+			{
+				return null;
+			}
+			return npc.npcInfo[infoIndexes[mod.Name][name]];
+		}
 		//at beginning of Terraria.Lang.npcName add
 		//  if (l >= Main.maxNPCTypes) { return NPCLoader.DisplayName(l); }
-		internal static string DisplayName(int type)
+		public static string DisplayName(int type)
 		{
 			ModNPC npc = GetNPC(type);
 			string name = "";
@@ -170,7 +192,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NPC.scaleStats before setting def fields call
 		//  NPCLoader.ScaleExpertStats(this, num4, num5);
-		internal static void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+		public static void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
 		{
 			if (IsModNPC(npc))
 			{
@@ -182,7 +204,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void ResetEffects(NPC npc)
+		public static void ResetEffects(NPC npc)
 		{
 			if (IsModNPC(npc))
 			{
@@ -194,7 +216,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.NPC rename AI to VanillaAI then make AI call NPCLoader.NPCAI(this)
-		internal static void NPCAI(NPC npc)
+		public static void NPCAI(NPC npc)
 		{
 			if (PreAI(npc))
 			{
@@ -214,7 +236,7 @@ namespace Terraria.ModLoader
 			PostAI(npc);
 		}
 
-		internal static bool PreAI(NPC npc)
+		public static bool PreAI(NPC npc)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
@@ -230,7 +252,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void AI(NPC npc)
+		public static void AI(NPC npc)
 		{
 			if (IsModNPC(npc))
 			{
@@ -242,7 +264,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PostAI(NPC npc)
+		public static void PostAI(NPC npc)
 		{
 			if (IsModNPC(npc))
 			{
@@ -255,7 +277,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NetMessage.SendData at end of case 23 call
 		//  NPCLoader.SendExtraAI(nPC, writer);
-		internal static void SendExtraAI(NPC npc, BinaryWriter writer)
+		public static void SendExtraAI(NPC npc, BinaryWriter writer)
 		{
 			if (IsModNPC(npc))
 			{
@@ -278,7 +300,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.MessageBuffer.GetData at end of case 27 add
 		//  NPCLoader.ReceiveExtraAI(nPC, reader);
-		internal static void ReceiveExtraAI(NPC npc, BinaryReader reader)
+		public static void ReceiveExtraAI(NPC npc, BinaryReader reader)
 		{
 			byte[] extraAI = reader.ReadBytes(reader.ReadByte());
 			if (extraAI.Length > 0 && IsModNPC(npc))
@@ -293,7 +315,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.NPC split VanillaFindFrame from FindFrame and make FindFrame call this
-		internal static void FindFrame(NPC npc, int frameHeight)
+		public static void FindFrame(NPC npc, int frameHeight)
 		{
 			int type = npc.type;
 			if (IsModNPC(npc) && npc.modNPC.animationType > 0)
@@ -312,7 +334,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.NPC rename HitEffect to vanillaHitEffect and make HitEffect call this
-		internal static void HitEffect(NPC npc, int hitDirection, double damage)
+		public static void HitEffect(NPC npc, int hitDirection, double damage)
 		{
 			npc.VanillaHitEffect(hitDirection, damage);
 			if (IsModNPC(npc))
@@ -325,7 +347,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void UpdateLifeRegen(NPC npc, ref int damage)
+		public static void UpdateLifeRegen(NPC npc, ref int damage)
 		{
 			if (IsModNPC(npc))
 			{
@@ -337,7 +359,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool CheckActive(NPC npc)
+		public static bool CheckActive(NPC npc)
 		{
 			if (IsModNPC(npc) && !npc.modNPC.CheckActive())
 			{
@@ -353,7 +375,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static bool CheckDead(NPC npc)
+		public static bool CheckDead(NPC npc)
 		{
 			if (IsModNPC(npc) && !npc.modNPC.CheckDead())
 			{
@@ -370,7 +392,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NPC.NPCLoot after hardmode meteor head check add
 		//  if(!NPCLoader.PreNPCLoot(this)) { return; }
-		internal static bool PreNPCLoot(NPC npc)
+		public static bool PreNPCLoot(NPC npc)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
@@ -388,7 +410,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 		//in Terraria.NPC.NPCLoot before heart and star drops add NPCLoader.NPCLoot(this);
-		internal static void NPCLoot(NPC npc)
+		public static void NPCLoot(NPC npc)
 		{
 			if (IsModNPC(npc))
 			{
@@ -402,7 +424,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NPC.NPCLoot after determing potion type call
 		//  NPCLoader.BossLoot(this, ref name, ref num70);
-		internal static void BossLoot(NPC npc, ref string name, ref int potionType)
+		public static void BossLoot(NPC npc, ref string name, ref int potionType)
 		{
 			if (IsModNPC(npc))
 			{
@@ -411,7 +433,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NPC.DropBossBags after if statements setting bag type call
 		//  NPCLoader.BossBag(this, ref num);
-		internal static void BossBag(NPC npc, ref int bagType)
+		public static void BossBag(NPC npc, ref int bagType)
 		{
 			if (IsModNPC(npc))
 			{
@@ -420,7 +442,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.Update for damage from NPCs in if statement checking immunities, etc.
 		//  add NPCLoader.CanHitPlayer(Main.npc[num249], this, ref num250) &&
-		internal static bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
+		public static bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
@@ -437,7 +459,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.Update for damage from NPCs after applying banner buff
 		//  add local crit variable and call this
-		internal static void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
+		public static void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
 		{
 			if (IsModNPC(npc))
 			{
@@ -450,7 +472,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.Update for damage from NPCs
 		//  assign return value from Player.Hurt to local variable then call this
-		internal static void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
+		public static void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
 		{
 			if (IsModNPC(npc))
 			{
@@ -463,7 +485,7 @@ namespace Terraria.ModLoader
 		}
 		//Terraria.NPC.UpdateNPC for friendly NPC taking damage (check patch files)
 		//Terraria.NPC.AI in aiStyle 7 for detecting threats (check patch files)
-		internal static bool? CanHitNPC(NPC npc, NPC target)
+		public static bool? CanHitNPC(NPC npc, NPC target)
 		{
 			bool? flag = null;
 			foreach (GlobalNPC globalNPC in globalNPCs)
@@ -493,7 +515,7 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 		//in Terraria.NPC.UpdateNPC for friendly NPC taking damage add local crit variable then call this
-		internal static void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+		public static void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
 		{
 			if (IsModNPC(npc))
 			{
@@ -505,7 +527,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.NPC.UpdateNPC for friendly NPC taking damage before dryad ward call this
-		internal static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
+		public static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
 		{
 			if (IsModNPC(npc))
 			{
@@ -517,7 +539,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Player.ItemCheck call after ItemLoader.CanHitNPC
-		internal static bool? CanBeHitByItem(NPC npc, Player player, Item item)
+		public static bool? CanBeHitByItem(NPC npc, Player player, Item item)
 		{
 			bool? flag = null;
 			foreach (GlobalNPC globalNPC in globalNPCs)
@@ -547,7 +569,7 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 		//in Terraria.Player.ItemCheck call after ItemLoader.ModifyHitNPC
-		internal static void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+		public static void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
 		{
 			if (IsModNPC(npc))
 			{
@@ -559,7 +581,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Player.ItemCheck call after ItemLoader.OnHitNPC
-		internal static void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+		public static void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
 		{
 			if (IsModNPC(npc))
 			{
@@ -571,7 +593,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Projectile.Damage call after ProjectileLoader.CanHitNPC
-		internal static bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
+		public static bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
 		{
 			bool? flag = null;
 			foreach (GlobalNPC globalNPC in globalNPCs)
@@ -601,7 +623,7 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 		//in Terraria.Projectile.Damage call after ProjectileLoader.ModifyHitNPC
-		internal static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit)
+		public static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit)
 		{
 			if (IsModNPC(npc))
 			{
@@ -613,7 +635,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Projectile.Damage call after ProjectileLoader.OnHitNPC
-		internal static void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+		public static void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
 		{
 			if (IsModNPC(npc))
 			{
@@ -625,7 +647,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.NPC.StrikeNPC place modifications to num in if statement checking this
-		internal static bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+		public static bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
 		{
 			bool flag = true;
 			if (IsModNPC(npc))
@@ -642,7 +664,7 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 		//in Terraria.NPC.GetBossHeadTextureIndex call this before returning
-		internal static void BossHeadSlot(NPC npc, ref int index)
+		public static void BossHeadSlot(NPC npc, ref int index)
 		{
 			if (IsModNPC(npc))
 			{
@@ -654,7 +676,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.NPC.GetBossHeadRotation call this before returning
-		internal static void BossHeadRotation(NPC npc, ref float rotation)
+		public static void BossHeadRotation(NPC npc, ref float rotation)
 		{
 			if (IsModNPC(npc))
 			{
@@ -666,7 +688,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.NPC.GetBossHeadSpriteEffects call this before returning
-		internal static void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects)
+		public static void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects)
 		{
 			if (IsModNPC(npc))
 			{
@@ -679,7 +701,7 @@ namespace Terraria.ModLoader
 		}
 		//at beginning of Terraria.NPC.GetAlpha add
 		//  Color? modColor = NPCLoader.GetAlpha(this, new Color); if(modColor.HasValue) { return modColor.Value; }
-		internal static Color? GetAlpha(NPC npc, Color lightColor)
+		public static Color? GetAlpha(NPC npc, Color lightColor)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
@@ -698,7 +720,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.DrawNPC after modifying draw color add
 		//  if(!NPCLoader.PreDraw(Main.npc[i], Main.spriteBatch, color9))
 		//  { NPCLoader.PostDraw(Main.npc[k], Main.spriteBatch, color9); return; }
-		internal static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
+		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
@@ -714,7 +736,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 		//call this at end of Terraria.Main.DrawNPC
-		internal static void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
+		public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
 		{
 			if (IsModNPC(npc))
 			{
@@ -727,7 +749,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NPC.SpawnNPC after modifying NPC.spawnRate and NPC.maxSpawns call
 		//  NPCLoader.EditSpawnRate(Main.player[j], ref NPC.spawnRate, ref NPC.maxSpawns);
-		internal static void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+		public static void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
@@ -737,7 +759,7 @@ namespace Terraria.ModLoader
 		//in Terraria.NPC.SpawnNPC after modifying spawn ranges call
 		//  NPCLoader.EditSpawnRange(Main.player[j], ref NPC.spawnRangeX, ref NPC.spawnRangeY,
 		//  ref NPC.safeRangeX, ref NPC.safeRangeY);
-		internal static void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
+		public static void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
 			ref int safeRangeX, ref int safeRangeY)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
@@ -748,7 +770,7 @@ namespace Terraria.ModLoader
 		//in Terraria.NPC.SpawnNPC after initializing variables and before actual spawning add
 		//  int? spawnChoice = NPCLoader.ChooseSpawn(spawnInfo); if(!spawnChoice.HasValue) { return; }
 		//  int spawn = spawnChoice.Value; if(spawn != 0) { goto endVanillaSpawn; }
-		internal static int? ChooseSpawn(NPCSpawnInfo spawnInfo)
+		public static int? ChooseSpawn(NPCSpawnInfo spawnInfo)
 		{
 			IDictionary<int, float> pool = new Dictionary<int, float>();
 			pool[0] = 1f;
@@ -783,7 +805,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NPC.SpawnNPC before spawning pinky add
 		//  endVanillaSpawn: if(spawn != 0) { num46 = NPCLoader.SpawnNPC(spawn, num, num2); }
-		internal static int SpawnNPC(int type, int tileX, int tileY)
+		public static int SpawnNPC(int type, int tileX, int tileY)
 		{
 			int npc;
 			if (type >= NPCID.Count)
@@ -801,7 +823,7 @@ namespace Terraria.ModLoader
 			return npc;
 		}
 		//at end of Terraria.Main.UpdateTime inside blocks add NPCLoader.CanTownNPCSpawn(num40, num42);
-		internal static void CanTownNPCSpawn(int numTownNPCs, int money)
+		public static void CanTownNPCSpawn(int numTownNPCs, int money)
 		{
 			foreach (ModNPC npc in npcs.Values)
 			{
@@ -818,7 +840,7 @@ namespace Terraria.ModLoader
 		}
 		//at beginning of Terraria.WorldGen.CheckConditions add
 		//  if(!NPCLoader.CheckConditions(type)) { return false; }
-		internal static bool CheckConditions(int type)
+		public static bool CheckConditions(int type)
 		{
 			if (type < NPCID.Count)
 			{
@@ -827,7 +849,7 @@ namespace Terraria.ModLoader
 			return GetNPC(type).CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2);
 		}
 		//in Terraria.NPC.getNewNPCName replace final return with return NPCLoader.TownNPCName(npcType);
-		internal static string TownNPCName(int type)
+		public static string TownNPCName(int type)
 		{
 			if (type < NPCID.Count)
 			{
@@ -836,7 +858,7 @@ namespace Terraria.ModLoader
 			return GetNPC(type).TownNPCName();
 		}
 		//in Terraria.NPC.GetChat before returning result add NPCLoader.GetChat(this, ref result);
-		internal static void GetChat(NPC npc, ref string chat)
+		public static void GetChat(NPC npc, ref string chat)
 		{
 			if (IsModNPC(npc))
 			{
@@ -849,7 +871,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.GUIChatDrawInner after if/else chain setting text and text2 call
 		//  NPCLoader.SetChatButtons(ref text, ref text2);
-		internal static void SetChatButtons(ref string button, ref string button2)
+		public static void SetChatButtons(ref string button, ref string button2)
 		{
 			if (Main.player[Main.myPlayer].talkNPC >= 0)
 			{
@@ -864,7 +886,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.GUIChatDrawInner after type checks for first button click call
 		//  NPCLoader.OnChatButtonClicked(true);
 		//  after type checks for second button click call NPCLoader.OnChatButtonClicked(false);
-		internal static void OnChatButtonClicked(bool firstButton)
+		public static void OnChatButtonClicked(bool firstButton)
 		{
 			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
 			if (IsModNPC(npc))
@@ -882,7 +904,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Chest.SetupShop before discount call NPCLoader.SetupShop(type, this, ref num);
-		internal static void SetupShop(int type, Chest shop, ref int nextSlot)
+		public static void SetupShop(int type, Chest shop, ref int nextSlot)
 		{
 			if (type < shopToNPC.Length)
 			{
@@ -898,7 +920,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//at end of Terraria.Chest.SetupTravelShop call NPCLoader.SetupTravelShop(Main.travelShop, ref num2);
-		internal static void SetupTravelShop(int[] shop, ref int nextSlot)
+		public static void SetupTravelShop(int[] shop, ref int nextSlot)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
@@ -907,7 +929,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NPC.AI in aiStyle 7 after buffing damage multiplier and defense add
 		//  NPCLoader.BuffTownNPC(ref num378, ref this.defense);
-		internal static void BuffTownNPC(ref float damageMult, ref int defense)
+		public static void BuffTownNPC(ref float damageMult, ref int defense)
 		{
 			foreach (GlobalNPC globalNPC in globalNPCs)
 			{
@@ -930,7 +952,7 @@ namespace Terraria.ModLoader
 		//  num442 = item width, num443 = item height
 		//unknowns are associated with ai[1], localAI[1], and localAI[3] when ai[0] is either 0 or 8
 		//check patch files for town NPC attacks
-		internal static void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
+		public static void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
 		{
 			if (IsModNPC(npc))
 			{
@@ -942,7 +964,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown)
+		public static void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown)
 		{
 			if (IsModNPC(npc))
 			{
@@ -954,7 +976,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay)
+		public static void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay)
 		{
 			if (IsModNPC(npc))
 			{
@@ -966,7 +988,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void TownNPCAttackProjSpeed(NPC npc, ref float multiplier, ref float gravityCorrection,
+		public static void TownNPCAttackProjSpeed(NPC npc, ref float multiplier, ref float gravityCorrection,
 			ref float randomOffset)
 		{
 			if (IsModNPC(npc))
@@ -979,7 +1001,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots)
+		public static void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots)
 		{
 			if (IsModNPC(npc))
 			{
@@ -991,7 +1013,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier)
+		public static void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier)
 		{
 			if (IsModNPC(npc))
 			{
@@ -1003,7 +1025,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight)
+		public static void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight)
 		{
 			if (IsModNPC(npc))
 			{
@@ -1016,7 +1038,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawNPCExtras for attack type 1 after if else chain setting num2-4 call
 		//  NPCLoader.DrawTownAttackGun(n, ref num2, ref num3, ref num4);
-		internal static void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+		public static void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
 		{
 			if (IsModNPC(npc))
 			{
@@ -1029,7 +1051,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawNPCExtras for attack type 3 after if else chain call
 		//  NPCLoader.DrawTownAttackSwing(n, ref texture2D5, ref num6, ref scaleFactor, ref zero);
-		internal static void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+		public static void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
 		{
 			if (IsModNPC(npc))
 			{

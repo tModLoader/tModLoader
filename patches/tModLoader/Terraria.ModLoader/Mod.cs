@@ -173,6 +173,18 @@ namespace Terraria.ModLoader
 				{
 					AutoloadMountData(type);
 				}
+				else if (type.IsSubclassOf(typeof(ItemInfo)))
+				{
+					AutoloadItemInfo(type);
+				}
+				else if (type.IsSubclassOf(typeof(ProjectileInfo)))
+				{
+					AutoloadProjectileInfo(type);
+				}
+				else if (type.IsSubclassOf(typeof(NPCInfo)))
+				{
+					AutoloadNPCInfo(type);
+				}
 				else if (type.IsSubclassOf(typeof(ModGore)))
 				{
 					modGores.Add(type);
@@ -247,6 +259,18 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		public void AddItemInfo(string name, ItemInfo info)
+		{
+			info.mod = this;
+			info.Name = name;
+			if (!ItemLoader.infoIndexes.ContainsKey(this.Name))
+			{
+				ItemLoader.infoIndexes[this.Name] = new Dictionary<string, int>();
+			}
+			ItemLoader.infoIndexes[this.Name][name] = ItemLoader.infoList.Count;
+			ItemLoader.infoList.Add(info);
 		}
 
 		public int AddEquipTexture(ModItem item, EquipType type, string name, string texture,
@@ -354,6 +378,17 @@ namespace Terraria.ModLoader
 			if (globalItem.Autoload(ref name))
 			{
 				AddGlobalItem(name, globalItem);
+			}
+		}
+
+		private void AutoloadItemInfo(Type type)
+		{
+			ItemInfo itemInfo = (ItemInfo)Activator.CreateInstance(type);
+			itemInfo.mod = this;
+			string name = type.Name;
+			if (itemInfo.Autoload(ref name))
+			{
+				AddItemInfo(name, itemInfo);
 			}
 		}
 
@@ -615,6 +650,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddProjectileInfo(string name, ProjectileInfo info)
+		{
+			info.mod = this;
+			info.Name = name;
+			if (!ProjectileLoader.infoIndexes.ContainsKey(this.Name))
+			{
+				ProjectileLoader.infoIndexes[this.Name] = new Dictionary<string, int>();
+			}
+			ProjectileLoader.infoIndexes[this.Name][name] = ProjectileLoader.infoList.Count;
+			ProjectileLoader.infoList.Add(info);
+		}
+
 		private void AutoloadProjectile(Type type)
 		{
 			ModProjectile projectile = (ModProjectile)Activator.CreateInstance(type);
@@ -635,6 +682,17 @@ namespace Terraria.ModLoader
 			if (globalProjectile.Autoload(ref name))
 			{
 				AddGlobalProjectile(name, globalProjectile);
+			}
+		}
+
+		private void AutoloadProjectileInfo(Type type)
+		{
+			ProjectileInfo projectileInfo = (ProjectileInfo)Activator.CreateInstance(type);
+			projectileInfo.mod = this;
+			string name = type.Name;
+			if (projectileInfo.Autoload(ref name))
+			{
+				AddProjectileInfo(name, projectileInfo);
 			}
 		}
 
@@ -691,6 +749,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddNPCInfo(string name, NPCInfo info)
+		{
+			info.mod = this;
+			info.Name = name;
+			if (!NPCLoader.infoIndexes.ContainsKey(this.Name))
+			{
+				NPCLoader.infoIndexes[this.Name] = new Dictionary<string, int>();
+			}
+			NPCLoader.infoIndexes[this.Name][name] = NPCLoader.infoList.Count;
+			NPCLoader.infoList.Add(info);
+		}
+
 		public void AddNPCHeadTexture(int npcType, string texture)
 		{
 			int slot = NPCHeadLoader.ReserveHeadSlot();
@@ -740,6 +810,17 @@ namespace Terraria.ModLoader
 			if (globalNPC.Autoload(ref name))
 			{
 				AddGlobalNPC(name, globalNPC);
+			}
+		}
+
+		private void AutoloadNPCInfo(Type type)
+		{
+			NPCInfo npcInfo = (NPCInfo)Activator.CreateInstance(type);
+			npcInfo.mod = this;
+			string name = type.Name;
+			if (npcInfo.Autoload(ref name))
+			{
+				AddNPCInfo(name, npcInfo);
 			}
 		}
 

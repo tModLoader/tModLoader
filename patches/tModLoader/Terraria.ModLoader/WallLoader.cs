@@ -124,7 +124,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillWall add if(!WallLoader.KillSound(i, j, tile.wall)) { } to beginning of
 		//  if/else chain for playing sounds, and turn first if into else if
-		internal static bool KillSound(int i, int j, int type)
+		public static bool KillSound(int i, int j, int type)
 		{
 			foreach (GlobalWall globalWall in globalWalls)
 			{
@@ -147,7 +147,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillWall after if statement setting num to 3 add
 		//  WallLoader.NumDust(i, j, tile.wall, fail, ref num);
-		internal static void NumDust(int i, int j, int type, bool fail, ref int numDust)
+		public static void NumDust(int i, int j, int type, bool fail, ref int numDust)
 		{
 			ModWall modWall = GetWall(type);
 			if (modWall != null)
@@ -161,7 +161,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillWall before if statements creating dust add
 		//  if(!WallLoader.CreateDust(i, j, tile.wall, ref int num2)) { continue; }
-		internal static bool CreateDust(int i, int j, int type, ref int dustType)
+		public static bool CreateDust(int i, int j, int type, ref int dustType)
 		{
 			foreach (GlobalWall globalWall in globalWalls)
 			{
@@ -179,7 +179,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillWall replace if (num4 > 0) with
 		//  if (WallLoader.Drop(i, j, tile.wall, ref num4) && num4 > 0)
-		internal static bool Drop(int i, int j, int type, ref int dropType)
+		public static bool Drop(int i, int j, int type, ref int dropType)
 		{
 			foreach (GlobalWall globalWall in globalWalls)
 			{
@@ -197,7 +197,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillWall after if statements setting fail to true call
 		//  WallLoader.KillWall(i, j, tile.wall, ref fail);
-		internal static void KillWall(int i, int j, int type, ref bool fail)
+		public static void KillWall(int i, int j, int type, ref bool fail)
 		{
 			ModWall modWall = GetWall(type);
 			if (modWall != null)
@@ -211,7 +211,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Lighting.PreRenderPhase after wall modifies light call
 		//  WallLoader.ModifyLight(n, num17, wall, ref num18, ref num19, ref num20);
-		internal static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+		public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
 		{
 			ModWall modWall = GetWall(type);
 			if (modWall != null)
@@ -226,7 +226,7 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.UpdateWorld after each call to TileLoader.RandomUpdate call
 		//  WallLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].wall);
 		//  WallLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].wall);
-		internal static void RandomUpdate(int i, int j, int type)
+		public static void RandomUpdate(int i, int j, int type)
 		{
 			ModWall modWall = GetWall(type);
 			if (modWall != null)
@@ -239,7 +239,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Main.Update after vanilla wall animations call WallLoader.AnimateWalls();
-		internal static void AnimateWalls()
+		public static void AnimateWalls()
 		{
 			if (loaded)
 			{
@@ -252,7 +252,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.DrawWalls before if statements that do the drawing add
 		//  if(!WallLoader.PreDraw(j, i, wall, Main.spriteBatch))
 		//  { WallLoader.PostDraw(j, i, wall, Main.spriteBatch); continue; }
-		internal static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
+		public static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
 		{
 			foreach (GlobalWall globalWall in globalWalls)
 			{
@@ -270,7 +270,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawWalls after wall outlines are drawn call
 		//  WallLoader.PostDraw(j, i, wall, Main.spriteBatch);
-		internal static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
+		public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
 		{
 			ModWall modWall = GetWall(type);
 			if (modWall != null)

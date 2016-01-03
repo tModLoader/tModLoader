@@ -30,6 +30,7 @@ namespace Terraria.ModLoader
 
 		internal static void SetupPlayer(Player player)
 		{
+			player.modPlayers.Clear();
 			foreach (ModPlayer modPlayer in players)
 			{
 				ModPlayer newPlayer = modPlayer.Clone();
@@ -48,7 +49,7 @@ namespace Terraria.ModLoader
 			return player.modPlayers[modIndexes[name]];
 		}
 
-		internal static void ResetEffects(Player player)
+		public static void ResetEffects(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -56,7 +57,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void UpdateDead(Player player)
+		public static void UpdateDead(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -64,7 +65,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static IList<Item> SetupStartInventory(Player player)
+		public static IList<Item> SetupStartInventory(Player player)
 		{
 			IList<Item> items = new List<Item>();
 			Item item = new Item();
@@ -122,7 +123,7 @@ namespace Terraria.ModLoader
 			return items;
 		}
 
-		internal static void SetStartInventory(Player player, IList<Item> items)
+		public static void SetStartInventory(Player player, IList<Item> items)
 		{
 			if (items.Count <= 50)
 			{
@@ -147,12 +148,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void SetStartInventory(Player player)
+		public static void SetStartInventory(Player player)
 		{
 			SetStartInventory(player, SetupStartInventory(player));
 		}
 
-		internal static void UpdateBiomes(Player player)
+		public static void UpdateBiomes(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -160,7 +161,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void UpdateBiomeVisuals(Player player)
+		public static void UpdateBiomeVisuals(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -168,7 +169,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void UpdateBadLifeRegen(Player player)
+		public static void UpdateBadLifeRegen(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -176,7 +177,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void UpdateLifeRegen(Player player)
+		public static void UpdateLifeRegen(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -184,7 +185,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void NaturalLifeRegen(Player player, ref float regen)
+		public static void NaturalLifeRegen(Player player, ref float regen)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -192,7 +193,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PreUpdate(Player player)
+		public static void PreUpdate(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -200,7 +201,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void SetControls(Player player)
+		public static void SetControls(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -208,7 +209,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PreUpdateBuffs(Player player)
+		public static void PreUpdateBuffs(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -216,7 +217,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PostUpdateBuffs(Player player)
+		public static void PostUpdateBuffs(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -224,7 +225,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PostUpdateEquips(Player player)
+		public static void PostUpdateEquips(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -232,7 +233,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PostUpdateMiscEffects(Player player)
+		public static void PostUpdateMiscEffects(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -240,7 +241,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PostUpdateRunSpeeds(Player player)
+		public static void PostUpdateRunSpeeds(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -248,7 +249,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PostUpdate(Player player)
+		public static void PostUpdate(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -256,7 +257,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void FrameEffects(Player player)
+		public static void FrameEffects(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -264,7 +265,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool PreHurt(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
+		public static bool PreHurt(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
 			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText)
 		{
 			bool flag = true;
@@ -279,7 +280,7 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		internal static void Hurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit)
+		public static void Hurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -287,7 +288,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void PostHurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit)
+		public static void PostHurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -295,7 +296,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool PreKill(Player player, double damage, int hitDirection, bool pvp, ref bool playSound,
+		public static bool PreKill(Player player, double damage, int hitDirection, bool pvp, ref bool playSound,
 			ref bool genGore, ref string deathText)
 		{
 			bool flag = true;
@@ -309,7 +310,7 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		internal static void Kill(Player player, double damage, int hitDirection, bool pvp, string deathText)
+		public static void Kill(Player player, double damage, int hitDirection, bool pvp, string deathText)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -317,7 +318,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool PreItemCheck(Player player)
+		public static bool PreItemCheck(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -329,7 +330,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void PostItemCheck(Player player)
+		public static void PostItemCheck(Player player)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -337,7 +338,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void GetWeaponDamage(Player player, Item item, ref int damage)
+		public static void GetWeaponDamage(Player player, Item item, ref int damage)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -345,7 +346,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void GetWeaponKnockback(Player player, Item item, ref float knockback)
+		public static void GetWeaponKnockback(Player player, Item item, ref float knockback)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -353,7 +354,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool ConsumeAmmo(Player player, Item weapon, Item ammo)
+		public static bool ConsumeAmmo(Player player, Item weapon, Item ammo)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -365,7 +366,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static bool Shoot(Player player, Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		public static bool Shoot(Player player, Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -377,7 +378,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void MeleeEffects(Player player, Item item, Rectangle hitbox)
+		public static void MeleeEffects(Player player, Item item, Rectangle hitbox)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -385,7 +386,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnHitAnything(Player player, float x, float y, Entity victim)
+		public static void OnHitAnything(Player player, float x, float y, Entity victim)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -393,7 +394,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool? CanHitNPC(Player player, Item item, NPC target)
+		public static bool? CanHitNPC(Player player, Item item, NPC target)
 		{
 			bool? flag = null;
 			foreach (ModPlayer modPlayer in player.modPlayers)
@@ -411,7 +412,7 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		internal static void ModifyHitNPC(Player player, Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+		public static void ModifyHitNPC(Player player, Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -419,7 +420,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockback, bool crit)
+		public static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockback, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -427,7 +428,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool? CanHitNPCWithProj(Projectile proj, NPC target)
+		public static bool? CanHitNPCWithProj(Projectile proj, NPC target)
 		{
 			if (proj.npcProj || proj.trap)
 			{
@@ -450,7 +451,7 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		internal static void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit)
+		public static void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit)
 		{
 			if (proj.npcProj || proj.trap)
 			{
@@ -463,7 +464,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+		public static void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
 		{
 			if (proj.npcProj || proj.trap)
 			{
@@ -476,7 +477,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool CanHitPvp(Player player, Item item, Player target)
+		public static bool CanHitPvp(Player player, Item item, Player target)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -488,7 +489,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void ModifyHitPvp(Player player, Item item, Player target, ref int damage, ref bool crit)
+		public static void ModifyHitPvp(Player player, Item item, Player target, ref int damage, ref bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -496,7 +497,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnHitPvp(Player player, Item item, Player target, int damage, bool crit)
+		public static void OnHitPvp(Player player, Item item, Player target, int damage, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -504,7 +505,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool CanHitPvpWithProj(Projectile proj, Player target)
+		public static bool CanHitPvpWithProj(Projectile proj, Player target)
 		{
 			Player player = Main.player[proj.owner];
 			foreach (ModPlayer modPlayer in player.modPlayers)
@@ -517,7 +518,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit)
+		public static void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit)
 		{
 			Player player = Main.player[proj.owner];
 			foreach (ModPlayer modPlayer in player.modPlayers)
@@ -526,7 +527,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)
+		public static void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)
 		{
 			Player player = Main.player[proj.owner];
 			foreach (ModPlayer modPlayer in player.modPlayers)
@@ -535,7 +536,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool CanBeHitByNPC(Player player, NPC npc, ref int cooldownSlot)
+		public static bool CanBeHitByNPC(Player player, NPC npc, ref int cooldownSlot)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -547,7 +548,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void ModifyHitByNPC(Player player, NPC npc, ref int damage, ref bool crit)
+		public static void ModifyHitByNPC(Player player, NPC npc, ref int damage, ref bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -555,7 +556,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnHitByNPC(Player player, NPC npc, int damage, bool crit)
+		public static void OnHitByNPC(Player player, NPC npc, int damage, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -563,7 +564,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool CanBeHitByProjectile(Player player, Projectile proj)
+		public static bool CanBeHitByProjectile(Player player, Projectile proj)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -575,7 +576,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void ModifyHitByProjectile(Player player, Projectile proj, ref int damage, ref bool crit)
+		public static void ModifyHitByProjectile(Player player, Projectile proj, ref int damage, ref bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -583,7 +584,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void OnHitByProjectile(Player player, Projectile proj, int damage, bool crit)
+		public static void OnHitByProjectile(Player player, Projectile proj, int damage, bool crit)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -591,7 +592,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void CatchFish(Player player, Item fishingRod, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
+		public static void CatchFish(Player player, Item fishingRod, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
 		{
 			int i = 0;
 			while (i < 58)
@@ -608,7 +609,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void GetFishingLevel(Player player, Item fishingRod, Item bait, ref int fishingLevel)
+		public static void GetFishingLevel(Player player, Item fishingRod, Item bait, ref int fishingLevel)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -616,7 +617,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void AnglerQuestReward(Player player, float rareMultiplier, List<Item> rewardItems)
+		public static void AnglerQuestReward(Player player, float rareMultiplier, List<Item> rewardItems)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
@@ -624,7 +625,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void GetDyeTraderReward(Player player, List<int> rewardPool)
+		public static void GetDyeTraderReward(Player player, List<int> rewardPool)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{

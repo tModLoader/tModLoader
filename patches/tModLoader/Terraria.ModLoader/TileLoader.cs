@@ -201,7 +201,7 @@ namespace Terraria.ModLoader
 		//  else { TileLoader.CheckModTile(i, j, num); }
 		//in Terraria.TileObject.CanPlace add optional checkStay parameter as false to end
 		//  and add && !checkStay to if statement that sets flag4
-		internal static void CheckModTile(int i, int j, int type)
+		public static void CheckModTile(int i, int j, int type)
 		{
 			if (WorldGen.destroyObject)
 			{
@@ -289,7 +289,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void DisableSmartCursor(Tile tile, ref bool disable)
+		public static void DisableSmartCursor(Tile tile, ref bool disable)
 		{
 			if (tile.active())
 			{
@@ -303,7 +303,7 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.OpenDoor replace bad type check with TileLoader.OpenDoorID(Main.tile[i, j]) < 0
 		//in Terraria.WorldGen.OpenDoor replace 11 with (ushort)TileLoader.OpenDoorID
 		//replace all type checks before WorldGen.OpenDoor
-		internal static int OpenDoorID(Tile tile)
+		public static int OpenDoorID(Tile tile)
 		{
 			ModTile modTile = GetTile(tile.type);
 			if (modTile != null)
@@ -320,7 +320,7 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.CloseDoor replace 10 with (ushort)TileLoader.CloseDoorID
 		//replace all type checks before WorldGen.CloseDoor
 		//replace type check in WorldGen.CheckRoom
-		internal static int CloseDoorID(Tile tile)
+		public static int CloseDoorID(Tile tile)
 		{
 			ModTile modTile = GetTile(tile.type);
 			if (modTile != null)
@@ -334,7 +334,7 @@ namespace Terraria.ModLoader
 			return -1;
 		}
 		//replace chest checks (type == 21) with this
-		internal static bool IsChest(int type)
+		public static bool IsChest(int type)
 		{
 			if (type == TileID.Containers)
 			{
@@ -343,7 +343,7 @@ namespace Terraria.ModLoader
 			return ModChestName(type).Length > 0;
 		}
 		//in Terraria.UI.ChestUI add this to Lang lookups
-		internal static string ModChestName(int type)
+		public static string ModChestName(int type)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -353,7 +353,7 @@ namespace Terraria.ModLoader
 			return "";
 		}
 		//in Terraria.Player.CheckSpawn add this to bed type check
-		internal static bool IsModBed(int type)
+		public static bool IsModBed(int type)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile == null)
@@ -364,7 +364,7 @@ namespace Terraria.ModLoader
 		}
 		//replace tile type checks for 19 in Terraria.Player, some places in Terraria.WorldGen,
 		//  Terraria.Main.DrawTiles, and Terraria.Collision
-		internal static bool IsPlatform(int type)
+		public static bool IsPlatform(int type)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile == null)
@@ -374,7 +374,7 @@ namespace Terraria.ModLoader
 			return modTile.platform;
 		}
 
-		internal static bool IsTorch(int type)
+		public static bool IsTorch(int type)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile == null)
@@ -384,7 +384,7 @@ namespace Terraria.ModLoader
 			return modTile.torch;
 		}
 
-		internal static bool IsModMusicBox(Tile tile)
+		public static bool IsModMusicBox(Tile tile)
 		{
 			return SoundLoader.tileToMusic.ContainsKey(tile.type)
 			&& SoundLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
@@ -406,7 +406,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
 		//  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
-		internal static bool KillSound(int i, int j, int type)
+		public static bool KillSound(int i, int j, int type)
 		{
 			foreach (GlobalTile globalTile in globalTiles)
 			{
@@ -429,7 +429,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillTile before num14 (num dust iteration) is declared, add
 		//  TileLoader.NumDust(i, j, tile.type, ref num13);
-		internal static void NumDust(int i, int j, int type, bool fail, ref int numDust)
+		public static void NumDust(int i, int j, int type, bool fail, ref int numDust)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -443,7 +443,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillTile replace if (num15 >= 0) with
 		//  if(TileLoader.CreateDust(i, j, tile.type, ref num15) && num15 >= 0)
-		internal static bool CreateDust(int i, int j, int type, ref int dustType)
+		public static bool CreateDust(int i, int j, int type, ref int dustType)
 		{
 			foreach (GlobalTile globalTile in globalTiles)
 			{
@@ -461,7 +461,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillTile before if statement checking num43 call
 		//  TileLoader.DropCritterChance(i, j, tile.type, ref num43, ref num44, ref num45);
-		internal static void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
+		public static void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -476,7 +476,7 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.KillTile before if statements checking num49 and num50
 		//  add bool vanillaDrop = TileLoader.Drop(i, j, tile.type);
 		//  add "vanillaDrop && " to beginning of these if statements
-		internal static bool Drop(int i, int j, int type)
+		public static bool Drop(int i, int j, int type)
 		{
 			foreach (GlobalTile globalTile in globalTiles)
 			{
@@ -502,7 +502,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.CanKillTile after check for tile.active() add
 		//  if(!TileLoader.CanKillTile(i, j, tile.type, ref blockDamaged)) { return false; }
-		internal static bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
+		public static bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
 		{
 			foreach (GlobalTile globalTile in globalTiles)
 			{
@@ -520,7 +520,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.KillTile before if (!effectOnly && !WorldGen.stopDrops) add
 		//  TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem);
-		internal static void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
+		public static void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -533,7 +533,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void KillMultiTile(int i, int j, int frameX, int frameY, int type)
+		public static void KillMultiTile(int i, int j, int frameX, int frameY, int type)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -543,7 +543,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Lighting.PreRenderPhase add local closer variable and after setting music box
 		//  call TileLoader.NearbyEffects(n, num17, type, closer);
-		internal static void NearbyEffects(int i, int j, int type, bool closer)
+		public static void NearbyEffects(int i, int j, int type, bool closer)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -557,7 +557,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Lighting.PreRenderPhase after label after if statement checking Main.tileLighted call
 		//  TileLoader.ModifyLight(n, num17, tile.type, ref num18, ref num19, ref num20);
-		internal static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+		public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
 		{
 			if (!Main.tileLighted[type])
 			{
@@ -575,7 +575,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawTiles after if statement setting effects call
 		//  TileLoader.SetSpriteEffects(j, i, type, ref effects);
-		internal static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects)
+		public static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -589,7 +589,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawTiles after if statements setting num11 and num12 call
 		//  TileLoader.SetDrawPositions(j, i, ref num9, ref num11, ref num12);
-		internal static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height)
+		public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height)
 		{
 			Tile tile = Main.tile[i, j];
 			if (tile.type >= TileID.Count)
@@ -612,7 +612,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Main.Update after vanilla tile animations call TileLoader.AnimateTiles();
-		internal static void AnimateTiles()
+		public static void AnimateTiles()
 		{
 			if (loaded)
 			{
@@ -628,7 +628,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.Draw after small if statements setting num15 call
 		//  TileLoader.SetAnimationFrame(type, ref num15);
-		internal static void SetAnimationFrame(int type, ref int frameY)
+		public static void SetAnimationFrame(int type, ref int frameY)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -639,7 +639,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.Draw after calling SetAnimationFrame call
 		//  if(!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
 		//  { TileLoader.PostDraw(j, i, type, Main.spriteBatch); continue; }
-		internal static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
+		public static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
 		{
 			foreach (GlobalTile globalTile in globalTiles)
 			{
@@ -657,7 +657,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.Draw after if statement checking whether texture2D is null call
 		//  TileLoader.PostDraw(j, i, type, Main.spriteBatch);
-		internal static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
+		public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -672,7 +672,7 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.UpdateWorld in the while loops updating certain numbers of tiles at end of null check if statements
 		//  add TileLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].type; for the first loop
 		//  add TileLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].type; for the second loop
-		internal static void RandomUpdate(int i, int j, int type)
+		public static void RandomUpdate(int i, int j, int type)
 		{
 			if (!Main.tile[i, j].active())
 			{
@@ -690,7 +690,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.WorldGen.TileFrame at beginning of block of if(tile.active()) add
 		//  if(!TileLoader.TileFrame(i, j, tile.type, ref resetFrame, ref noBreak)) { return; }
-		internal static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
+		public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
 		{
 			ModTile modTile = GetTile(type);
 			bool flag = true;
@@ -708,7 +708,7 @@ namespace Terraria.ModLoader
 		//  replace num222 += item.hammer; with TileLoader.MineDamage(item.hammer, ref num222);
 		//  replace num222 += item.axe; with TileLoader.MineDamage(item.axe, ref num222);
 		//in Terraria.Player.PickTile replace num += pickPower; with TileLoader.MineDamage(pickPower, ref num);
-		internal static void MineDamage(int minePower, ref int damage)
+		public static void MineDamage(int minePower, ref int damage)
 		{
 			Tile target = Main.tile[Player.tileTargetX, Player.tileTargetY];
 			ModTile modTile = GetTile(target.type);
@@ -723,7 +723,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.ItemCheck at end of else if chain setting num to 0 add
 		//  else { TileLoader.PickPowerCheck(tile, pickPower, ref num); }
-		internal static void PickPowerCheck(Tile target, int pickPower, ref int damage)
+		public static void PickPowerCheck(Tile target, int pickPower, ref int damage)
 		{
 			ModTile modTile = GetTile(target.type);
 			if (modTile != null && pickPower < modTile.minPick)
@@ -733,7 +733,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.PlaceThing after tileObject is initalized add else to if statement and before add
 		//  if(!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY)) { }
-		internal static bool CanPlace(int i, int j)
+		public static bool CanPlace(int i, int j)
 		{
 			int type = Main.tile[i, j].type;
 			foreach (GlobalTile globalTile in globalTiles)
@@ -752,7 +752,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.AdjTiles in end of if statement checking for tile's active
 		//  add TileLoader.AdjTiles(this, Main.tile[j, k].type);
-		internal static void AdjTiles(Player player, int type)
+		public static void AdjTiles(Player player, int type)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -773,7 +773,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.Update in if statements involving controluseTile and releaseUseTile
 		//  at end of type-check if else chain add TileLoader.RightClick(Player.tileTargetX, Player.tileTargetY);
-		internal static void RightClick(int i, int j)
+		public static void RightClick(int i, int j)
 		{
 			int type = Main.tile[i, j].type;
 			ModTile modTile = GetTile(type);
@@ -788,7 +788,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.Update after if statements setting showItemIcon call
 		//  TileLoader.MouseOver(Player.tileTargetX, Player.tileTargetY);
-		internal static void MouseOver(int i, int j)
+		public static void MouseOver(int i, int j)
 		{
 			int type = Main.tile[i, j].type;
 			ModTile modTile = GetTile(type);
@@ -802,7 +802,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void MouseOverFar(int i, int j)
+		public static void MouseOverFar(int i, int j)
 		{
 			int type = Main.tile[i, j].type;
 			ModTile modTile = GetTile(type);
@@ -816,7 +816,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static int AutoSelect(int i, int j, Player player)
+		public static int AutoSelect(int i, int j, Player player)
 		{
 			if (!Main.tile[i, j].active())
 			{
@@ -849,7 +849,7 @@ namespace Terraria.ModLoader
 		//  _wireList, _toProcess, _teleport, _inPumpX, _inPumpY, _numInPump, _outPumpX, _outPumpY, _numOutPump CheckMech, TripWire
 		//at end of Terraria.Wiring.HitWireSingle inside if statement checking for tile active add
 		//  TileLoader.HitWire(i, j, type);
-		internal static void HitWire(int i, int j, int type)
+		public static void HitWire(int i, int j, int type)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -863,7 +863,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.ItemCheck in poundRelease if statement before sloping if statements add
 		//  if(TileLoader.Slope(num223, num224, Main.tile[num223, num224].type)) { } else
-		internal static bool Slope(int i, int j, int type)
+		public static bool Slope(int i, int j, int type)
 		{
 			foreach (GlobalTile globalTile in globalTiles)
 			{
@@ -880,7 +880,7 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		internal static bool HasWalkDust(int type)
+		public static bool HasWalkDust(int type)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
@@ -890,7 +890,7 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		internal static void WalkDust(int type, ref int dustType, ref bool makeDust, ref Color color)
+		public static void WalkDust(int type, ref int dustType, ref bool makeDust, ref Color color)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
