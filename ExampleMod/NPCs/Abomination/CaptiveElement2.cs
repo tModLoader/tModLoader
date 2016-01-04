@@ -516,10 +516,6 @@ namespace ExampleMod.NPCs.Abomination
 				default:
 					return -1;
 			}
-			if (Main.expertMode)
-			{
-				time /= 2;
-			}
 			return time;
 		}
 

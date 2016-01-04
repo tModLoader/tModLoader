@@ -56,7 +56,6 @@ namespace ExampleMod.NPCs.Abomination
 			if (npc.localAI[0] == 0f)
 			{
 				Main.PlaySound(15, (int)npc.position.X, (int)npc.position.Y, 0);
-				npc.damage = 60;
 				npc.localAI[0] = 1f;
 			}
 			npc.velocity.Y += 1f;

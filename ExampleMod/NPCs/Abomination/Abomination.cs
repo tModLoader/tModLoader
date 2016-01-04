@@ -220,7 +220,7 @@ namespace ExampleMod.NPCs.Abomination
 				{
 					damage = (int)(damage / Main.expertDamage);
 				}
-				Projectile.NewProjectile(npc.Center.X, npc.Center.Y, delta.X, delta.Y, mod.ProjectileType("ElementBall"), damage, 3f, Main.myPlayer, BuffID.OnFire, Main.expertMode ? 300f : 600f);
+				Projectile.NewProjectile(npc.Center.X, npc.Center.Y, delta.X, delta.Y, mod.ProjectileType("ElementBall"), damage, 3f, Main.myPlayer, BuffID.OnFire, 600f);
 				npc.netUpdate = true;
 			}
 			if (Main.expertMode)
@@ -353,8 +353,7 @@ namespace ExampleMod.NPCs.Abomination
 		{
 			if (Main.expertMode || Main.rand.Next(2) == 0)
 			{
-				int time = Main.expertMode ? 300 : 600; //debuff times are doubled in expert mode
-				player.AddBuff(BuffID.OnFire, time, true);
+				player.AddBuff(BuffID.OnFire, 600, true);
 			}
 		}
 

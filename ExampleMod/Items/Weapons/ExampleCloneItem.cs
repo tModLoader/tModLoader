@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -15,7 +15,7 @@ namespace ExampleMod.Items.Weapons
 			item.shootSpeed *= 0.75f;
 			item.damage = (int)(item.damage * 1.5);
 		}
-		
+
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
 		{
 			type = mod.ProjectileType("ExampleCloneProjectile");

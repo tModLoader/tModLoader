@@ -3,7 +3,9 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.NPCs.PuritySpirit;
 
 namespace ExampleMod.Projectiles.PuritySpirit
 {
@@ -16,9 +18,12 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.height = 80;
 			projectile.penetrate = -1;
 			projectile.magic = true;
+			projectile.hostile = true;
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
-			Main.projFrames[projectile.type] = 5;
+			Main.projFrames[projectile.type] = 8;
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 200;
 			cooldownSlot = 1;
 		}
 
@@ -34,52 +39,83 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public override void AI()
 		{
-			projectile.ai[0] += 1f;
-			if (projectile.ai[0] < 180f)
+			projectile.ai[1] += 1f;
+			if (!Main.dedServ && projectile.ai[1] >= 180f && projectile.ai[1] < 480f && Main.rand.Next(10) == 0)
 			{
-				projectile.alpha = (int)((180f - projectile.ai[0]) * 255f / 180f);
-			}
-			else
-			{
-				projectile.alpha = 0;
-			}
-			if (projectile.ai[0] == 180f)
-			{
-				if (!Main.dedServ && projectile.localAI[0] == 1f)
+				ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
+				if (modPlayer.heroLives > 0)
 				{
-					ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
-					if (modPlayer.heroLives > 0)
-					{
-						Main.PlaySound(2, -1, -1, 14);
-					}
-					else
-					{
-						Main.PlaySound(2, (int)projectile.position.X, (int)projectile.position.Y, 14);
-					}
+					Main.PlaySound(2, -1, -1, 14);
 				}
-				projectile.hostile = true;
-				projectile.frame = 4;
+				else
+				{
+					Main.PlaySound(2, (int)projectile.position.X, (int)projectile.position.Y, 14);
+				}
 			}
-			if (projectile.ai[0] >= 185f)
-			{
-				projectile.hostile = false;
-			}
-			if (projectile.ai[0] >= 200f)
+			projectile.position = NextPosition();
+			if (projectile.ai[1] >= 500f)
 			{
 				projectile.Kill();
 			}
-			projectile.rotation += -2f * (float)Math.PI / 60f * projectile.ai[1];
-			projectile.spriteDirection = (int)projectile.ai[1];
-			if (projectile.frame < 4)
+		}
+
+		private Vector2 NextPosition()
+		{
+			const int interval = 60;
+			int arenaWidth = NPCs.PuritySpirit.PuritySpirit.arenaWidth;
+			int arenaHeight = NPCs.PuritySpirit.PuritySpirit.arenaHeight;
+			NPC npc = Main.npc[(int)projectile.ai[0]];
+			NPCs.PuritySpirit.PuritySpirit modNPC = (NPCs.PuritySpirit.PuritySpirit)npc.modNPC;
+			Vector2 nextPos;
+			if (projectile.ai[1] > 300f)
 			{
-				projectile.frameCounter++;
-				if (projectile.frameCounter >= 8)
+				nextPos = npc.Center;
+			}
+			else if ((int)projectile.ai[1] % 100 == 0 || (Main.expertMode && (int)projectile.ai[1] % 50 == 0))
+			{
+				int k = Main.myPlayer;
+				if (!modNPC.targets.Contains(k))
 				{
-					projectile.frameCounter = 0;
-					projectile.frame++;
-					projectile.frame %= 4;
+					k = modNPC.targets[Main.rand.Next(modNPC.targets.Count)];
+				}
+				nextPos = Main.player[k].Center;
+			}
+			else if (Main.rand.Next(5) == 0)
+			{
+				int k = Main.myPlayer;
+				if (!modNPC.targets.Contains(k))
+				{
+					k = modNPC.targets[Main.rand.Next(modNPC.targets.Count)];
+				}
+				nextPos = Main.player[k].Center + interval * new Vector2(Main.rand.Next(-5, 6), Main.rand.Next(-5, 6));
+				if (nextPos.X < npc.Center.X - arenaWidth / 2)
+				{
+					nextPos.X += arenaWidth;
+				}
+				else if (nextPos.X > npc.Center.X + arenaWidth / 2)
+				{
+					nextPos.X -= arenaWidth;
+				}
+				if (nextPos.Y < npc.Center.Y - arenaHeight / 2)
+				{
+					nextPos.Y += arenaHeight;
+				}
+				else if (nextPos.Y > npc.Center.Y + arenaHeight / 2)
+				{
+					nextPos.Y -= arenaHeight;
 				}
 			}
+			else
+			{
+				int leftBound = (-arenaWidth / 2 + 40) / interval;
+				int rightBound = (arenaWidth / 2 - 40) / interval + 1;
+				int upperBound = (-arenaHeight / 2 + 40) / interval;
+				int lowerBound = (arenaHeight / 2 - 40) / interval + 1;
+				nextPos = npc.Center + interval * new Vector2(Main.rand.Next(leftBound, rightBound), Main.rand.Next(upperBound, lowerBound));
+			}
+			nextPos.X -= projectile.width / 2;
+			nextPos.Y -= projectile.height / 2;
+			return nextPos;
 		}
 
 		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
@@ -94,33 +130,45 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
-			Vector2 ellipseCenter = new Vector2(projHitbox.X, projHitbox.Y) + 0.5f * new Vector2(projHitbox.Width, projHitbox.Height);
-			float x = 0f;
-			float y = 0f;
-			if (targetHitbox.X > ellipseCenter.X)
+			projHitbox.Width -= 16;
+			projHitbox.Height -= 16;
+			for (int k = Math.Max(180, (int)projectile.ai[1] - 300); k < projectile.oldPos.Length; k++)
 			{
-				x = targetHitbox.X - ellipseCenter.X;
+				if (projectile.oldPos[k] != Vector2.Zero)
+				{
+					projHitbox.X = (int)projectile.oldPos[k].X + 8;
+					projHitbox.Y = (int)projectile.oldPos[k].Y + 8;
+					if (projHitbox.Intersects(targetHitbox))
+					{
+						return true;
+					}
+				}
+				
 			}
-			else if (targetHitbox.X + targetHitbox.Width < ellipseCenter.X)
-			{
-				x = targetHitbox.X + targetHitbox.Width - ellipseCenter.X;
-			}
-			if (targetHitbox.Y > ellipseCenter.Y)
-			{
-				y = targetHitbox.Y - ellipseCenter.Y;
-			}
-			else if (targetHitbox.Y + targetHitbox.Height < ellipseCenter.Y)
-			{
-				y = targetHitbox.Y + targetHitbox.Height - ellipseCenter.Y;
-			}
-			float a = projHitbox.Width / 2f;
-			float b = projHitbox.Height / 2f;
-			return (x * x) / (a * a) + (y * y) / (b * b) < 1;
+			return false;
 		}
 
-		public override Color? GetAlpha(Color lightColor)
+		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
-			return Color.White * ((255 - projectile.alpha / 2) / 255f);
+			const int prime1 = 101;
+			const int prime2 = 107;
+			for (int k = Math.Max(0, (int)projectile.ai[1] - 300); k < projectile.oldPos.Length; k++)
+			{
+				if (projectile.oldPos[k] != Vector2.Zero)
+				{
+					Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition;
+					drawPos.X += (k / 5 * prime1) % 13 - 6;
+					drawPos.Y += (k / 5 * prime2) % 13 - 6;
+					Rectangle frame = new Rectangle(0, 0, 80, 80);
+					frame.Y += 164 * (k / 60);
+					if ((k / 10) % 2 == 1)
+					{
+						frame.Y += 82;
+					}
+					spriteBatch.Draw(Main.projectileTexture[projectile.type], drawPos, frame, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+				}
+			}
+			return false;
 		}
 	}
 }

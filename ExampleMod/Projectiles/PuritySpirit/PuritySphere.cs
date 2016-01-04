@@ -117,15 +117,6 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			}
 		}
 
-		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
-		{
-			if (target.hurtCooldowns[1] <= 0)
-			{
-				ExamplePlayer modPlayer = (ExamplePlayer)target.GetModPlayer(mod, "ExamplePlayer");
-				modPlayer.defenseEffect = 1f;
-			}
-		}
-
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return Color.White * ((255 - projectile.alpha / 2) / 255f);

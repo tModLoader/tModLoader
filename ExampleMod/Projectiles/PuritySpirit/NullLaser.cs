@@ -131,6 +131,14 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			}
 		}
 
+		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+		{
+			if (Main.rand.Next(3) == 0 || (Main.expertMode && Main.rand.Next(3) == 0))
+			{
+				target.AddBuff(mod.BuffType("Nullified"), Main.rand.Next(300, 360));
+			}
+		}
+
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
 			if (projectile.ai[1] > -warningTime)

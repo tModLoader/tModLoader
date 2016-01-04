@@ -152,23 +152,23 @@ namespace ExampleMod.Projectiles
 			NPC npc = Main.npc[(int)projectile.ai[0]];
 			if (npc.type == mod.NPCType("Abomination"))
 			{
-				return 300;
+				return 600;
 			}
 			if (npc.ai[1] == 0f)
 			{
-				return 200;
+				return 400;
 			}
 			if (npc.ai[1] == 1f)
 			{
-				return 150;
+				return 300;
 			}
 			if (npc.ai[1] == 3f)
 			{
-				return 200;
+				return 400;
 			}
 			if (npc.ai[1] == 4f)
 			{
-				return 450;
+				return 900;
 			}
 			return -1;
 		}

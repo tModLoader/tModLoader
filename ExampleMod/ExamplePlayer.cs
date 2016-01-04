@@ -25,6 +25,8 @@ namespace ExampleMod
 		public float defenseEffect = -1f;
 		public bool badHeal = false;
 		public int healHurt = 0;
+		public bool nullified = false;
+		public int purityDebuffCooldown = 0;
 
 		public override void ResetEffects()
 		{
@@ -39,6 +41,7 @@ namespace ExampleMod
 			defenseEffect = -1f;
 			badHeal = false;
 			healHurt = 0;
+			nullified = false;
 		}
 
 		public override void SaveCustomData(BinaryWriter writer)
@@ -123,6 +126,10 @@ namespace ExampleMod
 					player.AddBuff(mod.BuffType("HeroThree"), 3);
 				}
 			}
+			if (purityDebuffCooldown > 0)
+			{
+				purityDebuffCooldown--;
+			}
 		}
 
 		private void PuritySpiritTeleport(NPC npc)
@@ -170,37 +177,66 @@ namespace ExampleMod
 			}
 		}
 
-		private void PuritySpiritDebuff()
+		public void PuritySpiritDebuff()
 		{
+			bool flag = true;
 			if (Main.rand.Next(2) == 0)
 			{
-				switch (Main.rand.Next(5))
+				flag = false;
+				for (int k = 0; k < 2; k++)
 				{
-					case 0:
-						player.AddBuff(BuffID.Darkness, 1800);
-						break;
-					case 1:
-						player.AddBuff(BuffID.Cursed, 900);
-						break;
-					case 2:
-						player.AddBuff(BuffID.Confused, 1800);
-						break;
-					case 3:
-						player.AddBuff(BuffID.Slow, 1800);
-						break;
-					case 4:
-						player.AddBuff(BuffID.Silenced, 900);
-						break;
+					int buffType;
+					int buffTime;
+					switch (Main.rand.Next(5))
+					{
+						case 0:
+							buffType = BuffID.Darkness;
+							buffTime = 1800;
+							break;
+						case 1:
+							buffType = BuffID.Cursed;
+							buffTime = 900;
+							break;
+						case 2:
+							buffType = BuffID.Confused;
+							buffTime = 1800;
+							break;
+						case 3:
+							buffType = BuffID.Slow;
+							buffTime = 1800;
+							break;
+						default:
+							buffType = BuffID.Silenced;
+							buffTime = 900;
+							break;
+					}
+					if (!player.buffImmune[buffType])
+					{
+						player.AddBuff(buffType, buffTime);
+						return;
+					}
 				}
 			}
-			else
+			if (flag || Main.expertMode || Main.rand.Next(2) == 0)
 			{
 				player.AddBuff(mod.BuffType("Undead"), 1800, false);
 			}
 		}
 
+		public override void PostUpdateBuffs()
+		{
+			if (nullified)
+			{
+				Nullify();
+			}
+		}
+
 		public override void PostUpdateEquips()
 		{
+			if (nullified)
+			{
+				Nullify();
+			}
 			if (elementShield)
 			{
 				if (elementShields > 0)
@@ -220,6 +256,33 @@ namespace ExampleMod
 			}
 			elementShieldPos++;
 			elementShieldPos %= 300;
+		}
+
+		public override void FrameEffects()
+		{
+			if (nullified)
+			{
+				Nullify();
+			}
+		}
+
+		private void Nullify()
+		{
+			player.ResetEffects();
+			player.head = -1;
+			player.body = -1;
+			player.legs = -1;
+			player.handon = -1;
+			player.handoff = -1;
+			player.back = -1;
+			player.front = -1;
+			player.shoe = -1;
+			player.waist = -1;
+			player.shield = -1;
+			player.neck = -1;
+			player.face = -1;
+			player.balloon = -1;
+			nullified = true;
 		}
 
 		public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
@@ -272,6 +335,30 @@ namespace ExampleMod
 					}
 				}
 				elementShieldTimer = 600;
+			}
+			if (heroLives > 0)
+			{
+				for (int k = 0; k < 200; k++)
+				{
+					NPC npc = Main.npc[k];
+					if (npc.active && npc.type == mod.NPCType("PuritySpirit"))
+					{
+						PuritySpirit modNPC = (PuritySpirit)npc.modNPC;
+						if (modNPC.attack >= 0)
+						{
+							double proportion = damage / player.statLifeMax2;
+							if (proportion > 1.0)
+							{
+								proportion = 1.0;
+							}
+							modNPC.attackWeights[modNPC.attack] += (int)(proportion * 400);
+							if (modNPC.attackWeights[modNPC.attack] > PuritySpirit.maxAttackWeight)
+							{
+								modNPC.attackWeights[modNPC.attack] = PuritySpirit.maxAttackWeight;
+							}
+						}
+					}
+				}
 			}
 		}
 

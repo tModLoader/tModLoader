@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
@@ -10,6 +10,6 @@ namespace ExampleMod.Dusts
 		public override void SetDefaults()
 		{
 			updateType = 110;
-        }
+		}
 	}
 }

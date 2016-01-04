@@ -6,12 +6,12 @@ using ExampleMod;
 
 namespace ExampleMod.Buffs
 {
-	public class Undead : ModBuff
+	public class Nullified : ModBuff
 	{
 		public override void SetDefaults()
 		{
-			Main.buffName[this.Type] = "Undead";
-			Main.buffTip[this.Type] = "Recovering harms you";
+			Main.buffName[this.Type] = "Nullified";
+			Main.buffTip[this.Type] = "Your abilities are nullified";
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoSave[Type] = true;
@@ -20,7 +20,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).badHeal = true;
+			((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).nullified = true;
 		}
 	}
 }

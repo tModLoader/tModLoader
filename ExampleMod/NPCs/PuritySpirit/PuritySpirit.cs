@@ -107,25 +107,25 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 		}
 
-		private int attack
+		internal int attack
 		{
 			get
 			{
 				return (int)npc.ai[2];
 			}
-			set
+			private set
 			{
 				npc.ai[2] = value;
 			}
 		}
 
-		private int attackProgress
+		internal int attackProgress
 		{
 			get
 			{
 				return (int)npc.ai[3];
 			}
-			set
+			private set
 			{
 				npc.ai[3] = value;
 			}
@@ -150,8 +150,8 @@ namespace ExampleMod.NPCs.PuritySpirit
 		private bool saidRushMessage = false;
 		public readonly IList<int> targets = new List<int>();
 		public int[] attackWeights = new int[]{ 2000, 2000, 2000, 2000, 3000 };
-		private const int minAttackWeight = 1000;
-		private const int maxAttackWeight = 4000;
+		public const int minAttackWeight = 1000;
+		public const int maxAttackWeight = 4000;
 
 		public override void AI()
 		{
@@ -179,6 +179,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 			if (stage == 2 && difficulty > 0)
 			{
+				Projectile.NewProjectile(npc.Center.X - arenaWidth / 2, npc.Center.Y, NegativeWall.speed, 0f, mod.ProjectileType("NegativeWall"), 0, 0f, Main.myPlayer, npc.whoAmI, arenaHeight);
 				stage++;
 			}
 			if (stage == 3 && difficulty > 1)
@@ -188,6 +189,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 			if (stage == 4 && difficulty > 2)
 			{
+				Projectile.NewProjectile(npc.Center.X, npc.Center.Y - arenaHeight / 2, 0f, NegativeWall.speed, mod.ProjectileType("NegativeWall"), 0, 0f, Main.myPlayer, npc.whoAmI, -arenaWidth);
 				stage++;
 			}
 			if (stage == 5 && difficulty > 3)
@@ -365,57 +367,14 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (attackProgress == 0)
 			{
 				Main.PlaySound(15, -1, -1, 0);
+				if (Main.netMode != 1)
+				{
+					int damage = Main.expertMode ? 720 : 600;
+					Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("VoidWorld"), damage, 0f, Main.myPlayer, npc.whoAmI);
+				}
 			}
 			attackProgress++;
-			if (attackProgress <= 300 && Main.netMode != 1)
-			{
-				const int interval = 60;
-				float x, y;
-				if (attackProgress % 100 == 0 || (Main.expertMode && attackProgress % 50 == 0))
-				{
-					int k = targets[Main.rand.Next(targets.Count)];
-					x = Main.player[k].Center.X;
-					y = Main.player[k].Center.Y;
-				}
-				else if (Main.rand.Next(5) == 0)
-				{
-					int k = targets[Main.rand.Next(targets.Count)];
-					x = Main.player[k].Center.X + interval * Main.rand.Next(-5, 6);
-					y = Main.player[k].Center.Y + interval * Main.rand.Next(-5, 6);
-					if (x < npc.Center.X - arenaWidth / 2)
-					{
-						x += arenaWidth;
-					}
-					else if (x > npc.Center.X + arenaWidth / 2)
-					{
-						x -= arenaWidth;
-					}
-					if (y < npc.Center.Y - arenaHeight / 2)
-					{
-						y += arenaHeight;
-					}
-					else if (y > npc.Center.Y + arenaHeight / 2)
-					{
-						y -= arenaHeight;
-					}
-				}
-				else
-				{
-					int leftBound = (-arenaWidth / 2 + 40) / interval;
-					int rightBound = (arenaWidth / 2 - 40) / interval + 1;
-					int upperBound = (-arenaHeight / 2 + 40) / interval;
-					int lowerBound = (arenaHeight / 2 - 40) / interval + 1;
-					x = npc.Center.X + interval * Main.rand.Next(leftBound, rightBound);
-					y = npc.Center.Y + interval * Main.rand.Next(upperBound, lowerBound);
-				}
-				int damage = Main.expertMode ? 720 : 600;
-				int proj = Projectile.NewProjectile(x, y, 0f, 0f, mod.ProjectileType("VoidWorld"), damage, 0f, Main.myPlayer, 0f, 2 * Main.rand.Next(2) - 1);
-				if (Main.rand.Next(10) == 0)
-				{
-					Main.projectile[proj].localAI[0] = 1f;
-				}
-			}
-			if (attackProgress >= 480)
+			if (attackProgress >= 500)
 			{
 				attackProgress = 0;
 			}
@@ -430,9 +389,19 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 			if (attack < 0)
 			{
+				string text = "";
+				foreach (int weight in attackWeights)
+				{
+					text += weight.ToString() + " ";
+				}
+				Main.NewText(text);
 				int totalWeight = 0;
 				for (int k = 0; k < numAttacks; k++)
 				{
+					if (attackWeights[k] < minAttackWeight)
+					{
+						attackWeights[k] = minAttackWeight;
+					}
 					totalWeight += attackWeights[k];
 				}
 				int choice = Main.rand.Next(totalWeight);
@@ -444,6 +413,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 					}
 					choice -= attackWeights[attack];
 				}
+				attackWeights[attack] -= 80;
 				npc.netUpdate = true;
 			}
 			switch (attack)

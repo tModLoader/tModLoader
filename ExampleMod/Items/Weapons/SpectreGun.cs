@@ -40,6 +40,11 @@ namespace ExampleMod.Items.Weapons
 			recipe.AddRecipe();
 		}
 
+		public override void GetWeaponDamage(Player player, ref int damage)
+		{
+			damage = (int)(damage * player.bulletDamage + 5E-06);
+		}
+
 		public override Vector2? HoldoutOffset()
 		{
 			return Vector2.Zero;
