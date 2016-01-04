@@ -13,6 +13,39 @@ namespace Terraria.ModLoader
 		private static int nextBuff = BuffID.Count;
 		internal static readonly IDictionary<int, ModBuff> buffs = new Dictionary<int, ModBuff>();
 		internal static readonly IList<GlobalBuff> globalBuffs = new List<GlobalBuff>();
+		private static readonly bool[] vanillaLongerExpertDebuff = new bool[BuffID.Count];
+		private static readonly bool[] vanillaCanBeCleared = new bool[BuffID.Count];
+
+		static BuffLoader()
+		{
+			for (int k = 0; k < BuffID.Count; k++)
+			{
+				vanillaCanBeCleared[k] = true;
+			}
+			vanillaLongerExpertDebuff[BuffID.Poisoned] = true;
+			vanillaLongerExpertDebuff[BuffID.Darkness] = true;
+			vanillaLongerExpertDebuff[BuffID.Cursed] = true;
+			vanillaLongerExpertDebuff[BuffID.OnFire] = true;
+			vanillaLongerExpertDebuff[BuffID.Bleeding] = true;
+			vanillaLongerExpertDebuff[BuffID.Confused] = true;
+			vanillaLongerExpertDebuff[BuffID.Slow] = true;
+			vanillaLongerExpertDebuff[BuffID.Weak] = true;
+			vanillaLongerExpertDebuff[BuffID.Silenced] = true;
+			vanillaLongerExpertDebuff[BuffID.BrokenArmor] = true;
+			vanillaLongerExpertDebuff[BuffID.CursedInferno] = true;
+			vanillaLongerExpertDebuff[BuffID.Frostburn] = true;
+			vanillaLongerExpertDebuff[BuffID.Chilled] = true;
+			vanillaLongerExpertDebuff[BuffID.Frozen] = true;
+			vanillaLongerExpertDebuff[BuffID.Ichor] = true;
+			vanillaLongerExpertDebuff[BuffID.Venom] = true;
+			vanillaLongerExpertDebuff[BuffID.Blackout] = true;
+			vanillaCanBeCleared[BuffID.PotionSickness] = false;
+			vanillaCanBeCleared[BuffID.Werewolf] = false;
+			vanillaCanBeCleared[BuffID.Merfolk] = false;
+			vanillaCanBeCleared[BuffID.WaterCandle] = false;
+			vanillaCanBeCleared[BuffID.Campfire] = false;
+			vanillaCanBeCleared[BuffID.HeartLamp] = false;
+		}
 
 		internal static int ReserveBuffID()
 		{
@@ -88,6 +121,62 @@ namespace Terraria.ModLoader
 			foreach (GlobalBuff globalBuff in globalBuffs)
 			{
 				globalBuff.Update(buff, npc, ref buffIndex);
+			}
+		}
+
+		public static bool ReApply(int buff, Player player, int time, int buffIndex)
+		{
+			foreach (GlobalBuff globalBuff in globalBuffs)
+			{
+				if (globalBuff.ReApply(buff, player, time, buffIndex))
+				{
+					return true;
+				}
+			}
+			if (IsModBuff(buff))
+			{
+				return GetBuff(buff).ReApply(player, time, buffIndex);
+			}
+			return false;
+		}
+
+		public static bool ReApply(int buff, NPC npc, int time, int buffIndex)
+		{
+			foreach (GlobalBuff globalBuff in globalBuffs)
+			{
+				if (globalBuff.ReApply(buff, npc, time, buffIndex))
+				{
+					return true;
+				}
+			}
+			if (IsModBuff(buff))
+			{
+				return GetBuff(buff).ReApply(npc, time, buffIndex);
+			}
+			return false;
+		}
+
+		public static bool LongerExpertDebuff(int buff)
+		{
+			if (IsModBuff(buff))
+			{
+				return GetBuff(buff).longerExpertDebuff;
+			}
+			else
+			{
+				return vanillaLongerExpertDebuff[buff];
+			}
+		}
+
+		public static bool CanBeCleared(int buff)
+		{
+			if (IsModBuff(buff))
+			{
+				return GetBuff(buff).canBeCleared;
+			}
+			else
+			{
+				return vanillaCanBeCleared[buff];
 			}
 		}
 	}

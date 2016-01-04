@@ -912,6 +912,15 @@
  						}
  						Main.spriteBatch.Draw(Main.dustTexture, dust.position - Main.screenPosition, new Microsoft.Xna.Framework.Rectangle?(dust.frame), color5, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
  						if (dust.color != default(Microsoft.Xna.Framework.Color))
+@@ -29735,7 +29859,7 @@
+ 			for (int j = 0; j < 22; j++)
+ 			{
+ 				int num5 = Main.player[Main.myPlayer].buffType[j];
+-				if (Main.debuff[num5] && Main.player[Main.myPlayer].buffTime[j] > 5 && num5 != 28 && num5 != 34 && num5 != 87 && num5 != 89 && num5 != 21 && num5 != 86)
++				if (Main.debuff[num5] && Main.player[Main.myPlayer].buffTime[j] > 5 && BuffLoader.CanBeCleared(num5))
+ 				{
+ 					num4 += 1000;
+ 				}
 @@ -30027,6 +30151,7 @@
  					text = Lang.inter[54] + " (" + text4 + ")";
  				}
@@ -920,6 +929,15 @@
  			int num18 = 180 + (Main.screenWidth - 800) / 2;
  			int num19 = 130 + num2 * 30;
  			float scale = 0.9f;
+@@ -30472,7 +30597,7 @@
+ 									for (int l = 0; l < 22; l++)
+ 									{
+ 										int num27 = Main.player[Main.myPlayer].buffType[l];
+-										if (Main.debuff[num27] && Main.player[Main.myPlayer].buffTime[l] > 0 && num27 != 28 && num27 != 34 && num27 != 87 && num27 != 89 && num27 != 21 && num27 != 86)
++										if (Main.debuff[num27] && Main.player[Main.myPlayer].buffTime[l] > 0 && BuffLoader.CanBeCleared(num27))
+ 										{
+ 											Main.player[Main.myPlayer].DelBuff(l);
+ 										}
 @@ -30518,6 +30643,7 @@
  								}
  							}

@@ -27,6 +27,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal string texture;
+		public bool longerExpertDebuff = false;
+		public bool canBeCleared = true;
 
 		public virtual bool Autoload(ref string name, ref string texture)
 		{
@@ -43,6 +45,16 @@ namespace Terraria.ModLoader
 
 		public virtual void Update(NPC npc, ref int buffIndex)
 		{
+		}
+
+		public virtual bool ReApply(Player player, int time, int buffIndex)
+		{
+			return false;
+		}
+
+		public virtual bool ReApply(NPC npc, int time, int buffIndex)
+		{
+			return false;
 		}
 	}
 }

@@ -6,7 +6,7 @@ using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader
 {
-	internal static class PlayerHooks
+	public static class PlayerHooks
 	{
 		private static readonly IList<ModPlayer> players = new List<ModPlayer>();
 		private static readonly IDictionary<string, IDictionary<string, int>> indexes = new Dictionary<string, IDictionary<string, int>>();

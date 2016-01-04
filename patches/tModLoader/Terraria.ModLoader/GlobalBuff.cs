@@ -31,5 +31,15 @@ namespace Terraria.ModLoader
 		public virtual void Update(int type, NPC npc, ref int buffIndex)
 		{
 		}
+
+		public virtual bool ReApply(int type, Player player, int time, int buffIndex)
+		{
+			return false;
+		}
+
+		public virtual bool ReApply(int type, NPC npc, int time, int buffIndex)
+		{
+			return false;
+		}
 	}
 }
