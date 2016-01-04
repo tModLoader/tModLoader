@@ -49,7 +49,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -236,6 +248,84 @@
+@@ -236,6 +248,85 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -84,6 +84,7 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIMods.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModSourceItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModSources.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIUpdateMessage.cs" />
 +    <Compile Include="Terraria.ModLoader\BuffLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\BuildProperties.cs" />
 +    <Compile Include="Terraria.ModLoader\CraftGroup.cs" />
@@ -134,7 +135,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -358,6 +448,7 @@
+@@ -358,6 +449,7 @@
      <Compile Include="Terraria\Netplay.cs" />
      <Compile Include="Terraria\NPC.cs" />
      <Compile Include="Terraria\Player.cs" />
@@ -142,7 +143,7 @@
      <Compile Include="Terraria\Program.cs" />
      <Compile Include="Terraria\Projectile.cs" />
      <Compile Include="Terraria\Rain.cs" />
-@@ -383,6 +474,14 @@
+@@ -383,6 +475,14 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
@@ -153,7 +154,8 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>if "$(TerrariaSteamFolder)" == "" (copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\terraria") else (copy "$(TargetPath)" "$(TerrariaSteamFolder)")</PostBuildEvent>
 +  </PropertyGroup>
- </Project>
++</Project>
