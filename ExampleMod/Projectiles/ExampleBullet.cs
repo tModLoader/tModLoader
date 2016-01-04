@@ -19,6 +19,7 @@ namespace ExampleMod.Projectiles
 			projectile.ranged = true;
 			projectile.penetrate = 5;
 			projectile.timeLeft = 600;
+			projectile.alpha = 255;
 			projectile.light = 0.5f;
 			projectile.extraUpdates = 1;
 			ProjectileID.Sets.TrailCacheLength[projectile.type] = 5;

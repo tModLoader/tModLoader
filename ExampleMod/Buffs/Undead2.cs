@@ -23,5 +23,11 @@ namespace ExampleMod.Buffs
 			player.buffTime[buffIndex] -= extra;
 			((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).healHurt = extra + 1;
 		}
+
+		public override bool ReApply(Player player, int time, int buffIndex)
+		{
+			player.buffTime[buffIndex] += time;
+			return true;
+		}
 	}
 }

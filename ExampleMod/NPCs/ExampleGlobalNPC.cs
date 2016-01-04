@@ -6,8 +6,31 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.NPCs
 {
-	public class ExampleItemDrop : GlobalNPC
+	public class ExampleGlobalNPC : GlobalNPC
 	{
+		public override void ResetEffects(NPC npc)
+		{
+			ExampleNPCInfo info = (ExampleNPCInfo)npc.GetModInfo(mod, "ExampleNPCInfo");
+			info.eFlames = false;
+		}
+
+		public override void UpdateLifeRegen(NPC npc, ref int damage)
+		{
+			ExampleNPCInfo info = (ExampleNPCInfo)npc.GetModInfo(mod, "ExampleNPCInfo");
+			if (info.eFlames)
+			{
+				if (npc.lifeRegen > 0)
+				{
+					npc.lifeRegen = 0;
+				}
+				npc.lifeRegen -= 16;
+				if (damage < 2)
+				{
+					damage = 2;
+				}
+			}
+		}
+
 		public override void NPCLoot(NPC npc)
 		{
 			if (npc.lifeMax > 5 && npc.value > 0f)

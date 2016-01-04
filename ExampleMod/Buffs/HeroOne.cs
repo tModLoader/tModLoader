@@ -13,6 +13,8 @@ namespace ExampleMod.Buffs
 			Main.buffName[this.Type] = "Hero";
 			Main.buffTip[this.Type] = "You are a hero of Terraria!";
 			Main.buffNoSave[Type] = true;
+			Main.debuff[Type] = true;
+			canBeCleared = false;
 		}
 	}
 }
