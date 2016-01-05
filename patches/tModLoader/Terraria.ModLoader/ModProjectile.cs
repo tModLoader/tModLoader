@@ -98,6 +98,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool MinionContactDamage()
+		{
+			return false;
+		}
+
 		public virtual bool? CanHitNPC(NPC target)
 		{
 			return null;

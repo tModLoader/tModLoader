@@ -11,13 +11,12 @@ namespace ExampleMod.Items.Weapons
 		public override void SetDefaults()
 		{
 			item.name = "Purity Totem";
-			item.damage = 100;
+			item.damage = 110;
 			item.summon = true;
 			item.mana = 10;
 			item.width = 26;
 			item.height = 28;
 			item.toolTip = "Summons a purity wisp to fight for you.";
-			item.toolTip2 = "WIP - need to add buff support first";
 			item.useTime = 36;
 			item.useAnimation = 36;
 			item.useStyle = 1;
@@ -28,6 +27,8 @@ namespace ExampleMod.Items.Weapons
 			item.useSound = 44;
 			item.shoot = mod.ProjectileType("PurityWisp");
 			item.shootSpeed = 10f;
+			item.buffType = mod.BuffType("PurityWisp");
+			item.buffTime = 3600;
 		}
 	}
 }

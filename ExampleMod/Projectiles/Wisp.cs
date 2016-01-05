@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles
@@ -18,6 +19,7 @@ namespace ExampleMod.Projectiles
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
 			projectile.ranged = true;
+			ProjectileID.Sets.Homing[projectile.type] = true;
 		}
 
 		public override void AI()

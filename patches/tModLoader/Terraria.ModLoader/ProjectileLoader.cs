@@ -278,6 +278,22 @@ namespace Terraria.ModLoader
 				globalProjectile.Kill(projectile, timeLeft);
 			}
 		}
+
+		public static bool MinionContactDamage(Projectile projectile)
+		{
+			if (IsModProjectile(projectile) && projectile.modProjectile.MinionContactDamage())
+			{
+				return true;
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				if (globalProjectile.MinionContactDamage(projectile))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 		//in Terraria.Projectile.Damage for damaging NPCs before flag2 is checked... just check the patch files
 		public static bool? CanHitNPC(Projectile projectile, NPC target)
 		{

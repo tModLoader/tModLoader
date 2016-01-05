@@ -449,6 +449,7 @@ namespace ExampleMod.NPCs.Abomination
 				}
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MoltenDrill"));
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ElementResidue"));
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityTotem"));
 			}
 		}
 

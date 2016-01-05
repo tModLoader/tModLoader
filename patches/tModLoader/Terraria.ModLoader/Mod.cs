@@ -113,6 +113,10 @@ namespace Terraria.ModLoader
 			IList<Type> modSounds = new List<Type>();
 			foreach (Type type in classes)
 			{
+				if (type.IsAbstract)
+				{
+					continue;
+				}
 				if (type.IsSubclassOf(typeof(ModItem)))
 				{
 					AutoloadItem(type);

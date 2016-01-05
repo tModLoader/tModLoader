@@ -97,6 +97,15 @@ namespace Terraria.ModLoader
 			{
 				writer.WriteLine(e.Message);
 				writer.WriteLine(e.StackTrace);
+				Exception inner = e.InnerException;
+				while (inner != null)
+				{
+					writer.WriteLine();
+					writer.WriteLine("Inner Exception:");
+					writer.WriteLine(inner.Message);
+					writer.WriteLine(inner.StackTrace);
+					inner = inner.InnerException;
+				}
 			}
 			string message = "An error occurred while loading " + Path.GetFileNameWithoutExtension(modFile);
 			if (modFile == "recipes")
@@ -124,6 +133,15 @@ namespace Terraria.ModLoader
 			{
 				writer.WriteLine(e.Message);
 				writer.WriteLine(e.StackTrace);
+				Exception inner = e.InnerException;
+				while (inner != null)
+				{
+					writer.WriteLine();
+					writer.WriteLine("Inner Exception:");
+					writer.WriteLine(inner.Message);
+					writer.WriteLine(inner.StackTrace);
+					inner = inner.InnerException;
+				}
 			}
 			Interface.errorMessage.SetMessage("The game has crashed!\n\n" + e.Message + "\n" + e.StackTrace);
 			Interface.errorMessage.SetGotoMenu(0);
@@ -140,6 +158,15 @@ namespace Terraria.ModLoader
 			{
 				writer.WriteLine(e.Message);
 				writer.WriteLine(e.StackTrace);
+				Exception inner = e.InnerException;
+				while (inner != null)
+				{
+					writer.WriteLine();
+					writer.WriteLine("Inner Exception:");
+					writer.WriteLine(inner.Message);
+					writer.WriteLine(inner.StackTrace);
+					inner = inner.InnerException;
+				}
 			}
 			Interface.errorMessage.SetMessage("The game has crashed accessing Web Resources!\n\n" + e.Message + "\n" + e.StackTrace);
 			Interface.errorMessage.SetGotoMenu(0);
