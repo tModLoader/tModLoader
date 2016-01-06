@@ -35,16 +35,21 @@ namespace Terraria.ModLoader
 		{
 			Directory.CreateDirectory(LogPath);
 			string file = LogPath + Path.DirectorySeparatorChar + "Compile Errors.txt";
+			CompilerError displayError = null;
 			using (StreamWriter writer = File.CreateText(file))
 			{
 				foreach (CompilerError error in errors)
 				{
-					writer.WriteLine(error.ToString());
-					writer.WriteLine();
+					if (!error.IsWarning)
+					{
+						displayError = error;
+						writer.WriteLine(error.ToString());
+						writer.WriteLine();
+					}
 				}
 			}
 			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
-			Interface.errorMessage.SetMessage(errorHeader + errors[0]);
+			Interface.errorMessage.SetMessage(errorHeader + displayError);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 			Interface.errorMessage.SetFile(file);
 		}

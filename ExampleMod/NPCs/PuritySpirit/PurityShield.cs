@@ -47,6 +47,19 @@ namespace ExampleMod.NPCs.PuritySpirit
 				npc.active = false;
 				return;
 			}
+			PuritySpirit modOwner = (PuritySpirit)owner.modNPC;
+			if (npc.localAI[0] == 0f)
+			{
+				if (modOwner.targets.Contains(Main.myPlayer))
+				{
+					Main.PlaySound(2, -1, -1, 2);
+				}
+				else
+				{
+					Main.PlaySound(2, (int)npc.position.X, (int)npc.position.Y, 2);
+				}
+				npc.localAI[0] = 1f;
+			}
 			Vector2 targetPos = new Vector2(npc.ai[1], npc.ai[2]);
 			Vector2 direction = targetPos - npc.Center;
 			if (direction != Vector2.Zero)

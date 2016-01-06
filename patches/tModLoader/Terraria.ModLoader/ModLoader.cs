@@ -355,36 +355,40 @@ namespace Terraria.ModLoader
 								uint nAvgBytesPerSec;
 								ushort nBlockAlign;
 								ushort wBitsPerSample = 16;
-								MemoryStream output = new MemoryStream();
+								const int headerSize = 44;
+								MemoryStream output = new MemoryStream(headerSize + data.Length);
 								using (MemoryStream yourMp3FileStream = new MemoryStream(data))
-								using (var input = new MP3Sharp.MP3Stream(yourMp3FileStream))
-								using (var writer = new BinaryWriter(output, Encoding.UTF8))
 								{
-									var headerSize = 44;
-									output.Position = headerSize;
-									input.CopyTo(output);
-									UInt32 wavDataLength = (UInt32)output.Length - 44;
-									output.Position = 0;
-									nChannels = (ushort)input.ChannelCount;
-									nSamplesPerSec = (uint)input.Frequency;
-									nBlockAlign = (ushort)(nChannels * (wBitsPerSample / 8));
-									nAvgBytesPerSec = (uint)(nSamplesPerSec * nChannels * (wBitsPerSample / 8));
-									//write the header
-									writer.Write("RIFF".ToCharArray()); //4
-									writer.Write((UInt32)(wavDataLength + 36)); // 4
-									writer.Write("WAVE".ToCharArray()); //4
-									writer.Write("fmt ".ToCharArray()); //4
-									writer.Write(16); //4
-									writer.Write(wFormatTag);  //
-									writer.Write((ushort)nChannels);
-									writer.Write(nSamplesPerSec);
-									writer.Write(nAvgBytesPerSec);
-									writer.Write(nBlockAlign);
-									writer.Write(wBitsPerSample);
-									writer.Write("data".ToCharArray());
-									writer.Write((UInt32)(wavDataLength));
-									output.Position = 0;
-									sounds[mp3Path] = SoundEffect.FromStream(output);
+									using (MP3Sharp.MP3Stream input = new MP3Sharp.MP3Stream(yourMp3FileStream))
+									{
+										using (BinaryWriter writer = new BinaryWriter(output, Encoding.UTF8))
+										{
+											output.Position = headerSize;
+											input.CopyTo(output);
+											UInt32 wavDataLength = (UInt32)output.Length - headerSize;
+											output.Position = 0;
+											nChannels = (ushort)input.ChannelCount;
+											nSamplesPerSec = (uint)input.Frequency;
+											nBlockAlign = (ushort)(nChannels * (wBitsPerSample / 8));
+											nAvgBytesPerSec = (uint)(nSamplesPerSec * nChannels * (wBitsPerSample / 8));
+											//write the header
+											writer.Write("RIFF".ToCharArray()); //4
+											writer.Write((UInt32)(wavDataLength + 36)); // 4
+											writer.Write("WAVE".ToCharArray()); //4
+											writer.Write("fmt ".ToCharArray()); //4
+											writer.Write(16); //4
+											writer.Write(wFormatTag);  //
+											writer.Write((ushort)nChannels);
+											writer.Write(nSamplesPerSec);
+											writer.Write(nAvgBytesPerSec);
+											writer.Write(nBlockAlign);
+											writer.Write(wBitsPerSample);
+											writer.Write("data".ToCharArray());
+											writer.Write((UInt32)(wavDataLength));
+											output.Position = 0;
+											sounds[mp3Path] = SoundEffect.FromStream(output);
+										}
+									}
 								}
 								break;
 						}
