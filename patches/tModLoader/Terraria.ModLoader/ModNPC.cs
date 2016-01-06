@@ -205,6 +205,10 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
+		public virtual void DrawEffects(ref Color drawColor)
+		{
+		}
+
 		public virtual bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
 		{
 			return true;

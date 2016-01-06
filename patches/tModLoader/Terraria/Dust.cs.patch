@@ -39,6 +39,15 @@
  						if (dust.scale > 10f)
  						{
  							dust.active = false;
+@@ -1729,7 +1740,7 @@
+ 							}
+ 							Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num105 * 0.7f, num105, num105 * 0.8f);
+ 						}
+-						else
++						else if (modDust == null || !modDust.MidUpdate(dust))
+ 						{
+ 							Dust expr_3E5B_cp_0 = dust;
+ 							expr_3E5B_cp_0.velocity.X = expr_3E5B_cp_0.velocity.X * 0.99f;
 @@ -1954,6 +1965,7 @@
  						{
  							dust.active = false;

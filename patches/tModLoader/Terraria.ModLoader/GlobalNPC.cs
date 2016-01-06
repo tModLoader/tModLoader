@@ -155,6 +155,10 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
+		public virtual void DrawEffects(NPC npc, ref Color drawColor)
+		{
+		}
+
 		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
 		{
 			return true;

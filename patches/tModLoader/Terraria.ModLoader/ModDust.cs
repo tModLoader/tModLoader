@@ -133,6 +133,11 @@ namespace Terraria.ModLoader
 		{
 			return true;
 		}
+
+		public virtual bool MidUpdate(Dust dust)
+		{
+			return false;
+		}
 		//in beginning of Terraria.Dust.GetAlpha add
 		//  ModDust modDust = ModDust.GetDust(this.type);
 		//  if(modDust != null)

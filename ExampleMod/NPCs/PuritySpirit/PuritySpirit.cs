@@ -143,9 +143,21 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 		}
 
+		private int shieldTimer
+		{
+			get
+			{
+				return (int)npc.localAI[1];
+			}
+			set
+			{
+				npc.localAI[1] = value;
+			}
+		}
+
 		private IList<Particle> particles = new List<Particle>();
 		private float[,] aura = new float[size, size];
-		private const int dpsCap = 5000;
+		internal const int dpsCap = 5000;
 		private int damageTotal = 0;
 		private bool saidRushMessage = false;
 		public readonly IList<int> targets = new List<int>();
@@ -190,6 +202,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (stage == 4 && difficulty > 2)
 			{
 				Projectile.NewProjectile(npc.Center.X, npc.Center.Y - arenaHeight / 2, 0f, NegativeWall.speed, mod.ProjectileType("NegativeWall"), 0, 0f, Main.myPlayer, npc.whoAmI, -arenaWidth);
+				shieldTimer = 600;
 				stage++;
 			}
 			if (stage == 5 && difficulty > 3)
@@ -218,11 +231,15 @@ namespace ExampleMod.NPCs.PuritySpirit
 				case 2:
 				case 3:
 				case 4:
+					DoAttack(4);
+					break;
 				case 5:
 					DoAttack(4);
+					DoShield(1);
 					break;
 				case 6:
 					DoAttack(5);
+					DoShield(2);
 					break;
 				case 10:
 					FinishFight1();
@@ -389,12 +406,6 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 			if (attack < 0)
 			{
-				string text = "";
-				foreach (int weight in attackWeights)
-				{
-					text += weight.ToString() + " ";
-				}
-				Main.NewText(text);
 				int totalWeight = 0;
 				for (int k = 0; k < numAttacks; k++)
 				{
@@ -466,6 +477,14 @@ namespace ExampleMod.NPCs.PuritySpirit
 					}
 				}
 				int numExtra = 2 * (difficulty + 1) - 2 * (targets.Count - 1);
+				if (difficulty >= 2)
+				{
+					numExtra--;
+				}
+				if (difficulty >= 4)
+				{
+					numExtra--;
+				}
 				for (int k = 0; k < numExtra; k++)
 				{
 					Projectile.NewProjectile(npc.Center.X + Main.rand.Next(-arenaWidth / 2 + 50, arenaWidth / 2 - 50 + 1), y, 0f, 0f, mod.ProjectileType("PurityBeam"), damage, 0f, Main.myPlayer, arenaHeight);
@@ -575,6 +594,32 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 		}
 
+		private void DoShield(int numShields)
+		{
+			int count = 0;
+			for (int k = 0; k < 200; k++)
+			{
+				if (Main.npc[k].active && Main.npc[k].type == mod.NPCType("PurityShield") && Main.npc[k].ai[0] == npc.whoAmI)
+				{
+					count++;
+				}
+			}
+			if (count >= numShields)
+			{
+				shieldTimer = 0;
+				return;
+			}
+			float timeMult = timeMultiplier * 5f;
+			shieldTimer++;
+			if (shieldTimer >= 300 + 300 * timeMult)
+			{
+				float targetX = npc.Center.X + (Main.rand.Next(2) * 2 - 1) * arenaWidth / 4;
+				float targetY = npc.Center.Y + (Main.rand.Next(2) * 2 - 1) * arenaHeight / 4;
+				NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y + 40, mod.NPCType("PurityShield"), 0, npc.whoAmI, targetX, targetY);
+				shieldTimer = 0;
+			}
+		}
+
 		public override bool CheckDead()
 		{
 			if (stage < 10)
@@ -664,6 +709,13 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (!targets.Contains(player.whoAmI))
 			{
 				return false;
+			}
+			for (int k = 0; k < 200; k++)
+			{
+				if (Main.npc[k].active && Main.npc[k].type == mod.NPCType("PurityShield") && Main.npc[k].ai[0] == npc.whoAmI)
+				{
+					return false;
+				}
 			}
 			return null;
 		}

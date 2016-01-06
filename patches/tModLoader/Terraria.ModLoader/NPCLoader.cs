@@ -717,6 +717,18 @@ namespace Terraria.ModLoader
 			}
 			return null;
 		}
+
+		public static void DrawEffects(NPC npc, ref Color drawColor)
+		{
+			if (IsModNPC(npc))
+			{
+				npc.modNPC.DrawEffects(ref drawColor);
+			}
+			foreach (GlobalNPC globalNPC in globalNPCs)
+			{
+				globalNPC.DrawEffects(npc, ref drawColor);
+			}
+		}
 		//in Terraria.Main.DrawNPC after modifying draw color add
 		//  if(!NPCLoader.PreDraw(Main.npc[i], Main.spriteBatch, color9))
 		//  { NPCLoader.PostDraw(Main.npc[k], Main.spriteBatch, color9); return; }
