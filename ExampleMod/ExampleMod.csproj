@@ -46,6 +46,7 @@
     <Compile Include="Angle.cs" />
     <Compile Include="Buffs\CarMount.cs" />
     <Compile Include="Buffs\EtherealFlames.cs" />
+    <Compile Include="Buffs\ExamplePet.cs" />
     <Compile Include="Buffs\HeroOne.cs" />
     <Compile Include="Buffs\HeroThree.cs" />
     <Compile Include="Buffs\HeroTwo.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Items\EquipMaterial.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleItem.cs" />
+    <Compile Include="Items\ExamplePet.cs" />
     <Compile Include="Items\ExamplePickaxe.cs" />
     <Compile Include="Items\ExampleQuestFish.cs" />
     <Compile Include="Items\ExampleShield.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Projectiles\Minions\PurityWisp.cs" />
     <Compile Include="Projectiles\MoltenDrill.cs" />
     <Compile Include="Projectiles\OctopusArm.cs" />
+    <Compile Include="Projectiles\Pets\ExamplePet.cs" />
     <Compile Include="Projectiles\PixelBall.cs" />
     <Compile Include="Projectiles\PuritySpirit\NegativeWall.cs" />
     <Compile Include="Projectiles\PuritySpirit\NullLaser.cs" />

@@ -28,6 +28,7 @@ namespace ExampleMod
 		public bool nullified = false;
 		public int purityDebuffCooldown = 0;
 		public bool purityMinion = false;
+		public bool examplePet = false;
 
 		public override void ResetEffects()
 		{
@@ -44,6 +45,7 @@ namespace ExampleMod
 			healHurt = 0;
 			nullified = false;
 			purityMinion = false;
+			examplePet = false;
 		}
 
 		public override void SaveCustomData(BinaryWriter writer)

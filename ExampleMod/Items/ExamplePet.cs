@@ -1,0 +1,29 @@
+﻿using System;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace ExampleMod.Items
+{
+	public class ExamplePet : ModItem
+	{
+		public override void SetDefaults()
+		{
+			item.CloneDefaults(ItemID.ZephyrFish);
+			item.name = "Paper Airplane";
+			item.toolTip = "Summons a Paper Airplane to follow aimlessly behind you";
+			item.shoot = mod.ProjectileType("ExamplePet");
+			item.buffType = mod.BuffType("ExamplePet");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(null, "ExampleItem", 10);
+			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+}
