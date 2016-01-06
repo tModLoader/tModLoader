@@ -632,5 +632,24 @@ namespace Terraria.ModLoader
 				modPlayer.GetDyeTraderReward(rewardPool);
 			}
 		}
+
+		public static List<PlayerHeadLayer> GetDrawHeadLayers(Player drawPlayer)
+		{
+			List<PlayerHeadLayer> layers = new List<PlayerHeadLayer>();
+			layers.Add(PlayerHeadLayer.Head);
+			layers.Add(PlayerHeadLayer.Hair);
+			layers.Add(PlayerHeadLayer.AltHair);
+			layers.Add(PlayerHeadLayer.Armor);
+			layers.Add(PlayerHeadLayer.FaceAcc);
+			foreach (PlayerHeadLayer layer in layers)
+			{
+				layer.visible = true;
+			}
+			foreach (ModPlayer modPlayer in drawPlayer.modPlayers)
+			{
+				modPlayer.ModifyDrawHeadLayers(layers);
+			}
+			return layers;
+		}
 	}
 }

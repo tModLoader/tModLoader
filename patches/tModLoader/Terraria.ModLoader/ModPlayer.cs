@@ -269,7 +269,9 @@ namespace Terraria.ModLoader
 		public virtual void GetDyeTraderReward(List<int> rewardPool)
 		{
 		}
-		//TODO
-		//hooks for grappling hooks
+
+		public virtual void ModifyDrawHeadLayers(List<PlayerHeadLayer> layers)
+		{
+		}
 	}
 }

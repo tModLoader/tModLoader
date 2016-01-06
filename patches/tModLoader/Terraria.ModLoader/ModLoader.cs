@@ -404,6 +404,10 @@ namespace Terraria.ModLoader
 					mod.file = modFile.Name;
 					mod.code = modCode;
 					mod.Init();
+					if (mod.Name == "Terraria")
+					{
+						throw new DuplicateNameException("Mods cannot be named Terraria");
+					}
 					if (mods.ContainsKey(mod.Name))
 					{
 						throw new DuplicateNameException("Two mods share the internal name " + mod.Name);

@@ -199,11 +199,20 @@ namespace Terraria.ModLoader
 		public virtual bool IsVanitySet(int head, int body, int legs)
 		{
 			Item headItem = new Item();
-			headItem.SetDefaults(Item.headType[head]);
+			if (head >= 0)
+			{
+				headItem.SetDefaults(Item.headType[head]);
+			}
 			Item bodyItem = new Item();
-			bodyItem.SetDefaults(Item.bodyType[body]);
+			if (body >= 0)
+			{
+				bodyItem.SetDefaults(Item.bodyType[body]);
+			}
 			Item legItem = new Item();
-			legItem.SetDefaults(Item.legType[legs]);
+			if (legs >= 0)
+			{
+				legItem.SetDefaults(Item.legType[legs]);
+			}
 			return IsArmorSet(headItem, bodyItem, legItem);
 		}
 
