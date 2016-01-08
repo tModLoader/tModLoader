@@ -73,12 +73,16 @@ namespace ExampleMod.NPCs.PuritySpirit
 				direction *= speed;
 				npc.position += direction;
 			}
+			else
+			{
+				npc.localAI[1] = 1f;
+			}
 		}
 
 		public override void FindFrame(int frameHeight)
 		{
 			npc.frameCounter += 1.0;
-			npc.frameCounter %= 60.0;
+			npc.frameCounter %= 120.0;
 			npc.frame.Y = frameHeight * (((int)npc.frameCounter % 20) / 5);
 		}
 
@@ -124,20 +128,28 @@ namespace ExampleMod.NPCs.PuritySpirit
 		{
 			Vector2 end1 = npc.Center;
 			Vector2 end2 = Main.npc[(int)npc.ai[0]].Center;
-			if (end1 == end2)
+			Texture2D texture;
+			if (end1 != end2)
 			{
-				return true;
+				float length = Vector2.Distance(end1, end2);
+				Vector2 direction = end2 - end1;
+				direction.Normalize();
+				float start = (float)npc.frameCounter % 8f;
+				start *= 2f;
+				if (npc.localAI[1] == 0f)
+				{
+					start *= 2f;
+					start %= 16f;
+				}
+				texture = mod.GetTexture("NPCs/PuritySpirit/PurityShieldChain");
+				for (float k = start; k <= length; k += 16f)
+				{
+					spriteBatch.Draw(texture, end1 + k * direction - Main.screenPosition, null, Color.White, 0f, new Vector2(16f, 16f), 1f, SpriteEffects.None, 0f);
+				}
 			}
-			float length = Vector2.Distance(end1, end2);
-			Texture2D texture = mod.GetTexture("NPCs/PuritySpirit/PurityShieldChain");
-			Vector2 scale = new Vector2(length / texture.Width, 1f);
-			Vector2 drawPos = (end1 + end2) / 2f - Main.screenPosition;
-			Vector2 drawOrigin = new Vector2(texture.Width / 2, texture.Height / 2);
-			float rotation = (float)Math.Atan2(end2.Y - end1.Y, end2.X - end1.X);
-			spriteBatch.Draw(texture, drawPos, null, Color.White * 0.9f, rotation, drawOrigin, scale, SpriteEffects.None, 0f);
 			texture = Main.npcTexture[npc.type];
-			drawPos = npc.Center - Main.screenPosition;
-			drawOrigin = new Vector2(texture.Width / 2, texture.Height / 2 / Main.npcFrameCount[npc.type]);
+			Vector2 drawPos = npc.Center - Main.screenPosition;
+			Vector2 drawOrigin = new Vector2(texture.Width / 2, texture.Height / 2 / Main.npcFrameCount[npc.type]);
 			spriteBatch.Draw(texture, drawPos, npc.frame, Color.White, 0f, drawOrigin, 1f, SpriteEffects.None, 0f);
 			return false;
 		}
@@ -147,7 +159,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			Texture2D texture = mod.GetTexture("NPCs/PuritySpirit/PurityShieldGlow");
 			Vector2 drawPos = npc.position - Main.screenPosition;
 			Rectangle frame = new Rectangle(0, 0, texture.Width, texture.Height / 25);
-			frame.Y = (int)npc.frameCounter;
+			frame.Y = (int)npc.frameCounter % 60;
 			if (frame.Y > 24)
 			{
 				frame.Y = 24;

@@ -449,11 +449,11 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		public static void DrawHeldProjInFrontOfHeldItemAndBody(Projectile projectile, ref bool flag)
+		public static void DrawHeldProjInFrontOfHeldItemAndArms(Projectile projectile, ref bool flag)
 		{
 			if (IsModProjectile(projectile))
 			{
-				flag = projectile.modProjectile.drawHeldProjInFrontOfHeldItemAndBody;
+				flag = projectile.modProjectile.drawHeldProjInFrontOfHeldItemAndArms;
 			}
 		}
 		//at beginning of Terraria.Projectile.GetAlpha add

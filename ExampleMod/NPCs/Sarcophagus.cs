@@ -92,7 +92,7 @@ namespace ExampleMod.NPCs
 							target.AddBuff(BuffID.Darkness, 240, true);
 							if (target.HasBuff(BuffID.Cursed) >= 0 || target.HasBuff(BuffID.Slow) >= 0 || target.HasBuff(BuffID.Darkness) >= 0)
 							{
-								//target.GetSubClass<BluemagicPlayer>().lockTime = 60;
+								((ExamplePlayer)target.GetModPlayer(mod, "ExamplePlayer")).lockTime = 60;
 							}
 						}
 					}

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.NPCs.PuritySpirit;
@@ -18,8 +20,10 @@ namespace ExampleMod
 		public int elementShields = 0;
 		private int elementShieldTimer = 0;
 		public int elementShieldPos = 0;
+		public int lockTime = 0;
 		public int voidMonolith = 0;
 		public int heroLives = 0;
+		public int reviveTime = 0;
 		public int constantDamage = 0;
 		public float percentDamage = 0f;
 		public float defenseEffect = -1f;
@@ -225,6 +229,10 @@ namespace ExampleMod
 			{
 				player.AddBuff(mod.BuffType("Undead"), 1800, false);
 			}
+			for (int k = 0; k < 25; k++)
+			{
+				Dust.NewDust(player.position, player.width, player.height, mod.DustType("Negative"), 0f, -1f, 0, default(Color), 2f);
+			}
 		}
 
 		public override void PostUpdateBuffs()
@@ -260,6 +268,18 @@ namespace ExampleMod
 			}
 			elementShieldPos++;
 			elementShieldPos %= 300;
+		}
+
+		public override void PostUpdateMiscEffects()
+		{
+			if (lockTime > 0)
+			{
+				lockTime--;
+			}
+			if (reviveTime > 0)
+			{
+				reviveTime--;
+			}
 		}
 
 		public override void FrameEffects()
@@ -360,6 +380,14 @@ namespace ExampleMod
 							{
 								modNPC.attackWeights[modNPC.attack] = PuritySpirit.maxAttackWeight;
 							}
+							if (nullified && modNPC.attack != 2)
+							{
+								modNPC.attackWeights[2] += (int)(proportion * 200);
+								if (modNPC.attackWeights[2] > PuritySpirit.maxAttackWeight)
+								{
+									modNPC.attackWeights[2] = PuritySpirit.maxAttackWeight;
+								}
+							}
 						}
 					}
 				}
@@ -382,6 +410,7 @@ namespace ExampleMod
 						player.hurtCooldowns[k] = player.longInvince ? 180 : 120;
 					}
 					Main.PlaySound(2, (int)player.position.X, (int)player.position.Y, 29);
+					reviveTime = 60;
 					return false;
 				}
 			}
@@ -443,6 +472,94 @@ namespace ExampleMod
 				dyeItemIDsPool.Clear();
 				dyeItemIDsPool.Add(ItemID.MartianArmorDye);
 			}
+		}
+
+		public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+		{
+			if (eFlames)
+			{
+				if (Main.rand.Next(4) == 0 && drawInfo.shadow == 0f)
+				{
+					int dust = Dust.NewDust(drawInfo.position - new Vector2(2f, 2f), player.width + 4, player.height + 4, mod.DustType("EtherealFlame"), player.velocity.X * 0.4f, player.velocity.Y * 0.4f, 100, default(Color), 3f);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity *= 1.8f;
+					Main.dust[dust].velocity.Y -= 0.5f;
+					Main.playerDrawDust.Add(dust);
+				}
+				r *= 0.1f;
+				g *= 0.2f;
+				b *= 0.7f;
+				fullBright = true;
+			}
+		}
+
+		public static readonly PlayerLayer MiscEffectsBack = new PlayerLayer("ExampleMod", "MiscEffectsBack", PlayerLayer.MiscEffectsBack, delegate(PlayerDrawInfo drawInfo)
+			{
+				if (drawInfo.shadow != 0f)
+				{
+					return;
+				}
+				Player drawPlayer = drawInfo.drawPlayer;
+				Mod mod = ModLoader.GetMod("ExampleMod");
+				ExamplePlayer modPlayer = (ExamplePlayer)drawPlayer.GetModPlayer(mod, "ExamplePlayer");
+				if (modPlayer.reviveTime > 0)
+				{
+					Texture2D texture = mod.GetTexture("NPCs/PuritySpirit/Revive");
+					int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
+					int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - 60f + modPlayer.reviveTime - Main.screenPosition.Y);
+					DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, Color.White * (modPlayer.reviveTime / 60f), 0f, new Vector2(texture.Width / 2f, texture.Height / 2f), 1f, SpriteEffects.None, 0);
+					Main.playerDrawData.Add(data);
+				}
+			});
+		public static readonly PlayerLayer MiscEffects = new PlayerLayer("ExampleMod", "MiscEffects", PlayerLayer.MiscEffectsFront, delegate(PlayerDrawInfo drawInfo)
+			{
+				if (drawInfo.shadow != 0f)
+				{
+					return;
+				}
+				Player drawPlayer = drawInfo.drawPlayer;
+				Mod mod = ModLoader.GetMod("ExampleMod");
+				ExamplePlayer modPlayer = (ExamplePlayer)drawPlayer.GetModPlayer(mod, "ExamplePlayer");
+				if (modPlayer.lockTime > 0)
+				{
+					int frame = 2;
+					if (modPlayer.lockTime > 50)
+					{
+						frame = 0;
+					}
+					else if (modPlayer.lockTime > 40)
+					{
+						frame = 1;
+					}
+					Texture2D texture = mod.GetTexture("NPCs/Lock");
+					int frameSize = texture.Height / 3;
+					int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
+					int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - Main.screenPosition.Y);
+					DrawData data = new DrawData(texture, new Vector2(drawX, drawY), new Rectangle(0, frameSize * frame, texture.Width, frameSize), Lighting.GetColor((int)((drawInfo.position.X + drawPlayer.width / 2f) / 16f), (int)((drawInfo.position.Y + drawPlayer.height / 2f) / 16f)), 0f, new Vector2(texture.Width / 2f, frameSize / 2f), 1f, SpriteEffects.None, 0);
+					Main.playerDrawData.Add(data);
+				}
+				if (modPlayer.badHeal)
+				{
+					Texture2D texture = mod.GetTexture("Buffs/Skull");
+					int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
+					int drawY = (int)(drawInfo.position.Y - 4f - Main.screenPosition.Y);
+					DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, Lighting.GetColor((int)((drawInfo.position.X + drawPlayer.width / 2f) / 16f), (int)((drawInfo.position.Y - 4f - texture.Height / 2f) / 16f)), 0f, new Vector2(texture.Width / 2f, texture.Height), 1f, SpriteEffects.None, 0);
+					Main.playerDrawData.Add(data);
+					for (int k = 0; k < 2; k++)
+					{
+						int dust = Dust.NewDust(new Vector2(drawInfo.position.X + drawPlayer.width / 2f - texture.Width / 2f, drawInfo.position.Y - 4f - texture.Height), texture.Width, texture.Height, mod.DustType("Smoke"), 0f, 0f, 0, Color.Black);
+						Main.dust[dust].velocity += drawPlayer.velocity * 0.25f;
+						Main.playerDrawDust.Add(dust);
+					}
+				}
+			});
+
+		public override void ModifyDrawLayers(List<PlayerLayer> layers)
+		{
+			MiscEffectsBack.visible = true;
+			layers.Insert(0, MiscEffectsBack);
+			MiscEffects.visible = true;
+			layers.Add(MiscEffects);
 		}
 	}
 }

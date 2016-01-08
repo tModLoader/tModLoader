@@ -69,29 +69,41 @@ namespace ExampleMod.NPCs
 			}
 			if (npc.type == NPCID.Bunny && npc.AnyInteractions())
 			{
-				Vector2 pos = npc.Center;
-				int i = (int)pos.X / 16;
-				int j = (int)pos.Y / 16;
-				Tile tile = Main.tile[i, j];
-				if (tile.active() && tile.type == mod.TileType("ElementalPurge") && !NPC.AnyNPCs(mod.NPCType("PuritySpirit")))
+				int left = (int)(npc.position.X / 16f);
+				int top = (int)(npc.position.Y / 16f);
+				int right = (int)((npc.position.X + npc.width) / 16f);
+				int bottom = (int)((npc.position.Y + npc.height) / 16f);
+				bool flag = false;
+				for (int i = left; i <= right; i++)
 				{
-					i -= Main.tile[i, j].frameX / 18;
-					j -= Main.tile[i, j].frameY / 18;
-					i = (i * 16) + 16;
-					j = (j * 16) + 24 + 60;
-					bool flag = false;
-					for (int k = 0; k < 255; k++)
+					for (int j = top; j <= bottom; j++)
 					{
-						Player player = Main.player[k];
-						if (player.active && player.position.X > i - NPC.sWidth / 2 && player.position.X + player.width < i + NPC.sWidth / 2 && player.position.Y > j - NPC.sHeight / 2 && player.position.Y < j + NPC.sHeight / 2)
+						Tile tile = Main.tile[i, j];
+						if (tile.active() && tile.type == mod.TileType("ElementalPurge") && !NPC.AnyNPCs(mod.NPCType("PuritySpirit")))
 						{
-							flag = true;
-							break;
+							i -= Main.tile[i, j].frameX / 18;
+							j -= Main.tile[i, j].frameY / 18;
+							i = (i * 16) + 16;
+							j = (j * 16) + 24 + 60;
+							for (int k = 0; k < 255; k++)
+							{
+								Player player = Main.player[k];
+								if (player.active && player.position.X > i - NPC.sWidth / 2 && player.position.X + player.width < i + NPC.sWidth / 2 && player.position.Y > j - NPC.sHeight / 2 && player.position.Y < j + NPC.sHeight / 2)
+								{
+									flag = true;
+									break;
+								}
+							}
+							if (flag)
+							{
+								NPC.NewNPC(i, j, mod.NPCType("PuritySpirit"));
+								break;
+							}
 						}
 					}
 					if (flag)
 					{
-						NPC.NewNPC(i, j, mod.NPCType("PuritySpirit"));
+						break;
 					}
 				}
 			}

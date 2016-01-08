@@ -633,11 +633,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void DrawEffects(Player player, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+		public static void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
 		{
-			foreach (ModPlayer modPlayer in player.modPlayers)
+			foreach (ModPlayer modPlayer in drawInfo.drawPlayer.modPlayers)
 			{
-				modPlayer.DrawEffects(ref r, ref g, ref b, ref a, ref fullBright);
+				modPlayer.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
 			}
 		}
 

@@ -270,7 +270,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void DrawEffects(ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+		public virtual void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
 		{
 		}
 

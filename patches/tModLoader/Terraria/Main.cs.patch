@@ -781,7 +781,7 @@
  					flag3 = true;
  				}
 -			}
-+				ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndBody(Main.projectile[drawPlayer.heldProj], ref flag3);
++				ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms(Main.projectile[drawPlayer.heldProj], ref flag3);
 +			}
 +			drawInfo.drawHeldProjInFrontOfHeldItemAndBody = flag3;
  			bool flag4 = false;
@@ -987,7 +987,7 @@
  				}
  			}
 +			bool fullBright = false;
-+			PlayerHooks.DrawEffects(drawPlayer, ref num19, ref num20, ref num21, ref num22, ref fullBright);
++			PlayerHooks.DrawEffects(drawInfo, ref num19, ref num20, ref num21, ref num22, ref fullBright);
  			if (num19 != 1f || num20 != 1f || num21 != 1f || num22 != 1f)
  			{
 -				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn)

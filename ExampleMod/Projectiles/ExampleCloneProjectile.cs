@@ -18,7 +18,7 @@ namespace ExampleMod.Projectiles
 		public override bool PreKill(int timeLeft)
 		{
 			projectile.type = ProjectileID.Starfury;
-            return true;
+			return true;
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)
