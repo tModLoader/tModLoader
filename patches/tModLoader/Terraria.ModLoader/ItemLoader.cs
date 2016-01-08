@@ -779,6 +779,19 @@ namespace Terraria.ModLoader
 				globalItem.OpenVanillaBag(context, player, arg);
 			}
 		}
+
+		public static void DrawHands(Player player, ref bool drawHands, ref bool drawArms)
+		{
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			if (texture != null)
+			{
+				texture.DrawHands(ref drawHands, ref drawArms);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.DrawHands(player.body, ref drawHands, ref drawArms);
+			}
+		}
 		//in Terraria.Main.DrawPlayerHead after if statement that sets flag2 to true
 		//  call ItemLoader.DrawHair(drawPlayer, ref flag, ref flag2)
 		//in Terraria.Main.DrawPlayer after if statement that sets flag5 to true
@@ -813,6 +826,60 @@ namespace Terraria.ModLoader
 				}
 			}
 			return true;
+		}
+
+		public static bool DrawBody(Player player)
+		{
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
+			if (texture != null && !texture.DrawBody())
+			{
+				return false;
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				if (!globalItem.DrawBody(player.body))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public static bool DrawLegs(Player player)
+		{
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
+			if (texture != null && !texture.DrawLegs())
+			{
+				return false;
+			}
+			texture = EquipLoader.GetEquipTexture(EquipType.Shoes, player.shoe);
+			if (texture != null && !texture.DrawLegs())
+			{
+				return false;
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				if (!globalItem.DrawLegs(player.legs, player.shoe))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public static void DrawArmorColor(EquipType type, int slot, ref Color color, ref int glowMask,
+			ref Color glowMaskColor, ref int armGlowMask, ref Color armGlowMaskColor)
+		{
+			EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
+			if (texture != null)
+			{
+				texture.DrawArmorColor(ref color, ref glowMask, ref glowMaskColor, ref armGlowMask, ref armGlowMaskColor);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.DrawArmorColor(type, slot, ref color, ref glowMask, ref glowMaskColor,
+					ref armGlowMask, ref armGlowMaskColor);
+			}
 		}
 
 		public static Item GetWing(Player player)

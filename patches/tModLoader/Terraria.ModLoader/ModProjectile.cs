@@ -34,6 +34,7 @@ namespace Terraria.ModLoader
 		public int drawOffsetX = 0;
 		public int drawOriginOffsetY = 0;
 		public float drawOriginOffsetX = 0f;
+		public bool drawHeldProjInFrontOfHeldItemAndBody = false;
 
 		public ModProjectile()
 		{

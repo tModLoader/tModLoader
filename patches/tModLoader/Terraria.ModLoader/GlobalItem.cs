@@ -217,6 +217,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void DrawHands(int body, ref bool drawHands, ref bool drawArms)
+		{
+		}
+
 		public virtual void DrawHair(int head, ref bool drawHair, ref bool drawAltHair)
 		{
 		}
@@ -224,6 +228,21 @@ namespace Terraria.ModLoader
 		public virtual bool DrawHead(int head)
 		{
 			return true;
+		}
+
+		public virtual bool DrawBody(int body)
+		{
+			return true;
+		}
+
+		public virtual bool DrawLegs(int legs, int shoes)
+		{
+			return true;
+		}
+
+		public virtual void DrawArmorColor(EquipType type, int slot, ref Color color, ref int glowMask, ref Color glowMaskColor,
+			ref int armGlowMask, ref Color armGlowMaskColor)
+		{
 		}
 
 		public virtual void VerticalWingSpeeds(Item item, ref float ascentWhenFalling, ref float ascentWhenRising,

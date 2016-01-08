@@ -448,6 +448,14 @@ namespace Terraria.ModLoader
 			}
 			return null;
 		}
+
+		public static void DrawHeldProjInFrontOfHeldItemAndBody(Projectile projectile, ref bool flag)
+		{
+			if (IsModProjectile(projectile))
+			{
+				flag = projectile.modProjectile.drawHeldProjInFrontOfHeldItemAndBody;
+			}
+		}
 		//at beginning of Terraria.Projectile.GetAlpha add
 		//  Color? modColor = ProjectileLoader.GetAlpha(this, newColor);
 		//  if(modColor.HasValue) { return modColor.Value; }

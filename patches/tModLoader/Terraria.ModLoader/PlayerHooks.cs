@@ -633,6 +633,71 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void DrawEffects(Player player, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.DrawEffects(ref r, ref g, ref b, ref a, ref fullBright);
+			}
+		}
+
+		public static List<PlayerLayer> GetDrawLayers(Player drawPlayer)
+		{
+			List<PlayerLayer> layers = new List<PlayerLayer>();
+			layers.Add(PlayerLayer.HairBack);
+			layers.Add(PlayerLayer.MountBack);
+			layers.Add(PlayerLayer.MiscEffectsBack);
+			layers.Add(PlayerLayer.BackAcc);
+			layers.Add(PlayerLayer.Wings);
+			layers.Add(PlayerLayer.BalloonAcc);
+			layers.Add(PlayerLayer.Skin);
+			if (drawPlayer.wearsRobe)
+			{
+				layers.Add(PlayerLayer.ShoeAcc);
+				layers.Add(PlayerLayer.Legs);
+			}
+			else
+			{
+				layers.Add(PlayerLayer.Legs);
+				layers.Add(PlayerLayer.ShoeAcc);
+			}
+			layers.Add(PlayerLayer.Body);
+			layers.Add(PlayerLayer.HandOffAcc);
+			layers.Add(PlayerLayer.WaistAcc);
+			layers.Add(PlayerLayer.NeckAcc);
+			layers.Add(PlayerLayer.Face);
+			layers.Add(PlayerLayer.Hair);
+			layers.Add(PlayerLayer.Head);
+			layers.Add(PlayerLayer.FaceAcc);
+			if (drawPlayer.mount.Cart)
+			{
+				layers.Add(PlayerLayer.ShieldAcc);
+				layers.Add(PlayerLayer.MountFront);
+			}
+			else
+			{
+				layers.Add(PlayerLayer.MountFront);
+				layers.Add(PlayerLayer.ShieldAcc);
+			}
+			layers.Add(PlayerLayer.SolarShield);
+			layers.Add(PlayerLayer.HeldProjBack);
+			layers.Add(PlayerLayer.HeldItem);
+			layers.Add(PlayerLayer.Arms);
+			layers.Add(PlayerLayer.HandOnAcc);
+			layers.Add(PlayerLayer.HeldProjFront);
+			layers.Add(PlayerLayer.FrontAcc);
+			layers.Add(PlayerLayer.MiscEffectsFront);
+			foreach (PlayerLayer layer in layers)
+			{
+				layer.visible = true;
+			}
+			foreach (ModPlayer modPlayer in drawPlayer.modPlayers)
+			{
+				modPlayer.ModifyDrawLayers(layers);
+			}
+			return layers;
+		}
+
 		public static List<PlayerHeadLayer> GetDrawHeadLayers(Player drawPlayer)
 		{
 			List<PlayerHeadLayer> layers = new List<PlayerHeadLayer>();

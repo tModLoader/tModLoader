@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader
@@ -62,6 +62,34 @@ namespace Terraria.ModLoader
 
 	public class PlayerLayer : DrawLayer<PlayerDrawInfo>
 	{
+		public static readonly PlayerLayer HairBack = CreateVanillaLayer("HairBack");
+		public static readonly PlayerLayer MountBack = CreateVanillaLayer("MountBack");
+		public static readonly PlayerLayer MiscEffectsBack = CreateVanillaLayer("MiscEffectsBack");
+		public static readonly PlayerLayer BackAcc = CreateVanillaLayer("BackAcc");
+		public static readonly PlayerLayer Wings = CreateVanillaLayer("Wings");
+		public static readonly PlayerLayer BalloonAcc = CreateVanillaLayer("BalloonAcc");
+		public static readonly PlayerLayer Skin = CreateVanillaLayer("Skin");
+		public static readonly PlayerLayer Legs = CreateVanillaLayer("Legs");
+		public static readonly PlayerLayer ShoeAcc = CreateVanillaLayer("ShoeAcc");
+		public static readonly PlayerLayer Body = CreateVanillaLayer("Body");
+		public static readonly PlayerLayer HandOffAcc = CreateVanillaLayer("HandOffAcc");
+		public static readonly PlayerLayer WaistAcc = CreateVanillaLayer("WaistAcc");
+		public static readonly PlayerLayer NeckAcc = CreateVanillaLayer("NeckAcc");
+		public static readonly PlayerLayer Face = CreateVanillaLayer("Face");
+		public static readonly PlayerLayer Hair = CreateVanillaLayer("Hair");
+		public static readonly PlayerLayer Head = CreateVanillaLayer("Head");
+		public static readonly PlayerLayer FaceAcc = CreateVanillaLayer("FaceAcc");
+		public static readonly PlayerLayer MountFront = CreateVanillaLayer("MountFront");
+		public static readonly PlayerLayer ShieldAcc = CreateVanillaLayer("ShieldAcc");
+		public static readonly PlayerLayer SolarShield = CreateVanillaLayer("SolarShield");
+		public static readonly PlayerLayer HeldProjBack = CreateVanillaLayer("HeldProjBack");
+		public static readonly PlayerLayer HeldItem = CreateVanillaLayer("HeldItem");
+		public static readonly PlayerLayer Arms = CreateVanillaLayer("Arms");
+		public static readonly PlayerLayer HandOnAcc = CreateVanillaLayer("HandOnAcc");
+		public static readonly PlayerLayer HeldProjFront = CreateVanillaLayer("HeldProjFront");
+		public static readonly PlayerLayer FrontAcc = CreateVanillaLayer("FrontAcc");
+		public static readonly PlayerLayer MiscEffectsFront = CreateVanillaLayer("MiscEffectsFront");
+
 		public PlayerLayer(string mod, string name, Action<PlayerDrawInfo> layer)
 			: base(mod, name, layer)
 		{

@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 
 namespace Terraria.ModLoader
@@ -82,6 +83,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public virtual void DrawHands(ref bool drawHands, ref bool drawArms)
+		{
+			if (item != null)
+			{
+				item.DrawHands(ref drawHands, ref drawArms);
+			}
+		}
+
 		public virtual void DrawHair(ref bool drawHair, ref bool drawAltHair)
 		{
 			if (item != null)
@@ -93,6 +102,25 @@ namespace Terraria.ModLoader
 		public virtual bool DrawHead()
 		{
 			return item == null || item.DrawHead();
+		}
+
+		public virtual bool DrawBody()
+		{
+			return item == null || item.DrawBody();
+		}
+
+		public virtual bool DrawLegs()
+		{
+			return item == null || item.DrawLegs();
+		}
+
+		public virtual void DrawArmorColor(ref Color color, ref int glowMask, ref Color glowMaskColor,
+			ref int armGlowMask, ref Color armGlowMaskColor)
+		{
+			if (item != null)
+			{
+				item.DrawArmorColor(ref color, ref glowMask, ref glowMaskColor, ref armGlowMask, ref armGlowMaskColor);
+			}
 		}
 
 		public virtual void WingUpdate(Player player, bool inUse)

@@ -270,6 +270,14 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void DrawEffects(ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+		{
+		}
+
+		public virtual void ModifyDrawLayers(List<PlayerLayer> layers)
+		{
+		}
+
 		public virtual void ModifyDrawHeadLayers(List<PlayerHeadLayer> layers)
 		{
 		}
