@@ -23,7 +23,8 @@ namespace Terraria.ModLoader.UI
 		private Texture2D dividerTexture;
 		private UIText modName;
 		UITextPanel button2;
-		private bool update = false;
+		public bool update = false;
+		public bool exists = false;
 
 		public UIModDownloadItem(string displayname, string name, string version, string author, string description, string download, int downloads, string timeStamp, bool update, bool exists)
 		{
@@ -36,6 +37,7 @@ namespace Terraria.ModLoader.UI
 			this.downloads = downloads;
 			this.timeStamp = timeStamp;
 			this.update = update;
+			this.exists = exists;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.Height.Set(90f, 0f);
@@ -87,6 +89,20 @@ namespace Terraria.ModLoader.UI
 					return -1 * this.timeStamp.CompareTo((obj as UIModDownloadItem).timeStamp);
 			}
 			return base.CompareTo(obj);
+		}
+
+		public override bool PassFilters()
+		{
+			switch (Interface.modBrowser.updateFilterMode)
+			{
+				case UpdateFilter.All:
+					return true;
+				case UpdateFilter.Available:
+					return update || !exists;
+				case UpdateFilter.UpdateOnly:
+					return update;
+			}
+			return true;
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)

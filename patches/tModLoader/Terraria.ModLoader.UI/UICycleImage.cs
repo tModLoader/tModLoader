@@ -40,7 +40,6 @@ namespace Terraria.ModLoader.UI
 		public override void Click(UIMouseEvent evt)
 		{
 			currentState = (currentState + 1) % states;
-			Interface.modBrowser.sortMode = Interface.modBrowser.sortMode.Next();
 			base.Click(evt);
 		}
 

@@ -116,7 +116,8 @@ namespace Terraria.ModLoader.UI
 					string version = xmlNode.SelectSingleNode("version").InnerText;
 					string author = xmlNode.SelectSingleNode("author").InnerText;
 					string downloads = xmlNode.SelectSingleNode("downloads").InnerText;
-					UIModManageItem modItem = new UIModManageItem(displayname, name, version, author, downloads);
+					string downloadsversion = xmlNode.SelectSingleNode("downloadsversion").InnerText;
+					UIModManageItem modItem = new UIModManageItem(displayname, name, version, author, downloads, downloadsversion);
 					myPublishedMods.Add(modItem);
 				}
 			}

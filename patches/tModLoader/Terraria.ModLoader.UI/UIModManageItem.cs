@@ -22,12 +22,12 @@ namespace Terraria.ModLoader.UI
 		private UIText modName;
 		UITextPanel button2;
 
-		public UIModManageItem(string displayname, string name, string version, string author, string downloads)
+		public UIModManageItem(string displayname, string name, string version, string author, string downloads, string downloadsversion)
 		{
 			this.displayname = displayname;
 			this.version = version;
 			this.author = author;
-			this.name = name; 
+			this.name = name;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.Height.Set(90f, 0f);
@@ -38,8 +38,8 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel button = new UITextPanel(downloads + " downloads", 1f, false);
-			button.Width.Set(160f, 0f);
+			UITextPanel button = new UITextPanel(downloads + " downloads (" + downloadsversion + " latest version)", 1f, false);
+			button.Width.Set(260f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(10f, 0f);
 			button.Top.Set(40f, 0f);
@@ -51,7 +51,7 @@ namespace Terraria.ModLoader.UI
 			button2 = new UITextPanel("Unpublish", 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(150f, 0f);
-			button2.Left.Set(200f, 0f);
+			button2.Left.Set(360f, 0f);
 			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
 			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button2.OnClick += new UIElement.MouseEvent(this.Unpublish);

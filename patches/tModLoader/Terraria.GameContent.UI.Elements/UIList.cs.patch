@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIList.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIList.cs
+@@ -33,7 +33,7 @@
+ 			}
+ 		}
+ 
+-		protected List<UIElement> _items = new List<UIElement>();
++		public List<UIElement> _items = new List<UIElement>();
+ 		protected UIScrollbar _scrollbar;
+ 		private UIElement _innerList = new UIList.UIInnerList();
+ 		private float _innerListHeight;
+

@@ -11,17 +11,20 @@ using System.Net;
 using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIModBrowser : UIState
 	{
 		public UIList modList;
+		public UIList modListAll;
 		public UIModDownloadItem selectedItem;
 		public UITextPanel uITextPanel;
 		private List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		public bool loaded = false;
 		public SortModes sortMode = SortModes.RecentlyUpdated;
+		public UpdateFilter updateFilterMode = UpdateFilter.Available;
 		private bool updateAvailable;
 		private string updateText;
 		private string updateURL;
@@ -40,6 +43,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
+			modListAll = new UIList();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
 			modList.Height.Set(-50f, 1f);
@@ -83,12 +87,24 @@ namespace Terraria.ModLoader.UI
 			uIElement2.Height.Set(32f, 0f);
 			uIElement2.Top.Set(10f, 0f);
 			Texture2D texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
-			for (int j = 0; j < 1; j++)
+			UICycleImage uIToggleImage;
+			for (int j = 0; j < 2; j++)
 			{
-				UICycleImage uIToggleImage = new UICycleImage(texture, 5, 32, 32, 0, 0);
+				if (j == 0)
+				{
+					uIToggleImage = new UICycleImage(texture, 5, 32, 32, 0, 0);
+					uIToggleImage.setCurrentState((int)sortMode);
+					uIToggleImage.OnClick += (a, b) => Interface.modBrowser.sortMode = sortMode.Next();
+					uIToggleImage.OnClick += new UIElement.MouseEvent(this.SortList);
+				}
+				else
+				{
+					uIToggleImage = new UICycleImage(texture, 3, 32, 32, 34, 0);
+					uIToggleImage.setCurrentState((int)updateFilterMode);
+					uIToggleImage.OnClick += (a, b) => Interface.modBrowser.updateFilterMode = updateFilterMode.Next();
+					uIToggleImage.OnClick += new UIElement.MouseEvent(this.SortList);
+				}
 				uIToggleImage.Left.Set((float)(j * 36 + 8), 0f);
-				uIToggleImage.setCurrentState((int)sortMode);
-				uIToggleImage.OnClick += new UIElement.MouseEvent(this.SortList);
 				_categoryButtons.Add(uIToggleImage);
 				uIElement2.Append(uIToggleImage);
 			}
@@ -97,6 +113,11 @@ namespace Terraria.ModLoader.UI
 
 		private void SortList(UIMouseEvent evt, UIElement listeningElement)
 		{
+			modList.Clear();
+			foreach (UIModDownloadItem item in modListAll._items.Where(item => item.PassFilters()))
+			{
+				modList.Add(item);
+			}
 			modList.UpdateOrder();
 		}
 
@@ -112,6 +133,9 @@ namespace Terraria.ModLoader.UI
 					{
 						case 0:
 							text = Interface.modBrowser.sortMode.ToFriendlyString();
+							break;
+						case 1:
+							text = Interface.modBrowser.updateFilterMode.ToFriendlyString();
 							break;
 						default:
 							text = "None";
@@ -246,12 +270,10 @@ namespace Terraria.ModLoader.UI
 									}
 								}
 							}
-							//   if (!exists || update)
-							//   {
-							UIModDownloadItem modItem = new UIModDownloadItem(/*this, */displayname, name, version, author, description, download, downloads, timeStamp, update, exists);
-							modList.Add(modItem);
-							//  }
+							UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, description, download, downloads, timeStamp, update, exists);
+							modListAll.Add(modItem);
 						}
+						SortList(null, null);
 					}
 				}
 				loaded = true;
@@ -312,6 +334,37 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
+	public static class UpdateFilterModesExtensions
+	{
+		public static UpdateFilter Next(this UpdateFilter updateFilterMode)
+		{
+			switch (updateFilterMode)
+			{
+				case UpdateFilter.All:
+					return UpdateFilter.Available;
+				case UpdateFilter.Available:
+					return UpdateFilter.UpdateOnly;
+				case UpdateFilter.UpdateOnly:
+					return UpdateFilter.All;
+			}
+			return UpdateFilter.All;
+		}
+
+		public static string ToFriendlyString(this UpdateFilter updateFilterMode)
+		{
+			switch (updateFilterMode)
+			{
+				case UpdateFilter.All:
+					return "Show all mods";
+				case UpdateFilter.Available:
+					return "Show mods not installed and updates";
+				case UpdateFilter.UpdateOnly:
+					return "Show only updates";
+			}
+			return "Unknown Sort";
+		}
+	}
+
 	public enum SortModes
 	{
 		DisplayNameAtoZ,
@@ -319,5 +372,12 @@ namespace Terraria.ModLoader.UI
 		DownloadsDescending,
 		DownloadsAscending,
 		RecentlyUpdated,
+	}
+
+	public enum UpdateFilter
+	{
+		All,
+		Available,
+		UpdateOnly,
 	}
 }
