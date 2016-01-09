@@ -49,6 +49,7 @@
     <Compile Include="Angle.cs" />
     <Compile Include="Buffs\CarMount.cs" />
     <Compile Include="Buffs\EtherealFlames.cs" />
+    <Compile Include="Buffs\ExampleLightPet.cs" />
     <Compile Include="Buffs\ExamplePet.cs" />
     <Compile Include="Buffs\HeroOne.cs" />
     <Compile Include="Buffs\HeroThree.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Items\EquipMaterial.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleItem.cs" />
+    <Compile Include="Items\ExampleLightPet.cs" />
     <Compile Include="Items\ExamplePet.cs" />
     <Compile Include="Items\ExamplePickaxe.cs" />
     <Compile Include="Items\ExampleQuestFish.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Projectiles\Minions\PurityWisp.cs" />
     <Compile Include="Projectiles\MoltenDrill.cs" />
     <Compile Include="Projectiles\OctopusArm.cs" />
+    <Compile Include="Projectiles\Pets\ExampleLightPet.cs" />
     <Compile Include="Projectiles\Pets\ExamplePet.cs" />
     <Compile Include="Projectiles\PixelBall.cs" />
     <Compile Include="Projectiles\PuritySpirit\NegativeWall.cs" />
@@ -167,6 +170,7 @@
     <Compile Include="Projectiles\SparklingBall.cs" />
     <Compile Include="Projectiles\Wisp.cs" />
     <Compile Include="RecipeHelper.cs" />
+    <Compile Include="Sounds\Custom\WatchOut.cs" />
     <Compile Include="Tiles\AnimatedLoom.cs" />
     <Compile Include="Tiles\BossTrophy.cs" />
     <Compile Include="Tiles\ElementalPurge.cs" />
