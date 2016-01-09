@@ -102,12 +102,17 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.UpdateBuffs at end of if else chain add BuffLoader.Update(this.buffType[k], this, ref k);
 		public static void Update(int buff, Player player, ref int buffIndex)
 		{
+			int originalIndex = buffIndex;
 			if (IsModBuff(buff))
 			{
 				GetBuff(buff).Update(player, ref buffIndex);
 			}
 			foreach (GlobalBuff globalBuff in globalBuffs)
 			{
+				if (buffIndex != originalIndex)
+				{
+					break;
+				}
 				globalBuff.Update(buff, player, ref buffIndex);
 			}
 		}
