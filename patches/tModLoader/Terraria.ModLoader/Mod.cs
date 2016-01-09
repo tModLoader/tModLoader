@@ -1106,9 +1106,9 @@ namespace Terraria.ModLoader
 					}
 					string className = sound.Replace('/', '.');
 					ModSound modSound = null;
-					if (modSoundNames.ContainsKey(className))
+					if (modSoundNames.ContainsKey(sound))
 					{
-						modSound = (ModSound)Activator.CreateInstance(modSoundNames[className]);
+						modSound = (ModSound)Activator.CreateInstance(modSoundNames[sound]);
 					}
 					AddSound(soundType, sound, modSound);
 				}

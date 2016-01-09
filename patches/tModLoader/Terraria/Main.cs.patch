@@ -1864,4 +1864,19 @@
  									if (type == 0)
  									{
  										int num7 = Main.rand.Next(3);
+@@ -53335,6 +53851,14 @@
+ 										Main.soundInstanceMoonlordCry.Pitch = (float)Main.rand.Next(-10, 11) * 0.01f;
+ 										Main.PlaySoundInstance(Main.soundInstanceMoonlordCry);
+ 									}
++									else if (type == SoundLoader.customSoundType)
++									{
++										SoundLoader.customSoundInstances[num].Stop();
++										SoundLoader.customSoundInstances[num] = SoundLoader.customSounds[num].CreateInstance();
++										SoundLoader.customSoundInstances[num].Volume = num2;
++										SoundLoader.customSoundInstances[num].Pan = num3;
++										Main.PlaySoundInstance(SoundLoader.customSoundInstances[num]);
++									}
+ 								}
+ 							}
+ 						}
 

@@ -9,3 +9,4 @@
 /installer/obj
 *.cache
 ExampleMod/obj/x86/Debug/ExampleMod.csproj.FileListAbsolute.txt
+*.force

@@ -33,6 +33,7 @@ namespace ExampleMod
 		public int purityDebuffCooldown = 0;
 		public bool purityMinion = false;
 		public bool examplePet = false;
+		public bool exampleLightPet = false;
 
 		public override void ResetEffects()
 		{
@@ -50,6 +51,7 @@ namespace ExampleMod
 			nullified = false;
 			purityMinion = false;
 			examplePet = false;
+			exampleLightPet = false;
 		}
 
 		public override void SaveCustomData(BinaryWriter writer)
