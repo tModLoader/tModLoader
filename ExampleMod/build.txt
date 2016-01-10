@@ -1,3 +1,6 @@
 author = bluemagic123
 version = v0.7
 displayName = Example Mod
+hideCode = false
+hideResources = false
+includeSource = true

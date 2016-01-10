@@ -14,6 +14,9 @@ namespace Terraria.ModLoader
 		internal string version = "";
 		internal string displayName = "";
 		internal bool noCompile = false;
+		internal bool hideCode = true;
+		internal bool hideResources = true;
+		internal bool includeSource = false;
 
 		internal static BuildProperties ReadBuildFile(string modDir)
 		{
@@ -73,7 +76,16 @@ namespace Terraria.ModLoader
 						properties.displayName = value;
 						break;
 					case "noCompile":
-						properties.noCompile = value.ToLower() == "true" ? true : false;
+						properties.noCompile = value.ToLower() == "true";
+						break;
+					case "hideCode":
+						properties.hideCode = value.ToLower() != "false";
+						break;
+					case "hideResources":
+						properties.hideResources = value.ToLower() != "false";
+						break;
+					case "includeSource":
+						properties.includeSource = value.ToLower() == "true";
 						break;
 				}
 			}
@@ -123,6 +135,18 @@ namespace Terraria.ModLoader
 					if (noCompile)
 					{
 						writer.Write("noCompile");
+					}
+					if (!hideCode)
+					{
+						writer.Write("!hideCode");
+					}
+					if (!hideResources)
+					{
+						writer.Write("!hideResources");
+					}
+					if (includeSource)
+					{
+						writer.Write("includeSource");
 					}
 					writer.Write("");
 					writer.Flush();
@@ -187,6 +211,18 @@ namespace Terraria.ModLoader
 						if (tag == "noCompile")
 						{
 							properties.noCompile = true;
+						}
+						if (tag == "!hideCode")
+						{
+							properties.hideCode = false;
+						}
+						if (tag == "!hideResources")
+						{
+							properties.hideResources = false;
+						}
+						if (tag == "includeSource")
+						{
+							properties.includeSource = true;
 						}
 					}
 				}

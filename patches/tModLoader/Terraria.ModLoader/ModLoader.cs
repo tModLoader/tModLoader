@@ -609,7 +609,7 @@ namespace Terraria.ModLoader
 					string[] resources = Directory.GetFiles(modToBuild, "*", SearchOption.AllDirectories);
 					foreach (string resource in resources)
 					{
-						if (Path.GetExtension(resource) == ".cs")
+						if (Path.GetExtension(resource) == ".cs" && !properties.includeSource)
 						{
 							continue;
 						}
