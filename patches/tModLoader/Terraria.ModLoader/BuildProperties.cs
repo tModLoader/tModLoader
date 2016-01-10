@@ -7,6 +7,7 @@ namespace Terraria.ModLoader
 {
 	internal class BuildProperties
 	{
+		internal string modBuildVersion = "";
 		internal string[] dllReferences = new string[0];
 		internal string[] modReferences = new string[0];
 		internal string author = "";
@@ -135,10 +136,11 @@ namespace Terraria.ModLoader
 		{
 			BuildProperties properties = new BuildProperties();
 			byte[] data;
-			using (MemoryStream memoryStream = new MemoryStream(modFile.GetFile("Resources")))
+			using (MemoryStream memoryStream = new MemoryStream(modFile.GetFile("Info")))
 			{
 				using (BinaryReader reader = new BinaryReader(memoryStream))
 				{
+					properties.modBuildVersion = reader.ReadString();
 					data = reader.ReadBytes(reader.ReadInt32());
 				}
 			}

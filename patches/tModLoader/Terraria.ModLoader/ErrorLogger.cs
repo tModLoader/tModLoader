@@ -94,7 +94,7 @@ namespace Terraria.ModLoader
 			Interface.errorMessage.SetFile(file);
 		}
 
-		internal static void LogLoadingError(string modFile, Exception e)
+		internal static void LogLoadingError(string modFile, string modBuildVersion, Exception e)
 		{
 			Directory.CreateDirectory(LogPath);
 			string file = LogPath + Path.DirectorySeparatorChar + "Loading Errors.txt";
@@ -113,6 +113,11 @@ namespace Terraria.ModLoader
 				}
 			}
 			string message = "An error occurred while loading " + Path.GetFileNameWithoutExtension(modFile);
+			if (modBuildVersion != ModLoader.version)
+			{
+				message += "\nIt has been detected that this mod was build for " + modBuildVersion;
+				message += "\nHowever, you are using " + ModLoader.version;
+			}
 			if (modFile == "recipes")
 			{
 				message += "\nThe offending mod should have been automatically disabled.";

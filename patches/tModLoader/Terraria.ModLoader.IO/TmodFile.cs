@@ -105,7 +105,8 @@ namespace Terraria.ModLoader.IO
 
 		internal bool ValidMod()
 		{
-			return !InvalidFile && HasFile("Resources") && ((HasFile("Windows") && HasFile("Other")) || HasFile("All"));
+			return !InvalidFile && HasFile("Info") && HasFile("Resources")
+			&& ((HasFile("Windows") && HasFile("Other")) || HasFile("All"));
 		}
 	}
 }

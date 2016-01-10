@@ -146,7 +146,7 @@ namespace Terraria.ModLoader
 				catch (Exception e)
 				{
 					DisableMod(mod.file);
-					ErrorLogger.LogLoadingError(mod.file, e);
+					ErrorLogger.LogLoadingError(mod.file, mod.buildVersion, e);
 					Main.menuMode = Interface.errorMessageID;
 					return;
 				}
@@ -166,7 +166,7 @@ namespace Terraria.ModLoader
 				catch (Exception e)
 				{
 					DisableMod(mod.file);
-					ErrorLogger.LogLoadingError(mod.file, e);
+					ErrorLogger.LogLoadingError(mod.file, mod.buildVersion, e);
 					Main.menuMode = Interface.errorMessageID;
 					return;
 				}
@@ -187,7 +187,7 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e)
 			{
-				ErrorLogger.LogLoadingError("recipes", e);
+				ErrorLogger.LogLoadingError("recipes", version, e);
 				Main.menuMode = Interface.errorMessageID;
 				return;
 			}
@@ -279,7 +279,7 @@ namespace Terraria.ModLoader
 						catch (Exception e)
 						{
 							DisableMod(modsToLoad[k].Name);
-							ErrorLogger.LogLoadingError(modsToLoad[k].Name, e);
+							ErrorLogger.LogLoadingError(modsToLoad[k].Name, properties[modsToLoad[k].Name].modBuildVersion, e);
 							return false;
 						}
 						loadedMods.Add(modsToLoad[k].Name);
@@ -324,7 +324,6 @@ namespace Terraria.ModLoader
 			{
 				using (BinaryReader reader = new BinaryReader(memoryStream))
 				{
-					memoryStream.Seek(reader.ReadInt32(), SeekOrigin.Current);
 					rootDirectory = reader.ReadString();
 					for (string path = reader.ReadString(); path != "end"; path = reader.ReadString())
 					{
@@ -402,6 +401,7 @@ namespace Terraria.ModLoader
 				{
 					Mod mod = (Mod)Activator.CreateInstance(type);
 					mod.file = modFile.Name;
+					mod.buildVersion = properties.modBuildVersion;
 					mod.code = modCode;
 					mod.Init();
 					if (mod.Name == "Terraria")
@@ -594,8 +594,17 @@ namespace Terraria.ModLoader
 			{
 				using (BinaryWriter writer = new BinaryWriter(memoryStream))
 				{
+					writer.Write(version);
 					writer.Write(propertiesData.Length);
 					writer.Write(propertiesData);
+					writer.Flush();
+					modFile.AddFile("Info", memoryStream.ToArray());
+				}
+			}
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				using (BinaryWriter writer = new BinaryWriter(memoryStream))
+				{
 					writer.Write(Path.GetFileName(modToBuild));
 					string[] resources = Directory.GetFiles(modToBuild, "*", SearchOption.AllDirectories);
 					foreach (string resource in resources)

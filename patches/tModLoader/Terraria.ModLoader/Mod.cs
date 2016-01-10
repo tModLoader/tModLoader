@@ -12,6 +12,7 @@ namespace Terraria.ModLoader
 	public abstract partial class Mod
 	{
 		internal string file;
+		internal string buildVersion;
 		internal Assembly code;
 		private string name;
 
