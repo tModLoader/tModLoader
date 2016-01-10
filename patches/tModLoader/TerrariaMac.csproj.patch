@@ -133,12 +133,16 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -376,5 +465,11 @@
+@@ -376,5 +465,15 @@
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
    </ItemGroup>
 +  <ItemGroup>
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
++  </ItemGroup>
++  <ItemGroup>
++    <EmbeddedResource Include="Terraria.ModLoader.Default\MysteryItem.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default\StartBag.png" />
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 -</Project>

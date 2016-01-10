@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader;
 
@@ -8,7 +9,6 @@ namespace Terraria.ModLoader.Default
 	public class ModLoaderMod : Mod
 	{
 		private static bool texturesLoaded = false;
-		private static readonly string ContentPath = "Content" + Path.DirectorySeparatorChar + "ModLoader";
 		private static Texture2D mysteryItemTexture;
 		private static Texture2D startBagTexture;
 
@@ -38,17 +38,16 @@ namespace Terraria.ModLoader.Default
 			{
 				return;
 			}
-			byte[] data = File.ReadAllBytes(ContentPath + Path.DirectorySeparatorChar + "MysteryItem.png");
-			using (MemoryStream stream = new MemoryStream(data))
-			{
-				mysteryItemTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
-			}
-			data = File.ReadAllBytes(ContentPath + Path.DirectorySeparatorChar + "StartBag.png");
-			using (MemoryStream stream = new MemoryStream(data))
-			{
-				startBagTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
-			}
+			mysteryItemTexture = ReadTexture("MysteryItem");
+			startBagTexture = ReadTexture("StartBag");
 			texturesLoaded = true;
+		}
+
+		private static Texture2D ReadTexture(string file)
+		{
+			Assembly assembly = Assembly.GetExecutingAssembly();
+			Stream stream = assembly.GetManifestResourceStream("Terraria.ModLoader.Default." + file + ".png");
+			return Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
 		}
 	}
 }

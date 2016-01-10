@@ -115,7 +115,7 @@ namespace Terraria.ModLoader
 			string message = "An error occurred while loading " + Path.GetFileNameWithoutExtension(modFile);
 			if (modBuildVersion != ModLoader.version)
 			{
-				message += "\nIt has been detected that this mod was build for " + modBuildVersion;
+				message += "\nIt has been detected that this mod was built for " + modBuildVersion;
 				message += "\nHowever, you are using " + ModLoader.version;
 			}
 			if (modFile == "recipes")

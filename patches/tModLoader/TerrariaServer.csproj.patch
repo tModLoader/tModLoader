@@ -116,7 +116,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -386,6 +474,10 @@
+@@ -386,6 +474,14 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
@@ -124,6 +124,10 @@
 +  </ItemGroup>
 +  <ItemGroup>
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
++  </ItemGroup>
++  <ItemGroup>
++    <EmbeddedResource Include="Terraria.ModLoader.Default\MysteryItem.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default\StartBag.png" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
  </Project>
