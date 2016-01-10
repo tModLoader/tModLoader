@@ -113,28 +113,28 @@
 -				}
 -			}
 -			return false;
-+			CraftGroup group = CraftGroup.GetVanillaGroup("Wood");
++			CraftGroup group = CraftGroup.Wood;
 +			return this.anyWood && group.Items.Contains(invType) && group.Items.Contains(reqType);
  		}
  
  		public bool useIronBar(int invType, int reqType)
  		{
 -			return this.anyIronBar && (reqType == 22 || reqType == 704) && (invType == 22 || invType == 704);
-+			CraftGroup group = CraftGroup.GetVanillaGroup("IronBar");
++			CraftGroup group = CraftGroup.IronBar;
 +			return this.anyIronBar && group.Items.Contains(invType) && group.Items.Contains(reqType);
  		}
  
  		public bool useSand(int invType, int reqType)
  		{
 -			return (reqType == 169 || reqType == 408 || reqType == 1246 || reqType == 370 || reqType == 3272) && (this.anySand && (invType == 169 || invType == 408 || invType == 1246 || invType == 370 || invType == 3272));
-+			CraftGroup group = CraftGroup.GetVanillaGroup("Sand");
++			CraftGroup group = CraftGroup.Sand;
 +			return this.anySand && group.Items.Contains(invType) && group.Items.Contains(reqType);
  		}
  
  		public bool useFragment(int invType, int reqType)
  		{
 -			return (reqType == 3458 || reqType == 3456 || reqType == 3457 || reqType == 3459) && (this.anyFragment && (invType == 3458 || invType == 3456 || invType == 3457 || invType == 3459));
-+			CraftGroup group = CraftGroup.GetVanillaGroup("Fragment");
++			CraftGroup group = CraftGroup.Fragment;
 +			return this.anyFragment && group.Items.Contains(invType) && group.Items.Contains(reqType);
  		}
  
@@ -205,7 +205,7 @@
 -				}
 -			}
 -			return false;
-+			CraftGroup group = CraftGroup.GetVanillaGroup("PressurePlate");
++			CraftGroup group = CraftGroup.PressurePlate;
 +			return this.anyPressurePlate && group.Items.Contains(invType) && group.Items.Contains(reqType);
  		}
  

@@ -736,7 +736,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public override bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
 		{
-			if (damageTotal >= dpsCap)
+			if (damageTotal >= dpsCap * 60)
 			{
 				if (!saidRushMessage)
 				{

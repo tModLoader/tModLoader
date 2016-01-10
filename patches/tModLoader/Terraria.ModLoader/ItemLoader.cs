@@ -526,6 +526,22 @@ namespace Terraria.ModLoader
 			}
 			return false;
 		}
+
+		public static bool AltFunctionUse(Item item, Player player)
+		{
+			if (IsModItem(item) && item.modItem.AltFunctionUse(player))
+			{
+				return true;
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				if (globalItem.AltFunctionUse(item, player))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 		//place at end of first for loop in Terraria.Player.UpdateEquips
 		//  call ItemLoader.UpdateInventory(this.inventory[j], this)
 		public static void UpdateInventory(Item item, Player player)

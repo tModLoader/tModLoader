@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -27,14 +27,11 @@ namespace ExampleMod.Projectiles.Pets
 			Main.projPet[projectile.type] = true;
 		}
 
-
 		const int fadeInTicks = 30;
 		const int fullBrightTicks = 200;
 		const int fadeOutTicks = 30;
-
 		const int range = 500;
 		int rangeHypoteneus = (int)Math.Sqrt(range * range + range * range);
-
 
 		public override void AI()
 		{
@@ -45,7 +42,6 @@ namespace ExampleMod.Projectiles.Pets
 				projectile.active = false;
 				return;
 			}
-
 			if (player.dead)
 			{
 				modPlayer.exampleLightPet = false;
@@ -54,7 +50,6 @@ namespace ExampleMod.Projectiles.Pets
 			{
 				projectile.timeLeft = 2;
 			}
-
 			projectile.ai[1]++;
 			if (projectile.ai[1] > 1000 && ((int)projectile.ai[0] % 100 == 0))
 			{
@@ -70,11 +65,8 @@ namespace ExampleMod.Projectiles.Pets
 					}
 				}
 			}
-
 			projectile.rotation += projectile.velocity.X / 20f;
-
 			Lighting.AddLight(projectile.Center, ((255 - projectile.alpha) * 0.9f) / 255f, ((255 - projectile.alpha) * 0.1f) / 255f, ((255 - projectile.alpha) * 0.3f) / 255f);
-
 			if (projectile.velocity.Length() > 1f)
 			{
 				projectile.velocity *= .98f;
@@ -84,7 +76,6 @@ namespace ExampleMod.Projectiles.Pets
 				projectile.velocity = Vector2.UnitX.RotatedBy(Main.rand.NextFloat() * Math.PI * 2);
 				projectile.velocity *= 2f;
 			}
-
 			projectile.ai[0]++;
 			if (projectile.ai[0] < fadeInTicks)
 			{
@@ -110,7 +101,6 @@ namespace ExampleMod.Projectiles.Pets
 				Vector2 vectorToPlayer = player.Center - projectile.Center;
 				projectile.velocity = 2f * Vector2.Normalize(vectorToPlayer);
 			}
-
 			if (Vector2.Distance(player.Center, projectile.Center) > rangeHypoteneus)
 			{
 				projectile.Center = new Vector2(Main.rand.Next((int)player.Center.X - range, (int)player.Center.X + range), Main.rand.Next((int)player.Center.Y - range, (int)player.Center.Y + range));
@@ -118,7 +108,6 @@ namespace ExampleMod.Projectiles.Pets
 				Vector2 vectorToPlayer = player.Center - projectile.Center;
 				projectile.velocity += 2f * Vector2.Normalize(vectorToPlayer);
 			}
-
 			if ((int)projectile.ai[0] % 100 == 0)
 			{
 				projectile.velocity = projectile.velocity.RotatedByRandom(MathHelper.ToRadians(90));

@@ -142,6 +142,11 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
+		public virtual bool AltFunctionUse(Item item, Player player)
+		{
+			return false;
+		}
+
 		public virtual void UpdateInventory(Item item, Player player)
 		{
 		}

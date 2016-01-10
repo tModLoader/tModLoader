@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -29,7 +29,6 @@ namespace ExampleMod.Buffs
 			{
 				Projectile.NewProjectile(player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, mod.ProjectileType("ExampleLightPet"), 0, 0f, player.whoAmI, 0f, 0f);
 			}
-
 			if ((player.controlDown && player.releaseDown))
 			{
 				if (player.doubleTapCardinalTimer[0] > 0 && player.doubleTapCardinalTimer[0] != 15)

@@ -26,7 +26,7 @@ namespace ExampleMod.Items.Weapons
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Starfury);
-			recipe.AddCraftGroup(CraftGroup.GetVanillaGroup("IronBar"), 5);
+			recipe.AddCraftGroup(CraftGroup.IronBar, 5);
 			recipe.AddTile(TileID.FireflyinaBottle);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
