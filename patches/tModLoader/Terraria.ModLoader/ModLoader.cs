@@ -122,6 +122,11 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
+		public static string[] GetLoadedMods()
+		{
+			return loadOrder.ToArray();
+		}
+
 		internal static void Load()
 		{
 			ThreadPool.QueueUserWorkItem(new WaitCallback(do_Load), 1);
