@@ -15,9 +15,7 @@ namespace ExampleMod.Items
 			item.toolTip = "This is a modded mount.";
 			item.useTime = 20;
 			item.useAnimation = 20;
-			item.pick = 220;
 			item.useStyle = 1;
-			item.knockBack = 6;
 			item.value = 30000;
 			item.rare = 2;
 			item.useSound = 79;

@@ -5,11 +5,11 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Placeable
 {
-	public class AbominationTrophy : ModItem
+	public class BunnyTrophy : ModItem
 	{
 		public override void SetDefaults()
 		{
-			item.name = "Abomination Trophy";
+			item.name = "Bunny Trophy";
 			item.width = 30;
 			item.height = 30;
 			item.maxStack = 99;
@@ -22,7 +22,7 @@ namespace ExampleMod.Items.Placeable
 			item.value = 50000;
 			item.rare = 1;
 			item.createTile = mod.TileType("BossTrophy");
-			item.placeStyle = 0;
+			item.placeStyle = 2;
 		}
 	}
 }

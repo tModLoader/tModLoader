@@ -44,6 +44,15 @@ namespace Terraria.ModLoader.UI
 						remainder = drawString[drawString.Length - 1] + remainder;
 						drawString = drawString.Substring(0, drawString.Length - 1);
 					}
+					if (remainder.Length > 0)
+					{
+						int index = drawString.LastIndexOf(' ');
+						if (index >= 0)
+						{
+							remainder = drawString.Substring(index + 1) + remainder;
+							drawString = drawString.Substring(0, index);
+						}
+					}
 					if (position + textHeight > space.Height)
 					{
 						flag = true;

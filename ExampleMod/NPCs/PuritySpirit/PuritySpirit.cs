@@ -43,6 +43,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 			NPCID.Sets.MustAlwaysDraw[npc.type] = true;
 			music = MusicID.Title;
+			bossBag = mod.ItemType("PuritySpiritBag");
 		}
 
 		public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
@@ -665,7 +666,45 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public override void NPCLoot()
 		{
-			
+			int choice = Main.rand.Next(10);
+			int item = 0;
+			switch (choice)
+			{
+				case 0:
+					item = mod.ItemType("PuritySpiritTrophy");
+					break;
+				case 1:
+					item = mod.ItemType("BunnyTrophy");
+					break;
+				case 2:
+					item = mod.ItemType("TreeTrophy");
+					break;
+			}
+			if (item > 0)
+			{
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, item);
+			}
+			if (Main.expertMode)
+			{
+				npc.DropBossBags();
+			}
+			else
+			{
+				choice = Main.rand.Next(7);
+				if (choice == 0)
+				{
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PuritySpiritMask"));
+				}
+				else if (choice == 1)
+				{
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BunnyMask"));
+				}
+				if (choice != 1)
+				{
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Bunny);
+				}
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityShield"));
+			}
 		}
 
 		public override void BossLoot(ref string name, ref int potionType)

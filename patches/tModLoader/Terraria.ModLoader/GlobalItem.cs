@@ -245,8 +245,12 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		public virtual void DrawArmorColor(EquipType type, int slot, ref Color color, ref int glowMask, ref Color glowMaskColor,
-			ref int armGlowMask, ref Color armGlowMaskColor)
+		public virtual void DrawArmorColor(EquipType type, int slot, Player drawPlayer, float shadow, ref Color color,
+			ref int glowMask, ref Color glowMaskColor)
+		{
+		}
+
+		public virtual void ArmorArmGlowMask(int slot, Player drawPlayer, float shadow, ref int glowMask, ref Color color)
 		{
 		}
 

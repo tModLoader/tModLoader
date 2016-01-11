@@ -24,9 +24,25 @@ namespace ExampleMod.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			if (frameX == 0)
+			int item = 0;
+			switch (frameX / 54)
 			{
-				Item.NewItem(i * 16, j * 16, 48, 48, mod.ItemType("AbominationTrophy"));
+				case 0:
+					item = mod.ItemType("AbominationTrophy");
+					break;
+				case 1:
+					item = mod.ItemType("PuritySpiritTrophy");
+					break;
+				case 2:
+					item = mod.ItemType("BunnyTrophy");
+					break;
+				case 3:
+					item = mod.ItemType("TreeTrophy");
+					break;
+			}
+			if (item > 0)
+			{
+				Item.NewItem(i * 16, j * 16, 48, 48, item);
 			}
 		}
 	}

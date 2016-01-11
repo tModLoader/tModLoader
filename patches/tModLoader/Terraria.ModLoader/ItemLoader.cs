@@ -883,18 +883,30 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		public static void DrawArmorColor(EquipType type, int slot, ref Color color, ref int glowMask,
-			ref Color glowMaskColor, ref int armGlowMask, ref Color armGlowMaskColor)
+		public static void DrawArmorColor(EquipType type, int slot, Player drawPlayer, float shadow, ref Color color,
+			ref int glowMask, ref Color glowMaskColor)
 		{
 			EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
 			if (texture != null)
 			{
-				texture.DrawArmorColor(ref color, ref glowMask, ref glowMaskColor, ref armGlowMask, ref armGlowMaskColor);
+				texture.DrawArmorColor(drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				globalItem.DrawArmorColor(type, slot, ref color, ref glowMask, ref glowMaskColor,
-					ref armGlowMask, ref armGlowMaskColor);
+				globalItem.DrawArmorColor(type, slot, drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
+			}
+		}
+
+		public static void ArmorArmGlowMask(int slot, Player drawPlayer, float shadow, ref int glowMask, ref Color color)
+		{
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Body, slot);
+			if (texture != null)
+			{
+				texture.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.ArmorArmGlowMask(slot, drawPlayer, shadow, ref glowMask, ref color);
 			}
 		}
 

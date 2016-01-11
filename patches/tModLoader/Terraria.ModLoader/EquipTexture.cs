@@ -114,12 +114,19 @@ namespace Terraria.ModLoader
 			return item == null || item.DrawLegs();
 		}
 
-		public virtual void DrawArmorColor(ref Color color, ref int glowMask, ref Color glowMaskColor,
-			ref int armGlowMask, ref Color armGlowMaskColor)
+		public virtual void DrawArmorColor(Player drawPlayer, float shadow, ref Color color, ref int glowMask, ref Color glowMaskColor)
 		{
 			if (item != null)
 			{
-				item.DrawArmorColor(ref color, ref glowMask, ref glowMaskColor, ref armGlowMask, ref armGlowMaskColor);
+				item.DrawArmorColor(drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
+			}
+		}
+
+		public virtual void ArmorArmGlowMask(Player drawPlayer, float shadow, ref int glowMask, ref Color color)
+		{
+			if (item != null)
+			{
+				item.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
 			}
 		}
 
