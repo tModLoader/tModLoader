@@ -10,3 +10,5 @@
 *.cache
 ExampleMod/obj/x86/Debug/ExampleMod.csproj.FileListAbsolute.txt
 *.force
+ExampleMod/bin/Debug/ConsoleApplication.vshost.exe
+ExampleMod/bin/Debug/ConsoleApplication.vshost.exe.manifest
