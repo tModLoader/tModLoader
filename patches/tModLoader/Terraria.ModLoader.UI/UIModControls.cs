@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.UI
 {
 	internal static class UIModControls
 	{
-		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int numButtons)
+		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons)
 		{
 			string[] currentBinding = new string[ModLoader.modHotKeys.Count];
 			int j = 0;
@@ -39,6 +39,7 @@ namespace Terraria.ModLoader.UI
 			buttonNames[numButtons - 2] = Lang.menu[86];
 			buttonScales[numButtons - 1] = 0.8f;
 			//	array4[15] = 16;
+			buttonVerticalSpacing[numButtons - 1] = 20;
 			buttonNames[numButtons - 1] = Lang.menu[5];
 			if (selectedMenu == numButtons - 1)
 			{

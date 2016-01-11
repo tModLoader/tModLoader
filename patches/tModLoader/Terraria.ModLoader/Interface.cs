@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 		internal static UIBuildMod buildMod = new UIBuildMod();
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
-		private static UIModInfo modInfo = new UIModInfo();
+		internal static UIModInfo modInfo = new UIModInfo();
 		internal static UIDownloadMod downloadMod = new UIDownloadMod();
 		internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
@@ -85,7 +85,7 @@ namespace Terraria.ModLoader
 		}
 		//add to end of if else chain of Main.menuMode in Terraria.Main.DrawMenu
 		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num4);
-		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int numButtons)
+		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons)
 		{
 			if (Main.menuMode == modsMenuID)
 			{
@@ -146,7 +146,7 @@ namespace Terraria.ModLoader
 			}
 			else if (Main.menuMode == modControlsID)
 			{
-				UIModControls.ModLoaderMenus(main, selectedMenu, buttonNames, buttonScales, ref offY, ref spacing, ref numButtons);
+				UIModControls.ModLoaderMenus(main, selectedMenu, buttonNames, buttonScales, buttonVerticalSpacing, ref offY, ref spacing, ref numButtons);
 			}
 			else if (Main.menuMode == updateMessageID)
 			{

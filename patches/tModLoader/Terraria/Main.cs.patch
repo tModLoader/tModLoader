@@ -1714,7 +1714,7 @@
  					}
 +					else
 +					{
-+						Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num4);
++						Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num, ref num3, ref num4);
 +					}
  				}
  			}

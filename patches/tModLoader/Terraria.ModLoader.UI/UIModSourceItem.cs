@@ -161,9 +161,10 @@ namespace Terraria.ModLoader.UI
 						{ "name", Path.GetFileNameWithoutExtension(filename) },
 						{ "version", bp.version },
 						{ "author", bp.author },
-						{ "description", "Coming Soon" },
+						{ "homepage", bp.homepage },
+						{ "description", bp.description },
 						{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
-						{ "modloaderversion", ModLoader.version },
+						{ "modloaderversion", bp.modBuildVersion },
 					};
 					byte[] result = IO.UploadFile.UploadFiles(url, files, values);
 					string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);

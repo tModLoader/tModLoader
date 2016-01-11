@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.UI
 		private UIText modName;
 		UITextPanel button2;
 
-		public UIModManageItem(string displayname, string name, string version, string author, string downloads, string downloadsversion)
+		public UIModManageItem(string displayname, string name, string version, string author, string downloads, string downloadsversion, string modloaderversion)
 		{
 			this.displayname = displayname;
 			this.version = version;
@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.UI
 			this.Height.Set(90f, 0f);
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
-			string text = displayname + " " + version + " - by " + author;
+			string text = displayname + " " + version + " - by " + author + " - " + modloaderversion;
 			this.modName = new UIText(text, 1f, false);
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);

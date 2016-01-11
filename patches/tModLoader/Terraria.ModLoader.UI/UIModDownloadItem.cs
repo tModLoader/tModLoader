@@ -17,6 +17,7 @@ namespace Terraria.ModLoader.UI
 		public string version;
 		public string author;
 		public string description;
+		public string homepage;
 		public string download;
 		public string timeStamp;
 		public int downloads;
@@ -26,13 +27,14 @@ namespace Terraria.ModLoader.UI
 		public bool update = false;
 		public bool exists = false;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string description, string download, int downloads, string timeStamp, bool update, bool exists)
+		public UIModDownloadItem(string displayname, string name, string version, string author, string description, string homepage, string download, int downloads, string timeStamp, bool update, bool exists)
 		{
 			this.displayname = displayname;
 			this.mod = name;
 			this.version = version;
 			this.author = author;
 			this.description = description;
+			this.homepage = homepage;
 			this.download = download;
 			this.downloads = downloads;
 			this.timeStamp = timeStamp;
@@ -177,7 +179,10 @@ namespace Terraria.ModLoader.UI
 		internal void Moreinfo(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10, -1, -1, 1);
-			Interface.modBrowser.selectedItem = this;
+			Interface.modInfo.SetModName(this.displayname);
+			Interface.modInfo.SetModInfo(this.description);
+			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);
+			Interface.modInfo.SetURL(this.homepage);
 			Main.menuMode = Interface.modInfoID;
 		}
 	}

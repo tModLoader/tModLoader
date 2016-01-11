@@ -765,7 +765,8 @@ namespace Terraria.ModLoader
 				File.Move(refFile, realRefFile);
 				compileOptions.ReferencedAssemblies.Add(realRefFile);
 			}
-			CodeDomProvider codeProvider = new CSharpCodeProvider();
+			var options = new Dictionary<string, string> { { "CompilerVersion", "v4.0" } };
+			CodeDomProvider codeProvider = new CSharpCodeProvider(options);
 			CompilerResults results = codeProvider.CompileAssemblyFromFile(compileOptions, Directory.GetFiles(modDir, "*.cs", SearchOption.AllDirectories));
 			CompilerErrorCollection errors = results.Errors;
 			foreach (string reference in properties.modReferences)

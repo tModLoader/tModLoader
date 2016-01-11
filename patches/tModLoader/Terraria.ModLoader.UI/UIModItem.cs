@@ -16,6 +16,8 @@ namespace Terraria.ModLoader.UI
 		private Texture2D innerPanelTexture;
 		private UIText modName;
 		internal bool enabled;
+		BuildProperties properties;
+		UITextPanel button2;
 
 		public UIModItem(TmodFile mod)
 		{
@@ -26,8 +28,8 @@ namespace Terraria.ModLoader.UI
 			this.Height.Set(90f, 0f);
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
-			base.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
-			BuildProperties properties = BuildProperties.ReadModFile(mod);
+			//base.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
+			properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : Path.GetFileNameWithoutExtension(mod.Name);
 			if (properties.version.Length > 0)
 			{
@@ -42,6 +44,28 @@ namespace Terraria.ModLoader.UI
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 			this.enabled = ModLoader.IsEnabled(mod.Name);
+			UITextPanel button = new UITextPanel("More info", 1f, false);
+			button.Width.Set(100f, 0f);
+			button.Height.Set(30f, 0f);
+			button.Left.Set(430f, 0f);
+			button.Top.Set(40f, 0f);
+			button.PaddingTop -= 2f;
+			button.PaddingBottom -= 2f;
+			button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+			button.OnClick += new UIElement.MouseEvent(this.Moreinfo);
+			base.Append(button);
+			button2 = new UITextPanel(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
+			button2.Width.Set(100f, 0f);
+			button2.Height.Set(30f, 0f);
+			button2.Left.Set(275f, 0f);
+			button2.Top.Set(40f, 0f);
+			button2.PaddingTop -= 2f;
+			button2.PaddingBottom -= 2f;
+			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+			button2.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
+			base.Append(button2);
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
@@ -72,9 +96,9 @@ namespace Terraria.ModLoader.UI
 				drawPos += new Vector2(120f, 5f);
 				Utils.DrawBorderString(spriteBatch, "Reload Required", drawPos, Color.White, 1f, 0f, 0f, -1);
 			}
-			string text = this.enabled ? "Click to Disable" : "Click to Enable";
-			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 150f, innerDimensions.Y + 50f);
-			Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
+			//string text = this.enabled ? "Click to Disable" : "Click to Enable";
+			//drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 150f, innerDimensions.Y + 50f);
+			//Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
 		}
 
 		public override void MouseOver(UIMouseEvent evt)
@@ -91,11 +115,33 @@ namespace Terraria.ModLoader.UI
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
+		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(12, -1, -1, 1);
+			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
+		}
+
+		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
+		{
+			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
+		}
+
 		internal void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(12, -1, -1, 1);
 			this.enabled = !this.enabled;
+			button2.SetText(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
 			ModLoader.SetModActive(this.mod, this.enabled);
+		}
+
+		internal void Moreinfo(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(10, -1, -1, 1);
+			Interface.modInfo.SetModName(properties.displayName);
+			Interface.modInfo.SetModInfo(properties.description);
+			Interface.modInfo.SetGotoMenu(Interface.modsMenuID);
+			Interface.modInfo.SetURL(properties.homepage);
+			Main.menuMode = Interface.modInfoID;
 		}
 	}
 }

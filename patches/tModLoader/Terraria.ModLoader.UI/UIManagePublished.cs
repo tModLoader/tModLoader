@@ -99,6 +99,8 @@ namespace Terraria.ModLoader.UI
 					uITextPanel.SetText("Mod Browser OFFLINE", 0.8f, true);
 					return;
 				}
+				uITextPanel.SetText("Mod Browser OFFLINE.", 0.8f, true);
+				return;
 			}
 			catch (Exception e)
 			{
@@ -117,7 +119,8 @@ namespace Terraria.ModLoader.UI
 					string author = xmlNode.SelectSingleNode("author").InnerText;
 					string downloads = xmlNode.SelectSingleNode("downloads").InnerText;
 					string downloadsversion = xmlNode.SelectSingleNode("downloadsversion").InnerText;
-					UIModManageItem modItem = new UIModManageItem(displayname, name, version, author, downloads, downloadsversion);
+					string modloaderversion = xmlNode.SelectSingleNode("modloaderversion").InnerText;
+					UIModManageItem modItem = new UIModManageItem(displayname, name, version, author, downloads, downloadsversion, modloaderversion);
 					myPublishedMods.Add(modItem);
 				}
 			}

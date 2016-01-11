@@ -17,14 +17,21 @@ namespace Terraria.ModLoader
 		internal bool hideCode = true;
 		internal bool hideResources = true;
 		internal bool includeSource = false;
+		internal string homepage = "";
+		internal string description = "";
 
 		internal static BuildProperties ReadBuildFile(string modDir)
 		{
 			string propertiesFile = modDir + Path.DirectorySeparatorChar + "build.txt";
+			string descriptionfile = modDir + Path.DirectorySeparatorChar + "description.txt";
 			BuildProperties properties = new BuildProperties();
 			if (!File.Exists(propertiesFile))
 			{
 				return properties;
+			}
+			if (File.Exists(descriptionfile))
+			{
+				properties.description = File.ReadAllText(descriptionfile);
 			}
 			string[] lines = File.ReadAllLines(propertiesFile);
 			foreach (string line in lines)
@@ -74,6 +81,9 @@ namespace Terraria.ModLoader
 						break;
 					case "displayName":
 						properties.displayName = value;
+						break;
+					case "homepage":
+						properties.homepage = value;
 						break;
 					case "noCompile":
 						properties.noCompile = value.ToLower() == "true";
@@ -131,6 +141,16 @@ namespace Terraria.ModLoader
 					{
 						writer.Write("displayName");
 						writer.Write(displayName);
+					}
+					if (homepage.Length > 0)
+					{
+						writer.Write("homepage");
+						writer.Write(homepage);
+					}
+					if (description.Length > 0)
+					{
+						writer.Write("description");
+						writer.Write(description);
 					}
 					if (noCompile)
 					{
@@ -207,6 +227,14 @@ namespace Terraria.ModLoader
 						if (tag == "displayName")
 						{
 							properties.displayName = reader.ReadString();
+						}
+						if (tag == "homepage")
+						{
+							properties.homepage = reader.ReadString();
+						}
+						if (tag == "description")
+						{
+							properties.description = reader.ReadString();
 						}
 						if (tag == "noCompile")
 						{
