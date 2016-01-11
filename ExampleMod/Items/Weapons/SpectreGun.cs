@@ -24,7 +24,7 @@ namespace ExampleMod.Items.Weapons
 			item.knockBack = 4f;
 			item.value = Item.sellPrice(0, 10, 0, 0);
 			item.rare = 8;
-			item.useSound = 43;
+			item.useSound = mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo");
 			item.autoReuse = true;
 			item.shoot = mod.ProjectileType("Wisp");
 			item.shootSpeed = 6f;
