@@ -40,11 +40,11 @@ namespace Terraria.ModLoader
 			{
 				foreach (CompilerError error in errors)
 				{
-					if (!error.IsWarning)
+					writer.WriteLine(error.ToString());
+					writer.WriteLine();
+					if (!error.IsWarning && displayError == null)
 					{
 						displayError = error;
-						writer.WriteLine(error.ToString());
-						writer.WriteLine();
 					}
 				}
 			}

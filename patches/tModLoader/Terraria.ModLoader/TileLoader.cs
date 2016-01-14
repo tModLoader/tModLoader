@@ -573,6 +573,23 @@ namespace Terraria.ModLoader
 				globalTile.ModifyLight(i, j, type, ref r, ref g, ref b);
 			}
 		}
+
+		public static bool Dangersense(int i, int j, int type, Player player)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile != null && modTile.Dangersense(i, j, player))
+			{
+				return true;
+			}
+			foreach (GlobalTile globalTile in globalTiles)
+			{
+				if (globalTile.Dangersense(i, j, type, player))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 		//in Terraria.Main.DrawTiles after if statement setting effects call
 		//  TileLoader.SetSpriteEffects(j, i, type, ref effects);
 		public static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects)

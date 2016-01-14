@@ -35,7 +35,7 @@ namespace ExampleMod.Tiles
 			adjTiles = new int[] { TileID.Dressers, TileID.Containers };
 			chest = "Example Dresser";
 		}
-		
+
 		public override bool CanKillTile(int i, int j, ref bool blockDamaged)
 		{
 			Tile tile = Main.tile[i, j];
@@ -228,7 +228,7 @@ namespace ExampleMod.Tiles
 		{
 			num = fail ? 1 : 3;
 		}
-		
+
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
 			Item.NewItem(i * 16, j * 16, 48, 32, mod.ItemType("ExampleDresser"));

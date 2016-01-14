@@ -28,7 +28,7 @@ namespace ExampleMod.Items
 			item.lifeRegen = 19;
 		}
 
-		public override void UpdateAccessory(Player player)
+		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			if (player.name == "bluemagic123")
 			{

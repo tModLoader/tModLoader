@@ -29,7 +29,7 @@ namespace ExampleMod.Items.Abomination
 			return new DrawAnimationVertical(10, 4);
 		}
 
-		public override void UpdateAccessory(Player player)
+		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).elementShield = true;
 		}

@@ -155,7 +155,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void UpdateAccessory(Item item, Player player)
+		public virtual void UpdateAccessory(Item item, Player player, bool hideVisual)
 		{
 		}
 

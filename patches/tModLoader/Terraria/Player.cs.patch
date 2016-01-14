@@ -487,7 +487,7 @@
 +							Main.musicBox2 = SoundLoader.itemToMusic[this.armor[l].type];
 +						}
 +					}
-+					ItemLoader.UpdateAccessory(this.armor[l], this);
++					ItemLoader.UpdateAccessory(this.armor[l], this, this.hideVisual[l]);
  				}
  			}
  			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)

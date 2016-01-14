@@ -184,7 +184,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void UpdateAccessory(Player player)
+		public virtual void UpdateAccessory(Player player, bool hideVisual)
 		{
 		}
 
@@ -413,6 +413,11 @@ namespace Terraria.ModLoader
 			newItem.projOnSwing = projOnSwing;
 			newItem.bossBagNPC = bossBagNPC;
 			clone.modItem = newItem;
+			clone.itemInfo.Clear();
+			foreach (ItemInfo info in item.itemInfo)
+			{
+				clone.itemInfo.Add(info.Clone());
+			}
 		}
 
 		public virtual ModItem Clone()

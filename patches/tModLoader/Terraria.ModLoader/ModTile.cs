@@ -134,6 +134,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool Dangersense(int i, int j, Player player)
+		{
+			return false;
+		}
+
 		public virtual void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects)
 		{
 		}

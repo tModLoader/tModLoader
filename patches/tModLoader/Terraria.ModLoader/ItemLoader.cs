@@ -569,16 +569,16 @@ namespace Terraria.ModLoader
 			}
 		}
 		//place at end of third for loop of Terraria.Player.UpdateEquips
-		//  call ItemLoader.UpdateAccessory(this.armor[l], this)
-		public static void UpdateAccessory(Item item, Player player)
+		//  call ItemLoader.UpdateAccessory(this.armor[l], this, this.hideVisual[l])
+		public static void UpdateAccessory(Item item, Player player, bool hideVisual)
 		{
 			if (IsModItem(item))
 			{
-				item.modItem.UpdateAccessory(player);
+				item.modItem.UpdateAccessory(player, hideVisual);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				globalItem.UpdateAccessory(item, player);
+				globalItem.UpdateAccessory(item, player, hideVisual);
 			}
 		}
 
