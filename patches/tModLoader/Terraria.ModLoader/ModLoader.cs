@@ -21,12 +21,12 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		public static readonly string version = "tModLoader v0.7.1";
-		#if WINDOWS
+#if WINDOWS
 		private const bool windows = true;
 
 #else
 		private const bool windows = false;
-		#endif
+#endif
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
@@ -614,6 +614,10 @@ namespace Terraria.ModLoader
 					string[] resources = Directory.GetFiles(modToBuild, "*", SearchOption.AllDirectories);
 					foreach (string resource in resources)
 					{
+						if (properties.ignoreFile(resource.Replace(modToBuild + Path.DirectorySeparatorChar, null)))
+						{
+							continue;
+						}
 						if (Path.GetExtension(resource) == ".cs" && !properties.includeSource)
 						{
 							continue;

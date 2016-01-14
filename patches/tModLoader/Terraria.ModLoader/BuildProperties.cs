@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -10,6 +12,7 @@ namespace Terraria.ModLoader
 		internal string modBuildVersion = "";
 		internal string[] dllReferences = new string[0];
 		internal string[] modReferences = new string[0];
+		internal string[] buildIgnores = new string[0];
 		internal string author = "";
 		internal string version = "";
 		internal string displayName = "";
@@ -96,6 +99,18 @@ namespace Terraria.ModLoader
 						break;
 					case "includeSource":
 						properties.includeSource = value.ToLower() == "true";
+						break;
+					case "buildIgnore":
+						string[] buildIgnores = value.Split(',');
+						for (int k = 0; k < buildIgnores.Length; k++)
+						{
+							string buildIgnore = buildIgnores[k].Trim();
+							if (buildIgnore.Length > 0)
+							{
+								buildIgnores[k] = buildIgnore;
+							}
+						}
+						properties.buildIgnores = buildIgnores;
 						break;
 				}
 			}
@@ -256,6 +271,25 @@ namespace Terraria.ModLoader
 				}
 			}
 			return properties;
+		}
+
+		internal bool ignoreFile(string resource)
+		{
+			return this.buildIgnores.Any(fileMask => FitsMask(resource, fileMask));
+		}
+
+		private bool FitsMask(string fileName, string fileMask)
+		{
+			string pattern =
+				 '^' +
+				 Regex.Escape(fileMask.Replace(".", "__DOT__")
+								 .Replace("*", "__STAR__")
+								 .Replace("?", "__QM__"))
+					 .Replace("__DOT__", "[.]")
+					 .Replace("__STAR__", ".*")
+					 .Replace("__QM__", ".")
+				 + '$';
+			return new Regex(pattern, RegexOptions.IgnoreCase).IsMatch(fileName);
 		}
 	}
 }

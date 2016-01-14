@@ -110,6 +110,7 @@
     <Compile Include="Items\Placeable\ExampleBlock.cs" />
     <Compile Include="Items\Placeable\ExampleChair.cs" />
     <Compile Include="Items\Placeable\ExampleChest.cs" />
+    <Compile Include="Items\Placeable\ExampleClock.cs" />
     <Compile Include="Items\Placeable\ExampleDoor.cs" />
     <Compile Include="Items\Placeable\ExampleDresser.cs" />
     <Compile Include="Items\Placeable\ExampleMusicBox.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Tiles\ExampleBlock.cs" />
     <Compile Include="Tiles\ExampleChair.cs" />
     <Compile Include="Tiles\ExampleChest.cs" />
+    <Compile Include="Tiles\ExampleClock.cs" />
     <Compile Include="Tiles\ExampleDoorClosed.cs" />
     <Compile Include="Tiles\ExampleDoorOpen.cs" />
     <Compile Include="Tiles\ExampleDresser.cs" />
