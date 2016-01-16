@@ -963,6 +963,15 @@
  					}
  					if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
  					{
+@@ -23216,7 +23367,7 @@
+ 			if (Main.playerInventory)
+ 			{
+ 				bool flag = false;
+-				for (int l = 0; l < 419; l++)
++				for (int l = 0; l < this.adjTile.Length; l++)
+ 				{
+ 					if (this.oldAdjTile[l] != this.adjTile[l])
+ 					{
 @@ -23467,6 +23618,7 @@
  			{
  				this.boneArmor = true;
@@ -1881,7 +1890,7 @@
  			int[] array = new int[2];
  			this.hurtCooldowns = array;
  			this.width = 20;
-@@ -34288,9 +34599,7 @@
+@@ -34288,16 +34599,14 @@
  			}
  			this.trashItem = new Item();
  			this.grappling[0] = -1;
@@ -1892,6 +1901,14 @@
  			this.statManaMax = 20;
  			this.extraAccessory = false;
  			if (Main.cEd)
+ 			{
+ 				this.inventory[3].SetDefaults(603, false);
+ 			}
+-			for (int n = 0; n < 419; n++)
++			for (int n = 0; n < this.adjTile.Length; n++)
+ 			{
+ 				this.adjTile[n] = false;
+ 				this.oldAdjTile[n] = false;
 @@ -34400,6 +34709,7 @@
  
  		public void GetAnglerReward()

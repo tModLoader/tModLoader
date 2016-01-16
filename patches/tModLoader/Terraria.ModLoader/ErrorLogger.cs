@@ -127,6 +127,10 @@ namespace Terraria.ModLoader
 				message += "\nThis mod has automatically been disabled.";
 			}
 			message += "\n\n" + e.Message + "\n" + e.StackTrace;
+			if (Main.dedServ)
+			{
+				Console.WriteLine(message);
+			}
 			Interface.errorMessage.SetMessage(message);
 			Interface.errorMessage.SetGotoMenu(Interface.reloadModsID);
 			Interface.errorMessage.SetFile(file);

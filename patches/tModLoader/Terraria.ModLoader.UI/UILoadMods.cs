@@ -21,44 +21,69 @@ namespace Terraria.ModLoader.UI
 
 		internal void SetProgressFinding()
 		{
-			loadProgress.SetText("Finding Mods...");
-			loadProgress.SetProgress(0f);
+			if (!Main.dedServ)
+			{
+				loadProgress.SetText("Finding Mods...");
+				loadProgress.SetProgress(0f);
+			}
 		}
 
 		internal void SetProgressCompatibility(string mod, int num, int max)
 		{
-			loadProgress.SetText("Compatibilizing: " + mod);
-			loadProgress.SetProgress((float)num / (float)max);
+			if (!Main.dedServ)
+			{
+				loadProgress.SetText("Compatibilizing: " + mod);
+				loadProgress.SetProgress((float)num / (float)max);
+			}
 		}
 
 		internal void SetProgressReading(string mod, int num, int max)
 		{
-			loadProgress.SetText("Reading: " + mod);
-			loadProgress.SetProgress((float)num / (float)max);
+			if (!Main.dedServ)
+			{
+				loadProgress.SetText("Reading: " + mod);
+				loadProgress.SetProgress((float)num / (float)max);
+			}
+			else if (num == 0)
+			{
+				Console.WriteLine("Reading: " + mod);
+			}
 		}
 
 		internal void SetProgressInit(string mod, int num, int max)
 		{
-			loadProgress.SetText("Initializing: " + mod);
-			loadProgress.SetProgress((float)num / (float)max);
+			if (!Main.dedServ)
+			{
+				loadProgress.SetText("Initializing: " + mod);
+				loadProgress.SetProgress((float)num / (float)max);
+			}
 		}
 
 		internal void SetProgressSetup(float progress)
 		{
-			loadProgress.SetText("Setting up...");
-			loadProgress.SetProgress(progress);
+			if (!Main.dedServ)
+			{
+				loadProgress.SetText("Setting up...");
+				loadProgress.SetProgress(progress);
+			}
 		}
 
 		internal void SetProgressLoad(string mod, int num, int max)
 		{
-			loadProgress.SetText("Loading Mod: " + mod);
-			loadProgress.SetProgress((float)num / (float)max);
+			if (!Main.dedServ)
+			{
+				loadProgress.SetText("Loading Mod: " + mod);
+				loadProgress.SetProgress((float)num / (float)max);
+			}
 		}
 
 		internal void SetProgressRecipes()
 		{
-			loadProgress.SetText("Adding Recipes...");
-			loadProgress.SetProgress(0f);
+			if (!Main.dedServ)
+			{
+				loadProgress.SetText("Adding Recipes...");
+				loadProgress.SetProgress(0f);
+			}
 		}
 	}
 }

@@ -30,14 +30,16 @@ namespace Terraria.ModLoader.UI
 			loadProgress.SetText("Reading Properties: " + Path.GetFileName(ModLoader.modToBuild));
 		}
 
-		internal void SetCompiling()
+		internal void SetCompiling(int num)
 		{
 			loadProgress.SetText("Compiling " + Path.GetFileName(ModLoader.modToBuild) + "...");
+			loadProgress.SetProgress((float)num / 2f);
 		}
 
 		internal void SetBuildText()
 		{
 			loadProgress.SetText("Building " + Path.GetFileName(ModLoader.modToBuild) + "...");
+			loadProgress.SetProgress(0f);
 		}
 	}
 }

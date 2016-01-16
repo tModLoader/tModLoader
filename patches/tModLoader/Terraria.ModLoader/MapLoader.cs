@@ -32,6 +32,10 @@ namespace Terraria.ModLoader
 		//in Terraria.Map.MapHelper.SaveMap add mod-type-check to darkness check
 		internal static void SetupModMap()
 		{
+			if (Main.dedServ)
+			{
+				return;
+			}
 			Array.Resize(ref MapHelper.tileLookup, TileLoader.TileCount());
 			Array.Resize(ref MapHelper.wallLookup, WallLoader.WallCount());
 			IList<Color> colors = new List<Color>();

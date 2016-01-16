@@ -21,11 +21,12 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		public static readonly string version = "tModLoader v0.7.0.1";
-#if WINDOWS
+		#if WINDOWS
 		private const bool windows = true;
+
 #else
 		private const bool windows = false;
-#endif
+		#endif
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
@@ -69,9 +70,24 @@ namespace Terraria.ModLoader
 			{
 				return;
 			}
+			AppDomain.CurrentDomain.AssemblyResolve += ResolveTerrariaReference;
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveDllReference;
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveModReference;
 			assemblyResolverAdded = true;
+		}
+
+		private static Assembly ResolveTerrariaReference(object sender, ResolveEventArgs args)
+		{
+			string name = args.Name;
+			if (name.IndexOf(',') >= 0)
+			{
+				name = name.Substring(0, name.IndexOf(','));
+			}
+			if (name == "Terraria")
+			{
+				return Assembly.GetExecutingAssembly();
+			}
+			return null;
 		}
 
 		private static Assembly ResolveDllReference(object sender, ResolveEventArgs args)
@@ -131,12 +147,16 @@ namespace Terraria.ModLoader
 			ThreadPool.QueueUserWorkItem(new WaitCallback(do_Load), 1);
 		}
 
-		private static void do_Load(object threadContext)
+		internal static void do_Load(object threadContext)
 		{
 			if (!LoadMods())
 			{
 				Main.menuMode = Interface.errorMessageID;
 				return;
+			}
+			if (Main.dedServ)
+			{
+				Console.WriteLine("Adding mod content...");
 			}
 			int num = 0;
 			foreach (Mod mod in mods.Values)
@@ -333,6 +353,10 @@ namespace Terraria.ModLoader
 					{
 						byte[] data = reader.ReadBytes(reader.ReadInt32());
 						files[path] = data;
+						if (Main.dedServ)
+						{
+							continue;
+						}
 						string extension = Path.GetExtension(path);
 						switch (extension)
 						{
@@ -551,7 +575,6 @@ namespace Terraria.ModLoader
 				return false;
 			}
 			LoadReferences();
-			Interface.buildMod.SetCompiling();
 			byte[] windowsData;
 			byte[] otherData;
 			if (properties.noCompile)
@@ -579,7 +602,9 @@ namespace Terraria.ModLoader
 			}
 			else
 			{
+				Interface.buildMod.SetCompiling(0);
 				windowsData = CompileMod(modToBuild, properties, true);
+				Interface.buildMod.SetCompiling(1);
 				otherData = CompileMod(modToBuild, properties, false);
 				if (windowsData == null || otherData == null)
 				{

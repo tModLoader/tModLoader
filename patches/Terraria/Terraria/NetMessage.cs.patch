@@ -1,5 +1,23 @@
 --- src/merged\Terraria\NetMessage.cs
 +++ src/Terraria\Terraria\NetMessage.cs
+@@ -318,7 +318,7 @@
+ 					writer.Write((byte)number5);
+ 					break;
+ 				case 18:
+-					writer.Write(Main.dayTime ? 1 : 0);
++					writer.Write((byte)(Main.dayTime ? 1 : 0));
+ 					writer.Write((int)Main.time);
+ 					writer.Write(Main.sunModY);
+ 					writer.Write(Main.moonModY);
+@@ -327,7 +327,7 @@
+ 					writer.Write((byte)number);
+ 					writer.Write((short)number2);
+ 					writer.Write((short)number3);
+-					writer.Write((number4 == 1f) ? 1 : 0);
++					writer.Write((byte)((number4 == 1f) ? 1 : 0));
+ 					break;
+ 				case 20:
+ 				{
 @@ -1499,7 +1499,7 @@
  								{
  									short[] arg_1FB_0 = array2;
