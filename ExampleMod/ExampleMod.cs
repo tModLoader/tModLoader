@@ -35,7 +35,10 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
 			RegisterHotKey("Random Buff", "P");
-			Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
+			if (!Main.dedServ)
+			{
+				Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
+			}
 			AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 			Main.instance.LoadTiles(TileID.Loom);
 			Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom");
