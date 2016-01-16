@@ -832,6 +832,7 @@ namespace Terraria.ModLoader
 
 		public static Texture2D GetTexture(string name)
 		{
+			if (Main.dedServ) return null;
 			if (!TextureExists(name))
 			{
 				throw new MissingResourceException("Missing texture " + name);
@@ -878,6 +879,7 @@ namespace Terraria.ModLoader
 
 		public static SoundEffect GetSound(string name)
 		{
+			if (Main.dedServ) return null;
 			if (!SoundExists(name))
 			{
 				throw new MissingResourceException("Missing sound " + name);

@@ -1,50 +1,38 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terraria", "..\src\tModLoader\Terraria.csproj", "{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrariaServer", "..\src\tModLoader\TerrariaServer.csproj", "{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrariaMac", "..\src\tModLoader\TerrariaMac.csproj", "{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrariaMacServer", "..\src\tModLoader\TerrariaMacServer.csproj", "{2790886F-7C81-438F-AD89-E8CA2B1BAD71}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrariaLinux", "..\src\tModLoader\TerrariaLinux.csproj", "{3134CA9C-99FE-45D3-9872-B21FB19A38C1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrariaLinuxServer", "..\src\tModLoader\TerrariaLinuxServer.csproj", "{E04611C6-316A-4D9B-A6D6-CCD5D417FE6D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x86 = Debug|x86
-		Release|x86 = Release|x86
+		LinuxRelease|x86 = LinuxRelease|x86
+		LinuxServerRelease|x86 = LinuxServerRelease|x86
+		MacRelease|x86 = MacRelease|x86
+		MacServerRelease|x86 = MacServerRelease|x86
+		WindowsDebug|x86 = WindowsDebug|x86
+		WindowsRelease|x86 = WindowsRelease|x86
+		WindowsServerDebug|x86 = WindowsServerDebug|x86
+		WindowsServerRelease|x86 = WindowsServerRelease|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.Debug|x86.ActiveCfg = Debug|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.Debug|x86.Build.0 = Debug|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.Release|x86.ActiveCfg = Release|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.Release|x86.Build.0 = Release|x86
-		{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}.Debug|x86.ActiveCfg = Debug|x86
-		{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}.Debug|x86.Build.0 = Debug|x86
-		{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}.Release|x86.ActiveCfg = Release|x86
-		{85BF1171-A0DC-4696-BFA4-D6E9DC4E0830}.Release|x86.Build.0 = Release|x86
-		{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}.Debug|x86.ActiveCfg = Debug|x86
-		{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}.Debug|x86.Build.0 = Debug|x86
-		{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}.Release|x86.ActiveCfg = Release|x86
-		{9B1110E5-84CB-43D9-88FC-A5ABA3E09D61}.Release|x86.Build.0 = Release|x86
-		{2790886F-7C81-438F-AD89-E8CA2B1BAD71}.Debug|x86.ActiveCfg = Debug|x86
-		{2790886F-7C81-438F-AD89-E8CA2B1BAD71}.Debug|x86.Build.0 = Debug|x86
-		{2790886F-7C81-438F-AD89-E8CA2B1BAD71}.Release|x86.ActiveCfg = Release|x86
-		{2790886F-7C81-438F-AD89-E8CA2B1BAD71}.Release|x86.Build.0 = Release|x86
-		{3134CA9C-99FE-45D3-9872-B21FB19A38C1}.Debug|x86.ActiveCfg = Debug|x86
-		{3134CA9C-99FE-45D3-9872-B21FB19A38C1}.Debug|x86.Build.0 = Debug|x86
-		{3134CA9C-99FE-45D3-9872-B21FB19A38C1}.Release|x86.ActiveCfg = Release|x86
-		{3134CA9C-99FE-45D3-9872-B21FB19A38C1}.Release|x86.Build.0 = Release|x86
-		{E04611C6-316A-4D9B-A6D6-CCD5D417FE6D}.Debug|x86.ActiveCfg = Debug|x86
-		{E04611C6-316A-4D9B-A6D6-CCD5D417FE6D}.Debug|x86.Build.0 = Debug|x86
-		{E04611C6-316A-4D9B-A6D6-CCD5D417FE6D}.Release|x86.ActiveCfg = Release|x86
-		{E04611C6-316A-4D9B-A6D6-CCD5D417FE6D}.Release|x86.Build.0 = Release|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|x86.ActiveCfg = LinuxRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|x86.Build.0 = LinuxRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|x86.ActiveCfg = LinuxServerRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|x86.Build.0 = LinuxServerRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|x86.ActiveCfg = MacRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|x86.Build.0 = MacRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|x86.ActiveCfg = MacServerRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|x86.Build.0 = MacServerRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|x86.ActiveCfg = WindowsDebug|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|x86.Build.0 = WindowsDebug|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|x86.ActiveCfg = WindowsRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|x86.Build.0 = WindowsRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|x86.ActiveCfg = WindowsServerDebug|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|x86.Build.0 = WindowsServerDebug|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|x86.ActiveCfg = WindowsServerRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|x86.Build.0 = WindowsServerRelease|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

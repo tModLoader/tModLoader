@@ -212,7 +212,7 @@ namespace Terraria.ModLoader
 		public void AddItem(string name, ModItem item, string texture)
 		{
 			Type type = item.GetType();
-			if (type.GetMethod("UpdateAccessory", new Type[]{ typeof(Player) }) != null)
+			if (type.GetMethod("UpdateAccessory", new Type[] { typeof(Player) }) != null)
 			{
 				throw new Exception("Item " + name + " uses an old UpdateAccessory hook");
 			}
@@ -1123,6 +1123,7 @@ namespace Terraria.ModLoader
 
 		public void AddMusicBox(int musicSlot, int itemType, int tileType, int tileFrameY = 0)
 		{
+			if (Main.dedServ) return;
 			if (musicSlot < Main.maxMusic)
 			{
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);
