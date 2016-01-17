@@ -21,12 +21,12 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		public static readonly string version = "tModLoader v0.7.0.1";
-		#if WINDOWS
+#if WINDOWS
 		private const bool windows = true;
 
 #else
 		private const bool windows = false;
-		#endif
+#endif
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
@@ -376,6 +376,12 @@ namespace Terraria.ModLoader
 								break;
 							case ".mp3":
 								string mp3Path = Path.ChangeExtension(path, null);
+								string wavCacheFilename = mp3Path.Replace('/', '_') + "_" + properties.version + ".wav";
+								if (WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
+								{
+									sounds[mp3Path] = SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename));
+									break;
+								}
 								ushort wFormatTag = 1;
 								ushort nChannels;
 								uint nSamplesPerSec;
@@ -413,6 +419,7 @@ namespace Terraria.ModLoader
 											writer.Write("data".ToCharArray());
 											writer.Write((UInt32)(wavDataLength));
 											output.Position = 0;
+											WAVCacheIO.SaveWavStream(output, wavCacheFilename);
 											sounds[mp3Path] = SoundEffect.FromStream(output);
 										}
 									}
