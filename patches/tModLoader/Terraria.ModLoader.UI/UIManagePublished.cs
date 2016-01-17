@@ -78,6 +78,7 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate()
 		{
 			myPublishedMods.Clear();
+			uITextPanel.SetText("My Published Mods", 0.8f, true);
 			String xmlText = "";
 			try
 			{
@@ -96,7 +97,7 @@ namespace Terraria.ModLoader.UI
 			{
 				if (e.Status == WebExceptionStatus.Timeout)
 				{
-					uITextPanel.SetText("Mod Browser OFFLINE", 0.8f, true);
+					uITextPanel.SetText("Mod Browser OFFLINE (Busy)", 0.8f, true);
 					return;
 				}
 				uITextPanel.SetText("Mod Browser OFFLINE.", 0.8f, true);

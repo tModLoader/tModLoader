@@ -193,6 +193,7 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!loaded)
 			{
+				uITextPanel.SetText("Mod Browser", 0.8f, true);
 				modListAll.Clear();
 				TmodFile[] modFiles = ModLoader.FindMods();
 				List<BuildProperties> modBuildProperties = new List<BuildProperties>();
@@ -218,7 +219,7 @@ namespace Terraria.ModLoader.UI
 				{
 					if (e.Status == WebExceptionStatus.Timeout)
 					{
-						uITextPanel.SetText("Mod Browser OFFLINE", 0.8f, true);
+						uITextPanel.SetText("Mod Browser OFFLINE (Busy)", 0.8f, true);
 						return;
 					}
 					if (e.Status == WebExceptionStatus.ProtocolError)
@@ -226,7 +227,7 @@ namespace Terraria.ModLoader.UI
 						var resp = (HttpWebResponse)e.Response;
 						if (resp.StatusCode == HttpStatusCode.NotFound)
 						{
-							uITextPanel.SetText("Mod Browser OFFLINE.", 0.8f, true);
+							uITextPanel.SetText("Mod Browser OFFLINE (404)", 0.8f, true);
 							return;
 						}
 						uITextPanel.SetText("Mod Browser OFFLINE..", 0.8f, true);
@@ -238,46 +239,54 @@ namespace Terraria.ModLoader.UI
 					ErrorLogger.LogModBrowserException(e);
 					return;
 				}
-				foreach (XmlNode xmlNode in xmlDoc.DocumentElement)
+				try
 				{
-					if (xmlNode.Name.Equals("update"))
+					foreach (XmlNode xmlNode in xmlDoc.DocumentElement)
 					{
-						updateAvailable = true;
-						updateText = xmlNode.SelectSingleNode("message").InnerText;
-						updateURL = xmlNode.SelectSingleNode("url").InnerText;
-					}
-					else if (xmlNode.Name.Equals("modlist"))
-					{
-						foreach (XmlNode xmlNode2 in xmlNode)
+						if (xmlNode.Name.Equals("update"))
 						{
-							string displayname = xmlNode2.SelectSingleNode("displayname").InnerText;
-							string name = xmlNode2.SelectSingleNode("name").InnerText;
-							string version = xmlNode2.SelectSingleNode("version").InnerText;
-							string author = xmlNode2.SelectSingleNode("author").InnerText;
-							string description = xmlNode2.SelectSingleNode("description").InnerText;
-							string homepage = xmlNode2.SelectSingleNode("homepage").InnerText;
-							string download = xmlNode2.SelectSingleNode("download").InnerText;
-							string timeStamp = xmlNode2.SelectSingleNode("updateTimeStamp").InnerText;
-							int downloads;
-							Int32.TryParse(xmlNode2.SelectSingleNode("downloads").InnerText, out downloads);
-							bool exists = false;
-							bool update = false;
-							foreach (BuildProperties bp in modBuildProperties)
+							updateAvailable = true;
+							updateText = xmlNode.SelectSingleNode("message").InnerText;
+							updateURL = xmlNode.SelectSingleNode("url").InnerText;
+						}
+						else if (xmlNode.Name.Equals("modlist"))
+						{
+							foreach (XmlNode xmlNode2 in xmlNode)
 							{
-								if (bp.displayName.Equals(displayname))
+								string displayname = xmlNode2.SelectSingleNode("displayname").InnerText;
+								string name = xmlNode2.SelectSingleNode("name").InnerText;
+								string version = xmlNode2.SelectSingleNode("version").InnerText;
+								string author = xmlNode2.SelectSingleNode("author").InnerText;
+								string description = xmlNode2.SelectSingleNode("description").InnerText;
+								string homepage = xmlNode2.SelectSingleNode("homepage").InnerText;
+								string download = xmlNode2.SelectSingleNode("download").InnerText;
+								string timeStamp = xmlNode2.SelectSingleNode("updateTimeStamp").InnerText;
+								int downloads;
+								Int32.TryParse(xmlNode2.SelectSingleNode("downloads").InnerText, out downloads);
+								bool exists = false;
+								bool update = false;
+								foreach (BuildProperties bp in modBuildProperties)
 								{
-									exists = true;
-									if (!bp.version.Equals(version))
+									if (bp.displayName.Equals(displayname))
 									{
-										update = true;
+										exists = true;
+										if (!bp.version.Equals(version))
+										{
+											update = true;
+										}
 									}
 								}
+								UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, description, homepage, download, downloads, timeStamp, update, exists);
+								modListAll.Add(modItem);
 							}
-							UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, description, homepage, download, downloads, timeStamp, update, exists);
-							modListAll.Add(modItem);
+							SortList(null, null);
 						}
-						SortList(null, null);
 					}
+				}
+				catch (Exception e)
+				{
+					ErrorLogger.LogModBrowserException(e);
+					return;
 				}
 				loaded = true;
 			}
