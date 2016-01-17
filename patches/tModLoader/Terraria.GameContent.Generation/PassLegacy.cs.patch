@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.Generation\PassLegacy.cs
++++ src/tModLoader\Terraria.GameContent.Generation\PassLegacy.cs
+@@ -5,7 +5,7 @@
+ 
+ namespace Terraria.GameContent.Generation
+ {
+-	internal class PassLegacy : GenPass
++	public class PassLegacy : GenPass
+ 	{
+ 		private static Dictionary<string, float> _weightMap = PassLegacy.GenerateWeightMap();
+ 		private WorldGenLegacyMethod _method;
+

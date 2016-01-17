@@ -483,6 +483,7 @@ namespace Terraria.ModLoader
 			ResizeArrays(true);
 			MapLoader.UnloadModMap();
 			modHotKeys.Clear();
+			ModWorldHooks.Unload();
 		}
 
 		internal static void Reload()
