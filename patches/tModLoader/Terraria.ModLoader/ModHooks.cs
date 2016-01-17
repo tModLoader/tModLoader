@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 			// Key is name, value is keycode
 			foreach (var item in ModLoader.modHotKeys)
 			{
-				if (item.Value.Item1.Equals(key))
+				if (item.Value.Item2.Equals(key))
 				{
 					foreach (Mod mod in ModLoader.mods.Values)
 					{

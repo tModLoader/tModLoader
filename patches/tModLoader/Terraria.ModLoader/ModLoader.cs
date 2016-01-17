@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 		private static readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 		private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		private static readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-		internal static readonly IDictionary<string, Tuple<string, string>> modHotKeys = new Dictionary<string, Tuple<string, string>>();
+		internal static readonly IDictionary<string, Tuple<Mod, string, string>> modHotKeys = new Dictionary<string, Tuple<Mod, string, string>>();
 
 		private static void LoadReferences()
 		{
@@ -910,9 +910,21 @@ namespace Terraria.ModLoader
 			return modSounds;
 		}
 
-		public static void RegisterHotKey(string name, string defaultKey)
+		public static void RegisterHotKey(Mod mod, string name, string defaultKey)
 		{
-			modHotKeys[name] = new Tuple<string, string>(defaultKey, defaultKey);
+			string configurationString = mod.Name + "_" + "HotKey" + "_" + name.Replace(' ', '_');
+			string keyFromConfigutation = Main.Configuration.Get<string>(configurationString, defaultKey);
+			modHotKeys[name] = new Tuple<Mod, string, string>(mod, keyFromConfigutation, defaultKey);
+		}
+
+		// example: ExampleMod_HotKey_Random_Buff="P"
+		internal static void SaveConfiguration()
+		{
+			foreach (KeyValuePair<string, Tuple<Mod, string, string>> hotKey in modHotKeys)
+			{
+				string name = hotKey.Value.Item1.Name + "_" + "HotKey" + "_" + hotKey.Key.Replace(' ', '_');
+ 				Main.Configuration.Put(name, hotKey.Value.Item2);
+			}
 		}
 
 		private static void AddCraftGroups()

@@ -1175,7 +1175,7 @@ namespace Terraria.ModLoader
 
 		public void RegisterHotKey(string name, string defaultKey)
 		{
-			ModLoader.RegisterHotKey(name, defaultKey);
+			ModLoader.RegisterHotKey(this, name, defaultKey);
 		}
 
 		internal void SetupContent()
