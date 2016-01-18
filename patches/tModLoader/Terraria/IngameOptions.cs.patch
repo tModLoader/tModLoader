@@ -86,7 +86,7 @@
  			}
  			Vector2 anchor2 = new Vector2(value3.X + value2.X * 3f / 4f, value3.Y + (float)(num * 5 / 2));
  			Vector2 offset2 = new Vector2(0f, value2.Y - (float)(num * 3)) / (float)(num8 + 1);
-@@ -1147,6 +1165,73 @@
+@@ -1147,6 +1165,72 @@
  							Main.setKey = -1;
  							Main.blockKey = pressedKeys2[0];
  							Main.blockInput = false;
@@ -129,7 +129,6 @@
 +					num13++;
 +					num14++;
 +				}
-+
 +				anchor2.X += 30f;
 +				if (IngameOptions.DrawRightSide(sb, Lang.menu[86], num13, anchor2, offset2, IngameOptions.rightScale[num13], (IngameOptions.rightScale[num13] - num2) / (num3 - num2), default(Color)))
 +				{

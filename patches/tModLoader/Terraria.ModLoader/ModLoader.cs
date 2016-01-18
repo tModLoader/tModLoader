@@ -21,12 +21,12 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		public static readonly string version = "tModLoader v0.7.0.1";
-#if WINDOWS
+		#if WINDOWS
 		private const bool windows = true;
 
 #else
 		private const bool windows = false;
-#endif
+		#endif
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
@@ -483,7 +483,7 @@ namespace Terraria.ModLoader
 			ResizeArrays(true);
 			MapLoader.UnloadModMap();
 			modHotKeys.Clear();
-			ModWorldHooks.Unload();
+			WorldHooks.Unload();
 		}
 
 		internal static void Reload()
@@ -917,14 +917,13 @@ namespace Terraria.ModLoader
 			string keyFromConfigutation = Main.Configuration.Get<string>(configurationString, defaultKey);
 			modHotKeys[name] = new Tuple<Mod, string, string>(mod, keyFromConfigutation, defaultKey);
 		}
-
 		// example: ExampleMod_HotKey_Random_Buff="P"
 		internal static void SaveConfiguration()
 		{
 			foreach (KeyValuePair<string, Tuple<Mod, string, string>> hotKey in modHotKeys)
 			{
 				string name = hotKey.Value.Item1.Name + "_" + "HotKey" + "_" + hotKey.Key.Replace(' ', '_');
- 				Main.Configuration.Put(name, hotKey.Value.Item2);
+				Main.Configuration.Put(name, hotKey.Value.Item2);
 			}
 		}
 

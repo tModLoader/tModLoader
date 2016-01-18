@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
@@ -25,22 +25,18 @@ namespace Terraria.ModLoader
 		{
 			return mod.Properties.Autoload;
 		}
-
 		//public virtual void WorldGenPostInit()
 		//{
 		//}
-
-		public virtual void WorldGenModifyTaskList(List<GenPass> list)
+		public virtual void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
 		}
 
-		public virtual void WorldGenPostGen()
+		public virtual void PostWorldGen()
 		{
 		}
-
 		//public virtual void WorldGenModifyHardmodeTaskList(List<GenPass> list)
 		//{
 		//}
-
 	}
 }

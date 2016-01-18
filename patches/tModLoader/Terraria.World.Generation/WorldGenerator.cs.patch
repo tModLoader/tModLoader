@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.World.Generation\WorldGenerator.cs
 +++ src/tModLoader\Terraria.World.Generation\WorldGenerator.cs
-@@ -2,12 +2,13 @@
+@@ -2,13 +2,14 @@
  using System.Collections.Generic;
  using System.Diagnostics;
  using Terraria.GameContent.UI.States;
@@ -12,16 +12,10 @@
 +	public class WorldGenerator
  	{
 -		private List<GenPass> _passes = new List<GenPass>();
-+		public List<GenPass> _passes = new List<GenPass>();
- 		private float _totalLoadWeight;
+-		private float _totalLoadWeight;
++		internal List<GenPass> _passes = new List<GenPass>();
++		internal float _totalLoadWeight;
  
  		public void Append(GenPass pass)
-@@ -18,6 +19,7 @@
- 
- 		public void GenerateWorld(GenerationProgress progress = null)
  		{
-+			ModWorldHooks.WorldGenModifyTaskList(this._passes);
- 			Stopwatch stopwatch = new Stopwatch();
- 			float num = 0f;
- 			foreach (GenPass current in this._passes)
 

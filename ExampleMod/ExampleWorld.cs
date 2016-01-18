@@ -6,16 +6,11 @@ using Terraria.World.Generation;
 
 namespace ExampleMod
 {
-	public class ExampleWorldGen : ModWorld
+	public class ExampleWorld : ModWorld
 	{
-		public override void WorldGenModifyTaskList(List<GenPass> list)
+		public override void PostWorldGen()
 		{
-			list.RemoveRange(10, list.Count - 10);
-		}
-
-		public override void WorldGenPostGen()
-		{
-			for(int i = 0; i<Main.maxTilesX; i++)
+			for(int i = 0; i < Main.maxTilesX; i++)
 			{
 				Main.tile[i, Main.maxTilesY / 2].type = TileID.Chlorophyte;
 			}

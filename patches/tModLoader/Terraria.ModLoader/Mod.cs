@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModMountData> mountDatas = new Dictionary<string, ModMountData>();
 		internal readonly IDictionary<string, ModBuff> buffs = new Dictionary<string, ModBuff>();
 		internal readonly IDictionary<string, GlobalBuff> globalBuffs = new Dictionary<string, GlobalBuff>();
-		internal readonly IDictionary<string, ModWorld> modWorlds = new Dictionary<string, ModWorld>();
+		internal readonly IDictionary<string, ModWorld> worlds = new Dictionary<string, ModWorld>();
 		/*
          * Initializes the mod's information, such as its name.
          */
@@ -1129,9 +1129,9 @@ namespace Terraria.ModLoader
 		public void AddModWorld(string name, ModWorld modWorld)
 		{
 			modWorld.Name = name;
-			modWorlds[name] = modWorld;
+			worlds[name] = modWorld;
 			modWorld.mod = this;
-			ModWorldHooks.Add(modWorld);
+			WorldHooks.Add(modWorld);
 		}
 
 		private void AutoloadModWorld(Type type)
@@ -1309,7 +1309,7 @@ namespace Terraria.ModLoader
 			globalNPCs.Clear();
 			buffs.Clear();
 			globalBuffs.Clear();
-			modWorlds.Clear();
+			worlds.Clear();
 		}
 
 		public string FileName(string fileName)

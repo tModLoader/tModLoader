@@ -123,7 +123,7 @@
 +    <Compile Include="Terraria.ModLoader\ModTile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWorld.cs" />
-+    <Compile Include="Terraria.ModLoader\ModWorldHooks.cs" />
++    <Compile Include="Terraria.ModLoader\WorldHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\MountTextureType.cs" />
 +    <Compile Include="Terraria.ModLoader\MusicWrapper.cs" />
@@ -161,8 +161,7 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>if "$(TerrariaSteamFolder)" == "" (copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\terraria") else (copy "$(TargetPath)" "$(TerrariaSteamFolder)")</PostBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
