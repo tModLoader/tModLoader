@@ -1145,6 +1145,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModWorld GetModWorld(string name)
+		{
+			if (worlds.ContainsKey(name))
+			{
+				return worlds[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 		public void AddMusicBox(int musicSlot, int itemType, int tileType, int tileFrameY = 0)
 		{
 			if (musicSlot < Main.maxMusic)

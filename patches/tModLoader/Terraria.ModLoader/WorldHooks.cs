@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader.Default;
+﻿using System.Collections.Generic;
 using Terraria.World.Generation;
 
 namespace Terraria.ModLoader
@@ -21,6 +17,14 @@ namespace Terraria.ModLoader
 			worlds.Clear();
 		}
 
+		public static void PostWorldGen()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostWorldGen();
+			}
+		}
+
 		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight)
 		{
 			foreach (ModWorld modWorld in worlds)
@@ -29,11 +33,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void PostWorldGen()
+		public static void PreWorldGen()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostWorldGen();
+				modWorld.PreWorldGen();
 			}
 		}
 	}

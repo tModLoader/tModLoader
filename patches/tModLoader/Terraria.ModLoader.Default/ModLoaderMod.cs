@@ -30,6 +30,7 @@ namespace Terraria.ModLoader.Default
 			AddItem("MysteryItem", new MysteryItem(), FileName("MysteryItem"));
 			AddItem("StartBag", new StartBag(), FileName("StartBag"));
 			AddPlayer("MysteryPlayer", new MysteryPlayer());
+			AddModWorld("MysteryWorld", new MysteryWorld());
 		}
 
 		private static void LoadTextures()
