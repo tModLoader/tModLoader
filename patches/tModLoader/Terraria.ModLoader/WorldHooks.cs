@@ -5,7 +5,7 @@ namespace Terraria.ModLoader
 {
 	public static class WorldHooks
 	{
-		private static readonly IList<ModWorld> worlds = new List<ModWorld>();
+		internal static readonly IList<ModWorld> worlds = new List<ModWorld>();
 
 		internal static void Add(ModWorld modWorld)
 		{
