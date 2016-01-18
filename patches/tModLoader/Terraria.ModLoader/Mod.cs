@@ -52,6 +52,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModMountData> mountDatas = new Dictionary<string, ModMountData>();
 		internal readonly IDictionary<string, ModBuff> buffs = new Dictionary<string, ModBuff>();
 		internal readonly IDictionary<string, GlobalBuff> globalBuffs = new Dictionary<string, GlobalBuff>();
+		internal readonly IDictionary<string, ModWorld> worlds = new Dictionary<string, ModWorld>();
 		/*
          * Initializes the mod's information, such as its name.
          */
@@ -197,6 +198,10 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(ModSound)))
 				{
 					modSounds.Add(type);
+				}
+				else if (type.IsSubclassOf(typeof(ModWorld)))
+				{
+					AutoloadModWorld(type);
 				}
 			}
 			if (Properties.AutoloadGores)
@@ -1121,6 +1126,37 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddModWorld(string name, ModWorld modWorld)
+		{
+			modWorld.Name = name;
+			worlds[name] = modWorld;
+			modWorld.mod = this;
+			WorldHooks.Add(modWorld);
+		}
+
+		private void AutoloadModWorld(Type type)
+		{
+			ModWorld modWorld = (ModWorld)Activator.CreateInstance(type);
+			modWorld.mod = this;
+			string name = type.Name;
+			if (modWorld.Autoload(ref name))
+			{
+				AddModWorld(name, modWorld);
+			}
+		}
+
+		public ModWorld GetModWorld(string name)
+		{
+			if (worlds.ContainsKey(name))
+			{
+				return worlds[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 		public void AddMusicBox(int musicSlot, int itemType, int tileType, int tileFrameY = 0)
 		{
 			if (Main.dedServ) return;
@@ -1176,7 +1212,7 @@ namespace Terraria.ModLoader
 
 		public void RegisterHotKey(string name, string defaultKey)
 		{
-			ModLoader.RegisterHotKey(name, defaultKey);
+			ModLoader.RegisterHotKey(this, name, defaultKey);
 		}
 
 		internal void SetupContent()
@@ -1286,6 +1322,7 @@ namespace Terraria.ModLoader
 			globalNPCs.Clear();
 			buffs.Clear();
 			globalBuffs.Clear();
+			worlds.Clear();
 		}
 
 		public string FileName(string fileName)

@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using Terraria;
+using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
@@ -152,6 +154,75 @@ namespace Terraria.ModLoader
 			{
 				Main.MenuUI.SetState(updateMessage);
 				Main.menuMode = 888;
+			}
+		}
+
+		internal static void ServerModMenu()
+		{
+			bool exit = false;
+			while (!exit)
+			{
+				Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.version);
+				Console.WriteLine();
+				TmodFile[] mods = ModLoader.FindMods();
+				for (int k = 0; k < mods.Length; k++)
+				{
+					BuildProperties properties = BuildProperties.ReadModFile(mods[k]);
+					string name = properties.displayName;
+					if (name.Length == 0)
+					{
+						name = Path.GetFileNameWithoutExtension(mods[k].Name);
+					}
+					string line = (k + 1) + "\t\t" + name + "(";
+					line += (ModLoader.IsEnabled(mods[k].Name) ? "enabled" : "disabled") + ")";
+					Console.WriteLine(line);
+				}
+				Console.WriteLine("e\t\tEnable All");
+				Console.WriteLine("d\t\tDisable All");
+				Console.WriteLine("r\t\tReload and return to world menu");
+				Console.WriteLine("Type a number to switch between enabled/disabled");
+				Console.WriteLine();
+				Console.WriteLine("Type a command: ");
+				string command = Console.ReadLine();
+				if (command == null)
+				{
+					command = "";
+				}
+				command = command.ToLower();
+				Console.Clear();
+				if (command == "e")
+				{
+					foreach (TmodFile mod in mods)
+					{
+						ModLoader.EnableMod(mod.Name);
+					}
+				}
+				else if (command == "d")
+				{
+					foreach (TmodFile mod in mods)
+					{
+						ModLoader.DisableMod(mod.Name);
+					}
+				}
+				else if (command == "r")
+				{
+					Console.WriteLine("Unloading mods...");
+					ModLoader.Unload();
+					ModLoader.do_Load(null);
+					exit = true;
+				}
+				else
+				{
+					int value;
+					if (Int32.TryParse(command, out value))
+					{
+						value--;
+						if (value >= 0 && value < mods.Length)
+						{
+							ModLoader.SetModActive(mods[value].Name, !ModLoader.IsEnabled(mods[value].Name));
+						}
+					}
+				}
 			}
 		}
 	}

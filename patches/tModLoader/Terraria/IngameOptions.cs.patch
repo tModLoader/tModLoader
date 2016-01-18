@@ -1,14 +1,16 @@
 --- src/Terraria\Terraria\IngameOptions.cs
 +++ src/tModLoader\Terraria\IngameOptions.cs
-@@ -2,6 +2,7 @@
+@@ -2,7 +2,9 @@
  using Microsoft.Xna.Framework.Graphics;
  using Microsoft.Xna.Framework.Input;
  using System;
 +using System.Linq;
  using Terraria.GameContent;
++using Terraria.ModLoader;
  using Terraria.Social;
  using Terraria.UI;
-@@ -137,6 +138,7 @@
+ 
+@@ -137,6 +139,7 @@
  			bool flag2 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
  			int num5 = flag2 ? 1 : 0;
  			int num6 = 6 + num5;
@@ -16,7 +18,7 @@
  			Vector2 anchor = new Vector2(value3.X + value2.X / 4f, value3.Y + (float)(num * 5 / 2));
  			Vector2 offset = new Vector2(0f, value2.Y - (float)(num * 5)) / (float)(num6 + 1);
  			for (int i = 0; i <= num6; i++)
-@@ -196,35 +198,44 @@
+@@ -196,35 +199,44 @@
  					Main.PlaySound(10, -1, -1, 1);
  				}
  			}
@@ -71,7 +73,7 @@
  				if (flag)
  				{
  					IngameOptions.Close();
-@@ -266,6 +277,12 @@
+@@ -266,6 +278,12 @@
  					num3 = 0.801f;
  					num4 = 0.001f;
  					break;
@@ -84,7 +86,7 @@
  			}
  			Vector2 anchor2 = new Vector2(value3.X + value2.X * 3f / 4f, value3.Y + (float)(num * 5 / 2));
  			Vector2 offset2 = new Vector2(0f, value2.Y - (float)(num * 3)) / (float)(num8 + 1);
-@@ -1147,6 +1164,73 @@
+@@ -1147,6 +1165,72 @@
  							Main.setKey = -1;
  							Main.blockKey = pressedKeys2[0];
  							Main.blockInput = false;
@@ -101,7 +103,7 @@
 +				int j = 0;
 +				foreach (var a in ModLoader.ModLoader.modHotKeys.Values)
 +				{
-+					currentBinding[j] = a.Item1;
++					currentBinding[j] = a.Item2;
 +					j++;
 +				}
 +				string[] hotKeyName = ModLoader.ModLoader.modHotKeys.Keys.ToArray<string>();
@@ -127,7 +129,6 @@
 +					num13++;
 +					num14++;
 +				}
-+				
 +				anchor2.X += 30f;
 +				if (IngameOptions.DrawRightSide(sb, Lang.menu[86], num13, anchor2, offset2, IngameOptions.rightScale[num13], (IngameOptions.rightScale[num13] - num2) / (num3 - num2), default(Color)))
 +				{
@@ -136,7 +137,7 @@
 +					{
 +						foreach (string key in ModLoader.ModLoader.modHotKeys.Keys.ToList())
 +						{
-+							ModLoader.ModLoader.modHotKeys[key] = new Tuple<string, string>(ModLoader.ModLoader.modHotKeys[key].Item2, ModLoader.ModLoader.modHotKeys[key].Item2);
++							ModLoader.ModLoader.modHotKeys[key] = new Tuple<Mod, string, string>(ModLoader.ModLoader.modHotKeys[key].Item1, ModLoader.ModLoader.modHotKeys[key].Item3, ModLoader.ModLoader.modHotKeys[key].Item3);
 +						}
 +						Main.setKey = -1;
 +					}
@@ -151,7 +152,7 @@
 +						string text = string.Concat(pressedKeys[0]);
 +						if (text != "None")
 +						{
-+							ModLoader.ModLoader.modHotKeys[ModLoader.ModLoader.modHotKeys.ElementAt(Main.setKey).Key] = new Tuple<string, string>(text, ModLoader.ModLoader.modHotKeys.ElementAt(Main.setKey).Value.Item2);
++							ModLoader.ModLoader.modHotKeys[ModLoader.ModLoader.modHotKeys.ElementAt(Main.setKey).Key] = new Tuple<Mod, string, string>(ModLoader.ModLoader.modHotKeys.ElementAt(Main.setKey).Value.Item1, text, ModLoader.ModLoader.modHotKeys.ElementAt(Main.setKey).Value.Item3);
 +							Main.blockKey = pressedKeys[0];
 +							Main.blockInput = false;
 +							Main.setKey = -1;

@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.UI
 			int j = 0;
 			foreach (var a in ModLoader.modHotKeys.Values)
 			{
-				currentBinding[j] = a.Item1;
+				currentBinding[j] = a.Item2;
 				j++;
 			}
 			string[] hotKeyName = ModLoader.modHotKeys.Keys.ToArray<string>();
@@ -50,7 +50,7 @@ namespace Terraria.ModLoader.UI
 			{
 				foreach (string key in ModLoader.modHotKeys.Keys.ToList())
 				{
-					ModLoader.modHotKeys[key] = new Tuple<string, string>(ModLoader.modHotKeys[key].Item2, ModLoader.modHotKeys[key].Item2);
+					ModLoader.modHotKeys[key] = new Tuple<Mod, string, string>(ModLoader.modHotKeys[key].Item1, ModLoader.modHotKeys[key].Item3, ModLoader.modHotKeys[key].Item3);
 				}
 				Main.setKey = -1;
 				Main.PlaySound(11, -1, -1, 1);
@@ -67,7 +67,7 @@ namespace Terraria.ModLoader.UI
 					string a3 = string.Concat(pressedKeys2[0]);
 					if (a3 != "None")
 					{
-						ModLoader.modHotKeys[ModLoader.modHotKeys.ElementAt(Main.setKey).Key] = new Tuple<string,string>(a3, ModLoader.modHotKeys.ElementAt(Main.setKey).Value.Item2);
+						ModLoader.modHotKeys[ModLoader.modHotKeys.ElementAt(Main.setKey).Key] = new Tuple<Mod, string, string>(ModLoader.modHotKeys.ElementAt(Main.setKey).Value.Item1, a3, ModLoader.modHotKeys.ElementAt(Main.setKey).Value.Item3);
 						Main.setKey = -1;
 					}
 				}

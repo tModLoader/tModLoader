@@ -78,6 +78,10 @@ namespace Terraria.ModLoader
 		{
 			tileEntries.Clear();
 			wallEntries.Clear();
+			if (Main.dedServ)
+			{
+				return;
+			}
 			nameFuncs.Clear();
 			entryToTile.Clear();
 			entryToWall.Clear();
