@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -4,7 +4,7 @@
+@@ -4,57 +4,126 @@
      <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
      <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
      <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -9,11 +9,16 @@
      <AssemblyName>Terraria</AssemblyName>
      <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
      <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-@@ -25,36 +25,118 @@
-     <DebugType>pdbonly</DebugType>
-     <Optimize>true</Optimize>
+     <WarningLevel>4</WarningLevel>
++    <DebugType>full</DebugType>
++    <DebugSymbols>true</DebugSymbols>
    </PropertyGroup>
--  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+     <PlatformTarget>x86</PlatformTarget>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+-    <OutputPath>bin\Debug\</OutputPath>
+-    <DebugSymbols>true</DebugSymbols>
 +  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
 +    <DefineConstants>SERVER; WINDOWS</DefineConstants>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -24,20 +29,15 @@
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
-+    <DebugSymbols>true</DebugSymbols>
 +    <OutputPath>bin\x86\MacRelease\</OutputPath>
 +    <DefineConstants>CLIENT; MAC</DefineConstants>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <Optimize>true</Optimize>
-+    <DebugType>full</DebugType>
-+    <PlatformTarget>x86</PlatformTarget>
-+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxRelease|x86'">
 +    <OutputPath>bin\x86\LinuxRelease\</OutputPath>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <Optimize>true</Optimize>
-+    <PlatformTarget>x86</PlatformTarget>
 +    <DefineConstants>CLIENT; LINUX</DefineConstants>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxServerRelease|x86'">
@@ -45,54 +45,65 @@
 +    <DefineConstants>SERVER; LINUX</DefineConstants>
 +    <Optimize>true</Optimize>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-+    <PlatformTarget>x86</PlatformTarget>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacServerRelease|x86'">
 +    <OutputPath>bin\x86\MacServerRelease\</OutputPath>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <Optimize>true</Optimize>
-+    <PlatformTarget>x86</PlatformTarget>
 +    <DefineConstants>SERVER; MAC</DefineConstants>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerRelease|x86'">
 +    <OutputPath>bin\x86\WindowsServerRelease\</OutputPath>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <Optimize>true</Optimize>
-+    <PlatformTarget>x86</PlatformTarget>
 +    <DefineConstants>SERVER; WINDOWS</DefineConstants>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
 +    <OutputPath>bin\x86\WindowsRelease\</OutputPath>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <Optimize>true</Optimize>
-+    <PlatformTarget>x86</PlatformTarget>
-     <DefineConstants>CLIENT; WINDOWS</DefineConstants>
--    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
--  </PropertyGroup>
--  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
++    <DefineConstants>CLIENT; WINDOWS</DefineConstants>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsDebug|x86'">
 +    <OutputPath>bin\x86\WindowsDebug\</OutputPath>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <Optimize>false</Optimize>
-+    <PlatformTarget>x86</PlatformTarget>
-     <DefineConstants>CLIENT; WINDOWS</DefineConstants>
-   </PropertyGroup>
++    <DefineConstants>CLIENT; WINDOWS</DefineConstants>
++  </PropertyGroup>
 +  <Choose>
-+   <When Condition="$(DefineConstants.Contains('CLIENT'))">
-+     <PropertyGroup>
-+       <OutputType>WinExe</OutputType>
-+     </PropertyGroup>
-+   </When>
-+   <Otherwise>
-+     <PropertyGroup>
-+       <OutputType>Exe</OutputType>
-+     </PropertyGroup>
-+   </Otherwise>
++    <When Condition="$(DefineConstants.Contains('CLIENT'))">
++      <PropertyGroup>
++        <OutputType>WinExe</OutputType>
++      </PropertyGroup>
++    </When>
++    <Otherwise>
++      <PropertyGroup>
++        <OutputType>Exe</OutputType>
++      </PropertyGroup>
++    </Otherwise>
 +  </Choose>
 +  <PropertyGroup>
 +    <StartupObject />
 +  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+     <DebugType>full</DebugType>
+-    <Optimize>false</Optimize>
+-  </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+-    <OutputPath>bin\Release\</OutputPath>
+-    <DebugSymbols>true</DebugSymbols>
+-    <DebugType>pdbonly</DebugType>
+-    <Optimize>true</Optimize>
++    <PlatformTarget>x86</PlatformTarget>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+-    <DefineConstants>CLIENT; WINDOWS</DefineConstants>
+-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+-    <DefineConstants>CLIENT; WINDOWS</DefineConstants>
++    <PlatformTarget>x86</PlatformTarget>
+   </PropertyGroup>
    <ItemGroup>
 -    <Reference Include="Ionic.Zip.CF">
 +    <Reference Include="FNA" Condition="!$(DefineConstants.Contains('WINDOWS'))">
@@ -138,7 +149,7 @@
      <Compile Include="Properties\AssemblyInfo.cs" />
      <Compile Include="Terraria.Achievements\Achievement.cs" />
      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
-@@ -209,6 +291,7 @@
+@@ -209,6 +278,7 @@
      <Compile Include="Terraria.ID\ItemID.cs" />
      <Compile Include="Terraria.ID\MessageID.cs" />
      <Compile Include="Terraria.ID\MountID.cs" />
@@ -146,7 +157,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -236,6 +319,91 @@
+@@ -236,6 +306,91 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -238,7 +249,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -343,13 +511,13 @@
+@@ -343,13 +498,13 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />
      <Compile Include="Terraria\ItemText.cs" />
@@ -255,7 +266,7 @@
      <Compile Include="Terraria\Main.cs" />
      <Compile Include="Terraria\MessageBuffer.cs" />
      <Compile Include="Terraria\Minecart.cs" />
-@@ -358,6 +526,7 @@
+@@ -358,6 +513,7 @@
      <Compile Include="Terraria\Netplay.cs" />
      <Compile Include="Terraria\NPC.cs" />
      <Compile Include="Terraria\Player.cs" />
@@ -263,7 +274,7 @@
      <Compile Include="Terraria\Program.cs" />
      <Compile Include="Terraria\Projectile.cs" />
      <Compile Include="Terraria\Rain.cs" />
-@@ -373,7 +542,7 @@
+@@ -373,7 +529,7 @@
      <Compile Include="Terraria\TimeLogger.cs" />
      <Compile Include="Terraria\Utils.cs" />
      <Compile Include="Terraria\WaterfallManager.cs" />
@@ -272,7 +283,7 @@
      <Compile Include="Terraria\Wiring.cs" />
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
-@@ -383,6 +552,30 @@
+@@ -383,6 +539,30 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
@@ -285,6 +296,7 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET RELEASEPATH=C:\Program Files (x86)\Steam\steamapps\common\terraria
 +if NOT "$(TerrariaSteamFolder)" == "" SET RELEASEPATH=$(TerrariaSteamFolder)
@@ -302,5 +314,4 @@
 +echo $(TargetPath)
 +echo %25RELEASEPATH%25\%25RELEASEFILE%25</PostBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>
