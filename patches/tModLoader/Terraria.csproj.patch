@@ -5,11 +5,11 @@
      <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
      <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
 -    <OutputType>WinExe</OutputType>
-+    <OutputType>Exe</OutputType>
++    <!--<OutputType>Exe</OutputType>-->
      <AssemblyName>Terraria</AssemblyName>
      <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
      <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-@@ -25,36 +25,106 @@
+@@ -25,36 +25,118 @@
      <DebugType>pdbonly</DebugType>
      <Optimize>true</Optimize>
    </PropertyGroup>
@@ -78,6 +78,18 @@
 +    <PlatformTarget>x86</PlatformTarget>
      <DefineConstants>CLIENT; WINDOWS</DefineConstants>
    </PropertyGroup>
++  <Choose>
++   <When Condition="$(DefineConstants.Contains('CLIENT'))">
++     <PropertyGroup>
++       <OutputType>WinExe</OutputType>
++     </PropertyGroup>
++   </When>
++   <Otherwise>
++     <PropertyGroup>
++       <OutputType>Exe</OutputType>
++     </PropertyGroup>
++   </Otherwise>
++  </Choose>
 +  <PropertyGroup>
 +    <StartupObject />
 +  </PropertyGroup>
@@ -126,7 +138,7 @@
      <Compile Include="Properties\AssemblyInfo.cs" />
      <Compile Include="Terraria.Achievements\Achievement.cs" />
      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
-@@ -209,6 +279,7 @@
+@@ -209,6 +291,7 @@
      <Compile Include="Terraria.ID\ItemID.cs" />
      <Compile Include="Terraria.ID\MessageID.cs" />
      <Compile Include="Terraria.ID\MountID.cs" />
@@ -134,7 +146,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -236,6 +307,91 @@
+@@ -236,6 +319,91 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -226,7 +238,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -343,13 +499,13 @@
+@@ -343,13 +511,13 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />
      <Compile Include="Terraria\ItemText.cs" />
@@ -243,7 +255,7 @@
      <Compile Include="Terraria\Main.cs" />
      <Compile Include="Terraria\MessageBuffer.cs" />
      <Compile Include="Terraria\Minecart.cs" />
-@@ -358,6 +514,7 @@
+@@ -358,6 +526,7 @@
      <Compile Include="Terraria\Netplay.cs" />
      <Compile Include="Terraria\NPC.cs" />
      <Compile Include="Terraria\Player.cs" />
@@ -251,7 +263,7 @@
      <Compile Include="Terraria\Program.cs" />
      <Compile Include="Terraria\Projectile.cs" />
      <Compile Include="Terraria\Rain.cs" />
-@@ -373,7 +530,7 @@
+@@ -373,7 +542,7 @@
      <Compile Include="Terraria\TimeLogger.cs" />
      <Compile Include="Terraria\Utils.cs" />
      <Compile Include="Terraria\WaterfallManager.cs" />
@@ -260,7 +272,7 @@
      <Compile Include="Terraria\Wiring.cs" />
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
-@@ -383,6 +540,30 @@
+@@ -383,6 +552,30 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
