@@ -1849,16 +1849,18 @@
  		{
  			if (!Main.wallLoaded[i])
  			{
-@@ -47155,7 +47661,7 @@
+@@ -47155,8 +47661,9 @@
  			}
  		}
  
 -		protected void LoadTiles(int i)
 +		public void LoadTiles(int i)
  		{
++			if (Main.dedServ) return;
  			if (!Main.tileSetsLoaded[i])
  			{
-@@ -48855,6 +49361,19 @@
+ 				Main.tileTexture[i] = base.Content.Load<Texture2D>(string.Concat(new object[]
+@@ -48855,6 +49362,19 @@
  		}
  
  		protected override void Draw(GameTime gameTime)
@@ -1878,7 +1880,7 @@
  		{
  			if (Main._drawCycleCounter == 0uL)
  			{
-@@ -52245,7 +52764,7 @@
+@@ -52245,7 +52765,7 @@
  								num14++;
  							}
  						}
@@ -1887,7 +1889,7 @@
  						{
  							Main.nextNPC[num16] = false;
  						}
-@@ -52638,6 +53157,7 @@
+@@ -52638,6 +53158,7 @@
  							{
  								WorldGen.spawnNPC = 142;
  							}
@@ -1895,7 +1897,7 @@
  						}
  					}
  				}
-@@ -52756,6 +53276,10 @@
+@@ -52756,6 +53277,10 @@
  								}
  								if (num2 > 0f || (type >= 30 && type <= 35) || type == 39)
  								{
@@ -1906,7 +1908,7 @@
  									if (type == 0)
  									{
  										int num7 = Main.rand.Next(3);
-@@ -53335,6 +53859,14 @@
+@@ -53335,6 +53860,14 @@
  										Main.soundInstanceMoonlordCry.Pitch = (float)Main.rand.Next(-10, 11) * 0.01f;
  										Main.PlaySoundInstance(Main.soundInstanceMoonlordCry);
  									}
