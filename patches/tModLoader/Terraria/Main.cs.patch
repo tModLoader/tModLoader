@@ -81,13 +81,11 @@
  			}
  			NetMessage.SendAnglerQuest();
  		}
-@@ -2391,7 +2403,8 @@
- 			Main.Configuration.Put("HidePasswords", Main.HidePassword);
+@@ -2392,6 +2404,7 @@
  			Main.Configuration.Put("ThickMouseEdges", Main.ThickMouse);
  			Main.Configuration.Put("ThickMouseEdgesPackedColor", Main.ThickMousePackedColor);
--			Main.Configuration.Put("ReverseUpDownForArmorSetBonuses", Main.ReversedUpDownArmorSetBonuses);
-+			Main.Configuration.Put("ReverseUpDownForArmorSetBonuses", Main.ReversedUpDownArmorSetBonuses)
-+            ModLoader.ModLoader.SaveConfiguration();
+ 			Main.Configuration.Put("ReverseUpDownForArmorSetBonuses", Main.ReversedUpDownArmorSetBonuses);
++			ModLoader.ModLoader.SaveConfiguration();
  			return Main.Configuration.Save(true);
  		}
  
