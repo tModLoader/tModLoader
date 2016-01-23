@@ -451,6 +451,7 @@ namespace ExampleMod.NPCs.Abomination
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ElementResidue"));
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityTotem"));
 			}
+			ExampleWorld.downedAbomination = true;
 		}
 
 		public override void BossLoot(ref string name, ref int potionType)

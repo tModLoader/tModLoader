@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod;
 
 namespace ExampleMod.NPCs
 {
@@ -153,7 +154,7 @@ namespace ExampleMod.NPCs
 		public override float CanSpawn(NPCSpawnInfo spawnInfo)
 		{
 			Tile tile = Main.tile[spawnInfo.spawnTileX, spawnInfo.spawnTileY];
-			return ExampleMod.NoZoneNormalSpawn(spawnInfo) && (tile.type == 53 || tile.type == 112 || tile.type == 116 || tile.type == 234 || spawnInfo.desertCave) && !spawnInfo.playerSafe && NPC.downedGolemBoss ? 0.5f : 0f;
+			return ExampleMod.NoZoneNormalSpawn(spawnInfo) && (tile.type == 53 || tile.type == 112 || tile.type == 116 || tile.type == 234 || spawnInfo.desertCave) && !spawnInfo.playerSafe && ExampleWorld.downedAbomination ? 0.5f : 0f;
 		}
 	}
 }

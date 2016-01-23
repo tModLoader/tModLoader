@@ -157,12 +157,13 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -236,6 +306,91 @@
+@@ -236,6 +306,92 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\ModLoaderMod.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\MysteryItem.cs" />
++    <Compile Include="Terraria.ModLoader.Default\MysteryTile.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\MysteryWorld.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\MysteryPlayer.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\StartBag.cs" />
@@ -249,7 +250,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -343,13 +498,13 @@
+@@ -343,13 +499,13 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />
      <Compile Include="Terraria\ItemText.cs" />
@@ -266,7 +267,7 @@
      <Compile Include="Terraria\Main.cs" />
      <Compile Include="Terraria\MessageBuffer.cs" />
      <Compile Include="Terraria\Minecart.cs" />
-@@ -358,6 +513,7 @@
+@@ -358,6 +514,7 @@
      <Compile Include="Terraria\Netplay.cs" />
      <Compile Include="Terraria\NPC.cs" />
      <Compile Include="Terraria\Player.cs" />
@@ -274,7 +275,7 @@
      <Compile Include="Terraria\Program.cs" />
      <Compile Include="Terraria\Projectile.cs" />
      <Compile Include="Terraria\Rain.cs" />
-@@ -373,7 +529,7 @@
+@@ -373,7 +530,7 @@
      <Compile Include="Terraria\TimeLogger.cs" />
      <Compile Include="Terraria\Utils.cs" />
      <Compile Include="Terraria\WaterfallManager.cs" />
@@ -283,7 +284,7 @@
      <Compile Include="Terraria\Wiring.cs" />
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
-@@ -383,6 +539,30 @@
+@@ -383,6 +540,31 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
@@ -291,12 +292,12 @@
 +  </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default\MysteryTile.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default\MysteryItem.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default\StartBag.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET RELEASEPATH=C:\Program Files (x86)\Steam\steamapps\common\terraria
 +if NOT "$(TerrariaSteamFolder)" == "" SET RELEASEPATH=$(TerrariaSteamFolder)
@@ -314,4 +315,4 @@
 +echo $(TargetPath)
 +echo %25RELEASEPATH%25\%25RELEASEFILE%25</PostBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>

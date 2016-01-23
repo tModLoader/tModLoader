@@ -41,6 +41,10 @@ namespace Terraria.ModLoader
 			return mod.Properties.Autoload;
 		}
 
+		public virtual void Initialize()
+		{
+		}
+
 		public virtual void ResetEffects()
 		{
 		}

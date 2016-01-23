@@ -20,7 +20,7 @@ namespace Terraria.ModLoader
 	public static class ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
-		public static readonly string version = "tModLoader v0.7.0.1";
+		public static readonly string version = "tModLoader v0.7.1";
 		#if WINDOWS
 		private const bool windows = true;
 
@@ -840,7 +840,8 @@ namespace Terraria.ModLoader
 
 		public static Texture2D GetTexture(string name)
 		{
-			if (Main.dedServ) return null;
+			if (Main.dedServ)
+				return null;
 			if (!TextureExists(name))
 			{
 				throw new MissingResourceException("Missing texture " + name);
@@ -887,7 +888,8 @@ namespace Terraria.ModLoader
 
 		public static SoundEffect GetSound(string name)
 		{
-			if (Main.dedServ) return null;
+			if (Main.dedServ)
+				return null;
 			if (!SoundExists(name))
 			{
 				throw new MissingResourceException("Missing sound " + name);

@@ -9,15 +9,16 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -106,6 +108,7 @@
+@@ -106,6 +108,8 @@
  						}
  						binaryReader.Close();
  						memoryStream.Close();
++						WorldHooks.SetupWorld();
 +						WorldIO.ReadModFile(Main.worldPathName, flag);
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
-@@ -302,6 +305,7 @@
+@@ -302,6 +306,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
  				}
@@ -25,7 +26,7 @@
  				WorldGen.saveLock = false;
  			}
  			Main.serverGenLock = false;
-@@ -997,7 +1001,14 @@
+@@ -997,7 +1002,14 @@
  				writer.Write(Main.anglerWhoFinishedToday[i]);
  			}
  			writer.Write(NPC.savedAngler);
@@ -41,7 +42,7 @@
  			writer.Write(NPC.savedStylist);
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(Main.invasionSizeStart);
-@@ -1050,7 +1061,7 @@
+@@ -1050,7 +1062,7 @@
  					byte b2;
  					byte b = b2 = (b3 = 0);
  					bool flag = false;
@@ -50,7 +51,7 @@
  					{
  						flag = true;
  						if (tile.type == 127)
-@@ -1087,9 +1098,11 @@
+@@ -1087,9 +1099,11 @@
  						}
  						if (Main.tileFrameImportant[(int)tile.type])
  						{
@@ -64,7 +65,7 @@
  							num2++;
  							array[num2] = (byte)(tile.frameY & 255);
  							num2++;
-@@ -1103,10 +1116,10 @@
+@@ -1103,10 +1117,10 @@
  							num2++;
  						}
  					}
@@ -77,7 +78,7 @@
  						num2++;
  						if (tile.wallColor() != 0)
  						{
-@@ -1260,7 +1273,7 @@
+@@ -1260,7 +1274,7 @@
  					for (int l = 0; l < 40; l++)
  					{
  						Item item = chest.item[l];

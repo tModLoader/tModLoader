@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using Terraria.World.Generation;
 
@@ -23,6 +23,18 @@ namespace Terraria.ModLoader
 			return mod.Properties.Autoload;
 		}
 
+		public virtual void Initialize()
+		{
+		}
+
+		public virtual void SaveCustomData(BinaryWriter writer)
+		{
+		}
+
+		public virtual void LoadCustomData(BinaryReader reader)
+		{
+		}
+
 		public virtual void PreWorldGen()
 		{
 		}
@@ -32,14 +44,6 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void PostWorldGen()
-		{
-		}
-
-		public virtual void SaveCustomData(BinaryWriter writer)
-		{
-		}
-
-		public virtual void LoadCustomData(BinaryReader reader)
 		{
 		}
 		//TODO

@@ -109,7 +109,7 @@ namespace ExampleMod.NPCs
 			int x = spawnInfo.spawnTileX;
 			int y = spawnInfo.spawnTileY;
 			int tile = (int)Main.tile[x, y].type;
-			return (ExampleMod.NormalSpawn(spawnInfo) && (tile == 53 || tile == 112 || tile == 116 || tile == 234) && ExampleMod.NoZoneAllowWater(spawnInfo) && spawnInfo.water) && y < Main.rockLayer && (x < 250 || x > Main.maxTilesX - 250) && !spawnInfo.playerSafe && NPC.downedGolemBoss ? 0.5f : 0f;
+			return (ExampleMod.NormalSpawn(spawnInfo) && (tile == 53 || tile == 112 || tile == 116 || tile == 234) && ExampleMod.NoZoneAllowWater(spawnInfo) && spawnInfo.water) && y < Main.rockLayer && (x < 250 || x > Main.maxTilesX - 250) && !spawnInfo.playerSafe && ExampleWorld.downedAbomination ? 0.5f : 0f;
 		}
 	}
 }

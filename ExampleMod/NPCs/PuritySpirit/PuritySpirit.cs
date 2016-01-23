@@ -219,7 +219,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 					Initialize();
 					break;
 				case 1:
-				case 11:
+				case 12:
 					attack = 4;
 					UltimateAttack();
 					if (attackProgress == 0)
@@ -243,9 +243,19 @@ namespace ExampleMod.NPCs.PuritySpirit
 					DoShield(2);
 					break;
 				case 10:
+					if (attackProgress == 0)
+					{
+						stage++;
+					}
+					else
+					{
+						DoAttack(5);
+					}
+					break;
+				case 11:
 					FinishFight1();
 					break;
-				case 12:
+				case 13:
 					FinishFight2();
 					break;
 			}
@@ -342,7 +352,14 @@ namespace ExampleMod.NPCs.PuritySpirit
 			attackProgress++;
 			if (attackProgress == 90)
 			{
-				Talk("You, who have challenged me...");
+				if (ExampleWorld.downedPuritySpirit)
+				{
+					Talk("What, you again? Oh well...");
+				}
+				else
+				{
+					Talk("You, who have challenged me...");
+				}
 			}
 			if (attackProgress == 180)
 			{
@@ -629,7 +646,6 @@ namespace ExampleMod.NPCs.PuritySpirit
 				npc.life = 1;
 				npc.dontTakeDamage = true;
 				stage = 10;
-				attackProgress = 0;
 				return false;
 			}
 			return true;
@@ -655,7 +671,14 @@ namespace ExampleMod.NPCs.PuritySpirit
 			attackProgress++;
 			if (attackProgress == 120)
 			{
-				Talk("I wish you luck in your future endeavors.");
+				if (ExampleWorld.downedPuritySpirit)
+				{
+					Talk("I wish you luck in your future farming.");
+				}
+				else
+				{
+					Talk("I wish you luck in your future endeavors.");
+				}
 			}
 			if (attackProgress >= 180)
 			{
@@ -705,6 +728,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 				}
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityShield"));
 			}
+			ExampleWorld.downedPuritySpirit = true;
 		}
 
 		public override void BossLoot(ref string name, ref int potionType)

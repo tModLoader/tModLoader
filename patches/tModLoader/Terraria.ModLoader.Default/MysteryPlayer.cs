@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.Default
 {
 	public class MysteryPlayer : ModPlayer
 	{
-		private IList<UnloadedData> data = new List<UnloadedData>();
+		private IList<UnloadedData> data;
 
 		internal void AddData(string mod, string name, byte[] newData)
 		{
@@ -37,6 +37,11 @@ namespace Terraria.ModLoader.Default
 					data.RemoveAt(k);
 				}
 			}
+		}
+
+		public override void Initialize()
+		{
+			data = new List<UnloadedData>();
 		}
 
 		public override void SaveCustomData(BinaryWriter writer)

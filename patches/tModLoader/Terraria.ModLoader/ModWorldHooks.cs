@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -36,6 +36,5 @@ namespace Terraria.ModLoader
 				modWorld.WorldGenModifyTaskList(_passes);
 			}
 		}
-
 	}
 }

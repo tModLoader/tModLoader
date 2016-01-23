@@ -1159,7 +1159,8 @@ namespace Terraria.ModLoader
 
 		public void AddMusicBox(int musicSlot, int itemType, int tileType, int tileFrameY = 0)
 		{
-			if (Main.dedServ) return;
+			if (Main.dedServ)
+				return;
 			if (musicSlot < Main.maxMusic)
 			{
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);

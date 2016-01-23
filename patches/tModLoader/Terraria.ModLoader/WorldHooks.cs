@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Terraria.World.Generation;
 
 namespace Terraria.ModLoader
@@ -17,11 +17,19 @@ namespace Terraria.ModLoader
 			worlds.Clear();
 		}
 
-		public static void PostWorldGen()
+		internal static void SetupWorld()
+		{
+			foreach (ModWorld world in worlds)
+			{
+				world.Initialize();
+			}
+		}
+
+		public static void PreWorldGen()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostWorldGen();
+				modWorld.PreWorldGen();
 			}
 		}
 
@@ -33,11 +41,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void PreWorldGen()
+		public static void PostWorldGen()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PreWorldGen();
+				modWorld.PostWorldGen();
 			}
 		}
 	}

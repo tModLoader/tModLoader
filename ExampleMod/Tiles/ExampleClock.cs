@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -18,11 +18,11 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.Height = 5;
 			TileObjectData.newTile.CoordinateHeights = new int[]
 			{
-			16,
-			16,
-			16,
-			16,
-			16
+				16,
+				16,
+				16,
+				16,
+				16
 			};
 			TileObjectData.addTile(Type);
 			AddMapEntry(new Color(200, 200, 200), "Example Clock");
@@ -36,7 +36,6 @@ namespace ExampleMod.Tiles
 				string text = "AM";
 				//Get current weird time
 				double time = Main.time;
-
 				if (!Main.dayTime)
 				{
 					//if it's night add this number
@@ -46,7 +45,6 @@ namespace ExampleMod.Tiles
 				time = time / 86400.0 * 24.0;
 				//Dunno why we're taking 19.5. Something about hour formatting
 				time = time - 7.5 - 12.0;
-
 				//Format in readable time
 				if (time < 0.0)
 				{
@@ -63,7 +61,6 @@ namespace ExampleMod.Tiles
 				deltaTime = ((int)(deltaTime * 60.0));
 				//This could easily be replaced by deltaTime.ToString()
 				string text2 = string.Concat(deltaTime);
-
 				if (deltaTime < 10.0)
 				{
 					//if deltaTime is eg "1" (which would cause time to display as HH:M instead of HH:MM)
@@ -84,6 +81,7 @@ namespace ExampleMod.Tiles
 				Main.NewText(newText, 255, 240, 20);
 			}
 		}
+
 		public override void NearbyEffects(int i, int j, bool closer)
 		{
 			if (closer)
@@ -91,10 +89,12 @@ namespace ExampleMod.Tiles
 				Main.clock = true;
 			}
 		}
+
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;
 		}
+
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
 			Item.NewItem(i * 16, j * 16, 48, 32, mod.ItemType("ExampleClock"));

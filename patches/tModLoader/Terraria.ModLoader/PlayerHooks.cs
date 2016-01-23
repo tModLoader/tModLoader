@@ -35,6 +35,7 @@ namespace Terraria.ModLoader
 			{
 				ModPlayer newPlayer = modPlayer.Clone();
 				newPlayer.player = player;
+				newPlayer.Initialize();
 				player.modPlayers.Add(newPlayer);
 			}
 		}

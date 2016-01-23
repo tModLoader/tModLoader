@@ -105,7 +105,7 @@ namespace Terraria.ModLoader.IO
 			{
 				flags[0] |= 16;
 			}
-			if (WriteModWorldCustomData(writer))
+			if (WriteCustomData(writer))
 			{
 				flags[0] |= 32;
 			}
@@ -140,90 +140,7 @@ namespace Terraria.ModLoader.IO
 			}
 			if ((flags[0] & 32) == 32)
 			{
-				ReadModWorldCustomData(reader);
-			}
-		}
-
-		internal static bool WriteModWorldCustomData(BinaryWriter writer)
-		{
-			ushort count = 0;
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter customWriter = new BinaryWriter(stream))
-				{
-					foreach (var modWorld in WorldHooks.worlds)
-					{
-						if (WriteModWorldCustomData(modWorld, customWriter))
-						{
-							count++;
-						}
-					}
-					customWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			if (count > 0)
-			{
-				writer.Write(count);
-				writer.Write(data);
-				return true;
-			}
-			return false;
-		}
-
-		internal static bool WriteModWorldCustomData(ModWorld modWorld, BinaryWriter writer)
-		{
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter customWriter = new BinaryWriter(stream))
-				{
-					modWorld.SaveCustomData(customWriter);
-					customWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			if (data.Length > 0)
-			{
-				writer.Write(modWorld.mod.Name);
-				writer.Write(modWorld.Name);
-				writer.Write((ushort)data.Length);
-				writer.Write(data);
-				return true;
-			}
-			return false;
-		}
-
-		internal static void ReadModWorldCustomData(BinaryReader reader)
-		{
-			int count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++)
-			{
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				byte[] data = reader.ReadBytes(reader.ReadUInt16());
-				Mod mod = ModLoader.GetMod(modName);
-				ModWorld modWorld = mod == null ? null : mod.GetModWorld(name);
-				if (modWorld != null)
-				{
-					using (MemoryStream stream = new MemoryStream(data))
-					{
-						using (BinaryReader customReader = new BinaryReader(stream))
-						{
-							modWorld.LoadCustomData(customReader);
-						}
-					}
-					if (modName == "ModLoader" && name == "MysteryWorld")
-					{
-						((MysteryWorld)modWorld).RestoreData();
-					}
-				}
-				else
-				{
-					ModWorld mystery = ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld");
-					((MysteryWorld)mystery).AddData(modName, name, data);
-				}
+				ReadCustomData(reader);
 			}
 		}
 
@@ -396,6 +313,89 @@ namespace Terraria.ModLoader.IO
 			if (!flag)
 			{
 				Main.AnglerQuestSwap();
+			}
+		}
+
+		internal static bool WriteCustomData(BinaryWriter writer)
+		{
+			ushort count = 0;
+			byte[] data;
+			using (MemoryStream stream = new MemoryStream())
+			{
+				using (BinaryWriter customWriter = new BinaryWriter(stream))
+				{
+					foreach (var modWorld in WorldHooks.worlds)
+					{
+						if (WriteCustomData(modWorld, customWriter))
+						{
+							count++;
+						}
+					}
+					customWriter.Flush();
+					data = stream.ToArray();
+				}
+			}
+			if (count > 0)
+			{
+				writer.Write(count);
+				writer.Write(data);
+				return true;
+			}
+			return false;
+		}
+
+		internal static bool WriteCustomData(ModWorld modWorld, BinaryWriter writer)
+		{
+			byte[] data;
+			using (MemoryStream stream = new MemoryStream())
+			{
+				using (BinaryWriter customWriter = new BinaryWriter(stream))
+				{
+					modWorld.SaveCustomData(customWriter);
+					customWriter.Flush();
+					data = stream.ToArray();
+				}
+			}
+			if (data.Length > 0)
+			{
+				writer.Write(modWorld.mod.Name);
+				writer.Write(modWorld.Name);
+				writer.Write((ushort)data.Length);
+				writer.Write(data);
+				return true;
+			}
+			return false;
+		}
+
+		internal static void ReadCustomData(BinaryReader reader)
+		{
+			int count = reader.ReadUInt16();
+			for (int k = 0; k < count; k++)
+			{
+				string modName = reader.ReadString();
+				string name = reader.ReadString();
+				byte[] data = reader.ReadBytes(reader.ReadUInt16());
+				Mod mod = ModLoader.GetMod(modName);
+				ModWorld modWorld = mod == null ? null : mod.GetModWorld(name);
+				if (modWorld != null)
+				{
+					using (MemoryStream stream = new MemoryStream(data))
+					{
+						using (BinaryReader customReader = new BinaryReader(stream))
+						{
+							modWorld.LoadCustomData(customReader);
+						}
+					}
+					if (modName == "ModLoader" && name == "MysteryWorld")
+					{
+						((MysteryWorld)modWorld).RestoreData();
+					}
+				}
+				else
+				{
+					ModWorld mystery = ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld");
+					((MysteryWorld)mystery).AddData(modName, name, data);
+				}
 			}
 		}
 		//add to end of Terraria.IO.WorldFileData.MoveToCloud

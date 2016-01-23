@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -17,14 +17,11 @@ namespace ExampleMod.Tiles
 			Main.tileCut[Type] = true;
 			//Main.tileAlch[Type] = true;
 			Main.tileNoFail[Type] = true;
-
 			//Main.tileLavaDeath[Type] = true;
-
 
 			//dustType = -1;
 			//disableSmartCursor = true;
 			//AddMapEntry(new Color(13, 88, 130), "Banner");
-
 
 			//TileObjectData.newTile.Width = 1;
 			//TileObjectData.newTile.Height = 1;
@@ -44,7 +41,6 @@ namespace ExampleMod.Tiles
 			//TileObjectData.newTile.LavaPlacement = LiquidPlacement.NotAllowed;
 			//TileObjectData.addBaseTile(out TileObjectData.StyleAlch);
 
-
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleAlch);
 			TileObjectData.newTile.AnchorValidTiles = new int[]
 			{
@@ -58,15 +54,12 @@ namespace ExampleMod.Tiles
 				TileID.PlanterBox
 			};
 			TileObjectData.addTile(Type);
-
 			//drop = mod.ItemType()
 		}
-
 		//public override bool CanPlace(int i, int j)
 		//{
 		//	return base.CanPlace(i, j);
 		//}
-
 		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects)
 		{
 			if (i % 2 == 1)
@@ -97,7 +90,6 @@ namespace ExampleMod.Tiles
 				Main.tile[i, j].frameX += 18;
 			}
 		}
-
 		//public override void RightClick(int i, int j)
 		//{
 		//	base.RightClick(i, j);

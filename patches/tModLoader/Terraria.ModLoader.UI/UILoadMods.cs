@@ -57,6 +57,10 @@ namespace Terraria.ModLoader.UI
 				loadProgress.SetText("Initializing: " + mod);
 				loadProgress.SetProgress((float)num / (float)max);
 			}
+			else
+			{
+				Console.WriteLine("Initializing: " + mod);
+			}
 		}
 
 		internal void SetProgressSetup(float progress)
@@ -74,6 +78,10 @@ namespace Terraria.ModLoader.UI
 			{
 				loadProgress.SetText("Loading Mod: " + mod);
 				loadProgress.SetProgress((float)num / (float)max);
+			}
+			else
+			{
+				Console.WriteLine("Loading Mod: " + mod);
 			}
 		}
 
