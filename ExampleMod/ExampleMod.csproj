@@ -69,8 +69,8 @@
     <Compile Include="Dusts\Sparkle.cs" />
     <Compile Include="Dusts\SpectreDust.cs" />
     <Compile Include="ExampleMod.cs" />
-    <Compile Include="ExampleWorldGen.cs" />
     <Compile Include="ExamplePlayer.cs" />
+    <Compile Include="ExampleWorld.cs" />
     <Compile Include="Items\Abomination\AbominationBag.cs" />
     <Compile Include="Items\Abomination\Bubble.cs" />
     <Compile Include="Items\Abomination\ElementResidue.cs" />

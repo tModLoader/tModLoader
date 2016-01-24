@@ -593,7 +593,15 @@
  				}
  				num63++;
  			}
-@@ -44813,7 +44863,7 @@
+@@ -40729,6 +40779,7 @@
+ 					Projectile.NewProjectile(vector.X, vector.Y, num139, num140, 12, 1000, 10f, Main.myPlayer, 0f, 0f);
+ 				}
+ 			}
++			WorldHooks.PostUpdate();
+ 		}
+ 
+ 		public static void SpreadDesertWalls(int wallDist, int i, int j)
+@@ -44813,7 +44864,7 @@
  			{
  				int num = 1;
  				int slope = 2;
@@ -602,7 +610,7 @@
  				{
  					num = 2;
  					slope = 1;
-@@ -44858,7 +44908,7 @@
+@@ -44858,7 +44909,7 @@
  		public static int PlatformProperSides(int x, int y, bool acceptNonOpposing = false)
  		{
  			Tile tile = Main.tile[x, y];
@@ -611,7 +619,7 @@
  			{
  				return 0;
  			}
-@@ -44885,12 +44935,12 @@
+@@ -44885,12 +44936,12 @@
  			}
  			if (acceptNonOpposing)
  			{
@@ -626,7 +634,7 @@
  			{
  				num3++;
  			}
-@@ -44898,12 +44948,12 @@
+@@ -44898,12 +44949,12 @@
  			num5 *= -1;
  			if (acceptNonOpposing)
  			{
@@ -641,7 +649,7 @@
  			{
  				num3++;
  			}
-@@ -45221,7 +45271,11 @@
+@@ -45221,7 +45272,11 @@
  					}
  					if (tile.active())
  					{
@@ -654,7 +662,7 @@
  						{
  							return;
  						}
-@@ -45235,7 +45289,7 @@
+@@ -45235,7 +45290,7 @@
  						Rectangle rectangle = new Rectangle(-1, -1, 0, 0);
  						if (Main.tileFrameImportant[(int)tile.type])
  						{
@@ -663,7 +671,7 @@
  							{
  								Tile tile2 = Main.tile[i, j - 1];
  								Tile tile3 = Main.tile[i, j + 1];
-@@ -45289,7 +45343,7 @@
+@@ -45289,7 +45344,7 @@
  								{
  									num9 = (int)tile9.type;
  								}
@@ -672,7 +680,7 @@
  								{
  									tile.frameX = num2;
  								}
-@@ -45854,7 +45908,7 @@
+@@ -45854,7 +45909,7 @@
  									}
  								}
  							}
@@ -681,7 +689,7 @@
  							{
  								Tile tile4 = Main.tile[i - 1, j];
  								if (tile4 != null)
-@@ -45940,13 +45994,13 @@
+@@ -45940,13 +45995,13 @@
  														}
  														if (tile.slope() == 1)
  														{
@@ -698,7 +706,7 @@
  																{
  																	rectangle.X = 432;
  																}
-@@ -45955,7 +46009,7 @@
+@@ -45955,7 +46010,7 @@
  																	rectangle.X = 360;
  																}
  															}
@@ -707,7 +715,7 @@
  															{
  																rectangle.X = 396;
  															}
-@@ -45966,13 +46020,13 @@
+@@ -45966,13 +46021,13 @@
  														}
  														else if (tile.slope() == 2)
  														{
@@ -724,7 +732,7 @@
  																{
  																	rectangle.X = 414;
  																}
-@@ -45981,7 +46035,7 @@
+@@ -45981,7 +46036,7 @@
  																	rectangle.X = 342;
  																}
  															}
@@ -733,7 +741,7 @@
  															{
  																rectangle.X = 378;
  															}
-@@ -46282,6 +46336,10 @@
+@@ -46282,6 +46337,10 @@
  							{
  								WorldGen.CheckPalmTree(i, j);
  							}
@@ -744,7 +752,7 @@
  							return;
  						}
  						else
-@@ -46495,19 +46553,19 @@
+@@ -46495,19 +46554,19 @@
  							{
  								num50 = num;
  							}
@@ -768,7 +776,7 @@
  							{
  								num50 = num;
  							}
-@@ -46522,7 +46580,7 @@
+@@ -46522,7 +46581,7 @@
  									num50 = num;
  								}
  							}
@@ -777,7 +785,7 @@
  							{
  								num45 = num;
  							}
-@@ -49473,7 +49531,7 @@
+@@ -49473,7 +49532,7 @@
  									if (tile3 != null && !tile3.active())
  									{
  										bool flag5 = true;
@@ -786,7 +794,7 @@
  										{
  											flag5 = false;
  										}
-@@ -49539,7 +49597,7 @@
+@@ -49539,7 +49598,7 @@
  								else if (Main.netMode == 2 && tile3 != null && !tile3.active())
  								{
  									bool flag6 = true;

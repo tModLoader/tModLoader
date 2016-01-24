@@ -48,5 +48,13 @@ namespace Terraria.ModLoader
 				modWorld.PostWorldGen();
 			}
 		}
+
+		public static void PostUpdate()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdate();
+			}
+		}
 	}
 }

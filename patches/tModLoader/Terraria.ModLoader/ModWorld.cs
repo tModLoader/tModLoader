@@ -46,15 +46,15 @@ namespace Terraria.ModLoader
 		public virtual void PostWorldGen()
 		{
 		}
+
+		public virtual void PostUpdate()
+		{
+		}
+
 		//TODO
-		//public virtual void Initialize()  Called before the game goes into the gameplay mode.
-		//{
-		//}
 		//Called after queuing world generation tasks when switching the world to hardmode, can be used to modify which tasks should be done and/or add custom tasks.
 		//public virtual void WorldGenModifyHardmodeTaskList(List<GenPass> list)
 		//{
 		//}
-		//Called every frame when the world updates (in singleplayer and on the server).
-		//PostUpdate
 	}
 }
