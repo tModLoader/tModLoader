@@ -263,7 +263,7 @@ namespace Terraria.ModLoader.Setup
 			this.resetTimeStampOptimizationsToolStripMenuItem.Name = "resetTimeStampOptimizationsToolStripMenuItem";
 			this.resetTimeStampOptimizationsToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
 			this.resetTimeStampOptimizationsToolStripMenuItem.Text = "Reset TimeStamp Optimizations";
-			this.menuItemTerraria.Click += new System.EventHandler(this.menuItemResetTimeStampOptmizations_Click);
+			this.resetTimeStampOptimizationsToolStripMenuItem.Click += new System.EventHandler(this.menuItemResetTimeStampOptmizations_Click);
 			// 
 			// MainForm
 			// 
