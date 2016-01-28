@@ -42,7 +42,7 @@ namespace ExampleMod.Projectiles.Pets
 				projectile.active = false;
 				return;
 			}
-			if (player.dead)
+			if (player.dead || player.HasBuff(mod.BuffType("ExampleLightPet")) == -1)
 			{
 				modPlayer.exampleLightPet = false;
 			}
