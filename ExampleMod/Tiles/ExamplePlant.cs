@@ -18,11 +18,9 @@ namespace ExampleMod.Tiles
 			//Main.tileAlch[Type] = true;
 			Main.tileNoFail[Type] = true;
 			//Main.tileLavaDeath[Type] = true;
-
 			//dustType = -1;
 			//disableSmartCursor = true;
 			//AddMapEntry(new Color(13, 88, 130), "Banner");
-
 			//TileObjectData.newTile.Width = 1;
 			//TileObjectData.newTile.Height = 1;
 			//TileObjectData.newTile.Origin = Point16.Zero;
@@ -40,7 +38,6 @@ namespace ExampleMod.Tiles
 			//TileObjectData.newTile.LavaDeath = true;
 			//TileObjectData.newTile.LavaPlacement = LiquidPlacement.NotAllowed;
 			//TileObjectData.addBaseTile(out TileObjectData.StyleAlch);
-
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleAlch);
 			TileObjectData.newTile.AnchorValidTiles = new int[]
 			{

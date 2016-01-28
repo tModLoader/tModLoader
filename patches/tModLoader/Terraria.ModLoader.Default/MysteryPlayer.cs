@@ -57,12 +57,10 @@ namespace Terraria.ModLoader.Default
 					writer.Write(unloadedData.data);
 				}
 			}
-			data.Clear();
 		}
 
 		public override void LoadCustomData(BinaryReader reader)
 		{
-			data.Clear();
 			int count = reader.ReadUInt16();
 			for (int k = 0; k < count; k++)
 			{

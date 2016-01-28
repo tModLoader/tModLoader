@@ -1,0 +1,30 @@
+--- src/Terraria\Terraria.DataStructures\DrawData.cs
++++ src/tModLoader\Terraria.DataStructures\DrawData.cs
+@@ -97,7 +97,7 @@
+ 			this.effect = SpriteEffects.None;
+ 			this.shader = 0;
+ 			this.ignorePlayerRotation = false;
+-			this.useDestinationRectangle = false;
++			this.useDestinationRectangle = true;
+ 		}
+ 
+ 		public DrawData(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRect, Color color)
+@@ -113,7 +113,7 @@
+ 			this.effect = SpriteEffects.None;
+ 			this.shader = 0;
+ 			this.ignorePlayerRotation = false;
+-			this.useDestinationRectangle = false;
++			this.useDestinationRectangle = true;
+ 		}
+ 
+ 		public DrawData(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRect, Color color, float rotation, Vector2 origin, SpriteEffects effect, int inactiveLayerDepth)
+@@ -129,7 +129,7 @@
+ 			this.scale = Vector2.One;
+ 			this.shader = 0;
+ 			this.ignorePlayerRotation = false;
+-			this.useDestinationRectangle = false;
++			this.useDestinationRectangle = true;
+ 		}
+ 
+ 		public void Draw(SpriteBatch sb)
+

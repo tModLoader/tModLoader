@@ -103,6 +103,11 @@ namespace Terraria.ModLoader
 		{
 			return item.type >= ItemID.Count;
 		}
+
+		private static bool GeneralPrefix(Item item)
+		{
+			return item.maxStack == 1 && item.damage > 0 && item.ammo == 0 && !item.accessory;
+		}
 		//add to Terraria.Item.Prefix
 		internal static bool MeleePrefix(Item item)
 		{
@@ -110,7 +115,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.maxStack == 1 && item.damage > 0 && item.melee && !item.noUseGraphic && !item.accessory;
+			return GeneralPrefix(item) && item.melee && !item.noUseGraphic;
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool WeaponPrefix(Item item)
@@ -119,7 +124,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.maxStack == 1 && item.damage > 0 && item.melee && item.noUseGraphic && !item.accessory;
+			return GeneralPrefix(item) && item.melee && item.noUseGraphic;
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool RangedPrefix(Item item)
@@ -128,7 +133,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.maxStack == 1 && item.damage > 0 && item.ranged && !item.accessory;
+			return GeneralPrefix(item) && item.ranged;
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool MagicPrefix(Item item)
@@ -137,7 +142,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			return item.maxStack == 1 && item.damage > 0 && (item.magic || item.summon) && !item.accessory;
+			return GeneralPrefix(item) && (item.magic || item.summon);
 		}
 		//in Terraria.Item.SetDefaults get rid of type-too-high check
 		//add near end of Terraria.Item.SetDefaults after setting netID

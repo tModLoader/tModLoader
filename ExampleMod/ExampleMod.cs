@@ -38,21 +38,24 @@ namespace ExampleMod
 			if (!Main.dedServ)
 			{
 				Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
+				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
+				Main.instance.LoadTiles(TileID.Loom);
+				Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom");
+				Filters.Scene["ExampleMod:PuritySpirit"] = new Filter(new PuritySpiritScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.9f, 0.4f).UseOpacity(0.7f), EffectPriority.VeryHigh);
+				SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
+				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
+				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
 			}
-			AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
-			Main.instance.LoadTiles(TileID.Loom);
-			Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom");
-			Filters.Scene["ExampleMod:PuritySpirit"] = new Filter(new PuritySpiritScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.9f, 0.4f).UseOpacity(0.7f), EffectPriority.VeryHigh);
-			SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
-			Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
-			SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
 		}
 
 		public override void Unload()
 		{
-			Main.music[MusicID.Dungeon].ModMusic = null;
-			Main.tileFrame[TileID.Loom] = 0;
-			Main.tileSetsLoaded[TileID.Loom] = false;
+			if (!Main.dedServ)
+			{
+				Main.music[MusicID.Dungeon].ModMusic = null;
+				Main.tileFrame[TileID.Loom] = 0;
+				Main.tileSetsLoaded[TileID.Loom] = false;
+			}
 		}
 
 		public override void AddCraftGroups()
