@@ -37,12 +37,12 @@ namespace ExampleMod.Projectiles.Pets
 		{
 			Player player = Main.player[projectile.owner];
 			ExamplePlayer modPlayer = (ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer");
-			if (!player.active || player.HasBuff(mod.BuffType("ExampleLightPet")) == -1)
+			if (!player.active)
 			{
 				projectile.active = false;
 				return;
 			}
-			if (player.dead)
+			if (player.dead || player.HasBuff(mod.BuffType("ExampleLightPet")) == -1)
 			{
 				modPlayer.exampleLightPet = false;
 			}
