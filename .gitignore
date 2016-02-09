@@ -8,7 +8,6 @@
 /installer/bin
 /installer/obj
 *.cache
-ExampleMod/obj/x86/Debug/ExampleMod.csproj.FileListAbsolute.txt
+ExampleMod/obj/
 *.force
-ExampleMod/bin/Debug/ConsoleApplication.vshost.exe
-ExampleMod/bin/Debug/ConsoleApplication.vshost.exe.manifest
+ExampleMod/bin/

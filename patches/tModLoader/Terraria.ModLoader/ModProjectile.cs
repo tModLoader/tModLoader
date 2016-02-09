@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -191,6 +192,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void GrappleRetreatSpeed(Player player, ref float speed)
+		{
+		}
+
+		public virtual void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles)
 		{
 		}
 	}

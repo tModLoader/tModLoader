@@ -616,5 +616,17 @@ namespace Terraria.ModLoader
 				globalProjectile.GrappleRetreatSpeed(projectile, player, ref speed);
 			}
 		}
+
+		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles)
+		{
+			if (IsModProjectile(projectile))
+			{
+				projectile.modProjectile.DrawBehind(index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles);
+			}
+			foreach (GlobalProjectile globalProjectile in globalProjectiles)
+			{
+				globalProjectile.DrawBehind(projectile, index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles);
+			}
+		}
 	}
 }
