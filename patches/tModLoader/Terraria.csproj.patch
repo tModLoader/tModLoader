@@ -284,7 +284,7 @@
      <Compile Include="Terraria\Wiring.cs" />
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
-@@ -383,6 +540,31 @@
+@@ -383,6 +540,34 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
@@ -296,8 +296,12 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.Default\MysteryItem.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default\StartBag.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
++  </ItemGroup>
++  <ItemGroup>
++    <None Include="App.config" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET RELEASEPATH=C:\Program Files (x86)\Steam\steamapps\common\terraria
 +if NOT "$(TerrariaSteamFolder)" == "" SET RELEASEPATH=$(TerrariaSteamFolder)
@@ -315,4 +319,4 @@
 +echo $(TargetPath)
 +echo %25RELEASEPATH%25\%25RELEASEFILE%25</PostBuildEvent>
 +  </PropertyGroup>
- </Project>
++</Project>
