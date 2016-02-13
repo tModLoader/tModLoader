@@ -206,17 +206,17 @@ namespace Terraria.ModLoader
 			Item headItem = new Item();
 			if (head >= 0)
 			{
-				headItem.SetDefaults(Item.headType[head]);
+				headItem.SetDefaults(Item.headType[head], true);
 			}
 			Item bodyItem = new Item();
 			if (body >= 0)
 			{
-				bodyItem.SetDefaults(Item.bodyType[body]);
+				bodyItem.SetDefaults(Item.bodyType[body], true);
 			}
 			Item legItem = new Item();
 			if (legs >= 0)
 			{
-				legItem.SetDefaults(Item.legType[legs]);
+				legItem.SetDefaults(Item.legType[legs], true);
 			}
 			return IsArmorSet(headItem, bodyItem, legItem);
 		}
