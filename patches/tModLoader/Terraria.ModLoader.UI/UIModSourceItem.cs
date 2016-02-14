@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.UI
 		private Texture2D dividerTexture;
 		private UIText modName;
 
-		public UIModSourceItem(string mod)
+		public UIModSourceItem(string mod, bool publishable)
 		{
 			this.mod = mod;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
@@ -50,20 +50,16 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button2.OnClick += new UIElement.MouseEvent(this.BuildAndReload);
 			base.Append(button2);
-			TmodFile[] modFiles = ModLoader.FindMods();
-			foreach (TmodFile file in modFiles)
+			if (publishable)
 			{
-				if (Path.GetFileNameWithoutExtension(file.Name).Equals(Path.GetFileName(mod)))
-				{
-					UITextPanel button3 = new UITextPanel("Publish", 1f, false);
-					button3.CopyStyle(button2);
-					button3.Width.Set(100f, 0f);
-					button3.Left.Set(390f, 0f);
-					button3.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-					button3.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-					button3.OnClick += new UIElement.MouseEvent(this.Publish);
-					base.Append(button3);
-				}
+				UITextPanel button3 = new UITextPanel("Publish", 1f, false);
+				button3.CopyStyle(button2);
+				button3.Width.Set(100f, 0f);
+				button3.Left.Set(390f, 0f);
+				button3.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+				button3.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+				button3.OnClick += new UIElement.MouseEvent(this.Publish);
+				base.Append(button3);
 			}
 			base.OnDoubleClick += new UIElement.MouseEvent(this.BuildAndReload);
 		}

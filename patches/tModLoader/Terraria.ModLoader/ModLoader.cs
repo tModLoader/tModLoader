@@ -389,7 +389,7 @@ namespace Terraria.ModLoader
 								ushort nBlockAlign;
 								ushort wBitsPerSample = 16;
 								const int headerSize = 44;
-								MemoryStream output = new MemoryStream(headerSize + data.Length);
+								using (MemoryStream output = new MemoryStream())
 								using (MemoryStream yourMp3FileStream = new MemoryStream(data))
 								{
 									using (MP3Sharp.MP3Stream input = new MP3Sharp.MP3Stream(yourMp3FileStream))

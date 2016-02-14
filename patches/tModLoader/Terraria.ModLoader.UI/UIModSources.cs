@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI
 {
@@ -132,9 +133,19 @@ namespace Terraria.ModLoader.UI
 		{
 			modList.Clear();
 			string[] mods = ModLoader.FindModSources();
+			TmodFile[] modFiles = ModLoader.FindMods();
 			foreach (string mod in mods)
 			{
-				modList.Add(new UIModSourceItem(mod));
+				bool publishable = false;
+				foreach (TmodFile file in modFiles)
+				{
+					if (Path.GetFileNameWithoutExtension(file.Name).Equals(Path.GetFileName(mod)))
+					{
+						publishable = true;
+						break;
+					}
+				}
+				modList.Add(new UIModSourceItem(mod, publishable));
 			}
 		}
 	}
