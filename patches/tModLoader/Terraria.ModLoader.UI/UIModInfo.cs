@@ -35,9 +35,15 @@ namespace Terraria.ModLoader.UI
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
 			modInfo = new UIMessageBox("This is a test of mod info here.");
-			modInfo.Width.Set(0f, 1f);
+			modInfo.Width.Set(-25f, 1f);
 			modInfo.Height.Set(0f, 1f);
 			uIPanel.Append(modInfo);
+			UIScrollbar uIScrollbar = new UIScrollbar();
+			uIScrollbar.SetView(100f, 1000f);
+			uIScrollbar.Height.Set(0f, 1f);
+			uIScrollbar.HAlign = 1f;
+			uIPanel.Append(uIScrollbar);
+			modInfo.SetScrollbar(uIScrollbar);
 			uITextPanel = new UITextPanel("Mod Info", 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
