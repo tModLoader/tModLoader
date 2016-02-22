@@ -37,7 +37,7 @@ namespace ExampleMod
 			RegisterHotKey("Random Buff", "P");
 			if (!Main.dedServ)
 			{
-				Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
+				//Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 				Main.instance.LoadTiles(TileID.Loom);
 				Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom");
