@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace Terraria.ModLoader.IO
@@ -27,6 +28,28 @@ namespace Terraria.ModLoader.IO
 		internal static Stream GetWavStream(string wavCachePath)
 		{
 			return File.OpenRead(ModCachePath + Path.DirectorySeparatorChar + wavCachePath);
+		}
+
+		internal static void ClearCache(string modName)
+		{
+			var dir = Directory.CreateDirectory(ModCachePath);
+			foreach (var file in dir.EnumerateFiles(Path.GetFileNameWithoutExtension(modName) + "_*.wav"))
+			{
+				file.Delete();
+			}
+		}
+
+		internal static void DeleteIfOlder(string modFilename, string wavCacheFilename)
+		{
+			FileInfo modFile = new FileInfo(modFilename);
+			FileInfo wavFile = new FileInfo(ModCachePath + Path.DirectorySeparatorChar + wavCacheFilename);
+			if (wavFile.Exists)
+			{
+				if (wavFile.LastWriteTime < modFile.LastWriteTime)
+				{
+					wavFile.Delete();
+				}
+			}
 		}
 	}
 }
