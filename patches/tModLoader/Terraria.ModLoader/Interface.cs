@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 			}
 			buttonIndex++;
 			numButtons++;
-			buttonNames[buttonIndex] = "Mod Browser (Alpha)";
+			buttonNames[buttonIndex] = "Mod Browser (Beta)";
 			if (selectedMenu == buttonIndex)
 			{
 				Main.PlaySound(10, -1, -1, 1);

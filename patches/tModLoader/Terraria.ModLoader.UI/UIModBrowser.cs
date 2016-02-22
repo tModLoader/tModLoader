@@ -21,10 +21,12 @@ namespace Terraria.ModLoader.UI
 		public UIList modListAll;
 		public UIModDownloadItem selectedItem;
 		public UITextPanel uITextPanel;
+		UIInputTextField filterTextBox;
 		private List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		public bool loaded = false;
 		public SortModes sortMode = SortModes.RecentlyUpdated;
 		public UpdateFilter updateFilterMode = UpdateFilter.Available;
+		internal string filter;
 		private bool updateAvailable;
 		private string updateText;
 		private string updateURL;
@@ -108,11 +110,27 @@ namespace Terraria.ModLoader.UI
 				_categoryButtons.Add(uIToggleImage);
 				uIElement2.Append(uIToggleImage);
 			}
+			filterTextBox = new UIInputTextField("Filter by name");
+			filterTextBox.Top.Set(5, 0f);
+			filterTextBox.Left.Set(-150, 1f);
+			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(SortList);
+			uIElement2.Append(filterTextBox);
 			uIPanel.Append(uIElement2);
+		}
+
+		private void SortList(object sender, EventArgs e)
+		{
+			SortList();
 		}
 
 		private void SortList(UIMouseEvent evt, UIElement listeningElement)
 		{
+			SortList();
+		}
+
+		private void SortList()
+		{
+			filter = filterTextBox.currentString;
 			modList.Clear();
 			foreach (UIModDownloadItem item in modListAll._items.Where(item => item.PassFilters()))
 			{

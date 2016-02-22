@@ -95,6 +95,14 @@ namespace Terraria.ModLoader.UI
 
 		public override bool PassFilters()
 		{
+			if (Interface.modBrowser.filter.Length > 0)
+			{
+				if (displayname.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1)
+				{
+					return false;
+				}
+			}
+
 			switch (Interface.modBrowser.updateFilterMode)
 			{
 				case UpdateFilter.All:
