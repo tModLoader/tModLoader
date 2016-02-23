@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -14,7 +14,6 @@ namespace Terraria.ModLoader.UI
 	{
 		private string hintText;
 		internal string currentString = "";
-
 		private int textBlinkerCount;
 		private int textBlinkerState;
 		private static KeyboardState inputText;
@@ -24,6 +23,7 @@ namespace Terraria.ModLoader.UI
 		private static int backSpaceCount;
 
 		public delegate void EventHandler(Object sender, EventArgs e);
+
 		public event EventHandler OnTextChange;
 
 		public UIInputTextField(string hintText)
@@ -72,7 +72,6 @@ namespace Terraria.ModLoader.UI
 			}
 			inputTextEnter = false;
 			inputTextEscape = false;
-
 			string text = oldString;
 			string newKeys = "";
 			if (text == null)
@@ -107,12 +106,12 @@ namespace Terraria.ModLoader.UI
 					if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
 					{
 						Thread thread = new Thread((ThreadStart)delegate
-						{
-							if (oldString.Length > 0)
 							{
-								Clipboard.SetText(oldString);
-							}
-						});
+								if (oldString.Length > 0)
+								{
+									Clipboard.SetText(oldString);
+								}
+							});
 						thread.SetApartmentState(ApartmentState.STA);
 						thread.Start();
 						while (thread.IsAlive)
@@ -123,17 +122,17 @@ namespace Terraria.ModLoader.UI
 					if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert))
 					{
 						Thread thread2 = new Thread((ThreadStart)delegate
-						{
-							string text2 = Clipboard.GetText();
-							for (int l = 0; l < text2.Length; l++)
 							{
-								if (text2[l] < ' ' || text2[l] == '\u007f')
+								string text2 = Clipboard.GetText();
+								for (int l = 0; l < text2.Length; l++)
 								{
-									text2 = text2.Replace(string.Concat(text2[l--]), "");
+									if (text2[l] < ' ' || text2[l] == '\u007f')
+									{
+										text2 = text2.Replace(string.Concat(text2[l--]), "");
+									}
 								}
-							}
-							newKeys += text2;
-						});
+								newKeys += text2;
+							});
 						thread2.SetApartmentState(ApartmentState.STA);
 						thread2.Start();
 						while (thread2.IsAlive)

@@ -102,7 +102,6 @@ namespace Terraria.ModLoader.UI
 					return false;
 				}
 			}
-
 			switch (Interface.modBrowser.updateFilterMode)
 			{
 				case UpdateFilter.All:

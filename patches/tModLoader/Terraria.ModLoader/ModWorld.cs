@@ -47,10 +47,13 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void PostUpdate()
+		public virtual void ResetNearbyTileEffects()
 		{
 		}
 
+		public virtual void PostUpdate()
+		{
+		}
 		//TODO
 		//Called after queuing world generation tasks when switching the world to hardmode, can be used to modify which tasks should be done and/or add custom tasks.
 		//public virtual void WorldGenModifyHardmodeTaskList(List<GenPass> list)

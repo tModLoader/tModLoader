@@ -8,7 +8,15 @@
  
  namespace Terraria
  {
-@@ -772,7 +773,7 @@
+@@ -609,6 +610,7 @@
+ 				Main.player[Main.myPlayer].NPCBannerBuff[m] = false;
+ 			}
+ 			Main.player[Main.myPlayer].hasBanner = false;
++			WorldHooks.ResetNearbyTileEffects();
+ 			int[] tileCounts = WorldGen.tileCounts;
+ 			num4 = Lighting.firstToLightX;
+ 			num5 = Lighting.lastToLightX;
+@@ -772,7 +774,7 @@
  							lightingState3.b2 = num20;
  						}
  					}
@@ -17,7 +25,7 @@
  					if (wall <= 137)
  					{
  						if (wall != 33)
-@@ -879,8 +880,10 @@
+@@ -879,8 +881,10 @@
  								break;
  						}
  					}
@@ -28,7 +36,7 @@
  						if (n > num4 + num15 && n < num5 - num15 && num17 > num6 + num16 && num17 < num7 - num16)
  						{
  							tileCounts[(int)tile.type]++;
-@@ -911,6 +914,7 @@
+@@ -911,6 +915,7 @@
  								Main.player[Main.myPlayer].NPCBannerBuff[num29] = true;
  								Main.player[Main.myPlayer].hasBanner = true;
  							}
@@ -36,7 +44,7 @@
  						}
  						ushort type = tile.type;
  						if (type != 139)
-@@ -964,6 +968,11 @@
+@@ -964,6 +969,11 @@
  						{
  							Main.musicBox = (int)(tile.frameY / 36);
  						}
@@ -48,7 +56,7 @@
  						if (Main.tileBlockLight[(int)tile.type] && (Lighting.lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
  						{
  							lightingState3.stopLight = true;
-@@ -2379,6 +2388,7 @@
+@@ -2379,6 +2389,7 @@
  						}
  					}
  					IL_304B:
@@ -56,7 +64,7 @@
  					if (Lighting.RGB)
  					{
  						if (lightingState3.r2 < num18)
-@@ -2522,7 +2532,7 @@
+@@ -2522,7 +2533,7 @@
  			if (Main.player[Main.myPlayer].accOreFinder)
  			{
  				Main.player[Main.myPlayer].bestOre = -1;

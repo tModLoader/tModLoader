@@ -49,6 +49,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void ResetNearbyTileEffects()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.ResetNearbyTileEffects();
+			}
+		}
+
 		public static void PostUpdate()
 		{
 			foreach (ModWorld modWorld in worlds)

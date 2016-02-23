@@ -14,7 +14,6 @@ namespace ExampleMod
 		private const int saveVersion = 0;
 		public static bool downedAbomination = false;
 		public static bool downedPuritySpirit = false;
-
 		public const int VolcanoProjectiles = 30;
 		public const float VolcanoAngleSpread = 170;
 		public int VolcanoCountdown;
@@ -61,6 +60,12 @@ namespace ExampleMod
 			Main.npc[num].homeless = true;
 		}
 
+		public override void ResetNearbyTileEffects()
+		{
+			ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
+			modPlayer.voidMonolith = false;
+		}
+
 		public override void PostUpdate()
 		{
 			if (Main.dayTime && VolcanoCountdown == 0)
@@ -79,15 +84,12 @@ namespace ExampleMod
 				{
 					Player player = Main.player[Main.myPlayer];
 					int speed = 12;
-
 					float spawnX = Main.rand.Next(1000) - 500 + player.Center.X;
 					float spawnY = -1000 + player.Center.Y;
 					Vector2 baseSpawn = new Vector2(spawnX, spawnY);
-
 					Vector2 baseVelocity = player.Center - baseSpawn;
 					baseVelocity.Normalize();
 					baseVelocity = baseVelocity * speed;
-
 					for (int i = 0; i < VolcanoProjectiles; i++)
 					{
 						Vector2 spawn = baseSpawn;
@@ -95,7 +97,6 @@ namespace ExampleMod
 						Vector2 velocity = baseVelocity;
 						velocity = baseVelocity.RotatedBy(MathHelper.ToRadians(-VolcanoAngleSpread / 2 + (VolcanoAngleSpread * i / (float)VolcanoProjectiles)));
 						velocity.X = velocity.X + 3 * Main.rand.NextFloat() - 1.5f;
-
 						int projectile = Projectile.NewProjectile(spawn.X, spawn.Y, velocity.X, velocity.Y, Main.rand.Next(ProjectileID.MolotovFire, ProjectileID.MolotovFire3 + 1), 10, 10f, Main.myPlayer, 0f, 0f);
 						Main.projectile[projectile].hostile = true;
 						Main.projectile[projectile].name = "Volcanic Rubble";

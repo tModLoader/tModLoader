@@ -36,7 +36,7 @@ namespace ExampleMod.Tiles
 			if (Main.tile[i, j].frameY >= 56)
 			{
 				ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
-				modPlayer.voidMonolith = 5;
+				modPlayer.voidMonolith = true;
 			}
 		}
 

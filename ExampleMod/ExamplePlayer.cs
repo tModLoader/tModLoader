@@ -21,7 +21,7 @@ namespace ExampleMod
 		private int elementShieldTimer = 0;
 		public int elementShieldPos = 0;
 		public int lockTime = 0;
-		public int voidMonolith = 0;
+		public bool voidMonolith = false;
 		public int heroLives = 0;
 		public int reviveTime = 0;
 		public int constantDamage = 0;
@@ -39,10 +39,6 @@ namespace ExampleMod
 		{
 			eFlames = false;
 			elementShield = false;
-			if (voidMonolith > 0)
-			{
-				voidMonolith--; //this is a very bad hack until I create ModWorld
-			}
 			constantDamage = 0;
 			percentDamage = 0f;
 			defenseEffect = -1f;
@@ -78,7 +74,7 @@ namespace ExampleMod
 		{
 			bool usePurity = NPC.AnyNPCs(mod.NPCType("PuritySpirit"));
 			player.ManageSpecialBiomeVisuals("ExampleMod:PuritySpirit", usePurity);
-			bool useVoidMonolith = voidMonolith > 0 && !usePurity && !NPC.AnyNPCs(NPCID.MoonLordCore);
+			bool useVoidMonolith = voidMonolith && !usePurity && !NPC.AnyNPCs(NPCID.MoonLordCore);
 			player.ManageSpecialBiomeVisuals("ExampleMod:MonolithVoid", useVoidMonolith, player.Center);
 		}
 
@@ -425,7 +421,7 @@ namespace ExampleMod
 
 		public override void AnglerQuestReward(float quality, List<Item> rewardItems)
 		{
-			if (voidMonolith > 0)
+			if (voidMonolith)
 			{
 				Item sticky = new Item();
 				sticky.SetDefaults(ItemID.StickyDynamite);
