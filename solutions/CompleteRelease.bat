@@ -8,7 +8,9 @@ set destinationFolder=.\tModLoader %version% Release
 call buildRelease.bat
 
 :: Make up-to-date Installers
-call ..\installer2\createInstallers.bat
+cd ..\installer2
+call createInstallers.bat
+cd ..\solutions
 
 :: Folder for release
 mkdir "%destinationFolder%"
