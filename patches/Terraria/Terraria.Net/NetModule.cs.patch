@@ -1,0 +1,12 @@
+--- src/merged\Terraria.Net\NetModule.cs
++++ src/Terraria\Terraria.Net\NetModule.cs
+@@ -20,7 +20,7 @@
+ 			ushort id = NetManager.Instance.GetId<T>();
+ 			NetPacket result = new NetPacket(id, size + 5);
+ 			result.Writer.Write((ushort)(size + 5));
+-			result.Writer.Write(82);
++			result.Writer.Write((byte)82);
+ 			result.Writer.Write(id);
+ 			return result;
+ 		}
+

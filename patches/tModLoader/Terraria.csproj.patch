@@ -309,7 +309,6 @@
 +    <None Include="App.config" />
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET RELEASEPATH=C:\Program Files (x86)\Steam\steamapps\common\terraria
 +if NOT "$(TerrariaSteamFolder)" == "" SET RELEASEPATH=$(TerrariaSteamFolder)
@@ -327,4 +326,4 @@
 +echo $(TargetPath)
 +echo %25RELEASEPATH%25\%25RELEASEFILE%25</PostBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
