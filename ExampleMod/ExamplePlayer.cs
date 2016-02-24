@@ -50,6 +50,12 @@ namespace ExampleMod
 			exampleLightPet = false;
 		}
 
+		public override void UpdateDead()
+		{
+			eFlames = false;
+			badHeal = false;
+		}
+
 		public override void SaveCustomData(BinaryWriter writer)
 		{
 			writer.Write(saveVersion);

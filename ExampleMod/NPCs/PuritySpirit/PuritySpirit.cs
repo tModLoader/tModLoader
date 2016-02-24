@@ -759,6 +759,10 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit)
 		{
+			if (ProjectileID.Sets.StardustDragon[projectile.type])
+			{
+				damage /= 2;
+			}
 			ModifyHit(ref damage);
 		}
 
