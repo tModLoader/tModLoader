@@ -22,6 +22,7 @@ namespace ExampleMod
 		{
 			downedAbomination = false;
 			downedPuritySpirit = false;
+			VolcanoCountdown = 0;
 		}
 
 		public override void SaveCustomData(BinaryWriter writer)
@@ -70,8 +71,7 @@ namespace ExampleMod
 		{
 			if (Main.dayTime && VolcanoCountdown == 0)
 			{
-				float widthMultiplier = (Main.maxTilesX / 4200);
-				if (Main.rand.Next(8000) < 10f * widthMultiplier)
+				if (Main.rand.Next(10000) == 0)
 				{
 					Main.NewText("Did you hear something....A Volcano! Find Cover!", Color.Orange.R, Color.Orange.G, Color.Orange.B);
 					VolcanoCountdown = 300;

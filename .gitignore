@@ -11,3 +11,4 @@
 ExampleMod/obj/
 *.force
 ExampleMod/bin/
+solutions/**/*.zip
