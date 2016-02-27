@@ -130,6 +130,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileFrameCounter, nextTile);
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
+			Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
+			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Grass, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Stone, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Ice, nextTile);

@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.Biomes\CaveHouseBiome.cs
++++ src/tModLoader\Terraria.GameContent.Biomes\CaveHouseBiome.cs
+@@ -160,7 +160,7 @@
+ 		}
+ 
+ 		private const int VERTICAL_EXIT_WIDTH = 3;
+-		private static readonly bool[] _blacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, new int[]
++		public static bool[] _blacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, new int[]
+ 			{
+ 				225,
+ 				41,
+
