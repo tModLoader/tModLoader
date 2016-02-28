@@ -27,11 +27,28 @@ namespace ExampleMod.Items.Weapons
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
+			WispRecipe recipe = new WispRecipe(mod);
 			recipe.AddIngredient(ItemID.Ectoplasm);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.SetResult(this, 50);
 			recipe.AddRecipe();
+		}
+	}
+
+	public class WispRecipe : ModRecipe
+	{
+		public WispRecipe(Mod mod) : base(mod)
+		{
+		}
+
+		public override int ConsumeItem(int type, int numRequired)
+		{
+			if (type == ItemID.Ectoplasm && Main.player[Main.myPlayer].adjTile[mod.TileType("ExampleWorkbench")])
+			{
+				Main.PlaySound(2, -1, -1, mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo"));
+				return Main.rand.Next(2) == 0 ? 0 : 1;
+			}
+			return base.ConsumeItem(type, numRequired);
 		}
 	}
 }
