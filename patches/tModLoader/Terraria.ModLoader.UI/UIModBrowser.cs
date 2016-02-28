@@ -209,6 +209,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
+			Main.clrInput();
 			if (!loaded)
 			{
 				uITextPanel.SetText("Mod Browser", 0.8f, true);
