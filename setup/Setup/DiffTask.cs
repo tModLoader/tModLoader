@@ -15,7 +15,8 @@ namespace Terraria.ModLoader.Setup
 		public readonly string baseDir;
 		public readonly string srcDir;
 		public readonly string patchDir;
-		public readonly CSharpFormattingOptions format;
+        public readonly ProgramSetting<DateTime> cutoff;
+        public readonly CSharpFormattingOptions format;
 
 		public string FullBaseDir { get { return Path.Combine(Program.baseDir, baseDir); } }
 		public string FullSrcDir { get { return Path.Combine(Program.baseDir, srcDir); } }
@@ -24,29 +25,20 @@ namespace Terraria.ModLoader.Setup
 		public static ProgramSetting<DateTime> MergedDiffCutoff = new ProgramSetting<DateTime>("MergedDiffCutoff");
 		public static ProgramSetting<DateTime> TerrariaDiffCutoff = new ProgramSetting<DateTime>("TerrariaDiffCutoff");
 		public static ProgramSetting<DateTime> tModLoaderDiffCutoff = new ProgramSetting<DateTime>("tModLoaderDiffCutoff");
-		public int stepNumber;
 
-		public DiffTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, int stepNumber,
-			CSharpFormattingOptions format = null)
-			: base(taskInterface)
+		public DiffTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, 
+            ProgramSetting<DateTime> cutoff, CSharpFormattingOptions format = null) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
 			this.srcDir = srcDir;
 			this.patchDir = patchDir;
 			this.format = format;
-			this.stepNumber = stepNumber;
+			this.cutoff = cutoff;
 		}
 
 		public override void Run()
 		{
-			List<string> patchesFiles = new List<string>();// (Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories));
-			foreach (var file in Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories))
-			{
-				patchesFiles.Add(RelPath(FullPatchDir, file));
-			}
-			//if (Directory.Exists(FullPatchDir))
-			//	Directory.Delete(FullPatchDir, true);
-
+			var patchesFiles = Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories).Select(file => RelPath(FullPatchDir, file)).ToList();
 			var files = Directory.EnumerateFiles(FullSrcDir, "*", SearchOption.AllDirectories).Where(f => extensions.Any(f.EndsWith));
 			var items = new List<WorkItem>();
 
@@ -55,17 +47,9 @@ namespace Terraria.ModLoader.Setup
 				var relPath = RelPath(FullSrcDir, file);
 				patchesFiles.Remove(relPath);
 				patchesFiles.Remove(relPath + ".patch");
-				if (excluded.Any(relPath.StartsWith))
+				if (excluded.Any(relPath.StartsWith) || File.GetLastWriteTime(file) < cutoff.Get())
 					continue;
 
-				//bool skip = false;
-				if ((stepNumber == 0 && (File.GetLastWriteTime(file) < MergedDiffCutoff.Get())) ||
-					(stepNumber == 1 && (File.GetLastWriteTime(file) < TerrariaDiffCutoff.Get())) ||
-					(stepNumber == 2 && (File.GetLastWriteTime(file) < tModLoaderDiffCutoff.Get())))
-					continue;
-				//skip = true;
-
-				//if (!skip)
 				items.Add(File.Exists(Path.Combine(FullBaseDir, relPath))
 					? new WorkItem("Creating Diff: " + relPath, () => Diff(relPath))
 					: new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(FullPatchDir, relPath))));
@@ -74,24 +58,10 @@ namespace Terraria.ModLoader.Setup
 			ExecuteParallel(items);
 
 			taskInterface.SetStatus("Deleting Unnessesary Patches");
-
 			foreach (string file in patchesFiles)
-			{
-				File.Delete(file);
-			}
+				File.Delete(Path.Combine(FullPatchDir, file));
 
-			switch (stepNumber)
-			{
-				case 0:
-					MergedDiffCutoff.Set(DateTime.Now);
-					break;
-				case 1:
-					TerrariaDiffCutoff.Set(DateTime.Now);
-					break;
-				case 2:
-					tModLoaderDiffCutoff.Set(DateTime.Now);
-					break;
-			}
+			cutoff.Set(DateTime.Now);
 		}
 
 		private void Diff(string relPath)

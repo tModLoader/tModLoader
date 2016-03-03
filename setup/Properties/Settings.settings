@@ -6,7 +6,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SteamDir" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">C:\Program Files (x86)\Steam\steamapps\common\terraria</Value>
     </Setting>
     <Setting Name="SingleDecompileThread" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

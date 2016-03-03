@@ -13,7 +13,8 @@ namespace Terraria.ModLoader.Setup
 		public readonly string baseDir;
 		public readonly string srcDir;
 		public readonly string patchDir;
-		public readonly CSharpFormattingOptions format;
+        public readonly ProgramSetting<DateTime> cutoff;
+        public readonly CSharpFormattingOptions format;
 		private int warnings;
 		private int failures;
 		private StreamWriter logFile;
@@ -22,17 +23,15 @@ namespace Terraria.ModLoader.Setup
 		public string FullSrcDir { get { return Path.Combine(Program.baseDir, srcDir); } }
 		public string FullPatchDir { get { return Path.Combine(Program.baseDir, patchDir); } }
 
-		public int stepNumber;
-
-		public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, int stepNumber,
-				CSharpFormattingOptions format = null) : base(taskInterface)
+		public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir,
+            ProgramSetting<DateTime> cutoff, CSharpFormattingOptions format = null) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
 			this.srcDir = srcDir;
 			this.patchDir = patchDir;
 			this.format = format;
-			this.stepNumber = stepNumber;
-		}
+            this.cutoff = cutoff;
+        }
 
 		public override bool StartupWarning()
 		{
@@ -95,18 +94,7 @@ namespace Terraria.ModLoader.Setup
 					logFile.Close();
 			}
 
-			switch (stepNumber)
-			{
-				case 0:
-					DiffTask.MergedDiffCutoff.Set(DateTime.Now);
-					break;
-				case 1:
-					DiffTask.TerrariaDiffCutoff.Set(DateTime.Now);
-					break;
-				case 2:
-					DiffTask.tModLoaderDiffCutoff.Set(DateTime.Now);
-					break;
-			}
+            cutoff.Set(DateTime.Now);
 		}
 
 		public override bool Failed()
