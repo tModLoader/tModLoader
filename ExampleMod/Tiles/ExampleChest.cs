@@ -22,19 +22,43 @@ namespace ExampleMod.Tiles
 			Main.tileValue[Type] = 500;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
-			TileObjectData.newTile.CoordinateHeights = new int[]{ 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 18 };
 			TileObjectData.newTile.HookCheck = new PlacementHook(new Func<int, int, int, int, int, int>(Chest.FindEmptyChest), -1, 0, true);
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(new Func<int, int, int, int, int, int>(Chest.AfterPlacement_Hook), -1, 0, false);
-			TileObjectData.newTile.AnchorInvalidTiles = new int[]{ 127 };
+			TileObjectData.newTile.AnchorInvalidTiles = new int[] { 127 };
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 			TileObjectData.addTile(Type);
-			AddMapEntry(new Color(200, 200, 200), "Chest");
+			AddMapEntry(new Color(200, 200, 200), "Example Chest", MapChestName);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
-			adjTiles = new int[]{ TileID.Containers };
+			adjTiles = new int[] { TileID.Containers };
 			chest = "Example Chest";
+		}
+
+		public string MapChestName(string name, int i, int j)
+		{
+			int left = i;
+			int top = j;
+			Tile tile = Main.tile[i, j];
+			if (tile.frameX % 36 != 0)
+			{
+				left--;
+			}
+			if (tile.frameY != 0)
+			{
+				top--;
+			}
+			int chest = Chest.FindChest(left, top);
+			if (Main.chest[chest].name == "")
+			{
+				return name;
+			}
+			else
+			{
+				return name + ": " + Main.chest[chest].name;
+			}
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
