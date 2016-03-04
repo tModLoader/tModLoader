@@ -6,6 +6,10 @@ set destinationFolder=.\tModLoader %version% Release
 
 :: Compile/Build exe 
 call buildRelease.bat
+@IF %ERRORLEVEL% NEQ 0 (
+	pause
+	EXIT /B %ERRORLEVEL%
+)
 
 :: Make up-to-date Installers
 cd ..\installer2
