@@ -197,7 +197,7 @@
 +IF %25RELEASEFILE%25 == WindowsDebug SET RELEASEFILE=TerrariaDebug
 +IF %25RELEASEFILE%25 == WindowsRelease SET RELEASEFILE=Terraria
 +
-+for /f %25%25i in ('"$(SolutionDir)..\setup\bin\setup" --steamdir') do set TERRARIASTEAMDIR=%25%25i
++for /f "tokens=* delims=" %25%25i in ('"$(ProjectDir)..\..\setup\bin\setup" --steamdir') do set TERRARIASTEAMDIR=%25%25i
 +copy "$(TargetDir)$(TargetName)$(TargetExt)" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25$(TargetExt)"</PostBuildEvent>
 +  </PropertyGroup>
 +  <PropertyGroup>
@@ -205,4 +205,3 @@
 +    </PreBuildEvent>
 +  </PropertyGroup>
  </Project>
-
