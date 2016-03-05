@@ -1,12 +1,25 @@
 --- src/Terraria\Terraria\Program.cs
 +++ src/tModLoader\Terraria\Program.cs
-@@ -97,6 +97,10 @@
+@@ -9,6 +9,7 @@
+ using System.Windows.Forms;
+ #endif
+ using Terraria.Initializers;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ 
+ namespace Terraria
+@@ -97,6 +98,15 @@
  		public static void LaunchGame(string[] args)
  		{
  			Program.LaunchParameters = Utils.ParseArguements(args);
 +			if (Program.LaunchParameters.ContainsKey("-savedirectory"))
 +			{
 +				Program.LaunchParameters["-savedirectory"] = Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader");
++			}
++			if (LaunchParameters.ContainsKey("--build"))
++			{
++				ModCompile.BuildModCommandLine(LaunchParameters["--build"]);
++				return;
 +			}
  			ThreadPool.SetMinThreads(8, 8);
  			using (Main main = new Main())

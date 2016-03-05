@@ -8,8 +8,9 @@ namespace Terraria.ModLoader
 {
 	public static class ErrorLogger
 	{
-		public static readonly string LogPath = Main.SavePath + Path.DirectorySeparatorChar + "Logs";
-		private static readonly string[] buildDllLines = new string[]
+		public static readonly string LogPath = Path.Combine(Main.SavePath, "Logs");
+		internal static string CompileErrorPath = Path.Combine(LogPath, "Compile Errors.txt");
+		private static readonly string[] buildDllLines =
 		{
 			"Must have either All.dll or both of Windows.dll and Other.dll",
 			"All.dll must not have any references to Microsoft.Xna.Framework or FNA",
@@ -20,60 +21,44 @@ namespace Terraria.ModLoader
 		internal static void LogModReferenceError(string reference)
 		{
 			Directory.CreateDirectory(LogPath);
-			string file = LogPath + Path.DirectorySeparatorChar + "Compile Errors.txt";
-			string message = "Mod reference " + reference + " was not found.";
-			using (StreamWriter writer = File.CreateText(file))
-			{
-				writer.WriteLine(message);
-			}
+			var message = "Mod reference " + reference + " was not found.";
+			File.WriteAllText(CompileErrorPath, message);
+			Console.WriteLine(message);
 			Interface.errorMessage.SetMessage(message);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Interface.errorMessage.SetFile(file);
+			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
 
 		internal static void LogCompileErrors(CompilerErrorCollection errors)
 		{
+			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
+			Console.WriteLine(errorHeader);
 			Directory.CreateDirectory(LogPath);
-			string file = LogPath + Path.DirectorySeparatorChar + "Compile Errors.txt";
 			CompilerError displayError = null;
-			using (StreamWriter writer = File.CreateText(file))
+			using (var writer = File.CreateText(CompileErrorPath))
 			{
 				foreach (CompilerError error in errors)
 				{
-					writer.WriteLine(error.ToString());
-					writer.WriteLine();
+					writer.WriteLine(error + Environment.NewLine);
+					Console.WriteLine(error + Environment.NewLine);
 					if (!error.IsWarning && displayError == null)
-					{
 						displayError = error;
-					}
 				}
 			}
-			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
 			Interface.errorMessage.SetMessage(errorHeader + displayError);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Interface.errorMessage.SetFile(file);
+			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
 
 		internal static void LogDllBuildError(string modDir)
 		{
 			Directory.CreateDirectory(LogPath);
-			string file = LogPath + Path.DirectorySeparatorChar + "Compile Errors.txt";
-			string errorText = "";
-			using (StreamWriter writer = File.CreateText(file))
-			{
-				writer.WriteLine("Missing dll files for " + Path.GetFileName(modDir));
-				errorText += "Missing dll files for " + Path.GetFileName(modDir) + Environment.NewLine;
-				writer.WriteLine();
-				errorText += Environment.NewLine;
-				foreach (string line in buildDllLines)
-				{
-					writer.WriteLine(line);
-					errorText += line + Environment.NewLine;
-				}
-			}
+			var errorText = "Missing dll files for " + Path.GetFileName(modDir) + Environment.NewLine + Environment.NewLine +
+			                string.Join(Environment.NewLine, buildDllLines);
+			File.WriteAllText(CompileErrorPath, errorText);
 			Interface.errorMessage.SetMessage(errorText);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Interface.errorMessage.SetFile(file);
+			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
 
 		internal static void LogMissingLoadReference(IList<TmodFile> mods)

@@ -20,6 +20,7 @@ namespace Terraria.ModLoader
 		internal bool hideCode = true;
 		internal bool hideResources = true;
 		internal bool includeSource = false;
+		internal bool includePDB = false;
 		internal string homepage = "";
 		internal string description = "";
 
@@ -99,6 +100,9 @@ namespace Terraria.ModLoader
 						break;
 					case "includeSource":
 						properties.includeSource = value.ToLower() == "true";
+						break;
+					case "includePDB":
+						properties.includePDB = value.ToLower() == "true";
 						break;
 					case "buildIgnore":
 						string[] buildIgnores = value.Split(',');
@@ -183,6 +187,10 @@ namespace Terraria.ModLoader
 					{
 						writer.Write("includeSource");
 					}
+					if (includePDB)
+					{
+						writer.Write("includePDB");
+					}
 					writer.Write("");
 					writer.Flush();
 					data = memoryStream.ToArray();
@@ -266,6 +274,10 @@ namespace Terraria.ModLoader
 						if (tag == "includeSource")
 						{
 							properties.includeSource = true;
+						}
+						if (tag == "includePDB")
+						{
+							properties.includePDB = true;
 						}
 					}
 				}

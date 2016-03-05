@@ -4,7 +4,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIBuildMod : UIState
+	internal class UIBuildMod : UIState, ModCompile.IBuildStatus
 	{
 		private UILoadProgress loadProgress;
 
@@ -20,26 +20,14 @@ namespace Terraria.ModLoader.UI
 			base.Append(loadProgress);
 		}
 
-		internal void SetProgress(int num, int max)
+		public void SetProgress(int num, int max)
 		{
 			loadProgress.SetProgress((float)num / (float)max);
 		}
 
-		internal void SetReading()
+		public void SetStatus(string msg)
 		{
-			loadProgress.SetText("Reading Properties: " + Path.GetFileName(ModLoader.modToBuild));
-		}
-
-		internal void SetCompiling(int num)
-		{
-			loadProgress.SetText("Compiling " + Path.GetFileName(ModLoader.modToBuild) + "...");
-			loadProgress.SetProgress((float)num / 2f);
-		}
-
-		internal void SetBuildText()
-		{
-			loadProgress.SetText("Building " + Path.GetFileName(ModLoader.modToBuild) + "...");
-			loadProgress.SetProgress(0f);
+			loadProgress.SetText(msg);
 		}
 	}
 }
