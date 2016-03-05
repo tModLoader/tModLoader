@@ -9,7 +9,7 @@ using ICSharpCode.NRefactory.Editor;
 
 namespace Terraria.ModLoader.Setup
 {
-    class FormatTask : Task
+    public class FormatTask : Task
     {
         public static CSharpFormattingOptions tModLoaderFormat = FormattingOptionsFactory.CreateAllman();
 

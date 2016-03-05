@@ -97,12 +97,15 @@ namespace Terraria.ModLoader.Setup
 			if (temp != null)
 				File.Delete(temp);
 
-			if (patch == "\r\n")
-				return;
+            var patchFile = Path.Combine(FullPatchDir, relPath + ".patch");
+		    if (patch.Trim() != "")
+            {
+                CreateParentDirectory(patchFile);
+                File.WriteAllText(patchFile, patch);
+		    }
+            else if (File.Exists(patchFile))
+                File.Delete(patchFile);
 
-			var patchFile = Path.Combine(FullPatchDir, relPath + ".patch");
-			CreateParentDirectory(patchFile);
-			File.WriteAllText(patchFile, patch);
 		}
 
 		private string CallDiff(string baseFile, string srcFile, string baseName, string srcName)

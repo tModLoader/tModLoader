@@ -66,6 +66,9 @@ namespace Terraria.ModLoader.Setup
                 Action<string> error = null,
                 CancellationToken cancel = default(CancellationToken)) {
 
+            if (output == null) output = _ => {};
+            if (error == null) error = _ => {};
+
             using (var process = new Process()) {
                 process.StartInfo = new ProcessStartInfo {
                     FileName = cmd,
@@ -89,8 +92,8 @@ namespace Terraria.ModLoader.Setup
                     }
                     process.WaitForExit(100);
 
-                    output?.Invoke(process.StandardOutput.ReadToEnd());
-                    error?.Invoke(process.StandardError.ReadToEnd());
+                    output(process.StandardOutput.ReadToEnd());
+                    error(process.StandardError.ReadToEnd());
                 }
 
                 return process.ExitCode;

@@ -51,14 +51,18 @@ namespace Terraria.ModLoader.Setup
 			var baseFiles = Directory.EnumerateFiles(FullBaseDir, "*", SearchOption.AllDirectories);
 			var patchFiles = Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories);
 
-			var copyItems = new List<WorkItem>();
+		    var removedFileList = Path.Combine(FullPatchDir, DiffTask.RemovedFileList);
+            var removedFiles = File.Exists(removedFileList) ? new HashSet<string>(File.ReadAllLines(removedFileList)) : new HashSet<string>();
+
+            var copyItems = new List<WorkItem>();
 			var patchItems = new List<WorkItem>();
 			var formatItems = new List<WorkItem>();
+
 
 			foreach (var file in baseFiles)
 			{
 				var relPath = RelPath(FullBaseDir, file);
-				if (DiffTask.excluded.Any(relPath.StartsWith))
+				if (DiffTask.excluded.Any(relPath.StartsWith) || removedFiles.Contains(relPath))
 					continue;
 
 				var srcPath = Path.Combine(FullSrcDir, relPath);
@@ -74,7 +78,7 @@ namespace Terraria.ModLoader.Setup
 				var relPath = RelPath(FullPatchDir, file);
 				if (relPath.EndsWith(".patch"))
 					patchItems.Add(new WorkItem("Patching: " + relPath, () => Patch(relPath)));
-				else
+				else if (relPath != DiffTask.RemovedFileList)
 					copyItems.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(FullSrcDir, relPath))));
 			}
 
@@ -149,8 +153,8 @@ namespace Terraria.ModLoader.Setup
 			var log = new StringBuilder();
 			Program.RunCmd(Program.toolsDir, Path.Combine(Program.toolsDir, "applydiff.exe"),
 				string.Format("-u -N -p0 -d {0} -i {1} {2}", Program.baseDir, patchFile, srcFile),
-				s => { output.Append(s); log.Append(s); },
-				s => { error.Append(s); log.Append(s); }
+				s => { output.Append(s); lock(log) log.Append(s); },
+				s => { error.Append(s); lock(log) log.Append(s); }
 			);
 
 			Log(log.ToString());
