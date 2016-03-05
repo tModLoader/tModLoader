@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Terraria.ModLoader.Setup
@@ -14,10 +15,10 @@ namespace Terraria.ModLoader.Setup
 		public static readonly string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 	    public static readonly string libDir = Path.Combine(appDir, "..", "lib");
 		public static readonly string toolsDir = Path.Combine(appDir, "..", "tools");
-        public static string LogDir { get { return Path.Combine(baseDir, "logs"); } }
-		public static ProgramSetting<bool> SuppressWarnings = new ProgramSetting<bool>("SuppressWarnings");
+        public static string LogDir => Path.Combine(baseDir, "logs");
+        public static ProgramSetting<bool> SuppressWarnings = new ProgramSetting<bool>("SuppressWarnings");
 
-			/// <summary>
+		/// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
@@ -30,6 +31,11 @@ namespace Terraria.ModLoader.Setup
 				path = new[] {".exe", ".dll"}.Select(ext => path+ext).SingleOrDefault(File.Exists);
 				return path != null ? Assembly.LoadFrom(path) : null;
 			};
+
+			if (args.Length == 1 && args[0] == "--steamdir") {
+			    Console.WriteLine(Settings.SteamDir.Get());
+			    return;
+			}
 
             LoadBaseDir(args);
             if (baseDir == null)
@@ -55,23 +61,39 @@ namespace Terraria.ModLoader.Setup
             baseDir = dialog.SelectedPath;
         }
 
-		public static void RunCmd(string dir, string cmd, string args, Action<string> output, Action<string> error) {
-            var start = new ProcessStartInfo {
-                FileName = cmd,
-                Arguments = args,
-				WorkingDirectory = dir,
-                UseShellExecute = false,
-                StandardOutputEncoding = Encoding.UTF8,
-                RedirectStandardOutput = true,
-                StandardErrorEncoding = Encoding.UTF8,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
-            using (var process = Process.Start(start)) {
-                using (var reader = process.StandardOutput)
-                    output(reader.ReadToEnd());
-                using (var reader = process.StandardError)
-                    error(reader.ReadToEnd());
+		public static int RunCmd(string dir, string cmd, string args, 
+                Action<string> output = null, 
+                Action<string> error = null,
+                CancellationToken cancel = default(CancellationToken)) {
+
+            using (var process = new Process()) {
+                process.StartInfo = new ProcessStartInfo {
+                    FileName = cmd,
+                    Arguments = args,
+                    WorkingDirectory = dir,
+                    UseShellExecute = false,
+                    StandardOutputEncoding = Encoding.UTF8,
+                    RedirectStandardOutput = true,
+                    StandardErrorEncoding = Encoding.UTF8,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+
+                if (!process.Start())
+                    throw new Exception("Failed to start process: \""+cmd+" "+args+"\"");
+
+                while (!process.HasExited) {
+                    if (cancel.IsCancellationRequested) {
+                        process.Kill();
+                        throw new OperationCanceledException(cancel);
+                    }
+                    process.WaitForExit(100);
+
+                    output?.Invoke(process.StandardOutput.ReadToEnd());
+                    error?.Invoke(process.StandardError.ReadToEnd());
+                }
+
+                return process.ExitCode;
             }
         }
     }

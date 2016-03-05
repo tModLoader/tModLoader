@@ -1,6 +1,25 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -45,6 +45,9 @@
+@@ -20,6 +20,7 @@
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerRelease|x86'">
+     <OutputPath>bin\x86\WindowsServerRelease\</OutputPath>
++    <AssemblyName>tModLoaderServer</AssemblyName>
+     <DefineConstants>SERVER; WINDOWS</DefineConstants>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsDebug|x86'">
+@@ -27,8 +28,9 @@
+     <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
++    <OutputPath>bin\x86\WindowsServerDebug\</OutputPath>
++    <AssemblyName>tModLoaderServer</AssemblyName>
+     <DefineConstants>DEBUG;SERVER; WINDOWS</DefineConstants>
+-    <OutputPath>bin\x86\WindowsServerDebug\</OutputPath>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
+     <OutputPath>bin\x86\MacRelease\</OutputPath>
+@@ -45,6 +47,9 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxServerRelease|x86'">
      <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
      <DefineConstants>SERVER; LINUX</DefineConstants>
@@ -10,7 +29,7 @@
    </PropertyGroup>
    <Choose>
      <When Condition="$(DefineConstants.Contains('DEBUG'))">
-@@ -73,15 +76,23 @@
+@@ -73,15 +78,23 @@
      </Otherwise>
    </Choose>
    <ItemGroup>
@@ -36,7 +55,7 @@
        <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
      </Reference>
      <Reference Include="System.Windows.Forms" />
-@@ -91,6 +102,7 @@
+@@ -91,6 +104,7 @@
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
@@ -44,7 +63,7 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -253,6 +265,7 @@
+@@ -253,6 +267,7 @@
      <Compile Include="Terraria.ID\ItemID.cs" />
      <Compile Include="Terraria.ID\MessageID.cs" />
      <Compile Include="Terraria.ID\MountID.cs" />
@@ -52,7 +71,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -280,6 +293,94 @@
+@@ -280,6 +295,94 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -147,7 +166,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -427,6 +528,36 @@
+@@ -427,6 +530,38 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
@@ -166,22 +185,24 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
-+    <PostBuildEvent>SET RELEASEPATH=C:\Program Files (x86)\Steam\steamapps\common\terraria
-+if NOT "$(TerrariaSteamFolder)" == "" SET RELEASEPATH=$(TerrariaSteamFolder)
-+SET RELEASEFILE=$(ConfigurationName).exe
-+echo %25RELEASEFILE%25
-+if %25RELEASEFILE%25 == MacRelease.exe (SET RELEASEFILE=TerrariaMac.exe)
-+if %25RELEASEFILE%25 == MacServerRelease.exe (SET RELEASEFILE=TerrariaServerMac.exe)
-+if %25RELEASEFILE%25 == LinuxRelease.exe SET RELEASEFILE=TerrariaLinux.exe
-+if %25RELEASEFILE%25 == LinuxServerRelease.exe (SET RELEASEFILE=TerrariaServerLinux.exe)
-+if %25RELEASEFILE%25 == WindowsServerDebug.exe (SET RELEASEFILE=tModLoaderServerDebug.exe)
-+if %25RELEASEFILE%25 == WindowsServerRelease.exe (SET RELEASEFILE=tModLoaderServer.exe)
-+if %25RELEASEFILE%25 == WindowsDebug.exe (SET RELEASEFILE=TerrariaDebug.exe)
-+if %25RELEASEFILE%25 == WindowsRelease.exe (SET RELEASEFILE=Terraria.exe)
-+copy "$(TargetPath)" "%25RELEASEPATH%25\%25RELEASEFILE%25"
-+echo $(TargetPath)
-+echo %25RELEASEPATH%25\%25RELEASEFILE%25</PostBuildEvent>
++    <PostBuildEvent>SET RELEASEFILE=$(ConfigurationName)
++
++IF %25RELEASEFILE%25 == MacRelease SET RELEASEFILE=TerrariaMac
++IF %25RELEASEFILE%25 == MacServerRelease SET RELEASEFILE=TerrariaServerMac
++IF %25RELEASEFILE%25 == LinuxRelease SET RELEASEFILE=TerrariaLinux
++IF %25RELEASEFILE%25 == LinuxServerRelease SET RELEASEFILE=TerrariaServerLinux
++IF %25RELEASEFILE%25 == WindowsServerDebug SET RELEASEFILE=tModLoaderServerDebug
++IF %25RELEASEFILE%25 == WindowsServerRelease SET RELEASEFILE=tModLoaderServer
++IF %25RELEASEFILE%25 == WindowsDebug SET RELEASEFILE=TerrariaDebug
++IF %25RELEASEFILE%25 == WindowsRelease SET RELEASEFILE=Terraria
++
++for /f %25%25i in ('"$(SolutionDir)..\setup\bin\setup" --steamdir') do set TERRARIASTEAMDIR=%25%25i
++copy "$(TargetDir)$(TargetName)$(TargetExt)" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25$(TargetExt)"</PostBuildEvent>
 +  </PropertyGroup>
-+</Project>
++  <PropertyGroup>
++    <PreBuildEvent>
++    </PreBuildEvent>
++  </PropertyGroup>
+ </Project>
+

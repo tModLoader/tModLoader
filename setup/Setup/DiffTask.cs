@@ -9,8 +9,9 @@ namespace Terraria.ModLoader.Setup
 {
 	public class DiffTask : Task
 	{
-		public static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png" };
+		public static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config" };
 		public static string[] excluded = { "bin" + Path.DirectorySeparatorChar, "obj" + Path.DirectorySeparatorChar };
+	    public static readonly string RemovedFileList = "removed_files.list";
 
 		public readonly string baseDir;
 		public readonly string srcDir;
@@ -21,10 +22,6 @@ namespace Terraria.ModLoader.Setup
 		public string FullBaseDir { get { return Path.Combine(Program.baseDir, baseDir); } }
 		public string FullSrcDir { get { return Path.Combine(Program.baseDir, srcDir); } }
 		public string FullPatchDir { get { return Path.Combine(Program.baseDir, patchDir); } }
-
-		public static ProgramSetting<DateTime> MergedDiffCutoff = new ProgramSetting<DateTime>("MergedDiffCutoff");
-		public static ProgramSetting<DateTime> TerrariaDiffCutoff = new ProgramSetting<DateTime>("TerrariaDiffCutoff");
-		public static ProgramSetting<DateTime> tModLoaderDiffCutoff = new ProgramSetting<DateTime>("tModLoaderDiffCutoff");
 
 		public DiffTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, 
             ProgramSetting<DateTime> cutoff, CSharpFormattingOptions format = null) : base(taskInterface)
@@ -38,16 +35,27 @@ namespace Terraria.ModLoader.Setup
 
 		public override void Run()
 		{
-			var patchesFiles = Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories).Select(file => RelPath(FullPatchDir, file)).ToList();
-			var files = Directory.EnumerateFiles(FullSrcDir, "*", SearchOption.AllDirectories).Where(f => extensions.Any(f.EndsWith));
-			var items = new List<WorkItem>();
+			var patchFiles = new HashSet<string>(
+                Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories)
+                .Select(file => RelPath(FullPatchDir, file)));
+            var oldFiles = new HashSet<string>(
+                Directory.EnumerateFiles(FullBaseDir, "*", SearchOption.AllDirectories)
+                .Select(file => RelPath(FullBaseDir, file))
+                .Where(relPath => !relPath.EndsWith(".patch") && !excluded.Any(relPath.StartsWith)));
 
-			foreach (var file in files)
+            var items = new List<WorkItem>();
+
+			foreach (var file in Directory.EnumerateFiles(FullSrcDir, "*", SearchOption.AllDirectories))
 			{
 				var relPath = RelPath(FullSrcDir, file);
-				patchesFiles.Remove(relPath);
-				patchesFiles.Remove(relPath + ".patch");
-				if (excluded.Any(relPath.StartsWith) || File.GetLastWriteTime(file) < cutoff.Get())
+                oldFiles.Remove(relPath);
+			    if (!extensions.Any(relPath.EndsWith))
+			        continue;
+
+                patchFiles.Remove(relPath);
+                patchFiles.Remove(relPath + ".patch");
+
+                if (excluded.Any(relPath.StartsWith) || File.GetLastWriteTime(file) < cutoff.Get())
 					continue;
 
 				items.Add(File.Exists(Path.Combine(FullBaseDir, relPath))
@@ -57,11 +65,18 @@ namespace Terraria.ModLoader.Setup
 
 			ExecuteParallel(items);
 
-			taskInterface.SetStatus("Deleting Unnessesary Patches");
-			foreach (string file in patchesFiles)
-				File.Delete(Path.Combine(FullPatchDir, file));
+            taskInterface.SetStatus("Deleting Unnessesary Patches");
+            foreach (var file in patchFiles)
+                File.Delete(Path.Combine(FullPatchDir, file));
 
-			cutoff.Set(DateTime.Now);
+            taskInterface.SetStatus("Noting Removed Files");
+		    var removedFileList = Path.Combine(FullPatchDir, RemovedFileList);
+            if (oldFiles.Count > 0)
+                File.WriteAllText(removedFileList, string.Join("\r\n", oldFiles));
+            else if (File.Exists(removedFileList))
+                File.Delete(removedFileList);
+
+            cutoff.Set(DateTime.Now);
 		}
 
 		private void Diff(string relPath)
@@ -95,7 +110,7 @@ namespace Terraria.ModLoader.Setup
 			var output = new StringBuilder();
 			Program.RunCmd(Program.toolsDir, Path.Combine(Program.toolsDir, "py.exe"),
 				string.Format("diff.py {0} {1} {2} {3}", baseFile, srcFile, baseName, srcName),
-				s => output.Append(s), _ => { });
+				s => output.Append(s));
 
 			return output.ToString();
 		}
