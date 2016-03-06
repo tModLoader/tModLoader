@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Item.cs
 +++ src/tModLoader\Terraria\Item.cs
-@@ -1,13 +1,42 @@
+@@ -1,13 +1,28 @@
  using Microsoft.Xna.Framework;
  using System;
 +using System.Collections.Generic;
@@ -19,21 +19,7 @@
 +			internal set;
 +		}
 +
-+		private IList<ItemInfo> infoList = null;
-+		private int lastLoad = -1;
-+
-+		internal IList<ItemInfo> itemInfo
-+		{
-+			get
-+			{
-+				if (infoList == null || lastLoad != ModLoader.ModLoader.numLoads)
-+				{
-+					infoList = new List<ItemInfo>();
-+					lastLoad = ModLoader.ModLoader.numLoads;
-+				}
-+				return infoList;
-+			}
-+		}
++	    internal readonly IList<ItemInfo> itemInfo = new List<ItemInfo>();
 +
 +		public ItemInfo GetModInfo(Mod mod, string name)
 +		{
@@ -43,7 +29,7 @@
  		public const int flaskTime = 72000;
  		public const int copper = 1;
  		public const int silver = 100;
-@@ -173,7 +202,7 @@
+@@ -173,7 +188,7 @@
  				}
  				if (num == -1 || num == -2 || num == -3)
  				{
@@ -52,7 +38,7 @@
  					{
  						int num9 = Main.rand.Next(40);
  						if (num9 == 0)
-@@ -337,7 +366,7 @@
+@@ -337,7 +352,7 @@
  							num = 81;
  						}
  					}
@@ -61,7 +47,7 @@
  					{
  						int num10 = Main.rand.Next(14);
  						if (num10 == 0)
-@@ -397,7 +426,7 @@
+@@ -397,7 +412,7 @@
  							num = 61;
  						}
  					}
@@ -70,7 +56,7 @@
  					{
  						int num11 = Main.rand.Next(36);
  						if (num11 == 0)
-@@ -545,7 +574,7 @@
+@@ -545,7 +560,7 @@
  							num = 82;
  						}
  					}
@@ -79,7 +65,7 @@
  					{
  						int num12 = Main.rand.Next(36);
  						if (num12 == 0)
-@@ -693,7 +722,7 @@
+@@ -693,7 +708,7 @@
  							num = 83;
  						}
  					}
@@ -88,7 +74,7 @@
  					{
  						int num13 = Main.rand.Next(14);
  						if (num13 == 0)
-@@ -3968,6 +3997,10 @@
+@@ -3968,6 +3983,10 @@
  				case 537:
  					return 249;
  			}
@@ -99,7 +85,7 @@
  			return 0;
  		}
  
-@@ -4461,6 +4494,10 @@
+@@ -4461,6 +4480,10 @@
  					return 537;
  				case 250:
  					return 220;
@@ -110,7 +96,7 @@
  			}
  			return 0;
  		}
-@@ -44752,6 +44789,17 @@
+@@ -44752,6 +44775,17 @@
  			}
  		}
  
@@ -128,7 +114,7 @@
  		public void SetDefaults(int Type = 0, bool noMatCheck = false)
  		{
  			if (Main.netMode == 1 || Main.netMode == 2)
-@@ -44763,10 +44811,6 @@
+@@ -44763,10 +44797,6 @@
  				this.owner = Main.myPlayer;
  			}
  			this.ResetStats(Type);
@@ -139,7 +125,7 @@
  			if (this.type == 0)
  			{
  				this.netID = 0;
-@@ -44973,12 +45017,13 @@
+@@ -44973,12 +45003,13 @@
  				this.maxStack = 999;
  			}
  			this.netID = this.type;
@@ -157,7 +143,7 @@
  			if (this.type > 0 && this.type < 3602 && ItemID.Sets.Deprecated[this.type])
  			{
  				this.netID = 0;
-@@ -44990,6 +45035,7 @@
+@@ -44990,6 +45021,7 @@
  
  		public void ResetStats(int Type)
  		{
@@ -165,7 +151,7 @@
  			this.expert = false;
  			this.expertOnly = false;
  			this.instanced = false;
-@@ -45148,6 +45194,11 @@
+@@ -45148,6 +45180,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{
@@ -177,7 +163,7 @@
  			int num = this.type;
  			if (num <= 1306)
  			{
-@@ -45714,6 +45765,7 @@
+@@ -45714,6 +45751,7 @@
  							}
  						}
  					}
@@ -185,7 +171,7 @@
  					if (ItemID.Sets.ItemNoGravity[this.type])
  					{
  						this.velocity.X = this.velocity.X * 0.95f;
-@@ -46223,6 +46275,7 @@
+@@ -46223,6 +46261,7 @@
  					}
  					this.spawnTime++;
  				}
@@ -193,7 +179,7 @@
  				if (Main.netMode == 2 && this.owner != Main.myPlayer)
  				{
  					this.release++;
-@@ -46259,6 +46312,10 @@
+@@ -46259,6 +46298,10 @@
  			}
  			int num = 400;
  			Main.item[400] = new Item();
@@ -204,7 +190,7 @@
  			if (Main.halloween)
  			{
  				if (Type == 58)
-@@ -46401,7 +46458,12 @@
+@@ -46401,7 +46444,12 @@
  
  		public Item Clone()
  		{

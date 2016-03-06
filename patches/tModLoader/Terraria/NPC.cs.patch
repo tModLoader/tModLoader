@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\NPC.cs
 +++ src/tModLoader\Terraria\NPC.cs
-@@ -9,11 +9,39 @@
+@@ -9,11 +9,25 @@
  using Terraria.GameContent.Tile_Entities;
  using Terraria.GameContent.UI;
  using Terraria.ID;
@@ -16,21 +16,7 @@
 +			internal set;
 +		}
 +
-+		private IList<NPCInfo> infoList = null;
-+		private int lastLoad = -1;
-+
-+		internal IList<NPCInfo> npcInfo
-+		{
-+			get
-+			{
-+				if (infoList == null || lastLoad != ModLoader.ModLoader.numLoads)
-+				{
-+					infoList = new List<NPCInfo>();
-+					lastLoad = ModLoader.ModLoader.numLoads;
-+				}
-+				return infoList;
-+			}
-+		}
++		internal readonly IList<NPCInfo> npcInfo = new List<NPCInfo>();
 +
 +		public NPCInfo GetModInfo(Mod mod, string name)
 +		{
@@ -40,7 +26,7 @@
  		public const int MaxMoonLordCountdown = 3600;
  		public const int maxBuffs = 5;
  		public const int breathMax = 200;
-@@ -75,13 +103,13 @@
+@@ -75,13 +89,13 @@
  		private static int townRangeY = NPC.sHeight;
  		public float npcSlots = 1f;
  		private static bool noSpawnCycle = false;
@@ -56,7 +42,7 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
-@@ -1524,7 +1552,7 @@
+@@ -1524,7 +1538,7 @@
  						return "Agnew";
  				}
  			}
@@ -65,7 +51,7 @@
  		}
  
  		public static void setNPCName(string newName, int npcType, bool resetExtras = false)
-@@ -1684,7 +1712,7 @@
+@@ -1684,7 +1698,7 @@
  			{
  				return 23;
  			}
@@ -74,7 +60,7 @@
  		}
  
  		public static int NumToType(int type)
-@@ -1781,7 +1809,7 @@
+@@ -1781,7 +1795,7 @@
  			{
  				return 441;
  			}
@@ -83,7 +69,7 @@
  		}
  
  		public int GetBossHeadTextureIndex()
-@@ -1835,6 +1863,7 @@
+@@ -1835,6 +1849,7 @@
  			{
  				result = 12;
  			}
@@ -91,7 +77,7 @@
  			return result;
  		}
  
-@@ -1880,6 +1909,7 @@
+@@ -1880,6 +1895,7 @@
  			{
  				result = this.rotation;
  			}
@@ -99,7 +85,7 @@
  			return result;
  		}
  
-@@ -1891,6 +1921,7 @@
+@@ -1891,6 +1907,7 @@
  			{
  				result = SpriteEffects.FlipHorizontally;
  			}
@@ -107,7 +93,7 @@
  			return result;
  		}
  
-@@ -3086,7 +3117,7 @@
+@@ -3086,7 +3103,7 @@
  			}
  			else if (Name != "")
  			{
@@ -116,7 +102,7 @@
  				{
  					if (Main.npcName[i] == Name)
  					{
-@@ -3109,6 +3140,17 @@
+@@ -3109,6 +3126,17 @@
  			{
  				this.scaleStats();
  			}
@@ -134,7 +120,7 @@
  		}
  
  		public void SetDefaultsKeepPlayerInteraction(int Type)
-@@ -3127,6 +3169,7 @@
+@@ -3127,6 +3155,7 @@
  
  		public void SetDefaults(int Type, float scaleOverride = -1f)
  		{
@@ -142,7 +128,7 @@
  			this.takenDamageMultiplier = 1f;
  			this.extraValue = 0f;
  			for (int i = 0; i < this.playerInteraction.Length; i++)
-@@ -3164,7 +3207,7 @@
+@@ -3164,7 +3193,7 @@
  				this.buffTime[k] = 0;
  				this.buffType[k] = 0;
  			}
@@ -151,7 +137,7 @@
  			{
  				this.buffImmune[l] = false;
  			}
-@@ -11532,9 +11575,11 @@
+@@ -11532,9 +11561,11 @@
  				this.catchItem = 3564;
  				this.rarity = 3;
  			}
@@ -164,7 +150,7 @@
  				{
  					this.buffImmune[num2] = true;
  				}
-@@ -11584,7 +11629,6 @@
+@@ -11584,7 +11615,6 @@
  			this.defDamage = this.damage;
  			this.defDefense = this.defense;
  			this.netID = this.type;
@@ -172,7 +158,7 @@
  			if (Main.expertMode)
  			{
  				this.scaleStats();
-@@ -11895,12 +11939,18 @@
+@@ -11895,12 +11925,18 @@
  					this.damage = (int)((double)this.damage * 0.75);
  					break;
  			}
@@ -191,7 +177,7 @@
  		{
  			if (this.aiStyle == 0)
  			{
-@@ -16744,7 +16794,7 @@
+@@ -16744,7 +16780,7 @@
  								}
  								else
  								{
@@ -200,7 +186,7 @@
  									{
  										bool flag26 = WorldGen.OpenDoor(num210, num211 - 1, this.direction);
  										if (!flag26)
-@@ -19507,6 +19557,7 @@
+@@ -19507,6 +19543,7 @@
  						num378 += 0.15f;
  						this.defense += 8;
  					}
@@ -208,7 +194,7 @@
  				}
  				if (this.type == 142 && Main.netMode != 1 && !Main.xMas)
  				{
-@@ -19579,7 +19630,7 @@
+@@ -19579,7 +19616,7 @@
  				{
  					NPC.savedStylist = true;
  				}
@@ -217,7 +203,7 @@
  				{
  					this.TargetClosest(true);
  					if (this.position.X < Main.player[this.target].position.X)
-@@ -19765,7 +19816,13 @@
+@@ -19765,7 +19802,13 @@
  				{
  					for (int num392 = 0; num392 < 200; num392++)
  					{
@@ -232,7 +218,7 @@
  						{
  							flag43 = true;
  							float num393 = Main.npc[num392].Center.X - base.Center.X;
-@@ -20010,7 +20067,7 @@
+@@ -20010,7 +20053,7 @@
  						if (this.closeDoor && ((this.position.X + (float)(this.width / 2)) / 16f > (float)(this.doorX + 2) || (this.position.X + (float)(this.width / 2)) / 16f < (float)(this.doorX - 2)))
  						{
  							Tile tileSafely = Framing.GetTileSafely(this.doorX, this.doorY);
@@ -241,7 +227,7 @@
  							{
  								bool flag47 = WorldGen.CloseDoor(this.doorX, this.doorY, false);
  								if (flag47)
-@@ -20183,7 +20240,7 @@
+@@ -20183,7 +20226,7 @@
  							Tile tileSafely3 = Framing.GetTileSafely(num398, num399);
  							Tile tileSafely4 = Framing.GetTileSafely(num398, num399 - 1);
  							Tile tileSafely5 = Framing.GetTileSafely(num398, num399 - 2);
@@ -250,7 +236,7 @@
  							{
  								if (Main.netMode != 1)
  								{
-@@ -20526,6 +20583,10 @@
+@@ -20526,6 +20569,10 @@
  						knockBack = 2f;
  						num409 = 10f;
  					}
@@ -261,7 +247,7 @@
  					if (Main.expertMode)
  					{
  						num406 = (int)((float)num406 * Main.expertNPCDamage);
-@@ -20585,7 +20646,7 @@
+@@ -20585,7 +20632,7 @@
  					int num416 = 0;
  					int maxValue4 = 0;
  					float knockBack2 = 0f;
@@ -270,7 +256,7 @@
  					bool flag53 = false;
  					float num418 = 0f;
  					if ((float)NPCID.Sets.AttackTime[this.type] == this.ai[1])
-@@ -20815,6 +20876,11 @@
+@@ -20815,6 +20862,11 @@
  							num418 = 0.1f;
  						}
  					}
@@ -282,7 +268,7 @@
  					if (Main.expertMode)
  					{
  						num414 = (int)((float)num414 * Main.expertNPCDamage);
-@@ -20965,6 +21031,11 @@
+@@ -20965,6 +21017,11 @@
  						maxValue5 = 1;
  						knockBack3 = 3f;
  					}
@@ -294,7 +280,7 @@
  					if (Main.expertMode)
  					{
  						num424 = (int)((float)num424 * Main.expertNPCDamage);
-@@ -21094,6 +21165,9 @@
+@@ -21094,6 +21151,9 @@
  						maxValue6 = 8;
  						num441 = 5f;
  					}
@@ -304,7 +290,7 @@
  					if (Main.expertMode)
  					{
  						num440 = (int)((float)num440 * Main.expertNPCDamage);
-@@ -45054,6 +45128,11 @@
+@@ -45054,6 +45114,11 @@
  				}
  				num = Main.npcTexture[this.type].Height / Main.npcFrameCount[this.type];
  			}
@@ -316,7 +302,7 @@
  			int num2 = 0;
  			if (this.aiAction == 0)
  			{
-@@ -52917,6 +52996,10 @@
+@@ -52917,6 +52982,10 @@
  				}
  				return;
  				IL_1E6:
@@ -327,7 +313,7 @@
  				if (this.townNPC || this.type == 453)
  				{
  					Rectangle rectangle = new Rectangle((int)(this.position.X + (float)(this.width / 2) - (float)NPC.townRangeX), (int)(this.position.Y + (float)(this.height / 2) - (float)NPC.townRangeY), NPC.townRangeX * 2, NPC.townRangeY * 2);
-@@ -53118,6 +53201,10 @@
+@@ -53118,6 +53187,10 @@
  					this.life = this.lifeMax;
  					this.dontTakeDamage = true;
  					this.netUpdate = true;
@@ -338,7 +324,7 @@
  					return;
  				}
  				NPC.noSpawnCycle = true;
-@@ -53786,7 +53873,7 @@
+@@ -53786,7 +53859,7 @@
  
  		public static void ResetKillCount()
  		{
@@ -347,7 +333,7 @@
  			{
  				NPC.killCount[i] = 0;
  			}
-@@ -53816,7 +53903,7 @@
+@@ -53816,7 +53889,7 @@
  
  		public void NPCLoot()
  		{
@@ -356,7 +342,7 @@
  			{
  				return;
  			}
-@@ -53922,6 +54009,10 @@
+@@ -53922,6 +53995,10 @@
  					{
  						num6 = 2897 + num3 - 88;
  					}
@@ -367,7 +353,7 @@
  					Vector2 position = this.position;
  					if (num5 >= 0 && num5 < 255)
  					{
-@@ -53931,6 +54022,10 @@
+@@ -53931,6 +54008,10 @@
  				}
  			}
  			if (this.type == 23 && Main.hardMode)
@@ -378,7 +364,7 @@
  			{
  				return;
  			}
-@@ -57065,6 +57160,7 @@
+@@ -57065,6 +57146,7 @@
  				{
  					num70 = 499;
  				}
@@ -386,7 +372,7 @@
  				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, num70, stack5, false, 0, false, false);
  				int num71 = Main.rand.Next(5) + 5;
  				for (int num72 = 0; num72 < num71; num72++)
-@@ -57135,6 +57231,7 @@
+@@ -57135,6 +57217,7 @@
  					NetMessage.SendData(25, -1, -1, Lang.misc[32], 255, 50f, 255f, 130f, 0, 0, 0);
  				}
  			}
@@ -394,7 +380,7 @@
  			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
  			{
  				int num73 = (int)Player.FindClosest(this.position, this.width, this.height);
-@@ -57329,6 +57426,7 @@
+@@ -57329,6 +57412,7 @@
  			{
  				num = 3332;
  			}
@@ -402,7 +388,7 @@
  			if (num > 0)
  			{
  				if (Main.netMode == 2)
-@@ -57908,6 +58006,7 @@
+@@ -57908,6 +57992,7 @@
  							NPC.maxSpawns = (int)((double)((float)NPC.maxSpawns) * 0.6);
  						}
  					}
@@ -410,7 +396,7 @@
  					int num6 = (int)(Main.player[j].position.X + (float)(Main.player[j].width / 2)) / 16;
  					int num7 = (int)(Main.player[j].position.Y + (float)(Main.player[j].height / 2)) / 16;
  					if (Main.wallHouse[(int)Main.tile[num6, num7].wall])
-@@ -57949,6 +58048,8 @@
+@@ -57949,6 +58034,8 @@
  							NPC.safeRangeX += (int)((double)(NPC.sWidth / 16) * 0.5 / (double)num8);
  							NPC.safeRangeY += (int)((double)(NPC.sHeight / 16) * 0.5 / (double)num8);
  						}
@@ -419,7 +405,7 @@
  						int num9 = (int)(Main.player[j].position.X / 16f) - NPC.spawnRangeX;
  						int num10 = (int)(Main.player[j].position.X / 16f) + NPC.spawnRangeX;
  						int num11 = (int)(Main.player[j].position.Y / 16f) - NPC.spawnRangeY;
-@@ -58099,6 +58200,7 @@
+@@ -58099,6 +58186,7 @@
  							}
  						}
  					}
@@ -427,7 +413,7 @@
  					if (flag13)
  					{
  						if (Main.player[j].ZoneDungeon && (!Main.tileDungeon[(int)Main.tile[num, num2].type] || Main.tile[num, num2 - 1].wall == 0))
-@@ -58203,6 +58305,8 @@
+@@ -58203,6 +58291,8 @@
  								}
  							}
  						}
@@ -436,7 +422,7 @@
  					}
  					if (flag6)
  					{
-@@ -58268,8 +58372,33 @@
+@@ -58268,8 +58358,33 @@
  								}
  							}
  						}
@@ -470,7 +456,7 @@
  						if (Main.player[j].ZoneTowerNebula)
  						{
  							bool flag15 = true;
-@@ -61228,6 +61357,11 @@
+@@ -61228,6 +61343,11 @@
  						{
  							num46 = NPC.NewNPC(num * 16 + 8, num2 * 16, 49, 0, 0f, 0f, 0f, 0f, 255);
  						}
@@ -482,7 +468,7 @@
  						if (Main.npc[num46].type == 1 && Main.rand.Next(180) == 0)
  						{
  							Main.npc[num46].SetDefaults("Pinky");
-@@ -62016,14 +62150,17 @@
+@@ -62016,14 +62136,17 @@
  			{
  				num2 = 0;
  			}
@@ -508,7 +494,7 @@
  			}
  			if ((this.takenDamageMultiplier > 1f || Damage != 9999) && this.lifeMax > 1)
  			{
-@@ -62273,6 +62410,11 @@
+@@ -62273,6 +62396,11 @@
  		}
  
  		public void HitEffect(int hitDirection = 0, double dmg = 10.0)
@@ -520,7 +506,7 @@
  		{
  			if (!this.active)
  			{
-@@ -69330,7 +69472,10 @@
+@@ -69330,7 +69458,10 @@
  			{
  				if (this.buffType[i] == type)
  				{
@@ -532,7 +518,7 @@
  					{
  						this.buffTime[i] = time;
  					}
-@@ -69820,6 +69965,7 @@
+@@ -69820,6 +69951,7 @@
  				this.javelined = false;
  				this.celled = false;
  				this.dryadBane = false;
@@ -540,7 +526,7 @@
  				for (int k = 0; k < 5; k++)
  				{
  					if (this.buffType[k] > 0 && this.buffTime[k] > 0)
-@@ -69901,6 +70047,7 @@
+@@ -69901,6 +70033,7 @@
  						{
  							this.daybreak = true;
  						}
@@ -548,7 +534,7 @@
  					}
  				}
  				if (this.soulDrain)
-@@ -70146,6 +70293,7 @@
+@@ -70146,6 +70279,7 @@
  							num19 = 5;
  						}
  					}
@@ -556,7 +542,7 @@
  					if (this.lifeRegen <= -240 && num19 < 2)
  					{
  						num19 = 2;
-@@ -70451,22 +70599,30 @@
+@@ -70451,22 +70585,30 @@
  							if (Main.npc[num39].active && !Main.npc[num39].friendly && Main.npc[num39].damage > 0)
  							{
  								Rectangle rectangle2 = new Rectangle((int)Main.npc[num39].position.X, (int)Main.npc[num39].position.Y, Main.npc[num39].width, Main.npc[num39].height);
@@ -590,7 +576,7 @@
  									if (this.dryadWard)
  									{
  										num40 = (int)num43 / 3;
-@@ -71275,6 +71431,11 @@
+@@ -71275,6 +71417,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{
@@ -602,7 +588,7 @@
  			float num = (float)(255 - this.alpha) / 255f;
  			int num2 = (int)((float)newColor.R * num);
  			int num3 = (int)((float)newColor.G * num);
-@@ -72927,6 +73088,7 @@
+@@ -72927,6 +73074,7 @@
  					result = Lang.dialog(Main.rand.Next(364, 370), false);
  				}
  			}
