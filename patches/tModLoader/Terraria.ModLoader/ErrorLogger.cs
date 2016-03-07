@@ -30,6 +30,17 @@ namespace Terraria.ModLoader
 			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
 
+	    internal static void LogBuildFileError(Exception e, string filePath) {
+            Directory.CreateDirectory(LogPath);
+            var errorText = "Failed to load " + filePath + Environment.NewLine + e;
+            File.WriteAllText(CompileErrorPath, errorText);
+            Console.WriteLine(errorText);
+
+            Interface.errorMessage.SetMessage(errorText);
+            Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
+            Interface.errorMessage.SetFile(CompileErrorPath);
+        }
+
 		internal static void LogCompileErrors(CompilerErrorCollection errors)
 		{
 			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
@@ -57,7 +68,9 @@ namespace Terraria.ModLoader
 			var errorText = "Missing dll files for " + Path.GetFileName(modDir) + Environment.NewLine + Environment.NewLine +
 			                string.Join(Environment.NewLine, buildDllLines);
 			File.WriteAllText(CompileErrorPath, errorText);
-			Interface.errorMessage.SetMessage(errorText);
+            Console.WriteLine(errorText);
+
+            Interface.errorMessage.SetMessage(errorText);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
@@ -67,7 +80,9 @@ namespace Terraria.ModLoader
 			Directory.CreateDirectory(LogPath);
             string file = Path.Combine(LogPath, "Loading Errors.txt");
             File.WriteAllText(file, error);
-			Interface.errorMessage.SetMessage(error);
+            Console.WriteLine(error);
+
+            Interface.errorMessage.SetMessage(error);
 			Interface.errorMessage.SetGotoMenu(Interface.reloadModsID);
 			Interface.errorMessage.SetFile(file);
 		}

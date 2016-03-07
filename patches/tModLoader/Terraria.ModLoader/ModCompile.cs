@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.CSharp;
+using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using static Terraria.ModLoader.ModLoader;
 namespace Terraria.ModLoader
@@ -26,6 +27,15 @@ namespace Terraria.ModLoader
             }
         }
 
+        private class BuildingMod : LoadingMod
+        {
+            public string path;
+
+            public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(modFile, properties) {
+                this.path = path;
+            }
+        }
+
         private static IList<string> terrariaReferences;
 
         internal static void LoadReferences() {
@@ -36,20 +46,46 @@ namespace Terraria.ModLoader
                 .Where(loc => loc != "").ToList();
         }
 
-        internal static bool BuildAll(string[] mods, IBuildStatus status) {
-            int num = 0;
-            bool success = true;
-            foreach (string modFolder in mods) {
-                status.SetProgress(num, mods.Length);
-                success &= Build(modFolder, status);
-                num++;
+        internal static bool BuildAll(string[] modFolders, IBuildStatus status) {
+            var modList = new List<LoadingMod>();
+            foreach (var modFolder in modFolders) {
+                var mod = ReadProperties(modFolder, status);
+                if (mod == null)
+                    return false;
+
+                modList.Add(mod);
             }
-            return success;
+
+            foreach (var modFile in FindMods()) {
+                if (modList.Exists(m => m.Name == modFile.name))
+                    continue;
+
+                modList.Add(new LoadingMod(modFile, BuildProperties.ReadModFile(modFile)));
+            }
+
+            List<BuildingMod> modsToBuild;
+            try {
+                var sortedModList = TopoSort(modList);
+                modsToBuild = sortedModList.OfType<BuildingMod>().ToList();
+            }
+            catch (ModSortingException e) {
+                ErrorLogger.LogDependencyError(e.Message);
+                return false;
+            }
+
+            int num = 0;
+            foreach (var mod in modsToBuild) {
+                status.SetProgress(num++, modsToBuild.Count);
+                if (!Build(mod, status))
+                    return false;
+            }
+
+            return true;
         }
 
-        internal static void BuildModCommandLine(string mod) {
+        internal static void BuildModCommandLine(string modFolder) {
             try {
-                Build(mod, new ConsoleBuildStatus());
+                Build(modFolder, new ConsoleBuildStatus());
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -57,89 +93,104 @@ namespace Terraria.ModLoader
             }
         }
 
-        internal static bool Build(string mod, IBuildStatus status) {
-            if (mod.EndsWith("\\") || mod.EndsWith("/")) mod = mod.Substring(0, mod.Length - 1);
-            var modName = Path.GetFileName(mod);
+        internal static bool Build(string modFolder, IBuildStatus status) {
+            var mod = ReadProperties(modFolder, status);
+            return mod != null && Build(mod, status);
+        }
+
+        private static BuildingMod ReadProperties(string modFolder, IBuildStatus status) {
+            if (modFolder.EndsWith("\\") || modFolder.EndsWith("/")) modFolder = modFolder.Substring(0, modFolder.Length - 1);
+            var modName = Path.GetFileName(modFolder);
             status.SetStatus("Reading Properties: " + modName);
-            var properties = BuildProperties.ReadBuildFile(mod);
+
+            BuildProperties properties;
+            try {
+                properties = BuildProperties.ReadBuildFile(modFolder);
+            }
+            catch (Exception e) {
+                ErrorLogger.LogBuildFileError(e, Path.Combine(modFolder, "build.txt"));
+                return null;
+            }
             
-            byte[] winDLL = null;
-            byte[] monoDLL = null;
-            byte[] winPDB = null;
-            byte[] monoPDB = null;
-            if (properties.noCompile) {
-                if (File.Exists(Path.Combine(mod, "All.dll"))) {
-                    winDLL = monoDLL = File.ReadAllBytes(Path.Combine(mod, "All.dll"));
-
-                    if (File.Exists(Path.Combine(mod, "All.pdb")))
-                        winPDB = monoPDB = File.ReadAllBytes(Path.Combine(mod, "All.pdb"));
-                }
-                else if (File.Exists(Path.Combine(mod, "Windows.dll")) && File.Exists(Path.Combine(mod, "Mono.dll"))) {
-                    winDLL = File.ReadAllBytes(Path.Combine(mod, "Windows.dll"));
-                    monoDLL = File.ReadAllBytes(Path.Combine(mod, "Mono.dll"));
-
-                    if (File.Exists(Path.Combine(mod, "Windows.pdb")))
-                        winPDB = File.ReadAllBytes(Path.Combine(mod, "Windows.pdb"));
-                    if (File.Exists(Path.Combine(mod, "Mono.pdb")))
-                        monoPDB = File.ReadAllBytes(Path.Combine(mod, "Mono.pdb"));
-                }
-                else {
-                    ErrorLogger.LogDllBuildError(mod);
-                    return false;
-                }
-            }
-            else {
-                var refMods = FindReferencedMods(properties);
-                if (refMods == null)
-                    return false;
-
-                status.SetStatus("Compiling "+modName+" for Windows...");
-                status.SetProgress(0, 2);
-                CompileMod(mod, properties, refMods, true, ref winDLL, ref winPDB);
-                status.SetStatus("Compiling " + modName + " for Mono...");
-                status.SetProgress(1, 2);
-                CompileMod(mod, properties, refMods, false, ref monoDLL, ref monoPDB);
-                if (winDLL == null || monoDLL == null)
-                    return false;
-            }
-
-            status.SetStatus("Building "+modName+"...");
-            status.SetProgress(0, 1);
-
             var file = Path.Combine(ModPath, modName + ".tmod");
             var modFile = new TmodFile(file) {
                 name = modName,
                 version = properties.version
             };
+            return new BuildingMod(modFile, properties, modFolder);
+        }
 
-            modFile.AddFile("Info", properties.ToBytes());
+        private static byte[] ReadIfExists(string path) {
+            return File.Exists(path) ? File.ReadAllBytes(path) : null;
+        }
 
-            if (Equal(winDLL, monoDLL)) {
-                modFile.AddFile("All.dll", winDLL);
-                if (winPDB != null) modFile.AddFile("All.pdb", winPDB);
+        private static bool Build(BuildingMod mod, IBuildStatus status) {
+            byte[] winDLL = null;
+            byte[] monoDLL = null;
+            byte[] winPDB = null;
+            byte[] monoPDB = null;
+            if (mod.properties.noCompile) {
+                winDLL = monoDLL = ReadIfExists(Path.Combine(mod.path, "All.dll"));
+                winPDB = monoPDB = ReadIfExists(Path.Combine(mod.path, "All.pdb"));
+
+                if (winDLL == null) {
+                    winDLL = ReadIfExists(Path.Combine(mod.path, "Windows.dll"));
+                    monoDLL = ReadIfExists(Path.Combine(mod.path, "Mono.dll"));
+                    winPDB = ReadIfExists(Path.Combine(mod.path, "Windows.pdb"));
+                    monoPDB = ReadIfExists(Path.Combine(mod.path, "Mono.pdb"));
+                }
+
+                if (winDLL == null || monoDLL == null) {
+                    ErrorLogger.LogDllBuildError(mod.path);
+                    return false;
+                }
             }
             else {
-                modFile.AddFile("Windows.dll", winDLL);
-                modFile.AddFile("Mono.dll", monoDLL);
-                if (winPDB != null) modFile.AddFile("Windows.pdb", winPDB);
-                if (monoPDB != null) modFile.AddFile("Mono.pdb", monoPDB);
+                var refMods = FindReferencedMods(mod.properties);
+                if (refMods == null)
+                    return false;
+
+                status.SetStatus("Compiling "+mod.Name+" for Windows...");
+                status.SetProgress(0, 2);
+                CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
+                status.SetStatus("Compiling " + mod.Name + " for Mono...");
+                status.SetProgress(1, 2);
+                CompileMod(mod, refMods, false, ref monoDLL, ref monoPDB);
+                if (winDLL == null || monoDLL == null)
+                    return false;
             }
 
-            foreach (var resource in Directory.GetFiles(mod, "*", SearchOption.AllDirectories)) {
-                var relPath = resource.Substring(mod.Length + 1);
-                if (properties.ignoreFile(relPath) ||
+            status.SetStatus("Building "+mod.Name+"...");
+            status.SetProgress(0, 1);
+
+            mod.modFile.AddFile("Info", mod.properties.ToBytes());
+
+            if (Equal(winDLL, monoDLL)) {
+                mod.modFile.AddFile("All.dll", winDLL);
+                if (winPDB != null) mod.modFile.AddFile("All.pdb", winPDB);
+            }
+            else {
+                mod.modFile.AddFile("Windows.dll", winDLL);
+                mod.modFile.AddFile("Mono.dll", monoDLL);
+                if (winPDB != null) mod.modFile.AddFile("Windows.pdb", winPDB);
+                if (monoPDB != null) mod.modFile.AddFile("Mono.pdb", monoPDB);
+            }
+
+            foreach (var resource in Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)) {
+                var relPath = resource.Substring(mod.path.Length + 1);
+                if (mod.properties.ignoreFile(relPath) ||
                         relPath == "build.txt" ||
-                        !properties.includeSource && Path.GetExtension(resource) == ".cs" ||
+                        !mod.properties.includeSource && Path.GetExtension(resource) == ".cs" ||
                         Path.GetFileName(resource) == "Thumbs.db")
                     continue;
 
-                modFile.AddFile(relPath, File.ReadAllBytes(resource));
+                mod.modFile.AddFile(relPath, File.ReadAllBytes(resource));
             }
 
-            WAVCacheIO.ClearCache(modFile.name);
+            WAVCacheIO.ClearCache(mod.Name);
 
-            modFile.Save();
-            EnableMod(modFile);
+            mod.modFile.Save();
+            EnableMod(mod.modFile);
             return true;
         }
 
@@ -179,7 +230,7 @@ namespace Terraria.ModLoader
             return true;
         }
 
-        private static void CompileMod(string modDir, BuildProperties properties, List<LoadingMod> refMods, bool forWindows,
+        private static void CompileMod(BuildingMod mod, List<LoadingMod> refMods, bool forWindows,
                 ref byte[] dll, ref byte[] pdb) {
             LoadReferences();
             var refs = new List<string>(terrariaReferences);
@@ -208,7 +259,7 @@ namespace Terraria.ModLoader
                 }
             }
 
-            refs.AddRange(properties.dllReferences.Select(refDll => Path.Combine(modDir, "lib/" + refDll + ".dll")));
+            refs.AddRange(mod.properties.dllReferences.Select(refDll => Path.Combine(mod.path, "lib/" + refDll + ".dll")));
 
             var tempDir = Path.Combine(ModPath, "compile_temp");
             Directory.CreateDirectory(tempDir);
@@ -226,17 +277,17 @@ namespace Terraria.ModLoader
             }
 
             var compileOptions = new CompilerParameters {
-                OutputAssembly = Path.Combine(tempDir, Path.GetFileName(modDir) + ".dll"),
+                OutputAssembly = Path.Combine(tempDir, mod.Name + ".dll"),
                 GenerateExecutable = false,
                 GenerateInMemory = false,
                 TempFiles = new TempFileCollection(tempDir, true),
-                IncludeDebugInformation = properties.includePDB
+                IncludeDebugInformation = mod.properties.includePDB
             };
 
             compileOptions.ReferencedAssemblies.AddRange(refs.ToArray());
             var options = new Dictionary<string, string> { { "CompilerVersion", "v4.0" } };
             var codeProvider = new CSharpCodeProvider(options);
-            var results = codeProvider.CompileAssemblyFromFile(compileOptions, Directory.GetFiles(modDir, "*.cs", SearchOption.AllDirectories));
+            var results = codeProvider.CompileAssemblyFromFile(compileOptions, Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories));
             var errors = results.Errors;
 
             if (errors.HasErrors) {
@@ -244,8 +295,8 @@ namespace Terraria.ModLoader
             }
             else {
                 dll = File.ReadAllBytes(compileOptions.OutputAssembly);
-                if (properties.includePDB)
-                    pdb = File.ReadAllBytes(Path.Combine(tempDir, Path.GetFileName(modDir) + ".pdb"));
+                if (mod.properties.includePDB)
+                    pdb = File.ReadAllBytes(Path.Combine(tempDir, mod.Name + ".pdb"));
             }
 
             Directory.Delete(tempDir, true);

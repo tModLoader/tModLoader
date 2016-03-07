@@ -319,13 +319,11 @@ namespace Terraria.ModLoader
 	                var dep = nameMap[depName];
 	                if (visiting.Contains(dep)) {
 	                    var cycle = dep.Name;
-	                    var stack = new Stack<LoadingMod>(visiting);
-                        LoadingMod entry;
-	                    do {
-	                        entry = stack.Pop();
+	                    foreach (var entry in visiting) {
 	                        errored.Add(entry);
 	                        cycle = entry.Name + " -> " + cycle;
-	                    } while (entry != dep);
+	                        if (entry == dep) break;
+	                    }
 	                    errorLog.AppendLine("Dependency Cycle: " + cycle);
 	                    continue;
 	                }
@@ -629,14 +627,5 @@ namespace Terraria.ModLoader
                 return name;
             }
         }
-
-        internal class ModSortingException : Exception
-        {
-            public ICollection<LoadingMod> errored;
-
-            public ModSortingException(ICollection<LoadingMod> errored, string message) : base(message) {
-                this.errored = errored;
-            }
-        }
-    }
+	}
 }
