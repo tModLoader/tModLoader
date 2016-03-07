@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.World.Generation;
 using Microsoft.Xna.Framework;
 using System;
+using Terraria.GameContent.Generation;
 
 namespace ExampleMod
 {
@@ -48,6 +49,25 @@ namespace ExampleMod
 			downedPuritySpirit = ((flags & 2) == 2);
 		}
 
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
+		{
+			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Shinies"));
+			if (ShiniesIndex == -1)
+			{
+				// Shinies pass removed by some other mod.
+				return;
+			}
+			tasks.Insert(ShiniesIndex + 1, new PassLegacy("Example Mod Ores", delegate (GenerationProgress progress)
+			{
+				progress.Message = "Example Mod Ores";
+
+				for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+				{
+					WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX), WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, Main.maxTilesY), (double)WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), mod.TileType("ExampleBlock"), false, 0f, 0f, false, true);
+				}
+			}));
+		}
+
 		public override void PostWorldGen()
 		{
 			for (int i = 0; i < Main.maxTilesX; i++)
@@ -59,6 +79,25 @@ namespace ExampleMod
 			Main.npc[num].homeTileY = Main.spawnTileY;
 			Main.npc[num].direction = 1;
 			Main.npc[num].homeless = true;
+			// Place some items in Ice Chests
+			int[] itemsToPlaceInWaterChests = new int[] { mod.ItemType("CarKey"), mod.ItemType("ExampleLightPet"), ItemID.PinkJellyfishJar };
+			int itemsToPlaceInWaterChestsChoice = 0;
+			for (int chestIndex = 0; chestIndex < 1000; chestIndex++)
+			{
+				Chest chest = Main.chest[chestIndex];
+				if (chest != null && Main.tile[chest.x, chest.y].frameX == 11 * 36)
+				{
+					for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
+					{
+						if (chest.item[inventoryIndex].type == 0)
+						{
+							chest.item[inventoryIndex].SetDefaults(itemsToPlaceInWaterChests[itemsToPlaceInWaterChestsChoice]);
+							itemsToPlaceInWaterChestsChoice = (itemsToPlaceInWaterChestsChoice + 1) % itemsToPlaceInWaterChests.Length;
+							break;
+						}
+					}
+				}
+			}
 		}
 
 		public override void ResetNearbyTileEffects()
