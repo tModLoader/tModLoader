@@ -158,7 +158,7 @@ namespace Terraria.ModLoader
             var refMods = new TmodFile[properties.modReferences.Length];
             for (int i = 0; i < refMods.Length; i++) {
                 var refName = properties.modReferences[i];
-                var mod = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
+                var mod = refMods[i] = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
                 mod.Read();
                 var ex = mod.ValidMod();
                 if (ex != null) {
@@ -198,19 +198,22 @@ namespace Terraria.ModLoader
                 }
             }
 
+            var tempDir = Path.Combine(ModPath, "compile_temp");
+            Directory.CreateDirectory(tempDir);
+
             Directory.CreateDirectory(DllPath);
             refs.AddRange(properties.dllReferences.Select(refDll => Path.Combine(DllPath, refDll + ".dll")));
+
             foreach (var refMod in refMods) {
                 var dllBytes = refMod.HasFile("All.dll")
                     ? refMod.GetFile("All.dll")
                     : refMod.GetFile(forWindows ? "Windows.dll" : "Other.dll");
 
-                File.WriteAllBytes(Path.Combine(ModSourcePath, refMod.name+".dll"), dllBytes);
-                refs.Add(refMod.name);
+                var path = Path.Combine(tempDir, refMod.name + ".dll");
+                File.WriteAllBytes(path, dllBytes);
+                refs.Add(path);
             }
 
-            var tempDir = Path.Combine(ModPath, "compile_temp");
-            Directory.CreateDirectory(tempDir);
             var compileOptions = new CompilerParameters {
                 OutputAssembly = Path.Combine(tempDir, Path.GetFileName(modDir) + ".dll"),
                 GenerateExecutable = false,
@@ -224,8 +227,6 @@ namespace Terraria.ModLoader
             var codeProvider = new CSharpCodeProvider(options);
             var results = codeProvider.CompileAssemblyFromFile(compileOptions, Directory.GetFiles(modDir, "*.cs", SearchOption.AllDirectories));
             var errors = results.Errors;
-            foreach (var refMod in refMods)
-                File.Delete(Path.Combine(ModSourcePath, refMod.name + ".dll"));
 
             if (errors.HasErrors) {
                 ErrorLogger.LogCompileErrors(errors);

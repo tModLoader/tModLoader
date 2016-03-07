@@ -231,10 +231,19 @@ namespace Terraria.ModLoader
 			Interface.loadMods.SetProgressFinding();
 			var modsToLoad = FindMods().ToList();
             modsToLoad = modsToLoad.Where(IsEnabled).ToList();
-		    var properties = modsToLoad.ToDictionary(mod => mod.name, BuildProperties.ReadModFile);
-		    modsToLoad = TopoSort(modsToLoad, properties);
-		    if (modsToLoad == null)
+            var modNameMap = modsToLoad.ToDictionary(mod => mod.name);
+            var properties = modsToLoad.ToDictionary(mod => mod.name, BuildProperties.ReadModFile);
+            try {
+		        var sorted = TopoSort(modNameMap.Keys, properties);
+		        modsToLoad = sorted.Select(name => modNameMap[name]).ToList();
+		    }
+		    catch (ModSortingException e) {
+                foreach (var mod in e.errored)
+                    DisableMod(modNameMap[mod]);
+
+                ErrorLogger.LogDependencyError(e.Message);
 		        return false;
+		    }
 
 			Mod defaultMod = new ModLoaderMod();
 			AddMod(defaultMod);
@@ -254,34 +263,33 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-	    private static List<TmodFile> TopoSort(IList<TmodFile> mods, IDictionary<string, BuildProperties> properties) {
-	        var visiting = new Stack<TmodFile>();
-            var sorted = new List<TmodFile>();
-            var errored = new HashSet<TmodFile>();
+	    internal static List<string> TopoSort(ICollection<string> mods, IDictionary<string, BuildProperties> properties) {
+	        var visiting = new Stack<string>();
+            var sorted = new List<string>();
+            var errored = new HashSet<string>();
             var errorLog = new StringBuilder();
 
-            Action<TmodFile> Visit = null;
+            Action<string> Visit = null;
 	        Visit = mod => {
 	            if (sorted.Contains(mod) || errored.Contains(mod))
 	                return;
 
 	            visiting.Push(mod);
-	            foreach (var depName in properties[mod.name].modReferences) {
-	                var dep = mods.FirstOrDefault(m => m.name == depName);
-	                if (dep == null) {
+	            foreach (var dep in properties[mod].modReferences) {
+	                if (!mods.Contains(dep)) {
                         errored.Add(mod);
-                        errorLog.AppendLine("Missing mod: " + depName + " required by " + mod.name);
+                        errorLog.AppendLine("Missing mod: " + dep + " required by " + mod);
 	                    continue;
 	                }
 
 	                if (visiting.Contains(dep)) {
-	                    var cycle = dep.name;
-	                    var stack = new Stack<TmodFile>(visiting);
-	                    TmodFile entry;
+	                    var cycle = dep;
+	                    var stack = new Stack<string>(visiting);
+	                    string entry;
 	                    do {
 	                        entry = stack.Pop();
 	                        errored.Add(entry);
-	                        cycle = entry.name + " -> " + cycle;
+	                        cycle = entry + " -> " + cycle;
 	                    } while (entry != dep);
 	                    errorLog.AppendLine("Dependency Cycle: " + cycle);
 	                    continue;
@@ -296,13 +304,8 @@ namespace Terraria.ModLoader
 	        foreach (var mod in mods)
 	            Visit(mod);
 
-	        if (errored.Count > 0) {
-                foreach (var mod in errored)
-                    DisableMod(mod);
-
-	            ErrorLogger.LogDependencyError(errorLog.ToString());
-	            return null;
-	        }
+	        if (errored.Count > 0)
+                throw new ModSortingException(errored, errorLog.ToString());
 
 	        return sorted;
 	    }
@@ -324,7 +327,7 @@ namespace Terraria.ModLoader
 			if (properties.includePDB && modFile.HasFile(dllFileName + ".pdb"))
 				modCode = Assembly.Load(modFile.GetFile(dllFileName + ".dll"), modFile.GetFile(dllFileName + ".pdb"));
 			else
-				modCode = Assembly.Load(modFile.GetFile(dllFileName));
+				modCode = Assembly.Load(modFile.GetFile(dllFileName + ".dll"));
 
 			Interface.loadMods.SetProgressReading(modFile.name, 1, 2);
 
@@ -547,4 +550,13 @@ namespace Terraria.ModLoader
 			}
 		}
 	}
+
+    internal class ModSortingException : Exception
+    {
+        public ICollection<string> errored;
+
+        public ModSortingException(ICollection<string> errored, string message) : base(message) {
+            this.errored = errored;
+        }
+    }
 }
