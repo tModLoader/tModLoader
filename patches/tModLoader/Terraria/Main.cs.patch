@@ -110,7 +110,7 @@
  			else
  			{
 -				Console.Title = "Terraria Server " + Main.versionNumber2;
-+				Console.Title = "Terraria Server " + Main.versionNumber2 + " - " + ModLoader.ModLoader.version;
++				Console.Title = "Terraria Server " + Main.versionNumber2 + " - " + ModLoader.ModLoader.versionedName;
  			}
  			Main.dedServ = true;
  			Main.showSplash = false;
@@ -126,7 +126,7 @@
  				{
  					Main.LoadWorlds();
 -					Console.WriteLine("Terraria Server " + Main.versionNumber2);
-+					Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.ModLoader.version);
++					Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.ModLoader.versionedName);
  					Console.WriteLine("");
  					for (int j = 0; j < Main.WorldList.Count; j++)
  					{
@@ -1766,7 +1766,7 @@
  					num98 = 2;
  				}
 -				Vector2 origin3 = Main.fontMouseText.MeasureString(Main.versionNumber);
-+				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.version;
++				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName;
 +				Vector2 origin3 = Main.fontMouseText.MeasureString(drawVersion);
  				origin3.X *= 0.5f;
  				origin3.Y *= 0.5f;

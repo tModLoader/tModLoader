@@ -1,34 +1,24 @@
-using System;
 using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.ModLoader;
 
 namespace Terraria.ModLoader.Default
 {
 	public class ModLoaderMod : Mod
 	{
-		private static bool texturesLoaded = false;
+		private static bool texturesLoaded;
 		private static Texture2D mysteryItemTexture;
 		private static Texture2D startBagTexture;
 
-		public ModLoaderMod()
-		{
-			file = "ModLoader";
-		}
+        public override string Name => "ModLoader";
 
-		public override void SetModInfo(out string name, ref ModProperties properties)
-		{
-			name = "ModLoader";
-		}
-
-		public override void Load()
+	    public override void Load()
 		{
 			LoadTextures();
 			AddTexture("MysteryItem", mysteryItemTexture);
 			AddTexture("StartBag", startBagTexture);
-			AddItem("MysteryItem", new MysteryItem(), FileName("MysteryItem"));
-			AddItem("StartBag", new StartBag(), FileName("StartBag"));
+			AddItem("MysteryItem", new MysteryItem(), "ModLoader/MysteryItem");
+			AddItem("StartBag", new StartBag(), "ModLoader/StartBag");
 			AddPlayer("MysteryPlayer", new MysteryPlayer());
 			AddModWorld("MysteryWorld", new MysteryWorld());
 		}

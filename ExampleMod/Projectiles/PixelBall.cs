@@ -9,7 +9,7 @@ namespace ExampleMod.Projectiles
 	{
 		public override bool Autoload(ref string name, ref string texture)
 		{
-			texture = mod.FileName("Projectiles/ElementBall");
+			texture = mod.Name + '/' + "Projectiles/ElementBall";
 			return mod.Properties.Autoload;
 		}
 

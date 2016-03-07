@@ -18,13 +18,14 @@ namespace Terraria.ModLoader
 			"Other.dll must reference a non-windows Terraria.exe and FNA.dll"
 		};
 
-		internal static void LogModReferenceError(string reference)
+		internal static void LogModReferenceError(Exception e, string modName)
 		{
 			Directory.CreateDirectory(LogPath);
-			var message = "Mod reference " + reference + " was not found.";
-			File.WriteAllText(CompileErrorPath, message);
-			Console.WriteLine(message);
-			Interface.errorMessage.SetMessage(message);
+			var log = "Mod reference modName" + e;
+			File.WriteAllText(CompileErrorPath, log);
+			Console.WriteLine(log);
+
+			Interface.errorMessage.SetMessage("Mod reference modName" + e.Message);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
@@ -61,25 +62,17 @@ namespace Terraria.ModLoader
 			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
 
-		internal static void LogMissingLoadReference(IList<TmodFile> mods)
+		internal static void LogDependencyError(string error)
 		{
 			Directory.CreateDirectory(LogPath);
-			string file = LogPath + Path.DirectorySeparatorChar + "Loading Errors.txt";
-			string message = "The following mods were missing mod dependencies. They have been automatically disabled.\n";
-			foreach (TmodFile modFile in mods)
-			{
-				message += Path.GetFileNameWithoutExtension(modFile.Name) + "\n";
-			}
-			using (StreamWriter writer = File.CreateText(file))
-			{
-				writer.Write(message);
-			}
-			Interface.errorMessage.SetMessage(message);
+            string file = Path.Combine(LogPath, "Loading Errors.txt");
+            File.WriteAllText(file, error);
+			Interface.errorMessage.SetMessage(error);
 			Interface.errorMessage.SetGotoMenu(Interface.reloadModsID);
 			Interface.errorMessage.SetFile(file);
 		}
 
-		internal static void LogLoadingError(string modFile, string modBuildVersion, Exception e)
+		internal static void LogLoadingError(string modFile, Version modBuildVersion, Exception e)
 		{
 			Directory.CreateDirectory(LogPath);
 			string file = LogPath + Path.DirectorySeparatorChar + "Loading Errors.txt";
@@ -97,11 +90,11 @@ namespace Terraria.ModLoader
 					inner = inner.InnerException;
 				}
 			}
-			string message = "An error occurred while loading " + Path.GetFileNameWithoutExtension(modFile);
+			string message = "An error occurred while loading " + modFile;
 			if (modBuildVersion != ModLoader.version)
 			{
-				message += "\nIt has been detected that this mod was built for " + modBuildVersion;
-				message += "\nHowever, you are using " + ModLoader.version;
+				message += "\nIt has been detected that this mod was built for tModLoader v" + modBuildVersion;
+				message += "\nHowever, you are using " + ModLoader.versionedName;
 			}
 			if (modFile == "recipes")
 			{
@@ -202,7 +195,7 @@ namespace Terraria.ModLoader
 			Main.menuMode = Interface.errorMessageID;
 		}
 
-		public static void Log(string message)
+        public static void Log(string message)
 		{
 			Directory.CreateDirectory(LogPath);
 			using (StreamWriter writer = File.AppendText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))

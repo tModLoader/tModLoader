@@ -19,12 +19,12 @@ namespace ExampleMod
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
 		private double pressedRandomBuffHotKeyTime;
 
-		public override void SetModInfo(out string name, ref ModProperties properties)
-		{
-			name = "ExampleMod";
-			properties.Autoload = true;
-			properties.AutoloadGores = true;
-			properties.AutoloadSounds = true;
+		public ExampleMod() {
+		    Properties = new ModProperties() {
+		        Autoload = true,
+		        AutoloadGores = true,
+		        AutoloadSounds = true
+		    };
 		}
 
 		public override void Load()
