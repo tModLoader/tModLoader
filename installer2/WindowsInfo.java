@@ -24,7 +24,10 @@ public class WindowsInfo
             "TerrariaMac.exe",
             "tModLoaderServer.exe",
             "MP3Sharp.dll",
-            "FNA.dll"
+            "FNA.dll",
+            "start-tModLoaderServer.bat",
+            "start-tModLoaderServer-steam-friends.bat",
+            "start-tModLoaderServer-steam-private.bat"
         };
         Installer.tryInstall(files, directory);
     }

@@ -1,7 +1,7 @@
 :: After Pulling, Patching, and making sure the version number is changed in src, this bat will compile and create zips for all release.
 :: It will also create a zip for ExampleMod
 
-set version=v0.7.1.1
+set version=v0.7.1.2
 set destinationFolder=.\tModLoader %version% Release
 
 :: Compile/Build exe 
@@ -32,6 +32,9 @@ copy ..\references\FNA.dll "%destinationFolder%\tModLoader Windows %version%\FNA
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Windows %version%\MP3Sharp.dll" /y
 copy ..\installer2\WindowsInstaller.jar "%destinationFolder%\tModLoader Windows %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Windows.txt "%destinationFolder%\tModLoader Windows %version%\README.txt" /y
+copy ReleaseExtras\start-tModLoaderServer.bat "%destinationFolder%\tModLoader Windows %version%\start-tModLoaderServer.bat" /y
+copy ReleaseExtras\start-tModLoaderServer-steam-friends.bat "%destinationFolder%\tModLoader Windows %version%\start-tModLoaderServer-steam-friends.bat" /y
+copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%destinationFolder%\tModLoader Windows %version%\start-tModLoaderServer-steam-private.bat" /y
 
 call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Windows %version%" -destination "%destinationFolder%\tModLoader Windows %version%.zip" -keep yes -force yes
 

@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
         }
         internal static bool BuildAll(string[] mods, IBuildStatus status) {
             int num = 0;
-            bool success = false;
+            bool success = true;
             foreach (string modFolder in mods) {
                 status.SetProgress(num, mods.Length);
                 success &= Build(modFolder, status);

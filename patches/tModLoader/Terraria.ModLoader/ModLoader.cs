@@ -524,7 +524,7 @@ namespace Terraria.ModLoader
 				{
 					try
 					{
-						ModCompile.Build(modToBuild, Interface.buildMod);
+						PostBuildMenu(ModCompile.Build(modToBuild, Interface.buildMod));
 					}
 					catch (Exception e)
 					{
