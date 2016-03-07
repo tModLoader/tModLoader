@@ -88,7 +88,7 @@ namespace Terraria.ModLoader.UI
 				var values = new NameValueCollection
 				{
 					{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
-					{ "modloaderversion", ModLoader.version },
+					{ "modloaderversion", ModLoader.versionedName },
 				};
 				byte[] result = IO.UploadFile.UploadFiles(url, files, values);
 				xmlText = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);

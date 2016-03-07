@@ -229,7 +229,7 @@ namespace Terraria.ModLoader.UI
 					IO.UploadFile[] files = new IO.UploadFile[0];
 					var values = new NameValueCollection
 					{
-						{ "modloaderversion", ModLoader.version },
+						{ "modloaderversion", ModLoader.versionedName },
 					};
 					byte[] result = IO.UploadFile.UploadFiles(url, files, values);
 					xmlDoc.LoadXml(System.Text.Encoding.UTF8.GetString(result, 0, result.Length));

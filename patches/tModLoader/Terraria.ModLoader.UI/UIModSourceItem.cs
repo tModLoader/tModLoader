@@ -125,7 +125,7 @@ namespace Terraria.ModLoader.UI
 				TmodFile theTModFile = null;
 				foreach (TmodFile tModFile in modFiles)
 				{
-					if (Path.GetFileName(tModFile.Name).Equals(@Path.GetFileName(mod) + @".tmod"))
+					if (Path.GetFileName(tModFile.path).Equals(@Path.GetFileName(mod) + @".tmod"))
 					{
 						ok = true;
 						theTModFile = tModFile;
@@ -155,12 +155,12 @@ namespace Terraria.ModLoader.UI
 					{
 						{ "displayname", bp.displayName },
 						{ "name", Path.GetFileNameWithoutExtension(filename) },
-						{ "version", bp.version },
+						{ "version", "v"+bp.version },
 						{ "author", bp.author },
 						{ "homepage", bp.homepage },
 						{ "description", bp.description },
 						{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
-						{ "modloaderversion", bp.modBuildVersion },
+						{ "modloaderversion", "tModLoader v"+theTModFile.tModLoaderVersion },
 					};
 					byte[] result = IO.UploadFile.UploadFiles(url, files, values);
 					string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);

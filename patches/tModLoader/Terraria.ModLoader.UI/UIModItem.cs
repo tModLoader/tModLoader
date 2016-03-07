@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIModItem : UIPanel
 	{
-		private string mod;
+		private TmodFile mod;
 		private Texture2D dividerTexture;
 		private Texture2D innerPanelTexture;
 		private UIText modName;
@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.UI
 
 		public UIModItem(TmodFile mod)
 		{
-			this.mod = mod.Name;
+			this.mod = mod;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
@@ -30,11 +30,8 @@ namespace Terraria.ModLoader.UI
 			base.SetPadding(6f);
 			//base.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
 			properties = BuildProperties.ReadModFile(mod);
-			string text = properties.displayName.Length > 0 ? properties.displayName : Path.GetFileNameWithoutExtension(mod.Name);
-			if (properties.version.Length > 0)
-			{
-				text += " " + properties.version;
-			}
+			string text = properties.displayName.Length > 0 ? properties.displayName : mod.name;
+			text += " " + mod.version;
 			if (properties.author.Length > 0)
 			{
 				text += " - by " + properties.author;
@@ -43,7 +40,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			this.enabled = ModLoader.IsEnabled(mod.Name);
+			this.enabled = ModLoader.IsEnabled(mod);
 			UITextPanel button = new UITextPanel("More info", 1f, false);
 			button.Width.Set(100f, 0f);
 			button.Height.Set(30f, 0f);
@@ -91,7 +88,7 @@ namespace Terraria.ModLoader.UI
 			drawPos = new Vector2(innerDimensions.X + 10f, innerDimensions.Y + 45f);
 			this.DrawPanel(spriteBatch, drawPos, 100f);
 			this.DrawEnabledText(spriteBatch, drawPos + new Vector2(15f, 5f));
-			if (this.enabled != ModLoader.ModLoaded(mod))
+			if (this.enabled != ModLoader.ModLoaded(mod.name))
 			{
 				drawPos += new Vector2(120f, 5f);
 				Utils.DrawBorderString(spriteBatch, "Reload Required", drawPos, Color.White, 1f, 0f, 0f, -1);

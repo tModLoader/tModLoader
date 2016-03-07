@@ -139,7 +139,7 @@ namespace Terraria.ModLoader.UI
 				bool publishable = false;
 				foreach (TmodFile file in modFiles)
 				{
-					if (Path.GetFileNameWithoutExtension(file.Name).Equals(Path.GetFileName(mod)))
+					if (Path.GetFileNameWithoutExtension(file.path).Equals(Path.GetFileName(mod)))
 					{
 						publishable = true;
 						break;

@@ -9,12 +9,11 @@ namespace Terraria.ModLoader
 {
 	internal class BuildProperties
 	{
-		internal string modBuildVersion = "";
 		internal string[] dllReferences = new string[0];
 		internal string[] modReferences = new string[0];
 		internal string[] buildIgnores = new string[0];
 		internal string author = "";
-		internal string version = "";
+		internal Version version = new Version(1, 0);
 		internal string displayName = "";
 		internal bool noCompile = false;
 		internal bool hideCode = true;
@@ -81,7 +80,7 @@ namespace Terraria.ModLoader
 						properties.author = value;
 						break;
 					case "version":
-						properties.version = value;
+						properties.version = new Version(value);
 						break;
 					case "displayName":
 						properties.displayName = value;
@@ -151,11 +150,8 @@ namespace Terraria.ModLoader
 						writer.Write("author");
 						writer.Write(author);
 					}
-					if (version.Length > 0)
-					{
-						writer.Write("version");
-						writer.Write(version);
-					}
+					writer.Write("version");
+					writer.Write(version.ToString());
 					if (displayName.Length > 0)
 					{
 						writer.Write("displayName");
@@ -192,93 +188,81 @@ namespace Terraria.ModLoader
 						writer.Write("includePDB");
 					}
 					writer.Write("");
-					writer.Flush();
-					data = memoryStream.ToArray();
-				}
-			}
+                }
+                data = memoryStream.ToArray();
+            }
 			return data;
 		}
 
 		internal static BuildProperties ReadModFile(TmodFile modFile)
 		{
 			BuildProperties properties = new BuildProperties();
-			byte[] data;
-			using (MemoryStream memoryStream = new MemoryStream(modFile.GetFile("Info")))
-			{
-				using (BinaryReader reader = new BinaryReader(memoryStream))
-				{
-					properties.modBuildVersion = reader.ReadString();
-					data = reader.ReadBytes(reader.ReadInt32());
-				}
-			}
+			byte[] data = modFile.GetFile("Info");
+			
 			if (data.Length == 0)
-			{
 				return properties;
-			}
-			using (MemoryStream memoryStream = new MemoryStream(data))
+			
+			using (BinaryReader reader = new BinaryReader(new MemoryStream(data)))
 			{
-				using (BinaryReader reader = new BinaryReader(memoryStream))
+				for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString())
 				{
-					for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString())
+					if (tag == "dllReferences")
 					{
-						if (tag == "dllReferences")
+						List<string> dllReferences = new List<string>();
+						for (string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
 						{
-							List<string> dllReferences = new List<string>();
-							for (string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
-							{
-								dllReferences.Add(reference);
-							}
-							properties.dllReferences = dllReferences.ToArray();
+							dllReferences.Add(reference);
 						}
-						if (tag == "modReferences")
+						properties.dllReferences = dllReferences.ToArray();
+					}
+					if (tag == "modReferences")
+					{
+						List<string> modReferences = new List<string>();
+						for (string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
 						{
-							List<string> modReferences = new List<string>();
-							for (string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
-							{
-								modReferences.Add(reference);
-							}
-							properties.modReferences = modReferences.ToArray();
+							modReferences.Add(reference);
 						}
-						if (tag == "author")
-						{
-							properties.author = reader.ReadString();
-						}
-						if (tag == "version")
-						{
-							properties.version = reader.ReadString();
-						}
-						if (tag == "displayName")
-						{
-							properties.displayName = reader.ReadString();
-						}
-						if (tag == "homepage")
-						{
-							properties.homepage = reader.ReadString();
-						}
-						if (tag == "description")
-						{
-							properties.description = reader.ReadString();
-						}
-						if (tag == "noCompile")
-						{
-							properties.noCompile = true;
-						}
-						if (tag == "!hideCode")
-						{
-							properties.hideCode = false;
-						}
-						if (tag == "!hideResources")
-						{
-							properties.hideResources = false;
-						}
-						if (tag == "includeSource")
-						{
-							properties.includeSource = true;
-						}
-						if (tag == "includePDB")
-						{
-							properties.includePDB = true;
-						}
+						properties.modReferences = modReferences.ToArray();
+					}
+					if (tag == "author")
+					{
+						properties.author = reader.ReadString();
+					}
+					if (tag == "version")
+					{
+						properties.version = new Version(reader.ReadString());
+					}
+					if (tag == "displayName")
+					{
+						properties.displayName = reader.ReadString();
+					}
+					if (tag == "homepage")
+					{
+						properties.homepage = reader.ReadString();
+					}
+					if (tag == "description")
+					{
+						properties.description = reader.ReadString();
+					}
+					if (tag == "noCompile")
+					{
+						properties.noCompile = true;
+					}
+					if (tag == "!hideCode")
+					{
+						properties.hideCode = false;
+					}
+					if (tag == "!hideResources")
+					{
+						properties.hideResources = false;
+					}
+					if (tag == "includeSource")
+					{
+						properties.includeSource = true;
+					}
+					if (tag == "includePDB")
+					{
+						properties.includePDB = true;
 					}
 				}
 			}

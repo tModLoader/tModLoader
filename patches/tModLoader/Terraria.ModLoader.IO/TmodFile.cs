@@ -1,112 +1,143 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Ionic.Zlib;
 
 namespace Terraria.ModLoader.IO
 {
-	internal class TmodFile
-	{
-		private IList<string> fileNames = new List<string>();
-		private IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
-		public readonly string Name;
+	public class TmodFile : IEnumerable<KeyValuePair<string, byte[]>>
+    {
+	    public readonly string path;
+        private readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 
-		public bool InvalidFile
+        public Version tModLoaderVersion {
+            get; private set;
+        }
+
+	    public string name { get; internal set; }
+
+        public Version version {
+            get; internal set;
+        }
+
+        public byte[] hash {
+            get; private set;
+        }
+
+	    internal byte[] signature { get; private set; } = new byte[256];
+
+        private Exception readException;
+
+	    internal TmodFile(string path)
+        {
+	        this.path = path;
+	    }
+
+        public bool HasFile(string fileName)
 		{
-			get;
-			internal set;
+			return files.ContainsKey(fileName.Replace('\\', '/'));
 		}
 
-		internal TmodFile(string name)
-		{
-			this.Name = name;
-			this.InvalidFile = false;
-		}
+		public byte[] GetFile(string fileName) {
+		    byte[] data;
+		    files.TryGetValue(fileName.Replace('\\', '/'), out data);
+		    return data;
+        }
 
-		internal bool HasFile(string fileName)
-		{
-			return files.ContainsKey(fileName);
-		}
+        internal void AddFile(string fileName, byte[] data) {
+            byte[] dataCopy = new byte[data.Length];
+            data.CopyTo(dataCopy, 0);
+            files[fileName.Replace('\\', '/')] = dataCopy;
+        }
 
-		internal void AddFile(string fileName, byte[] data)
+        internal void RemoveFile(string fileName) {
+            files.Remove(fileName.Replace('\\', '/'));
+        }
+
+	    public IEnumerator<KeyValuePair<string, byte[]>> GetEnumerator() {
+            return files.GetEnumerator();
+	    }
+
+	    IEnumerator IEnumerable.GetEnumerator() {
+	        return GetEnumerator();
+	    }
+
+        internal void Save()
 		{
-			if (!HasFile(fileName))
+            var dataStream = new MemoryStream();
+		    using (var writer = new BinaryWriter(dataStream)) {
+                writer.Write(name);
+                writer.Write(version.ToString());
+                
+                writer.Write(files.Count);
+                foreach (var entry in files) {
+                    writer.Write(entry.Key);
+                    writer.Write(entry.Value.Length);
+                    writer.Write(entry.Value);
+                }
+            }
+		    var data = dataStream.ToArray();
+		    hash = SHA1.Create().ComputeHash(data);
+
+            using (var writer = new BinaryWriter(new DeflateStream(File.Create(path), CompressionMode.Compress)))
 			{
-				fileNames.Add(fileName);
-			}
-			byte[] dataCopy = new byte[data.Length];
-			data.CopyTo(dataCopy, 0);
-			files[fileName] = dataCopy;
-		}
-
-		internal void RemoveFile(string fileName)
-		{
-			if (HasFile(fileName))
-			{
-				fileNames.Remove(fileName);
-				files.Remove(fileName);
-			}
-		}
-
-		internal byte[] GetFile(string fileName)
-		{
-			if (HasFile(fileName))
-			{
-				return files[fileName];
-			}
-			return null;
-		}
-
-		internal void Save()
-		{
-			using (FileStream fileStream = File.Create(Name))
-			{
-				using (DeflateStream compress = new DeflateStream(fileStream, CompressionMode.Compress))
-				{
-					using (BinaryWriter writer = new BinaryWriter(compress))
-					{
-						writer.Write((byte)fileNames.Count);
-						foreach (string fileName in fileNames)
-						{
-							writer.Write(fileName);
-							byte[] data = files[fileName];
-							writer.Write(data.Length);
-							writer.Write(data);
-						}
-					}
-				}
+                writer.Write(Encoding.ASCII.GetBytes("TMOD"));
+                writer.Write(ModLoader.version.ToString());
+                writer.Write(hash);
+                writer.Write(signature);
+                writer.Write(data.Length);
+                writer.Write(data);
 			}
 		}
 
 		internal void Read()
 		{
-			try
-			{
-				using (FileStream fileStream = File.OpenRead(Name))
-				{
-					using (DeflateStream decompress = new DeflateStream(fileStream, CompressionMode.Decompress))
-					{
-						using (BinaryReader reader = new BinaryReader(decompress))
-						{
-							int count = reader.ReadByte();
-							for (int k = 0; k < count; k++)
-							{
-								AddFile(reader.ReadString(), reader.ReadBytes(reader.ReadInt32()));
-							}
-						}
-					}
+			try {
+			    byte[] data;
+				using (var reader = new BinaryReader(new DeflateStream(File.OpenRead(path), CompressionMode.Decompress)))
+                {
+                    if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
+                        throw new Exception("Magic Header != \"TMOD\"");
+
+				    tModLoaderVersion = new Version(reader.ReadString());
+				    hash = reader.ReadBytes(20);
+				    signature = reader.ReadBytes(256);
+				    data = reader.ReadBytes(reader.ReadInt32());
+                    var verifyHash = SHA1.Create().ComputeHash(data);
+                    if (!verifyHash.SequenceEqual(hash))
+                        throw new Exception("Hash mismatch, data blob has been modified or corrupted");
 				}
+
+			    using (var reader = new BinaryReader(new MemoryStream(data))) {
+			        name = reader.ReadString();
+                    version = new Version(reader.ReadString());
+
+			        int count = reader.ReadInt32();
+			        for (int i = 0; i < count; i++)
+			            AddFile(reader.ReadString(), reader.ReadBytes(reader.ReadInt32()));
+                }
 			}
-			catch
+			catch (Exception e)
 			{
-				InvalidFile = true;
+                readException = e;
 			}
 		}
 
-		internal bool ValidMod()
-		{
-			return !InvalidFile && HasFile("Info") && HasFile("Resources")
-			&& ((HasFile("Windows") && HasFile("Other")) || HasFile("All"));
+		internal Exception ValidMod() {
+		    if (readException != null)
+		        return readException;
+
+            if (!HasFile("Info"))
+                return new Exception("Missing Info file");
+
+            if (!HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Other.dll")))
+			    return new Exception("Missing All.dll or Windows.dll and Other.dll");
+
+		    return null;
 		}
 	}
 }

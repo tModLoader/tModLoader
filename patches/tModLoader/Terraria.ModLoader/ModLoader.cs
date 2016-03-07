@@ -16,9 +16,10 @@ namespace Terraria.ModLoader
 	public static class ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
-		public static readonly string version = "tModLoader v0.7.1.2";
+		public static readonly Version version = new Version(0, 7, 1, 2);
+	    public static readonly string versionedName = "tModLoader v" + version;
 #if WINDOWS
-		public const bool windows = true;
+        public const bool windows = true;
 
 #else
         public const bool windows = false;
@@ -34,12 +35,8 @@ namespace Terraria.ModLoader
 		internal static bool reloadAfterBuild = false;
 		internal static bool buildAll = false;
 		internal static int numLoads = 0;
-		private static readonly IList<string> loadedMods = new List<string>();
-		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
-		private static readonly Stack<string> loadOrder = new Stack<string>();
-		private static readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
-		private static readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
-		private static readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+        private static readonly Stack<string> loadOrder = new Stack<string>();
+        internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
 		internal static readonly IDictionary<string, Tuple<Mod, string, string>> modHotKeys = new Dictionary<string, Tuple<Mod, string, string>>();
 
 		private static void AddAssemblyResolver()
@@ -93,22 +90,18 @@ namespace Terraria.ModLoader
 			{
 				name = name.Substring(0, name.IndexOf(','));
 			}
-			Mod mod = GetMod(name);
-			return mod?.code;
+			return GetMod(name)?.Code;
 		}
 
 		internal static bool ModLoaded(string name)
 		{
-			return loadedMods.Contains(name);
+			return mods.ContainsKey(name);
 		}
 
-		public static Mod GetMod(string name)
-		{
-			if (mods.ContainsKey(name))
-			{
-				return mods[name];
-			}
-			return null;
+		public static Mod GetMod(string name) {
+		    Mod m;
+		    mods.TryGetValue(name, out m);
+		    return m;
 		}
 
 		public static string[] GetLoadedMods()
@@ -143,8 +136,8 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					DisableMod(mod.file);
-					ErrorLogger.LogLoadingError(mod.file, mod.buildVersion, e);
+					DisableMod(mod.File);
+					ErrorLogger.LogLoadingError(mod.Name, mod.tModLoaderVersion, e);
 					Main.menuMode = Interface.errorMessageID;
 					return;
 				}
@@ -163,8 +156,8 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					DisableMod(mod.file);
-					ErrorLogger.LogLoadingError(mod.file, mod.buildVersion, e);
+					DisableMod(mod.File);
+					ErrorLogger.LogLoadingError(mod.Name, mod.tModLoaderVersion, e);
 					Main.menuMode = Interface.errorMessageID;
 					return;
 				}
@@ -213,13 +206,12 @@ namespace Terraria.ModLoader
 		internal static TmodFile[] FindMods()
 		{
 			Directory.CreateDirectory(ModPath);
-			string[] fileNames = Directory.GetFiles(ModPath, "*.tmod", SearchOption.TopDirectoryOnly);
 			IList<TmodFile> files = new List<TmodFile>();
-			foreach (string fileName in fileNames)
+			foreach (string fileName in Directory.GetFiles(ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
 			{
 				TmodFile file = new TmodFile(fileName);
 				file.Read();
-				if (file.ValidMod())
+				if (file.ValidMod() == null)
 				{
 					files.Add(file);
 				}
@@ -227,221 +219,130 @@ namespace Terraria.ModLoader
 			return files.ToArray();
 		}
 
+	    private static void AddMod(Mod mod) {
+            loadOrder.Push(mod.Name);
+            mods[mod.Name] = mod;
+	    }
+
 		private static bool LoadMods()
 		{
 			//load all referenced assemblies before mods for compiling
 			ModCompile.LoadReferences();
 			Interface.loadMods.SetProgressFinding();
-			TmodFile[] modFiles = FindMods();
-			List<TmodFile> enabledMods = new List<TmodFile>();
-			foreach (TmodFile modFile in modFiles)
-			{
-				if (IsEnabled(modFile.Name))
-				{
-					enabledMods.Add(modFile);
-				}
-			}
-			IDictionary<string, BuildProperties> properties = new Dictionary<string, BuildProperties>();
-			List<TmodFile> modsToLoad = new List<TmodFile>();
-			foreach (TmodFile modFile in enabledMods)
-			{
-				properties[modFile.Name] = BuildProperties.ReadModFile(modFile);
-				modsToLoad.Add(modFile);
-			}
-			int previousCount = 0;
-			int num = 0;
+			var modsToLoad = FindMods().ToList();
+            modsToLoad = modsToLoad.Where(IsEnabled).ToList();
+		    var properties = modsToLoad.ToDictionary(mod => mod.name, BuildProperties.ReadModFile);
+		    modsToLoad = TopoSort(modsToLoad, properties);
+		    if (modsToLoad == null)
+		        return false;
+
 			Mod defaultMod = new ModLoaderMod();
-			defaultMod.Init();
-			mods[defaultMod.Name] = defaultMod;
-			loadedMods.Add(defaultMod.Name);
-			while (modsToLoad.Count > 0 && modsToLoad.Count != previousCount)
-			{
-				previousCount = modsToLoad.Count;
-				int k = 0;
-				while (k < modsToLoad.Count)
-				{
-					bool canLoad = true;
-					foreach (string reference in properties[modsToLoad[k].Name].modReferences)
-					{
-						if (!ModLoaded(ModPath + Path.DirectorySeparatorChar + reference + ".tmod"))
-						{
-							canLoad = false;
-							break;
-						}
-					}
-					if (canLoad)
-					{
-						Interface.loadMods.SetProgressCompatibility(Path.GetFileNameWithoutExtension(modsToLoad[k].Name), num, enabledMods.Count);
-						try
-						{
-							LoadMod(modsToLoad[k], properties[modsToLoad[k].Name]);
-						}
-						catch (Exception e)
-						{
-							DisableMod(modsToLoad[k].Name);
-							ErrorLogger.LogLoadingError(modsToLoad[k].Name, properties[modsToLoad[k].Name].modBuildVersion, e);
-							return false;
-						}
-						loadedMods.Add(modsToLoad[k].Name);
-						num++;
-						modsToLoad.RemoveAt(k);
-					}
-					else
-					{
-						k++;
-					}
-				}
-			}
-			if (modsToLoad.Count > 0)
-			{
-				foreach (TmodFile modFile in modsToLoad)
-				{
-					DisableMod(modFile.Name);
-				}
-				ErrorLogger.LogMissingLoadReference(modsToLoad);
-				return false;
-			}
+			AddMod(defaultMod);
+
+		    int i = 0;
+		    foreach (var mod in modsToLoad) {
+                Interface.loadMods.SetProgressCompatibility(mod.name, i++, modsToLoad.Count);
+                try {
+                    LoadMod(mod, properties[mod.name]);
+                }
+                catch (Exception e) {
+                    DisableMod(mod);
+                    ErrorLogger.LogLoadingError(mod.name, mod.tModLoaderVersion, e);
+                    return false;
+                }
+            }
 			return true;
 		}
 
-		private static void LoadMod(TmodFile modFile, BuildProperties properties)
+	    private static List<TmodFile> TopoSort(IList<TmodFile> mods, IDictionary<string, BuildProperties> properties) {
+	        var visiting = new Stack<TmodFile>();
+            var sorted = new List<TmodFile>();
+            var errored = new HashSet<TmodFile>();
+            var errorLog = new StringBuilder();
+
+            Action<TmodFile> Visit = null;
+	        Visit = mod => {
+	            if (sorted.Contains(mod) || errored.Contains(mod))
+	                return;
+
+	            visiting.Push(mod);
+	            foreach (var depName in properties[mod.name].modReferences) {
+	                var dep = mods.FirstOrDefault(m => m.name == depName);
+	                if (dep == null) {
+                        errored.Add(mod);
+                        errorLog.AppendLine("Missing mod: " + depName + " required by " + mod.name);
+	                    continue;
+	                }
+
+	                if (visiting.Contains(dep)) {
+	                    var cycle = dep.name;
+	                    var stack = new Stack<TmodFile>(visiting);
+	                    TmodFile entry;
+	                    do {
+	                        entry = stack.Pop();
+	                        errored.Add(entry);
+	                        cycle = entry.name + " -> " + cycle;
+	                    } while (entry != dep);
+	                    errorLog.AppendLine("Dependency Cycle: " + cycle);
+	                    continue;
+	                }
+
+	                Visit(dep);
+	            }
+	            visiting.Pop();
+	            sorted.Add(mod);
+	        };
+
+	        foreach (var mod in mods)
+	            Visit(mod);
+
+	        if (errored.Count > 0) {
+                foreach (var mod in errored)
+                    DisableMod(mod);
+
+	            ErrorLogger.LogDependencyError(errorLog.ToString());
+	            return null;
+	        }
+
+	        return sorted;
+	    }
+
+	    private static void LoadMod(TmodFile modFile, BuildProperties properties)
 		{
 			AddAssemblyResolver();
-			string fileName = Path.GetFileNameWithoutExtension(modFile.Name);
-			Interface.loadMods.SetProgressReading(fileName, 0, 2);
+
+            if (modFile.name.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
+                throw new DuplicateNameException("Mods cannot be named Terraria");
+
+            if (mods.ContainsKey(modFile.name))
+                throw new DuplicateNameException("Two mods share the internal name " + modFile.name);
+
+            Interface.loadMods.SetProgressReading(modFile.name, 0, 2);
+
 			Assembly modCode;
-			string rootDirectory;
-			var dllFileName = modFile.HasFile("All") ? "All" : windows ? "Windows" : "Other";
+			var dllFileName = modFile.HasFile("All.dll") ? "All" : windows ? "Windows" : "Other";
 			if (properties.includePDB && modFile.HasFile(dllFileName + ".pdb"))
-			{
-				modCode = Assembly.Load(modFile.GetFile(dllFileName), modFile.GetFile(dllFileName + ".pdb"));
-			}
+				modCode = Assembly.Load(modFile.GetFile(dllFileName + ".dll"), modFile.GetFile(dllFileName + ".pdb"));
 			else
-			{
 				modCode = Assembly.Load(modFile.GetFile(dllFileName));
-			}
-			Interface.loadMods.SetProgressReading(fileName, 1, 2);
-			using (MemoryStream memoryStream = new MemoryStream(modFile.GetFile("Resources")))
-			{
-				using (BinaryReader reader = new BinaryReader(memoryStream))
-				{
-					rootDirectory = reader.ReadString();
-					for (string path = reader.ReadString(); path != "end"; path = reader.ReadString())
-					{
-						byte[] data = reader.ReadBytes(reader.ReadInt32());
-						files[path] = data;
-						if (Main.dedServ)
-						{
-							continue;
-						}
-						string extension = Path.GetExtension(path);
-						switch (extension)
-						{
-							case ".png":
-								string texturePath = Path.ChangeExtension(path, null);
-								using (MemoryStream buffer = new MemoryStream(data))
-								{
-									textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
-								}
-								break;
-							case ".wav":
-								string soundPath = Path.ChangeExtension(path, null);
-								using (MemoryStream buffer = new MemoryStream(data))
-								{
-									sounds[soundPath] = SoundEffect.FromStream(buffer);
-								}
-								break;
-							case ".mp3":
-								string mp3Path = Path.ChangeExtension(path, null);
-								string wavCacheFilename = mp3Path.Replace('/', '_') + "_" + properties.version + ".wav";
-								WAVCacheIO.DeleteIfOlder(modFile.Name, wavCacheFilename);
-								if (WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
-								{
-									sounds[mp3Path] = SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename));
-									break;
-								}
-								ushort wFormatTag = 1;
-								ushort nChannels;
-								uint nSamplesPerSec;
-								uint nAvgBytesPerSec;
-								ushort nBlockAlign;
-								ushort wBitsPerSample = 16;
-								const int headerSize = 44;
-								using (MemoryStream output = new MemoryStream())
-								using (MemoryStream yourMp3FileStream = new MemoryStream(data))
-								{
-									using (MP3Sharp.MP3Stream input = new MP3Sharp.MP3Stream(yourMp3FileStream))
-									{
-										using (BinaryWriter writer = new BinaryWriter(output, Encoding.UTF8))
-										{
-											output.Position = headerSize;
-											input.CopyTo(output);
-											UInt32 wavDataLength = (UInt32)output.Length - headerSize;
-											output.Position = 0;
-											nChannels = (ushort)input.ChannelCount;
-											nSamplesPerSec = (uint)input.Frequency;
-											nBlockAlign = (ushort)(nChannels * (wBitsPerSample / 8));
-											nAvgBytesPerSec = (uint)(nSamplesPerSec * nChannels * (wBitsPerSample / 8));
-											//write the header
-											writer.Write("RIFF".ToCharArray()); //4
-											writer.Write((UInt32)(wavDataLength + 36)); // 4
-											writer.Write("WAVE".ToCharArray()); //4
-											writer.Write("fmt ".ToCharArray()); //4
-											writer.Write(16); //4
-											writer.Write(wFormatTag);  //
-											writer.Write((ushort)nChannels);
-											writer.Write(nSamplesPerSec);
-											writer.Write(nAvgBytesPerSec);
-											writer.Write(nBlockAlign);
-											writer.Write(wBitsPerSample);
-											writer.Write("data".ToCharArray());
-											writer.Write((UInt32)(wavDataLength));
-											output.Position = 0;
-											WAVCacheIO.SaveWavStream(output, wavCacheFilename);
-											sounds[mp3Path] = SoundEffect.FromStream(output);
-										}
-									}
-								}
-								break;
-						}
-					}
-				}
-			}
-			Type[] classes = modCode.GetTypes();
-			foreach (Type type in classes)
-			{
-				if (type.IsSubclassOf(typeof(Mod)))
-				{
-					Mod mod = (Mod)Activator.CreateInstance(type);
-					mod.file = modFile.Name;
-					mod.buildVersion = properties.modBuildVersion;
-					mod.code = modCode;
-					mod.Init();
-					if (mod.Name == "Terraria")
-					{
-						throw new DuplicateNameException("Mods cannot be named Terraria");
-					}
-					if (mods.ContainsKey(mod.Name))
-					{
-						throw new DuplicateNameException("Two mods share the internal name " + mod.Name);
-					}
-					if (rootDirectory != mod.Name)
-					{
-						throw new MissingResourceException("Mod name " + mod.Name + " does not match source directory name " + rootDirectory);
-					}
-					mods[mod.Name] = mod;
-					loadOrder.Push(mod.Name);
-				}
-			}
+
+			Interface.loadMods.SetProgressReading(modFile.name, 1, 2);
+
+	        var modType = modCode.GetTypes().Single(t => t.IsSubclassOf(typeof (Mod)));
+			Mod mod = (Mod)Activator.CreateInstance(modType);
+			mod.File = modFile;
+			mod.Code = modCode;
+					
+			AddMod(mod);
 		}
 
 		internal static void Unload()
 		{
 			while (loadOrder.Count > 0)
-			{
 				GetMod(loadOrder.Pop()).UnloadContent();
-			}
-			loadedMods.Clear();
+
+            loadOrder.Clear();
+
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModDust.Unload();
@@ -455,10 +356,8 @@ namespace Terraria.ModLoader
 			MountLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
-			textures.Clear();
-			sounds.Clear();
-			mods.Clear();
-			ResizeArrays(true);
+            mods.Clear();
+            ResizeArrays(true);
 			MapLoader.UnloadModMap();
 			modHotKeys.Clear();
 			WorldHooks.Unload();
@@ -470,37 +369,31 @@ namespace Terraria.ModLoader
 			Main.menuMode = Interface.loadModsID;
 		}
 
-		internal static bool IsEnabled(string modFile)
+		internal static bool IsEnabled(TmodFile mod)
 		{
-			if (modFile == "ModLoader")
-			{
-				return true;
-			}
-			string enablePath = Path.ChangeExtension(modFile, "enabled");
+			string enablePath = Path.ChangeExtension(mod.path, "enabled");
 			return !File.Exists(enablePath) || File.ReadAllText(enablePath) != "false";
 		}
 
-		internal static void SetModActive(string modFile, bool active)
-		{
-			if (modFile == "ModLoader")
-			{
-				return;
-			}
-			string path = Path.ChangeExtension(modFile, "enabled");
+		internal static void SetModActive(TmodFile mod, bool active) {
+		    if (mod == null)
+		        return;
+
+			string path = Path.ChangeExtension(mod.path, "enabled");
 			using (StreamWriter writer = File.CreateText(path))
 			{
 				writer.Write(active ? "true" : "false");
 			}
 		}
 
-		internal static void EnableMod(string modFile)
+		internal static void EnableMod(TmodFile mod)
 		{
-			SetModActive(modFile, true);
+			SetModActive(mod, true);
 		}
 
-		internal static void DisableMod(string modFile)
+		internal static void DisableMod(TmodFile mod)
 		{
-			SetModActive(modFile, false);
+			SetModActive(mod, false);
 		}
 
 		internal static string[] FindModSources()
@@ -536,100 +429,73 @@ namespace Terraria.ModLoader
 		private static void PostBuildMenu(bool success)
 		{
 			Main.menuMode = success ? (reloadAfterBuild ? Interface.reloadModsID : 0) : Interface.errorMessageID;
-		}
+        }
 
-		public static byte[] GetFileBytes(string name)
-		{
-			if (!FileExists(name))
-			{
-				throw new MissingResourceException("Missing file " + name);
-			}
-			return files[name];
-		}
+	    private static void SplitName(string name, out string domain, out string subName) {
+            int slash = name.IndexOf('/');
+            if (slash < 0)
+                throw new MissingResourceException("Missing mod qualifier: " + name);
 
-		public static bool FileExists(string name)
-		{
-			return files.ContainsKey(name);
-		}
+            domain = name.Substring(0, slash);
+            subName = name.Substring(slash + 1);
+        }
 
-		public static Texture2D GetTexture(string name)
-		{
-			if (Main.dedServ)
-				return null;
-			if (!TextureExists(name))
-			{
-				throw new MissingResourceException("Missing texture " + name);
-			}
-			if (name.IndexOf("Terraria/") == 0)
-			{
-				name = name.Substring(9);
-				return Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + name);
-			}
-			return textures[name];
-		}
+        public static Texture2D GetTexture(string name) {
+            if (Main.dedServ)
+                return null;
 
-		public static bool TextureExists(string name)
-		{
-			if (name.IndexOf("Terraria/") == 0)
-			{
-				name = name.Substring(9);
-				return File.Exists(ImagePath + Path.DirectorySeparatorChar + name + ".xnb");
-			}
-			return textures.ContainsKey(name);
-		}
+            string modName, subName;
+            SplitName(name, out modName, out subName);
+            if (modName == "Terraria")
+                return Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
 
-		public static void AddTexture(string name, Texture2D texture)
-		{
-			if (TextureExists(name))
-			{
-				throw new DuplicateNameException("Texture already exist: " + name);
-			}
-			textures[name] = texture;
-		}
+            Mod mod = GetMod(modName);
+            if (mod == null)
+                throw new MissingResourceException("Missing mod: " + name);
 
-		internal static IList<string> GetTextures(Mod mod)
-		{
-			IList<string> modTextures = new List<string>();
-			foreach (string texture in textures.Keys)
-			{
-				if (texture.IndexOf(mod.Name + "/") == 0)
-				{
-					modTextures.Add(texture);
-				}
-			}
-			return modTextures;
-		}
+            return mod.GetTexture(subName);
+        }
 
-		public static SoundEffect GetSound(string name)
-		{
-			if (Main.dedServ)
-				return null;
-			if (!SoundExists(name))
-			{
-				throw new MissingResourceException("Missing sound " + name);
-			}
-			return sounds[name];
-		}
+	    public static bool TextureExists(string name) {
+	        if (!name.Contains('/'))
+                return false;
 
-		public static bool SoundExists(string name)
-		{
-			return sounds.ContainsKey(name);
-		}
+            string modName, subName;
+            SplitName(name, out modName, out subName);
 
-		internal static IList<string> GetSounds(Mod mod)
-		{
-			IList<string> modSounds = new List<string>();
-			foreach (string sound in sounds.Keys)
-			{
-				if (sound.IndexOf(mod.Name + "/") == 0)
-				{
-					modSounds.Add(sound);
-				}
-			}
-			return modSounds;
-		}
+	        if (modName == "Terraria")
+	            return File.Exists(ImagePath + Path.DirectorySeparatorChar + name + ".xnb");
 
-		public static void RegisterHotKey(Mod mod, string name, string defaultKey)
+	        Mod mod = GetMod(modName);
+	        return mod != null && mod.TextureExists(subName);
+        }
+
+        public static SoundEffect GetSound(string name) {
+            if (Main.dedServ)
+                return null;
+
+            string modName, subName;
+            SplitName(name, out modName, out subName);
+
+            Mod mod = GetMod(modName);
+            if (mod == null)
+                throw new MissingResourceException("Missing mod: " + name);
+
+            return mod.GetSound(subName);
+        }
+
+        public static bool SoundExists(string name) {
+            if (!name.Contains('/'))
+                return false;
+
+            string modName, subName;
+            SplitName(name, out modName, out subName);
+
+            Mod mod = GetMod(modName);
+            return mod != null && mod.SoundExists(subName);
+        }
+
+        public static void RegisterHotKey(Mod mod, string name, string defaultKey)
 		{
 			string configurationString = mod.Name + "_" + "HotKey" + "_" + name.Replace(' ', '_');
 			string keyFromConfigutation = Main.Configuration.Get<string>(configurationString, defaultKey);
@@ -655,7 +521,7 @@ namespace Terraria.ModLoader
 				}
 				catch
 				{
-					DisableMod(mod.file);
+					DisableMod(mod.File);
 					throw;
 				}
 			}
@@ -675,7 +541,7 @@ namespace Terraria.ModLoader
 				}
 				catch
 				{
-					DisableMod(mod.file);
+					DisableMod(mod.File);
 					throw;
 				}
 			}
