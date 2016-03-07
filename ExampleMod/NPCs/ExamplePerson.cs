@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -98,6 +99,19 @@ namespace ExampleMod.NPCs
 					return "Blocky";
 				default:
 					return "Colorless";
+			}
+		}
+
+		public override void FindFrame(int frameHeight)
+		{
+			npc.frame.Width = 40;
+			if (((int)Main.time / 10) % 2 == 0)
+			{
+				npc.frame.X = 40;
+			}
+			else
+			{
+				npc.frame.X = 0;
 			}
 		}
 
