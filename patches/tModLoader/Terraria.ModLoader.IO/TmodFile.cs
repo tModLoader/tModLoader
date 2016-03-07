@@ -134,10 +134,18 @@ namespace Terraria.ModLoader.IO
             if (!HasFile("Info"))
                 return new Exception("Missing Info file");
 
-            if (!HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Other.dll")))
-			    return new Exception("Missing All.dll or Windows.dll and Other.dll");
+            if (!HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
+			    return new Exception("Missing All.dll or Windows.dll and Mono.dll");
 
 		    return null;
 		}
+
+	    public byte[] GetMainAssembly(bool windows = ModLoader.windows) {
+	        return HasFile("All.dll") ? GetFile("All.dll") : windows ? GetFile("Windows.dll") : GetFile("Mono.dll");
+	    }
+
+	    public byte[] GetMainPDB(bool windows = ModLoader.windows) {
+            return HasFile("All.pdb") ? GetFile("All.pdb") : windows ? GetFile("Windows.pdb") : GetFile("Mono.pdb");
+        }
 	}
 }

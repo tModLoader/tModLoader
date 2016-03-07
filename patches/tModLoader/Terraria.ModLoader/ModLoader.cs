@@ -288,11 +288,7 @@ namespace Terraria.ModLoader
                 foreach (var dll in mod.properties.dllReferences)
                     mod.dlls[dll] = mod.modFile.GetFile("lib/" + dll + ".dll");
 
-                var codeFileName = mod.modFile.HasFile("All.dll") ? "All" : windows ? "Windows" : "Other";
-                mod.code = mod.modFile.GetFile(codeFileName + ".dll");
-
-                if (mod.properties.includePDB && mod.modFile.HasFile(codeFileName + ".pdb"))
-                    mod.pdb = mod.modFile.GetFile(codeFileName + ".pdb");
+                mod.code = mod.modFile.GetMainAssembly();
             }
 
             foreach (var mod in mods)
@@ -355,7 +351,7 @@ namespace Terraria.ModLoader
             foreach (var dll in mod.dlls.Values)
 	            LoadAssembly(dll);
 
-	        Assembly modCode = LoadAssembly(mod.code, mod.pdb);
+	        Assembly modCode = LoadAssembly(mod.code, mod.modFile.GetMainPDB());
 
             Interface.loadMods.SetProgressReading(mod.Name, 1, 2);
 	        var modType = modCode.GetTypes().Single(t => t.IsSubclassOf(typeof (Mod)));
@@ -585,7 +581,6 @@ namespace Terraria.ModLoader
             public readonly List<LoadingMod> modReferences = new List<LoadingMod>();
              
             public byte[] code;
-            public byte[] pdb;
             public readonly IDictionary<string, byte[]> dlls = new Dictionary<string, byte[]>();
 
             public string Name => modFile.name;

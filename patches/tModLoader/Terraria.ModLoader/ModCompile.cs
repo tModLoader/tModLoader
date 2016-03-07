@@ -68,21 +68,20 @@ namespace Terraria.ModLoader
             byte[] winPDB = null;
             byte[] monoPDB = null;
             if (properties.noCompile) {
-                var all = Path.Combine(mod, "All.dll");
-                var win = Path.Combine(mod, "Windows.dll");
-                var mono = Path.Combine(mod, "Other.dll");
-                if (File.Exists(all)) {
-                    winDLL = monoDLL = File.ReadAllBytes(all);
+                if (File.Exists(Path.Combine(mod, "All.dll"))) {
+                    winDLL = monoDLL = File.ReadAllBytes(Path.Combine(mod, "All.dll"));
+
                     if (File.Exists(Path.Combine(mod, "All.pdb")))
                         winPDB = monoPDB = File.ReadAllBytes(Path.Combine(mod, "All.pdb"));
                 }
-                else if (File.Exists(win) && File.Exists(mono)) {
-                    winDLL = File.ReadAllBytes(win);
-                    monoDLL = File.ReadAllBytes(mono);
+                else if (File.Exists(Path.Combine(mod, "Windows.dll")) && File.Exists(Path.Combine(mod, "Mono.dll"))) {
+                    winDLL = File.ReadAllBytes(Path.Combine(mod, "Windows.dll"));
+                    monoDLL = File.ReadAllBytes(Path.Combine(mod, "Mono.dll"));
+
                     if (File.Exists(Path.Combine(mod, "Windows.pdb")))
                         winPDB = File.ReadAllBytes(Path.Combine(mod, "Windows.pdb"));
-                    if (File.Exists(Path.Combine(mod, "Other.pdb")))
-                        monoPDB = File.ReadAllBytes(Path.Combine(mod, "Other.pdb"));
+                    if (File.Exists(Path.Combine(mod, "Mono.pdb")))
+                        monoPDB = File.ReadAllBytes(Path.Combine(mod, "Mono.pdb"));
                 }
                 else {
                     ErrorLogger.LogDllBuildError(mod);
@@ -90,9 +89,10 @@ namespace Terraria.ModLoader
                 }
             }
             else {
-                var refMods = CreateModReferenceDlls(properties);
+                var refMods = FindReferencedMods(properties);
                 if (refMods == null)
                     return false;
+
                 status.SetStatus("Compiling "+modName+" for Windows...");
                 status.SetProgress(0, 2);
                 CompileMod(mod, properties, refMods, true, ref winDLL, ref winPDB);
@@ -120,9 +120,9 @@ namespace Terraria.ModLoader
             }
             else {
                 modFile.AddFile("Windows.dll", winDLL);
-                modFile.AddFile("Other.dll", monoDLL);
+                modFile.AddFile("Mono.dll", monoDLL);
                 if (winPDB != null) modFile.AddFile("Windows.pdb", winPDB);
-                if (monoPDB != null) modFile.AddFile("Other.pdb", monoPDB);
+                if (monoPDB != null) modFile.AddFile("Mono.pdb", monoPDB);
             }
 
             foreach (var resource in Directory.GetFiles(mod, "*", SearchOption.AllDirectories)) {
@@ -154,22 +154,32 @@ namespace Terraria.ModLoader
             return true;
         }
 
-        internal static TmodFile[] CreateModReferenceDlls(BuildProperties properties) {
-            var refMods = new TmodFile[properties.modReferences.Length];
-            for (int i = 0; i < refMods.Length; i++) {
-                var refName = properties.modReferences[i];
-                var mod = refMods[i] = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
-                mod.Read();
-                var ex = mod.ValidMod();
-                if (ex != null) {
-                    ErrorLogger.LogModReferenceError(ex, refName);
-                    return null;
-                }
-            }
-            return refMods;
+        internal static List<LoadingMod> FindReferencedMods(BuildProperties properties) {
+            var mods = new Dictionary<string, LoadingMod>();
+            return FindReferencedMods(properties, mods) ? mods.Values.ToList() : null;
         }
 
-        private static void CompileMod(string modDir, BuildProperties properties, TmodFile[] refMods, bool forWindows,
+        private static bool FindReferencedMods(BuildProperties properties, Dictionary<string, LoadingMod> mods) {
+            foreach (var refName in properties.modReferences) {
+                if (mods.ContainsKey(refName))
+                    continue;
+
+                var modFile = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
+                modFile.Read();
+                var ex = modFile.ValidMod();
+                if (ex != null) {
+                    ErrorLogger.LogModReferenceError(ex, refName);
+                    return false;
+                }
+                var mod = new LoadingMod(modFile, BuildProperties.ReadModFile(modFile));
+                mods[refName] = mod;
+                FindReferencedMods(mod.properties, mods);
+            }
+
+            return true;
+        }
+
+        private static void CompileMod(string modDir, BuildProperties properties, List<LoadingMod> refMods, bool forWindows,
                 ref byte[] dll, ref byte[] pdb) {
             LoadReferences();
             var refs = new List<string>(terrariaReferences);
@@ -198,19 +208,21 @@ namespace Terraria.ModLoader
                 }
             }
 
+            refs.AddRange(properties.dllReferences.Select(refDll => Path.Combine(modDir, "lib/" + refDll + ".dll")));
+
             var tempDir = Path.Combine(ModPath, "compile_temp");
             Directory.CreateDirectory(tempDir);
 
-            refs.AddRange(properties.dllReferences.Select(refDll => Path.Combine(modDir, "lib/" + refDll + ".dll")));
-
             foreach (var refMod in refMods) {
-                var dllBytes = refMod.HasFile("All.dll")
-                    ? refMod.GetFile("All.dll")
-                    : refMod.GetFile(forWindows ? "Windows.dll" : "Other.dll");
-
-                var path = Path.Combine(tempDir, refMod.name + ".dll");
-                File.WriteAllBytes(path, dllBytes);
+                var path = Path.Combine(tempDir, refMod.Name + ".dll");
+                File.WriteAllBytes(path, refMod.modFile.GetMainAssembly(forWindows));
                 refs.Add(path);
+
+                foreach (var refDll in refMod.properties.dllReferences) {
+                    path = Path.Combine(tempDir, refDll + ".dll");
+                    File.WriteAllBytes(path, refMod.modFile.GetFile("lib/"+refDll+".dll"));
+                    refs.Add(path);
+                }
             }
 
             var compileOptions = new CompilerParameters {

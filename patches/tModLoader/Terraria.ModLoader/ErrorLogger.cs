@@ -12,20 +12,20 @@ namespace Terraria.ModLoader
 		internal static string CompileErrorPath = Path.Combine(LogPath, "Compile Errors.txt");
 		private static readonly string[] buildDllLines =
 		{
-			"Must have either All.dll or both of Windows.dll and Other.dll",
+            "Must have either All.dll or both of Windows.dll and Mono.dll",
 			"All.dll must not have any references to Microsoft.Xna.Framework or FNA",
 			"Windows.dll must reference the windows Terraria.exe and Microsoft.Xna.Framework.dll",
-			"Other.dll must reference a non-windows Terraria.exe and FNA.dll"
+			"Mono.dll must reference a non-windows Terraria.exe and FNA.dll"
 		};
 
 		internal static void LogModReferenceError(Exception e, string modName)
 		{
 			Directory.CreateDirectory(LogPath);
-			var log = "Mod reference modName" + e;
-			File.WriteAllText(CompileErrorPath, log);
-			Console.WriteLine(log);
+			var errorText = "Mod reference " + modName + " " + e;
+			File.WriteAllText(CompileErrorPath, errorText);
+			Console.WriteLine(errorText);
 
-			Interface.errorMessage.SetMessage("Mod reference modName" + e.Message);
+			Interface.errorMessage.SetMessage(errorText);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
