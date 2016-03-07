@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using static Terraria.ModLoader.Setup.Settings;
@@ -22,7 +21,7 @@ namespace Terraria.ModLoader.Setup
         public override void Run() {
             taskInterface.SetStatus("Copying References");
 
-            var references = new[] {"FNA.dll", "MP3Sharp.dll"};
+            var references = new[] {"FNA.dll", "MP3Sharp.dll", "Mono.Cecil.dll"};
             foreach (var dll in references)
                 Copy(Path.Combine(Program.baseDir, "references/"+dll), Path.Combine(SteamDir.Get(), dll));
 

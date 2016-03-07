@@ -20,7 +20,7 @@
    </PropertyGroup>
    <Choose>
      <When Condition="$(DefineConstants.Contains('DEBUG'))">
-@@ -73,15 +76,23 @@
+@@ -73,15 +76,26 @@
      </Otherwise>
    </Choose>
    <ItemGroup>
@@ -33,6 +33,9 @@
        <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
      </Reference>
      <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++    <Reference Include="Mono.Cecil">
++      <HintPath>..\..\references\Mono.Cecil.dll</HintPath>
++    </Reference>
 +    <Reference Include="MP3Sharp">
 +      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
 +    </Reference>
@@ -46,7 +49,7 @@
        <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
      </Reference>
      <Reference Include="System.Windows.Forms" />
-@@ -91,6 +102,7 @@
+@@ -91,6 +105,7 @@
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
@@ -54,7 +57,7 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -253,6 +265,7 @@
+@@ -253,6 +268,7 @@
      <Compile Include="Terraria.ID\ItemID.cs" />
      <Compile Include="Terraria.ID\MessageID.cs" />
      <Compile Include="Terraria.ID\MountID.cs" />
@@ -62,7 +65,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -280,6 +293,95 @@
+@@ -280,6 +296,95 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -158,7 +161,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -427,6 +529,42 @@
+@@ -427,6 +532,42 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />

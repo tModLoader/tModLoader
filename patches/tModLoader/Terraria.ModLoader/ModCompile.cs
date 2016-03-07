@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
         }
 
         private static IList<string> terrariaReferences;
-        
+
         internal static void LoadReferences() {
             if (terrariaReferences != null)
                 return;
@@ -201,8 +201,7 @@ namespace Terraria.ModLoader
             var tempDir = Path.Combine(ModPath, "compile_temp");
             Directory.CreateDirectory(tempDir);
 
-            Directory.CreateDirectory(DllPath);
-            refs.AddRange(properties.dllReferences.Select(refDll => Path.Combine(DllPath, refDll + ".dll")));
+            refs.AddRange(properties.dllReferences.Select(refDll => Path.Combine(modDir, "lib/" + refDll + ".dll")));
 
             foreach (var refMod in refMods) {
                 var dllBytes = refMod.HasFile("All.dll")
@@ -230,12 +229,12 @@ namespace Terraria.ModLoader
 
             if (errors.HasErrors) {
                 ErrorLogger.LogCompileErrors(errors);
-                return;
             }
-
-            dll = File.ReadAllBytes(compileOptions.OutputAssembly);
-            if (properties.includePDB)
-                pdb = File.ReadAllBytes(Path.Combine(tempDir, Path.GetFileName(modDir) + ".pdb"));
+            else {
+                dll = File.ReadAllBytes(compileOptions.OutputAssembly);
+                if (properties.includePDB)
+                    pdb = File.ReadAllBytes(Path.Combine(tempDir, Path.GetFileName(modDir) + ".pdb"));
+            }
 
             Directory.Delete(tempDir, true);
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
@@ -27,16 +29,16 @@ namespace Terraria.ModLoader
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
-		public static readonly string DllPath = Main.SavePath + Path.DirectorySeparatorChar + "dllReferences";
 		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
 		private static bool assemblyResolverAdded = false;
 		internal const int earliestRelease = 149;
 		internal static string modToBuild;
 		internal static bool reloadAfterBuild = false;
 		internal static bool buildAll = false;
-		internal static int numLoads = 0;
+		internal static int numLoads;
         private static readonly Stack<string> loadOrder = new Stack<string>();
         internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
+        private static readonly IDictionary<string, Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
 		internal static readonly IDictionary<string, Tuple<Mod, string, string>> modHotKeys = new Dictionary<string, Tuple<Mod, string, string>>();
 
 		private static void AddAssemblyResolver()
@@ -46,7 +48,6 @@ namespace Terraria.ModLoader
 				return;
 			}
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveTerrariaReference;
-			AppDomain.CurrentDomain.AssemblyResolve += ResolveDllReference;
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveModReference;
 			assemblyResolverAdded = true;
 		}
@@ -65,24 +66,6 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		private static Assembly ResolveDllReference(object sender, ResolveEventArgs args)
-		{
-			Directory.CreateDirectory(DllPath);
-			string name = args.Name;
-			if (name.IndexOf(',') >= 0)
-			{
-				name = name.Substring(0, name.IndexOf(','));
-			}
-			try
-			{
-				return Assembly.LoadFrom(DllPath + Path.DirectorySeparatorChar + name + ".dll");
-			}
-			catch
-			{
-				return null;
-			}
-		}
-
 		private static Assembly ResolveModReference(object sender, ResolveEventArgs args)
 		{
 			string name = args.Name;
@@ -90,7 +73,9 @@ namespace Terraria.ModLoader
 			{
 				name = name.Substring(0, name.IndexOf(','));
 			}
-			return GetMod(name)?.Code;
+			Assembly a;
+		    loadedAssemblies.TryGetValue(name, out a);
+		    return a;
 		}
 
 		internal static bool ModLoaded(string name)
@@ -217,84 +202,139 @@ namespace Terraria.ModLoader
 				}
 			}
 			return files.ToArray();
-		}
+        }
 
-	    private static void AddMod(Mod mod) {
+        private static void AddMod(Mod mod) {
             loadOrder.Push(mod.Name);
             mods[mod.Name] = mod;
-	    }
+        }
 
-		private static bool LoadMods()
+        private static Assembly LoadAssembly(byte[] code, byte[] pdb = null) {
+            var asm = Assembly.Load(code, pdb);
+            loadedAssemblies[asm.GetName().Name] = asm;
+            return asm;
+        }
+
+        private static bool LoadMods()
 		{
 			//load all referenced assemblies before mods for compiling
 			ModCompile.LoadReferences();
+
 			Interface.loadMods.SetProgressFinding();
-			var modsToLoad = FindMods().ToList();
-            modsToLoad = modsToLoad.Where(IsEnabled).ToList();
-            var modNameMap = modsToLoad.ToDictionary(mod => mod.name);
-            var properties = modsToLoad.ToDictionary(mod => mod.name, BuildProperties.ReadModFile);
+		    var modsToLoad = FindMods()
+                .Where(IsEnabled)
+		        .Select(mod => new LoadingMod(mod, BuildProperties.ReadModFile(mod)))
+                .ToList();
+
+		    if (!VerifyNames(modsToLoad))
+		        return false;
+            
             try {
-		        var sorted = TopoSort(modNameMap.Keys, properties);
-		        modsToLoad = sorted.Select(name => modNameMap[name]).ToList();
+                modsToLoad = TopoSort(modsToLoad);
 		    }
 		    catch (ModSortingException e) {
                 foreach (var mod in e.errored)
-                    DisableMod(modNameMap[mod]);
+                    DisableMod(mod.modFile);
 
                 ErrorLogger.LogDependencyError(e.Message);
 		        return false;
 		    }
 
+		    EncapsulateReferences(modsToLoad);
+            
 			Mod defaultMod = new ModLoaderMod();
 			AddMod(defaultMod);
 
-		    int i = 0;
+            AddAssemblyResolver();
+            int i = 0;
 		    foreach (var mod in modsToLoad) {
-                Interface.loadMods.SetProgressCompatibility(mod.name, i++, modsToLoad.Count);
+                Interface.loadMods.SetProgressCompatibility(mod.Name, i++, modsToLoad.Count);
                 try {
-                    LoadMod(mod, properties[mod.name]);
+                    LoadMod(mod);
                 }
                 catch (Exception e) {
-                    DisableMod(mod);
-                    ErrorLogger.LogLoadingError(mod.name, mod.tModLoaderVersion, e);
+                    DisableMod(mod.modFile);
+                    ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
                     return false;
                 }
             }
 			return true;
 		}
 
-	    internal static List<string> TopoSort(ICollection<string> mods, IDictionary<string, BuildProperties> properties) {
-	        var visiting = new Stack<string>();
-            var sorted = new List<string>();
-            var errored = new HashSet<string>();
+	    private static bool VerifyNames(List<LoadingMod> mods) {
+            var names = new HashSet<string>();
+	        foreach (var mod in mods) {
+                try {
+                    if (mod.Name.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
+                        throw new DuplicateNameException("Mods cannot be named Terraria");
+
+                    if (names.Contains(mod.Name))
+                        throw new DuplicateNameException("Two mods share the internal name " + mod.Name);
+
+                    names.Add(mod.Name);
+                }
+                catch (Exception e) {
+                    DisableMod(mod.modFile);
+                    ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
+                    return false;
+                }
+	        }
+
+	        return true;
+	    }
+
+        private static void EncapsulateReferences(List<LoadingMod> mods) {
+            foreach (var mod in mods) {
+                foreach (var dll in mod.properties.dllReferences)
+                    mod.dlls[dll] = mod.modFile.GetFile("lib/" + dll + ".dll");
+
+                var codeFileName = mod.modFile.HasFile("All.dll") ? "All" : windows ? "Windows" : "Other";
+                mod.code = mod.modFile.GetFile(codeFileName + ".dll");
+
+                if (mod.properties.includePDB && mod.modFile.HasFile(codeFileName + ".pdb"))
+                    mod.pdb = mod.modFile.GetFile(codeFileName + ".pdb");
+            }
+
+            foreach (var mod in mods)
+                mod.EncapsulateReferences();
+	    }
+
+	    internal static List<LoadingMod> TopoSort(ICollection<LoadingMod> mods) {
+	        var nameMap = mods.ToDictionary(mod => mod.Name);
+
+	        var visiting = new Stack<LoadingMod>();
+            var sorted = new List<LoadingMod>();
+            var errored = new HashSet<LoadingMod>();
             var errorLog = new StringBuilder();
 
-            Action<string> Visit = null;
+            Action<LoadingMod> Visit = null;
 	        Visit = mod => {
 	            if (sorted.Contains(mod) || errored.Contains(mod))
 	                return;
 
 	            visiting.Push(mod);
-	            foreach (var dep in properties[mod].modReferences) {
-	                if (!mods.Contains(dep)) {
+	            foreach (var depName in mod.properties.modReferences) {
+	                if (!nameMap.ContainsKey(depName)) {
                         errored.Add(mod);
-                        errorLog.AppendLine("Missing mod: " + dep + " required by " + mod);
+                        errorLog.AppendLine("Missing mod: " + depName + " required by " + mod.Name);
 	                    continue;
 	                }
 
+	                var dep = nameMap[depName];
 	                if (visiting.Contains(dep)) {
-	                    var cycle = dep;
-	                    var stack = new Stack<string>(visiting);
-	                    string entry;
+	                    var cycle = dep.Name;
+	                    var stack = new Stack<LoadingMod>(visiting);
+                        LoadingMod entry;
 	                    do {
 	                        entry = stack.Pop();
 	                        errored.Add(entry);
-	                        cycle = entry + " -> " + cycle;
+	                        cycle = entry.Name + " -> " + cycle;
 	                    } while (entry != dep);
 	                    errorLog.AppendLine("Dependency Cycle: " + cycle);
 	                    continue;
 	                }
 
+                    mod.modReferences.Add(dep);
 	                Visit(dep);
 	            }
 	            visiting.Pop();
@@ -310,33 +350,19 @@ namespace Terraria.ModLoader
 	        return sorted;
 	    }
 
-	    private static void LoadMod(TmodFile modFile, BuildProperties properties)
-		{
-			AddAssemblyResolver();
+	    private static void LoadMod(LoadingMod mod) {
+            Interface.loadMods.SetProgressReading(mod.Name, 0, 1);
+            foreach (var dll in mod.dlls.Values)
+	            LoadAssembly(dll);
 
-            if (modFile.name.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
-                throw new DuplicateNameException("Mods cannot be named Terraria");
+	        Assembly modCode = LoadAssembly(mod.code, mod.pdb);
 
-            if (mods.ContainsKey(modFile.name))
-                throw new DuplicateNameException("Two mods share the internal name " + modFile.name);
-
-            Interface.loadMods.SetProgressReading(modFile.name, 0, 2);
-
-			Assembly modCode;
-			var dllFileName = modFile.HasFile("All.dll") ? "All" : windows ? "Windows" : "Other";
-			if (properties.includePDB && modFile.HasFile(dllFileName + ".pdb"))
-				modCode = Assembly.Load(modFile.GetFile(dllFileName + ".dll"), modFile.GetFile(dllFileName + ".pdb"));
-			else
-				modCode = Assembly.Load(modFile.GetFile(dllFileName + ".dll"));
-
-			Interface.loadMods.SetProgressReading(modFile.name, 1, 2);
-
+            Interface.loadMods.SetProgressReading(mod.Name, 1, 2);
 	        var modType = modCode.GetTypes().Single(t => t.IsSubclassOf(typeof (Mod)));
-			Mod mod = (Mod)Activator.CreateInstance(modType);
-			mod.File = modFile;
-			mod.Code = modCode;
-					
-			AddMod(mod);
+			Mod m = (Mod)Activator.CreateInstance(modType);
+			m.File = mod.modFile;
+			m.Code = modCode;
+			AddMod(m);
 		}
 
 		internal static void Unload()
@@ -364,7 +390,9 @@ namespace Terraria.ModLoader
 			MapLoader.UnloadModMap();
 			modHotKeys.Clear();
 			WorldHooks.Unload();
-		}
+
+            loadedAssemblies.Clear();
+        }
 
 		internal static void Reload()
 		{
@@ -548,15 +576,72 @@ namespace Terraria.ModLoader
 					throw;
 				}
 			}
-		}
-	}
+        }
 
-    internal class ModSortingException : Exception
-    {
-        public ICollection<string> errored;
+        internal class LoadingMod
+        {
+            public readonly TmodFile modFile;
+            public readonly BuildProperties properties;
+            public readonly List<LoadingMod> modReferences = new List<LoadingMod>();
+             
+            public byte[] code;
+            public byte[] pdb;
+            public readonly IDictionary<string, byte[]> dlls = new Dictionary<string, byte[]>();
 
-        public ModSortingException(ICollection<string> errored, string message) : base(message) {
-            this.errored = errored;
+            public string Name => modFile.name;
+
+            public LoadingMod(TmodFile modFile, BuildProperties properties) {
+                this.modFile = modFile;
+                this.properties = properties;
+            }
+
+            public void EncapsulateReferences() {
+                code = EncapsulateReferences(code);
+
+                foreach (var dllName in dlls.Keys.ToArray())
+                    dlls[dllName] = EncapsulateReferences(dlls[dllName]);
+            }
+
+            private byte[] EncapsulateReferences(byte[] code) {
+                var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code));
+                asm.Name.Name = EncapsulateName(asm.Name.Name);
+
+                //randomise the module version id so that the debugger can detect it as a different module (even if it has the same content)
+                asm.MainModule.Mvid = Guid.NewGuid();
+
+                foreach (var mod in asm.Modules)
+                    foreach (var asmRef in mod.AssemblyReferences)
+                        asmRef.Name = EncapsulateName(asmRef.Name);
+
+                var ret = new MemoryStream();
+                asm.Write(ret);
+                return ret.ToArray();
+            }
+
+            private string EncapsulateName(string name) {
+                if (Name == name)
+                    return name + '_' + numLoads;
+
+                if (dlls.ContainsKey(name))
+                    return Name + '_' + name + '_' + numLoads;
+
+                foreach (var modRef in modReferences) {
+                    var _name = modRef.EncapsulateName(name);
+                    if (_name != name)
+                        return _name;
+                }
+
+                return name;
+            }
+        }
+
+        internal class ModSortingException : Exception
+        {
+            public ICollection<LoadingMod> errored;
+
+            public ModSortingException(ICollection<LoadingMod> errored, string message) : base(message) {
+                this.errored = errored;
+            }
         }
     }
 }

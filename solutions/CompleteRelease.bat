@@ -30,6 +30,7 @@ copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%destinationFolder%\tMod
 copy ..\src\tModLoader\bin\x86\WindowsServerRelease\Terraria.exe "%destinationFolder%\tModLoader Windows %version%\tModLoaderServer.exe" /y
 copy ..\references\FNA.dll "%destinationFolder%\tModLoader Windows %version%\FNA.dll" /y
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Windows %version%\MP3Sharp.dll" /y
+copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Windows %version%\Mono.Cecil.dll" /y
 copy ..\installer2\WindowsInstaller.jar "%destinationFolder%\tModLoader Windows %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Windows.txt "%destinationFolder%\tModLoader Windows %version%\README.txt" /y
 copy ReleaseExtras\start-tModLoaderServer.bat "%destinationFolder%\tModLoader Windows %version%\start-tModLoaderServer.bat" /y
@@ -47,6 +48,7 @@ copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%destinationFolder%\tModLoa
 copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%destinationFolder%\tModLoader Mac %version%\Microsoft.Xna.Framework.Graphics.dll" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoader Mac %version%\Microsoft.Xna.Framework.Xact.dll" /y
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Mac %version%\MP3Sharp.dll" /y
+copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Mac %version%\Mono.Cecil.dll" /y
 copy ..\installer2\MacInstaller.jar "%destinationFolder%\tModLoader Mac %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Mac.txt "%destinationFolder%\tModLoader Mac %version%\README.txt" /y
 
@@ -61,6 +63,7 @@ copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%destinationFolder%\tModLoa
 copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%destinationFolder%\tModLoader Linux %version%\Microsoft.Xna.Framework.Graphics.dll" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoader Linux %version%\Microsoft.Xna.Framework.Xact.dll" /y
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Linux %version%\MP3Sharp.dll" /y
+copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Linux %version%\Mono.Cecil.dll" /y
 copy ..\installer2\LinuxInstaller.jar "%destinationFolder%\tModLoader Linux %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%destinationFolder%\tModLoader Linux %version%\README.txt" /y
 
