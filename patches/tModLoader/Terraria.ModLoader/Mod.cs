@@ -44,6 +44,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModBuff> buffs = new Dictionary<string, ModBuff>();
 		internal readonly IDictionary<string, GlobalBuff> globalBuffs = new Dictionary<string, GlobalBuff>();
 		internal readonly IDictionary<string, ModWorld> worlds = new Dictionary<string, ModWorld>();
+		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 
         public virtual void Load()
 		{
@@ -210,6 +211,10 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(ModWorld)))
 				{
 					AutoloadModWorld(type);
+				}
+				else if (type.IsSubclassOf(typeof(GlobalRecipe)))
+				{
+					AutoloadGlobalRecipe(type);
 				}
 			}
 			if (Properties.AutoloadGores)
@@ -1115,6 +1120,37 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddGlobalRecipe(string name, GlobalRecipe globalRecipe)
+		{
+			globalRecipe.Name = name;
+			globalRecipes[name] = globalRecipe;
+			globalRecipe.mod = this;
+			RecipeHooks.Add(globalRecipe);
+		}
+
+		private void AutoloadGlobalRecipe(Type type)
+		{
+			GlobalRecipe globalRecipe = (GlobalRecipe)Activator.CreateInstance(type);
+			globalRecipe.mod = this;
+			string name = type.Name;
+			if (globalRecipe.Autoload(ref name))
+			{
+				AddGlobalRecipe(name, globalRecipe);
+			}
+		}
+
+		public GlobalRecipe GetGlobalRecipe(string name)
+		{
+			if (globalRecipes.ContainsKey(name))
+			{
+				return globalRecipes[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 		public void AddModWorld(string name, ModWorld modWorld)
 		{
 			modWorld.Name = name;
@@ -1311,6 +1347,7 @@ namespace Terraria.ModLoader
 			buffs.Clear();
 			globalBuffs.Clear();
 			worlds.Clear();
+			globalRecipes.Clear();
 		}
 
 		public byte[] GetFileBytes(string name) {

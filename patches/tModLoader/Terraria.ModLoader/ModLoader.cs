@@ -384,8 +384,9 @@ namespace Terraria.ModLoader
 			MapLoader.UnloadModMap();
 			modHotKeys.Clear();
 			WorldHooks.Unload();
+			RecipeHooks.Unload();
 
-            loadedAssemblies.Clear();
+			loadedAssemblies.Clear();
         }
 
 		internal static void Reload()

@@ -41,6 +41,11 @@ namespace ExampleMod.Items.Weapons
 		{
 		}
 
+		public override bool RecipeAvailable()
+		{
+			return Main.player[Main.myPlayer].Male;
+		}
+
 		public override int ConsumeItem(int type, int numRequired)
 		{
 			if (type == ItemID.Ectoplasm && Main.player[Main.myPlayer].adjTile[mod.TileType("ExampleWorkbench")])

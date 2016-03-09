@@ -141,6 +141,12 @@ namespace Terraria.ModLoader
 		{
 			this.AddTile(tile.Type);
 		}
+
+		public virtual bool RecipeAvailable()
+		{
+			return true;
+		}
+
 		//in Terraria.Recipe.Create before alchemy table check add
 		//  ModRecipe modRecipe = this as ModRecipe;
 		//  if(modRecipe != null) { num = modRecipe.ConsumeItem(item.type, item.stack); }
@@ -148,6 +154,7 @@ namespace Terraria.ModLoader
 		{
 			return numRequired;
 		}
+
 		//for Terraria.Recipe add public bool ItemMatches(Item invItem, Item reqItem)
 		//replace || chains with Terraria.Recipe.ItemMatches
 		//add this to the || chain in Terraria.Recipe.ItemMatches

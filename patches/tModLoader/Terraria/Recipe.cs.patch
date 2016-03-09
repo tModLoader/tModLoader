@@ -229,6 +229,15 @@
  								{
  									num6 -= dictionary[current];
  									flag3 = true;
+@@ -427,7 +323,7 @@
+ 							flag2 = false;
+ 						}
+ 					}
+-					if (flag2)
++					if (flag2 && RecipeHooks.RecipeAvailable(Main.recipe[num4]))
+ 					{
+ 						Main.availableRecipe[Main.numAvailableRecipes] = num4;
+ 						Main.numAvailableRecipes++;
 @@ -10128,6 +10024,7 @@
  			Recipe.AddRecipe();
  			Recipe.WallReturn();

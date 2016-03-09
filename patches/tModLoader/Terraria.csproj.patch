@@ -65,7 +65,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -280,6 +296,96 @@
+@@ -280,6 +296,98 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -119,6 +119,7 @@
 +    <Compile Include="Terraria.ModLoader\GlobalItem.cs" />
 +    <Compile Include="Terraria.ModLoader\GlobalNPC.cs" />
 +    <Compile Include="Terraria.ModLoader\GlobalProjectile.cs" />
++    <Compile Include="Terraria.ModLoader\GlobalRecipe.cs" />
 +    <Compile Include="Terraria.ModLoader\GlobalTile.cs" />
 +    <Compile Include="Terraria.ModLoader\GlobalWall.cs" />
 +    <Compile Include="Terraria.ModLoader\Interface.cs" />
@@ -144,6 +145,7 @@
 +    <Compile Include="Terraria.ModLoader\ModTile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWorld.cs" />
++    <Compile Include="Terraria.ModLoader\RecipeHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\WorldHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\MountTextureType.cs" />
@@ -162,7 +164,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -427,6 +533,42 @@
+@@ -427,6 +535,42 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />

@@ -8,7 +8,6 @@ using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Net;
 using System.Collections.Specialized;
-using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI
 {
