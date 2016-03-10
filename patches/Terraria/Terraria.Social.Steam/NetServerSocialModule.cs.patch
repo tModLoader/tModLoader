@@ -1,0 +1,12 @@
+--- src/merged\Terraria.Social.Steam\NetServerSocialModule.cs
++++ src/Terraria\Terraria.Social.Steam\NetServerSocialModule.cs
+@@ -37,7 +37,7 @@
+ 			{
+ 				using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
+ 				{
+-					binaryWriter.Write(1);
++					binaryWriter.Write((byte)1);
+ 					foreach (ulong current2 in list)
+ 					{
+ 						binaryWriter.Write(current2);
+
