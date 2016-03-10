@@ -230,10 +230,6 @@ namespace Terraria.ModLoader
 		public void AddItem(string name, ModItem item, string texture)
 		{
 			Type type = item.GetType();
-			if (type.GetMethod("UpdateAccessory", new Type[] { typeof(Player) }) != null)
-			{
-				throw new Exception("Item " + name + " uses an old UpdateAccessory hook");
-			}
 			int id = ItemLoader.ReserveItemID();
 			item.item.name = name;
 			item.item.ResetStats(id);
@@ -272,10 +268,6 @@ namespace Terraria.ModLoader
 		public void AddGlobalItem(string name, GlobalItem globalItem)
 		{
 			Type type = globalItem.GetType();
-			if (type.GetMethod("UpdateAccessory", new Type[] { typeof(Item), typeof(Player) }) != null)
-			{
-				throw new Exception("Item " + name + " uses an old UpdateAccessory hook");
-			}
 			globalItem.mod = this;
 			globalItem.Name = name;
 			this.globalItems[name] = globalItem;

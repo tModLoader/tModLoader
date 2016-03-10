@@ -706,16 +706,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void SetMatch(int type, ref int equipSlot, ref bool robes)
+		public static void SetMatch(int type, bool male, ref int equipSlot, ref bool robes)
 		{
 			ModItem modItem = GetItem(type);
 			if (modItem != null)
 			{
-				modItem.SetMatch(ref equipSlot, ref robes);
+				modItem.SetMatch(male, ref equipSlot, ref robes);
 			}
 			foreach (GlobalItem globalItem in globalItems)
 			{
-				globalItem.SetMatch(type, ref equipSlot, ref robes);
+				globalItem.SetMatch(type, male, ref equipSlot, ref robes);
 			}
 		}
 		//in Terraria.UI.ItemSlot.RightClick in end of item-opening if/else chain before final else

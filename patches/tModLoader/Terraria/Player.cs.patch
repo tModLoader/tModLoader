@@ -1047,7 +1047,7 @@
  						break;
  				}
  			}
-+			ItemLoader.SetMatch(type, ref num, ref somethingSpecial);
++			ItemLoader.SetMatch(type, male, ref num, ref somethingSpecial);
  			return num;
  		}
  
