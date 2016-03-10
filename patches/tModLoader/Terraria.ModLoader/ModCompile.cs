@@ -271,16 +271,18 @@ namespace Terraria.ModLoader
         private static void CompileMod(BuildingMod mod, List<LoadingMod> refMods, bool forWindows,
                 ref byte[] dll, ref byte[] pdb) {
             LoadReferences();
+            var terrariaModule = Assembly.GetExecutingAssembly();
+
             var refs = new List<string>(terrariaReferences);
             if (forWindows == windows) {
-                refs.Add(Assembly.GetExecutingAssembly().Location);
+                refs.Add(terrariaModule.Location);
             }
             else {
                 refs = refs.Where(path => {
                     var name = Path.GetFileName(path);
                     return name != "FNA.dll" && !name.StartsWith("Microsoft.Xna.Framework");
                 }).ToList();
-                var terrariaDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var terrariaDir = Path.GetDirectoryName(terrariaModule.Location);
                 if (forWindows) {
                     refs.Add(Path.Combine(terrariaDir, "TerrariaWindows.exe"));
                     var xna = new[] {
@@ -301,6 +303,14 @@ namespace Terraria.ModLoader
 
             var tempDir = Path.Combine(ModPath, "compile_temp");
             Directory.CreateDirectory(tempDir);
+
+            foreach (var resName in terrariaModule.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
+                var path = Path.Combine(tempDir, Path.GetFileName(resName));
+                using (Stream res = terrariaModule.GetManifestResourceStream(resName), file = File.Create(path))
+                    res.CopyTo(file);
+
+                refs.Add(path);
+            }
 
             foreach (var refMod in refMods) {
                 var path = Path.Combine(tempDir, refMod.Name + ".dll");

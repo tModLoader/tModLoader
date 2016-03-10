@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.Setup
         public override void Run() {
             taskInterface.SetStatus("Copying References");
 
-            var references = new[] {"FNA.dll", "MP3Sharp.dll", "Mono.Cecil.dll"};
+            var references = new[] {"FNA.dll"};
             foreach (var dll in references)
                 Copy(Path.Combine(Program.baseDir, "references/"+dll), Path.Combine(SteamDir.Get(), dll));
 

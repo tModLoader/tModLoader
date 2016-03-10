@@ -165,11 +165,12 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -427,6 +536,42 @@
+@@ -427,6 +536,43 @@
      <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
++    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
 +  </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
