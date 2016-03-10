@@ -16,9 +16,9 @@
 +			{
 +				Program.LaunchParameters["-savedirectory"] = Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader");
 +			}
-+			if (LaunchParameters.ContainsKey("--build"))
++			if (LaunchParameters.ContainsKey("-build"))
 +			{
-+				ModCompile.BuildModCommandLine(LaunchParameters["--build"]);
++				ModCompile.BuildModCommandLine(LaunchParameters["-build"]);
 +				return;
 +			}
  			ThreadPool.SetMinThreads(8, 8);

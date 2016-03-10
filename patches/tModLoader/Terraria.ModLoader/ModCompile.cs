@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.CSharp;
+using Mono.Cecil;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using static Terraria.ModLoader.ModLoader;
@@ -85,7 +86,8 @@ namespace Terraria.ModLoader
 
         internal static void BuildModCommandLine(string modFolder) {
             try {
-                Build(modFolder, new ConsoleBuildStatus());
+                if (!Build(modFolder, new ConsoleBuildStatus()))
+                    Environment.ExitCode = 1;
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -108,7 +110,7 @@ namespace Terraria.ModLoader
                 properties = BuildProperties.ReadBuildFile(modFolder);
             }
             catch (Exception e) {
-                ErrorLogger.LogBuildFileError(e, Path.Combine(modFolder, "build.txt"));
+                ErrorLogger.LogBuildError("Failed to load " + Path.Combine(modFolder, "build.txt") + Environment.NewLine + e);
                 return null;
             }
             
@@ -150,15 +152,36 @@ namespace Terraria.ModLoader
                 if (refMods == null)
                     return false;
 
-                status.SetStatus("Compiling "+mod.Name+" for Windows...");
-                status.SetProgress(0, 2);
-                CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
+                if (Program.LaunchParameters.ContainsKey("-eac")) {
+                    try {
+                        status.SetStatus("Loading pre-compiled Windows.dll with edit and continue support");
+                        var winPath = Program.LaunchParameters["-eac"];
+                        var pdbPath = Path.ChangeExtension(winPath, "pdb");
+                        winDLL = File.ReadAllBytes(winPath);
+                        winPDB = File.ReadAllBytes(pdbPath);
+                        mod.properties.editAndContinue = true;
+                    }
+                    catch (Exception e) {
+                        Console.WriteLine("Failed to load pre-compiled edit and continue dll");
+                        Console.WriteLine(e);
+                        return false;
+                    }
+                }
+                else {
+                    status.SetStatus("Compiling " + mod.Name + " for Windows...");
+                    status.SetProgress(0, 2);
+                    CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
+                }
+
                 status.SetStatus("Compiling " + mod.Name + " for Mono...");
                 status.SetProgress(1, 2);
                 CompileMod(mod, refMods, false, ref monoDLL, ref monoPDB);
                 if (winDLL == null || monoDLL == null)
                     return false;
             }
+
+            if (!VerifyName(mod.Name, winDLL) || !VerifyName(mod.Name, monoDLL))
+                return false;
 
             status.SetStatus("Building "+mod.Name+"...");
             status.SetProgress(0, 1);
@@ -194,6 +217,22 @@ namespace Terraria.ModLoader
             return true;
         }
 
+        private static bool VerifyName(string modName, byte[] dll) {
+            var asmName = AssemblyDefinition.ReadAssembly(new MemoryStream(dll)).Name.Name;
+            if (asmName != modName) {
+                ErrorLogger.LogBuildError("Mod name \""+ modName+ "\" does not match assembly name \""+asmName+"\"");
+                return false;
+            }
+
+            if (modName.StartsWith("Terraria",  StringComparison.InvariantCultureIgnoreCase) || 
+                    modName.StartsWith("tModLoader", StringComparison.InvariantCultureIgnoreCase)) {
+                ErrorLogger.LogBuildError("Mod name \"" + modName + "\" cannot start with \"Terraria\" or \"tModLoader\"");
+                return false;
+            }
+
+            return true;
+        }
+
         private static bool Equal(byte[] a, byte[] b) {
             if (a.Length != b.Length)
                 return false;
@@ -219,7 +258,7 @@ namespace Terraria.ModLoader
                 modFile.Read();
                 var ex = modFile.ValidMod();
                 if (ex != null) {
-                    ErrorLogger.LogModReferenceError(ex, refName);
+                    ErrorLogger.LogBuildError("Mod reference " + refName + " " + ex);
                     return false;
                 }
                 var mod = new LoadingMod(modFile, BuildProperties.ReadModFile(modFile));

@@ -18,21 +18,8 @@ namespace Terraria.ModLoader
 			"Mono.dll must reference a non-windows Terraria.exe and FNA.dll"
 		};
 
-		internal static void LogModReferenceError(Exception e, string modName)
-		{
-			Directory.CreateDirectory(LogPath);
-			var errorText = "Mod reference " + modName + " " + e;
-			File.WriteAllText(CompileErrorPath, errorText);
-			Console.WriteLine(errorText);
-
-			Interface.errorMessage.SetMessage(errorText);
-			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Interface.errorMessage.SetFile(CompileErrorPath);
-		}
-
-	    internal static void LogBuildFileError(Exception e, string filePath) {
+	    internal static void LogBuildError(string errorText) {
             Directory.CreateDirectory(LogPath);
-            var errorText = "Failed to load " + filePath + Environment.NewLine + e;
             File.WriteAllText(CompileErrorPath, errorText);
             Console.WriteLine(errorText);
 

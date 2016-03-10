@@ -20,7 +20,8 @@ namespace Terraria.ModLoader
 		internal bool hideResources = true;
 		internal bool includeSource = false;
 		internal bool includePDB = false;
-		internal string homepage = "";
+	    internal bool editAndContinue = false;
+        internal string homepage = "";
 		internal string description = "";
 
 		internal static BuildProperties ReadBuildFile(string modDir)
@@ -187,6 +188,10 @@ namespace Terraria.ModLoader
 					{
 						writer.Write("includePDB");
 					}
+					if (editAndContinue)
+					{
+						writer.Write("editAndContinue");
+					}
 					writer.Write("");
                 }
                 data = memoryStream.ToArray();
@@ -263,6 +268,10 @@ namespace Terraria.ModLoader
 					if (tag == "includePDB")
 					{
 						properties.includePDB = true;
+					}
+					if (tag == "editAndContinue")
+					{
+						properties.editAndContinue = true;
 					}
 				}
 			}
