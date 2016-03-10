@@ -86,7 +86,7 @@ namespace Terraria.ModLoader
 
 		internal void Autoload()
 		{
-		    if (File != null) {
+		    if (!Main.dedServ && File != null) {
                 foreach (var file in File) {
                     var path = file.Key;
                     var data = file.Value;

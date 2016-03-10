@@ -43,7 +43,7 @@ namespace ExampleMod.Items.Weapons
 
 		public override bool RecipeAvailable()
 		{
-			return Main.player[Main.myPlayer].Male;
+			return Main.player[Main.myPlayer].HasItem(mod.ItemType("SpectreGun"));
 		}
 
 		public override int ConsumeItem(int type, int numRequired)
