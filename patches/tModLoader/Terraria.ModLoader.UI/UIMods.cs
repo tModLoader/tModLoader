@@ -146,6 +146,10 @@ namespace Terraria.ModLoader.UI
 			TmodFile[] mods = ModLoader.FindMods();
 			foreach (TmodFile mod in mods)
 			{
+				if (ModLoader.IsSignedBy(mod, ModLoader.modBrowserPublicKey))
+				{
+					mod.validModBrowserSignature = true;
+				}
 				UIModItem modItem = new UIModItem(mod);
 				modList.Add(modItem);
 				items.Add(modItem);

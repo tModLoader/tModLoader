@@ -18,6 +18,7 @@ namespace Terraria.ModLoader.UI
 		internal bool enabled;
 		BuildProperties properties;
 		UITextPanel button2;
+		UIHoverImage keyImage;
 
 		public UIModItem(TmodFile mod)
 		{
@@ -63,6 +64,12 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button2.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
 			base.Append(button2);
+			if (mod.validModBrowserSignature)
+			{
+				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], "This mod originated from the Mod Browser");
+				keyImage.Left.Set(-20, 1f);
+				base.Append(keyImage);
+			}
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
