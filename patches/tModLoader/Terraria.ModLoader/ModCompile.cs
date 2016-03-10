@@ -224,9 +224,8 @@ namespace Terraria.ModLoader
                 return false;
             }
 
-            if (modName.StartsWith("Terraria",  StringComparison.InvariantCultureIgnoreCase) || 
-                    modName.StartsWith("tModLoader", StringComparison.InvariantCultureIgnoreCase)) {
-                ErrorLogger.LogBuildError("Mod name \"" + modName + "\" cannot start with \"Terraria\" or \"tModLoader\"");
+            if (modName.Equals("Terraria",  StringComparison.InvariantCultureIgnoreCase)) {
+                ErrorLogger.LogBuildError("Mods cannot be named Terraria");
                 return false;
             }
 

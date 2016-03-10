@@ -128,7 +128,7 @@ namespace Terraria.ModLoader
                 if (name.IndexOf(',') >= 0)
                     name = name.Substring(0, name.IndexOf(','));
 
-                if (name.StartsWith("Terraria") || name.StartsWith("tModLoader"))
+                if (name == "Terraria")
                     return Assembly.GetExecutingAssembly();
 
                 Assembly a;

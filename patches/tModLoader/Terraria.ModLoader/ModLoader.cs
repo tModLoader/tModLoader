@@ -208,9 +208,8 @@ namespace Terraria.ModLoader
             var names = new HashSet<string>();
 	        foreach (var mod in mods) {
                 try {
-                    if (mod.Name.StartsWith("Terraria", StringComparison.InvariantCultureIgnoreCase) ||
-                            mod.Name.StartsWith("tModLoader", StringComparison.InvariantCultureIgnoreCase))
-                        throw new DuplicateNameException("Mods names cannot start with \"Terraria\" or \"tModLoader\"");
+                    if (mod.Name.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
+                        throw new DuplicateNameException("Mods names cannot be named Terraria");
 
                     if (names.Contains(mod.Name))
                         throw new DuplicateNameException("Two mods share the internal name " + mod.Name);
