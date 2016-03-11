@@ -289,7 +289,7 @@ namespace Terraria.ModLoader.UI
 									if (bp.displayName.Equals(displayname))
 									{
 										exists = true;
-										if (!bp.version.Equals(version))
+										if (!bp.version.Equals(new Version(version.Substring(1))))
 										{
 											update = true;
 										}
