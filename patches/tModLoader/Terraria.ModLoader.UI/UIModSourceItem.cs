@@ -138,6 +138,7 @@ namespace Terraria.ModLoader.UI
 				System.Net.ServicePointManager.Expect100Continue = false;
 				string filename = @ModLoader.ModPath + @Path.DirectorySeparatorChar + @Path.GetFileName(mod) + @".tmod";
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
+				byte[] result;
 				using (var stream = File.Open(filename, FileMode.Open))
 				{
 					var files = new[]
@@ -162,10 +163,17 @@ namespace Terraria.ModLoader.UI
 						{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
 						{ "modloaderversion", "tModLoader v"+theTModFile.tModLoaderVersion },
 					};
-					byte[] result = IO.UploadFile.UploadFiles(url, files, values);
-					string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
-					ErrorLogger.LogModPublish(s);
+					result = IO.UploadFile.UploadFiles(url, files, values);
 				}
+				int responseLength = result.Length;
+				if (result.Length > 256 && result[result.Length - 256 - 1] == '~')
+				{
+					Array.Copy(result, result.Length - 256, theTModFile.signature, 0, 256);
+					theTModFile.Save();
+					responseLength -= 257;
+				}
+				string s = System.Text.Encoding.UTF8.GetString(result, 0, responseLength);
+				ErrorLogger.LogModPublish(s);
 			}
 			catch (WebException e)
 			{
