@@ -79,7 +79,7 @@ namespace Terraria.ModLoader.IO
 		internal void Save()
 		{
 			var dataStream = new MemoryStream();
-			using (var writer = new BinaryWriter(dataStream))
+			using (var writer = new BinaryWriter(new DeflateStream(dataStream, CompressionMode.Compress)))
 			{
 				writer.Write(name);
 				writer.Write(version.ToString());
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.IO
 			var data = dataStream.ToArray();
 			hash = SHA1.Create().ComputeHash(data);
 
-			using (var writer = new BinaryWriter(new DeflateStream(File.Create(path), CompressionMode.Compress)))
+			using (var writer = new BinaryWriter(File.Create(path)))
 			{
 				writer.Write(Encoding.ASCII.GetBytes("TMOD"));
 				writer.Write(ModLoader.version.ToString());
@@ -111,7 +111,7 @@ namespace Terraria.ModLoader.IO
 			try
 			{
 				byte[] data;
-				using (var reader = new BinaryReader(new DeflateStream(File.OpenRead(path), CompressionMode.Decompress)))
+				using (var reader = new BinaryReader(File.OpenRead(path)))
 				{
 					if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
 						throw new Exception("Magic Header != \"TMOD\"");
@@ -125,7 +125,7 @@ namespace Terraria.ModLoader.IO
 						throw new Exception("Hash mismatch, data blob has been modified or corrupted");
 				}
 
-				using (var reader = new BinaryReader(new MemoryStream(data)))
+				using (var reader = new BinaryReader(new DeflateStream(new MemoryStream(data), CompressionMode.Decompress)))
 				{
 					name = reader.ReadString();
 					version = new Version(reader.ReadString());
