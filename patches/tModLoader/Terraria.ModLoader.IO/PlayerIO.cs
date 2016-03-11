@@ -188,14 +188,15 @@ namespace Terraria.ModLoader.IO
 				{
 					for (int k = 0; k < inv.Length; k++)
 					{
-						if (ItemIO.WriteModItemSlot(inv, k, invWriter, writeStack, writeFavorite))
+						if (ItemLoader.IsModItem(inv[k]))
 						{
+							writer.Write((ushort) k);
+							ItemIO.WriteItem(inv[k], invWriter, writeStack, writeFavorite);
 							count++;
 						}
 					}
-					invWriter.Flush();
-					data = stream.ToArray();
 				}
+				data = stream.ToArray();
 			}
 			if (count > 0)
 			{
@@ -210,9 +211,7 @@ namespace Terraria.ModLoader.IO
 		{
 			int count = reader.ReadUInt16();
 			for (int k = 0; k < count; k++)
-			{
-				ItemIO.ReadModItemSlot(inv, reader, readStack, readFavorite);
-			}
+				ItemIO.ReadItem(inv[reader.ReadUInt16()], reader, readStack, readFavorite);
 		}
 
 		internal static bool WriteCustomData(Player player, BinaryWriter writer)

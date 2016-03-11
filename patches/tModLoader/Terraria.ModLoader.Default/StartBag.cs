@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -35,7 +34,7 @@ namespace Terraria.ModLoader.Default
 			foreach (Item item in items)
 			{
 				int k = Item.NewItem((int)player.position.X, (int)player.position.Y, player.width, player.height,
-					        item.type, item.stack, false, item.prefix, false, false);
+							item.type, item.stack, false, item.prefix, false, false);
 				if (Main.netMode == 1)
 				{
 					NetMessage.SendData(21, -1, -1, "", k, 1f);
@@ -47,22 +46,14 @@ namespace Terraria.ModLoader.Default
 		{
 			writer.Write((ushort)items.Count);
 			foreach (Item item in items)
-			{
-				ItemIO.WriteModItem(item, writer);
-				writer.Write(item.stack);
-			}
+				ItemIO.WriteItem(item, writer, true);
 		}
 
 		public override void LoadCustomData(BinaryReader reader)
 		{
 			int count = reader.ReadUInt16();
 			for (int k = 0; k < count; k++)
-			{
-				Item item = new Item();
-				ItemIO.ReadModItem(item, reader);
-				item.stack = reader.ReadInt32();
-				AddItem(item);
-			}
+				AddItem(ItemIO.ReadItem(reader, true));
 		}
 	}
 }

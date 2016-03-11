@@ -465,8 +465,7 @@ namespace Terraria.ModLoader.IO
 				{
 					TEItemFrame itemFrame = TileEntity.ByID[oldID] as TEItemFrame;
 					writer.Write(itemFrames[oldID]);
-					ItemIO.WriteModItem(itemFrame.item, writer);
-					writer.Write(itemFrame.item.stack);
+					ItemIO.WriteItem(itemFrame.item, writer, true);
 				}
 			}
 			return true;
@@ -515,8 +514,7 @@ namespace Terraria.ModLoader.IO
 				{
 					int id = reader.ReadInt32();
 					TEItemFrame itemFrame = TileEntity.ByID[id] as TEItemFrame;
-					ItemIO.ReadModItem(itemFrame.item, reader);
-					itemFrame.item.stack = reader.ReadInt32();
+					ItemIO.ReadItem(itemFrame.item, reader, true);
 				}
 			}
 		}

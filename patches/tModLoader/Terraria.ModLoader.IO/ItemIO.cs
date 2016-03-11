@@ -1,7 +1,4 @@
-using System;
 using System.IO;
-using Terraria;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO
@@ -15,117 +12,78 @@ namespace Terraria.ModLoader.IO
 			writer.Write(ItemLoader.IsModItem(item) ? 0 : item.netID);
 		}
 
-		public static bool WriteModItemSlot(Item[] inv, int slot, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false)
+		public static void WriteItem(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false)
 		{
-			Item item = inv[slot];
-			if (ItemLoader.IsModItem(item))
+			if (item.modItem == null)
 			{
-				writer.Write((ushort)slot);
-				WriteModItem(item, writer);
-				if (writeStack)
-				{
-					writer.Write(item.stack);
-				}
-				if (writeFavorite)
-				{
-					writer.Write(item.favorited);
-				}
-				return true;
-			}
-			return false;
-		}
-
-		public static void ReadModItemSlot(Item[] inv, BinaryReader reader, bool readStack = false, bool readFavorite = false)
-		{
-			int slot = reader.ReadUInt16();
-			Item item = inv[slot];
-			ReadModItem(item, reader);
-			if (readStack)
-			{
-				item.stack = reader.ReadInt32();
-			}
-			if (readFavorite)
-			{
-				item.favorited = reader.ReadBoolean();
-			}
-		}
-
-		public static void WriteModItem(Item item, BinaryWriter writer)
-		{
-			writer.Write(item.modItem.mod.Name);
-			writer.Write(Main.itemName[item.type]);
-			byte[] data;
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				using (BinaryWriter customWriter = new BinaryWriter(memoryStream))
-				{
-					item.modItem.SaveCustomData(customWriter);
-					customWriter.Flush();
-					data = memoryStream.ToArray();
-				}
-			}
-			writer.Write((ushort)data.Length);
-			if (data.Length > 0)
-			{
-				writer.Write(data);
-			}
-			writer.Write(item.prefix);
-		}
-
-		public static void ReadModItem(Item item, BinaryReader reader)
-		{
-			string modName = reader.ReadString();
-			string itemName = reader.ReadString();
-			Mod mod = ModLoader.GetMod(modName);
-			int type = mod == null ? 0 : mod.ItemType(itemName);
-			if (type != 0)
-			{
-				item.netDefaults(type);
-				int dataLength = reader.ReadUInt16();
-				if (dataLength > 0)
-				{
-					byte[] data = reader.ReadBytes(dataLength);
-					using (MemoryStream memoryStream = new MemoryStream(data))
-					{
-						using (BinaryReader customReader = new BinaryReader(memoryStream))
-						{
-							item.modItem.LoadCustomData(customReader);
-						}
-					}
-				}
-				if (type == ModLoader.GetMod("ModLoader").ItemType("MysteryItem"))
-				{
-					MysteryItem mystery = item.modItem as MysteryItem;
-					modName = mystery.GetModName();
-					itemName = mystery.GetItemName();
-					mod = ModLoader.GetMod(modName);
-					type = mod == null ? 0 : mod.ItemType(itemName);
-					if (type != 0)
-					{
-						item.netDefaults(type);
-						byte[] data = mystery.GetData();
-						if (data.Length > 0)
-						{
-							using (MemoryStream memoryStream = new MemoryStream(data))
-							{
-								using (BinaryReader customReader = new BinaryReader(memoryStream))
-								{
-									item.modItem.LoadCustomData(customReader);
-								}
-							}
-						}
-					}
-				}
+				writer.Write("Terraria");
+				writer.Write(item.netID);
 			}
 			else
 			{
-				item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
-				MysteryItem mystery = item.modItem as MysteryItem;
-				mystery.SetModName(modName);
-				mystery.SetItemName(itemName);
-				mystery.SetData(reader.ReadBytes(reader.ReadUInt16()));
+				writer.Write(item.modItem.mod.Name);
+				writer.Write(Main.itemName[item.type]);
+				byte[] data;
+				using (MemoryStream memoryStream = new MemoryStream()) {
+					using (BinaryWriter customWriter = new BinaryWriter(memoryStream))
+						item.modItem.SaveCustomData(customWriter);
+
+					data = memoryStream.ToArray();
+				}
+				writer.Write((ushort)data.Length);
+				writer.Write(data);
 			}
+			
+			writer.Write(item.prefix);
+
+			if (writeStack)
+				writer.Write(item.stack);
+
+			if (writeFavorite)
+				writer.Write(item.favorited);
+		}
+
+		public static void ReadItem(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
+		{
+			string modName = reader.ReadString();
+			if (modName == "Vanilla")
+			{
+				item.netDefaults(reader.ReadInt16());
+			}
+			else
+			{
+				string itemName = reader.ReadString();
+				byte[] data = reader.ReadBytes(reader.ReadUInt16());
+
+				var type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
+				if (type != 0)
+				{
+					item.netDefaults(type);
+					if (data.Length > 0)
+						using (BinaryReader customReader = new BinaryReader(new MemoryStream(data)))
+							item.modItem.LoadCustomData(customReader);
+				}
+				else
+				{
+					item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
+					((MysteryItem)item.modItem).Setup(modName, itemName, data);
+				}
+			}
+			
 			item.Prefix(reader.ReadByte());
+
+			if (readStack)
+				item.stack = reader.ReadInt32();
+
+			if (readFavorite)
+				item.favorited = reader.ReadBoolean();
+		}
+
+		public static Item ReadItem(BinaryReader reader, bool readStack = false, bool readFavorite = false)
+		{
+			var item = new Item();
+			ReadItem(item, reader, readStack, readFavorite);
+			return item;
 		}
 	}
 }

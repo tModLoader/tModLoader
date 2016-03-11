@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using Terraria.ModLoader;
 
 namespace Terraria.ModLoader.Default
 {
@@ -18,36 +16,13 @@ namespace Terraria.ModLoader.Default
 			item.rare = 1;
 		}
 
-		internal string GetModName()
+		internal void Setup(string modName, string itemName, byte[] data)
 		{
-			return modName;
-		}
-
-		internal void SetModName(string name)
-		{
-			modName = name;
-			item.toolTip = "Mod: " + name;
-		}
-
-		internal string GetItemName()
-		{
-			return itemName;
-		}
-
-		internal void SetItemName(string name)
-		{
-			itemName = name;
-			item.toolTip2 = "Item: " + name;
-		}
-
-		internal byte[] GetData()
-		{
-			return data;
-		}
-
-		internal void SetData(byte[] data)
-		{
+			this.modName = modName;
+			this.itemName = itemName;
 			this.data = data;
+			item.toolTip = "Mod: " + modName;
+			item.toolTip2 = "Item: " + itemName;
 		}
 
 		public override void SaveCustomData(BinaryWriter writer)
@@ -55,17 +30,22 @@ namespace Terraria.ModLoader.Default
 			writer.Write(modName);
 			writer.Write(itemName);
 			writer.Write((ushort)data.Length);
-			if (data.Length > 0)
-			{
-				writer.Write(data);
-			}
+			writer.Write(data);
 		}
 
 		public override void LoadCustomData(BinaryReader reader)
 		{
-			SetModName(reader.ReadString());
-			SetItemName(reader.ReadString());
-			SetData(reader.ReadBytes(reader.ReadUInt16()));
+			Setup(reader.ReadString(), reader.ReadString(), reader.ReadBytes(reader.ReadUInt16()));
+
+			var type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
+			if (type != 0)
+			{
+				item.netDefaults(type);
+				if (data.Length > 0)
+					using (BinaryReader customReader = new BinaryReader(new MemoryStream(data)))
+						item.modItem.LoadCustomData(customReader);
+				
+			}
 		}
 	}
 }
