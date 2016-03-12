@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using Terraria;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
 using Terraria.Utilities;
 
@@ -281,7 +282,15 @@ namespace Terraria.ModLoader.IO
 					{
 						using (BinaryReader customReader = new BinaryReader(stream))
 						{
-							modPlayer.LoadCustomData(customReader);
+                            try
+                            {
+                                modPlayer.LoadCustomData(customReader);
+                            }
+                            catch (Exception e)
+                            {
+                                throw new CustomModDataException(
+                                    "Error in reading custom player data for " + mod.Name, e);
+                            }
 						}
 					}
 					if (modName == "ModLoader" && name == "MysteryPlayer")

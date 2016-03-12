@@ -1,5 +1,7 @@
+using System;
 using System.IO;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.IO
 {
@@ -23,15 +25,7 @@ namespace Terraria.ModLoader.IO
 			{
 				writer.Write(item.modItem.mod.Name);
 				writer.Write(Main.itemName[item.type]);
-				byte[] data;
-				using (MemoryStream memoryStream = new MemoryStream()) {
-					using (BinaryWriter customWriter = new BinaryWriter(memoryStream))
-						item.modItem.SaveCustomData(customWriter);
-
-					data = memoryStream.ToArray();
-				}
-				writer.Write((ushort)data.Length);
-				writer.Write(data);
+                SaveCustomData(item, writer);
 			}
 			
 			writer.Write(item.prefix);
@@ -46,9 +40,9 @@ namespace Terraria.ModLoader.IO
 		public static void ReadItem(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
 		{
 			string modName = reader.ReadString();
-			if (modName == "Vanilla")
+			if (modName == "Terraria")
 			{
-				item.netDefaults(reader.ReadInt16());
+				item.netDefaults(reader.ReadInt32());
 			}
 			else
 			{
@@ -59,9 +53,7 @@ namespace Terraria.ModLoader.IO
 				if (type != 0)
 				{
 					item.netDefaults(type);
-					if (data.Length > 0)
-						using (BinaryReader customReader = new BinaryReader(new MemoryStream(data)))
-							item.modItem.LoadCustomData(customReader);
+                    ReadCustomData(item, data);
 				}
 				else
 				{
@@ -84,6 +76,38 @@ namespace Terraria.ModLoader.IO
 			var item = new Item();
 			ReadItem(item, reader, readStack, readFavorite);
 			return item;
-		}
-	}
+        }
+
+        public static void SaveCustomData(Item item, BinaryWriter writer)
+        {
+            if (ItemLoader.IsModItem(item))
+            {
+                byte[] data;
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    using (BinaryWriter customWriter = new BinaryWriter(memoryStream))
+                        item.modItem.SaveCustomData(customWriter);
+
+                    data = memoryStream.ToArray();
+                }
+                writer.Write((ushort)data.Length);
+                writer.Write(data);
+            }
+        }
+
+        public static void ReadCustomData(Item item, byte[] data)
+        {
+            if (data.Length > 0)
+                using (BinaryReader customReader = new BinaryReader(new MemoryStream(data)))
+                    try
+                    {
+                        item.modItem.LoadCustomData(customReader);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new CustomModDataException(
+                            "Error in reading custom item data for " + item.modItem.mod.Name, e);
+                    }
+        }
+    }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
 using Terraria.Utilities;
 
@@ -383,7 +384,15 @@ namespace Terraria.ModLoader.IO
 					{
 						using (BinaryReader customReader = new BinaryReader(stream))
 						{
-							modWorld.LoadCustomData(customReader);
+                            try
+                            {
+                                modWorld.LoadCustomData(customReader);
+                            }
+                            catch (Exception e)
+                            {
+                                throw new CustomModDataException(
+                                    "Error in reading custom world data for " + mod.Name, e);
+                            }
 						}
 					}
 					if (modName == "ModLoader" && name == "MysteryWorld")
