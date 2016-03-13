@@ -70,6 +70,24 @@ namespace Terraria.ModLoader.UI
 				keyImage.Left.Set(-20, 1f);
 				base.Append(keyImage);
 			}
+			if (ModLoader.ModLoaded(mod.name))
+			{
+				Mod loadedMod = ModLoader.GetMod(mod.name);
+				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count	};
+				string[] strings = { " items", " NPCs", " tiles", " walls", " buffs", " mounts"};
+				int xOffset = -40;
+				for (int i = 0; i < values.Length; i++)
+				{
+					if(values[i] > 0)
+					{
+						Texture2D iconTexture = ModLoader.GetTexture("Terraria/UI" + Path.DirectorySeparatorChar + "InfoIcon_" + i);
+						keyImage = new UIHoverImage(iconTexture, values[i] + strings[i]);
+						keyImage.Left.Set(xOffset, 1f);
+						base.Append(keyImage);
+						xOffset -= 18;
+					}
+				}
+			}
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
