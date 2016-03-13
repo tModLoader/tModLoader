@@ -55,12 +55,13 @@
 +  </Choose>
    <ItemGroup>
 -    <Reference Include="Ionic.Zip.CF">
+-      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
 +    <Reference Include="FNA" Condition="!$(DefineConstants.Contains('WINDOWS'))">
 +      <HintPath>..\..\references\FNA.dll</HintPath>
 +    </Reference>
-+    <Reference Include="Ionic.Zip.CF, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
++    <Reference Include="Ionic.Zip.Reduced">
 +      <SpecificVersion>False</SpecificVersion>
-       <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
++      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
      </Reference>
      <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
 +    <Reference Include="Mono.Cecil">
@@ -197,8 +198,12 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -427,6 +539,43 @@
-     <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
+@@ -424,9 +535,46 @@
+   </ItemGroup>
+   <ItemGroup>
+     <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
+-    <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
++    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
