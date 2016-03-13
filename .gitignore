@@ -1,14 +1,9 @@
-/decompiled
 /src
-/terraria
+/logs
+**/bin/
+**/obj/
 *.user
 *.suo
-/setup/obj
-/logs
-/installer/bin
-/installer/obj
 *.cache
-ExampleMod/obj/
 *.force
-ExampleMod/bin/
 solutions/**/*.zip
