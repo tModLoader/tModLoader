@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.NPCs.PuritySpirit;
 
 namespace ExampleMod.Projectiles.PuritySpirit
 {
@@ -50,7 +46,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			}
 			if (projectile.localAI[0] % 10 == 0)
 			{
-				ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
+				ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
 				if (modPlayer.heroLives > 0)
 				{
 					Main.PlaySound(2, -1, -1, 20);
@@ -91,7 +87,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		{
 			if (target.hurtCooldowns[1] <= 0)
 			{
-				ExamplePlayer modPlayer = (ExamplePlayer)target.GetModPlayer(mod, "ExamplePlayer");
+				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>(mod);
 				modPlayer.defenseEffect = 1f;
 			}
 		}

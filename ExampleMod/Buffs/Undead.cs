@@ -1,8 +1,5 @@
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod;
 
 namespace ExampleMod.Buffs
 {
@@ -10,8 +7,8 @@ namespace ExampleMod.Buffs
 	{
 		public override void SetDefaults()
 		{
-			Main.buffName[this.Type] = "Undead";
-			Main.buffTip[this.Type] = "Recovering harms you";
+			Main.buffName[Type] = "Undead";
+			Main.buffTip[Type] = "Recovering harms you";
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoSave[Type] = true;
@@ -20,7 +17,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).badHeal = true;
+            player.GetModPlayer<ExamplePlayer>(mod).badHeal = true;
 		}
 	}
 }

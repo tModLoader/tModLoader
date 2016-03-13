@@ -1,9 +1,6 @@
-using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles.Minions
 {
@@ -35,7 +32,7 @@ namespace ExampleMod.Projectiles.Minions
 		public override void CheckActive()
 		{
 			Player player = Main.player[projectile.owner];
-			ExamplePlayer modPlayer = (ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer");
+			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
 			if (player.dead)
 			{
 				modPlayer.purityMinion = false;

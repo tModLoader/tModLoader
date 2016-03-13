@@ -1,4 +1,3 @@
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -16,7 +15,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			ExamplePlayer modPlayer = (ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer");
+			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
 			if (player.ownedProjectileCounts[mod.ProjectileType("PurityWisp")] > 0)
 			{
 				modPlayer.purityMinion = true;

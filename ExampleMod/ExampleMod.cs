@@ -1,13 +1,9 @@
 using System;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Items;
-using ExampleMod.Items.Armor;
-using ExampleMod.NPCs;
 using ExampleMod.NPCs.PuritySpirit;
 using ExampleMod.Tiles;
 
@@ -314,7 +310,7 @@ namespace ExampleMod
 				Main.NewText("Could not find player: " + args[0]);
 				return;
 			}
-			ExamplePlayer modPlayer = (ExamplePlayer)Main.player[player].GetModPlayer(this, "ExamplePlayer");
+			ExamplePlayer modPlayer = Main.player[player].GetModPlayer<ExamplePlayer>(this);
 			if (args[1] == "get")
 			{
 				Main.NewText(args[0] + "'s score is " + modPlayer.score);

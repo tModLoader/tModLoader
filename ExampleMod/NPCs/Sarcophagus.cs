@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod;
 
 namespace ExampleMod.NPCs
 {
@@ -93,7 +92,7 @@ namespace ExampleMod.NPCs
 							target.AddBuff(BuffID.Darkness, 240, true);
 							if (target.HasBuff(BuffID.Cursed) >= 0 || target.HasBuff(BuffID.Slow) >= 0 || target.HasBuff(BuffID.Darkness) >= 0)
 							{
-								((ExamplePlayer)target.GetModPlayer(mod, "ExamplePlayer")).lockTime = 60;
+                                target.GetModPlayer<ExamplePlayer>(mod).lockTime = 60;
 							}
 						}
 					}

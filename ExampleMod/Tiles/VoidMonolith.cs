@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -35,7 +34,7 @@ namespace ExampleMod.Tiles
 		{
 			if (Main.tile[i, j].frameY >= 56)
 			{
-				ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
+				ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
 				modPlayer.voidMonolith = true;
 			}
 		}

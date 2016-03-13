@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,14 +16,9 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			ExamplePlayer modPlayer = (ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer");
-			modPlayer.exampleLightPet = true;
+            player.GetModPlayer<ExamplePlayer>(mod).exampleLightPet = true;
 			player.buffTime[buffIndex] = 18000;
-			bool petProjectileNotSpawned = true;
-			if (player.ownedProjectileCounts[mod.ProjectileType("ExampleLightPet")] > 0)
-			{
-				petProjectileNotSpawned = false;
-			}
+			bool petProjectileNotSpawned = player.ownedProjectileCounts[mod.ProjectileType("ExampleLightPet")] <= 0;
 			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
 			{
 				Projectile.NewProjectile(player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, mod.ProjectileType("ExampleLightPet"), 0, 0f, player.whoAmI, 0f, 0f);

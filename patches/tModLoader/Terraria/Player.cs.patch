@@ -1883,25 +1883,31 @@
  					}
  					playerFileData = Player.LoadPlayer(file, cloudSave);
  					if (playerFileData.Player == null)
-@@ -34249,9 +34562,17 @@
+@@ -34249,9 +34562,22 @@
  			}
  			return -1;
  		}
 +        
 +		internal readonly IList<ModPlayer> modPlayers = new List<ModPlayer>();
-+
+ 
+-		public Player()
 +		public ModPlayer GetModPlayer(Mod mod, string name)
-+		{
+ 		{
 +			return PlayerHooks.GetModPlayer(this, mod, name);
 +		}
- 
- 		public Player()
- 		{
++
++        public T GetModPlayer<T>(Mod mod) where T : ModPlayer
++        {
++            return (T)GetModPlayer(mod, typeof(T).Name);
++        }
++
++        public Player()
++		{
 +			PlayerHooks.SetupPlayer(this);
  			int[] array = new int[2];
  			this.hurtCooldowns = array;
  			this.width = 20;
-@@ -34288,16 +34609,14 @@
+@@ -34288,16 +34614,14 @@
  			}
  			this.trashItem = new Item();
  			this.grappling[0] = -1;
@@ -1920,7 +1926,7 @@
  			{
  				this.adjTile[n] = false;
  				this.oldAdjTile[n] = false;
-@@ -34400,6 +34719,7 @@
+@@ -34400,6 +34724,7 @@
  
  		public void GetAnglerReward()
  		{
@@ -1928,7 +1934,7 @@
  			Item item = new Item();
  			item.type = 0;
  			float num = 1f;
-@@ -34415,6 +34735,10 @@
+@@ -34415,6 +34740,10 @@
  			{
  				num = 0.25f - (float)(this.anglerQuestsFinished - 100) * 0.002f;
  			}
@@ -1939,7 +1945,7 @@
  			if (this.anglerQuestsFinished == 5)
  			{
  				item.SetDefaults(2428, false);
-@@ -34571,69 +34895,24 @@
+@@ -34571,69 +34900,24 @@
  					}
  				}
  			}
@@ -2014,7 +2020,7 @@
  			}
  			Item item7 = new Item();
  			int num4 = (this.anglerQuestsFinished + 50) / 2;
-@@ -34670,16 +34949,7 @@
+@@ -34670,16 +34954,7 @@
  				item7.SetDefaults(72, false);
  				item7.stack = num4;
  			}
@@ -2032,7 +2038,7 @@
  			if (Main.rand.Next((int)(100f * num)) <= 50)
  			{
  				Item item8 = new Item();
-@@ -34719,14 +34989,19 @@
+@@ -34719,14 +34994,19 @@
  				{
  					item8.stack++;
  				}
@@ -2058,7 +2064,7 @@
  					}
  				}
  			}
-@@ -34785,6 +35060,7 @@
+@@ -34785,6 +35065,7 @@
  					list.Add(3024);
  				}
  			}

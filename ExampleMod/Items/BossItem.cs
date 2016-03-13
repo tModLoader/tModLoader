@@ -1,5 +1,3 @@
-using System;
-using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items

@@ -1,6 +1,4 @@
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items
@@ -11,8 +9,7 @@ namespace ExampleMod.Items
 		{
 			if (item.healLife > 0)
 			{
-				ExamplePlayer modPlayer = (ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer");
-				if (modPlayer.badHeal)
+				if (player.GetModPlayer<ExamplePlayer>(mod).badHeal)
 				{
 					int heal = item.healLife;
 					int damage = player.statLifeMax2 - player.statLife;

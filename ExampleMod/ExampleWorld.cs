@@ -5,7 +5,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.World.Generation;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria.GameContent.Generation;
 
 namespace ExampleMod
@@ -102,7 +101,7 @@ namespace ExampleMod
 
 		public override void ResetNearbyTileEffects()
 		{
-			ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
+			ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
 			modPlayer.voidMonolith = false;
 		}
 

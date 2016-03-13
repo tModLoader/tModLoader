@@ -1,8 +1,5 @@
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod;
 using ExampleMod.NPCs;
 
 namespace ExampleMod.Buffs
@@ -11,8 +8,8 @@ namespace ExampleMod.Buffs
 	{
 		public override void SetDefaults()
 		{
-			Main.buffName[this.Type] = "Ethereal Flames";
-			Main.buffTip[this.Type] = "Losing life";
+			Main.buffName[Type] = "Ethereal Flames";
+			Main.buffTip[Type] = "Losing life";
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoSave[Type] = true;
@@ -21,12 +18,12 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).eFlames = true;
+			player.GetModPlayer<ExamplePlayer>(mod).eFlames = true;
 		}
 
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			((ExampleNPCInfo)npc.GetModInfo(mod, "ExampleNPCInfo")).eFlames = true;
+			npc.GetModInfo<ExampleNPCInfo>(mod).eFlames = true;
 		}
 	}
 }

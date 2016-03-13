@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -35,7 +34,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.ai[1] += 1f;
 			if (projectile.ai[1] == charge)
 			{
-				ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
+				ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
 				if (modPlayer.heroLives > 0)
 				{
 					Main.PlaySound(29, -1, -1, 104);
@@ -56,7 +55,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		{
 			if (target.hurtCooldowns[1] <= 0)
 			{
-				ExamplePlayer modPlayer = (ExamplePlayer)target.GetModPlayer(mod, "ExamplePlayer");
+				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>(mod);
 				modPlayer.constantDamage = projectile.damage;
 				modPlayer.percentDamage = Main.expertMode ? 0.6f : 0.5f;
 			}

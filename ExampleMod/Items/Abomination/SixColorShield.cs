@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -31,7 +30,7 @@ namespace ExampleMod.Items.Abomination
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).elementShield = true;
+            player.GetModPlayer<ExamplePlayer>(mod).elementShield = true;
 		}
 
 		public override Color? GetAlpha(Color lightColor)

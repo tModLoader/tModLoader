@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -10,14 +9,12 @@ namespace ExampleMod.NPCs
 	{
 		public override void ResetEffects(NPC npc)
 		{
-			ExampleNPCInfo info = (ExampleNPCInfo)npc.GetModInfo(mod, "ExampleNPCInfo");
-			info.eFlames = false;
+            npc.GetModInfo<ExampleNPCInfo>(mod).eFlames = false;
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
-			ExampleNPCInfo info = (ExampleNPCInfo)npc.GetModInfo(mod, "ExampleNPCInfo");
-			if (info.eFlames)
+			if (npc.GetModInfo<ExampleNPCInfo>(mod).eFlames)
 			{
 				if (npc.lifeRegen > 0)
 				{
@@ -111,8 +108,7 @@ namespace ExampleMod.NPCs
 
 		public override void DrawEffects(NPC npc, ref Color drawColor)
 		{
-			ExampleNPCInfo info = (ExampleNPCInfo)npc.GetModInfo(mod, "ExampleNPCInfo");
-			if (info.eFlames)
+			if (npc.GetModInfo<ExampleNPCInfo>(mod).eFlames)
 			{
 				if (Main.rand.Next(4) < 3)
 				{

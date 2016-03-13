@@ -1,5 +1,3 @@
-using System;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,7 +25,7 @@ namespace ExampleMod.Projectiles.Pets
 		public override void AI()
 		{
 			Player player = Main.player[projectile.owner];
-			ExamplePlayer modPlayer = (ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer");
+			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
 			if (player.dead)
 			{
 				modPlayer.examplePet = false;

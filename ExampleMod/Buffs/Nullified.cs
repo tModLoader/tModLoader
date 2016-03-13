@@ -1,8 +1,5 @@
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod;
 
 namespace ExampleMod.Buffs
 {
@@ -20,7 +17,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).nullified = true;
+            player.GetModPlayer<ExamplePlayer>(mod).nullified = true;
 		}
 	}
 }

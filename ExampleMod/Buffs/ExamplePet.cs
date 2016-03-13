@@ -1,4 +1,3 @@
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,13 +16,8 @@ namespace ExampleMod.Buffs
 		public override void Update(Player player, ref int buffIndex)
 		{
 			player.buffTime[buffIndex] = 18000;
-			ExamplePlayer modPlayer = (ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer");
-			modPlayer.examplePet = true;
-			bool petProjectileNotSpawned = true;
-			if (player.ownedProjectileCounts[mod.ProjectileType("ExamplePet")] > 0)
-			{
-				petProjectileNotSpawned = false;
-			}
+            player.GetModPlayer<ExamplePlayer>(mod).examplePet = true;
+			bool petProjectileNotSpawned = player.ownedProjectileCounts[mod.ProjectileType("ExamplePet")] <= 0;
 			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
 			{
 				Projectile.NewProjectile(player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, mod.ProjectileType("ExamplePet"), 0, 0f, player.whoAmI, 0f, 0f);

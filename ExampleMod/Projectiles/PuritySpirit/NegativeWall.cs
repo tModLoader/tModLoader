@@ -1,11 +1,7 @@
-using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-using ExampleMod;
-using ExampleMod.NPCs.PuritySpirit;
 
 namespace ExampleMod.Projectiles.PuritySpirit
 {
@@ -67,7 +63,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 				Player player = Main.player[k];
 				if (player.active && !player.dead && player.Hitbox.Intersects(projectile.Hitbox))
 				{
-					ExamplePlayer modPlayer = (ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer");
+					ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
 					if (modPlayer.purityDebuffCooldown <= 0)
 					{
 						modPlayer.PuritySpiritDebuff();

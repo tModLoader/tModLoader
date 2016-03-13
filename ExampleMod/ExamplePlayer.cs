@@ -505,7 +505,7 @@ namespace ExampleMod
 				}
 				Player drawPlayer = drawInfo.drawPlayer;
 				Mod mod = ModLoader.GetMod("ExampleMod");
-				ExamplePlayer modPlayer = (ExamplePlayer)drawPlayer.GetModPlayer(mod, "ExamplePlayer");
+				ExamplePlayer modPlayer = drawPlayer.GetModPlayer<ExamplePlayer>(mod);
 				if (modPlayer.reviveTime > 0)
 				{
 					Texture2D texture = mod.GetTexture("NPCs/PuritySpirit/Revive");
@@ -523,8 +523,8 @@ namespace ExampleMod
 				}
 				Player drawPlayer = drawInfo.drawPlayer;
 				Mod mod = ModLoader.GetMod("ExampleMod");
-				ExamplePlayer modPlayer = (ExamplePlayer)drawPlayer.GetModPlayer(mod, "ExamplePlayer");
-				if (modPlayer.lockTime > 0)
+				ExamplePlayer modPlayer = drawPlayer.GetModPlayer<ExamplePlayer>(mod);
+                if (modPlayer.lockTime > 0)
 				{
 					int frame = 2;
 					if (modPlayer.lockTime > 50)

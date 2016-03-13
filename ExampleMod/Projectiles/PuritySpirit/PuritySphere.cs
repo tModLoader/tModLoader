@@ -87,7 +87,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			}
 			if (timer == maxTimer)
 			{
-				ExamplePlayer modPlayer = (ExamplePlayer)Main.player[Main.myPlayer].GetModPlayer(mod, "ExamplePlayer");
+				ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
 				if (modPlayer.heroLives > 0)
 				{
 					Main.PlaySound(2, -1, -1, 12);

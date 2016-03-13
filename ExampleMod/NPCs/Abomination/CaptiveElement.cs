@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod;
 
 namespace ExampleMod.NPCs.Abomination
 {

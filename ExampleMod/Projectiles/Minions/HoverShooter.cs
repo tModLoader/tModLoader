@@ -1,7 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles.Minions
 {

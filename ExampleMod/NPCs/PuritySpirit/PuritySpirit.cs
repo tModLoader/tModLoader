@@ -315,7 +315,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			targets.Clear();
 			for (int k = 0; k < 255; k++)
 			{
-				if (Main.player[k].active && ((ExamplePlayer)Main.player[k].GetModPlayer(mod, "ExamplePlayer")).heroLives > 0)
+				if (Main.player[k].active && Main.player[k].GetModPlayer<ExamplePlayer>(mod).heroLives > 0)
 				{
 					targets.Add(k);
 				}
@@ -345,7 +345,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 					Player player = Main.player[k];
 					if (player.active && player.position.X > center.X - arenaWidth / 2 && player.position.X + player.width < center.X + arenaWidth / 2 && player.position.Y > center.Y - arenaHeight / 2 && player.position.Y + player.height < center.Y + arenaHeight / 2)
 					{
-						((ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer")).heroLives = 3;
+                        player.GetModPlayer<ExamplePlayer>(mod).heroLives = 3;
 					}
 				}
 			}

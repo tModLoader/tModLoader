@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
 
 namespace ExampleMod.Projectiles.Pets
 {
@@ -36,7 +35,7 @@ namespace ExampleMod.Projectiles.Pets
 		public override void AI()
 		{
 			Player player = Main.player[projectile.owner];
-			ExamplePlayer modPlayer = (ExamplePlayer)player.GetModPlayer(mod, "ExamplePlayer");
+			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
 			if (!player.active)
 			{
 				projectile.active = false;

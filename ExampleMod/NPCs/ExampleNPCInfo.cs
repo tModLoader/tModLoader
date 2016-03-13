@@ -1,4 +1,3 @@
-using System;
 using Terraria.ModLoader;
 
 namespace ExampleMod.NPCs

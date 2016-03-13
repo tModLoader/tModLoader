@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>ExampleMod</RootNamespace>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
@@ -41,8 +44,8 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Terraria">
-      <HintPath>C:\Program Files (x86)\Steam\SteamApps\common\Terraria\Terraria.exe</HintPath>
+    <Reference Include="tModLoaderDebug">
+      <HintPath>..\..\..\SteamLibrary\steamapps\common\Terraria\tModLoaderDebug.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
