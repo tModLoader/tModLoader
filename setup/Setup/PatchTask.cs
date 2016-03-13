@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ICSharpCode.NRefactory.CSharp;
 
@@ -128,6 +129,7 @@ namespace Terraria.ModLoader.Setup
 				return;
 			}
 
+			FixLineEndings(Path.Combine(FullPatchDir, relPath));
 			CallPatch(Path.Combine(patchDir, relPath), Path.Combine(srcDir, patchFullName));
 
 			//just a copy of the original if the patch wasn't perfect, delete it, we still have it
@@ -136,6 +138,14 @@ namespace Terraria.ModLoader.Setup
 				fileName.Substring(0, Math.Min(fileName.Length, 13)) + "~");
 			if (File.Exists(fuzzFile))
 				File.Delete(fuzzFile);
+		}
+
+		private void FixLineEndings(string file)
+		{
+			var text = File.ReadAllText(file);
+			var text2 = new Regex("(?<!\r)\n").Replace(text, "\r\n");
+			if (text != text2)
+				File.WriteAllText(file, text2);
 		}
 
 		private void Log(string text)
