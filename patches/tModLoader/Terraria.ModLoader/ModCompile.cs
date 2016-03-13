@@ -37,6 +37,7 @@ namespace Terraria.ModLoader
             }
         }
 
+        private static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
         private static IList<string> terrariaReferences;
 
         internal static void LoadReferences() {
@@ -130,16 +131,14 @@ namespace Terraria.ModLoader
             byte[] winDLL = null;
             byte[] monoDLL = null;
             byte[] winPDB = null;
-            byte[] monoPDB = null;
             if (mod.properties.noCompile) {
                 winDLL = monoDLL = ReadIfExists(Path.Combine(mod.path, "All.dll"));
-                winPDB = monoPDB = ReadIfExists(Path.Combine(mod.path, "All.pdb"));
+                winPDB = ReadIfExists(Path.Combine(mod.path, "All.pdb"));
 
                 if (winDLL == null) {
                     winDLL = ReadIfExists(Path.Combine(mod.path, "Windows.dll"));
                     monoDLL = ReadIfExists(Path.Combine(mod.path, "Mono.dll"));
                     winPDB = ReadIfExists(Path.Combine(mod.path, "Windows.pdb"));
-                    monoPDB = ReadIfExists(Path.Combine(mod.path, "Mono.pdb"));
                 }
 
                 if (winDLL == null || monoDLL == null) {
@@ -153,6 +152,11 @@ namespace Terraria.ModLoader
                     return false;
 
                 if (Program.LaunchParameters.ContainsKey("-eac")) {
+                    if (!windows) {
+                        ErrorLogger.LogBuildError("Edit and continue is only supported on windows");
+                        return false;
+                    }
+
                     try {
                         status.SetStatus("Loading pre-compiled Windows.dll with edit and continue support");
                         var winPath = Program.LaunchParameters["-eac"];
@@ -162,8 +166,7 @@ namespace Terraria.ModLoader
                         mod.properties.editAndContinue = true;
                     }
                     catch (Exception e) {
-                        Console.WriteLine("Failed to load pre-compiled edit and continue dll");
-                        Console.WriteLine(e);
+                        ErrorLogger.LogBuildError("Failed to load pre-compiled edit and continue dll "+e);
                         return false;
                     }
                 }
@@ -175,7 +178,7 @@ namespace Terraria.ModLoader
 
                 status.SetStatus("Compiling " + mod.Name + " for Mono...");
                 status.SetProgress(1, 2);
-                CompileMod(mod, refMods, false, ref monoDLL, ref monoPDB);
+                CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
                 if (winDLL == null || monoDLL == null)
                     return false;
             }
@@ -196,7 +199,6 @@ namespace Terraria.ModLoader
                 mod.modFile.AddFile("Windows.dll", winDLL);
                 mod.modFile.AddFile("Mono.dll", monoDLL);
                 if (winPDB != null) mod.modFile.AddFile("Windows.pdb", winPDB);
-                if (monoPDB != null) mod.modFile.AddFile("Mono.pdb", monoPDB);
             }
 
             foreach (var resource in Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)) {
@@ -272,6 +274,11 @@ namespace Terraria.ModLoader
                 ref byte[] dll, ref byte[] pdb) {
             LoadReferences();
             var terrariaModule = Assembly.GetExecutingAssembly();
+            bool generatePDB = mod.properties.includePDB && forWindows;
+            if (generatePDB && !windows) {
+                Console.WriteLine("PDB files can only be generated for windows, on windows.");
+                generatePDB = false;
+            }
 
             var refs = new List<string>(terrariaReferences);
             if (forWindows == windows) {
@@ -282,21 +289,19 @@ namespace Terraria.ModLoader
                     var name = Path.GetFileName(path);
                     return name != "FNA.dll" && !name.StartsWith("Microsoft.Xna.Framework");
                 }).ToList();
-                var terrariaDir = Path.GetDirectoryName(terrariaModule.Location);
-                if (forWindows) {
-                    refs.Add(Path.Combine(terrariaDir, "TerrariaWindows.exe"));
-                    var xna = new[] {
+                var names = forWindows
+                    ? new[] {
+                        "tModLoaderWindows.exe",
                         "Microsoft.Xna.Framework.dll",
                         "Microsoft.Xna.Framework.Game.dll",
                         "Microsoft.Xna.Framework.Graphics.dll",
                         "Microsoft.Xna.Framework.Xact.dll"
+                    }
+                    : new[] {
+                        "tModLoaderMac.exe",
+                        "FNA.dll"
                     };
-                    refs.AddRange(xna.Select(f => Path.Combine(terrariaDir, f)));
-                }
-                else {
-                    refs.Add(Path.Combine(terrariaDir, "TerrariaMac.exe"));
-                    refs.Add(Path.Combine(terrariaDir, "FNA.dll"));
-                }
+                refs.AddRange(names.Select(f => Path.Combine(modCompileDir, f)));
             }
 
             refs.AddRange(mod.properties.dllReferences.Select(refDll => Path.Combine(mod.path, "lib/" + refDll + ".dll")));
@@ -329,25 +334,63 @@ namespace Terraria.ModLoader
                 GenerateExecutable = false,
                 GenerateInMemory = false,
                 TempFiles = new TempFileCollection(tempDir, true),
-                IncludeDebugInformation = mod.properties.includePDB
+                IncludeDebugInformation = generatePDB
             };
 
             compileOptions.ReferencedAssemblies.AddRange(refs.ToArray());
-            var options = new Dictionary<string, string> { { "CompilerVersion", "v4.0" } };
-            var codeProvider = new CSharpCodeProvider(options);
-            var results = codeProvider.CompileAssemblyFromFile(compileOptions, Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories));
-            var errors = results.Errors;
+            var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories);
 
-            if (errors.HasErrors) {
-                ErrorLogger.LogCompileErrors(errors);
-            }
-            else {
+            try {
+                CompilerResults results;
+                if (mod.properties.languageVersion == 6) {
+                    if (Environment.Version.Revision < 10000) {
+                        ErrorLogger.LogBuildError(".NET Framework 4.5 must be installed to compile C# 6.0");
+                        return;
+                    }
+
+                    results = RoslynCompile(compileOptions, files);
+                }
+                else {
+                    var options = new Dictionary<string, string> { { "CompilerVersion", "v" + mod.properties.languageVersion + ".0" } };
+                    results = new CSharpCodeProvider(options).CompileAssemblyFromFile(compileOptions, files);
+                }
+
+                if (results.Errors.HasErrors) {
+                    ErrorLogger.LogCompileErrors(results.Errors);
+                    return;
+                }
+
                 dll = File.ReadAllBytes(compileOptions.OutputAssembly);
-                if (mod.properties.includePDB)
+                if (generatePDB)
                     pdb = File.ReadAllBytes(Path.Combine(tempDir, mod.Name + ".pdb"));
             }
+            finally {
+                Directory.Delete(tempDir, true);
+            }
+        }
 
-            Directory.Delete(tempDir, true);
+        /// <summary>
+        /// Invoke the Roslyn compiler via reflection to avoid a .NET 4.5 dependency
+        /// </summary>
+        private static CompilerResults RoslynCompile(CompilerParameters compileOptions, string[] files) {
+            var terrariaDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var modCompileDir = Path.Combine(terrariaDir, "ModCompile");
+            var asm = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll"));
+
+            AppDomain.CurrentDomain.AssemblyResolve += (o, args) => {
+                var name = new AssemblyName(args.Name).Name;
+                var f = Path.Combine(modCompileDir, name + ".dll");
+                return File.Exists(f) ? Assembly.LoadFile(f) : null;
+            };
+
+            var res = (CompilerResults) asm.GetType("Terraria.ModLoader.RoslynWrapper").GetMethod("Compile")
+                .Invoke(null, new object[] {compileOptions, files});
+
+            if (!res.Errors.HasErrors && compileOptions.IncludeDebugInformation)
+                asm.GetType("Terraria.ModLoader.RoslynPdbFixer").GetMethod("Fix")
+                    .Invoke(null, new object[] { compileOptions.OutputAssembly });
+            
+            return res;
         }
     }
 }

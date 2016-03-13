@@ -124,9 +124,7 @@ namespace Terraria.ModLoader
 
         static AssemblyManager() {
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
-                string name = args.Name;
-                if (name.IndexOf(',') >= 0)
-                    name = name.Substring(0, name.IndexOf(','));
+                string name = new AssemblyName(args.Name).Name;
 
                 if (name == "Terraria")
                     return Assembly.GetExecutingAssembly();

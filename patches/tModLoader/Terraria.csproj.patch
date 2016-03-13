@@ -198,7 +198,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -424,9 +535,46 @@
+@@ -424,9 +536,48 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -222,27 +222,30 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
-+    <PostBuildEvent>SET RELEASEFILE=$(ConfigurationName)
++    <PostBuildEvent>SET RELEASEFILE=""
 +
-+IF %25RELEASEFILE%25 == MacRelease SET RELEASEFILE=TerrariaMac
-+IF %25RELEASEFILE%25 == MacServerRelease SET RELEASEFILE=TerrariaServerMac
-+IF %25RELEASEFILE%25 == LinuxRelease SET RELEASEFILE=TerrariaLinux
-+IF %25RELEASEFILE%25 == LinuxServerRelease SET RELEASEFILE=TerrariaServerLinux
-+IF %25RELEASEFILE%25 == WindowsServerDebug SET RELEASEFILE=tModLoaderServerDebug
-+IF %25RELEASEFILE%25 == WindowsServerRelease SET RELEASEFILE=tModLoaderServer
-+IF %25RELEASEFILE%25 == WindowsDebug SET RELEASEFILE=TerrariaDebug
-+IF %25RELEASEFILE%25 == WindowsRelease SET RELEASEFILE=Terraria
++IF $(ConfigurationName) == MacRelease SET RELEASEFILE=ModCompile/tModLoaderMac
++IF $(ConfigurationName) == WindowsServerDebug SET RELEASEFILE=tModLoaderServerDebug
++IF $(ConfigurationName) == WindowsServerRelease SET RELEASEFILE=tModLoaderServer
++IF $(ConfigurationName) == WindowsDebug SET RELEASEFILE=tModLoaderDebug
++IF $(ConfigurationName) == WindowsRelease SET RELEASEFILE=tModLoader
 +
 +for /f "tokens=* delims=" %25%25i in ('"$(ProjectDir)..\..\setup\bin\setup" --steamdir') do set TERRARIASTEAMDIR=%25%25i
++
++IF NOT %25RELEASEFILE%25 == "" (
++
 +copy "$(TargetDir)$(TargetName)$(TargetExt)" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25$(TargetExt)"
 +
 +IF NOT %25RELEASEFILE:Debug=%25==%25RELEASEFILE%25 (
 +	copy "$(TargetDir)$(TargetName).pdb" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25.pdb"
++)
++
 +)</PostBuildEvent>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
++</Project>

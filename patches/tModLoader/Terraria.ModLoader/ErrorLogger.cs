@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 				foreach (CompilerError error in errors)
 				{
 					writer.WriteLine(error + Environment.NewLine);
-					Console.WriteLine(error + Environment.NewLine);
+					Console.WriteLine(error);
 					if (!error.IsWarning && displayError == null)
 						displayError = error;
 				}

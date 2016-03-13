@@ -21,6 +21,7 @@ namespace Terraria.ModLoader
 		internal bool includeSource = false;
 		internal bool includePDB = false;
 	    internal bool editAndContinue = false;
+	    internal int languageVersion = 4;
         internal string homepage = "";
 		internal string description = "";
 
@@ -116,6 +117,14 @@ namespace Terraria.ModLoader
 						}
 						properties.buildIgnores = buildIgnores;
 						break;
+                    case "languageVersion":
+                        if (!int.TryParse(value, out properties.languageVersion))
+                            throw new Exception("languageVersion not an int: "+value);
+
+                        if (properties.languageVersion < 4 || properties.languageVersion > 6)
+                            throw new Exception("languageVersion ("+properties.languageVersion+") must be between 4 and 6");
+
+				        break;
 				}
 			}
 			return properties;
