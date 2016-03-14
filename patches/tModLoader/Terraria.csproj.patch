@@ -198,7 +198,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -424,9 +536,48 @@
+@@ -424,9 +536,50 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -222,7 +222,6 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET RELEASEFILE=""
 +
@@ -233,6 +232,8 @@
 +IF $(ConfigurationName) == WindowsRelease SET RELEASEFILE=tModLoader
 +
 +for /f "tokens=* delims=" %25%25i in ('"$(ProjectDir)..\..\setup\bin\setup" --steamdir') do set TERRARIASTEAMDIR=%25%25i
++
++mkdir "%25TERRARIASTEAMDIR%25\ModCompile\"
 +
 +IF NOT %25RELEASEFILE%25 == "" (
 +
@@ -248,4 +249,5 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
+
