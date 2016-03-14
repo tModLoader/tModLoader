@@ -13,19 +13,19 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader
 {
 	public abstract partial class Mod
-    {
-	    public TmodFile File { get; internal set; }
-        public Assembly Code { get; internal set; }
+	{
+		public TmodFile File { get; internal set; }
+		public Assembly Code { get; internal set; }
 
-        public virtual string Name => File.name;
-        public Version tModLoaderVersion => File?.tModLoaderVersion ?? ModLoader.version;
-        public Version Version => File?.version ?? ModLoader.version;
+		public virtual string Name => File.name;
+		public Version tModLoaderVersion => File?.tModLoaderVersion ?? ModLoader.version;
+		public Version Version => File?.version ?? ModLoader.version;
 
-        public ModProperties Properties { get; protected set; }
+		public ModProperties Properties { get; protected set; }
 
-        internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
-        internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-        internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
+		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
 		internal readonly IDictionary<string, CraftGroup> craftGroups = new Dictionary<string, CraftGroup>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModWorld> worlds = new Dictionary<string, ModWorld>();
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 
-        public virtual void Load()
+		public virtual void Load()
 		{
 		}
 
@@ -86,38 +86,43 @@ namespace Terraria.ModLoader
 
 		internal void Autoload()
 		{
-		    if (!Main.dedServ && File != null) {
-                foreach (var file in File) {
-                    var path = file.Key;
-                    var data = file.Value;
-                    string extension = Path.GetExtension(path);
-                    switch (extension) {
-                        case ".png":
-                            string texturePath = Path.ChangeExtension(path, null);
-                            using (MemoryStream buffer = new MemoryStream(data)) {
-                                textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
-                            }
-                            break;
-                        case ".wav":
-                            string soundPath = Path.ChangeExtension(path, null);
-                            using (MemoryStream buffer = new MemoryStream(data)) {
-                                sounds[soundPath] = SoundEffect.FromStream(buffer);
-                            }
-                            break;
-                        case ".mp3":
-                            string mp3Path = Path.ChangeExtension(path, null);
-                            string wavCacheFilename = mp3Path.Replace('/', '_') + "_" + Version + ".wav";
-                            WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
-                            sounds[mp3Path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename)
-                                ? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
-                                : WAVCacheIO.CacheMP3(wavCacheFilename, data);
-                            break;
+			if (!Main.dedServ && File != null)
+			{
+				foreach (var file in File)
+				{
+					var path = file.Key;
+					var data = file.Value;
+					string extension = Path.GetExtension(path);
+					switch (extension)
+					{
+						case ".png":
+							string texturePath = Path.ChangeExtension(path, null);
+							using (MemoryStream buffer = new MemoryStream(data))
+							{
+								textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+							}
+							break;
+						case ".wav":
+							string soundPath = Path.ChangeExtension(path, null);
+							using (MemoryStream buffer = new MemoryStream(data))
+							{
+								sounds[soundPath] = SoundEffect.FromStream(buffer);
+							}
+							break;
+						case ".mp3":
+							string mp3Path = Path.ChangeExtension(path, null);
+							string wavCacheFilename = this.Name + "_" + mp3Path.Replace('/', '_') + "_" + Version + ".wav";
+							WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
+							sounds[mp3Path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename)
+								? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
+								: WAVCacheIO.CacheMP3(wavCacheFilename, data);
+							break;
 
-                    }
-                }
-            }
+					}
+				}
+			}
 
-            if (Code == null)
+			if (Code == null)
 				return;
 
 			IList<Type> modGores = new List<Type>();
@@ -1037,7 +1042,8 @@ namespace Terraria.ModLoader
 			return mountData.Type;
 		}
 
-		public void AddGore(string texture, ModGore modGore = null) {
+		public void AddGore(string texture, ModGore modGore = null)
+		{
 			int id = ModGore.ReserveGoreID();
 			ModGore.gores[texture] = id;
 			if (modGore != null)
@@ -1046,8 +1052,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public void AddSound(SoundType type, string soundPath, ModSound modSound = null) {
-            int id = SoundLoader.ReserveSoundID(type);
+		public void AddSound(SoundType type, string soundPath, ModSound modSound = null)
+		{
+			int id = SoundLoader.ReserveSoundID(type);
 			SoundLoader.sounds[type][soundPath] = id;
 			if (modSound != null)
 			{
@@ -1062,7 +1069,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void AutoloadGores(IList<Type> modGores)
-        {
+		{
 			var modGoreNames = modGores.ToDictionary(t => t.Namespace + "." + t.Name);
 			foreach (var texture in textures.Keys.Where(t => t.StartsWith("Gores/")))
 			{
@@ -1083,8 +1090,8 @@ namespace Terraria.ModLoader
 		private void AutoloadSounds(IList<Type> modSounds)
 		{
 			var modSoundNames = modSounds.ToDictionary(t => t.Namespace + "." + t.Name);
-            foreach (var sound in sounds.Keys.Where(t => t.StartsWith("Sounds/")))
-            {
+			foreach (var sound in sounds.Keys.Where(t => t.StartsWith("Sounds/")))
+			{
 				string substring = sound.Substring("Sounds/".Length);
 				SoundType soundType = SoundType.Custom;
 				if (substring.StartsWith("Item/"))
@@ -1103,10 +1110,10 @@ namespace Terraria.ModLoader
 				{
 					soundType = SoundType.Music;
 				}
-                ModSound modSound = null;
-                Type t;
-                if (modSoundNames.TryGetValue(sound.Replace('/', '.'), out t))
-                    modSound = (ModSound)Activator.CreateInstance(t);
+				ModSound modSound = null;
+				Type t;
+				if (modSoundNames.TryGetValue(sound.Replace('/', '.'), out t))
+					modSound = (ModSound)Activator.CreateInstance(t);
 
 				AddSound(soundType, Name + '/' + sound, modSound);
 			}
@@ -1307,7 +1314,7 @@ namespace Terraria.ModLoader
 			foreach (ModMountData modMountData in mountDatas.Values)
 			{
 				var mountData = modMountData.mountData;
-                mountData.modMountData = modMountData;
+				mountData.modMountData = modMountData;
 				MountLoader.SetupMount(mountData);
 				Mount.mounts[modMountData.Type] = mountData;
 			}
@@ -1342,52 +1349,58 @@ namespace Terraria.ModLoader
 			globalRecipes.Clear();
 		}
 
-		public byte[] GetFileBytes(string name) {
-		    return File?.GetFile(name);
+		public byte[] GetFileBytes(string name)
+		{
+			return File?.GetFile(name);
 		}
 
-		public bool FileExists(string name) {
-		    return File != null && File.HasFile(name);
+		public bool FileExists(string name)
+		{
+			return File != null && File.HasFile(name);
 		}
 
-		public Texture2D GetTexture(string name) {
-		    Texture2D t;
-            if (!textures.TryGetValue(name, out t))
-                throw new MissingResourceException(name);
+		public Texture2D GetTexture(string name)
+		{
+			Texture2D t;
+			if (!textures.TryGetValue(name, out t))
+				throw new MissingResourceException(name);
 
-		    return t;
+			return t;
 		}
 
-		public bool TextureExists(string name) {
-		    return textures.ContainsKey(name);
+		public bool TextureExists(string name)
+		{
+			return textures.ContainsKey(name);
 		}
 
 		public void AddTexture(string name, Texture2D texture)
 		{
-            if (TextureExists(name))
-                throw new DuplicateNameException("Texture already exist: " + name);
-            
-            textures[name] = texture;
+			if (TextureExists(name))
+				throw new DuplicateNameException("Texture already exist: " + name);
+
+			textures[name] = texture;
 		}
 
 		public SoundEffect GetSound(string name)
 		{
-            SoundEffect sound;
-            if (!sounds.TryGetValue(name, out sound))
-                throw new MissingResourceException(name);
+			SoundEffect sound;
+			if (!sounds.TryGetValue(name, out sound))
+				throw new MissingResourceException(name);
 
-            return sound;
+			return sound;
 		}
 
-		public bool SoundExists(string name) {
-		    return sounds.ContainsKey(name);
+		public bool SoundExists(string name)
+		{
+			return sounds.ContainsKey(name);
 		}
 
-        /// <summary>
-        /// For weak inter-mod communication.
-        /// </summary>
-	    public virtual object Call(params object[] args) {
-	        return null;
-	    }
+		/// <summary>
+		/// For weak inter-mod communication.
+		/// </summary>
+		public virtual object Call(params object[] args)
+		{
+			return null;
+		}
 	}
 }

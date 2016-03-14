@@ -44,55 +44,65 @@ namespace Terraria.ModLoader.IO
 		internal static void DeleteIfOlder(string modFilename, string wavCacheFilename)
 		{
 			FileInfo modFile = new FileInfo(modFilename);
-			FileInfo wavFile = new FileInfo(ModCachePath + Path.DirectorySeparatorChar + wavCacheFilename);
-			if (wavFile.Exists)
+			var dir = Directory.CreateDirectory(ModCachePath);
+			foreach (var file in dir.EnumerateFiles(Path.GetFileNameWithoutExtension(wavCacheFilename.Substring(0, wavCacheFilename.LastIndexOf('_'))) + "_*.wav"))
 			{
-				if (wavFile.LastWriteTime < modFile.LastWriteTime)
+				if (file.Name == wavCacheFilename)
 				{
-					wavFile.Delete();
+					if (file.LastWriteTime < modFile.LastWriteTime)
+					{
+						file.Delete();
+					}
+				}
+				else
+				{
+					file.Delete();
 				}
 			}
 		}
 
-	    public static SoundEffect CacheMP3(string wavCacheFilename, byte[] data) {
-            ushort wFormatTag = 1;
-            ushort nChannels;
-            uint nSamplesPerSec;
-            uint nAvgBytesPerSec;
-            ushort nBlockAlign;
-            ushort wBitsPerSample = 16;
-            const int headerSize = 44;
-	        var output = new MemoryStream();
+		public static SoundEffect CacheMP3(string wavCacheFilename, byte[] data)
+		{
+			ushort wFormatTag = 1;
+			ushort nChannels;
+			uint nSamplesPerSec;
+			uint nAvgBytesPerSec;
+			ushort nBlockAlign;
+			ushort wBitsPerSample = 16;
+			const int headerSize = 44;
+			var output = new MemoryStream();
 
-            using (var input = new MP3Sharp.MP3Stream(new MemoryStream(data))) {
-                using (var writer = new BinaryWriter(output, Encoding.UTF8)) {
-                    output.Position = headerSize;
-                    input.CopyTo(output);
-                    uint wavDataLength = (uint)output.Length - headerSize;
-                    output.Position = 0;
-                    nChannels = (ushort)input.ChannelCount;
-                    nSamplesPerSec = (uint)input.Frequency;
-                    nBlockAlign = (ushort)(nChannels * (wBitsPerSample / 8));
-                    nAvgBytesPerSec = (uint)(nSamplesPerSec * nChannels * (wBitsPerSample / 8));
-                    //write the header
-                    writer.Write("RIFF".ToCharArray()); //4
-                    writer.Write((uint)(wavDataLength + 36)); // 4
-                    writer.Write("WAVE".ToCharArray()); //4
-                    writer.Write("fmt ".ToCharArray()); //4
-                    writer.Write(16); //4
-                    writer.Write(wFormatTag); //
-                    writer.Write((ushort)nChannels);
-                    writer.Write(nSamplesPerSec);
-                    writer.Write(nAvgBytesPerSec);
-                    writer.Write(nBlockAlign);
-                    writer.Write(wBitsPerSample);
-                    writer.Write("data".ToCharArray());
-                    writer.Write((uint)wavDataLength);
-                    output.Position = 0;
-                    SaveWavStream(output, wavCacheFilename);
-                    return SoundEffect.FromStream(output);
-                }
-            }
-        }
+			using (var input = new MP3Sharp.MP3Stream(new MemoryStream(data)))
+			{
+				using (var writer = new BinaryWriter(output, Encoding.UTF8))
+				{
+					output.Position = headerSize;
+					input.CopyTo(output);
+					uint wavDataLength = (uint)output.Length - headerSize;
+					output.Position = 0;
+					nChannels = (ushort)input.ChannelCount;
+					nSamplesPerSec = (uint)input.Frequency;
+					nBlockAlign = (ushort)(nChannels * (wBitsPerSample / 8));
+					nAvgBytesPerSec = (uint)(nSamplesPerSec * nChannels * (wBitsPerSample / 8));
+					//write the header
+					writer.Write("RIFF".ToCharArray()); //4
+					writer.Write((uint)(wavDataLength + 36)); // 4
+					writer.Write("WAVE".ToCharArray()); //4
+					writer.Write("fmt ".ToCharArray()); //4
+					writer.Write(16); //4
+					writer.Write(wFormatTag); //
+					writer.Write((ushort)nChannels);
+					writer.Write(nSamplesPerSec);
+					writer.Write(nAvgBytesPerSec);
+					writer.Write(nBlockAlign);
+					writer.Write(wBitsPerSample);
+					writer.Write("data".ToCharArray());
+					writer.Write((uint)wavDataLength);
+					output.Position = 0;
+					SaveWavStream(output, wavCacheFilename);
+					return SoundEffect.FromStream(output);
+				}
+			}
+		}
 	}
 }
