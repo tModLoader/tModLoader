@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Terraria.ModLoader;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.Default
 {
@@ -31,7 +31,15 @@ namespace Terraria.ModLoader.Default
 					{
 						using (BinaryReader reader = new BinaryReader(memoryStream))
 						{
-							modPlayer.LoadCustomData(reader);
+                            try
+                            {
+                                modPlayer.LoadCustomData(reader);
+                            }
+                            catch (Exception e)
+                            {
+                                throw new CustomModDataException(mod,
+                                    "Error in loading custom player data for " + mod.Name, e);
+                            }
 						}
 					}
 					data.RemoveAt(k);

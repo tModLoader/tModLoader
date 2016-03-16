@@ -105,7 +105,7 @@ namespace Terraria.ModLoader.IO
                     }
                     catch (Exception e)
                     {
-                        throw new CustomModDataException(
+                        throw new CustomModDataException(item.modItem.mod,
                             "Error in reading custom item data for " + item.modItem.mod.Name, e);
                     }
         }

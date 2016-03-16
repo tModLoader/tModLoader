@@ -11,6 +11,8 @@ namespace Terraria.ModLoader.IO
 {
 	internal static class WorldIO
 	{
+        public static CustomModDataException customDataFail = null;
+
 		private const byte numByteFlags = 1;
 		//add near end of Terraria.IO.WorldFile.saveWorld before releasing locks
 		internal static void WriteModFile(string path, bool isCloudSave)
@@ -58,6 +60,7 @@ namespace Terraria.ModLoader.IO
 		//add near end of Terraria.IO.WorldFile.loadWorld before setting failure and success
 		internal static void ReadModFile(string path, bool isCloudSave)
 		{
+            customDataFail = null;
 			path = Path.ChangeExtension(path, ".twld");
 			if (!FileUtilities.Exists(path, isCloudSave))
 			{
@@ -78,7 +81,15 @@ namespace Terraria.ModLoader.IO
 					{
 						Array.Resize(ref flags, numByteFlags);
 					}
-					ReadModWorld(flags, reader);
+                    try
+                    {
+                        ReadModWorld(flags, reader);
+                    }
+                    catch (CustomModDataException e)
+                    {
+                        customDataFail = e;
+                        throw;
+                    }
 				}
 			}
 		}
@@ -217,6 +228,7 @@ namespace Terraria.ModLoader.IO
 			{
 				chest = Chest.CreateChest(x, y);
 			}
+            ErrorLogger.ClearLog();
 			if (chest >= 0)
 			{
 				PlayerIO.ReadInventory(Main.chest[chest].item, reader, true);
@@ -390,7 +402,7 @@ namespace Terraria.ModLoader.IO
                             }
                             catch (Exception e)
                             {
-                                throw new CustomModDataException(
+                                throw new CustomModDataException(mod,
                                     "Error in reading custom world data for " + mod.Name, e);
                             }
 						}

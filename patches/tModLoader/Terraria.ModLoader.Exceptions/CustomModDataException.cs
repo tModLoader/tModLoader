@@ -5,6 +5,11 @@ namespace Terraria.ModLoader.Exceptions
 {
     public class CustomModDataException : IOException
     {
-        public CustomModDataException(string message, Exception inner) : base(message, inner) { }
+        public readonly string modName;
+
+        public CustomModDataException(Mod mod, string message, Exception inner) : base(message, inner)
+        {
+            this.modName = mod.Name;
+        }
     }
 }

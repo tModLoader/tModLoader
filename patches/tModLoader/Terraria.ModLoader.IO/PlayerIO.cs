@@ -211,8 +211,10 @@ namespace Terraria.ModLoader.IO
 		internal static void ReadInventory(Item[] inv, BinaryReader reader, bool readStack = false, bool readFavorite = false)
 		{
 			int count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++)
-				ItemIO.ReadItem(inv[reader.ReadUInt16()], reader, readStack, readFavorite);
+            for (int k = 0; k < count; k++)
+            {
+                ItemIO.ReadItem(inv[reader.ReadUInt16()], reader, readStack, readFavorite);
+            }
 		}
 
 		internal static bool WriteCustomData(Player player, BinaryWriter writer)
@@ -288,7 +290,7 @@ namespace Terraria.ModLoader.IO
                             }
                             catch (Exception e)
                             {
-                                throw new CustomModDataException(
+                                throw new CustomModDataException(mod,
                                     "Error in reading custom player data for " + mod.Name, e);
                             }
 						}

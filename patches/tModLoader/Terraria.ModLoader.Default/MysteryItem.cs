@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.Default
 {
@@ -41,9 +43,17 @@ namespace Terraria.ModLoader.Default
 			if (type != 0)
 			{
 				item.netDefaults(type);
-				if (data.Length > 0)
-					using (BinaryReader customReader = new BinaryReader(new MemoryStream(data)))
-						item.modItem.LoadCustomData(customReader);
+                if (data.Length > 0)
+                    using (BinaryReader customReader = new BinaryReader(new MemoryStream(data)))
+                        try
+                        {
+                            item.modItem.LoadCustomData(customReader);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new CustomModDataException(item.modItem.mod,
+                                "Error in loading custom item data for " + item.modItem.mod.Name, e);
+                        }
 				
 			}
 		}

@@ -1,15 +1,16 @@
 --- src/Terraria\Terraria.IO\WorldFile.cs
 +++ src/tModLoader\Terraria.IO\WorldFile.cs
-@@ -5,6 +5,8 @@
+@@ -5,6 +5,9 @@
  using Terraria.DataStructures;
  using Terraria.GameContent.Events;
  using Terraria.ID;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -106,6 +108,8 @@
+@@ -106,6 +109,8 @@
  						}
  						binaryReader.Close();
  						memoryStream.Close();
@@ -18,7 +19,19 @@
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
-@@ -302,6 +306,7 @@
+@@ -164,8 +169,9 @@
+ 						}
+ 						NPC.setWorldMonsters();
+ 					}
+-					catch
+-					{
++					catch (Exception e)
++					{
++                        ErrorLogger.Log(e.ToString());
+ 						WorldGen.loadFailed = true;
+ 						WorldGen.loadSuccess = false;
+ 						try
+@@ -302,6 +308,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
  				}
@@ -26,7 +39,7 @@
  				WorldGen.saveLock = false;
  			}
  			Main.serverGenLock = false;
-@@ -997,7 +1002,14 @@
+@@ -997,7 +1004,14 @@
  				writer.Write(Main.anglerWhoFinishedToday[i]);
  			}
  			writer.Write(NPC.savedAngler);
@@ -42,7 +55,7 @@
  			writer.Write(NPC.savedStylist);
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(Main.invasionSizeStart);
-@@ -1050,7 +1062,7 @@
+@@ -1050,7 +1064,7 @@
  					byte b2;
  					byte b = b2 = (b3 = 0);
  					bool flag = false;
@@ -51,7 +64,7 @@
  					{
  						flag = true;
  						if (tile.type == 127)
-@@ -1087,9 +1099,11 @@
+@@ -1087,9 +1101,11 @@
  						}
  						if (Main.tileFrameImportant[(int)tile.type])
  						{
@@ -65,7 +78,7 @@
  							num2++;
  							array[num2] = (byte)(tile.frameY & 255);
  							num2++;
-@@ -1103,10 +1117,10 @@
+@@ -1103,10 +1119,10 @@
  							num2++;
  						}
  					}
@@ -78,7 +91,7 @@
  						num2++;
  						if (tile.wallColor() != 0)
  						{
-@@ -1260,7 +1274,7 @@
+@@ -1260,7 +1276,7 @@
  					for (int l = 0; l < 40; l++)
  					{
  						Item item = chest.item[l];
