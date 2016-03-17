@@ -20,18 +20,22 @@ namespace Terraria.ModLoader
             public readonly List<LoadedMod> dependencies = new List<LoadedMod>();
             public readonly List<LoadedMod> dependents = new List<LoadedMod>();
 
-            public IEnumerable<LoadedMod> DependentSet => dependents.Union(dependencies.SelectMany(mod => mod.DependentSet));
+            public Assembly assembly;
 
             private int loadIndex;
             private bool eacEnabled;
-            public bool needsReload = true;
-            public Assembly assembly;
 
-            public string AssemblyName => eacEnabled ? Name : Name + '_' + loadIndex;
-
-            public string DllName(string dll) {
-                return eacEnabled ? dll : Name + '_' + dll + '_' + loadIndex;
+            private bool _needsReload = true;
+            private bool NeedsReload {
+                get { return _needsReload; }
+                set {
+                    if (value && !_needsReload) loadIndex++;
+                    _needsReload = value;
+                }
             }
+
+            private string AssemblyName => eacEnabled ? Name : Name + '_' + loadIndex;
+            private string DllName(string dll) => eacEnabled ? dll : Name + '_' + dll + '_' + loadIndex;
 
             public void SetMod(ModLoader.LoadingMod mod) {
                 if (modFile == null ||
@@ -43,11 +47,8 @@ namespace Terraria.ModLoader
                 properties = mod.properties;
             }
 
-            public void SetNeedsReload() {
-                if (!needsReload)
-                    loadIndex++;
-
-                needsReload = true;
+            private void SetNeedsReload() {
+                NeedsReload = true;
                 eacEnabled = false;
 
                 foreach (var dep in dependents)
@@ -59,28 +60,38 @@ namespace Terraria.ModLoader
                 dep.dependents.Add(this);
             }
 
-            public bool CanEaC() {
-                return eacEnabled ||
-                       !loadedAssemblies.ContainsKey(modFile.name) && dependencies.All(dep => dep.CanEaC());
-            }
+            public bool CanEaC => eacEnabled || 
+                !loadedAssemblies.ContainsKey(modFile.name) && dependencies.All(dep => dep.CanEaC);
 
             public void EnableEaC() {
                 if (eacEnabled)
                     return;
 
+                SetNeedsReloadUnlessEaC();
                 eacEnabled = true;
-                //this assembly is changing name, so any dependents 
-                foreach (var dep in DependentSet)
-                    if (!dep.eacEnabled)
-                        dep.needsReload = true;
+
+                //all dependencies need to have unmodified names
+                foreach (var dep in dependencies)
+                    dep.EnableEaC();
             }
 
-            public void Reload() {
+            private void SetNeedsReloadUnlessEaC() {
+                if (!eacEnabled)
+                    NeedsReload = true;
+
+                foreach (var dep in dependents)
+                    dep.SetNeedsReloadUnlessEaC();
+            }
+
+            public void LoadAssemblies() {
+                if (!NeedsReload)
+                    return;
+
                 foreach (var dll in properties.dllReferences)
                     LoadAssembly(EncapsulateReferences(modFile.GetFile("lib/" + dll + ".dll")));
 
                 assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
-                needsReload = false;
+                NeedsReload = false;
             }
 
             private byte[] EncapsulateReferences(byte[] code) {
@@ -166,7 +177,7 @@ namespace Terraria.ModLoader
             RecalculateReferences();
 
             if (Debugger.IsAttached) {
-                foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC()))
+                foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
                     mod.EnableEaC();
             }
 
@@ -177,8 +188,7 @@ namespace Terraria.ModLoader
                 Interface.loadMods.SetProgressCompatibility(mod.Name, i++, modsToLoad.Count);
                 try {
                     Interface.loadMods.SetProgressReading(mod.Name, 0, 1);
-                    if (mod.needsReload)
-                        mod.Reload();
+                    mod.LoadAssemblies();
 
                     Interface.loadMods.SetProgressReading(mod.Name, 1, 2);
                     var modType = mod.assembly.GetTypes().Single(t => t.IsSubclassOf(typeof(Mod)));
