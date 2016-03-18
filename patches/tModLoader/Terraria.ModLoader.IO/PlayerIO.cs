@@ -191,7 +191,7 @@ namespace Terraria.ModLoader.IO
 					{
 						if (ItemLoader.IsModItem(inv[k]))
 						{
-							writer.Write((ushort) k);
+							invWriter.Write((ushort) k);
 							ItemIO.WriteItem(inv[k], invWriter, writeStack, writeFavorite);
 							count++;
 						}
