@@ -320,6 +320,7 @@ namespace Terraria.ModLoader
 			equipTexture.Slot = slot;
 			equipTexture.item = item;
 			EquipLoader.equipTextures[type][slot] = equipTexture;
+            equipTextures[name] = equipTexture;
 			ModLoader.GetTexture(texture);
 			if (type == EquipType.Body)
 			{
