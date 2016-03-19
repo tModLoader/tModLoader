@@ -71,7 +71,7 @@ namespace Terraria.ModLoader
 					if (type != SoundType.Music)
 					{
 						GetSoundArray(type)[slot] = ModLoader.GetSound(sound);
-						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot].CreateInstance();
+						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot]?.CreateInstance() ?? null;
 					}
 					else
 					{
@@ -79,7 +79,7 @@ namespace Terraria.ModLoader
 						{
 							Main.music[slot] = new MusicWrapper();
 						}
-						Main.music[slot].ModMusic = ModLoader.GetSound(sound).CreateInstance();
+						Main.music[slot].ModMusic = ModLoader.GetSound(sound)?.CreateInstance() ?? null;
 					}
 				}
 			}

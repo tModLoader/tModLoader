@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 				}
 				else
 				{
-					return cue.IsDisposed;
+					return cue?.IsDisposed ?? true;
 				}
 			}
 		}
@@ -41,7 +41,7 @@ namespace Terraria.ModLoader
 				}
 				else
 				{
-					return cue.IsPaused;
+					return cue?.IsPaused ?? true;
 				}
 			}
 		}
@@ -56,7 +56,7 @@ namespace Terraria.ModLoader
 				}
 				else if (cue != null)
 				{
-					return cue.IsPlaying;
+					return cue?.IsPlaying ?? false;
 				}
 				else
 				{
@@ -102,7 +102,7 @@ namespace Terraria.ModLoader
 			}
 			else
 			{
-				cue.Pause();
+				cue?.Pause();
 			}
 		}
 
@@ -114,8 +114,8 @@ namespace Terraria.ModLoader
 			}
 			else
 			{
-				cue = Main.soundBank.GetCue(cue.Name);
-				cue.Play();
+				cue = Main.soundBank?.GetCue(cue.Name) ?? null;
+				cue?.Play();
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace Terraria.ModLoader
 			}
 			else
 			{
-				cue.Resume();
+				cue?.Resume();
 			}
 		}
 
@@ -139,7 +139,7 @@ namespace Terraria.ModLoader
 			}
 			else
 			{
-				cue.Stop(AudioStopOptions.Immediate);
+				cue?.Stop(AudioStopOptions.Immediate);
 			}
 		}
 
@@ -153,11 +153,11 @@ namespace Terraria.ModLoader
 			{
 				if (immediate)
 				{
-					cue.Stop(AudioStopOptions.Immediate);
+					cue?.Stop(AudioStopOptions.Immediate);
 				}
 				else
 				{
-					cue.Stop(AudioStopOptions.AsAuthored);
+					cue?.Stop(AudioStopOptions.AsAuthored);
 				}
 			}
 		}
@@ -170,7 +170,7 @@ namespace Terraria.ModLoader
 			}
 			else
 			{
-				cue.Stop(options);
+				cue?.Stop(options);
 			}
 		}
 
@@ -185,7 +185,7 @@ namespace Terraria.ModLoader
 			}
 			else
 			{
-				cue.SetVariable(name, value);
+				cue?.SetVariable(name, value);
 			}
 		}
 		//~SoundEffectInstance();

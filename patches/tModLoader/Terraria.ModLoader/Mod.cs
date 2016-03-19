@@ -106,16 +106,30 @@ namespace Terraria.ModLoader
 							string soundPath = Path.ChangeExtension(path, null);
 							using (MemoryStream buffer = new MemoryStream(data))
 							{
-								sounds[soundPath] = SoundEffect.FromStream(buffer);
+								try
+								{
+									sounds[soundPath] = SoundEffect.FromStream(buffer);
+								}
+								catch
+								{
+									sounds[soundPath] = null;
+								}
 							}
 							break;
 						case ".mp3":
 							string mp3Path = Path.ChangeExtension(path, null);
 							string wavCacheFilename = this.Name + "_" + mp3Path.Replace('/', '_') + "_" + Version + ".wav";
 							WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
-							sounds[mp3Path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename)
-								? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
-								: WAVCacheIO.CacheMP3(wavCacheFilename, data);
+							try
+							{
+								sounds[mp3Path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename)
+									? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
+									: WAVCacheIO.CacheMP3(wavCacheFilename, data);
+							}
+							catch
+							{
+								sounds[mp3Path] = null;
+							}
 							break;
 
 					}
