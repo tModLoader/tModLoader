@@ -36,6 +36,17 @@
  		public int heldProj = -1;
  		public int breathCD;
  		public int breathMax = 200;
+@@ -568,8 +570,8 @@
+ 		public static int tileTargetX;
+ 		public static int tileTargetY;
+ 		public static float defaultGravity = 0.4f;
+-		private static int jumpHeight = 15;
+-		private static float jumpSpeed = 5.01f;
++		public static int jumpHeight = 15;
++		public static float jumpSpeed = 5.01f;
+ 		public float gravity = Player.defaultGravity;
+ 		public float maxFallSpeed = 10f;
+ 		public float maxRunSpeed = 3f;
 @@ -581,8 +583,28 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
