@@ -147,6 +147,10 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		public virtual void OnCraft(Item item)
+		{
+		}
+
 		//in Terraria.Recipe.Create before alchemy table check add
 		//  ModRecipe modRecipe = this as ModRecipe;
 		//  if(modRecipe != null) { num = modRecipe.ConsumeItem(item.type, item.stack); }

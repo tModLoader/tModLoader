@@ -32,5 +32,18 @@ namespace Terraria.ModLoader
 			}
 			return true;
 		}
+
+		public static void OnCraft(Item item, Recipe recipe)
+		{
+			ModRecipe modRecipe = recipe as ModRecipe;
+			if (modRecipe != null)
+			{
+				modRecipe.OnCraft(item);
+			}
+			foreach (GlobalRecipe globalRecipe in globalRecipes)
+			{
+				globalRecipe.OnCraft(item, recipe);
+			}
+		}
 	}
 }

@@ -29,5 +29,9 @@ namespace Terraria.ModLoader
 		{
 			return true;
 		}
+
+		public virtual void OnCraft(Item item, Recipe recipe)
+		{
+		}
 	}
 }

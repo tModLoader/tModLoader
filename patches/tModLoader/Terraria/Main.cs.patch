@@ -1713,7 +1713,23 @@
  								num62++;
  							}
  						}
-@@ -32034,6 +32515,14 @@
+@@ -31912,6 +32393,7 @@
+ 										Main.recipe[Main.availableRecipe[num67]].Create();
+ 										if (Main.mouseItem.type > 0 || Main.recipe[Main.availableRecipe[num67]].createItem.type > 0)
+ 										{
++											RecipeHooks.OnCraft(Main.mouseItem, Main.recipe[Main.availableRecipe[num67]]);
+ 											Main.PlaySound(7, -1, -1, 1);
+ 										}
+ 									}
+@@ -31938,6 +32420,7 @@
+ 										Main.recipe[Main.availableRecipe[num67]].Create();
+ 										if (Main.mouseItem.type > 0 || Main.recipe[Main.availableRecipe[num67]].createItem.type > 0)
+ 										{
++											RecipeHooks.OnCraft(Main.mouseItem, Main.recipe[Main.availableRecipe[num67]]);
+ 											Main.PlaySound(7, -1, -1, 1);
+ 										}
+ 									}
+@@ -32034,6 +32517,14 @@
  							else if (Main.recipe[Main.availableRecipe[Main.focusRecipe]].anyPressurePlate && Main.recipe[Main.availableRecipe[Main.focusRecipe]].requiredItem[num72].type == 542)
  							{
  								Main.toolTip.name = Lang.misc[37] + " " + Lang.misc[38];
@@ -1728,7 +1744,7 @@
  							}
  							if (Main.recipe[Main.availableRecipe[Main.focusRecipe]].requiredItem[num72].stack > 1)
  							{
-@@ -35607,7 +36096,7 @@
+@@ -35607,7 +36098,7 @@
  						}
  						else
  						{
@@ -1737,7 +1753,7 @@
  						}
  						flag10 = true;
  					}
-@@ -37092,7 +37581,7 @@
+@@ -37092,7 +37583,7 @@
  						{
  							text = text + " -world \"" + Main.worldPathName + "\"";
  						}
@@ -1746,7 +1762,7 @@
  						this.tServer.StartInfo.Arguments = text;
  						if (Main.libPath != "")
  						{
-@@ -37215,17 +37704,26 @@
+@@ -37215,17 +37706,26 @@
  				{
  					num4 = 3;
  					array9[0] = Lang.menu[9];
@@ -1773,7 +1789,7 @@
  							Main.PlaySound(10, -1, -1, 1);
  							WorldGen.playWorld();
  							Main.menuMode = 10;
-@@ -37238,16 +37736,27 @@
+@@ -37238,16 +37738,27 @@
  						}
  					}
  					if (this.selectedMenu == 2)
@@ -1806,7 +1822,7 @@
  					array[0] = true;
  					array[1] = true;
  					num -= 30;
-@@ -37255,10 +37764,21 @@
+@@ -37255,10 +37766,21 @@
  					array4[2] = 50;
  					array9[1] = Lang.menu[11];
  					array9[2] = Lang.menu[5];
@@ -1829,7 +1845,7 @@
  						Main.netMode = 0;
  					}
  				}
-@@ -37339,6 +37859,8 @@
+@@ -37339,6 +37861,8 @@
  					{
  						SkyManager.Instance["Slime"].Deactivate(new object[0]);
  					}
@@ -1838,7 +1854,7 @@
  					int num9 = 0;
  					num4 = 5;
  					num3 = 60;
-@@ -37364,6 +37886,7 @@
+@@ -37364,6 +37888,7 @@
  						Main.menuMode = 888;
  					}
  					num9++;
@@ -1846,7 +1862,7 @@
  					array9[num9] = Lang.menu[14];
  					if (this.selectedMenu == num9)
  					{
-@@ -38325,6 +38848,7 @@
+@@ -38325,6 +38850,7 @@
  							Main.PlaySound(11, -1, -1, 1);
  							Main.menuMode = 272727;
  						}
@@ -1854,7 +1870,7 @@
  						num20++;
  						array9[num20] = Lang.menu[103];
  						if (this.selectedMenu == num20)
-@@ -39074,6 +39598,10 @@
+@@ -39074,6 +39600,10 @@
  							WorldGen.setWorldSize();
  						}
  					}
@@ -1865,7 +1881,7 @@
  				}
  			}
  			IL_4287:
-@@ -39824,10 +40352,11 @@
+@@ -39824,10 +40354,11 @@
  				{
  					num98 = 2;
  				}
@@ -1879,7 +1895,7 @@
  			}
  			Vector2 value = Main.DrawThickCursor(false);
  			Main.spriteBatch.Draw(Main.cursorTextures[0], new Vector2((float)Main.mouseX, (float)Main.mouseY) + value + Vector2.One, null, new Microsoft.Xna.Framework.Color((int)((float)Main.cursorColor.R * 0.2f), (int)((float)Main.cursorColor.G * 0.2f), (int)((float)Main.cursorColor.B * 0.2f), (int)((float)Main.cursorColor.A * 0.5f)), 0f, default(Vector2), Main.cursorScale * 1.1f, SpriteEffects.None, 0f);
-@@ -43470,7 +43999,7 @@
+@@ -43470,7 +44001,7 @@
  					}
  					else
  					{
@@ -1888,7 +1904,7 @@
  					}
  				}
  				float num103 = (num16 * 0.25f * 2f + 1f) / 3f;
-@@ -45989,7 +46518,7 @@
+@@ -45989,7 +46520,7 @@
  						tile = new Tile();
  						Main.tile[j, i] = tile;
  					}
@@ -1897,7 +1913,7 @@
  					if (wall > 0 && !this.FullTile(j, i))
  					{
  						Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
-@@ -45997,6 +46526,11 @@
+@@ -45997,6 +46528,11 @@
  						{
  							this.LoadWall((int)wall);
  							int num8 = (int)(Main.wallFrame[(int)wall] * 180);
@@ -1909,7 +1925,7 @@
  							if (Lighting.lightMode < 2 && !Main.wallLight[(int)wall] && (tile.wall < 88 || tile.wall > 93) && !WorldGen.SolidTile(tile))
  							{
  								Texture2D texture;
-@@ -46068,6 +46602,7 @@
+@@ -46068,6 +46604,7 @@
  									Main.spriteBatch.Draw(Main.wallOutlineTexture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X), (float)(i * 16 - (int)Main.screenPosition.Y + 14)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 14, 16, 2)), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  								}
  							}
@@ -1917,7 +1933,7 @@
  						}
  					}
  				}
-@@ -47095,7 +47630,7 @@
+@@ -47095,7 +47632,7 @@
  			}
  		}
  
@@ -1926,7 +1942,7 @@
  		{
  			if (!Main.NPCLoaded[i] || Main.npcTexture[i] == null)
  			{
-@@ -47110,7 +47645,7 @@
+@@ -47110,7 +47647,7 @@
  			}
  		}
  
@@ -1935,7 +1951,7 @@
  		{
  			if (!Main.projectileLoaded[i])
  			{
-@@ -47125,7 +47660,7 @@
+@@ -47125,7 +47662,7 @@
  			}
  		}
  
@@ -1944,7 +1960,7 @@
  		{
  			if (!Main.goreLoaded[i])
  			{
-@@ -47140,7 +47675,7 @@
+@@ -47140,7 +47677,7 @@
  			}
  		}
  
@@ -1953,7 +1969,7 @@
  		{
  			if (!Main.wallLoaded[i])
  			{
-@@ -47155,8 +47690,10 @@
+@@ -47155,8 +47692,10 @@
  			}
  		}
  
@@ -1965,7 +1981,7 @@
  			if (!Main.tileSetsLoaded[i])
  			{
  				Main.tileTexture[i] = base.Content.Load<Texture2D>(string.Concat(new object[]
-@@ -48855,6 +49392,19 @@
+@@ -48855,6 +49394,19 @@
  		}
  
  		protected override void Draw(GameTime gameTime)
@@ -1985,7 +2001,7 @@
  		{
  			if (Main._drawCycleCounter == 0uL)
  			{
-@@ -52245,7 +52795,7 @@
+@@ -52245,7 +52797,7 @@
  								num14++;
  							}
  						}
@@ -1994,7 +2010,7 @@
  						{
  							Main.nextNPC[num16] = false;
  						}
-@@ -52638,6 +53188,7 @@
+@@ -52638,6 +53190,7 @@
  							{
  								WorldGen.spawnNPC = 142;
  							}
@@ -2002,7 +2018,7 @@
  						}
  					}
  				}
-@@ -52691,7 +53242,7 @@
+@@ -52691,7 +53244,7 @@
  			{
  				if (!Main.dedServ)
  				{
@@ -2011,7 +2027,7 @@
  					{
  						bool flag = false;
  						float num2 = 1f;
-@@ -52756,6 +53307,10 @@
+@@ -52756,6 +53309,10 @@
  								}
  								if (num2 > 0f || (type >= 30 && type <= 35) || type == 39)
  								{
@@ -2022,7 +2038,7 @@
  									if (type == 0)
  									{
  										int num7 = Main.rand.Next(3);
-@@ -53335,14 +53890,54 @@
+@@ -53335,14 +53892,54 @@
  										Main.soundInstanceMoonlordCry.Pitch = (float)Main.rand.Next(-10, 11) * 0.01f;
  										Main.PlaySoundInstance(Main.soundInstanceMoonlordCry);
  									}
