@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.Setup
             taskInterface.SetStatus("Compiling tModLoaderMac.exe");
             compileFailed = Program.RunCmd(Path.Combine(Program.baseDir, "solutions"), "msbuild",
                 "tModLoader.sln /p:Configuration=MacRelease /p:Platform=\"x86\"",
-                null, null, taskInterface.CancellationToken()
+                null, null, null, taskInterface.CancellationToken()
             ) != 0;
         }
 

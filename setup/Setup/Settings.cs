@@ -9,8 +9,8 @@ namespace Terraria.ModLoader.Setup
         public static ProgramSetting<bool> SingleDecompileThread = new ProgramSetting<bool>("SingleDecompileThread");
         public static ProgramSetting<string> SteamDir = new ProgramSetting<string>("SteamDir");
 
-        public static string TerrariaPath { get { return Path.Combine(SteamDir.Get(), "Terraria.exe"); } }
-        public static string TerrariaServerPath { get { return Path.Combine(SteamDir.Get(), "TerrariaServer.exe"); } }
+        public static string TerrariaPath => Path.Combine(SteamDir.Get(), "Terraria.exe");
+        public static string TerrariaServerPath => Path.Combine(SteamDir.Get(), "TerrariaServer.exe");
 
         public static ProgramSetting<DateTime> MergedDiffCutoff = new ProgramSetting<DateTime>("MergedDiffCutoff");
         public static ProgramSetting<DateTime> TerrariaDiffCutoff = new ProgramSetting<DateTime>("TerrariaDiffCutoff");

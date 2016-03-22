@@ -60,7 +60,7 @@ namespace Terraria.ModLoader.Setup
         private ModuleDefinition clientModule;
         private ModuleDefinition serverModule;
 
-        public string FullSrcDir { get { return Path.Combine(Program.baseDir, srcDir); } }
+        public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
 
         public DecompileTask(ITaskInterface taskInterface, string srcDir) : base(taskInterface) {
             this.srcDir = srcDir;
@@ -144,8 +144,7 @@ namespace Terraria.ModLoader.Setup
 
 	    private void VersionCheck(AssemblyDefinition assembly) {
 			if (assembly.Name.Version != version)
-				throw new Exception(string.Format("{0} version {1}. Expected {2}", 
-					assembly.Name.Name, assembly.Name.Version, version));
+				throw new Exception($"{assembly.Name.Name} version {assembly.Name.Version}. Expected {version}");
 	    }
 
 #region ReflectedMethods
