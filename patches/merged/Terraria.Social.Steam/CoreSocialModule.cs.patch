@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Social.Steam\CoreSocialModule.cs
 +++ src/merged\Terraria.Social.Steam\CoreSocialModule.cs
-@@ -24,11 +24,13 @@
+@@ -24,11 +_,13 @@
  		public void Initialize()
  		{
  			CoreSocialModule._instance = this;
@@ -14,7 +14,7 @@
  			if (!SteamAPI.Init())
  			{
  				MessageBox.Show("Please launch the game from your Steam client.", "Error");
-@@ -39,7 +41,10 @@
+@@ -39,7 +_,10 @@
  			ThreadPool.QueueUserWorkItem(new WaitCallback(this.SteamTickLoop), null);
  			Main.OnTick += new Action(this.PulseSteamTick);
  			Main.OnTick += new Action(this.PulseSteamCallback);
@@ -26,7 +26,7 @@
  
  		public void PulseSteamTick()
  		{
-@@ -93,8 +98,13 @@
+@@ -93,8 +_,13 @@
  
  		public void Shutdown()
  		{

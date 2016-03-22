@@ -1,6 +1,6 @@
 --- src/merged\Terraria.GameContent.Biomes\DesertBiome.cs
 +++ src/Terraria\Terraria.GameContent.Biomes\DesertBiome.cs
-@@ -243,7 +243,7 @@
+@@ -243,7 +_,7 @@
  					tile.liquid = 0;
  					Tile testTile = GenBase._tiles[num15, num16 + 1];
  					Tile testTile2 = GenBase._tiles[num15, num16 + 2];

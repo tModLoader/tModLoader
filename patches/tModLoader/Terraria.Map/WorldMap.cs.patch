@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Map\WorldMap.cs
 +++ src/tModLoader\Terraria.Map\WorldMap.cs
-@@ -1,6 +1,7 @@
+@@ -1,6 +_,7 @@
  using System;
  using System.IO;
  using Terraria.IO;
@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -115,6 +116,7 @@
+@@ -115,6 +_,7 @@
  							{
  								MapHelper.LoadMapVersion2(binaryReader, num);
  							}

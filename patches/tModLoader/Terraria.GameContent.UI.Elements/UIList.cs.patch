@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIList.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIList.cs
-@@ -33,7 +33,7 @@
+@@ -33,7 +_,7 @@
  			}
  		}
  

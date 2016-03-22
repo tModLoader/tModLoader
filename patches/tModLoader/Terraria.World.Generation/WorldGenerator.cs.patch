@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.World.Generation\WorldGenerator.cs
 +++ src/tModLoader\Terraria.World.Generation\WorldGenerator.cs
-@@ -2,13 +2,14 @@
+@@ -2,13 +_,14 @@
  using System.Collections.Generic;
  using System.Diagnostics;
  using Terraria.GameContent.UI.States;

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.World.Generation\GenPass.cs
 +++ src/tModLoader\Terraria.World.Generation\GenPass.cs
-@@ -2,7 +2,7 @@
+@@ -2,7 +_,7 @@
  
  namespace Terraria.World.Generation
  {

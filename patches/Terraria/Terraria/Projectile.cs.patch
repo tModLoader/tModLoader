@@ -1,6 +1,6 @@
 --- src/merged\Terraria\Projectile.cs
 +++ src/Terraria\Terraria\Projectile.cs
-@@ -11986,100 +11986,34 @@
+@@ -11986,100 +_,34 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
  			{
@@ -129,7 +129,7 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -20764,7 +20698,7 @@
+@@ -20764,7 +_,7 @@
  																int num688 = (int)(this.position.Y + (float)this.height) / 16 + 1;
  																if (WorldGen.SolidTile(num687, num688) || Main.tile[num687, num688].halfBrick())
  																{
@@ -138,7 +138,7 @@
  																}
  																if (Main.tile[num687, num688].slope() > 0)
  																{
-@@ -20776,7 +20710,6 @@
+@@ -20776,7 +_,6 @@
  																Block_1933:
  																try
  																{
@@ -146,7 +146,7 @@
  																	num687 = (int)(this.position.X + (float)(this.width / 2)) / 16;
  																	num688 = (int)(this.position.Y + (float)(this.height / 2)) / 16;
  																	num687 += num681;
-@@ -34045,7 +33978,7 @@
+@@ -34045,7 +_,7 @@
  							for (int n = 0; n < 5; n++)
  							{
  								int num29 = this.width / 4;

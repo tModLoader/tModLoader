@@ -1,6 +1,6 @@
 --- src/merged\Terraria.Utilities\PlatformUtilties.cs
 +++ src/Terraria\Terraria.Utilities\PlatformUtilties.cs
-@@ -47,7 +47,7 @@
+@@ -47,7 +_,7 @@
  		{
  #if WINDOWS
  			string clipboardText = "";
@@ -9,7 +9,7 @@
  			{
  				clipboardText = Clipboard.GetText();
  			});
-@@ -81,7 +81,7 @@
+@@ -81,7 +_,7 @@
  		public static void SetClipboard(string text)
  		{
  #if WINDOWS

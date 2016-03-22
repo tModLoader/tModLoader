@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\IngameOptions.cs
 +++ src/tModLoader\Terraria\IngameOptions.cs
-@@ -2,7 +2,9 @@
+@@ -2,7 +_,9 @@
  using Microsoft.Xna.Framework.Graphics;
  using Microsoft.Xna.Framework.Input;
  using System;
@@ -10,7 +10,7 @@
  using Terraria.Social;
  using Terraria.UI;
  
-@@ -14,6 +16,7 @@
+@@ -14,6 +_,7 @@
  		public const int height = 480;
  		public static float[] leftScale = new float[]
  		{
@@ -18,7 +18,7 @@
  			0.7f,
  			0.7f,
  			0.7f,
-@@ -137,6 +140,7 @@
+@@ -137,6 +_,7 @@
  			bool flag2 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
  			int num5 = flag2 ? 1 : 0;
  			int num6 = 6 + num5;
@@ -26,7 +26,7 @@
  			Vector2 anchor = new Vector2(value3.X + value2.X / 4f, value3.Y + (float)(num * 5 / 2));
  			Vector2 offset = new Vector2(0f, value2.Y - (float)(num * 5)) / (float)(num6 + 1);
  			for (int i = 0; i <= num6; i++)
-@@ -196,35 +200,44 @@
+@@ -196,35 +_,44 @@
  					Main.PlaySound(10, -1, -1, 1);
  				}
  			}
@@ -81,7 +81,7 @@
  				if (flag)
  				{
  					IngameOptions.Close();
-@@ -266,6 +279,12 @@
+@@ -266,6 +_,12 @@
  					num3 = 0.801f;
  					num4 = 0.001f;
  					break;
@@ -94,7 +94,7 @@
  			}
  			Vector2 anchor2 = new Vector2(value3.X + value2.X * 3f / 4f, value3.Y + (float)(num * 5 / 2));
  			Vector2 offset2 = new Vector2(0f, value2.Y - (float)(num * 3)) / (float)(num8 + 1);
-@@ -1147,6 +1166,72 @@
+@@ -1147,6 +_,72 @@
  							Main.setKey = -1;
  							Main.blockKey = pressedKeys2[0];
  							Main.blockInput = false;

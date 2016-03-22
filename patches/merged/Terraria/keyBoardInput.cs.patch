@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\keyBoardInput.cs
 +++ src/merged\Terraria\keyBoardInput.cs
-@@ -1,11 +1,19 @@
+@@ -1,11 +_,19 @@
 +#if !WINDOWS
 +using Microsoft.Xna.Framework.Input;
 +#endif
@@ -20,7 +20,7 @@
  		public class inKey : IMessageFilter
  		{
  			public bool PreFilterMessage(ref Message m)
-@@ -35,11 +43,28 @@
+@@ -35,11 +_,28 @@
  
  		[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto)]
  		public static extern bool TranslateMessage(IntPtr message);

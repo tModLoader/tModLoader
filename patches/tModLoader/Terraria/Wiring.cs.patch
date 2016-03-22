@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Wiring.cs
 +++ src/tModLoader\Terraria\Wiring.cs
-@@ -3,6 +3,7 @@
+@@ -3,6 +_,7 @@
  using System.Collections.Generic;
  using Terraria.DataStructures;
  using Terraria.ID;
@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -12,15 +13,15 @@
+@@ -12,15 +_,15 @@
  		private const int MaxMech = 1000;
  		public static bool running;
  		private static Dictionary<Point16, bool> _wireSkip;
@@ -33,7 +33,7 @@
  		private static int[] _mechX;
  		private static int[] _mechY;
  		private static int _numMechs;
-@@ -204,7 +205,7 @@
+@@ -204,7 +_,7 @@
  			}
  		}
  
@@ -42,7 +42,7 @@
  		{
  			for (int k = 0; k < Wiring._numMechs; k++)
  			{
-@@ -278,7 +279,7 @@
+@@ -278,7 +_,7 @@
  			}
  		}
  
@@ -51,7 +51,7 @@
  		{
  			if (Main.netMode == 1)
  			{
-@@ -656,7 +657,7 @@
+@@ -656,7 +_,7 @@
  						NetMessage.SendData(19, -1, -1, "", 4 + flag.ToInt(), (float)i, (float)j, 0f, 0, 0, 0);
  						return;
  					}
@@ -60,7 +60,7 @@
  					{
  						if (WorldGen.CloseDoor(i, j, true))
  						{
-@@ -664,7 +665,7 @@
+@@ -664,7 +_,7 @@
  							return;
  						}
  					}
@@ -69,7 +69,7 @@
  					{
  						int num26 = 1;
  						if (Main.rand.Next(2) == 0)
-@@ -762,7 +763,7 @@
+@@ -762,7 +_,7 @@
  						}
  						else
  						{
@@ -78,7 +78,7 @@
  							{
  								if (tile.frameX < 66)
  								{
-@@ -1108,7 +1109,7 @@
+@@ -1108,7 +_,7 @@
  								}
  								else
  								{
@@ -87,7 +87,7 @@
  									{
  										WorldGen.SwitchMB(i, j);
  										return;
-@@ -1454,6 +1455,7 @@
+@@ -1454,6 +_,7 @@
  						}
  					}
  				}

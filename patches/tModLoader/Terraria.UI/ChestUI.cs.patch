@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.UI\ChestUI.cs
 +++ src/tModLoader\Terraria.UI\ChestUI.cs
-@@ -2,6 +2,7 @@
+@@ -2,6 +_,7 @@
  using Microsoft.Xna.Framework.Graphics;
  using System;
  using System.Collections.Generic;
@@ -8,7 +8,7 @@
  using Terraria.UI.Chat;
  
  namespace Terraria.UI
-@@ -115,6 +116,10 @@
+@@ -115,6 +_,10 @@
  				else if (Main.tile[player.chestX, player.chestY].type == 88)
  				{
  					text = Lang.dresserType[(int)(Main.tile[player.chestX, player.chestY].frameX / 54)];
@@ -19,7 +19,7 @@
  				}
  			}
  			else if (player.chest == -2)
-@@ -631,6 +636,10 @@
+@@ -631,6 +_,10 @@
  				{
  					Main.defaultChestName = Lang.dresserType[(int)(Main.tile[player.chestX, player.chestY].frameX / 54)];
  				}

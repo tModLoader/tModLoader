@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.csproj
 +++ src/merged\Terraria.csproj
-@@ -2,37 +2,84 @@
+@@ -2,37 +_,84 @@
  <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
    <PropertyGroup>
      <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
@@ -104,7 +104,7 @@
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
-@@ -41,6 +88,10 @@
+@@ -41,6 +_,10 @@
    </ItemGroup>
    <ItemGroup>
      <Compile Include="Extensions\EnumerationExtensions.cs" />
@@ -115,7 +115,7 @@
      <Compile Include="Properties\AssemblyInfo.cs" />
      <Compile Include="Terraria.Achievements\Achievement.cs" />
      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
-@@ -329,11 +380,13 @@
+@@ -329,11 +_,13 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />
      <Compile Include="Terraria\ItemText.cs" />
@@ -130,7 +130,7 @@
      <Compile Include="Terraria\Main.cs" />
      <Compile Include="Terraria\MessageBuffer.cs" />
      <Compile Include="Terraria\Minecart.cs" />
-@@ -357,7 +410,7 @@
+@@ -357,7 +_,7 @@
      <Compile Include="Terraria\TimeLogger.cs" />
      <Compile Include="Terraria\Utils.cs" />
      <Compile Include="Terraria\WaterfallManager.cs" />

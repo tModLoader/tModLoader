@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\Program.cs
 +++ src/merged\Terraria\Program.cs
-@@ -4,7 +4,9 @@
+@@ -4,7 +_,9 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Threading;
@@ -10,7 +10,7 @@
  using Terraria.Initializers;
  using Terraria.Social;
  
-@@ -12,7 +14,11 @@
+@@ -12,7 +_,11 @@
  {
  	public static class Program
  	{
@@ -22,7 +22,7 @@
  
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
-@@ -25,15 +31,23 @@
+@@ -25,15 +_,23 @@
  			for (int i = 0; i < array.Length; i++)
  			{
  				Type type = array[i];
@@ -48,7 +48,7 @@
  				}
  			}
  		}
-@@ -94,7 +108,11 @@
+@@ -94,7 +_,11 @@
  					{
  						Program.ForceLoadAssembly(Assembly.GetExecutingAssembly(), true);
  					};
@@ -60,7 +60,7 @@
  				}
  				catch (Exception e)
  				{
-@@ -113,7 +131,14 @@
+@@ -113,7 +_,14 @@
  					streamWriter.WriteLine(e);
  					streamWriter.WriteLine("");
  				}

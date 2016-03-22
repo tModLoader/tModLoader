@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Graphics.Capture\CaptureCamera.cs
 +++ src/merged\Terraria.Graphics.Capture\CaptureCamera.cs
-@@ -5,8 +5,13 @@
+@@ -5,8 +_,13 @@
  using System.Drawing;
  using System.Drawing.Imaging;
  using System.IO;
@@ -14,7 +14,7 @@
  
  namespace Terraria.Graphics.Capture
  {
-@@ -233,6 +238,7 @@
+@@ -233,6 +_,7 @@
  					"Captures",
  					Path.DirectorySeparatorChar
  				}));
@@ -22,7 +22,7 @@
  				using (Bitmap bitmap = new Bitmap(width, height))
  				{
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
-@@ -243,7 +249,13 @@
+@@ -243,7 +_,13 @@
  					bitmap.Save(filename, imageFormat);
  					bitmap.Dispose();
  				}
@@ -37,7 +37,7 @@
  			}
  			catch (Exception value)
  			{
-@@ -265,6 +277,7 @@
+@@ -265,6 +_,7 @@
  			});
  			string filename2 = Path.Combine(text, filename);
  			Directory.CreateDirectory(text);
@@ -45,7 +45,7 @@
  			using (Bitmap bitmap = new Bitmap(width, height))
  			{
  				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
-@@ -292,7 +305,30 @@
+@@ -292,7 +_,30 @@
  				bitmap.UnlockBits(bitmapData);
  				bitmap.Save(filename2, imageFormat);
  			}
@@ -77,7 +77,7 @@
  
  		private void FinishCapture()
  		{
-@@ -334,6 +370,7 @@
+@@ -334,6 +_,7 @@
  
  		public void Dispose()
  		{
@@ -85,7 +85,7 @@
  			Monitor.Enter(this._captureLock);
  			if (this._isDisposed)
  			{
-@@ -348,6 +385,7 @@
+@@ -348,6 +_,7 @@
  			CaptureCamera.CameraExists = false;
  			this._isDisposed = true;
  			Monitor.Exit(this._captureLock);

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Graphics.Effects\CustomSky.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\CustomSky.cs
-@@ -4,7 +4,7 @@
+@@ -4,7 +_,7 @@
  
  namespace Terraria.Graphics.Effects
  {

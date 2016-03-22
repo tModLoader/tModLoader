@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\WindowsLaunch.cs
 +++ src/tModLoader\Terraria\WindowsLaunch.cs
-@@ -63,12 +63,12 @@
+@@ -63,12 +_,12 @@
  					result = Assembly.Load(array);
  				}
  				return result;

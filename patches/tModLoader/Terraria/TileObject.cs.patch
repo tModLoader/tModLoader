@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\TileObject.cs
 +++ src/tModLoader\Terraria\TileObject.cs
-@@ -160,7 +160,7 @@
+@@ -160,7 +_,7 @@
  			return true;
  		}
  
@@ -9,7 +9,7 @@
  		{
  			TileObjectData tileData = TileObjectData.GetTileData(type, style, 0);
  			objectData = TileObject.Empty;
-@@ -341,7 +341,7 @@
+@@ -341,7 +_,7 @@
  								}
  							}
  							bool flag4 = false;

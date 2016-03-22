@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.GameContent.UI.Elements\UIHeader.cs
 +++ src/merged\Terraria.GameContent.UI.Elements\UIHeader.cs
-@@ -20,9 +20,11 @@
+@@ -20,9 +_,11 @@
  				if (this._text != value)
  				{
  					this._text = value;

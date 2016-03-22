@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -27,8 +27,8 @@
+@@ -27,8 +_,8 @@
      <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
@@ -10,7 +10,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
      <OutputPath>bin\x86\MacRelease\</OutputPath>
-@@ -46,20 +46,9 @@
+@@ -46,20 +_,9 @@
      <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
      <DefineConstants>SERVER; LINUX</DefineConstants>
    </PropertyGroup>
@@ -34,7 +34,7 @@
    <Choose>
      <When Condition="$(DefineConstants.Contains('CLIENT'))">
        <PropertyGroup>
-@@ -72,16 +61,42 @@
+@@ -72,16 +_,42 @@
        </PropertyGroup>
      </Otherwise>
    </Choose>
@@ -80,7 +80,7 @@
        <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
      </Reference>
      <Reference Include="System.Windows.Forms" />
-@@ -91,6 +106,7 @@
+@@ -91,6 +_,7 @@
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
@@ -88,7 +88,7 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -253,6 +269,7 @@
+@@ -253,6 +_,7 @@
      <Compile Include="Terraria.ID\ItemID.cs" />
      <Compile Include="Terraria.ID\MessageID.cs" />
      <Compile Include="Terraria.ID\MountID.cs" />
@@ -96,7 +96,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -280,6 +297,101 @@
+@@ -280,6 +_,101 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -198,7 +198,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -424,9 +536,50 @@
+@@ -424,9 +_,50 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -250,3 +250,4 @@
 +    </PreBuildEvent>
 +  </PropertyGroup>
  </Project>
+

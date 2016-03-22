@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Utilities\PlatformUtilties.cs
 +++ src/merged\Terraria.Utilities\PlatformUtilties.cs
-@@ -1,14 +1,51 @@
+@@ -1,14 +_,51 @@
 +#if !WINDOWS
 +using SDL2;
 +#endif
@@ -53,7 +53,7 @@
  			string clipboardText = "";
  			Thread thread = new Thread(delegate
  			{
-@@ -26,11 +63,24 @@
+@@ -26,11 +_,24 @@
  					array[length++] = clipboardText[i];
  				}
  			}
@@ -80,7 +80,7 @@
  			Thread thread = new Thread(delegate
  			{
  				if (text.Length > 0)
-@@ -41,12 +91,62 @@
+@@ -41,12 +_,62 @@
  			thread.SetApartmentState(ApartmentState.STA);
  			thread.Start();
  			thread.Join();

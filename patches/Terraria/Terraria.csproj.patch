@@ -1,6 +1,6 @@
 --- src/merged\Terraria.csproj
 +++ src/Terraria\Terraria.csproj
-@@ -73,17 +73,24 @@
+@@ -73,17 +_,24 @@
      </Otherwise>
    </Choose>
    <ItemGroup>

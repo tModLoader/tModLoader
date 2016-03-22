@@ -1,6 +1,6 @@
 --- src/merged\Terraria.GameContent.Biomes\MiningExplosivesBiome.cs
 +++ src/Terraria\Terraria.GameContent.Biomes\MiningExplosivesBiome.cs
-@@ -15,13 +15,13 @@
+@@ -15,13 +_,13 @@
  			}
  			ushort type = Utils.SelectRandom<ushort>(GenBase._random, new ushort[]
  			{

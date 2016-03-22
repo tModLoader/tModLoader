@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Graphics.Effects\Filters.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\Filters.cs
-@@ -2,7 +2,7 @@
+@@ -2,7 +_,7 @@
  
  namespace Terraria.Graphics.Effects
  {

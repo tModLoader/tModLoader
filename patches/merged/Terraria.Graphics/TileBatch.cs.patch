@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Graphics\TileBatch.cs
 +++ src/merged\Terraria.Graphics\TileBatch.cs
-@@ -1,11 +1,19 @@
+@@ -1,11 +_,19 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using System;
@@ -20,7 +20,7 @@
  		private struct SpriteData
  		{
  			public Vector4 Source;
-@@ -30,9 +38,106 @@
+@@ -30,9 +_,106 @@
  		private Texture2D[] spriteTextures;
  
  		private int queuedSpriteCount;
@@ -130,7 +130,7 @@
  		private static Vector2 vector2Zero;
  
  		private static Rectangle? nullRectangle;
-@@ -46,14 +151,27 @@
+@@ -46,14 +_,27 @@
  		private VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[8192];
  
  		private int vertexBufferPosition;
@@ -160,7 +160,7 @@
  		private void Allocate()
  		{
  			if (this.vertexBuffer == null || this.vertexBuffer.IsDisposed)
-@@ -89,7 +207,7 @@
+@@ -89,7 +_,7 @@
  			}
  		}
  
@@ -169,7 +169,7 @@
  		{
  			this.Allocate();
  			this.graphicsDevice.SetVertexBuffer(this.vertexBuffer);
-@@ -350,6 +468,285 @@
+@@ -350,6 +_,285 @@
  				1f,
  				1f
  			};

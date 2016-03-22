@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using ICSharpCode.NRefactory.CSharp;
 
 namespace Terraria.ModLoader.Setup
@@ -12,18 +13,20 @@ namespace Terraria.ModLoader.Setup
 		public static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config" };
 		public static string[] excluded = { "bin" + Path.DirectorySeparatorChar, "obj" + Path.DirectorySeparatorChar };
 	    public static readonly string RemovedFileList = "removed_files.list";
+	    public static readonly string HunkOffsetRegex = @"@@ -(\d+),(\d+) \+([_\d]+),(\d+) @@";
 
-		public readonly string baseDir;
+
+        public readonly string baseDir;
 		public readonly string srcDir;
 		public readonly string patchDir;
         public readonly ProgramSetting<DateTime> cutoff;
         public readonly CSharpFormattingOptions format;
 
-		public string FullBaseDir { get { return Path.Combine(Program.baseDir, baseDir); } }
-		public string FullSrcDir { get { return Path.Combine(Program.baseDir, srcDir); } }
-		public string FullPatchDir { get { return Path.Combine(Program.baseDir, patchDir); } }
+		public string FullBaseDir => Path.Combine(Program.baseDir, baseDir);
+	    public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
+	    public string FullPatchDir => Path.Combine(Program.baseDir, patchDir);
 
-		public DiffTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, 
+	    public DiffTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, 
             ProgramSetting<DateTime> cutoff, CSharpFormattingOptions format = null) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
@@ -98,21 +101,30 @@ namespace Terraria.ModLoader.Setup
 				File.Delete(temp);
 
             var patchFile = Path.Combine(FullPatchDir, relPath + ".patch");
-		    if (patch.Trim() != "")
-            {
+		    if (patch.Trim() != "") {
                 CreateParentDirectory(patchFile);
-                File.WriteAllText(patchFile, patch);
+                File.WriteAllText(patchFile, StripDestHunkOffsets(patch));
 		    }
             else if (File.Exists(patchFile))
                 File.Delete(patchFile);
 
 		}
 
-		private string CallDiff(string baseFile, string srcFile, string baseName, string srcName)
+	    private static string StripDestHunkOffsets(string patchText) {
+	        var r = new Regex(HunkOffsetRegex);
+	        var lines = patchText.Split(new [] { Environment.NewLine }, StringSplitOptions.None);
+	        for (int i = 0; i < lines.Length; i++)
+	            if (lines[i].StartsWith("@@"))
+                    lines[i] = r.Replace(lines[i], "@@ -$1,$2 +_,$4 @@");
+
+	        return string.Join(Environment.NewLine, lines);
+	    }
+
+	    private string CallDiff(string baseFile, string srcFile, string baseName, string srcName)
 		{
 			var output = new StringBuilder();
 			Program.RunCmd(Program.toolsDir, Path.Combine(Program.toolsDir, "py.exe"),
-				string.Format("diff.py {0} {1} {2} {3}", baseFile, srcFile, baseName, srcName),
+			    $"diff.py {baseFile} {srcFile} {baseName} {srcName}",
 				s => output.Append(s));
 
 			return output.ToString();

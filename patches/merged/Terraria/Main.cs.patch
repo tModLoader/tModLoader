@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\Main.cs
 +++ src/merged\Terraria\Main.cs
-@@ -3,11 +3,19 @@
+@@ -3,11 +_,19 @@
  using Microsoft.Xna.Framework.Audio;
  using Microsoft.Xna.Framework.Graphics;
  using Microsoft.Xna.Framework.Input;
@@ -20,7 +20,7 @@
  using System.Runtime.InteropServices;
  using System.Text;
  using System.Text.RegularExpressions;
-@@ -38,10 +46,17 @@
+@@ -38,10 +_,17 @@
  using Terraria.UI.Chat;
  using Terraria.Utilities;
  using Terraria.World.Generation;
@@ -38,7 +38,7 @@
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
  
-@@ -3704,11 +3719,13 @@
+@@ -3704,11 +_,13 @@
  			Main.mouseColor.R = Main.Configuration.Get<byte>("MouseColorR", Main.mouseColor.R);
  			Main.mouseColor.G = Main.Configuration.Get<byte>("MouseColorG", Main.mouseColor.G);
  			Main.mouseColor.B = Main.Configuration.Get<byte>("MouseColorB", Main.mouseColor.B);
@@ -52,7 +52,7 @@
  			Main.SetDisplayMode(preferredBackBufferWidth, preferredBackBufferHeight, fullscreen);
  			int num = 0;
  			Main.Configuration.Get<int>("LastLaunchedVersion", ref num);
-@@ -3778,12 +3795,20 @@
+@@ -3778,12 +_,20 @@
  								{
  									Main.terrariasFixedTiming = binaryReader.ReadBoolean();
  								}
@@ -75,7 +75,7 @@
  								{
  									int width = binaryReader.ReadInt32();
  									int height = binaryReader.ReadInt32();
-@@ -3892,9 +3917,14 @@
+@@ -3892,9 +_,14 @@
  			{
  				if (!Main.WorldList[i].IsCloudSave)
  				{
@@ -91,7 +91,7 @@
  				else if (SocialAPI.Cloud != null)
  				{
  					SocialAPI.Cloud.Delete(Main.WorldList[i].Path);
-@@ -4313,11 +4343,13 @@
+@@ -4313,11 +_,13 @@
  			{
  				string text = "terraria" + Main.rand.Next(2147483647);
  				Console.Title = text;
@@ -105,7 +105,7 @@
  			}
  			else
  			{
-@@ -5185,17 +5217,21 @@
+@@ -5185,17 +_,21 @@
  		public Main()
  		{
  			Main.instance = this;
@@ -127,7 +127,7 @@
  		}
  
  		public static void InitLifeBytes()
-@@ -5251,6 +5287,9 @@
+@@ -5251,6 +_,9 @@
  
  		protected override void Initialize()
  		{
@@ -137,7 +137,7 @@
  			Main.LocalFavoriteData.Load();
  			Main.CloudFavoritesData.Load();
  			TileObjectData.Initialize();
-@@ -5261,9 +5300,14 @@
+@@ -5261,9 +_,14 @@
  			ItemRarity.Initialize();
  			TileEntity.InitializeAll();
  			Main.InitializeItemAnimations();
@@ -152,7 +152,7 @@
  			WorldGen.RandomizeBackgrounds();
  			WorldGen.RandomizeCaveBackgrounds();
  			WorldGen.RandomizeMoonState();
-@@ -7597,17 +7641,20 @@
+@@ -7597,17 +_,20 @@
  				Main.ActivePlayerFileData.StartPlayTimer();
  				Player.EnterWorld(Main.player[Main.myPlayer]);
  			}
@@ -173,7 +173,7 @@
  			keyBoardInput.newKeyEvent += delegate(char keyStroke)
  			{
  				if (Main.keyCount < 10)
-@@ -7617,6 +7664,7 @@
+@@ -7617,6 +_,7 @@
  					Main.keyCount++;
  				}
  			};
@@ -181,7 +181,7 @@
  			base.Initialize();
  			base.Window.AllowUserResizing = true;
  			this.OpenSettings();
-@@ -7642,12 +7690,14 @@
+@@ -7642,12 +_,14 @@
  			this.OpenRecent();
  			Star.SpawnStars();
  			WorldGen.RandomizeWeather();
@@ -196,7 +196,7 @@
  			foreach (DisplayMode current in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
  			{
  				if (current.Width >= Main.minScreenW && current.Height >= Main.minScreenH && current.Width <= Main.maxScreenW && current.Height <= Main.maxScreenH)
-@@ -8512,7 +8562,31 @@
+@@ -8512,7 +_,31 @@
  
  		protected void UpdateMusic()
  		{
@@ -229,7 +229,7 @@
  			{
  				Main.curMusic = 0;
  			}
-@@ -11799,10 +11873,12 @@
+@@ -11799,10 +_,12 @@
  
  		protected override void Update(GameTime gameTime)
  		{
@@ -242,7 +242,7 @@
  			if (Main._hasPendingNetmodeChange)
  			{
  				Main.netMode = Main._targetNetMode;
-@@ -12179,7 +12255,9 @@
+@@ -12179,7 +_,9 @@
  				}
  				if (!base.IsActive && Main.netMode == 0)
  				{
@@ -252,7 +252,7 @@
  					if (Main.netMode != 2 && Main.myPlayer >= 0)
  					{
  						Main.player[Main.myPlayer].delayUseItem = true;
-@@ -12193,7 +12271,9 @@
+@@ -12193,7 +_,9 @@
  					Main.gamePaused = true;
  					return;
  				}
@@ -262,7 +262,7 @@
  				EmoteBubble.UpdateAll();
  				ScreenObstruction.Update();
  				ScreenDarkness.Update();
-@@ -13894,6 +13974,7 @@
+@@ -13894,6 +_,7 @@
  
  		public static string GetInputText(string oldString)
  		{
@@ -270,7 +270,7 @@
  			Main.<>c__DisplayClass6 <>c__DisplayClass = new Main.<>c__DisplayClass6();
  			<>c__DisplayClass.oldString = oldString;
  			if (!Main.hasFocus)
-@@ -14034,6 +14115,9 @@
+@@ -14034,6 +_,9 @@
  				}
  			}
  			return text;
@@ -280,7 +280,7 @@
  		}
  
  		public void MouseText(string cursorText, int rare = 0, byte diff = 0)
-@@ -37579,9 +37663,14 @@
+@@ -37579,9 +_,14 @@
  		protected void QuitGame()
  		{
  			Main.SaveSettings();
@@ -296,7 +296,7 @@
  
  		protected Microsoft.Xna.Framework.Color randColor()
  		{
-@@ -38221,6 +38310,16 @@
+@@ -38221,6 +_,16 @@
  							"\" -lang ",
  							Lang.lang
  						});
@@ -313,7 +313,7 @@
  						if (Main.ActiveWorldFileData.IsCloudSave)
  						{
  							text = text + " -cloudworld \"" + Main.worldPathName + "\"";
-@@ -49958,6 +50057,7 @@
+@@ -49958,6 +_,7 @@
  
  		private static void CheckMonoliths()
  		{
@@ -321,7 +321,7 @@
  			bool flag = Main.player[Main.myPlayer].ZoneTowerVortex || Main.player[Main.myPlayer].ZoneTowerNebula || Main.player[Main.myPlayer].ZoneTowerStardust || Main.player[Main.myPlayer].ZoneTowerSolar;
  			for (int i = 0; i < Main.MonolithFilterNames.Length; i++)
  			{
-@@ -49984,6 +50084,7 @@
+@@ -49984,6 +_,7 @@
  					}
  				}
  			}
@@ -329,7 +329,7 @@
  		}
  
  		protected override void Draw(GameTime gameTime)
-@@ -50032,7 +50133,9 @@
+@@ -50032,7 +_,9 @@
  			{
  				Main.maxQ = true;
  			}
@@ -339,7 +339,7 @@
  			Main.drawTime++;
  			Main.screenLastPosition = Main.screenPosition;
  			if (Main.stackSplit == 0)
-@@ -52962,6 +53065,7 @@
+@@ -52962,6 +_,7 @@
  			Main.UpdateSundial();
  			Main.time += (double)Main.dayRate;
  			CultistRitual.UpdateTime();
@@ -347,7 +347,7 @@
  			if (NPC.MoonLordCountdown > 0)
  			{
  				float num5 = MathHelper.Clamp((float)Math.Sin((double)((float)NPC.MoonLordCountdown / 60f * 0.5f)) * 2f, 0f, 1f);
-@@ -52976,6 +53080,7 @@
+@@ -52976,6 +_,7 @@
  			{
  				Filters.Scene.Deactivate("MoonLordShake", new object[0]);
  			}
@@ -355,7 +355,7 @@
  			if (NPC.MoonLordCountdown > 0)
  			{
  				NPC.MoonLordCountdown--;
-@@ -54542,8 +54647,12 @@
+@@ -54542,8 +_,12 @@
  			{
  				Main.graphics.ToggleFullScreen();
  			}
@@ -368,7 +368,7 @@
  			if (!Main.instance.IsActive && (Main.screenMaximized || Main.graphics.IsFullScreen))
  			{
  				return;
-@@ -54553,7 +54662,9 @@
+@@ -54553,7 +_,9 @@
  			int num4;
  			if (Main.screenMaximized || Main.graphics.IsFullScreen)
  			{
@@ -378,7 +378,7 @@
  				if (width > Main.maxScreenW)
  				{
  					float num = (float)height / (float)width;
-@@ -54571,13 +54682,16 @@
+@@ -54571,13 +_,16 @@
  			}
  			else
  			{
@@ -395,7 +395,7 @@
  			if (!fullscreen && !flag)
  			{
  				if (form.ClientSize.Width < Main.graphics.PreferredBackBufferWidth)
-@@ -54591,6 +54705,11 @@
+@@ -54591,6 +_,11 @@
  					flag = true;
  				}
  			}
@@ -407,7 +407,7 @@
  			width &= 2147483646;
  			height &= 2147483646;
  			width = Math.Max(width, Main.minScreenW);
-@@ -54609,11 +54728,13 @@
+@@ -54609,11 +_,13 @@
  				Main.graphics.ApplyChanges();
  				Main.PendingResolutionWidth = Main.screenWidth;
  				Main.PendingResolutionHeight = Main.screenHeight;

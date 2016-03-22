@@ -1,6 +1,6 @@
 --- src/merged\Terraria\HitTile.cs
 +++ src/Terraria\Terraria\HitTile.cs
-@@ -130,35 +130,36 @@
+@@ -130,35 +_,36 @@
  			}
  			hitTileObject.damage += damageAmount;
  			hitTileObject.timeToLive = 60;
@@ -66,7 +66,7 @@
  		}
  
  		public void Clear(int tileId)
-@@ -168,21 +169,20 @@
+@@ -168,21 +_,20 @@
  				return;
  			}
  			this.data[tileId].Clear();

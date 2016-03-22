@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Program.cs
 +++ src/tModLoader\Terraria\Program.cs
-@@ -9,6 +9,7 @@
+@@ -9,6 +_,7 @@
  using System.Windows.Forms;
  #endif
  using Terraria.Initializers;
@@ -8,7 +8,7 @@
  using Terraria.Social;
  
  namespace Terraria
-@@ -97,6 +98,15 @@
+@@ -97,6 +_,15 @@
  		public static void LaunchGame(string[] args)
  		{
  			Program.LaunchParameters = Utils.ParseArguements(args);

@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\Minecart.cs
 +++ src/merged\Terraria\Minecart.cs
-@@ -89,10 +89,12 @@
+@@ -89,10 +_,12 @@
  
  		public static void Initialize()
  		{

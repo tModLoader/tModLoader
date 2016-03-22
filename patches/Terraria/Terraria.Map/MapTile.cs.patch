@@ -1,6 +1,6 @@
 --- src/merged\Terraria.Map\MapTile.cs
 +++ src/Terraria\Terraria.Map\MapTile.cs
-@@ -31,11 +31,11 @@
+@@ -31,11 +_,11 @@
  		{
  			get
  			{
@@ -14,7 +14,7 @@
  			}
  		}
  
-@@ -65,12 +65,12 @@
+@@ -65,12 +_,12 @@
  
  		public MapTile WithLight(byte light)
  		{

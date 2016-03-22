@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Skies\VortexSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\VortexSky.cs
-@@ -119,7 +119,7 @@
+@@ -119,7 +_,7 @@
  			return (1f - this._fadeOpacity) * 0.3f + 0.7f;
  		}
  
@@ -9,7 +9,7 @@
  		{
  			this._fadeOpacity = 0.002f;
  			this._isActive = true;
-@@ -130,7 +130,7 @@
+@@ -130,7 +_,7 @@
  			}
  		}
  

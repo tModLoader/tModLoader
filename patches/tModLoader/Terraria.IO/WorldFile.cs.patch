@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.IO\WorldFile.cs
 +++ src/tModLoader\Terraria.IO\WorldFile.cs
-@@ -5,6 +5,9 @@
+@@ -5,6 +_,9 @@
  using Terraria.DataStructures;
  using Terraria.GameContent.Events;
  using Terraria.ID;
@@ -10,7 +10,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -106,6 +109,8 @@
+@@ -106,6 +_,8 @@
  						}
  						binaryReader.Close();
  						memoryStream.Close();
@@ -19,7 +19,7 @@
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
-@@ -164,8 +169,9 @@
+@@ -164,8 +_,9 @@
  						}
  						NPC.setWorldMonsters();
  					}
@@ -31,7 +31,7 @@
  						WorldGen.loadFailed = true;
  						WorldGen.loadSuccess = false;
  						try
-@@ -302,6 +308,7 @@
+@@ -302,6 +_,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
  				}
@@ -39,7 +39,7 @@
  				WorldGen.saveLock = false;
  			}
  			Main.serverGenLock = false;
-@@ -997,7 +1004,14 @@
+@@ -997,7 +_,14 @@
  				writer.Write(Main.anglerWhoFinishedToday[i]);
  			}
  			writer.Write(NPC.savedAngler);
@@ -55,7 +55,7 @@
  			writer.Write(NPC.savedStylist);
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(Main.invasionSizeStart);
-@@ -1050,7 +1064,7 @@
+@@ -1050,7 +_,7 @@
  					byte b2;
  					byte b = b2 = (b3 = 0);
  					bool flag = false;
@@ -64,7 +64,7 @@
  					{
  						flag = true;
  						if (tile.type == 127)
-@@ -1087,9 +1101,11 @@
+@@ -1087,9 +_,11 @@
  						}
  						if (Main.tileFrameImportant[(int)tile.type])
  						{
@@ -78,7 +78,7 @@
  							num2++;
  							array[num2] = (byte)(tile.frameY & 255);
  							num2++;
-@@ -1103,10 +1119,10 @@
+@@ -1103,10 +_,10 @@
  							num2++;
  						}
  					}
@@ -91,7 +91,7 @@
  						num2++;
  						if (tile.wallColor() != 0)
  						{
-@@ -1260,7 +1276,7 @@
+@@ -1260,7 +_,7 @@
  					for (int l = 0; l < 40; l++)
  					{
  						Item item = chest.item[l];

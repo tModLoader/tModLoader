@@ -1,6 +1,6 @@
 --- src/decompiled\Properties\AssemblyInfo.cs
 +++ src/merged\Properties\AssemblyInfo.cs
-@@ -1,14 +1,25 @@
+@@ -1,14 +_,25 @@
  using System;
 +#if WINDOWS
  using System.Diagnostics;
@@ -26,7 +26,7 @@
  [assembly: AssemblyCompany("Re-Logic")]
  [assembly: AssemblyCopyright("Copyright © Re-Logic 2015")]
  [assembly: AssemblyDescription("")]
-@@ -16,10 +27,20 @@
+@@ -16,10 +_,20 @@
  [assembly: AssemblyProduct("Terraria")]
  [assembly: AssemblyTitle("Terraria")]
  [assembly: AssemblyTrademark("")]

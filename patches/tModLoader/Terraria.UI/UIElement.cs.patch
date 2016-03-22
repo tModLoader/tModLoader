@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.UI\UIElement.cs
 +++ src/tModLoader\Terraria.UI\UIElement.cs
-@@ -380,5 +380,10 @@
+@@ -380,5 +_,10 @@
  		{
  			return 0;
  		}

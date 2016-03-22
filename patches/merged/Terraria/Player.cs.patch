@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\Player.cs
 +++ src/merged\Terraria\Player.cs
-@@ -33554,10 +33554,12 @@
+@@ -33554,10 +_,12 @@
  					int num4 = y;
  					bool flag3 = Main.tile[x, num4].active();
  					WorldGen.KillTile(x, num4, false, false, false);

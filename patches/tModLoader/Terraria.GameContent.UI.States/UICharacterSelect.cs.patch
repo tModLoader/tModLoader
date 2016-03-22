@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.UI.States\UICharacterSelect.cs
 +++ src/tModLoader\Terraria.GameContent.UI.States\UICharacterSelect.cs
-@@ -3,6 +3,7 @@
+@@ -3,6 +_,7 @@
  using Terraria.GameContent.UI.Elements;
  using Terraria.IO;
  using Terraria.UI;
@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent.UI.States
  {
-@@ -63,12 +64,7 @@
+@@ -63,12 +_,7 @@
  		{
  			Main.PlaySound(10, -1, -1, 1);
  			Player player = new Player();

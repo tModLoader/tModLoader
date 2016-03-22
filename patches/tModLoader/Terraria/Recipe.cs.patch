@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Recipe.cs
 +++ src/tModLoader\Terraria\Recipe.cs
-@@ -1,6 +1,7 @@
+@@ -1,6 +_,7 @@
  using System;
  using System.Collections.Generic;
  using Terraria.GameContent.Achievements;
@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -42,6 +43,11 @@
+@@ -42,6 +_,11 @@
  					break;
  				}
  				int num = item.stack;
@@ -20,7 +20,7 @@
  				if (this.alchemy && Main.player[Main.myPlayer].alchemyTable)
  				{
  					if (num > 1)
-@@ -71,7 +77,7 @@
+@@ -71,7 +_,7 @@
  						{
  							break;
  						}
@@ -29,7 +29,7 @@
  						{
  							if (item2.stack > num)
  							{
-@@ -106,7 +112,7 @@
+@@ -106,7 +_,7 @@
  							{
  								break;
  							}
@@ -38,7 +38,7 @@
  							{
  								if (item2.stack > num)
  								{
-@@ -136,153 +142,42 @@
+@@ -136,153 +_,42 @@
  			Recipe.FindRecipes();
  		}
  
@@ -210,7 +210,7 @@
  		}
  
  		public static void FindRecipes()
-@@ -306,7 +201,7 @@
+@@ -306,7 +_,7 @@
  					int num3 = 0;
  					while (num3 < Recipe.maxRequirements && Main.recipe[j].requiredItem[num3].type != 0)
  					{
@@ -219,7 +219,7 @@
  						{
  							Main.availableRecipe[Main.numAvailableRecipes] = j;
  							Main.numAvailableRecipes++;
-@@ -400,7 +295,8 @@
+@@ -400,7 +_,8 @@
  							bool flag3 = false;
  							foreach (int current in dictionary.Keys)
  							{
@@ -229,7 +229,7 @@
  								{
  									num6 -= dictionary[current];
  									flag3 = true;
-@@ -427,7 +323,7 @@
+@@ -427,7 +_,7 @@
  							flag2 = false;
  						}
  					}
@@ -238,7 +238,7 @@
  					{
  						Main.availableRecipe[Main.numAvailableRecipes] = num4;
  						Main.numAvailableRecipes++;
-@@ -10128,6 +10024,7 @@
+@@ -10128,6 +_,7 @@
  			Recipe.AddRecipe();
  			Recipe.WallReturn();
  			Recipe.PlatformReturn();

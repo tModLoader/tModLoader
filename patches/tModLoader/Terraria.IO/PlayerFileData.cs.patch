@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.IO\PlayerFileData.cs
 +++ src/tModLoader\Terraria.IO\PlayerFileData.cs
-@@ -3,6 +3,7 @@
+@@ -3,6 +_,7 @@
  using System.Diagnostics;
  using System.IO;
  using System.Text.RegularExpressions;
@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -96,6 +97,7 @@
+@@ -96,6 +_,7 @@
  				this._isCloudSave = true;
  				this._path = playerPathFromName;
  				Main.CloudFavoritesData.SaveFavorite(this);
@@ -16,7 +16,7 @@
  			}
  		}
  
-@@ -112,6 +114,8 @@
+@@ -112,6 +_,8 @@
  				char directorySeparatorChar = System.IO.Path.DirectorySeparatorChar;
  				string matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.map";
  				List<string> files = SocialAPI.Cloud.GetFiles(matchPattern);
@@ -25,7 +25,7 @@
  				for (int i = 0; i < files.Count; i++)
  				{
  					string localPath = string.Concat(new object[]
-@@ -128,6 +132,7 @@
+@@ -128,6 +_,7 @@
  				this._isCloudSave = false;
  				this._path = playerPathFromName;
  				Main.LocalFavoriteData.SaveFavorite(this);

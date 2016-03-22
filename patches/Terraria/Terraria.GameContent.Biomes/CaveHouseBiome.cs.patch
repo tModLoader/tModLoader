@@ -1,6 +1,6 @@
 --- src/merged\Terraria.GameContent.Biomes\CaveHouseBiome.cs
 +++ src/Terraria\Terraria.GameContent.Biomes\CaveHouseBiome.cs
-@@ -788,7 +788,7 @@
+@@ -788,7 +_,7 @@
  				{
  					CaveHouseBiome.BuildData.Default.Wall
  				}),
@@ -9,7 +9,7 @@
  			}));
  			WorldUtils.Gen(new Point(room.X, room.Y), new Shapes.Rectangle(room.Width, room.Height), Actions.Chain(new GenAction[]
  			{
-@@ -841,7 +841,7 @@
+@@ -841,7 +_,7 @@
  			{
  				new Modifiers.Dither(0.85000002384185791),
  				new Modifiers.Blotches(2, 0.8),

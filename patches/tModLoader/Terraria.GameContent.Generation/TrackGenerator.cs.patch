@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Generation\TrackGenerator.cs
 +++ src/tModLoader\Terraria.GameContent.Generation\TrackGenerator.cs
-@@ -95,7 +95,7 @@
+@@ -95,7 +_,7 @@
  			{
  				return false;
  			}

@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Utilities\FileUtilities.cs
 +++ src/merged\Terraria.Utilities\FileUtilities.cs
-@@ -25,8 +25,12 @@
+@@ -25,8 +_,12 @@
  				SocialAPI.Cloud.Delete(path);
  				return;
  			}

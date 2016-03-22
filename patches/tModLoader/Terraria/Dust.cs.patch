@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Dust.cs
 +++ src/tModLoader\Terraria\Dust.cs
-@@ -2,6 +2,8 @@
+@@ -2,6 +_,8 @@
  using System;
  using Terraria.GameContent;
  using Terraria.Graphics.Shaders;
@@ -9,7 +9,7 @@
  
  namespace Terraria
  {
-@@ -24,6 +26,7 @@
+@@ -24,6 +_,7 @@
  		public ArmorShaderData shader;
  		public object customData;
  		public bool firstFrame;
@@ -17,7 +17,7 @@
  
  		public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  		{
-@@ -168,6 +171,7 @@
+@@ -168,6 +_,7 @@
  					{
  						dust.alpha = 50;
  					}
@@ -25,7 +25,7 @@
  					if (dust.type != 34 && dust.type != 35 && dust.type != 152)
  					{
  						break;
-@@ -290,6 +294,13 @@
+@@ -290,6 +_,13 @@
  					if (dust.active)
  					{
  						Dust.dCount += 1f;
@@ -39,7 +39,7 @@
  						if (dust.scale > 10f)
  						{
  							dust.active = false;
-@@ -1729,7 +1740,7 @@
+@@ -1729,7 +_,7 @@
  							}
  							Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num105 * 0.7f, num105, num105 * 0.8f);
  						}
@@ -48,7 +48,7 @@
  						{
  							Dust expr_3E5B_cp_0 = dust;
  							expr_3E5B_cp_0.velocity.X = expr_3E5B_cp_0.velocity.X * 0.99f;
-@@ -1954,6 +1965,7 @@
+@@ -1954,6 +_,7 @@
  						{
  							dust.active = false;
  						}
@@ -56,7 +56,7 @@
  					}
  				}
  				else
-@@ -1992,6 +2004,15 @@
+@@ -1992,6 +_,15 @@
  
  		public Color GetAlpha(Color newColor)
  		{

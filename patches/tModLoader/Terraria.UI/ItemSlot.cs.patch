@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.UI\ItemSlot.cs
 +++ src/tModLoader\Terraria.UI\ItemSlot.cs
-@@ -5,6 +5,7 @@
+@@ -5,6 +_,7 @@
  using Terraria.GameContent.Achievements;
  using Terraria.GameContent.UI.Chat;
  using Terraria.ID;
@@ -8,7 +8,7 @@
  using Terraria.UI.Chat;
  
  namespace Terraria.UI
-@@ -731,7 +732,7 @@
+@@ -731,7 +_,7 @@
  			if (context == 0)
  			{
  				flag = true;
@@ -17,7 +17,7 @@
  				{
  					if (Main.mouseRightRelease)
  					{
-@@ -848,6 +849,10 @@
+@@ -848,6 +_,10 @@
  						inv[slot].stack = Main.rand.Next(20, 50);
  					}
  					Recipe.FindRecipes();
@@ -28,7 +28,7 @@
  				}
  				else
  				{
-@@ -1270,11 +1275,17 @@
+@@ -1270,11 +_,17 @@
  				num4 *= inventoryScale;
  				Vector2 position2 = position + texture2D.Size() * inventoryScale / 2f - rectangle2.Size() * num4 / 2f;
  				Vector2 origin = rectangle2.Size() * (num3 / 2f - 0.5f);
@@ -51,7 +51,7 @@
  				if (item.stack > 1)
  				{
  					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, item.stack.ToString(), position + new Vector2(10f, 26f) * inventoryScale, color, 0f, Vector2.Zero, new Vector2(inventoryScale), -1f, inventoryScale);
-@@ -1493,7 +1504,7 @@
+@@ -1493,7 +_,7 @@
  				}
  				if (player.armor[slot].wingSlot > 0 && item.wingSlot > 0)
  				{
@@ -60,7 +60,7 @@
  				}
  			}
  			for (int i = 0; i < player.armor.Length; i++)
-@@ -1514,7 +1525,7 @@
+@@ -1514,7 +_,7 @@
  					return true;
  				}
  			}
@@ -69,7 +69,7 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success)
-@@ -1602,6 +1613,15 @@
+@@ -1602,6 +_,15 @@
  						ItemSlot.accSlotCount = j - 3;
  					}
  				}
@@ -85,7 +85,7 @@
  				if (ItemSlot.accSlotCount >= num2)
  				{
  					ItemSlot.accSlotCount = 0;
-@@ -1617,6 +1637,10 @@
+@@ -1617,6 +_,10 @@
  					{
  						num3 = k;
  					}
@@ -96,7 +96,7 @@
  				}
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
-@@ -1748,7 +1772,7 @@
+@@ -1748,7 +_,7 @@
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false)
  		{

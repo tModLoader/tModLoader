@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\Mount.cs
 +++ src/merged\Terraria\Mount.cs
-@@ -1075,6 +1075,7 @@
+@@ -1075,6 +_,7 @@
  				mountData.textureHeight = mountData.frontTexture.Height;
  			}
  			Mount.drillTextureSize = new Vector2(80f, 80f);
@@ -8,7 +8,7 @@
  			Vector2 value = new Vector2((float)mountData.textureWidth, (float)(mountData.textureHeight / mountData.totalFrames));
  			if (Mount.drillTextureSize != value)
  			{
-@@ -1087,6 +1088,7 @@
+@@ -1087,6 +_,7 @@
  					"."
  				}));
  			}
@@ -16,7 +16,7 @@
  			mountData = new Mount.MountData();
  			Mount.mounts[9] = mountData;
  			mountData.spawnDust = 152;
-@@ -1155,6 +1157,7 @@
+@@ -1155,6 +_,7 @@
  			Mount.scutlixEyePositions[8] = new Vector2(70f, 34f);
  			Mount.scutlixEyePositions[9] = new Vector2(76f, 34f);
  			Mount.scutlixTextureSize = new Vector2(45f, 54f);
@@ -24,7 +24,7 @@
  			Vector2 value2 = new Vector2((float)(mountData.textureWidth / 2), (float)(mountData.textureHeight / mountData.totalFrames));
  			if (Mount.scutlixTextureSize != value2)
  			{
-@@ -1167,6 +1170,7 @@
+@@ -1167,6 +_,7 @@
  					"."
  				}));
  			}

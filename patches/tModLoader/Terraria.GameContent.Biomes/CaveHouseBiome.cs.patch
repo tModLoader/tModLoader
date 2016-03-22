@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Biomes\CaveHouseBiome.cs
 +++ src/tModLoader\Terraria.GameContent.Biomes\CaveHouseBiome.cs
-@@ -160,7 +160,7 @@
+@@ -160,7 +_,7 @@
  		}
  
  		private const int VERTICAL_EXIT_WIDTH = 3;

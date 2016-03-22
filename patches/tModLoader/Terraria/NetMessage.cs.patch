@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\NetMessage.cs
 +++ src/tModLoader\Terraria\NetMessage.cs
-@@ -6,6 +6,7 @@
+@@ -6,6 +_,7 @@
  using Terraria.GameContent.Tile_Entities;
  using Terraria.ID;
  using Terraria.IO;
@@ -8,7 +8,7 @@
  using Terraria.Net.Sockets;
  using Terraria.Social;
  
-@@ -496,6 +497,7 @@
+@@ -496,6 +_,7 @@
  							{
  								writer.Write((byte)nPC.releaseOwner);
  							}
@@ -16,7 +16,7 @@
  							break;
  						}
  					case 24:
-@@ -541,7 +543,7 @@
+@@ -541,7 +_,7 @@
  									bb14[num10] = true;
  								}
  							}
@@ -25,7 +25,7 @@
  							{
  								bb14[Projectile.maxAI] = true;
  							}
-@@ -557,6 +559,7 @@
+@@ -557,6 +_,7 @@
  							{
  								writer.Write((short)projectile.projUUID);
  							}
@@ -33,7 +33,7 @@
  							break;
  						}
  					case 28:
-@@ -1426,7 +1429,7 @@
+@@ -1426,7 +_,7 @@
  			int num5 = 0;
  			int num6 = 0;
  			byte b = 0;
@@ -42,7 +42,7 @@
  			Tile tile = null;
  			for (int i = yStart; i < yStart + height; i++)
  			{
-@@ -1557,7 +1560,10 @@
+@@ -1557,7 +_,10 @@
  						if (tile2.wall != 0)
  						{
  							b |= 4;
@@ -54,7 +54,7 @@
  							num5++;
  							if (tile2.wallColor() != 0)
  							{
-@@ -1789,7 +1795,7 @@
+@@ -1789,7 +_,7 @@
  						}
  						if ((b3 & 4) == 4)
  						{

@@ -1,6 +1,6 @@
 --- src/merged\Terraria.ID\SetFactory.cs
 +++ src/Terraria\Terraria.ID\SetFactory.cs
-@@ -52,20 +52,21 @@
+@@ -52,20 +_,21 @@
  			return result;
  		}
  
@@ -36,7 +36,7 @@
  
  		public bool[] CreateBoolSet(params int[] types)
  		{
-@@ -117,7 +118,7 @@
+@@ -117,7 +_,7 @@
  			}
  			for (int j = 0; j < inputs.Length; j += 2)
  			{

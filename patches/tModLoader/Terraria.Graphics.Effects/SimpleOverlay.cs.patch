@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Graphics.Effects\SimpleOverlay.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\SimpleOverlay.cs
-@@ -33,13 +33,13 @@
+@@ -33,13 +_,13 @@
  			spriteBatch.Draw(this._texture.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White);
  		}
  

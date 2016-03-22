@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Graphics.Capture\CaptureManager.cs
 +++ src/merged\Terraria.Graphics.Capture\CaptureManager.cs
-@@ -16,7 +16,11 @@
+@@ -16,7 +_,11 @@
  		{
  			get
  			{
@@ -12,7 +12,7 @@
  			}
  		}
  
-@@ -50,7 +54,9 @@
+@@ -50,7 +_,9 @@
  		public CaptureManager()
  		{
  			this._interface = new CaptureInterface();

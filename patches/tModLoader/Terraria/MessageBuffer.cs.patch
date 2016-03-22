@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\MessageBuffer.cs
 +++ src/tModLoader\Terraria\MessageBuffer.cs
-@@ -9,6 +9,7 @@
+@@ -9,6 +_,7 @@
  using Terraria.GameContent.UI;
  using Terraria.GameContent.UI.Chat;
  using Terraria.ID;
@@ -8,7 +8,7 @@
  using Terraria.Net;
  using Terraria.UI;
  
-@@ -1070,7 +1071,7 @@
+@@ -1070,7 +_,7 @@
  								}
  								if (tile.wall > 0)
  								{
@@ -17,7 +17,7 @@
  								}
  								if (flag8)
  								{
-@@ -1292,8 +1293,8 @@
+@@ -1292,8 +_,8 @@
  						if (Main.npcCatchable[nPC.type])
  						{
  							nPC.releaseOwner = (short)this.reader.ReadByte();
@@ -28,7 +28,7 @@
  						return;
  					}
  				case 24:
-@@ -1472,6 +1473,7 @@
+@@ -1472,6 +_,7 @@
  						{
  							num84 = -1;
  						}
@@ -36,7 +36,7 @@
  						if (Main.netMode == 2)
  						{
  							num81 = this.whoAmI;
-@@ -1525,6 +1527,7 @@
+@@ -1525,6 +_,7 @@
  							projectile.projUUID = num84;
  							Main.projectileIdentity[num81, num84] = num85;
  						}

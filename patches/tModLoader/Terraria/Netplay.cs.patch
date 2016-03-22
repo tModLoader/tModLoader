@@ -1,13 +1,13 @@
 --- src/Terraria\Terraria\Netplay.cs
 +++ src/tModLoader\Terraria\Netplay.cs
-@@ -1,4 +1,6 @@
+@@ -1,4 +_,6 @@
  using System;
 +using System.Collections.Concurrent;
 +using System.Collections.Generic;
  using System.IO;
  using System.Net;
  using System.Net.Sockets;
-@@ -7,6 +9,7 @@
+@@ -7,6 +_,7 @@
  using System.Runtime.CompilerServices;
  #endif
  using System.Threading;
@@ -15,7 +15,7 @@
  using Terraria.IO;
  using Terraria.Net;
  using Terraria.Net.Sockets;
-@@ -48,6 +51,20 @@
+@@ -48,6 +_,20 @@
  
  		public static event Action OnDisconnect;
  
@@ -36,7 +36,7 @@
  		private static void OpenPort()
  		{
  			Netplay.portForwardIP = Netplay.GetLocalIPAddress();
-@@ -275,7 +292,7 @@
+@@ -275,7 +_,7 @@
  					{
  						if (NetMessage.buffer[256].checkBytes)
  						{
@@ -45,7 +45,7 @@
  						}
  						Netplay.Connection.IsActive = true;
  						if (Netplay.Connection.State == 0)
-@@ -359,7 +376,6 @@
+@@ -359,7 +_,6 @@
  									});
  							}
  						}
@@ -53,7 +53,7 @@
  					}
  					else if (Netplay.Connection.IsActive)
  					{
-@@ -514,7 +530,6 @@
+@@ -514,7 +_,6 @@
  				{
  				}
  			}
@@ -61,7 +61,7 @@
  			while (!Netplay.disconnect)
  			{
  				if (!Netplay.IsListening)
-@@ -548,19 +563,20 @@
+@@ -548,19 +_,20 @@
  					}
  				}
  				IL_165:
@@ -92,7 +92,7 @@
  					{
  						if (Netplay.Clients[k].IsConnected())
  						{
-@@ -695,16 +711,6 @@
+@@ -695,16 +_,6 @@
  					IL_65B:
  					;
  				}

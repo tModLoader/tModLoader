@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.ObjectData\TileObjectData.cs
 +++ src/tModLoader\Terraria.ObjectData\TileObjectData.cs
-@@ -9,7 +9,7 @@
+@@ -9,7 +_,7 @@
  {
  	public class TileObjectData
  	{
@@ -9,7 +9,7 @@
  		private bool _linkedAlternates;
  		private bool _usesCustomCanPlace;
  		private TileObjectAlternatesModule _alternates;
-@@ -34,33 +34,33 @@
+@@ -34,33 +_,33 @@
  		private bool _hasOwnTileObjectDraw;
  		private bool _hasOwnTileObjectStyle;
  		private bool _hasOwnTileObjectCoords;
@@ -68,7 +68,7 @@
  		{
  			get
  			{
-@@ -91,7 +91,7 @@
+@@ -91,7 +_,7 @@
  			}
  		}
  
@@ -77,7 +77,7 @@
  		{
  			get
  			{
-@@ -645,7 +645,7 @@
+@@ -645,7 +_,7 @@
  			}
  		}
  
@@ -86,7 +86,7 @@
  		{
  			get
  			{
-@@ -1655,14 +1655,14 @@
+@@ -1655,14 +_,14 @@
  			TileObjectData.newTile = new TileObjectData(TileObjectData._baseObject);
  		}
  
@@ -103,7 +103,7 @@
  		{
  			TileObjectData.newSubTile.Calculate();
  			List<TileObjectData> list;
-@@ -1687,7 +1687,7 @@
+@@ -1687,7 +_,7 @@
  			TileObjectData.newSubTile = new TileObjectData(TileObjectData._baseObject);
  		}
  
@@ -112,7 +112,7 @@
  		{
  			TileObjectData.newAlternate.Calculate();
  			if (!TileObjectData.newTile._hasOwnAlternates)
-@@ -3305,7 +3305,6 @@
+@@ -3305,7 +_,6 @@
  			};
  			TileObjectData.addAlternate(27);
  			TileObjectData.addTile(20);

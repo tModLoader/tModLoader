@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Gore.cs
 +++ src/tModLoader\Terraria\Gore.cs
-@@ -1,11 +1,18 @@
+@@ -1,11 +_,18 @@
  using Microsoft.Xna.Framework;
  using System;
  using Terraria.GameContent;
@@ -19,7 +19,7 @@
  		public static int goreTime = 600;
  		public Vector2 position;
  		public Vector2 velocity;
-@@ -30,6 +37,10 @@
+@@ -30,6 +_,10 @@
  			}
  			if (this.active)
  			{
@@ -30,7 +30,7 @@
  				if (this.type >= 276 && this.type <= 282)
  				{
  					this.velocity.X = this.velocity.X * 0.98f;
-@@ -673,6 +684,7 @@
+@@ -673,6 +_,7 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
@@ -38,7 +38,7 @@
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type))
  			{
  				Main.gore[num].type = Main.rand.Next(11, 14);
-@@ -742,6 +754,14 @@
+@@ -742,6 +_,14 @@
  
  		public Color GetAlpha(Color newColor)
  		{

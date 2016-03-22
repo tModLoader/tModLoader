@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Generation\WorldGenLegacyMethod.cs
 +++ src/tModLoader\Terraria.GameContent.Generation\WorldGenLegacyMethod.cs
-@@ -3,5 +3,5 @@
+@@ -3,5 +_,5 @@
  
  namespace Terraria.GameContent.Generation
  {

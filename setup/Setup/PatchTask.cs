@@ -20,11 +20,11 @@ namespace Terraria.ModLoader.Setup
 		private int failures;
 		private StreamWriter logFile;
 
-		public string FullBaseDir { get { return Path.Combine(Program.baseDir, baseDir); } }
-		public string FullSrcDir { get { return Path.Combine(Program.baseDir, srcDir); } }
-		public string FullPatchDir { get { return Path.Combine(Program.baseDir, patchDir); } }
+		public string FullBaseDir => Path.Combine(Program.baseDir, baseDir);
+	    public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
+	    public string FullPatchDir => Path.Combine(Program.baseDir, patchDir);
 
-		public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir,
+	    public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir,
             ProgramSetting<DateTime> cutoff, CSharpFormattingOptions format = null) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
@@ -93,13 +93,11 @@ namespace Terraria.ModLoader.Setup
 				logFile = new StreamWriter(Path.Combine(Program.LogDir, "patch.log"));
 				ExecuteParallel(patchItems, false);
 			}
-			finally
-			{
-				if (logFile != null)
-					logFile.Close();
+			finally {
+			    logFile?.Close();
 			}
 
-            cutoff.Set(DateTime.Now);
+		    cutoff.Set(DateTime.Now);
 		}
 
 		public override bool Failed()
@@ -115,7 +113,7 @@ namespace Terraria.ModLoader.Setup
 		public override void FinishedDialog()
 		{
 			MessageBox.Show(
-				string.Format("Patches applied with {0} failures and {1} warnings.\nSee /logs/patch.log for details", failures, warnings),
+			    $"Patches applied with {failures} failures and {warnings} warnings.\nSee /logs/patch.log for details",
 				"Patch Results", MessageBoxButtons.OK, Failed() ? MessageBoxIcon.Error : MessageBoxIcon.Warning);
 		}
 
@@ -129,8 +127,10 @@ namespace Terraria.ModLoader.Setup
 				return;
 			}
 
-			FixLineEndings(Path.Combine(FullPatchDir, relPath));
-			CallPatch(Path.Combine(patchDir, relPath), Path.Combine(srcDir, patchFullName));
+		    var patchText = File.ReadAllText(Path.Combine(FullPatchDir, relPath));
+		    patchText = PreparePatch(patchText);
+
+			CallPatch(patchText, Path.Combine(srcDir, patchFullName));
 
 			//just a copy of the original if the patch wasn't perfect, delete it, we still have it
 			var fileName = Path.GetFileName(patchFullName);
@@ -140,15 +140,24 @@ namespace Terraria.ModLoader.Setup
 				File.Delete(fuzzFile);
 		}
 
-		private void FixLineEndings(string file)
-		{
-			var text = File.ReadAllText(file);
-			var text2 = new Regex("(?<!\r)\n").Replace(text, "\r\n");
-			if (text != text2)
-				File.WriteAllText(file, text2);
-		}
+        //generates destination hunk offsets and enforces windows line endings
+	    private static string PreparePatch(string patchText) {
+            var r = new Regex(DiffTask.HunkOffsetRegex);
+            var lines = patchText.Split('\n');
+	        int delta = 0;
+	        for (int i = 0; i < lines.Length; i++) {
+	            lines[i] = lines[i].TrimEnd();
+	            if (lines[i].StartsWith("@@")) {
+	                var m = r.Match(lines[i]);
+	                var hunkOffset = int.Parse(m.Groups[1].Value) + delta;
+	                delta += int.Parse(m.Groups[4].Value) - int.Parse(m.Groups[2].Value);
+	                lines[i] = m.Result($"@@ -$1,$2 +{hunkOffset},$4 @@");
+	            }
+	        }
+	        return string.Join(Environment.NewLine, lines);
+	    }
 
-		private void Log(string text)
+        private void Log(string text)
 		{
 			lock (logFile)
 			{
@@ -156,16 +165,17 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private void CallPatch(string patchFile, string srcFile)
+		private void CallPatch(string patchText, string srcFile)
 		{
 			var output = new StringBuilder();
 			var error = new StringBuilder();
 			var log = new StringBuilder();
 			Program.RunCmd(Program.toolsDir, Path.Combine(Program.toolsDir, "applydiff.exe"),
-				string.Format("-u -N -p0 -d {0} -i {1} {2}", Program.baseDir, patchFile, srcFile),
+			    $"-u -N -p0 -d {Program.baseDir} {srcFile}",
 				s => { output.Append(s); lock(log) log.Append(s); },
-				s => { error.Append(s); lock(log) log.Append(s); }
-			);
+				s => { error.Append(s); lock(log) log.Append(s); },
+                patchText
+            );
 
 			Log(log.ToString());
 

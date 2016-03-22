@@ -1,6 +1,6 @@
 --- src/merged\Terraria.Map\MapHelper.cs
 +++ src/Terraria\Terraria.Map\MapHelper.cs
-@@ -1137,9 +1137,9 @@
+@@ -1137,9 +_,9 @@
  				oldColor.B = (byte)((float)(255 - oldColor.B) * 0.5f);
  				return;
  			}
@@ -13,7 +13,7 @@
  		}
  
  		public static Color GetMapTileXnaColor(ref MapTile tile)
-@@ -1889,12 +1889,12 @@
+@@ -1889,12 +_,12 @@
  								binaryWriter.Write(Main.worldID);
  								binaryWriter.Write(Main.maxTilesY);
  								binaryWriter.Write(Main.maxTilesX);
@@ -32,7 +32,7 @@
  								byte b = 1;
  								byte b2 = 0;
  								int i;
-@@ -2661,13 +2661,13 @@
+@@ -2661,13 +_,13 @@
  						case 3:
  						case 4:
  						case 5:

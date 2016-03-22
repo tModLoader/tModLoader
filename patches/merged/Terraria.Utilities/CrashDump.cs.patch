@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Utilities\CrashDump.cs
 +++ src/merged\Terraria.Utilities\CrashDump.cs
-@@ -34,7 +34,11 @@
+@@ -34,7 +_,11 @@
  			DateTime dateTime = DateTime.Now.ToLocalTime();
  			string path = string.Concat(new string[]
  			{
@@ -12,7 +12,7 @@
  				Main.versionNumber,
  				" ",
  				dateTime.Year.ToString("D4"),
-@@ -58,7 +62,11 @@
+@@ -58,7 +_,11 @@
  			DateTime dateTime = DateTime.Now.ToLocalTime();
  			string path = string.Concat(new string[]
  			{

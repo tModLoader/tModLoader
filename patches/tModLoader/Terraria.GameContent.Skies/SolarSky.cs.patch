@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Skies\SolarSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\SolarSky.cs
-@@ -115,7 +115,7 @@
+@@ -115,7 +_,7 @@
  			return (1f - this._fadeOpacity) * 0.3f + 0.7f;
  		}
  
@@ -9,7 +9,7 @@
  		{
  			this._fadeOpacity = 0.002f;
  			this._isActive = true;
-@@ -145,7 +145,7 @@
+@@ -145,7 +_,7 @@
  			return meteor2.Depth.CompareTo(meteor1.Depth);
  		}
  
