@@ -462,66 +462,3980 @@
  					}
  				}
  			}
-@@ -6818,6 +_,7 @@
+@@ -6751,11 +_,10 @@
+ 			}
+ 		}
+ 
+-		public void UpdateEquips(int i)
++		public void VanillaUpdateInventory(ref Item item)
+ 		{
+-			for (int j = 0; j < 58; j++)
+-			{
+-				int type = this.inventory[j].type;
++			{
++				int type = item.type;
+ 				if ((type == 15 || type == 707) && this.accWatch < 1)
+ 				{
+ 					this.accWatch = 1;
+@@ -6818,1972 +_,2001 @@
  				{
  					this.accDreamCatcher = true;
  				}
-+				ItemLoader.UpdateInventory(this.inventory[j], this);
++				ItemLoader.UpdateInventory(item, this);
++			}
++		}
++
++		public void VanillaUpdateEquip(ref Item item)
++		{
++			if (!item.expertOnly || Main.expertMode)
++			{
++				int type2 = item.type;
++				if ((type2 == 15 || type2 == 707) && this.accWatch < 1)
++				{
++					this.accWatch = 1;
++				}
++				if ((type2 == 16 || type2 == 708) && this.accWatch < 2)
++				{
++					this.accWatch = 2;
++				}
++				if ((type2 == 17 || type2 == 709) && this.accWatch < 3)
++				{
++					this.accWatch = 3;
++				}
++				if (type2 == 393)
++				{
++					this.accCompass = 1;
++				}
++				if (type2 == 18)
++				{
++					this.accDepthMeter = 1;
++				}
++				if (type2 == 395 || type2 == 3123 || type2 == 3124)
++				{
++					this.accWatch = 3;
++					this.accDepthMeter = 1;
++					this.accCompass = 1;
++				}
++				if (type2 == 3120 || type2 == 3036 || type2 == 3123 || type2 == 3124)
++				{
++					this.accFishFinder = true;
++				}
++				if (type2 == 3037 || type2 == 3036 || type2 == 3123 || type2 == 3124)
++				{
++					this.accWeatherRadio = true;
++				}
++				if (type2 == 3096 || type2 == 3036 || type2 == 3123 || type2 == 3124)
++				{
++					this.accCalendar = true;
++				}
++				if (type2 == 3084 || type2 == 3122 || type2 == 3123 || type2 == 3124)
++				{
++					this.accThirdEye = true;
++				}
++				if (type2 == 3095 || type2 == 3122 || type2 == 3123 || type2 == 3124)
++				{
++					this.accJarOfSouls = true;
++				}
++				if (type2 == 3118 || type2 == 3122 || type2 == 3123 || type2 == 3124)
++				{
++					this.accCritterGuide = true;
++				}
++				if (type2 == 3099 || type2 == 3121 || type2 == 3123 || type2 == 3124)
++				{
++					this.accStopwatch = true;
++				}
++				if (type2 == 3102 || type2 == 3121 || type2 == 3123 || type2 == 3124)
++				{
++					this.accOreFinder = true;
++				}
++				if (type2 == 3119 || type2 == 3121 || type2 == 3123 || type2 == 3124)
++				{
++					this.accDreamCatcher = true;
++				}
++				if (item.type == 3017 && this.whoAmI == Main.myPlayer && this.velocity.Y == 0f && this.grappling[0] == -1)
++				{
++					int num = (int)base.Center.X / 16;
++					int num2 = (int)(this.position.Y + (float)this.height - 1f) / 16;
++					if (Main.tile[num, num2] == null)
++					{
++						Main.tile[num, num2] = new Tile();
++					}
++					if (!Main.tile[num, num2].active() && Main.tile[num, num2].liquid == 0 && Main.tile[num, num2 + 1] != null && WorldGen.SolidTile(num, num2 + 1))
++					{
++						Main.tile[num, num2].frameY = 0;
++						Main.tile[num, num2].slope(0);
++						Main.tile[num, num2].halfBrick(false);
++						if (Main.tile[num, num2 + 1].type == 2)
++						{
++							if (Main.rand.Next(2) == 0)
++							{
++								Main.tile[num, num2].active(true);
++								Main.tile[num, num2].type = 3;
++								Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(6, 11));
++								while (Main.tile[num, num2].frameX == 144)
++								{
++									Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(6, 11));
++								}
++							}
++							else
++							{
++								Main.tile[num, num2].active(true);
++								Main.tile[num, num2].type = 73;
++								Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(6, 21));
++								while (Main.tile[num, num2].frameX == 144)
++								{
++									Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(6, 21));
++								}
++							}
++							if (Main.netMode == 1)
++							{
++								NetMessage.SendTileSquare(-1, num, num2, 1);
++							}
++						}
++						else if (Main.tile[num, num2 + 1].type == 109)
++						{
++							if (Main.rand.Next(2) == 0)
++							{
++								Main.tile[num, num2].active(true);
++								Main.tile[num, num2].type = 110;
++								Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(4, 7));
++								while (Main.tile[num, num2].frameX == 90)
++								{
++									Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(4, 7));
++								}
++							}
++							else
++							{
++								Main.tile[num, num2].active(true);
++								Main.tile[num, num2].type = 113;
++								Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(2, 8));
++								while (Main.tile[num, num2].frameX == 90)
++								{
++									Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(2, 8));
++								}
++							}
++							if (Main.netMode == 1)
++							{
++								NetMessage.SendTileSquare(-1, num, num2, 1);
++							}
++						}
++						else if (Main.tile[num, num2 + 1].type == 60)
++						{
++							Main.tile[num, num2].active(true);
++							Main.tile[num, num2].type = 74;
++							Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(9, 17));
++							if (Main.netMode == 1)
++							{
++								NetMessage.SendTileSquare(-1, num, num2, 1);
++							}
++						}
++					}
++				}
++				this.statDefense += item.defense;
++				this.lifeRegen += item.lifeRegen;
++				if (item.type == 268)
++				{
++					this.accDivingHelm = true;
++				}
++				if (item.type == 238)
++				{
++					this.magicDamage += 0.15f;
++				}
++				if (item.type == 3212)
++				{
++					this.armorPenetration += 5;
++				}
++				if (item.type == 2277)
++				{
++					this.magicDamage += 0.05f;
++					this.meleeDamage += 0.05f;
++					this.rangedDamage += 0.05f;
++					this.thrownDamage += 0.05f;
++					this.magicCrit += 5;
++					this.rangedCrit += 5;
++					this.meleeCrit += 5;
++					this.thrownCrit += 5;
++					this.meleeSpeed += 0.1f;
++					this.moveSpeed += 0.1f;
++				}
++				if (item.type == 2279)
++				{
++					this.magicDamage += 0.06f;
++					this.magicCrit += 6;
++					this.manaCost -= 0.1f;
++				}
++				if (item.type == 3109)
++				{
++					this.nightVision = true;
++				}
++				if (item.type == 256)
++				{
++					this.thrownVelocity += 0.15f;
++				}
++				if (item.type == 257)
++				{
++					this.thrownDamage += 0.15f;
++				}
++				if (item.type == 258)
++				{
++					this.thrownCrit += 10;
++				}
++				if (item.type == 3374)
++				{
++					this.thrownVelocity += 0.2f;
++				}
++				if (item.type == 3375)
++				{
++					this.thrownDamage += 0.2f;
++				}
++				if (item.type == 3376)
++				{
++					this.thrownCrit += 15;
++				}
++				if (item.type == 2275)
++				{
++					this.magicDamage += 0.07f;
++					this.magicCrit += 7;
++				}
++				if (item.type == 123 || item.type == 124 || item.type == 125)
++				{
++					this.magicDamage += 0.07f;
++				}
++				if (item.type == 151 || item.type == 152 || item.type == 153 || item.type == 959)
++				{
++					this.rangedDamage += 0.05f;
++				}
++				if (item.type == 111 || item.type == 228 || item.type == 229 || item.type == 230 || item.type == 960 || item.type == 961 || item.type == 962)
++				{
++					this.statManaMax2 += 20;
++				}
++				if (item.type == 228 || item.type == 960)
++				{
++					this.statManaMax2 += 20;
++				}
++				if (item.type == 228 || item.type == 229 || item.type == 230 || item.type == 960 || item.type == 961 || item.type == 962)
++				{
++					this.magicCrit += 4;
++				}
++				if (item.type == 100 || item.type == 101 || item.type == 102)
++				{
++					this.meleeSpeed += 0.07f;
++				}
++				if (item.type == 956 || item.type == 957 || item.type == 958)
++				{
++					this.meleeSpeed += 0.07f;
++				}
++				if (item.type == 792 || item.type == 793 || item.type == 794)
++				{
++					this.meleeDamage += 0.02f;
++					this.rangedDamage += 0.02f;
++					this.magicDamage += 0.02f;
++					this.thrownDamage += 0.02f;
++				}
++				if (item.type == 371)
++				{
++					this.magicCrit += 9;
++					this.statManaMax2 += 40;
++				}
++				if (item.type == 372)
++				{
++					this.moveSpeed += 0.07f;
++					this.meleeSpeed += 0.12f;
++				}
++				if (item.type == 373)
++				{
++					this.rangedDamage += 0.1f;
++					this.rangedCrit += 6;
++				}
++				if (item.type == 374)
++				{
++					this.magicCrit += 3;
++					this.meleeCrit += 3;
++					this.rangedCrit += 3;
++				}
++				if (item.type == 375)
++				{
++					this.moveSpeed += 0.1f;
++				}
++				if (item.type == 376)
++				{
++					this.magicDamage += 0.15f;
++					this.statManaMax2 += 60;
++				}
++				if (item.type == 377)
++				{
++					this.meleeCrit += 5;
++					this.meleeDamage += 0.1f;
++				}
++				if (item.type == 378)
++				{
++					this.rangedDamage += 0.12f;
++					this.rangedCrit += 7;
++				}
++				if (item.type == 379)
++				{
++					this.rangedDamage += 0.05f;
++					this.meleeDamage += 0.05f;
++					this.magicDamage += 0.05f;
++				}
++				if (item.type == 380)
++				{
++					this.magicCrit += 3;
++					this.meleeCrit += 3;
++					this.rangedCrit += 3;
++				}
++				if (item.type >= 2367 && item.type <= 2369)
++				{
++					this.fishingSkill += 5;
++				}
++				if (item.type == 400)
++				{
++					this.magicDamage += 0.11f;
++					this.magicCrit += 11;
++					this.statManaMax2 += 80;
++				}
++				if (item.type == 401)
++				{
++					this.meleeCrit += 7;
++					this.meleeDamage += 0.14f;
++				}
++				if (item.type == 402)
++				{
++					this.rangedDamage += 0.14f;
++					this.rangedCrit += 8;
++				}
++				if (item.type == 403)
++				{
++					this.rangedDamage += 0.06f;
++					this.meleeDamage += 0.06f;
++					this.magicDamage += 0.06f;
++				}
++				if (item.type == 404)
++				{
++					this.magicCrit += 4;
++					this.meleeCrit += 4;
++					this.rangedCrit += 4;
++					this.moveSpeed += 0.05f;
++				}
++				if (item.type == 1205)
++				{
++					this.meleeDamage += 0.08f;
++					this.meleeSpeed += 0.12f;
++				}
++				if (item.type == 1206)
++				{
++					this.rangedDamage += 0.09f;
++					this.rangedCrit += 9;
++				}
++				if (item.type == 1207)
++				{
++					this.magicDamage += 0.07f;
++					this.magicCrit += 7;
++					this.statManaMax2 += 60;
++				}
++				if (item.type == 1208)
++				{
++					this.meleeDamage += 0.03f;
++					this.rangedDamage += 0.03f;
++					this.magicDamage += 0.03f;
++					this.magicCrit += 2;
++					this.meleeCrit += 2;
++					this.rangedCrit += 2;
++				}
++				if (item.type == 1209)
++				{
++					this.meleeDamage += 0.02f;
++					this.rangedDamage += 0.02f;
++					this.magicDamage += 0.02f;
++					this.magicCrit++;
++					this.meleeCrit++;
++					this.rangedCrit++;
++				}
++				if (item.type == 1210)
++				{
++					this.meleeDamage += 0.07f;
++					this.meleeSpeed += 0.07f;
++					this.moveSpeed += 0.07f;
++				}
++				if (item.type == 1211)
++				{
++					this.rangedCrit += 15;
++					this.moveSpeed += 0.08f;
++				}
++				if (item.type == 1212)
++				{
++					this.magicCrit += 18;
++					this.statManaMax2 += 80;
++				}
++				if (item.type == 1213)
++				{
++					this.magicCrit += 6;
++					this.meleeCrit += 6;
++					this.rangedCrit += 6;
++				}
++				if (item.type == 1214)
++				{
++					this.moveSpeed += 0.11f;
++				}
++				if (item.type == 1215)
++				{
++					this.meleeDamage += 0.08f;
++					this.meleeCrit += 8;
++					this.meleeSpeed += 0.08f;
++				}
++				if (item.type == 1216)
++				{
++					this.rangedDamage += 0.16f;
++					this.rangedCrit += 7;
++				}
++				if (item.type == 1217)
++				{
++					this.magicDamage += 0.16f;
++					this.magicCrit += 7;
++					this.statManaMax2 += 100;
++				}
++				if (item.type == 1218)
++				{
++					this.meleeDamage += 0.04f;
++					this.rangedDamage += 0.04f;
++					this.magicDamage += 0.04f;
++					this.magicCrit += 3;
++					this.meleeCrit += 3;
++					this.rangedCrit += 3;
++				}
++				if (item.type == 1219)
++				{
++					this.meleeDamage += 0.03f;
++					this.rangedDamage += 0.03f;
++					this.magicDamage += 0.03f;
++					this.magicCrit += 3;
++					this.meleeCrit += 3;
++					this.rangedCrit += 3;
++					this.moveSpeed += 0.06f;
++				}
++				if (item.type == 558)
++				{
++					this.magicDamage += 0.12f;
++					this.magicCrit += 12;
++					this.statManaMax2 += 100;
++				}
++				if (item.type == 559)
++				{
++					this.meleeCrit += 10;
++					this.meleeDamage += 0.1f;
++					this.meleeSpeed += 0.1f;
++				}
++				if (item.type == 553)
++				{
++					this.rangedDamage += 0.15f;
++					this.rangedCrit += 8;
++				}
++				if (item.type == 551)
++				{
++					this.magicCrit += 7;
++					this.meleeCrit += 7;
++					this.rangedCrit += 7;
++				}
++				if (item.type == 552)
++				{
++					this.rangedDamage += 0.07f;
++					this.meleeDamage += 0.07f;
++					this.magicDamage += 0.07f;
++					this.moveSpeed += 0.08f;
++				}
++				if (item.type == 1001)
++				{
++					this.meleeDamage += 0.16f;
++					this.meleeCrit += 6;
++				}
++				if (item.type == 1002)
++				{
++					this.rangedDamage += 0.16f;
++					this.ammoCost80 = true;
++				}
++				if (item.type == 1003)
++				{
++					this.statManaMax2 += 80;
++					this.manaCost -= 0.17f;
++					this.magicDamage += 0.16f;
++				}
++				if (item.type == 1004)
++				{
++					this.meleeDamage += 0.05f;
++					this.magicDamage += 0.05f;
++					this.rangedDamage += 0.05f;
++					this.magicCrit += 7;
++					this.meleeCrit += 7;
++					this.rangedCrit += 7;
++				}
++				if (item.type == 1005)
++				{
++					this.magicCrit += 8;
++					this.meleeCrit += 8;
++					this.rangedCrit += 8;
++					this.moveSpeed += 0.05f;
++				}
++				if (item.type == 2189)
++				{
++					this.statManaMax2 += 60;
++					this.manaCost -= 0.13f;
++					this.magicDamage += 0.05f;
++					this.magicCrit += 5;
++				}
++				if (item.type == 1503)
++				{
++					this.magicDamage -= 0.4f;
++				}
++				if (item.type == 1504)
++				{
++					this.magicDamage += 0.07f;
++					this.magicCrit += 7;
++				}
++				if (item.type == 1505)
++				{
++					this.magicDamage += 0.08f;
++					this.moveSpeed += 0.08f;
++				}
++				if (item.type == 1546)
++				{
++					this.rangedCrit += 5;
++					this.arrowDamage += 0.15f;
++				}
++				if (item.type == 1547)
++				{
++					this.rangedCrit += 5;
++					this.bulletDamage += 0.15f;
++				}
++				if (item.type == 1548)
++				{
++					this.rangedCrit += 5;
++					this.rocketDamage += 0.15f;
++				}
++				if (item.type == 1549)
++				{
++					this.rangedCrit += 13;
++					this.rangedDamage += 0.13f;
++					this.ammoCost80 = true;
++				}
++				if (item.type == 1550)
++				{
++					this.rangedCrit += 7;
++					this.moveSpeed += 0.12f;
++				}
++				if (item.type == 1282)
++				{
++					this.statManaMax2 += 20;
++					this.manaCost -= 0.05f;
++				}
++				if (item.type == 1283)
++				{
++					this.statManaMax2 += 40;
++					this.manaCost -= 0.07f;
++				}
++				if (item.type == 1284)
++				{
++					this.statManaMax2 += 40;
++					this.manaCost -= 0.09f;
++				}
++				if (item.type == 1285)
++				{
++					this.statManaMax2 += 60;
++					this.manaCost -= 0.11f;
++				}
++				if (item.type == 1286)
++				{
++					this.statManaMax2 += 60;
++					this.manaCost -= 0.13f;
++				}
++				if (item.type == 1287)
++				{
++					this.statManaMax2 += 80;
++					this.manaCost -= 0.15f;
++				}
++				if (item.type == 1316 || item.type == 1317 || item.type == 1318)
++				{
++					this.aggro += 250;
++				}
++				if (item.type == 1316)
++				{
++					this.meleeDamage += 0.06f;
++				}
++				if (item.type == 1317)
++				{
++					this.meleeDamage += 0.08f;
++					this.meleeCrit += 8;
++				}
++				if (item.type == 1318)
++				{
++					this.meleeCrit += 4;
++				}
++				if (item.type == 2199 || item.type == 2202)
++				{
++					this.aggro += 250;
++				}
++				if (item.type == 2201)
++				{
++					this.aggro += 400;
++				}
++				if (item.type == 2199)
++				{
++					this.meleeDamage += 0.06f;
++				}
++				if (item.type == 2200)
++				{
++					this.meleeDamage += 0.08f;
++					this.meleeCrit += 8;
++					this.meleeSpeed += 0.06f;
++					this.moveSpeed += 0.06f;
++				}
++				if (item.type == 2201)
++				{
++					this.meleeDamage += 0.05f;
++					this.meleeCrit += 5;
++				}
++				if (item.type == 2202)
++				{
++					this.meleeSpeed += 0.06f;
++					this.moveSpeed += 0.06f;
++				}
++				if (item.type == 684)
++				{
++					this.rangedDamage += 0.16f;
++					this.meleeDamage += 0.16f;
++				}
++				if (item.type == 685)
++				{
++					this.meleeCrit += 11;
++					this.rangedCrit += 11;
++				}
++				if (item.type == 686)
++				{
++					this.moveSpeed += 0.08f;
++					this.meleeSpeed += 0.07f;
++				}
++				if (item.type == 2361)
++				{
++					this.maxMinions++;
++					this.minionDamage += 0.04f;
++				}
++				if (item.type == 2362)
++				{
++					this.maxMinions++;
++					this.minionDamage += 0.04f;
++				}
++				if (item.type == 2363)
++				{
++					this.minionDamage += 0.05f;
++				}
++				if (item.type >= 1158 && item.type <= 1161)
++				{
++					this.maxMinions++;
++				}
++				if (item.type >= 1159 && item.type <= 1161)
++				{
++					this.minionDamage += 0.1f;
++				}
++				if (item.type >= 2370 && item.type <= 2371)
++				{
++					this.minionDamage += 0.05f;
++					this.maxMinions++;
++				}
++				if (item.type == 2372)
++				{
++					this.minionDamage += 0.06f;
++					this.maxMinions++;
++				}
++				if (item.type == 3381 || item.type == 3382 || item.type == 3383)
++				{
++					if (item.type != 3381)
++					{
++						this.maxMinions++;
++					}
++					this.maxMinions++;
++					this.minionDamage += 0.22f;
++				}
++				if (item.type == 2763)
++				{
++					this.aggro += 300;
++					this.meleeCrit += 17;
++				}
++				if (item.type == 2764)
++				{
++					this.aggro += 300;
++					this.meleeDamage += 0.22f;
++				}
++				if (item.type == 2765)
++				{
++					this.aggro += 300;
++					this.meleeSpeed += 0.15f;
++					this.moveSpeed += 0.15f;
++				}
++				if (item.type == 2757)
++				{
++					this.rangedCrit += 7;
++					this.rangedDamage += 0.16f;
++				}
++				if (item.type == 2758)
++				{
++					this.ammoCost75 = true;
++					this.rangedCrit += 12;
++					this.rangedDamage += 0.12f;
++				}
++				if (item.type == 2759)
++				{
++					this.rangedCrit += 8;
++					this.rangedDamage += 0.08f;
++					this.moveSpeed += 0.1f;
++				}
++				if (item.type == 2760)
++				{
++					this.statManaMax2 += 60;
++					this.manaCost -= 0.15f;
++					this.magicCrit += 7;
++					this.magicDamage += 0.07f;
++				}
++				if (item.type == 2761)
++				{
++					this.magicDamage += 0.09f;
++					this.magicCrit += 9;
++				}
++				if (item.type == 2762)
++				{
++					this.moveSpeed += 0.1f;
++					this.magicDamage += 0.1f;
++				}
++				if (item.type >= 1832 && item.type <= 1834)
++				{
++					this.maxMinions++;
++				}
++				if (item.type >= 1832 && item.type <= 1834)
++				{
++					this.minionDamage += 0.11f;
++				}
++				if (item.prefix == 62)
++				{
++					this.statDefense++;
++				}
++				if (item.prefix == 63)
++				{
++					this.statDefense += 2;
++				}
++				if (item.prefix == 64)
++				{
++					this.statDefense += 3;
++				}
++				if (item.prefix == 65)
++				{
++					this.statDefense += 4;
++				}
++				if (item.prefix == 66)
++				{
++					this.statManaMax2 += 20;
++				}
++				if (item.prefix == 67)
++				{
++					this.meleeCrit += 2;
++					this.rangedCrit += 2;
++					this.magicCrit += 2;
++					this.thrownCrit += 2;
++				}
++				if (item.prefix == 68)
++				{
++					this.meleeCrit += 4;
++					this.rangedCrit += 4;
++					this.magicCrit += 4;
++					this.thrownCrit += 4;
++				}
++				if (item.prefix == 69)
++				{
++					this.meleeDamage += 0.01f;
++					this.rangedDamage += 0.01f;
++					this.magicDamage += 0.01f;
++					this.minionDamage += 0.01f;
++					this.thrownDamage += 0.01f;
++				}
++				if (item.prefix == 70)
++				{
++					this.meleeDamage += 0.02f;
++					this.rangedDamage += 0.02f;
++					this.magicDamage += 0.02f;
++					this.minionDamage += 0.02f;
++					this.thrownDamage += 0.02f;
++				}
++				if (item.prefix == 71)
++				{
++					this.meleeDamage += 0.03f;
++					this.rangedDamage += 0.03f;
++					this.magicDamage += 0.03f;
++					this.minionDamage += 0.03f;
++					this.thrownDamage += 0.03f;
++				}
++				if (item.prefix == 72)
++				{
++					this.meleeDamage += 0.04f;
++					this.rangedDamage += 0.04f;
++					this.magicDamage += 0.04f;
++					this.minionDamage += 0.04f;
++					this.thrownDamage += 0.04f;
++				}
++				if (item.prefix == 73)
++				{
++					this.moveSpeed += 0.01f;
++				}
++				if (item.prefix == 74)
++				{
++					this.moveSpeed += 0.02f;
++				}
++				if (item.prefix == 75)
++				{
++					this.moveSpeed += 0.03f;
++				}
++				if (item.prefix == 76)
++				{
++					this.moveSpeed += 0.04f;
++				}
++				if (item.prefix == 77)
++				{
++					this.meleeSpeed += 0.01f;
++				}
++				if (item.prefix == 78)
++				{
++					this.meleeSpeed += 0.02f;
++				}
++				if (item.prefix == 79)
++				{
++					this.meleeSpeed += 0.03f;
++				}
++				if (item.prefix == 80)
++				{
++					this.meleeSpeed += 0.04f;
++				}
++				ItemLoader.UpdateEquip(item, this);
++			}
++		}
++
++		public void VanillaUpdateAccessory(ref Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3)
++		{
++			if (!item.expertOnly || Main.expertMode)
++			{
++				if (item.type == 3015)
++				{
++					this.aggro -= 400;
++					this.meleeCrit += 5;
++					this.magicCrit += 5;
++					this.rangedCrit += 5;
++					this.thrownCrit += 5;
++					this.meleeDamage += 0.05f;
++					this.magicDamage += 0.05f;
++					this.rangedDamage += 0.05f;
++					this.thrownDamage += 0.05f;
++					this.minionDamage += 0.05f;
++				}
++				if (item.type == 3016)
++				{
++					this.aggro += 400;
++				}
++				if (item.type == 2373)
++				{
++					this.accFishingLine = true;
++				}
++				if (item.type == 2374)
++				{
++					this.fishingSkill += 10;
++				}
++				if (item.type == 2375)
++				{
++					this.accTackleBox = true;
++				}
++				if (item.type == 3090)
++				{
++					this.npcTypeNoAggro[1] = true;
++					this.npcTypeNoAggro[16] = true;
++					this.npcTypeNoAggro[59] = true;
++					this.npcTypeNoAggro[71] = true;
++					this.npcTypeNoAggro[81] = true;
++					this.npcTypeNoAggro[138] = true;
++					this.npcTypeNoAggro[121] = true;
++					this.npcTypeNoAggro[122] = true;
++					this.npcTypeNoAggro[141] = true;
++					this.npcTypeNoAggro[147] = true;
++					this.npcTypeNoAggro[183] = true;
++					this.npcTypeNoAggro[184] = true;
++					this.npcTypeNoAggro[204] = true;
++					this.npcTypeNoAggro[225] = true;
++					this.npcTypeNoAggro[244] = true;
++					this.npcTypeNoAggro[302] = true;
++					this.npcTypeNoAggro[333] = true;
++					this.npcTypeNoAggro[335] = true;
++					this.npcTypeNoAggro[334] = true;
++					this.npcTypeNoAggro[336] = true;
++					this.npcTypeNoAggro[537] = true;
++				}
++				if (item.stringColor > 0)
++				{
++					this.yoyoString = true;
++				}
++				if (item.type == 3366)
++				{
++					this.counterWeight = 556 + Main.rand.Next(6);
++					this.yoyoGlove = true;
++					this.yoyoString = true;
++				}
++				if (item.type >= 3309 && item.type <= 3314)
++				{
++					this.counterWeight = 556 + item.type - 3309;
++				}
++				if (item.type == 3334)
++				{
++					this.yoyoGlove = true;
++				}
++				if (item.type == 3337)
++				{
++					this.shinyStone = true;
++				}
++				if (item.type == 3336)
++				{
++					this.SporeSac();
++					this.sporeSac = true;
++				}
++				if (item.type == 2423)
++				{
++					this.autoJump = true;
++					this.jumpSpeedBoost += 2.4f;
++					this.extraFall += 15;
++				}
++				if (item.type == 857)
++				{
++					this.doubleJumpSandstorm = true;
++				}
++				if (item.type == 983)
++				{
++					this.doubleJumpSandstorm = true;
++					this.jumpBoost = true;
++				}
++				if (item.type == 987)
++				{
++					this.doubleJumpBlizzard = true;
++				}
++				if (item.type == 1163)
++				{
++					this.doubleJumpBlizzard = true;
++					this.jumpBoost = true;
++				}
++				if (item.type == 1724)
++				{
++					this.doubleJumpFart = true;
++				}
++				if (item.type == 1863)
++				{
++					this.doubleJumpFart = true;
++					this.jumpBoost = true;
++				}
++				if (item.type == 1164)
++				{
++					this.doubleJumpCloud = true;
++					this.doubleJumpSandstorm = true;
++					this.doubleJumpBlizzard = true;
++					this.jumpBoost = true;
++				}
++				if (item.type == 1250)
++				{
++					this.jumpBoost = true;
++					this.doubleJumpCloud = true;
++					this.noFallDmg = true;
++				}
++				if (item.type == 1252)
++				{
++					this.doubleJumpSandstorm = true;
++					this.jumpBoost = true;
++					this.noFallDmg = true;
++				}
++				if (item.type == 1251)
++				{
++					this.doubleJumpBlizzard = true;
++					this.jumpBoost = true;
++					this.noFallDmg = true;
++				}
++				if (item.type == 3250)
++				{
++					this.doubleJumpFart = true;
++					this.jumpBoost = true;
++					this.noFallDmg = true;
++				}
++				if (item.type == 3252)
++				{
++					this.doubleJumpSail = true;
++					this.jumpBoost = true;
++					this.noFallDmg = true;
++				}
++				if (item.type == 3251)
++				{
++					this.jumpBoost = true;
++					this.bee = true;
++					this.noFallDmg = true;
++				}
++				if (item.type == 1249)
++				{
++					this.jumpBoost = true;
++					this.bee = true;
++				}
++				if (item.type == 3241)
++				{
++					this.jumpBoost = true;
++					this.doubleJumpSail = true;
++				}
++				if (item.type == 1253 && (double)this.statLife <= (double)this.statLifeMax2 * 0.5)
++				{
++					this.AddBuff(62, 5, true);
++				}
++				if (item.type == 1290)
++				{
++					this.panic = true;
++				}
++				if ((item.type == 1300 || item.type == 1858) && (this.inventory[this.selectedItem].useAmmo == 14 || this.inventory[this.selectedItem].useAmmo == 311 || this.inventory[this.selectedItem].useAmmo == 323 || this.inventory[this.selectedItem].useAmmo == 23))
++				{
++					this.scope = true;
++				}
++				if (item.type == 1858)
++				{
++					this.rangedCrit += 10;
++					this.rangedDamage += 0.1f;
++				}
++				if (item.type == 1303 && this.wet)
++				{
++					Lighting.AddLight((int)base.Center.X / 16, (int)base.Center.Y / 16, 0.9f, 0.2f, 0.6f);
++				}
++				if (item.type == 1301)
++				{
++					this.meleeCrit += 8;
++					this.rangedCrit += 8;
++					this.magicCrit += 8;
++					this.thrownCrit += 8;
++					this.meleeDamage += 0.1f;
++					this.rangedDamage += 0.1f;
++					this.magicDamage += 0.1f;
++					this.minionDamage += 0.1f;
++					this.thrownDamage += 0.1f;
++				}
++				if (item.type == 982)
++				{
++					this.statManaMax2 += 20;
++					this.manaRegenDelayBonus++;
++					this.manaRegenBonus += 25;
++				}
++				if (item.type == 1595)
++				{
++					this.statManaMax2 += 20;
++					this.magicCuffs = true;
++				}
++				if (item.type == 2219)
++				{
++					this.manaMagnet = true;
++				}
++				if (item.type == 2220)
++				{
++					this.manaMagnet = true;
++					this.magicDamage += 0.15f;
++				}
++				if (item.type == 2221)
++				{
++					this.manaMagnet = true;
++					this.magicCuffs = true;
++				}
++				if (this.whoAmI == Main.myPlayer && item.type == 1923)
++				{
++					Player.tileRangeX++;
++					Player.tileRangeY++;
++				}
++				if (item.type == 1247)
++				{
++					this.starCloak = true;
++					this.bee = true;
++				}
++				if (item.type == 1248)
++				{
++					this.meleeCrit += 10;
++					this.rangedCrit += 10;
++					this.magicCrit += 10;
++					this.thrownCrit += 10;
++				}
++				if (item.type == 854)
++				{
++					this.discount = true;
++				}
++				if (item.type == 855)
++				{
++					this.coins = true;
++				}
++				if (item.type == 3033)
++				{
++					this.goldRing = true;
++				}
++				if (item.type == 3034)
++				{
++					this.goldRing = true;
++					this.coins = true;
++				}
++				if (item.type == 3035)
++				{
++					this.goldRing = true;
++					this.coins = true;
++					this.discount = true;
++				}
++				if (item.type == 53)
++				{
++					this.doubleJumpCloud = true;
++				}
++				if (item.type == 3201)
++				{
++					this.doubleJumpSail = true;
++				}
++				if (item.type == 54)
++				{
++					this.accRunSpeed = 6f;
++				}
++				if (item.type == 3068)
++				{
++					this.cordage = true;
++				}
++				if (item.type == 1579)
++				{
++					this.accRunSpeed = 6f;
++					this.coldDash = true;
++				}
++				if (item.type == 3200)
++				{
++					this.accRunSpeed = 6f;
++					this.sailDash = true;
++				}
++				if (item.type == 128)
++				{
++					this.rocketBoots = 1;
++				}
++				if (item.type == 156)
++				{
++					this.noKnockback = true;
++				}
++				if (item.type == 158)
++				{
++					this.noFallDmg = true;
++				}
++				if (item.type == 934)
++				{
++					this.carpet = true;
++				}
++				if (item.type == 953)
++				{
++					this.spikedBoots++;
++				}
++				if (item.type == 975)
++				{
++					this.spikedBoots++;
++				}
++				if (item.type == 976)
++				{
++					this.spikedBoots += 2;
++				}
++				if (item.type == 977)
++				{
++					this.dash = 1;
++				}
++				if (item.type == 3097)
++				{
++					this.dash = 2;
++				}
++				if (item.type == 963)
++				{
++					this.blackBelt = true;
++				}
++				if (item.type == 984)
++				{
++					this.blackBelt = true;
++					this.dash = 1;
++					this.spikedBoots = 2;
++				}
++				if (item.type == 1131)
++				{
++					this.gravControl2 = true;
++				}
++				if (item.type == 1132)
++				{
++					this.bee = true;
++				}
++				if (item.type == 1578)
++				{
++					this.bee = true;
++					this.panic = true;
++				}
++				if (item.type == 3224)
++				{
++					this.endurance += 0.17f;
++				}
++				if (item.type == 3223)
++				{
++					this.brainOfConfusion = true;
++				}
++				if (item.type == 950)
++				{
++					this.iceSkate = true;
++				}
++				if (item.type == 159)
++				{
++					this.jumpBoost = true;
++				}
++				if (item.type == 3225)
++				{
++					this.jumpBoost = true;
++				}
++				if (item.type == 187)
++				{
++					this.accFlipper = true;
++				}
++				if (item.type == 211)
++				{
++					this.meleeSpeed += 0.12f;
++				}
++				if (item.type == 223)
++				{
++					this.manaCost -= 0.06f;
++				}
++				if (item.type == 285)
++				{
++					this.moveSpeed += 0.05f;
++				}
++				if (item.type == 212)
++				{
++					this.moveSpeed += 0.1f;
++				}
++				if (item.type == 267)
++				{
++					this.killGuide = true;
++				}
++				if (item.type == 1307)
++				{
++					this.killClothier = true;
++				}
++				if (item.type == 193)
++				{
++					this.fireWalk = true;
++				}
++				if (item.type == 861)
++				{
++					this.accMerman = true;
++					this.wolfAcc = true;
++					if (hideVisual)
++					{
++						this.hideMerman = true;
++						this.hideWolf = true;
++					}
++				}
++				if (item.type == 862)
++				{
++					this.starCloak = true;
++					this.longInvince = true;
++				}
++				if (item.type == 860)
++				{
++					this.pStone = true;
++				}
++				if (item.type == 863)
++				{
++					this.waterWalk2 = true;
++				}
++				if (item.type == 907)
++				{
++					this.waterWalk2 = true;
++					this.fireWalk = true;
++				}
++				if (item.type == 908)
++				{
++					this.waterWalk = true;
++					this.fireWalk = true;
++					this.lavaMax += 420;
++				}
++				if (item.type == 906)
++				{
++					this.lavaMax += 420;
++				}
++				if (item.type == 485)
++				{
++					this.wolfAcc = true;
++					if (hideVisual)
++					{
++						this.hideWolf = true;
++					}
++				}
++				if (item.type == 486 && !hideVisual)
++				{
++					this.rulerLine = true;
++				}
++				if (item.type == 2799 && !hideVisual)
++				{
++					this.rulerGrid = true;
++				}
++				if (item.type == 394)
++				{
++					this.accFlipper = true;
++					this.accDivingHelm = true;
++				}
++				if (item.type == 396)
++				{
++					this.noFallDmg = true;
++					this.fireWalk = true;
++				}
++				if (item.type == 397)
++				{
++					this.noKnockback = true;
++					this.fireWalk = true;
++				}
++				if (item.type == 399)
++				{
++					this.jumpBoost = true;
++					this.doubleJumpCloud = true;
++				}
++				if (item.type == 405)
++				{
++					this.accRunSpeed = 6f;
++					this.rocketBoots = 2;
++				}
++				if (item.type == 1860)
++				{
++					this.accFlipper = true;
++					this.accDivingHelm = true;
++					if (this.wet)
++					{
++						Lighting.AddLight((int)base.Center.X / 16, (int)base.Center.Y / 16, 0.9f, 0.2f, 0.6f);
++					}
++				}
++				if (item.type == 1861)
++				{
++					this.arcticDivingGear = true;
++					this.accFlipper = true;
++					this.accDivingHelm = true;
++					this.iceSkate = true;
++					if (this.wet)
++					{
++						Lighting.AddLight((int)base.Center.X / 16, (int)base.Center.Y / 16, 0.2f, 0.8f, 0.9f);
++					}
++				}
++				if (item.type == 2214)
++				{
++					flag2 = true;
++				}
++				if (item.type == 2215)
++				{
++					flag3 = true;
++				}
++				if (item.type == 2216)
++				{
++					this.autoPaint = true;
++				}
++				if (item.type == 2217)
++				{
++					flag = true;
++				}
++				if (item.type == 3061)
++				{
++					flag = true;
++					flag2 = true;
++					this.autoPaint = true;
++					flag3 = true;
++				}
++				if (item.type == 897)
++				{
++					this.kbGlove = true;
++					this.meleeSpeed += 0.12f;
++				}
++				if (item.type == 1343)
++				{
++					this.kbGlove = true;
++					this.meleeSpeed += 0.1f;
++					this.meleeDamage += 0.1f;
++					this.magmaStone = true;
++				}
++				if (item.type == 1167)
++				{
++					this.minionKB += 2f;
++					this.minionDamage += 0.15f;
++				}
++				if (item.type == 1864)
++				{
++					this.minionKB += 2f;
++					this.minionDamage += 0.15f;
++					this.maxMinions++;
++				}
++				if (item.type == 1845)
++				{
++					this.minionDamage += 0.1f;
++					this.maxMinions++;
++				}
++				if (item.type == 1321)
++				{
++					this.magicQuiver = true;
++					this.arrowDamage += 0.1f;
++				}
++				if (item.type == 1322)
++				{
++					this.magmaStone = true;
++				}
++				if (item.type == 1323)
++				{
++					this.lavaRose = true;
++				}
++				if (item.type == 3333)
++				{
++					this.strongBees = true;
++				}
++				if (item.type == 938)
++				{
++					this.noKnockback = true;
++					if ((double)this.statLife > (double)this.statLifeMax2 * 0.25)
++					{
++						if (this.whoAmI == Main.myPlayer) // Changed from i.
++						{
++							this.paladinGive = true;
++						}
++						else if (this.miscCounter % 5 == 0)
++						{
++							int myPlayer = Main.myPlayer;
++							if (Main.player[myPlayer].team == this.team && this.team != 0)
++							{
++								float num3 = this.position.X - Main.player[myPlayer].position.X;
++								float num4 = this.position.Y - Main.player[myPlayer].position.Y;
++								float num5 = (float)Math.Sqrt((double)(num3 * num3 + num4 * num4));
++								if (num5 < 800f)
++								{
++									Main.player[myPlayer].AddBuff(43, 10, true);
++								}
++							}
++						}
++					}
++				}
++				if (item.type == 936)
++				{
++					this.kbGlove = true;
++					this.meleeSpeed += 0.12f;
++					this.meleeDamage += 0.12f;
++				}
++				if (item.type == 898)
++				{
++					this.accRunSpeed = 6.75f;
++					this.rocketBoots = 2;
++					this.moveSpeed += 0.08f;
++				}
++				if (item.type == 1862)
++				{
++					this.accRunSpeed = 6.75f;
++					this.rocketBoots = 3;
++					this.moveSpeed += 0.08f;
++					this.iceSkate = true;
++				}
++				if (item.type == 3110)
++				{
++					this.accMerman = true;
++					this.wolfAcc = true;
++					if (hideVisual)
++					{
++						this.hideMerman = true;
++						this.hideWolf = true;
++					}
++				}
++				if (item.type == 1865 || item.type == 3110)
++				{
++					this.lifeRegen += 2;
++					this.statDefense += 4;
++					this.meleeSpeed += 0.1f;
++					this.meleeDamage += 0.1f;
++					this.meleeCrit += 2;
++					this.rangedDamage += 0.1f;
++					this.rangedCrit += 2;
++					this.magicDamage += 0.1f;
++					this.magicCrit += 2;
++					this.pickSpeed -= 0.15f;
++					this.minionDamage += 0.1f;
++					this.minionKB += 0.5f;
++					this.thrownDamage += 0.1f;
++					this.thrownCrit += 2;
++				}
++				if (item.type == 899 && Main.dayTime)
++				{
++					this.lifeRegen += 2;
++					this.statDefense += 4;
++					this.meleeSpeed += 0.1f;
++					this.meleeDamage += 0.1f;
++					this.meleeCrit += 2;
++					this.rangedDamage += 0.1f;
++					this.rangedCrit += 2;
++					this.magicDamage += 0.1f;
++					this.magicCrit += 2;
++					this.pickSpeed -= 0.15f;
++					this.minionDamage += 0.1f;
++					this.minionKB += 0.5f;
++					this.thrownDamage += 0.1f;
++					this.thrownCrit += 2;
++				}
++				if (item.type == 900 && (!Main.dayTime || Main.eclipse))
++				{
++					this.lifeRegen += 2;
++					this.statDefense += 4;
++					this.meleeSpeed += 0.1f;
++					this.meleeDamage += 0.1f;
++					this.meleeCrit += 2;
++					this.rangedDamage += 0.1f;
++					this.rangedCrit += 2;
++					this.magicDamage += 0.1f;
++					this.magicCrit += 2;
++					this.pickSpeed -= 0.15f;
++					this.minionDamage += 0.1f;
++					this.minionKB += 0.5f;
++					this.thrownDamage += 0.1f;
++					this.thrownCrit += 2;
++				}
++				if (item.type == 407)
++				{
++					this.blockRange = 1;
++				}
++				if (item.type == 489)
++				{
++					this.magicDamage += 0.15f;
++				}
++				if (item.type == 490)
++				{
++					this.meleeDamage += 0.15f;
++				}
++				if (item.type == 491)
++				{
++					this.rangedDamage += 0.15f;
++				}
++				if (item.type == 2998)
++				{
++					this.minionDamage += 0.15f;
++				}
++				if (item.type == 935)
++				{
++					this.magicDamage += 0.12f;
++					this.meleeDamage += 0.12f;
++					this.rangedDamage += 0.12f;
++					this.minionDamage += 0.12f;
++					this.thrownDamage += 0.12f;
++				}
++				if (item.type == 492)
++				{
++					this.wingTimeMax = 100;
++				}
++				if (item.type == 493)
++				{
++					this.wingTimeMax = 100;
++				}
++				if (item.type == 748)
++				{
++					this.wingTimeMax = 115;
++				}
++				if (item.type == 749)
++				{
++					this.wingTimeMax = 130;
++				}
++				if (item.type == 761)
++				{
++					this.wingTimeMax = 130;
++				}
++				if (item.type == 785)
++				{
++					this.wingTimeMax = 140;
++				}
++				if (item.type == 786)
++				{
++					this.wingTimeMax = 140;
++				}
++				if (item.type == 821)
++				{
++					this.wingTimeMax = 160;
++				}
++				if (item.type == 822)
++				{
++					this.wingTimeMax = 160;
++				}
++				if (item.type == 823)
++				{
++					this.wingTimeMax = 160;
++				}
++				if (item.type == 2280)
++				{
++					this.wingTimeMax = 160;
++				}
++				if (item.type == 2494)
++				{
++					this.wingTimeMax = 100;
++				}
++				if (item.type == 2609)
++				{
++					this.wingTimeMax = 180;
++					this.ignoreWater = true;
++				}
++				if (item.type == 948)
++				{
++					this.wingTimeMax = 180;
++				}
++				if (item.type == 1162)
++				{
++					this.wingTimeMax = 160;
++				}
++				if (item.type == 1165)
++				{
++					this.wingTimeMax = 140;
++				}
++				if (item.type == 1515)
++				{
++					this.wingTimeMax = 130;
++				}
++				if (item.type == 665)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 1583)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 1584)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 1585)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 1586)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 3228)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 3580)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 3582)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 3588)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 3592)
++				{
++					this.wingTimeMax = 150;
++				}
++				if (item.type == 1797)
++				{
++					this.wingTimeMax = 180;
++				}
++				if (item.type == 1830)
++				{
++					this.wingTimeMax = 180;
++				}
++				if (item.type == 1866)
++				{
++					this.wingTimeMax = 170;
++				}
++				if (item.type == 1871)
++				{
++					this.wingTimeMax = 170;
++				}
++				if (item.type == 2770)
++				{
++					this.wingTimeMax = 160;
++				}
++				if (item.type == 3468)
++				{
++					this.wingTimeMax = 180;
++				}
++				if (item.type == 3469)
++				{
++					this.wingTimeMax = 160;
++				}
++				if (item.type == 3470)
++				{
++					this.wingTimeMax = 180;
++				}
++				if (item.type == 3471)
++				{
++					this.wingTimeMax = 220;
++				}
++				if (item.type == 885)
++				{
++					this.buffImmune[30] = true;
++				}
++				if (item.type == 886)
++				{
++					this.buffImmune[36] = true;
++				}
++				if (item.type == 887)
++				{
++					this.buffImmune[20] = true;
++				}
++				if (item.type == 888)
++				{
++					this.buffImmune[22] = true;
++				}
++				if (item.type == 889)
++				{
++					this.buffImmune[32] = true;
++				}
++				if (item.type == 890)
++				{
++					this.buffImmune[35] = true;
++				}
++				if (item.type == 891)
++				{
++					this.buffImmune[23] = true;
++				}
++				if (item.type == 892)
++				{
++					this.buffImmune[33] = true;
++				}
++				if (item.type == 893)
++				{
++					this.buffImmune[31] = true;
++				}
++				if (item.type == 901)
++				{
++					this.buffImmune[33] = true;
++					this.buffImmune[36] = true;
++				}
++				if (item.type == 902)
++				{
++					this.buffImmune[30] = true;
++					this.buffImmune[20] = true;
++				}
++				if (item.type == 903)
++				{
++					this.buffImmune[32] = true;
++					this.buffImmune[31] = true;
++				}
++				if (item.type == 904)
++				{
++					this.buffImmune[35] = true;
++					this.buffImmune[23] = true;
++				}
++				if (item.type == 1921)
++				{
++					this.buffImmune[46] = true;
++					this.buffImmune[47] = true;
++				}
++				if (item.type == 1612)
++				{
++					this.buffImmune[33] = true;
++					this.buffImmune[36] = true;
++					this.buffImmune[30] = true;
++					this.buffImmune[20] = true;
++					this.buffImmune[32] = true;
++					this.buffImmune[31] = true;
++					this.buffImmune[35] = true;
++					this.buffImmune[23] = true;
++					this.buffImmune[22] = true;
++				}
++				if (item.type == 1613)
++				{
++					this.buffImmune[46] = true;
++					this.noKnockback = true;
++					this.fireWalk = true;
++					this.buffImmune[33] = true;
++					this.buffImmune[36] = true;
++					this.buffImmune[30] = true;
++					this.buffImmune[20] = true;
++					this.buffImmune[32] = true;
++					this.buffImmune[31] = true;
++					this.buffImmune[35] = true;
++					this.buffImmune[23] = true;
++					this.buffImmune[22] = true;
++				}
++				if (item.type == 497)
++				{
++					this.accMerman = true;
++					if (hideVisual)
++					{
++						this.hideMerman = true;
++					}
++				}
++				if (item.type == 535)
++				{
++					this.pStone = true;
++				}
++				if (item.type == 536)
++				{
++					this.kbGlove = true;
++				}
++				if (item.type == 532)
++				{
++					this.starCloak = true;
++				}
++				if (item.type == 554)
++				{
++					this.longInvince = true;
++				}
++				if (item.type == 555)
++				{
++					this.manaFlower = true;
++					this.manaCost -= 0.08f;
++				}
++				if (Main.myPlayer == this.whoAmI)
++				{
++					if (item.type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0)
++					{
++						int num6 = 0;
++						if (Main.curMusic == 1)
++						{
++							num6 = 0;
++						}
++						if (Main.curMusic == 2)
++						{
++							num6 = 1;
++						}
++						if (Main.curMusic == 3)
++						{
++							num6 = 2;
++						}
++						if (Main.curMusic == 4)
++						{
++							num6 = 4;
++						}
++						if (Main.curMusic == 5)
++						{
++							num6 = 5;
++						}
++						if (Main.curMusic == 6)
++						{
++							num6 = 3;
++						}
++						if (Main.curMusic == 7)
++						{
++							num6 = 6;
++						}
++						if (Main.curMusic == 8)
++						{
++							num6 = 7;
++						}
++						if (Main.curMusic == 9)
++						{
++							num6 = 9;
++						}
++						if (Main.curMusic == 10)
++						{
++							num6 = 8;
++						}
++						if (Main.curMusic == 11)
++						{
++							num6 = 11;
++						}
++						if (Main.curMusic == 12)
++						{
++							num6 = 10;
++						}
++						if (Main.curMusic == 13)
++						{
++							num6 = 12;
++						}
++						if (Main.curMusic == 28)
++						{
++							item.SetDefaults(1963, false);
++						}
++						else if (Main.curMusic == 29)
++						{
++							item.SetDefaults(1610, false);
++						}
++						else if (Main.curMusic == 30)
++						{
++							item.SetDefaults(1963, false);
++						}
++						else if (Main.curMusic == 31)
++						{
++							item.SetDefaults(1964, false);
++						}
++						else if (Main.curMusic == 32)
++						{
++							item.SetDefaults(1965, false);
++						}
++						else if (Main.curMusic == 33)
++						{
++							item.SetDefaults(2742, false);
++						}
++						else if (Main.curMusic == 34)
++						{
++							item.SetDefaults(3370, false);
++						}
++						else if (Main.curMusic == 35)
++						{
++							item.SetDefaults(3236, false);
++						}
++						else if (Main.curMusic == 36)
++						{
++							item.SetDefaults(3237, false);
++						}
++						else if (Main.curMusic == 37)
++						{
++							item.SetDefaults(3235, false);
++						}
++						else if (Main.curMusic == 38)
++						{
++							item.SetDefaults(3044, false);
++						}
++						else if (Main.curMusic == 39)
++						{
++							item.SetDefaults(3371, false);
++						}
++						else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
++						{
++							item.SetDefaults(1596 + Main.curMusic - 14, false);
++						}
++						else if (Main.curMusic < Main.maxMusic)
++						{
++							item.SetDefaults(num6 + 562, false);
++						}
++						else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
++						{
++							item.SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
++						}
++					}
++					if (item.type >= 562 && item.type <= 574)
++					{
++						Main.musicBox2 = item.type - 562;
++					}
++					if (item.type >= 1596 && item.type <= 1609)
++					{
++						Main.musicBox2 = item.type - 1596 + 13;
++					}
++					if (item.type == 1610)
++					{
++						Main.musicBox2 = 27;
++					}
++					if (item.type == 1963)
++					{
++						Main.musicBox2 = 28;
++					}
++					if (item.type == 1964)
++					{
++						Main.musicBox2 = 29;
++					}
++					if (item.type == 1965)
++					{
++						Main.musicBox2 = 30;
++					}
++					if (item.type == 2742)
++					{
++						Main.musicBox2 = 31;
++					}
++					if (item.type == 3044)
++					{
++						Main.musicBox2 = 32;
++					}
++					if (item.type == 3235)
++					{
++						Main.musicBox2 = 33;
++					}
++					if (item.type == 3236)
++					{
++						Main.musicBox2 = 34;
++					}
++					if (item.type == 3237)
++					{
++						Main.musicBox2 = 35;
++					}
++					if (item.type == 3370)
++					{
++						Main.musicBox2 = 36;
++					}
++					if (item.type == 3371)
++					{
++						Main.musicBox2 = 37;
++					}
++					if (SoundLoader.itemToMusic.ContainsKey(item.type))
++					{
++						Main.musicBox2 = SoundLoader.itemToMusic[item.type];
++					}
++				}
++				ItemLoader.UpdateAccessory(item, this, hideVisual);
++			}
++		}
++
++		public void UpdateEquips(int i)//Noise For the Diff
++		{
++			for (int j = 0; j < 58; j++)
++			{
++				VanillaUpdateInventory(ref this.inventory[j]);
  			}
  			for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
  			{
-@@ -7644,6 +_,7 @@
- 					{
- 						this.meleeSpeed += 0.04f;
- 					}
-+					ItemLoader.UpdateEquip(this.armor[k], this);
- 				}
+-				if (!this.armor[k].expertOnly || Main.expertMode)
+-				{
+-					int type2 = this.armor[k].type;
+-					if ((type2 == 15 || type2 == 707) && this.accWatch < 1)
+-					{
+-						this.accWatch = 1;
+-					}
+-					if ((type2 == 16 || type2 == 708) && this.accWatch < 2)
+-					{
+-						this.accWatch = 2;
+-					}
+-					if ((type2 == 17 || type2 == 709) && this.accWatch < 3)
+-					{
+-						this.accWatch = 3;
+-					}
+-					if (type2 == 393)
+-					{
+-						this.accCompass = 1;
+-					}
+-					if (type2 == 18)
+-					{
+-						this.accDepthMeter = 1;
+-					}
+-					if (type2 == 395 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accWatch = 3;
+-						this.accDepthMeter = 1;
+-						this.accCompass = 1;
+-					}
+-					if (type2 == 3120 || type2 == 3036 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accFishFinder = true;
+-					}
+-					if (type2 == 3037 || type2 == 3036 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accWeatherRadio = true;
+-					}
+-					if (type2 == 3096 || type2 == 3036 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accCalendar = true;
+-					}
+-					if (type2 == 3084 || type2 == 3122 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accThirdEye = true;
+-					}
+-					if (type2 == 3095 || type2 == 3122 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accJarOfSouls = true;
+-					}
+-					if (type2 == 3118 || type2 == 3122 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accCritterGuide = true;
+-					}
+-					if (type2 == 3099 || type2 == 3121 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accStopwatch = true;
+-					}
+-					if (type2 == 3102 || type2 == 3121 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accOreFinder = true;
+-					}
+-					if (type2 == 3119 || type2 == 3121 || type2 == 3123 || type2 == 3124)
+-					{
+-						this.accDreamCatcher = true;
+-					}
+-					if (this.armor[k].type == 3017 && this.whoAmI == Main.myPlayer && this.velocity.Y == 0f && this.grappling[0] == -1)
+-					{
+-						int num = (int)base.Center.X / 16;
+-						int num2 = (int)(this.position.Y + (float)this.height - 1f) / 16;
+-						if (Main.tile[num, num2] == null)
+-						{
+-							Main.tile[num, num2] = new Tile();
+-						}
+-						if (!Main.tile[num, num2].active() && Main.tile[num, num2].liquid == 0 && Main.tile[num, num2 + 1] != null && WorldGen.SolidTile(num, num2 + 1))
+-						{
+-							Main.tile[num, num2].frameY = 0;
+-							Main.tile[num, num2].slope(0);
+-							Main.tile[num, num2].halfBrick(false);
+-							if (Main.tile[num, num2 + 1].type == 2)
+-							{
+-								if (Main.rand.Next(2) == 0)
+-								{
+-									Main.tile[num, num2].active(true);
+-									Main.tile[num, num2].type = 3;
+-									Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(6, 11));
+-									while (Main.tile[num, num2].frameX == 144)
+-									{
+-										Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(6, 11));
+-									}
+-								}
+-								else
+-								{
+-									Main.tile[num, num2].active(true);
+-									Main.tile[num, num2].type = 73;
+-									Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(6, 21));
+-									while (Main.tile[num, num2].frameX == 144)
+-									{
+-										Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(6, 21));
+-									}
+-								}
+-								if (Main.netMode == 1)
+-								{
+-									NetMessage.SendTileSquare(-1, num, num2, 1);
+-								}
+-							}
+-							else if (Main.tile[num, num2 + 1].type == 109)
+-							{
+-								if (Main.rand.Next(2) == 0)
+-								{
+-									Main.tile[num, num2].active(true);
+-									Main.tile[num, num2].type = 110;
+-									Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(4, 7));
+-									while (Main.tile[num, num2].frameX == 90)
+-									{
+-										Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(4, 7));
+-									}
+-								}
+-								else
+-								{
+-									Main.tile[num, num2].active(true);
+-									Main.tile[num, num2].type = 113;
+-									Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(2, 8));
+-									while (Main.tile[num, num2].frameX == 90)
+-									{
+-										Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(2, 8));
+-									}
+-								}
+-								if (Main.netMode == 1)
+-								{
+-									NetMessage.SendTileSquare(-1, num, num2, 1);
+-								}
+-							}
+-							else if (Main.tile[num, num2 + 1].type == 60)
+-							{
+-								Main.tile[num, num2].active(true);
+-								Main.tile[num, num2].type = 74;
+-								Main.tile[num, num2].frameX = (short)(18 * Main.rand.Next(9, 17));
+-								if (Main.netMode == 1)
+-								{
+-									NetMessage.SendTileSquare(-1, num, num2, 1);
+-								}
+-							}
+-						}
+-					}
+-					this.statDefense += this.armor[k].defense;
+-					this.lifeRegen += this.armor[k].lifeRegen;
+-					if (this.armor[k].type == 268)
+-					{
+-						this.accDivingHelm = true;
+-					}
+-					if (this.armor[k].type == 238)
+-					{
+-						this.magicDamage += 0.15f;
+-					}
+-					if (this.armor[k].type == 3212)
+-					{
+-						this.armorPenetration += 5;
+-					}
+-					if (this.armor[k].type == 2277)
+-					{
+-						this.magicDamage += 0.05f;
+-						this.meleeDamage += 0.05f;
+-						this.rangedDamage += 0.05f;
+-						this.thrownDamage += 0.05f;
+-						this.magicCrit += 5;
+-						this.rangedCrit += 5;
+-						this.meleeCrit += 5;
+-						this.thrownCrit += 5;
+-						this.meleeSpeed += 0.1f;
+-						this.moveSpeed += 0.1f;
+-					}
+-					if (this.armor[k].type == 2279)
+-					{
+-						this.magicDamage += 0.06f;
+-						this.magicCrit += 6;
+-						this.manaCost -= 0.1f;
+-					}
+-					if (this.armor[k].type == 3109)
+-					{
+-						this.nightVision = true;
+-					}
+-					if (this.armor[k].type == 256)
+-					{
+-						this.thrownVelocity += 0.15f;
+-					}
+-					if (this.armor[k].type == 257)
+-					{
+-						this.thrownDamage += 0.15f;
+-					}
+-					if (this.armor[k].type == 258)
+-					{
+-						this.thrownCrit += 10;
+-					}
+-					if (this.armor[k].type == 3374)
+-					{
+-						this.thrownVelocity += 0.2f;
+-					}
+-					if (this.armor[k].type == 3375)
+-					{
+-						this.thrownDamage += 0.2f;
+-					}
+-					if (this.armor[k].type == 3376)
+-					{
+-						this.thrownCrit += 15;
+-					}
+-					if (this.armor[k].type == 2275)
+-					{
+-						this.magicDamage += 0.07f;
+-						this.magicCrit += 7;
+-					}
+-					if (this.armor[k].type == 123 || this.armor[k].type == 124 || this.armor[k].type == 125)
+-					{
+-						this.magicDamage += 0.07f;
+-					}
+-					if (this.armor[k].type == 151 || this.armor[k].type == 152 || this.armor[k].type == 153 || this.armor[k].type == 959)
+-					{
+-						this.rangedDamage += 0.05f;
+-					}
+-					if (this.armor[k].type == 111 || this.armor[k].type == 228 || this.armor[k].type == 229 || this.armor[k].type == 230 || this.armor[k].type == 960 || this.armor[k].type == 961 || this.armor[k].type == 962)
+-					{
+-						this.statManaMax2 += 20;
+-					}
+-					if (this.armor[k].type == 228 || this.armor[k].type == 960)
+-					{
+-						this.statManaMax2 += 20;
+-					}
+-					if (this.armor[k].type == 228 || this.armor[k].type == 229 || this.armor[k].type == 230 || this.armor[k].type == 960 || this.armor[k].type == 961 || this.armor[k].type == 962)
+-					{
+-						this.magicCrit += 4;
+-					}
+-					if (this.armor[k].type == 100 || this.armor[k].type == 101 || this.armor[k].type == 102)
+-					{
+-						this.meleeSpeed += 0.07f;
+-					}
+-					if (this.armor[k].type == 956 || this.armor[k].type == 957 || this.armor[k].type == 958)
+-					{
+-						this.meleeSpeed += 0.07f;
+-					}
+-					if (this.armor[k].type == 792 || this.armor[k].type == 793 || this.armor[k].type == 794)
+-					{
+-						this.meleeDamage += 0.02f;
+-						this.rangedDamage += 0.02f;
+-						this.magicDamage += 0.02f;
+-						this.thrownDamage += 0.02f;
+-					}
+-					if (this.armor[k].type == 371)
+-					{
+-						this.magicCrit += 9;
+-						this.statManaMax2 += 40;
+-					}
+-					if (this.armor[k].type == 372)
+-					{
+-						this.moveSpeed += 0.07f;
+-						this.meleeSpeed += 0.12f;
+-					}
+-					if (this.armor[k].type == 373)
+-					{
+-						this.rangedDamage += 0.1f;
+-						this.rangedCrit += 6;
+-					}
+-					if (this.armor[k].type == 374)
+-					{
+-						this.magicCrit += 3;
+-						this.meleeCrit += 3;
+-						this.rangedCrit += 3;
+-					}
+-					if (this.armor[k].type == 375)
+-					{
+-						this.moveSpeed += 0.1f;
+-					}
+-					if (this.armor[k].type == 376)
+-					{
+-						this.magicDamage += 0.15f;
+-						this.statManaMax2 += 60;
+-					}
+-					if (this.armor[k].type == 377)
+-					{
+-						this.meleeCrit += 5;
+-						this.meleeDamage += 0.1f;
+-					}
+-					if (this.armor[k].type == 378)
+-					{
+-						this.rangedDamage += 0.12f;
+-						this.rangedCrit += 7;
+-					}
+-					if (this.armor[k].type == 379)
+-					{
+-						this.rangedDamage += 0.05f;
+-						this.meleeDamage += 0.05f;
+-						this.magicDamage += 0.05f;
+-					}
+-					if (this.armor[k].type == 380)
+-					{
+-						this.magicCrit += 3;
+-						this.meleeCrit += 3;
+-						this.rangedCrit += 3;
+-					}
+-					if (this.armor[k].type >= 2367 && this.armor[k].type <= 2369)
+-					{
+-						this.fishingSkill += 5;
+-					}
+-					if (this.armor[k].type == 400)
+-					{
+-						this.magicDamage += 0.11f;
+-						this.magicCrit += 11;
+-						this.statManaMax2 += 80;
+-					}
+-					if (this.armor[k].type == 401)
+-					{
+-						this.meleeCrit += 7;
+-						this.meleeDamage += 0.14f;
+-					}
+-					if (this.armor[k].type == 402)
+-					{
+-						this.rangedDamage += 0.14f;
+-						this.rangedCrit += 8;
+-					}
+-					if (this.armor[k].type == 403)
+-					{
+-						this.rangedDamage += 0.06f;
+-						this.meleeDamage += 0.06f;
+-						this.magicDamage += 0.06f;
+-					}
+-					if (this.armor[k].type == 404)
+-					{
+-						this.magicCrit += 4;
+-						this.meleeCrit += 4;
+-						this.rangedCrit += 4;
+-						this.moveSpeed += 0.05f;
+-					}
+-					if (this.armor[k].type == 1205)
+-					{
+-						this.meleeDamage += 0.08f;
+-						this.meleeSpeed += 0.12f;
+-					}
+-					if (this.armor[k].type == 1206)
+-					{
+-						this.rangedDamage += 0.09f;
+-						this.rangedCrit += 9;
+-					}
+-					if (this.armor[k].type == 1207)
+-					{
+-						this.magicDamage += 0.07f;
+-						this.magicCrit += 7;
+-						this.statManaMax2 += 60;
+-					}
+-					if (this.armor[k].type == 1208)
+-					{
+-						this.meleeDamage += 0.03f;
+-						this.rangedDamage += 0.03f;
+-						this.magicDamage += 0.03f;
+-						this.magicCrit += 2;
+-						this.meleeCrit += 2;
+-						this.rangedCrit += 2;
+-					}
+-					if (this.armor[k].type == 1209)
+-					{
+-						this.meleeDamage += 0.02f;
+-						this.rangedDamage += 0.02f;
+-						this.magicDamage += 0.02f;
+-						this.magicCrit++;
+-						this.meleeCrit++;
+-						this.rangedCrit++;
+-					}
+-					if (this.armor[k].type == 1210)
+-					{
+-						this.meleeDamage += 0.07f;
+-						this.meleeSpeed += 0.07f;
+-						this.moveSpeed += 0.07f;
+-					}
+-					if (this.armor[k].type == 1211)
+-					{
+-						this.rangedCrit += 15;
+-						this.moveSpeed += 0.08f;
+-					}
+-					if (this.armor[k].type == 1212)
+-					{
+-						this.magicCrit += 18;
+-						this.statManaMax2 += 80;
+-					}
+-					if (this.armor[k].type == 1213)
+-					{
+-						this.magicCrit += 6;
+-						this.meleeCrit += 6;
+-						this.rangedCrit += 6;
+-					}
+-					if (this.armor[k].type == 1214)
+-					{
+-						this.moveSpeed += 0.11f;
+-					}
+-					if (this.armor[k].type == 1215)
+-					{
+-						this.meleeDamage += 0.08f;
+-						this.meleeCrit += 8;
+-						this.meleeSpeed += 0.08f;
+-					}
+-					if (this.armor[k].type == 1216)
+-					{
+-						this.rangedDamage += 0.16f;
+-						this.rangedCrit += 7;
+-					}
+-					if (this.armor[k].type == 1217)
+-					{
+-						this.magicDamage += 0.16f;
+-						this.magicCrit += 7;
+-						this.statManaMax2 += 100;
+-					}
+-					if (this.armor[k].type == 1218)
+-					{
+-						this.meleeDamage += 0.04f;
+-						this.rangedDamage += 0.04f;
+-						this.magicDamage += 0.04f;
+-						this.magicCrit += 3;
+-						this.meleeCrit += 3;
+-						this.rangedCrit += 3;
+-					}
+-					if (this.armor[k].type == 1219)
+-					{
+-						this.meleeDamage += 0.03f;
+-						this.rangedDamage += 0.03f;
+-						this.magicDamage += 0.03f;
+-						this.magicCrit += 3;
+-						this.meleeCrit += 3;
+-						this.rangedCrit += 3;
+-						this.moveSpeed += 0.06f;
+-					}
+-					if (this.armor[k].type == 558)
+-					{
+-						this.magicDamage += 0.12f;
+-						this.magicCrit += 12;
+-						this.statManaMax2 += 100;
+-					}
+-					if (this.armor[k].type == 559)
+-					{
+-						this.meleeCrit += 10;
+-						this.meleeDamage += 0.1f;
+-						this.meleeSpeed += 0.1f;
+-					}
+-					if (this.armor[k].type == 553)
+-					{
+-						this.rangedDamage += 0.15f;
+-						this.rangedCrit += 8;
+-					}
+-					if (this.armor[k].type == 551)
+-					{
+-						this.magicCrit += 7;
+-						this.meleeCrit += 7;
+-						this.rangedCrit += 7;
+-					}
+-					if (this.armor[k].type == 552)
+-					{
+-						this.rangedDamage += 0.07f;
+-						this.meleeDamage += 0.07f;
+-						this.magicDamage += 0.07f;
+-						this.moveSpeed += 0.08f;
+-					}
+-					if (this.armor[k].type == 1001)
+-					{
+-						this.meleeDamage += 0.16f;
+-						this.meleeCrit += 6;
+-					}
+-					if (this.armor[k].type == 1002)
+-					{
+-						this.rangedDamage += 0.16f;
+-						this.ammoCost80 = true;
+-					}
+-					if (this.armor[k].type == 1003)
+-					{
+-						this.statManaMax2 += 80;
+-						this.manaCost -= 0.17f;
+-						this.magicDamage += 0.16f;
+-					}
+-					if (this.armor[k].type == 1004)
+-					{
+-						this.meleeDamage += 0.05f;
+-						this.magicDamage += 0.05f;
+-						this.rangedDamage += 0.05f;
+-						this.magicCrit += 7;
+-						this.meleeCrit += 7;
+-						this.rangedCrit += 7;
+-					}
+-					if (this.armor[k].type == 1005)
+-					{
+-						this.magicCrit += 8;
+-						this.meleeCrit += 8;
+-						this.rangedCrit += 8;
+-						this.moveSpeed += 0.05f;
+-					}
+-					if (this.armor[k].type == 2189)
+-					{
+-						this.statManaMax2 += 60;
+-						this.manaCost -= 0.13f;
+-						this.magicDamage += 0.05f;
+-						this.magicCrit += 5;
+-					}
+-					if (this.armor[k].type == 1503)
+-					{
+-						this.magicDamage -= 0.4f;
+-					}
+-					if (this.armor[k].type == 1504)
+-					{
+-						this.magicDamage += 0.07f;
+-						this.magicCrit += 7;
+-					}
+-					if (this.armor[k].type == 1505)
+-					{
+-						this.magicDamage += 0.08f;
+-						this.moveSpeed += 0.08f;
+-					}
+-					if (this.armor[k].type == 1546)
+-					{
+-						this.rangedCrit += 5;
+-						this.arrowDamage += 0.15f;
+-					}
+-					if (this.armor[k].type == 1547)
+-					{
+-						this.rangedCrit += 5;
+-						this.bulletDamage += 0.15f;
+-					}
+-					if (this.armor[k].type == 1548)
+-					{
+-						this.rangedCrit += 5;
+-						this.rocketDamage += 0.15f;
+-					}
+-					if (this.armor[k].type == 1549)
+-					{
+-						this.rangedCrit += 13;
+-						this.rangedDamage += 0.13f;
+-						this.ammoCost80 = true;
+-					}
+-					if (this.armor[k].type == 1550)
+-					{
+-						this.rangedCrit += 7;
+-						this.moveSpeed += 0.12f;
+-					}
+-					if (this.armor[k].type == 1282)
+-					{
+-						this.statManaMax2 += 20;
+-						this.manaCost -= 0.05f;
+-					}
+-					if (this.armor[k].type == 1283)
+-					{
+-						this.statManaMax2 += 40;
+-						this.manaCost -= 0.07f;
+-					}
+-					if (this.armor[k].type == 1284)
+-					{
+-						this.statManaMax2 += 40;
+-						this.manaCost -= 0.09f;
+-					}
+-					if (this.armor[k].type == 1285)
+-					{
+-						this.statManaMax2 += 60;
+-						this.manaCost -= 0.11f;
+-					}
+-					if (this.armor[k].type == 1286)
+-					{
+-						this.statManaMax2 += 60;
+-						this.manaCost -= 0.13f;
+-					}
+-					if (this.armor[k].type == 1287)
+-					{
+-						this.statManaMax2 += 80;
+-						this.manaCost -= 0.15f;
+-					}
+-					if (this.armor[k].type == 1316 || this.armor[k].type == 1317 || this.armor[k].type == 1318)
+-					{
+-						this.aggro += 250;
+-					}
+-					if (this.armor[k].type == 1316)
+-					{
+-						this.meleeDamage += 0.06f;
+-					}
+-					if (this.armor[k].type == 1317)
+-					{
+-						this.meleeDamage += 0.08f;
+-						this.meleeCrit += 8;
+-					}
+-					if (this.armor[k].type == 1318)
+-					{
+-						this.meleeCrit += 4;
+-					}
+-					if (this.armor[k].type == 2199 || this.armor[k].type == 2202)
+-					{
+-						this.aggro += 250;
+-					}
+-					if (this.armor[k].type == 2201)
+-					{
+-						this.aggro += 400;
+-					}
+-					if (this.armor[k].type == 2199)
+-					{
+-						this.meleeDamage += 0.06f;
+-					}
+-					if (this.armor[k].type == 2200)
+-					{
+-						this.meleeDamage += 0.08f;
+-						this.meleeCrit += 8;
+-						this.meleeSpeed += 0.06f;
+-						this.moveSpeed += 0.06f;
+-					}
+-					if (this.armor[k].type == 2201)
+-					{
+-						this.meleeDamage += 0.05f;
+-						this.meleeCrit += 5;
+-					}
+-					if (this.armor[k].type == 2202)
+-					{
+-						this.meleeSpeed += 0.06f;
+-						this.moveSpeed += 0.06f;
+-					}
+-					if (this.armor[k].type == 684)
+-					{
+-						this.rangedDamage += 0.16f;
+-						this.meleeDamage += 0.16f;
+-					}
+-					if (this.armor[k].type == 685)
+-					{
+-						this.meleeCrit += 11;
+-						this.rangedCrit += 11;
+-					}
+-					if (this.armor[k].type == 686)
+-					{
+-						this.moveSpeed += 0.08f;
+-						this.meleeSpeed += 0.07f;
+-					}
+-					if (this.armor[k].type == 2361)
+-					{
+-						this.maxMinions++;
+-						this.minionDamage += 0.04f;
+-					}
+-					if (this.armor[k].type == 2362)
+-					{
+-						this.maxMinions++;
+-						this.minionDamage += 0.04f;
+-					}
+-					if (this.armor[k].type == 2363)
+-					{
+-						this.minionDamage += 0.05f;
+-					}
+-					if (this.armor[k].type >= 1158 && this.armor[k].type <= 1161)
+-					{
+-						this.maxMinions++;
+-					}
+-					if (this.armor[k].type >= 1159 && this.armor[k].type <= 1161)
+-					{
+-						this.minionDamage += 0.1f;
+-					}
+-					if (this.armor[k].type >= 2370 && this.armor[k].type <= 2371)
+-					{
+-						this.minionDamage += 0.05f;
+-						this.maxMinions++;
+-					}
+-					if (this.armor[k].type == 2372)
+-					{
+-						this.minionDamage += 0.06f;
+-						this.maxMinions++;
+-					}
+-					if (this.armor[k].type == 3381 || this.armor[k].type == 3382 || this.armor[k].type == 3383)
+-					{
+-						if (this.armor[k].type != 3381)
+-						{
+-							this.maxMinions++;
+-						}
+-						this.maxMinions++;
+-						this.minionDamage += 0.22f;
+-					}
+-					if (this.armor[k].type == 2763)
+-					{
+-						this.aggro += 300;
+-						this.meleeCrit += 17;
+-					}
+-					if (this.armor[k].type == 2764)
+-					{
+-						this.aggro += 300;
+-						this.meleeDamage += 0.22f;
+-					}
+-					if (this.armor[k].type == 2765)
+-					{
+-						this.aggro += 300;
+-						this.meleeSpeed += 0.15f;
+-						this.moveSpeed += 0.15f;
+-					}
+-					if (this.armor[k].type == 2757)
+-					{
+-						this.rangedCrit += 7;
+-						this.rangedDamage += 0.16f;
+-					}
+-					if (this.armor[k].type == 2758)
+-					{
+-						this.ammoCost75 = true;
+-						this.rangedCrit += 12;
+-						this.rangedDamage += 0.12f;
+-					}
+-					if (this.armor[k].type == 2759)
+-					{
+-						this.rangedCrit += 8;
+-						this.rangedDamage += 0.08f;
+-						this.moveSpeed += 0.1f;
+-					}
+-					if (this.armor[k].type == 2760)
+-					{
+-						this.statManaMax2 += 60;
+-						this.manaCost -= 0.15f;
+-						this.magicCrit += 7;
+-						this.magicDamage += 0.07f;
+-					}
+-					if (this.armor[k].type == 2761)
+-					{
+-						this.magicDamage += 0.09f;
+-						this.magicCrit += 9;
+-					}
+-					if (this.armor[k].type == 2762)
+-					{
+-						this.moveSpeed += 0.1f;
+-						this.magicDamage += 0.1f;
+-					}
+-					if (this.armor[k].type >= 1832 && this.armor[k].type <= 1834)
+-					{
+-						this.maxMinions++;
+-					}
+-					if (this.armor[k].type >= 1832 && this.armor[k].type <= 1834)
+-					{
+-						this.minionDamage += 0.11f;
+-					}
+-					if (this.armor[k].prefix == 62)
+-					{
+-						this.statDefense++;
+-					}
+-					if (this.armor[k].prefix == 63)
+-					{
+-						this.statDefense += 2;
+-					}
+-					if (this.armor[k].prefix == 64)
+-					{
+-						this.statDefense += 3;
+-					}
+-					if (this.armor[k].prefix == 65)
+-					{
+-						this.statDefense += 4;
+-					}
+-					if (this.armor[k].prefix == 66)
+-					{
+-						this.statManaMax2 += 20;
+-					}
+-					if (this.armor[k].prefix == 67)
+-					{
+-						this.meleeCrit += 2;
+-						this.rangedCrit += 2;
+-						this.magicCrit += 2;
+-						this.thrownCrit += 2;
+-					}
+-					if (this.armor[k].prefix == 68)
+-					{
+-						this.meleeCrit += 4;
+-						this.rangedCrit += 4;
+-						this.magicCrit += 4;
+-						this.thrownCrit += 4;
+-					}
+-					if (this.armor[k].prefix == 69)
+-					{
+-						this.meleeDamage += 0.01f;
+-						this.rangedDamage += 0.01f;
+-						this.magicDamage += 0.01f;
+-						this.minionDamage += 0.01f;
+-						this.thrownDamage += 0.01f;
+-					}
+-					if (this.armor[k].prefix == 70)
+-					{
+-						this.meleeDamage += 0.02f;
+-						this.rangedDamage += 0.02f;
+-						this.magicDamage += 0.02f;
+-						this.minionDamage += 0.02f;
+-						this.thrownDamage += 0.02f;
+-					}
+-					if (this.armor[k].prefix == 71)
+-					{
+-						this.meleeDamage += 0.03f;
+-						this.rangedDamage += 0.03f;
+-						this.magicDamage += 0.03f;
+-						this.minionDamage += 0.03f;
+-						this.thrownDamage += 0.03f;
+-					}
+-					if (this.armor[k].prefix == 72)
+-					{
+-						this.meleeDamage += 0.04f;
+-						this.rangedDamage += 0.04f;
+-						this.magicDamage += 0.04f;
+-						this.minionDamage += 0.04f;
+-						this.thrownDamage += 0.04f;
+-					}
+-					if (this.armor[k].prefix == 73)
+-					{
+-						this.moveSpeed += 0.01f;
+-					}
+-					if (this.armor[k].prefix == 74)
+-					{
+-						this.moveSpeed += 0.02f;
+-					}
+-					if (this.armor[k].prefix == 75)
+-					{
+-						this.moveSpeed += 0.03f;
+-					}
+-					if (this.armor[k].prefix == 76)
+-					{
+-						this.moveSpeed += 0.04f;
+-					}
+-					if (this.armor[k].prefix == 77)
+-					{
+-						this.meleeSpeed += 0.01f;
+-					}
+-					if (this.armor[k].prefix == 78)
+-					{
+-						this.meleeSpeed += 0.02f;
+-					}
+-					if (this.armor[k].prefix == 79)
+-					{
+-						this.meleeSpeed += 0.03f;
+-					}
+-					if (this.armor[k].prefix == 80)
+-					{
+-						this.meleeSpeed += 0.04f;
+-					}
+-				}
++				VanillaUpdateEquip(ref this.armor[k]);
  			}
  			bool flag = false;
-@@ -8618,7 +_,7 @@
- 					}
- 					if (Main.myPlayer == this.whoAmI)
- 					{
--						if (this.armor[l].type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0 && Main.curMusic <= 39)
-+						if (this.armor[l].type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0)
- 						{
- 							int num6 = 0;
- 							if (Main.curMusic == 1)
-@@ -8721,14 +_,18 @@
- 							{
- 								this.armor[l].SetDefaults(3371, false);
- 							}
--							else if (Main.curMusic > 13)
-+							else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
- 							{
- 								this.armor[l].SetDefaults(1596 + Main.curMusic - 14, false);
- 							}
--							else
-+							else if (Main.curMusic < Main.maxMusic)
- 							{
- 								this.armor[l].SetDefaults(num6 + 562, false);
- 							}
-+							else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
-+							{
-+								this.armor[l].SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
-+							}
- 						}
- 						if (this.armor[l].type >= 562 && this.armor[l].type <= 574)
- 						{
-@@ -8782,7 +_,12 @@
- 						{
- 							Main.musicBox2 = 37;
- 						}
+ 			bool flag2 = false;
+ 			bool flag3 = false;
+ 			for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
+ 			{
+-				if (!this.armor[l].expertOnly || Main.expertMode)
+-				{
+-					if (this.armor[l].type == 3015)
+-					{
+-						this.aggro -= 400;
+-						this.meleeCrit += 5;
+-						this.magicCrit += 5;
+-						this.rangedCrit += 5;
+-						this.thrownCrit += 5;
+-						this.meleeDamage += 0.05f;
+-						this.magicDamage += 0.05f;
+-						this.rangedDamage += 0.05f;
+-						this.thrownDamage += 0.05f;
+-						this.minionDamage += 0.05f;
 -					}
-+						if (SoundLoader.itemToMusic.ContainsKey(this.armor[l].type))
-+						{
-+							Main.musicBox2 = SoundLoader.itemToMusic[this.armor[l].type];
-+						}
-+					}
-+					ItemLoader.UpdateAccessory(this.armor[l], this, this.hideVisual[l]);
- 				}
+-					if (this.armor[l].type == 3016)
+-					{
+-						this.aggro += 400;
+-					}
+-					if (this.armor[l].type == 2373)
+-					{
+-						this.accFishingLine = true;
+-					}
+-					if (this.armor[l].type == 2374)
+-					{
+-						this.fishingSkill += 10;
+-					}
+-					if (this.armor[l].type == 2375)
+-					{
+-						this.accTackleBox = true;
+-					}
+-					if (this.armor[l].type == 3090)
+-					{
+-						this.npcTypeNoAggro[1] = true;
+-						this.npcTypeNoAggro[16] = true;
+-						this.npcTypeNoAggro[59] = true;
+-						this.npcTypeNoAggro[71] = true;
+-						this.npcTypeNoAggro[81] = true;
+-						this.npcTypeNoAggro[138] = true;
+-						this.npcTypeNoAggro[121] = true;
+-						this.npcTypeNoAggro[122] = true;
+-						this.npcTypeNoAggro[141] = true;
+-						this.npcTypeNoAggro[147] = true;
+-						this.npcTypeNoAggro[183] = true;
+-						this.npcTypeNoAggro[184] = true;
+-						this.npcTypeNoAggro[204] = true;
+-						this.npcTypeNoAggro[225] = true;
+-						this.npcTypeNoAggro[244] = true;
+-						this.npcTypeNoAggro[302] = true;
+-						this.npcTypeNoAggro[333] = true;
+-						this.npcTypeNoAggro[335] = true;
+-						this.npcTypeNoAggro[334] = true;
+-						this.npcTypeNoAggro[336] = true;
+-						this.npcTypeNoAggro[537] = true;
+-					}
+-					if (this.armor[l].stringColor > 0)
+-					{
+-						this.yoyoString = true;
+-					}
+-					if (this.armor[l].type == 3366)
+-					{
+-						this.counterWeight = 556 + Main.rand.Next(6);
+-						this.yoyoGlove = true;
+-						this.yoyoString = true;
+-					}
+-					if (this.armor[l].type >= 3309 && this.armor[l].type <= 3314)
+-					{
+-						this.counterWeight = 556 + this.armor[l].type - 3309;
+-					}
+-					if (this.armor[l].type == 3334)
+-					{
+-						this.yoyoGlove = true;
+-					}
+-					if (this.armor[l].type == 3337)
+-					{
+-						this.shinyStone = true;
+-					}
+-					if (this.armor[l].type == 3336)
+-					{
+-						this.SporeSac();
+-						this.sporeSac = true;
+-					}
+-					if (this.armor[l].type == 2423)
+-					{
+-						this.autoJump = true;
+-						this.jumpSpeedBoost += 2.4f;
+-						this.extraFall += 15;
+-					}
+-					if (this.armor[l].type == 857)
+-					{
+-						this.doubleJumpSandstorm = true;
+-					}
+-					if (this.armor[l].type == 983)
+-					{
+-						this.doubleJumpSandstorm = true;
+-						this.jumpBoost = true;
+-					}
+-					if (this.armor[l].type == 987)
+-					{
+-						this.doubleJumpBlizzard = true;
+-					}
+-					if (this.armor[l].type == 1163)
+-					{
+-						this.doubleJumpBlizzard = true;
+-						this.jumpBoost = true;
+-					}
+-					if (this.armor[l].type == 1724)
+-					{
+-						this.doubleJumpFart = true;
+-					}
+-					if (this.armor[l].type == 1863)
+-					{
+-						this.doubleJumpFart = true;
+-						this.jumpBoost = true;
+-					}
+-					if (this.armor[l].type == 1164)
+-					{
+-						this.doubleJumpCloud = true;
+-						this.doubleJumpSandstorm = true;
+-						this.doubleJumpBlizzard = true;
+-						this.jumpBoost = true;
+-					}
+-					if (this.armor[l].type == 1250)
+-					{
+-						this.jumpBoost = true;
+-						this.doubleJumpCloud = true;
+-						this.noFallDmg = true;
+-					}
+-					if (this.armor[l].type == 1252)
+-					{
+-						this.doubleJumpSandstorm = true;
+-						this.jumpBoost = true;
+-						this.noFallDmg = true;
+-					}
+-					if (this.armor[l].type == 1251)
+-					{
+-						this.doubleJumpBlizzard = true;
+-						this.jumpBoost = true;
+-						this.noFallDmg = true;
+-					}
+-					if (this.armor[l].type == 3250)
+-					{
+-						this.doubleJumpFart = true;
+-						this.jumpBoost = true;
+-						this.noFallDmg = true;
+-					}
+-					if (this.armor[l].type == 3252)
+-					{
+-						this.doubleJumpSail = true;
+-						this.jumpBoost = true;
+-						this.noFallDmg = true;
+-					}
+-					if (this.armor[l].type == 3251)
+-					{
+-						this.jumpBoost = true;
+-						this.bee = true;
+-						this.noFallDmg = true;
+-					}
+-					if (this.armor[l].type == 1249)
+-					{
+-						this.jumpBoost = true;
+-						this.bee = true;
+-					}
+-					if (this.armor[l].type == 3241)
+-					{
+-						this.jumpBoost = true;
+-						this.doubleJumpSail = true;
+-					}
+-					if (this.armor[l].type == 1253 && (double)this.statLife <= (double)this.statLifeMax2 * 0.5)
+-					{
+-						this.AddBuff(62, 5, true);
+-					}
+-					if (this.armor[l].type == 1290)
+-					{
+-						this.panic = true;
+-					}
+-					if ((this.armor[l].type == 1300 || this.armor[l].type == 1858) && (this.inventory[this.selectedItem].useAmmo == 14 || this.inventory[this.selectedItem].useAmmo == 311 || this.inventory[this.selectedItem].useAmmo == 323 || this.inventory[this.selectedItem].useAmmo == 23))
+-					{
+-						this.scope = true;
+-					}
+-					if (this.armor[l].type == 1858)
+-					{
+-						this.rangedCrit += 10;
+-						this.rangedDamage += 0.1f;
+-					}
+-					if (this.armor[l].type == 1303 && this.wet)
+-					{
+-						Lighting.AddLight((int)base.Center.X / 16, (int)base.Center.Y / 16, 0.9f, 0.2f, 0.6f);
+-					}
+-					if (this.armor[l].type == 1301)
+-					{
+-						this.meleeCrit += 8;
+-						this.rangedCrit += 8;
+-						this.magicCrit += 8;
+-						this.thrownCrit += 8;
+-						this.meleeDamage += 0.1f;
+-						this.rangedDamage += 0.1f;
+-						this.magicDamage += 0.1f;
+-						this.minionDamage += 0.1f;
+-						this.thrownDamage += 0.1f;
+-					}
+-					if (this.armor[l].type == 982)
+-					{
+-						this.statManaMax2 += 20;
+-						this.manaRegenDelayBonus++;
+-						this.manaRegenBonus += 25;
+-					}
+-					if (this.armor[l].type == 1595)
+-					{
+-						this.statManaMax2 += 20;
+-						this.magicCuffs = true;
+-					}
+-					if (this.armor[l].type == 2219)
+-					{
+-						this.manaMagnet = true;
+-					}
+-					if (this.armor[l].type == 2220)
+-					{
+-						this.manaMagnet = true;
+-						this.magicDamage += 0.15f;
+-					}
+-					if (this.armor[l].type == 2221)
+-					{
+-						this.manaMagnet = true;
+-						this.magicCuffs = true;
+-					}
+-					if (this.whoAmI == Main.myPlayer && this.armor[l].type == 1923)
+-					{
+-						Player.tileRangeX++;
+-						Player.tileRangeY++;
+-					}
+-					if (this.armor[l].type == 1247)
+-					{
+-						this.starCloak = true;
+-						this.bee = true;
+-					}
+-					if (this.armor[l].type == 1248)
+-					{
+-						this.meleeCrit += 10;
+-						this.rangedCrit += 10;
+-						this.magicCrit += 10;
+-						this.thrownCrit += 10;
+-					}
+-					if (this.armor[l].type == 854)
+-					{
+-						this.discount = true;
+-					}
+-					if (this.armor[l].type == 855)
+-					{
+-						this.coins = true;
+-					}
+-					if (this.armor[l].type == 3033)
+-					{
+-						this.goldRing = true;
+-					}
+-					if (this.armor[l].type == 3034)
+-					{
+-						this.goldRing = true;
+-						this.coins = true;
+-					}
+-					if (this.armor[l].type == 3035)
+-					{
+-						this.goldRing = true;
+-						this.coins = true;
+-						this.discount = true;
+-					}
+-					if (this.armor[l].type == 53)
+-					{
+-						this.doubleJumpCloud = true;
+-					}
+-					if (this.armor[l].type == 3201)
+-					{
+-						this.doubleJumpSail = true;
+-					}
+-					if (this.armor[l].type == 54)
+-					{
+-						this.accRunSpeed = 6f;
+-					}
+-					if (this.armor[l].type == 3068)
+-					{
+-						this.cordage = true;
+-					}
+-					if (this.armor[l].type == 1579)
+-					{
+-						this.accRunSpeed = 6f;
+-						this.coldDash = true;
+-					}
+-					if (this.armor[l].type == 3200)
+-					{
+-						this.accRunSpeed = 6f;
+-						this.sailDash = true;
+-					}
+-					if (this.armor[l].type == 128)
+-					{
+-						this.rocketBoots = 1;
+-					}
+-					if (this.armor[l].type == 156)
+-					{
+-						this.noKnockback = true;
+-					}
+-					if (this.armor[l].type == 158)
+-					{
+-						this.noFallDmg = true;
+-					}
+-					if (this.armor[l].type == 934)
+-					{
+-						this.carpet = true;
+-					}
+-					if (this.armor[l].type == 953)
+-					{
+-						this.spikedBoots++;
+-					}
+-					if (this.armor[l].type == 975)
+-					{
+-						this.spikedBoots++;
+-					}
+-					if (this.armor[l].type == 976)
+-					{
+-						this.spikedBoots += 2;
+-					}
+-					if (this.armor[l].type == 977)
+-					{
+-						this.dash = 1;
+-					}
+-					if (this.armor[l].type == 3097)
+-					{
+-						this.dash = 2;
+-					}
+-					if (this.armor[l].type == 963)
+-					{
+-						this.blackBelt = true;
+-					}
+-					if (this.armor[l].type == 984)
+-					{
+-						this.blackBelt = true;
+-						this.dash = 1;
+-						this.spikedBoots = 2;
+-					}
+-					if (this.armor[l].type == 1131)
+-					{
+-						this.gravControl2 = true;
+-					}
+-					if (this.armor[l].type == 1132)
+-					{
+-						this.bee = true;
+-					}
+-					if (this.armor[l].type == 1578)
+-					{
+-						this.bee = true;
+-						this.panic = true;
+-					}
+-					if (this.armor[l].type == 3224)
+-					{
+-						this.endurance += 0.17f;
+-					}
+-					if (this.armor[l].type == 3223)
+-					{
+-						this.brainOfConfusion = true;
+-					}
+-					if (this.armor[l].type == 950)
+-					{
+-						this.iceSkate = true;
+-					}
+-					if (this.armor[l].type == 159)
+-					{
+-						this.jumpBoost = true;
+-					}
+-					if (this.armor[l].type == 3225)
+-					{
+-						this.jumpBoost = true;
+-					}
+-					if (this.armor[l].type == 187)
+-					{
+-						this.accFlipper = true;
+-					}
+-					if (this.armor[l].type == 211)
+-					{
+-						this.meleeSpeed += 0.12f;
+-					}
+-					if (this.armor[l].type == 223)
+-					{
+-						this.manaCost -= 0.06f;
+-					}
+-					if (this.armor[l].type == 285)
+-					{
+-						this.moveSpeed += 0.05f;
+-					}
+-					if (this.armor[l].type == 212)
+-					{
+-						this.moveSpeed += 0.1f;
+-					}
+-					if (this.armor[l].type == 267)
+-					{
+-						this.killGuide = true;
+-					}
+-					if (this.armor[l].type == 1307)
+-					{
+-						this.killClothier = true;
+-					}
+-					if (this.armor[l].type == 193)
+-					{
+-						this.fireWalk = true;
+-					}
+-					if (this.armor[l].type == 861)
+-					{
+-						this.accMerman = true;
+-						this.wolfAcc = true;
+-						if (this.hideVisual[l])
+-						{
+-							this.hideMerman = true;
+-							this.hideWolf = true;
+-						}
+-					}
+-					if (this.armor[l].type == 862)
+-					{
+-						this.starCloak = true;
+-						this.longInvince = true;
+-					}
+-					if (this.armor[l].type == 860)
+-					{
+-						this.pStone = true;
+-					}
+-					if (this.armor[l].type == 863)
+-					{
+-						this.waterWalk2 = true;
+-					}
+-					if (this.armor[l].type == 907)
+-					{
+-						this.waterWalk2 = true;
+-						this.fireWalk = true;
+-					}
+-					if (this.armor[l].type == 908)
+-					{
+-						this.waterWalk = true;
+-						this.fireWalk = true;
+-						this.lavaMax += 420;
+-					}
+-					if (this.armor[l].type == 906)
+-					{
+-						this.lavaMax += 420;
+-					}
+-					if (this.armor[l].type == 485)
+-					{
+-						this.wolfAcc = true;
+-						if (this.hideVisual[l])
+-						{
+-							this.hideWolf = true;
+-						}
+-					}
+-					if (this.armor[l].type == 486 && !this.hideVisual[l])
+-					{
+-						this.rulerLine = true;
+-					}
+-					if (this.armor[l].type == 2799 && !this.hideVisual[l])
+-					{
+-						this.rulerGrid = true;
+-					}
+-					if (this.armor[l].type == 394)
+-					{
+-						this.accFlipper = true;
+-						this.accDivingHelm = true;
+-					}
+-					if (this.armor[l].type == 396)
+-					{
+-						this.noFallDmg = true;
+-						this.fireWalk = true;
+-					}
+-					if (this.armor[l].type == 397)
+-					{
+-						this.noKnockback = true;
+-						this.fireWalk = true;
+-					}
+-					if (this.armor[l].type == 399)
+-					{
+-						this.jumpBoost = true;
+-						this.doubleJumpCloud = true;
+-					}
+-					if (this.armor[l].type == 405)
+-					{
+-						this.accRunSpeed = 6f;
+-						this.rocketBoots = 2;
+-					}
+-					if (this.armor[l].type == 1860)
+-					{
+-						this.accFlipper = true;
+-						this.accDivingHelm = true;
+-						if (this.wet)
+-						{
+-							Lighting.AddLight((int)base.Center.X / 16, (int)base.Center.Y / 16, 0.9f, 0.2f, 0.6f);
+-						}
+-					}
+-					if (this.armor[l].type == 1861)
+-					{
+-						this.arcticDivingGear = true;
+-						this.accFlipper = true;
+-						this.accDivingHelm = true;
+-						this.iceSkate = true;
+-						if (this.wet)
+-						{
+-							Lighting.AddLight((int)base.Center.X / 16, (int)base.Center.Y / 16, 0.2f, 0.8f, 0.9f);
+-						}
+-					}
+-					if (this.armor[l].type == 2214)
+-					{
+-						flag2 = true;
+-					}
+-					if (this.armor[l].type == 2215)
+-					{
+-						flag3 = true;
+-					}
+-					if (this.armor[l].type == 2216)
+-					{
+-						this.autoPaint = true;
+-					}
+-					if (this.armor[l].type == 2217)
+-					{
+-						flag = true;
+-					}
+-					if (this.armor[l].type == 3061)
+-					{
+-						flag = true;
+-						flag2 = true;
+-						this.autoPaint = true;
+-						flag3 = true;
+-					}
+-					if (this.armor[l].type == 897)
+-					{
+-						this.kbGlove = true;
+-						this.meleeSpeed += 0.12f;
+-					}
+-					if (this.armor[l].type == 1343)
+-					{
+-						this.kbGlove = true;
+-						this.meleeSpeed += 0.1f;
+-						this.meleeDamage += 0.1f;
+-						this.magmaStone = true;
+-					}
+-					if (this.armor[l].type == 1167)
+-					{
+-						this.minionKB += 2f;
+-						this.minionDamage += 0.15f;
+-					}
+-					if (this.armor[l].type == 1864)
+-					{
+-						this.minionKB += 2f;
+-						this.minionDamage += 0.15f;
+-						this.maxMinions++;
+-					}
+-					if (this.armor[l].type == 1845)
+-					{
+-						this.minionDamage += 0.1f;
+-						this.maxMinions++;
+-					}
+-					if (this.armor[l].type == 1321)
+-					{
+-						this.magicQuiver = true;
+-						this.arrowDamage += 0.1f;
+-					}
+-					if (this.armor[l].type == 1322)
+-					{
+-						this.magmaStone = true;
+-					}
+-					if (this.armor[l].type == 1323)
+-					{
+-						this.lavaRose = true;
+-					}
+-					if (this.armor[l].type == 3333)
+-					{
+-						this.strongBees = true;
+-					}
+-					if (this.armor[l].type == 938)
+-					{
+-						this.noKnockback = true;
+-						if ((double)this.statLife > (double)this.statLifeMax2 * 0.25)
+-						{
+-							if (i == Main.myPlayer)
+-							{
+-								this.paladinGive = true;
+-							}
+-							else if (this.miscCounter % 5 == 0)
+-							{
+-								int myPlayer = Main.myPlayer;
+-								if (Main.player[myPlayer].team == this.team && this.team != 0)
+-								{
+-									float num3 = this.position.X - Main.player[myPlayer].position.X;
+-									float num4 = this.position.Y - Main.player[myPlayer].position.Y;
+-									float num5 = (float)Math.Sqrt((double)(num3 * num3 + num4 * num4));
+-									if (num5 < 800f)
+-									{
+-										Main.player[myPlayer].AddBuff(43, 10, true);
+-									}
+-								}
+-							}
+-						}
+-					}
+-					if (this.armor[l].type == 936)
+-					{
+-						this.kbGlove = true;
+-						this.meleeSpeed += 0.12f;
+-						this.meleeDamage += 0.12f;
+-					}
+-					if (this.armor[l].type == 898)
+-					{
+-						this.accRunSpeed = 6.75f;
+-						this.rocketBoots = 2;
+-						this.moveSpeed += 0.08f;
+-					}
+-					if (this.armor[l].type == 1862)
+-					{
+-						this.accRunSpeed = 6.75f;
+-						this.rocketBoots = 3;
+-						this.moveSpeed += 0.08f;
+-						this.iceSkate = true;
+-					}
+-					if (this.armor[l].type == 3110)
+-					{
+-						this.accMerman = true;
+-						this.wolfAcc = true;
+-						if (this.hideVisual[l])
+-						{
+-							this.hideMerman = true;
+-							this.hideWolf = true;
+-						}
+-					}
+-					if (this.armor[l].type == 1865 || this.armor[l].type == 3110)
+-					{
+-						this.lifeRegen += 2;
+-						this.statDefense += 4;
+-						this.meleeSpeed += 0.1f;
+-						this.meleeDamage += 0.1f;
+-						this.meleeCrit += 2;
+-						this.rangedDamage += 0.1f;
+-						this.rangedCrit += 2;
+-						this.magicDamage += 0.1f;
+-						this.magicCrit += 2;
+-						this.pickSpeed -= 0.15f;
+-						this.minionDamage += 0.1f;
+-						this.minionKB += 0.5f;
+-						this.thrownDamage += 0.1f;
+-						this.thrownCrit += 2;
+-					}
+-					if (this.armor[l].type == 899 && Main.dayTime)
+-					{
+-						this.lifeRegen += 2;
+-						this.statDefense += 4;
+-						this.meleeSpeed += 0.1f;
+-						this.meleeDamage += 0.1f;
+-						this.meleeCrit += 2;
+-						this.rangedDamage += 0.1f;
+-						this.rangedCrit += 2;
+-						this.magicDamage += 0.1f;
+-						this.magicCrit += 2;
+-						this.pickSpeed -= 0.15f;
+-						this.minionDamage += 0.1f;
+-						this.minionKB += 0.5f;
+-						this.thrownDamage += 0.1f;
+-						this.thrownCrit += 2;
+-					}
+-					if (this.armor[l].type == 900 && (!Main.dayTime || Main.eclipse))
+-					{
+-						this.lifeRegen += 2;
+-						this.statDefense += 4;
+-						this.meleeSpeed += 0.1f;
+-						this.meleeDamage += 0.1f;
+-						this.meleeCrit += 2;
+-						this.rangedDamage += 0.1f;
+-						this.rangedCrit += 2;
+-						this.magicDamage += 0.1f;
+-						this.magicCrit += 2;
+-						this.pickSpeed -= 0.15f;
+-						this.minionDamage += 0.1f;
+-						this.minionKB += 0.5f;
+-						this.thrownDamage += 0.1f;
+-						this.thrownCrit += 2;
+-					}
+-					if (this.armor[l].type == 407)
+-					{
+-						this.blockRange = 1;
+-					}
+-					if (this.armor[l].type == 489)
+-					{
+-						this.magicDamage += 0.15f;
+-					}
+-					if (this.armor[l].type == 490)
+-					{
+-						this.meleeDamage += 0.15f;
+-					}
+-					if (this.armor[l].type == 491)
+-					{
+-						this.rangedDamage += 0.15f;
+-					}
+-					if (this.armor[l].type == 2998)
+-					{
+-						this.minionDamage += 0.15f;
+-					}
+-					if (this.armor[l].type == 935)
+-					{
+-						this.magicDamage += 0.12f;
+-						this.meleeDamage += 0.12f;
+-						this.rangedDamage += 0.12f;
+-						this.minionDamage += 0.12f;
+-						this.thrownDamage += 0.12f;
+-					}
+-					if (this.armor[l].type == 492)
+-					{
+-						this.wingTimeMax = 100;
+-					}
+-					if (this.armor[l].type == 493)
+-					{
+-						this.wingTimeMax = 100;
+-					}
+-					if (this.armor[l].type == 748)
+-					{
+-						this.wingTimeMax = 115;
+-					}
+-					if (this.armor[l].type == 749)
+-					{
+-						this.wingTimeMax = 130;
+-					}
+-					if (this.armor[l].type == 761)
+-					{
+-						this.wingTimeMax = 130;
+-					}
+-					if (this.armor[l].type == 785)
+-					{
+-						this.wingTimeMax = 140;
+-					}
+-					if (this.armor[l].type == 786)
+-					{
+-						this.wingTimeMax = 140;
+-					}
+-					if (this.armor[l].type == 821)
+-					{
+-						this.wingTimeMax = 160;
+-					}
+-					if (this.armor[l].type == 822)
+-					{
+-						this.wingTimeMax = 160;
+-					}
+-					if (this.armor[l].type == 823)
+-					{
+-						this.wingTimeMax = 160;
+-					}
+-					if (this.armor[l].type == 2280)
+-					{
+-						this.wingTimeMax = 160;
+-					}
+-					if (this.armor[l].type == 2494)
+-					{
+-						this.wingTimeMax = 100;
+-					}
+-					if (this.armor[l].type == 2609)
+-					{
+-						this.wingTimeMax = 180;
+-						this.ignoreWater = true;
+-					}
+-					if (this.armor[l].type == 948)
+-					{
+-						this.wingTimeMax = 180;
+-					}
+-					if (this.armor[l].type == 1162)
+-					{
+-						this.wingTimeMax = 160;
+-					}
+-					if (this.armor[l].type == 1165)
+-					{
+-						this.wingTimeMax = 140;
+-					}
+-					if (this.armor[l].type == 1515)
+-					{
+-						this.wingTimeMax = 130;
+-					}
+-					if (this.armor[l].type == 665)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 1583)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 1584)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 1585)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 1586)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 3228)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 3580)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 3582)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 3588)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 3592)
+-					{
+-						this.wingTimeMax = 150;
+-					}
+-					if (this.armor[l].type == 1797)
+-					{
+-						this.wingTimeMax = 180;
+-					}
+-					if (this.armor[l].type == 1830)
+-					{
+-						this.wingTimeMax = 180;
+-					}
+-					if (this.armor[l].type == 1866)
+-					{
+-						this.wingTimeMax = 170;
+-					}
+-					if (this.armor[l].type == 1871)
+-					{
+-						this.wingTimeMax = 170;
+-					}
+-					if (this.armor[l].type == 2770)
+-					{
+-						this.wingTimeMax = 160;
+-					}
+-					if (this.armor[l].type == 3468)
+-					{
+-						this.wingTimeMax = 180;
+-					}
+-					if (this.armor[l].type == 3469)
+-					{
+-						this.wingTimeMax = 160;
+-					}
+-					if (this.armor[l].type == 3470)
+-					{
+-						this.wingTimeMax = 180;
+-					}
+-					if (this.armor[l].type == 3471)
+-					{
+-						this.wingTimeMax = 220;
+-					}
+-					if (this.armor[l].type == 885)
+-					{
+-						this.buffImmune[30] = true;
+-					}
+-					if (this.armor[l].type == 886)
+-					{
+-						this.buffImmune[36] = true;
+-					}
+-					if (this.armor[l].type == 887)
+-					{
+-						this.buffImmune[20] = true;
+-					}
+-					if (this.armor[l].type == 888)
+-					{
+-						this.buffImmune[22] = true;
+-					}
+-					if (this.armor[l].type == 889)
+-					{
+-						this.buffImmune[32] = true;
+-					}
+-					if (this.armor[l].type == 890)
+-					{
+-						this.buffImmune[35] = true;
+-					}
+-					if (this.armor[l].type == 891)
+-					{
+-						this.buffImmune[23] = true;
+-					}
+-					if (this.armor[l].type == 892)
+-					{
+-						this.buffImmune[33] = true;
+-					}
+-					if (this.armor[l].type == 893)
+-					{
+-						this.buffImmune[31] = true;
+-					}
+-					if (this.armor[l].type == 901)
+-					{
+-						this.buffImmune[33] = true;
+-						this.buffImmune[36] = true;
+-					}
+-					if (this.armor[l].type == 902)
+-					{
+-						this.buffImmune[30] = true;
+-						this.buffImmune[20] = true;
+-					}
+-					if (this.armor[l].type == 903)
+-					{
+-						this.buffImmune[32] = true;
+-						this.buffImmune[31] = true;
+-					}
+-					if (this.armor[l].type == 904)
+-					{
+-						this.buffImmune[35] = true;
+-						this.buffImmune[23] = true;
+-					}
+-					if (this.armor[l].type == 1921)
+-					{
+-						this.buffImmune[46] = true;
+-						this.buffImmune[47] = true;
+-					}
+-					if (this.armor[l].type == 1612)
+-					{
+-						this.buffImmune[33] = true;
+-						this.buffImmune[36] = true;
+-						this.buffImmune[30] = true;
+-						this.buffImmune[20] = true;
+-						this.buffImmune[32] = true;
+-						this.buffImmune[31] = true;
+-						this.buffImmune[35] = true;
+-						this.buffImmune[23] = true;
+-						this.buffImmune[22] = true;
+-					}
+-					if (this.armor[l].type == 1613)
+-					{
+-						this.buffImmune[46] = true;
+-						this.noKnockback = true;
+-						this.fireWalk = true;
+-						this.buffImmune[33] = true;
+-						this.buffImmune[36] = true;
+-						this.buffImmune[30] = true;
+-						this.buffImmune[20] = true;
+-						this.buffImmune[32] = true;
+-						this.buffImmune[31] = true;
+-						this.buffImmune[35] = true;
+-						this.buffImmune[23] = true;
+-						this.buffImmune[22] = true;
+-					}
+-					if (this.armor[l].type == 497)
+-					{
+-						this.accMerman = true;
+-						if (this.hideVisual[l])
+-						{
+-							this.hideMerman = true;
+-						}
+-					}
+-					if (this.armor[l].type == 535)
+-					{
+-						this.pStone = true;
+-					}
+-					if (this.armor[l].type == 536)
+-					{
+-						this.kbGlove = true;
+-					}
+-					if (this.armor[l].type == 532)
+-					{
+-						this.starCloak = true;
+-					}
+-					if (this.armor[l].type == 554)
+-					{
+-						this.longInvince = true;
+-					}
+-					if (this.armor[l].type == 555)
+-					{
+-						this.manaFlower = true;
+-						this.manaCost -= 0.08f;
+-					}
+-					if (Main.myPlayer == this.whoAmI)
+-					{
+-						if (this.armor[l].type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0 && Main.curMusic <= 39)
+-						{
+-							int num6 = 0;
+-							if (Main.curMusic == 1)
+-							{
+-								num6 = 0;
+-							}
+-							if (Main.curMusic == 2)
+-							{
+-								num6 = 1;
+-							}
+-							if (Main.curMusic == 3)
+-							{
+-								num6 = 2;
+-							}
+-							if (Main.curMusic == 4)
+-							{
+-								num6 = 4;
+-							}
+-							if (Main.curMusic == 5)
+-							{
+-								num6 = 5;
+-							}
+-							if (Main.curMusic == 6)
+-							{
+-								num6 = 3;
+-							}
+-							if (Main.curMusic == 7)
+-							{
+-								num6 = 6;
+-							}
+-							if (Main.curMusic == 8)
+-							{
+-								num6 = 7;
+-							}
+-							if (Main.curMusic == 9)
+-							{
+-								num6 = 9;
+-							}
+-							if (Main.curMusic == 10)
+-							{
+-								num6 = 8;
+-							}
+-							if (Main.curMusic == 11)
+-							{
+-								num6 = 11;
+-							}
+-							if (Main.curMusic == 12)
+-							{
+-								num6 = 10;
+-							}
+-							if (Main.curMusic == 13)
+-							{
+-								num6 = 12;
+-							}
+-							if (Main.curMusic == 28)
+-							{
+-								this.armor[l].SetDefaults(1963, false);
+-							}
+-							else if (Main.curMusic == 29)
+-							{
+-								this.armor[l].SetDefaults(1610, false);
+-							}
+-							else if (Main.curMusic == 30)
+-							{
+-								this.armor[l].SetDefaults(1963, false);
+-							}
+-							else if (Main.curMusic == 31)
+-							{
+-								this.armor[l].SetDefaults(1964, false);
+-							}
+-							else if (Main.curMusic == 32)
+-							{
+-								this.armor[l].SetDefaults(1965, false);
+-							}
+-							else if (Main.curMusic == 33)
+-							{
+-								this.armor[l].SetDefaults(2742, false);
+-							}
+-							else if (Main.curMusic == 34)
+-							{
+-								this.armor[l].SetDefaults(3370, false);
+-							}
+-							else if (Main.curMusic == 35)
+-							{
+-								this.armor[l].SetDefaults(3236, false);
+-							}
+-							else if (Main.curMusic == 36)
+-							{
+-								this.armor[l].SetDefaults(3237, false);
+-							}
+-							else if (Main.curMusic == 37)
+-							{
+-								this.armor[l].SetDefaults(3235, false);
+-							}
+-							else if (Main.curMusic == 38)
+-							{
+-								this.armor[l].SetDefaults(3044, false);
+-							}
+-							else if (Main.curMusic == 39)
+-							{
+-								this.armor[l].SetDefaults(3371, false);
+-							}
+-							else if (Main.curMusic > 13)
+-							{
+-								this.armor[l].SetDefaults(1596 + Main.curMusic - 14, false);
+-							}
+-							else
+-							{
+-								this.armor[l].SetDefaults(num6 + 562, false);
+-							}
+-						}
+-						if (this.armor[l].type >= 562 && this.armor[l].type <= 574)
+-						{
+-							Main.musicBox2 = this.armor[l].type - 562;
+-						}
+-						if (this.armor[l].type >= 1596 && this.armor[l].type <= 1609)
+-						{
+-							Main.musicBox2 = this.armor[l].type - 1596 + 13;
+-						}
+-						if (this.armor[l].type == 1610)
+-						{
+-							Main.musicBox2 = 27;
+-						}
+-						if (this.armor[l].type == 1963)
+-						{
+-							Main.musicBox2 = 28;
+-						}
+-						if (this.armor[l].type == 1964)
+-						{
+-							Main.musicBox2 = 29;
+-						}
+-						if (this.armor[l].type == 1965)
+-						{
+-							Main.musicBox2 = 30;
+-						}
+-						if (this.armor[l].type == 2742)
+-						{
+-							Main.musicBox2 = 31;
+-						}
+-						if (this.armor[l].type == 3044)
+-						{
+-							Main.musicBox2 = 32;
+-						}
+-						if (this.armor[l].type == 3235)
+-						{
+-							Main.musicBox2 = 33;
+-						}
+-						if (this.armor[l].type == 3236)
+-						{
+-							Main.musicBox2 = 34;
+-						}
+-						if (this.armor[l].type == 3237)
+-						{
+-							Main.musicBox2 = 35;
+-						}
+-						if (this.armor[l].type == 3370)
+-						{
+-							Main.musicBox2 = 36;
+-						}
+-						if (this.armor[l].type == 3371)
+-						{
+-							Main.musicBox2 = 37;
+-						}
+-					}
+-				}
++				VanillaUpdateAccessory(ref this.armor[l], this.hideVisual[l], ref flag, ref flag2, ref flag3);
  			}
  			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
+ 			{
 @@ -9390,6 +_,7 @@
  			{
  				this.DelBuff(this.HasBuff(187));
@@ -1894,14 +5808,13 @@
  					}
  					playerFileData = Player.LoadPlayer(file, cloudSave);
  					if (playerFileData.Player == null)
-@@ -34249,9 +_,22 @@
- 			}
+@@ -34250,8 +_,21 @@
  			return -1;
  		}
-+        
-+		internal readonly IList<ModPlayer> modPlayers = new List<ModPlayer>();
  
 -		public Player()
++		internal readonly IList<ModPlayer> modPlayers = new List<ModPlayer>();
++
 +		public ModPlayer GetModPlayer(Mod mod, string name)
  		{
 +			return PlayerHooks.GetModPlayer(this, mod, name);
@@ -2066,7 +5979,7 @@
 +				rewardItem.position = base.Center;
 +				Item getItem = this.GetItem(this.whoAmI, rewardItem, true, false);
 +				if (getItem.stack > 0)
-+				{ 
++				{
 +					int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, getItem.type, getItem.stack, false, 0, true, false);
  					if (Main.netMode == 1)
  					{
