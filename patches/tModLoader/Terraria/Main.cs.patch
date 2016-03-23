@@ -188,15 +188,6 @@
  				}
  				Main.soundMech[0] = base.Content.Load<SoundEffect>("Sounds" + Path.DirectorySeparatorChar + "Mech_0");
  				Main.soundInstanceMech[0] = Main.soundMech[0].CreateInstance();
-@@ -7332,7 +_,7 @@
- 				}
- 			}
- 		}
--
-+		 
- 		protected void UpdateMusic()
- 		{
- #if !WINDOWS
 @@ -7415,6 +_,7 @@
  					bool flag11 = false;
  					Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
@@ -1721,19 +1712,21 @@
  								num62++;
  							}
  						}
-@@ -31912,6 +_,7 @@
+@@ -31912,6 +_,8 @@
  										Main.recipe[Main.availableRecipe[num67]].Create();
  										if (Main.mouseItem.type > 0 || Main.recipe[Main.availableRecipe[num67]].createItem.type > 0)
  										{
 +											RecipeHooks.OnCraft(Main.mouseItem, Main.recipe[Main.availableRecipe[num67]]);
++											ItemLoader.OnCraft(Main.mouseItem, Main.recipe[Main.availableRecipe[num67]]);
  											Main.PlaySound(7, -1, -1, 1);
  										}
  									}
-@@ -31938,6 +_,7 @@
+@@ -31938,6 +_,8 @@
  										Main.recipe[Main.availableRecipe[num67]].Create();
  										if (Main.mouseItem.type > 0 || Main.recipe[Main.availableRecipe[num67]].createItem.type > 0)
  										{
 +											RecipeHooks.OnCraft(Main.mouseItem, Main.recipe[Main.availableRecipe[num67]]);
++											ItemLoader.OnCraft(Main.mouseItem, Main.recipe[Main.availableRecipe[num67]]);
  											Main.PlaySound(7, -1, -1, 1);
  										}
  									}

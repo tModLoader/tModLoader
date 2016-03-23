@@ -345,5 +345,9 @@ namespace Terraria.ModLoader
 		public virtual void AnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation)
 		{
 		}
+
+		public virtual void OnCraft(Item item, Recipe recipe)
+		{
+		}
 	}
 }

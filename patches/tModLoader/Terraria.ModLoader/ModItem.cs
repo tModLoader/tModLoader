@@ -436,5 +436,9 @@ namespace Terraria.ModLoader
 		public virtual void AddRecipes()
 		{
 		}
+
+		public virtual void OnCraft(Recipe recipe)
+		{
+		}
 	}
 }

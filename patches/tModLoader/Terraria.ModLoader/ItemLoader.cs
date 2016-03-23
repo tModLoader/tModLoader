@@ -1292,5 +1292,17 @@ namespace Terraria.ModLoader
 				globalItem.AnglerChat(turningInFish, anglerQuestFinished, type, ref chat, ref catchLocation);
 			}
 		}
+
+		public static void OnCraft(Item item, Recipe recipe)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.OnCraft(recipe);
+			}
+			foreach (GlobalItem globalItem in globalItems)
+			{
+				globalItem.OnCraft(item, recipe);
+            }
+		}
 	}
 }
