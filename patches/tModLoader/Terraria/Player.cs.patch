@@ -5710,6 +5710,15 @@
  			Main.mouseItem = new Item();
  		}
  
+@@ -33308,7 +_,7 @@
+ 
+ 		public object clientClone()
+ 		{
+-			Player player = new Player();
++			Player player = new Player(false);
+ 			player.zone1 = this.zone1;
+ 			player.zone2 = this.zone2;
+ 			player.extraAccessory = this.extraAccessory;
 @@ -33377,7 +_,7 @@
  			{
  				return false;
@@ -5807,10 +5816,11 @@
  			return -1;
  		}
  
+-		public Player()
 +		internal ModPlayer[] modPlayers = new ModPlayer[0];
 +
 +		public ModPlayer GetModPlayer(Mod mod, string name)
-+		{
+ 		{
 +			return PlayerHooks.GetModPlayer(this, mod, name);
 +		}
 +
@@ -5819,20 +5829,23 @@
 +			return (T)GetModPlayer(mod, typeof(T).Name);
 +		}
 +
- 		public Player()
- 		{
++		public Player(bool startupInventory = true)
++		{
 +			PlayerHooks.SetupPlayer(this);
  			int[] array = new int[2];
  			this.hurtCooldowns = array;
  			this.width = 20;
-@@ -34288,16 +_,14 @@
+@@ -34288,16 +_,17 @@
  			}
  			this.trashItem = new Item();
  			this.grappling[0] = -1;
 -			this.inventory[0].SetDefaults("Copper Shortsword");
 -			this.inventory[1].SetDefaults("Copper Pickaxe");
 -			this.inventory[2].SetDefaults("Copper Axe");
-+			PlayerHooks.SetStartInventory(this);
++		    if (startupInventory)
++		    {
++			    PlayerHooks.SetStartInventory(this);
++		    }
  			this.statManaMax = 20;
  			this.extraAccessory = false;
  			if (Main.cEd)
