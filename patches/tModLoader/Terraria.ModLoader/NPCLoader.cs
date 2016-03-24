@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 
@@ -12,15 +12,92 @@ namespace Terraria.ModLoader
 	public static class NPCLoader
 	{
 		private static int nextNPC = NPCID.Count;
-		internal static readonly IDictionary<int, ModNPC> npcs = new Dictionary<int, ModNPC>();
+		internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
 		internal static readonly IList<NPCInfo> infoList = new List<NPCInfo>();
-		internal static readonly IDictionary<string, IDictionary<string, int>> infoIndexes = new Dictionary<string, IDictionary<string, int>>();
+		internal static readonly IDictionary<string, int> infoIndexes = new Dictionary<string, int>();
 		private static int vanillaSkeletonCount = NPCID.Sets.Skeletons.Count;
 		private static readonly int[] shopToNPC = new int[Main.numShops - 1];
 		//in Terraria.Item.NewItem after setting Main.item[400] add
 		//  if(NPCLoader.blockLoot.Contains(Type)) { return num; }
 		public static readonly IList<int> blockLoot = new List<int>();
+		
+		private static Action<NPC>[] HookSetDefaults = new Action<NPC>[0];
+		private static Action<NPC, int, float>[] HookScaleExpertStats;
+		private static Action<NPC>[] HookResetEffects;
+		private static Func<NPC, bool>[] HookPreAI;
+		private static Action<NPC>[] HookAI;
+		private static Action<NPC>[] HookPostAI;
+		private static Action<NPC, int>[] HookFindFrame;
+		private static Action<NPC, int, double>[] HookHitEffect;
+		private delegate void DelegateUpdateLifeRegen(NPC npc, ref int damage);
+		private static DelegateUpdateLifeRegen[] HookUpdateLifeRegen;
+		private static Func<NPC, bool>[] HookCheckActive;
+		private static Func<NPC, bool>[] HookCheckDead;
+		private static Func<NPC, bool>[] HookPreNPCLoot;
+		private static Action<NPC>[] HookNPCLoot;
+		private delegate bool DelegateCanHitPlayer(NPC npc, Player target, ref int cooldownSlot);
+		private static DelegateCanHitPlayer[] HookCanHitPlayer;
+		private delegate void DelegateModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit);
+		private static DelegateModifyHitPlayer[] HookModifyHitPlayer;
+		private static Action<NPC, Player, int, bool>[] HookOnHitPlayer;
+		private static Func<NPC, NPC, bool?>[] HookCanHitNPC;
+		private delegate void DelegateModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit);
+		private static DelegateModifyHitNPC[] HookModifyHitNPC;
+		private static Action<NPC, NPC, int, float, bool>[] HookOnHitNPC;
+		private static Func<NPC, Player, Item, bool?>[] HookCanBeHitByItem;
+		private delegate void DelegateModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit);
+		private static DelegateModifyHitByItem[] HookModifyHitByItem;
+		private static Action<NPC, Player, Item, int, float, bool>[] HookOnHitByItem;
+		private static Func<NPC, Projectile, bool?>[] HookCanBeHitByProjectile;
+		private delegate void DelegateModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit);
+		private static DelegateModifyHitByProjectile[] HookModifyHitByProjectile;
+		private static Action<NPC, Projectile, int, float, bool>[] HookOnHitByProjectile;
+		private delegate bool DelegateStrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit);
+		private static DelegateStrikeNPC[] HookStrikeNPC;
+		private delegate void DelegateBossHeadSlot(NPC npc, ref int index);
+		private static DelegateBossHeadSlot[] HookBossHeadSlot;
+		private delegate void DelegateBossHeadRotation(NPC npc, ref float rotation);
+		private static DelegateBossHeadRotation[] HookBossHeadRotation;
+		private delegate void DelegateBossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects);
+		private static DelegateBossHeadSpriteEffects[] HookBossHeadSpriteEffects;
+		private static Func<NPC, Color, Color?>[] HookGetAlpha;
+		private delegate void DelegateDrawEffects(NPC npc, ref Color drawColor);
+		private static DelegateDrawEffects[] HookDrawEffects;
+		private static Func<NPC, SpriteBatch, Color, bool>[] HookPreDraw;
+		private static Action<NPC, SpriteBatch, Color>[] HookPostDraw;
+		private delegate void DelegateEditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns);
+		private static DelegateEditSpawnRate[] HookEditSpawnRate;
+		private delegate void DelegateEditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY, ref int safeRangeX, ref int safeRangeY);
+		private static DelegateEditSpawnRange[] HookEditSpawnRange;
+		private static Action<IDictionary<int, float>, NPCSpawnInfo>[] HookEditSpawnPool;
+		private static Action<int, int, int>[] HookSpawnNPC;
+		private delegate void DelegateGetChat(NPC npc, ref string chat);
+		private static DelegateGetChat[] HookGetChat;
+		private delegate void DelegateSetupShop(int type, Chest shop, ref int nextSlot);
+		private static DelegateSetupShop[] HookSetupShop = new DelegateSetupShop[0];
+		private delegate void DelegateSetupTravelShop(int[] shop, ref int nextSlot);
+		private static DelegateSetupTravelShop[] HookSetupTravelShop = new DelegateSetupTravelShop[0];
+		private delegate void DelegateBuffTownNPC(ref float damageMult, ref int defense);
+		private static DelegateBuffTownNPC[] HookBuffTownNPC;
+		private delegate void DelegateTownNPCAttackStrength(NPC npc, ref int damage, ref float knockback);
+		private static DelegateTownNPCAttackStrength[] HookTownNPCAttackStrength;
+		private delegate void DelegateTownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown);
+		private static DelegateTownNPCAttackCooldown[] HookTownNPCAttackCooldown;
+		private delegate void DelegateTownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay);
+		private static DelegateTownNPCAttackProj[] HookTownNPCAttackProj;
+		private delegate void DelegateTownNPCAttackProjSpeed(NPC npc, ref float multiplier, ref float gravityCorrection, ref float randomOffset);
+		private static DelegateTownNPCAttackProjSpeed[] HookTownNPCAttackProjSpeed;
+		private delegate void DelegateTownNPCAttackShoot(NPC npc, ref bool inBetweenShots);
+		private static DelegateTownNPCAttackShoot[] HookTownNPCAttackShoot;
+		private delegate void DelegateTownNPCAttackMagic(NPC npc, ref float auraLightMultiplier);
+		private static DelegateTownNPCAttackMagic[] HookTownNPCAttackMagic;
+		private delegate void DelegateTownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight);
+		private static DelegateTownNPCAttackSwing[] HookTownNPCAttackSwing;
+		private delegate void DelegateDrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness);
+		private static DelegateDrawTownAttackGun[] HookDrawTownAttackGun;
+		private delegate void DelegateDrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset);
+		private static DelegateDrawTownAttackSwing[] HookDrawTownAttackSwing;
 
 		static NPCLoader()
 		{
@@ -53,21 +130,11 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int NPCCount()
-		{
-			return nextNPC;
-		}
+		internal static int NPCCount => nextNPC;
 
 		public static ModNPC GetNPC(int type)
 		{
-			if (npcs.ContainsKey(type))
-			{
-				return npcs[type];
-			}
-			else
-			{
-				return null;
-			}
+			return type >= NPCID.Count && type < NPCCount ? npcs[type - NPCID.Count] : null;
 		}
 		//change initial size of Terraria.Player.npcTypeNoAggro and NPCBannerBuff to NPCLoader.NPCCount()
 		//in Terraria.Main.MouseText replace 251 with NPCLoader.NPCCount()
@@ -117,6 +184,57 @@ namespace Terraria.ModLoader
 				NPCID.Sets.MagicAuraColor[k] = Color.White;
 				NPCID.Sets.BossHeadTextures[k] = -1;
 			}
+
+			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalNPCs, g => g.SetDefaults);
+			ModLoader.BuildGlobalHook(ref HookScaleExpertStats, globalNPCs, g => g.ScaleExpertStats);
+			ModLoader.BuildGlobalHook(ref HookResetEffects, globalNPCs, g => g.ResetEffects);
+			ModLoader.BuildGlobalHook(ref HookPreAI, globalNPCs, g => g.PreAI);
+			ModLoader.BuildGlobalHook(ref HookAI, globalNPCs, g => g.AI);
+			ModLoader.BuildGlobalHook(ref HookPostAI, globalNPCs, g => g.PostAI);
+			ModLoader.BuildGlobalHook(ref HookFindFrame, globalNPCs, g => g.FindFrame);
+			ModLoader.BuildGlobalHook(ref HookHitEffect, globalNPCs, g => g.HitEffect);
+			ModLoader.BuildGlobalHook(ref HookUpdateLifeRegen, globalNPCs, g => g.UpdateLifeRegen);
+			ModLoader.BuildGlobalHook(ref HookCheckActive, globalNPCs, g => g.CheckActive);
+			ModLoader.BuildGlobalHook(ref HookCheckDead, globalNPCs, g => g.CheckDead);
+			ModLoader.BuildGlobalHook(ref HookPreNPCLoot, globalNPCs, g => g.PreNPCLoot);
+			ModLoader.BuildGlobalHook(ref HookNPCLoot, globalNPCs, g => g.NPCLoot);
+			ModLoader.BuildGlobalHook(ref HookCanHitPlayer, globalNPCs, g => g.CanHitPlayer);
+			ModLoader.BuildGlobalHook(ref HookModifyHitPlayer, globalNPCs, g => g.ModifyHitPlayer);
+			ModLoader.BuildGlobalHook(ref HookOnHitPlayer, globalNPCs, g => g.OnHitPlayer);
+			ModLoader.BuildGlobalHook(ref HookCanHitNPC, globalNPCs, g => g.CanHitNPC);
+			ModLoader.BuildGlobalHook(ref HookModifyHitNPC, globalNPCs, g => g.ModifyHitNPC);
+			ModLoader.BuildGlobalHook(ref HookOnHitNPC, globalNPCs, g => g.OnHitNPC);
+			ModLoader.BuildGlobalHook(ref HookCanBeHitByItem, globalNPCs, g => g.CanBeHitByItem);
+			ModLoader.BuildGlobalHook(ref HookModifyHitByItem, globalNPCs, g => g.ModifyHitByItem);
+			ModLoader.BuildGlobalHook(ref HookOnHitByItem, globalNPCs, g => g.OnHitByItem);
+			ModLoader.BuildGlobalHook(ref HookCanBeHitByProjectile, globalNPCs, g => g.CanBeHitByProjectile);
+			ModLoader.BuildGlobalHook(ref HookModifyHitByProjectile, globalNPCs, g => g.ModifyHitByProjectile);
+			ModLoader.BuildGlobalHook(ref HookOnHitByProjectile, globalNPCs, g => g.OnHitByProjectile);
+			ModLoader.BuildGlobalHook(ref HookStrikeNPC, globalNPCs, g => g.StrikeNPC);
+			ModLoader.BuildGlobalHook(ref HookBossHeadSlot, globalNPCs, g => g.BossHeadSlot);
+			ModLoader.BuildGlobalHook(ref HookBossHeadRotation, globalNPCs, g => g.BossHeadRotation);
+			ModLoader.BuildGlobalHook(ref HookBossHeadSpriteEffects, globalNPCs, g => g.BossHeadSpriteEffects);
+			ModLoader.BuildGlobalHook(ref HookGetAlpha, globalNPCs, g => g.GetAlpha);
+			ModLoader.BuildGlobalHook(ref HookDrawEffects, globalNPCs, g => g.DrawEffects);
+			ModLoader.BuildGlobalHook(ref HookPreDraw, globalNPCs, g => g.PreDraw);
+			ModLoader.BuildGlobalHook(ref HookPostDraw, globalNPCs, g => g.PostDraw);
+			ModLoader.BuildGlobalHook(ref HookEditSpawnRate, globalNPCs, g => g.EditSpawnRate);
+			ModLoader.BuildGlobalHook(ref HookEditSpawnRange, globalNPCs, g => g.EditSpawnRange);
+			ModLoader.BuildGlobalHook(ref HookEditSpawnPool, globalNPCs, g => g.EditSpawnPool);
+			ModLoader.BuildGlobalHook(ref HookSpawnNPC, globalNPCs, g => g.SpawnNPC);
+			ModLoader.BuildGlobalHook(ref HookGetChat, globalNPCs, g => g.GetChat);
+			ModLoader.BuildGlobalHook(ref HookSetupShop, globalNPCs, g => g.SetupShop);
+			ModLoader.BuildGlobalHook(ref HookSetupTravelShop, globalNPCs, g => g.SetupTravelShop);
+			ModLoader.BuildGlobalHook(ref HookBuffTownNPC, globalNPCs, g => g.BuffTownNPC);
+			ModLoader.BuildGlobalHook(ref HookTownNPCAttackStrength, globalNPCs, g => g.TownNPCAttackStrength);
+			ModLoader.BuildGlobalHook(ref HookTownNPCAttackCooldown, globalNPCs, g => g.TownNPCAttackCooldown);
+			ModLoader.BuildGlobalHook(ref HookTownNPCAttackProj, globalNPCs, g => g.TownNPCAttackProj);
+			ModLoader.BuildGlobalHook(ref HookTownNPCAttackProjSpeed, globalNPCs, g => g.TownNPCAttackProjSpeed);
+			ModLoader.BuildGlobalHook(ref HookTownNPCAttackShoot, globalNPCs, g => g.TownNPCAttackShoot);
+			ModLoader.BuildGlobalHook(ref HookTownNPCAttackMagic, globalNPCs, g => g.TownNPCAttackMagic);
+			ModLoader.BuildGlobalHook(ref HookTownNPCAttackSwing, globalNPCs, g => g.TownNPCAttackSwing);
+			ModLoader.BuildGlobalHook(ref HookDrawTownAttackGun, globalNPCs, g => g.DrawTownAttackGun);
+			ModLoader.BuildGlobalHook(ref HookDrawTownAttackSwing, globalNPCs, g => g.DrawTownAttackSwing);
 		}
 
 		internal static void Unload()
@@ -138,34 +256,22 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NPC.SetDefaults after if else setting properties call NPCLoader.SetupNPC(this);
 		//in Terraria.NPC.SetDefaults move Lang stuff before SetupNPC and replace this.netID with this.type
-		internal static void SetupNPC(NPC npc)
-		{
-			npc.npcInfo.Clear();
-			foreach (NPCInfo info in infoList)
-			{
-				npc.npcInfo.Add(info.Clone());
-			}
+		internal static void SetupNPC(NPC npc) {
+			npc.npcInfo = infoList.Select(info => info.Clone()).ToArray();
 			if (IsModNPC(npc))
 			{
 				GetNPC(npc.type).SetupNPC(npc);
 			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookSetDefaults)
 			{
-				globalNPC.SetDefaults(npc);
+				hook(npc);
 			}
 		}
 
 		internal static NPCInfo GetNPCInfo(NPC npc, Mod mod, string name)
 		{
-			if (!infoIndexes.ContainsKey(mod.Name))
-			{
-				return null;
-			}
-			if (!infoIndexes[mod.Name].ContainsKey(name))
-			{
-				return null;
-			}
-			return npc.npcInfo[infoIndexes[mod.Name][name]];
+			int index;
+			return infoIndexes.TryGetValue(mod.Name + ':' + name, out index) ? npc.npcInfo[index] : null;
 		}
 		//at beginning of Terraria.Lang.npcName add
 		//  if (l >= Main.maxNPCTypes) { return NPCLoader.DisplayName(l); }
@@ -194,25 +300,21 @@ namespace Terraria.ModLoader
 		//  NPCLoader.ScaleExpertStats(this, num4, num5);
 		public static void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.ScaleExpertStats(numPlayers, bossLifeScale);
+
+			foreach (var hook in HookScaleExpertStats)
 			{
-				npc.modNPC.ScaleExpertStats(numPlayers, bossLifeScale);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.ScaleExpertStats(npc, numPlayers, bossLifeScale);
+				hook(npc, numPlayers, bossLifeScale);
 			}
 		}
 
 		public static void ResetEffects(NPC npc)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.ResetEffects();
+
+			foreach (var hook in HookResetEffects)
 			{
-				npc.modNPC.ResetEffects();
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.ResetEffects(npc);
+				hook(npc);
 			}
 		}
 		//in Terraria.NPC rename AI to VanillaAI then make AI call NPCLoader.NPCAI(this)
@@ -221,7 +323,7 @@ namespace Terraria.ModLoader
 			if (PreAI(npc))
 			{
 				int type = npc.type;
-				bool useAiType = IsModNPC(npc) && npc.modNPC.aiType > 0;
+				bool useAiType = npc.modNPC != null && npc.modNPC.aiType > 0;
 				if (useAiType)
 				{
 					npc.type = npc.modNPC.aiType;
@@ -238,14 +340,14 @@ namespace Terraria.ModLoader
 
 		public static bool PreAI(NPC npc)
 		{
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookPreAI)
 			{
-				if (!globalNPC.PreAI(npc))
+				if (!hook(npc))
 				{
 					return false;
 				}
 			}
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				return npc.modNPC.PreAI();
 			}
@@ -254,32 +356,28 @@ namespace Terraria.ModLoader
 
 		public static void AI(NPC npc)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.AI();
+
+			foreach (var hook in HookAI)
 			{
-				npc.modNPC.AI();
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.AI(npc);
+				hook(npc);
 			}
 		}
 
 		public static void PostAI(NPC npc)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.PostAI();
+
+			foreach (var hook in HookPostAI)
 			{
-				npc.modNPC.PostAI();
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.PostAI(npc);
+				hook(npc);
 			}
 		}
 		//in Terraria.NetMessage.SendData at end of case 23 call
 		//  NPCLoader.SendExtraAI(nPC, writer);
 		public static void SendExtraAI(NPC npc, BinaryWriter writer)
 		{
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				byte[] data;
 				using (MemoryStream stream = new MemoryStream())
@@ -303,7 +401,7 @@ namespace Terraria.ModLoader
 		public static void ReceiveExtraAI(NPC npc, BinaryReader reader)
 		{
 			byte[] extraAI = reader.ReadBytes(reader.ReadByte());
-			if (extraAI.Length > 0 && IsModNPC(npc))
+			if (extraAI.Length > 0 && npc.modNPC != null)
 			{
 				using (MemoryStream stream = new MemoryStream(extraAI))
 				{
@@ -318,56 +416,50 @@ namespace Terraria.ModLoader
 		public static void FindFrame(NPC npc, int frameHeight)
 		{
 			int type = npc.type;
-			if (IsModNPC(npc) && npc.modNPC.animationType > 0)
+			if (npc.modNPC != null && npc.modNPC.animationType > 0)
 			{
 				npc.type = npc.modNPC.animationType;
 			}
 			npc.VanillaFindFrame(frameHeight);
 			npc.type = type;
-			if (IsModNPC(npc))
+			npc.modNPC?.FindFrame(frameHeight);
+
+			foreach (var hook in HookFindFrame)
 			{
-				npc.modNPC.FindFrame(frameHeight);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.FindFrame(npc, frameHeight);
+				hook(npc, frameHeight);
 			}
 		}
 		//in Terraria.NPC rename HitEffect to vanillaHitEffect and make HitEffect call this
 		public static void HitEffect(NPC npc, int hitDirection, double damage)
 		{
 			npc.VanillaHitEffect(hitDirection, damage);
-			if (IsModNPC(npc))
+			npc.modNPC?.HitEffect(hitDirection, damage);
+
+			foreach (var hook in HookHitEffect)
 			{
-				npc.modNPC.HitEffect(hitDirection, damage);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.HitEffect(npc, hitDirection, damage);
+				hook(npc, hitDirection, damage);
 			}
 		}
 
 		public static void UpdateLifeRegen(NPC npc, ref int damage)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.UpdateLifeRegen(ref damage);
+
+			foreach (var hook in HookUpdateLifeRegen)
 			{
-				npc.modNPC.UpdateLifeRegen(ref damage);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.UpdateLifeRegen(npc, ref damage);
+				hook(npc, ref damage);
 			}
 		}
 
 		public static bool CheckActive(NPC npc)
 		{
-			if (IsModNPC(npc) && !npc.modNPC.CheckActive())
+			if (npc.modNPC != null && !npc.modNPC.CheckActive())
 			{
 				return false;
 			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookCheckActive)
 			{
-				if (!globalNPC.CheckActive(npc))
+				if (!hook(npc))
 				{
 					return false;
 				}
@@ -377,13 +469,13 @@ namespace Terraria.ModLoader
 
 		public static bool CheckDead(NPC npc)
 		{
-			if (IsModNPC(npc) && !npc.modNPC.CheckDead())
+			if (npc.modNPC != null && !npc.modNPC.CheckDead())
 			{
 				return false;
 			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookCheckDead)
 			{
-				if (!globalNPC.CheckDead(npc))
+				if (!hook(npc))
 				{
 					return false;
 				}
@@ -394,15 +486,15 @@ namespace Terraria.ModLoader
 		//  if(!NPCLoader.PreNPCLoot(this)) { return; }
 		public static bool PreNPCLoot(NPC npc)
 		{
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookPreNPCLoot)
 			{
-				if (!globalNPC.PreNPCLoot(npc))
+				if (!hook(npc))
 				{
 					blockLoot.Clear();
 					return false;
 				}
 			}
-			if (IsModNPC(npc) && !npc.modNPC.PreNPCLoot())
+			if (npc.modNPC != null && !npc.modNPC.PreNPCLoot())
 			{
 				blockLoot.Clear();
 				return false;
@@ -412,13 +504,11 @@ namespace Terraria.ModLoader
 		//in Terraria.NPC.NPCLoot before heart and star drops add NPCLoader.NPCLoot(this);
 		public static void NPCLoot(NPC npc)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.NPCLoot();
+
+			foreach (var hook in HookNPCLoot)
 			{
-				npc.modNPC.NPCLoot();
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.NPCLoot(npc);
+				hook(npc);
 			}
 			blockLoot.Clear();
 		}
@@ -426,16 +516,14 @@ namespace Terraria.ModLoader
 		//  NPCLoader.BossLoot(this, ref name, ref num70);
 		public static void BossLoot(NPC npc, ref string name, ref int potionType)
 		{
-			if (IsModNPC(npc))
-			{
-				npc.modNPC.BossLoot(ref name, ref potionType);
-			}
+			npc.modNPC?.BossLoot(ref name, ref potionType);
 		}
+
 		//in Terraria.NPC.DropBossBags after if statements setting bag type call
 		//  NPCLoader.BossBag(this, ref num);
 		public static void BossBag(NPC npc, ref int bagType)
 		{
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				bagType = npc.modNPC.bossBag;
 			}
@@ -444,14 +532,14 @@ namespace Terraria.ModLoader
 		//  add NPCLoader.CanHitPlayer(Main.npc[num249], this, ref num250) &&
 		public static bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
 		{
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookCanHitPlayer)
 			{
-				if (!globalNPC.CanHitPlayer(npc, target, ref cooldownSlot))
+				if (!hook(npc, target, ref cooldownSlot))
 				{
 					return false;
 				}
 			}
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				return npc.modNPC.CanHitPlayer(target, ref cooldownSlot);
 			}
@@ -461,26 +549,22 @@ namespace Terraria.ModLoader
 		//  add local crit variable and call this
 		public static void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.ModifyHitPlayer(target, ref damage, ref crit);
+
+			foreach (var hook in HookModifyHitPlayer)
 			{
-				npc.modNPC.ModifyHitPlayer(target, ref damage, ref crit);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.ModifyHitPlayer(npc, target, ref damage, ref crit);
+				hook(npc, target, ref damage, ref crit);
 			}
 		}
 		//in Terraria.Player.Update for damage from NPCs
 		//  assign return value from Player.Hurt to local variable then call this
 		public static void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.OnHitPlayer(target, damage, crit);
+
+			foreach (var hook in HookOnHitPlayer)
 			{
-				npc.modNPC.OnHitPlayer(target, damage, crit);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.OnHitPlayer(npc, target, damage, crit);
+				hook(npc, target, damage, crit);
 			}
 		}
 		//Terraria.NPC.UpdateNPC for friendly NPC taking damage (check patch files)
@@ -488,9 +572,9 @@ namespace Terraria.ModLoader
 		public static bool? CanHitNPC(NPC npc, NPC target)
 		{
 			bool? flag = null;
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookCanHitNPC)
 			{
-				bool? canHit = globalNPC.CanHitNPC(npc, target);
+				bool? canHit = hook(npc, target);
 				if (canHit.HasValue && !canHit.Value)
 				{
 					return false;
@@ -500,7 +584,7 @@ namespace Terraria.ModLoader
 					flag = canHit.Value;
 				}
 			}
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				bool? canHit = npc.modNPC.CanHitNPC(target);
 				if (canHit.HasValue && !canHit.Value)
@@ -517,34 +601,29 @@ namespace Terraria.ModLoader
 		//in Terraria.NPC.UpdateNPC for friendly NPC taking damage add local crit variable then call this
 		public static void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.ModifyHitNPC(target, ref damage, ref knockback, ref crit);
+
+			foreach (var hook in HookModifyHitNPC)
 			{
-				npc.modNPC.ModifyHitNPC(target, ref damage, ref knockback, ref crit);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.ModifyHitNPC(npc, target, ref damage, ref knockback, ref crit);
+				hook(npc, target, ref damage, ref knockback, ref crit);
 			}
 		}
 		//in Terraria.NPC.UpdateNPC for friendly NPC taking damage before dryad ward call this
 		public static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.OnHitNPC(target, damage, knockback, crit);
+			foreach (var hook in HookOnHitNPC)
 			{
-				npc.modNPC.OnHitNPC(target, damage, knockback, crit);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.OnHitNPC(npc, target, damage, knockback, crit);
+				hook(npc, target, damage, knockback, crit);
 			}
 		}
 		//in Terraria.Player.ItemCheck call after ItemLoader.CanHitNPC
 		public static bool? CanBeHitByItem(NPC npc, Player player, Item item)
 		{
 			bool? flag = null;
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookCanBeHitByItem)
 			{
-				bool? canHit = globalNPC.CanBeHitByItem(npc, player, item);
+				bool? canHit = hook(npc, player, item);
 				if (canHit.HasValue && !canHit.Value)
 				{
 					return false;
@@ -554,7 +633,7 @@ namespace Terraria.ModLoader
 					flag = canHit.Value;
 				}
 			}
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				bool? canHit = npc.modNPC.CanBeHitByItem(player, item);
 				if (canHit.HasValue && !canHit.Value)
@@ -571,34 +650,30 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.ItemCheck call after ItemLoader.ModifyHitNPC
 		public static void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.ModifyHitByItem(player, item, ref damage, ref knockback, ref crit);
+
+			foreach (var hook in HookModifyHitByItem)
 			{
-				npc.modNPC.ModifyHitByItem(player, item, ref damage, ref knockback, ref crit);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.ModifyHitByItem(npc, player, item, ref damage, ref knockback, ref crit);
+				hook(npc, player, item, ref damage, ref knockback, ref crit);
 			}
 		}
 		//in Terraria.Player.ItemCheck call after ItemLoader.OnHitNPC
 		public static void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.OnHitByItem(player, item, damage, knockback, crit);
+
+			foreach (var hook in HookOnHitByItem)
 			{
-				npc.modNPC.OnHitByItem(player, item, damage, knockback, crit);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.OnHitByItem(npc, player, item, damage, knockback, crit);
+				hook(npc, player, item, damage, knockback, crit);
 			}
 		}
 		//in Terraria.Projectile.Damage call after ProjectileLoader.CanHitNPC
 		public static bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
 		{
 			bool? flag = null;
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookCanBeHitByProjectile)
 			{
-				bool? canHit = globalNPC.CanBeHitByProjectile(npc, projectile);
+				bool? canHit = hook(npc, projectile);
 				if (canHit.HasValue && !canHit.Value)
 				{
 					return false;
@@ -608,7 +683,7 @@ namespace Terraria.ModLoader
 					flag = canHit.Value;
 				}
 			}
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				bool? canHit = npc.modNPC.CanBeHitByProjectile(projectile);
 				if (canHit.HasValue && !canHit.Value)
@@ -625,38 +700,34 @@ namespace Terraria.ModLoader
 		//in Terraria.Projectile.Damage call after ProjectileLoader.ModifyHitNPC
 		public static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit);
+
+			foreach (var hook in HookModifyHitByProjectile)
 			{
-				npc.modNPC.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.ModifyHitByProjectile(npc, projectile, ref damage, ref knockback, ref crit);
+				hook(npc, projectile, ref damage, ref knockback, ref crit);
 			}
 		}
 		//in Terraria.Projectile.Damage call after ProjectileLoader.OnHitNPC
 		public static void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.OnHitByProjectile(projectile, damage, knockback, crit);
+
+			foreach (var hook in HookOnHitByProjectile)
 			{
-				npc.modNPC.OnHitByProjectile(projectile, damage, knockback, crit);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.OnHitByProjectile(npc, projectile, damage, knockback, crit);
+				hook(npc, projectile, damage, knockback, crit);
 			}
 		}
 		//in Terraria.NPC.StrikeNPC place modifications to num in if statement checking this
 		public static bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
 		{
 			bool flag = true;
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				flag = npc.modNPC.StrikeNPC(ref damage, defense, ref knockback, hitDirection, ref crit);
 			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookStrikeNPC)
 			{
-				if (!globalNPC.StrikeNPC(npc, ref damage, defense, ref knockback, hitDirection, ref crit))
+				if (!hook(npc, ref damage, defense, ref knockback, hitDirection, ref crit))
 				{
 					flag = false;
 				}
@@ -666,67 +737,55 @@ namespace Terraria.ModLoader
 		//in Terraria.NPC.GetBossHeadTextureIndex call this before returning
 		public static void BossHeadSlot(NPC npc, ref int index)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.BossHeadSlot(ref index);
+
+			foreach (var hook in HookBossHeadSlot)
 			{
-				npc.modNPC.BossHeadSlot(ref index);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.BossHeadSlot(npc, ref index);
+				hook(npc, ref index);
 			}
 		}
 		//in Terraria.NPC.GetBossHeadRotation call this before returning
 		public static void BossHeadRotation(NPC npc, ref float rotation)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.BossHeadRotation(ref rotation);
+
+			foreach (var hook in HookBossHeadRotation)
 			{
-				npc.modNPC.BossHeadRotation(ref rotation);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.BossHeadRotation(npc, ref rotation);
+				hook(npc, ref rotation);
 			}
 		}
 		//in Terraria.NPC.GetBossHeadSpriteEffects call this before returning
 		public static void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.BossHeadSpriteEffects(ref spriteEffects);
+
+			foreach (var hook in HookBossHeadSpriteEffects)
 			{
-				npc.modNPC.BossHeadSpriteEffects(ref spriteEffects);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.BossHeadSpriteEffects(npc, ref spriteEffects);
+				hook(npc, ref spriteEffects);
 			}
 		}
 		//at beginning of Terraria.NPC.GetAlpha add
 		//  Color? modColor = NPCLoader.GetAlpha(this, new Color); if(modColor.HasValue) { return modColor.Value; }
 		public static Color? GetAlpha(NPC npc, Color lightColor)
 		{
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookGetAlpha)
 			{
-				Color? color = globalNPC.GetAlpha(npc, lightColor);
+				Color? color = hook(npc, lightColor);
 				if (color.HasValue)
 				{
 					return color.Value;
 				}
 			}
-			if (IsModNPC(npc))
-			{
-				return npc.modNPC.GetAlpha(lightColor);
-			}
-			return null;
+			return npc.modNPC?.GetAlpha(lightColor);
 		}
 
 		public static void DrawEffects(NPC npc, ref Color drawColor)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.DrawEffects(ref drawColor);
+
+			foreach (var hook in HookDrawEffects)
 			{
-				npc.modNPC.DrawEffects(ref drawColor);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.DrawEffects(npc, ref drawColor);
+				hook(npc, ref drawColor);
 			}
 		}
 		//in Terraria.Main.DrawNPC after modifying draw color add
@@ -734,14 +793,14 @@ namespace Terraria.ModLoader
 		//  { NPCLoader.PostDraw(Main.npc[k], Main.spriteBatch, color9); return; }
 		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
 		{
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookPreDraw)
 			{
-				if (!globalNPC.PreDraw(npc, spriteBatch, drawColor))
+				if (!hook(npc, spriteBatch, drawColor))
 				{
 					return false;
 				}
 			}
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				return npc.modNPC.PreDraw(spriteBatch, drawColor);
 			}
@@ -750,22 +809,20 @@ namespace Terraria.ModLoader
 		//call this at end of Terraria.Main.DrawNPC
 		public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.PostDraw(spriteBatch, drawColor);
+
+			foreach (var hook in HookPostDraw)
 			{
-				npc.modNPC.PostDraw(spriteBatch, drawColor);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.PostDraw(npc, spriteBatch, drawColor);
+				hook(npc, spriteBatch, drawColor);
 			}
 		}
 		//in Terraria.NPC.SpawnNPC after modifying NPC.spawnRate and NPC.maxSpawns call
 		//  NPCLoader.EditSpawnRate(Main.player[j], ref NPC.spawnRate, ref NPC.maxSpawns);
 		public static void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
 		{
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookEditSpawnRate)
 			{
-				globalNPC.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
+				hook(player, ref spawnRate, ref maxSpawns);
 			}
 		}
 		//in Terraria.NPC.SpawnNPC after modifying spawn ranges call
@@ -774,9 +831,9 @@ namespace Terraria.ModLoader
 		public static void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
 			ref int safeRangeX, ref int safeRangeY)
 		{
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookEditSpawnRange)
 			{
-				globalNPC.EditSpawnRange(player, ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
+				hook(player, ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
 			}
 		}
 		//in Terraria.NPC.SpawnNPC after initializing variables and before actual spawning add
@@ -786,7 +843,7 @@ namespace Terraria.ModLoader
 		{
 			IDictionary<int, float> pool = new Dictionary<int, float>();
 			pool[0] = 1f;
-			foreach (ModNPC npc in npcs.Values)
+			foreach (ModNPC npc in npcs)
 			{
 				float weight = npc.CanSpawn(spawnInfo);
 				if (weight > 0f)
@@ -794,9 +851,9 @@ namespace Terraria.ModLoader
 					pool[npc.npc.type] = weight;
 				}
 			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookEditSpawnPool)
 			{
-				globalNPC.EditSpawnPool(pool, spawnInfo);
+				hook(pool, spawnInfo);
 			}
 			float totalWeight = 0f;
 			foreach (int type in pool.Keys)
@@ -819,28 +876,24 @@ namespace Terraria.ModLoader
 		//  endVanillaSpawn: if(spawn != 0) { num46 = NPCLoader.SpawnNPC(spawn, num, num2); }
 		public static int SpawnNPC(int type, int tileX, int tileY)
 		{
-			int npc;
-			if (type >= NPCID.Count)
+			var npc = type >= NPCID.Count ? 
+				GetNPC(type).SpawnNPC(tileX, tileY) : 
+				NPC.NewNPC(tileX * 16 + 8, tileY * 16, type);
+
+			foreach (var hook in HookSpawnNPC)
 			{
-				npc = NPCLoader.npcs[type].SpawnNPC(tileX, tileY);
+				hook(npc, tileX, tileY);
 			}
-			else
-			{
-				npc = NPC.NewNPC(tileX * 16 + 8, tileY * 16, type);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.SpawnNPC(npc, tileX, tileY);
-			}
+
 			return npc;
 		}
 		//at end of Terraria.Main.UpdateTime inside blocks add NPCLoader.CanTownNPCSpawn(num40, num42);
 		public static void CanTownNPCSpawn(int numTownNPCs, int money)
 		{
-			foreach (ModNPC npc in npcs.Values)
+			foreach (ModNPC npc in npcs)
 			{
 				if (npc.npc.townNPC && NPC.TypeToNum(npc.npc.type) >= 0 && !NPC.AnyNPCs(npc.npc.type) &&
-				    npc.CanTownNPCSpawn(numTownNPCs, money))
+					npc.CanTownNPCSpawn(numTownNPCs, money))
 				{
 					Main.nextNPC[npc.npc.type] = true;
 					if (WorldGen.spawnNPC == 0)
@@ -854,31 +907,23 @@ namespace Terraria.ModLoader
 		//  if(!NPCLoader.CheckConditions(type)) { return false; }
 		public static bool CheckConditions(int type)
 		{
-			if (type < NPCID.Count)
-			{
-				return true;
-			}
-			return GetNPC(type).CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2);
+			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
 		}
 		//in Terraria.NPC.getNewNPCName replace final return with return NPCLoader.TownNPCName(npcType);
 		public static string TownNPCName(int type)
 		{
-			if (type < NPCID.Count)
-			{
-				return "";
-			}
-			return GetNPC(type).TownNPCName();
+			return GetNPC(type)?.TownNPCName() ?? "";
 		}
 		//in Terraria.NPC.GetChat before returning result add NPCLoader.GetChat(this, ref result);
 		public static void GetChat(NPC npc, ref string chat)
 		{
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				chat = npc.modNPC.GetChat();
 			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookGetChat)
 			{
-				globalNPC.GetChat(npc, ref chat);
+				hook(npc, ref chat);
 			}
 		}
 		//in Terraria.Main.GUIChatDrawInner after if/else chain setting text and text2 call
@@ -888,10 +933,7 @@ namespace Terraria.ModLoader
 			if (Main.player[Main.myPlayer].talkNPC >= 0)
 			{
 				NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-				if (IsModNPC(npc))
-				{
-					npc.modNPC.SetChatButtons(ref button, ref button2);
-				}
+				npc.modNPC?.SetChatButtons(ref button, ref button2);
 			}
 		}
 		//add 1 to Terraria.Main.numShops
@@ -901,7 +943,7 @@ namespace Terraria.ModLoader
 		public static void OnChatButtonClicked(bool firstButton)
 		{
 			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-			if (IsModNPC(npc))
+			if (npc.modNPC != null)
 			{
 				bool shop = false;
 				npc.modNPC.OnChatButtonClicked(firstButton, ref shop);
@@ -922,30 +964,30 @@ namespace Terraria.ModLoader
 			{
 				type = shopToNPC[type];
 			}
-			else if (type >= NPCID.Count)
+			else
 			{
-				GetNPC(type).SetupShop(shop, ref nextSlot);
+				GetNPC(type)?.SetupShop(shop, ref nextSlot);
 			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookSetupShop)
 			{
-				globalNPC.SetupShop(type, shop, ref nextSlot);
+				hook(type, shop, ref nextSlot);
 			}
 		}
 		//at end of Terraria.Chest.SetupTravelShop call NPCLoader.SetupTravelShop(Main.travelShop, ref num2);
 		public static void SetupTravelShop(int[] shop, ref int nextSlot)
 		{
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookSetupTravelShop)
 			{
-				globalNPC.SetupTravelShop(shop, ref nextSlot);
+				hook(shop, ref nextSlot);
 			}
 		}
 		//in Terraria.NPC.AI in aiStyle 7 after buffing damage multiplier and defense add
 		//  NPCLoader.BuffTownNPC(ref num378, ref this.defense);
 		public static void BuffTownNPC(ref float damageMult, ref int defense)
 		{
-			foreach (GlobalNPC globalNPC in globalNPCs)
+			foreach (var hook in HookBuffTownNPC)
 			{
-				globalNPC.BuffTownNPC(ref damageMult, ref defense);
+				hook(ref damageMult, ref defense);
 			}
 		}
 		//attack type 0 = throwing
@@ -966,112 +1008,94 @@ namespace Terraria.ModLoader
 		//check patch files for town NPC attacks
 		public static void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.TownNPCAttackStrength(ref damage, ref knockback);
+
+			foreach (var hook in HookTownNPCAttackStrength)
 			{
-				npc.modNPC.TownNPCAttackStrength(ref damage, ref knockback);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.TownNPCAttackStrength(npc, ref damage, ref knockback);
+				hook(npc, ref damage, ref knockback);
 			}
 		}
 
 		public static void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.TownNPCAttackCooldown(ref cooldown, ref randExtraCooldown);
+
+			foreach (var hook in HookTownNPCAttackCooldown)
 			{
-				npc.modNPC.TownNPCAttackCooldown(ref cooldown, ref randExtraCooldown);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.TownNPCAttackCooldown(npc, ref cooldown, ref randExtraCooldown);
+				hook(npc, ref cooldown, ref randExtraCooldown);
 			}
 		}
 
 		public static void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.TownNPCAttackProj(ref projType, ref attackDelay);
+
+			foreach (var hook in HookTownNPCAttackProj)
 			{
-				npc.modNPC.TownNPCAttackProj(ref projType, ref attackDelay);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.TownNPCAttackProj(npc, ref projType, ref attackDelay);
+				hook(npc, ref projType, ref attackDelay);
 			}
 		}
 
 		public static void TownNPCAttackProjSpeed(NPC npc, ref float multiplier, ref float gravityCorrection,
 			ref float randomOffset)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.TownNPCAttackProjSpeed(ref multiplier, ref gravityCorrection, ref randomOffset);
+
+			foreach (var hook in HookTownNPCAttackProjSpeed)
 			{
-				npc.modNPC.TownNPCAttackProjSpeed(ref multiplier, ref gravityCorrection, ref randomOffset);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.TownNPCAttackProjSpeed(npc, ref multiplier, ref gravityCorrection, ref randomOffset);
+				hook(npc, ref multiplier, ref gravityCorrection, ref randomOffset);
 			}
 		}
 
 		public static void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.TownNPCAttackShoot(ref inBetweenShots);
+
+			foreach (var hook in HookTownNPCAttackShoot)
 			{
-				npc.modNPC.TownNPCAttackShoot(ref inBetweenShots);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.TownNPCAttackShoot(npc, ref inBetweenShots);
+				hook(npc, ref inBetweenShots);
 			}
 		}
 
 		public static void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.TownNPCAttackMagic(ref auraLightMultiplier);
+
+			foreach (var hook in HookTownNPCAttackMagic)
 			{
-				npc.modNPC.TownNPCAttackMagic(ref auraLightMultiplier);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.TownNPCAttackMagic(npc, ref auraLightMultiplier);
+				hook(npc, ref auraLightMultiplier);
 			}
 		}
 
 		public static void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.TownNPCAttackSwing(ref itemWidth, ref itemHeight);
+
+			foreach (var hook in HookTownNPCAttackSwing)
 			{
-				npc.modNPC.TownNPCAttackSwing(ref itemWidth, ref itemHeight);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.TownNPCAttackSwing(npc, ref itemWidth, ref itemHeight);
+				hook(npc, ref itemWidth, ref itemHeight);
 			}
 		}
 		//in Terraria.Main.DrawNPCExtras for attack type 1 after if else chain setting num2-4 call
 		//  NPCLoader.DrawTownAttackGun(n, ref num2, ref num3, ref num4);
 		public static void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.DrawTownAttackGun(ref scale, ref item, ref closeness);
+
+			foreach (var hook in HookDrawTownAttackGun)
 			{
-				npc.modNPC.DrawTownAttackGun(ref scale, ref item, ref closeness);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.DrawTownAttackGun(npc, ref scale, ref item, ref closeness);
+				hook(npc, ref scale, ref item, ref closeness);
 			}
 		}
 		//in Terraria.Main.DrawNPCExtras for attack type 3 after if else chain call
 		//  NPCLoader.DrawTownAttackSwing(n, ref texture2D5, ref num6, ref scaleFactor, ref zero);
 		public static void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
 		{
-			if (IsModNPC(npc))
+			npc.modNPC?.DrawTownAttackSwing(ref item, ref itemSize, ref scale, ref offset);
+
+			foreach (var hook in HookDrawTownAttackSwing)
 			{
-				npc.modNPC.DrawTownAttackSwing(ref item, ref itemSize, ref scale, ref offset);
-			}
-			foreach (GlobalNPC globalNPC in globalNPCs)
-			{
-				globalNPC.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
+				hook(npc, ref item, ref itemSize, ref scale, ref offset);
 			}
 		}
 	}

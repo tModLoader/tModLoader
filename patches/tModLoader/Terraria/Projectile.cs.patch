@@ -16,17 +16,17 @@
 +			internal set;
 +		}
 +
-+		internal IList<ProjectileInfo> projectileInfo = new List<ProjectileInfo>();
++		internal ProjectileInfo[] projectileInfo = new ProjectileInfo[0];
 +
 +		public ProjectileInfo GetModInfo(Mod mod, string name)
 +		{
 +			return ProjectileLoader.GetProjectileInfo(this, mod, name);
 +		}
 +
-+	    public T GetModInfo<T>(Mod mod) where T : ProjectileInfo
-+        {
-+	        return (T)GetModInfo(mod, typeof(T).Name);
-+	    }
++		public T GetModInfo<T>(Mod mod) where T : ProjectileInfo
++		{
++			return (T)GetModInfo(mod, typeof(T).Name);
++		}
 +
  		public bool arrow;
  		public int numHits;
@@ -105,11 +105,16 @@
  			{
  				return;
  			}
-@@ -8091,7 +_,23 @@
+@@ -8090,8 +_,27 @@
+ 				{
  					for (int k = 0; k < 200; k++)
  					{
- 						bool flag = !this.updatedNPCImmunity || this.npcImmune[k] == 0;
+-						bool flag = !this.updatedNPCImmunity || this.npcImmune[k] == 0;
 -						if (Main.npc[k].active && !Main.npc[k].dontTakeDamage && flag && ((this.friendly && (!Main.npc[k].friendly || this.type == 318 || (Main.npc[k].type == 22 && this.owner < 255 && Main.player[this.owner].killGuide) || (Main.npc[k].type == 54 && this.owner < 255 && Main.player[this.owner].killClothier))) || (this.hostile && Main.npc[k].friendly)) && (this.owner < 0 || Main.npc[k].immune[this.owner] == 0 || this.maxPenetrate == 1))
++						if (!Main.npc[k].active || Main.npc[k].dontTakeDamage || this.updatedNPCImmunity && this.npcImmune[k] != 0)
++						{
++							continue;
++						}
 +						bool? modCanHit = ProjectileLoader.CanHitNPC(this, Main.npc[k]);
 +						if (modCanHit.HasValue && !modCanHit.Value)
 +						{
@@ -126,7 +131,7 @@
 +							continue;
 +						}
 +						bool canHitFlag = (modCanHit.HasValue && modCanHit.Value) || (modCanBeHit.HasValue && modCanBeHit.Value) || (modCanHit2.HasValue && modCanHit2.Value);
-+						if (Main.npc[k].active && !Main.npc[k].dontTakeDamage && flag && (canHitFlag || (this.friendly && (!Main.npc[k].friendly || this.type == 318 || (Main.npc[k].type == 22 && this.owner < 255 && Main.player[this.owner].killGuide) || (Main.npc[k].type == 54 && this.owner < 255 && Main.player[this.owner].killClothier))) || (this.hostile && Main.npc[k].friendly)) && (this.owner < 0 || Main.npc[k].immune[this.owner] == 0 || this.maxPenetrate == 1))
++						if ((canHitFlag || (this.friendly && (!Main.npc[k].friendly || this.type == 318 || (Main.npc[k].type == 22 && this.owner < 255 && Main.player[this.owner].killGuide) || (Main.npc[k].type == 54 && this.owner < 255 && Main.player[this.owner].killClothier))) || (this.hostile && Main.npc[k].friendly)) && (this.owner < 0 || Main.npc[k].immune[this.owner] == 0 || this.maxPenetrate == 1))
  						{
  							bool flag2 = false;
  							if (this.type == 11 && (Main.npc[k].type == 47 || Main.npc[k].type == 57))
@@ -379,7 +384,7 @@
  														if (rectangle5.Intersects(value13))
  														{
 -															if (this.ai[1] > 0f && this.ai[1] < 3602f)
-+															if (this.ai[1] > 0f && this.ai[1] < (float)ItemLoader.ItemCount())
++															if (this.ai[1] > 0f && this.ai[1] < (float)ItemLoader.ItemCount)
  															{
  																int num594 = (int)this.ai[1];
  																Item item = new Item();

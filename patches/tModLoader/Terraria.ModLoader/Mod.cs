@@ -248,12 +248,11 @@ namespace Terraria.ModLoader
 
 		public void AddItem(string name, ModItem item, string texture)
 		{
-			Type type = item.GetType();
 			int id = ItemLoader.ReserveItemID();
 			item.item.name = name;
 			item.item.ResetStats(id);
 			items[name] = item;
-			ItemLoader.items[id] = item;
+			ItemLoader.items.Add(item);
 			item.texture = texture;
 			item.mod = this;
 			if (item.IsQuestFish())
@@ -309,11 +308,7 @@ namespace Terraria.ModLoader
 		{
 			info.mod = this;
 			info.Name = name;
-			if (!ItemLoader.infoIndexes.ContainsKey(this.Name))
-			{
-				ItemLoader.infoIndexes[this.Name] = new Dictionary<string, int>();
-			}
-			ItemLoader.infoIndexes[this.Name][name] = ItemLoader.infoList.Count;
+			ItemLoader.infoIndexes[Name + ':' + name] = ItemLoader.infoList.Count;
 			ItemLoader.infoList.Add(info);
 		}
 
@@ -440,17 +435,10 @@ namespace Terraria.ModLoader
 		public void AddDust(string name, ModDust dust, string texture = "")
 		{
 			int id = ModDust.ReserveDustID();
-			ModDust.dusts[id] = dust;
+			ModDust.dusts.Add(dust);
 			dust.Type = id;
 			dust.Name = name;
-			if (texture.Length > 0)
-			{
-				dust.Texture = ModLoader.GetTexture(texture);
-			}
-			else
-			{
-				dust.Texture = Main.dustTexture;
-			}
+			dust.Texture = texture.Length > 0 ? ModLoader.GetTexture(texture) : Main.dustTexture;
 			dust.mod = this;
 			dusts[name] = dust;
 		}
@@ -495,7 +483,7 @@ namespace Terraria.ModLoader
 			tile.Name = name;
 			tile.Type = (ushort)id;
 			tiles[name] = tile;
-			TileLoader.tiles[id] = tile;
+			TileLoader.tiles.Add(tile);
 			tile.texture = texture;
 			tile.mod = this;
 		}
@@ -571,7 +559,7 @@ namespace Terraria.ModLoader
 			wall.Name = name;
 			wall.Type = (ushort)id;
 			walls[name] = wall;
-			WallLoader.walls[id] = wall;
+			WallLoader.walls.Add(wall);
 			wall.texture = texture;
 			wall.mod = this;
 		}
@@ -648,7 +636,7 @@ namespace Terraria.ModLoader
 			projectile.Name = name;
 			projectile.projectile.type = id;
 			projectiles[name] = projectile;
-			ProjectileLoader.projectiles[id] = projectile;
+			ProjectileLoader.projectiles.Add(projectile);
 			projectile.texture = texture;
 			projectile.mod = this;
 		}
@@ -699,11 +687,7 @@ namespace Terraria.ModLoader
 		{
 			info.mod = this;
 			info.Name = name;
-			if (!ProjectileLoader.infoIndexes.ContainsKey(this.Name))
-			{
-				ProjectileLoader.infoIndexes[this.Name] = new Dictionary<string, int>();
-			}
-			ProjectileLoader.infoIndexes[this.Name][name] = ProjectileLoader.infoList.Count;
+			ProjectileLoader.infoIndexes[Name + ':' + name] = ProjectileLoader.infoList.Count;
 			ProjectileLoader.infoList.Add(info);
 		}
 
@@ -747,7 +731,7 @@ namespace Terraria.ModLoader
 			npc.npc.name = name;
 			npc.npc.type = id;
 			npcs[name] = npc;
-			NPCLoader.npcs[id] = npc;
+			NPCLoader.npcs.Add(npc);
 			npc.texture = texture;
 			npc.mod = this;
 		}
@@ -798,11 +782,7 @@ namespace Terraria.ModLoader
 		{
 			info.mod = this;
 			info.Name = name;
-			if (!NPCLoader.infoIndexes.ContainsKey(this.Name))
-			{
-				NPCLoader.infoIndexes[this.Name] = new Dictionary<string, int>();
-			}
-			NPCLoader.infoIndexes[this.Name][name] = NPCLoader.infoList.Count;
+			NPCLoader.infoIndexes[Name + ':' + name] = NPCLoader.infoList.Count;
 			NPCLoader.infoList.Add(info);
 		}
 
@@ -894,7 +874,7 @@ namespace Terraria.ModLoader
 			buff.Name = name;
 			buff.Type = id;
 			buffs[name] = buff;
-			BuffLoader.buffs[id] = buff;
+			BuffLoader.buffs.Add(buff);
 			buff.texture = texture;
 			buff.mod = this;
 		}

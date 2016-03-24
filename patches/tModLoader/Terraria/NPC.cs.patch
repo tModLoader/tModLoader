@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\NPC.cs
 +++ src/tModLoader\Terraria\NPC.cs
-@@ -9,12 +_,31 @@
+@@ -9,11 +_,30 @@
  using Terraria.GameContent.Tile_Entities;
  using Terraria.GameContent.UI;
  using Terraria.ID;
@@ -10,29 +10,27 @@
  {
  	public class NPC : Entity
  	{
--		public const int MaxMoonLordCountdown = 3600;
 +		public ModNPC modNPC
 +		{
 +			get;
 +			internal set;
 +		}
 +
-+		internal readonly IList<NPCInfo> npcInfo = new List<NPCInfo>();
++		internal NPCInfo[] npcInfo = new NPCInfo[0];
 +
 +		public NPCInfo GetModInfo(Mod mod, string name)
 +		{
 +			return NPCLoader.GetNPCInfo(this, mod, name);
-+        }
++		}
 +
-+        public T GetModInfo<T>(Mod mod) where T : NPCInfo
-+        {
-+            return (T)GetModInfo(mod, typeof(T).Name);
-+        }
++		public T GetModInfo<T>(Mod mod) where T : NPCInfo
++		{
++			return (T)GetModInfo(mod, typeof(T).Name);
++		}
 +
-+        public const int MaxMoonLordCountdown = 3600;
+ 		public const int MaxMoonLordCountdown = 3600;
  		public const int maxBuffs = 5;
  		public const int breathMax = 200;
- 		public static readonly int[,,,] MoonLordAttacksArray = NPC.InitializeMoonLordAttacks();
 @@ -75,13 +_,13 @@
  		private static int townRangeY = NPC.sHeight;
  		public float npcSlots = 1f;
@@ -45,7 +43,7 @@
  		public int[] buffType = new int[5];
  		public int[] buffTime = new int[5];
 -		public bool[] buffImmune = new bool[191];
-+		public bool[] buffImmune = new bool[BuffLoader.BuffCount()];
++		public bool[] buffImmune = new bool[BuffLoader.BuffCount];
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
@@ -105,7 +103,7 @@
  			else if (Name != "")
  			{
 -				for (int i = 1; i < 540; i++)
-+				for (int i = 1; i < NPCLoader.NPCCount(); i++)
++				for (int i = 1; i < NPCLoader.NPCCount; i++)
  				{
  					if (Main.npcName[i] == Name)
  					{
@@ -140,7 +138,7 @@
  				this.buffType[k] = 0;
  			}
 -			for (int l = 0; l < 191; l++)
-+			for (int l = 0; l < BuffLoader.BuffCount(); l++)
++			for (int l = 0; l < BuffLoader.BuffCount; l++)
  			{
  				this.buffImmune[l] = false;
  			}
@@ -153,7 +151,7 @@
  			if (flag)
  			{
 -				for (int num2 = 0; num2 < 191; num2++)
-+				for (int num2 = 0; num2 < BuffLoader.BuffCount(); num2++)
++				for (int num2 = 0; num2 < BuffLoader.BuffCount; num2++)
  				{
  					this.buffImmune[num2] = true;
  				}
@@ -355,7 +353,7 @@
  					}
 +					if (num3 >= NPCID.Count)
 +					{
-+						num6 = NPCLoader.npcs[num3].bannerItem;
++						num6 = NPCLoader.GetNPC(num3).bannerItem;
 +					}
  					Vector2 position = this.position;
  					if (num5 >= 0 && num5 < 255)

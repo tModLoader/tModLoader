@@ -18,9 +18,11 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<int, string> femaleTextures = new Dictionary<int, string>();
 		internal static readonly IDictionary<int, string> armTextures = new Dictionary<int, string>();
 
+		public static readonly EquipType[] EquipTypes = (EquipType[]) Enum.GetValues(typeof (EquipType));
+
 		static EquipLoader()
 		{
-			foreach (EquipType type in Enum.GetValues(typeof(EquipType)))
+			foreach (EquipType type in EquipTypes)
 			{
 				nextEquip[type] = GetNumVanilla(type);
 				equipTextures[type] = new Dictionary<int, EquipTexture>();
@@ -65,7 +67,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.accNeckLoaded, nextEquip[EquipType.Neck]);
 			Array.Resize(ref Main.accFaceLoaded, nextEquip[EquipType.Face]);
 			Array.Resize(ref Main.accballoonLoaded, nextEquip[EquipType.Balloon]);
-			foreach (EquipType type in Enum.GetValues(typeof(EquipType)))
+			foreach (EquipType type in EquipTypes)
 			{
 				for (int k = GetNumVanilla(type); k < nextEquip[type]; k++)
 				{
@@ -88,7 +90,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.accNeckTexture, nextEquip[EquipType.Neck]);
 			Array.Resize(ref Main.accFaceTexture, nextEquip[EquipType.Face]);
 			Array.Resize(ref Main.accBalloonTexture, nextEquip[EquipType.Balloon]);
-			foreach (EquipType type in Enum.GetValues(typeof(EquipType)))
+			foreach (EquipType type in EquipTypes)
 			{
 				foreach (int slot in equipTextures[type].Keys)
 				{
@@ -127,7 +129,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload()
 		{
-			foreach (EquipType type in Enum.GetValues(typeof(EquipType)))
+			foreach (EquipType type in EquipTypes)
 			{
 				nextEquip[type] = GetNumVanilla(type);
 				equipTextures[type].Clear();

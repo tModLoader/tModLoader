@@ -1,6 +1,4 @@
-using System;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 
 namespace Terraria.ModLoader
 {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -11,7 +10,7 @@ namespace Terraria.ModLoader
 	public class ModDust
 	{
 		private static int nextDust = DustID.Count;
-		internal static readonly IDictionary<int, ModDust> dusts = new Dictionary<int, ModDust>();
+		internal static readonly IList<ModDust> dusts = new List<ModDust>();
 		public int updateType = -1;
 
 		public string Name
@@ -38,13 +37,11 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal static int DustCount => nextDust;
+
 		public static ModDust GetDust(int type)
 		{
-			if (dusts.ContainsKey(type))
-			{
-				return dusts[type];
-			}
-			return null;
+			return type >= DustID.Count && type < DustCount ? dusts[type - DustID.Count] : null;
 		}
 
 		internal static int ReserveDustID()

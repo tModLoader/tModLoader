@@ -22,7 +22,7 @@ namespace Terraria.ModLoader
 
 		public void AddTooltip(Item item, string tooltip)
 		{
-			if (item.toolTip == null || item.toolTip.Length == 0)
+			if (string.IsNullOrEmpty(item.toolTip))
 			{
 				item.toolTip = tooltip;
 			}
@@ -34,7 +34,7 @@ namespace Terraria.ModLoader
 
 		public void AddTooltip2(Item item, string tooltip)
 		{
-			if (item.toolTip2 == null || item.toolTip2.Length == 0)
+			if (string.IsNullOrEmpty(item.toolTip2))
 			{
 				item.toolTip2 = tooltip;
 			}

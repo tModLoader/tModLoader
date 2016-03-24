@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -516,9 +517,34 @@ namespace Terraria.ModLoader
 					throw;
 				}
 			}
-		}
+        }
 
-		internal class LoadingMod
+        /// <summary>
+        /// Allows type inference on T and F
+        /// </summary>
+	    internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) {
+	        list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
+	    }
+
+	    internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) {
+            MethodInfo method;
+            try {
+                var convert = expr.Body as UnaryExpression;
+                var makeDelegate = convert.Operand as MethodCallExpression;
+                var methodArg = makeDelegate.Arguments[2] as ConstantExpression;
+                method = methodArg.Value as MethodInfo;
+                if (method == null) throw new NullReferenceException();
+            }
+            catch (Exception e) {
+                throw new ArgumentException("Invalid hook expression " + expr, e);
+            }
+
+            if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
+            var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+            return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
+        }
+
+        internal class LoadingMod
 		{
 			public readonly TmodFile modFile;
 			public readonly BuildProperties properties;

@@ -1,9 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -11,10 +7,17 @@ namespace Terraria.ModLoader
 	public static class BuffLoader
 	{
 		private static int nextBuff = BuffID.Count;
-		internal static readonly IDictionary<int, ModBuff> buffs = new Dictionary<int, ModBuff>();
+		internal static readonly IList<ModBuff> buffs = new List<ModBuff>();
 		internal static readonly IList<GlobalBuff> globalBuffs = new List<GlobalBuff>();
 		private static readonly bool[] vanillaLongerExpertDebuff = new bool[BuffID.Count];
 		private static readonly bool[] vanillaCanBeCleared = new bool[BuffID.Count];
+		
+		private delegate void DelegateUpdatePlayer(int type, Player player, ref int buffIndex);
+		private static DelegateUpdatePlayer[] HookUpdatePlayer; 
+		private delegate void DelegateUpdateNPC(int type, NPC npc, ref int buffIndex);
+		private static DelegateUpdateNPC[] HookUpdateNPC; 
+		private static Func<int, Player, int, int, bool>[] HookReApplyPlayer; 
+		private static Func<int, NPC, int, int, bool>[] HookReApplyNPC; 
 
 		static BuffLoader()
 		{
@@ -54,21 +57,11 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int BuffCount()
-		{
-			return nextBuff;
-		}
+		internal static int BuffCount => nextBuff;
 
 		public static ModBuff GetBuff(int type)
 		{
-			if (buffs.ContainsKey(type))
-			{
-				return buffs[type];
-			}
-			else
-			{
-				return null;
-			}
+			return type >= BuffID.Count && type < BuffCount ? buffs[type - BuffID.Count] : null;
 		}
 
 		internal static void ResizeArrays()
@@ -86,6 +79,11 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.buffDoubleApply, nextBuff);
 			Array.Resize(ref Main.buffAlpha, nextBuff);
 			Array.Resize(ref Main.buffTexture, nextBuff);
+			
+			ModLoader.BuildGlobalHook(ref HookUpdatePlayer, globalBuffs, g => g.Update);
+			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);
+			ModLoader.BuildGlobalHook(ref HookReApplyPlayer, globalBuffs, g => g.ReApply);
+			ModLoader.BuildGlobalHook(ref HookReApplyNPC, globalBuffs, g => g.ReApply);
 		}
 
 		internal static void Unload()
@@ -107,13 +105,13 @@ namespace Terraria.ModLoader
 			{
 				GetBuff(buff).Update(player, ref buffIndex);
 			}
-			foreach (GlobalBuff globalBuff in globalBuffs)
+			foreach (var hook in HookUpdatePlayer)
 			{
 				if (buffIndex != originalIndex)
 				{
 					break;
 				}
-				globalBuff.Update(buff, player, ref buffIndex);
+				hook(buff, player, ref buffIndex);
 			}
 		}
 
@@ -123,17 +121,17 @@ namespace Terraria.ModLoader
 			{
 				GetBuff(buff).Update(npc, ref buffIndex);
 			}
-			foreach (GlobalBuff globalBuff in globalBuffs)
+			foreach (var hook in HookUpdateNPC)
 			{
-				globalBuff.Update(buff, npc, ref buffIndex);
+				hook(buff, npc, ref buffIndex);
 			}
 		}
 
 		public static bool ReApply(int buff, Player player, int time, int buffIndex)
 		{
-			foreach (GlobalBuff globalBuff in globalBuffs)
+			foreach (var hook in HookReApplyPlayer)
 			{
-				if (globalBuff.ReApply(buff, player, time, buffIndex))
+				if (hook(buff, player, time, buffIndex))
 				{
 					return true;
 				}
@@ -147,9 +145,9 @@ namespace Terraria.ModLoader
 
 		public static bool ReApply(int buff, NPC npc, int time, int buffIndex)
 		{
-			foreach (GlobalBuff globalBuff in globalBuffs)
+			foreach (var hook in HookReApplyNPC)
 			{
-				if (globalBuff.ReApply(buff, npc, time, buffIndex))
+				if (hook(buff, npc, time, buffIndex))
 				{
 					return true;
 				}
@@ -163,26 +161,12 @@ namespace Terraria.ModLoader
 
 		public static bool LongerExpertDebuff(int buff)
 		{
-			if (IsModBuff(buff))
-			{
-				return GetBuff(buff).longerExpertDebuff;
-			}
-			else
-			{
-				return vanillaLongerExpertDebuff[buff];
-			}
+			return GetBuff(buff)?.longerExpertDebuff ?? vanillaLongerExpertDebuff[buff];
 		}
 
 		public static bool CanBeCleared(int buff)
 		{
-			if (IsModBuff(buff))
-			{
-				return GetBuff(buff).canBeCleared;
-			}
-			else
-			{
-				return vanillaCanBeCleared[buff];
-			}
+			return GetBuff(buff)?.canBeCleared ?? vanillaCanBeCleared[buff];
 		}
 	}
 }

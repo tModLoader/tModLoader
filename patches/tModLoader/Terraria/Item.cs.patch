@@ -19,17 +19,17 @@
 +			internal set;
 +		}
 +
-+	    internal readonly IList<ItemInfo> itemInfo = new List<ItemInfo>();
++		internal ItemInfo[] itemInfo = new ItemInfo[0];
 +
 +		public ItemInfo GetModInfo(Mod mod, string name)
 +		{
 +			return ItemLoader.GetItemInfo(this, mod, name);
 +		}
 +
-+	    public T GetModInfo<T>(Mod mod) where T : ItemInfo
-+        {
-+	        return (T)GetModInfo(mod, typeof(T).Name);
-+	    }
++		public T GetModInfo<T>(Mod mod) where T : ItemInfo
++		{
++			return (T)GetModInfo(mod, typeof(T).Name);
++		}
 +
  		public const int flaskTime = 72000;
  		public const int copper = 1;
@@ -85,7 +85,7 @@
  			}
 +			if (i >= NPCID.Count)
 +			{
-+				return NPCLoader.npcs[i].banner;
++				return NPCLoader.GetNPC(i).banner;
 +			}
  			return 0;
  		}
@@ -148,11 +148,12 @@
  			if (this.type > 0 && this.type < 3602 && ItemID.Sets.Deprecated[this.type])
  			{
  				this.netID = 0;
-@@ -44990,6 +_,7 @@
+@@ -44990,6 +_,8 @@
  
  		public void ResetStats(int Type)
  		{
 +			this.modItem = null;
++			this.itemInfo = new ItemInfo[0];
  			this.expert = false;
  			this.expertOnly = false;
  			this.instanced = false;
@@ -195,16 +196,18 @@
  			if (Main.halloween)
  			{
  				if (Type == 58)
-@@ -46401,7 +_,12 @@
+@@ -46401,7 +_,14 @@
  
  		public Item Clone()
  		{
 -			return (Item)base.MemberwiseClone();
 +			Item newItem = (Item)base.MemberwiseClone();
-+			if (this.modItem != null)
-+			{
-+				this.modItem.SetupClone(newItem);
-+			}
++
++			newItem.itemInfo = new ItemInfo[itemInfo.Length];
++			for (int i = 0; i < itemInfo.Length; i++)
++				newItem.itemInfo[i] = itemInfo[i].Clone();
++
++			modItem?.SetupClone(newItem);
 +			return newItem;
  		}
  

@@ -23,7 +23,7 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
 -		public bool[] NPCBannerBuff = new bool[251];
-+		public bool[] NPCBannerBuff = new bool[NPCLoader.NPCCount()];
++		public bool[] NPCBannerBuff = new bool[NPCLoader.NPCCount];
  		public bool hasBanner;
  		public Vector2 lastDeathPostion;
  		public DateTime lastDeathTime;
@@ -32,7 +32,7 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
 -		public bool[] buffImmune = new bool[191];
-+		public bool[] buffImmune = new bool[BuffLoader.BuffCount()];
++		public bool[] buffImmune = new bool[BuffLoader.BuffCount];
  		public int heldProj = -1;
  		public int breathCD;
  		public int breathMax = 200;
@@ -53,24 +53,24 @@
  		public bool oldAdjLava;
 -		public bool[] adjTile = new bool[419];
 -		public bool[] oldAdjTile = new bool[419];
-+		private bool[] _adjTile = new bool[TileLoader.TileCount()];
++		private bool[] _adjTile = new bool[TileLoader.TileCount];
 +		public bool[] adjTile
 +		{
 +			get
 +			{
-+				if (_adjTile.Length != TileLoader.TileCount())
-+					Array.Resize(ref _adjTile, TileLoader.TileCount());
++				if (_adjTile.Length != TileLoader.TileCount)
++					Array.Resize(ref _adjTile, TileLoader.TileCount);
 +				return _adjTile;
 +			}
 +			set { _adjTile = value; }
 +		}
-+		private bool[] _oldAdjTile = new bool[TileLoader.TileCount()];
++		private bool[] _oldAdjTile = new bool[TileLoader.TileCount];
 +		public bool[] oldAdjTile
 +		{
 +			get
 +			{
-+				if (_oldAdjTile.Length != TileLoader.TileCount())
-+					Array.Resize(ref _oldAdjTile, TileLoader.TileCount());
++				if (_oldAdjTile.Length != TileLoader.TileCount)
++					Array.Resize(ref _oldAdjTile, TileLoader.TileCount);
 +				return _oldAdjTile;
 +			}
 +			set { _oldAdjTile = value; }
@@ -84,8 +84,8 @@
  		public int cYorai;
 -		public int[] ownedProjectileCounts = new int[651];
 -		public bool[] npcTypeNoAggro = new bool[540];
-+		public int[] ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount()];
-+		public bool[] npcTypeNoAggro = new bool[NPCLoader.NPCCount()];
++		public int[] ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
++		public bool[] npcTypeNoAggro = new bool[NPCLoader.NPCCount];
  		public int lastPortalColorIndex;
  		public int _portalPhysicsTime;
  		public bool portalPhysicsFlag;
@@ -127,14 +127,12 @@
  			this.statLife += item.healLife;
  			this.statMana += item.healMana;
  			if (this.statLife > this.statLifeMax2)
-@@ -1534,7 +_,12 @@
+@@ -1534,7 +_,10 @@
  			{
  				this.ManaEffect(item.healMana);
  			}
 -			item.stack--;
-+			bool consume = true;
-+			ItemLoader.ConsumeItem(item, this, ref consume);
-+			if (consume)
++			if (ItemLoader.ConsumeItem(item, this))
 +			{
 +				item.stack--;
 +			}
@@ -147,7 +145,7 @@
  			{
 -				if (this.inventory[i].stack > 0 && this.inventory[i].type > 0 && this.inventory[i].healMana > 0 && (this.potionDelay == 0 || !this.inventory[i].potion))
 +				if (this.inventory[i].stack > 0 && this.inventory[i].type > 0 && this.inventory[i].healMana > 0 && (this.potionDelay == 0 || !this.inventory[i].potion)
-+				    && ItemLoader.CanUseItem(this.inventory[i], this))
++					&& ItemLoader.CanUseItem(this.inventory[i], this))
  				{
  					Main.PlaySound(2, (int)this.position.X, (int)this.position.Y, this.inventory[i].useSound);
  					if (this.inventory[i].potion)
@@ -159,14 +157,12 @@
  					this.statLife += this.inventory[i].healLife;
  					this.statMana += this.inventory[i].healMana;
  					if (this.statLife > this.statLifeMax2)
-@@ -1593,7 +_,12 @@
+@@ -1593,7 +_,10 @@
  							this.ManaEffect(this.inventory[i].healMana);
  						}
  					}
 -					this.inventory[i].stack--;
-+					bool consume = true;
-+					ItemLoader.ConsumeItem(this.inventory[i], this, ref consume);
-+					if (consume)
++					if (ItemLoader.ConsumeItem(this.inventory[i], this))
 +					{
 +						this.inventory[i].stack--;
 +					}
@@ -190,14 +186,12 @@
  						num = this.inventory[i].useSound;
  						int num3 = this.inventory[i].buffTime;
  						if (num3 == 0)
-@@ -1697,7 +_,12 @@
+@@ -1697,7 +_,10 @@
  						this.AddBuff(num2, num3, true);
  						if (this.inventory[i].consumable)
  						{
 -							this.inventory[i].stack--;
-+							bool consume = true;
-+							ItemLoader.ConsumeItem(this.inventory[i], this, ref consume);
-+							if (consume)
++							if (ItemLoader.ConsumeItem(this.inventory[i], this))
 +							{
 +								this.inventory[i].stack--;
 +							}
@@ -4689,7 +4683,7 @@
  			}
 -			for (int num29 = 0; num29 < 191; num29++)
 +			PlayerHooks.PreUpdateBuffs(this);
-+			for (int num29 = 0; num29 < BuffLoader.BuffCount(); num29++)
++			for (int num29 = 0; num29 < BuffLoader.BuffCount; num29++)
  			{
  				this.buffImmune[num29] = false;
  			}
@@ -4761,7 +4755,7 @@
  								}
 -								else if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 139)
 +								else if (Main.tile[Player.tileTargetX, Player.tileTargetY].type == 139
-+								         || TileLoader.IsModMusicBox(Main.tile[Player.tileTargetX, Player.tileTargetY]))
++										 || TileLoader.IsModMusicBox(Main.tile[Player.tileTargetX, Player.tileTargetY]))
  								{
  									Main.PlaySound(28, Player.tileTargetX * 16, Player.tileTargetY * 16, 0);
  									WorldGen.SwitchMB(Player.tileTargetX, Player.tileTargetY);
@@ -4819,7 +4813,7 @@
  						}
 -						if ((num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
 +						if (NPCLoader.CanHitPlayer(Main.npc[num249], this, ref num250) && PlayerHooks.CanBeHitByNPC(this, Main.npc[num249], ref num250)
-+						    && (num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
++							&& (num250 != -1 || !this.immune) && (this.dash != 2 || num249 != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[num249].type])
  						{
  							float num251 = 1f;
  							Rectangle value6 = new Rectangle((int)Main.npc[num249].position.X, (int)Main.npc[num249].position.Y, Main.npc[num249].width, Main.npc[num249].height);
@@ -4850,7 +4844,7 @@
  			this.slotsMinions = 0f;
 -			if (this.altFunctionUse == 0 && this.selectedItem != 58 && this.controlUseTile && this.releaseUseItem && !this.controlUseItem && !this.mouseInterface && !CaptureManager.Instance.Active && this.inventory[this.selectedItem].type == 3384)
 +			if (this.altFunctionUse == 0 && this.selectedItem != 58 && this.controlUseTile && this.releaseUseItem && !this.controlUseItem && !this.mouseInterface && !CaptureManager.Instance.Active
-+			    && (this.inventory[this.selectedItem].type == 3384 || ItemLoader.AltFunctionUse(this.inventory[this.selectedItem], this)))
++				&& (this.inventory[this.selectedItem].type == 3384 || ItemLoader.AltFunctionUse(this.inventory[this.selectedItem], this)))
  			{
  				this.altFunctionUse = 1;
  				this.controlUseItem = true;
@@ -4984,7 +4978,7 @@
 +			bool playSound = true;
 +			bool genGore = true;
 +			if (!PlayerHooks.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage,
-+				    ref playSound, ref genGore, ref deathText))
++					ref playSound, ref genGore, ref deathText))
 +			{
 +				return 0.0;
 +			}
@@ -5432,7 +5426,7 @@
  				{
  					flag8 = false;
  				}
-+				ItemLoader.CheckProjOnSwing(this, item, ref flag8);
++				flag8 &= ItemLoader.CheckProjOnSwing(this, item);
  				if (item.shoot > 0 && this.itemAnimation > 0 && this.itemTime == 0 && flag8)
  				{
  					int num71 = item.shoot;
@@ -5442,7 +5436,7 @@
  						}
 -						else
 +						else if (PlayerHooks.Shoot(this, item, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74)
-+						         && ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
++								 && ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
  						{
  							int num204 = Projectile.NewProjectile(vector2.X, vector2.Y, num78, num79, num71, num73, num74, i, 0f, 0f);
  							if (item.type == 726)
@@ -5553,7 +5547,7 @@
  										Rectangle value16 = new Rectangle((int)Main.player[num302].position.X, (int)Main.player[num302].position.Y, Main.player[num302].width, Main.player[num302].height);
 -										if (r2.Intersects(value16) && Collision.CanHit(this.position, this.width, this.height, Main.player[num302].position, Main.player[num302].width, Main.player[num302].height))
 +										if (ItemLoader.CanHitPvp(item, this, Main.player[num302]) && PlayerHooks.CanHitPvp(this, item, Main.player[num302])
-+										    && r2.Intersects(value16) && Collision.CanHit(this.position, this.width, this.height, Main.player[num302].position, Main.player[num302].width, Main.player[num302].height))
++											&& r2.Intersects(value16) && Collision.CanHit(this.position, this.width, this.height, Main.player[num302].position, Main.player[num302].width, Main.player[num302].height))
  										{
  											bool flag20 = false;
  											if (Main.rand.Next(1, 101) <= 10)
@@ -5586,14 +5580,15 @@
  				if (item.hairDye >= 0)
  				{
  					this.itemTime = item.useTime;
-@@ -32325,6 +_,7 @@
+@@ -32325,7 +_,7 @@
  					{
  						flag22 = true;
  					}
-+					ItemLoader.ConsumeItem(item, this, ref flag22);
- 					if (flag22)
+-					if (flag22)
++					if (flag22 && ItemLoader.ConsumeItem(this.inventory[i], this))
  					{
  						if (item.stack > 0)
+ 						{
 @@ -32351,6 +_,7 @@
  					Main.mouseItem = item.Clone();
  				}
@@ -5812,21 +5807,20 @@
  			return -1;
  		}
  
--		public Player()
-+		internal readonly IList<ModPlayer> modPlayers = new List<ModPlayer>();
++		internal ModPlayer[] modPlayers = new ModPlayer[0];
 +
 +		public ModPlayer GetModPlayer(Mod mod, string name)
- 		{
++		{
 +			return PlayerHooks.GetModPlayer(this, mod, name);
 +		}
 +
-+        public T GetModPlayer<T>(Mod mod) where T : ModPlayer
-+        {
-+            return (T)GetModPlayer(mod, typeof(T).Name);
-+        }
-+
-+        public Player()
++		public T GetModPlayer<T>(Mod mod) where T : ModPlayer
 +		{
++			return (T)GetModPlayer(mod, typeof(T).Name);
++		}
++
+ 		public Player()
+ 		{
 +			PlayerHooks.SetupPlayer(this);
  			int[] array = new int[2];
  			this.hurtCooldowns = array;

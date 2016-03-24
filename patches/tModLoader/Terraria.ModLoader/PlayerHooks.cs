@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader.Default;
@@ -9,16 +10,11 @@ namespace Terraria.ModLoader
 	public static class PlayerHooks
 	{
 		private static readonly IList<ModPlayer> players = new List<ModPlayer>();
-		private static readonly IDictionary<string, IDictionary<string, int>> indexes = new Dictionary<string, IDictionary<string, int>>();
+		private static readonly IDictionary<string, int> indexes = new Dictionary<string, int>();
 
 		internal static void Add(ModPlayer player)
 		{
-			string mod = player.mod.Name;
-			if (!indexes.ContainsKey(mod))
-			{
-				indexes[mod] = new Dictionary<string, int>();
-			}
-			indexes[mod][player.Name] = players.Count;
+			indexes[player.mod.Name + ':'+player.Name] = players.Count;
 			players.Add(player);
 		}
 
@@ -28,26 +24,19 @@ namespace Terraria.ModLoader
 			indexes.Clear();
 		}
 
-		internal static void SetupPlayer(Player player)
-		{
-			player.modPlayers.Clear();
-			foreach (ModPlayer modPlayer in players)
-			{
+		internal static void SetupPlayer(Player player) {
+			player.modPlayers = players.Select(modPlayer => {
 				ModPlayer newPlayer = modPlayer.Clone();
 				newPlayer.player = player;
 				newPlayer.Initialize();
-				player.modPlayers.Add(newPlayer);
-			}
+				return newPlayer;
+			}).ToArray();
 		}
 
 		internal static ModPlayer GetModPlayer(Player player, Mod mod, string name)
 		{
-			IDictionary<string, int> modIndexes = indexes[mod.Name];
-			if (!modIndexes.ContainsKey(name))
-			{
-				return null;
-			}
-			return player.modPlayers[modIndexes[name]];
+			int index;
+			return indexes.TryGetValue(mod.Name + ':' + name, out index) ? player.modPlayers[index] : null;
 		}
 
 		public static void ResetEffects(Player player)
@@ -273,7 +262,7 @@ namespace Terraria.ModLoader
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
-					    ref playSound, ref genGore, ref deathText))
+						ref playSound, ref genGore, ref deathText))
 				{
 					flag = false;
 				}

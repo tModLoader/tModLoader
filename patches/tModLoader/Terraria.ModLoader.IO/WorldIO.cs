@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
@@ -247,7 +248,7 @@ namespace Terraria.ModLoader.IO
 			{
 				using (BinaryWriter countWriter = new BinaryWriter(stream))
 				{
-					foreach (int type in NPCLoader.npcs.Keys)
+					for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++)
 					{
 						if (NPC.killCount[type] > 0)
 						{

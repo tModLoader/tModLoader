@@ -36,8 +36,8 @@ namespace Terraria.ModLoader
 			{
 				return;
 			}
-			Array.Resize(ref MapHelper.tileLookup, TileLoader.TileCount());
-			Array.Resize(ref MapHelper.wallLookup, WallLoader.WallCount());
+			Array.Resize(ref MapHelper.tileLookup, TileLoader.TileCount);
+			Array.Resize(ref MapHelper.wallLookup, WallLoader.WallCount);
 			IList<Color> colors = new List<Color>();
 			IList<string> names = new List<string>();
 			foreach (ushort type in tileEntries.Keys)
