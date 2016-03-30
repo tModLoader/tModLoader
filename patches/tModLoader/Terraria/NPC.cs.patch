@@ -133,11 +133,15 @@
  			this.takenDamageMultiplier = 1f;
  			this.extraValue = 0f;
  			for (int i = 0; i < this.playerInteraction.Length; i++)
-@@ -3164,7 +_,7 @@
+@@ -3164,7 +_,11 @@
  				this.buffTime[k] = 0;
  				this.buffType[k] = 0;
  			}
 -			for (int l = 0; l < 191; l++)
++			if (buffImmune.Length != BuffLoader.BuffCount)
++			{
++				Array.Resize(ref buffImmune, BuffLoader.BuffCount);
++			}
 +			for (int l = 0; l < BuffLoader.BuffCount; l++)
  			{
  				this.buffImmune[l] = false;
