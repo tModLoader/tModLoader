@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.World.Generation;
@@ -52,6 +53,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void PostUpdate()
+		{
+		}
+
+		public virtual void TileCountsAvailable(int[] tileCounts)
 		{
 		}
 		//TODO

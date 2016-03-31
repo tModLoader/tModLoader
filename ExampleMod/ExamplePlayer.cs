@@ -35,6 +35,9 @@ namespace ExampleMod
 		public bool examplePet = false;
 		public bool exampleLightPet = false;
 
+		// TODO, need to sync this data?
+		public bool ZoneExample = false;
+
 		public override void ResetEffects()
 		{
 			eFlames = false;
@@ -76,12 +79,26 @@ namespace ExampleMod
 			items.Add(item);
 		}
 
+		public override void UpdateBiomes()
+		{
+			ZoneExample = (ExampleWorld.exampleTiles > 50);
+		}
+
 		public override void UpdateBiomeVisuals()
 		{
 			bool usePurity = NPC.AnyNPCs(mod.NPCType("PuritySpirit"));
 			player.ManageSpecialBiomeVisuals("ExampleMod:PuritySpirit", usePurity);
 			bool useVoidMonolith = voidMonolith && !usePurity && !NPC.AnyNPCs(NPCID.MoonLordCore);
 			player.ManageSpecialBiomeVisuals("ExampleMod:MonolithVoid", useVoidMonolith, player.Center);
+		}
+
+		public override Texture2D GetMapBackgroundImage()
+		{
+			if (ZoneExample)
+			{
+				return mod.GetTexture("ExampleBiomeMapBackground");
+			}
+			return null;
 		}
 
 		public override void UpdateBadLifeRegen()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader
 {
@@ -71,6 +72,11 @@ namespace Terraria.ModLoader
 
 		public virtual void UpdateBiomeVisuals()
 		{
+		}
+
+		public virtual Texture2D GetMapBackgroundImage()
+		{
+			return null;
 		}
 
 		public virtual void UpdateBadLifeRegen()

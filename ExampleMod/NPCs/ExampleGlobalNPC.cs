@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -33,6 +34,10 @@ namespace ExampleMod.NPCs
 			if (npc.lifeMax > 5 && npc.value > 0f)
 			{
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ExampleItem"));
+				if (Main.player[(int)Player.FindClosest(npc.position, npc.width, npc.height)].GetModPlayer<ExamplePlayer>(mod).ZoneExample)
+				{
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BossItem"));
+				}
 			}
 			if (((npc.type == NPCID.Pumpking && Main.pumpkinMoon) || (npc.type == NPCID.IceQueen && Main.snowMoon)) && NPC.waveCount > 10)
 			{
@@ -125,5 +130,14 @@ namespace ExampleMod.NPCs
 				Lighting.AddLight(npc.position, 0.1f, 0.2f, 0.7f);
 			}
 		}
+
+		public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+		{
+			if (player.GetModPlayer<ExamplePlayer>(mod).ZoneExample)
+			{
+				spawnRate = (int)(spawnRate * 5f);
+				maxSpawns = (int)(maxSpawns * 5f);
+			}
+        }
 	}
 }

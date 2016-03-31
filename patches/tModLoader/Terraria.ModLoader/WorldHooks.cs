@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Terraria.World.Generation;
 
@@ -62,6 +63,14 @@ namespace Terraria.ModLoader
 			foreach (ModWorld modWorld in worlds)
 			{
 				modWorld.PostUpdate();
+			}
+		}
+
+		public static void TileCountsAvailable(int[] tileCounts)
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.TileCountsAvailable(tileCounts);
 			}
 		}
 	}

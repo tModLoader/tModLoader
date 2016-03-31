@@ -17,6 +17,7 @@ namespace ExampleMod
 		public const int VolcanoProjectiles = 30;
 		public const float VolcanoAngleSpread = 170;
 		public int VolcanoCountdown;
+		public static int exampleTiles = 0;
 
 		public override void Initialize()
 		{
@@ -103,6 +104,12 @@ namespace ExampleMod
 		{
 			ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
 			modPlayer.voidMonolith = false;
+			exampleTiles = 0;
+		}
+
+		public override void TileCountsAvailable(int[] tileCounts)
+		{
+			exampleTiles = tileCounts[mod.TileType("ExampleBlock")];
 		}
 
 		public override void PostUpdate()

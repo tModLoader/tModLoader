@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader.Default;
 
@@ -157,6 +158,20 @@ namespace Terraria.ModLoader
 			{
 				modPlayer.UpdateBiomeVisuals();
 			}
+		}
+
+		public static Texture2D GetMapBackgroundImage(Player player)
+		{
+			Texture2D texture = null;
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				texture = modPlayer.GetMapBackgroundImage();
+				if (texture != null)
+				{
+					return texture;
+				}
+			}
+			return texture;
 		}
 
 		public static void UpdateBadLifeRegen(Player player)

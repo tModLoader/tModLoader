@@ -73,4 +73,12 @@
  				{
  					if (tileCounts[num60] > 0 && Main.tileValue[num60] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num60] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
  					{
+@@ -2530,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			WorldHooks.TileCountsAvailable(tileCounts);
+ 			Array.Clear(tileCounts, 0, tileCounts.Length);
+ 			if (Main.holyTiles < 0)
+ 			{
 

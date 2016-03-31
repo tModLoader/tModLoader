@@ -1896,6 +1896,20 @@
  			}
  			Vector2 value = Main.DrawThickCursor(false);
  			Main.spriteBatch.Draw(Main.cursorTextures[0], new Vector2((float)Main.mouseX, (float)Main.mouseY) + value + Vector2.One, null, new Microsoft.Xna.Framework.Color((int)((float)Main.cursorColor.R * 0.2f), (int)((float)Main.cursorColor.G * 0.2f), (int)((float)Main.cursorColor.B * 0.2f), (int)((float)Main.cursorColor.A * 0.5f)), 0f, default(Vector2), Main.cursorScale * 1.1f, SpriteEffects.None, 0f);
+@@ -42829,7 +_,12 @@
+ 				Main.spriteBatch.End();
+ 				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+ 				flag = true;
+-				if (Main.screenPosition.Y > (float)((Main.maxTilesY - 232) * 16))
++				Texture2D modTexture = PlayerHooks.GetMapBackgroundImage(Main.player[Main.myPlayer]);
++				if (modTexture != null)
++				{
++					Main.spriteBatch.Draw(modTexture, new Microsoft.Xna.Framework.Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Microsoft.Xna.Framework.Color.White);
++				}
++				else if (Main.screenPosition.Y > (float)((Main.maxTilesY - 232) * 16))
+ 				{
+ 					Main.spriteBatch.Draw(this.mapBG3Texture, new Microsoft.Xna.Framework.Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Microsoft.Xna.Framework.Color.White);
+ 				}
 @@ -43470,7 +_,7 @@
  					}
  					else

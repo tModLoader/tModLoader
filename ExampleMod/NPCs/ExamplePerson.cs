@@ -166,6 +166,11 @@ namespace ExampleMod.NPCs
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHamaxe"));
 			nextSlot++;
+			if (Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod).ZoneExample)
+			{
+				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleWings"));
+				nextSlot++;
+			}
 			if (Main.moonPhase < 2)
 			{
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleSword"));

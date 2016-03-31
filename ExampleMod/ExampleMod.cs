@@ -15,12 +15,14 @@ namespace ExampleMod
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
 		private double pressedRandomBuffHotKeyTime;
 
-		public ExampleMod() {
-		    Properties = new ModProperties() {
-		        Autoload = true,
-		        AutoloadGores = true,
-		        AutoloadSounds = true
-		    };
+		public ExampleMod()
+		{
+			Properties = new ModProperties()
+			{
+				Autoload = true,
+				AutoloadGores = true,
+				AutoloadSounds = true
+			};
 		}
 
 		public override void Load()
@@ -94,6 +96,10 @@ namespace ExampleMod
 			if (Main.myPlayer != -1 && !Main.gameMenu)
 			{
 				if (Main.player[Main.myPlayer].active && Main.player[Main.myPlayer].HasBuff(this.BuffType("CarMount")) != -1)
+				{
+					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+				}
+				if (Main.player[Main.myPlayer].active && Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(this).ZoneExample)
 				{
 					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
 				}
@@ -365,6 +371,7 @@ namespace ExampleMod
 			}
 			Main.PlaySound(type, -1, -1, style);
 		}
+
 		//spawning helper methods imported from my tAPI mod
 		public static bool NoInvasion(NPCSpawnInfo spawnInfo)
 		{
