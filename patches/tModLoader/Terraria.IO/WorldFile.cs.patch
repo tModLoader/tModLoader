@@ -19,18 +19,15 @@
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
-@@ -164,8 +_,9 @@
+@@ -164,7 +_,7 @@
  						}
  						NPC.setWorldMonsters();
  					}
 -					catch
--					{
 +					catch (Exception e)
-+					{
-+                        ErrorLogger.Log(e.ToString());
+ 					{
  						WorldGen.loadFailed = true;
  						WorldGen.loadSuccess = false;
- 						try
 @@ -302,6 +_,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);

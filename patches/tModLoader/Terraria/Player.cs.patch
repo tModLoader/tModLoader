@@ -1,10 +1,11 @@
 --- src/Terraria\Terraria\Player.cs
 +++ src/tModLoader\Terraria\Player.cs
-@@ -14,6 +_,8 @@
+@@ -14,6 +_,9 @@
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
  using Terraria.IO;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
  using Terraria.ObjectData;
  using Terraria.Social;
@@ -5804,7 +5805,22 @@
  							for (int num32 = 3; num32 < 8 + player.extraAccessorySlots; num32++)
  							{
  								int type = player.armor[num32].type;
-@@ -34184,6 +_,7 @@
+@@ -34146,6 +_,10 @@
+ 				result = playerFileData;
+ 				return result;
+ 			}
++            catch (CustomModDataException e)
++            {
++                playerFileData.customDataFail = e;
++            }
+ 			catch
+ 			{
+ 			}
+@@ -34181,15 +_,18 @@
+ 			{
+ 				if (playerFileData.Player.loadStatus != 0 && playerFileData.Player.loadStatus != 1)
+ 				{
++                    CustomModDataException customDataFail = playerFileData.customDataFail;
  					if (FileUtilities.Exists(file + ".bak", cloudSave))
  					{
  						FileUtilities.Move(file + ".bak", file, cloudSave, true);
@@ -5812,6 +5828,13 @@
  					}
  					playerFileData = Player.LoadPlayer(file, cloudSave);
  					if (playerFileData.Player == null)
+ 					{
+ 						return null;
+ 					}
++                    playerFileData.customDataFail = customDataFail;
+ 				}
+ 				return playerFileData;
+ 			}
 @@ -34250,8 +_,21 @@
  			return -1;
  		}

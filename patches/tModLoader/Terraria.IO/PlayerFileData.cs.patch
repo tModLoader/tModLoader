@@ -1,13 +1,22 @@
 --- src/Terraria\Terraria.IO\PlayerFileData.cs
 +++ src/tModLoader\Terraria.IO\PlayerFileData.cs
-@@ -3,6 +_,7 @@
+@@ -3,6 +_,8 @@
  using System.Diagnostics;
  using System.IO;
  using System.Text.RegularExpressions;
++using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
  using Terraria.Social;
  using Terraria.Utilities;
  
+@@ -14,6 +_,7 @@
+ 		private TimeSpan _playTime = TimeSpan.Zero;
+ 		private Stopwatch _timer = new Stopwatch();
+ 		private bool _isTimerActive;
++        public CustomModDataException customDataFail = null;
+ 
+ 		public Player Player
+ 		{
 @@ -96,6 +_,7 @@
  				this._isCloudSave = true;
  				this._path = playerPathFromName;
