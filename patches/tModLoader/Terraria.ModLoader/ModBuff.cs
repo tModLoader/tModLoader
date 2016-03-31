@@ -56,5 +56,9 @@ namespace Terraria.ModLoader
 		{
 			return false;
 		}
+
+        public virtual void ModifyBuffTip(ref string tip, ref int rare)
+        {
+        }
 	}
 }

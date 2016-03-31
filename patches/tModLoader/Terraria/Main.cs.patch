@@ -1745,6 +1745,29 @@
  							}
  							if (Main.recipe[Main.availableRecipe[Main.focusRecipe]].requiredItem[num72].stack > 1)
  							{
+@@ -32987,6 +_,7 @@
+ 					if (num18 > 0)
+ 					{
+ 						Main.buffString = Main.buffTip[num18];
++                        int rare = 0;
+ 						if (num18 == 26 && Main.expertMode)
+ 						{
+ 							Main.buffString += Lang.misc[39];
+@@ -33002,10 +_,10 @@
+ 						}
+ 						if (Main.meleeBuff[num18])
+ 						{
+-							this.MouseText(Main.buffName[num18], -10, 0);
+-							return;
+-						}
+-						this.MouseText(Main.buffName[num18], 0, 0);
++                            rare = -10;
++						}
++                        BuffLoader.ModifyBuffTip(num18, ref Main.buffString, ref rare);
++						this.MouseText(Main.buffName[num18], rare, 0);
+ 					}
+ 				}
+ 			}
 @@ -35607,7 +_,7 @@
  						}
  						else

@@ -17,7 +17,9 @@ namespace Terraria.ModLoader
 		private delegate void DelegateUpdateNPC(int type, NPC npc, ref int buffIndex);
 		private static DelegateUpdateNPC[] HookUpdateNPC; 
 		private static Func<int, Player, int, int, bool>[] HookReApplyPlayer; 
-		private static Func<int, NPC, int, int, bool>[] HookReApplyNPC; 
+		private static Func<int, NPC, int, int, bool>[] HookReApplyNPC;
+        private delegate void DelegateModifyBuffTip(int type, ref string tip, ref int rare);
+        private static DelegateModifyBuffTip[] HookModifyBuffTip;
 
 		static BuffLoader()
 		{
@@ -84,6 +86,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookReApplyPlayer, globalBuffs, g => g.ReApply);
 			ModLoader.BuildGlobalHook(ref HookReApplyNPC, globalBuffs, g => g.ReApply);
+            ModLoader.BuildGlobalHook(ref HookModifyBuffTip, globalBuffs, g => g.ModifyBuffTip);
 		}
 
 		internal static void Unload()
@@ -168,5 +171,17 @@ namespace Terraria.ModLoader
 		{
 			return GetBuff(buff)?.canBeCleared ?? vanillaCanBeCleared[buff];
 		}
+
+        public static void ModifyBuffTip(int buff, ref string tip, ref int rare)
+        {
+            if (IsModBuff(buff))
+            {
+                GetBuff(buff).ModifyBuffTip(ref tip, ref rare);
+            }
+            foreach (var hook in HookModifyBuffTip)
+            {
+                hook(buff, ref tip, ref rare);
+            }
+        }
 	}
 }
