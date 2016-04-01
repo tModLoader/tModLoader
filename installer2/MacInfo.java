@@ -16,6 +16,8 @@ public class MacInfo
             "ModCompile/tModLoaderWindows.exe",
             "tModLoaderServer.exe",
             "MP3Sharp.dll",
+            "Ionic.Zip.Reduced.dll",
+            "Mono.Cecil.dll",
             "ModCompile/Microsoft.Xna.Framework.dll",
             "ModCompile/Microsoft.Xna.Framework.Game.dll",
             "ModCompile/Microsoft.Xna.Framework.Graphics.dll",

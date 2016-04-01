@@ -1,7 +1,7 @@
 :: After Pulling, Patching, and making sure the version number is changed in src, this bat will compile and create zips for all release.
 :: It will also create a zip for ExampleMod
 
-set version=v0.7.1.2
+set version=v0.8
 set destinationFolder=.\tModLoader %version% Release
 
 :: Compile/Build exe 
@@ -58,6 +58,7 @@ copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%destinationFolder%\tMo
 copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.Xact.dll" /y
 :: References
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Mac %version%\MP3Sharp.dll" /y
+copy ..\references\Ionic.Zip.Reduced.dll "%destinationFolder%\tModLoader Mac %version%\Ionic.Zip.Reduced.dll" /y
 copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Mac %version%\Mono.Cecil.dll" /y
 
 copy ..\installer2\MacInstaller.jar "%destinationFolder%\tModLoader Mac %version%\tModLoaderInstaller.jar" /y
@@ -76,6 +77,7 @@ copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%destinationFolder%\tMo
 copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.Xact.dll" /y
 :: References
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Linux %version%\MP3Sharp.dll" /y
+copy ..\references\Ionic.Zip.Reduced.dll "%destinationFolder%\tModLoader Mac %version%\Ionic.Zip.Reduced.dll" /y
 copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Linux %version%\Mono.Cecil.dll" /y
 copy ..\installer2\LinuxInstaller.jar "%destinationFolder%\tModLoader Linux %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%destinationFolder%\tModLoader Linux %version%\README.txt" /y
