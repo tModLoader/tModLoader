@@ -1,13 +1,22 @@
 --- src/Terraria\Terraria\NetMessage.cs
 +++ src/tModLoader\Terraria\NetMessage.cs
-@@ -6,6 +_,7 @@
+@@ -6,6 +_,8 @@
  using Terraria.GameContent.Tile_Entities;
  using Terraria.ID;
  using Terraria.IO;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  using Terraria.Net.Sockets;
  using Terraria.Social;
  
+@@ -429,6 +_,7 @@
+ 								value = (short)item2.netID;
+ 							}
+ 							writer.Write(value);
++                            ItemIO.SaveCustomData(item2, writer);
+ 							break;
+ 						}
+ 					case 22:
 @@ -496,6 +_,7 @@
  							{
  								writer.Write((byte)nPC.releaseOwner);

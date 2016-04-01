@@ -1,10 +1,12 @@
 --- src/Terraria\Terraria\MessageBuffer.cs
 +++ src/tModLoader\Terraria\MessageBuffer.cs
-@@ -9,6 +_,7 @@
+@@ -9,6 +_,9 @@
  using Terraria.GameContent.UI;
  using Terraria.GameContent.UI.Chat;
  using Terraria.ID;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Exceptions;
++using Terraria.ModLoader.IO;
  using Terraria.Net;
  using Terraria.UI;
  
@@ -16,6 +18,51 @@
 +									tile.wall = this.reader.ReadUInt16();
  								}
  								if (flag8)
+ 								{
+@@ -1097,6 +_,7 @@
+ 						int pre = (int)this.reader.ReadByte();
+ 						int num60 = (int)this.reader.ReadByte();
+ 						int num61 = (int)this.reader.ReadInt16();
++                        byte[] data = num61 >= ItemID.Count ? this.reader.ReadBytes(this.reader.ReadUInt16()) : new byte[0];
+ 						if (Main.netMode == 1)
+ 						{
+ 							if (num61 == 0)
+@@ -1106,7 +_,7 @@
+ 							}
+ 							int num62 = num59;
+ 							Item item = Main.item[num62];
+-							bool newAndShiny = (item.newAndShiny || item.netID != num61) && ItemSlot.Options.HighlightNewItems && (num61 < 0 || num61 >= 3602 || !ItemID.Sets.NeverShiny[num61]);
++							bool newAndShiny = (item.newAndShiny || item.netID != num61) && ItemSlot.Options.HighlightNewItems && (num61 < 0 || !ItemID.Sets.NeverShiny[num61]);
+ 							item.netDefaults(num61);
+ 							item.newAndShiny = newAndShiny;
+ 							item.Prefix(pre);
+@@ -1114,6 +_,13 @@
+ 							item.position = position;
+ 							item.velocity = velocity;
+ 							item.active = true;
++                            try
++                            {
++                                ItemIO.ReadCustomData(item, data);
++                            }
++                            catch (CustomModDataException)
++                            {
++                            }
+ 							if (b == 90)
+ 							{
+ 								item.instanced = true;
+@@ -1159,6 +_,13 @@
+ 								item3.position = position;
+ 								item3.velocity = velocity;
+ 								item3.active = true;
++                                try
++                                {
++                                    ItemIO.ReadCustomData(item3, data);
++                                }
++                                catch (CustomModDataException)
++                                {
++                                }
+ 								item3.owner = Main.myPlayer;
+ 								if (flag9)
  								{
 @@ -1292,8 +_,8 @@
  						if (Main.npcCatchable[nPC.type])
