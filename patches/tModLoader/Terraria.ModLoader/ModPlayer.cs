@@ -27,15 +27,22 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		internal ModPlayer Clone()
+		internal ModPlayer CreateFor(Player newPlayer)
 		{
-			return (ModPlayer)MemberwiseClone();
+			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
+			modPlayer.Name = Name;
+			modPlayer.mod = mod;
+			modPlayer.player = newPlayer;
+			modPlayer.Initialize();
+			return modPlayer;
 		}
 
 		public bool TypeEquals(ModPlayer other)
 		{
 			return mod == other.mod && Name == other.Name;
 		}
+
+		public virtual bool CloneNewInstances => true;
 
 		public virtual bool Autoload(ref string name)
 		{

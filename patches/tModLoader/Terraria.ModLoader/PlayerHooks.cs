@@ -26,12 +26,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SetupPlayer(Player player) {
-			player.modPlayers = players.Select(modPlayer => {
-				ModPlayer newPlayer = modPlayer.Clone();
-				newPlayer.player = player;
-				newPlayer.Initialize();
-				return newPlayer;
-			}).ToArray();
+			player.modPlayers = players.Select(modPlayer => modPlayer.CreateFor(player)).ToArray();
 		}
 
 		internal static ModPlayer GetModPlayer(Player player, Mod mod, string name)
