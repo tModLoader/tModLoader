@@ -13,7 +13,7 @@
  								value = (short)item2.netID;
  							}
  							writer.Write(value);
-+                            ItemIO.SaveCustomData(item2, writer);
++							ItemIO.SaveCustomData(item2, writer);
  							break;
  						}
  					case 22:

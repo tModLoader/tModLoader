@@ -23,7 +23,7 @@
  						int pre = (int)this.reader.ReadByte();
  						int num60 = (int)this.reader.ReadByte();
  						int num61 = (int)this.reader.ReadInt16();
-+                        byte[] data = num61 >= ItemID.Count ? this.reader.ReadBytes(this.reader.ReadUInt16()) : new byte[0];
++						byte[] data = num61 >= ItemID.Count ? this.reader.ReadBytes(this.reader.ReadUInt16()) : new byte[0];
  						if (Main.netMode == 1)
  						{
  							if (num61 == 0)
@@ -40,13 +40,13 @@
  							item.position = position;
  							item.velocity = velocity;
  							item.active = true;
-+                            try
-+                            {
-+                                ItemIO.ReadCustomData(item, data);
-+                            }
-+                            catch (CustomModDataException)
-+                            {
-+                            }
++							try
++							{
++								ItemIO.ReadCustomData(item, data);
++							}
++							catch (CustomModDataException)
++							{
++							}
  							if (b == 90)
  							{
  								item.instanced = true;
@@ -54,13 +54,13 @@
  								item3.position = position;
  								item3.velocity = velocity;
  								item3.active = true;
-+                                try
-+                                {
-+                                    ItemIO.ReadCustomData(item3, data);
-+                                }
-+                                catch (CustomModDataException)
-+                                {
-+                                }
++								try
++								{
++									ItemIO.ReadCustomData(item3, data);
++								}
++								catch (CustomModDataException)
++								{
++								}
  								item3.owner = Main.myPlayer;
  								if (flag9)
  								{

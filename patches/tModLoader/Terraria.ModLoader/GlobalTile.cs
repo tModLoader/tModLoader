@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
@@ -89,6 +90,10 @@ namespace Terraria.ModLoader
 		public virtual bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
 		{
 			return true;
+		}
+
+		public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor)
+		{
 		}
 
 		public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)

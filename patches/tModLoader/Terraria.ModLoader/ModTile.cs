@@ -156,6 +156,10 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor)
+		{
+		}
+
 		public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 		}

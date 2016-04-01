@@ -53,6 +53,8 @@ namespace Terraria.ModLoader
 		private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 		private static Action[] HookAnimateTile;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
+		private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor);
+		private static DelegateDrawEffects[] HookDrawEffects;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 		private static Action<int, int, int>[] HookRandomUpdate;
 		private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
@@ -212,6 +214,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
 			ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
+			ModLoader.BuildGlobalHook(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalTiles, g => g.PostDraw);
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
 			ModLoader.BuildGlobalHook(ref HookTileFrame, globalTiles, g => g.TileFrame);
@@ -683,6 +686,15 @@ namespace Terraria.ModLoader
 				}
 			}
 			return GetTile(type)?.PreDraw(i, j, spriteBatch) ?? true;
+		}
+
+		public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor)
+		{
+			GetTile(type)?.DrawEffects(i, j, spriteBatch, ref drawColor);
+			foreach (var hook in HookDrawEffects)
+			{
+				hook(i, j, type, spriteBatch, ref drawColor);
+			}
 		}
 		//in Terraria.Main.Draw after if statement checking whether texture2D is null call
 		//  TileLoader.PostDraw(j, i, type, Main.spriteBatch);

@@ -305,7 +305,7 @@
  				Main.netMode = Main._targetNetMode;
  				Main._hasPendingNetmodeChange = false;
  			}
-+		    Netplay.OnUpdate();
++			Netplay.OnUpdate();
  			Main.tileNoFail[384] = true;
  			if (CaptureManager.Instance.IsCapturing)
  			{
@@ -459,6 +459,14 @@
  								if (flag3)
  								{
  									if (color.R < 255)
+@@ -16197,6 +_,7 @@
+ 								}
+ 								Main.spriteBatch.Draw(Main.shroomCapTexture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X - 22), (float)(i * 16 - (int)Main.screenPosition.Y - 26)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(num87 * 62, 0, 60, 42)), Lighting.GetColor(j, i), 0f, default(Vector2), 1f, effects, 0f);
+ 							}
++							TileLoader.DrawEffects(j, i, type, Main.spriteBatch, ref color);
+ 							if (color.R >= 1 || color.G >= 1 || color.B >= 1)
+ 							{
+ 								Tile tile2 = Main.tile[j + 1, i];
 @@ -16689,7 +_,7 @@
  									{
  										color = Main.shine(color, (int)type);
@@ -1749,7 +1757,7 @@
  					if (num18 > 0)
  					{
  						Main.buffString = Main.buffTip[num18];
-+                        int rare = 0;
++						int rare = 0;
  						if (num18 == 26 && Main.expertMode)
  						{
  							Main.buffString += Lang.misc[39];
@@ -1761,9 +1769,9 @@
 -							return;
 -						}
 -						this.MouseText(Main.buffName[num18], 0, 0);
-+                            rare = -10;
++							rare = -10;
 +						}
-+                        BuffLoader.ModifyBuffTip(num18, ref Main.buffString, ref rare);
++						BuffLoader.ModifyBuffTip(num18, ref Main.buffString, ref rare);
 +						this.MouseText(Main.buffName[num18], rare, 0);
  					}
  				}
@@ -1777,6 +1785,15 @@
  						}
  						flag10 = true;
  					}
+@@ -36432,7 +_,7 @@
+ #endif
+ 			base.Exit();
+ #if MAC
+-            SDL.SDL_DestroyWindow(base.Window.Handle);
++			SDL.SDL_DestroyWindow(base.Window.Handle);
+ #endif
+ 		}
+ 
 @@ -37092,7 +_,7 @@
  						{
  							text = text + " -world \"" + Main.worldPathName + "\"";
@@ -1790,20 +1807,20 @@
  				{
  					num4 = 3;
  					array9[0] = Lang.menu[9];
-+                    if (WorldIO.customDataFail != null)
-+                    {
-+                        array9[0] = WorldIO.customDataFail.modName + " " + array9[0];
-+                    }
++					if (WorldIO.customDataFail != null)
++					{
++						array9[0] = WorldIO.customDataFail.modName + " " + array9[0];
++					}
  					array[0] = true;
  					num -= 30;
  					array4[1] = 70;
  					array4[2] = 50;
  					array9[1] = Lang.menu[10];
  					array9[2] = Lang.menu[6];
-+                    if (WorldIO.customDataFail != null)
-+                    {
-+                        array9[2] = "View Error";
-+                    }
++					if (WorldIO.customDataFail != null)
++					{
++						array9[2] = "View Error";
++					}
  					if (this.selectedMenu == 1)
  					{
  						if (FileUtilities.Exists(Main.worldPathName + ".bak", Main.ActiveWorldFileData.IsCloudSave))
@@ -1813,36 +1830,30 @@
  							Main.PlaySound(10, -1, -1, 1);
  							WorldGen.playWorld();
  							Main.menuMode = 10;
-@@ -37238,16 +_,27 @@
- 						}
- 					}
+@@ -37240,7 +_,14 @@
  					if (this.selectedMenu == 2)
--					{
--						Main.PlaySound(11, -1, -1, 1);
+ 					{
+ 						Main.PlaySound(11, -1, -1, 1);
 -						Main.menuMode = 0;
--						Main.netMode = 0;
--					}
-+                    {
-+                        Main.PlaySound(11, -1, -1, 1);
-+                        if (WorldIO.customDataFail == null)
-+                        {
-+                            Main.menuMode = 0;
-+                        }
-+                        else
-+                        {
-+                            ErrorLogger.LogException(WorldIO.customDataFail.InnerException);
-+                        }
-+                        Main.netMode = 0;
-+                    }
++						if (WorldIO.customDataFail == null)
++						{
++							Main.menuMode = 0;
++						}
++						else
++						{
++							ErrorLogger.LogException(WorldIO.customDataFail.InnerException);
++						}
+ 						Main.netMode = 0;
+ 					}
  				}
- 				else if (Main.menuMode == 201)
+@@ -37248,6 +_,10 @@
  				{
  					num4 = 3;
  					array9[0] = Lang.menu[9];
-+                    if (WorldIO.customDataFail != null)
-+                    {
-+                        array9[0] = WorldIO.customDataFail.modName + " " + array9[0];
-+                    }
++					if (WorldIO.customDataFail != null)
++					{
++						array9[0] = WorldIO.customDataFail.modName + " " + array9[0];
++					}
  					array[0] = true;
  					array[1] = true;
  					num -= 30;
@@ -1850,22 +1861,22 @@
  					array4[2] = 50;
  					array9[1] = Lang.menu[11];
  					array9[2] = Lang.menu[5];
-+                    if (WorldIO.customDataFail != null)
-+                    {
-+                        array9[2] = "View Error";
-+                    }
++					if (WorldIO.customDataFail != null)
++					{
++						array9[2] = "View Error";
++					}
  					if (this.selectedMenu == 2)
  					{
  						Main.PlaySound(11, -1, -1, 1);
 -						Main.menuMode = 0;
-+                        if (WorldIO.customDataFail == null)
-+                        {
-+                            Main.menuMode = 0;
-+                        }
-+                        else
-+                        {
-+                            ErrorLogger.LogException(WorldIO.customDataFail.InnerException);
-+                        }
++						if (WorldIO.customDataFail == null)
++						{
++							Main.menuMode = 0;
++						}
++						else
++						{
++							ErrorLogger.LogException(WorldIO.customDataFail.InnerException);
++						}
  						Main.netMode = 0;
  					}
  				}
