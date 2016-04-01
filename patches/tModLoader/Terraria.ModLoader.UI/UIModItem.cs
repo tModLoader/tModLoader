@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.UI
 			//base.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
 			properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : mod.name;
-			text += " " + mod.version;
+			text += " v" + mod.version;
 			if (properties.author.Length > 0)
 			{
 				text += " - by " + properties.author;

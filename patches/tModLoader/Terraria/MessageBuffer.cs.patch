@@ -91,4 +91,22 @@
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
  						{
+@@ -1669,6 +_,17 @@
+ 						Main.chest[num99].item[num100].netDefaults(type4);
+ 						Main.chest[num99].item[num100].Prefix(pre2);
+ 						Main.chest[num99].item[num100].stack = stack4;
++						if (type4 >= ItemID.Count)
++						{
++							byte[] data = this.reader.ReadBytes(this.reader.ReadUInt16());
++							try
++							{
++								ItemIO.ReadCustomData(Main.chest[num99].item[num100], data);
++							}
++							catch (CustomModDataException)
++							{
++							}
++						}
+ 						Recipe.FindRecipes();
+ 						return;
+ 					}
 

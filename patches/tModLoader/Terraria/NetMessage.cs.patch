@@ -42,6 +42,14 @@
  							break;
  						}
  					case 28:
+@@ -591,6 +_,7 @@
+ 							writer.Write((short)item3.stack);
+ 							writer.Write(item3.prefix);
+ 							writer.Write(value3);
++							ItemIO.SaveCustomData(item3, writer);
+ 							break;
+ 						}
+ 					case 33:
 @@ -1426,7 +_,7 @@
  			int num5 = 0;
  			int num6 = 0;
