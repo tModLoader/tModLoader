@@ -114,6 +114,14 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
+		{
+		}
+
+		public virtual void UpdateVanityAccessories()
+		{
+		}
+
 		public virtual void PostUpdateEquips()
 		{
 		}

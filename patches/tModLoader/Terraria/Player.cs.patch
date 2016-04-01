@@ -462,7 +462,7 @@
  		}
  
 -		public void UpdateEquips(int i)
-+		public void VanillaUpdateInventory(ref Item item)
++		public void VanillaUpdateInventory(Item item)
  		{
 -			for (int j = 0; j < 58; j++)
 -			{
@@ -472,7 +472,7 @@
  				if ((type == 15 || type == 707) && this.accWatch < 1)
  				{
  					this.accWatch = 1;
-@@ -6818,1972 +_,2001 @@
+@@ -6818,2002 +_,2036 @@
  				{
  					this.accDreamCatcher = true;
  				}
@@ -480,7 +480,7 @@
 +			}
 +		}
 +
-+		public void VanillaUpdateEquip(ref Item item)
++		public void VanillaUpdateEquip(Item item)
 +		{
 +			if (!item.expertOnly || Main.expertMode)
 +			{
@@ -1309,7 +1309,7 @@
 +			}
 +		}
 +
-+		public void VanillaUpdateAccessory(ref Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3)
++		public void VanillaUpdateAccessory(Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3)
 +		{
 +			if (!item.expertOnly || Main.expertMode)
 +			{
@@ -2451,7 +2451,34 @@
 +						Main.musicBox2 = SoundLoader.itemToMusic[item.type];
 +					}
 +				}
++				if (item.wingSlot > 0)//combined from the second loop
++				{
++					if (!hideVisual || (this.velocity.Y != 0f && !this.mount.Active))
++					{
++						this.wings = item.wingSlot;
++					}
++					this.wingsLogic = item.wingSlot;
++				}
 +				ItemLoader.UpdateAccessory(item, this, hideVisual);
++			}
++		}
++
++		public void VanillaUpdateVanityAccessory(Item item)
++		{
++			int type3 = item.type;
++			if (item.wingSlot > 0)
++			{
++				this.wings = item.wingSlot;
++			}
++			if (type3 == 861 || type3 == 3110 || type3 == 485)
++			{
++				this.hideWolf = false;
++				this.forceWerewolf = true;
++			}
++			if (((this.wet && !this.lavaWet && (!this.mount.Active || this.mount.Type != 3)) || !this.forceWerewolf) && (type3 == 861 || type3 == 3110 || type3 == 497))
++			{
++				this.hideMerman = false;
++				this.forceMerman = true;
 +			}
 +		}
 +
@@ -2459,7 +2486,7 @@
 +		{
 +			for (int j = 0; j < 58; j++)
 +			{
-+				VanillaUpdateInventory(ref this.inventory[j]);
++				VanillaUpdateInventory(this.inventory[j]);
  			}
  			for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
  			{
@@ -3287,7 +3314,7 @@
 -						this.meleeSpeed += 0.04f;
 -					}
 -				}
-+				VanillaUpdateEquip(ref this.armor[k]);
++				VanillaUpdateEquip(this.armor[k]);
  			}
  			bool flag = false;
  			bool flag2 = false;
@@ -4427,10 +4454,46 @@
 -						}
 -					}
 -				}
-+				VanillaUpdateAccessory(ref this.armor[l], this.hideVisual[l], ref flag, ref flag2, ref flag3);
- 			}
- 			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
+-			}
+-			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
+-			{
+-				if (this.armor[m].wingSlot > 0)
+-				{
+-					if (!this.hideVisual[m] || (this.velocity.Y != 0f && !this.mount.Active))
+-					{
+-						this.wings = (int)this.armor[m].wingSlot;
+-					}
+-					this.wingsLogic = (int)this.armor[m].wingSlot;
+-				}
+-			}
++				VanillaUpdateAccessory(this.armor[l], this.hideVisual[l], ref flag, ref flag2, ref flag3);
++			}
++            PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
++			//wing loop merged into VanillaUpdateAccessory
+ 			for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
  			{
+-				int type3 = this.armor[n].type;
+-				if (this.armor[n].wingSlot > 0)
+-				{
+-					this.wings = (int)this.armor[n].wingSlot;
+-				}
+-				if (type3 == 861 || type3 == 3110 || type3 == 485)
+-				{
+-					this.hideWolf = false;
+-					this.forceWerewolf = true;
+-				}
+-				if (((this.wet && !this.lavaWet && (!this.mount.Active || this.mount.Type != 3)) || !this.forceWerewolf) && (type3 == 861 || type3 == 3110 || type3 == 497))
+-				{
+-					this.hideMerman = false;
+-					this.forceMerman = true;
+-				}
+-			}
++			    VanillaUpdateVanityAccessory(this.armor[n]);
++			}
++            PlayerHooks.UpdateVanityAccessories(this);
+ 			if (this.whoAmI == Main.myPlayer && Main.clock && this.accWatch < 3)
+ 			{
+ 				this.accWatch++;
 @@ -9390,6 +_,7 @@
  			{
  				this.DelBuff(this.HasBuff(187));
@@ -4678,6 +4741,30 @@
  					if (this.controlInv)
  					{
  						if (this.releaseInventory)
+@@ -16902,14 +_,6 @@
+ 						num25 = 0;
+ 					}
+ 					this.mount.FatigueRecovery();
+-					bool flag17 = false;
+-					for (int num26 = 3; num26 < 10; num26++)
+-					{
+-						if (this.armor[num26].stack > 0 && this.armor[num26].wingSlot > -1)
+-						{
+-							flag17 = true;
+-						}
+-					}
+ 					if (this.stoned)
+ 					{
+ 						int num27 = (int)(((float)num25 * this.gravDir - 2f) * 20f);
+@@ -16919,7 +_,7 @@
+ 							this.immune = false;
+ 						}
+ 					}
+-					else if (((this.gravDir == 1f && num25 > num24) || (this.gravDir == -1f && num25 < -num24)) && !this.noFallDmg && !flag17)
++					else if (((this.gravDir == 1f && num25 > num24) || (this.gravDir == -1f && num25 < -num24)) && !this.noFallDmg && this.wingsLogic == 0)
+ 					{
+ 						this.immune = false;
+ 						int num28 = (int)((float)num25 * this.gravDir - (float)num24) * 10;
 @@ -17081,11 +_,13 @@
  					this.AddBuff(147, 2, false);
  				}

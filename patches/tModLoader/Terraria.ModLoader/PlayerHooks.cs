@@ -25,7 +25,8 @@ namespace Terraria.ModLoader
 			indexes.Clear();
 		}
 
-		internal static void SetupPlayer(Player player) {
+		internal static void SetupPlayer(Player player)
+		{
 			player.modPlayers = players.Select(modPlayer => modPlayer.CreateFor(player)).ToArray();
 		}
 
@@ -222,6 +223,22 @@ namespace Terraria.ModLoader
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				modPlayer.PostUpdateBuffs();
+			}
+		}
+
+		public static void UpdateEquips(Player player, ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.UpdateEquips(ref wallSpeedBuff, ref tileSpeedBuff, ref tileRangeBuff);
+			}
+		}
+
+		public static void UpdateVanityAccessories(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.UpdateVanityAccessories();
 			}
 		}
 
