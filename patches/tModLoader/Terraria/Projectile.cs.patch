@@ -400,6 +400,18 @@
  			if (this.type == 634 || this.type == 635)
  			{
  				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
+@@ -40046,6 +_,11 @@
+ 									if (!Main.hardMode && Main.tile[num707, num708].type == 58)
+ 									{
+ 										flag4 = false;
++										//patch file
++									}
++									if (!TileLoader.CanExplode(num707, num708))
++									{
++										flag4 = false;
+ 									}
+ 									if (flag4)
+ 									{
 @@ -40434,11 +_,17 @@
  					}
  				}

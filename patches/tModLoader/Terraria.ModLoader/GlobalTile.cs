@@ -66,6 +66,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool CanExplode(int i, int j, int type)
+		{
+			return true;
+		}
+
 		public virtual void NearbyEffects(int i, int j, int type, bool closer)
 		{
 		}

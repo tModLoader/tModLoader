@@ -45,6 +45,7 @@ namespace Terraria.ModLoader
 		private static DelegateCanKillTile[] HookCanKillTile;
 		private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
 		private static DelegateKillTile[] HookKillTile;
+		private static Func<int, int, int, bool>[] HookCanExplode;
 		private static Action<int, int, int, bool>[] HookNearbyEffects;
 		private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 		private static DelegateModifyLight[] HookModifyLight;
@@ -208,6 +209,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookDrop, globalTiles, g => g.Drop);
 			ModLoader.BuildGlobalHook(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
 			ModLoader.BuildGlobalHook(ref HookKillTile, globalTiles, g => g.KillTile);
+			ModLoader.BuildGlobalHook(ref HookCanExplode, globalTiles, g => g.CanExplode);
 			ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
 			ModLoader.BuildGlobalHook(ref HookModifyLight, globalTiles, g => g.ModifyLight);
 			ModLoader.BuildGlobalHook(ref HookDangersense, globalTiles, g => g.Dangersense);
@@ -568,6 +570,24 @@ namespace Terraria.ModLoader
 		public static void KillMultiTile(int i, int j, int frameX, int frameY, int type)
 		{
 			GetTile(type)?.KillMultiTile(i, j, frameX, frameY);
+		}
+
+		public static bool CanExplode(int i, int j)
+		{
+			int type = Main.tile[i, j].type;
+			ModTile modTile = GetTile(type);
+			if (modTile != null && !modTile.CanExplode(i, j))
+			{
+				return false;
+			}
+			foreach (var hook in HookCanExplode)
+			{
+				if (!hook(i, j, type))
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 		//in Terraria.Lighting.PreRenderPhase add local closer variable and after setting music box
 		//  call TileLoader.NearbyEffects(n, num17, type, closer);
