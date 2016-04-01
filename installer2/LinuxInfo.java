@@ -21,13 +21,13 @@ public class LinuxInfo
         String[] files = new String[]
         {
             "Terraria.exe",
-            "TerrariaWindows.exe",
+            "ModCompile/tModLoaderWindows.exe",
             "tModLoaderServer.exe",
             "MP3Sharp.dll",
-            "Microsoft.Xna.Framework.dll",
-            "Microsoft.Xna.Framework.Game.dll",
-            "Microsoft.Xna.Framework.Graphics.dll",
-            "Microsoft.Xna.Framework.Xact.dll"
+            "ModCompile/Microsoft.Xna.Framework.dll",
+            "ModCompile/Microsoft.Xna.Framework.Game.dll",
+            "ModCompile/Microsoft.Xna.Framework.Graphics.dll",
+            "ModCompile/Microsoft.Xna.Framework.Xact.dll"
         };
         Installer.tryInstall(files, directory);
     }

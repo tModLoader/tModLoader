@@ -43,6 +43,11 @@ public class Installer
             if (source.exists())
             {
                 File destination = new File(directory, file);
+                File parent = destination.getParentFile();
+                if (parent != null)
+                {
+                    parent.mkdirs();
+                }
                 copy(source, destination);
             }
             else

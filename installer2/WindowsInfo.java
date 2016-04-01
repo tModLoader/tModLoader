@@ -21,10 +21,9 @@ public class WindowsInfo
         String[] files = new String[]
         {
             "Terraria.exe",
-            "TerrariaMac.exe",
+            "ModCompile/tModLoaderMac.exe",
             "tModLoaderServer.exe",
-            "MP3Sharp.dll",
-            "FNA.dll",
+            "ModCompile/FNA.dll",
             "start-tModLoaderServer.bat",
             "start-tModLoaderServer-steam-friends.bat",
             "start-tModLoaderServer-steam-private.bat"

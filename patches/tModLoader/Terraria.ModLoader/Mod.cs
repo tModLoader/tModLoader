@@ -790,7 +790,14 @@ namespace Terraria.ModLoader
 		{
 			int slot = NPCHeadLoader.ReserveHeadSlot();
 			NPCHeadLoader.heads[texture] = slot;
-			ModLoader.GetTexture(texture);
+			if (!Main.dedServ)
+			{
+				ModLoader.GetTexture(texture);
+			}
+			else if (Main.dedServ && !FileExists(texture + ".png"))
+			{
+				throw new MissingResourceException(texture);
+			}
 			NPCHeadLoader.npcToHead[npcType] = slot;
 			NPCHeadLoader.headToNPC[slot] = npcType;
 		}
@@ -815,7 +822,7 @@ namespace Terraria.ModLoader
 				string headTexture = defaultTexture + "_Head";
 				string bossHeadTexture = headTexture + "_Boss";
 				npc.AutoloadHead(ref headTexture, ref bossHeadTexture);
-				if (ModLoader.TextureExists(headTexture))
+				if (ModLoader.TextureExists(headTexture) || (Main.dedServ && FileExists(headTexture + ".png")))
 				{
 					AddNPCHeadTexture(npc.npc.type, headTexture);
 				}
