@@ -79,6 +79,16 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
+		public override void SetupStartInventory(IList<Item> items)
+		{
+			if (AprilFools.CheckAprilFools())
+			{
+				Item item = new Item();
+				item.SetDefaults(mod.ItemType("AprilFools"));
+				items.Add(item);
+			}
+		}
+
 		private struct UnloadedData
 		{
 			internal string modName;

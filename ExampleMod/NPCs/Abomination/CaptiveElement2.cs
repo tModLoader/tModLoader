@@ -316,6 +316,7 @@ namespace ExampleMod.NPCs.Abomination
 				}
 				else
 				{
+					LookInDirection(npc.velocity);
 					npc.velocity *= 0.995f;
 				}
 			}
@@ -345,6 +346,11 @@ namespace ExampleMod.NPCs.Abomination
 		private void LookToPlayer()
 		{
 			Vector2 look = Main.player[npc.target].Center - npc.Center;
+			LookInDirection(look);
+		}
+
+		private void LookInDirection(Vector2 look)
+		{
 			float angle = 0.5f * (float)Math.PI;
 			if (look.X != 0f)
 			{

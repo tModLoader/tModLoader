@@ -365,7 +365,17 @@ namespace Terraria.ModLoader
                     pdb = File.ReadAllBytes(Path.Combine(tempDir, mod.Name + ".pdb"));
             }
             finally {
-                Directory.Delete(tempDir, true);
+				int numTries = 10;
+				while (numTries > 0) {
+					try {
+						Directory.Delete(tempDir, true);
+						numTries = 0;
+					}
+					catch {
+						System.Threading.Thread.Sleep(1);
+						numTries--;
+					}
+				}
             }
         }
 

@@ -19,6 +19,7 @@ namespace Terraria.ModLoader.Default
 			AddTexture("StartBag", startBagTexture);
 			AddItem("MysteryItem", new MysteryItem(), "ModLoader/MysteryItem");
 			AddItem("StartBag", new StartBag(), "ModLoader/StartBag");
+			AddItem("AprilFools", new AprilFools(), "Terraria/Item_3389");
 			AddPlayer("MysteryPlayer", new MysteryPlayer());
 			AddModWorld("MysteryWorld", new MysteryWorld());
 		}

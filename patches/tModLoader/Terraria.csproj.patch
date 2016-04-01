@@ -96,10 +96,11 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -280,6 +_,101 @@
+@@ -280,6 +_,102 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
++    <Compile Include="Terraria.ModLoader.Default\AprilFools.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\ModLoaderMod.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\MysteryItem.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\MysteryTile.cs" />
