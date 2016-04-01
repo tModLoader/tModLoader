@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Default
 		public static bool CheckAprilFools()
 		{
 			DateTime now = DateTime.Now;
-			return now.Month == 4 && now.Day == 1;
+			return now.Month == 4 && now.Day <= 3;
 		}
 
 		public override void SetDefaults()
