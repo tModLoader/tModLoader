@@ -794,7 +794,7 @@ namespace Terraria.ModLoader
 			{
 				ModLoader.GetTexture(texture);
 			}
-			else if (Main.dedServ && !FileExists(texture + ".png"))
+			else if (Main.dedServ && !ModLoader.FileExists(texture + ".png"))
 			{
 				throw new MissingResourceException(texture);
 			}
@@ -822,7 +822,7 @@ namespace Terraria.ModLoader
 				string headTexture = defaultTexture + "_Head";
 				string bossHeadTexture = headTexture + "_Boss";
 				npc.AutoloadHead(ref headTexture, ref bossHeadTexture);
-				if (ModLoader.TextureExists(headTexture) || (Main.dedServ && FileExists(headTexture + ".png")))
+				if (ModLoader.TextureExists(headTexture) || (Main.dedServ && ModLoader.FileExists(headTexture + ".png")))
 				{
 					AddNPCHeadTexture(npc.npc.type, headTexture);
 				}

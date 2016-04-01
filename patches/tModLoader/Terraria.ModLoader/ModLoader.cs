@@ -408,6 +408,30 @@ namespace Terraria.ModLoader
 			subName = name.Substring(slash + 1);
 		}
 
+		public static byte[] GetFileBytes(string name)
+		{
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+
+			Mod mod = GetMod(modName);
+			if (mod == null)
+				throw new MissingResourceException("Missing mod: " + name);
+
+			return mod.GetFileBytes(subName);
+		}
+
+		public static bool FileExists(string name)
+		{
+			if (!name.Contains('/'))
+				return false;
+
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+
+			Mod mod = GetMod(modName);
+			return mod != null && mod.FileExists(subName);
+		}
+
 		public static Texture2D GetTexture(string name)
 		{
 			if (Main.dedServ)

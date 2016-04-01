@@ -102,7 +102,7 @@ namespace ExampleMod.NPCs
 
 		public override void FindFrame(int frameHeight)
 		{
-			npc.frame.Width = 40;
+			/*npc.frame.Width = 40;
 			if (((int)Main.time / 10) % 2 == 0)
 			{
 				npc.frame.X = 40;
@@ -110,7 +110,7 @@ namespace ExampleMod.NPCs
 			else
 			{
 				npc.frame.X = 0;
-			}
+			}*/
 		}
 
 		public override string GetChat()

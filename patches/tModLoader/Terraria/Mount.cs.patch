@@ -34,15 +34,56 @@
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
  		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
-@@ -152,7 +_,7 @@
- 		private Mount.MountData _data;
- 		private int _type;
- 		private bool _flipDraw;
+@@ -149,28 +_,28 @@
+ 		public static int drillPickPower = 210;
+ 		public static int drillPickTime = 6;
+ 		public static int drillBeamCooldownMax = 1;
+-		private Mount.MountData _data;
+-		private int _type;
+-		private bool _flipDraw;
 -		private int _frame;
+-		private float _frameCounter;
+-		private int _frameExtra;
+-		private float _frameExtraCounter;
+-		private int _frameState;
+-		private int _flyTime;
+-		private int _idleTime;
+-		private int _idleTimeNext;
+-		private float _fatigue;
+-		private float _fatigueMax;
+-		private bool _abilityCharging;
+-		private int _abilityCharge;
+-		private int _abilityCooldown;
+-		private int _abilityDuration;
+-		private bool _abilityActive;
+-		private bool _aiming;
++		public Mount.MountData _data;
++		public int _type;
++		public bool _flipDraw;
 +		public int _frame;
- 		private float _frameCounter;
- 		private int _frameExtra;
- 		private float _frameExtraCounter;
++		public float _frameCounter;
++		public int _frameExtra;
++		public float _frameExtraCounter;
++		public int _frameState;
++		public int _flyTime;
++		public int _idleTime;
++		public int _idleTimeNext;
++		public float _fatigue;
++		public float _fatigueMax;
++		public bool _abilityCharging;
++		public int _abilityCharge;
++		public int _abilityCooldown;
++		public int _abilityDuration;
++		public bool _abilityActive;
++		public bool _aiming;
+ 		public List<DrillDebugDraw> _debugDraw;
+-		private object _mountSpecificData;
+-		private bool _active;
++		public object _mountSpecificData;
++		public bool _active;
+ 
+ 		public bool Active
+ 		{
 @@ -1747,6 +_,10 @@
  
  		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
