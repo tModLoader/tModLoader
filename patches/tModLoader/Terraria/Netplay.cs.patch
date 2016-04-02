@@ -1,12 +1,13 @@
 --- src/Terraria\Terraria\Netplay.cs
 +++ src/tModLoader\Terraria\Netplay.cs
-@@ -1,4 +_,6 @@
+@@ -1,5 +_,7 @@
  using System;
 +using System.Collections.Concurrent;
-+using System.Collections.Generic;
  using System.IO;
++using System.Linq;
  using System.Net;
  using System.Net.Sockets;
+ 
 @@ -7,6 +_,7 @@
  using System.Runtime.CompilerServices;
  #endif
@@ -19,29 +20,42 @@
  
  		public static event Action OnDisconnect;
  
-+        private static readonly ConcurrentQueue<Task> mainThreadTasks = new ConcurrentQueue<Task>();
++		private static readonly ConcurrentQueue<Task> mainThreadTasks = new ConcurrentQueue<Task>();
 +
-+	    internal static void OnUpdate() {
-+            Task t;
-+            while (mainThreadTasks.TryDequeue(out t))
-+                t.RunSynchronously();
-+        }
++		internal static void OnUpdate() {
++			Task t;
++			while (mainThreadTasks.TryDequeue(out t))
++				t.RunSynchronously();
++		}
 +
-+	    private static void InvokeOnMainThread(Action action) {
-+	        var t = new Task(action);
-+            mainThreadTasks.Enqueue(t);
-+	        t.Wait();
-+	    }
++		private static void InvokeOnMainThread(Action action) {
++			var t = new Task(action);
++			mainThreadTasks.Enqueue(t);
++			t.Wait();
++		}
 +
  		private static void OpenPort()
  		{
  			Netplay.portForwardIP = Netplay.GetLocalIPAddress();
+@@ -218,9 +_,9 @@
+ 				catch
+ 				{
+ #if MAC
+-                    Thread.Sleep(200);
+-                    Netplay.Connection.Socket.Close();
+-                    Netplay.Connection.Socket = new TcpSocket();
++					Thread.Sleep(200);
++					Netplay.Connection.Socket.Close();
++					Netplay.Connection.Socket = new TcpSocket();
+ #endif
+ 					if (!Netplay.disconnect && Main.gameMenu)
+ 					{
 @@ -275,7 +_,7 @@
  					{
  						if (NetMessage.buffer[256].checkBytes)
  						{
 -							NetMessage.CheckBytes(256);
-+                            InvokeOnMainThread(() => NetMessage.CheckBytes(256));
++							InvokeOnMainThread(() => NetMessage.CheckBytes(256));
  						}
  						Netplay.Connection.IsActive = true;
  						if (Netplay.Connection.State == 0)
@@ -53,19 +67,11 @@
  					}
  					else if (Netplay.Connection.IsActive)
  					{
-@@ -514,7 +_,6 @@
- 				{
- 				}
- 			}
--			int num = 0;
- 			while (!Netplay.disconnect)
- 			{
- 				if (!Netplay.IsListening)
-@@ -548,19 +_,30 @@
+@@ -548,19 +_,20 @@
  					}
  				}
  				IL_165:
-+				if (anyClients) InvokeOnMainThread(() => {
++				if (NetMessage.buffer.Any(b => b.checkBytes) || Clients.Any(c => c.PendingTermination)) InvokeOnMainThread(() => {
 +					for (int k = 0; k < 256; k++) {
 +						if (NetMessage.buffer[k].checkBytes) {
 +							NetMessage.CheckBytes(k);
@@ -76,16 +82,6 @@
 +						}
 +					}
 +				});
-+				else
-+					for (int k = 0; k < 256; k++) {
-+						if (NetMessage.buffer[k].checkBytes) {
-+							NetMessage.CheckBytes(k);
-+						}
-+						if (Netplay.Clients[k].PendingTermination) {
-+							Netplay.Clients[k].Reset();
-+							NetMessage.syncPlayers();
-+						}
-+					}
  				int num3 = 0;
  				for (int k = 0; k < 256; k++)
  				{
@@ -102,21 +98,4 @@
  					{
  						if (Netplay.Clients[k].IsConnected())
  						{
-@@ -695,16 +_,6 @@
- 					IL_65B:
- 					;
- 				}
--				num++;
--				if (num > 10)
--				{
--					Thread.Sleep(1);
--					num = 0;
--				}
--				else
--				{
--					Thread.Sleep(0);
--				}
- 				if (!WorldGen.saveLock && !Main.dedServ)
- 				{
- 					if (num3 == 0)
 

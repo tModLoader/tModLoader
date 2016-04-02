@@ -159,6 +159,17 @@
  					}
  					else
  					{
+@@ -3539,6 +_,10 @@
+ 					if (Netplay.anyClients)
+ 					{
+ 						this.Update(new GameTime());
++					}
++					else
++					{
++						Netplay.OnUpdate();
+ 					}
+ 					if (Main.OnTick != null)
+ 					{
 @@ -6428,7 +_,7 @@
  			}
  			Main.clientUUID = Guid.NewGuid().ToString();
