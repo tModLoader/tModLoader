@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 		public static readonly IList<int> blockLoot = new List<int>();
 		
 		private static Action<NPC>[] HookSetDefaults = new Action<NPC>[0];
-		private static Action<NPC, int, float>[] HookScaleExpertStats;
+		private static Action<NPC, int, float>[] HookScaleExpertStats = new Action<NPC, int, float>[0];
 		private static Action<NPC>[] HookResetEffects;
 		private static Func<NPC, bool>[] HookPreAI;
 		private static Action<NPC>[] HookAI;
