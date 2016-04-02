@@ -67,6 +67,15 @@
  					}
  					else if (Netplay.Connection.IsActive)
  					{
+@@ -438,7 +_,7 @@
+ 			{
+ 				Netplay.Clients[num].Reset();
+ 				Netplay.Clients[num].Socket = client;
+-				Console.WriteLine(client.GetRemoteAddress() + " is connecting...");
++				//Console.WriteLine(client.GetRemoteAddress() + " is connecting...");
+ 			}
+ 			if (Netplay.FindNextOpenClientSlot() == -1)
+ 			{
 @@ -548,19 +_,20 @@
  					}
  				}
