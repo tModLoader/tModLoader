@@ -83,6 +83,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public virtual void SetMatch(bool male, ref int equipSlot, ref bool robes)
+		{
+			if (item != null)
+			{
+				item.SetMatch(male, ref equipSlot, ref robes);
+			}
+		}
+
 		public virtual void DrawHands(ref bool drawHands, ref bool drawArms)
 		{
 			if (item != null)

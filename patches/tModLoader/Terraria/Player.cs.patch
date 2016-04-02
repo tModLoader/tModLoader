@@ -5054,7 +5054,7 @@
  						break;
  				}
  			}
-+			ItemLoader.SetMatch(type, male, ref num, ref somethingSpecial);
++			ItemLoader.SetMatch(armorslot, type, male, ref num, ref somethingSpecial);
  			return num;
  		}
  

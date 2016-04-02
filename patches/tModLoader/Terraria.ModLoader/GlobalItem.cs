@@ -200,7 +200,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void SetMatch(int type, bool male, ref int equipSlot, ref bool robes)
+		public virtual void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes)
 		{
 		}
 

@@ -54,7 +54,7 @@ namespace Terraria.ModLoader
 		private static GlobalItem[] HookPreUpdateVanitySet;
 		private static GlobalItem[] HookUpdateVanitySet;
 		private static GlobalItem[] HookArmorSetShadows;
-		private delegate void DelegateSetMatch(int type, bool male, ref int equipSlot, ref bool robes);
+		private delegate void DelegateSetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes);
 		private static DelegateSetMatch[] HookSetMatch;
 		private static Func<Item, bool>[] HookCanRightClick;
 		private static Action<Item, Player>[] HookRightClick;
@@ -99,6 +99,7 @@ namespace Terraria.ModLoader
 		private static Func<int, bool>[] HookIsAnglerQuestAvailable;
 		private delegate void DelegateAnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation);
 		private static DelegateAnglerChat[] HookAnglerChat;
+		private static Action<Item, Recipe>[] HookOnCraft;
 
 		static ItemLoader()
 		{
@@ -219,6 +220,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookCaughtFishStack, globalItems, g => g.CaughtFishStack);
 			ModLoader.BuildGlobalHook(ref HookIsAnglerQuestAvailable, globalItems, g => g.IsAnglerQuestAvailable);
 			ModLoader.BuildGlobalHook(ref HookAnglerChat, globalItems, g => g.AnglerChat);
+			ModLoader.BuildGlobalHook(ref HookOnCraft, globalItems, g => g.OnCraft);
 		}
 
 		internal static void Unload()
@@ -764,13 +766,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void SetMatch(int type, bool male, ref int equipSlot, ref bool robes)
+		public static void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes)
 		{
-			GetItem(type)?.SetMatch(male, ref equipSlot, ref robes);
+			EquipTexture texture = null;
+			if (armorSlot == 1)
+			{
+				texture = EquipLoader.GetEquipTexture(EquipType.Body, type);
+			}
+			else if (armorSlot == 2)
+			{
+				texture = EquipLoader.GetEquipTexture(EquipType.Legs, type);
+			}
+			texture?.SetMatch(male, ref equipSlot, ref robes);
 
 			foreach (var hook in HookSetMatch)
 			{
-				hook(type, male, ref equipSlot, ref robes);
+				hook(armorSlot, type, male, ref equipSlot, ref robes);
 			}
 		}
 		//in Terraria.UI.ItemSlot.RightClick in end of item-opening if/else chain before final else
@@ -1320,9 +1331,9 @@ namespace Terraria.ModLoader
 			{
 				item.modItem.OnCraft(recipe);
 			}
-			foreach (GlobalItem globalItem in globalItems)
+			foreach (var hook in HookOnCraft)
 			{
-				globalItem.OnCraft(item, recipe);
+				hook(item, recipe);
             }
 		}
 	}
