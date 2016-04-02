@@ -159,17 +159,68 @@
  					}
  					else
  					{
-@@ -3539,6 +_,10 @@
- 					if (Netplay.anyClients)
+@@ -3517,20 +_,10 @@
+ 				Main.startDedInput();
+ 			}
+ 			stopwatch.Start();
+-			double num7 = 16.666666666666668;
+-			double num8 = 0.0;
+-			int num9 = 0;
+-			Stopwatch stopwatch2 = new Stopwatch();
+-			stopwatch2.Start();
++			double delta = 1000/60D;
++			double target = delta;
+ 			while (!Netplay.disconnect)
+ 			{
+-				double num10 = (double)stopwatch.ElapsedMilliseconds;
+-				if (num10 + num8 >= num7)
+-				{
+-					num9++;
+-					num8 += num10 - num7;
+-					stopwatch.Reset();
+-					stopwatch.Start();
+ 					if (Main.oldStatusText != Main.statusText)
+ 					{
+ 						Main.oldStatusText = Main.statusText;
+@@ -3540,26 +_,22 @@
  					{
  						this.Update(new GameTime());
-+					}
+ 					}
 +					else
 +					{
 +						Netplay.OnUpdate();
- 					}
++					}
  					if (Main.OnTick != null)
  					{
+ 						Main.OnTick();
+ 					}
+-					double num11 = (double)stopwatch.ElapsedMilliseconds + num8;
+-					if (num11 < num7)
+-					{
+-						int num12 = (int)(num7 - num11) - 1;
+-						if (num12 > 1)
+-						{
+-							Thread.Sleep(num12 - 1);
+-							if (!Netplay.anyClients)
+-							{
+-								num8 = 0.0;
+-								Thread.Sleep(10);
+-							}
+-						}
+-					}
+-				}
+-				Thread.Sleep(0);
++					double now = stopwatch.ElapsedMilliseconds;
++					double remaining = target - now;
++					target += delta; //new target
++					if (target < now) //can't catch up, reset target
++					{
++						target = now + delta;
++					}
++					Thread.Sleep(Math.Max((int)remaining, 0));
+ 			}
+ 		}
+ 
 @@ -6428,7 +_,7 @@
  			}
  			Main.clientUUID = Guid.NewGuid().ToString();
