@@ -49,7 +49,7 @@ call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Windows %vers
 
 :: Mac release
 copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\Terraria.exe" /y
-copy ..\src\tModLoader\bin\x86\WindowsServerRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer.exe" /y
+copy ..\src\tModLoader\bin\x86\MacServerRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer.exe" /y
 :: ModCompile
 copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\ModCompile\tModLoaderWindows.exe" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.dll" /y
@@ -68,7 +68,7 @@ call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Mac %version%
 
 :: Linux release
 copy ..\src\tModLoader\bin\x86\LinuxRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\Terraria.exe" /y
-copy ..\src\tModLoader\bin\x86\WindowsServerRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.exe" /y
+copy ..\src\tModLoader\bin\x86\LinuxServerRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.exe" /y
 :: ModCompile
 copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\ModCompile\tModLoaderWindows.exe" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.dll" /y
@@ -77,7 +77,7 @@ copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%destinationFolder%\tMo
 copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.Xact.dll" /y
 :: References
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Linux %version%\MP3Sharp.dll" /y
-copy ..\references\Ionic.Zip.Reduced.dll "%destinationFolder%\tModLoader Mac %version%\Ionic.Zip.Reduced.dll" /y
+copy ..\references\Ionic.Zip.Reduced.dll "%destinationFolder%\tModLoader Linux %version%\Ionic.Zip.Reduced.dll" /y
 copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Linux %version%\Mono.Cecil.dll" /y
 copy ..\installer2\LinuxInstaller.jar "%destinationFolder%\tModLoader Linux %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%destinationFolder%\tModLoader Linux %version%\README.txt" /y

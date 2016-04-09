@@ -28,7 +28,7 @@ namespace ExampleMod.Dusts
 				}
 				Lighting.AddLight(dust.position, 0.1f * strength, 0.2f * strength, 0.7f * strength);
 			}
-			return true;
+			return false;
 		}
 
 		public override Color? GetAlpha(Dust dust, Color lightColor)
