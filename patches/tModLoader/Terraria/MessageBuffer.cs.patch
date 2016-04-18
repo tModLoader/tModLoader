@@ -109,4 +109,30 @@
  						Recipe.FindRecipes();
  						return;
  					}
+@@ -3286,6 +_,7 @@
+ 				default:
+ 					return;
+ 			}
++			//case 6
+ 			if (Main.netMode != 2)
+ 			{
+ 				return;
+@@ -3298,7 +_,7 @@
+ 			NetMessage.SendData(7, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
+ 			Main.SyncAnInvasion(this.whoAmI);
+ 			return;
+-			IL_4824:
++			IL_4824://case 49
+ 			if (Netplay.Connection.State == 6)
+ 			{
+ 				Netplay.Connection.State = 10;
+@@ -3308,7 +_,7 @@
+ 				return;
+ 			}
+ 			return;
+-			IL_63B1:
++			IL_63B1://case 92
+ 			int num209 = (int)this.reader.ReadInt16();
+ 			float num210 = this.reader.ReadSingle();
+ 			float num211 = this.reader.ReadSingle();
 
