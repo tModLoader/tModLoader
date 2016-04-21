@@ -27,6 +27,15 @@
  		public static bool dedServFPS = false;
  		public static int dedServCount1 = 0;
  		public static int dedServCount2 = 0;
+@@ -454,7 +_,7 @@
+ 		private static bool flameRingLoaded;
+ 		private Texture2D flameRingTexture;
+ 		private Texture2D mapDeathTexture;
+-		private RenderTarget2D[,] mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
++		public RenderTarget2D[,] mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
+ 		private RenderTarget2D mapSectionTexture;
+ 		public static bool[,] initMap = new bool[Main.mapTargetX, Main.mapTargetY];
+ 		public static bool[,] mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
 @@ -1002,7 +_,8 @@
  		public static AudioEngine engine;
  		public static SoundBank soundBank;

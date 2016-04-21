@@ -199,7 +199,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -424,9 +_,50 @@
+@@ -424,9 +_,52 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -226,7 +226,9 @@
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 -</Project>
 +  <PropertyGroup>
-+    <PostBuildEvent>SET RELEASEFILE=""
++    <PostBuildEvent>"$(SolutionDir)4gb_patch.exe" "$(TargetPath)"
++
++SET RELEASEFILE=""
 +
 +IF $(ConfigurationName) == MacRelease SET RELEASEFILE=ModCompile/tModLoaderMac
 +IF $(ConfigurationName) == WindowsServerDebug SET RELEASEFILE=tModLoaderServerDebug
