@@ -1,0 +1,8 @@
+Changes from 0.8 to current:
+
+tModLoader
+-Less OutOfMemoryErrors
+
+ExampleMod
+-ExampleSoul.cs
+--ModItem.GrabRange and ModItem.GrabStyle examples
