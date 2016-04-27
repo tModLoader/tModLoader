@@ -135,6 +135,7 @@
     <Compile Include="Items\Weapons\ExampleCloneItem.cs" />
     <Compile Include="Items\Weapons\ExampleGun.cs" />
     <Compile Include="Items\Weapons\ExampleStaff.cs" />
+    <Compile Include="Items\Weapons\ExampleDualUseWeapon.cs" />
     <Compile Include="Items\Weapons\ExampleSword.cs" />
     <Compile Include="Items\Weapons\PurityTotem.cs" />
     <Compile Include="Items\Weapons\SpectreGun.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="NPCs\Abomination\CaptiveElement.cs" />
     <Compile Include="NPCs\Abomination\CaptiveElement2.cs" />
     <Compile Include="NPCs\Abomination\FreedElement.cs" />
+    <Compile Include="NPCs\ExampleChestSummon.cs" />
     <Compile Include="NPCs\ExampleGlobalNPC.cs" />
     <Compile Include="NPCs\ExampleNPCInfo.cs" />
     <Compile Include="NPCs\ExamplePerson.cs" />
