@@ -1,3 +1,4 @@
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -190,6 +191,12 @@ namespace ExampleMod.NPCs
 			}
 			else
 			{
+			}
+			// Here is an example of how your npc can sell items from other mods.
+			if (ModLoader.GetLoadedMods().Contains("SummonersAssociation"))
+			{
+				shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SummonersAssociation").ItemType("BloodTalisman"));
+				nextSlot++;
 			}
 		}
 

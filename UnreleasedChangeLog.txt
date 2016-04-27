@@ -6,3 +6,13 @@ tModLoader
 ExampleMod
 -ExampleSoul.cs
 --ModItem.GrabRange and ModItem.GrabStyle examples
+-ExamplePerson--Cross-mod shop item example
+-ExampleDualUseWeapon.cs
+--ModItem.AltFunctionUse example
+-ExampleChestSummon.cs
+--Example of how to do a chest summon.
+
+TODO
+Make an Example Soul Sprite
+Change DualUseWeapon Sprite
+
