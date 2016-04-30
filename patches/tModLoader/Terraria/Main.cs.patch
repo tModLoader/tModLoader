@@ -168,6 +168,16 @@
  					}
  					else
  					{
+@@ -3498,6 +_,9 @@
+ 					Console.WriteLine(Main.statusText);
+ 				}
+ 			}
++			//run one tick to JIT all the game content now rather than when a player connects
++			Console.WriteLine("Running one update...");
++			Update(new GameTime());
+ 			try
+ 			{
+ 				Console.Clear();
 @@ -3517,20 +_,10 @@
  				Main.startDedInput();
  			}
