@@ -50,6 +50,15 @@
  #endif
  					if (!Netplay.disconnect && Main.gameMenu)
  					{
+@@ -260,7 +_,7 @@
+ 			}
+ 			Netplay.disconnect = false;
+ 			Netplay.Connection = new RemoteServer();
+-			Netplay.Connection.ReadBuffer = new byte[1024];
++			Netplay.Connection.ReadBuffer = new byte[ushort.MaxValue];
+ 		}
+ 
+ 		private static void InnerClientLoop()
 @@ -275,7 +_,7 @@
  					{
  						if (NetMessage.buffer[256].checkBytes)

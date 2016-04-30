@@ -20,10 +20,11 @@ namespace Terraria.ModLoader
 		internal bool hideResources = true;
 		internal bool includeSource = false;
 		internal bool includePDB = false;
-	    internal bool editAndContinue = false;
-	    internal int languageVersion = 4;
-        internal string homepage = "";
+		internal bool editAndContinue = false;
+		internal int languageVersion = 4;
+		internal string homepage = "";
 		internal string description = "";
+		internal ModSide side;
 
 		internal static BuildProperties ReadBuildFile(string modDir)
 		{
@@ -117,14 +118,17 @@ namespace Terraria.ModLoader
 						}
 						properties.buildIgnores = buildIgnores;
 						break;
-                    case "languageVersion":
-                        if (!int.TryParse(value, out properties.languageVersion))
-                            throw new Exception("languageVersion not an int: "+value);
+					case "languageVersion":
+						if (!int.TryParse(value, out properties.languageVersion))
+							throw new Exception("languageVersion not an int: "+value);
 
-                        if (properties.languageVersion < 4 || properties.languageVersion > 6)
-                            throw new Exception("languageVersion ("+properties.languageVersion+") must be between 4 and 6");
-
-				        break;
+						if (properties.languageVersion < 4 || properties.languageVersion > 6)
+							throw new Exception("languageVersion ("+properties.languageVersion+") must be between 4 and 6");
+						break;
+					case "side":
+						if (!ModSide.TryParse(value, true, out properties.side))
+							throw new Exception("side is not one of (Both, Client, Server, NoSync): "+value);
+						break;
 				}
 			}
 			return properties;
@@ -201,10 +205,15 @@ namespace Terraria.ModLoader
 					{
 						writer.Write("editAndContinue");
 					}
+					if (side != ModSide.Both)
+					{
+						writer.Write("side");
+						writer.Write((byte)side);
+					}
 					writer.Write("");
-                }
-                data = memoryStream.ToArray();
-            }
+				}
+				data = memoryStream.ToArray();
+			}
 			return data;
 		}
 
@@ -281,6 +290,10 @@ namespace Terraria.ModLoader
 					if (tag == "editAndContinue")
 					{
 						properties.editAndContinue = true;
+					}
+					if (tag == "side")
+					{
+						properties.side = (ModSide) reader.ReadByte();
 					}
 				}
 			}

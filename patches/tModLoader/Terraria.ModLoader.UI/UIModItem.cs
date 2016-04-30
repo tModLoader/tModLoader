@@ -64,7 +64,7 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button2.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
 			base.Append(button2);
-			if (mod.validModBrowserSignature)
+			if (mod.ValidModBrowserSignature)
 			{
 				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], "This mod originated from the Mod Browser");
 				keyImage.Left.Set(-20, 1f);

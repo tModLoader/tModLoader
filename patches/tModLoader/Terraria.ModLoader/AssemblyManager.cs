@@ -195,6 +195,8 @@ namespace Terraria.ModLoader
                     var m = (Mod)Activator.CreateInstance(modType);
                     m.File = mod.modFile;
                     m.Code = mod.assembly;
+                    m.Side = mod.properties.side;
+                    m.DisplayName = mod.properties.displayName;
                     modInstances.Add(m);
                 }
                 catch (Exception e) {

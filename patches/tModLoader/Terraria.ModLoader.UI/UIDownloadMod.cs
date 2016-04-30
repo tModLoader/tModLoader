@@ -1,6 +1,7 @@
 using System;
-using System.IO;
 using System.Net;
+using Microsoft.Xna.Framework;
+using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -8,11 +9,12 @@ namespace Terraria.ModLoader.UI
 	internal class UIDownloadMod : UIState
 	{
 		private UILoadProgress loadProgress;
+		private string name;
+		private Action cancelAction;
 
 		public override void OnInitialize()
 		{
 			loadProgress = new UILoadProgress();
-			SetDownloading();
 			loadProgress.Width.Set(0f, 0.8f);
 			loadProgress.MaxWidth.Set(600f, 0f);
 			loadProgress.Height.Set(150f, 0f);
@@ -20,23 +22,55 @@ namespace Terraria.ModLoader.UI
 			loadProgress.VAlign = 0.5f;
 			loadProgress.Top.Set(10f, 0f);
 			base.Append(loadProgress);
+			
+			var cancel = new UITextPanel("Cancel", 0.75f, true);
+			cancel.VAlign = 0.5f;
+			cancel.HAlign = 0.5f;
+			cancel.Top.Set(170f, 0f);
+			cancel.OnMouseOver += FadedMouseOver;
+			cancel.OnMouseOut += FadedMouseOut;
+			cancel.OnClick += CancelClick;
+			base.Append(cancel);
 		}
 
 		public override void OnActivate()
 		{
-			SetDownloading();
+			loadProgress.SetText("Downloading: " + name);
 			loadProgress.SetProgress(0f);
 		}
 
-		internal void SetDownloading()
+		internal void SetDownloading(string name)
 		{
-			loadProgress.SetText("Downloading: " + Interface.modBrowser.selectedItem.mod);
+			this.name = name;
 		}
 
-		internal void SetProgress(DownloadProgressChangedEventArgs e)
+		public void SetCancel(Action cancelAction)
 		{
-			loadProgress.SetText("Downloading: " + Interface.modBrowser.selectedItem.mod);// + " -- " + e.BytesReceived+"/" + e.TotalBytesToReceive);
-			loadProgress.SetProgress((float)e.ProgressPercentage / 100f);
+			this.cancelAction = cancelAction;
+		}
+		
+		internal void SetProgress(DownloadProgressChangedEventArgs e) => SetProgress(e.BytesReceived, e.TotalBytesToReceive);
+		internal void SetProgress(long count, long len)
+		{
+			//loadProgress?.SetText("Downloading: " + name + " -- " + count+"/" + len);
+			loadProgress?.SetProgress((float)count / len);
+		}
+
+		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(12);
+			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
+		}
+
+		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
+		{
+			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
+		}
+
+		private void CancelClick(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(10);
+			cancelAction();
 		}
 	}
 }

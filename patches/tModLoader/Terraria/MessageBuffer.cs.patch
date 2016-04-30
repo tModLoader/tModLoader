@@ -10,12 +10,63 @@
  using Terraria.Net;
  using Terraria.UI;
  
+@@ -80,14 +_,13 @@
+ 			int num = start + 1;
+ 			byte b = this.readBuffer[start];
+ 			messageType = (int)b;
+-			if (b >= 105)
+-			{
+-				return;
+-			}
+ 			Main.rxMsg++;
+ 			Main.rxData += length;
+-			Main.rxMsgType[(int)b]++;
+-			Main.rxDataType[(int)b] += length;
++			if (b < Main.maxMsg)
++			{
++				Main.rxMsgType[(int) b]++;
++				Main.rxDataType[(int) b] += length;
++			}
+ 			if (Main.netMode == 1 && Netplay.Connection.StatusMax > 0)
+ 			{
+ 				Netplay.Connection.StatusCount++;
+@@ -107,7 +_,7 @@
+ 				NetMessage.SendData(2, this.whoAmI, -1, Lang.mp[1], 0, 0f, 0f, 0f, 0, 0, 0);
+ 				return;
+ 			}
+-			if (Main.netMode == 2 && Netplay.Clients[this.whoAmI].State < 10 && b > 12 && b != 93 && b != 16 && b != 42 && b != 50 && b != 38 && b != 68)
++			if (Main.netMode == 2 && Netplay.Clients[this.whoAmI].State < 10 && b > 12 && b != 93 && b != 16 && b != 42 && b != 50 && b != 38 && b != 68 && b < 250)
+ 			{
+ 				NetMessage.BootPlayer(this.whoAmI, Lang.mp[2]);
+ 			}
+@@ -134,7 +_,8 @@
+ 							return;
+ 						}
+ 						string a = this.reader.ReadString();
+-						if (!(a == "Terraria" + Main.curRelease))
++						ModNet.isModdedClient[whoAmI] = a == ModLoader.ModLoader.versionedName;
++						if (!ModNet.isModdedClient[whoAmI] && !(a == "Terraria" + Main.curRelease && ModNet.AllowVanillaClients))
+ 						{
+ 							NetMessage.SendData(2, this.whoAmI, -1, Lang.mp[4], 0, 0f, 0f, 0f, 0, 0, 0);
+ 							return;
+@@ -142,6 +_,11 @@
+ 						if (string.IsNullOrEmpty(Netplay.ServerPassword))
+ 						{
+ 							Netplay.Clients[this.whoAmI].State = 1;
++							if (ModNet.isModdedClient[whoAmI])
++							{
++								ModNet.SyncMods(whoAmI);
++								return;
++							}
+ 							NetMessage.SendData(3, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
+ 							return;
+ 						}
 @@ -1070,7 +_,7 @@
  								}
  								if (tile.wall > 0)
  								{
 -									tile.wall = this.reader.ReadByte();
-+									tile.wall = this.reader.ReadUInt16();
++									tile.wall = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16();
  								}
  								if (flag8)
  								{
@@ -109,7 +160,46 @@
  						Recipe.FindRecipes();
  						return;
  					}
-@@ -3286,6 +_,7 @@
+@@ -1900,6 +_,11 @@
+ 						if (a2 == Netplay.ServerPassword)
+ 						{
+ 							Netplay.Clients[this.whoAmI].State = 1;
++							if (ModNet.isModdedClient[whoAmI])
++							{
++								ModNet.SyncMods(whoAmI);
++								return;
++							}
+ 							NetMessage.SendData(3, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
+ 							return;
+ 						}
+@@ -3283,9 +_,34 @@
+ 						}
+ 						return;
+ 					}
++				case 250:
++					ModNet.HandleModPacket(reader, whoAmI);
++					return;
++				case 251:
++					if (Main.netMode == 1)
++					{
++						ModNet.SyncClientMods(reader);
++					}
++					else
++					{
++						ModNet.SendNetIDs(whoAmI);
++						NetMessage.SendData(3, whoAmI);
++					}
++					return;
++				case 252:
++					if (Main.netMode == 1)
++					{
++						ModNet.ReceiveMod(reader);
++					}
++					else
++					{
++						ModNet.SendMod(reader.ReadString(), whoAmI);
++					}
++					return;
  				default:
  					return;
  			}

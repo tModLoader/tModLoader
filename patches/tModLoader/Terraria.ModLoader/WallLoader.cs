@@ -31,6 +31,8 @@ namespace Terraria.ModLoader
 
 		internal static int ReserveWallID()
 		{
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding walls breaks vanilla client compatiblity");
+
 			int reserveID = nextWall;
 			nextWall++;
 			return reserveID;

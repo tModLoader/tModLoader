@@ -4,15 +4,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader.Default
 {
-	public class ModLoaderMod : Mod
+	internal class ModLoaderMod : Mod
 	{
 		private static bool texturesLoaded;
 		private static Texture2D mysteryItemTexture;
 		private static Texture2D startBagTexture;
 
-        public override string Name => "ModLoader";
+		public override string Name => "ModLoader";
 
-	    public override void Load()
+		internal ModLoaderMod()
+		{
+			Side = ModSide.NoSync;
+		}
+
+		public override void Load()
 		{
 			LoadTextures();
 			AddTexture("MysteryItem", mysteryItemTexture);

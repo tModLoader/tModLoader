@@ -116,6 +116,8 @@ namespace Terraria.ModLoader
 
 		internal static int ReserveItemID()
 		{
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding items breaks vanilla client compatiblity");
+
 			int reserveID = nextItem;
 			nextItem++;
 			return reserveID;
@@ -157,7 +159,7 @@ namespace Terraria.ModLoader
 			{
 				Main.anglerQuestItemNetIDs[vanillaQuestFishCount + k] = questFish[k];
 			}
-            
+			
 			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalItems, g => g.SetDefaults);
 			ModLoader.BuildGlobalHook(ref HookCanUseItem, globalItems, g => g.CanUseItem);
 			ModLoader.BuildGlobalHook(ref HookCanUseItem, globalItems, g => g.CanUseItem);
@@ -1334,7 +1336,7 @@ namespace Terraria.ModLoader
 			foreach (var hook in HookOnCraft)
 			{
 				hook(item, recipe);
-            }
+			}
 		}
 	}
 }

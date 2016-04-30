@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.ID\MessageID.cs
 +++ src/tModLoader\Terraria.ID\MessageID.cs
-@@ -5,74 +_,285 @@
+@@ -5,74 +_,289 @@
  	public class MessageID
  	{
  		public const byte NeverCalled = 0;
@@ -12,6 +12,9 @@
 +		//checks if a client is banned, and kicks if so
 +		//does a version check and kicks if the version is not equal
 +		//if the server has a password, sends RequestPassword, otherwise sends LoadPlayer
++		//tModLoader changes the version string to ModLoader.versionedName
++		//if the server accepts vanilla clients and the client sent a vanilla version tModLoader flags them as a vanilla client and communicates using an unmodified protocol
++		//otherwise sends SyncMods instead of LoadPlayer
 +		public const byte ClientHello = 1;
 +		//kick with reason, displays the text "{ip} was booted: {reason}" in the server console
 +		public const byte KickClient = 2;
@@ -69,6 +72,7 @@
 -		public const byte Unknown19 = 19;
 -		public const byte Unknown20 = 20;
 +		//frames a rectangle of tile sections
++		//tModLoader changes walls from byte to short
 +		//sent after a NetMessage.SendSection block
 +		public const byte FrameSection = 11;
 +		//sent from Player.Spawn
@@ -109,7 +113,7 @@
 +		//forwarded to other clients
 +		public const byte ChangeDoor = 19;
 +		//sends a square area of tile data (with upper left x, y) and given size (minimum 1)
-+		//byte for walls changed to short
++		//tModLoader changes walls from byte to short
 +		//forwarded to other clients
 +		public const byte TileSquare = 20;
 +		//sends all info about an item in the world
@@ -383,7 +387,7 @@
  		public const byte MurderSomeoneElsesProjectile = 95;
  		public const byte TeleportPlayerThroughPortal = 96;
  		public const byte AchievementMessageNPCKilled = 97;
-@@ -107,7 +_,7 @@
+@@ -107,8 +_,27 @@
  		public const byte TeleportNPCThroughPortal = 100;
  		public const byte UpdateTowerShieldStrengths = 101;
  		public const byte NebulaLevelupRequest = 102;
@@ -391,5 +395,25 @@
 +		public const byte MoonlordCountdown = 103;
  		public const byte ShopOverride = 104;
  		public const byte Count = 105;
++		//contains a netID followed by custom data sent by mods
++		//special case netID == -1, is sent by the server in response to SyncMods and contains the netIDs of every non-server only mod
++		//netIDs will be sent for no-sync mods, and packets will be ignored if the mod is not installed on the client
++		public const byte ModPacket = 250;
++		//sent instead of LoadPlayer for non-vanilla clients {
++		//    value of ModNet.AllowVanillaClients is synchronised for common net spec
++		//    list of all mods loaded on the server with side == Both {name, version, hash, isBrowserSigned}
++		//}
++		//the client then enables/disables mods to ensure a matching mod set
++		//if the client is missing a mod, or has a different hash, it sends ModFile with the name of the mod
++		//if mod downloading is disabled, or only signed mods are accepted, and the given mod isn't signed, an error message is displayed
++		//if there are no mods to be downloaded, a reload may be performed if necessary, and then the client returns SyncMods
++		//when the server receives SyncMods, it sends ModPacket with the netIDs and then LoadPlayer
++		public const byte SyncMods = 251;
++		//the server recieves the name of one of the mods sent in SyncMods
++		//sends one packet containing the display name and length, then a series of packets containing up to 64k bytes containing the contents of the file
++		//client displays the downloading mod UI when it recieves the first packet with display name and length
++		//once the file is downloaded, the client either sends a request for the next file, or reloads and sends SyncMods
++		public const byte ModFile = 252;
  	}
+ }
 

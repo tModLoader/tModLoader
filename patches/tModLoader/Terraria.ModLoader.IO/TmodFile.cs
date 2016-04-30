@@ -32,8 +32,18 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal byte[] signature { get; private set; } = new byte[256];
+		
+		private bool? validModBrowserSignature;
+		internal bool ValidModBrowserSignature
+		{
+			get
+			{
+				if (!validModBrowserSignature.HasValue)
+					validModBrowserSignature = ModLoader.IsSignedBy(this, ModLoader.modBrowserPublicKey);
 
-		internal bool validModBrowserSignature;
+				return validModBrowserSignature.Value;
+			}
+		}
 
 		private Exception readException;
 

@@ -155,6 +155,8 @@ namespace Terraria.ModLoader.UI
 				using (WebClient client = new WebClient())
 				{
 					Interface.modBrowser.selectedItem = this;
+					Interface.downloadMod.SetDownloading(displayname);
+					Interface.downloadMod.SetCancel(client.CancelAsync);
 					client.DownloadProgressChanged += (s, e) =>
 					{
 						Interface.downloadMod.SetProgress(e);

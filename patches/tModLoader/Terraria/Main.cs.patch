@@ -1875,6 +1875,15 @@
  #endif
  		}
  
+@@ -36959,7 +_,7 @@
+ 			}
+ 			else
+ 			{
+-				if (Main.netMode == 1 || Main.menuMode == 14)
++				if (Main.netMode == 1 && menuMode < 10000 && menuMode != 888 || Main.menuMode == 14)
+ 				{
+ 					num4 = 2;
+ 					array9[0] = Main.statusText;
 @@ -37092,7 +_,7 @@
  						{
  							text = text + " -world \"" + Main.worldPathName + "\"";

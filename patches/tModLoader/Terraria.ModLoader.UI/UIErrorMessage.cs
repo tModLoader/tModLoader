@@ -42,6 +42,11 @@ namespace Terraria.ModLoader.UI
 			base.Append(area);
 		}
 
+		public override void OnActivate()
+		{
+			Netplay.disconnect = true;
+		}
+
 		internal void SetMessage(string text)
 		{
 			message.SetText(text);

@@ -108,10 +108,6 @@ namespace Terraria.ModLoader.UI
 				string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
 				ErrorLogger.LogModUnPublish(s);
 			}
-			catch (WebException e)
-			{
-				ErrorLogger.LogModBrowserException(e);
-			}
 			catch (Exception e)
 			{
 				ErrorLogger.LogModBrowserException(e);

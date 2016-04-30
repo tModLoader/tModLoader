@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace Terraria.ModLoader
 {
@@ -13,6 +14,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void HotKeyPressed(string name)
+		{
+		}
+
+		public virtual void HandlePacket(BinaryReader reader, int whoAmI)
 		{
 		}
 	}

@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 		public const bool windows = true;
 
 #else
-        public const bool windows = false;
+		public const bool windows = false;
 #endif
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
@@ -37,16 +37,19 @@ namespace Terraria.ModLoader
 		internal static string modToBuild;
 		internal static bool reloadAfterBuild = false;
 		internal static bool buildAll = false;
-		internal static int numLoads;
 		private static readonly Stack<string> loadOrder = new Stack<string>();
+		private static Mod[] loadedMods;
 		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>();
 		internal static readonly IDictionary<string, Tuple<Mod, string, string>> modHotKeys = new Dictionary<string, Tuple<Mod, string, string>>();
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
+		internal static Action PostLoad;
 
 		internal static bool ModLoaded(string name)
 		{
 			return mods.ContainsKey(name);
 		}
+
+		public static int ModCount => loadedMods.Length;
 
 		public static Mod GetMod(string name)
 		{
@@ -54,6 +57,13 @@ namespace Terraria.ModLoader
 			mods.TryGetValue(name, out m);
 			return m;
 		}
+
+		public static Mod GetMod(int index)
+		{
+			return index >= 0 && index < loadedMods.Length ? loadedMods[index] : null;
+		}
+
+		public static Mod[] LoadedMods => (Mod[]) loadedMods.Clone();
 
 		public static string[] GetLoadedMods()
 		{
@@ -114,6 +124,10 @@ namespace Terraria.ModLoader
 				}
 				num++;
 			}
+
+			if (Main.dedServ)
+				ModNet.AssignNetIDs();
+
 			MapLoader.SetupModMap();
 			Interface.loadMods.SetProgressRecipes();
 			for (int k = 0; k < Recipe.maxRecipes; k++)
@@ -133,8 +147,15 @@ namespace Terraria.ModLoader
 				Main.menuMode = Interface.errorMessageID;
 				return;
 			}
-			Main.menuMode = 0;
-			numLoads++;
+			if (PostLoad != null)
+			{
+				PostLoad();
+				PostLoad = null;
+			}
+			else
+			{
+				Main.menuMode = 0;
+			}
 		}
 
 		private static void ResizeArrays(bool unloading = false)
@@ -179,6 +200,7 @@ namespace Terraria.ModLoader
 			var modsToLoad = FindMods()
 				.Where(IsEnabled)
 				.Select(mod => new LoadingMod(mod, BuildProperties.ReadModFile(mod)))
+				.Where(mod => LoadSide(mod.properties.side))
 				.ToList();
 
 			if (!VerifyNames(modsToLoad))
@@ -202,6 +224,7 @@ namespace Terraria.ModLoader
 				return false;
 
 			modInstances.Insert(0, new ModLoaderMod());
+			loadedMods = modInstances.ToArray();
 			foreach (var mod in modInstances)
 			{
 				loadOrder.Push(mod.Name);
@@ -307,6 +330,7 @@ namespace Terraria.ModLoader
 				GetMod(loadOrder.Pop()).UnloadContent();
 
 			loadOrder.Clear();
+			loadedMods = new Mod[0];
 
 			ItemLoader.Unload();
 			EquipLoader.Unload();
@@ -327,6 +351,9 @@ namespace Terraria.ModLoader
 			modHotKeys.Clear();
 			WorldHooks.Unload();
 			RecipeHooks.Unload();
+
+			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
+				ModNet.AllowVanillaClients = false;
 		}
 
 		internal static void Reload()
@@ -334,6 +361,8 @@ namespace Terraria.ModLoader
 			Unload();
 			Main.menuMode = Interface.loadModsID;
 		}
+
+		internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
 		internal static bool IsEnabled(TmodFile mod)
 		{
@@ -541,34 +570,34 @@ namespace Terraria.ModLoader
 					throw;
 				}
 			}
-        }
+		}
 
-        /// <summary>
-        /// Allows type inference on T and F
-        /// </summary>
-	    internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) {
-	        list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
-	    }
+		/// <summary>
+		/// Allows type inference on T and F
+		/// </summary>
+		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) {
+			list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
+		}
 
-	    internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) {
-            MethodInfo method;
-            try {
-                var convert = expr.Body as UnaryExpression;
-                var makeDelegate = convert.Operand as MethodCallExpression;
-                var methodArg = makeDelegate.Arguments[2] as ConstantExpression;
-                method = methodArg.Value as MethodInfo;
-                if (method == null) throw new NullReferenceException();
-            }
-            catch (Exception e) {
-                throw new ArgumentException("Invalid hook expression " + expr, e);
-            }
+		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) {
+			MethodInfo method;
+			try {
+				var convert = expr.Body as UnaryExpression;
+				var makeDelegate = convert.Operand as MethodCallExpression;
+				var methodArg = makeDelegate.Arguments[2] as ConstantExpression;
+				method = methodArg.Value as MethodInfo;
+				if (method == null) throw new NullReferenceException();
+			}
+			catch (Exception e) {
+				throw new ArgumentException("Invalid hook expression " + expr, e);
+			}
 
-            if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
-            var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-            return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
-        }
+			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
+			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
+		}
 
-        internal class LoadingMod
+		internal class LoadingMod
 		{
 			public readonly TmodFile modFile;
 			public readonly BuildProperties properties;

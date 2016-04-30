@@ -9,6 +9,27 @@
  using Terraria.Net.Sockets;
  using Terraria.Social;
  
+@@ -41,7 +_,7 @@
+ 				switch (msgType)
+ 				{
+ 					case 1:
+-						writer.Write("Terraria" + Main.curRelease);
++						writer.Write(ModLoader.ModLoader.versionedName);
+ 						break;
+ 					case 2:
+ 						writer.Write(text);
+@@ -402,7 +_,10 @@
+ 									}
+ 									if (tile.wall > 0)
+ 									{
+-										writer.Write(tile.wall);
++										if (ModNet.AllowVanillaClients)
++											writer.Write((byte)tile.wall);
++										else
++											writer.Write(tile.wall);
+ 									}
+ 									if (tile.liquid > 0 && Main.netMode == 2)
+ 									{
 @@ -429,6 +_,7 @@
  								value = (short)item2.netID;
  							}
@@ -55,19 +76,26 @@
  			int num6 = 0;
  			byte b = 0;
 -			byte[] array4 = new byte[13];
-+			byte[] array4 = new byte[14];
++			byte[] array4 = new byte[ModNet.AllowVanillaClients ? 13 : 14];
  			Tile tile = null;
  			for (int i = yStart; i < yStart + height; i++)
  			{
-@@ -1557,7 +_,10 @@
+@@ -1557,7 +_,17 @@
  						if (tile2.wall != 0)
  						{
  							b |= 4;
 -							array4[num5] = tile2.wall;
-+							byte[] wallBytes = BitConverter.GetBytes(tile2.wall);
-+							array4[num5] = wallBytes[0];
-+							num5++;
-+							array4[num5] = wallBytes[1];
++							if (ModNet.AllowVanillaClients)
++							{
++								array4[num5] = (byte) tile2.wall;
++							}
++							else
++							{
++								byte[] wallBytes = BitConverter.GetBytes(tile2.wall);
++								array4[num5] = wallBytes[0];
++								num5++;
++								array4[num5] = wallBytes[1];
++							}
  							num5++;
  							if (tile2.wallColor() != 0)
  							{
@@ -76,7 +104,7 @@
  						if ((b3 & 4) == 4)
  						{
 -							tile.wall = reader.ReadByte();
-+							tile.wall = reader.ReadUInt16();
++							tile.wall = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16();
  							if ((b & 16) == 16)
  							{
  								tile.wallColor(reader.ReadByte());
