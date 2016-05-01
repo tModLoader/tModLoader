@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader
 {
@@ -20,10 +21,15 @@ namespace Terraria.ModLoader
 		public virtual void HandlePacket(BinaryReader reader, int whoAmI)
 		{
 		}
-		
+
 		public virtual bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
 		{
 			return false;
+		}
+
+		public virtual Matrix ModifyTransformMatrix(Matrix Transform)
+		{
+			return Transform;
 		}
 	}
 
@@ -63,6 +69,15 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+		}
+
+		internal static Matrix ModifyTransformMatrix(Matrix Transform)
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				Transform = mod.ModifyTransformMatrix(Transform);
+			}
+			return Transform;
 		}
 	}
 }

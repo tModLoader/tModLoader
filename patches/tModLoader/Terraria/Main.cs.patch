@@ -2120,11 +2120,10 @@
  			if (!Main.tileSetsLoaded[i])
  			{
  				Main.tileTexture[i] = base.Content.Load<Texture2D>(string.Concat(new object[]
-@@ -48855,6 +_,19 @@
- 		}
+@@ -48856,6 +_,19 @@
  
  		protected override void Draw(GameTime gameTime)
-+		{
+ 		{
 +			try
 +			{
 +				do_Draw(gameTime);
@@ -2137,8 +2136,17 @@
 +		}
 +
 +		protected void do_Draw(GameTime gameTime)
- 		{
++		{
  			if (Main._drawCycleCounter == 0uL)
+ 			{
+ 				Main._tileFrameSeed = Utils.RandomNextSeed(Main._tileFrameSeed);
+@@ -49925,6 +_,7 @@
+ 				this.Transform = Matrix.CreateScale(1f, -1f, 1f) * Matrix.CreateRotationZ(0f) * Matrix.CreateTranslation(new Vector3(0f, (float)Main.screenHeight, 0f));
+ 				this.Rasterizer = RasterizerState.CullClockwise;
+ 			}
++			Transform = ModHooks.ModifyTransformMatrix(Transform);
+ 			bool flag = !Main.drawToScreen && Main.netMode != 2 && !Main.gameMenu && !Main.mapFullscreen && Filters.Scene.HasActiveFilter();
+ 			if (flag)
  			{
 @@ -52245,7 +_,7 @@
  								num14++;
