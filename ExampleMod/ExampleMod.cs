@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.NPCs.PuritySpirit;
 using ExampleMod.Tiles;
+using Microsoft.Xna.Framework;
 
 namespace ExampleMod
 {
@@ -117,6 +118,62 @@ namespace ExampleMod
 					Main.player[Main.myPlayer].AddBuff(buff, 600);
 				}
 			}
+		}
+
+		const int ShakeLength = 5;
+		int ShakeCount = 0;
+		float previousRotation = 0;
+		float targetRotation = 0;
+		float previousOffsetX = 0;
+		float previousOffsetY = 0;
+		float targetOffsetX = 0;
+		float targetOffsetY = 0;
+
+		public override Matrix ModifyTransformMatrix(Matrix Transform)
+		{
+			if (!Main.gameMenu)
+			{
+				ExampleWorld world = (ExampleWorld)GetModWorld("ExampleWorld");
+				if (world.VolcanoTremorTime > 0)
+				{
+					if (world.VolcanoTremorTime % ShakeLength == 0)
+					{
+						ShakeCount = 0;
+						previousRotation = targetRotation;
+						previousOffsetX = targetOffsetX;
+						previousOffsetY = targetOffsetY;
+						targetRotation = (Main.rand.NextFloat() - .5f) * MathHelper.ToRadians(15);
+						targetOffsetX = Main.rand.Next(60) - 30;
+						targetOffsetY = Main.rand.Next(40) - 20;
+						if (world.VolcanoTremorTime == ShakeLength)
+						{
+							targetRotation = 0;
+							targetOffsetX = 0;
+							targetOffsetY = 0;
+						}
+					}
+					float transX = Main.screenWidth / 2;
+					float transY = Main.screenHeight / 2;
+
+					float lerp = (float)(ShakeCount) / ShakeLength;
+					float rotation = MathHelper.Lerp(previousRotation, targetRotation, lerp);
+					float offsetX = MathHelper.Lerp(previousOffsetX, targetOffsetX, lerp);
+					float offsetY = MathHelper.Lerp(previousOffsetY, targetOffsetY, lerp);
+
+					world.VolcanoTremorTime--;
+					ShakeCount++;
+
+
+					return Transform
+						* Matrix.CreateTranslation(-transX, -transY, 0f)
+						* Matrix.CreateRotationZ(rotation)
+						* Matrix.CreateTranslation(transX, transY, 0f)
+						* Matrix.CreateTranslation(offsetX, offsetY, 0f);
+					//Matrix.CreateFromAxisAngle(new Vector3(Main.screenWidth / 2, Main.screenHeight / 2, 0f), .2f);
+					//Matrix.CreateRotationZ(MathHelper.ToRadians(30));
+				}
+			}
+			return Transform;
 		}
 
 		public override void ChatInput(string text)

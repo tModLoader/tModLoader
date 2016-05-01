@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.World.Generation;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Generation;
+using System;
 
 namespace ExampleMod
 {
@@ -17,6 +18,7 @@ namespace ExampleMod
 		public const int VolcanoProjectiles = 30;
 		public const float VolcanoAngleSpread = 170;
 		public int VolcanoCountdown;
+		public int VolcanoTremorTime;
 		public static int exampleTiles = 0;
 
 		public override void Initialize()
@@ -24,6 +26,7 @@ namespace ExampleMod
 			downedAbomination = false;
 			downedPuritySpirit = false;
 			VolcanoCountdown = 0;
+			VolcanoTremorTime = 0;
 		}
 
 		public override void SaveCustomData(BinaryWriter writer)
@@ -127,6 +130,7 @@ namespace ExampleMod
 				VolcanoCountdown--;
 				if (VolcanoCountdown == 0)
 				{
+					VolcanoTremorTime = 200;
 					for (int playerIndex = 0; playerIndex < 255; playerIndex++)
 					{
 						if (Main.player[playerIndex].active)
