@@ -290,5 +290,31 @@ namespace Terraria.ModLoader
 			else if (id < netMods.Length)
 				netMods[id]?.HandlePacket(reader, whoAmI);
 		}
+
+		internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
+		{
+			if(netMods == null)
+			{
+				return false;
+			}
+
+			bool hijacked = false;
+			long readerPos = reader.BaseStream.Position;
+			long biggestReaderPos = readerPos;
+			foreach (var mod in netMods)
+			{
+				if (mod.HijackGetData(ref messageType, ref reader, playerNumber))
+				{
+					hijacked = true;
+					biggestReaderPos = Math.Max(reader.BaseStream.Position, biggestReaderPos);
+				}
+				reader.BaseStream.Position = readerPos;
+			}
+			if (hijacked)
+			{
+				reader.BaseStream.Position = biggestReaderPos;
+			}
+			return hijacked;
+		}
 	}
 }

@@ -39,6 +39,17 @@
  			{
  				NetMessage.BootPlayer(this.whoAmI, Lang.mp[2]);
  			}
+@@ -116,6 +_,10 @@
+ 				this.ResetReader();
+ 			}
+ 			this.reader.BaseStream.Position = (long)num;
++			if (ModNet.HijackGetData(ref b, ref this.reader, this.whoAmI))
++			{
++				return;
++			}
+ 			switch (b)
+ 			{
+ 				case 1:
 @@ -134,7 +_,8 @@
  							return;
  						}

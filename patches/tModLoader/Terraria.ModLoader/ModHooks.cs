@@ -20,6 +20,11 @@ namespace Terraria.ModLoader
 		public virtual void HandlePacket(BinaryReader reader, int whoAmI)
 		{
 		}
+		
+		public virtual bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
+		{
+			return false;
+		}
 	}
 
 	internal static class ModHooks
