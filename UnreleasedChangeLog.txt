@@ -2,6 +2,9 @@ Changes from 0.8 to current:
 
 tModLoader
 -Less OutOfMemoryErrors
+-ModNet hooks: Hijack, Handle, 
+-Sync mods with host server
+-Transform matrix hook
 
 ExampleMod
 -ExampleSoul.cs
@@ -11,8 +14,13 @@ ExampleMod
 --ModItem.AltFunctionUse example
 -ExampleChestSummon.cs
 --Example of how to do a chest summon.
+-ExampleMod.cs
+--Example of ModifyTransformMatrix
+-ExampleStatue
 
 TODO
 Make an Example Soul Sprite
 Change DualUseWeapon Sprite
+Update Documentation: ModNet, 
+Fix ExampleStatue Stack overflow, pngs
 
