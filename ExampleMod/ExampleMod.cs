@@ -7,6 +7,8 @@ using Terraria.ModLoader;
 using ExampleMod.NPCs.PuritySpirit;
 using ExampleMod.Tiles;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ExampleMod
 {
@@ -65,6 +67,15 @@ namespace ExampleMod
 
 		public override void AddRecipes()
 		{
+			// Removing Recipes.
+			List<Recipe> rec = Main.recipe.ToList();
+			int numberRecipesRemoved = 0;
+			// The Recipes to remove. 
+			numberRecipesRemoved += rec.RemoveAll(x => x.createItem.type == ItemID.AlphabetStatueT);
+			Main.recipe = rec.ToArray();
+			Array.Resize(ref Main.recipe, Recipe.maxRecipes);
+			Recipe.numRecipes -= numberRecipesRemoved;
+
 			ModRecipe recipe = new ModRecipe(this);
 			recipe.AddIngredient(null, "ExampleItem");
 			recipe.SetResult(ItemID.Wood, 999);
