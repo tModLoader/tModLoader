@@ -25,6 +25,9 @@ namespace Terraria.ModLoader
 		private static Action<NPC>[] HookSetDefaults = new Action<NPC>[0];
 		private static Action<NPC, int, float>[] HookScaleExpertStats = new Action<NPC, int, float>[0];
 		private static Action<NPC>[] HookResetEffects;
+		private static Func<NPC, bool, bool>[] HookPreTargetClosest;
+		private static Action<NPC, bool>[] HookTargetClosest;
+		private static Action<NPC, bool>[] HookPostTargetClosest;
 		private static Func<NPC, bool>[] HookPreAI;
 		private static Action<NPC>[] HookAI;
 		private static Action<NPC>[] HookPostAI;
@@ -190,6 +193,9 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalNPCs, g => g.SetDefaults);
 			ModLoader.BuildGlobalHook(ref HookScaleExpertStats, globalNPCs, g => g.ScaleExpertStats);
 			ModLoader.BuildGlobalHook(ref HookResetEffects, globalNPCs, g => g.ResetEffects);
+			ModLoader.BuildGlobalHook(ref HookPreTargetClosest, globalNPCs, g => g.PreTargetClosest);
+			ModLoader.BuildGlobalHook(ref HookTargetClosest, globalNPCs, g => g.TargetClosest);
+			ModLoader.BuildGlobalHook(ref HookPostTargetClosest, globalNPCs, g => g.PostTargetClosest);
 			ModLoader.BuildGlobalHook(ref HookPreAI, globalNPCs, g => g.PreAI);
 			ModLoader.BuildGlobalHook(ref HookAI, globalNPCs, g => g.AI);
 			ModLoader.BuildGlobalHook(ref HookPostAI, globalNPCs, g => g.PostAI);
@@ -318,6 +324,51 @@ namespace Terraria.ModLoader
 			{
 				hook(npc);
 			}
+		}
+		//in Terraria.NPC rename TargetClosest to VanillaTargetClosest then make AI call NPCLoader.NPCTargetClosest(this, faceTarget)
+		public static void NPCTargetClosest(NPC npc, bool faceTarget = true)
+		{
+		    if (PreTargetClosest(npc, faceTarget))
+		    {
+			npc.VanillaTargetClosest();
+			TargetClosest(npc, faceTarget);
+		    }
+		    PostTargetClosest(npc, faceTarget);
+		}
+
+		public static bool PreTargetClosest(NPC npc, bool faceTarget = true) {
+		    foreach (var hook in HookPreTargetClosest)
+		    {
+			if (!hook(npc, faceTarget))
+			{
+			    return false;
+			}
+		    }
+		    if (npc.modNPC != null)
+		    {
+			return npc.modNPC.PreTargetClosest();
+		    }
+		    return true;
+		}
+
+		public static void TargetClosest(NPC npc, bool faceTarget = true)
+		{
+		    npc.modNPC?.TargetClosest();
+
+		    foreach (var hook in HookTargetClosest)
+		    {
+			hook(npc, faceTarget);
+		    }
+		}
+
+		public static void PostTargetClosest(NPC npc, bool faceTarget = true)
+		{
+		    npc.modNPC?.PostTargetClosest();
+
+		    foreach (var hook in HookPostTargetClosest)
+		    {
+			hook(npc, faceTarget);
+		    }
 		}
 		//in Terraria.NPC rename AI to VanillaAI then make AI call NPCLoader.NPCAI(this)
 		public static void NPCAI(NPC npc)

@@ -75,6 +75,19 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool PreTargetClosest(bool faceTarget = true)
+		{
+			return true;
+		}
+
+		public virtual void TargetClosest(bool faceTarget = true)
+		{
+		}
+
+		public virtual void PostTargetClosest(bool faceTarget = true)
+		{
+		}
+
 		public virtual bool PreAI()
 		{
 			return true;
