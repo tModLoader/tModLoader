@@ -91,6 +91,14 @@
  		public static void SetCameraLerp(float lerp, int time)
  		{
  			Main.cameraLerp = lerp;
+@@ -2144,6 +_,7 @@
+ 				flag = false;
+ 				Main.anglerQuest = Main.rand.Next(Main.anglerQuestItemNetIDs.Length);
+ 				int num = Main.anglerQuestItemNetIDs[Main.anglerQuest];
++				//patch file: num, flag
+ 				if (num == 2454 && (!Main.hardMode || WorldGen.crimson))
+ 				{
+ 					flag = true;
 @@ -2196,6 +_,7 @@
  				{
  					flag = true;
@@ -503,6 +511,14 @@
  					{
  						if (Item.BannerToNPC(num38) != 0 && Main.player[Main.myPlayer].NPCBannerBuff[num38])
  						{
+@@ -14242,6 +_,7 @@
+ 					{
+ 					}
+ 					Tile tile = Main.tile[j, i];
++					//patch file: j, i
+ 					if (tile == null)
+ 					{
+ 						tile = new Tile();
 @@ -14288,6 +_,7 @@
  						{
  							effects = SpriteEffects.FlipHorizontally;
@@ -511,6 +527,17 @@
  						Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
  						int num11 = 0;
  						int num12 = 16;
+@@ -14444,8 +_,10 @@
+ 						}
+ 						if (type == 227)
+ 						{
++							//patch file: num9, num12
+ 							num9 = 32;
+ 							num12 = 38;
++							//patch file: num11
+ 							if (num10 == 238)
+ 							{
+ 								num11 -= 6;
 @@ -14527,6 +_,7 @@
  						{
  							num11 = 2;
@@ -621,6 +648,34 @@
  			}
  			if (Main.npc[i].townNPC && Main.npc[i].ai[0] == 5f)
  			{
+@@ -19124,16 +_,19 @@
+ 						{
+ 							flag = true;
+ 						}
++						//patch file: flag
+ 						if (player.body == 67 && player.legs == 56 && player.head >= 103 && player.head <= 105)
+ 						{
+ 							flag = true;
+ 						}
++						//patch file: flag2
+ 						if ((player.head == 78 || player.head == 79 || player.head == 80) && player.body == 51 && player.legs == 47)
+ 						{
+ 							flag2 = true;
+ 						}
+ 						if (player.head == 171 && player.body == 177 && player.legs == 112)
+ 						{
++							//patch file: flag3
+ 							flag = true;
+ 							flag3 = true;
+ 						}
+@@ -19143,6 +_,7 @@
+ 						}
+ 						if (player.head == 170 && player.body == 176 && player.legs == 111)
+ 						{
++							//patch file: flag4
+ 							flag4 = true;
+ 							flag3 = true;
+ 						}
 @@ -19212,6 +_,7 @@
  						{
  							flag3 = true;
@@ -647,11 +702,18 @@
  		{
  			int type = Main.npc[i].type;
  			this.LoadNPC(type);
-@@ -20080,6 +_,8 @@
+@@ -20044,6 +_,7 @@
+ 			}
+ 			if (Main.npc[i].ichor)
+ 			{
++				//patch file: color9
+ 				color9 = new Microsoft.Xna.Framework.Color(255, 255, 0, 255);
+ 			}
+ 			if (Main.npc[i].onFrostBurn)
+@@ -20080,6 +_,7 @@
  				}
  				Lighting.AddLight((int)(Main.npc[i].position.X / 16f), (int)(Main.npc[i].position.Y / 16f + 1f), 1f, 0.3f, 0.1f);
  			}
-+			//check color9 when Terraria updates
 +			NPCLoader.DrawEffects(Main.npc[i], ref color9);
  			if (Main.player[Main.myPlayer].detectCreature && Main.npc[i].lifeMax > 1)
  			{
@@ -684,14 +746,17 @@
  				Texture2D texture2D = Main.itemTexture[num3];
  				int num5 = (int)this.DrawPlayerItemPos(1f, num3).X - num4;
  				Vector2 origin = new Vector2((float)(-(float)num5), (float)(texture2D.Height / 2));
-@@ -22261,6 +_,7 @@
+@@ -22261,8 +_,10 @@
  						zero.Y = 12f;
  					}
  				}
 +				NPCLoader.DrawTownAttackSwing(n, ref texture2D5, ref num6, ref scaleFactor, ref zero);
  				Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num6, num6);
  				Vector2 vector3 = swingStats.Item1 + (swingStats.Item1 - n.Center) * scaleFactor + zero;
++				//patch file: texture2D5
  				Vector2 origin3 = texture2D5.Size() * new Vector2((float)((n.spriteDirection == 1) ? 0 : 1), 1f);
+ 				Main.spriteBatch.Draw(texture2D5, new Vector2((float)((int)(vector3.X - Main.screenPosition.X)), (float)((int)(vector3.Y - Main.screenPosition.Y))), null, NPCID.Sets.MagicAuraColor[n.type], swingStats.Item2, origin3, n.scale, npcSpriteEffect ^ SpriteEffects.FlipHorizontally, 0f);
+ 			}
 @@ -22415,7 +_,11 @@
  					}
  				}
@@ -717,6 +782,22 @@
  			int num148 = 0;
  			int num149 = 0;
  			if (projectile.type == 175)
+@@ -23848,6 +_,7 @@
+ 			}
+ 			if (projectile.type == 519)
+ 			{
++				//patch file: num148, num149
+ 				num148 = 6;
+ 				num149 -= 6;
+ 			}
+@@ -24027,6 +_,7 @@
+ 				num148 = 4;
+ 				num149 = 4;
+ 			}
++			//patch file: num150
+ 			float num150 = (float)(Main.projectileTexture[projectile.type].Width - projectile.width) * 0.5f + (float)projectile.width * 0.5f;
+ 			if (projectile.type == 50 || projectile.type == 53 || projectile.type == 515)
+ 			{
 @@ -24123,6 +_,7 @@
  			{
  				num148 = 8;
@@ -1138,6 +1219,48 @@
  			num3 = drawPlayer.head;
  			switch (num3)
  			{
+@@ -27009,6 +_,7 @@
+ 			}
+ 			if (drawPlayer.head == 169)
+ 			{
++				//patch file: num13, color16
+ 				num13 = 15;
+ 				byte b = (byte)(62.5f * (float)(1 + num9));
+ 				color16 = new Microsoft.Xna.Framework.Color((int)b, (int)b, (int)b, 0);
+@@ -27053,14 +_,17 @@
+ 			}
+ 			if (drawPlayer.body == 175)
+ 			{
++				//patch file: num14
+ 				if (drawPlayer.Male)
+ 				{
+ 					num14 = 13;
+ 				}
++				//patch file
+ 				else
+ 				{
+ 					num14 = 18;
+ 				}
++				//patch file: color17
+ 				byte b5 = (byte)(62.5f * (float)(1 + num9));
+ 				color17 = new Microsoft.Xna.Framework.Color((int)b5, (int)b5, (int)b5, 0);
+ 			}
+@@ -27075,6 +_,7 @@
+ 					num14 = 186;
+ 				}
+ 				num15 = 188;
++				//patch file: num15, color18
+ 				byte b6 = (byte)(62.5f * (float)(1 + num12));
+ 				color17 = new Microsoft.Xna.Framework.Color((int)b6, (int)b6, (int)b6, 0);
+ 				color18 = new Microsoft.Xna.Framework.Color((int)b6, (int)b6, (int)b6, 0);
+@@ -27123,6 +_,7 @@
+ 			}
+ 			if (drawPlayer.legs == 111)
+ 			{
++				//patch file: num16, color19
+ 				num16 = 17;
+ 				byte b9 = (byte)(62.5f * (float)(1 + num10));
+ 				color19 = new Microsoft.Xna.Framework.Color((int)b9, (int)b9, (int)b9, 0);
 @@ -27150,6 +_,10 @@
  				color19 = new Microsoft.Xna.Framework.Color((int)b12, (int)b12, (int)b12, 0);
  				color14 = drawPlayer.GetImmuneAlphaPure(new Microsoft.Xna.Framework.Color((int)b12, (int)b12, (int)b12, 255), shadow);
@@ -1618,6 +1741,14 @@
  			{
  				Microsoft.Xna.Framework.Rectangle bodyFrame4 = drawPlayer.bodyFrame;
  				int num82 = num2;
+@@ -28684,6 +_,7 @@
+ 					if (flag && !drawPlayer.invis)
+ 					{
+ 						int arg_901C_0 = drawPlayer.body;
++						//patch file: flag, flag2
+ 						if (flag2)
+ 						{
+ 							value = new DrawData(Main.playerTextures[skinVariant, 7], new Vector2((float)((int)(Position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2))), (float)((int)(Position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f))) + drawPlayer.bodyPosition + new Vector2((float)(drawPlayer.bodyFrame.Width / 2), (float)(drawPlayer.bodyFrame.Height / 2)), new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color5, drawPlayer.bodyRotation, origin, 1f, spriteEffects, 0);
 @@ -28712,7 +_,9 @@
  				value = new DrawData(Main.playerTextures[skinVariant, 13], new Vector2((float)((int)(Position.X - Main.screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2))), (float)((int)(Position.Y - Main.screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f))) + drawPlayer.bodyPosition + new Vector2((float)(drawPlayer.bodyFrame.Width / 2), (float)(drawPlayer.bodyFrame.Height / 2)), new Microsoft.Xna.Framework.Rectangle?(drawPlayer.bodyFrame), color7, drawPlayer.bodyRotation, origin, 1f, spriteEffects, 0);
  				Main.playerDrawData.Add(value);
@@ -1884,6 +2015,29 @@
  				{
  					num4 = 2;
  					array9[0] = Main.statusText;
+@@ -37075,14 +_,14 @@
+ 								Lang.lang
+ 							});
+ #if LINUX
+-				        if (IntPtr.Size == 8)
+-				        {
+-					        text += " -x64";
+-				        }
+-				        else
+-				        {
+-					        text += " -x86";
+-				        }
++						if (IntPtr.Size == 8)
++						{
++							text += " -x64";
++						}
++						else
++						{
++							text += " -x86";
++						}
+ #endif
+ 						if (Main.ActiveWorldFileData.IsCloudSave)
+ 						{
 @@ -37092,7 +_,7 @@
  						{
  							text = text + " -world \"" + Main.worldPathName + "\"";
@@ -2006,6 +2160,22 @@
  				}
  			}
  			IL_4287:
+@@ -39101,6 +_,7 @@
+ 			this.focusMenu = -1;
+ 			for (int num35 = 0; num35 < num4; num35++)
+ 			{
++				//patch file: num4, array9, num35
+ 				if (array9[num35] != null)
+ 				{
+ 					if (!flag)
+@@ -39666,6 +_,7 @@
+ 						num90 *= array7[num35];
+ 						if (!array8[num35])
+ 						{
++							//patch file: array9, array7, array4, num, num3
+ 							Main.spriteBatch.DrawString(Main.fontDeathText, array9[num35], new Vector2((float)(num2 + num88 + array5[num35]), (float)(num + num3 * num35 + num89) + origin.Y * array7[num35] + (float)array4[num35]), color9, 0f, origin, num90, SpriteEffects.None, 0f);
+ 						}
+ 						else
 @@ -39824,10 +_,11 @@
  				{
  					num98 = 2;
@@ -2034,6 +2204,14 @@
  				{
  					Main.spriteBatch.Draw(this.mapBG3Texture, new Microsoft.Xna.Framework.Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Microsoft.Xna.Framework.Color.White);
  				}
+@@ -43442,6 +_,7 @@
+ 					else if (type >= num95 && type < num95 + num96)
+ 					{
+ 						Tile tile2 = Main.tile[num91, num92];
++						//patch file: num91, num92
+ 						if (tile2 == null)
+ 						{
+ 							tile2 = new Tile();
 @@ -43470,7 +_,7 @@
  					}
  					else
@@ -2043,7 +2221,14 @@
  					}
  				}
  				float num103 = (num16 * 0.25f * 2f + 1f) / 3f;
-@@ -45989,7 +_,7 @@
+@@ -45983,13 +_,14 @@
+ 			{
+ 				for (int j = num2 - num6; j < num3 + num6; j++)
+ 				{
++					//patch file: j, i
+ 					Tile tile = Main.tile[j, i];
+ 					if (tile == null)
+ 					{
  						tile = new Tile();
  						Main.tile[j, i] = tile;
  					}
@@ -2157,6 +2342,22 @@
  						{
  							Main.nextNPC[num16] = false;
  						}
+@@ -52374,6 +_,7 @@
+ 								if (Main.npc[num41].type == 441)
+ 								{
+ 									num39++;
++									//patch file: num40
+ 								}
+ 								num40++;
+ 							}
+@@ -52397,6 +_,7 @@
+ 										{
+ 											if (num42 < 2000000000)
+ 											{
++												//patch file: num42
+ 												if (Main.player[num44].inventory[num45].type == 71)
+ 												{
+ 													num42 += Main.player[num44].inventory[num45].stack;
 @@ -52638,6 +_,7 @@
  							{
  								WorldGen.spawnNPC = 142;
@@ -2165,7 +2366,12 @@
  						}
  					}
  				}
-@@ -52691,7 +_,7 @@
+@@ -52687,11 +_,12 @@
+ 		public static void PlaySound(int type, int x = -1, int y = -1, int Style = 1)
+ 		{
+ 			int num = Style;
++			//patch file: num
+ 			try
  			{
  				if (!Main.dedServ)
  				{
@@ -2174,6 +2380,14 @@
  					{
  						bool flag = false;
  						float num2 = 1f;
+@@ -52722,6 +_,7 @@
+ 								num3 = ((float)x - vector.X) / ((float)Main.screenWidth * 0.5f);
+ 								float num4 = Math.Abs((float)x - vector.X);
+ 								float num5 = Math.Abs((float)y - vector.Y);
++								//patch file: num2, num3
+ 								float num6 = (float)Math.Sqrt((double)(num4 * num4 + num5 * num5));
+ 								num2 = 1f - num6 / ((float)Main.screenWidth * 1.5f);
+ 							}
 @@ -52756,6 +_,10 @@
  								}
  								if (num2 > 0f || (type >= 30 && type <= 35) || type == 39)

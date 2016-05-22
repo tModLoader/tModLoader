@@ -225,7 +225,7 @@
  							{
 -								if (Main.recipe[num4].useWood(current, item.type) || Main.recipe[num4].useSand(current, item.type) || Main.recipe[num4].useIronBar(current, item.type) || Main.recipe[num4].useFragment(current, item.type) || Main.recipe[num4].usePressurePlate(current, item.type))
 +								if (Main.recipe[num4].useWood(current, item.type) || Main.recipe[num4].useSand(current, item.type) || Main.recipe[num4].useIronBar(current, item.type) || Main.recipe[num4].useFragment(current, item.type) || Main.recipe[num4].usePressurePlate(current, item.type)
-+								    || (Main.recipe[num4] is ModRecipe && ((ModRecipe)Main.recipe[num4]).UseCraftGroup(current, item.type)))
++									|| (Main.recipe[num4] is ModRecipe && ((ModRecipe)Main.recipe[num4]).UseCraftGroup(current, item.type)))
  								{
  									num6 -= dictionary[current];
  									flag3 = true;

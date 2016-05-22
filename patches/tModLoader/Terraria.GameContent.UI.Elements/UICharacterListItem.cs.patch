@@ -15,36 +15,34 @@
  		private Texture2D _buttonFavoriteInactiveTexture;
  		private Texture2D _buttonPlayTexture;
  		private Texture2D _buttonDeleteTexture;
-+        private Texture2D _errorTexture;
++		private Texture2D _errorTexture;
  		private UIImageButton _deleteButton;
  
  		public bool IsFavorite
-@@ -43,7 +_,9 @@
+@@ -43,6 +_,8 @@
  			this._buttonFavoriteInactiveTexture = TextureManager.Load("Images/UI/ButtonFavoriteInactive");
  			this._buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
  			this._buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
--			this.Height.Set(96f, 0f);
-+            this._errorTexture = Texture2D.FromStream(Main.instance.GraphicsDevice,
-+                Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonError.png"));
-+            this.Height.Set(96f, 0f);
++			this._errorTexture = Texture2D.FromStream(Main.instance.GraphicsDevice,
++				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonError.png"));
+ 			this.Height.Set(96f, 0f);
  			this.Width.Set(0f, 1f);
  			base.SetPadding(6f);
- 			this._data = data;
 @@ -88,6 +_,17 @@
  			{
  				base.Append(uIImageButton4);
  			}
-+            if (data.customDataFail != null)
-+            {
-+                UIImageButton uIImageButton5 = new UIImageButton(this._errorTexture);
-+                uIImageButton5.VAlign = 1f;
-+                uIImageButton5.HAlign = 1f;
-+                uIImageButton5.Left.Set(-24f, 0f);
-+                uIImageButton5.OnClick += new UIElement.MouseEvent(this.ErrorButtonClick);
-+                uIImageButton5.OnMouseOver += new UIElement.MouseEvent(this.ErrorMouseOver);
-+                uIImageButton5.OnMouseOut += new UIElement.MouseEvent(this.DeleteMouseOut);
-+                base.Append(uIImageButton5);
-+            }
++			if (data.customDataFail != null)
++			{
++				UIImageButton uIImageButton5 = new UIImageButton(this._errorTexture);
++				uIImageButton5.VAlign = 1f;
++				uIImageButton5.HAlign = 1f;
++				uIImageButton5.Left.Set(-24f, 0f);
++				uIImageButton5.OnClick += new UIElement.MouseEvent(this.ErrorButtonClick);
++				uIImageButton5.OnMouseOver += new UIElement.MouseEvent(this.ErrorMouseOver);
++				uIImageButton5.OnMouseOut += new UIElement.MouseEvent(this.DeleteMouseOut);
++				base.Append(uIImageButton5);
++			}
  			this._buttonLabel = new UIText("", 1f, false);
  			this._buttonLabel.VAlign = 1f;
  			this._buttonLabel.Left.Set(80f, 0f);
@@ -57,28 +55,28 @@
  			this._deleteButtonLabel.Top.Set(-3f, 0f);
  			base.Append(this._deleteButtonLabel);
  		}
-@@ -130,6 +_,11 @@
+@@ -129,6 +_,11 @@
+ 		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement)
  		{
  			this._deleteButtonLabel.SetText("Delete");
- 		}
++		}
 +
-+        private void ErrorMouseOver(UIMouseEvent evt, UIElement listeningElement)
-+        {
-+            this._deleteButtonLabel.SetText(this._data.customDataFail.modName + " Error");
-+        }
++		private void ErrorMouseOver(UIMouseEvent evt, UIElement listeningElement)
++		{
++			this._deleteButtonLabel.SetText(this._data.customDataFail.modName + " Error");
+ 		}
  
  		private void DeleteMouseOut(UIMouseEvent evt, UIElement listeningElement)
- 		{
-@@ -207,6 +_,11 @@
+@@ -206,6 +_,11 @@
+ 			{
  				uIList.UpdateOrder();
  			}
- 		}
++		}
 +
-+        private void ErrorButtonClick(UIMouseEvent evt, UIElement listeningElement)
-+        {
-+            ErrorLogger.LogException(this._data.customDataFail.InnerException);
-+        }
++		private void ErrorButtonClick(UIMouseEvent evt, UIElement listeningElement)
++		{
++			ErrorLogger.LogException(this._data.customDataFail.InnerException);
+ 		}
  
  		public override int CompareTo(object obj)
- 		{
 

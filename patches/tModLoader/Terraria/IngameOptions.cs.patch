@@ -90,10 +90,16 @@
  				if (flag)
  				{
  					IngameOptions.Close();
-@@ -266,6 +_,19 @@
- 					num3 = 0.801f;
+@@ -261,7 +_,21 @@
  					num4 = 0.001f;
  					break;
+ 				case 3:
++					//patch file: num2, num3, num4, num8
+ 					num8 = 7;
++					num2 = 0.8f;
++					num3 = 0.801f;
++					num4 = 0.001f;
++					break;
 +				case 4:
 +					int TotalModHotKeys = ModLoader.ModLoader.modHotKeys.Count;
 +					bool Multipage = TotalModHotKeys > ControlsPerPage;
@@ -103,13 +109,9 @@
 +					}
 +					int ShownModHotKeys = Math.Min(ControlsPerPage, TotalModHotKeys - page * ControlsPerPage);
 +					num8 = 2 + ShownModHotKeys + (Multipage ? 1 : 0);
-+					num2 = 0.8f;
-+					num3 = 0.801f;
-+					num4 = 0.001f;
-+					break;
- 			}
- 			Vector2 anchor2 = new Vector2(value3.X + value2.X * 3f / 4f, value3.Y + (float)(num * 5 / 2));
- 			Vector2 offset2 = new Vector2(0f, value2.Y - (float)(num * 3)) / (float)(num8 + 1);
+ 					num2 = 0.8f;
+ 					num3 = 0.801f;
+ 					num4 = 0.001f;
 @@ -1147,6 +_,105 @@
  							Main.setKey = -1;
  							Main.blockKey = pressedKeys2[0];

@@ -137,6 +137,14 @@
  						return;
  					}
  				case 24:
+@@ -1456,6 +_,7 @@
+ 						int num82 = (int)this.reader.ReadInt16();
+ 						BitsByte bitsByte14 = this.reader.ReadByte();
+ 						float[] array3 = new float[Projectile.maxAI];
++						//patch file: bitsByte14
+ 						for (int num83 = 0; num83 < Projectile.maxAI; num83++)
+ 						{
+ 							if (bitsByte14[num83])
 @@ -1472,6 +_,7 @@
  						{
  							num84 = -1;

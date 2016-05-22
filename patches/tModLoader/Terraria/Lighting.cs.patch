@@ -16,6 +16,14 @@
  			int[] tileCounts = WorldGen.tileCounts;
  			num4 = Lighting.firstToLightX;
  			num5 = Lighting.lastToLightX;
+@@ -621,6 +_,7 @@
+ 			for (int n = num4; n < num5; n++)
+ 			{
+ 				Lighting.LightingState[] array3 = Lighting.states[n - Lighting.firstToLightX];
++				//patch file: n, num17
+ 				for (int num17 = num6; num17 < num7; num17++)
+ 				{
+ 					Lighting.LightingState lightingState3 = array3[num17 - Lighting.firstToLightY];
 @@ -772,7 +_,7 @@
  							lightingState3.b2 = num20;
  						}
@@ -56,7 +64,7 @@
  						if (Main.tileBlockLight[(int)tile.type] && (Lighting.lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
  						{
  							lightingState3.stopLight = true;
-@@ -2379,6 +_,7 @@
+@@ -2379,16 +_,19 @@
  						}
  					}
  					IL_304B:
@@ -64,6 +72,18 @@
  					if (Lighting.RGB)
  					{
  						if (lightingState3.r2 < num18)
+ 						{
+ 							lightingState3.r2 = num18;
+ 						}
++						//patch file: num18, num19
+ 						if (lightingState3.g2 < num19)
+ 						{
+ 							lightingState3.g2 = num19;
+ 						}
++						//patch file: num19, num20
+ 						if (lightingState3.b2 < num20)
+ 						{
+ 							lightingState3.b2 = num20;
 @@ -2522,7 +_,7 @@
  			if (Main.player[Main.myPlayer].accOreFinder)
  			{

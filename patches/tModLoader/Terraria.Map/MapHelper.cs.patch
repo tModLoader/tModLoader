@@ -44,7 +44,11 @@
  										{
  											flag4 = false;
  											flag3 = false;
-@@ -2134,6 +_,7 @@
+@@ -2131,9 +_,11 @@
+ 								}
+ 								deflateStream.Dispose();
+ 								FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
++                                //patch file: text
  							}
  						}
  					}

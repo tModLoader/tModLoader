@@ -10,6 +10,14 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
+@@ -51,6 +_,7 @@
+ 			Main.checkXMas();
+ 			Main.checkHalloween();
+ 			bool flag = loadFromCloud && SocialAPI.Cloud != null;
++            //patch file: flag
+ 			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen)
+ 			{
+ 				if (!flag)
 @@ -106,6 +_,8 @@
  						}
  						binaryReader.Close();

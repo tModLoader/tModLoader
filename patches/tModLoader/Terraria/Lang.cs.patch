@@ -26,10 +26,17 @@
  			if (Lang.lang <= 1 || english)
  			{
  				switch (l)
-@@ -31781,6 +_,16 @@
- 							text = "\n(Caught Jungle Surface)";
+@@ -31775,10 +_,21 @@
+ 							array = array2;
  						}
- 						break;
+ 						else
++						//patch file: array, array2, flag, text
+ 						{
+ 							array[num2++] = "Piranhas and sharks are ugly! Soooo ugly! Did you know there's a fish that looks very pretty and still can eat your face off? I would pay 2 platinum to see that happen, by the way... To the point, though, you catchy for me. Just make sure I have it before you lose your face!";
+ 							flag = true;
+ 							text = "\n(Caught Jungle Surface)";
++						}
++						break;
 +					default:
 +						if (gotFish)
 +						{
@@ -38,11 +45,9 @@
 +						else
 +						{
 +							flag = true;
-+						}
-+						break;
+ 						}
+ 						break;
  				}
- 			}
- 			string text2 = array[0];
 @@ -31791,6 +_,7 @@
  					text2 = text2 + " " + array[i];
  				}

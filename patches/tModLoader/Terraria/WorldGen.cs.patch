@@ -131,12 +131,12 @@
  						if (!WorldGen.worldBackup)
  						{
 -							Console.WriteLine("Load failed!  No backup found.");
-+                            string message = "Load failed!  No backup found.";
-+                            if (WorldIO.customDataFail != null)
-+                            {
-+                                message = WorldIO.customDataFail.modName + " " + message;
-+                                message += "\n" + WorldIO.customDataFail.InnerException;
-+                            }
++							string message = "Load failed!  No backup found.";
++							if (WorldIO.customDataFail != null)
++							{
++								message = WorldIO.customDataFail.modName + " " + message;
++								message += "\n" + WorldIO.customDataFail.InnerException;
++							}
 +							Console.WriteLine(message);
  							return;
  						}
@@ -153,12 +153,12 @@
  								FileUtilities.Delete(Main.worldPathName + ".bad", isCloudSave);
 -								Console.WriteLine("Load failed!");
 +								WorldIO.RevertDedServBackup(Main.worldPathName, isCloudSave);
-+                                string message = "Load failed!";
-+                                if (WorldIO.customDataFail != null)
-+                                {
-+                                    message = WorldIO.customDataFail.modName + " " + message;
-+                                    message += "\n" + WorldIO.customDataFail.InnerException;
-+                                }
++								string message = "Load failed!";
++								if (WorldIO.customDataFail != null)
++								{
++									message = WorldIO.customDataFail.modName + " " + message;
++									message += "\n" + WorldIO.customDataFail.InnerException;
++								}
 +								Console.WriteLine(message);
  								return;
  							}
@@ -388,7 +388,7 @@
  					}
 -					if (Main.tile[l, m].active() && (Main.tile[l, m].type == 139 || Main.tile[l, m].type == 35))
 +					if (Main.tile[l, m].active() && (Main.tile[l, m].type == 139 || Main.tile[l, m].type == 35
-+					    || TileLoader.IsModMusicBox(Main.tile[l, m])))
++						|| TileLoader.IsModMusicBox(Main.tile[l, m])))
  					{
  						if (Main.tile[l, m].frameX < 36)
  						{
@@ -611,6 +611,14 @@
  						{
  							if (tile.type == 352 && num15 == 5)
  							{
+@@ -35726,6 +_,7 @@
+ 						}
+ 						if (tile.type == 73)
+ 						{
++							//patch file: num43, num44
+ 							num43 = 200;
+ 							num44 = 50;
+ 							if (tile.frameX >= 108)
 @@ -35787,6 +_,7 @@
  						{
  							num45 = 10;
@@ -638,6 +646,14 @@
  						{
  							Item.NewItem(i * 16, j * 16, 16, 16, num50, 1, false, -1, false, false);
  						}
+@@ -39262,6 +_,7 @@
+ 				}
+ 				int num7 = WorldGen.genRand.Next(10, Main.maxTilesX - 10);
+ 				int num8 = WorldGen.genRand.Next(10, (int)Main.worldSurface - 1);
++				//patch file: num7, num8
+ 				int num9 = num7 - 1;
+ 				int num10 = num7 + 2;
+ 				int num11 = num8 - 1;
 @@ -40016,6 +_,8 @@
  							}
  						}

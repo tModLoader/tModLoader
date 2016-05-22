@@ -217,6 +217,14 @@
  								if (!Main.player[num35].immune)
  								{
  									this.StatusPvP(num35);
+@@ -8869,6 +_,7 @@
+ 								{
+ 									Main.player[this.owner].OnHit(Main.player[num35].Center.X, Main.player[num35].Center.Y, Main.player[num35]);
+ 								}
++								//patch file: num37
+ 								int num37 = (int)Main.player[num35].Hurt(num36, this.direction, true, false, Lang.deathMsg(this.owner, -1, this.whoAmI, -1), flag7, -1);
+ 								if (num37 > 0 && Main.player[this.owner].ghostHeal && this.friendly && !this.hostile)
+ 								{
 @@ -8882,6 +_,8 @@
  								{
  									Projectile.NewProjectile(Main.player[num35].Center.X, Main.player[num35].Center.Y, Main.player[num35].velocity.X, Main.player[num35].velocity.Y, 289, 0, 0f, this.owner, 0f, 0f);
@@ -283,7 +291,7 @@
  			}
  			if (myRect.Intersects(targetRect))
  			{
-@@ -10111,6 +_,7 @@
+@@ -10111,12 +_,14 @@
  							num25 = (int)(20f * this.scale);
  							num26 = (int)(20f * this.scale);
  						}
@@ -291,6 +299,21 @@
  						if (((this.type != 440 && this.type != 449 && this.type != 606) || this.ai[1] != 1f) && (this.type != 466 || this.localAI[1] != 1f) && (this.type != 580 || this.localAI[1] <= 0f) && (this.type != 640 || this.localAI[1] <= 0f))
  						{
  							if (this.aiStyle == 10)
+ 							{
+ 								if (this.type == 42 || this.type == 65 || this.type == 68 || this.type == 354 || (this.type == 31 && this.ai[0] == 2f))
+ 								{
++									//patch file: flag4
+ 									this.velocity = Collision.TileCollision(this.position, this.velocity, this.width, this.height, flag4, flag4, 1);
+ 								}
+ 								else
+@@ -10126,6 +_,7 @@
+ 							}
+ 							else
+ 							{
++								//patch file: num25, num26
+ 								Vector2 position = this.position;
+ 								int num27 = (num25 != -1) ? num25 : this.width;
+ 								int num28 = (num26 != -1) ? num26 : this.height;
 @@ -10202,7 +_,10 @@
  						}
  						if (flag3)
@@ -303,6 +326,37 @@
  							{
  								this.position += this.velocity;
  								this.numUpdates = 0;
+@@ -11289,12 +_,14 @@
+ 				{
+ 					num5++;
+ 					num6++;
++					//patch file: flag, num5
+ 					if (Main.tile[i, num6].lava())
+ 					{
+ 						flag = true;
+ 					}
+ 					else if (Main.tile[i, num6].honey())
+ 					{
++						//patch file: flag2
+ 						flag2 = true;
+ 					}
+ 				}
+@@ -11374,6 +_,7 @@
+ 			}
+ 			else if ((double)num2 < Main.worldSurface)
+ 			{
++				//patch file: num14
+ 				num14 = 1;
+ 			}
+ 			else if ((double)num2 < Main.rockLayer)
+@@ -11445,6 +_,7 @@
+ 				num21 += 10;
+ 			}
+ 			int num22 = Main.anglerQuestItemNetIDs[Main.anglerQuest];
++			//patch file: num22
+ 			if (Main.player[this.owner].HasItem(num22))
+ 			{
+ 				num22 = -1;
 @@ -11453,6 +_,7 @@
  			{
  				num22 = -1;

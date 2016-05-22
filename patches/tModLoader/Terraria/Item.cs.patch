@@ -177,6 +177,14 @@
  					if (ItemID.Sets.ItemNoGravity[this.type])
  					{
  						this.velocity.X = this.velocity.X * 0.95f;
+@@ -45729,6 +_,7 @@
+ 					}
+ 					else
+ 					{
++						//patch file: num, num2
+ 						this.velocity.Y = this.velocity.Y + num;
+ 						if (this.velocity.Y > num2)
+ 						{
 @@ -46223,6 +_,7 @@
  					}
  					this.spawnTime++;

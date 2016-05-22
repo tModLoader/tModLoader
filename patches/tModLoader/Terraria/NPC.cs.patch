@@ -167,6 +167,14 @@
  			if (Main.expertMode)
  			{
  				this.scaleStats();
+@@ -11679,6 +_,7 @@
+ 						num4++;
+ 					}
+ 				}
++				//patch file: num4, num5
+ 				for (int j = 1; j < num4; j++)
+ 				{
+ 					num5 += num6;
 @@ -11895,12 +_,18 @@
  					this.damage = (int)((double)this.damage * 0.75);
  					break;
@@ -195,6 +203,14 @@
  									{
  										bool flag26 = WorldGen.OpenDoor(num210, num211 - 1, this.direction);
  										if (!flag26)
+@@ -19429,6 +_,7 @@
+ 			else if (this.aiStyle == 7)
+ 			{
+ 				bool flag38 = Main.raining;
++				//patch file: flag38
+ 				if (!Main.dayTime)
+ 				{
+ 					flag38 = true;
 @@ -19507,6 +_,7 @@
  						num378 += 0.15f;
  						this.defense += 8;
@@ -245,7 +261,14 @@
  							{
  								if (Main.netMode != 1)
  								{
-@@ -20526,6 +_,10 @@
+@@ -20520,12 +_,17 @@
+ 						num405 = 589;
+ 						scaleFactor7 = 7f;
+ 						num406 = 22;
++						//patch file: num405, num406, num407, num408, scaleFactor7, maxValue3
+ 						num407 = 1;
+ 						num408 = 10;
+ 						maxValue3 = 1;
  						knockBack = 2f;
  						num409 = 10f;
  					}
@@ -265,6 +288,21 @@
  					bool flag53 = false;
  					float num418 = 0f;
  					if ((float)NPCID.Sets.AttackTime[this.type] == this.ai[1])
+@@ -20703,12 +_,14 @@
+ 					else if (this.type == 228)
+ 					{
+ 						num413 = 267;
++						//patch file: num413, num414, num415, scaleFactor8
+ 						scaleFactor8 = 14f;
+ 						num414 = 20;
+ 						num415 = 1;
+ 						num416 = 10;
+ 						maxValue4 = 1;
+ 						knockBack2 = 3f;
++						//patch file: num416, num417, num418, maxValue4, knockBack2
+ 						num417 = 6;
+ 						num418 = 0.4f;
+ 					}
 @@ -20815,6 +_,11 @@
  							num418 = 0.1f;
  						}
@@ -277,6 +315,32 @@
  					if (Main.expertMode)
  					{
  						num414 = (int)((float)num414 * Main.expertNPCDamage);
+@@ -20925,21 +_,25 @@
+ 					if (this.type == 54)
+ 					{
+ 						num423 = 585;
++						//patch file: num423, scaleFactor9
+ 						scaleFactor9 = 10f;
+ 						num424 = 16;
+ 						num425 = 30;
++						//patch file: num424, num425, num426, maxValue5, knockBack3
+ 						num426 = 20;
+ 						maxValue5 = 15;
+ 						knockBack3 = 2f;
+ 						num430 = 1f;
+ 					}
+ 					else if (this.type == 108)
++					//patch file: num430
+ 					{
+ 						num423 = 15;
+ 						scaleFactor9 = 6f;
+ 						num424 = 18;
+ 						num425 = 15;
+ 						num426 = 15;
++						//patch file: num427
+ 						maxValue5 = 5;
+ 						knockBack3 = 3f;
+ 						num427 = 20f;
 @@ -20965,6 +_,11 @@
  						maxValue5 = 1;
  						knockBack3 = 3f;
@@ -289,7 +353,13 @@
  					if (Main.expertMode)
  					{
  						num424 = (int)((float)num424 * Main.expertNPCDamage);
-@@ -21094,6 +_,9 @@
+@@ -21089,11 +_,15 @@
+ 					else if (this.type == 353)
+ 					{
+ 						num440 = 10;
++						//patch file: num439, num440, num442, num443
+ 						num443 = (num442 = 32);
+ 						num439 = 15;
  						maxValue6 = 8;
  						num441 = 5f;
  					}
@@ -397,6 +467,29 @@
  			if (num > 0)
  			{
  				if (Main.netMode == 2)
+@@ -57615,12 +_,13 @@
+ 					bool flag9 = false;
+ 					bool flag10 = false;
+ 					bool flag11 = false;
+-					bool flag12 = NPC.downedPlantBoss && Main.hardMode;
++					bool flag12 = NPC.downedPlantBoss && Main.hardMode; //patch file: flag12
+ 					if (Main.player[j].active && Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0 && (double)Main.player[j].position.Y < Main.worldSurface * 16.0 + (double)NPC.sHeight)
+ 					{
+ 						int num5 = 3000;
+ 						if ((double)Main.player[j].position.X > Main.invasionX * 16.0 - (double)num5 && (double)Main.player[j].position.X < Main.invasionX * 16.0 + (double)num5)
+ 						{
++							//patch file: flag4
+ 							flag4 = true;
+ 						}
+ 						else if (Main.invasionX >= (double)(Main.maxTilesX / 2 - 5) && Main.invasionX <= (double)(Main.maxTilesX / 2 + 5))
+@@ -57901,6 +_,7 @@
+ 						else if (Main.player[j].townNPCs >= 3f)
+ 						{
+ 							flag3 = true;
++							//patch file: flag3, flag10
+ 							if (!Main.expertMode || Main.rand.Next(30) != 0)
+ 							{
+ 								flag10 = true;
 @@ -57908,6 +_,7 @@
  							NPC.maxSpawns = (int)((double)((float)NPC.maxSpawns) * 0.6);
  						}
@@ -405,6 +498,14 @@
  					int num6 = (int)(Main.player[j].position.X + (float)(Main.player[j].width / 2)) / 16;
  					int num7 = (int)(Main.player[j].position.Y + (float)(Main.player[j].height / 2)) / 16;
  					if (Main.wallHouse[(int)Main.tile[num6, num7].wall])
+@@ -57916,6 +_,7 @@
+ 					}
+ 					if (Main.tile[num6, num7].wall == 87)
+ 					{
++						//patch file: flag2
+ 						flag2 = true;
+ 					}
+ 					bool flag14 = false;
 @@ -57949,6 +_,8 @@
  							NPC.safeRangeX += (int)((double)(NPC.sWidth / 16) * 0.5 / (double)num8);
  							NPC.safeRangeY += (int)((double)(NPC.sHeight / 16) * 0.5 / (double)num8);
@@ -414,6 +515,14 @@
  						int num9 = (int)(Main.player[j].position.X / 16f) - NPC.spawnRangeX;
  						int num10 = (int)(Main.player[j].position.X / 16f) + NPC.spawnRangeX;
  						int num11 = (int)(Main.player[j].position.Y / 16f) - NPC.spawnRangeY;
+@@ -58068,6 +_,7 @@
+ 								}
+ 								if (num >= num13 && num <= num14)
+ 								{
++									//patch file(?): flag14
+ 									flag14 = true;
+ 									goto IL_14A6;
+ 								}
 @@ -58099,6 +_,7 @@
  							}
  						}
@@ -422,15 +531,51 @@
  					if (flag13)
  					{
  						if (Main.player[j].ZoneDungeon && (!Main.tileDungeon[(int)Main.tile[num, num2].type] || Main.tile[num, num2 - 1].wall == 0))
-@@ -58203,6 +_,8 @@
- 								}
- 							}
+@@ -58107,10 +_,12 @@
  						}
+ 						if (Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 2].liquid > 0 && !Main.tile[num, num2 - 1].lava())
+ 						{
++							//patch file: flag6
+ 							if (Main.tile[num, num2 - 1].honey())
+ 							{
+ 								flag6 = true;
+ 							}
++							//patch file: flag5
+ 							else
+ 							{
+ 								flag5 = true;
+@@ -58118,12 +_,15 @@
+ 						}
+ 						int num25 = (int)Main.player[j].Center.X / 16;
+ 						int num26 = (int)(Main.player[j].Bottom.Y + 8f) / 16;
 +						spawnInfo.playerFloorX = num25;
 +						spawnInfo.playerFloorY = num26;
- 					}
- 					if (flag6)
- 					{
+ 						if (Main.tile[num, num2].type == 367)
+ 						{
+ 							flag8 = true;
+ 						}
+ 						else if (Main.tile[num, num2].type == 368)
+ 						{
++							//patch file: flag7
+ 							flag7 = true;
+ 						}
+ 						else if (Main.tile[num25, num26].type == 367)
+@@ -58223,6 +_,7 @@
+ 										{
+ 											if (Main.tile[num36, num37].wall == 62)
+ 											{
++												//patch file: flag9
+ 												flag9 = true;
+ 											}
+ 										}
+@@ -58252,6 +_,7 @@
+ 										{
+ 											if (WallID.Sets.Conversion.Sandstone[(int)Main.tile[num41, num42].wall] || WallID.Sets.Conversion.HardenedSand[(int)Main.tile[num41, num42].wall])
+ 											{
++												//patch file: flag11
+ 												flag11 = true;
+ 											}
+ 										}
 @@ -58268,8 +_,33 @@
  								}
  							}

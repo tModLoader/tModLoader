@@ -4468,7 +4468,7 @@
 -			}
 +				VanillaUpdateAccessory(this.armor[l], this.hideVisual[l], ref flag, ref flag2, ref flag3);
 +			}
-+            PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
++			PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
 +			//wing loop merged into VanillaUpdateAccessory
  			for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
  			{
@@ -4488,9 +4488,9 @@
 -					this.forceMerman = true;
 -				}
 -			}
-+			    VanillaUpdateVanityAccessory(this.armor[n]);
++				VanillaUpdateVanityAccessory(this.armor[n]);
 +			}
-+            PlayerHooks.UpdateVanityAccessories(this);
++			PlayerHooks.UpdateVanityAccessories(this);
  			if (this.whoAmI == Main.myPlayer && Main.clock && this.accWatch < 3)
  			{
  				this.accWatch++;
@@ -4556,6 +4556,14 @@
  							{
  								int num62 = (int)tile4.slope();
  								if (num62 != 2 && !Main.tile[num60 - 1, num61 - 1].active())
+@@ -11619,6 +_,7 @@
+ 			if (this.controlTorch && this.itemAnimation == 0)
+ 			{
+ 				int num = 0;
++				//patch file: num2, num3
+ 				int num2 = (int)(((float)Main.mouseX + Main.screenPosition.X) / 16f);
+ 				int num3 = (int)(((float)Main.mouseY + Main.screenPosition.Y) / 16f);
+ 				if (this.gravDir == -1f)
 @@ -11648,7 +_,7 @@
  					{
  						num7 = this.inventory[i].tileBoost;
@@ -4692,6 +4700,17 @@
  			float num4 = (float)this.statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			this.lifeRegen += (int)Math.Round((double)num2);
+@@ -14406,8 +_,10 @@
+ 			if (this.wingsLogic == 31)
+ 			{
+ 				num2 = 0.75f;
++				//patch file: num2, num5
+ 				num5 = 0.15f;
+ 				num4 = 1f;
++				//patch file: num, num3, num4
+ 				num3 = 3f;
+ 				num = 0.125f;
+ 			}
 @@ -14417,6 +_,7 @@
  				num3 = 1.5f;
  				num = 0.125f;
@@ -4709,6 +4728,14 @@
  			{
  				int num4 = 1;
  				if (Falling)
+@@ -15535,6 +_,7 @@
+ 				{
+ 					bool flag = true;
+ 					int num5 = 76;
++					//patch file: num3, num5, flag
+ 					if (num3 == 53)
+ 					{
+ 						num5 = 32;
 @@ -15624,6 +_,7 @@
  					{
  						newColor = new Color(97, 200, 255, 100);
@@ -5567,6 +5594,14 @@
  												{
  													num225 = 2;
  													slope = 1;
+@@ -31044,6 +_,7 @@
+ 				}
+ 				else if (item.useStyle == 3)
+ 				{
++					//patch file: flag17
+ 					if ((double)this.itemAnimation > (double)this.itemAnimationMax * 0.666)
+ 					{
+ 						flag17 = true;
 @@ -31059,6 +_,7 @@
  						r2.Height = (int)((double)r2.Height * 0.6);
  					}
@@ -5609,7 +5644,7 @@
  										{
  											Rectangle value12 = new Rectangle((int)Main.npc[num292].position.X, (int)Main.npc[num292].position.Y, Main.npc[num292].width, Main.npc[num292].height);
  											if (r2.Intersects(value12) && (Main.npc[num292].noTileCollide || Collision.CanHit(this.position, this.width, this.height, Main.npc[num292].position, Main.npc[num292].width, Main.npc[num292].height)))
-@@ -31556,6 +_,9 @@
+@@ -31556,12 +_,16 @@
  													}
  												}
  												int num294 = Main.DamageVar((float)num282);
@@ -5619,6 +5654,13 @@
  												this.StatusNPC(item.type, num292);
  												this.OnHit(Main.npc[num292].Center.X, Main.npc[num292].Center.Y, Main.npc[num292]);
  												if (this.armorPenetration > 0)
+ 												{
+ 													num294 += Main.npc[num292].checkArmorPenetration(this.armorPenetration);
+ 												}
++												//patch file: num283, flag18, num295
+ 												int num295 = (int)Main.npc[num292].StrikeNPC(num294, num283, this.direction, flag18, false, false);
+ 												if (this.inventory[this.selectedItem].type == 3211)
+ 												{
 @@ -31630,6 +_,9 @@
  														NetMessage.SendData(21, -1, -1, "", num300, 0f, 0f, 0f, 0, 0, 0);
  													}
@@ -5892,22 +5934,22 @@
  							for (int num32 = 3; num32 < 8 + player.extraAccessorySlots; num32++)
  							{
  								int type = player.armor[num32].type;
-@@ -34146,6 +_,10 @@
+@@ -34145,6 +_,10 @@
+ 				playerFileData.Player = player;
  				result = playerFileData;
  				return result;
++			}
++			catch (CustomModDataException e)
++			{
++				playerFileData.customDataFail = e;
  			}
-+            catch (CustomModDataException e)
-+            {
-+                playerFileData.customDataFail = e;
-+            }
  			catch
  			{
- 			}
 @@ -34181,15 +_,18 @@
  			{
  				if (playerFileData.Player.loadStatus != 0 && playerFileData.Player.loadStatus != 1)
  				{
-+                    CustomModDataException customDataFail = playerFileData.customDataFail;
++					CustomModDataException customDataFail = playerFileData.customDataFail;
  					if (FileUtilities.Exists(file + ".bak", cloudSave))
  					{
  						FileUtilities.Move(file + ".bak", file, cloudSave, true);
@@ -5918,7 +5960,7 @@
  					{
  						return null;
  					}
-+                    playerFileData.customDataFail = customDataFail;
++					playerFileData.customDataFail = customDataFail;
  				}
  				return playerFileData;
  			}
@@ -5952,10 +5994,10 @@
 -			this.inventory[0].SetDefaults("Copper Shortsword");
 -			this.inventory[1].SetDefaults("Copper Pickaxe");
 -			this.inventory[2].SetDefaults("Copper Axe");
-+		    if (startupInventory)
-+		    {
-+			    PlayerHooks.SetStartInventory(this);
-+		    }
++			if (startupInventory)
++			{
++				PlayerHooks.SetStartInventory(this);
++			}
  			this.statManaMax = 20;
  			this.extraAccessory = false;
  			if (Main.cEd)
