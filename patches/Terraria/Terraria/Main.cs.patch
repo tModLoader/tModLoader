@@ -1,5 +1,77 @@
 --- src/merged\Terraria\Main.cs
 +++ src/Terraria\Terraria\Main.cs
+@@ -3763,39 +_,39 @@
+ 			Main.Configuration.Put("InvisibleCursorForGamepad", Main.InvisibleCursorForGamepad);
+ 			Main.Configuration.Put("GamepadDisableInstructionsDisplay", Main.GamepadDisableInstructionsDisplay);
+ 			Main.Configuration.Put("MouseColor", new Dictionary<string, byte>
+-			{
+-				{
+-					"R",
+-					Main.mouseColor.R
+-				},
+-				{
+-					"G",
+-					Main.mouseColor.G
+-				},
+-				{
+-					"B",
+-					Main.mouseColor.B
+-				}
+-			});
++				{
++					{
++						"R",
++						Main.mouseColor.R
++					},
++					{
++						"G",
++						Main.mouseColor.G
++					},
++					{
++						"B",
++						Main.mouseColor.B
++					}
++				});
+ 			Main.Configuration.Put("MouseBorderColor", new Dictionary<string, byte>
+-			{
+-				{
+-					"R",
+-					Main.MouseBorderColor.R
+-				},
+-				{
+-					"G",
+-					Main.MouseBorderColor.G
+-				},
+-				{
+-					"B",
+-					Main.MouseBorderColor.B
+-				},
+-				{
+-					"A",
+-					Main.MouseBorderColor.A
+-				}
+-			});
++				{
++					{
++						"R",
++						Main.MouseBorderColor.R
++					},
++					{
++						"G",
++						Main.MouseBorderColor.G
++					},
++					{
++						"B",
++						Main.MouseBorderColor.B
++					},
++					{
++						"A",
++						Main.MouseBorderColor.A
++					}
++				});
+ 			Main.Configuration.Put("QuickLaunch", Main.SkipAssemblyLoad);
+ 			bool flag = Main.Configuration.Save(true);
+ 			return flag && PlayerInput.Save();
 @@ -12220,8 +_,7 @@
  							Main.butterflyCageMode[num17, num18] = (byte)Main.rand.Next(5);
  							if (Main.rand.Next(2) == 0)
