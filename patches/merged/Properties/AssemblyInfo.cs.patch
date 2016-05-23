@@ -17,14 +17,14 @@
  using System.Security.Permissions;
  
 +#if WINDOWS || LINUX
- [assembly: AssemblyVersion("1.3.0.7")]
+ [assembly: AssemblyVersion("1.3.1.0")]
 +#endif
 +#if WINDOWS
  [assembly: Debuggable(DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
 +#endif
 +#if WINDOWS || LINUX
  [assembly: AssemblyCompany("Re-Logic")]
- [assembly: AssemblyCopyright("Copyright © Re-Logic 2015")]
+ [assembly: AssemblyCopyright("Copyright © Re-Logic 2016")]
  [assembly: AssemblyDescription("")]
 @@ -16,10 +_,20 @@
  [assembly: AssemblyProduct("Terraria")]

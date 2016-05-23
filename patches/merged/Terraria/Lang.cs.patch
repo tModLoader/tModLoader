@@ -1,14 +1,15 @@
 --- src/decompiled\Terraria\Lang.cs
 +++ src/merged\Terraria\Lang.cs
-@@ -1,5 +_,7 @@
+@@ -1,6 +_,8 @@
  using System;
+ using Terraria.ID;
 +#if CLIENT
  using Terraria.Map;
 +#endif
  
  namespace Terraria
  {
-@@ -32686,6 +_,7 @@
+@@ -33398,6 +_,7 @@
  				Main.buffTip[78] = "Melee attacks cause confetti to appear";
  				Main.buffName[79] = "Weapon Imbue: Poison";
  				Main.buffTip[79] = "Melee attacks poison enemies";
@@ -16,7 +17,7 @@
  				if (Lang.mapLegend == null)
  				{
  					Lang.mapLegend = new string[MapHelper.LookupCount()];
-@@ -32940,6 +_,7 @@
+@@ -33676,6 +_,7 @@
  						Lang.mapLegend[j] = string.Empty;
  					}
  				}
@@ -24,7 +25,7 @@
  				Lang.chestType[0] = "Chest";
  				Lang.chestType[1] = "Gold Chest";
  				Lang.chestType[2] = "Locked Gold Chest";
-@@ -33626,6 +_,7 @@
+@@ -34362,6 +_,7 @@
  				Main.buffTip[78] = "Nahkampfangriffe verursachen Konfetti zu erscheinen";
  				Main.buffName[79] = "Waffe verleihen: Gift";
  				Main.buffTip[79] = "Nahkampfangriffe Gift Feinde";
@@ -32,7 +33,7 @@
  				Lang.mapLegend[MapHelper.TileToLookup(13, 0)] = "Flasche";
  				Lang.mapLegend[MapHelper.TileToLookup(14, 0)] = "Tabelle";
  				Lang.mapLegend[MapHelper.TileToLookup(15, 0)] = "Stuhl";
-@@ -33642,6 +_,7 @@
+@@ -34378,6 +_,7 @@
  				Lang.mapLegend[MapHelper.TileToLookup(114, 0)] = "Tueftler-Werkstatt";
  				Lang.mapLegend[MapHelper.TileToLookup(133, 0)] = "Adamantitschmiede";
  				Lang.mapLegend[MapHelper.TileToLookup(134, 0)] = "Mithrilamboss";
@@ -40,7 +41,7 @@
  				Lang.prefix[1] = "Gross";
  				Lang.prefix[2] = "Massiv";
  				Lang.prefix[3] = "Gefährlich";
-@@ -34248,6 +_,7 @@
+@@ -34984,6 +_,7 @@
  				Main.buffTip[78] = "Attacchi corpo a corpo causano a comparire coriandoli";
  				Main.buffName[79] = "Arma Imbue: Poison";
  				Main.buffTip[79] = "Mischia attacca nemici veleno";
@@ -48,7 +49,7 @@
  				Lang.mapLegend[MapHelper.TileToLookup(13, 0)] = "Bottiglia";
  				Lang.mapLegend[MapHelper.TileToLookup(14, 0)] = "Tavolo";
  				Lang.mapLegend[MapHelper.TileToLookup(15, 0)] = "Sedia";
-@@ -34264,6 +_,7 @@
+@@ -35000,6 +_,7 @@
  				Lang.mapLegend[MapHelper.TileToLookup(114, 0)] = "Laboratorio dell'inventore";
  				Lang.mapLegend[MapHelper.TileToLookup(133, 0)] = "Fornace di adamantio";
  				Lang.mapLegend[MapHelper.TileToLookup(134, 0)] = "Incudine di mitrilio";
@@ -56,7 +57,7 @@
  				Lang.prefix[1] = "Grande";
  				Lang.prefix[2] = "Massiccio";
  				Lang.prefix[3] = "Pericoloso";
-@@ -34870,6 +_,7 @@
+@@ -35606,6 +_,7 @@
  				Main.buffTip[78] = "Les attaques de mêlée causent des confettis à comparaître";
  				Main.buffName[79] = "Arme Imbue: Poison";
  				Main.buffTip[79] = "Attaques de mêlée des ennemis de poison";
@@ -64,7 +65,7 @@
  				Lang.mapLegend[MapHelper.TileToLookup(13, 0)] = "Bouteille";
  				Lang.mapLegend[MapHelper.TileToLookup(14, 0)] = "Table";
  				Lang.mapLegend[MapHelper.TileToLookup(15, 0)] = "Président";
-@@ -34886,6 +_,7 @@
+@@ -35622,6 +_,7 @@
  				Lang.mapLegend[MapHelper.TileToLookup(114, 0)] = "Atelier du bricoleur";
  				Lang.mapLegend[MapHelper.TileToLookup(133, 0)] = "Forge en adamantine";
  				Lang.mapLegend[MapHelper.TileToLookup(134, 0)] = "Enclume en mythril";
@@ -72,7 +73,7 @@
  				Lang.prefix[1] = "Grand";
  				Lang.prefix[2] = "Massif";
  				Lang.prefix[3] = "Dangereuses";
-@@ -35492,6 +_,7 @@
+@@ -36228,6 +_,7 @@
  				Main.buffTip[78] = "Ataques cuerpo a cuerpo infligen confetti que aparezca";
  				Main.buffName[79] = "imbuir armas: tóxico";
  				Main.buffTip[79] = "Cuerpo a cuerpo ataca a los enemigos de veneno";
@@ -80,7 +81,7 @@
  				Lang.mapLegend[MapHelper.TileToLookup(13, 0)] = "Botella";
  				Lang.mapLegend[MapHelper.TileToLookup(14, 0)] = "Mesa";
  				Lang.mapLegend[MapHelper.TileToLookup(15, 0)] = "Silla";
-@@ -35508,6 +_,7 @@
+@@ -36244,6 +_,7 @@
  				Lang.mapLegend[MapHelper.TileToLookup(114, 0)] = "Taller del reparador";
  				Lang.mapLegend[MapHelper.TileToLookup(133, 0)] = "Forja de adamantita";
  				Lang.mapLegend[MapHelper.TileToLookup(134, 0)] = "Yunque de mithril";

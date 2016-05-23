@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Social\SocialAPI.cs
 +++ src/merged\Terraria.Social\SocialAPI.cs
-@@ -32,7 +_,14 @@
+@@ -34,7 +_,14 @@
  			if (!mode.HasValue)
  			{
  				mode = new SocialMode?(SocialMode.None);
@@ -15,23 +15,22 @@
  			}
  			SocialAPI._mode = mode.Value;
  			SocialAPI._modules = new List<ISocialModule>();
-@@ -58,7 +_,11 @@
+@@ -60,7 +_,11 @@
  
  		private static T LoadModule<T>() where T : ISocialModule, new()
  		{
--			T t = (default(T) == null) ? Activator.CreateInstance<T>() : default(T);
 +#if MAC
-+            T t = Activator.CreateInstance<T>();
++			T t = Activator.CreateInstance<T>();
 +#else
-+            T t = (default(T) == null) ? Activator.CreateInstance<T>() : default(T);
+ 			T t = (default(T) == null) ? Activator.CreateInstance<T>() : default(T);
 +#endif
  			SocialAPI._modules.Add(t);
  			return t;
  		}
-@@ -75,7 +_,11 @@
- 			SocialAPI.Friends = SocialAPI.LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
+@@ -78,7 +_,11 @@
  			SocialAPI.Achievements = SocialAPI.LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
  			SocialAPI.Cloud = SocialAPI.LoadModule<Terraria.Social.Steam.CloudSocialModule>();
+ 			SocialAPI.Overlay = SocialAPI.LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
 +#if CLIENT
  			SocialAPI.Network = SocialAPI.LoadModule<NetClientSocialModule>();
 +#else

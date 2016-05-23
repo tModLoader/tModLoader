@@ -1,0 +1,36 @@
+--- src/merged\Terraria\TestHighFPSIssues.cs
++++ src/Terraria\Terraria\TestHighFPSIssues.cs
+@@ -58,16 +_,14 @@
+ 			}
+ 			double totalMilliseconds = gt.TotalGameTime.TotalMilliseconds;
+ 			double num = totalMilliseconds - 5000.0;
+-			while (TestHighFPSIssues._tapUpdates.Count > 0)
++			while (TestHighFPSIssues._tapUpdates.Count >= 0)
+ 			{
+-				if (TestHighFPSIssues._tapUpdates[0] >= num)
++				if (TestHighFPSIssues._tapUpdates.Count == 0 || TestHighFPSIssues._tapUpdates[0] >= num)
+ 				{
+-					IL_81:
+-					while (TestHighFPSIssues._tapDraws.Count > 0)
++					while (TestHighFPSIssues._tapDraws.Count >= 0)
+ 					{
+-						if (TestHighFPSIssues._tapDraws[0] >= num)
++						if (TestHighFPSIssues._tapDraws.Count == 0 || TestHighFPSIssues._tapDraws[0] >= num)
+ 						{
+-							IL_A9:
+ 							while (TestHighFPSIssues._tapUpdateEnds.Count > 0 && TestHighFPSIssues._tapUpdateEnds[0] < num)
+ 							{
+ 								TestHighFPSIssues._tapUpdateEnds.RemoveAt(0);
+@@ -90,11 +_,9 @@
+ 						}
+ 						TestHighFPSIssues._tapDraws.RemoveAt(0);
+ 					}
+-					goto IL_A9;
+ 				}
+ 				TestHighFPSIssues._tapUpdates.RemoveAt(0);
+ 			}
+-			goto IL_81;
+ 		}
+ 	}
+ }
+

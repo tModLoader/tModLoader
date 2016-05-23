@@ -4,7 +4,7 @@
  				int num18 = 0;
  				int num19 = 0;
  				int num20 = 0;
-+                int num21;
++				int num21;
  				int num22;
  				if (num12 == 1 || num12 == 14)
  				{

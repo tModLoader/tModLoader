@@ -1,6 +1,6 @@
 --- src/merged\Terraria.csproj
 +++ src/Terraria\Terraria.csproj
-@@ -73,17 +_,24 @@
+@@ -73,15 +_,22 @@
      </Otherwise>
    </Choose>
    <ItemGroup>
@@ -20,12 +20,10 @@
      <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System" />
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
--	<Reference Include="Steamworks.NET" />
+-    <Reference Include="Steamworks.NET" />
 -    <Reference Include="Newtonsoft.Json" />
+-    <Reference Include="Ionic.Zip.CF" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
--    <Reference Include="Ionic.Zip.CF" />
      <Reference Include="WindowsBase" />
-   </ItemGroup>
-   <ItemGroup>
 

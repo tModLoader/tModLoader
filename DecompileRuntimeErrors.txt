@@ -15,13 +15,13 @@ private static int SaveChests(BinaryWriter writer)
 
 Terraria.Map.MapHelper
 public static void SaveMap()
-- binaryWriter.Write(419); //number of tiles, will likely change
+- binaryWriter.Write(446); //number of tiles, will likely change
 - binaryWriter.Write(225); //number of walls, will likely change
 - binaryWriter.Write(3);
 - binaryWriter.Write(256);
 - binaryWriter.Write(256);
 - binaryWriter.Write(256);
-+ binaryWriter.Write((short)419);
++ binaryWriter.Write((short)446);
 + binaryWriter.Write((short)225);
 + binaryWriter.Write((short)3);
 + binaryWriter.Write((short)256);

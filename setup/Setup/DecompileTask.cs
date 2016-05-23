@@ -54,7 +54,7 @@ namespace Terraria.ModLoader.Setup
         private static readonly CSharpLanguage lang = new CSharpLanguage();
         private static readonly Guid clientGuid = new Guid("3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5");
         private static readonly Guid serverGuid = new Guid("85BF1171-A0DC-4696-BFA4-D6E9DC4E0830");
-		public static readonly Version version = new Version(1, 3, 0, 7);
+		public static readonly Version version = new Version(1, 3, 1, 0);
 
         public string srcDir;
         private ModuleDefinition clientModule;

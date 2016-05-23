@@ -1,6 +1,6 @@
 --- src/merged\Terraria\WorldGen.cs
 +++ src/Terraria\Terraria\WorldGen.cs
-@@ -6391,7 +_,7 @@
+@@ -6623,7 +_,7 @@
  				progress.Message = Lang.gen[21];
  				for (int k = 0; k < WorldGen.numMCaves; k++)
  				{
@@ -9,61 +9,60 @@
  					int j2 = WorldGen.mCaveY[k];
  					WorldGen.CaveOpenater(i2, j2);
  					WorldGen.Cavinator(i2, j2, WorldGen.genRand.Next(40, 50));
-@@ -8940,6 +_,8 @@
- 				int num2 = 400;
- 				int num3 = 4;
- 				int num4 = 275;
-+                bool flag2;
-+                int maxValue;
- 				for (int k = 0; k < 3; k++)
+@@ -9177,39 +_,32 @@
  				{
  					int num5;
-@@ -8947,36 +_,34 @@
+ 					int num6;
++					bool flag2;
++					int maxValue;
  					switch (k)
  					{
  					case 0:
 -					{
 -						IL_3D:
-+                    default:
-+					{
++					default:
  						num5 = 5;
  						num6 = num4;
 -						bool flag2 = false;
 -						int maxValue = num3;
+-						goto IL_77;
+-					}
 +						flag2 = false;
 +						maxValue = num3;
- 						goto IL_77;
- 					}
++						break;
  					case 1:
- 					{
+-					{
  						num5 = num2;
  						num6 = Main.maxTilesX - num2;
 -						bool flag2 = true;
 -						int maxValue = num;
+-						goto IL_77;
+-					}
 +						flag2 = true;
 +						maxValue = num;
- 						goto IL_77;
- 					}
++						break;
  					case 2:
- 					{
+-					{
  						num5 = Main.maxTilesX - num4;
  						num6 = Main.maxTilesX - 5;
 -						bool flag2 = false;
 -						int maxValue = num3;
+-						goto IL_77;
+-					}
+-					}
+-					goto IL_3D;
+-					IL_77:
 +						flag2 = false;
 +						maxValue = num3;
- 						goto IL_77;
- 					}
- 					}
--					goto IL_3D;
- 					IL_77:
++						break;
++					}
  					for (int l = num5; l < num6; l++)
  					{
 -						int maxValue;
  						if (WorldGen.genRand.Next(maxValue) == 0)
  						{
  							int num7 = 0;
-@@ -8988,7 +_,6 @@
+@@ -9221,7 +_,6 @@
  									Tile tile2 = Main.tile[l, num7 - 1];
  									if (!tile2.active() && tile2.wall == 0)
  									{
@@ -71,7 +70,7 @@
  										if (flag2)
  										{
  											WorldGen.PlantCactus(l, num7);
-@@ -10263,7 +_,7 @@
+@@ -10611,7 +_,7 @@
  						if (flag)
  						{
  							short num6 = (short)Math.Sign(num3);
@@ -80,7 +79,7 @@
  						}
  					}
  					tile.active(true);
-@@ -13167,7 +_,7 @@
+@@ -13520,7 +_,7 @@
  			Main.tile[x - 1, y - 1].frameY = 0;
  			Main.tile[x, y - 1].active(true);
  			Main.tile[x, y - 1].type = 31;
@@ -89,7 +88,7 @@
  			Main.tile[x, y - 1].frameY = 0;
  			Main.tile[x - 1, y].active(true);
  			Main.tile[x - 1, y].type = 31;
-@@ -13175,7 +_,7 @@
+@@ -13528,7 +_,7 @@
  			Main.tile[x - 1, y].frameY = 18;
  			Main.tile[x, y].active(true);
  			Main.tile[x, y].type = 31;
@@ -98,47 +97,50 @@
  			Main.tile[x, y].frameY = 18;
  		}
  
-@@ -13649,33 +_,32 @@
+@@ -14002,33 +_,25 @@
  					int style16 = 32;
  					int style17 = 32;
  					int num37;
-+                    int num38;
++					int num38;
  					switch (num36)
  					{
  					case 0:
 -					{
 -						IL_F95:
-+                    default:
-+					{
++					default:
  						num37 = 1;
 -						int num38 = 3;
+-						goto IL_FAB;
+-					}
 +						num38 = 3;
- 						goto IL_FAB;
- 					}
++						break;
  					case 1:
- 					{
+-					{
  						num37 = 3;
 -						int num38 = 3;
+-						goto IL_FAB;
+-					}
 +						num38 = 3;
- 						goto IL_FAB;
- 					}
++						break;
  					case 2:
- 					{
+-					{
  						num37 = 1;
 -						int num38 = 2;
-+						num38 = 2;
- 						goto IL_FAB;
- 					}
- 					}
+-						goto IL_FAB;
+-					}
+-					}
 -					goto IL_F95;
- 					IL_FAB:
+-					IL_FAB:
++						num38 = 2;
++						break;
++					}
  					for (int num39 = num34 - 1; num39 <= num34 + num37; num39++)
  					{
 -						int num38;
  						for (int num40 = num35; num40 <= num35 + num38; num40++)
  						{
  							Tile tile = Main.tile[num34, num35];
-@@ -19802,7 +_,7 @@
+@@ -20155,7 +_,7 @@
  			Main.tile[num4 + 1, num2].active(true);
  			Main.tile[num4 + 1, num2].type = 11;
  			Main.tile[num4 + 1, num2].frameY = (short)num6;
@@ -147,7 +149,7 @@
  			Main.tile[num4 + 1, num2].color(color);
  			if (Main.tile[num4, num2 + 1] == null)
  			{
-@@ -19820,7 +_,7 @@
+@@ -20173,7 +_,7 @@
  			Main.tile[num4 + 1, num2 + 1].active(true);
  			Main.tile[num4 + 1, num2 + 1].type = 11;
  			Main.tile[num4 + 1, num2 + 1].frameY = (short)(num6 + 18);
@@ -156,7 +158,7 @@
  			Main.tile[num4 + 1, num2 + 1].color(color2);
  			if (Main.tile[num4, num2 + 2] == null)
  			{
-@@ -19838,7 +_,7 @@
+@@ -20191,7 +_,7 @@
  			Main.tile[num4 + 1, num2 + 2].active(true);
  			Main.tile[num4 + 1, num2 + 2].type = 11;
  			Main.tile[num4 + 1, num2 + 2].frameY = (short)(num6 + 36);
@@ -165,7 +167,7 @@
  			Main.tile[num4 + 1, num2 + 2].color(color3);
  			for (int m = num4 - 1; m <= num4 + 2; m++)
  			{
-@@ -21083,7 +_,7 @@
+@@ -21446,7 +_,7 @@
  				}
  				else
  				{
@@ -174,7 +176,7 @@
  				}
  				if ((style & 2) == 2)
  				{
-@@ -21092,7 +_,7 @@
+@@ -21455,7 +_,7 @@
  				}
  				else
  				{
@@ -183,7 +185,7 @@
  				}
  				if ((style & 4) == 4)
  				{
-@@ -21101,7 +_,7 @@
+@@ -21464,7 +_,7 @@
  				}
  				else
  				{
@@ -192,7 +194,7 @@
  				}
  			}
  			if (obj == 1)
-@@ -21113,7 +_,7 @@
+@@ -21476,7 +_,7 @@
  				}
  				else
  				{
@@ -201,7 +203,7 @@
  				}
  				if ((style & 2) == 2)
  				{
-@@ -21122,7 +_,7 @@
+@@ -21485,7 +_,7 @@
  				}
  				else
  				{
@@ -210,7 +212,7 @@
  				}
  				if ((style & 4) == 4)
  				{
-@@ -21131,7 +_,7 @@
+@@ -21494,7 +_,7 @@
  				}
  				else
  				{
@@ -219,7 +221,7 @@
  				}
  			}
  			if (obj == 2)
-@@ -21143,7 +_,7 @@
+@@ -21506,7 +_,7 @@
  				}
  				else
  				{
@@ -228,7 +230,7 @@
  				}
  				if ((style & 2) == 2)
  				{
-@@ -21152,7 +_,7 @@
+@@ -21515,7 +_,7 @@
  				}
  				else
  				{
@@ -237,7 +239,7 @@
  				}
  				if ((style & 4) == 4)
  				{
-@@ -21161,7 +_,7 @@
+@@ -21524,7 +_,7 @@
  				}
  				else
  				{
@@ -246,7 +248,7 @@
  				}
  				if ((style & 8) == 8)
  				{
-@@ -21170,7 +_,7 @@
+@@ -21533,7 +_,7 @@
  				}
  				else
  				{
@@ -255,7 +257,7 @@
  				}
  			}
  			if (obj == 3)
-@@ -21182,7 +_,7 @@
+@@ -21545,7 +_,7 @@
  				}
  				else
  				{
@@ -264,7 +266,7 @@
  				}
  				if ((style & 2) == 2)
  				{
-@@ -21191,7 +_,7 @@
+@@ -21554,7 +_,7 @@
  				}
  				else
  				{
@@ -273,7 +275,7 @@
  				}
  				if ((style & 4) == 4)
  				{
-@@ -21200,7 +_,7 @@
+@@ -21563,7 +_,7 @@
  				}
  				else
  				{
@@ -282,7 +284,7 @@
  				}
  				if ((style & 8) == 8)
  				{
-@@ -21208,7 +_,7 @@
+@@ -21571,7 +_,7 @@
  					expr_443.frameY |= 8192;
  					return;
  				}
@@ -291,16 +293,20 @@
  			}
  		}
  
-@@ -22112,7 +_,7 @@
- 			return white;
- 		}
+@@ -22488,7 +_,11 @@
  
--		public static void paintEffect(int x, int y, byte color, byte oldColor)
-+		public static void paintEffect(int x, int y, byte? color, byte? oldColor)
+ 		public static void paintEffect(int x, int y, byte color, byte oldColor)
  		{
- 			int color2 = (int)(color ?? oldColor);
+-			int color2 = (int)(color ?? oldColor);
++			int color2 = color;
++			if (color == 0)
++			{
++				color2 = oldColor;
++			}
  			Color newColor = WorldGen.paintColor(color2);
-@@ -23791,7 +_,7 @@
+ 			for (int i = 0; i < 10; i++)
+ 			{
+@@ -24329,7 +_,7 @@
  				Main.tile[x, y - 1].frameX = frameX;
  				Main.tile[x, y - 1].type = type;
  				Main.tile[x, y].active(true);
@@ -309,7 +315,7 @@
  				Main.tile[x, y].frameX = frameX;
  				Main.tile[x, y].type = type;
  			}
-@@ -23816,7 +_,7 @@
+@@ -24354,7 +_,7 @@
  				Main.tile[x, y].frameX = frameX;
  				Main.tile[x, y].type = type;
  				Main.tile[x, y + 1].active(true);
@@ -318,7 +324,7 @@
  				Main.tile[x, y + 1].frameX = frameX;
  				Main.tile[x, y + 1].type = type;
  			}
-@@ -24046,7 +_,7 @@
+@@ -24584,7 +_,7 @@
  					Main.tile[i, j].type = type;
  					Main.tile[i + 1, j].active(true);
  					Main.tile[i + 1, j].frameY = frameY;
@@ -327,7 +333,7 @@
  					Main.tile[i + 1, j].type = type;
  					return true;
  				}
-@@ -24738,15 +_,15 @@
+@@ -25276,15 +_,15 @@
  					Main.tile[X2 - 1, num - 1].type = type;
  					Main.tile[X2, num - 1].active(true);
  					Main.tile[X2, num - 1].frameY = num2;
@@ -347,7 +353,7 @@
  					Main.tile[X2, num].type = type;
  					return;
  				}
-@@ -24789,11 +_,11 @@
+@@ -25327,11 +_,11 @@
  					Main.tile[X2 - 1, Y2 - 1].type = type;
  					Main.tile[X2, Y2 - 1].active(true);
  					Main.tile[X2, Y2 - 1].frameY = 0;
@@ -361,7 +367,7 @@
  					Main.tile[X2 + 1, Y2 - 1].type = type;
  					Main.tile[X2 - 1, Y2].active(true);
  					Main.tile[X2 - 1, Y2].frameY = 18;
-@@ -24801,11 +_,11 @@
+@@ -25339,11 +_,11 @@
  					Main.tile[X2 - 1, Y2].type = type;
  					Main.tile[X2, Y2].active(true);
  					Main.tile[X2, Y2].frameY = 18;
@@ -375,7 +381,7 @@
  					Main.tile[X2 + 1, Y2].type = type;
  				}
  			}
-@@ -26749,15 +_,15 @@
+@@ -27374,15 +_,15 @@
  				Main.tile[x - 1, y - 1].type = type;
  				Main.tile[x, y - 1].active(true);
  				Main.tile[x, y - 1].frameY = (short)num2;
@@ -394,7 +400,7 @@
  				Main.tile[x + 2, y - 1].type = type;
  				Main.tile[x - 1, y].active(true);
  				Main.tile[x - 1, y].frameY = (short)(num2 + 18);
-@@ -26765,15 +_,15 @@
+@@ -27390,15 +_,15 @@
  				Main.tile[x - 1, y].type = type;
  				Main.tile[x, y].active(true);
  				Main.tile[x, y].frameY = (short)(num2 + 18);
@@ -413,7 +419,7 @@
  				Main.tile[x + 2, y].type = type;
  			}
  		}
-@@ -27670,8 +_,8 @@
+@@ -28396,8 +_,8 @@
  
  		public static bool ShiftTallGate(int x, int y, bool closing)
  		{
@@ -424,7 +430,7 @@
  			Tile tileSafely = Framing.GetTileSafely(x, y);
  			if (tileSafely.type != num)
  			{
-@@ -27950,11 +_,11 @@
+@@ -28676,11 +_,11 @@
  				Main.tile[x - 1, y].type = type;
  				Main.tile[x, y].active(true);
  				Main.tile[x, y].frameY = 0;
@@ -438,7 +444,7 @@
  				Main.tile[x + 1, y].type = type;
  			}
  		}
-@@ -28032,11 +_,11 @@
+@@ -28758,11 +_,11 @@
  					Main.tile[x - 1, y].type = type;
  					Main.tile[x, y].active(true);
  					Main.tile[x, y].frameY = 0;
@@ -452,7 +458,7 @@
  					Main.tile[x + 1, y].type = type;
  					return;
  				}
-@@ -28046,11 +_,11 @@
+@@ -28772,11 +_,11 @@
  				Main.tile[x - 1, y - 1].type = type;
  				Main.tile[x, y - 1].active(true);
  				Main.tile[x, y - 1].frameY = 0;
@@ -466,7 +472,7 @@
  				Main.tile[x + 1, y - 1].type = type;
  				Main.tile[x - 1, y].active(true);
  				Main.tile[x - 1, y].frameY = 18;
-@@ -28058,11 +_,11 @@
+@@ -28784,11 +_,11 @@
  				Main.tile[x - 1, y].type = type;
  				Main.tile[x, y].active(true);
  				Main.tile[x, y].frameY = 18;
@@ -480,7 +486,7 @@
  				Main.tile[x + 1, y].type = type;
  			}
  		}
-@@ -28115,15 +_,15 @@
+@@ -28841,15 +_,15 @@
  				Main.tile[x - 1, y - 1].type = type;
  				Main.tile[x, y - 1].active(true);
  				Main.tile[x, y - 1].frameY = num;
@@ -500,7 +506,7 @@
  				Main.tile[x, y].type = type;
  			}
  		}
-@@ -31633,11 +_,11 @@
+@@ -32490,11 +_,11 @@
  			Main.tile[x - 1, y - 1].type = type;
  			Main.tile[x, y - 1].active(true);
  			Main.tile[x, y - 1].frameY = 0;
@@ -514,7 +520,7 @@
  			Main.tile[x + 1, y - 1].type = type;
  			Main.tile[x - 1, y].active(true);
  			Main.tile[x - 1, y].frameY = 18;
-@@ -31645,11 +_,11 @@
+@@ -32502,11 +_,11 @@
  			Main.tile[x - 1, y].type = type;
  			Main.tile[x, y].active(true);
  			Main.tile[x, y].frameY = 18;
@@ -528,7 +534,7 @@
  			Main.tile[x + 1, y].type = type;
  		}
  
-@@ -45465,11 +_,11 @@
+@@ -46848,11 +_,11 @@
  								}
  								else if ((num4 >= 0 && Main.tileSolid[num4] && !Main.tileNoAttach[num4]) || num4 == 124 || (num4 == 5 && num8 == 5 && num6 == 5))
  								{
@@ -542,55 +548,55 @@
  								}
  								else if (tile.wall > 0)
  								{
-@@ -45645,21 +_,21 @@
+@@ -47142,21 +_,21 @@
  								{
  									if (tile.frameY < 108 || tile.frameY > 54)
  									{
--										tile.frameY = 108 + num25;
-+										tile.frameY = (short)(108 + num25);
+-										tile.frameY = 108 + num33;
++										tile.frameY = (short)(108 + num33);
  									}
  								}
- 								else if (num24 >= 0 && Main.tileSolid[num24] && !Main.tileSolidTop[num24])
+ 								else if (num32 >= 0 && Main.tileSolid[num32] && !Main.tileSolidTop[num32])
  								{
  									if (tile.frameY < 162 || tile.frameY > 198)
  									{
--										tile.frameY = 162 + num25;
-+										tile.frameY = (short)(162 + num25);
+-										tile.frameY = 162 + num33;
++										tile.frameY = (short)(162 + num33);
  									}
  								}
- 								else if (num22 >= 0 && Main.tileSolid[num22] && !Main.tileSolidTop[num22])
+ 								else if (num30 >= 0 && Main.tileSolid[num30] && !Main.tileSolidTop[num30])
  								{
  									if (tile.frameY < 54 || tile.frameY > 90)
  									{
--										tile.frameY = 54 + num25;
-+										tile.frameY = (short)(54 + num25);
+-										tile.frameY = 54 + num33;
++										tile.frameY = (short)(54 + num33);
  									}
  								}
  								else
-@@ -45721,7 +_,7 @@
+@@ -47218,7 +_,7 @@
  									}
  									if (tile.frameY < 54 || tile.frameY > 90)
  									{
--										tile.frameY = 54 + num30;
-+										tile.frameY = (short)(54 + num30);
+-										tile.frameY = 54 + num38;
++										tile.frameY = (short)(54 + num38);
  									}
  								}
- 								else if (num28 >= 0 && Main.tileMoss[num28])
-@@ -45736,7 +_,7 @@
+ 								else if (num36 >= 0 && Main.tileMoss[num36])
+@@ -47233,7 +_,7 @@
  									}
  									if (tile.frameY < 108 || tile.frameY > 54)
  									{
--										tile.frameY = 108 + num30;
-+										tile.frameY = (short)(108 + num30);
+-										tile.frameY = 108 + num38;
++										tile.frameY = (short)(108 + num38);
  									}
  								}
- 								else if (num29 >= 0 && Main.tileMoss[num29])
-@@ -45751,7 +_,7 @@
+ 								else if (num37 >= 0 && Main.tileMoss[num37])
+@@ -47248,7 +_,7 @@
  									}
  									if (tile.frameY < 162 || tile.frameY > 198)
  									{
--										tile.frameY = 162 + num30;
-+										tile.frameY = (short)(162 + num30);
+-										tile.frameY = 162 + num38;
++										tile.frameY = (short)(162 + num38);
  									}
  								}
  								else

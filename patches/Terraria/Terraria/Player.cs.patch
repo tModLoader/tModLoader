@@ -1,15 +1,35 @@
 --- src/merged\Terraria\Player.cs
 +++ src/Terraria\Terraria\Player.cs
-@@ -11162,7 +_,7 @@
+@@ -11892,7 +_,7 @@
  						{
- 							list9.Add(tuple8);
+ 							list10.Add(tuple9);
  						}
--						Main.tile[tuple8.Item1, tuple8.Item2];
-+						Tile _ = Main.tile[tuple8.Item1, tuple8.Item2];
- 						if (Collision.HitWallSubstep(tuple8.Item1, tuple8.Item2))
+-						Main.tile[tuple9.Item1, tuple9.Item2];
++						Tile _ = Main.tile[tuple9.Item1, tuple9.Item2];
+ 						if (Collision.HitWallSubstep(tuple9.Item1, tuple9.Item2))
  						{
- 							list9.Add(tuple8);
-@@ -34210,7 +_,7 @@
+ 							list10.Add(tuple9);
+@@ -23398,8 +_,8 @@
+ 					{
+ 						int num21 = (int)(Main.tile[myX, myY].frameX / 54);
+ 						int num22 = (int)(Main.tile[myX, myY].frameY / 54);
+-						short arg_A8C_0 = Main.tile[myX, myY].frameX % 54 / 18;
+-						short arg_AA6_0 = Main.tile[myX, myY].frameY % 54 / 18;
++						short arg_A8C_0 = (short)(Main.tile[myX, myY].frameX % 54 / 18);
++						short arg_AA6_0 = (short)(Main.tile[myX, myY].frameY % 54 / 18);
+ 						int num23 = -1;
+ 						switch (num21)
+ 						{
+@@ -33845,7 +_,7 @@
+ 													{
+ 														num243 = 0;
+ 													}
+-													Main.tile[num227, num228].frameX = 22 * num243;
++													Main.tile[num227, num228].frameX = (short)(22 * num243);
+ 													if (Main.netMode == 1)
+ 													{
+ 														NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1);
+@@ -36717,7 +_,7 @@
  				FileUtilities.Copy(path, path + ".bak", isCloudSave, true);
  			}
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
@@ -18,10 +38,10 @@
  			{
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(Player.ENCRYPTION_KEY, Player.ENCRYPTION_KEY), CryptoStreamMode.Write))
  				{
-@@ -34938,7 +_,6 @@
- 		{
- 			int[] array = new int[2];
- 			this.hurtCooldowns = array;
+@@ -37612,7 +_,6 @@
+ 			this.TouchedTiles = new List<Point>();
+ 			int[] array2 = new int[2];
+ 			this.hurtCooldowns = array2;
 -			base..ctor();
  			this.width = 20;
  			this.height = 42;

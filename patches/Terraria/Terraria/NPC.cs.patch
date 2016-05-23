@@ -1,91 +1,131 @@
 --- src/merged\Terraria\NPC.cs
 +++ src/Terraria\Terraria\NPC.cs
-@@ -45374,7 +_,7 @@
+@@ -45776,19 +_,16 @@
+ 						case 2:
+ 						case 4:
  						case 5:
- 							goto IL_97D;
+-							goto IL_97D;
++							break;
  						case 3:
 -							IL_95E:
 +						default:
  							if (num8 != 0)
  							{
  								this.frame.Y = 0;
-@@ -45383,7 +_,6 @@
- 							}
- 							goto IL_97D;
- 						}
+ 								this.frameCounter = 0.0;
+-								goto IL_97D;
+-							}
+-							goto IL_97D;
+-						}
 -						goto IL_95E;
- 						IL_97D:
+-						IL_97D:
++							}
++							break;
++						}
  						int num9;
  						if (this.frameCounter < 10.0)
-@@ -45518,7 +_,7 @@
+ 						{
+@@ -45920,19 +_,16 @@
+ 						case 2:
+ 						case 4:
  						case 5:
- 							goto IL_DC7;
+-							goto IL_DC7;
++							break;
  						case 3:
 -							IL_DA8:
 +						default:
  							if (num12 != 0)
  							{
  								this.frame.Y = 0;
-@@ -45527,7 +_,6 @@
- 							}
- 							goto IL_DC7;
- 						}
+ 								this.frameCounter = 0.0;
+-								goto IL_DC7;
+-							}
+-							goto IL_DC7;
+-						}
 -						goto IL_DA8;
- 						IL_DC7:
+-						IL_DC7:
++							}
++							break;
++						}
  						int num13 = 0;
  						if (this.frameCounter < 16.0)
-@@ -45576,7 +_,7 @@
+ 						{
+@@ -45978,19 +_,16 @@
+ 						case 2:
+ 						case 4:
  						case 5:
- 							goto IL_F6F;
+-							goto IL_F6F;
++							break;
  						case 3:
 -							IL_F50:
 +						default:
  							if (num14 != 0)
  							{
  								this.frame.Y = 0;
-@@ -45585,7 +_,6 @@
- 							}
- 							goto IL_F6F;
- 						}
+ 								this.frameCounter = 0.0;
+-								goto IL_F6F;
+-							}
+-							goto IL_F6F;
+-						}
 -						goto IL_F50;
- 						IL_F6F:
+-						IL_F6F:
++							}
++							break;
++						}
  						int num15;
  						if (this.frameCounter < 10.0)
-@@ -45757,7 +_,7 @@
+ 						{
+@@ -46159,19 +_,16 @@
+ 						case 2:
+ 						case 4:
  						case 5:
- 							goto IL_1396;
+-							goto IL_1396;
++							break;
  						case 3:
 -							IL_1377:
 +						default:
  							if (num28 != 0)
  							{
  								this.frame.Y = 0;
-@@ -45766,7 +_,6 @@
- 							}
- 							goto IL_1396;
- 						}
+ 								this.frameCounter = 0.0;
+-								goto IL_1396;
+-							}
+-							goto IL_1396;
+-						}
 -						goto IL_1377;
- 						IL_1396:
+-						IL_1396:
++							}
++							break;
++						}
  						bool flag = this.ai[0] == 3f;
  						int num29 = 0;
-@@ -45882,7 +_,7 @@
+ 						int num30 = 0;
+@@ -46284,19 +_,16 @@
+ 						case 2:
+ 						case 4:
  						case 5:
- 							goto IL_16FF;
+-							goto IL_16FF;
++							break;
  						case 3:
 -							IL_16E0:
 +						default:
  							if (num33 != 0)
  							{
  								this.frame.Y = 0;
-@@ -45891,7 +_,6 @@
- 							}
- 							goto IL_16FF;
- 						}
+ 								this.frameCounter = 0.0;
+-								goto IL_16FF;
+-							}
+-							goto IL_16FF;
+-						}
 -						goto IL_16E0;
- 						IL_16FF:
+-						IL_16FF:
++							}
++							break;
++						}
  						bool flag2 = this.ai[0] == 16f;
  						int num34 = 0;
-@@ -56514,7 +_,7 @@
+ 						int num35 = -1;
+@@ -56944,7 +_,7 @@
  						{
  							if ((num54 == num51 - num53 || num54 == num51 + num53 || num55 == num52 - num53 || num55 == num52 + num53) && !Main.tile[num54, num55].active())
  							{
@@ -94,7 +134,7 @@
  								Main.tile[num54, num55].active(true);
  							}
  							Main.tile[num54, num55].lava(false);
-@@ -63281,7 +_,7 @@
+@@ -63779,7 +_,7 @@
  					while ((double)num61 < 10.0 + dmg / 10.0)
  					{
  						int num62 = this.width / 4;
@@ -103,7 +143,7 @@
  						int num63 = Dust.NewDust(base.Center - Vector2.One * (float)num62, num62 * 2, num62 * 2, 229, 0f, 0f, 0, default(Color), 1f);
  						Dust dust27 = Main.dust[num63];
  						Vector2 vector2 = Vector2.Normalize(dust27.position - base.Center);
-@@ -63304,7 +_,7 @@
+@@ -63802,7 +_,7 @@
  					for (int num64 = 0; num64 < 60; num64++)
  					{
  						int num65 = this.width / 4;
@@ -112,7 +152,7 @@
  						int num66 = Dust.NewDust(base.Center - Vector2.One * (float)num65, num65 * 2, num65 * 2, 229, 0f, 0f, 0, default(Color), 1f);
  						Dust dust28 = Main.dust[num66];
  						Vector2 vector3 = Vector2.Normalize(dust28.position - base.Center);
-@@ -64182,7 +_,7 @@
+@@ -64680,7 +_,7 @@
  					for (int num163 = 0; num163 < 60; num163++)
  					{
  						int num164 = 25;
@@ -121,7 +161,7 @@
  						int num165 = Dust.NewDust(base.Center - Vector2.One * (float)num164, num164 * 2, num164 * 2, 212, 0f, 0f, 0, default(Color), 1f);
  						Dust dust43 = Main.dust[num165];
  						Vector2 vector6 = Vector2.Normalize(dust43.position - base.Center);
-@@ -71400,7 +_,7 @@
+@@ -71902,7 +_,7 @@
  					{
  						if (this.boss)
  						{

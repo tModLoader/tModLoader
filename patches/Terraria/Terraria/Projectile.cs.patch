@@ -1,12 +1,12 @@
 --- src/merged\Terraria\Projectile.cs
 +++ src/Terraria\Terraria\Projectile.cs
-@@ -11986,100 +_,34 @@
+@@ -12256,100 +_,34 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
  			{
--				if (<PrivateImplementationDetails>{925BC6E4-7F2B-447A-92FB-BAE94A6960E5}.$$method0x6000740-1 == null)
+-				if (<PrivateImplementationDetails>{B92CDB68-6FA8-4A3A-A998-25323E471618}.$$method0x60009b7-1 == null)
 -				{
--					<PrivateImplementationDetails>{925BC6E4-7F2B-447A-92FB-BAE94A6960E5}.$$method0x6000740-1 = new Dictionary<string, int>(14)
+-					<PrivateImplementationDetails>{B92CDB68-6FA8-4A3A-A998-25323E471618}.$$method0x60009b7-1 = new Dictionary<string, int>(14)
 -					{
 -						{
 -							"Tsuki",
@@ -67,7 +67,7 @@
 -					};
 -				}
 -				int num;
--				if (<PrivateImplementationDetails>{925BC6E4-7F2B-447A-92FB-BAE94A6960E5}.$$method0x6000740-1.TryGetValue(name, out num))
+-				if (<PrivateImplementationDetails>{B92CDB68-6FA8-4A3A-A998-25323E471618}.$$method0x60009b7-1.TryGetValue(name, out num))
 -				{
 -					switch (num)
 -					{
@@ -129,24 +129,16 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -20764,7 +_,7 @@
- 																int num688 = (int)(this.position.Y + (float)this.height) / 16 + 1;
- 																if (WorldGen.SolidTile(num687, num688) || Main.tile[num687, num688].halfBrick())
+@@ -21148,7 +_,7 @@
+ 																int num689 = (int)(this.position.Y + (float)this.height) / 16;
+ 																if (WorldGen.SolidTile(num688, num689) || Main.tile[num688, num689].halfBrick() || Main.tile[num688, num689].slope() > 0)
  																{
--																	goto IL_1C179;
-+																	goto Block_1933;
+-																	goto IL_1C752;
++																	goto Block_1971;
  																}
- 																if (Main.tile[num687, num688].slope() > 0)
+ 																if (TileID.Sets.Platforms[(int)Main.tile[num688, num689].type] && Main.tile[num688, num689].active() && !Main.tile[num688, num689].inActive())
  																{
-@@ -20776,7 +_,6 @@
- 																Block_1933:
- 																try
- 																{
--																	IL_1C179:
- 																	num687 = (int)(this.position.X + (float)(this.width / 2)) / 16;
- 																	num688 = (int)(this.position.Y + (float)(this.height / 2)) / 16;
- 																	num687 += num681;
-@@ -34045,7 +_,7 @@
+@@ -34751,7 +_,7 @@
  							for (int n = 0; n < 5; n++)
  							{
  								int num29 = this.width / 4;

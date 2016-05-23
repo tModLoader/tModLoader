@@ -4,8 +4,8 @@
  			}
  			int num = (int)(Main.tile[X, Y].frameX / 36);
  			int num2 = num;
-+            short num3;
-+            int type;
++			short num3;
++			int type;
  			switch (num2)
  			{
  			case 2:

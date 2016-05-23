@@ -1,6 +1,6 @@
 --- src/merged\Terraria\NetMessage.cs
 +++ src/Terraria\Terraria\NetMessage.cs
-@@ -318,7 +_,7 @@
+@@ -319,7 +_,7 @@
  					writer.Write((byte)number5);
  					break;
  				case 18:
@@ -9,7 +9,7 @@
  					writer.Write((int)Main.time);
  					writer.Write(Main.sunModY);
  					writer.Write(Main.moonModY);
-@@ -327,7 +_,7 @@
+@@ -328,7 +_,7 @@
  					writer.Write((byte)number);
  					writer.Write((short)number2);
  					writer.Write((short)number3);
@@ -18,7 +18,7 @@
  					break;
  				case 20:
  				{
-@@ -1499,7 +_,7 @@
+@@ -1534,7 +_,7 @@
  								{
  									short[] arg_1FB_0 = array2;
  									short expr_1F3 = num2;
@@ -27,7 +27,7 @@
  									arg_1FB_0[(int)expr_1F3] = num9;
  								}
  							}
-@@ -1510,7 +_,7 @@
+@@ -1545,7 +_,7 @@
  								{
  									short[] arg_23C_0 = array2;
  									short expr_234 = num2;
@@ -36,25 +36,34 @@
  									arg_23C_0[(int)expr_234] = num10;
  								}
  							}
-@@ -1521,7 +_,7 @@
+@@ -1556,7 +_,7 @@
  								{
- 									short[] arg_27C_0 = array3;
- 									short expr_273 = num3;
--									num3 = expr_273 + 1;
-+									num3 = (short)(expr_273 + 1);
- 									arg_27C_0[(int)expr_273] = (short)num11;
+ 									short[] arg_280_0 = array2;
+ 									short expr_278 = num2;
+-									num2 = expr_278 + 1;
++									num2 = (short)(expr_278 + 1);
+ 									arg_280_0[(int)expr_278] = num11;
  								}
  							}
-@@ -1532,7 +_,7 @@
+@@ -1567,7 +_,7 @@
  								{
- 									short[] arg_2BC_0 = array3;
- 									short expr_2B3 = num3;
--									num3 = expr_2B3 + 1;
-+									num3 = (short)(expr_2B3 + 1);
- 									arg_2BC_0[(int)expr_2B3] = (short)num12;
+ 									short[] arg_2C0_0 = array3;
+ 									short expr_2B7 = num3;
+-									num3 = expr_2B7 + 1;
++									num3 = (short)(expr_2B7 + 1);
+ 									arg_2C0_0[(int)expr_2B7] = (short)num12;
  								}
  							}
-@@ -1834,7 +_,7 @@
+@@ -1578,7 +_,7 @@
+ 								{
+ 									short[] arg_300_0 = array3;
+ 									short expr_2F7 = num3;
+-									num3 = expr_2F7 + 1;
++									num3 = (short)(expr_2F7 + 1);
+ 									arg_300_0[(int)expr_2F7] = (short)num13;
+ 								}
+ 							}
+@@ -1884,7 +_,7 @@
  								}
  								else
  								{
