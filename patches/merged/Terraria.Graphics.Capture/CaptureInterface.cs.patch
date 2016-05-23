@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Graphics.Capture\CaptureInterface.cs
 +++ src/merged\Terraria.Graphics.Capture\CaptureInterface.cs
-@@ -1102,9 +_,20 @@
+@@ -1095,9 +_,20 @@
  					}
  					if (i == num2++ && flag2 && flag)
  					{

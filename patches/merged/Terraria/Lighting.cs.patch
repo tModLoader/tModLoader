@@ -9,5 +9,5 @@
 +#endif
  using System.Threading;
  using Terraria.DataStructures;
- using Terraria.Graphics;
+ using Terraria.GameContent;
 

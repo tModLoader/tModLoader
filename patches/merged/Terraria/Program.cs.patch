@@ -22,7 +22,7 @@
  
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
-@@ -25,15 +_,23 @@
+@@ -59,15 +_,23 @@
  			for (int i = 0; i < array.Length; i++)
  			{
  				Type type = array[i];
@@ -46,11 +46,11 @@
 +#endif
 +                    }
  				}
+ 				Program.ThingsLoaded++;
  			}
- 		}
-@@ -94,7 +_,11 @@
+@@ -130,7 +_,11 @@
  					{
- 						Program.ForceLoadAssembly(Assembly.GetExecutingAssembly(), true);
+ 						Program.StartForceLoad();
  					};
 +#if CLIENT
  					main.Run();
@@ -60,7 +60,7 @@
  				}
  				catch (Exception e)
  				{
-@@ -113,7 +_,14 @@
+@@ -149,7 +_,14 @@
  					streamWriter.WriteLine(e);
  					streamWriter.WriteLine("");
  				}
