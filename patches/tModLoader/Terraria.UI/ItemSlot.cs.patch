@@ -1,14 +1,14 @@
 --- src/Terraria\Terraria.UI\ItemSlot.cs
 +++ src/tModLoader\Terraria.UI\ItemSlot.cs
-@@ -5,6 +_,7 @@
- using Terraria.GameContent.Achievements;
+@@ -7,6 +_,7 @@
  using Terraria.GameContent.UI.Chat;
+ using Terraria.GameInput;
  using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.UI.Chat;
+ using Terraria.UI.Gamepad;
  
- namespace Terraria.UI
-@@ -731,7 +_,7 @@
+@@ -860,7 +_,7 @@
  			if (context == 0)
  			{
  				flag = true;
@@ -17,7 +17,7 @@
  				{
  					if (Main.mouseRightRelease)
  					{
-@@ -848,6 +_,10 @@
+@@ -977,6 +_,10 @@
  						inv[slot].stack = Main.rand.Next(20, 50);
  					}
  					Recipe.FindRecipes();
@@ -28,30 +28,30 @@
  				}
  				else
  				{
-@@ -1270,11 +_,17 @@
- 				num4 *= inventoryScale;
- 				Vector2 position2 = position + texture2D.Size() * inventoryScale / 2f - rectangle2.Size() * num4 / 2f;
- 				Vector2 origin = rectangle2.Size() * (num3 / 2f - 0.5f);
--				spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetAlpha(newColor), 0f, origin, num4 * num3, SpriteEffects.None, 0f);
+@@ -1538,11 +_,17 @@
+ 				num8 *= inventoryScale;
+ 				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num8 / 2f;
+ 				Vector2 origin = rectangle2.Size() * (num7 / 2f - 0.5f);
+-				spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetAlpha(newColor), 0f, origin, num8 * num7, SpriteEffects.None, 0f);
 -				if (item.color != Color.Transparent)
 -				{
--					spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetColor(color), 0f, origin, num4 * num3, SpriteEffects.None, 0f);
+-					spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetColor(color), 0f, origin, num8 * num7, SpriteEffects.None, 0f);
 -				}
 +				if (ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
-+					    item.GetColor(color), origin, num4 * num3))
++					item.GetColor(color), origin, num8 * num7))
 +				{
-+					spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetAlpha(newColor), 0f, origin, num4 * num3, SpriteEffects.None, 0f);
++					spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetAlpha(newColor), 0f, origin, num8 * num7, SpriteEffects.None, 0f);
 +					if (item.color != Color.Transparent)
 +					{
-+						spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetColor(color), 0f, origin, num4 * num3, SpriteEffects.None, 0f);
++						spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetColor(color), 0f, origin, num8 * num7, SpriteEffects.None, 0f);
 +					}
 +				}
 +				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
-+					item.GetColor(color), origin, num4 * num3);
- 				if (item.stack > 1)
++					item.GetColor(color), origin, num8 * num7);
+ 				if (ItemID.Sets.TrapSigned[item.type])
  				{
- 					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, item.stack.ToString(), position + new Vector2(10f, 26f) * inventoryScale, color, 0f, Vector2.Zero, new Vector2(inventoryScale), -1f, inventoryScale);
-@@ -1493,7 +_,7 @@
+ 					spriteBatch.Draw(Main.wireTexture, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle?(new Rectangle(4, 58, 8, 8)), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
+@@ -1769,7 +_,7 @@
  				}
  				if (player.armor[slot].wingSlot > 0 && item.wingSlot > 0)
  				{
@@ -60,7 +60,7 @@
  				}
  			}
  			for (int i = 0; i < player.armor.Length; i++)
-@@ -1514,7 +_,7 @@
+@@ -1790,7 +_,7 @@
  					return true;
  				}
  			}
@@ -69,7 +69,7 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success)
-@@ -1602,6 +_,15 @@
+@@ -1878,6 +_,15 @@
  						ItemSlot.accSlotCount = j - 3;
  					}
  				}
@@ -85,7 +85,7 @@
  				if (ItemSlot.accSlotCount >= num2)
  				{
  					ItemSlot.accSlotCount = 0;
-@@ -1617,6 +_,10 @@
+@@ -1893,6 +_,10 @@
  					{
  						num3 = k;
  					}
@@ -96,11 +96,11 @@
  				}
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
-@@ -1748,7 +_,7 @@
+@@ -2152,7 +_,7 @@
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false)
  		{
--			if (type < 0 || type > 3602)
+-			if (type < 0 || type > 3730)
 +			if (type < 0)
  			{
  				return currentColor;

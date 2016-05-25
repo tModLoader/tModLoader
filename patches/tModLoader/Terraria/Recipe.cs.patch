@@ -1,14 +1,14 @@
 --- src/Terraria\Terraria\Recipe.cs
 +++ src/tModLoader\Terraria\Recipe.cs
-@@ -1,6 +_,7 @@
- using System;
+@@ -2,6 +_,7 @@
  using System.Collections.Generic;
  using Terraria.GameContent.Achievements;
+ using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -42,6 +_,11 @@
+@@ -79,6 +_,11 @@
  					break;
  				}
  				int num = item.stack;
@@ -20,25 +20,7 @@
  				if (this.alchemy && Main.player[Main.myPlayer].alchemyTable)
  				{
  					if (num > 1)
-@@ -71,7 +_,7 @@
- 						{
- 							break;
- 						}
--						if (item2.IsTheSameAs(item) || this.useWood(item2.type, item.type) || this.useSand(item2.type, item.type) || this.useFragment(item2.type, item.type) || this.useIronBar(item2.type, item.type) || this.usePressurePlate(item2.type, item.type))
-+						if (this.ItemMatches(item2, item))
- 						{
- 							if (item2.stack > num)
- 							{
-@@ -106,7 +_,7 @@
- 							{
- 								break;
- 							}
--							if (item2.IsTheSameAs(item) || this.useWood(item2.type, item.type) || this.useSand(item2.type, item.type) || this.useIronBar(item2.type, item.type) || this.usePressurePlate(item2.type, item.type) || this.useFragment(item2.type, item.type))
-+							if (this.ItemMatches(item2, item))
- 							{
- 								if (item2.stack > num)
- 								{
-@@ -136,153 +_,42 @@
+@@ -173,153 +_,42 @@
  			Recipe.FindRecipes();
  		}
  
@@ -210,26 +192,7 @@
  		}
  
  		public static void FindRecipes()
-@@ -306,7 +_,7 @@
- 					int num3 = 0;
- 					while (num3 < Recipe.maxRequirements && Main.recipe[j].requiredItem[num3].type != 0)
- 					{
--						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[num3]) || Main.recipe[j].useWood(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type) || Main.recipe[j].useSand(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type) || Main.recipe[j].useIronBar(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type) || Main.recipe[j].useFragment(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type) || Main.recipe[j].usePressurePlate(Main.guideItem.type, Main.recipe[j].requiredItem[num3].type))
-+						if (Main.recipe[j].ItemMatches(Main.guideItem, Main.recipe[j].requiredItem[num3]))
- 						{
- 							Main.availableRecipe[Main.numAvailableRecipes] = j;
- 							Main.numAvailableRecipes++;
-@@ -400,7 +_,8 @@
- 							bool flag3 = false;
- 							foreach (int current in dictionary.Keys)
- 							{
--								if (Main.recipe[num4].useWood(current, item.type) || Main.recipe[num4].useSand(current, item.type) || Main.recipe[num4].useIronBar(current, item.type) || Main.recipe[num4].useFragment(current, item.type) || Main.recipe[num4].usePressurePlate(current, item.type))
-+								if (Main.recipe[num4].useWood(current, item.type) || Main.recipe[num4].useSand(current, item.type) || Main.recipe[num4].useIronBar(current, item.type) || Main.recipe[num4].useFragment(current, item.type) || Main.recipe[num4].usePressurePlate(current, item.type)
-+									|| (Main.recipe[num4] is ModRecipe && ((ModRecipe)Main.recipe[num4]).UseCraftGroup(current, item.type)))
- 								{
- 									num6 -= dictionary[current];
- 									flag3 = true;
-@@ -427,7 +_,7 @@
+@@ -464,7 +_,7 @@
  							flag2 = false;
  						}
  					}
@@ -238,12 +201,12 @@
  					{
  						Main.availableRecipe[Main.numAvailableRecipes] = num4;
  						Main.numAvailableRecipes++;
-@@ -10128,6 +_,7 @@
+@@ -10563,6 +_,7 @@
  			Recipe.AddRecipe();
  			Recipe.WallReturn();
  			Recipe.PlatformReturn();
 +			Terraria.ModLoader.ModLoader.AddRecipes();
- 			for (int m = 0; m < Recipe.numRecipes; m++)
+ 			for (int num4 = 0; num4 < Recipe.numRecipes; num4++)
  			{
- 				int num = 0;
+ 				int num5 = 0;
 

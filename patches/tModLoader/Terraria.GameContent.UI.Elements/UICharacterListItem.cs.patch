@@ -28,7 +28,7 @@
  			this.Height.Set(96f, 0f);
  			this.Width.Set(0f, 1f);
  			base.SetPadding(6f);
-@@ -88,6 +_,17 @@
+@@ -89,6 +_,17 @@
  			{
  				base.Append(uIImageButton4);
  			}
@@ -46,7 +46,7 @@
  			this._buttonLabel = new UIText("", 1f, false);
  			this._buttonLabel.VAlign = 1f;
  			this._buttonLabel.Left.Set(80f, 0f);
-@@ -96,7 +_,7 @@
+@@ -97,7 +_,7 @@
  			this._deleteButtonLabel = new UIText("", 1f, false);
  			this._deleteButtonLabel.VAlign = 1f;
  			this._deleteButtonLabel.HAlign = 1f;
@@ -54,8 +54,8 @@
 +			this._deleteButtonLabel.Left.Set(data.customDataFail == null ? -30f : -54f, 0f);
  			this._deleteButtonLabel.Top.Set(-3f, 0f);
  			base.Append(this._deleteButtonLabel);
- 		}
-@@ -129,6 +_,11 @@
+ 			uIImageButton.SetSnapPoint("Play", snapPointIndex, null, null);
+@@ -133,6 +_,11 @@
  		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement)
  		{
  			this._deleteButtonLabel.SetText("Delete");
@@ -67,7 +67,7 @@
  		}
  
  		private void DeleteMouseOut(UIMouseEvent evt, UIElement listeningElement)
-@@ -206,6 +_,11 @@
+@@ -210,6 +_,11 @@
  			{
  				uIList.UpdateOrder();
  			}

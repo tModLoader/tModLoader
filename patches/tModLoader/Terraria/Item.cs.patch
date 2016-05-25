@@ -34,7 +34,7 @@
  		public const int flaskTime = 72000;
  		public const int copper = 1;
  		public const int silver = 100;
-@@ -173,7 +_,7 @@
+@@ -204,7 +_,7 @@
  				}
  				if (num == -1 || num == -2 || num == -3)
  				{
@@ -43,7 +43,7 @@
  					{
  						int num9 = Main.rand.Next(40);
  						if (num9 == 0)
-@@ -337,7 +_,7 @@
+@@ -368,7 +_,7 @@
  							num = 81;
  						}
  					}
@@ -52,7 +52,7 @@
  					{
  						int num10 = Main.rand.Next(14);
  						if (num10 == 0)
-@@ -397,7 +_,7 @@
+@@ -428,7 +_,7 @@
  							num = 61;
  						}
  					}
@@ -61,7 +61,7 @@
  					{
  						int num11 = Main.rand.Next(36);
  						if (num11 == 0)
-@@ -545,7 +_,7 @@
+@@ -576,7 +_,7 @@
  							num = 82;
  						}
  					}
@@ -70,7 +70,7 @@
  					{
  						int num12 = Main.rand.Next(36);
  						if (num12 == 0)
-@@ -693,7 +_,7 @@
+@@ -724,7 +_,7 @@
  							num = 83;
  						}
  					}
@@ -79,7 +79,7 @@
  					{
  						int num13 = Main.rand.Next(14);
  						if (num13 == 0)
-@@ -3968,6 +_,10 @@
+@@ -3999,6 +_,10 @@
  				case 537:
  					return 249;
  			}
@@ -90,7 +90,7 @@
  			return 0;
  		}
  
-@@ -4461,6 +_,10 @@
+@@ -4492,6 +_,10 @@
  					return 537;
  				case 250:
  					return 220;
@@ -101,7 +101,7 @@
  			}
  			return 0;
  		}
-@@ -44752,6 +_,17 @@
+@@ -45428,6 +_,17 @@
  			}
  		}
  
@@ -119,18 +119,18 @@
  		public void SetDefaults(int Type = 0, bool noMatCheck = false)
  		{
  			if (Main.netMode == 1 || Main.netMode == 2)
-@@ -44763,10 +_,6 @@
+@@ -45439,10 +_,6 @@
  				this.owner = Main.myPlayer;
  			}
  			this.ResetStats(Type);
--			if (this.type >= 3602)
+-			if (this.type >= 3730)
 -			{
 -				this.type = 0;
 -			}
  			if (this.type == 0)
  			{
  				this.netID = 0;
-@@ -44973,12 +_,13 @@
+@@ -45649,13 +_,14 @@
  				this.maxStack = 999;
  			}
  			this.netID = this.type;
@@ -140,15 +140,17 @@
 -			}
  			this.name = Lang.itemName(this.netID, false);
  			this.CheckTip();
+-			if (this.type > 0 && this.type < 3730 && ItemID.Sets.Deprecated[this.type])
 +			ItemLoader.SetupItem(this);
 +			if (!noMatCheck)
 +			{
 +				this.checkMat();
 +			}
- 			if (this.type > 0 && this.type < 3602 && ItemID.Sets.Deprecated[this.type])
++			if (this.type > 0 && ItemID.Sets.Deprecated[this.type])
  			{
  				this.netID = 0;
-@@ -44990,6 +_,8 @@
+ 				this.type = 0;
+@@ -45666,6 +_,8 @@
  
  		public void ResetStats(int Type)
  		{
@@ -157,7 +159,7 @@
  			this.expert = false;
  			this.expertOnly = false;
  			this.instanced = false;
-@@ -45148,6 +_,11 @@
+@@ -45824,6 +_,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{
@@ -169,7 +171,7 @@
  			int num = this.type;
  			if (num <= 1306)
  			{
-@@ -45714,6 +_,7 @@
+@@ -46390,6 +_,7 @@
  							}
  						}
  					}
@@ -177,7 +179,7 @@
  					if (ItemID.Sets.ItemNoGravity[this.type])
  					{
  						this.velocity.X = this.velocity.X * 0.95f;
-@@ -45729,6 +_,7 @@
+@@ -46405,6 +_,7 @@
  					}
  					else
  					{
@@ -185,7 +187,7 @@
  						this.velocity.Y = this.velocity.Y + num;
  						if (this.velocity.Y > num2)
  						{
-@@ -46223,6 +_,7 @@
+@@ -46900,6 +_,7 @@
  					}
  					this.spawnTime++;
  				}
@@ -193,7 +195,7 @@
  				if (Main.netMode == 2 && this.owner != Main.myPlayer)
  				{
  					this.release++;
-@@ -46259,6 +_,10 @@
+@@ -46936,6 +_,10 @@
  			}
  			int num = 400;
  			Main.item[400] = new Item();
@@ -204,7 +206,7 @@
  			if (Main.halloween)
  			{
  				if (Type == 58)
-@@ -46401,7 +_,14 @@
+@@ -47083,7 +_,14 @@
  
  		public Item Clone()
  		{

@@ -112,7 +112,7 @@
  		{
  			TileObjectData.newAlternate.Calculate();
  			if (!TileObjectData.newTile._hasOwnAlternates)
-@@ -3305,7 +_,6 @@
+@@ -3481,7 +_,6 @@
  			};
  			TileObjectData.addAlternate(27);
  			TileObjectData.addTile(20);

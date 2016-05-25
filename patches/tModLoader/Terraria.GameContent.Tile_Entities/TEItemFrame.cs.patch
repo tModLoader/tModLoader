@@ -8,9 +8,9 @@
  
  namespace Terraria.GameContent.Tile_Entities
  {
-@@ -62,7 +_,7 @@
+@@ -81,7 +_,7 @@
  
- 		public override void WriteExtraData(BinaryWriter writer)
+ 		public override void WriteExtraData(BinaryWriter writer, bool networkSend)
  		{
 -			writer.Write((short)this.item.netID);
 +			writer.Write((short)(this.item.netID >= ItemID.Count ? 0 : this.item.netID));

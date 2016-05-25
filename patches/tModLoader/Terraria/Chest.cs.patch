@@ -8,10 +8,10 @@
  using Terraria.ObjectData;
  
  namespace Terraria
-@@ -784,9 +_,11 @@
- 						num2++;
- 						Main.travelShop[num2] = 2262;
- 						num2++;
+@@ -851,9 +_,11 @@
+ 								Main.travelShop[num2++] = 3641;
+ 								break;
+ 						}
 -					}
 -				}
 -			}
@@ -23,7 +23,7 @@
  		}
  
  		public void SetupShop(int type)
-@@ -1891,6 +_,7 @@
+@@ -1982,6 +_,7 @@
  					num++;
  				}
  			}

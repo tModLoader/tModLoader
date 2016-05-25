@@ -8,7 +8,7 @@
  using Terraria.Social;
  
  namespace Terraria
-@@ -97,6 +_,15 @@
+@@ -130,6 +_,15 @@
  		public static void LaunchGame(string[] args)
  		{
  			Program.LaunchParameters = Utils.ParseArguements(args);

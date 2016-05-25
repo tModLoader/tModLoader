@@ -317,9 +317,9 @@
 +		//only sent by client, accepted by server
 +		//npcID capped at 540, no mod support
 +		//npcID must be contained in NPCID.Sets.MPAllowedEnemies and there must be no other instances of the boss in the world
-+		//special events for npcID { 
++		//special events for npcID {
 +		//    GoblinArmy = -1, FrostLegion = -2, Pirates = -3
-+		//    PumpkinMoon = -4, SnowMoon = -5, Eclipse = -6, MartianInvation = -7, 
++		//    PumpkinMoon = -4, SnowMoon = -5, Eclipse = -6, MartianInvation = -7,
 +		//    MoonLordTimer = -8 if (NPC.downedGolemBoss && Main.HardMode && !NPC.AnyDanger && !NPC.AnyoneNearCultists)
 +		//}
 +		public const byte SpawnBoss = 61;
@@ -387,14 +387,19 @@
  		public const byte MurderSomeoneElsesProjectile = 95;
  		public const byte TeleportPlayerThroughPortal = 96;
  		public const byte AchievementMessageNPCKilled = 97;
-@@ -107,8 +_,27 @@
+@@ -107,7 +_,7 @@
  		public const byte TeleportNPCThroughPortal = 100;
  		public const byte UpdateTowerShieldStrengths = 101;
  		public const byte NebulaLevelupRequest = 102;
 -		public const byte MoonlordHorror = 103;
 +		public const byte MoonlordCountdown = 103;
  		public const byte ShopOverride = 104;
- 		public const byte Count = 105;
+ 		public const byte GemLockToggle = 105;
+ 		public const byte PoofOfSmoke = 106;
+@@ -116,5 +_,24 @@
+ 		public const byte MassWireOperation = 109;
+ 		public const byte MassWireOperationPay = 110;
+ 		public const byte Count = 111;
 +		//contains a netID followed by custom data sent by mods
 +		//special case netID == -1, is sent by the server in response to SyncMods and contains the netIDs of every non-server only mod
 +		//netIDs will be sent for no-sync mods, and packets will be ignored if the mod is not installed on the client

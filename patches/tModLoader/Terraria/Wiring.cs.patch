@@ -1,19 +1,30 @@
 --- src/Terraria\Terraria\Wiring.cs
 +++ src/tModLoader\Terraria\Wiring.cs
-@@ -3,6 +_,7 @@
- using System.Collections.Generic;
+@@ -4,6 +_,7 @@
  using Terraria.DataStructures;
+ using Terraria.GameContent.UI;
  using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -12,15 +_,15 @@
- 		private const int MaxMech = 1000;
+@@ -14,21 +_,21 @@
+ 		public static bool blockPlayerTeleportationForOneIteration;
  		public static bool running;
  		private static Dictionary<Point16, bool> _wireSkip;
 -		private static DoubleStack<Point16> _wireList;
+-		private static DoubleStack<byte> _wireDirectionList;
 -		private static Dictionary<Point16, byte> _toProcess;
++		public static DoubleStack<Point16> _wireList;
++		public static DoubleStack<byte> _wireDirectionList;
++		public static Dictionary<Point16, byte> _toProcess;
+ 		private static Queue<Point16> _GatesCurrent;
+-		private static Queue<Point16> _LampsToCheck;
+-		private static Queue<Point16> _GatesNext;
++		public static Queue<Point16> _LampsToCheck;
++		public static Queue<Point16> _GatesNext;
+ 		private static Dictionary<Point16, bool> _GatesDone;
+ 		private static Dictionary<Point16, byte> _PixelBoxTriggers;
 -		private static Vector2[] _teleport;
 -		private static int[] _inPumpX;
 -		private static int[] _inPumpY;
@@ -21,8 +32,6 @@
 -		private static int[] _outPumpX;
 -		private static int[] _outPumpY;
 -		private static int _numOutPump;
-+		public static DoubleStack<Point16> _wireList;
-+		public static Dictionary<Point16, byte> _toProcess;
 +		public static Vector2[] _teleport;
 +		public static int[] _inPumpX;
 +		public static int[] _inPumpY;
@@ -33,7 +42,7 @@
  		private static int[] _mechX;
  		private static int[] _mechY;
  		private static int _numMechs;
-@@ -204,7 +_,7 @@
+@@ -337,7 +_,7 @@
  			}
  		}
  
@@ -42,7 +51,7 @@
  		{
  			for (int k = 0; k < Wiring._numMechs; k++)
  			{
-@@ -278,7 +_,7 @@
+@@ -411,7 +_,7 @@
  			}
  		}
  
@@ -51,43 +60,43 @@
  		{
  			if (Main.netMode == 1)
  			{
-@@ -656,7 +_,7 @@
- 						NetMessage.SendData(19, -1, -1, "", 4 + flag.ToInt(), (float)i, (float)j, 0f, 0, 0, 0);
- 						return;
- 					}
--					if (type == 11)
-+					if (TileLoader.CloseDoorID(Main.tile[i, j]) >= 0)
- 					{
- 						if (WorldGen.CloseDoor(i, j, true))
- 						{
-@@ -664,7 +_,7 @@
- 							return;
- 						}
- 					}
--					else if (type == 10)
-+					else if (TileLoader.OpenDoorID(Main.tile[i, j]) >= 0)
- 					{
- 						int num26 = 1;
- 						if (Main.rand.Next(2) == 0)
-@@ -762,7 +_,7 @@
- 						}
- 						else
- 						{
--							if (type == 4)
-+							if (TileLoader.IsTorch(type))
- 							{
- 								if (tile.frameX < 66)
- 								{
-@@ -1108,7 +_,7 @@
+@@ -1317,7 +_,7 @@
+ 									NetMessage.SendData(19, -1, -1, "", 4 + flag4.ToInt(), (float)i, (float)j, 0f, 0, 0, 0);
+ 									return;
  								}
- 								else
+-								if (type == 11)
++								if (TileLoader.CloseDoorID(Main.tile[i, j]) >= 0)
  								{
--									if (type == 139 || type == 35)
-+									if (type == 139 || type == 35 || TileLoader.IsModMusicBox(tile))
+ 									if (WorldGen.CloseDoor(i, j, true))
  									{
- 										WorldGen.SwitchMB(i, j);
+@@ -1325,7 +_,7 @@
  										return;
-@@ -1454,6 +_,7 @@
+ 									}
+ 								}
+-								else if (type == 10)
++								else if (TileLoader.OpenDoorID(Main.tile[i, j]) >= 0)
+ 								{
+ 									int num62 = 1;
+ 									if (Main.rand.Next(2) == 0)
+@@ -1423,7 +_,7 @@
+ 									}
+ 									else
+ 									{
+-										if (type == 4)
++										if (TileLoader.IsTorch(type))
+ 										{
+ 											if (tile.frameX < 66)
+ 											{
+@@ -1986,7 +_,7 @@
+ 											}
+ 											else
+ 											{
+-												if (type == 139 || type == 35)
++												if (type == 139 || type == 35 || TileLoader.IsModMusicBox(tile))
+ 												{
+ 													WorldGen.SwitchMB(i, j);
+ 													return;
+@@ -2484,6 +_,7 @@
  						}
  					}
  				}

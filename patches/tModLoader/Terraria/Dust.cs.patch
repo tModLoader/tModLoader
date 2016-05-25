@@ -25,7 +25,7 @@
  					if (dust.type != 34 && dust.type != 35 && dust.type != 152)
  					{
  						break;
-@@ -290,6 +_,13 @@
+@@ -318,6 +_,13 @@
  					if (dust.active)
  					{
  						Dust.dCount += 1f;
@@ -39,16 +39,16 @@
  						if (dust.scale > 10f)
  						{
  							dust.active = false;
-@@ -1729,7 +_,7 @@
+@@ -1788,7 +_,7 @@
  							}
  							Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num105 * 0.7f, num105, num105 * 0.8f);
  						}
 -						else
 +						else if (modDust == null || !modDust.MidUpdate(dust))
  						{
- 							Dust expr_3E5B_cp_0 = dust;
- 							expr_3E5B_cp_0.velocity.X = expr_3E5B_cp_0.velocity.X * 0.99f;
-@@ -1954,6 +_,7 @@
+ 							Dust expr_4048_cp_0 = dust;
+ 							expr_4048_cp_0.velocity.X = expr_4048_cp_0.velocity.X * 0.99f;
+@@ -2013,6 +_,7 @@
  						{
  							dust.active = false;
  						}
@@ -56,7 +56,7 @@
  					}
  				}
  				else
-@@ -1992,6 +_,15 @@
+@@ -2051,6 +_,15 @@
  
  		public Color GetAlpha(Color newColor)
  		{
