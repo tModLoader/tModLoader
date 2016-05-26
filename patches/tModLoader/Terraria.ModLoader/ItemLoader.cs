@@ -137,6 +137,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.itemFlameLoaded, nextItem);
 			Array.Resize(ref Main.itemFlameTexture, nextItem);
 			Array.Resize(ref Main.itemAnimations, nextItem);
+			Array.Resize(ref Item.itemCaches, nextItem);
 			Array.Resize(ref Item.staff, nextItem);
 			Array.Resize(ref Item.claw, nextItem);
 			//Array.Resize(ref ItemID.Sets.TextureCopyLoad, nextItem); //not needed?
@@ -169,6 +170,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ItemID.Sets.SingleUseInGamepad, nextItem);
 			for (int k = ItemID.Count; k < nextItem; k++)
 			{
+				Item.itemCaches[k] = -1;
 				//ItemID.Sets.TextureCopyLoad[k] = -1;
 				ItemID.Sets.ExtractinatorMode[k] = -1;
 				ItemID.Sets.StaffMinionSlotsRequired[k] = 1;
