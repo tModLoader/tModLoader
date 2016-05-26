@@ -1,0 +1,82 @@
+﻿using System;
+using System.Collections.Generic;
+using Terraria.ID;
+
+namespace Terraria.ModLoader
+{
+	internal static class RecipeGroupHelper
+	{
+		internal static void ResetRecipeGroups()
+		{
+			RecipeGroup.recipeGroups.Clear();
+			RecipeGroup.recipeGroupIDs.Clear();
+			RecipeGroup.nextRecipeGroupIndex = 0;
+		}
+
+		internal static void AddOldVanillaGroups()
+		{
+			RecipeGroup rec = new RecipeGroup(() => Lang.misc[37] + " " + Main.itemName[9], new int[]
+				{
+					ItemID.Wood,
+					ItemID.Ebonwood,
+					ItemID.RichMahogany,
+					ItemID.Pearlwood,
+					ItemID.Shadewood,
+					ItemID.SpookyWood,
+					ItemID.BorealWood,
+					ItemID.PalmWood
+				});
+			RecipeGroupID.Wood = RecipeGroup.RegisterGroup("Wood", rec);
+			rec = new RecipeGroup(() => Lang.misc[37] + " " + Main.itemName[22], new int[]
+				{
+					ItemID.IronBar,
+					ItemID.LeadBar
+				});
+			RecipeGroupID.IronBar = RecipeGroup.RegisterGroup("IronBar", rec);
+			rec = new RecipeGroup(() => Lang.misc[37] + " " + Lang.misc[38], new int[]
+				{
+					ItemID.RedPressurePlate,
+					ItemID.GreenPressurePlate,
+					ItemID.GrayPressurePlate,
+					ItemID.BrownPressurePlate,
+					ItemID.BluePressurePlate,
+					ItemID.YellowPressurePlate,
+					ItemID.LihzahrdPressurePlate
+				});
+			RecipeGroupID.PressurePlate = RecipeGroup.RegisterGroup("PresurePlate", rec);
+			rec = new RecipeGroup(() => Lang.misc[37] + " " + Main.itemName[169], new int[]
+				{
+					ItemID.SandBlock,
+					ItemID.PearlsandBlock,
+					ItemID.CrimsandBlock,
+					ItemID.EbonsandBlock,
+					ItemID.HardenedSand
+				});
+			RecipeGroupID.Sand = RecipeGroup.RegisterGroup("Sand", rec);
+			rec = new RecipeGroup(() => Lang.misc[37] + " " + Lang.misc[51], new int[]
+				{
+					ItemID.FragmentSolar,
+					ItemID.FragmentVortex,
+					ItemID.FragmentNebula,
+					ItemID.FragmentStardust
+				});
+			RecipeGroupID.Fragment = RecipeGroup.RegisterGroup("Fragment", rec);
+		}
+
+		internal static void AddRecipeGroups()
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				try
+				{
+					mod.AddRecipeGroups();
+				}
+				catch
+				{
+					ModLoader.DisableMod(mod.File);
+					throw;
+				}
+			}
+		}
+	}
+}

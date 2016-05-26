@@ -32,7 +32,6 @@ namespace Terraria.ModLoader
 		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
 		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
-		private static bool assemblyResolverAdded = false;
 		internal const int earliestRelease = 149;
 		internal static string modToBuild;
 		internal static bool reloadAfterBuild = false;
@@ -135,10 +134,9 @@ namespace Terraria.ModLoader
 				Main.recipe[k] = new Recipe();
 			}
 			Recipe.numRecipes = 0;
+			RecipeGroupHelper.ResetRecipeGroups();
 			try
 			{
-				CraftGroup.ResetVanillaGroups();
-				AddCraftGroups();
 				Recipe.SetupRecipes();
 			}
 			catch (Exception e)
@@ -533,42 +531,6 @@ namespace Terraria.ModLoader
 			{
 				string name = hotKey.Value.Item1.Name + "_" + "HotKey" + "_" + hotKey.Key.Replace(' ', '_');
 				Main.Configuration.Put(name, hotKey.Value.Item2);
-			}
-		}
-
-		private static void AddCraftGroups()
-		{
-			foreach (Mod mod in mods.Values)
-			{
-				try
-				{
-					mod.AddCraftGroups();
-				}
-				catch
-				{
-					DisableMod(mod.File);
-					throw;
-				}
-			}
-		}
-		//place near end of Terraria.Recipe.SetupRecipes before material checks
-		internal static void AddRecipes()
-		{
-			foreach (Mod mod in mods.Values)
-			{
-				try
-				{
-					mod.AddRecipes();
-					foreach (ModItem item in mod.items.Values)
-					{
-						item.AddRecipes();
-					}
-				}
-				catch
-				{
-					DisableMod(mod.File);
-					throw;
-				}
 			}
 		}
 

@@ -1,0 +1,15 @@
+--- src/Terraria\Terraria.ID\RecipeGroupID.cs
++++ src/tModLoader\Terraria.ID\RecipeGroupID.cs
+@@ -12,5 +_,11 @@
+ 		public static int Butterflies = 5;
+ 		public static int Fireflies = 6;
+ 		public static int Snails = 7;
++
++		public static int Wood = 8;
++		public static int IronBar = 9;
++		public static int PressurePlate = 10;
++		public static int Sand = 11;
++		public static int Fragment = 12;
+ 	}
+ }
+

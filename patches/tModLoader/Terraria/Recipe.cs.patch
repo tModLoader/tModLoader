@@ -29,22 +29,20 @@
  					{
  						Main.availableRecipe[Main.numAvailableRecipes] = num4;
  						Main.numAvailableRecipes++;
-@@ -497,6 +_,10 @@
+@@ -553,6 +_,8 @@
+ 					2007
+ 				});
+ 			RecipeGroupID.Snails = RecipeGroup.RegisterGroup("Snails", rec);
++			RecipeGroupHelper.AddOldVanillaGroups();
++			RecipeGroupHelper.AddRecipeGroups();
+ 		}
  
- 		public static void SetupRecipeGroups()
- 		{
-+			if (RecipeGroup.nextRecipeGroupIndex > 0)
-+			{
-+				return;
-+			}
- 			RecipeGroup rec = new RecipeGroup(() => Lang.misc[37] + " " + Main.npcName[74], new int[]
- 				{
- 					2015,
+ 		public static void SetupRecipes()
 @@ -10563,6 +_,7 @@
  			Recipe.AddRecipe();
  			Recipe.WallReturn();
  			Recipe.PlatformReturn();
-+			ModLoader.ModLoader.AddRecipes();
++			RecipeHooks.AddRecipes();
  			for (int num4 = 0; num4 < Recipe.numRecipes; num4++)
  			{
  				int num5 = 0;

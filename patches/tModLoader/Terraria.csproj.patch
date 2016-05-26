@@ -143,7 +143,6 @@
 +    <Compile Include="Terraria.ModLoader\AssemblyManager.cs" />
 +    <Compile Include="Terraria.ModLoader\BuffLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\BuildProperties.cs" />
-+    <Compile Include="Terraria.ModLoader\CraftGroup.cs" />
 +    <Compile Include="Terraria.ModLoader\DrawInfo.cs" />
 +    <Compile Include="Terraria.ModLoader\EntityInfo.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipLoader.cs" />
@@ -183,6 +182,7 @@
 +    <Compile Include="Terraria.ModLoader\ModTile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWorld.cs" />
++    <Compile Include="Terraria.ModLoader\RecipeGroupHelper.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\WorldHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
@@ -227,6 +227,7 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>"$(SolutionDir)4gb_patch.exe" "$(TargetPath)"
 +
@@ -255,5 +256,4 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>
