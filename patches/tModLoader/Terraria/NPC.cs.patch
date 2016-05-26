@@ -444,6 +444,15 @@
  			{
  				return;
  			}
+@@ -54467,7 +_,7 @@
+ 			if (this.type == 1 && this.ai[1] > 0f)
+ 			{
+ 				int num8 = (int)this.ai[1];
+-				if (num8 > 0 && num8 < 3730)
++				if (num8 > 0)
+ 				{
+ 					int num9 = 1;
+ 					if (num8 == 8)
 @@ -57482,6 +_,7 @@
  				{
  					num70 = 499;

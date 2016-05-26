@@ -613,7 +613,7 @@
  									num9 = (int)tile9.type;
  								}
 -								if (num3 >= 0 && Main.tileSolid[num3] && (!Main.tileNoAttach[num3] || num3 == 19))
-+								if (num3 >= 0 && Main.tileSolid[num3] && (!Main.tileNoAttach[num3] || TileLoader.IsPlatform(num3)))
++								if (num3 >= 0 && Main.tileSolid[num3] && (!Main.tileNoAttach[num3] || TileID.Sets.Platforms[num3]))
  								{
  									tile.frameX = num2;
  								}

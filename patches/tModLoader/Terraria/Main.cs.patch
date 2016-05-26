@@ -2052,7 +2052,7 @@
  						Main.menuMode = 888;
  					}
  					num10++;
-+					Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
++					Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num2, ref num4, ref num10, ref num5);
  					array9[num10] = Lang.menu[14];
  					if (this.selectedMenu == num10)
  					{
@@ -2062,7 +2062,7 @@
  					}
 +					else
 +					{
-+						Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num, ref num3, ref num5);
++						Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5);
 +					}
  				}
  			}
@@ -2079,7 +2079,7 @@
  						num99 *= array7[num90];
  						if (!array8[num90])
  						{
-+							//patch file: array9, array7, array4, num, num3
++							//patch file: array9, array7, array4, num2, num4
  							Main.spriteBatch.DrawString(Main.fontDeathText, array9[num90], new Vector2((float)(num3 + num97 + array5[num90]), (float)(num2 + num4 * num90 + num98) + origin.Y * array7[num90] + (float)array4[num90]), color10, 0f, origin, num99, SpriteEffects.None, 0f);
  						}
  						else

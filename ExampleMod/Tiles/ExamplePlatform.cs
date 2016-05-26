@@ -17,6 +17,7 @@ namespace ExampleMod.Tiles
 			Main.tileNoAttach[Type] = true;
 			Main.tileTable[Type] = true;
 			Main.tileLavaDeath[Type] = true;
+			TileID.Sets.Platforms[Type] = true;
 			TileObjectData.newTile.CoordinateHeights = new int[]{ 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
@@ -32,7 +33,6 @@ namespace ExampleMod.Tiles
 			drop = mod.ItemType("ExamplePlatform");
 			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.Platforms };
-			platform = true;
 		}
 
 		public override void PostSetDefaults()

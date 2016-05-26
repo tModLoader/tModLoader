@@ -107,6 +107,7 @@ namespace Terraria.ModLoader
 			{
 				Main.tileSetsLoaded[k] = true;
 			}
+			Array.Resize(ref Main.highlightMaskTexture, nextTile);
 			Resize2DArray(ref Main.tileAltTexture, nextTile);
 			Resize2DArray(ref Main.tileAltTextureInit, nextTile);
 			Resize2DArray(ref Main.tileAltTextureDrawn, nextTile);
@@ -165,6 +166,13 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.Conversion.Sandstone, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Thorn, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Moss, nextTile);
+			Array.Resize(ref TileID.Sets.Platforms, nextTile);
+			Array.Resize(ref TileID.Sets.GemsparkFramingTypes, nextTile);
+			Array.Resize(ref TileID.Sets.TeamTiles, nextTile);
+			Array.Resize(ref TileID.Sets.ConveyorDirection, nextTile);
+			Array.Resize(ref TileID.Sets.HasSlopeFrames, nextTile);
+			Array.Resize(ref TileID.Sets.TileInteractRead, nextTile);
+			Array.Resize(ref TileID.Sets.HasOutlines, nextTile);
 			Array.Resize(ref TileID.Sets.AllTiles, nextTile);
 			for (int k = TileID.Count; k < nextTile; k++)
 			{
@@ -199,6 +207,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.TouchDamageOther, nextTile);
 			Array.Resize(ref TileID.Sets.Falling, nextTile);
 			Array.Resize(ref TileID.Sets.Ore, nextTile);
+			Array.Resize(ref TileID.Sets.ForceObsidianKill, nextTile);
 			while (TileObjectData._data.Count < nextTile)
 			{
 				TileObjectData._data.Add(null);
@@ -416,17 +425,6 @@ namespace Terraria.ModLoader
 				return false;
 			}
 			return modTile.bed;
-		}
-		//replace tile type checks for 19 in Terraria.Player, some places in Terraria.WorldGen,
-		//  Terraria.Main.DrawTiles, and Terraria.Collision
-		public static bool IsPlatform(int type)
-		{
-			ModTile modTile = GetTile(type);
-			if (modTile == null)
-			{
-				return type == TileID.Platforms;
-			}
-			return modTile.platform;
 		}
 
 		public static bool IsTorch(int type)

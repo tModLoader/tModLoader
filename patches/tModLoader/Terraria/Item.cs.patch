@@ -79,6 +79,15 @@
  					{
  						int num13 = Main.rand.Next(14);
  						if (num13 == 0)
+@@ -3037,7 +_,7 @@
+ 			}
+ 			else if (ItemName != "")
+ 			{
+-				for (int i = 0; i < 3730; i++)
++				for (int i = 0; i < Main.itemName.Length; i++)
+ 				{
+ 					if (Main.itemName[i] == ItemName)
+ 					{
 @@ -3999,6 +_,10 @@
  				case 537:
  					return 249;

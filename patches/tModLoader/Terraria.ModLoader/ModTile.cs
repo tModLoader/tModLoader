@@ -41,7 +41,6 @@ namespace Terraria.ModLoader
 		public int openDoorID = -1;
 		public string chest = "";
 		public bool bed = false;
-		public bool platform = false;
 		public bool torch = false;
 
 		public void AddToArray(ref int[] array)

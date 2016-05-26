@@ -76,6 +76,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.projHook, nextProjectile);
 			Array.Resize(ref Main.projFrames, nextProjectile);
 			Array.Resize(ref Main.projPet, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.ForcePlateDetection, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.TrailingMode, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.TrailCacheLength, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.LightPet, nextProjectile);

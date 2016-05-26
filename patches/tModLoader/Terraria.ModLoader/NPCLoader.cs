@@ -154,6 +154,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
+			Array.Resize(ref NPCID.Sets.StatueSpawnedDropRarity, nextNPC);
+			Array.Resize(ref NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue, nextNPC);
 			Array.Resize(ref NPCID.Sets.NeedsExpertScaling, nextNPC);
 			Array.Resize(ref NPCID.Sets.ProjectileNPC, nextNPC);
 			Array.Resize(ref NPCID.Sets.SavesAndLoads, nextNPC);
@@ -177,6 +179,7 @@ namespace Terraria.ModLoader
 			{
 				Main.NPCLoaded[k] = true;
 				Main.npcFrameCount[k] = 1;
+				NPCID.Sets.StatueSpawnedDropRarity[k] = -1f;
 				NPCID.Sets.TrailCacheLength[k] = 10;
 				NPCID.Sets.DangerDetectRange[k] = -1;
 				NPCID.Sets.AttackTime[k] = -1;
