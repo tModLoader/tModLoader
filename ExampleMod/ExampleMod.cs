@@ -59,10 +59,15 @@ namespace ExampleMod
 			}
 		}
 
-		public override void AddCraftGroups()
+		public override void AddRecipeGroups()
 		{
-			AddCraftGroup("ExampleItem", Lang.misc[37] + " " + GetItem("ExampleItem").item.name,
-				ItemType("ExampleItem"), ItemType("EquipMaterial"), ItemType("BossItem"));
+			RecipeGroup group = new RecipeGroup(() => Lang.misc[37] + " " + GetItem("ExampleItem").item.name, new int[]
+			{
+				ItemType("ExampleItem"),
+				ItemType("EquipMaterial"),
+				ItemType("BossItem")
+			});
+			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", group);
 		}
 
 		public override void AddRecipes()

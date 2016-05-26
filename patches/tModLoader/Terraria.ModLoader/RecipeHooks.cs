@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
@@ -28,10 +30,10 @@ namespace Terraria.ModLoader
 						item.AddRecipes();
 					}
 				}
-				catch
+				catch (Exception e)
 				{
 					ModLoader.DisableMod(mod.File);
-					throw;
+					throw new AddRecipesException(mod, "An error occured in adding recipes for " + mod.Name, e);
 				}
 			}
 		}

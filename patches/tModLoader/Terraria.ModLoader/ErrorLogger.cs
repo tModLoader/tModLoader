@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 			Interface.errorMessage.SetFile(file);
 		}
 
-		internal static void LogLoadingError(string modFile, Version modBuildVersion, Exception e)
+		internal static void LogLoadingError(string modFile, Version modBuildVersion, Exception e, bool recipes = false)
 		{
 			Directory.CreateDirectory(LogPath);
 			string file = LogPath + Path.DirectorySeparatorChar + "Loading Errors.txt";
@@ -92,20 +92,21 @@ namespace Terraria.ModLoader
 					inner = inner.InnerException;
 				}
 			}
-			string message = "An error occurred while loading " + modFile;
+			string message;
+			if (recipes)
+			{
+				message = "An error occurred while adding recipes for " + modFile;
+			}
+			else
+			{
+				message = "An error occurred while loading " + modFile;
+			}
 			if (modBuildVersion != ModLoader.version)
 			{
 				message += "\nIt has been detected that this mod was built for tModLoader v" + modBuildVersion;
 				message += "\nHowever, you are using " + ModLoader.versionedName;
 			}
-			if (modFile == "recipes")
-			{
-				message += "\nThe offending mod should have been automatically disabled.";
-			}
-			else
-			{
-				message += "\nThis mod has automatically been disabled.";
-			}
+			message += "\nThis mod has automatically been disabled.";
 			message += "\n\n" + e.Message + "\n" + e.StackTrace;
 			if (Main.dedServ)
 			{

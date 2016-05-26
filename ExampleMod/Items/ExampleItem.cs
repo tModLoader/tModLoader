@@ -23,7 +23,7 @@ namespace ExampleMod.Items
 			recipe.SetResult(this, 999);
 			recipe.AddRecipe();
 			recipe = new ModRecipe(mod);
-			recipe.AddCraftGroup(null, "ExampleItem");
+			recipe.AddRecipeGroup("ExampleMod:ExampleItem");
 			recipe.SetResult(this, 999);
 			recipe.AddRecipe();
 		}

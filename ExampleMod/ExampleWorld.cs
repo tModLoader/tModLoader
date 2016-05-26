@@ -18,6 +18,7 @@ namespace ExampleMod
 		public const int VolcanoProjectiles = 30;
 		public const float VolcanoAngleSpread = 170;
 		public int VolcanoCountdown;
+		public int VolcanoCooldown = 10000;
 		public int VolcanoTremorTime;
 		public static int exampleTiles = 0;
 
@@ -119,10 +120,15 @@ namespace ExampleMod
 		{
 			if (Main.dayTime && VolcanoCountdown == 0)
 			{
-				if (Main.rand.Next(10000) == 0)
+				if (VolcanoCooldown > 0)
+				{
+					VolcanoCooldown--;
+				}
+				if (VolcanoCooldown <= 0 && Main.rand.Next(10000) == 0)
 				{
 					Main.NewText("Did you hear something....A Volcano! Find Cover!", Color.Orange.R, Color.Orange.G, Color.Orange.B);
 					VolcanoCountdown = 300;
+					VolcanoCooldown = 10000;
 				}
 			}
 			if (VolcanoCountdown > 0)

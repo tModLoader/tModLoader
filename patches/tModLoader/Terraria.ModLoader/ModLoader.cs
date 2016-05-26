@@ -139,9 +139,9 @@ namespace Terraria.ModLoader
 			{
 				Recipe.SetupRecipes();
 			}
-			catch (Exception e)
+			catch (AddRecipesException e)
 			{
-				ErrorLogger.LogLoadingError("recipes", version, e);
+				ErrorLogger.LogLoadingError(e.modName, version, e.InnerException, true);
 				Main.menuMode = Interface.errorMessageID;
 				return;
 			}

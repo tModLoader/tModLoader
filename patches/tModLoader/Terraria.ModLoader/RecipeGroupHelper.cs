@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Terraria.ID;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
@@ -71,10 +72,10 @@ namespace Terraria.ModLoader
 				{
 					mod.AddRecipeGroups();
 				}
-				catch
+				catch (Exception e)
 				{
 					ModLoader.DisableMod(mod.File);
-					throw;
+					throw new AddRecipesException(mod, "An error occured in adding recipe groups for " + mod.Name, e);
 				}
 			}
 		}
