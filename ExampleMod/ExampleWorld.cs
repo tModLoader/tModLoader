@@ -17,8 +17,12 @@ namespace ExampleMod
 		public static bool downedPuritySpirit = false;
 		public const int VolcanoProjectiles = 30;
 		public const float VolcanoAngleSpread = 170;
+		public const int DefaultVolcanoTremorTime = 200; // ~ 3 seconds
+		public const int DefaultVolcanoCountdown = 300; // 5 seconds
+		public const int DefaultVolcanoCooldown = 10000; // At least 3 min of daytime between volcanos
+		public const int VolcanoChance = 10000; // Chance each tick of Volcano if cooldown exhausted.
 		public int VolcanoCountdown;
-		public int VolcanoCooldown = 10000;
+		public int VolcanoCooldown = DefaultVolcanoCooldown;
 		public int VolcanoTremorTime;
 		public static int exampleTiles = 0;
 
@@ -124,11 +128,20 @@ namespace ExampleMod
 				{
 					VolcanoCooldown--;
 				}
-				if (VolcanoCooldown <= 0 && Main.rand.Next(10000) == 0)
+				if (VolcanoCooldown <= 0 && Main.rand.Next(VolcanoChance) == 0)
 				{
-					Main.NewText("Did you hear something....A Volcano! Find Cover!", Color.Orange.R, Color.Orange.G, Color.Orange.B);
-					VolcanoCountdown = 300;
-					VolcanoCooldown = 10000;
+					string message = "Did you hear something....A Volcano! Find Cover!";
+					Color messageColor = Color.Orange;
+					if (Main.netMode == 2) // Server
+					{
+						NetMessage.SendData(25, -1, -1, message, 255, messageColor.R, messageColor.G, messageColor.B, 0);
+					}
+					else if (Main.netMode == 0) // Single Player
+					{
+						Main.NewText(message, messageColor.R, messageColor.G, messageColor.B);
+					}
+					VolcanoCountdown = DefaultVolcanoCountdown;
+					VolcanoCooldown = DefaultVolcanoCooldown;
 				}
 			}
 			if (VolcanoCountdown > 0)
@@ -136,7 +149,22 @@ namespace ExampleMod
 				VolcanoCountdown--;
 				if (VolcanoCountdown == 0)
 				{
-					VolcanoTremorTime = 200;
+					VolcanoTremorTime = DefaultVolcanoTremorTime;
+					// Since PostUpdate only happens in single and server, we need to inform the clients to shake if this is a server
+					if (Main.netMode == 2)
+					{
+						var netMessage = mod.GetPacket();
+						netMessage.Write((byte)ExampleModMessageType.SetTremorTime);
+						netMessage.Write(VolcanoTremorTime);
+						try
+						{
+							netMessage.Send();
+						}
+						catch
+						{
+
+						}
+					}
 					for (int playerIndex = 0; playerIndex < 255; playerIndex++)
 					{
 						if (Main.player[playerIndex].active)
@@ -149,6 +177,7 @@ namespace ExampleMod
 							Vector2 baseVelocity = player.Center - baseSpawn;
 							baseVelocity.Normalize();
 							baseVelocity = baseVelocity * speed;
+							List<int> identities = new List<int>();
 							for (int i = 0; i < VolcanoProjectiles; i++)
 							{
 								Vector2 spawn = baseSpawn;
@@ -158,8 +187,26 @@ namespace ExampleMod
 								velocity.X = velocity.X + 3 * Main.rand.NextFloat() - 1.5f;
 								int projectile = Projectile.NewProjectile(spawn.X, spawn.Y, velocity.X, velocity.Y, Main.rand.Next(ProjectileID.MolotovFire, ProjectileID.MolotovFire3 + 1), 10, 10f, Main.myPlayer, 0f, 0f);
 								Main.projectile[projectile].hostile = true;
-								//Main.projectile[projectile].friendly = false; // TODO, Fix Damage on servers, Fix message on servers.
 								Main.projectile[projectile].name = "Volcanic Rubble";
+								identities.Add(Main.projectile[projectile].identity);
+							}
+							if (Main.netMode == 2)
+							{
+								var netMessage = mod.GetPacket();
+								netMessage.Write((byte)ExampleModMessageType.VolcanicRubbleMultiplayerFix);
+								netMessage.Write(identities.Count);
+								for (int i = 0; i < identities.Count; i++)
+								{
+									netMessage.Write(identities[i]);
+								}
+								try
+								{
+									netMessage.Send();
+								}
+								catch
+								{
+
+								}
 							}
 						}
 					}

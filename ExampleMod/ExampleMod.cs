@@ -9,6 +9,7 @@ using ExampleMod.Tiles;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace ExampleMod
 {
@@ -486,5 +487,52 @@ namespace ExampleMod
 		{
 			return NormalSpawn(spawnInfo) && NoBiome(spawnInfo) && NoZone(spawnInfo);
 		}
+
+		public override void HandlePacket(BinaryReader reader, int whoAmI)
+		{
+			ExampleModMessageType msgType = (ExampleModMessageType)reader.ReadByte();
+			switch (msgType)
+			{
+				// This message sent by the server to initialize the Volcano Tremor on clients
+				case ExampleModMessageType.SetTremorTime:
+					int tremorTime = reader.ReadInt32();
+					ExampleWorld world = (ExampleWorld)GetModWorld("ExampleWorld");
+					world.VolcanoTremorTime = tremorTime;
+					break;
+				// This message sent by the server to initialize the Volcano Rubble.
+				case ExampleModMessageType.VolcanicRubbleMultiplayerFix:
+					int numberProjectiles = reader.ReadInt32();
+					for (int i = 0; i < numberProjectiles; i++)
+					{
+						int identity = reader.ReadInt32();
+						bool found = false;
+						for (int j = 0; j < 1000; j++)
+						{
+							if (Main.projectile[j].owner == 255 && Main.projectile[j].identity == identity && Main.projectile[j].active)
+							{
+								Main.projectile[j].hostile = true;
+								Main.projectile[j].name = "Volcanic Rubble";
+								found = true;
+								break;
+							}
+						}
+						if (!found)
+						{
+							ErrorLogger.Log("Error: Projectile not found");
+						}
+					}
+					break;
+				default:
+					ErrorLogger.Log("ExampleMod: Unknown Message type: " + msgType);
+					break;
+			}
+		}
+	}
+
+	enum ExampleModMessageType : byte
+	{
+		SetTremorTime,
+		VolcanicRubbleMultiplayerFix,
 	}
 }
+
