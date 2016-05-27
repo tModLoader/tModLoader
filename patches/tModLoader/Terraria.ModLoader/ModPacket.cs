@@ -22,7 +22,7 @@ namespace Terraria.ModLoader
 				Netplay.Clients[toClient].Socket.AsyncSend(buf, 0, len, SendCallback);
 			else
 				for (int i = 0; i < 256; i++)
-					if (i != ignoreClient)
+					if (i != ignoreClient && Netplay.Clients[i].IsConnected())
 						Netplay.Clients[i].Socket.AsyncSend(buf, 0, len, SendCallback);
 		}
 
