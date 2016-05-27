@@ -1,0 +1,115 @@
+--- src/Terraria\Terraria.GameContent.UI.States\UIManageControls.cs
++++ src/tModLoader\Terraria.GameContent.UI.States\UIManageControls.cs
+@@ -35,7 +_,8 @@
+ 			"sp10",
+ 			"sp11",
+ 			"sp12",
+-			"sp13"
++			"sp13",
++			"ResetModHotkeys"
+ 		};
+ 		private static List<string> _BindingsHalfSingleLine = new List<string>
+ 		{
+@@ -43,7 +_,8 @@
+ 			"sp10",
+ 			"sp11",
+ 			"sp12",
+-			"sp13"
++			"sp13",
++			"ResetModHotkeys"
+ 		};
+ 		private bool OnKeyboard = true;
+ 		private bool OnGameplay = true;
+@@ -291,26 +_,39 @@
+ 				"sp18",
+ 				"sp13"
+ 			};
++			_BindingsFullLine.RemoveAll(x => x.Contains(":"));
++			List<string> modBindings = new List<string>();
++			foreach (var hotkey in ModLoader.ModLoader.modHotKeys)
++			{
++				modBindings.Add(hotkey.Value.displayName);
++				_BindingsFullLine.Add(hotkey.Value.displayName);
++			}
++			modBindings.Add("ResetModHotkeys");
++
+ 			InputMode currentInputMode = InputMode.Keyboard;
+ 			this._bindsKeyboard.Add(this.CreateBindingGroup(0, bindings, currentInputMode));
+ 			this._bindsKeyboard.Add(this.CreateBindingGroup(1, bindings4, currentInputMode));
+ 			this._bindsKeyboard.Add(this.CreateBindingGroup(2, bindings3, currentInputMode));
++			this._bindsKeyboard.Add(this.CreateBindingGroup(5, modBindings, currentInputMode));
+ 			currentInputMode = InputMode.XBoxGamepad;
+ 			this._bindsGamepad.Add(this.CreateBindingGroup(0, bindings2, currentInputMode));
+ 			this._bindsGamepad.Add(this.CreateBindingGroup(1, bindings4, currentInputMode));
+ 			this._bindsGamepad.Add(this.CreateBindingGroup(2, bindings3, currentInputMode));
+ 			this._bindsGamepad.Add(this.CreateBindingGroup(3, bindings5, currentInputMode));
+ 			this._bindsGamepad.Add(this.CreateBindingGroup(4, bindings6, currentInputMode));
++			this._bindsGamepad.Add(this.CreateBindingGroup(5, modBindings, currentInputMode));
+ 			currentInputMode = InputMode.KeyboardUI;
+ 			this._bindsKeyboardUI.Add(this.CreateBindingGroup(0, bindings, currentInputMode));
+ 			this._bindsKeyboardUI.Add(this.CreateBindingGroup(1, bindings4, currentInputMode));
+ 			this._bindsKeyboardUI.Add(this.CreateBindingGroup(2, bindings3, currentInputMode));
++			this._bindsKeyboardUI.Add(this.CreateBindingGroup(5, modBindings, currentInputMode));
+ 			currentInputMode = InputMode.XBoxGamepadUI;
+ 			this._bindsGamepadUI.Add(this.CreateBindingGroup(0, bindings2, currentInputMode));
+ 			this._bindsGamepadUI.Add(this.CreateBindingGroup(1, bindings4, currentInputMode));
+ 			this._bindsGamepadUI.Add(this.CreateBindingGroup(2, bindings3, currentInputMode));
+ 			this._bindsGamepadUI.Add(this.CreateBindingGroup(3, bindings5, currentInputMode));
+ 			this._bindsGamepadUI.Add(this.CreateBindingGroup(4, bindings6, currentInputMode));
++			this._bindsGamepadUI.Add(this.CreateBindingGroup(5, modBindings, currentInputMode));
+ 		}
+ 
+ 		private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode)
+@@ -350,6 +_,9 @@
+ 				case 4:
+ 					uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Turquoise, 0.18f);
+ 					break;
++				case 5:
++					uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Yellow, 0.18f);
++					break;
+ 			}
+ 			this.CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
+ 			uIPanel.BackgroundColor = uIPanel.BackgroundColor.MultiplyRGBA(new Color(111, 111, 111));
+@@ -370,6 +_,9 @@
+ 					break;
+ 				case 4:
+ 					text = Lang.menu[198];
++					break;
++				case 5:
++					text = "Mod Controls";
+ 					break;
+ 			}
+ 			uISortableElement.Append(new UITextPanel(text, 0.7f, false)
+@@ -546,6 +_,16 @@
+ 						};
+ 						return uIElement7;
+ 					}
++				case "ResetModHotkeys":
++					{
++						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => Lang.menu[86], color);
++						uIElement7.OnClick += delegate(UIMouseEvent evt, UIElement listeningElement)
++						{
++							string copyableProfileName = UIManageControls.GetCopyableProfileName();
++							PlayerInput.CurrentProfile.CopyModHotkeySettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
++						};
++						return uIElement7;
++					}
+ 				case "sp14":
+ 					{
+ 						UIElement uIElement8 = new UIKeybindingToggleListItem(() => Lang.menu[205], () => PlayerInput.CurrentProfile.LeftThumbstickInvertX, color);
+@@ -633,6 +_,14 @@
+ 
+ 		public override void OnActivate()
+ 		{
++			// TODO, only if new mod controls
++			_bindsKeyboard.Clear();
++			_bindsGamepad.Clear();
++			_bindsKeyboardUI.Clear();
++			_bindsGamepadUI.Clear();
++			AssembleBindPanels();
++			FillList();
++
+ 			if (Main.gameMenu)
+ 			{
+ 				this._outerContainer.Top.Set(220f, 0f);
+

@@ -96,7 +96,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -302,6 +_,106 @@
+@@ -302,6 +_,107 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -168,6 +168,7 @@
 +    <Compile Include="Terraria.ModLoader\ModDust.cs" />
 +    <Compile Include="Terraria.ModLoader\ModGore.cs" />
 +    <Compile Include="Terraria.ModLoader\ModHooks.cs" />
++    <Compile Include="Terraria.ModLoader\ModHotkey.cs" />
 +    <Compile Include="Terraria.ModLoader\ModItem.cs" />
 +    <Compile Include="Terraria.ModLoader\ModLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\ModMountData.cs" />

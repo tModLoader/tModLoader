@@ -1,0 +1,58 @@
+--- src/Terraria\Terraria.GameInput\PlayerInput.cs
++++ src/tModLoader\Terraria.GameInput\PlayerInput.cs
+@@ -307,6 +_,43 @@
+ 			}
+ 		}
+ 
++		// To allow mod hotkeys to load, need to reinitialize after load.
++		public static void ReInitialize()
++		{
++			PlayerInput.Profiles.Clear();
++			PlayerInput.OriginalProfiles.Clear();
++			PlayerInputProfile playerInputProfile = new PlayerInputProfile("Redigit's Pick");
++			playerInputProfile.Initialize(PresetProfiles.Redigit);
++			PlayerInput.Profiles.Add(playerInputProfile.Name, playerInputProfile);
++			playerInputProfile = new PlayerInputProfile("Yoraiz0r's Pick");
++			playerInputProfile.Initialize(PresetProfiles.Yoraiz0r);
++			PlayerInput.Profiles.Add(playerInputProfile.Name, playerInputProfile);
++			playerInputProfile = new PlayerInputProfile("Console (Playstation)");
++			playerInputProfile.Initialize(PresetProfiles.ConsolePS);
++			PlayerInput.Profiles.Add(playerInputProfile.Name, playerInputProfile);
++			playerInputProfile = new PlayerInputProfile("Console (Xbox)");
++			playerInputProfile.Initialize(PresetProfiles.ConsoleXBox);
++			PlayerInput.Profiles.Add(playerInputProfile.Name, playerInputProfile);
++			playerInputProfile = new PlayerInputProfile("Custom");
++			playerInputProfile.Initialize(PresetProfiles.Redigit);
++			PlayerInput.Profiles.Add(playerInputProfile.Name, playerInputProfile);
++			playerInputProfile = new PlayerInputProfile("Redigit's Pick");
++			playerInputProfile.Initialize(PresetProfiles.Redigit);
++			PlayerInput.OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
++			playerInputProfile = new PlayerInputProfile("Yoraiz0r's Pick");
++			playerInputProfile.Initialize(PresetProfiles.Yoraiz0r);
++			PlayerInput.OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
++			playerInputProfile = new PlayerInputProfile("Console (Playstation)");
++			playerInputProfile.Initialize(PresetProfiles.ConsolePS);
++			PlayerInput.OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
++			playerInputProfile = new PlayerInputProfile("Console (Xbox)");
++			playerInputProfile.Initialize(PresetProfiles.ConsoleXBox);
++			PlayerInput.OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
++			PlayerInput.SetSelectedProfile("Custom");
++			PlayerInput.Triggers.Initialize();
++			PlayerInput.Load();
++		}
++
+ 		public static void Initialize()
+ 		{
+ 			Main.InputProfiles.OnProcessText += new Preferences.TextProcessAction(PlayerInput.PrettyPrintProfiles);
+@@ -1445,6 +_,10 @@
+ 							c.KeyStatus["Hotbar8"].Add("D8");
+ 							c.KeyStatus["Hotbar9"].Add("D9");
+ 							c.KeyStatus["Hotbar10"].Add("D0");
++							foreach (var item in ModLoader.ModLoader.modHotKeys)
++							{
++								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
++							}
+ 							return;
+ 						case InputMode.KeyboardUI:
+ 							c.KeyStatus["MouseLeft"].Add("Mouse1");
+

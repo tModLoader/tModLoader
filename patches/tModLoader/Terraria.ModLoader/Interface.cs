@@ -68,23 +68,23 @@ namespace Terraria.ModLoader
 			spacing = 45;
 		}
 
-		internal static void AddSettingsMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] virticalSpacing, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
-		{
-			buttonIndex++;
-			numButtons++;
-			buttonNames[buttonIndex] = "Mod " + Lang.menu[66];
-			if (selectedMenu == buttonIndex)
-			{
-				Main.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modControlsID;
-			}
-			for (int k = 0; k < numButtons; k++)
-			{
-				buttonScales[k] = 0.73f;
-				virticalSpacing[k] = 0;
-			}
-			virticalSpacing[numButtons - 1] = 8;
-		}
+		//internal static void AddSettingsMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] virticalSpacing, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
+		//{
+		//	buttonIndex++;
+		//	numButtons++;
+		//	buttonNames[buttonIndex] = "Mod " + Lang.menu[66];
+		//	if (selectedMenu == buttonIndex)
+		//	{
+		//		Main.PlaySound(10, -1, -1, 1);
+		//		Main.menuMode = modControlsID;
+		//	}
+		//	for (int k = 0; k < numButtons; k++)
+		//	{
+		//		buttonScales[k] = 0.73f;
+		//		virticalSpacing[k] = 0;
+		//	}
+		//	virticalSpacing[numButtons - 1] = 8;
+		//}
 		//add to end of if else chain of Main.menuMode in Terraria.Main.DrawMenu
 		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num4);
 		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons)
@@ -146,10 +146,10 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(managePublished);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == modControlsID)
-			{
-				UIModControls.ModLoaderMenus(main, selectedMenu, buttonNames, buttonScales, buttonVerticalSpacing, ref offY, ref spacing, ref numButtons);
-			}
+			//else if (Main.menuMode == modControlsID)
+			//{
+			//	UIModControls.ModLoaderMenus(main, selectedMenu, buttonNames, buttonScales, buttonVerticalSpacing, ref offY, ref spacing, ref numButtons);
+			//}
 			else if (Main.menuMode == updateMessageID)
 			{
 				Main.MenuUI.SetState(updateMessage);

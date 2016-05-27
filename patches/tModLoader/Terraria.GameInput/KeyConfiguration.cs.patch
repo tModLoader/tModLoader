@@ -1,0 +1,14 @@
+--- src/Terraria\Terraria.GameInput\KeyConfiguration.cs
++++ src/tModLoader\Terraria.GameInput\KeyConfiguration.cs
+@@ -22,6 +_,10 @@
+ 			foreach (string current in PlayerInput.KnownTriggers)
+ 			{
+ 				this.KeyStatus.Add(current, new List<string>());
++			}
++			foreach (var current in ModLoader.ModLoader.modHotKeys)
++			{
++				this.KeyStatus.Add(current.Value.displayName, new List<string>() /*{current.Value.defaultKey}*/);
+ 			}
+ 		}
+ 
+

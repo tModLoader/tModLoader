@@ -1,0 +1,24 @@
+--- src/Terraria\Terraria.GameInput\PlayerInputProfile.cs
++++ src/tModLoader\Terraria.GameInput\PlayerInputProfile.cs
+@@ -3,6 +_,7 @@
+ using Newtonsoft.Json.Linq;
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
+ 
+ namespace Terraria.GameInput
+ {
+@@ -252,6 +_,12 @@
+ 			this.CopyKeysFrom(profile, mode, keysToCopy);
+ 		}
+ 
++		public void CopyModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode)
++		{
++			string[] keysToCopy = ModLoader.ModLoader.modHotKeys.Select(x=>x.Value.displayName).ToArray();
++			this.CopyKeysFrom(profile, mode, keysToCopy);
++		}
++
+ 		public void CopyGamepadSettingsFrom(PlayerInputProfile profile, InputMode mode)
+ 		{
+ 			string[] keysToCopy = new string[]
+
