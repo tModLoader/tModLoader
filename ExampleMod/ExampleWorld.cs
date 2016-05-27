@@ -156,14 +156,7 @@ namespace ExampleMod
 						var netMessage = mod.GetPacket();
 						netMessage.Write((byte)ExampleModMessageType.SetTremorTime);
 						netMessage.Write(VolcanoTremorTime);
-						try
-						{
-							netMessage.Send();
-						}
-						catch
-						{
-
-						}
+						netMessage.Send();
 					}
 					for (int playerIndex = 0; playerIndex < 255; playerIndex++)
 					{
@@ -199,14 +192,7 @@ namespace ExampleMod
 								{
 									netMessage.Write(identities[i]);
 								}
-								try
-								{
-									netMessage.Send();
-								}
-								catch
-								{
-
-								}
+								netMessage.Send();
 							}
 						}
 					}
