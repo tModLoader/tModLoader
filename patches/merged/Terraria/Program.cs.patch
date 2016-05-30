@@ -55,7 +55,7 @@
 +#if CLIENT
  					main.Run();
 +#else
-+                    main.DedServ();
++					main.DedServ();
 +#endif
  				}
  				catch (Exception e)

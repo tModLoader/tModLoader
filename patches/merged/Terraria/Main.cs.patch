@@ -54,7 +54,7 @@
  			Main.SetDisplayMode(preferredBackBufferWidth, preferredBackBufferHeight, fullscreen);
  			int num2 = 0;
  			Main.Configuration.Get<int>("LastLaunchedVersion", ref num2);
-@@ -4125,12 +_,20 @@
+@@ -4125,11 +_,19 @@
  								{
  									Main.terrariasFixedTiming = binaryReader.ReadBoolean();
  								}
@@ -65,18 +65,16 @@
  									Form form = (Form)Control.FromHandle(base.Window.Handle);
  									form.WindowState = FormWindowState.Maximized;
 -								}
--								if (num >= 4)
 +#endif
 +								}
 +#else
-+                                if (num < 91 || binaryReader.ReadBoolean())
-+                                {
-+                                }
++								if (num < 91 || binaryReader.ReadBoolean())
++								{
++								}
 +#endif
-+                                if (num >= 4)
+ 								if (num >= 4)
  								{
  									int width = binaryReader.ReadInt32();
- 									int height = binaryReader.ReadInt32();
 @@ -4239,9 +_,14 @@
  			{
  				if (!Main.WorldList[i].IsCloudSave)
@@ -316,6 +314,24 @@
  						if (Main.ActiveWorldFileData.IsCloudSave)
  						{
  							text = text + " -cloudworld \"" + Main.worldPathName + "\"";
+@@ -41756,6 +_,7 @@
+ 						{
+ 							array7[num24] = 0.85f;
+ 						}
++#if WINDOWS
+ 						bool flag7 = true;
+ 						Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
+ 						System.Drawing.Rectangle bounds = Screen.FromPoint(form.Location).Bounds;
+@@ -41763,6 +_,9 @@
+ 						{
+ 							flag7 = false;
+ 						}
++#else
++						bool flag7 = false;
++#endif
+ 						num2 = 210;
+ 						num4 = 55;
+ 						int num25 = 0;
 @@ -53072,6 +_,7 @@
  
  		private static void CheckMonoliths()

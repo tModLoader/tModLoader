@@ -364,7 +364,7 @@
  			Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color((int)b, (int)b, (int)b, 255);
  			this.logoRotation += this.logoRotationSpeed * 3E-05f;
  			if ((double)this.logoRotation > 0.1)
-@@ -42894,9 +_,9 @@
+@@ -42898,9 +_,9 @@
  						if (num56 == 4)
  						{
  							color7 = color;
@@ -377,7 +377,7 @@
  						}
  						int num57 = 255;
  						int num58 = (int)color7.R - (255 - num57);
-@@ -43006,9 +_,9 @@
+@@ -43010,9 +_,9 @@
  							if (num67 == 4)
  							{
  								color8 = color;
@@ -390,7 +390,7 @@
  							}
  							int num68 = (int)color8.R - (255 - num65);
  							if (num68 < 0)
-@@ -43081,9 +_,9 @@
+@@ -43085,9 +_,9 @@
  						break;
  					}
  					Microsoft.Xna.Framework.Color textColor = color;
@@ -403,7 +403,7 @@
  					int num75 = 255;
  					int num76 = (int)textColor.R - (255 - num75);
  					if (num76 < 0)
-@@ -43157,9 +_,9 @@
+@@ -43161,9 +_,9 @@
  						if (num84 == 4)
  						{
  							color9 = color;
@@ -416,7 +416,7 @@
  						}
  						int num85 = 255;
  						int num86 = (int)color9.R - (255 - num85);
-@@ -43247,9 +_,9 @@
+@@ -43251,9 +_,9 @@
  								color10 = color;
  								break;
  							}
@@ -429,7 +429,7 @@
  						}
  						int num92 = (int)(255f * (this.menuItemScale[num90] * 2f - 1f));
  						if (array[num90])
-@@ -43290,7 +_,7 @@
+@@ -43294,7 +_,7 @@
  							}
  							else
  							{
@@ -438,7 +438,7 @@
  							}
  						}
  						int num97 = 0;
-@@ -43432,9 +_,9 @@
+@@ -43436,9 +_,9 @@
  				if (num102 == 4)
  				{
  					color11 = color;
@@ -451,7 +451,7 @@
  				}
  				color11.A = (byte)((float)color11.A * 0.3f);
  				int num103 = 0;
-@@ -43467,9 +_,9 @@
+@@ -43471,9 +_,9 @@
  				if (num105 == 4)
  				{
  					color12 = color;
@@ -464,7 +464,7 @@
  				}
  				color12.A = (byte)((float)color12.A * 0.3f);
  				int num106 = 0;
-@@ -44212,9 +_,9 @@
+@@ -44216,9 +_,9 @@
  														}
  														break;
  													}
@@ -477,7 +477,7 @@
  													color4.R = (byte)((float)color4.R * x);
  													color4.G = (byte)((float)color4.G * y);
  													color4.B = (byte)((float)color4.B * z);
-@@ -44262,9 +_,9 @@
+@@ -44266,9 +_,9 @@
  													num29 = 8;
  													break;
  												}
@@ -490,7 +490,7 @@
  												color7.R = (byte)((float)color7.R * x);
  												color7.G = (byte)((float)color7.G * y);
  												color7.B = (byte)((float)color7.B * z);
-@@ -44531,9 +_,9 @@
+@@ -44535,9 +_,9 @@
  													}
  													break;
  												}
@@ -503,7 +503,7 @@
  												color15.R = (byte)((float)color15.R * x);
  												color15.G = (byte)((float)color15.G * y);
  												color15.B = (byte)((float)color15.B * z);
-@@ -44571,9 +_,9 @@
+@@ -44575,9 +_,9 @@
  													num57 = 8;
  													break;
  												}
@@ -516,7 +516,7 @@
  												color18.R = (byte)((float)color18.R * x);
  												color18.G = (byte)((float)color18.G * y);
  												color18.B = (byte)((float)color18.B * z);
-@@ -44813,9 +_,9 @@
+@@ -44817,9 +_,9 @@
  													}
  													break;
  												}
@@ -529,7 +529,7 @@
  												color26.R = (byte)((float)color26.R * x);
  												color26.G = (byte)((float)color26.G * y);
  												color26.B = (byte)((float)color26.B * z);
-@@ -44844,9 +_,9 @@
+@@ -44848,9 +_,9 @@
  													num77 = 8;
  													break;
  												}
@@ -542,7 +542,7 @@
  												color28.R = (byte)((float)color28.R * x);
  												color28.G = (byte)((float)color28.G * y);
  												color28.B = (byte)((float)color28.B * z);
-@@ -45383,9 +_,9 @@
+@@ -45387,9 +_,9 @@
  														}
  														break;
  													}
@@ -555,7 +555,7 @@
  													color4.R = (byte)((float)color4.R * num5);
  													color4.G = (byte)((float)color4.G * num6);
  													color4.B = (byte)((float)color4.B * num7);
-@@ -45433,9 +_,9 @@
+@@ -45437,9 +_,9 @@
  													num35 = 8;
  													break;
  												}
@@ -568,7 +568,7 @@
  												color7.R = (byte)((float)color7.R * num5);
  												color7.G = (byte)((float)color7.G * num6);
  												color7.B = (byte)((float)color7.B * num7);
-@@ -45702,9 +_,9 @@
+@@ -45706,9 +_,9 @@
  													}
  													break;
  												}
@@ -581,7 +581,7 @@
  												color15.R = (byte)((float)color15.R * num5);
  												color15.G = (byte)((float)color15.G * num6);
  												color15.B = (byte)((float)color15.B * num7);
-@@ -45742,9 +_,9 @@
+@@ -45746,9 +_,9 @@
  													num63 = 8;
  													break;
  												}
@@ -594,7 +594,7 @@
  												color18.R = (byte)((float)color18.R * num5);
  												color18.G = (byte)((float)color18.G * num6);
  												color18.B = (byte)((float)color18.B * num7);
-@@ -45978,9 +_,9 @@
+@@ -45982,9 +_,9 @@
  													}
  													break;
  												}
@@ -607,7 +607,7 @@
  												color26.R = (byte)((float)color26.R * num5);
  												color26.G = (byte)((float)color26.G * num6);
  												color26.B = (byte)((float)color26.B * num7);
-@@ -46009,9 +_,9 @@
+@@ -46013,9 +_,9 @@
  													num83 = 8;
  													break;
  												}
@@ -620,7 +620,7 @@
  												color28.R = (byte)((float)color28.R * num5);
  												color28.G = (byte)((float)color28.G * num6);
  												color28.B = (byte)((float)color28.B * num7);
-@@ -47929,9 +_,9 @@
+@@ -47933,9 +_,9 @@
  				}
  			}
  			Main.tileColor.A = 255;
@@ -633,7 +633,7 @@
  			Main.backColor = Main.bgColor;
  			Main.trueBackColor = Main.backColor;
  			Lighting.Initialize(true);
-@@ -49423,10 +_,10 @@
+@@ -49427,10 +_,10 @@
  										num26 = (float)color4.B * num17;
  										num27 = (float)color4.A * num17;
  										color4 = new Microsoft.Xna.Framework.Color((int)((byte)num24), (int)((byte)num25), (int)((byte)num26), (int)((byte)num27));
@@ -648,7 +648,7 @@
  										Main.spriteBatch.Draw(Main.liquidTexture[num12], value - Main.screenPosition + new Vector2((float)num28, (float)num29) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(value2.X + num28, value2.Y + num29, width, height)), color3, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  									}
  								}
-@@ -54276,9 +_,9 @@
+@@ -54280,9 +_,9 @@
  				}
  			}
  			Main.tileColor.A = 255;

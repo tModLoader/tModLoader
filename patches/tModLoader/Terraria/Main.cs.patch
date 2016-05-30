@@ -2056,7 +2056,7 @@
  					array9[num10] = Lang.menu[14];
  					if (this.selectedMenu == num10)
  					{
-@@ -41339,6 +_,10 @@
+@@ -41343,6 +_,10 @@
  							WorldGen.setWorldSize();
  						}
  					}
@@ -2067,7 +2067,7 @@
  				}
  			}
  			IL_46DC:
-@@ -41924,6 +_,7 @@
+@@ -41928,6 +_,7 @@
  			}
  			for (int num90 = 0; num90 < num5; num90++)
  			{
@@ -2075,7 +2075,7 @@
  				if (array9[num90] != null)
  				{
  					Vector2 origin = Main.fontDeathText.MeasureString(array9[num90]);
-@@ -42033,6 +_,7 @@
+@@ -42037,6 +_,7 @@
  						num99 *= array7[num90];
  						if (!array8[num90])
  						{
@@ -2083,7 +2083,7 @@
  							Main.spriteBatch.DrawString(Main.fontDeathText, array9[num90], new Vector2((float)(num3 + num97 + array5[num90]), (float)(num2 + num4 * num90 + num98) + origin.Y * array7[num90] + (float)array4[num90]), color10, 0f, origin, num99, SpriteEffects.None, 0f);
  						}
  						else
-@@ -42200,10 +_,11 @@
+@@ -42204,10 +_,11 @@
  				{
  					num107 = 2;
  				}
@@ -2097,7 +2097,7 @@
  			}
  			Vector2 bonus = Main.DrawThickCursor(false);
  			Main.DrawCursor(bonus, false);
-@@ -45254,7 +_,12 @@
+@@ -45258,7 +_,12 @@
  				Main.spriteBatch.End();
  				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
  				flag = true;
@@ -2111,7 +2111,7 @@
  				{
  					Main.spriteBatch.Draw(this.mapBG3Texture, new Microsoft.Xna.Framework.Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Microsoft.Xna.Framework.Color.White);
  				}
-@@ -45890,6 +_,7 @@
+@@ -45894,6 +_,7 @@
  					}
  					else if (type >= num96 && type < num96 + num97)
  					{
@@ -2119,7 +2119,7 @@
  						Tile tile3 = Main.tile[num91, num92];
  						if (tile3 == null)
  						{
-@@ -45919,7 +_,7 @@
+@@ -45923,7 +_,7 @@
  					}
  					else
  					{
@@ -2128,7 +2128,7 @@
  					}
  				}
  				float num106 = (num16 * 0.25f * 2f + 1f) / 3f;
-@@ -48439,7 +_,7 @@
+@@ -48443,7 +_,7 @@
  						tile = new Tile();
  						Main.tile[j, i] = tile;
  					}
@@ -2137,7 +2137,7 @@
  					if (wall > 0 && !this.FullTile(j, i))
  					{
  						Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
-@@ -48447,6 +_,11 @@
+@@ -48451,6 +_,11 @@
  						{
  							this.LoadWall((int)wall);
  							int num9 = (int)(Main.wallFrame[(int)wall] * 180);
@@ -2149,7 +2149,7 @@
  							if (Lighting.lightMode < 2 && !Main.wallLight[(int)wall] && (tile.wall < 88 || tile.wall > 93) && !WorldGen.SolidTile(tile))
  							{
  								Texture2D texture;
-@@ -48518,6 +_,7 @@
+@@ -48522,6 +_,7 @@
  									Main.spriteBatch.Draw(Main.wallOutlineTexture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X), (float)(i * 16 - (int)Main.screenPosition.Y + 14)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 14, 16, 2)), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  								}
  							}
@@ -2157,7 +2157,7 @@
  						}
  					}
  				}
-@@ -50147,7 +_,7 @@
+@@ -50151,7 +_,7 @@
  			}
  		}
  
@@ -2166,7 +2166,7 @@
  		{
  			if (!Main.NPCLoaded[i] || Main.npcTexture[i] == null)
  			{
-@@ -50162,7 +_,7 @@
+@@ -50166,7 +_,7 @@
  			}
  		}
  
@@ -2175,7 +2175,7 @@
  		{
  			if (!Main.projectileLoaded[i])
  			{
-@@ -50177,7 +_,7 @@
+@@ -50181,7 +_,7 @@
  			}
  		}
  
@@ -2184,7 +2184,7 @@
  		{
  			if (!Main.goreLoaded[i])
  			{
-@@ -50192,7 +_,7 @@
+@@ -50196,7 +_,7 @@
  			}
  		}
  
@@ -2193,7 +2193,7 @@
  		{
  			if (!Main.wallLoaded[i])
  			{
-@@ -50207,7 +_,7 @@
+@@ -50211,7 +_,7 @@
  			}
  		}
  
@@ -2202,7 +2202,7 @@
  		{
  			if (!Main.tileSetsLoaded[i])
  			{
-@@ -51916,6 +_,19 @@
+@@ -51920,6 +_,19 @@
  
  		protected override void Draw(GameTime gameTime)
  		{
@@ -2222,7 +2222,7 @@
  			if (Main._drawCycleCounter == 0uL)
  			{
  				Main._tileFrameSeed = Utils.RandomNextSeed(Main._tileFrameSeed);
-@@ -53030,6 +_,7 @@
+@@ -53034,6 +_,7 @@
  				this.Transform = Matrix.CreateScale(value.X, -value.Y, value.Z) * Matrix.CreateRotationZ(0f) * Matrix.CreateTranslation(new Vector3(0f, (float)Main.screenHeight, 0f));
  				this.Rasterizer = RasterizerState.CullClockwise;
  			}
@@ -2230,7 +2230,7 @@
  			bool flag = !Main.drawToScreen && Main.netMode != 2 && !Main.gameMenu && !Main.mapFullscreen && Filters.Scene.HasActiveFilter();
  			if (flag)
  			{
-@@ -55369,7 +_,7 @@
+@@ -55373,7 +_,7 @@
  								num14++;
  							}
  						}
@@ -2239,7 +2239,7 @@
  						{
  							Main.nextNPC[num16] = false;
  						}
-@@ -55498,6 +_,7 @@
+@@ -55502,6 +_,7 @@
  								if (Main.npc[num41].type == 441)
  								{
  									num39++;
@@ -2247,7 +2247,7 @@
  								}
  								num40++;
  							}
-@@ -55521,6 +_,7 @@
+@@ -55525,6 +_,7 @@
  										{
  											if (num42 < 2000000000)
  											{
@@ -2255,7 +2255,7 @@
  												if (Main.player[num44].inventory[num45].type == 71)
  												{
  													num42 += Main.player[num44].inventory[num45].stack;
-@@ -55762,6 +_,7 @@
+@@ -55766,6 +_,7 @@
  							{
  								WorldGen.spawnNPC = 142;
  							}
@@ -2263,7 +2263,7 @@
  						}
  					}
  				}
-@@ -55811,11 +_,12 @@
+@@ -55815,11 +_,12 @@
  		public static void PlaySound(int type, int x = -1, int y = -1, int Style = 1)
  		{
  			int num = Style;
@@ -2277,7 +2277,7 @@
  					{
  						bool flag = false;
  						float num2 = 1f;
-@@ -55846,6 +_,7 @@
+@@ -55850,6 +_,7 @@
  								num3 = ((float)x - vector.X) / ((float)Main.screenWidth * 0.5f);
  								float num4 = Math.Abs((float)x - vector.X);
  								float num5 = Math.Abs((float)y - vector.Y);
@@ -2285,7 +2285,7 @@
  								float num6 = (float)Math.Sqrt((double)(num4 * num4 + num5 * num5));
  								num2 = 1f - num6 / ((float)Main.screenWidth * 1.5f);
  							}
-@@ -55880,6 +_,10 @@
+@@ -55884,6 +_,10 @@
  								}
  								if (num2 > 0f || (type >= 30 && type <= 35) || type == 39)
  								{
@@ -2296,7 +2296,7 @@
  									if (type == 0)
  									{
  										int num7 = Main.rand.Next(3);
-@@ -56463,14 +_,54 @@
+@@ -56467,14 +_,54 @@
  										Main.soundInstanceMoonlordCry.Pitch = (float)Main.rand.Next(-10, 11) * 0.01f;
  										Main.PlaySoundInstance(Main.soundInstanceMoonlordCry);
  									}

@@ -1,12 +1,11 @@
 --- src/merged\Properties\AssemblyInfo.cs
 +++ src/Terraria\Properties\AssemblyInfo.cs
-@@ -40,7 +_,7 @@
+@@ -20,6 +_,6 @@
+ [assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
+ [assembly: ComVisible(false)]
  [assembly: Guid("f571b16a-2c9b-44ab-b115-7c762c9e4e7e")]
- #endif
- #if WINDOWS
 -[assembly: TargetFramework(".NETFramework,Version=v4.0,Profile=Client", FrameworkDisplayName = ".NET Framework 4 Client Profile")]
 +//[assembly: TargetFramework(".NETFramework,Version=v4.0,Profile=Client", FrameworkDisplayName = ".NET Framework 4 Client Profile")]
- #endif
  [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
  [module: UnverifiableCode]
 
