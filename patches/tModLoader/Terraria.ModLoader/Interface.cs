@@ -22,6 +22,7 @@ namespace Terraria.ModLoader
 		internal const int modControlsID = 10010;
 		internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
+		internal const int infoMessageID = 10013;
 		private static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -32,6 +33,7 @@ namespace Terraria.ModLoader
 		internal static UIDownloadMod downloadMod = new UIDownloadMod();
 		internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
+		internal static UIInfoMessage infoMessage = new UIInfoMessage();
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
@@ -153,6 +155,11 @@ namespace Terraria.ModLoader
 			else if (Main.menuMode == updateMessageID)
 			{
 				Main.MenuUI.SetState(updateMessage);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == infoMessageID)
+			{
+				Main.MenuUI.SetState(infoMessage);
 				Main.menuMode = 888;
 			}
 		}

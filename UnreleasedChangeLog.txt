@@ -4,6 +4,7 @@ tModLoader
 -Fixed multiplayer disappearing npc bug
 -Fixed bug where ModProjectile extra AI is not synced
 -Mod Browser downloads more graceful to web errors
+-Mod Browser reminds you to update or enable mods
 
 ExampleMod
 [Nothing yet]

@@ -196,11 +196,16 @@ namespace Terraria.ModLoader.UI
 							File.Copy(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod", ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod", true);
 							if (!update)
 							{
+								Interface.modBrowser.aNewModDownloaded = true;
 								string path = ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".enabled";
 								using (StreamWriter writer = File.CreateText(path))
 								{
 									writer.Write("false");
 								}
+							}
+							else
+							{
+								Interface.modBrowser.aModUpdated = true;
 							}
 							RemoveChild(button2);
 						}
