@@ -397,7 +397,7 @@ namespace Terraria.ModLoader
 		//  return newItem;
 		internal void SetupModItem(Item item)
 		{
-			ModItem newItem = (ModItem)Activator.CreateInstance(GetType());
+			ModItem newItem = Clone();
 			newItem.item = item;
 			item.modItem = newItem;
 			newItem.mod = mod;
@@ -405,7 +405,7 @@ namespace Terraria.ModLoader
 
 		internal void SetupClone(Item clone)
 		{
-			ModItem newItem = Clone();
+			ModItem newItem = CloneNewInstances ? Clone() : (ModItem)Activator.CreateInstance(GetType());
 			newItem.item = clone;
 			newItem.mod = mod;
 			newItem.texture = texture;
@@ -419,6 +419,8 @@ namespace Terraria.ModLoader
 		{
 			return (ModItem)MemberwiseClone();
 		}
+
+		public virtual bool CloneNewInstances => false;
 
 		public virtual void SaveCustomData(BinaryWriter writer)
 		{

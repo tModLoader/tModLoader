@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 
 		internal void SetupMount(Mount.MountData mountData)
 		{
-			ModMountData newMountData = (ModMountData)Activator.CreateInstance(GetType());
+			ModMountData newMountData = (ModMountData)MemberwiseClone();
 			newMountData.mountData = mountData;
 			mountData.modMountData = newMountData;
 			newMountData.mod = mod;

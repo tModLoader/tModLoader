@@ -50,12 +50,15 @@ namespace Terraria.ModLoader
 
 		internal void SetupProjectile(Projectile projectile)
 		{
-			ModProjectile newProjectile = (ModProjectile)Activator.CreateInstance(GetType());
+			ModProjectile newProjectile = (ModProjectile)(CloneNewInstances ? MemberwiseClone()
+				: Activator.CreateInstance(GetType()));
 			newProjectile.projectile = projectile;
 			projectile.modProjectile = newProjectile;
 			newProjectile.mod = mod;
 			newProjectile.SetDefaults();
 		}
+
+		public virtual bool CloneNewInstances => false;
 
 		public virtual void SetDefaults()
 		{

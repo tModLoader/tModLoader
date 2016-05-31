@@ -56,12 +56,14 @@ namespace Terraria.ModLoader
 
 		internal void SetupNPC(NPC npc)
 		{
-			ModNPC newNPC = (ModNPC)Activator.CreateInstance(GetType());
+			ModNPC newNPC = (ModNPC)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			newNPC.npc = npc;
 			npc.modNPC = newNPC;
 			newNPC.mod = mod;
 			newNPC.SetDefaults();
 		}
+
+		public virtual bool CloneNewInstances => false;
 
 		public virtual void SetDefaults()
 		{
