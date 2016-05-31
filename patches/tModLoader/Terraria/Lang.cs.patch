@@ -57,7 +57,7 @@
  			if (text.Length > 0)
  			{
  				text2 = text2 + "\n" + text;
-@@ -33391,7 +_,7 @@
+@@ -33394,7 +_,7 @@
  #if CLIENT
  				if (Lang.mapLegend == null)
  				{

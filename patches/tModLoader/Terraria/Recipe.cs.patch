@@ -38,7 +38,7 @@
  		}
  
  		public static void SetupRecipes()
-@@ -10563,6 +_,7 @@
+@@ -10568,6 +_,7 @@
  			Recipe.AddRecipe();
  			Recipe.WallReturn();
  			Recipe.PlatformReturn();

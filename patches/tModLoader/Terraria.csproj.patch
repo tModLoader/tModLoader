@@ -229,7 +229,6 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>"$(SolutionDir)4gb_patch.exe" "$(TargetPath)"
 +
@@ -258,4 +257,5 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
+

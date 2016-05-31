@@ -331,7 +331,7 @@
  				{
  					return;
  				}
-@@ -27553,7 +_,8 @@
+@@ -27557,7 +_,8 @@
  					{
  						Main.tile[l, m] = new Tile();
  					}
@@ -341,7 +341,7 @@
  					{
  						if (Main.tile[l, m].frameX < 36)
  						{
-@@ -27940,10 +_,6 @@
+@@ -27944,10 +_,6 @@
  
  		public static bool PlaceObject(int x, int y, int type, bool mute = false, int style = 0, int alternate = 0, int random = -1, int direction = -1)
  		{
@@ -352,7 +352,7 @@
  			TileObject toBePlaced;
  			if (!TileObject.CanPlace(x, y, type, style, direction, out toBePlaced, false))
  			{
-@@ -30764,7 +_,7 @@
+@@ -30768,7 +_,7 @@
  						int wall = (int)Main.tile[k, l].wall;
  						if (conversionType == 4)
  						{
@@ -361,7 +361,7 @@
  							{
  								if (WallID.Sets.Conversion.Grass[wall] && wall != 81)
  								{
-@@ -30842,7 +_,7 @@
+@@ -30846,7 +_,7 @@
  						}
  						else if (conversionType == 2)
  						{
@@ -370,7 +370,7 @@
  							{
  								if (WallID.Sets.Conversion.Grass[wall] && wall != 70)
  								{
-@@ -30922,7 +_,7 @@
+@@ -30926,7 +_,7 @@
  						}
  						else if (conversionType == 1)
  						{
@@ -379,7 +379,7 @@
  							{
  								if (WallID.Sets.Conversion.Grass[wall] && wall != 69)
  								{
-@@ -32546,10 +_,6 @@
+@@ -32550,10 +_,6 @@
  
  		public static bool PlaceTile(int i, int j, int type, bool mute = false, bool forced = false, int plr = -1, int style = 0)
  		{
@@ -390,7 +390,7 @@
  			bool result = false;
  			if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY)
  			{
-@@ -32823,7 +_,7 @@
+@@ -32827,7 +_,7 @@
  							WorldGen.SquareTileFrame(i, j, true);
  						}
  					}
@@ -399,7 +399,7 @@
  					{
  						if (Main.tile[i - 1, j] == null)
  						{
-@@ -33217,7 +_,11 @@
+@@ -33221,7 +_,11 @@
  					{
  						fail = true;
  					}
@@ -412,7 +412,7 @@
  					{
  						Main.PlaySound(13, i * 16, j * 16, 1);
  					}
-@@ -33234,6 +_,7 @@
+@@ -33238,6 +_,7 @@
  					{
  						num = 3;
  					}
@@ -420,7 +420,7 @@
  					for (int k = 0; k < num; k++)
  					{
  						int num2 = 0;
-@@ -33701,6 +_,10 @@
+@@ -33705,6 +_,10 @@
  						if (tile.wall == 151 || tile.wall == 152)
  						{
  							num2 = 215;
@@ -431,7 +431,7 @@
  						}
  						if (tile.wall == 44)
  						{
-@@ -34201,14 +_,14 @@
+@@ -34205,14 +_,14 @@
  					{
  						num4 = 2210 + (int)tile.wall - 138;
  					}
@@ -448,7 +448,7 @@
  					{
  						WorldGen.TileFrame(i, j, false, false);
  					}
-@@ -34279,6 +_,10 @@
+@@ -34283,6 +_,10 @@
  			{
  				return false;
  			}
@@ -459,7 +459,7 @@
  			if (j >= 1)
  			{
  				tile2 = Main.tile[i, j - 1];
-@@ -34351,7 +_,7 @@
+@@ -34355,7 +_,7 @@
  						int num2 = i - (int)(tile.frameX % 54 / 18);
  						for (int k = 0; k < 3; k++)
  						{
@@ -468,7 +468,7 @@
  							{
  								blockDamaged = true;
  								return false;
-@@ -34388,7 +_,7 @@
+@@ -34392,7 +_,7 @@
  					{
  						Main.tile[i, j - 1] = new Tile();
  					}
@@ -477,7 +477,7 @@
  					{
  						if (Main.tile[i, j - 1].type == 5)
  						{
-@@ -34416,16 +_,20 @@
+@@ -34420,16 +_,20 @@
  						int num = i - frameX % 54 / 18;
  						for (int k = 0; k < 3; k++)
  						{
@@ -500,7 +500,7 @@
  						{
  							Main.PlaySound(2, i * 16, j * 16, 27);
  						}
-@@ -34668,6 +_,7 @@
+@@ -34672,6 +_,7 @@
  					{
  						num13 = 0;
  					}
@@ -508,7 +508,7 @@
  					int num14 = 0;
  					while (num14 < num13)
  					{
-@@ -36624,7 +_,7 @@
+@@ -36628,7 +_,7 @@
  								goto IL_363E;
  						}
  						IL_3641:
@@ -517,7 +517,7 @@
  						{
  							if (tile.type == 352 && num15 == 5)
  							{
-@@ -36756,6 +_,7 @@
+@@ -36760,6 +_,7 @@
  						}
  						if (tile.type == 73)
  						{
@@ -525,7 +525,7 @@
  							num43 = 200;
  							num44 = 50;
  							if (tile.frameX >= 108)
-@@ -36817,6 +_,7 @@
+@@ -36821,6 +_,7 @@
  						{
  							num45 = 10;
  						}
@@ -533,7 +533,7 @@
  						if (num43 > 0 && NPC.CountNPCS(357) < 5 && WorldGen.genRand.Next(num43) == 0)
  						{
  							int type2 = 357;
-@@ -38582,7 +_,8 @@
+@@ -38586,7 +_,8 @@
  						{
  							num49 = 2504;
  						}
@@ -543,7 +543,7 @@
  						{
  							int num71 = 1;
  							if (flag2)
-@@ -38591,7 +_,7 @@
+@@ -38595,7 +_,7 @@
  							}
  							Item.NewItem(i * 16, j * 16, 16, 16, num49, num71, false, -1, false, false);
  						}
@@ -552,7 +552,7 @@
  						{
  							Item.NewItem(i * 16, j * 16, 16, 16, num50, 1, false, -1, false, false);
  						}
-@@ -40550,6 +_,7 @@
+@@ -40561,6 +_,7 @@
  				}
  				int num7 = WorldGen.genRand.Next(10, Main.maxTilesX - 10);
  				int num8 = WorldGen.genRand.Next(10, (int)Main.worldSurface - 1);
@@ -560,7 +560,7 @@
  				int num9 = num7 - 1;
  				int num10 = num7 + 2;
  				int num11 = num8 - 1;
-@@ -41304,6 +_,8 @@
+@@ -41315,6 +_,8 @@
  							}
  						}
  					}
@@ -569,7 +569,7 @@
  				}
  				num6++;
  			}
-@@ -42070,6 +_,8 @@
+@@ -42081,6 +_,8 @@
  						}
  					}
  					WorldGen.SpreadDesertWalls(num, num64, num65);
@@ -578,7 +578,7 @@
  				}
  				num63++;
  			}
-@@ -42093,6 +_,7 @@
+@@ -42104,6 +_,7 @@
  					Projectile.NewProjectile(vector.X, vector.Y, num147, num148, 12, 1000, 10f, Main.myPlayer, 0f, 0f);
  				}
  			}
@@ -586,7 +586,7 @@
  		}
  
  		public static void SpreadDesertWalls(int wallDist, int i, int j)
-@@ -46591,7 +_,11 @@
+@@ -46602,7 +_,11 @@
  					}
  					if (tile.active())
  					{
@@ -599,7 +599,7 @@
  						{
  							return;
  						}
-@@ -46605,7 +_,7 @@
+@@ -46616,7 +_,7 @@
  						Rectangle rectangle = new Rectangle(-1, -1, 0, 0);
  						if (Main.tileFrameImportant[(int)tile.type])
  						{
@@ -608,16 +608,7 @@
  							{
  								Tile tile2 = Main.tile[i, j - 1];
  								Tile tile3 = Main.tile[i, j + 1];
-@@ -46659,7 +_,7 @@
- 								{
- 									num9 = (int)tile9.type;
- 								}
--								if (num3 >= 0 && Main.tileSolid[num3] && (!Main.tileNoAttach[num3] || num3 == 19))
-+								if (num3 >= 0 && Main.tileSolid[num3] && (!Main.tileNoAttach[num3] || TileID.Sets.Platforms[num3]))
- 								{
- 									tile.frameX = num2;
- 								}
-@@ -47770,6 +_,10 @@
+@@ -47781,6 +_,10 @@
  							{
  								WorldGen.CheckPalmTree(i, j);
  							}
@@ -628,7 +619,7 @@
  							return;
  						}
  						else
-@@ -51107,7 +_,7 @@
+@@ -51118,7 +_,7 @@
  									if (tile3 != null && !tile3.active())
  									{
  										bool flag18 = true;
@@ -637,7 +628,7 @@
  										{
  											flag18 = false;
  										}
-@@ -51173,7 +_,7 @@
+@@ -51184,7 +_,7 @@
  								else if (Main.netMode == 2 && tile3 != null && !tile3.active())
  								{
  									bool flag19 = true;

@@ -1,8 +1,8 @@
 --- src/Terraria\Terraria.IO\WorldFile.cs
 +++ src/tModLoader\Terraria.IO\WorldFile.cs
-@@ -7,6 +_,9 @@
- using Terraria.GameContent;
+@@ -8,6 +_,9 @@
  using Terraria.GameContent.Events;
+ using Terraria.GameContent.Tile_Entities;
  using Terraria.ID;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Exceptions;
@@ -10,7 +10,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -53,6 +_,7 @@
+@@ -54,6 +_,7 @@
  			Main.checkXMas();
  			Main.checkHalloween();
  			bool flag = loadFromCloud && SocialAPI.Cloud != null;
@@ -18,7 +18,7 @@
  			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen)
  			{
  				if (!flag)
-@@ -108,6 +_,8 @@
+@@ -109,6 +_,8 @@
  						}
  						binaryReader.Close();
  						memoryStream.Close();
@@ -27,7 +27,7 @@
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
-@@ -304,6 +_,7 @@
+@@ -305,6 +_,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
  				}
@@ -35,7 +35,7 @@
  				WorldGen.saveLock = false;
  			}
  			Main.serverGenLock = false;
-@@ -999,7 +_,14 @@
+@@ -1000,7 +_,14 @@
  				writer.Write(Main.anglerWhoFinishedToday[i]);
  			}
  			writer.Write(NPC.savedAngler);
@@ -51,7 +51,7 @@
  			writer.Write(NPC.savedStylist);
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(Main.invasionSizeStart);
-@@ -1052,7 +_,7 @@
+@@ -1053,7 +_,7 @@
  					byte b2;
  					byte b = b2 = (b3 = 0);
  					bool flag = false;
@@ -60,7 +60,7 @@
  					{
  						flag = true;
  						if (tile.type == 127)
-@@ -1089,9 +_,11 @@
+@@ -1090,9 +_,11 @@
  						}
  						if (Main.tileFrameImportant[(int)tile.type])
  						{
@@ -74,7 +74,7 @@
  							num2++;
  							array[num2] = (byte)(tile.frameY & 255);
  							num2++;
-@@ -1105,10 +_,10 @@
+@@ -1106,10 +_,10 @@
  							num2++;
  						}
  					}
@@ -87,7 +87,7 @@
  						num2++;
  						if (tile.wallColor() != 0)
  						{
-@@ -1266,7 +_,7 @@
+@@ -1267,7 +_,7 @@
  					for (int l = 0; l < 40; l++)
  					{
  						Item item = chest.item[l];

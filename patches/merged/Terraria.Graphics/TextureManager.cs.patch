@@ -8,7 +8,7 @@
  				if (name != "" && name != null)
  				{
  					try
-@@ -51,6 +_,7 @@
+@@ -58,6 +_,7 @@
  						texture2D = TextureManager.BlankTexture;
  					}
  				}

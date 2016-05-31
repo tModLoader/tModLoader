@@ -419,7 +419,7 @@
  				Main.tile[x + 2, y].type = type;
  			}
  		}
-@@ -28396,8 +_,8 @@
+@@ -28400,8 +_,8 @@
  
  		public static bool ShiftTallGate(int x, int y, bool closing)
  		{
@@ -430,7 +430,7 @@
  			Tile tileSafely = Framing.GetTileSafely(x, y);
  			if (tileSafely.type != num)
  			{
-@@ -28676,11 +_,11 @@
+@@ -28680,11 +_,11 @@
  				Main.tile[x - 1, y].type = type;
  				Main.tile[x, y].active(true);
  				Main.tile[x, y].frameY = 0;
@@ -444,7 +444,7 @@
  				Main.tile[x + 1, y].type = type;
  			}
  		}
-@@ -28758,11 +_,11 @@
+@@ -28762,11 +_,11 @@
  					Main.tile[x - 1, y].type = type;
  					Main.tile[x, y].active(true);
  					Main.tile[x, y].frameY = 0;
@@ -458,7 +458,7 @@
  					Main.tile[x + 1, y].type = type;
  					return;
  				}
-@@ -28772,11 +_,11 @@
+@@ -28776,11 +_,11 @@
  				Main.tile[x - 1, y - 1].type = type;
  				Main.tile[x, y - 1].active(true);
  				Main.tile[x, y - 1].frameY = 0;
@@ -472,7 +472,7 @@
  				Main.tile[x + 1, y - 1].type = type;
  				Main.tile[x - 1, y].active(true);
  				Main.tile[x - 1, y].frameY = 18;
-@@ -28784,11 +_,11 @@
+@@ -28788,11 +_,11 @@
  				Main.tile[x - 1, y].type = type;
  				Main.tile[x, y].active(true);
  				Main.tile[x, y].frameY = 18;
@@ -486,7 +486,7 @@
  				Main.tile[x + 1, y].type = type;
  			}
  		}
-@@ -28841,15 +_,15 @@
+@@ -28845,15 +_,15 @@
  				Main.tile[x - 1, y - 1].type = type;
  				Main.tile[x, y - 1].active(true);
  				Main.tile[x, y - 1].frameY = num;
@@ -506,7 +506,7 @@
  				Main.tile[x, y].type = type;
  			}
  		}
-@@ -32490,11 +_,11 @@
+@@ -32494,11 +_,11 @@
  			Main.tile[x - 1, y - 1].type = type;
  			Main.tile[x, y - 1].active(true);
  			Main.tile[x, y - 1].frameY = 0;
@@ -520,7 +520,7 @@
  			Main.tile[x + 1, y - 1].type = type;
  			Main.tile[x - 1, y].active(true);
  			Main.tile[x - 1, y].frameY = 18;
-@@ -32502,11 +_,11 @@
+@@ -32506,11 +_,11 @@
  			Main.tile[x - 1, y].type = type;
  			Main.tile[x, y].active(true);
  			Main.tile[x, y].frameY = 18;
@@ -534,7 +534,7 @@
  			Main.tile[x + 1, y].type = type;
  		}
  
-@@ -46848,11 +_,11 @@
+@@ -46859,11 +_,11 @@
  								}
  								else if ((num4 >= 0 && Main.tileSolid[num4] && !Main.tileNoAttach[num4]) || num4 == 124 || (num4 == 5 && num8 == 5 && num6 == 5))
  								{
@@ -548,7 +548,7 @@
  								}
  								else if (tile.wall > 0)
  								{
-@@ -47142,21 +_,21 @@
+@@ -47153,21 +_,21 @@
  								{
  									if (tile.frameY < 108 || tile.frameY > 54)
  									{
@@ -573,7 +573,7 @@
  									}
  								}
  								else
-@@ -47218,7 +_,7 @@
+@@ -47229,7 +_,7 @@
  									}
  									if (tile.frameY < 54 || tile.frameY > 90)
  									{
@@ -582,7 +582,7 @@
  									}
  								}
  								else if (num36 >= 0 && Main.tileMoss[num36])
-@@ -47233,7 +_,7 @@
+@@ -47244,7 +_,7 @@
  									}
  									if (tile.frameY < 108 || tile.frameY > 54)
  									{
@@ -591,7 +591,7 @@
  									}
  								}
  								else if (num37 >= 0 && Main.tileMoss[num37])
-@@ -47248,7 +_,7 @@
+@@ -47259,7 +_,7 @@
  									}
  									if (tile.frameY < 162 || tile.frameY > 198)
  									{
