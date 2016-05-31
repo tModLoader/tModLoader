@@ -248,6 +248,15 @@
  			}
  		}
  
+@@ -4304,7 +_,7 @@
+ 		public static void InitLifeBytes()
+ 		{
+ 			NPC nPC = new NPC();
+-			for (int i = -65; i < 540; i++)
++			for (int i = -65; i < NPCLoader.NPCCount; i++)
+ 			{
+ 				if (i != 0)
+ 				{
 @@ -6866,6 +_,10 @@
  		protected override void LoadContent()
  		{
