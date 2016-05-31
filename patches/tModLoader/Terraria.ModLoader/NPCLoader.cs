@@ -405,14 +405,17 @@ namespace Terraria.ModLoader
 		//  NPCLoader.ReceiveExtraAI(nPC, reader);
 		public static void ReceiveExtraAI(NPC npc, BinaryReader reader)
 		{
-			byte[] extraAI = reader.ReadBytes(reader.ReadByte());
-			if (extraAI.Length > 0 && npc.modNPC != null)
+			if (npc.modNPC != null)
 			{
-				using (MemoryStream stream = new MemoryStream(extraAI))
+				byte[] extraAI = reader.ReadBytes(reader.ReadByte());
+				if (extraAI.Length > 0)
 				{
-					using (BinaryReader modReader = new BinaryReader(stream))
+					using (MemoryStream stream = new MemoryStream(extraAI))
 					{
-						npc.modNPC.ReceiveExtraAI(modReader);
+						using (BinaryReader modReader = new BinaryReader(stream))
+						{
+							npc.modNPC.ReceiveExtraAI(modReader);
+						}
 					}
 				}
 			}

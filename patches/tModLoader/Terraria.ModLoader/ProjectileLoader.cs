@@ -215,7 +215,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NetMessage.SendData at end of case 27 call
 		//  ProjectileLoader.SendExtraAI(projectile, writer, ref bb14);
-		public static void SendExtraAI(Projectile projectile, BinaryWriter writer, ref BitsByte flags)
+		public static byte[] SendExtraAI(Projectile projectile, ref BitsByte flags)
 		{
 			if (projectile.modProjectile != null)
 			{
@@ -232,10 +232,10 @@ namespace Terraria.ModLoader
 				if (data.Length > 0)
 				{
 					flags[Projectile.maxAI + 1] = true;
-					writer.Write((byte)data.Length);
-					writer.Write(data);
 				}
+				return data;
 			}
+			return new byte[0];
 		}
 		//in Terraria.MessageBuffer.GetData for case 27 after reading all data add
 		//  byte[] extraAI = ProjectileLoader.ReadExtraAI(reader, bitsByte14);

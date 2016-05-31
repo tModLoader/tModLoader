@@ -46,7 +46,7 @@
  							break;
  						}
  					case 24:
-@@ -544,7 +_,7 @@
+@@ -544,10 +_,11 @@
  									bb14[num10] = true;
  								}
  							}
@@ -55,14 +55,22 @@
  							{
  								bb14[Projectile.maxAI] = true;
  							}
-@@ -560,6 +_,7 @@
++							byte[] extraAI = ProjectileLoader.SendExtraAI(projectile, ref bb14);
+ 							writer.Write(bb14);
+ 							for (int num11 = 0; num11 < Projectile.maxAI; num11++)
  							{
- 								writer.Write((short)projectile.projUUID);
+@@ -555,6 +_,11 @@
+ 								{
+ 									writer.Write(projectile.ai[num11]);
+ 								}
++							}
++							if (bb14[Projectile.maxAI + 1])
++							{
++								writer.Write((byte)extraAI.Length);
++								writer.Write(extraAI);
  							}
-+							ProjectileLoader.SendExtraAI(projectile, writer, ref bb14);
- 							break;
- 						}
- 					case 28:
+ 							if (bb14[Projectile.maxAI])
+ 							{
 @@ -594,6 +_,7 @@
  							writer.Write((short)item3.stack);
  							writer.Write(item3.prefix);
