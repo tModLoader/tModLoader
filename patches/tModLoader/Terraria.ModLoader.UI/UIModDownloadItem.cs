@@ -164,19 +164,52 @@ namespace Terraria.ModLoader.UI
 					client.DownloadFileCompleted += (s, e) =>
 					{
 						Main.menuMode = Interface.modBrowserID;
+						if (e.Error != null)
+						{
+							if (e.Cancelled)
+							{
+							}
+							else
+							{
+								HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
+								if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
+								{
+									Interface.errorMessage.SetMessage("The Mod Browser server is under heavy load. Try again later.");
+									Interface.errorMessage.SetGotoMenu(0);
+									Interface.errorMessage.SetFile(ErrorLogger.LogPath);
+									Main.gameMenu = true;
+									Main.menuMode = Interface.errorMessageID;
+								}
+								else
+								{
+									Interface.errorMessage.SetMessage("Unknown Mod Browser Error. Try again later.");
+									Interface.errorMessage.SetGotoMenu(0);
+									Interface.errorMessage.SetFile(ErrorLogger.LogPath);
+									Main.gameMenu = true;
+									Main.menuMode = Interface.errorMessageID;
+								}
+							}
+						}
+						else if (!e.Cancelled)
+						{
+							// Downloaded OK
+							File.Copy(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod", ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod", true);
+							if (!update)
+							{
+								string path = ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".enabled";
+								using (StreamWriter writer = File.CreateText(path))
+								{
+									writer.Write("false");
+								}
+							}
+							RemoveChild(button2);
+						}
+						// Clean up: Delete temp
+						File.Delete(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
 					};
-					client.DownloadFileAsync(new Uri(download), ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod");
-					//client.DownloadFile(download, ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod");
+					client.DownloadFileAsync(new Uri(download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
+					//client.DownloadFileAsync(new Uri(download), ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod");
 				}
-				if (!update)
-				{
-					string path = ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".enabled";
-					using (StreamWriter writer = File.CreateText(path))
-					{
-						writer.Write("false");
-					}
-				}
-				base.RemoveChild(button2);
 				Main.menuMode = Interface.downloadModID;
 			}
 			catch (WebException e)
@@ -193,6 +226,20 @@ namespace Terraria.ModLoader.UI
 			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);
 			Interface.modInfo.SetURL(this.homepage);
 			Main.menuMode = Interface.modInfoID;
+		}
+
+		HttpStatusCode GetHttpStatusCode(System.Exception err)
+		{
+			if (err is WebException)
+			{
+				WebException we = (WebException)err;
+				if (we.Response is HttpWebResponse)
+				{
+					HttpWebResponse response = (HttpWebResponse)we.Response;
+					return response.StatusCode;
+				}
+			}
+			return 0;
 		}
 	}
 }
