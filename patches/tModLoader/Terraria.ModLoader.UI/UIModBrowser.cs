@@ -30,6 +30,8 @@ namespace Terraria.ModLoader.UI
 		private bool updateAvailable;
 		private string updateText;
 		private string updateURL;
+		public bool aModUpdated = false;
+		public bool aNewModDownloaded = false;
 
 		public override void OnInitialize()
 		{
@@ -198,6 +200,20 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(11, -1, -1, 1);
 			Main.menuMode = 0;
+			if (Interface.modBrowser.aModUpdated)
+			{
+				Interface.infoMessage.SetMessage("You have updated a mod. Remember to reload mods for it to take effect.");
+				Interface.infoMessage.SetGotoMenu(0);
+				Main.menuMode = Interface.infoMessageID;
+			}
+			else if (Interface.modBrowser.aNewModDownloaded)
+			{
+				Interface.infoMessage.SetMessage("Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.");
+				Interface.infoMessage.SetGotoMenu(0);
+				Main.menuMode = Interface.infoMessageID;
+			}
+			Interface.modBrowser.aModUpdated = false;
+			Interface.modBrowser.aNewModDownloaded = false;
 		}
 
 		private static void ReloadList(UIMouseEvent evt, UIElement listeningElement)
