@@ -20,6 +20,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.magic = true;
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
+			projectile.netImportant = true;
 		}
 
 		public override void SendExtraAI(BinaryWriter writer)

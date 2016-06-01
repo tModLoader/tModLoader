@@ -10,6 +10,8 @@ namespace ExampleMod.Projectiles.PuritySpirit
 {
 	public class VoidWorld : ModProjectile
 	{
+		private Random rand;
+
 		public override void SetDefaults()
 		{
 			projectile.name = "Void World";
@@ -38,8 +40,8 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public override void AI()
 		{
-			projectile.ai[1] += 1f;
-			if (!Main.dedServ && projectile.ai[1] >= 180f && projectile.ai[1] < 480f && Main.rand.Next(10) == 0)
+			projectile.localAI[0] += 1f;
+			if (!Main.dedServ && projectile.localAI[0] >= 180f && projectile.localAI[0] < 480f && Main.rand.Next(10) == 0)
 			{
 				ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
 				if (modPlayer.heroLives > 0)
@@ -52,7 +54,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 				}
 			}
 			projectile.position = NextPosition();
-			if (projectile.ai[1] >= 500f)
+			if (projectile.localAI[0] >= 500f)
 			{
 				projectile.Kill();
 			}
@@ -60,32 +62,28 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		private Vector2 NextPosition()
 		{
+			if (rand == null)
+			{
+				rand = new Random((int)projectile.ai[1]);
+			}
 			const int interval = 60;
 			int arenaWidth = NPCs.PuritySpirit.PuritySpirit.arenaWidth;
 			int arenaHeight = NPCs.PuritySpirit.PuritySpirit.arenaHeight;
 			NPC npc = Main.npc[(int)projectile.ai[0]];
 			NPCs.PuritySpirit.PuritySpirit modNPC = (NPCs.PuritySpirit.PuritySpirit)npc.modNPC;
 			Vector2 nextPos;
-			if (projectile.ai[1] > 300f)
+			if (projectile.localAI[0] > 300f)
 			{
 				nextPos = npc.Center;
 			}
-			else if ((int)projectile.ai[1] % 100 == 0 || (Main.expertMode && (int)projectile.ai[1] % 50 == 0))
+			else if ((int)projectile.localAI[0] % 100 == 0 || (Main.expertMode && (int)projectile.localAI[0] % 50 == 0))
 			{
-				int k = Main.myPlayer;
-				if (!modNPC.targets.Contains(k))
-				{
-					k = modNPC.targets[Main.rand.Next(modNPC.targets.Count)];
-				}
+				int k = modNPC.targets[rand.Next(modNPC.targets.Count)];
 				nextPos = Main.player[k].Center;
 			}
-			else if (Main.rand.Next(5) == 0)
+			else if (rand.Next(5) == 0)
 			{
-				int k = Main.myPlayer;
-				if (!modNPC.targets.Contains(k))
-				{
-					k = modNPC.targets[Main.rand.Next(modNPC.targets.Count)];
-				}
+				int k = modNPC.targets[rand.Next(modNPC.targets.Count)];
 				nextPos = Main.player[k].Center + interval * new Vector2(Main.rand.Next(-5, 6), Main.rand.Next(-5, 6));
 				if (nextPos.X < npc.Center.X - arenaWidth / 2)
 				{
@@ -110,7 +108,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 				int rightBound = (arenaWidth / 2 - 40) / interval + 1;
 				int upperBound = (-arenaHeight / 2 + 40) / interval;
 				int lowerBound = (arenaHeight / 2 - 40) / interval + 1;
-				nextPos = npc.Center + interval * new Vector2(Main.rand.Next(leftBound, rightBound), Main.rand.Next(upperBound, lowerBound));
+				nextPos = npc.Center + interval * new Vector2(rand.Next(leftBound, rightBound), rand.Next(upperBound, lowerBound));
 			}
 			nextPos.X -= projectile.width / 2;
 			nextPos.Y -= projectile.height / 2;
@@ -131,7 +129,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		{
 			projHitbox.Width -= 16;
 			projHitbox.Height -= 16;
-			for (int k = Math.Max(180, (int)projectile.ai[1] - 300); k < projectile.oldPos.Length; k++)
+			for (int k = Math.Max(180, (int)projectile.localAI[0] - 301); k < projectile.oldPos.Length; k++)
 			{
 				if (projectile.oldPos[k] != Vector2.Zero)
 				{
@@ -151,7 +149,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		{
 			const int prime1 = 101;
 			const int prime2 = 107;
-			for (int k = Math.Max(0, (int)projectile.ai[1] - 300); k < projectile.oldPos.Length; k++)
+			for (int k = Math.Max(0, (int)projectile.localAI[0] - 300); k < projectile.oldPos.Length; k++)
 			{
 				if (projectile.oldPos[k] != Vector2.Zero)
 				{

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -203,7 +204,6 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (stage == 4 && difficulty > 2)
 			{
 				Projectile.NewProjectile(npc.Center.X, npc.Center.Y - arenaHeight / 2, 0f, NegativeWall.speed, mod.ProjectileType("NegativeWall"), 0, 0f, Main.myPlayer, npc.whoAmI, -arenaWidth);
-				shieldTimer = 600;
 				stage++;
 			}
 			if (stage == 5 && difficulty > 3)
@@ -312,12 +312,26 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public void FindPlayers()
 		{
-			targets.Clear();
-			for (int k = 0; k < 255; k++)
+			if (Main.netMode != 1)
 			{
-				if (Main.player[k].active && Main.player[k].GetModPlayer<ExamplePlayer>(mod).heroLives > 0)
+				int originalCount = targets.Count;
+				targets.Clear();
+				for (int k = 0; k < 255; k++)
 				{
-					targets.Add(k);
+					if (Main.player[k].active && Main.player[k].GetModPlayer<ExamplePlayer>(mod).heroLives > 0)
+					{
+						targets.Add(k);
+					}
+				}
+				if (Main.netMode == 2 && targets.Count != originalCount)
+				{
+					ModPacket netMessage = GetPacket(PuritySpiritMessageType.TargetList);
+					netMessage.Write(targets.Count);
+					foreach (int target in targets)
+					{
+						netMessage.Write(target);
+					}
+					netMessage.Send();
 				}
 			}
 		}
@@ -337,7 +351,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public void Initialize()
 		{
-			if (attackProgress == 0)
+			if (attackProgress == 1)
 			{
 				Vector2 center = npc.Center;
 				for (int k = 0; k < 255; k++)
@@ -345,9 +359,15 @@ namespace ExampleMod.NPCs.PuritySpirit
 					Player player = Main.player[k];
 					if (player.active && player.position.X > center.X - arenaWidth / 2 && player.position.X + player.width < center.X + arenaWidth / 2 && player.position.Y > center.Y - arenaHeight / 2 && player.position.Y + player.height < center.Y + arenaHeight / 2)
 					{
-                        player.GetModPlayer<ExamplePlayer>(mod).heroLives = 3;
+						player.GetModPlayer<ExamplePlayer>(mod).heroLives = 3;
+						if (Main.netMode == 2)
+						{
+							ModPacket netMessage = GetPacket(PuritySpiritMessageType.HeroPlayer);
+							netMessage.Send(k);
+						}
 					}
 				}
+				shieldTimer = 1000;
 			}
 			attackProgress++;
 			if (attackProgress == 90)
@@ -371,6 +391,12 @@ namespace ExampleMod.NPCs.PuritySpirit
 				attackProgress = 0;
 				stage++;
 				npc.dontTakeDamage = false;
+				if (Main.netMode == 2)
+				{
+					ModPacket netMessage = GetPacket(PuritySpiritMessageType.DontTakeDamage);
+					netMessage.Write(false);
+					netMessage.Send();
+				}
 			}
 		}
 
@@ -393,7 +419,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 				int proj = Projectile.NewProjectile(pos.X, pos.Y, 0f, 0f, mod.ProjectileType("PureCrystal"), damage, 0f, Main.myPlayer, npc.whoAmI, angle);
 				Main.projectile[proj].localAI[0] = radius;
 				Main.projectile[proj].localAI[1] = clockwise ? 1 : -1;
-				Main.projectile[proj].netUpdate = true;
+				NetMessage.SendData(27, -1, -1, "", proj);
 			}
 		}
 
@@ -401,11 +427,11 @@ namespace ExampleMod.NPCs.PuritySpirit
 		{
 			if (attackProgress == 0)
 			{
-				Main.PlaySound(15, -1, -1, 0);
+				PlaySound(15, 0);
 				if (Main.netMode != 1)
 				{
 					int damage = Main.expertMode ? 720 : 600;
-					Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("VoidWorld"), damage, 0f, Main.myPlayer, npc.whoAmI);
+					Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("VoidWorld"), damage, 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
 				}
 			}
 			attackProgress++;
@@ -544,20 +570,13 @@ namespace ExampleMod.NPCs.PuritySpirit
 					int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("NullLaser"), damage, 0f, Main.myPlayer, npc.whoAmI, (int)(60f + k * timer));
 					Main.projectile[proj].localAI[0] = (int)totalTime;
 					((NullLaser)Main.projectile[proj].modProjectile).warningTime = timer;
-					Main.projectile[proj].netUpdate = true;
+					NetMessage.SendData(27, -1, -1, "", proj);
 				}
 				attackProgress = (int)totalTime;
 			}
 			if (attackProgress % 20 == 0)
 			{
-				if (targets.Contains(Main.myPlayer))
-				{
-					Main.PlaySound(2, -1, -1, 15);
-				}
-				else
-				{
-					Main.PlaySound(2, (int)npc.position.X, (int)npc.position.Y, 15);
-				}
+				PlaySound(2, 15);
 			}
 			Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("Sparkle"), 0f, 0f, 0, new Color(0, 180, 0), 1.5f);
 			attackProgress--;
@@ -600,7 +619,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 						Main.projectile[proj].localAI[0] = target;
 						Main.projectile[proj].localAI[1] = rotationSpeed;
 						((PuritySphere)Main.projectile[proj].modProjectile).maxTimer = (int)time;
-						Main.projectile[proj].netUpdate = true;
+						NetMessage.SendData(27, -1, -1, "", proj);
 					}
 				}
 				attackProgress = 60 + (int)time + PuritySphere.strikeTime;
@@ -645,7 +664,16 @@ namespace ExampleMod.NPCs.PuritySpirit
 				npc.active = true;
 				npc.life = 1;
 				npc.dontTakeDamage = true;
-				stage = 10;
+				if (Main.netMode == 2)
+				{
+					ModPacket netMessage = GetPacket(PuritySpiritMessageType.DontTakeDamage);
+					netMessage.Write(true);
+					netMessage.Send();
+				}
+				if (Main.netMode != 1)
+				{
+					stage = 10;
+				}
 				return false;
 			}
 			return true;
@@ -683,6 +711,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (attackProgress >= 180)
 			{
 				npc.dontTakeDamage = false;
+				npc.soundHit = 0;
 				npc.StrikeNPCNoInteraction(9999, 0f, 0);
 			}
 		}
@@ -798,14 +827,23 @@ namespace ExampleMod.NPCs.PuritySpirit
 		private void OnHit(int damage)
 		{
 			damageTotal += damage * 60;
-			//TODO - send information when server support is finished
+			if (Main.netMode != 0)
+			{
+				ModPacket netMessage = GetPacket(PuritySpiritMessageType.Damage);
+				netMessage.Write(damage * 60);
+				if (Main.netMode == 1)
+				{
+					netMessage.Write(Main.myPlayer);
+				}
+				netMessage.Send();
+			}
 		}
 
 		public override bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
 		{
 			if (damageTotal >= dpsCap * 60)
 			{
-				if (!saidRushMessage)
+				if (!saidRushMessage && Main.netMode != 1)
 				{
 					Talk("Oh, in a rush now, are we?");
 					saidRushMessage = true;
@@ -862,7 +900,94 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		private void Talk(string message)
 		{
-			Main.NewText("<Spirit of Purity> " + message, 150, 250, 150);
+			string text = "<Spirit of Purity> " + message;
+			if (Main.netMode != 2)
+			{
+				Main.NewText("<Spirit of Purity> " + message, 150, 250, 150);
+			}
+			else
+			{
+				NetMessage.SendData(25, -1, -1, text, 255, 150, 250, 150);
+			}
+		}
+
+		private void PlaySound(int type, int style)
+		{
+			if (Main.netMode != 2)
+			{
+				if (targets.Contains(Main.myPlayer))
+				{
+					Main.PlaySound(type, -1, -1, style);
+				}
+				else
+				{
+					Main.PlaySound(type, (int)npc.position.X, (int)npc.position.Y, style);
+				}
+			}
+			else
+			{
+				ModPacket netMessage = GetPacket(PuritySpiritMessageType.PlaySound);
+				netMessage.Write(type);
+				netMessage.Write(style);
+				netMessage.Send();
+			}
+		}
+
+		private ModPacket GetPacket(PuritySpiritMessageType type)
+		{
+			ModPacket packet = mod.GetPacket();
+			packet.Write((byte)ExampleModMessageType.PuritySpirit);
+			packet.Write(npc.whoAmI);
+			packet.Write((byte)type);
+			return packet;
+		}
+
+		public void HandlePacket(BinaryReader reader)
+		{
+			PuritySpiritMessageType type = (PuritySpiritMessageType)reader.ReadByte();
+			if (type == PuritySpiritMessageType.HeroPlayer)
+			{
+				Player player = Main.player[Main.myPlayer];
+				player.GetModPlayer<ExamplePlayer>(mod).heroLives = 3;
+			}
+			else if (type == PuritySpiritMessageType.TargetList)
+			{
+				int numTargets = reader.ReadInt32();
+				targets.Clear();
+				for (int k = 0; k < numTargets; k++)
+				{
+					targets.Add(reader.ReadInt32());
+				}
+			}
+			else if (type == PuritySpiritMessageType.DontTakeDamage)
+			{
+				npc.dontTakeDamage = reader.ReadBoolean();
+			}
+			else if (type == PuritySpiritMessageType.PlaySound)
+			{
+				int soundType = reader.ReadInt32();
+				int style = reader.ReadInt32();
+				if (targets.Contains(Main.myPlayer))
+				{
+					Main.PlaySound(soundType, -1, -1, style);
+				}
+				else
+				{
+					Main.PlaySound(soundType, (int)npc.position.X, (int)npc.position.Y, style);
+				}
+			}
+			else if (type == PuritySpiritMessageType.Damage)
+			{
+				int damage = reader.ReadInt32();
+				damageTotal += damage;
+				if (Main.netMode == 2)
+				{
+					ModPacket netMessage = GetPacket(PuritySpiritMessageType.Damage);
+					int ignore = reader.ReadInt32();
+					netMessage.Write(damage);
+					netMessage.Send(-1, ignore);
+				}
+			}
 		}
 	}
 
@@ -884,5 +1009,14 @@ namespace ExampleMod.NPCs.PuritySpirit
 			this.position += this.velocity * this.strength;
 			this.strength -= 0.01f;
 		}
+	}
+
+	enum PuritySpiritMessageType : byte
+	{
+		HeroPlayer,
+		TargetList,
+		DontTakeDamage,
+		PlaySound,
+		Damage
 	}
 }

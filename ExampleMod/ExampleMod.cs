@@ -301,7 +301,19 @@ namespace ExampleMod
 				}
 				for (int k = 0; k < num; k++)
 				{
-					NPC.NewNPC(x, y, type);
+					if (Main.netMode == 0)
+					{
+						NPC.NewNPC(x, y, type);
+					}
+					else if (Main.netMode == 1)
+					{
+						var netMessage = GetPacket();
+						netMessage.Write((byte)ExampleModMessageType.SpawnNPC);
+						netMessage.Write(x);
+						netMessage.Write(y);
+						netMessage.Write(type);
+						netMessage.Send();
+					}
 				}
 			}
 			catch
@@ -362,7 +374,7 @@ namespace ExampleMod
 				{
 					stack = 1;
 				}
-				Item.NewItem((int)player.position.X, (int)player.position.Y, player.width, player.height, type, stack);
+				player.QuickSpawnItem(type, stack);
 			}
 			catch
 			{
@@ -522,6 +534,34 @@ namespace ExampleMod
 						}
 					}
 					break;
+				case ExampleModMessageType.SpawnNPC:
+					NPC.NewNPC(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+					break;
+				case ExampleModMessageType.PuritySpirit:
+					PuritySpirit spirit = Main.npc[reader.ReadInt32()].modNPC as PuritySpirit;
+					if (spirit != null && spirit.npc.active)
+					{
+						spirit.HandlePacket(reader);
+					}
+					break;
+				case ExampleModMessageType.HeroLives:
+					Player player = Main.player[reader.ReadInt32()];
+					int lives = reader.ReadInt32();
+					player.GetModPlayer<ExamplePlayer>(this).heroLives = lives;
+					if (lives > 0)
+					{
+						string text = player.name + " has " + lives;
+						if (lives == 1)
+						{
+							text += " life left!";
+						}
+						else
+						{
+							text += " lives left!";
+						}
+						NetMessage.SendData(25, -1, -1, text, 255, 255, 25, 25);
+					}
+					break;
 				default:
 					ErrorLogger.Log("ExampleMod: Unknown Message type: " + msgType);
 					break;
@@ -533,6 +573,9 @@ namespace ExampleMod
 	{
 		SetTremorTime,
 		VolcanicRubbleMultiplayerFix,
+		SpawnNPC,
+		PuritySpirit,
+		HeroLives
 	}
 }
 

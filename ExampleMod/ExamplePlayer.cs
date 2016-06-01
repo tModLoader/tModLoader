@@ -420,6 +420,14 @@ namespace ExampleMod
 			if (heroLives > 0)
 			{
 				heroLives--;
+				if (Main.netMode == 1)
+				{
+					ModPacket packet = mod.GetPacket();
+					packet.Write((byte)ExampleModMessageType.HeroLives);
+					packet.Write(player.whoAmI);
+					packet.Write(heroLives);
+					packet.Send();
+				}
 				if (heroLives > 0)
 				{
 					player.statLife = player.statLifeMax2;
@@ -527,7 +535,7 @@ namespace ExampleMod
 				{
 					Texture2D texture = mod.GetTexture("NPCs/PuritySpirit/Revive");
 					int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
-					int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - 60f + modPlayer.reviveTime - Main.screenPosition.Y);
+					int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 4f - 60f + modPlayer.reviveTime - Main.screenPosition.Y);
 					DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, Color.White * (modPlayer.reviveTime / 60f), 0f, new Vector2(texture.Width / 2f, texture.Height / 2f), 1f, SpriteEffects.None, 0);
 					Main.playerDrawData.Add(data);
 				}
@@ -541,7 +549,7 @@ namespace ExampleMod
 				Player drawPlayer = drawInfo.drawPlayer;
 				Mod mod = ModLoader.GetMod("ExampleMod");
 				ExamplePlayer modPlayer = drawPlayer.GetModPlayer<ExamplePlayer>(mod);
-                if (modPlayer.lockTime > 0)
+				if (modPlayer.lockTime > 0)
 				{
 					int frame = 2;
 					if (modPlayer.lockTime > 50)
