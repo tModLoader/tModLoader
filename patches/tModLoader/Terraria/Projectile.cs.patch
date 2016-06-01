@@ -454,18 +454,20 @@
  			if (this.type == 634 || this.type == 635)
  			{
  				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
-@@ -40816,6 +_,11 @@
- 									if (!Main.hardMode && Main.tile[num714, num715].type == 58)
+@@ -40813,7 +_,13 @@
  									{
  										flag4 = false;
-+										//patch file
-+									}
-+									if (!TileLoader.CanExplode(num707, num708))
+ 									}
++									//patch file: num714, num715
+ 									if (!Main.hardMode && Main.tile[num714, num715].type == 58)
 +									{
 +										flag4 = false;
- 									}
- 									if (flag4)
++										//patch file: num714, num715
++									}
++									if (!TileLoader.CanExplode(num714, num715))
  									{
+ 										flag4 = false;
+ 									}
 @@ -41204,11 +_,17 @@
  					}
  				}
