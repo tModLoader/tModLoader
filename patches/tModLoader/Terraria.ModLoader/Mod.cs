@@ -1062,7 +1062,7 @@ namespace Terraria.ModLoader
 			{
 				ModGore modGore = null;
 				Type t;
-				if (modGoreNames.TryGetValue(texture.Replace('/', '.'), out t))
+				if (modGoreNames.TryGetValue(Name + "." + texture.Replace('/', '.'), out t))
 					modGore = (ModGore)Activator.CreateInstance(t);
 
 				AddGore(Name + '/' + texture, modGore);
