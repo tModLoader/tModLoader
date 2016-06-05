@@ -416,6 +416,25 @@ namespace Terraria.ModLoader
 			}
 			return "";
 		}
+
+		public static bool IsDresser(int type)
+		{
+			if (type == TileID.Dressers)
+			{
+				return true;
+			}
+			return ModDresserName(type).Length > 0;
+		}
+
+		public static string ModDresserName(int type)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile != null)
+			{
+				return modTile.dresser;
+			}
+			return "";
+		}
 		//in Terraria.Player.CheckSpawn add this to bed type check
 		public static bool IsModBed(int type)
 		{

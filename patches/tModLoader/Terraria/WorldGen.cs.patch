@@ -313,12 +313,21 @@
  			Main.tile[num4 + 1, num2 + 2].frameY = (short)(num6 + 36);
  			Main.tile[num4 + 1, num2 + 2].frameX = (short)(num3 + 18);
  			Main.tile[num4 + 1, num2 + 2].color(color3);
+@@ -25554,7 +_,7 @@
+ 			{
+ 				ushort type2 = Main.tile[k, num4 - 1].type;
+ 				ushort type3 = Main.tile[k + 1, num4 - 1].type;
+-				if (type2 != 21 && type3 != 21 && type2 != 88 && type3 != 88 && type2 != 441 && type3 != 441 && !WorldGen.SolidTileAllowBottomSlope(k, num4 + 2) && !WorldGen.SolidTileAllowBottomSlope(k + 1, num4 + 2))
++				if (!TileLoader.IsChest(type2) && !TileLoader.IsChest(type3) && !TileLoader.IsDresser(type2) && !TileLoader.IsDresser(type3) && type2 != 441 && type3 != 441 && !WorldGen.SolidTileAllowBottomSlope(k, num4 + 2) && !WorldGen.SolidTileAllowBottomSlope(k + 1, num4 + 2))
+ 				{
+ 					flag = true;
+ 				}
 @@ -25853,7 +_,7 @@
  			{
  			}
  			k = j - k / 18;
 -			return Main.tile[num, k - 1].type == 21 || Main.tile[num + 1, k - 1].type == 21 || Main.tile[num, k - 1].type == 441 || Main.tile[num + 1, k - 1].type == 441 || Main.tile[num, k - 1].type == 88 || Main.tile[num + 1, k - 1].type == 88;
-+			return TileLoader.IsChest(Main.tile[num, k - 1].type) || TileLoader.IsChest(Main.tile[num + 1, k - 1].type) || Main.tile[num, k - 1].type == 441 || Main.tile[num + 1, k - 1].type == 441 || Main.tile[num, k - 1].type == 88 || Main.tile[num + 1, k - 1].type == 88;
++			return TileLoader.IsChest(Main.tile[num, k - 1].type) || TileLoader.IsChest(Main.tile[num + 1, k - 1].type) || Main.tile[num, k - 1].type == 441 || Main.tile[num + 1, k - 1].type == 441 || TileLoader.IsDresser(Main.tile[num, k - 1].type) || TileLoader.IsDresser(Main.tile[num + 1, k - 1].type);
  		}
  
  		public static void OreRunner(int i, int j, double strength, int steps, ushort type)
@@ -352,6 +361,15 @@
  			TileObject toBePlaced;
  			if (!TileObject.CanPlace(x, y, type, style, direction, out toBePlaced, false))
  			{
+@@ -28556,7 +_,7 @@
+ 					flag2 = false;
+ 				}
+ 			}
+-			if (type == 88)
++			if (TileLoader.IsDresser(type))
+ 			{
+ 				int num2 = Chest.CreateChest(x - 1, y - 1, -1);
+ 				if (num2 == -1)
 @@ -30768,7 +_,7 @@
  						int wall = (int)Main.tile[k, l].wall;
  						if (conversionType == 4)
@@ -459,6 +477,52 @@
  			if (j >= 1)
  			{
  				tile2 = Main.tile[i, j - 1];
+@@ -34291,11 +_,11 @@
+ 			{
+ 				int type = (int)tile2.type;
+ 				int num = type;
+-				if (num <= 26)
++				if (num <= 26 || TileLoader.IsChest(num))
+ 				{
+ 					if (num != 5)
+ 					{
+-						if (num != 21 && num != 26)
++						if (!TileLoader.IsChest(num) && num != 26)
+ 						{
+ 							goto IL_12B;
+ 						}
+@@ -34309,7 +_,7 @@
+ 						goto IL_12B;
+ 					}
+ 				}
+-				else if (num != 72 && num != 88)
++				else if (num != 72 && !TileLoader.IsDresser(num))
+ 				{
+ 					if (num != 323)
+ 					{
+@@ -34328,11 +_,11 @@
+ 			}
+ 			IL_12B:
+ 			ushort type2 = tile.type;
+-			if (type2 <= 21)
++			if (type2 <= 21 || TileLoader.IsChest(type2))
+ 			{
+ 				if (type2 != 10)
+ 				{
+-					if (type2 == 21)
++					if (TileLoader.IsChest(type2))
+ 					{
+ 						if (!Chest.CanDestroyChest(i - (int)(tile.frameX / 18 % 2), j - (int)(tile.frameY / 18)))
+ 						{
+@@ -34346,7 +_,7 @@
+ 					return false;
+ 				}
+ 			}
+-			else if (type2 != 88)
++			else if (!TileLoader.IsDresser(type2))
+ 			{
+ 				if (type2 != 138)
+ 				{
 @@ -34355,7 +_,7 @@
  						int num2 = i - (int)(tile.frameX % 54 / 18);
  						for (int k = 0; k < 3; k++)
@@ -473,7 +537,7 @@
  						Main.tile[i, j - 1] = new Tile();
  					}
 -					if (j >= 1 && Main.tile[i, j - 1].active() && ((Main.tile[i, j - 1].type == 5 && tile.type != 5) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (Main.tile[i, j - 1].type == 21 && tile.type != 21) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (Main.tile[i, j - 1].type == 88 && tile.type != 88) || (Main.tile[i, j - 1].type == 26 && tile.type != 26) || (Main.tile[i, j - 1].type == 72 && tile.type != 72)))
-+					if (j >= 1 && Main.tile[i, j - 1].active() && ((Main.tile[i, j - 1].type == 5 && tile.type != 5) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (TileLoader.IsChest(Main.tile[i, j - 1].type) && !TileLoader.IsChest(tile.type)) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (Main.tile[i, j - 1].type == 88 && tile.type != 88) || (Main.tile[i, j - 1].type == 26 && tile.type != 26) || (Main.tile[i, j - 1].type == 72 && tile.type != 72)))
++					if (j >= 1 && Main.tile[i, j - 1].active() && ((Main.tile[i, j - 1].type == 5 && tile.type != 5) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (TileLoader.IsChest(Main.tile[i, j - 1].type) && !TileLoader.IsChest(tile.type)) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (TileLoader.IsDresser(Main.tile[i, j - 1].type) && !TileLoader.IsDresser(tile.type)) || (Main.tile[i, j - 1].type == 26 && tile.type != 26) || (Main.tile[i, j - 1].type == 72 && tile.type != 72)))
  					{
  						if (Main.tile[i, j - 1].type == 5)
  						{
@@ -586,6 +650,36 @@
  		}
  
  		public static void SpreadDesertWalls(int wallDist, int i, int j)
+@@ -46072,11 +_,11 @@
+ 			if (Main.tile[i, j - 1].active())
+ 			{
+ 				ushort type2 = Main.tile[i, j - 1].type;
+-				if (type2 <= 72)
+-				{
+-					if (type2 <= 21)
+-					{
+-						if (type2 != 5 && type2 != 21)
++				if (type2 <= 72 || TileLoader.IsChest(type2))
++				{
++					if (type2 <= 21 || TileLoader.IsChest(type2))
++					{
++						if (type2 != 5 && !TileLoader.IsChest(type2))
+ 						{
+ 							return true;
+ 						}
+@@ -46086,9 +_,9 @@
+ 						return true;
+ 					}
+ 				}
+-				else if (type2 <= 88)
+-				{
+-					if (type2 != 77 && type2 != 88)
++				else if (type2 <= 88 || TileLoader.IsDresser(type2))
++				{
++					if (type2 != 77 && !TileLoader.IsDresser(type2))
+ 					{
+ 						return true;
+ 					}
 @@ -46602,7 +_,11 @@
  					}
  					if (tile.active())
@@ -624,7 +718,7 @@
  									{
  										bool flag18 = true;
 -										if (tile2.active() && (tile2.type == 21 || tile2.type == 441 || tile2.type == 323 || tile2.type == 88))
-+										if (tile2.active() && (TileLoader.IsChest(tile2.type) || tile2.type == 441 || tile2.type == 323 || tile2.type == 88))
++										if (tile2.active() && (TileLoader.IsChest(tile2.type) || tile2.type == 441 || tile2.type == 323 || TileLoader.IsDresser(tile2.type)))
  										{
  											flag18 = false;
  										}
@@ -633,7 +727,7 @@
  								{
  									bool flag19 = true;
 -									if (tile2.active() && (tile2.type == 21 || tile2.type == 441 || tile2.type == 323 || tile2.type == 88))
-+									if (tile2.active() && (TileLoader.IsChest(tile2.type) || tile2.type == 441 || tile2.type == 323 || tile2.type == 88))
++									if (tile2.active() && (TileLoader.IsChest(tile2.type) || tile2.type == 441 || tile2.type == 323 || TileLoader.IsDresser(tile2.type)))
  									{
  										flag19 = false;
  									}
