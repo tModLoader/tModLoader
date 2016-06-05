@@ -4890,7 +4890,7 @@
 -					else if (Main.tile[myX, myY].type == 10)
 -					{
 -						if (Main.tile[myX, myY].frameY >= 594 && Main.tile[myX, myY].frameY <= 646)
-+					else if (TileLoader.OpenDoorID(Main.tile[myX, myY]) >= 0)
++					else if (Main.tile[myX, myY].type == TileID.ClosedDoor || TileLoader.OpenDoorID(Main.tile[myX, myY]) >= 0)
 +					{
 +						if (Main.tile[myX, myY].type == TileID.ClosedDoor && Main.tile[myX, myY].frameY >= 594 && Main.tile[myX, myY].frameY <= 646)
  						{
