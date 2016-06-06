@@ -417,6 +417,24 @@
  					{
  						if (Main.tile[i - 1, j] == null)
  						{
+@@ -32985,7 +_,7 @@
+ 						WorldGen.PlaceOnTable1x1(i, j, type, style);
+ 						WorldGen.SquareTileFrame(i, j, true);
+ 					}
+-					else if (type == 14 || type == 26 || type == 86 || type == 87 || type == 88 || type == 89 || type == 114 || type == 186 || type == 187 || type == 215 || type == 217 || type == 218 || type == 377)
++					else if (type == 14 || type == 26 || type == 86 || type == 87 || TileLoader.IsDresser(type) || type == 89 || type == 114 || type == 186 || type == 187 || type == 215 || type == 217 || type == 218 || type == 377)
+ 					{
+ 						WorldGen.Place3x2(i, j, (ushort)type, style);
+ 						WorldGen.SquareTileFrame(i, j, true);
+@@ -33061,7 +_,7 @@
+ 						WorldGen.Place2xX(i, j, (ushort)type, style);
+ 						WorldGen.SquareTileFrame(i, j, true);
+ 					}
+-					else if (type == 21)
++					else if (TileLoader.IsChest(type))
+ 					{
+ 						WorldGen.PlaceChest(i, j, (ushort)type, false, style);
+ 						WorldGen.SquareTileFrame(i, j, true);
 @@ -33221,7 +_,11 @@
  					{
  						fail = true;
@@ -581,6 +599,24 @@
  						{
  							if (tile.type == 352 && num15 == 5)
  							{
+@@ -36713,7 +_,7 @@
+ 						WorldGen.SquareTileFrame(i, j, true);
+ 						return;
+ 					}
+-					if (tile.type == 21 && Main.netMode != 1)
++					if (TileLoader.IsChest(tile.type) && Main.netMode != 1)
+ 					{
+ 						int num41 = (int)(tile.frameX / 18);
+ 						int y = j - (int)(tile.frameY / 18);
+@@ -36727,7 +_,7 @@
+ 							return;
+ 						}
+ 					}
+-					if (tile.type == 88 && Main.netMode != 1)
++					if (TileLoader.IsDresser(tile.type) && Main.netMode != 1)
+ 					{
+ 						int num42 = (int)(tile.frameX / 18);
+ 						int y2 = j - (int)(tile.frameY / 18);
 @@ -36760,6 +_,7 @@
  						}
  						if (tile.type == 73)

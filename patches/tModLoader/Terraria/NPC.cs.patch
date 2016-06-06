@@ -382,6 +382,15 @@
  			int num2 = 0;
  			if (this.aiAction == 0)
  			{
+@@ -53005,7 +_,7 @@
+ 				if (num2 != 1)
+ 				{
+ 				}
+-				if (Main.tile[x, y].type == 21)
++				if (TileLoader.IsChest(Main.tile[x, y].type))
+ 				{
+ 					if (Main.tile[x, y].frameX % 36 != 0)
+ 					{
 @@ -53317,6 +_,10 @@
  				}
  				return;

@@ -20,7 +20,7 @@ namespace ExampleMod.Tiles
 			Main.tileContainer[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
-			TileObjectData.newTile.Origin = new Point16(0, 1);
+			TileObjectData.newTile.Origin = new Point16(1, 1);
 			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16 };
 			TileObjectData.newTile.HookCheck = new PlacementHook(new Func<int, int, int, int, int, int>(Chest.FindEmptyChest), -1, 0, true);
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(new Func<int, int, int, int, int, int>(Chest.AfterPlacement_Hook), -1, 0, false);
@@ -31,25 +31,11 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 			AddMapEntry(new Color(200, 200, 200), "Example Dresser");
+			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
-			adjTiles = new int[] { TileID.Dressers, TileID.Containers };
-			chest = "Example Dresser";
-		}
-
-		public override bool CanKillTile(int i, int j, ref bool blockDamaged)
-		{
-			Tile tile = Main.tile[i, j];
-			int left = i;
-			int top = j;
-			if (tile.frameX % 36 != 0)
-			{
-				left--;
-			}
-			if (tile.frameY != 0)
-			{
-				top--;
-			}
-			return Chest.CanDestroyChest(left, top);
+			adjTiles = new int[] { TileID.Dressers };
+			dresser = "Example Dresser";
+			dresserDrop = mod.ItemType("ExampleDresser");
 		}
 
 		public override void RightClick(int i, int j)
@@ -231,7 +217,8 @@ namespace ExampleMod.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(i * 16, j * 16, 48, 32, mod.ItemType("ExampleDresser"));
+			Item.NewItem(i * 16, j * 16, 48, 32, dresserDrop);
+			Chest.DestroyChest(i, j);
 		}
 	}
 }

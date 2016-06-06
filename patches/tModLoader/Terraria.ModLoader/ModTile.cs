@@ -40,7 +40,9 @@ namespace Terraria.ModLoader
 		public int closeDoorID = -1;
 		public int openDoorID = -1;
 		public string chest = "";
+		public int chestDrop = 0;
 		public string dresser = "";
+		public int dresserDrop = 0;
 		public bool bed = false;
 		public bool torch = false;
 

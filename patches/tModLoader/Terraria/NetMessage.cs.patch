@@ -79,6 +79,17 @@
  							break;
  						}
  					case 33:
+@@ -634,6 +_,10 @@
+ 						writer.Write((short)number2);
+ 						writer.Write((short)number3);
+ 						writer.Write((short)number4);
++						if (number >= 100)
++						{
++							writer.Write((ushort)number6);
++						}
+ 						if (Main.netMode == 2)
+ 						{
+ 							Netplay.GetSectionX((int)number2);
 @@ -1461,7 +_,7 @@
  			int num5 = 0;
  			int num6 = 0;
@@ -88,6 +99,24 @@
  			Tile tile = null;
  			for (int i = yStart; i < yStart + height; i++)
  			{
+@@ -1509,7 +_,7 @@
+ 								num5++;
+ 								b |= 32;
+ 							}
+-							if (tile2.type == 21 && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0)
++							if (TileLoader.IsChest(tile2.type) && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0)
+ 							{
+ 								short num7 = (short)Chest.FindChest(j, i);
+ 								if (num7 != -1)
+@@ -1518,7 +_,7 @@
+ 									num += 1;
+ 								}
+ 							}
+-							if (tile2.type == 88 && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0)
++							if (TileLoader.IsDresser(tile2.type) && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0)
+ 							{
+ 								short num8 = (short)Chest.FindChest(j, i);
+ 								if (num8 != -1)
 @@ -1603,7 +_,17 @@
  						if (tile2.wall != 0)
  						{

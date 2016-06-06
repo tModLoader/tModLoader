@@ -179,6 +179,128 @@
  						Recipe.FindRecipes();
  						return;
  					}
+@@ -1775,36 +_,57 @@
+ 						int num105 = (int)this.reader.ReadInt16();
+ 						int num106 = (int)this.reader.ReadInt16();
+ 						int num107 = (int)this.reader.ReadInt16();
+-						if (Main.netMode == 2)
+-						{
+-							if (b7 == 0)
+-							{
+-								int num108 = WorldGen.PlaceChest(num105, num106, 21, false, num107);
++						ushort modType = 0;
++						if (b7 >= 100)
++						{
++							modType = this.reader.ReadUInt16();
++						}
++						if (Main.netMode == 2)
++						{
++							if (b7 % 100 == 0)
++							{
++								if (modType == 0)
++								{
++									modType = TileID.Containers;
++								}
++								int num108 = WorldGen.PlaceChest(num105, num106, modType, false, num107);
+ 								if (num108 == -1)
+ 								{
+-									NetMessage.SendData(34, this.whoAmI, -1, "", (int)b7, (float)num105, (float)num106, (float)num107, num108, 0, 0);
+-									Item.NewItem(num105 * 16, num106 * 16, 32, 32, Chest.chestItemSpawn[num107], 1, true, 0, false, false);
++									NetMessage.SendData(34, this.whoAmI, -1, "", (int)b7, (float)num105, (float)num106, (float)num107, num108, modType, 0);
++									int itemSpawn = b7 < 100 ? Chest.chestItemSpawn[num107] : TileLoader.GetTile(modType).chestDrop;
++									if (itemSpawn > 0)
++									{
++										Item.NewItem(num105 * 16, num106 * 16, 32, 32, itemSpawn, 1, true, 0, false, false);
++									}
+ 									return;
+ 								}
+-								NetMessage.SendData(34, -1, -1, "", (int)b7, (float)num105, (float)num106, (float)num107, num108, 0, 0);
++								NetMessage.SendData(34, -1, -1, "", (int)b7, (float)num105, (float)num106, (float)num107, num108, modType, 0);
+ 								return;
+ 							}
+-							else if (b7 == 2)
+-							{
+-								int num109 = WorldGen.PlaceChest(num105, num106, 88, false, num107);
++							else if (b7 % 100 == 2)
++							{
++								if (modType == 0)
++								{
++									modType = TileID.Dressers;
++								}
++								int num109 = WorldGen.PlaceChest(num105, num106, modType, false, num107);
+ 								if (num109 == -1)
+ 								{
+-									NetMessage.SendData(34, this.whoAmI, -1, "", (int)b7, (float)num105, (float)num106, (float)num107, num109, 0, 0);
+-									Item.NewItem(num105 * 16, num106 * 16, 32, 32, Chest.dresserItemSpawn[num107], 1, true, 0, false, false);
++									NetMessage.SendData(34, this.whoAmI, -1, "", (int)b7, (float)num105, (float)num106, (float)num107, num109, modType, 0);
++									int itemSpawn = b7 < 100 ? Chest.dresserItemSpawn[num107] : TileLoader.GetTile(modType).dresserDrop;
++									if (itemSpawn > 0)
++									{
++										Item.NewItem(num105 * 16, num106 * 16, 32, 32, itemSpawn, 1, true, 0, false, false);
++									}
+ 									return;
+ 								}
+-								NetMessage.SendData(34, -1, -1, "", (int)b7, (float)num105, (float)num106, (float)num107, num109, 0, 0);
++								NetMessage.SendData(34, -1, -1, "", (int)b7, (float)num105, (float)num106, (float)num107, num109, modType, 0);
+ 								return;
+ 							}
+ 							else
+ 							{
+ 								Tile tile2 = Main.tile[num105, num106];
+-								if (tile2.type == 21 && b7 == 1)
++								if (TileLoader.IsChest(tile2.type) && b7 == 1)
+ 								{
+ 									if (tile2.frameX % 36 != 0)
+ 									{
+@@ -1825,7 +_,7 @@
+ 								}
+ 								else
+ 								{
+-									if (tile2.type != 88 || b7 != 3)
++									if (!TileLoader.IsDresser(tile2.type) || b7 != 3)
+ 									{
+ 										return;
+ 									}
+@@ -1848,19 +_,23 @@
+ 						else
+ 						{
+ 							int num110 = (int)this.reader.ReadInt16();
+-							if (b7 == 0)
++							if (b7 % 100 == 0)
+ 							{
+ 								if (num110 == -1)
+ 								{
+ 									WorldGen.KillTile(num105, num106, false, false, false);
+ 									return;
+ 								}
+-								WorldGen.PlaceChestDirect(num105, num106, 21, num107, num110);
++								if (modType == 0)
++								{
++									modType = TileID.Containers;
++								}
++								WorldGen.PlaceChestDirect(num105, num106, modType, num107, num110);
+ 								return;
+ 							}
+ 							else
+ 							{
+-								if (b7 != 2)
++								if (b7 % 100 != 2)
+ 								{
+ 									Chest.DestroyChestDirect(num105, num106, num110);
+ 									WorldGen.KillTile(num105, num106, false, false, false);
+@@ -1871,7 +_,11 @@
+ 									WorldGen.KillTile(num105, num106, false, false, false);
+ 									return;
+ 								}
+-								WorldGen.PlaceDresserDirect(num105, num106, 88, num107, num110);
++								if (modType == 0)
++								{
++									modType = TileID.Dressers;
++								}
++								WorldGen.PlaceDresserDirect(num105, num106, modType, num107, num110);
+ 								return;
+ 							}
+ 						}
 @@ -1937,6 +_,11 @@
  						if (a2 == Netplay.ServerPassword)
  						{

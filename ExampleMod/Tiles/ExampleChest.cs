@@ -35,6 +35,7 @@ namespace ExampleMod.Tiles
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.Containers };
 			chest = "Example Chest";
+			chestDrop = mod.ItemType("ExampleChest");
 		}
 
 		public string MapChestName(string name, int i, int j)
@@ -66,25 +67,9 @@ namespace ExampleMod.Tiles
 			num = 1;
 		}
 
-		public override bool CanKillTile(int i, int j, ref bool blockDamaged)
-		{
-			Tile tile = Main.tile[i, j];
-			int left = i;
-			int top = j;
-			if (tile.frameX % 36 != 0)
-			{
-				left--;
-			}
-			if (tile.frameY != 0)
-			{
-				top--;
-			}
-			return Chest.CanDestroyChest(left, top);
-		}
-
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType("ExampleChest"));
+			Item.NewItem(i * 16, j * 16, 32, 32, chestDrop);
 			Chest.DestroyChest(i, j);
 		}
 

@@ -1,13 +1,38 @@
 --- src/Terraria\Terraria\Chest.cs
 +++ src/tModLoader\Terraria\Chest.cs
-@@ -2,6 +_,7 @@
+@@ -2,6 +_,8 @@
  using System;
  using Terraria.DataStructures;
  using Terraria.GameContent.Achievements;
++using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.ObjectData;
  
  namespace Terraria
+@@ -391,13 +_,21 @@
+ 				}
+ 				Main.chest[num] = chest;
+ 			}
+-			else if (type == 21)
++			else if (type == TileID.Containers)
+ 			{
+ 				NetMessage.SendData(34, -1, -1, "", 0, (float)x, (float)y, (float)style, 0, 0, 0);
+ 			}
+-			else
++			else if (type == TileID.Dressers)
+ 			{
+ 				NetMessage.SendData(34, -1, -1, "", 2, (float)x, (float)y, (float)style, 0, 0, 0);
++			}
++			else if (TileLoader.IsChest(type))
++			{
++				NetMessage.SendData(34, -1, -1, "", 100, (float)x, (float)y, (float)style, 0, type, 0);
++			}
++			else if (TileLoader.IsDresser(type))
++			{
++				NetMessage.SendData(34, -1, -1, "", 102, (float)x, (float)y, (float)style, 0, type, 0);
+ 			}
+ 			return num;
+ 		}
 @@ -851,9 +_,11 @@
  								Main.travelShop[num2++] = 3641;
  								break;
