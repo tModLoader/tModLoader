@@ -79,4 +79,18 @@
  		}
  
  		public override int CompareTo(object obj)
+@@ -269,11 +_,11 @@
+ 			this.DrawPanel(spriteBatch, vector2, num2);
+ 			spriteBatch.Draw(Main.heartTexture, vector2 + new Vector2(5f, 2f), Color.White);
+ 			vector2.X += 10f + (float)Main.heartTexture.Width;
+-			Utils.DrawBorderString(spriteBatch, this._data.Player.statLifeMax + " HP", vector2 + new Vector2(0f, 3f), Color.White, 1f, 0f, 0f, -1);
++			Utils.DrawBorderString(spriteBatch, this._data.Player.statLifeMax2 + " HP", vector2 + new Vector2(0f, 3f), Color.White, 1f, 0f, 0f, -1);
+ 			vector2.X += 65f;
+ 			spriteBatch.Draw(Main.manaTexture, vector2 + new Vector2(5f, 2f), Color.White);
+ 			vector2.X += 10f + (float)Main.manaTexture.Width;
+-			Utils.DrawBorderString(spriteBatch, this._data.Player.statManaMax + " MP", vector2 + new Vector2(0f, 3f), Color.White, 1f, 0f, 0f, -1);
++			Utils.DrawBorderString(spriteBatch, this._data.Player.statManaMax2 + " MP", vector2 + new Vector2(0f, 3f), Color.White, 1f, 0f, 0f, -1);
+ 			vector.X += num2 + 5f;
+ 			Vector2 vector3 = vector;
+ 			float num3 = 110f;
 

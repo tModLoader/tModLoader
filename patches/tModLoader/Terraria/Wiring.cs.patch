@@ -104,4 +104,22 @@
  			}
  		}
  
+@@ -2554,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void DeActive(int i, int j)
++		public static void DeActive(int i, int j)
+ 		{
+ 			if (!Main.tile[i, j].active())
+ 			{
+@@ -2593,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private static void ReActive(int i, int j)
++		public static void ReActive(int i, int j)
+ 		{
+ 			Main.tile[i, j].inActive(false);
+ 			WorldGen.SquareTileFrame(i, j, false);
 

@@ -5699,6 +5699,14 @@
  							for (int num35 = 3; num35 < 8 + player.extraAccessorySlots; num35++)
  							{
  								int type = player.armor[num35].type;
+@@ -36669,6 +_,7 @@
+ 								}
+ 								player.lavaTime = player.lavaMax;
+ 							}
++							player.ResetEffects();
+ 						}
+ 					}
+ 				}
 @@ -36677,6 +_,10 @@
  				playerFileData.Player = player;
  				result = playerFileData;
