@@ -1943,12 +1943,20 @@
  					}
  				}
  			}
-@@ -37424,7 +_,7 @@
+@@ -37424,7 +_,15 @@
  						}
  						else
  						{
 -							text2 = Lang.mapLegend[MapHelper.TileToLookup(Main.player[Main.myPlayer].bestOre, 0)] + " detected nearby!";
-+							text2 = Lang.mapLegend.FromType(Main.player[Main.myPlayer].bestOre) + " detected nearby!";
++                            if (Main.player[Main.myPlayer].bestOre > TileID.Count)
++                            {
++                                text2 = Lang.mapLegend[Main.player[Main.myPlayer].bestOre] + " detected nearby!";
++                            }
++                            else
++                            {
++                                text2 = Lang.mapLegend.FromType(Main.player[Main.myPlayer].bestOre) + " detected nearby!";
++                            }
++							
  						}
  						flag10 = true;
  					}
