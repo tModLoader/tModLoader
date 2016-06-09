@@ -5260,21 +5260,21 @@
  			if (this.mount.Active)
  			{
 -				if (this.mount.Type == 8)
-+                if (MountLoader.IsModMountData(this.mount._data))
-+                {
-+                    this.mount.UseAbility(this, Vector2.Zero, true);
-+                    //this.noItems = true;
-+                    //if (this.controlUseItem)
-+                    //{
-+                    //    this.channel = true;
-+                    //    if (this.releaseUseItem)
-+                    //    {
-+                            
-+                    //    }
-+                    //    this.releaseUseItem = false;
-+                    //}
-+                }
-+                if (this.mount.Type == 8)
++		if (MountLoader.IsModMountData(this.mount._data))
++		{
++		    this.mount.UseAbility(this, Vector2.Zero, true);
++		    //this.noItems = true;
++		    //if (this.controlUseItem)
++		    //{
++		    //    this.channel = true;
++		    //    if (this.releaseUseItem)
++		    //    {
++
++		    //    }
++		    //    this.releaseUseItem = false;
++		    //}
++		}
++		if (this.mount.Type == 8)
  				{
  					this.noItems = true;
  					if (this.controlUseItem)
@@ -5283,7 +5283,7 @@
  						if (this.releaseUseItem)
  						{
 -							this.mount.UseAbility(this, Vector2.Zero, true);
-+                            this.mount.UseAbility(this, Vector2.Zero, true);
++			    this.mount.UseAbility(this, Vector2.Zero, true);
  						}
  						this.releaseUseItem = false;
  					}
