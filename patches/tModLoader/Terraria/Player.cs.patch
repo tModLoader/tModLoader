@@ -5255,6 +5255,38 @@
  			if (this.webbed || this.frozen || this.stoned)
  			{
  				return;
+@@ -29290,7 +_,21 @@
+ 			Item item = this.inventory[this.selectedItem];
+ 			if (this.mount.Active)
+ 			{
+-				if (this.mount.Type == 8)
++		if (MountLoader.IsModMountData(this.mount._data))
++		{
++		    this.mount.UseAbility(this, Vector2.Zero, true);
++		    //this.noItems = true;
++		    //if (this.controlUseItem)
++		    //{
++		    //    this.channel = true;
++		    //    if (this.releaseUseItem)
++		    //    {
++
++		    //    }
++		    //    this.releaseUseItem = false;
++		    //}
++		}
++		if (this.mount.Type == 8)
+ 				{
+ 					this.noItems = true;
+ 					if (this.controlUseItem)
+@@ -29298,7 +_,7 @@
+ 						this.channel = true;
+ 						if (this.releaseUseItem)
+ 						{
+-							this.mount.UseAbility(this, Vector2.Zero, true);
++			    this.mount.UseAbility(this, Vector2.Zero, true);
+ 						}
+ 						this.releaseUseItem = false;
+ 					}
 @@ -29483,7 +_,7 @@
  				{
  					this.altFunctionUse = 2;
