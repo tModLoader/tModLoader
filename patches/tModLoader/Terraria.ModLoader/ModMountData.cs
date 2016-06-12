@@ -69,5 +69,13 @@ namespace Terraria.ModLoader
 		{
 			return false;
 		}
+		public virtual void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
+		{
+
+		}
+		public virtual void AimAbility(Player player, Vector2 mousePosition)
+		{
+
+		}
 	}
 }

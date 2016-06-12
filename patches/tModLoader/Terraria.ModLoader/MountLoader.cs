@@ -79,5 +79,19 @@ namespace Terraria.ModLoader
 			}
 			return false;
 		}
+		public static void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
+		{
+			if (IsModMountData(player.mount._data))
+			{
+				player.mount._data.modMountData.UseAbility(player, mousePosition, toggleOn);
+			}
+		}
+		public static void AimAbility(Mount mount, Player player, Vector2 mousePosition)
+		{
+			if (IsModMountData(mount._data))
+			{
+				mount._data.modMountData.AimAbility(player, mousePosition);
+			}
+		}
 	}
 }
