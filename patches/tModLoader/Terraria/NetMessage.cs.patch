@@ -18,6 +18,17 @@
  						break;
  					case 2:
  						writer.Write(text);
+@@ -239,6 +_,10 @@
+ 							bb7[6] = NPC.downedGolemBoss;
+ 							writer.Write(bb7);
+ 							writer.Write((sbyte)Main.invasionType);
++							if (!ModNet.AllowVanillaClients)
++							{
++								WorldHooks.SendCustomData(writer);
++							}
+ 							if (SocialAPI.Network != null)
+ 							{
+ 								writer.Write(SocialAPI.Network.GetLobbyId());
 @@ -404,7 +_,10 @@
  									}
  									if (tile.wall > 0)

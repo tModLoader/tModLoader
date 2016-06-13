@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using Terraria.World.Generation;
 
@@ -23,6 +24,81 @@ namespace Terraria.ModLoader
 			foreach (ModWorld world in worlds)
 			{
 				world.Initialize();
+			}
+		}
+
+		public static void SendCustomData(BinaryWriter writer)
+		{
+			ushort count = 0;
+			byte[] data;
+			using (MemoryStream stream = new MemoryStream())
+			{
+				using (BinaryWriter customWriter = new BinaryWriter(stream))
+				{
+					foreach (var modWorld in worlds)
+					{
+						if (SendCustomData(modWorld, customWriter))
+						{
+							count++;
+						}
+					}
+					customWriter.Flush();
+					data = stream.ToArray();
+				}
+			}
+			writer.Write(count);
+			writer.Write(data);
+		}
+
+		private static bool SendCustomData(ModWorld modWorld, BinaryWriter writer)
+		{
+			byte[] data;
+			using (MemoryStream stream = new MemoryStream())
+			{
+				using (BinaryWriter customWriter = new BinaryWriter(stream))
+				{
+					modWorld.SendCustomData(customWriter);
+					customWriter.Flush();
+					data = stream.ToArray();
+				}
+			}
+			if (data.Length > 0)
+			{
+				writer.Write(modWorld.mod.Name);
+				writer.Write(modWorld.Name);
+				writer.Write((ushort)data.Length);
+				writer.Write(data);
+				return true;
+			}
+			return false;
+		}
+
+		public static void ReceiveCustomData(BinaryReader reader)
+		{
+			int count = reader.ReadUInt16();
+			for (int k = 0; k < count; k++)
+			{
+				string modName = reader.ReadString();
+				string name = reader.ReadString();
+				byte[] data = reader.ReadBytes(reader.ReadUInt16());
+				Mod mod = ModLoader.GetMod(modName);
+				ModWorld modWorld = mod == null ? null : mod.GetModWorld(name);
+				if (modWorld != null)
+				{
+					using (MemoryStream stream = new MemoryStream(data))
+					{
+						using (BinaryReader customReader = new BinaryReader(stream))
+						{
+							try
+							{
+								modWorld.ReceiveCustomData(customReader);
+							}
+							catch
+							{
+							}
+						}
+					}
+				}
 			}
 		}
 

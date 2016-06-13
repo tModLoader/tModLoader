@@ -72,6 +72,17 @@
  							NetMessage.SendData(3, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
  							return;
  						}
+@@ -514,6 +_,10 @@
+ 							Main.StopSlimeRain(true);
+ 						}
+ 						Main.invasionType = (int)this.reader.ReadSByte();
++						if (!ModNet.AllowVanillaClients)
++						{
++							WorldHooks.ReceiveCustomData(reader);
++						}
+ 						Main.LobbyId = this.reader.ReadUInt64();
+ 						if (Netplay.Connection.State == 3)
+ 						{
 @@ -1107,7 +_,7 @@
  								tile.wire4(bitsByte11[7]);
  								if (tile.wall > 0)

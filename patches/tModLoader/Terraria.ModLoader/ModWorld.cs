@@ -36,6 +36,14 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void SendCustomData(BinaryWriter writer)
+		{
+		}
+
+		public virtual void ReceiveCustomData(BinaryReader reader)
+		{
+		}
+
 		public virtual void PreWorldGen()
 		{
 		}
