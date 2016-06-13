@@ -5255,6 +5255,14 @@
  			if (this.webbed || this.frozen || this.stoned)
  			{
  				return;
+@@ -29290,6 +_,7 @@
+ 			Item item = this.inventory[this.selectedItem];
+ 			if (this.mount.Active)
+ 			{
++				MountLoader.UseAbility(this,Vector2.Zero,false);
+ 				if (this.mount.Type == 8)
+ 				{
+ 					this.noItems = true;
 @@ -29483,7 +_,7 @@
  				{
  					this.altFunctionUse = 2;

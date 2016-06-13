@@ -103,6 +103,14 @@
  			switch (this._type)
  			{
  				case 8:
+@@ -2468,6 +_,7 @@
+ 		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
+ 		{
+ 			this._aiming = true;
++			MountLoader.AimAbility(this,mountedPlayer, mousePosition);
+ 			switch (this._type)
+ 			{
+ 				case 8:
 @@ -2901,7 +_,7 @@
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
