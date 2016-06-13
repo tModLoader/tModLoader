@@ -57,6 +57,27 @@ namespace ExampleMod
 			downedPuritySpirit = ((flags & 2) == 2);
 		}
 
+		public override void SendCustomData(BinaryWriter writer)
+		{
+			byte flags = 0;
+			if (downedAbomination)
+			{
+				flags |= 1;
+			}
+			if (downedPuritySpirit)
+			{
+				flags |= 2;
+			}
+			writer.Write(flags);
+		}
+
+		public override void ReceiveCustomData(BinaryReader reader)
+		{
+			byte flags = reader.ReadByte();
+			downedAbomination = ((flags & 1) == 1);
+			downedPuritySpirit = ((flags & 2) == 2);
+		}
+
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
 			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Shinies"));

@@ -309,6 +309,17 @@
  								return;
  							}
  						}
+@@ -1906,6 +_,10 @@
+ 						Player player9 = Main.player[num113];
+ 						player9.zone1 = this.reader.ReadByte();
+ 						player9.zone2 = this.reader.ReadByte();
++						if (!ModNet.AllowVanillaClients)
++						{
++							PlayerHooks.ReceiveCustomBiomes(player9, reader);
++						}
+ 						if (Main.netMode == 2)
+ 						{
+ 							NetMessage.SendData(36, -1, this.whoAmI, "", num113, 0f, 0f, 0f, 0, 0, 0);
 @@ -1937,6 +_,11 @@
  						if (a2 == Netplay.ServerPassword)
  						{

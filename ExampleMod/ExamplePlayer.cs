@@ -35,7 +35,6 @@ namespace ExampleMod
 		public bool examplePet = false;
 		public bool exampleLightPet = false;
 
-		// TODO, need to sync this data?
 		public bool ZoneExample = false;
 
 		public override void ResetEffects()
@@ -82,6 +81,34 @@ namespace ExampleMod
 		public override void UpdateBiomes()
 		{
 			ZoneExample = (ExampleWorld.exampleTiles > 50);
+		}
+
+		public override bool CustomBiomesMatch(Player other)
+		{
+			ExamplePlayer modOther = other.GetModPlayer<ExamplePlayer>(mod);
+			return ZoneExample == modOther.ZoneExample;
+		}
+
+		public override void CopyCustomBiomesTo(Player other)
+		{
+			ExamplePlayer modOther = other.GetModPlayer<ExamplePlayer>(mod);
+			modOther.ZoneExample = ZoneExample;
+		}
+
+		public override void SendCustomBiomes(BinaryWriter writer)
+		{
+			byte flags = 0;
+			if (ZoneExample)
+			{
+				flags |= 1;
+			}
+			writer.Write(flags);
+		}
+
+		public override void ReceiveCustomBiomes(BinaryReader reader)
+		{
+			byte flags = reader.ReadByte();
+			ZoneExample = ((flags & 1) == 1);
 		}
 
 		public override void UpdateBiomeVisuals()

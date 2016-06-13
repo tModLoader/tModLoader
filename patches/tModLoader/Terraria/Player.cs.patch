@@ -5613,7 +5613,7 @@
  			Main.mouseItem = new Item();
  		}
  
-@@ -35795,7 +_,7 @@
+@@ -35795,9 +_,10 @@
  
  		public object clientClone()
  		{
@@ -5621,7 +5621,10 @@
 +			Player player = new Player(false);
  			player.zone1 = this.zone1;
  			player.zone2 = this.zone2;
++			PlayerHooks.CopyCustomBiomesTo(this, player);
  			player.extraAccessory = this.extraAccessory;
+ 			player.MinionTargetPoint = this.MinionTargetPoint;
+ 			player.direction = this.direction;
 @@ -35866,7 +_,7 @@
  			{
  				return false;

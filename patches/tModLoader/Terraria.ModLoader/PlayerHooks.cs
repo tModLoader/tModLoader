@@ -1,9 +1,9 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader
@@ -145,6 +145,101 @@ namespace Terraria.ModLoader
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				modPlayer.UpdateBiomes();
+			}
+		}
+
+		public static bool CustomBiomesMatch(Player player, Player other)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (!modPlayer.CustomBiomesMatch(other))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public static void CopyCustomBiomesTo(Player player, Player other)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.CopyCustomBiomesTo(other);
+			}
+		}
+
+		public static void SendCustomBiomes(Player player, BinaryWriter writer)
+		{
+			ushort count = 0;
+			byte[] data;
+			using (MemoryStream stream = new MemoryStream())
+			{
+				using (BinaryWriter customWriter = new BinaryWriter(stream))
+				{
+					foreach (ModPlayer modPlayer in player.modPlayers)
+					{
+						if (SendCustomBiomes(modPlayer, customWriter))
+						{
+							count++;
+						}
+					}
+					customWriter.Flush();
+					data = stream.ToArray();
+				}
+			}
+			writer.Write(count);
+			writer.Write(data);
+		}
+
+		private static bool SendCustomBiomes(ModPlayer modPlayer, BinaryWriter writer)
+		{
+			byte[] data;
+			using (MemoryStream stream = new MemoryStream())
+			{
+				using (BinaryWriter customWriter = new BinaryWriter(stream))
+				{
+					modPlayer.SendCustomBiomes(customWriter);
+					customWriter.Flush();
+					data = stream.ToArray();
+				}
+			}
+			if (data.Length > 0)
+			{
+				writer.Write(modPlayer.mod.Name);
+				writer.Write(modPlayer.Name);
+				writer.Write((byte)data.Length);
+				writer.Write(data);
+				return true;
+			}
+			return false;
+		}
+
+		public static void ReceiveCustomBiomes(Player player, BinaryReader reader)
+		{
+			int count = reader.ReadUInt16();
+			for (int k = 0; k < count; k++)
+			{
+				string modName = reader.ReadString();
+				string name = reader.ReadString();
+				byte[] data = reader.ReadBytes(reader.ReadByte());
+				Mod mod = ModLoader.GetMod(modName);
+				ModPlayer modPlayer = mod == null ? null : player.GetModPlayer(mod, name);
+				if (modPlayer != null)
+				{
+					using (MemoryStream stream = new MemoryStream(data))
+					{
+						using (BinaryReader customReader = new BinaryReader(stream))
+						{
+							try
+							{
+								modPlayer.ReceiveCustomBiomes(customReader);
+							}
+							catch
+							{
+							}
+						}
+					}
+				}
 			}
 		}
 

@@ -101,6 +101,17 @@
  						if (Main.netMode == 2)
  						{
  							Netplay.GetSectionX((int)number2);
+@@ -652,6 +_,10 @@
+ 							writer.Write((byte)number);
+ 							writer.Write(player4.zone1);
+ 							writer.Write(player4.zone2);
++							if (!ModNet.AllowVanillaClients)
++							{
++								PlayerHooks.SendCustomBiomes(player4, writer);
++							}
+ 							break;
+ 						}
+ 					case 38:
 @@ -1461,7 +_,7 @@
  			int num5 = 0;
  			int num6 = 0;

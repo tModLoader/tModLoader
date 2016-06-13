@@ -431,6 +431,17 @@
  				{
  					if (Main.chatRelease && !Main.drawingPlayerChat && !Main.editSign && !Main.editChest && !Main.gameMenu && !Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
  					{
+@@ -12651,6 +_,10 @@
+ 					flag = true;
+ 				}
+ 				if (Main.player[Main.myPlayer].zone2 != Main.clientPlayer.zone2)
++				{
++					flag = true;
++				}
++				if (!PlayerHooks.CustomBiomesMatch(Main.player[Main.myPlayer], Main.clientPlayer))
+ 				{
+ 					flag = true;
+ 				}
 @@ -13493,9 +_,13 @@
  					{
  						float num7 = 5E-06f;

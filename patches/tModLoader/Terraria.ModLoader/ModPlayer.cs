@@ -77,6 +77,23 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool CustomBiomesMatch(Player other)
+		{
+			return true;
+		}
+
+		public virtual void CopyCustomBiomesTo(Player other)
+		{
+		}
+
+		public virtual void SendCustomBiomes(BinaryWriter writer)
+		{
+		}
+
+		public virtual void ReceiveCustomBiomes(BinaryReader reader)
+		{
+		}
+
 		public virtual void UpdateBiomeVisuals()
 		{
 		}
