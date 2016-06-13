@@ -250,11 +250,14 @@ namespace Terraria.ModLoader
 			{
 				try
 				{
+					if (mod.Name.Length == 0)
+						throw new ModNameException("Mods must actually have stuff in their names");
+
 					if (mod.Name.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
-						throw new DuplicateNameException("Mods names cannot be named Terraria");
+						throw new ModNameException("Mods names cannot be named Terraria");
 
 					if (names.Contains(mod.Name))
-						throw new DuplicateNameException("Two mods share the internal name " + mod.Name);
+						throw new ModNameException("Two mods share the internal name " + mod.Name);
 
 					names.Add(mod.Name);
 				}

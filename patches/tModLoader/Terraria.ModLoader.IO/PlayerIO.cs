@@ -189,7 +189,7 @@ namespace Terraria.ModLoader.IO
 				{
 					for (int k = 0; k < inv.Length; k++)
 					{
-						if (ItemLoader.IsModItem(inv[k]))
+						if (ItemLoader.NeedsModSaving(inv[k]))
 						{
 							invWriter.Write((ushort) k);
 							ItemIO.WriteItem(inv[k], invWriter, writeStack, writeFavorite);

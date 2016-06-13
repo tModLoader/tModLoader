@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -347,6 +348,19 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void OnCraft(Item item, Recipe recipe)
+		{
+		}
+
+		public virtual bool NeedsCustomSaving(Item item)
+		{
+			return false;
+		}
+
+		public virtual void SaveCustomData(Item item, BinaryWriter writer)
+		{
+		}
+
+		public virtual void LoadCustomData(Item item, BinaryReader reader)
 		{
 		}
 	}

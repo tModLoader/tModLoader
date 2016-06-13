@@ -85,7 +85,7 @@
  						int pre = (int)this.reader.ReadByte();
  						int num60 = (int)this.reader.ReadByte();
  						int num61 = (int)this.reader.ReadInt16();
-+						byte[] data = num61 >= ItemID.Count ? this.reader.ReadBytes(this.reader.ReadUInt16()) : new byte[0];
++						byte[] data = ItemIO.GetCustomData(num61, reader);
  						if (Main.netMode == 1)
  						{
  							if (num61 == 0)
@@ -161,20 +161,17 @@
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
  						{
-@@ -1706,6 +_,17 @@
+@@ -1706,6 +_,14 @@
  						Main.chest[num99].item[num100].netDefaults(type4);
  						Main.chest[num99].item[num100].Prefix(pre2);
  						Main.chest[num99].item[num100].stack = stack4;
-+						if (type4 >= ItemID.Count)
++						byte[] data = ItemIO.GetCustomData(type4, reader);
++						try
 +						{
-+							byte[] data = this.reader.ReadBytes(this.reader.ReadUInt16());
-+							try
-+							{
-+								ItemIO.ReadCustomData(Main.chest[num99].item[num100], data);
-+							}
-+							catch (CustomModDataException)
-+							{
-+							}
++							ItemIO.ReadCustomData(Main.chest[num99].item[num100], data);
++						}
++						catch (CustomModDataException)
++						{
 +						}
  						Recipe.FindRecipes();
  						return;

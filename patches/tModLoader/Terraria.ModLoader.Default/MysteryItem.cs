@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
@@ -9,6 +10,7 @@ namespace Terraria.ModLoader.Default
 		private string modName;
 		private string itemName;
 		private byte[] data;
+		private bool hasGlobalData;
 
 		public override void SetDefaults()
 		{
@@ -18,17 +20,22 @@ namespace Terraria.ModLoader.Default
 			item.rare = 1;
 		}
 
-		internal void Setup(string modName, string itemName, byte[] data)
+		internal void Setup(string modName, string itemName, byte[] data, bool hasGlobal)
 		{
 			this.modName = modName;
 			this.itemName = itemName;
 			this.data = data;
+			this.hasGlobalData = hasGlobal;
 			item.toolTip = "Mod: " + modName;
 			item.toolTip2 = "Item: " + itemName;
 		}
 
 		public override void SaveCustomData(BinaryWriter writer)
 		{
+			if (hasGlobalData)
+			{
+				writer.Write("");
+			}
 			writer.Write(modName);
 			writer.Write(itemName);
 			writer.Write((ushort)data.Length);
@@ -37,24 +44,20 @@ namespace Terraria.ModLoader.Default
 
 		public override void LoadCustomData(BinaryReader reader)
 		{
-			Setup(reader.ReadString(), reader.ReadString(), reader.ReadBytes(reader.ReadUInt16()));
+			string modName = reader.ReadString();
+			bool hasGlobal = false;
+			if (modName.Length == 0)
+			{
+				hasGlobal = true;
+				modName = reader.ReadString();
+			}
+			Setup(modName, reader.ReadString(), ItemIO.GetCustomData(Int32.MaxValue, reader, hasGlobal), hasGlobal);
 
 			var type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
 			if (type != 0)
 			{
 				item.netDefaults(type);
-                if (data.Length > 0)
-                    using (BinaryReader customReader = new BinaryReader(new MemoryStream(data)))
-                        try
-                        {
-                            item.modItem.LoadCustomData(customReader);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new CustomModDataException(item.modItem.mod,
-                                "Error in loading custom item data for " + item.modItem.mod.Name, e);
-                        }
-				
+				ItemIO.ReadCustomData(item, data, hasGlobalData);
 			}
 		}
 	}

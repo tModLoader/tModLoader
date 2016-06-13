@@ -416,7 +416,7 @@ namespace Terraria.ModLoader.IO
 			foreach (KeyValuePair<int, TileEntity> entity in TileEntity.ByID)
 			{
 				TEItemFrame itemFrame = entity.Value as TEItemFrame;
-				if (itemFrame != null && itemFrame.item.netID >= ItemID.Count)
+				if (itemFrame != null && ItemLoader.NeedsModSaving(itemFrame.item))
 				{
 					itemFrames.Add(itemFrame.ID, tileEntity);
 					flags[0] |= 2;

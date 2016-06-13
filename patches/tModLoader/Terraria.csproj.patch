@@ -109,7 +109,7 @@
 +    <Compile Include="Terraria.ModLoader.Default\StartBag.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\AddRecipesException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\CustomModDataException.cs" />
-+    <Compile Include="Terraria.ModLoader.Exceptions\DuplicateNameException.cs" />
++    <Compile Include="Terraria.ModLoader.Exceptions\ModNameException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\MissingResourceException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\ModSortingException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\RecipeException.cs" />
@@ -230,6 +230,7 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>"$(SolutionDir)4gb_patch.exe" "$(TargetPath)"
 +
@@ -258,5 +259,4 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>

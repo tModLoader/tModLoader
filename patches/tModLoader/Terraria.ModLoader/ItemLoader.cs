@@ -100,6 +100,7 @@ namespace Terraria.ModLoader
 		private delegate void DelegateAnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation);
 		private static DelegateAnglerChat[] HookAnglerChat;
 		private static Action<Item, Recipe>[] HookOnCraft;
+		private static Func<Item, bool>[] HookNeedsCustomSaving;
 
 		static ItemLoader()
 		{
@@ -251,6 +252,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookIsAnglerQuestAvailable, globalItems, g => g.IsAnglerQuestAvailable);
 			ModLoader.BuildGlobalHook(ref HookAnglerChat, globalItems, g => g.AnglerChat);
 			ModLoader.BuildGlobalHook(ref HookOnCraft, globalItems, g => g.OnCraft);
+			ModLoader.BuildGlobalHook(ref HookNeedsCustomSaving, globalItems, g => g.NeedsCustomSaving);
 		}
 
 		internal static void Unload()
@@ -1365,6 +1367,24 @@ namespace Terraria.ModLoader
 			{
 				hook(item, recipe);
 			}
+		}
+
+		public static int NeedsGlobalCustomSaving(Item item)
+		{
+			int numGlobalData = 0;
+			foreach (var hook in HookNeedsCustomSaving)
+			{
+				if (hook(item))
+				{
+					numGlobalData++;
+				}
+			}
+			return numGlobalData;
+		}
+
+		public static bool NeedsModSaving(Item item)
+		{
+			return IsModItem(item) || NeedsGlobalCustomSaving(item) > 0;
 		}
 	}
 }
