@@ -351,6 +351,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+		{
+		}
+
 		public virtual bool NeedsCustomSaving(Item item)
 		{
 			return false;

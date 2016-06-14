@@ -100,6 +100,7 @@ namespace Terraria.ModLoader
 		private delegate void DelegateAnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation);
 		private static DelegateAnglerChat[] HookAnglerChat;
 		private static Action<Item, Recipe>[] HookOnCraft;
+		private static Action<Item, List<TooltipLine>>[] HookModifyTooltips;
 		private static Func<Item, bool>[] HookNeedsCustomSaving;
 
 		static ItemLoader()
@@ -252,6 +253,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookIsAnglerQuestAvailable, globalItems, g => g.IsAnglerQuestAvailable);
 			ModLoader.BuildGlobalHook(ref HookAnglerChat, globalItems, g => g.AnglerChat);
 			ModLoader.BuildGlobalHook(ref HookOnCraft, globalItems, g => g.OnCraft);
+			ModLoader.BuildGlobalHook(ref HookModifyTooltips, globalItems, g => g.ModifyTooltips);
 			ModLoader.BuildGlobalHook(ref HookNeedsCustomSaving, globalItems, g => g.NeedsCustomSaving);
 		}
 
@@ -1366,6 +1368,48 @@ namespace Terraria.ModLoader
 			foreach (var hook in HookOnCraft)
 			{
 				hook(item, recipe);
+			}
+		}
+
+		public static void ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text,
+			ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor)
+		{
+			List<TooltipLine> tooltips = new List<TooltipLine>();
+			for (int k = 0; k < numTooltips; k++)
+			{
+				TooltipLine tooltip = new TooltipLine(names[k], text[k]);
+				tooltip.isModifier = modifier[k];
+				tooltip.isModifierBad = badModifier[k];
+				if (k == oneDropLogo)
+				{
+					tooltip.oneDropLogo = true;
+				}
+				tooltips.Add(tooltip);
+			}
+			if (IsModItem(item))
+			{
+				item.modItem.ModifyTooltips(tooltips);
+			}
+			foreach (var hook in HookModifyTooltips)
+			{
+				hook(item, tooltips);
+			}
+			numTooltips = tooltips.Count;
+			text = new string[numTooltips];
+			modifier = new bool[numTooltips];
+			badModifier = new bool[numTooltips];
+			oneDropLogo = -1;
+			overrideColor = new Color?[numTooltips];
+			for (int k = 0; k < numTooltips; k++)
+			{
+				text[k] = tooltips[k].text;
+				modifier[k] = tooltips[k].isModifier;
+				badModifier[k] = tooltips[k].isModifierBad;
+				if (tooltips[k].oneDropLogo)
+				{
+					oneDropLogo = k;
+				}
+				overrideColor[k] = tooltips[k].overrideColor;
 			}
 		}
 

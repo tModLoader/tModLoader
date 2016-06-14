@@ -437,5 +437,9 @@ namespace Terraria.ModLoader
 		public virtual void OnCraft(Recipe recipe)
 		{
 		}
+
+		public virtual void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+		}
 	}
 }

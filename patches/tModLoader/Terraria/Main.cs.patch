@@ -442,6 +442,36 @@
  				{
  					flag = true;
  				}
+@@ -13455,6 +_,7 @@
+ 				string[] array = new string[num5];
+ 				bool[] array2 = new bool[num5];
+ 				bool[] array3 = new bool[num5];
++				string[] tooltipNames = new string[num5];
+ 				for (int i = 0; i < num5; i++)
+ 				{
+ 					array2[i] = false;
+@@ -13475,16 +_,21 @@
+ 							")"
+ 						});
+ 				}
++				tooltipNames[0] = "ItemName";
+ 				if (Main.toolTip.favorited)
+ 				{
+ 					array[num6++] = Lang.tip[56];
++					tooltipNames[num6 - 1] = "Favorite";
+ 					array[num6++] = Lang.tip[57];
++					tooltipNames[num6 - 1] = "FavoriteDesc";
+ 				}
+ 				if (Main.toolTip.social)
+ 				{
+ 					array[num6] = Lang.tip[0];
++					tooltipNames[num6] = "Social";
+ 					num6++;
+ 					array[num6] = Lang.tip[1];
++					tooltipNames[num6] = "SocialDesc";
+ 					num6++;
+ 				}
+ 				else
 @@ -13493,9 +_,13 @@
  					{
  						float num7 = 5E-06f;
@@ -457,7 +487,7 @@
  							string[] array4;
  							IntPtr intPtr;
  							(array4 = array)[(int)(intPtr = (IntPtr)num6)] = array4[(int)intPtr] + Lang.tip[2];
-@@ -13519,35 +_,50 @@
+@@ -13519,62 +_,82 @@
  							{
  								num8 *= Main.player[Main.myPlayer].rocketDamage;
  							}
@@ -513,6 +543,46 @@
  							string[] array4;
  							IntPtr intPtr;
  							(array4 = array)[(int)(intPtr = (IntPtr)num6)] = array4[(int)intPtr] + Lang.tip[55];
+ 						}
++						tooltipNames[num6] = "Damage";
+ 						num6++;
+ 						if (Main.toolTip.melee)
+ 						{
+ 							int num9 = Main.player[Main.myPlayer].meleeCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.toolTip.crit;
+ 							array[num6] = num9 + Lang.tip[5];
++							tooltipNames[num6] = "CritChance";
+ 							num6++;
+ 						}
+ 						else if (Main.toolTip.ranged)
+ 						{
+ 							int num10 = Main.player[Main.myPlayer].rangedCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.toolTip.crit;
+ 							array[num6] = num10 + Lang.tip[5];
++							tooltipNames[num6] = "CritChance";
+ 							num6++;
+ 						}
+ 						else if (Main.toolTip.magic)
+ 						{
+ 							int num11 = Main.player[Main.myPlayer].magicCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.toolTip.crit;
+ 							array[num6] = num11 + Lang.tip[5];
++							tooltipNames[num6] = "CritChance";
+ 							num6++;
+ 						}
+ 						else if (Main.toolTip.thrown)
+ 						{
+ 							int num12 = Main.player[Main.myPlayer].thrownCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.toolTip.crit;
+ 							array[num6] = num12 + Lang.tip[5];
++							tooltipNames[num6] = "CritChance";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.useStyle > 0 && !Main.toolTip.summon)
+@@ -13611,6 +_,7 @@
+ 							{
+ 								array[num6] = Lang.tip[13];
+ 							}
++							tooltipNames[num6] = "Speed";
+ 							num6++;
+ 						}
+ 						float num13 = Main.toolTip.knockBack;
 @@ -13626,6 +_,8 @@
  						{
  							num13 += num13 * (1f - Main.player[Main.myPlayer].stealth);
@@ -522,6 +592,412 @@
  						if (num13 == 0f)
  						{
  							array[num6] = Lang.tip[14];
+@@ -13662,58 +_,70 @@
+ 						{
+ 							array[num6] = Lang.tip[22];
+ 						}
++						tooltipNames[num6] = "Knockback";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.fishingPole > 0)
+ 					{
+ 						array[num6] = Main.toolTip.fishingPole + "% fishing power";
++						tooltipNames[num6] = "FishingPower";
+ 						num6++;
+ 						array[num6] = "Requires bait to catch fish";
++						tooltipNames[num6] = "NeedsBait";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.bait > 0)
+ 					{
+ 						array[num6] = Main.toolTip.bait + "% bait power";
++						tooltipNames[num6] = "BaitPower";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.headSlot > 0 || Main.toolTip.bodySlot > 0 || Main.toolTip.legSlot > 0 || Main.toolTip.accessory || Main.projHook[Main.toolTip.shoot] || Main.toolTip.mountType != -1 || (Main.toolTip.buffType > 0 && (Main.lightPet[Main.toolTip.buffType] || Main.vanityPet[Main.toolTip.buffType])))
+ 					{
+ 						array[num6] = Lang.tip[23];
++						tooltipNames[num6] = "Equipable";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.tileWand > 0)
+ 					{
+ 						array[num6] = Lang.tip[52] + Lang.itemName(Main.toolTip.tileWand, false);
++						tooltipNames[num6] = "WandConsumes";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.questItem)
+ 					{
+ 						array[num6] = Lang.inter[65];
++						tooltipNames[num6] = "Quest";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.vanity)
+ 					{
+ 						array[num6] = Lang.tip[24];
++						tooltipNames[num6] = "Vanity";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.defense > 0)
+ 					{
+ 						array[num6] = Main.toolTip.defense + Lang.tip[25];
++						tooltipNames[num6] = "Defense";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.pick > 0)
+ 					{
+ 						array[num6] = Main.toolTip.pick + Lang.tip[26];
++						tooltipNames[num6] = "PickPower";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.axe > 0)
+ 					{
+ 						array[num6] = Main.toolTip.axe * 5 + Lang.tip[27];
++						tooltipNames[num6] = "AxePower";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.hammer > 0)
+ 					{
+ 						array[num6] = Main.toolTip.hammer + Lang.tip[28];
++						tooltipNames[num6] = "HammerPower";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.tileBoost != 0)
+@@ -13727,6 +_,7 @@
+ 						{
+ 							array[num6] = tileBoost + Lang.tip[54];
+ 						}
++						tooltipNames[num6] = "TileBoost";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.healLife > 0)
+@@ -13739,6 +_,7 @@
+ 								" ",
+ 								Lang.tip[30]
+ 							});
++						tooltipNames[num6] = "HealLife";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.healMana > 0)
+@@ -13751,6 +_,7 @@
+ 								" ",
+ 								Lang.tip[31]
+ 							});
++						tooltipNames[num6] = "HealMana";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.mana > 0 && (Main.toolTip.type != 127 || !Main.player[Main.myPlayer].spaceGun))
+@@ -13763,6 +_,7 @@
+ 								" ",
+ 								Lang.tip[31]
+ 							});
++						tooltipNames[num6] = "UseMana";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.createWall > 0 || Main.toolTip.createTile > -1)
+@@ -13770,22 +_,26 @@
+ 						if (Main.toolTip.type != 213 && Main.toolTip.tileWand < 1)
+ 						{
+ 							array[num6] = Lang.tip[33];
++							tooltipNames[num6] = "Placeable";
+ 							num6++;
+ 						}
+ 					}
+ 					else if (Main.toolTip.ammo > 0 && !Main.toolTip.notAmmo)
+ 					{
+ 						array[num6] = Lang.tip[34];
++						tooltipNames[num6] = "Ammo";
+ 						num6++;
+ 					}
+ 					else if (Main.toolTip.consumable)
+ 					{
+ 						array[num6] = Lang.tip[35];
++						tooltipNames[num6] = "Consumable";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.material)
+ 					{
+ 						array[num6] = Lang.tip[36];
++						tooltipNames[num6] = "Material";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.toolTip != null)
+@@ -13798,16 +_,19 @@
+ 						{
+ 							array[num6] = this.TooltipMousetextProcessor(Main.toolTip.toolTip);
+ 						}
++						tooltipNames[num6] = "Tooltip";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.toolTip2 != null)
+ 					{
+ 						array[num6] = this.TooltipMousetextProcessor(Main.toolTip.toolTip2);
++						tooltipNames[num6] = "Tooltip2";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.buffType == 26 && Main.expertMode)
+ 					{
+ 						array[num6] = Lang.misc[40];
++						tooltipNames[num6] = "WellFedExpert";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.buffTime > 0)
+@@ -13822,12 +_,14 @@
+ 							text = Math.Round((double)Main.toolTip.buffTime / 60.0) + Lang.tip[38];
+ 						}
+ 						array[num6] = text;
++						tooltipNames[num6] = "BuffTime";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.type == 3262 || Main.toolTip.type == 3282 || Main.toolTip.type == 3283 || Main.toolTip.type == 3284 || Main.toolTip.type == 3285 || Main.toolTip.type == 3286 || Main.toolTip.type == 3316 || Main.toolTip.type == 3315 || Main.toolTip.type == 3317 || Main.toolTip.type == 3389)
+ 					{
+ 						array[num6] = " ";
+ 						num = num6;
++						tooltipNames[num6] = "OneDropLogo";
+ 						num6++;
+ 					}
+ 					if (Main.toolTip.prefix > 0)
+@@ -13855,6 +_,7 @@
+ 								array3[num6] = true;
+ 							}
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixDamage";
+ 							num6++;
+ 						}
+ 						if (Main.cpItem.useAnimation != Main.toolTip.useAnimation)
+@@ -13876,6 +_,7 @@
+ 								array3[num6] = true;
+ 							}
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixSpeed";
+ 							num6++;
+ 						}
+ 						if (Main.cpItem.crit != Main.toolTip.crit)
+@@ -13894,6 +_,7 @@
+ 								array3[num6] = true;
+ 							}
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixCritChance";
+ 							num6++;
+ 						}
+ 						if (Main.cpItem.mana != Main.toolTip.mana)
+@@ -13914,6 +_,7 @@
+ 								array3[num6] = true;
+ 							}
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixUseMana";
+ 							num6++;
+ 						}
+ 						if (Main.cpItem.scale != Main.toolTip.scale)
+@@ -13934,6 +_,7 @@
+ 								array3[num6] = true;
+ 							}
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixSize";
+ 							num6++;
+ 						}
+ 						if (Main.cpItem.shootSpeed != Main.toolTip.shootSpeed)
+@@ -13954,6 +_,7 @@
+ 								array3[num6] = true;
+ 							}
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixShootSpeed";
+ 							num6++;
+ 						}
+ 						if (Main.cpItem.knockBack != knockBack)
+@@ -13974,135 +_,158 @@
+ 								array3[num6] = true;
+ 							}
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixKnockback";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 62)
+ 						{
+ 							array[num6] = "+1" + Lang.tip[25];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccDefense";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 63)
+ 						{
+ 							array[num6] = "+2" + Lang.tip[25];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccDefense";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 64)
+ 						{
+ 							array[num6] = "+3" + Lang.tip[25];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccDefense";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 65)
+ 						{
+ 							array[num6] = "+4" + Lang.tip[25];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccDefense";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 66)
+ 						{
+ 							array[num6] = "+20 " + Lang.tip[31];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccMaxMana";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 67)
+ 						{
+ 							array[num6] = "+2" + Lang.tip[5];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccCritChance";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 68)
+ 						{
+ 							array[num6] = "+4" + Lang.tip[5];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccCritChance";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 69)
+ 						{
+ 							array[num6] = "+1" + Lang.tip[39];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccDamage";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 70)
+ 						{
+ 							array[num6] = "+2" + Lang.tip[39];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccDamage";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 71)
+ 						{
+ 							array[num6] = "+3" + Lang.tip[39];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccDamage";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 72)
+ 						{
+ 							array[num6] = "+4" + Lang.tip[39];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccDamage";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 73)
+ 						{
+ 							array[num6] = "+1" + Lang.tip[46];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccMoveSpeed";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 74)
+ 						{
+ 							array[num6] = "+2" + Lang.tip[46];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccMoveSpeed";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 75)
+ 						{
+ 							array[num6] = "+3" + Lang.tip[46];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccMoveSpeed";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 76)
+ 						{
+ 							array[num6] = "+4" + Lang.tip[46];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccMoveSpeed";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 77)
+ 						{
+ 							array[num6] = "+1" + Lang.tip[47];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccMeleeSpeed";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 78)
+ 						{
+ 							array[num6] = "+2" + Lang.tip[47];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccMeleeSpeed";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 79)
+ 						{
+ 							array[num6] = "+3" + Lang.tip[47];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccMeleeSpeed";
+ 							num6++;
+ 						}
+ 						if (Main.toolTip.prefix == 80)
+ 						{
+ 							array[num6] = "+4" + Lang.tip[47];
+ 							array2[num6] = true;
++							tooltipNames[num6] = "PrefixAccMeleeSpeed";
+ 							num6++;
+ 						}
+ 					}
+ 					if (Main.toolTip.wornArmor && Main.player[Main.myPlayer].setBonus != "")
+ 					{
+ 						array[num6] = Lang.tip[48] + " " + Main.player[Main.myPlayer].setBonus;
++						tooltipNames[num6] = "SetBonus";
+ 						num6++;
+ 					}
+ 				}
+ 				if (Main.toolTip.expert)
+ 				{
+ 					array[num6] = "Expert";
++					tooltipNames[num6] = "Expert";
+ 					num6++;
+ 				}
+ 				num21 = (float)Main.mouseTextColor / 255f;
++				//patch file: num22
+ 				float num22 = num21;
+ 				int a = (int)Main.mouseTextColor;
+ 				if (Main.npcShop > 0)
+@@ -14203,6 +_,7 @@
+ 						{
+ 							array[num6] = Lang.tip[50] + " " + text2;
+ 						}
++						tooltipNames[num6] = "Price";
+ 						num6++;
+ 						if (num23 > 0)
+ 						{
+@@ -14224,10 +_,14 @@
+ 					else
+ 					{
+ 						array[num6] = Lang.tip[51];
++						tooltipNames[num6] = "Price";
+ 						num6++;
+ 						color = new Microsoft.Xna.Framework.Color((int)((byte)(120f * num22)), (int)((byte)(120f * num22)), (int)((byte)(120f * num22)), a);
+ 					}
+ 				}
++				Microsoft.Xna.Framework.Color?[] overrideColor;
++				ItemLoader.ModifyTooltips(Main.toolTip, ref num6, tooltipNames, ref array,
++					ref array2, ref array3, ref num, out overrideColor);
+ 				Vector2 zero = Vector2.Zero;
+ 				int num28 = 0;
+ 				for (int j = 0; j < num6; j++)
+@@ -14370,6 +_,10 @@
+ 						else if (k == num6 - 1)
+ 						{
+ 							baseColor = color;
++						}
++						if (overrideColor[k].HasValue)
++						{
++							baseColor = overrideColor[k].Value * num22;
+ 						}
+ 						ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, array[k], new Vector2((float)num2, (float)(num3 + num29)), baseColor, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
+ 					}
 @@ -14386,7 +_,7 @@
  				if (Main.bannerMouseOver)
  				{
