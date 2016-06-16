@@ -20,6 +20,163 @@
  				if (this.alchemy && Main.player[Main.myPlayer].alchemyTable)
  				{
  					if (num > 1)
+@@ -179,78 +_,26 @@
+ 			{
+ 				return false;
+ 			}
+-			if (reqType <= 621)
+-			{
+-				if (reqType == 9)
+-				{
+-					goto IL_59;
+-				}
+-				switch (reqType)
+-				{
+-					case 619:
+-					case 620:
+-					case 621:
+-						goto IL_59;
+-				}
+-			}
+-			else
+-			{
+-				if (reqType == 911 || reqType == 1729)
+-				{
+-					goto IL_59;
+-				}
+-				switch (reqType)
+-				{
+-					case 2503:
+-					case 2504:
+-						goto IL_59;
+-				}
+-			}
+-			return false;
+-			IL_59:
+-			if (invType <= 621)
+-			{
+-				if (invType == 9)
+-				{
+-					return true;
+-				}
+-				switch (invType)
+-				{
+-					case 619:
+-					case 620:
+-					case 621:
+-						return true;
+-				}
+-			}
+-			else
+-			{
+-				if (invType == 911 || invType == 1729)
+-				{
+-					return true;
+-				}
+-				switch (invType)
+-				{
+-					case 2503:
+-					case 2504:
+-						return true;
+-				}
+-			}
+-			return false;
++			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.Wood].ValidItems;
++			return valid.Contains(invType) && valid.Contains(reqType);
+ 		}
+ 
+ 		public bool useIronBar(int invType, int reqType)
+ 		{
+-			return this.anyIronBar && (reqType == 22 || reqType == 704) && (invType == 22 || invType == 704);
++			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.IronBar].ValidItems;
++			return this.anyIronBar && valid.Contains(invType) && valid.Contains(reqType);
+ 		}
+ 
+ 		public bool useSand(int invType, int reqType)
+ 		{
+-			return (reqType == 169 || reqType == 408 || reqType == 1246 || reqType == 370 || reqType == 3272) && (this.anySand && (invType == 169 || invType == 408 || invType == 1246 || invType == 370 || invType == 3272));
++			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems;
++			return this.anySand && valid.Contains(invType) && valid.Contains(reqType);
+ 		}
+ 
+ 		public bool useFragment(int invType, int reqType)
+ 		{
+-			return (reqType == 3458 || reqType == 3456 || reqType == 3457 || reqType == 3459) && (this.anyFragment && (invType == 3458 || invType == 3456 || invType == 3457 || invType == 3459));
++			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.Fragment].ValidItems;
++			return this.anyFragment && valid.Contains(invType) && valid.Contains(reqType);
+ 		}
+ 
+ 		public bool usePressurePlate(int invType, int reqType)
+@@ -259,67 +_,8 @@
+ 			{
+ 				return false;
+ 			}
+-			if (reqType <= 543)
+-			{
+-				if (reqType == 529)
+-				{
+-					goto IL_54;
+-				}
+-				switch (reqType)
+-				{
+-					case 541:
+-					case 542:
+-					case 543:
+-						goto IL_54;
+-				}
+-			}
+-			else
+-			{
+-				switch (reqType)
+-				{
+-					case 852:
+-					case 853:
+-						goto IL_54;
+-					default:
+-						if (reqType == 1151)
+-						{
+-							goto IL_54;
+-						}
+-						break;
+-				}
+-			}
+-			return false;
+-			IL_54:
+-			if (invType <= 543)
+-			{
+-				if (invType == 529)
+-				{
+-					return true;
+-				}
+-				switch (invType)
+-				{
+-					case 541:
+-					case 542:
+-					case 543:
+-						return true;
+-				}
+-			}
+-			else
+-			{
+-				switch (invType)
+-				{
+-					case 852:
+-					case 853:
+-						return true;
+-					default:
+-						if (invType == 1151)
+-						{
+-							return true;
+-						}
+-						break;
+-				}
+-			}
+-			return false;
++			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate].ValidItems;
++			return valid.Contains(invType) && valid.Contains(reqType);
+ 		}
+ 
+ 		public static void FindRecipes()
 @@ -464,7 +_,7 @@
  							flag2 = false;
  						}

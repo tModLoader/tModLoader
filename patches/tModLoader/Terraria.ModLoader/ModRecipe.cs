@@ -101,6 +101,10 @@ namespace Terraria.ModLoader
 
 		public void AddRecipeGroup(string name, int stack = 1)
 		{
+			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
+			{
+				throw new RecipeException("A recipe group with the name " + name + " does not exist.");
+			}
 			int id = RecipeGroup.recipeGroupIDs[name];
 			RecipeGroup rec = RecipeGroup.recipeGroups[id];
 			AddIngredient(rec.ValidItems[rec.IconicItemIndex], stack);

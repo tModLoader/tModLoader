@@ -1,3 +1,4 @@
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -54,88 +55,26 @@ namespace ExampleMod
 			recipe.AddRecipe();
 		}
 
-		public static void AddTestRecipes(Mod mod)
+		public static void TestRecipeEditor(Mod mod)
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.NebulaHelmet);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.NebulaBreastplate);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.NebulaLeggings);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.CelestialCuffs);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.ManaFlower);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.CharmofMyths);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.StarVeil);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.WormScarf);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.LunarFlareBook);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.LastPrism);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.WingsSolar);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.AnkhShield);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.FrostsparkBoots);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.SuperManaPotion, 99);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.SpectreHood);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.SpectreRobe);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.SpectrePants);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.BubbleGun);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.GoldenShower);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.RazorbladeTyphoon);
-			recipe.AddRecipe();
+			RecipeFinder finder = new RecipeFinder();
+			finder.AddIngredient(ItemID.Chain);
+			foreach (Recipe recipe in finder.SearchRecipes())
+			{
+				RecipeEditor editor = new RecipeEditor(recipe);
+				editor.DeleteIngredient(ItemID.Chain);
+			}
+
+			finder = new RecipeFinder();
+			finder.AddRecipeGroup("IronBar");
+			finder.AddTile(TileID.Anvils);
+			finder.SetResult(ItemID.Chain, 10);
+			Recipe recipe2 = finder.FindExactRecipe();
+			if (recipe2 != null)
+			{
+				RecipeEditor editor = new RecipeEditor(recipe2);
+				editor.DeleteRecipe();
+			}
 		}
 	}
 }

@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.Graphics.Shaders\GameShaders.cs
++++ src/tModLoader\Terraria.Graphics.Shaders\GameShaders.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.Graphics.Shaders
+ {
+-	internal class GameShaders
++	public class GameShaders
+ 	{
+ 		public static ArmorShaderDataSet Armor = new ArmorShaderDataSet();
+ 		public static HairShaderDataSet Hair = new HairShaderDataSet();
+
