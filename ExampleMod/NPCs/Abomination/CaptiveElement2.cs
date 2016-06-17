@@ -550,5 +550,11 @@ namespace ExampleMod.NPCs.Abomination
 				index = NPCHeadLoader.GetBossHeadSlot(ExampleMod.captiveElement2Head + captiveType);
 			}
 		}
+
+		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+		{
+			scale = 1.5f;
+			return null;
+		}
 	}
 }

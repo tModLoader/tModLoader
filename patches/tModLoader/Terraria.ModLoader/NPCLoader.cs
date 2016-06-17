@@ -66,6 +66,8 @@ namespace Terraria.ModLoader
 		private static DelegateDrawEffects[] HookDrawEffects;
 		private static Func<NPC, SpriteBatch, Color, bool>[] HookPreDraw;
 		private static Action<NPC, SpriteBatch, Color>[] HookPostDraw;
+		private delegate bool? DelegateDrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 offset);
+		private static DelegateDrawHealthBar[] HookDrawHealthBar;
 		private delegate void DelegateEditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns);
 		private static DelegateEditSpawnRate[] HookEditSpawnRate;
 		private delegate void DelegateEditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY, ref int safeRangeX, ref int safeRangeY);
@@ -223,6 +225,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookDrawEffects, globalNPCs, g => g.DrawEffects);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalNPCs, g => g.PreDraw);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalNPCs, g => g.PostDraw);
+			ModLoader.BuildGlobalHook(ref HookDrawHealthBar, globalNPCs, g => g.DrawHealthBar);
 			ModLoader.BuildGlobalHook(ref HookEditSpawnRate, globalNPCs, g => g.EditSpawnRate);
 			ModLoader.BuildGlobalHook(ref HookEditSpawnRange, globalNPCs, g => g.EditSpawnRange);
 			ModLoader.BuildGlobalHook(ref HookEditSpawnPool, globalNPCs, g => g.EditSpawnPool);
@@ -823,6 +826,50 @@ namespace Terraria.ModLoader
 			{
 				hook(npc, spriteBatch, drawColor);
 			}
+		}
+
+		public static bool DrawHealthBar(NPC npc, ref float scale)
+		{
+			Vector2 position = new Vector2(npc.position.X + npc.width / 2, npc.position.Y + npc.gfxOffY);
+			if (Main.hbPosition == 1)
+			{
+				position.Y += npc.height + 10f + Main.NPCAddHeight(npc.whoAmI);
+			}
+			else if (Main.hbPosition == 2)
+			{
+				position.Y -= 24f + Main.NPCAddHeight(npc.whoAmI) / 2f;
+			}
+			foreach (var hook in HookDrawHealthBar)
+			{
+				bool? result = hook(npc, Main.hbPosition, ref scale, ref position);
+				if (result.HasValue)
+				{
+					if (result.Value)
+					{
+						DrawHealthBar(npc, position, scale);
+					}
+					return false;
+				}
+			}
+			if (NPCLoader.IsModNPC(npc))
+			{
+				bool? result = npc.modNPC.DrawHealthBar(Main.hbPosition, ref scale, ref position);
+				if (result.HasValue)
+				{
+					if (result.Value)
+					{
+						DrawHealthBar(npc, position, scale);
+					}
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private static void DrawHealthBar(NPC npc, Vector2 position, float scale)
+		{
+			float alpha = Lighting.Brightness((int)(npc.Center.X / 16f), (int)(npc.Center.Y / 16f));
+			Main.instance.DrawHealthBar(position.X, position.Y, npc.life, npc.lifeMax, alpha, scale);
 		}
 		//in Terraria.NPC.SpawnNPC after modifying NPC.spawnRate and NPC.maxSpawns call
 		//  NPCLoader.EditSpawnRate(Main.player[j], ref NPC.spawnRate, ref NPC.maxSpawns);

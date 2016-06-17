@@ -5474,7 +5474,7 @@
  						flag29 = true;
  					}
 -					if (flag29)
-+					if (flag29 && ItemLoader.ConsumeItem(this.inventory[i], this))
++					if (flag29 && ItemLoader.ConsumeItem(item, this))
  					{
  						if (item.stack > 0)
  						{

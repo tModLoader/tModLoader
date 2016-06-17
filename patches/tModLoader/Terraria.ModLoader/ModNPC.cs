@@ -220,6 +220,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+		{
+			return null;
+		}
+
 		public virtual float CanSpawn(NPCSpawnInfo spawnInfo)
 		{
 			return 0f;

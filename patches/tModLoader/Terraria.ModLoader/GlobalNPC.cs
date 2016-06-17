@@ -168,6 +168,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position)
+		{
+			return null;
+		}
+
 		public virtual void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
 		{
 		}

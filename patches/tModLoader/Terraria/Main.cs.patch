@@ -1097,6 +1097,15 @@
  					{
  						Main.drawBackGore = true;
  					}
+@@ -19452,7 +_,7 @@
+ 			TimeLogger.DetailedDrawTime(24);
+ 		}
+ 
+-		protected void DrawHealthBar(float X, float Y, int Health, int MaxHealth, float alpha, float scale = 1f)
++		public void DrawHealthBar(float X, float Y, int Health, int MaxHealth, float alpha, float scale = 1f)
+ 		{
+ 			if (Health <= 0)
+ 			{
 @@ -19693,6 +_,10 @@
  			else if (Main.npc[i].type == 376)
  			{
@@ -2430,6 +2439,17 @@
  					}
  				}
  			}
+@@ -35948,6 +_,10 @@
+ 							if (type == 439 || type == 370)
+ 							{
+ 								scale4 = 1.5f;
++							}
++							if (!NPCLoader.DrawHealthBar(Main.npc[m], ref scale4))
++							{
++								continue;
+ 							}
+ 							if ((!Main.expertMode || type != 266) && ((type != 439 && type != 440) || Main.npc[m].ai[0] != 5f))
+ 							{
 @@ -37424,7 +_,7 @@
  						}
  						else

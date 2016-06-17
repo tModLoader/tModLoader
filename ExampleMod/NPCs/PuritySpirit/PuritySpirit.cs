@@ -898,6 +898,12 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 		}
 
+		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+		{
+			scale = 1.5f;
+			return null;
+		}
+
 		private void Talk(string message)
 		{
 			string text = "<Spirit of Purity> " + message;
