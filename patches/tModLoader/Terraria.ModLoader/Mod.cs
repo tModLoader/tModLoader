@@ -85,6 +85,7 @@ namespace Terraria.ModLoader
 							using (MemoryStream buffer = new MemoryStream(data))
 							{
 								textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+								textures[texturePath].Name = Name + "/" + texturePath;
 							}
 							break;
 						case ".wav":
