@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Terraria.World.Generation;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Generation;
-using System;
+using System.Linq;
 
 namespace ExampleMod
 {
@@ -81,20 +81,220 @@ namespace ExampleMod
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
 			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Shinies"));
-			if (ShiniesIndex == -1)
+			if (ShiniesIndex != -1)
 			{
-				// Shinies pass removed by some other mod.
-				return;
-			}
-			tasks.Insert(ShiniesIndex + 1, new PassLegacy("Example Mod Ores", delegate (GenerationProgress progress)
-			{
-				progress.Message = "Example Mod Ores";
-
-				for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+				tasks.Insert(ShiniesIndex + 1, new PassLegacy("Example Mod Ores", delegate (GenerationProgress progress)
 				{
-					WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX), WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, Main.maxTilesY), (double)WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), mod.TileType("ExampleBlock"), false, 0f, 0f, false, true);
+					progress.Message = "Example Mod Ores";
+
+					for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+					{
+						WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX), WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, Main.maxTilesY), (double)WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), mod.TileType("ExampleBlock"), false, 0f, 0f, false, true);
+					}
+				}));
+			}
+
+			int LivingTreesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Living Trees"));
+			if (LivingTreesIndex != -1)
+			{
+				tasks.Insert(LivingTreesIndex + 1, new PassLegacy("Post Terrain", delegate (GenerationProgress progress)
+				{
+					progress.Message = "What is it Lassie, did Timmy fall down a well?";
+					MakeWells();
+				}));
+			}
+		}
+
+		private void MakeWells()
+		{
+			float widthScale = (Main.maxTilesX / 4200f);
+			int numberToGenerate = WorldGen.genRand.Next(1, (int)(2f * widthScale));
+			for (int k = 0; k < numberToGenerate; k++)
+			{
+				bool success = false;
+				int attempts = 0;
+				while (!success)
+				{
+					attempts++;
+					if (attempts > 1000)
+					{
+						success = true;
+						continue;
+					}
+					int i = WorldGen.genRand.Next(300, Main.maxTilesX - 300);
+					if (i <= Main.maxTilesX / 2 - 50 || i >= Main.maxTilesX / 2 + 50)
+					{
+						int j = 0;
+						while (!Main.tile[i, j].active() && (double)j < Main.worldSurface)
+						{
+							j++;
+						}
+						if (Main.tile[i, j].type == TileID.Dirt)
+						{
+							j--;
+							if (j > 150)
+							{
+								bool placementOK = true;
+								for (int l = i - 4; l < i + 4; l++)
+								{
+									for (int m = j - 6; m < j + 20; m++)
+									{
+										if (Main.tile[l, m].active())
+										{
+											int type = (int)Main.tile[l, m].type;
+											if (type == TileID.BlueDungeonBrick || type == TileID.GreenDungeonBrick || type == TileID.PinkDungeonBrick || type == TileID.Cloud || type == TileID.RainCloud)
+											{
+												placementOK = false;
+											}
+										}
+									}
+								}
+								if (placementOK)
+								{
+									success = PlaceWell(i, j);
+								}
+							}
+						}
+					}
 				}
-			}));
+			}
+		}
+
+		int[,] wellshape = new int[,]
+		{
+			{0,0,3,1,4,0,0 },
+			{0,3,1,1,1,4,0 },
+			{3,1,1,1,1,1,4 },
+			{5,5,5,6,5,5,5 },
+			{5,5,5,6,5,5,5 },
+			{5,5,5,6,5,5,5 },
+			{2,1,5,6,5,1,2 },
+			{1,1,5,5,5,1,1 },
+			{1,1,5,5,5,1,1 },
+			{0,1,5,5,5,1,0 },
+			{0,1,5,5,5,1,0 },
+			{0,1,5,5,5,1,0 },
+			{0,1,5,5,5,1,0 },
+			{0,1,5,5,5,1,0 },
+			{0,1,5,5,5,1,0 },
+			{0,1,5,5,5,1,0 },
+			{0,1,5,5,5,1,0 },
+			{0,1,1,1,1,1,0 },
+		};
+
+		int[,] wellshapeWall = new int[,]
+		{
+			{0,0,0,0,0,0,0 },
+			{0,0,0,0,0,0,0 },
+			{0,0,0,0,0,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+		};
+
+		int[,] wellshapeWater = new int[,]
+		{
+			{0,0,0,0,0,0,0 },
+			{0,0,0,0,0,0,0 },
+			{0,0,0,0,0,0,0 },
+			{0,0,0,0,0,0,0 },
+			{0,0,0,0,0,0,0 },
+			{0,0,0,0,0,0,0 },
+			{0,0,0,0,0,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,1,1,1,0,0 },
+			{0,0,0,0,0,0,0 },
+		};
+
+		public bool PlaceWell(int i, int j)
+		{
+			if (!WorldGen.SolidTile(i, j + 1))
+			{
+				return false;
+			}
+			if (Main.tile[i, j].active())
+			{
+				return false;
+			}
+			if (j < 150)
+			{
+				return false;
+			}
+
+			for (int y = 0; y < wellshape.GetLength(0); y++)
+			{
+				for (int x = 0; x < wellshape.GetLength(1); x++)
+				{
+					int k = i - 3 + x;
+					int l = j - 6 + y;
+					if (WorldGen.InWorld(k, l, 30))
+					{
+						Tile tile = Framing.GetTileSafely(k, l);
+						switch (wellshape[y, x])
+						{
+							case 1:
+								tile.type = TileID.RedBrick;
+								tile.active(true);
+								break;
+							case 2:
+								tile.type = TileID.RedBrick;
+								tile.active(true);
+								tile.halfBrick(true);
+								break;
+							case 3:
+								tile.type = TileID.RedBrick;
+								tile.active(true);
+								tile.slope(2);
+								break;
+							case 4:
+								tile.type = TileID.RedBrick;
+								tile.active(true);
+								tile.slope(1);
+								break;
+							case 5:
+								tile.active(false);
+								break;
+							case 6:
+								tile.type = TileID.Rope;
+								tile.active(true);
+								break;
+						}
+						switch (wellshapeWall[y, x])
+						{
+							case 1:
+								tile.wall = WallID.RedBrick;
+								break;
+						}
+						switch (wellshapeWater[y, x])
+						{
+							case 1:
+								tile.liquid = 255;
+								break;
+						}
+					}
+				}
+			}
+			return true;
 		}
 
 		public override void PostWorldGen()
