@@ -1063,6 +1063,15 @@
  								if (flag4)
  								{
  									if (color.R < 255)
+@@ -16673,7 +_,7 @@
+ 									}
+ 								}
+ 							}
+-							if (type == 21)
++							if (TileLoader.IsChest(type))
+ 							{
+ 								Microsoft.Xna.Framework.Point key = new Microsoft.Xna.Framework.Point(j, i);
+ 								if (num10 % 36 != 0)
 @@ -16918,6 +_,7 @@
  								}
  								Main.spriteBatch.Draw(Main.shroomCapTexture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X - 22), (float)(i * 16 - (int)Main.screenPosition.Y - 26)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(num93 * 62, 0, 60, 42)), Lighting.GetColor(j, i), 0f, default(Vector2), 1f, effects, 0f);
