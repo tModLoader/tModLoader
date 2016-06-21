@@ -9,6 +9,7 @@ namespace Terraria.ModLoader.Default
 		private static bool texturesLoaded;
 		private static Texture2D mysteryItemTexture;
 		private static Texture2D startBagTexture;
+		private static Texture2D mysteryTileTexture;
 
 		public override string Name => "ModLoader";
 
@@ -22,11 +23,15 @@ namespace Terraria.ModLoader.Default
 			LoadTextures();
 			AddTexture("MysteryItem", mysteryItemTexture);
 			AddTexture("StartBag", startBagTexture);
+			AddTexture("MysteryTile", mysteryTileTexture);
 			AddItem("MysteryItem", new MysteryItem(), "ModLoader/MysteryItem");
 			AddItem("StartBag", new StartBag(), "ModLoader/StartBag");
 			AddItem("AprilFools", new AprilFools(), "Terraria/Item_3389");
+			AddTile("MysteryTile", new MysteryTile(), "ModLoader/MysteryTile");
+			AddTile("PendingMysteryTile", new MysteryTile(), "ModLoader/MysteryTile");
 			AddPlayer("MysteryPlayer", new MysteryPlayer());
 			AddModWorld("MysteryWorld", new MysteryWorld());
+			AddModWorld("MysteryTilesWorld", new MysteryTilesWorld());
 		}
 
 		private static void LoadTextures()
@@ -37,6 +42,7 @@ namespace Terraria.ModLoader.Default
 			}
 			mysteryItemTexture = ReadTexture("MysteryItem");
 			startBagTexture = ReadTexture("StartBag");
+			mysteryTileTexture = ReadTexture("MysteryTile");
 			texturesLoaded = true;
 		}
 
