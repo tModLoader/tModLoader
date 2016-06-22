@@ -1,7 +1,7 @@
 :: After Pulling, Patching, and making sure the version number is changed in src, this bat will compile and create zips for all release.
 :: It will also create a zip for ExampleMod
 
-set version=v0.8.2
+set version=v0.8.2.1
 set destinationFolder=.\tModLoader %version% Release
 
 :: Compile/Build exe 
@@ -63,6 +63,7 @@ copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Mac %version%\
 
 copy ..\installer2\MacInstaller.jar "%destinationFolder%\tModLoader Mac %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Mac.txt "%destinationFolder%\tModLoader Mac %version%\README.txt" /y
+copy ReleaseExtras\Terraria.exe.config "%destinationFolder%\tModLoader Mac %version%\Terraria.exe.config" /y
 
 call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Mac %version%" -destination "%destinationFolder%\tModLoader Mac %version%.zip" -keep yes -force yes
 
@@ -79,8 +80,10 @@ copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoa
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Linux %version%\MP3Sharp.dll" /y
 copy ..\references\Ionic.Zip.Reduced.dll "%destinationFolder%\tModLoader Linux %version%\Ionic.Zip.Reduced.dll" /y
 copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Linux %version%\Mono.Cecil.dll" /y
+
 copy ..\installer2\LinuxInstaller.jar "%destinationFolder%\tModLoader Linux %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%destinationFolder%\tModLoader Linux %version%\README.txt" /y
+copy ReleaseExtras\Terraria.exe.config "%destinationFolder%\tModLoader Linux %version%\Terraria.exe.config" /y
 
 call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Linux %version%" -destination "%destinationFolder%\tModLoader Linux %version%.zip" -keep yes -force yes
 

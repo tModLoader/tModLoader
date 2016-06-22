@@ -199,6 +199,65 @@
  									{
  										flag3 = true;
  									}
+@@ -10224,7 +_,7 @@
+ 				});
+ 			WorldGen.AddGenerationPass("Micro Biomes", delegate(GenerationProgress progress)
+ 				{
+-					progress.Message = Lang.gen[76];
++					progress.Message = Lang.gen[76] + "..Thin Ice";
+ 					float num = (float)(Main.maxTilesX * Main.maxTilesY) / 5040000f;
+ 					float num2 = (float)Main.maxTilesX / 4200f;
+ 					int num3 = (int)((float)WorldGen.genRand.Next(3, 6) * num);
+@@ -10237,6 +_,7 @@
+ 						}
+ 					}
+ 					progress.Set(0.1f);
++					progress.Message = Lang.gen[76] + "..Enchanted Swords";
+ 					int num4 = (int)Math.Ceiling((double)num);
+ 					int l = 0;
+ 					while (l < num4)
+@@ -10257,6 +_,7 @@
+ 						}
+ 					}
+ 					progress.Set(0.2f);
++					progress.Message = Lang.gen[76] + "..Campsites";
+ 					int num5 = (int)((float)WorldGen.genRand.Next(6, 12) * num);
+ 					int m = 0;
+ 					while (m < num5)
+@@ -10266,6 +_,8 @@
+ 							m++;
+ 						}
+ 					}
++					progress.Message = Lang.gen[76] + "..Mining Explosives";
++					progress.Set(0.25f);
+ 					int num6 = (int)((float)WorldGen.genRand.Next(14, 30) * num);
+ 					int n = 0;
+ 					while (n < num6)
+@@ -10275,6 +_,7 @@
+ 							n++;
+ 						}
+ 					}
++					progress.Message = Lang.gen[76] + "..Mahogany Trees";
+ 					progress.Set(0.3f);
+ 					int num7 = (int)((float)WorldGen.genRand.Next(6, 12) * num2);
+ 					int num8 = 0;
+@@ -10287,6 +_,7 @@
+ 						}
+ 						num9++;
+ 					}
++					progress.Message = Lang.gen[76] + "..Corruption Pits";
+ 					progress.Set(0.4f);
+ 					if (!WorldGen.crimson)
+ 					{
+@@ -10300,6 +_,8 @@
+ 							}
+ 						}
+ 					}
++					progress.Message = Lang.gen[76] + "..Minecart Tracks";
++					progress.Set(0.5f);
+ 					TrackGenerator.Run((int)(10f * num), (int)(num * 25f) + 250);
+ 					progress.Set(1f);
+ 				});
 @@ -10351,7 +_,9 @@
  					WorldGen.gen = false;
  					Main.AnglerQuestSwap();

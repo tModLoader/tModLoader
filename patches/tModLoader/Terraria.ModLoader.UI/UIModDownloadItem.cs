@@ -7,6 +7,7 @@ using Terraria.Graphics;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Net;
+using System.Net.Security;
 
 namespace Terraria.ModLoader.UI
 {
@@ -154,6 +155,7 @@ namespace Terraria.ModLoader.UI
 			{
 				using (WebClient client = new WebClient())
 				{
+					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
 					Interface.modBrowser.selectedItem = this;
 					Interface.downloadMod.SetDownloading(displayname);
 					Interface.downloadMod.SetCancel(client.CancelAsync);

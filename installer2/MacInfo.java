@@ -18,6 +18,7 @@ public class MacInfo
             "MP3Sharp.dll",
             "Ionic.Zip.Reduced.dll",
             "Mono.Cecil.dll",
+            "Terraria.exe.config",
             "ModCompile/Microsoft.Xna.Framework.dll",
             "ModCompile/Microsoft.Xna.Framework.Game.dll",
             "ModCompile/Microsoft.Xna.Framework.Graphics.dll",
