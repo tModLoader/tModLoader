@@ -60,6 +60,8 @@ namespace Terraria.ModLoader
 		private static Action<Item, Player>[] HookRightClick;
 		private static Func<string, Player, int, bool>[] HookPreOpenVanillaBag;
 		private static Action<string, Player, int>[] HookOpenVanillaBag;
+		private static Action<Item>[] HookPreReforge;
+		private static Action<Item>[] HookPostReforge;
 		private delegate void DelegateDrawHands(int body, ref bool drawHands, ref bool drawArms);
 		private static DelegateDrawHands[] HookDrawHands;
 		private delegate void DelegateDrawHair(int body, ref bool drawHair, ref bool drawAltHair);
@@ -225,6 +227,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookRightClick, globalItems, g => g.RightClick);
 			ModLoader.BuildGlobalHook(ref HookPreOpenVanillaBag, globalItems, g => g.PreOpenVanillaBag);
 			ModLoader.BuildGlobalHook(ref HookOpenVanillaBag, globalItems, g => g.OpenVanillaBag);
+			ModLoader.BuildGlobalHook(ref HookPreReforge, globalItems, g => g.PreReforge);
+			ModLoader.BuildGlobalHook(ref HookPostReforge, globalItems, g => g.PostReforge);
 			ModLoader.BuildGlobalHook(ref HookDrawHands, globalItems, g => g.DrawHands);
 			ModLoader.BuildGlobalHook(ref HookDrawHair, globalItems, g => g.DrawHair);
 			ModLoader.BuildGlobalHook(ref HookDrawHead, globalItems, g => g.DrawHead);
@@ -895,6 +899,30 @@ namespace Terraria.ModLoader
 			foreach (var hook in HookOpenVanillaBag)
 			{
 				hook(context, player, arg);
+			}
+		}
+
+		public static void PreReforge(Item item)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.PreReforge();
+			}
+			foreach (var hook in HookPreReforge)
+			{
+				hook(item);
+			}
+		}
+
+		public static void PostReforge(Item item)
+		{
+			if (IsModItem(item))
+			{
+				item.modItem.PostReforge();
+			}
+			foreach (var hook in HookPostReforge)
+			{
+				hook(item);
 			}
 		}
 

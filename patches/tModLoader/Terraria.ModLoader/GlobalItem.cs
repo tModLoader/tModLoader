@@ -223,6 +223,14 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void PreReforge(Item item)
+		{
+		}
+
+		public virtual void PostReforge(Item item)
+		{
+		}
+
 		public virtual void DrawHands(int body, ref bool drawHands, ref bool drawArms)
 		{
 		}
