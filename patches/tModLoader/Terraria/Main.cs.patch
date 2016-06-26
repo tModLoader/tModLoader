@@ -1007,6 +1007,15 @@
  					{
  						if (Item.BannerToNPC(m) != 0 && Main.player[Main.myPlayer].NPCBannerBuff[m])
  						{
+@@ -14468,7 +_,7 @@
+ 				if (Main.bannerMouseOver)
+ 				{
+ 					int num41 = 0;
+-					for (int num42 = 0; num42 < 251; num42++)
++					for (int num42 = 0; num42 < NPCLoader.NPCCount; num42++)
+ 					{
+ 						if (Item.BannerToNPC(num42) != 0 && Main.player[Main.myPlayer].NPCBannerBuff[num42])
+ 						{
 @@ -14855,6 +_,7 @@
  					{
  					}
@@ -2404,6 +2413,26 @@
  							Main.npcChatText = Lang.DyeTraderQuestChat(gotDye);
  						}
 +						NPCLoader.OnChatButtonClicked(false);
+ 					}
+ 				}
+ 			}
+@@ -32566,14 +_,13 @@
+ 							int num31 = (int)(Main.player[Main.myPlayer].manaSickReduction * 100f) + 1;
+ 							Main.buffString = Main.buffString + num31 + "%";
+ 						}
++						int rare = 0;
+ 						if (Main.meleeBuff[num30])
+ 						{
+-							this.MouseText(Main.buffName[num30], -10, 0);
+-						}
+-						else
+-						{
+-							this.MouseText(Main.buffName[num30], 0, 0);
+-						}
++							rare = -10;
++						}
++						BuffLoader.ModifyBuffTip(num30, ref Main.buffString, ref rare);
++						this.MouseText(Main.buffName[num30], rare, 0);
  					}
  				}
  			}
