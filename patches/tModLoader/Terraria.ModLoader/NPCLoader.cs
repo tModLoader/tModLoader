@@ -264,8 +264,9 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.NPC.SetDefaults after if else setting properties call NPCLoader.SetupNPC(this);
 		//in Terraria.NPC.SetDefaults move Lang stuff before SetupNPC and replace this.netID with this.type
-		internal static void SetupNPC(NPC npc) {
-			npc.npcInfo = infoList.Select(info => info.Clone()).ToArray();
+		internal static void SetupNPC(NPC npc)
+		{
+			SetupNPCInfo(npc);
 			if (IsModNPC(npc))
 			{
 				GetNPC(npc.type).SetupNPC(npc);
@@ -274,6 +275,11 @@ namespace Terraria.ModLoader
 			{
 				hook(npc);
 			}
+		}
+
+		internal static void SetupNPCInfo(NPC npc)
+		{
+			npc.npcInfo = infoList.Select(info => info.Clone()).ToArray();
 		}
 
 		internal static NPCInfo GetNPCInfo(NPC npc, Mod mod, string name)

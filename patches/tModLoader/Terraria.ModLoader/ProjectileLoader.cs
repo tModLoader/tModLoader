@@ -141,7 +141,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Projectile.SetDefaults before scaling size call ProjectileLoader.SetupProjectile(this);
 		internal static void SetupProjectile(Projectile projectile)
 		{
-			projectile.projectileInfo = infoList.Select(info => info.Clone()).ToArray();
+			SetupProjectileInfo(projectile);
 			if (IsModProjectile(projectile))
 			{
 				GetProjectile(projectile.type).SetupProjectile(projectile);
@@ -150,6 +150,11 @@ namespace Terraria.ModLoader
 			{
 				hook(projectile);
 			}
+		}
+
+		internal static void SetupProjectileInfo(Projectile projectile)
+		{
+			projectile.projectileInfo = infoList.Select(info => info.Clone()).ToArray();
 		}
 
 		internal static ProjectileInfo GetProjectileInfo(Projectile projectile, Mod mod, string name)

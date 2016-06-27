@@ -237,6 +237,7 @@ namespace Terraria.ModLoader
 			int id = ItemLoader.ReserveItemID();
 			item.item.name = name;
 			item.item.ResetStats(id);
+			item.item.modItem = item;
 			items[name] = item;
 			ItemLoader.items.Add(item);
 			item.texture = texture;
@@ -1233,6 +1234,7 @@ namespace Terraria.ModLoader
 				Main.itemTexture[item.item.type] = ModLoader.GetTexture(item.texture);
 				Main.itemName[item.item.type] = item.item.name;
 				EquipLoader.SetSlot(item.item);
+				ItemLoader.SetupItemInfo(item.item);
 				item.SetDefaults();
 				DrawAnimation animation = item.GetAnimation();
 				if (animation != null)
@@ -1271,6 +1273,7 @@ namespace Terraria.ModLoader
 			{
 				Main.projectileTexture[projectile.projectile.type] = ModLoader.GetTexture(projectile.texture);
 				Main.projFrames[projectile.projectile.type] = 1;
+				ProjectileLoader.SetupProjectileInfo(projectile.projectile);
 				projectile.SetDefaults();
 				if (projectile.projectile.hostile)
 				{
@@ -1285,6 +1288,7 @@ namespace Terraria.ModLoader
 			{
 				Main.npcTexture[npc.npc.type] = ModLoader.GetTexture(npc.texture);
 				Main.npcName[npc.npc.type] = npc.npc.name;
+				NPCLoader.SetupNPCInfo(npc.npc);
 				npc.SetDefaults();
 				if (npc.npc.lifeMax > 32767 || npc.npc.boss)
 				{

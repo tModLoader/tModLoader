@@ -306,7 +306,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Item.SetDefaults move Lang stuff before SetupItem
 		internal static void SetupItem(Item item)
 		{
-			item.itemInfo = infoList.Select(info => info.Clone()).ToArray();
+			SetupItemInfo(item);
 			if (IsModItem(item))
 			{
 				GetItem(item.type).SetupItem(item);
@@ -315,6 +315,11 @@ namespace Terraria.ModLoader
 			{
 				hook(item);
 			}
+		}
+
+		internal static void SetupItemInfo(Item item)
+		{
+			item.itemInfo = infoList.Select(info => info.Clone()).ToArray();
 		}
 
 		internal static ItemInfo GetItemInfo(Item item, Mod mod, string name)
