@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader
 {
@@ -42,8 +42,16 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-        public virtual void ModifyBuffTip(int type, ref string tip, ref int rare)
-        {
-        }
+		public virtual void ModifyBuffTip(int type, ref string tip, ref int rare)
+		{
+		}
+
+		public virtual void CustomBuffTipSize(string buffTip, List<Vector2> sizes)
+		{
+		}
+
+		public virtual void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY)
+		{
+		}
 	}
 }

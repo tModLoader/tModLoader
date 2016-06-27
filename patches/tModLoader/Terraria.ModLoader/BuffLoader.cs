@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -18,8 +20,10 @@ namespace Terraria.ModLoader
 		private static DelegateUpdateNPC[] HookUpdateNPC; 
 		private static Func<int, Player, int, int, bool>[] HookReApplyPlayer; 
 		private static Func<int, NPC, int, int, bool>[] HookReApplyNPC;
-        private delegate void DelegateModifyBuffTip(int type, ref string tip, ref int rare);
-        private static DelegateModifyBuffTip[] HookModifyBuffTip;
+		private delegate void DelegateModifyBuffTip(int type, ref string tip, ref int rare);
+		private static DelegateModifyBuffTip[] HookModifyBuffTip;
+		private static Action<string, List<Vector2>>[] HookCustomBuffTipSize;
+		private static Action<string, SpriteBatch, int, int>[] HookDrawCustomBuffTip;
 
 		static BuffLoader()
 		{
@@ -88,7 +92,9 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookReApplyPlayer, globalBuffs, g => g.ReApply);
 			ModLoader.BuildGlobalHook(ref HookReApplyNPC, globalBuffs, g => g.ReApply);
-            ModLoader.BuildGlobalHook(ref HookModifyBuffTip, globalBuffs, g => g.ModifyBuffTip);
+			ModLoader.BuildGlobalHook(ref HookModifyBuffTip, globalBuffs, g => g.ModifyBuffTip);
+			ModLoader.BuildGlobalHook(ref HookCustomBuffTipSize, globalBuffs, g => g.CustomBuffTipSize);
+			ModLoader.BuildGlobalHook(ref HookDrawCustomBuffTip, globalBuffs, g => g.DrawCustomBuffTip);
 		}
 
 		internal static void Unload()
@@ -174,16 +180,32 @@ namespace Terraria.ModLoader
 			return GetBuff(buff)?.canBeCleared ?? vanillaCanBeCleared[buff];
 		}
 
-        public static void ModifyBuffTip(int buff, ref string tip, ref int rare)
-        {
-            if (IsModBuff(buff))
-            {
-                GetBuff(buff).ModifyBuffTip(ref tip, ref rare);
-            }
-            foreach (var hook in HookModifyBuffTip)
-            {
-                hook(buff, ref tip, ref rare);
-            }
-        }
+		public static void ModifyBuffTip(int buff, ref string tip, ref int rare)
+		{
+			if (IsModBuff(buff))
+			{
+				GetBuff(buff).ModifyBuffTip(ref tip, ref rare);
+			}
+			foreach (var hook in HookModifyBuffTip)
+			{
+				hook(buff, ref tip, ref rare);
+			}
+		}
+
+		public static void CustomBuffTipSize(string buffTip, List<Vector2> sizes)
+		{
+			foreach (var hook in HookCustomBuffTipSize)
+			{
+				hook(buffTip, sizes);
+			}
+		}
+
+		public static void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY)
+		{
+			foreach (var hook in HookDrawCustomBuffTip)
+			{
+				hook(buffTip, spriteBatch, originX, originY);
+			}
+		}
 	}
 }
