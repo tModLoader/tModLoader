@@ -253,6 +253,9 @@ namespace Terraria.ModLoader
 		private static void NetReload() {
 			Main.ActivePlayerFileData = Player.GetFileData(Main.ActivePlayerFileData.Path, Main.ActivePlayerFileData.IsCloudSave);
 			Main.ActivePlayerFileData.SetAsActive();
+			//from Netplay.ClientLoopSetup
+			Main.player[Main.myPlayer].hostile = false;
+			Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();
 
 			Main.menuMode = 10;
 			OnModsDownloaded(false);
