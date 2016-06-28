@@ -1448,6 +1448,10 @@ namespace Terraria.ModLoader
 
 		public static int NeedsGlobalCustomSaving(Item item)
 		{
+			if (item.type == 0)
+			{
+				return 0;
+			}
 			int numGlobalData = 0;
 			foreach (var hook in HookNeedsCustomSaving)
 			{
