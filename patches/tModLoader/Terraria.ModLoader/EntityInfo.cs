@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 
 	public class ItemInfo : EntityInfo
 	{
-		internal ItemInfo Clone()
+		public virtual ItemInfo Clone()
 		{
 			return (ItemInfo)MemberwiseClone();
 		}
@@ -32,7 +32,7 @@ namespace Terraria.ModLoader
 
 	public class ProjectileInfo : EntityInfo
 	{
-		internal ProjectileInfo Clone()
+		public virtual ProjectileInfo Clone()
 		{
 			return (ProjectileInfo)MemberwiseClone();
 		}
@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 
 	public class NPCInfo : EntityInfo
 	{
-		internal NPCInfo Clone()
+		public virtual NPCInfo Clone()
 		{
 			return (NPCInfo)MemberwiseClone();
 		}
