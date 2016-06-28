@@ -85,6 +85,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool ShouldUpdatePosition()
+		{
+			return true;
+		}
+
 		public virtual void TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
 		{
 		}
@@ -101,6 +106,11 @@ namespace Terraria.ModLoader
 
 		public virtual void Kill(int timeLeft)
 		{
+		}
+
+		public virtual bool CanDamage()
+		{
+			return true;
 		}
 
 		public virtual bool MinionContactDamage()

@@ -96,12 +96,16 @@
  			{
  				if (ProjectileID.Sets.NeedsUUID[Type])
  				{
-@@ -8042,7 +_,7 @@
+@@ -8042,7 +_,11 @@
  			{
  				return;
  			}
 -			if (Main.projPet[this.type] && this.type != 266 && this.type != 407 && this.type != 317 && (this.type != 388 || this.ai[0] != 2f) && (this.type < 390 || this.type > 392) && (this.type < 393 || this.type > 395) && (this.type != 533 || this.ai[0] < 6f || this.ai[0] > 8f) && (this.type < 625 || this.type > 628))
 +			if (Main.projPet[this.type] && this.type != 266 && this.type != 407 && this.type != 317 && (this.type != 388 || this.ai[0] != 2f) && (this.type < 390 || this.type > 392) && (this.type < 393 || this.type > 395) && (this.type != 533 || this.ai[0] < 6f || this.ai[0] > 8f) && (this.type < 625 || this.type > 628) && !ProjectileLoader.MinionContactDamage(this))
++			{
++				return;
++			}
++			if (!ProjectileLoader.CanDamage(this))
  			{
  				return;
  			}
@@ -326,6 +330,17 @@
  					{
  						this.position += this.velocity;
  						this.numUpdates = 0;
+@@ -11507,6 +_,10 @@
+ 				{
+ 					return;
+ 				}
++				if (!ProjectileLoader.ShouldUpdatePosition(this))
++				{
++					return;
++				}
+ 				if (this.wet)
+ 				{
+ 					this.position += wetVelocity;
 @@ -11558,12 +_,14 @@
  				{
  					num5++;

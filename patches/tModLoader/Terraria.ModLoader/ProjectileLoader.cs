@@ -20,11 +20,13 @@ namespace Terraria.ModLoader
 		private static Func<Projectile, bool>[] HookPreAI;
 		private static Action<Projectile>[] HookAI;
 		private static Action<Projectile>[] HookPostAI;
+		private static Func<Projectile, bool>[] HookShouldUpdatePosition;
 		private delegate void DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
 		private static DelegateTileCollideStyle[] HookTileCollideStyle;
 		private static Func<Projectile, Vector2, bool>[] HookOnTileCollide;
 		private static Func<Projectile, int, bool>[] HookPreKill;
 		private static Action<Projectile, int>[] HookKill;
+		private static Func<Projectile, bool>[] HookCanDamage;
 		private static Func<Projectile, bool>[] HookMinionContactDamage;
 		private static Func<Projectile, NPC, bool?>[] HookCanHitNPC;
 		private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit);
@@ -97,10 +99,12 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookPreAI, globalProjectiles, g => g.PreAI);
 			ModLoader.BuildGlobalHook(ref HookAI, globalProjectiles, g => g.AI);
 			ModLoader.BuildGlobalHook(ref HookPostAI, globalProjectiles, g => g.PostAI);
+			ModLoader.BuildGlobalHook(ref HookShouldUpdatePosition, globalProjectiles, g => g.ShouldUpdatePosition);
 			ModLoader.BuildGlobalHook(ref HookTileCollideStyle, globalProjectiles, g => g.TileCollideStyle);
 			ModLoader.BuildGlobalHook(ref HookOnTileCollide, globalProjectiles, g => g.OnTileCollide);
 			ModLoader.BuildGlobalHook(ref HookPreKill, globalProjectiles, g => g.PreKill);
 			ModLoader.BuildGlobalHook(ref HookKill, globalProjectiles, g => g.Kill);
+			ModLoader.BuildGlobalHook(ref HookCanDamage, globalProjectiles, g => g.CanDamage);
 			ModLoader.BuildGlobalHook(ref HookMinionContactDamage, globalProjectiles, g => g.MinionContactDamage);
 			ModLoader.BuildGlobalHook(ref HookCanHitNPC, globalProjectiles, g => g.CanHitNPC);
 			ModLoader.BuildGlobalHook(ref HookModifyHitNPC, globalProjectiles, g => g.ModifyHitNPC);
@@ -267,6 +271,22 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		public static bool ShouldUpdatePosition(Projectile projectile)
+		{
+			if (IsModProjectile(projectile) && !projectile.modProjectile.ShouldUpdatePosition())
+			{
+				return false;
+			}
+			foreach (var hook in HookShouldUpdatePosition)
+			{
+				if (!hook(projectile))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
 		//in Terraria.Projectile.Update before adjusting velocity to tile collisions add
 		//  ProjectileLoader.TileCollideStyle(this, ref num25, ref num26, ref flag4);
 		public static void TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
@@ -322,6 +342,22 @@ namespace Terraria.ModLoader
 			{
 				hook(projectile, timeLeft);
 			}
+		}
+
+		public static bool CanDamage(Projectile projectile)
+		{
+			if (projectile.modProjectile != null && !projectile.modProjectile.CanDamage())
+			{
+				return false;
+			}
+			foreach (var hook in HookCanDamage)
+			{
+				if (!hook(projectile))
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 
 		public static bool MinionContactDamage(Projectile projectile)
