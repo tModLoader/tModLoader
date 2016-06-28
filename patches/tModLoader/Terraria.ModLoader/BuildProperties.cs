@@ -9,8 +9,47 @@ namespace Terraria.ModLoader
 {
 	internal class BuildProperties
 	{
+		internal struct ModReference
+		{
+			public string mod;
+			public Version target;
+
+			public ModReference(string mod, Version target)
+			{
+				this.mod = mod;
+				this.target = target;
+			}
+
+			public override string ToString() => target == null ? mod : mod + '@' + target;
+
+			public static ModReference Parse(string spec)
+			{
+				var split = spec.Split('@');
+				if (split.Length == 1)
+					return new ModReference(split[0], null);
+
+				if (split.Length > 2)
+					throw new Exception("Invalid mod reference: " + spec);
+
+				try
+				{
+					return new ModReference(split[0], new Version(split[1]));
+				}
+				catch
+				{
+					throw new Exception("Invalid mod reference: " + spec);
+				}
+			}
+		}
+
 		internal string[] dllReferences = new string[0];
-		internal string[] modReferences = new string[0];
+		internal ModReference[] modReferences = new ModReference[0];
+		internal ModReference[] weakReferences = new ModReference[0];
+		//this mod will load after any mods in this list
+		//sortAfter includes (mod|weak)References that are not in sortBefore
+		internal string[] sortAfter = new string[0];
+		//this mod will load before any mods in this list
+		internal string[] sortBefore = new string[0];
 		internal string[] buildIgnores = new string[0];
 		internal string author = "";
 		internal Version version = new Version(1, 0);
@@ -25,6 +64,31 @@ namespace Terraria.ModLoader
 		internal string homepage = "";
 		internal string description = "";
 		internal ModSide side;
+
+		public IEnumerable<ModReference> Refs(bool build) => 
+			build ? modReferences.Concat(weakReferences) : modReferences;
+
+		public IEnumerable<string> RefNames(bool build) => Refs(build).Select(dep => dep.mod);
+
+		private static IEnumerable<string> ReadList(string value)
+			=> value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);
+
+		private static IEnumerable<string> ReadList(BinaryReader reader)
+		{
+			var list = new List<string>();
+			for (string item = reader.ReadString(); item.Length > 0; item = reader.ReadString())
+				list.Add(item);
+
+			return list;
+		}
+
+		private static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer)
+		{
+			foreach (var item in list)
+				writer.Write(item.ToString());
+
+			writer.Write("");
+		}
 
 		internal static BuildProperties ReadBuildFile(string modDir)
 		{
@@ -56,28 +120,19 @@ namespace Terraria.ModLoader
 				switch (property)
 				{
 					case "dllReferences":
-						string[] dllReferences = value.Split(',');
-						for (int k = 0; k < dllReferences.Length; k++)
-						{
-							string dllReference = dllReferences[k].Trim();
-							if (dllReference.Length > 0)
-							{
-								dllReferences[k] = dllReference;
-							}
-						}
-						properties.dllReferences = dllReferences;
+						properties.dllReferences = ReadList(value).ToArray();
 						break;
 					case "modReferences":
-						string[] modReferences = value.Split(',');
-						for (int k = 0; k < modReferences.Length; k++)
-						{
-							string modReference = modReferences[k].Trim();
-							if (modReference.Length > 0)
-							{
-								modReferences[k] = modReference;
-							}
-						}
-						properties.modReferences = modReferences;
+						properties.modReferences = ReadList(value).Select(ModReference.Parse).ToArray();
+						break;
+					case "weakReferences":
+						properties.weakReferences = ReadList(value).Select(ModReference.Parse).ToArray();
+						break;
+					case "sortBefore":
+						properties.sortAfter = ReadList(value).ToArray();
+						break;
+					case "sortAfter":
+						properties.sortBefore = ReadList(value).ToArray();
 						break;
 					case "author":
 						properties.author = value;
@@ -107,16 +162,7 @@ namespace Terraria.ModLoader
 						properties.includePDB = value.ToLower() == "true";
 						break;
 					case "buildIgnore":
-						string[] buildIgnores = value.Split(',');
-						for (int k = 0; k < buildIgnores.Length; k++)
-						{
-							string buildIgnore = buildIgnores[k].Trim();
-							if (buildIgnore.Length > 0)
-							{
-								buildIgnores[k] = buildIgnore;
-							}
-						}
-						properties.buildIgnores = buildIgnores;
+						properties.buildIgnores = value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
 						break;
 					case "languageVersion":
 						if (!int.TryParse(value, out properties.languageVersion))
@@ -126,11 +172,20 @@ namespace Terraria.ModLoader
 							throw new Exception("languageVersion ("+properties.languageVersion+") must be between 4 and 6");
 						break;
 					case "side":
-						if (!ModSide.TryParse(value, true, out properties.side))
+						if (!Enum.TryParse(value, true, out properties.side))
 							throw new Exception("side is not one of (Both, Client, Server, NoSync): "+value);
 						break;
 				}
 			}
+
+			var refs = properties.RefNames(true).ToList();
+			if (refs.Count != refs.Distinct().Count())
+				throw new Exception("Duplicate mod/weak reference");
+
+			//add (mod|weak)References that are not in sortBefore to sortAfter
+			properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
+				.Concat(properties.sortAfter).Distinct().ToArray();
+
 			return properties;
 		}
 
@@ -144,20 +199,27 @@ namespace Terraria.ModLoader
 					if (dllReferences.Length > 0)
 					{
 						writer.Write("dllReferences");
-						foreach (string reference in dllReferences)
-						{
-							writer.Write(reference);
-						}
-						writer.Write("");
+						WriteList(dllReferences, writer);
 					}
 					if (modReferences.Length > 0)
 					{
 						writer.Write("modReferences");
-						foreach (string reference in modReferences)
-						{
-							writer.Write(reference);
-						}
-						writer.Write("");
+						WriteList(modReferences, writer);
+					}
+					if (weakReferences.Length > 0)
+					{
+						writer.Write("weakReferences");
+						WriteList(weakReferences, writer);
+					}
+					if (sortAfter.Length > 0)
+					{
+						writer.Write("sortAfter");
+						WriteList(sortAfter, writer);
+					}
+					if (sortBefore.Length > 0)
+					{
+						writer.Write("sortBefore");
+						WriteList(sortBefore, writer);
 					}
 					if (author.Length > 0)
 					{
@@ -208,7 +270,7 @@ namespace Terraria.ModLoader
 					if (side != ModSide.Both)
 					{
 						writer.Write("side");
-						writer.Write((byte)side);
+						writer.Write((byte) side);
 					}
 					writer.Write("");
 				}
@@ -231,21 +293,23 @@ namespace Terraria.ModLoader
 				{
 					if (tag == "dllReferences")
 					{
-						List<string> dllReferences = new List<string>();
-						for (string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
-						{
-							dllReferences.Add(reference);
-						}
-						properties.dllReferences = dllReferences.ToArray();
+						properties.dllReferences = ReadList(reader).ToArray();
 					}
 					if (tag == "modReferences")
 					{
-						List<string> modReferences = new List<string>();
-						for (string reference = reader.ReadString(); reference.Length > 0; reference = reader.ReadString())
-						{
-							modReferences.Add(reference);
-						}
-						properties.modReferences = modReferences.ToArray();
+						properties.modReferences = ReadList(reader).Select(ModReference.Parse).ToArray();
+					}
+					if (tag == "weakReferences")
+					{
+						properties.weakReferences = ReadList(reader).Select(ModReference.Parse).ToArray();
+					}
+					if (tag == "sortAfter")
+					{
+						properties.sortAfter = ReadList(reader).ToArray();
+					}
+					if (tag == "sortBefore")
+					{
+						properties.sortBefore = ReadList(reader).ToArray();
 					}
 					if (tag == "author")
 					{

@@ -19,6 +19,9 @@ namespace Terraria.ModLoader
 
             public readonly List<LoadedMod> dependencies = new List<LoadedMod>();
             public readonly List<LoadedMod> dependents = new List<LoadedMod>();
+            //list of weak dependencies that are not currently loaded
+            //weak dependencies assume loadIndex 0 when they come into being
+            public readonly ISet<string> weakDependencies = new HashSet<string>();
 
             public Assembly assembly;
 
@@ -36,6 +39,7 @@ namespace Terraria.ModLoader
 
             private string AssemblyName => eacEnabled ? Name : Name + '_' + loadIndex;
             private string DllName(string dll) => eacEnabled ? dll : Name + '_' + dll + '_' + loadIndex;
+            private string WeakDepName(string depName) => eacEnabled ? depName : depName + "_0";
 
             public void SetMod(ModLoader.LoadingMod mod) {
                 if (modFile == null ||
@@ -83,6 +87,15 @@ namespace Terraria.ModLoader
                     dep.SetNeedsReloadUnlessEaC();
             }
 
+            public void UpdateWeakRefs() {
+                foreach (var loaded in dependencies.Where(dep => weakDependencies.Remove(dep.Name))) {
+                    if (eacEnabled && !loaded.eacEnabled)
+                        loaded.EnableEaC();
+                    else if (loaded.AssemblyName != WeakDepName(loaded.Name))
+                        SetNeedsReload();
+                }
+            }
+
             public void LoadAssemblies() {
                 if (!NeedsReload)
                     return;
@@ -120,6 +133,9 @@ namespace Terraria.ModLoader
                 if (properties.dllReferences.Contains(name))
                     return DllName(name);
 
+                if (weakDependencies.Contains(name))
+                    return WeakDepName(name);
+
                 foreach (var dep in dependencies) {
                     var _name = dep.EncapsulateName(name);
                     if (_name != name)
@@ -153,8 +169,14 @@ namespace Terraria.ModLoader
             }
 
             foreach (var mod in loadedMods.Values)
-                foreach (var depName in mod.properties.modReferences)
-                    mod.AddDependency(loadedMods[depName]);
+                foreach (var depName in mod.properties.RefNames(true))
+                    if (loadedMods.ContainsKey(depName))
+                        mod.AddDependency(loadedMods[depName]);
+                    else
+                        mod.weakDependencies.Add(depName);
+
+            foreach (var mod in loadedMods.Values)
+                mod.UpdateWeakRefs();
         }
 
         private static Assembly LoadAssembly(byte[] code, byte[] pdb = null) {

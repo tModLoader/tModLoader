@@ -67,7 +67,7 @@ namespace Terraria.ModLoader
 
             List<BuildingMod> modsToBuild;
             try {
-                var sortedModList = TopoSort(modList);
+                var sortedModList = TopoSort(modList, true);
                 modsToBuild = sortedModList.OfType<BuildingMod>().ToList();
             }
             catch (ModSortingException e) {
@@ -251,7 +251,7 @@ namespace Terraria.ModLoader
         }
 
         private static bool FindReferencedMods(BuildProperties properties, Dictionary<string, LoadingMod> mods) {
-            foreach (var refName in properties.modReferences) {
+            foreach (var refName in properties.RefNames(true)) {
                 if (mods.ContainsKey(refName))
                     continue;
 

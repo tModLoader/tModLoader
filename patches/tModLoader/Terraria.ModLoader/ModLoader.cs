@@ -207,7 +207,7 @@ namespace Terraria.ModLoader
 
 			try
 			{
-				modsToLoad = TopoSort(modsToLoad);
+				modsToLoad = TopoSort(modsToLoad, false);
 			}
 			catch (ModSortingException e)
 			{
@@ -272,14 +272,49 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static List<LoadingMod> TopoSort(ICollection<LoadingMod> mods)
+		internal static List<LoadingMod> TopoSort(ICollection<LoadingMod> mods, bool building)
 		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
+			var errored = new HashSet<LoadingMod>();
+			var errorLog = new StringBuilder();
+
+			//ensure dependencies exist
+			foreach (var mod in mods)
+				foreach (var depName in mod.properties.RefNames(building))
+					if (!nameMap.ContainsKey(depName))
+					{
+						errored.Add(mod);
+						errorLog.AppendLine("Missing mod: " + depName + " required by " + mod.Name);
+					}
+
+			if (errored.Count > 0)
+				throw new ModSortingException(errored, errorLog.ToString());
+
+			//ensure target versions are met
+			foreach (var mod in mods)
+				foreach (var dep in mod.properties.Refs(true))
+				{
+					LoadingMod inst;
+					if (nameMap.TryGetValue(dep.mod, out inst) && inst.properties.version < dep.target)
+					{
+						errored.Add(mod);
+						errorLog.AppendLine(mod.Name + " requires version " + dep.target + "+ of " + dep.target + 
+							" but version " + inst.properties.version + " is installed");
+					}
+				}
+
+			if (errored.Count > 0)
+				throw new ModSortingException(errored, errorLog.ToString());
+
+			//build graph
+			var modsBefore = mods.ToDictionary(mod => mod.Name, mod => mod.properties.sortAfter.ToList());
+			foreach (var mod in mods)
+				foreach (var before in mod.properties.sortBefore)
+					modsBefore[before].Add(mod.Name);
+
 
 			var visiting = new Stack<LoadingMod>();
 			var sorted = new List<LoadingMod>();
-			var errored = new HashSet<LoadingMod>();
-			var errorLog = new StringBuilder();
 
 			Action<LoadingMod> Visit = null;
 			Visit = mod =>
@@ -288,15 +323,8 @@ namespace Terraria.ModLoader
 					return;
 
 				visiting.Push(mod);
-				foreach (var depName in mod.properties.modReferences)
+				foreach (var depName in modsBefore[mod.Name].Where(nameMap.ContainsKey))
 				{
-					if (!nameMap.ContainsKey(depName))
-					{
-						errored.Add(mod);
-						errorLog.AppendLine("Missing mod: " + depName + " required by " + mod.Name);
-						continue;
-					}
-
 					var dep = nameMap[depName];
 					if (visiting.Contains(dep))
 					{
