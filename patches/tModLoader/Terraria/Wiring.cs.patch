@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -14,21 +_,21 @@
+@@ -14,26 +_,26 @@
  		public static bool blockPlayerTeleportationForOneIteration;
  		public static bool running;
  		private static Dictionary<Point16, bool> _wireSkip;
@@ -42,6 +42,12 @@
  		private static int[] _mechX;
  		private static int[] _mechY;
  		private static int _numMechs;
+ 		private static int[] _mechTime;
+-		private static int _currentWireColor;
++		public static int _currentWireColor;
+ 		private static int CurrentUser = 254;
+ 
+ 		public static void SetCurrentUser(int plr = -1)
 @@ -337,7 +_,7 @@
  			}
  		}
