@@ -1,10 +1,7 @@
-Changes from 0.8.1 to 0.8.1.1:
+Changes from 0.8.2.1 to 0.8.2.2:
 
 tModLoader
--Fixed multiplayer disappearing npc bug
--Fixed bug where ModProjectile extra AI is not synced
--Mod Browser downloads more graceful to web errors
--Mod Browser reminds you to update or enable mods
+[Nothing yet]
 
 ExampleMod
 [Nothing yet]
@@ -14,6 +11,3 @@ Fix ExampleStatue Stack overflow, pngs
 
 Make an Example Soul Sprite
 Change DualUseWeapon Sprite
-
-Update Documentation: ModNet, Transform
-Update Spreadsheets to 1.3.1
