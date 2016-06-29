@@ -1,12 +1,21 @@
 Changes from 0.8.2.1 to 0.8.2.2:
 
 tModLoader
-[Nothing yet]
+Mod: 
+	PostDrawInterface(SpriteBatch spriteBatch)
+	PostDrawFullscreenMap(ref string mouseText)
+	PostUpdateInput()
 
 ExampleMod
 [Nothing yet]
 
+To Document:
+	PostDrawInterface(SpriteBatch spriteBatch)
+	PostDrawFullscreenMap(ref string mouseText)
+	PostUpdateInput()
+
 TODO
+
 Fix ExampleStatue Stack overflow, pngs
 
 Make an Example Soul Sprite

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.GameInput;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader
 {
@@ -31,6 +32,18 @@ namespace Terraria.ModLoader
 		public virtual Matrix ModifyTransformMatrix(Matrix Transform)
 		{
 			return Transform;
+		}
+
+		public virtual void PostDrawInterface(SpriteBatch spriteBatch)
+		{
+		}
+
+		public virtual void PostDrawFullscreenMap(ref string mouseText)
+		{
+		}
+
+		public virtual void PostUpdateInput()
+		{
 		}
 	}
 
@@ -85,6 +98,30 @@ namespace Terraria.ModLoader
 				Transform = mod.ModifyTransformMatrix(Transform);
 			}
 			return Transform;
+		}
+
+		internal static void PostDrawFullscreenMap(ref string mouseText)
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.PostDrawFullscreenMap(ref mouseText);
+			}
+		}
+
+		internal static void PostDrawInterface(SpriteBatch spriteBatch)
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.PostDrawInterface(spriteBatch);
+			}
+		}
+
+		internal static void PostUpdateInput()
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.PostUpdateInput();
+			}
 		}
 	}
 }

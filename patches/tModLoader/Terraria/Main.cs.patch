@@ -414,6 +414,14 @@
  				Main.CritterCages();
  				Main.UpdateDrawAnimations();
  				if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F10) && !Main.drawingPlayerChat && !Main.editSign && !Main.editChest)
+@@ -12460,6 +_,7 @@
+ 					Main.toggleFullscreen = true;
+ 				}
+ 				PlayerInput.UpdateInput();
++				ModLoader.ModHooks.PostUpdateInput();
+ 				UILinkPointNavigator.Update();
+ 				Main.keyState = Keyboard.GetState();
+ 				if (Main.editSign)
 @@ -12533,6 +_,7 @@
  							Main.player[Main.myPlayer].chatOverhead.NewMessage(Main.chatText, Main.chatLength / 2);
  							Main.NewText(newText, white.R, white.G, white.B, false);
@@ -2527,6 +2535,14 @@
  							}
  							if ((!Main.expertMode || type != 266) && ((type != 439 && type != 440) || Main.npc[m].ai[0] != 5f))
  							{
+@@ -36763,6 +_,7 @@
+ 			this.DrawBuilderAccToggles(new Vector2(10f, 77f));
+ 			ItemSlot.DrawRadialCircular(Main.spriteBatch, new Vector2((float)Main.screenWidth, (float)Main.screenHeight) / 2f);
+ 			ItemSlot.DrawRadialQuicks(Main.spriteBatch, new Vector2((float)Main.screenWidth, (float)Main.screenHeight) / 2f);
++			ModLoader.ModHooks.PostDrawInterface(Main.spriteBatch);
+ 			if (Main.mouseItem.stack <= 0)
+ 			{
+ 				Main.mouseItem.type = 0;
 @@ -37424,7 +_,7 @@
  						}
  						else
@@ -2721,6 +2737,14 @@
  					}
  				}
  				float num106 = (num16 * 0.25f * 2f + 1f) / 3f;
+@@ -46114,6 +_,7 @@
+ 					}
+ 				}
+ 				Main.spriteBatch.Draw(Main.mapIconTexture[num139], new Vector2((float)num137, (float)num138), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.mapIconTexture[num139].Width, Main.mapIconTexture[num139].Height)), new Microsoft.Xna.Framework.Color(num140, num140, num140, num140), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				ModLoader.ModHooks.PostDrawFullscreenMap(ref text);
+ 				Vector2 bonus = Main.DrawThickCursor(false);
+ 				Main.DrawCursor(bonus, false);
+ 			}
 @@ -48425,7 +_,7 @@
  						tile = new Tile();
  						Main.tile[j, i] = tile;
