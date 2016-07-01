@@ -251,6 +251,30 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void clientClone(Player player, Player clientClone)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.clientClone(clientClone.GetModPlayer(modPlayer.mod, modPlayer.Name));
+			}
+		}
+
+		public static void SyncPlayer(Player player, bool newPlayer)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.SyncPlayer(newPlayer);
+			}
+		}
+
+		public static void SendClientChanges(Player player, Player clientPlayer)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.SendClientChanges(clientPlayer.GetModPlayer(modPlayer.mod, modPlayer.Name));
+			}
+		}
+
 		public static Texture2D GetMapBackgroundImage(Player player)
 		{
 			Texture2D texture = null;

@@ -98,6 +98,18 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void clientClone(ModPlayer clientClone)
+		{
+		}
+
+		public virtual void SyncPlayer(bool newPlayer)
+		{
+		}
+
+		public virtual void SendClientChanges(ModPlayer clientPlayer)
+		{
+		}
+
 		public virtual Texture2D GetMapBackgroundImage()
 		{
 			return null;

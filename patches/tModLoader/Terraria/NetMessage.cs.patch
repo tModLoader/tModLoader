@@ -167,4 +167,12 @@
  							if ((b & 16) == 16)
  							{
  								tile.wallColor(reader.ReadByte());
+@@ -2237,6 +_,7 @@
+ 					{
+ 						NetMessage.SendData(5, -1, i, "", i, (float)(58 + Main.player[i].armor.Length + Main.player[i].dye.Length + Main.player[i].miscEquips.Length + 1 + n), (float)Main.player[i].miscDyes[n].prefix, 0f, 0, 0, 0);
+ 					}
++					PlayerHooks.SyncPlayer(Main.player[i], false);
+ 					if (!Netplay.Clients[i].IsAnnouncementCompleted)
+ 					{
+ 						Netplay.Clients[i].IsAnnouncementCompleted = true;
 

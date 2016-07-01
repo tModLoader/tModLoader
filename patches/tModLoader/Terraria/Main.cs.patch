@@ -439,25 +439,25 @@
  				{
  					if (Main.chatRelease && !Main.drawingPlayerChat && !Main.editSign && !Main.editChest && !Main.gameMenu && !Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
  					{
-@@ -12651,6 +_,10 @@
- 					flag = true;
- 				}
- 				if (Main.player[Main.myPlayer].zone2 != Main.clientPlayer.zone2)
-+				{
-+					flag = true;
-+				}
-+				if (!PlayerHooks.CustomBiomesMatch(Main.player[Main.myPlayer], Main.clientPlayer))
+@@ -12654,6 +_,10 @@
  				{
  					flag = true;
  				}
-@@ -13425,6 +_,7 @@
- 			{
- 				return;
++				if (!PlayerHooks.CustomBiomesMatch(Main.player[Main.myPlayer], Main.clientPlayer))
++				{
++					flag = true;
++				}
+ 				if (flag)
+ 				{
+ 					NetMessage.SendData(36, -1, -1, "", Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
+@@ -12708,6 +_,7 @@
+ 				{
+ 					NetMessage.SendData(99, -1, -1, "", Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
+ 				}
++				PlayerHooks.SendClientChanges(Main.player[Main.myPlayer], Main.clientPlayer);
  			}
-+			//patch file: num2, num3
- 			int num2 = Main.mouseX + 10;
- 			int num3 = Main.mouseY + 10;
- 			Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor);
+ 			if (Main.netMode == 1)
+ 			{
 @@ -13455,6 +_,7 @@
  				string[] array = new string[num5];
  				bool[] array2 = new bool[num5];
@@ -1023,14 +1023,6 @@
  					{
  						if (Item.BannerToNPC(m) != 0 && Main.player[Main.myPlayer].NPCBannerBuff[m])
  						{
-@@ -14418,6 +_,7 @@
- 						}
- 					}
- 				}
-+				BuffLoader.CustomBuffTipSize(Main.buffString, list);
- 				Vector2 zero2 = Vector2.Zero;
- 				foreach (Vector2 current in list)
- 				{
 @@ -14468,7 +_,7 @@
  				if (Main.bannerMouseOver)
  				{
@@ -1040,15 +1032,6 @@
  					{
  						if (Item.BannerToNPC(num42) != 0 && Main.player[Main.myPlayer].NPCBannerBuff[num42])
  						{
-@@ -14520,6 +_,8 @@
- 						}
- 					}
- 				}
-+				BuffLoader.DrawCustomBuffTip(Main.buffString, Main.spriteBatch,
-+					num2, num3 + (int)Main.fontMouseText.MeasureString(Main.buffString).Y);
- 			}
- 			if (Main.ThickMouse)
- 			{
 @@ -14855,6 +_,7 @@
  					{
  					}

@@ -72,6 +72,14 @@
  							NetMessage.SendData(3, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
  							return;
  						}
+@@ -211,6 +_,7 @@
+ 							NetMessage.SendData(5, -1, -1, "", num2, (float)(58 + player.armor.Length + player.dye.Length + player.miscEquips.Length + player.miscDyes.Length + player.bank.item.Length + 1 + num5), (float)player.bank2.item[num5].prefix, 0f, 0, 0, 0);
+ 						}
+ 						NetMessage.SendData(5, -1, -1, "", num2, (float)(58 + player.armor.Length + player.dye.Length + player.miscEquips.Length + player.miscDyes.Length + player.bank.item.Length + player.bank2.item.Length + 1), (float)player.trashItem.prefix, 0f, 0, 0, 0);
++						PlayerHooks.SyncPlayer(player, true);
+ 						NetMessage.SendData(6, -1, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
+ 						if (Netplay.Connection.State == 2)
+ 						{
 @@ -514,6 +_,10 @@
  							Main.StopSlimeRain(true);
  						}

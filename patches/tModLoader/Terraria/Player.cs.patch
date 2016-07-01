@@ -5625,6 +5625,14 @@
  			player.extraAccessory = this.extraAccessory;
  			player.MinionTargetPoint = this.MinionTargetPoint;
  			player.direction = this.direction;
+@@ -35853,6 +_,7 @@
+ 			}
+ 			this.DpadRadial.CopyTo(player.DpadRadial);
+ 			this.CircularRadial.CopyTo(player.CircularRadial);
++			PlayerHooks.clientClone(this, player);
+ 			return player;
+ 		}
+ 
 @@ -35866,7 +_,7 @@
  			{
  				return false;
