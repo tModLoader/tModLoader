@@ -1023,6 +1023,14 @@
  					{
  						if (Item.BannerToNPC(m) != 0 && Main.player[Main.myPlayer].NPCBannerBuff[m])
  						{
+@@ -14418,6 +_,7 @@
+ 						}
+ 					}
+ 				}
++				BuffLoader.CustomBuffTipSize(Main.buffString, list);
+ 				Vector2 zero2 = Vector2.Zero;
+ 				foreach (Vector2 current in list)
+ 				{
 @@ -14468,7 +_,7 @@
  				if (Main.bannerMouseOver)
  				{
@@ -1032,6 +1040,15 @@
  					{
  						if (Item.BannerToNPC(num42) != 0 && Main.player[Main.myPlayer].NPCBannerBuff[num42])
  						{
+@@ -14520,6 +_,8 @@
+ 						}
+ 					}
+ 				}
++				BuffLoader.DrawCustomBuffTip(Main.buffString, Main.spriteBatch,
++					num2, num3 + (int)Main.fontMouseText.MeasureString(Main.buffString).Y);
+ 			}
+ 			if (Main.ThickMouse)
+ 			{
 @@ -14855,6 +_,7 @@
  					{
  					}
