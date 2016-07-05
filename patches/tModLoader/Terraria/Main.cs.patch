@@ -76,6 +76,15 @@
  		public static int menuSkip = 0;
  		private static Item cpItem = new Item();
  		public int textBlinkerCount;
+@@ -1982,7 +_,7 @@
+ 		private static int sX = Main.screenWidth - 800;
+ 		private static int starMana = 20;
+ 		private static float heartLife = 20f;
+-		private static int rare = 0;
++		public static int rare = 0;
+ 		public static int hairStart = 0;
+ 		private static int oldHairStyle;
+ 		private static Microsoft.Xna.Framework.Color oldHairColor;
 @@ -2133,6 +_,8 @@
  			}
  		}
