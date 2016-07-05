@@ -4857,6 +4857,16 @@
  		}
  
  		private void HandleHotbar()
+@@ -22108,6 +_,9 @@
+ 
+ 		public void ScrollHotbar(int Offset)
+ 		{
++			//disable hotbar scrolling when using auto select
++			//previously it only worked when scrolling between 0 and 9, and made the sound
++			if (selectedItem >= 10) return;
+ 			while (Offset > 9)
+ 			{
+ 				Offset -= 10;
 @@ -22428,6 +_,7 @@
  					this.showItemIcon2 = -1;
  				}
