@@ -777,6 +777,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void ModifyDrawInfo(ref PlayerDrawInfo drawInfo)
+		{
+			foreach (ModPlayer modPlayer in drawInfo.drawPlayer.modPlayers)
+			{
+				modPlayer.ModifyDrawInfo(ref drawInfo);
+			}
+		}
+
 		public static List<PlayerLayer> GetDrawLayers(Player drawPlayer)
 		{
 			List<PlayerLayer> layers = new List<PlayerLayer>();

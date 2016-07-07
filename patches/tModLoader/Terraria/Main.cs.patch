@@ -1853,12 +1853,63 @@
  			if ((drawPlayer.merman || drawPlayer.forceMerman) && !drawPlayer.hideMerman)
  			{
  				drawPlayer.headRotation = drawPlayer.velocity.Y * (float)drawPlayer.direction * 0.1f;
-@@ -28937,6 +_,134 @@
+@@ -28937,6 +_,185 @@
  			{
  				flag7 = true;
  			}
 +			goto heldItemColor;
 +			postSetupVars:
++			PlayerHooks.ModifyDrawInfo(ref drawInfo);
++			Position = drawInfo.position;
++			shadow = drawInfo.shadow;
++			value2 = drawInfo.itemLocation;
++			flag = drawInfo.drawHands;
++			flag2 = drawInfo.drawArms;
++			flag3 = drawInfo.drawHeldProjInFrontOfHeldItemAndBody;
++			flag4 = drawInfo.drawHair;
++			flag5 = drawInfo.drawAltHair;
++			num4 = drawInfo.hairShader;
++			num6 = drawInfo.headArmorShader;
++			num7 = drawInfo.bodyArmorShader;
++			shader = drawInfo.legArmorShader;
++			shader2 = drawInfo.handOnShader;
++			shader3 = drawInfo.handOffShader;
++			shader4 = drawInfo.backShader;
++			shader5 = drawInfo.frontShader;
++			shader6 = drawInfo.shoeShader;
++			shader7 = drawInfo.waistShader;
++			shader8 = drawInfo.shieldShader;
++			shader9 = drawInfo.neckShader;
++			shader10 = drawInfo.faceShader;
++			shader11 = drawInfo.balloonShader;
++			shader12 = drawInfo.wingShader;
++			shader13 = drawInfo.carpetShader;
++			color = drawInfo.hairColor;
++			color2 = drawInfo.eyeWhiteColor;
++			color3 = drawInfo.eyeColor;
++			color4 = drawInfo.faceColor;
++			color5 = drawInfo.bodyColor;
++			color6 = drawInfo.legColor;
++			color7 = drawInfo.shirtColor;
++			color8 = drawInfo.underShirtColor;
++			color9 = drawInfo.pantsColor;
++			color10 = drawInfo.shoeColor;
++			color11 = drawInfo.upperArmorColor;
++			color12 = drawInfo.middleArmorColor;
++			color13 = drawInfo.mountColor;
++			color14 = drawInfo.lowerArmorColor;
++			num13 = drawInfo.headGlowMask;
++			num14 = drawInfo.bodyGlowMask;
++			num15 = drawInfo.armGlowMask;
++			num16 = drawInfo.legGlowMask;
++			color16 = drawInfo.headGlowMaskColor;
++			color17 = drawInfo.bodyGlowMaskColor;
++			color18 = drawInfo.armGlowMaskColor;
++			color19 = drawInfo.legGlowMaskColor;
++			spriteEffects = drawInfo.spriteEffects;
++			vector2 = drawInfo.legOrigin;
++			origin = drawInfo.bodyOrigin;
++			vector3 = drawInfo.headOrigin;
 +			List<PlayerLayer> drawLayers = PlayerHooks.GetDrawLayers(drawPlayer);
 +			int layerIndex = -1;
 +			layerLoopContinue:

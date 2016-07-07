@@ -328,6 +328,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual void ModifyDrawInfo(ref PlayerDrawInfo drawInfo)
+		{
+		}
+
 		public virtual void ModifyDrawLayers(List<PlayerLayer> layers)
 		{
 		}
