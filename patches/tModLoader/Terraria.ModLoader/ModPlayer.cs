@@ -339,5 +339,13 @@ namespace Terraria.ModLoader
 		public virtual void ModifyDrawHeadLayers(List<PlayerHeadLayer> layers)
 		{
 		}
+
+		public virtual void ModifyScreenPosition()
+		{
+		}
+
+		public virtual void ModifyZoom(ref float zoom)
+		{
+		}
 	}
 }

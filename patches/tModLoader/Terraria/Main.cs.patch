@@ -2899,6 +2899,102 @@
  			if (Main._drawCycleCounter == 0uL)
  			{
  				Main._tileFrameSeed = Utils.RandomNextSeed(Main._tileFrameSeed);
+@@ -52065,6 +_,7 @@
+ 							{
+ 								num6 = 0.5f;
+ 							}
++							PlayerHooks.ModifyZoom(Main.player[Main.myPlayer], ref num6);
+ 							Vector2 vector2 = (Main.MouseScreen - new Vector2((float)Main.screenWidth, (float)Main.screenHeight) / 2f) / (new Vector2((float)Main.screenWidth, (float)Main.screenHeight) / 2f);
+ 							Vector2 vector3 = vector2;
+ 							num5 = 48f;
+@@ -52097,8 +_,10 @@
+ 						{
+ 							num8 = 0;
+ 						}
+-						num3 = (float)(num7 - Main.screenWidth / 2) / 1.25f;
+-						num4 = (float)(num8 - Main.screenHeight / 2) / 1.25f;
++						float zoom = .8f;
++						PlayerHooks.ModifyZoom(Main.player[Main.myPlayer], ref zoom);
++						num3 = (float)(num7 - Main.screenWidth / 2) * zoom;
++						num4 = (float)(num8 - Main.screenHeight / 2) * zoom;
+ 					}
+ 					else if (Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].type == 1254 && Main.mouseRight)
+ 					{
+@@ -52120,8 +_,10 @@
+ 						{
+ 							num10 = 0;
+ 						}
+-						num3 = (float)(num9 - Main.screenWidth / 2) / 1.5f;
+-						num4 = (float)(num10 - Main.screenHeight / 2) / 1.5f;
++						float zoom = 0.6666667f;
++						PlayerHooks.ModifyZoom(Main.player[Main.myPlayer], ref zoom);
++						num3 = (float)(num9 - Main.screenWidth / 2) * zoom;
++						num4 = (float)(num10 - Main.screenHeight / 2) * zoom;
+ 					}
+ 					else if (Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].type == 1299 && Main.player[Main.myPlayer].selectedItem != 58)
+ 					{
+@@ -52143,8 +_,10 @@
+ 						{
+ 							num12 = 0;
+ 						}
+-						num3 = (float)(num11 - Main.screenWidth / 2) / 1.5f;
+-						num4 = (float)(num12 - Main.screenHeight / 2) / 1.5f;
++						float zoom = 0.6666667f;
++						PlayerHooks.ModifyZoom(Main.player[Main.myPlayer], ref zoom);
++						num3 = (float)(num11 - Main.screenWidth / 2) * zoom;
++						num4 = (float)(num12 - Main.screenHeight / 2) * zoom;
+ 					}
+ 					else if (Main.player[Main.myPlayer].scope && Main.mouseRight)
+ 					{
+@@ -52166,8 +_,38 @@
+ 						{
+ 							num14 = 0;
+ 						}
+-						num3 = (float)(num13 - Main.screenWidth / 2) / 2f;
+-						num4 = (float)(num14 - Main.screenHeight / 2) / 2f;
++						float zoom = 0.5f;
++						PlayerHooks.ModifyZoom(Main.player[Main.myPlayer], ref zoom);
++						num3 = (float)(num13 - Main.screenWidth / 2) * zoom;
++						num4 = (float)(num14 - Main.screenHeight / 2) * zoom;
++					}
++					else
++					{
++						int mouseXClamped = Main.mouseX;
++						int mouseYClamped = Main.mouseY;
++						if (mouseXClamped > Main.screenWidth)
++						{
++							mouseXClamped = Main.screenWidth;
++						}
++						if (mouseXClamped < 0)
++						{
++							mouseXClamped = 0;
++						}
++						if (mouseYClamped > Main.screenHeight)
++						{
++							mouseYClamped = Main.screenHeight;
++						}
++						if (mouseYClamped < 0)
++						{
++							mouseYClamped = 0;
++						}
++						float zoom = -1f;
++						PlayerHooks.ModifyZoom(Main.player[Main.myPlayer], ref zoom);
++						if (zoom != -1f)
++						{
++							num3 = (float)(mouseXClamped - Main.screenWidth / 2) * zoom;
++							num4 = (float)(mouseYClamped - Main.screenHeight / 2) * zoom;
++						}
+ 					}
+ 				}
+ 				if (float.IsNaN(Main.zoomX))
+@@ -52212,6 +_,7 @@
+ 				}
+ 				Main.screenPosition.X = (float)((int)Main.screenPosition.X);
+ 				Main.screenPosition.Y = (float)((int)Main.screenPosition.Y);
++				PlayerHooks.ModifyScreenPosition(Main.player[Main.myPlayer]);
+ 			}
+ 			if (!Main.gameMenu && Main.netMode != 2)
+ 			{
 @@ -53016,6 +_,7 @@
  				this.Transform = Matrix.CreateScale(value.X, -value.Y, value.Z) * Matrix.CreateRotationZ(0f) * Matrix.CreateTranslation(new Vector3(0f, (float)Main.screenHeight, 0f));
  				this.Rasterizer = RasterizerState.CullClockwise;

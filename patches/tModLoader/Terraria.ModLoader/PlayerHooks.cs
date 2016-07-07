@@ -860,5 +860,21 @@ namespace Terraria.ModLoader
 			}
 			return layers;
 		}
+
+		public static void ModifyScreenPosition(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyScreenPosition();
+			}
+		}
+
+		public static void ModifyZoom(Player player, ref float zoom)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ModifyZoom(ref zoom);
+			}
+		}
 	}
 }
