@@ -43,10 +43,21 @@ namespace ExampleMod
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 				Main.instance.LoadTiles(TileID.Loom);
 				Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom");
+				// What if....Replace a vanilla item texture and equip texture.
+				//Main.itemTexture[ItemID.CopperHelmet] = GetTexture("Resprite/CopperHelmet_Item");
+				//Item copperHelmet = new Item();
+				//copperHelmet.SetDefaults(ItemID.CopperHelmet);
+				//Main.armorHeadLoaded[copperHelmet.headSlot] = true;
+				//Main.armorHeadTexture[copperHelmet.headSlot] = GetTexture("Resprite/CopperHelmet_Head");
 				Filters.Scene["ExampleMod:PuritySpirit"] = new Filter(new PuritySpiritScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.9f, 0.4f).UseOpacity(0.7f), EffectPriority.VeryHigh);
 				SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG0");
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG1");
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG2");
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG3");
+				AddUndergroundBackgroundStyle("ExampleMod:ExampleBiomeUnderground");
 			}
 		}
 
@@ -113,6 +124,25 @@ namespace ExampleMod
 				{
 					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
 				}
+			}
+		}
+
+		public override void ChooseUndergroundBackgroundStyle(ref int backgroundStyle)
+		{
+			if (Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(this).ZoneExample)
+			{
+				backgroundStyle = GetUndergroundBackgroundStyle("ExampleMod:ExampleBiomeUnderground");
+			}
+		}
+
+		public override void FillUndergroundBackgroundArray(int backgroundStyle, int[] textureSlots)
+		{
+			if (backgroundStyle == GetUndergroundBackgroundStyle("ExampleMod:ExampleBiomeUnderground"))
+			{
+				textureSlots[0] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG0");
+				textureSlots[1] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG1");
+				textureSlots[2] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG2");
+				textureSlots[3] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG3");
 			}
 		}
 

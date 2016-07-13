@@ -2766,6 +2766,22 @@
  			}
  			Vector2 bonus = Main.DrawThickCursor(false);
  			Main.DrawCursor(bonus, false);
+@@ -42498,6 +_,7 @@
+ 			{
+ 				num9 = 2;
+ 			}
++			ModHooks.ChooseUndergroundBackgroundStyle(ref num9);
+ 			if (num9 != Main.ugBack)
+ 			{
+ 				Main.oldUgBack = Main.ugBack;
+@@ -42705,6 +_,7 @@
+ 					array4[5] = 127;
+ 				}
+ 				array4[6] = 185 + Main.hellBackStyle;
++				ModHooks.FillUndergroundBackgroundArray(num10, array4);
+ 				this.LoadBackground(array4[0]);
+ 				this.LoadBackground(array4[1]);
+ 				this.LoadBackground(array4[2]);
 @@ -45240,7 +_,12 @@
  				Main.spriteBatch.End();
  				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
@@ -3003,6 +3019,22 @@
  			bool flag = !Main.drawToScreen && Main.netMode != 2 && !Main.gameMenu && !Main.mapFullscreen && Filters.Scene.HasActiveFilter();
  			if (flag)
  			{
+@@ -53285,6 +_,7 @@
+ 			{
+ 				num68 = 0;
+ 			}
++			//ModLoader.ChoosesSurfaceBackgroundStyle(ref num68);
+ 			int num70 = 30;
+ 			Main.tranSpeed = 0.05f;
+ 			if (num68 == 0)
+@@ -53597,6 +_,7 @@
+ 					Main.bgAlpha2[6] = 0f;
+ 				}
+ 			}
++			// TODO bgAlpha -= for new styles
+ 			if (Main.ignoreErrors)
+ 			{
+ 				try
 @@ -55355,7 +_,7 @@
  								num14++;
  							}

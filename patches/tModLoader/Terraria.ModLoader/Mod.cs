@@ -316,7 +316,7 @@ namespace Terraria.ModLoader
 			equipTexture.Slot = slot;
 			equipTexture.item = item;
 			EquipLoader.equipTextures[type][slot] = equipTexture;
-            equipTextures[name] = equipTexture;
+			equipTextures[name] = equipTexture;
 			ModLoader.GetTexture(texture);
 			if (type == EquipType.Body)
 			{
@@ -1394,13 +1394,37 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		public ModPacket GetPacket(int capacity = 256) {
+		public ModPacket GetPacket(int capacity = 256)
+		{
 			if (netID < 0)
-				throw new Exception("Cannot get packet for "+Name+" because it does not exist on the other side");
+				throw new Exception("Cannot get packet for " + Name + " because it does not exist on the other side");
 
-			var p = new ModPacket(MessageID.ModPacket, capacity+5);
+			var p = new ModPacket(MessageID.ModPacket, capacity + 5);
 			p.Write(netID);
 			return p;
+		}
+
+		public void AddBackgroundTexture(string texture)
+		{
+			int slot = BackgroundTextureLoader.ReserveBackgroundSlot();
+			BackgroundTextureLoader.backgrounds[texture] = slot;
+			ModLoader.GetTexture(texture);
+		}
+
+		public int GetBackgroundSlot(string name)
+		{
+			return BackgroundTextureLoader.GetBackgroundSlot(name);
+		}
+
+		public void AddUndergroundBackgroundStyle(string styleName)
+		{
+			int slot = UndergroundBackgroundStyleLoader.ReserveBackgroundSlot();
+			UndergroundBackgroundStyleLoader.undergroundBackgroundStyles[styleName] = slot;
+		}
+
+		public int GetUndergroundBackgroundStyle(string styleName)
+		{
+			return UndergroundBackgroundStyleLoader.GetBackgroundSlot(styleName);
 		}
 	}
 }

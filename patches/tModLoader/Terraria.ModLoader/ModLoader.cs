@@ -172,6 +172,8 @@ namespace Terraria.ModLoader
 			SoundLoader.ResizeAndFillArrays();
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
+			BackgroundTextureLoader.ResizeAndFillArrays();
+			UndergroundBackgroundStyleLoader.ResizeAndFillArrays();
 		}
 
 		internal static TmodFile[] FindMods()
@@ -375,6 +377,8 @@ namespace Terraria.ModLoader
 			MountLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
+			BackgroundTextureLoader.Unload();
+			UndergroundBackgroundStyleLoader.Unload();
 			mods.Clear();
 			ResizeArrays(true);
 			MapLoader.UnloadModMap();

@@ -45,6 +45,14 @@ namespace Terraria.ModLoader
 		public virtual void PostUpdateInput()
 		{
 		}
+
+		public virtual void FillUndergroundBackgroundArray(int backgroundStyle, int[] textureSlots)
+		{
+		}
+
+		public virtual void ChooseUndergroundBackgroundStyle(ref int backgroundStyle)
+		{
+		}
 	}
 
 	internal static class ModHooks
@@ -121,6 +129,22 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.PostUpdateInput();
+			}
+		}
+		
+		internal static void FillUndergroundBackgroundArray(int backgroundStyle, int[] textureSlots)
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.FillUndergroundBackgroundArray(backgroundStyle, textureSlots);
+			}
+		}
+
+		internal static void ChooseUndergroundBackgroundStyle(ref int backgroundStyle)
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.ChooseUndergroundBackgroundStyle(ref backgroundStyle);
 			}
 		}
 	}
