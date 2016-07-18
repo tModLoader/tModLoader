@@ -2895,6 +2895,114 @@
  		{
  			if (!Main.tileSetsLoaded[i])
  			{
+@@ -50683,6 +_,27 @@
+ 								Main.spriteBatch.Draw(Main.backgroundTexture[24], new Vector2((float)(this.bgStart + Main.bgW * num6), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[24], Main.backgroundHeight[24])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
+ 							}
+ 						}
++						for (int i = SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount; i < Main.bgAlpha2.Length; i++)
++						{
++							Main.backColor = Main.trueBackColor;
++							Main.backColor.R = (byte)((float)Main.backColor.R * Main.bgAlpha2[i]);
++							Main.backColor.G = (byte)((float)Main.backColor.G * Main.bgAlpha2[i]);
++							Main.backColor.B = (byte)((float)Main.backColor.B * Main.bgAlpha2[i]);
++							Main.backColor.A = (byte)((float)Main.backColor.A * Main.bgAlpha2[i]);
++							if (Main.bgAlpha2[i] > 0f)
++							{
++								int textureSlot = -1; 
++								ModHooks.ChooseFarSurfaceBackground(i, ref textureSlot);
++								if (textureSlot != -1)
++								{
++									this.LoadBackground(textureSlot);
++									for (int num6 = 0; num6 < this.bgLoops; num6++)
++									{
++										Main.spriteBatch.Draw(Main.backgroundTexture[textureSlot], new Vector2((float)(this.bgStart + Main.bgW * num6), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
++									}
++								}
++							}
++						}
+ 						SkyManager.Instance.DrawToDepth(Main.spriteBatch, 5f);
+ 					}
+ 				}
+@@ -50875,6 +_,27 @@
+ 								Main.spriteBatch.Draw(Main.backgroundTexture[42], new Vector2((float)(this.bgStart + Main.bgW * num17), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[42], Main.backgroundHeight[42])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
+ 							}
+ 						}
++						for (int i = SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount; i < Main.bgAlpha2.Length; i++)
++						{
++							Main.backColor = Main.trueBackColor;
++							Main.backColor.R = (byte)((float)Main.backColor.R * Main.bgAlpha2[i]);
++							Main.backColor.G = (byte)((float)Main.backColor.G * Main.bgAlpha2[i]);
++							Main.backColor.B = (byte)((float)Main.backColor.B * Main.bgAlpha2[i]);
++							Main.backColor.A = (byte)((float)Main.backColor.A * Main.bgAlpha2[i]);
++							if (Main.bgAlpha2[i] > 0f)
++							{
++								int textureSlot = -1; 
++								ModHooks.ChooseMiddleSurfaceBackground(i, ref textureSlot);
++								if (textureSlot != -1)
++								{
++									this.LoadBackground(textureSlot);
++									for (int num6 = 0; num6 < this.bgLoops; num6++)
++									{
++										Main.spriteBatch.Draw(Main.backgroundTexture[textureSlot], new Vector2((float)(this.bgStart + Main.bgW * num6), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
++									}
++								}
++							}
++						}
+ 					}
+ 				}
+ 				this.cTop = (float)this.bgTop * 1.01f - 150f;
+@@ -50911,7 +_,7 @@
+ 			}
+ 			if (!Main.mapFullscreen)
+ 			{
+-				for (int num21 = 0; num21 < 10; num21++)
++				for (int num21 = 0; num21 < Main.bgAlpha2.Length; num21++)
+ 				{
+ 					if (Main.bgStyle == num21)
+ 					{
+@@ -51740,6 +_,42 @@
+ 								}
+ 							}
+ 							SkyManager.Instance.DrawToDepth(Main.spriteBatch, 1f);
++						}
++						if (Main.bgAlpha[num21] > 0f && num21 >= SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount)
++						{
++							bool manual = false;
++							ModHooks.DrawCloseSurfaceBackgroundManual(num21, ref manual);
++							if (!manual)
++							{
++								int textureSlot = -1; 
++								Main.bgScale = 1.25f;
++								this.bgParallax = 0.37;
++								float a = 1800.0f;
++								float b = 1750.0f;
++								ModHooks.ChooseCloseSurfaceBackground(num21, ref textureSlot, ref Main.bgScale, ref this.bgParallax, ref a, ref b);
++								if (textureSlot != -1)
++								{
++									//Custom: bgScale, textureslot, patallaz, these 2 numbers...., Top and Start?
++									this.LoadBackground(textureSlot);
++									Main.bgScale *= 2f;
++									Main.bgW = (int)((float)Main.backgroundWidth[textureSlot] * Main.bgScale);
++									SkyManager.Instance.DrawToDepth(Main.spriteBatch, 1f / (float)this.bgParallax);
++									this.bgStart = (int)(-Math.IEEERemainder((double)Main.screenPosition.X * this.bgParallax, (double)Main.bgW) - (double)(Main.bgW / 2));
++									this.bgTop = (int)((double)(-(double)Main.screenPosition.Y + this.screenOff / 2f) / (Main.worldSurface * 16.0) * a + b) + (int)this.scAdj;
++									if (Main.gameMenu)
++									{
++										this.bgTop = 320;
++									}
++									this.bgLoops = Main.screenWidth / Main.bgW + 2;
++									if ((double)Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0)
++									{
++										for (int num25 = 0; num25 < this.bgLoops; num25++)
++										{
++											Main.spriteBatch.Draw(Main.backgroundTexture[textureSlot], new Vector2((float)(this.bgStart + Main.bgW * num25), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
++										}
++									}
++								}
++							}
+ 						}
+ 					}
+ 				}
 @@ -51902,6 +_,19 @@
  
  		protected override void Draw(GameTime gameTime)
@@ -3023,15 +3131,35 @@
  			{
  				num68 = 0;
  			}
-+			//ModLoader.ChoosesSurfaceBackgroundStyle(ref num68);
++			ModHooks.ChooseSurfaceBackgroundStyle(ref num68);
  			int num70 = 30;
  			Main.tranSpeed = 0.05f;
  			if (num68 == 0)
-@@ -53597,6 +_,7 @@
+@@ -53559,7 +_,7 @@
+ 					Main.bgAlpha2[6] = 1f;
+ 				}
+ 			}
+-			else
++			else if (Main.bgStyle == 0 || Main.bgStyle == 3)
+ 			{
+ 				Main.bgAlpha2[0] += Main.tranSpeed;
+ 				if (Main.bgAlpha2[0] > 1f)
+@@ -53597,6 +_,18 @@
  					Main.bgAlpha2[6] = 0f;
  				}
  			}
-+			// TODO bgAlpha -= for new styles
++			if(Main.bgStyle < SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount)
++			{
++				for (int i = SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount; i < Main.bgAlpha2.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++)
++				{
++					Main.bgAlpha2[i] -= Main.tranSpeed;
++					if (Main.bgAlpha2[i] < 0f)
++					{
++						Main.bgAlpha2[i] = 0f;
++					}
++				}
++			}
++			ModHooks.ModifyFarSurfaceBackgroundFades(Main.bgStyle, Main.bgAlpha2, Main.tranSpeed);
  			if (Main.ignoreErrors)
  			{
  				try

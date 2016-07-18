@@ -1426,5 +1426,16 @@ namespace Terraria.ModLoader
 		{
 			return UndergroundBackgroundStyleLoader.GetBackgroundSlot(styleName);
 		}
+
+		public void AddSurfaceBackgroundStyle(string styleName)
+		{
+			int slot = SurfaceBackgroundStyleLoader.ReserveBackgroundSlot();
+			SurfaceBackgroundStyleLoader.surfaceBackgroundStyles[styleName] = slot;
+		}
+
+		public int GetSurfaceBackgroundStyle(string styleName)
+		{
+			return SurfaceBackgroundStyleLoader.GetBackgroundSlot(styleName);
+		}
 	}
 }

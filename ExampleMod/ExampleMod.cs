@@ -58,6 +58,13 @@ namespace ExampleMod
 				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG2");
 				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG3");
 				AddUndergroundBackgroundStyle("ExampleMod:ExampleBiomeUnderground");
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceFar");
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid0");
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid1");
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid2");
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid3");
+				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceClose");
+				AddSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface");
 			}
 		}
 
@@ -143,6 +150,88 @@ namespace ExampleMod
 				textureSlots[1] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG1");
 				textureSlots[2] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG2");
 				textureSlots[3] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG3");
+			}
+		}
+
+		public override void ChooseSurfaceBackgroundStyle(ref int backgroundStyle)
+		{
+			if (!Main.gameMenu)
+			{
+				if (Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(this).ZoneExample)
+				{
+					backgroundStyle = GetSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface");
+				}
+			}
+		}
+
+		// Use this to keep far Backgrounds like the mountains.
+		public override void ModifyFarSurfaceBackgroundFades(int backgroundStyle, float[] farBackgroundFades, float transitionSpeed)
+		{
+			if (backgroundStyle == GetSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface"))
+			{
+				for (int i = 0; i < farBackgroundFades.Length; i++)
+				{
+					if (i == GetSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface"))
+					{
+						farBackgroundFades[i] += transitionSpeed;
+						if (farBackgroundFades[i] > 0f)
+						{
+							farBackgroundFades[i] = 1f;
+						}
+					}
+					else
+					{
+						farBackgroundFades[i] -= transitionSpeed;
+						if (farBackgroundFades[i] < 0f)
+						{
+							farBackgroundFades[i] = 0f;
+						}
+					}
+				}
+			}
+		}
+
+		public override void ChooseFarSurfaceBackground(int backgroundStyle, ref int backgroundSlot)
+		{
+			if (backgroundStyle == GetSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface"))
+			{
+				backgroundSlot = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeSurfaceFar");
+			}
+		}
+
+		static int ExampleBiomeSurfaceFrameCounter = 0;
+		static int ExampleBiomeSurfaceFrame = 0;
+		public override void ChooseMiddleSurfaceBackground(int backgroundStyle, ref int backgroundSlot)
+		{
+			if (backgroundStyle == GetSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface"))
+			{
+				if (++ExampleBiomeSurfaceFrameCounter > 12)
+				{
+					ExampleBiomeSurfaceFrame = (ExampleBiomeSurfaceFrame + 1) % 4;
+				}
+				switch (ExampleBiomeSurfaceFrame)
+				{
+					case 0:
+						backgroundSlot = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid0");
+						break;
+					case 1:
+						backgroundSlot = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid1");
+						break;
+					case 2:
+						backgroundSlot = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid2");
+						break;
+					case 3:
+						backgroundSlot = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid3");
+						break;
+				}
+			}
+		}
+
+		public override void ChooseCloseSurfaceBackground(int backgroundStyle, ref int backgroundSlot, ref float scale, ref double parallax, ref float a, ref float b)
+		{
+			if (backgroundStyle == GetSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface"))
+			{
+				backgroundSlot = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeSurfaceClose");
 			}
 		}
 

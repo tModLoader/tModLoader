@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeAndFillArrays()
-		{
+		{			
 		}
 
 		internal static void Unload()
@@ -43,5 +43,41 @@ namespace Terraria.ModLoader
 
 	public static class SurfaceBackgroundStyleLoader
 	{
+		public static readonly int vanillaSurfaceBackgroundStyleCount = 10;
+		private static int nextSurfaceBackgroundStyle = vanillaSurfaceBackgroundStyleCount;
+		internal static IDictionary<string, int> surfaceBackgroundStyles = new Dictionary<string, int>();
+
+		//public static int SurfaceStyleCount => nextSurfaceBackgroundStyle;
+
+		internal static int ReserveBackgroundSlot()
+		{
+			int reserve = nextSurfaceBackgroundStyle;
+			nextSurfaceBackgroundStyle++;
+			return reserve;
+		}
+
+		public static int GetBackgroundSlot(string texture)
+		{
+			if (surfaceBackgroundStyles.ContainsKey(texture))
+			{
+				return surfaceBackgroundStyles[texture];
+			}
+			else
+			{
+				return -1;
+			}
+		}
+
+		internal static void ResizeAndFillArrays()
+		{
+			Array.Resize(ref Main.bgAlpha, nextSurfaceBackgroundStyle);
+			Array.Resize(ref Main.bgAlpha2, nextSurfaceBackgroundStyle);
+		}
+
+		internal static void Unload()
+		{
+			nextSurfaceBackgroundStyle = vanillaSurfaceBackgroundStyleCount;
+			surfaceBackgroundStyles.Clear();
+		}
 	}
 }

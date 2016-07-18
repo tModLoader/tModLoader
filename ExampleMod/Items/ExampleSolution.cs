@@ -8,7 +8,7 @@ namespace ExampleMod.Items
 	{
 		public override void SetDefaults()
 		{
-			item.name = "Monochromatic Solutiuon";
+			item.name = "Monochromatic Solution";
 			item.shoot = mod.ProjectileType("ExampleSolution") - ProjectileID.PureSpray;
 			item.ammo = ItemID.GreenSolution;
 			item.width = 10;
