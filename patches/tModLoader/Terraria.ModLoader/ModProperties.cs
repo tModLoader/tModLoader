@@ -10,5 +10,6 @@ namespace Terraria.ModLoader
 		public bool Autoload;
 		public bool AutoloadGores;
 		public bool AutoloadSounds;
+		public bool AutoloadBackgrounds;
 	}
 }

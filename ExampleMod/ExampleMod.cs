@@ -25,7 +25,8 @@ namespace ExampleMod
 			{
 				Autoload = true,
 				AutoloadGores = true,
-				AutoloadSounds = true
+				AutoloadSounds = true,
+				AutoloadBackgrounds = true
 			};
 		}
 
@@ -53,16 +54,7 @@ namespace ExampleMod
 				SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
-				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG0");
-				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG1");
-				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG2");
-				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeUG3");
 				AddUndergroundBackgroundStyle("ExampleMod:ExampleBiomeUnderground");
-				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceFar");
-				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid0");
-				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid1");
-				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid2");
-				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceMid3");
 				AddBackgroundTexture("ExampleMod/Backgrounds/ExampleBiomeSurfaceClose");
 				AddSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface");
 			}
@@ -146,10 +138,10 @@ namespace ExampleMod
 		{
 			if (backgroundStyle == GetUndergroundBackgroundStyle("ExampleMod:ExampleBiomeUnderground"))
 			{
-				textureSlots[0] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG0");
-				textureSlots[1] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG1");
-				textureSlots[2] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG2");
-				textureSlots[3] = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeUG3");
+				textureSlots[0] = GetBackgroundSlot("Backgrounds/ExampleBiomeUG0");
+				textureSlots[1] = GetBackgroundSlot("Backgrounds/ExampleBiomeUG1");
+				textureSlots[2] = GetBackgroundSlot("Backgrounds/ExampleBiomeUG2");
+				textureSlots[3] = GetBackgroundSlot("Backgrounds/ExampleBiomeUG3");
 			}
 		}
 
@@ -195,7 +187,7 @@ namespace ExampleMod
 		{
 			if (backgroundStyle == GetSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface"))
 			{
-				backgroundSlot = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeSurfaceFar");
+				backgroundSlot = GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceFar");
 			}
 		}
 
@@ -231,7 +223,7 @@ namespace ExampleMod
 		{
 			if (backgroundStyle == GetSurfaceBackgroundStyle("ExampleMod:ExampleBiomeSurface"))
 			{
-				backgroundSlot = GetBackgroundSlot("ExampleMod/Backgrounds/ExampleBiomeSurfaceClose");
+				backgroundSlot = GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceClose");
 			}
 		}
 

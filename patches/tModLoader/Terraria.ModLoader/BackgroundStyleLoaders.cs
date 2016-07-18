@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 {
 	public static class UndergroundBackgroundStyleLoader
 	{
-		public static readonly int vanillaUndergroundBackgroundStyleCount = 18;
+		public const int vanillaUndergroundBackgroundStyleCount = 18;
 		private static int nextUndergroundBackgroundStyle = vanillaUndergroundBackgroundStyleCount;
 		internal static IDictionary<string, int> undergroundBackgroundStyles = new Dictionary<string, int>();
 
@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 
 	public static class SurfaceBackgroundStyleLoader
 	{
-		public static readonly int vanillaSurfaceBackgroundStyleCount = 10;
+		public const int vanillaSurfaceBackgroundStyleCount = 10;
 		private static int nextSurfaceBackgroundStyle = vanillaSurfaceBackgroundStyleCount;
 		internal static IDictionary<string, int> surfaceBackgroundStyles = new Dictionary<string, int>();
 

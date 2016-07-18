@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 {
 	public static class BackgroundTextureLoader
 	{
-		public static readonly int vanillaBackgroundTextureCount = Main.backgroundTexture.Length;
+		public const int vanillaBackgroundTextureCount = Main.maxBackgrounds;
 		private static int nextBackground = vanillaBackgroundTextureCount;
 		internal static IDictionary<string, int> backgrounds = new Dictionary<string, int>();
 

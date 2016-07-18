@@ -230,6 +230,10 @@ namespace Terraria.ModLoader
 			{
 				AutoloadSounds(modSounds);
 			}
+			if (Properties.AutoloadBackgrounds)
+			{
+				AutoloadBackgrounds();
+			}
 		}
 
 		public void AddItem(string name, ModItem item, string texture)
@@ -1031,6 +1035,37 @@ namespace Terraria.ModLoader
 			return mountData.Type;
 		}
 
+		public void AddModWorld(string name, ModWorld modWorld)
+		{
+			modWorld.Name = name;
+			worlds[name] = modWorld;
+			modWorld.mod = this;
+			WorldHooks.Add(modWorld);
+		}
+
+		private void AutoloadModWorld(Type type)
+		{
+			ModWorld modWorld = (ModWorld)Activator.CreateInstance(type);
+			modWorld.mod = this;
+			string name = type.Name;
+			if (modWorld.Autoload(ref name))
+			{
+				AddModWorld(name, modWorld);
+			}
+		}
+
+		public ModWorld GetModWorld(string name)
+		{
+			if (worlds.ContainsKey(name))
+			{
+				return worlds[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 		public void AddGore(string texture, ModGore modGore = null)
 		{
 			int id = ModGore.ReserveGoreID();
@@ -1038,17 +1073,6 @@ namespace Terraria.ModLoader
 			if (modGore != null)
 			{
 				ModGore.modGores[id] = modGore;
-			}
-		}
-
-		public void AddSound(SoundType type, string soundPath, ModSound modSound = null)
-		{
-			int id = SoundLoader.ReserveSoundID(type);
-			SoundLoader.sounds[type][soundPath] = id;
-			if (modSound != null)
-			{
-				SoundLoader.modSounds[type][id] = modSound;
-				modSound.sound = ModLoader.GetSound(soundPath);
 			}
 		}
 
@@ -1068,6 +1092,17 @@ namespace Terraria.ModLoader
 					modGore = (ModGore)Activator.CreateInstance(t);
 
 				AddGore(Name + '/' + texture, modGore);
+			}
+		}
+
+		public void AddSound(SoundType type, string soundPath, ModSound modSound = null)
+		{
+			int id = SoundLoader.ReserveSoundID(type);
+			SoundLoader.sounds[type][soundPath] = id;
+			if (modSound != null)
+			{
+				SoundLoader.modSounds[type][id] = modSound;
+				modSound.sound = ModLoader.GetSound(soundPath);
 			}
 		}
 
@@ -1108,6 +1143,26 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddBackgroundTexture(string texture)
+		{
+			int slot = BackgroundTextureLoader.ReserveBackgroundSlot();
+			BackgroundTextureLoader.backgrounds[texture] = slot;
+			ModLoader.GetTexture(texture);
+		}
+
+		public int GetBackgroundSlot(string name)
+		{
+			return BackgroundTextureLoader.GetBackgroundSlot(Name + '/' + name);
+		}
+
+		private void AutoloadBackgrounds()
+		{
+			foreach (string texture in textures.Keys.Where(t => t.StartsWith("Backgrounds/")))
+			{
+				AddBackgroundTexture(Name + '/' + texture);
+			}
+		}
+
 		public void AddGlobalRecipe(string name, GlobalRecipe globalRecipe)
 		{
 			globalRecipe.Name = name;
@@ -1132,37 +1187,6 @@ namespace Terraria.ModLoader
 			if (globalRecipes.ContainsKey(name))
 			{
 				return globalRecipes[name];
-			}
-			else
-			{
-				return null;
-			}
-		}
-
-		public void AddModWorld(string name, ModWorld modWorld)
-		{
-			modWorld.Name = name;
-			worlds[name] = modWorld;
-			modWorld.mod = this;
-			WorldHooks.Add(modWorld);
-		}
-
-		private void AutoloadModWorld(Type type)
-		{
-			ModWorld modWorld = (ModWorld)Activator.CreateInstance(type);
-			modWorld.mod = this;
-			string name = type.Name;
-			if (modWorld.Autoload(ref name))
-			{
-				AddModWorld(name, modWorld);
-			}
-		}
-
-		public ModWorld GetModWorld(string name)
-		{
-			if (worlds.ContainsKey(name))
-			{
-				return worlds[name];
 			}
 			else
 			{
@@ -1402,18 +1426,6 @@ namespace Terraria.ModLoader
 			var p = new ModPacket(MessageID.ModPacket, capacity + 5);
 			p.Write(netID);
 			return p;
-		}
-
-		public void AddBackgroundTexture(string texture)
-		{
-			int slot = BackgroundTextureLoader.ReserveBackgroundSlot();
-			BackgroundTextureLoader.backgrounds[texture] = slot;
-			ModLoader.GetTexture(texture);
-		}
-
-		public int GetBackgroundSlot(string name)
-		{
-			return BackgroundTextureLoader.GetBackgroundSlot(name);
 		}
 
 		public void AddUndergroundBackgroundStyle(string styleName)
