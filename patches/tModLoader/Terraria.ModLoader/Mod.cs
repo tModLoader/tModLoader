@@ -47,6 +47,9 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModBuff> buffs = new Dictionary<string, ModBuff>();
 		internal readonly IDictionary<string, GlobalBuff> globalBuffs = new Dictionary<string, GlobalBuff>();
 		internal readonly IDictionary<string, ModWorld> worlds = new Dictionary<string, ModWorld>();
+		internal readonly IDictionary<string, ModUgBgStyle> ugBgStyles = new Dictionary<string, ModUgBgStyle>();
+		internal readonly IDictionary<string, ModSurfaceBgStyle> surfaceBgStyles = new Dictionary<string, ModSurfaceBgStyle>();
+		internal readonly IDictionary<string, GlobalBgStyle> globalBgStyles = new Dictionary<string, GlobalBgStyle>();
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 
 		public virtual void Load()
@@ -216,6 +219,18 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(ModWorld)))
 				{
 					AutoloadModWorld(type);
+				}
+				else if (type.IsSubclassOf(typeof(ModUgBgStyle)))
+				{
+					AutoloadUgBgStyle(type);
+				}
+				else if (type.IsSubclassOf(typeof(ModSurfaceBgStyle)))
+				{
+					AutoloadSurfaceBgStyle(type);
+				}
+				else if (type.IsSubclassOf(typeof(GlobalBgStyle)))
+				{
+					AutoloadGlobalBgStyle(type);
 				}
 				else if (type.IsSubclassOf(typeof(GlobalRecipe)))
 				{
@@ -1066,6 +1081,103 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public void AddUgBgStyle(string name, ModUgBgStyle ugBgStyle)
+		{
+			int slot = UgBgStyleLoader.ReserveBackgroundSlot();
+			ugBgStyle.mod = this;
+			ugBgStyle.Name = name;
+			ugBgStyle.Slot = slot;
+			ugBgStyles[name] = ugBgStyle;
+			UgBgStyleLoader.ugBgStyles.Add(ugBgStyle);
+		}
+
+		public ModUgBgStyle GetUgBgStyle(string name)
+		{
+			if (ugBgStyles.ContainsKey(name))
+			{
+				return ugBgStyles[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		private void AutoloadUgBgStyle(Type type)
+		{
+			ModUgBgStyle ugBgStyle = (ModUgBgStyle)Activator.CreateInstance(type);
+			ugBgStyle.mod = this;
+			string name = type.Name;
+			if (ugBgStyle.Autoload(ref name))
+			{
+				AddUgBgStyle(name, ugBgStyle);
+			}
+		}
+
+		public void AddSurfaceBgStyle(string name, ModSurfaceBgStyle surfaceBgStyle)
+		{
+			int slot = SurfaceBgStyleLoader.ReserveBackgroundSlot();
+			surfaceBgStyle.mod = this;
+			surfaceBgStyle.Name = name;
+			surfaceBgStyle.Slot = slot;
+			surfaceBgStyles[name] = surfaceBgStyle;
+			SurfaceBgStyleLoader.surfaceBgStyles.Add(surfaceBgStyle);
+		}
+
+		public ModSurfaceBgStyle GetSurfaceBgStyle(string name)
+		{
+			if (surfaceBgStyles.ContainsKey(name))
+			{
+				return surfaceBgStyles[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		private void AutoloadSurfaceBgStyle(Type type)
+		{
+			ModSurfaceBgStyle surfaceBgStyle = (ModSurfaceBgStyle)Activator.CreateInstance(type);
+			surfaceBgStyle.mod = this;
+			string name = type.Name;
+			if (surfaceBgStyle.Autoload(ref name))
+			{
+				AddSurfaceBgStyle(name, surfaceBgStyle);
+			}
+		}
+
+		public void AddGlobalBgStyle(string name, GlobalBgStyle globalBgStyle)
+		{
+			globalBgStyle.mod = this;
+			globalBgStyle.Name = name;
+			globalBgStyles[name] = globalBgStyle;
+			GlobalBgStyleLoader.globalBgStyles.Add(globalBgStyle);
+		}
+
+		public GlobalBgStyle GetGlobalBgStyle(string name)
+		{
+			if (globalBgStyles.ContainsKey(name))
+			{
+				return globalBgStyles[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		private void AutoloadGlobalBgStyle(Type type)
+		{
+			GlobalBgStyle globalBgStyle = (GlobalBgStyle)Activator.CreateInstance(type);
+			globalBgStyle.mod = this;
+			string name = type.Name;
+			if (globalBgStyle.Autoload(ref name))
+			{
+				AddGlobalBgStyle(name, globalBgStyle);
+			}
+		}
+
 		public void AddGore(string texture, ModGore modGore = null)
 		{
 			int id = ModGore.ReserveGoreID();
@@ -1361,6 +1473,9 @@ namespace Terraria.ModLoader
 			buffs.Clear();
 			globalBuffs.Clear();
 			worlds.Clear();
+			ugBgStyles.Clear();
+			surfaceBgStyles.Clear();
+			globalBgStyles.Clear();
 			globalRecipes.Clear();
 		}
 
@@ -1426,28 +1541,6 @@ namespace Terraria.ModLoader
 			var p = new ModPacket(MessageID.ModPacket, capacity + 5);
 			p.Write(netID);
 			return p;
-		}
-
-		public void AddUndergroundBackgroundStyle(string styleName)
-		{
-			int slot = UndergroundBackgroundStyleLoader.ReserveBackgroundSlot();
-			UndergroundBackgroundStyleLoader.undergroundBackgroundStyles[styleName] = slot;
-		}
-
-		public int GetUndergroundBackgroundStyle(string styleName)
-		{
-			return UndergroundBackgroundStyleLoader.GetBackgroundSlot(styleName);
-		}
-
-		public void AddSurfaceBackgroundStyle(string styleName)
-		{
-			int slot = SurfaceBackgroundStyleLoader.ReserveBackgroundSlot();
-			SurfaceBackgroundStyleLoader.surfaceBackgroundStyles[styleName] = slot;
-		}
-
-		public int GetSurfaceBackgroundStyle(string styleName)
-		{
-			return SurfaceBackgroundStyleLoader.GetBackgroundSlot(styleName);
 		}
 	}
 }

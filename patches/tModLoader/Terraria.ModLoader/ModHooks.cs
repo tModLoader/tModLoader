@@ -45,38 +45,6 @@ namespace Terraria.ModLoader
 		public virtual void PostUpdateInput()
 		{
 		}
-
-		public virtual void FillUndergroundBackgroundArray(int backgroundStyle, int[] textureSlots)
-		{
-		}
-
-		public virtual void ChooseUndergroundBackgroundStyle(ref int backgroundStyle)
-		{
-		}
-
-		public virtual void ChooseSurfaceBackgroundStyle(ref int backgroundStyle)
-		{
-		}
-
-		public virtual void ModifyFarSurfaceBackgroundFades(int backgroundStyle, float[] farBackgroundFades, float transitionSpeed)
-		{
-		}
-
-		public virtual void ChooseFarSurfaceBackground(int backgroundStyle, ref int backgroundSlot)
-		{
-		}
-
-		public virtual void ChooseMiddleSurfaceBackground(int backgroundStyle, ref int backgroundSlot)
-		{
-		}
-
-		public virtual void DrawCloseSurfaceBackgroundManual(int backgroundStyle, ref bool manual)
-		{
-		}
-
-		public virtual void ChooseCloseSurfaceBackground(int backgroundStyle, ref int backgroundSlot, ref float scale, ref double parallax, ref float a, ref float b)
-		{
-		}
 	}
 
 	internal static class ModHooks
@@ -153,70 +121,6 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.PostUpdateInput();
-			}
-		}
-
-		internal static void FillUndergroundBackgroundArray(int backgroundStyle, int[] textureSlots)
-		{
-			foreach (Mod mod in ModLoader.mods.Values)
-			{
-				mod.FillUndergroundBackgroundArray(backgroundStyle, textureSlots);
-			}
-		}
-
-		internal static void ChooseUndergroundBackgroundStyle(ref int backgroundStyle)
-		{
-			foreach (Mod mod in ModLoader.mods.Values)
-			{
-				mod.ChooseUndergroundBackgroundStyle(ref backgroundStyle);
-			}
-		}
-
-		internal static void ChooseSurfaceBackgroundStyle(ref int backgroundStyle)
-		{
-			foreach (Mod mod in ModLoader.mods.Values)
-			{
-				mod.ChooseSurfaceBackgroundStyle(ref backgroundStyle);
-			}
-		}
-
-		internal static void ModifyFarSurfaceBackgroundFades(int backgroundStyle, float[] farBackgroundFades, float transitionSpeed)
-		{
-			foreach (Mod mod in ModLoader.mods.Values)
-			{
-				mod.ModifyFarSurfaceBackgroundFades(backgroundStyle, farBackgroundFades, transitionSpeed);
-			}
-		}
-
-		internal static void ChooseFarSurfaceBackground(int backgroundStyle, ref int backgroundSlot)
-		{
-			foreach (Mod mod in ModLoader.mods.Values)
-			{
-				mod.ChooseFarSurfaceBackground(backgroundStyle, ref backgroundSlot);
-			}
-		}
-
-		internal static void ChooseMiddleSurfaceBackground(int backgroundStyle, ref int backgroundSlot)
-		{
-			foreach (Mod mod in ModLoader.mods.Values)
-			{
-				mod.ChooseMiddleSurfaceBackground(backgroundStyle, ref backgroundSlot);
-			}
-		}
-
-		internal static void DrawCloseSurfaceBackgroundManual(int backgroundStyle, ref bool manual)
-		{
-			foreach (Mod mod in ModLoader.mods.Values)
-			{
-				mod.DrawCloseSurfaceBackgroundManual(backgroundStyle, ref manual);
-			}
-		}
-
-		internal static void ChooseCloseSurfaceBackground(int backgroundStyle, ref int backgroundSlot, ref float scale, ref double parallax, ref float a, ref float b)
-		{
-			foreach (Mod mod in ModLoader.mods.Values)
-			{
-				mod.ChooseCloseSurfaceBackground(backgroundStyle, ref backgroundSlot, ref scale, ref parallax, ref a, ref b);
 			}
 		}
 	}

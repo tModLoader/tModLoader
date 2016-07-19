@@ -36,6 +36,23 @@
  		private RenderTarget2D mapSectionTexture;
  		public static bool[,] initMap = new bool[Main.mapTargetX, Main.mapTargetY];
  		public static bool[,] mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
+@@ -525,12 +_,12 @@
+ 		private int lastTileX;
+ 		private int firstTileY;
+ 		private int lastTileY;
+-		private double bgParallax;
+-		private int bgStart;
+-		private int bgLoops;
++		internal double bgParallax;
++		internal int bgStart;
++		internal int bgLoops;
+ 		private int bgStartY;
+ 		private int bgLoopsY;
+-		private int bgTop;
++		internal int bgTop;
+ 		public static int renderCount = 99;
+ 		public static GraphicsDeviceManager graphics;
+ 		public static SpriteBatch spriteBatch;
 @@ -1028,7 +_,8 @@
  		public static AudioEngine engine;
  		public static SoundBank soundBank;
@@ -85,15 +102,34 @@
  		public static int hairStart = 0;
  		private static int oldHairStyle;
  		private static Microsoft.Xna.Framework.Color oldHairColor;
-@@ -2133,6 +_,8 @@
+@@ -2029,12 +_,12 @@
+ 		};
+ 		private static float tranSpeed = 0.05f;
+ 		private static float atmo = 0f;
+-		private static float bgScale = 1f;
+-		private static int bgW = (int)(1024f * Main.bgScale);
+-		private static Microsoft.Xna.Framework.Color backColor = Microsoft.Xna.Framework.Color.White;
+-		private static Microsoft.Xna.Framework.Color trueBackColor = Main.backColor;
+-		private float screenOff;
+-		private float scAdj;
++		internal static float bgScale = 1f;
++		internal static int bgW = (int)(1024f * Main.bgScale);
++		internal static Microsoft.Xna.Framework.Color backColor = Microsoft.Xna.Framework.Color.White;
++		internal static Microsoft.Xna.Framework.Color trueBackColor = Main.backColor;
++		internal float screenOff;
++		internal float scAdj;
+ 		private float cTop;
+ 
+ 		public static event Action OnEngineLoad;
+@@ -2132,6 +_,8 @@
+ 				return (Main.mapStyle != 1 || !Main.mapEnabled || Main.screenHeight >= 820) && (Main.mapStyle == 1 || Main.screenWidth >= 855) && !PlayerInput.UsingGamepad;
  			}
  		}
- 
-+		public static ulong TileFrameSeed => Main._tileFrameSeed;
 +
++		public static ulong TileFrameSeed => Main._tileFrameSeed;
+ 
  		public static void FindAnnouncementBoxStatus()
  		{
- 			Main.AnnouncementBoxDisabled = Program.LaunchParameters.ContainsKey("-disableannouncementbox");
 @@ -2250,6 +_,7 @@
  				flag2 = false;
  				Main.anglerQuest = Main.rand.Next(Main.anglerQuestItemNetIDs.Length);
@@ -2770,7 +2806,7 @@
  			{
  				num9 = 2;
  			}
-+			ModHooks.ChooseUndergroundBackgroundStyle(ref num9);
++			UgBgStyleLoader.ChooseStyle(ref num9);
  			if (num9 != Main.ugBack)
  			{
  				Main.oldUgBack = Main.ugBack;
@@ -2778,7 +2814,7 @@
  					array4[5] = 127;
  				}
  				array4[6] = 185 + Main.hellBackStyle;
-+				ModHooks.FillUndergroundBackgroundArray(num10, array4);
++				UgBgStyleLoader.FillTextureArray(num10, array4);
  				this.LoadBackground(array4[0]);
  				this.LoadBackground(array4[1]);
  				this.LoadBackground(array4[2]);
@@ -2895,59 +2931,19 @@
  		{
  			if (!Main.tileSetsLoaded[i])
  			{
-@@ -50683,6 +_,27 @@
+@@ -50683,6 +_,7 @@
  								Main.spriteBatch.Draw(Main.backgroundTexture[24], new Vector2((float)(this.bgStart + Main.bgW * num6), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[24], Main.backgroundHeight[24])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
  							}
  						}
-+						for (int i = SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount; i < Main.bgAlpha2.Length; i++)
-+						{
-+							Main.backColor = Main.trueBackColor;
-+							Main.backColor.R = (byte)((float)Main.backColor.R * Main.bgAlpha2[i]);
-+							Main.backColor.G = (byte)((float)Main.backColor.G * Main.bgAlpha2[i]);
-+							Main.backColor.B = (byte)((float)Main.backColor.B * Main.bgAlpha2[i]);
-+							Main.backColor.A = (byte)((float)Main.backColor.A * Main.bgAlpha2[i]);
-+							if (Main.bgAlpha2[i] > 0f)
-+							{
-+								int textureSlot = -1; 
-+								ModHooks.ChooseFarSurfaceBackground(i, ref textureSlot);
-+								if (textureSlot != -1)
-+								{
-+									this.LoadBackground(textureSlot);
-+									for (int num6 = 0; num6 < this.bgLoops; num6++)
-+									{
-+										Main.spriteBatch.Draw(Main.backgroundTexture[textureSlot], new Vector2((float)(this.bgStart + Main.bgW * num6), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
-+									}
-+								}
-+							}
-+						}
++						SurfaceBgStyleLoader.DrawFarTexture();
  						SkyManager.Instance.DrawToDepth(Main.spriteBatch, 5f);
  					}
  				}
-@@ -50875,6 +_,27 @@
+@@ -50875,6 +_,7 @@
  								Main.spriteBatch.Draw(Main.backgroundTexture[42], new Vector2((float)(this.bgStart + Main.bgW * num17), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[42], Main.backgroundHeight[42])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
  							}
  						}
-+						for (int i = SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount; i < Main.bgAlpha2.Length; i++)
-+						{
-+							Main.backColor = Main.trueBackColor;
-+							Main.backColor.R = (byte)((float)Main.backColor.R * Main.bgAlpha2[i]);
-+							Main.backColor.G = (byte)((float)Main.backColor.G * Main.bgAlpha2[i]);
-+							Main.backColor.B = (byte)((float)Main.backColor.B * Main.bgAlpha2[i]);
-+							Main.backColor.A = (byte)((float)Main.backColor.A * Main.bgAlpha2[i]);
-+							if (Main.bgAlpha2[i] > 0f)
-+							{
-+								int textureSlot = -1; 
-+								ModHooks.ChooseMiddleSurfaceBackground(i, ref textureSlot);
-+								if (textureSlot != -1)
-+								{
-+									this.LoadBackground(textureSlot);
-+									for (int num6 = 0; num6 < this.bgLoops; num6++)
-+									{
-+										Main.spriteBatch.Draw(Main.backgroundTexture[textureSlot], new Vector2((float)(this.bgStart + Main.bgW * num6), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
-+									}
-+								}
-+							}
-+						}
++						SurfaceBgStyleLoader.DrawMiddleTexture();
  					}
  				}
  				this.cTop = (float)this.bgTop * 1.01f - 150f;
@@ -2960,49 +2956,22 @@
  				{
  					if (Main.bgStyle == num21)
  					{
-@@ -51740,6 +_,42 @@
+@@ -51569,6 +_,7 @@
  								}
  							}
- 							SkyManager.Instance.DrawToDepth(Main.spriteBatch, 1f);
-+						}
-+						if (Main.bgAlpha[num21] > 0f && num21 >= SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount)
-+						{
-+							bool manual = false;
-+							ModHooks.DrawCloseSurfaceBackgroundManual(num21, ref manual);
-+							if (!manual)
-+							{
-+								int textureSlot = -1; 
-+								Main.bgScale = 1.25f;
-+								this.bgParallax = 0.37;
-+								float a = 1800.0f;
-+								float b = 1750.0f;
-+								ModHooks.ChooseCloseSurfaceBackground(num21, ref textureSlot, ref Main.bgScale, ref this.bgParallax, ref a, ref b);
-+								if (textureSlot != -1)
-+								{
-+									//Custom: bgScale, textureslot, patallaz, these 2 numbers...., Top and Start?
-+									this.LoadBackground(textureSlot);
-+									Main.bgScale *= 2f;
-+									Main.bgW = (int)((float)Main.backgroundWidth[textureSlot] * Main.bgScale);
-+									SkyManager.Instance.DrawToDepth(Main.spriteBatch, 1f / (float)this.bgParallax);
-+									this.bgStart = (int)(-Math.IEEERemainder((double)Main.screenPosition.X * this.bgParallax, (double)Main.bgW) - (double)(Main.bgW / 2));
-+									this.bgTop = (int)((double)(-(double)Main.screenPosition.Y + this.screenOff / 2f) / (Main.worldSurface * 16.0) * a + b) + (int)this.scAdj;
-+									if (Main.gameMenu)
-+									{
-+										this.bgTop = 320;
-+									}
-+									this.bgLoops = Main.screenWidth / Main.bgW + 2;
-+									if ((double)Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0)
-+									{
-+										for (int num25 = 0; num25 < this.bgLoops; num25++)
-+										{
-+											Main.spriteBatch.Draw(Main.backgroundTexture[textureSlot], new Vector2((float)(this.bgStart + Main.bgW * num25), (float)this.bgTop), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot])), Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
-+										}
-+									}
-+								}
-+							}
  						}
++						//patch file: num21
+ 						if (Main.bgAlpha[num21] > 0f && num21 == 9)
+ 						{
+ 							float num44 = (float)Main.backColor.A / 255f;
+@@ -51741,6 +_,7 @@
+ 							}
+ 							SkyManager.Instance.DrawToDepth(Main.spriteBatch, 1f);
+ 						}
++						SurfaceBgStyleLoader.DrawCloseBackground(num21);
  					}
  				}
+ 			}
 @@ -51902,6 +_,19 @@
  
  		protected override void Draw(GameTime gameTime)
@@ -3131,7 +3100,7 @@
  			{
  				num68 = 0;
  			}
-+			ModHooks.ChooseSurfaceBackgroundStyle(ref num68);
++			SurfaceBgStyleLoader.ChooseStyle(ref num68);
  			int num70 = 30;
  			Main.tranSpeed = 0.05f;
  			if (num68 == 0)
@@ -3148,9 +3117,9 @@
  					Main.bgAlpha2[6] = 0f;
  				}
  			}
-+			if(Main.bgStyle < SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount)
++			if(Main.bgStyle < SurfaceBgStyleLoader.vanillaSurfaceBgStyleCount)
 +			{
-+				for (int i = SurfaceBackgroundStyleLoader.vanillaSurfaceBackgroundStyleCount; i < Main.bgAlpha2.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++)
++				for (int i = SurfaceBgStyleLoader.vanillaSurfaceBgStyleCount; i < Main.bgAlpha2.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++)
 +				{
 +					Main.bgAlpha2[i] -= Main.tranSpeed;
 +					if (Main.bgAlpha2[i] < 0f)
@@ -3159,7 +3128,7 @@
 +					}
 +				}
 +			}
-+			ModHooks.ModifyFarSurfaceBackgroundFades(Main.bgStyle, Main.bgAlpha2, Main.tranSpeed);
++			SurfaceBgStyleLoader.ModifyFarFades(Main.bgStyle, Main.bgAlpha2, Main.tranSpeed);
  			if (Main.ignoreErrors)
  			{
  				try
