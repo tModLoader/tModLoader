@@ -112,7 +112,7 @@ namespace Terraria.ModLoader.UI
 				_categoryButtons.Add(uIToggleImage);
 				uIElement2.Append(uIToggleImage);
 			}
-			filterTextBox = new UIInputTextField("Filter by name");
+			filterTextBox = new UIInputTextField("Type to search");
 			filterTextBox.Top.Set(5, 0f);
 			filterTextBox.Left.Set(-150, 1f);
 			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(SortList);

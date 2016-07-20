@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 		internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
 		internal const int infoMessageID = 10013;
-		private static UIMods modsMenu = new UIMods();
+		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
 		internal static UIBuildMod buildMod = new UIBuildMod();

@@ -165,5 +165,18 @@ namespace Terraria.ModLoader.UI
 			Interface.modInfo.SetURL(properties.homepage);
 			Main.menuMode = Interface.modInfoID;
 		}
+
+		public override bool PassFilters()
+		{
+			if (Interface.modsMenu.filter.Length > 0)
+			{
+				string name = properties.displayName.Length > 0 ? properties.displayName : mod.name;
+				if (name.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 }

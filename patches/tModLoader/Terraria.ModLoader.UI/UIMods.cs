@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.IO;
@@ -12,7 +13,10 @@ namespace Terraria.ModLoader.UI
 	internal class UIMods : UIState
 	{
 		private UIList modList;
+		private UIList modListAll;
 		private List<UIModItem> items = new List<UIModItem>();
+		private UIInputTextField filterTextBox;
+		internal string filter;
 
 		public override void OnInitialize()
 		{
@@ -27,6 +31,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
+			modListAll = new UIList();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
 			modList.Height.Set(0f, 1f);
@@ -82,6 +87,18 @@ namespace Terraria.ModLoader.UI
 			button5.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button5.OnClick += new UIElement.MouseEvent(OpenModsFolder);
 			uIElement.Append(button5);
+			UIPanel panel = new UIPanel();
+			panel.Top.Set(-40f, 0f);
+			panel.Left.Set(-200f, 1f);
+			panel.Width.Set(200f, 0f);
+			panel.Height.Set(40f, 0f);
+			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			uIElement.Append(panel);
+			filterTextBox = new UIInputTextField("Type to search");
+			filterTextBox.Top.Set(-30f, 0f);
+			filterTextBox.Left.Set(-180f, 1f);
+			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(FilterList);
+			uIElement.Append(filterTextBox);
 			base.Append(uIElement);
 		}
 
@@ -139,17 +156,38 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		private void FilterList(object sender, EventArgs e)
+		{
+			FilterList();
+		}
+
+		private void FilterList(UIMouseEvent evt, UIElement listeningElement)
+		{
+			FilterList();
+		}
+
+		private void FilterList()
+		{
+			filter = filterTextBox.currentString;
+			modList.Clear();
+			foreach (UIModItem item in modListAll._items.Where(item => item.PassFilters()))
+			{
+				modList.Add(item);
+			}
+		}
+
 		public override void OnActivate()
 		{
-			modList.Clear();
+			modListAll.Clear();
 			items.Clear();
 			TmodFile[] mods = ModLoader.FindMods();
 			foreach (TmodFile mod in mods)
 			{
 				UIModItem modItem = new UIModItem(mod);
-				modList.Add(modItem);
+				modListAll.Add(modItem);
 				items.Add(modItem);
 			}
+			FilterList();
 		}
 	}
 }
