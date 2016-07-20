@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIText.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIText.cs
+@@ -5,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIText : UIElement
++	public class UIText : UIElement
+ 	{
+ 		private string _text = "";
+ 		private float _textScale = 1f;
+

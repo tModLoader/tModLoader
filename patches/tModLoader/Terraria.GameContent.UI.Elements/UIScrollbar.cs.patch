@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIScrollbar.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIScrollbar.cs
+@@ -6,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIScrollbar : UIElement
++	public class UIScrollbar : UIElement
+ 	{
+ 		private float _viewPosition;
+ 		private float _viewSize = 1f;
+

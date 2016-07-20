@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIHeader.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIHeader.cs
+@@ -5,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIHeader : UIElement
++	public class UIHeader : UIElement
+ 	{
+ 		private string _text;
+ 
+

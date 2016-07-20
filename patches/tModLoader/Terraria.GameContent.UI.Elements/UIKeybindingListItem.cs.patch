@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIKeybindingListItem.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIKeybindingListItem.cs
+@@ -9,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIKeybindingListItem : UIElement
++	public class UIKeybindingListItem : UIElement
+ 	{
+ 		private InputMode _inputmode;
+ 		private Color _color;
+

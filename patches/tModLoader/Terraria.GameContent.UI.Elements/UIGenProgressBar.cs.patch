@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIGenProgressBar.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIGenProgressBar.cs
+@@ -6,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIGenProgressBar : UIElement
++	public class UIGenProgressBar : UIElement
+ 	{
+ 		private Texture2D _texInnerDirt;
+ 		private Texture2D _texOuterCrimson;
+

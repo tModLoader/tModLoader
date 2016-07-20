@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
+@@ -8,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIWorldListItem : UIPanel
++	public class UIWorldListItem : UIPanel
+ 	{
+ 		private WorldFileData _data;
+ 		private Texture2D _dividerTexture;
+

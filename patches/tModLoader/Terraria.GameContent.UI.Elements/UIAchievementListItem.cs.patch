@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIAchievementListItem.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIAchievementListItem.cs
+@@ -8,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIAchievementListItem : UIPanel
++	public class UIAchievementListItem : UIPanel
+ 	{
+ 		private const int _iconSize = 64;
+ 		private const int _iconSizeWithSpace = 66;
+

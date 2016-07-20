@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIToggleImage.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIToggleImage.cs
+@@ -5,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIToggleImage : UIElement
++	public class UIToggleImage : UIElement
+ 	{
+ 		private Texture2D _onTexture;
+ 		private Texture2D _offTexture;
+

@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIProgressBar.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIProgressBar.cs
+@@ -5,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIProgressBar : UIElement
++	public class UIProgressBar : UIElement
+ 	{
+ 		private class UIInnerProgressBar : UIElement
+ 		{
+

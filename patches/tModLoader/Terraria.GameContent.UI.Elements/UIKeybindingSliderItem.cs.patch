@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIKeybindingSliderItem.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIKeybindingSliderItem.cs
+@@ -8,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+-	internal class UIKeybindingSliderItem : UIElement
++	public class UIKeybindingSliderItem : UIElement
+ 	{
+ 		private Color _color;
+ 		private Func<string> _TextDisplayFunction;
+

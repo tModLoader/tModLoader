@@ -29,7 +29,8 @@ namespace Terraria.ModLoader
 		public const bool windows = false;
 #endif
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
-		public static readonly string ModPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
+		public static string ModPath => modPath;
+		internal static string modPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
 		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
 		internal const int earliestRelease = 149;
