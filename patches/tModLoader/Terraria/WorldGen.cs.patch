@@ -268,6 +268,14 @@
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
  		}
  
+@@ -10378,6 +_,7 @@
+ 		public static bool GrowPalmTree(int i, int y)
+ 		{
+ 			int num = y;
++			//TODO - is sapling
+ 			while (Main.tile[i, num].type == 20)
+ 			{
+ 				num++;
 @@ -10450,10 +_,12 @@
  		public static bool GrowEpicTree(int i, int y)
  		{
@@ -323,6 +331,14 @@
  					if (Main.tile[i + 1, num].nactive() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199))
  					{
  						flag4 = true;
+@@ -12898,6 +_,7 @@
+ 								return false;
+ 							}
+ 						}
++						//TODO - is sapling
+ 						else if (ignoreID == 20)
+ 						{
+ 							ushort type3 = Main.tile[i, j].type;
 @@ -13156,7 +_,7 @@
  				Main.tile[i, j] = new Tile();
  			}
@@ -427,6 +443,22 @@
  			Main.tile[num4 + 1, num2 + 2].frameY = (short)(num6 + 36);
  			Main.tile[num4 + 1, num2 + 2].frameX = (short)(num3 + 18);
  			Main.tile[num4 + 1, num2 + 2].color(color3);
+@@ -21620,6 +_,7 @@
+ 			{
+ 				flag = true;
+ 			}
++			//TODO - is sapling
+ 			if (Main.tile[x, num].type == 20)
+ 			{
+ 				int num3 = (int)(Main.tile[x, num].frameX / 54);
+@@ -21665,6 +_,7 @@
+ 				{
+ 					num4 = 9;
+ 				}
++				//TODO - sapling type
+ 				else
+ 				{
+ 					flag = true;
 @@ -25554,7 +_,7 @@
  			{
  				ushort type2 = Main.tile[k, num4 - 1].type;
@@ -593,6 +625,22 @@
  					{
  						WorldGen.Place3x2(i, j, (ushort)type, style);
  						WorldGen.SquareTileFrame(i, j, true);
+@@ -33000,6 +_,7 @@
+ 						WorldGen.PlaceJunglePlant(i, j, (ushort)type, 0, 0);
+ 						WorldGen.SquareTileFrame(i, j, true);
+ 					}
++					//TODO - is sapling
+ 					else if (type == 20)
+ 					{
+ 						if (Main.tile[i, j + 1] == null)
+@@ -33007,6 +_,7 @@
+ 							Main.tile[i, j + 1] = new Tile();
+ 						}
+ 						int type2 = (int)Main.tile[i, j + 1].type;
++						//TODO - can support sapling
+ 						if (Main.tile[i, j + 1].active() && (type2 == 2 || type2 == 109 || type2 == 147 || type2 == 60 || type2 == 23 || type2 == 199 || type2 == 53 || type2 == 234 || type2 == 116 || type2 == 112))
+ 						{
+ 							WorldGen.Place1x2(i, j, (ushort)type, style);
 @@ -33061,7 +_,7 @@
  						WorldGen.Place2xX(i, j, (ushort)type, style);
  						WorldGen.SquareTileFrame(i, j, true);
