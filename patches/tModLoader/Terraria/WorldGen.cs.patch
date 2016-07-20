@@ -268,6 +268,61 @@
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
  		}
  
+@@ -10450,10 +_,12 @@
+ 		public static bool GrowEpicTree(int i, int y)
+ 		{
+ 			int num = y;
++			//TODO - is sapling
+ 			while (Main.tile[i, num].type == 20)
+ 			{
+ 				num++;
+ 			}
++			//TODO - can grow epic tree
+ 			if (Main.tile[i, num].active() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && Main.tile[i, num].type == 2 && Main.tile[i, num - 1].wall == 0 && Main.tile[i, num - 1].liquid == 0 && ((Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109)) || (Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109))))
+ 			{
+ 				int num2 = 2;
+@@ -10720,10 +_,12 @@
+ 					int num6 = WorldGen.genRand.Next(3);
+ 					bool flag3 = false;
+ 					bool flag4 = false;
++					//TODO - can grow epic tree
+ 					if (Main.tile[i - 1, num].active() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109))
+ 					{
+ 						flag3 = true;
+ 					}
++					//TODO - can grow epic tree
+ 					if (Main.tile[i + 1, num].active() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109))
+ 					{
+ 						flag4 = true;
+@@ -11845,6 +_,7 @@
+ 		public static void GrowTree(int i, int y)
+ 		{
+ 			int num = y;
++			//TODO - is sapling
+ 			while (Main.tile[i, num].type == 20)
+ 			{
+ 				num++;
+@@ -11853,6 +_,7 @@
+ 			{
+ 				return;
+ 			}
++			//TODO - can grow tree
+ 			if (Main.tile[i, num].nactive() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && (Main.tile[i, num].type == 2 || Main.tile[i, num].type == 23 || Main.tile[i, num].type == 60 || Main.tile[i, num].type == 109 || Main.tile[i, num].type == 147 || Main.tile[i, num].type == 199 || Main.tile[i, num].type == 70) && (Main.tile[i, num - 1].wall == 0 || Main.tile[i, num - 1].wall == 106 || Main.tile[i, num - 1].wall == 107 || (Main.tile[i, num - 1].wall >= 138 && Main.tile[i, num - 1].wall <= 141) || Main.tile[i, num - 1].wall == 145 || Main.tile[i, num - 1].wall == 150 || Main.tile[i, num - 1].wall == 152) && ((Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199 || Main.tile[i - 1, num].type == 70)) || (Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199 || Main.tile[i + 1, num].type == 70))))
+ 			{
+ 				int num2 = 2;
+@@ -12124,10 +_,12 @@
+ 					int num7 = WorldGen.genRand.Next(3);
+ 					bool flag3 = false;
+ 					bool flag4 = false;
++					//TODO - can grow tree
+ 					if (Main.tile[i - 1, num].nactive() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199))
+ 					{
+ 						flag3 = true;
+ 					}
++					//TODO - can grow tree
+ 					if (Main.tile[i + 1, num].nactive() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199))
+ 					{
+ 						flag4 = true;
 @@ -13156,7 +_,7 @@
  				Main.tile[i, j] = new Tile();
  			}
@@ -429,6 +484,38 @@
  			{
  				int num2 = Chest.CreateChest(x - 1, y - 1, -1);
  				if (num2 == -1)
+@@ -30075,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			//TODO - can grow cactus
+ 			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234))
+ 			{
+ 				WorldGen.KillTile(i, j, false, false, false);
+@@ -30088,6 +_,7 @@
+ 					return true;
+ 				}
+ 			}
++			//TODO - can grow cactus
+ 			else if (i == num2 && (!Main.tile[i, j + 1].active() || (Main.tile[i, j + 1].type != 80 && Main.tile[i, j + 1].type != 53 && Main.tile[i, j + 1].type != 112 && Main.tile[i, j + 1].type != 116 && Main.tile[i, j + 1].type != 234)))
+ 			{
+ 				WorldGen.KillTile(i, j, false, false, false);
+@@ -30335,6 +_,7 @@
+ 			{
+ 				num2 = 53;
+ 			}
++			//TODO - can grow palm tree
+ 			if (num2 != 53 && num2 != type)
+ 			{
+ 				WorldGen.KillTile(i, j, false, false, false);
+@@ -30425,6 +_,7 @@
+ 			{
+ 				num4 = 2;
+ 			}
++			//TODO - can grow tree
+ 			if (num4 != 2 && num4 != type && ((Main.tile[i, j].frameX == 0 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 22 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 44 && Main.tile[i, j].frameY <= 130)))
+ 			{
+ 				WorldGen.KillTile(i, j, false, false, false);
 @@ -30768,7 +_,7 @@
  						int wall = (int)Main.tile[k, l].wall;
  						if (conversionType == 4)
@@ -456,6 +543,27 @@
  							{
  								if (WallID.Sets.Conversion.Grass[wall] && wall != 69)
  								{
+@@ -31369,10 +_,12 @@
+ 			{
+ 				return;
+ 			}
++			//TODO - can grow cactus
+ 			if (Main.tile[i, j].type != 53 && Main.tile[i, j].type != 80 && Main.tile[i, j].type != 234 && Main.tile[i, j].type != 112 && Main.tile[i, j].type != 116)
+ 			{
+ 				return;
+ 			}
++			//TODO - can grow cactus
+ 			if (Main.tile[i, j].type == 53 || Main.tile[i, j].type == 112 || Main.tile[i, j].type == 116 || Main.tile[i, j].type == 234)
+ 			{
+ 				if (Main.tile[i, j - 1].active() || Main.tile[i - 1, j - 1].active() || Main.tile[i + 1, j - 1].active())
+@@ -31397,6 +_,7 @@
+ 										return;
+ 									}
+ 								}
++								//TODO - can grow cactus
+ 								if (Main.tile[k, l].type == 53 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 234)
+ 								{
+ 									num4++;
 @@ -32550,10 +_,6 @@
  
  		public static bool PlaceTile(int i, int j, int type, bool mute = false, bool forced = false, int plr = -1, int style = 0)
@@ -649,6 +757,22 @@
  					int num14 = 0;
  					while (num14 < num13)
  					{
+@@ -35668,6 +_,7 @@
+ 									{
+ 										num15 = 122;
+ 									}
++									//TODO - tree dust
+ 								}
+ 							}
+ 						}
+@@ -35695,6 +_,7 @@
+ 									{
+ 										num15 = 77;
+ 									}
++									//TODO - palm tree dust
+ 								}
+ 							}
+ 						}
 @@ -36628,7 +_,7 @@
  								goto IL_363E;
  						}
@@ -692,6 +816,30 @@
  						if (num43 > 0 && NPC.CountNPCS(357) < 5 && WorldGen.genRand.Next(num43) == 0)
  						{
  							int type2 = 357;
+@@ -37165,6 +_,7 @@
+ 										}
+ 										if (Main.tile[i, num55] != null)
+ 										{
++											//TODO - tree can drop acorn
+ 											if (Main.tile[i, num55].type == 2 || Main.tile[i, num55].type == 109 || Main.tile[i, num55].type == 147 || Main.tile[i, num55].type == 199 || Main.tile[i, num55].type == 23)
+ 											{
+ 												num49 = 9;
+@@ -37260,6 +_,7 @@
+ 									{
+ 										num49 = 621;
+ 									}
++									//TODO - tree wood drop
+ 								}
+ 								int num58 = (int)Player.FindClosest(new Vector2((float)(num56 * 16), (float)(num57 * 16)), 16, 16);
+ 								int axe = Main.player[num58].inventory[Main.player[num58].selectedItem].axe;
+@@ -37303,6 +_,7 @@
+ 									num49 = 619;
+ 								}
+ 							}
++							//TODO - palm tree wood drop
+ 						}
+ 						else if (tile.type == 408)
+ 						{
 @@ -38586,7 +_,8 @@
  						{
  							num49 = 2504;

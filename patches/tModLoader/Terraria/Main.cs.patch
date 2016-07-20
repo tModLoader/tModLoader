@@ -1189,6 +1189,30 @@
  							if (color.R >= 1 || color.G >= 1 || color.B >= 1)
  							{
  								Tile tile2 = Main.tile[j + 1, i];
+@@ -17765,6 +_,7 @@
+ 											flag15 = true;
+ 										}
+ 									}
++									//TODO - cactus drawing
+ 									if (flag13)
+ 									{
+ 										Main.spriteBatch.Draw(Main.evilCactusTexture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num9 - 16f) / 2f, (float)(i * 16 - (int)Main.screenPosition.Y + num12)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle((int)num10, (int)num11, num9, num13)), color, 0f, default(Vector2), 1f, effects, 0f);
+@@ -18101,6 +_,7 @@
+ 												num168++;
+ 											}
+ 											int treeVariant = Main.GetTreeVariant(num167, num168);
++											//TODO - tree drawing
+ 											if (treeVariant == -1)
+ 											{
+ 												if (Main.canDrawColorTile(j, i))
+@@ -18148,6 +_,7 @@
+ 											}
+ 											int y2 = 22 * num169;
+ 											int num172 = (int)num11;
++											//TODO - palm tree drawing
+ 											if (Main.canDrawColorTile(j, i))
+ 											{
+ 												Main.spriteBatch.Draw(Main.tileAltTexture[(int)type, (int)tile.color()], new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num9 - 16f) / 2f + (float)num172, (float)(i * 16 - (int)Main.screenPosition.Y + num12)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle((int)num10, y2, num9, num13)), color, 0f, default(Vector2), 1f, effects, 0f);
 @@ -18728,6 +_,7 @@
  								int num289 = 0;
  								Main.spriteBatch.Draw(texture2D2, new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num9 - 16f) / 2f + (float)num288, (float)(i * 16 - (int)Main.screenPosition.Y + num12 + num289)) + zero, new Microsoft.Xna.Framework.Rectangle?(empty2), transparent, 0f, default(Vector2), 1f, effects, 0f);
@@ -1197,6 +1221,38 @@
  						}
  					}
  				}
+@@ -19113,6 +_,7 @@
+ 										num323++;
+ 									}
+ 								}
++								//TODO - draw tree top
+ 							}
+ 							if (num318 == 14)
+ 							{
+@@ -19209,6 +_,7 @@
+ 										num326++;
+ 									}
+ 								}
++								//TODO - draw tree branch
+ 							}
+ 							if (num325 == 14)
+ 							{
+@@ -19305,6 +_,7 @@
+ 										num329++;
+ 									}
+ 								}
++								//TODO - draw tree branch
+ 							}
+ 							if (num328 == 14)
+ 							{
+@@ -19365,6 +_,7 @@
+ 								num333 = 3;
+ 								break;
+ 							}
++							//TODO - draw palm tree top
+ 						}
+ 						int frameY4 = (int)Main.tile[num300, num301].frameY;
+ 						int y3 = num333 * 82;
 @@ -19403,7 +_,7 @@
  		{
  			for (int i = 0; i < 500; i++)
