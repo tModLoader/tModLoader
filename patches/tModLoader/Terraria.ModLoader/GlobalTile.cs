@@ -149,5 +149,9 @@ namespace Terraria.ModLoader
 		{
 			return true;
 		}
+
+		public virtual void ChangeWaterfallStyle(int type, ref int style)
+		{
+		}
 	}
 }

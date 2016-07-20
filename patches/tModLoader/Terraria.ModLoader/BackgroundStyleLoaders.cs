@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeAndFillArrays()
-		{			
+		{
 		}
 
 		internal static void Unload()

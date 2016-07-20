@@ -45,6 +45,22 @@
  						Tile tile2 = Main.tile[num13, num14];
  						if (tile2 == null)
  						{
+@@ -554,6 +_,7 @@
+ 						}
+ 						if (num40 != -1)
+ 						{
++							//patch file: num40, num12
+ 							if (num40 == 160)
+ 							{
+ 								num12 = 2;
+@@ -562,6 +_,7 @@
+ 							{
+ 								num12 = 15 + num40 - 262;
+ 							}
++							TileLoader.ChangeWaterfallStyle(num40, ref num12);
+ 						}
+ 						if (WorldGen.SolidTile(tile4) && !tile2.halfBrick())
+ 						{
 @@ -624,6 +_,10 @@
  							num42 = 255f * num41;
  							num43 = 255f * num41;

@@ -28,5 +28,10 @@ namespace ExampleMod.Tiles
 			g = 0.5f;
 			b = 0.5f;
 		}
+
+		public override void ChangeWaterfallStyle(ref int style)
+		{
+			style = mod.GetWaterfallStyleSlot("ExampleWaterfallStyle");
+		}
 	}
 }

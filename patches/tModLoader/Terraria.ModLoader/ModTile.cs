@@ -224,5 +224,9 @@ namespace Terraria.ModLoader
 		public virtual void WalkDust(ref int dustType, ref bool makeDust, ref Color color)
 		{
 		}
+
+		public virtual void ChangeWaterfallStyle(ref int style)
+		{
+		}
 	}
 }

@@ -68,6 +68,8 @@ namespace Terraria.ModLoader
 		private static Func<int, int, int, Item, bool>[] HookAutoSelect;
 		private static Action<int, int, int>[] HookHitWire;
 		private static Func<int, int, int, bool>[] HookSlope;
+		private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
+		private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 
 		internal static int ReserveTileID()
 		{
@@ -239,6 +241,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookAutoSelect, globalTiles, g => g.AutoSelect);
 			ModLoader.BuildGlobalHook(ref HookHitWire, globalTiles, g => g.HitWire);
 			ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
+			ModLoader.BuildGlobalHook(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
 
 			if (!unloading)
 			{
@@ -933,6 +936,15 @@ namespace Terraria.ModLoader
 		public static void WalkDust(int type, ref int dustType, ref bool makeDust, ref Color color)
 		{
 			GetTile(type)?.WalkDust(ref dustType, ref makeDust, ref color);
+		}
+
+		public static void ChangeWaterfallStyle(int type, ref int style)
+		{
+			GetTile(type)?.ChangeWaterfallStyle(ref style);
+			foreach (var hook in HookChangeWaterfallStyle)
+			{
+				hook(type, ref style);
+			}
 		}
 	}
 }
