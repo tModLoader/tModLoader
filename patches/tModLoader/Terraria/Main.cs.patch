@@ -1129,19 +1129,30 @@
  						int num15 = 0;
  						if (tile.halfBrick())
  						{
-@@ -15364,6 +_,12 @@
- 							{
+@@ -15365,6 +_,12 @@
  								num16 += 90;
  							}
-+						}
+ 						}
 +						TileLoader.SetAnimationFrame(type, ref num16);
 +						if (!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
 +						{
 +							TileLoader.PostDraw(j, i, type, Main.spriteBatch);
 +							continue;
- 						}
++						}
  						if (type == 373 || type == 374 || type == 375)
  						{
+ 							int num26 = 60;
+@@ -15402,6 +_,10 @@
+ 									if (Main.waterStyle > 1)
+ 									{
+ 										type2 = 706 + Main.waterStyle - 1;
++										if (Main.waterStyle >= WaterStyleLoader.vanillaWaterCount)
++										{
++											type2 = WaterStyleLoader.GetWaterStyle(Main.waterStyle).GetDropletGore();
++										}
+ 									}
+ 									if (type == 374)
+ 									{
 @@ -15986,6 +_,7 @@
  										flag4 = (flag4 || type == 162);
  									}
@@ -2857,6 +2868,64 @@
  				Vector2 bonus = Main.DrawThickCursor(false);
  				Main.DrawCursor(bonus, false);
  			}
+@@ -47057,6 +_,7 @@
+ 				{
+ 					Main.waterStyle = 0;
+ 				}
++				WaterStyleLoader.ChooseWaterStyle(ref Main.waterStyle);
+ 				if (Main.bgStyle != 4 && Main.bloodMoon && !Main.dayTime)
+ 				{
+ 					Main.waterStyle = 9;
+@@ -47595,6 +_,7 @@
+ 						Main.liquidAlpha[10] = 1f;
+ 					}
+ 				}
++				WaterStyleLoader.UpdateLiquidAlphas();
+ 			}
+ 			Main.drewLava = false;
+ 			if (!Main.drawToScreen)
+@@ -47619,9 +_,9 @@
+ 					this.DrawWater(bg, styleOverride, 1f);
+ 					return;
+ 				}
+-				for (int i = 0; i < 11; i++)
+-				{
+-					if (i != 1 && Main.liquidAlpha[i] > 0f)
++				for (int i = 0; i < WaterStyleLoader.WaterStyleCount; i++)
++				{
++					if (i != 1 && i != 11 && Main.liquidAlpha[i] > 0f)
+ 					{
+ 						this.DrawWater(bg, i, Main.liquidAlpha[i]);
+ 					}
+@@ -47797,21 +_,23 @@
+ 						if (Main.waterStyle < 10)
+ 						{
+ 							this.DrawWater(bg, 10, Main.liquidAlpha[10]);
+-							return;
+-						}
+-						this.DrawWater(bg, 10, 1f);
+-						return;
++						}
++						else
++						{
++							this.DrawWater(bg, 10, 1f);
++						}
+ 					}
+ 					else
+ 					{
+ 						this.DrawWater(bg, 10, Main.liquidAlpha[10]);
+ 					}
+ 				}
++				WaterStyleLoader.DrawWatersToScreen(bg);
+ 				return;
+ 			}
+ 		}
+ 
+-		protected void DrawWater(bool bg = false, int Style = 0, float Alpha = 1f)
++		protected internal void DrawWater(bool bg = false, int Style = 0, float Alpha = 1f)
+ 		{
+ 			if (Main.drawToScreen)
+ 			{
 @@ -48425,7 +_,7 @@
  						tile = new Tile();
  						Main.tile[j, i] = tile;

@@ -1,0 +1,67 @@
+--- src/Terraria\Terraria\WaterfallManager.cs
++++ src/tModLoader\Terraria\WaterfallManager.cs
+@@ -2,6 +_,7 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
+ using System.IO;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+@@ -18,7 +_,7 @@
+ 		private const int minWet = 160;
+ 		private const int maxCount = 200;
+ 		private const int maxLength = 100;
+-		private const int maxTypes = 22;
++		internal const int maxTypes = 22;
+ 		private int qualityMax;
+ 		private int currentMax;
+ 		private WaterfallManager.WaterfallData[] waterfalls;
+@@ -217,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f)
++		internal void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f)
+ 		{
+ 			float num = 0f;
+ 			float num2 = 99999f;
+@@ -370,6 +_,7 @@
+ 					if (num29 < 2)
+ 					{
+ 						int num30 = num12;
++						//patch file: num12, num30
+ 						switch (num30)
+ 						{
+ 							case 1:
+@@ -451,6 +_,10 @@
+ 								}
+ 								break;
+ 						}
++						if (num30 >= WaterfallStyleLoader.vanillaWaterfallCount)
++						{
++							WaterfallStyleLoader.GetWaterfallStyle(num30).AddLight(num13, num14);
++						}
+ 						Tile tile2 = Main.tile[num13, num14];
+ 						if (tile2 == null)
+ 						{
+@@ -624,6 +_,10 @@
+ 							num42 = 255f * num41;
+ 							num43 = 255f * num41;
+ 							num44 = 255f * num41;
++						}
++						if (num12 >= WaterfallStyleLoader.vanillaWaterfallCount)
++						{
++							WaterfallStyleLoader.GetWaterfallStyle(num12).ColorMultiplier(ref num42, ref num43, ref num44, num41);
+ 						}
+ 						color5 = new Color((int)num42, (int)num43, (int)num44, (int)num45);
+ 						if (num12 == 1)
+@@ -933,6 +_,7 @@
+ 			{
+ 				this.DrawWaterfall(spriteBatch, 13, Main.liquidAlpha[10]);
+ 			}
++			WaterStyleLoader.DrawWaterfall(this, spriteBatch);
+ 		}
+ 	}
+ }
+

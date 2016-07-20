@@ -13,6 +13,8 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<string, int> gores = new Dictionary<string, int>();
 		internal static readonly IDictionary<int, ModGore> modGores = new Dictionary<int, ModGore>();
 
+		public int updateType = -1;
+
 		internal static int ReserveGoreID()
 		{
 			int reserveID = nextGore;
@@ -64,6 +66,24 @@ namespace Terraria.ModLoader
 			else
 			{
 				gore.modGore = null;
+			}
+		}
+
+		internal static void SetupUpdateType(Gore gore)
+		{
+			if (gore.modGore != null && gore.modGore.updateType > 0)
+			{
+				gore.realType = gore.type;
+				gore.type = gore.modGore.updateType;
+			}
+		}
+
+		internal static void TakeDownUpdateType(Gore gore)
+		{
+			if (gore.realType > 0)
+			{
+				gore.type = gore.realType;
+				gore.realType = 0;
 			}
 		}
 		//in Terraria.Main.DrawGore and DrawGoreBehind replace type checks with this

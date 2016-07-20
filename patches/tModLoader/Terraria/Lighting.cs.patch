@@ -8,6 +8,24 @@
  
  namespace Terraria
  {
+@@ -123,7 +_,7 @@
+ 		private static int firstToLightY;
+ 		private static int lastToLightX;
+ 		private static int lastToLightY;
+-		private static float negLight = 0.04f;
++		internal static float negLight = 0.04f;
+ 		private static float negLight2 = 0.16f;
+ 		private static float wetLightR = 0.16f;
+ 		private static float wetLightG = 0.16f;
+@@ -131,7 +_,7 @@
+ 		private static float honeyLightR = 0.16f;
+ 		private static float honeyLightG = 0.16f;
+ 		private static float honeyLightB = 0.16f;
+-		private static float blueWave = 1f;
++		internal static float blueWave = 1f;
+ 		private static int blueDir = 1;
+ 		private static int minX7;
+ 		private static int maxX7;
 @@ -610,6 +_,7 @@
  				Main.player[Main.myPlayer].NPCBannerBuff[m] = false;
  			}
@@ -101,4 +119,12 @@
  			Array.Clear(tileCounts, 0, tileCounts.Length);
  			if (Main.holyTiles < 0)
  			{
+@@ -2739,6 +_,7 @@
+ 							Lighting.wetLightB = 0f;
+ 							break;
+ 					}
++					WaterStyleLoader.LightColorMultiplier(Main.waterStyle, ref Lighting.wetLightR, ref Lighting.wetLightG, ref Lighting.wetLightB);
+ 				}
+ 				else
+ 				{
 

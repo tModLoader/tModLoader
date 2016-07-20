@@ -176,6 +176,8 @@ namespace Terraria.ModLoader
 			UgBgStyleLoader.ResizeAndFillArrays();
 			SurfaceBgStyleLoader.ResizeAndFillArrays();
 			GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
+			WaterStyleLoader.ResizeArrays();
+			WaterfallStyleLoader.ResizeArrays();
 		}
 
 		internal static TmodFile[] FindMods()
@@ -383,6 +385,8 @@ namespace Terraria.ModLoader
 			UgBgStyleLoader.Unload();
 			SurfaceBgStyleLoader.Unload();
 			GlobalBgStyleLoader.Unload();
+			WaterStyleLoader.Unload();
+			WaterfallStyleLoader.Unload();
 			mods.Clear();
 			ResizeArrays(true);
 			MapLoader.UnloadModMap();

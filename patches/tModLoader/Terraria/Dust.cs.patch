@@ -25,6 +25,17 @@
  					if (dust.type != 34 && dust.type != 35 && dust.type != 152)
  					{
  						break;
+@@ -280,6 +_,10 @@
+ 
+ 		public static int dustWater()
+ 		{
++			if (Main.waterStyle >= WaterStyleLoader.vanillaWaterCount)
++			{
++				return WaterStyleLoader.GetWaterStyle(Main.waterStyle).GetSplashDust();
++			}
+ 			switch (Main.waterStyle)
+ 			{
+ 				case 2:
 @@ -318,6 +_,13 @@
  					if (dust.active)
  					{

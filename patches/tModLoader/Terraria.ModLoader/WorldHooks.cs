@@ -149,5 +149,13 @@ namespace Terraria.ModLoader
 				modWorld.TileCountsAvailable(tileCounts);
 			}
 		}
+
+		public static void ChooseWaterStyle(ref int style)
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.ChooseWaterStyle(ref style);
+			}
+		}
 	}
 }

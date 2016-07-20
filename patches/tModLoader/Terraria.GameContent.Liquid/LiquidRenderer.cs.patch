@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.Liquid\LiquidRenderer.cs
++++ src/tModLoader\Terraria.GameContent.Liquid\LiquidRenderer.cs
+@@ -64,7 +_,7 @@
+ 		private static readonly Tile EMPTY_TILE = new Tile();
+ 		public static LiquidRenderer Instance = new LiquidRenderer();
+ 		private Tile[,] _tiles = Main.tile;
+-		private Texture2D[] _liquidTextures = new Texture2D[12];
++		public Texture2D[] _liquidTextures = new Texture2D[12];
+ 		private LiquidRenderer.LiquidCache[] _cache = new LiquidRenderer.LiquidCache[41617];
+ 		private LiquidRenderer.LiquidDrawCache[] _drawCache = new LiquidRenderer.LiquidDrawCache[40001];
+ 		private int _animationFrame;
+

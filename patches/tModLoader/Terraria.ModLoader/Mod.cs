@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
@@ -50,6 +51,8 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModUgBgStyle> ugBgStyles = new Dictionary<string, ModUgBgStyle>();
 		internal readonly IDictionary<string, ModSurfaceBgStyle> surfaceBgStyles = new Dictionary<string, ModSurfaceBgStyle>();
 		internal readonly IDictionary<string, GlobalBgStyle> globalBgStyles = new Dictionary<string, GlobalBgStyle>();
+		internal readonly IDictionary<string, ModWaterStyle> waterStyles = new Dictionary<string, ModWaterStyle>();
+		internal readonly IDictionary<string, ModWaterfallStyle> waterfallStyles = new Dictionary<string, ModWaterfallStyle>();
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 
 		public virtual void Load()
@@ -231,6 +234,14 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(GlobalBgStyle)))
 				{
 					AutoloadGlobalBgStyle(type);
+				}
+				else if (type.IsSubclassOf(typeof(ModWaterStyle)))
+				{
+					AutoloadWaterStyle(type);
+				}
+				else if (type.IsSubclassOf(typeof(ModWaterfallStyle)))
+				{
+					AutoloadWaterfallStyle(type);
 				}
 				else if (type.IsSubclassOf(typeof(GlobalRecipe)))
 				{
@@ -1136,6 +1147,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public int GetSurfaceBgStyleSlot(string name)
+		{
+			ModSurfaceBgStyle style = GetSurfaceBgStyle(name);
+			return style == null ? -1 : style.Slot;
+		}
+
 		private void AutoloadSurfaceBgStyle(Type type)
 		{
 			ModSurfaceBgStyle surfaceBgStyle = (ModSurfaceBgStyle)Activator.CreateInstance(type);
@@ -1175,6 +1192,84 @@ namespace Terraria.ModLoader
 			if (globalBgStyle.Autoload(ref name))
 			{
 				AddGlobalBgStyle(name, globalBgStyle);
+			}
+		}
+
+		public void AddWaterStyle(string name, ModWaterStyle waterStyle, string texture, string blockTexture)
+		{
+			int style = WaterStyleLoader.ReserveStyle();
+			waterStyle.mod = this;
+			waterStyle.Name = name;
+			waterStyle.Type = style;
+			waterStyle.texture = texture;
+			waterStyle.blockTexture = blockTexture;
+			waterStyles[name] = waterStyle;
+			WaterStyleLoader.waterStyles.Add(waterStyle);
+		}
+
+		public ModWaterStyle GetWaterStyle(string name)
+		{
+			if (waterStyles.ContainsKey(name))
+			{
+				return waterStyles[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		private void AutoloadWaterStyle(Type type)
+		{
+			ModWaterStyle waterStyle = (ModWaterStyle)Activator.CreateInstance(type);
+			waterStyle.mod = this;
+			string name = type.Name;
+			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+			string blockTexture = texture + "_Block";
+			if (waterStyle.Autoload(ref name, ref texture, ref blockTexture))
+			{
+				AddWaterStyle(name, waterStyle, texture, blockTexture);
+			}
+		}
+
+		public void AddWaterfallStyle(string name, ModWaterfallStyle waterfallStyle, string texture)
+		{
+			int slot = WaterfallStyleLoader.ReserveStyle();
+			waterfallStyle.mod = this;
+			waterfallStyle.Name = name;
+			waterfallStyle.Type = slot;
+			waterfallStyle.texture = texture;
+			waterfallStyles[name] = waterfallStyle;
+			WaterfallStyleLoader.waterfallStyles.Add(waterfallStyle);
+		}
+
+		public ModWaterfallStyle GetWaterfallStyle(string name)
+		{
+			if (waterfallStyles.ContainsKey(name))
+			{
+				return waterfallStyles[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		public int GetWaterfallStyleSlot(string name)
+		{
+			ModWaterfallStyle style = GetWaterfallStyle(name);
+			return style == null ? -1 : style.Type;
+		}
+
+		private void AutoloadWaterfallStyle(Type type)
+		{
+			ModWaterfallStyle waterfallStyle = (ModWaterfallStyle)Activator.CreateInstance(type);
+			waterfallStyle.mod = this;
+			string name = type.Name;
+			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
+			if (waterfallStyle.Autoload(ref name, ref texture))
+			{
+				AddWaterfallStyle(name, waterfallStyle, texture);
 			}
 		}
 
@@ -1452,6 +1547,16 @@ namespace Terraria.ModLoader
 				Main.buffName[buff.Type] = buff.Name;
 				buff.SetDefaults();
 			}
+			foreach (ModWaterStyle waterStyle in waterStyles.Values)
+			{
+				LiquidRenderer.Instance._liquidTextures[waterStyle.Type] = ModLoader.GetTexture(waterStyle.texture);
+				Main.liquidTexture[waterStyle.Type] = ModLoader.GetTexture(waterStyle.blockTexture);
+			}
+			foreach (ModWaterfallStyle waterfallStyle in waterfallStyles.Values)
+			{
+				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type]
+					= ModLoader.GetTexture(waterfallStyle.texture);
+			}
 		}
 
 		internal void UnloadContent()
@@ -1476,6 +1581,8 @@ namespace Terraria.ModLoader
 			ugBgStyles.Clear();
 			surfaceBgStyles.Clear();
 			globalBgStyles.Clear();
+			waterStyles.Clear();
+			waterfallStyles.Clear();
 			globalRecipes.Clear();
 		}
 

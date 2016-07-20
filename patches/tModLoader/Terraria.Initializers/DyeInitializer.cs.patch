@@ -1,0 +1,22 @@
+--- src/Terraria\Terraria.Initializers\DyeInitializer.cs
++++ src/tModLoader\Terraria.Initializers\DyeInitializer.cs
+@@ -3,6 +_,7 @@
+ using System;
+ using Terraria.GameContent.Dyes;
+ using Terraria.Graphics.Shaders;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.Initializers
+ {
+@@ -337,6 +_,10 @@
+ 						{
+ 							color = new Color(208, 80, 80);
+ 						}
++						else if (Main.waterStyle >= WaterStyleLoader.vanillaWaterCount)
++						{
++							color = WaterStyleLoader.GetWaterStyle(Main.waterStyle).BiomeHairColor();
++						}
+ 						else
+ 						{
+ 							color = new Color(28, 216, 94);
+

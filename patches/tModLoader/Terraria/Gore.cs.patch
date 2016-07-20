@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Gore.cs
 +++ src/tModLoader\Terraria\Gore.cs
-@@ -1,11 +_,18 @@
+@@ -1,11 +_,19 @@
  using Microsoft.Xna.Framework;
  using System;
  using Terraria.GameContent;
@@ -15,11 +15,12 @@
 +			get;
 +			internal set;
 +		}
++		internal int realType = 0;
 +
  		public static int goreTime = 600;
  		public Vector2 position;
  		public Vector2 velocity;
-@@ -30,6 +_,10 @@
+@@ -30,6 +_,11 @@
  			}
  			if (this.active)
  			{
@@ -27,9 +28,18 @@
 +				{
 +					return;
 +				}
++				ModGore.SetupUpdateType(this);
  				if (this.type >= 276 && this.type <= 282)
  				{
  					this.velocity.X = this.velocity.X * 0.98f;
+@@ -627,6 +_,7 @@
+ 					}
+ 					Lighting.AddLight((int)((this.position.X + 32f * this.scale / 2f) / 16f), (int)((this.position.Y + 32f * this.scale / 2f) / 16f), num25, num26, num27);
+ 				}
++				ModGore.TakeDownUpdateType(this);
+ 			}
+ 		}
+ 
 @@ -673,6 +_,7 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
