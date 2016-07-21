@@ -5,8 +5,8 @@ public T[] CreateCustomSet<T>(T defaultState, params object[] inputs)
 
 Terraria.IO.WorldFile
 private static int SaveWorldHeader(BinaryWriter writer)
-- writer.Write(540); //number of NPCs, will likely change
-+ writer.Write((short)540);
+- writer.Write(541); //number of NPCs, will likely change
++ writer.Write((short)541);
 private static int SaveChests(BinaryWriter writer)
 - writer.Write(40);
 + writer.Write((short)40);
@@ -15,8 +15,8 @@ private static int SaveChests(BinaryWriter writer)
 
 Terraria.Map.MapHelper
 public static void SaveMap()
-- binaryWriter.Write(446); //number of tiles, will likely change
-- binaryWriter.Write(225); //number of walls, will likely change
+- binaryWriter.Write(461); //number of tiles, will likely change
+- binaryWriter.Write(231); //number of walls, will likely change
 - binaryWriter.Write(3);
 - binaryWriter.Write(256);
 - binaryWriter.Write(256);

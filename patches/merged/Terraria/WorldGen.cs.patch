@@ -14,7 +14,7 @@
  
  namespace Terraria
  {
-@@ -46475,6 +_,7 @@
+@@ -46924,6 +_,7 @@
  		public static bool UpdateMapTile(int i, int j, bool addToList = true)
  		{
  			bool result = false;
@@ -22,7 +22,7 @@
  			if (Main.mapEnabled && !WorldGen.noMapUpdate && !WorldGen.gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList)
  			{
  				result = true;
-@@ -46489,6 +_,7 @@
+@@ -46938,6 +_,7 @@
  					Main.refreshMap = true;
  				}
  			}

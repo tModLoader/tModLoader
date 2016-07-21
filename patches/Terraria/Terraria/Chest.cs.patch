@@ -1,6 +1,6 @@
 --- src/merged\Terraria\Chest.cs
 +++ src/Terraria\Terraria\Chest.cs
-@@ -250,12 +_,14 @@
+@@ -251,12 +_,14 @@
  			}
  			int num = (int)(Main.tile[X, Y].frameX / 36);
  			int num2 = num;
@@ -17,7 +17,7 @@
  				AchievementsHelper.NotifyProgressionEvent(19);
  				goto IL_B7;
  			}
-@@ -263,8 +_,8 @@
+@@ -264,8 +_,8 @@
  				break;
  			case 4:
  			{
@@ -28,7 +28,7 @@
  				goto IL_B7;
  			}
  			default:
-@@ -280,8 +_,8 @@
+@@ -281,8 +_,8 @@
  					{
  						return false;
  					}
@@ -39,7 +39,7 @@
  					AchievementsHelper.NotifyProgressionEvent(20);
  					goto IL_B7;
  				}
-@@ -292,8 +_,8 @@
+@@ -293,8 +_,8 @@
  					case 38:
  					case 40:
  					{
@@ -50,7 +50,7 @@
  						goto IL_B7;
  					}
  					}
-@@ -309,11 +_,9 @@
+@@ -310,11 +_,9 @@
  				for (int j = Y; j <= Y + 1; j++)
  				{
  					Tile expr_DD = Main.tile[i, j];

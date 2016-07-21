@@ -4,9 +4,9 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
  			{
--				if (<PrivateImplementationDetails>{1101AA3B-650D-40F8-8557-81B992424CA5}.$$method0x60009b8-1 == null)
+-				if (<PrivateImplementationDetails>{63C57A8C-BC1C-4889-9682-A70837FF8C93}.$$method0x60009d3-1 == null)
 -				{
--					<PrivateImplementationDetails>{1101AA3B-650D-40F8-8557-81B992424CA5}.$$method0x60009b8-1 = new Dictionary<string, int>(14)
+-					<PrivateImplementationDetails>{63C57A8C-BC1C-4889-9682-A70837FF8C93}.$$method0x60009d3-1 = new Dictionary<string, int>(14)
 -					{
 -						{
 -							"Tsuki",
@@ -67,7 +67,7 @@
 -					};
 -				}
 -				int num;
--				if (<PrivateImplementationDetails>{1101AA3B-650D-40F8-8557-81B992424CA5}.$$method0x60009b8-1.TryGetValue(name, out num))
+-				if (<PrivateImplementationDetails>{63C57A8C-BC1C-4889-9682-A70837FF8C93}.$$method0x60009d3-1.TryGetValue(name, out num))
 -				{
 -					switch (num)
 -					{
@@ -138,7 +138,7 @@
  																}
  																if (TileID.Sets.Platforms[(int)Main.tile[num688, num689].type] && Main.tile[num688, num689].active() && !Main.tile[num688, num689].inActive())
  																{
-@@ -34751,7 +_,7 @@
+@@ -34748,7 +_,7 @@
  							for (int n = 0; n < 5; n++)
  							{
  								int num29 = this.width / 4;

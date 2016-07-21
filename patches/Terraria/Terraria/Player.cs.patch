@@ -1,6 +1,6 @@
 --- src/merged\Terraria\Player.cs
 +++ src/Terraria\Terraria\Player.cs
-@@ -11892,7 +_,7 @@
+@@ -11897,7 +_,7 @@
  						{
  							list10.Add(tuple9);
  						}
@@ -9,27 +9,27 @@
  						if (Collision.HitWallSubstep(tuple9.Item1, tuple9.Item2))
  						{
  							list10.Add(tuple9);
-@@ -23398,8 +_,8 @@
+@@ -23488,8 +_,8 @@
  					{
  						int num21 = (int)(Main.tile[myX, myY].frameX / 54);
  						int num22 = (int)(Main.tile[myX, myY].frameY / 54);
--						short arg_A8C_0 = Main.tile[myX, myY].frameX % 54 / 18;
--						short arg_AA6_0 = Main.tile[myX, myY].frameY % 54 / 18;
-+						short arg_A8C_0 = (short)(Main.tile[myX, myY].frameX % 54 / 18);
-+						short arg_AA6_0 = (short)(Main.tile[myX, myY].frameY % 54 / 18);
+-						short arg_ACA_0 = Main.tile[myX, myY].frameX % 54 / 18;
+-						short arg_AE4_0 = Main.tile[myX, myY].frameY % 54 / 18;
++						short arg_ACA_0 = (short)(Main.tile[myX, myY].frameX % 54 / 18);
++						short arg_AE4_0 = (short)(Main.tile[myX, myY].frameY % 54 / 18);
  						int num23 = -1;
  						switch (num21)
  						{
-@@ -33845,7 +_,7 @@
+@@ -33955,7 +_,7 @@
  													{
- 														num243 = 0;
+ 														num244 = 0;
  													}
--													Main.tile[num227, num228].frameX = 22 * num243;
-+													Main.tile[num227, num228].frameX = (short)(22 * num243);
+-													Main.tile[num228, num229].frameX = 22 * num244;
++													Main.tile[num228, num229].frameX = (short)(22 * num244);
  													if (Main.netMode == 1)
  													{
  														NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1);
-@@ -36717,7 +_,7 @@
+@@ -36827,7 +_,7 @@
  				FileUtilities.Copy(path, path + ".bak", isCloudSave, true);
  			}
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
@@ -38,7 +38,7 @@
  			{
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(Player.ENCRYPTION_KEY, Player.ENCRYPTION_KEY), CryptoStreamMode.Write))
  				{
-@@ -37612,7 +_,6 @@
+@@ -37722,7 +_,6 @@
  			this.TouchedTiles = new List<Point>();
  			int[] array2 = new int[2];
  			this.hurtCooldowns = array2;

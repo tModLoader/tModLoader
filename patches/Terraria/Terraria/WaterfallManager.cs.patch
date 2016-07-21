@@ -1,6 +1,6 @@
 --- src/merged\Terraria\WaterfallManager.cs
 +++ src/Terraria\Terraria\WaterfallManager.cs
-@@ -261,12 +_,13 @@
+@@ -289,12 +_,13 @@
  				int num18 = 0;
  				int num19 = 0;
  				int num20 = 0;
@@ -12,19 +12,19 @@
  					{
 -						int num21 = 32 * this.slowFrame;
 +						num21 = 32 * this.slowFrame;
- 						goto IL_3FA;
+ 						goto IL_46D;
  					}
  				}
-@@ -282,7 +_,7 @@
+@@ -310,7 +_,7 @@
  						{
- 							goto IL_1879;
+ 							goto IL_18F5;
  						}
 -						int num21 = 32 * this.regularFrame;
 +						num21 = 32 * this.regularFrame;
- 						goto IL_3FA;
+ 						goto IL_46D;
  					}
  					if (!Main.drewLava)
-@@ -709,7 +_,6 @@
+@@ -760,7 +_,6 @@
  								Main.dust[num55].velocity *= 0f;
  							}
  						}

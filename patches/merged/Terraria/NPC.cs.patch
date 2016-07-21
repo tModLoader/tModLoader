@@ -1,14 +1,14 @@
 --- src/decompiled\Terraria\NPC.cs
 +++ src/merged\Terraria\NPC.cs
-@@ -39224,6 +_,7 @@
+@@ -39235,6 +_,7 @@
  													31,
  													229
  												});
 +#if CLIENT
- 												if (flag162)
+ 												if (flag163)
  												{
  													MoonlordDeathDrama.AddExplosion(vector203);
-@@ -39237,6 +_,7 @@
+@@ -39248,6 +_,7 @@
  														dust14.scale = num1631;
  													}
  												}

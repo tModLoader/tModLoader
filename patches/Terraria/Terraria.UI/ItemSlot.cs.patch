@@ -1,6 +1,6 @@
 --- src/merged\Terraria.UI\ItemSlot.cs
 +++ src/Terraria\Terraria.UI\ItemSlot.cs
-@@ -613,11 +_,10 @@
+@@ -636,11 +_,10 @@
  					return;
  				case 3:
  				case 4:
