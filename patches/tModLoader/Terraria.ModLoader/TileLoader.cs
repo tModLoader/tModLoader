@@ -176,10 +176,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.TileInteractRead, nextTile);
 			Array.Resize(ref TileID.Sets.HasOutlines, nextTile);
 			Array.Resize(ref TileID.Sets.AllTiles, nextTile);
-			for (int k = TileID.Count; k < nextTile; k++)
-			{
-				TileID.Sets.AllTiles[k] = true;
-			}
 			Array.Resize(ref TileID.Sets.Mud, nextTile);
 			Array.Resize(ref TileID.Sets.Snow, nextTile);
 			Array.Resize(ref TileID.Sets.Ices, nextTile);
@@ -210,6 +206,12 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.Falling, nextTile);
 			Array.Resize(ref TileID.Sets.Ore, nextTile);
 			Array.Resize(ref TileID.Sets.ForceObsidianKill, nextTile);
+			for (int k = TileID.Count; k < nextTile; k++)
+			{
+				TileID.Sets.AllTiles[k] = true;
+				TileID.Sets.GeneralPlacementTiles[k] = true;
+				TileID.Sets.CanBeClearedDuringGeneration[k] = true;
+			}
 			while (TileObjectData._data.Count < nextTile)
 			{
 				TileObjectData._data.Add(null);
