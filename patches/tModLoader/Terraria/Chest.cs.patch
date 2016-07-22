@@ -1,15 +1,15 @@
 --- src/Terraria\Terraria\Chest.cs
 +++ src/tModLoader\Terraria\Chest.cs
-@@ -2,6 +_,8 @@
- using System;
+@@ -3,6 +_,8 @@
  using Terraria.DataStructures;
  using Terraria.GameContent.Achievements;
+ using Terraria.GameContent.Events;
 +using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.ObjectData;
  
  namespace Terraria
-@@ -391,13 +_,21 @@
+@@ -392,13 +_,21 @@
  				}
  				Main.chest[num] = chest;
  			}
@@ -33,7 +33,7 @@
  			}
  			return num;
  		}
-@@ -851,9 +_,11 @@
+@@ -852,9 +_,11 @@
  								Main.travelShop[num2++] = 3641;
  								break;
  						}
@@ -48,7 +48,7 @@
  		}
  
  		public void SetupShop(int type)
-@@ -1982,6 +_,7 @@
+@@ -2008,6 +_,7 @@
  					num++;
  				}
  			}

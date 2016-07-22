@@ -742,7 +742,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public void AddNPC(string name, ModNPC npc, string texture)
+		public void AddNPC(string name, ModNPC npc, string texture, string[] altTextures = null)
 		{
 			int id = NPCLoader.ReserveNPCID();
 			npc.npc.name = name;
@@ -750,6 +750,7 @@ namespace Terraria.ModLoader
 			npcs[name] = npc;
 			NPCLoader.npcs.Add(npc);
 			npc.texture = texture;
+			npc.altTextures = altTextures;
 			npc.mod = this;
 		}
 
@@ -833,9 +834,10 @@ namespace Terraria.ModLoader
 			string name = type.Name;
 			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
 			string defaultTexture = texture;
-			if (npc.Autoload(ref name, ref texture))
+			string[] altTextures = new string[0];
+			if (npc.Autoload(ref name, ref texture, ref altTextures))
 			{
-				AddNPC(name, npc, texture);
+				AddNPC(name, npc, texture, altTextures);
 				string headTexture = defaultTexture + "_Head";
 				string bossHeadTexture = headTexture + "_Boss";
 				npc.AutoloadHead(ref headTexture, ref bossHeadTexture);
@@ -1532,6 +1534,16 @@ namespace Terraria.ModLoader
 				else
 				{
 					Main.npcLifeBytes[npc.npc.type] = 1;
+				}
+				int altTextureCount = NPCID.Sets.ExtraTextureCount[npc.npc.type];
+				Main.npcAltTextures[npc.npc.type] = new Texture2D[altTextureCount + 1];
+				if (altTextureCount > 0)
+				{
+					Main.npcAltTextures[npc.npc.type][0] = Main.npcTexture[npc.npc.type];
+				}
+				for (int k = 1; k <= altTextureCount; k++)
+				{
+					Main.npcAltTextures[npc.npc.type][k] = ModLoader.GetTexture(npc.altTextures[k - 1]);
 				}
 			}
 			foreach (ModMountData modMountData in mountDatas.Values)

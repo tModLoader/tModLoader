@@ -7,9 +7,10 @@ namespace ExampleMod.NPCs
 {
 	public class ExamplePerson : ModNPC
 	{
-		public override bool Autoload(ref string name, ref string texture)
+		public override bool Autoload(ref string name, ref string texture, ref string[] altTextures)
 		{
 			name = "Example Person";
+			altTextures = new string[] { "ExampleMod/NPCs/ExamplePerson_Alt_1" };
 			return mod.Properties.Autoload;
 		}
 
@@ -34,6 +35,8 @@ namespace ExampleMod.NPCs
 			NPCID.Sets.AttackType[npc.type] = 0;
 			NPCID.Sets.AttackTime[npc.type] = 90;
 			NPCID.Sets.AttackAverageChance[npc.type] = 30;
+			NPCID.Sets.HatOffsetY[npc.type] = 4;
+			NPCID.Sets.ExtraTextureCount[npc.type] = 1;
 			animationType = NPCID.Guide;
 		}
 

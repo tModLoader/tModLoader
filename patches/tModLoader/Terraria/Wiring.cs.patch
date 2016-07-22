@@ -1,14 +1,14 @@
 --- src/Terraria\Terraria\Wiring.cs
 +++ src/tModLoader\Terraria\Wiring.cs
-@@ -4,6 +_,7 @@
- using Terraria.DataStructures;
+@@ -5,6 +_,7 @@
+ using Terraria.GameContent.Events;
  using Terraria.GameContent.UI;
  using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -14,26 +_,26 @@
+@@ -15,26 +_,26 @@
  		public static bool blockPlayerTeleportationForOneIteration;
  		public static bool running;
  		private static Dictionary<Point16, bool> _wireSkip;
@@ -48,7 +48,7 @@
  		private static int CurrentUser = 254;
  
  		public static void SetCurrentUser(int plr = -1)
-@@ -337,7 +_,7 @@
+@@ -338,7 +_,7 @@
  			}
  		}
  
@@ -57,7 +57,7 @@
  		{
  			for (int k = 0; k < Wiring._numMechs; k++)
  			{
-@@ -411,7 +_,7 @@
+@@ -412,7 +_,7 @@
  			}
  		}
  
@@ -66,7 +66,7 @@
  		{
  			if (Main.netMode == 1)
  			{
-@@ -1317,7 +_,7 @@
+@@ -1340,7 +_,7 @@
  									NetMessage.SendData(19, -1, -1, "", 4 + flag4.ToInt(), (float)i, (float)j, 0f, 0, 0, 0);
  									return;
  								}
@@ -75,16 +75,16 @@
  								{
  									if (WorldGen.CloseDoor(i, j, true))
  									{
-@@ -1325,7 +_,7 @@
+@@ -1348,7 +_,7 @@
  										return;
  									}
  								}
 -								else if (type == 10)
 +								else if (TileLoader.OpenDoorID(Main.tile[i, j]) >= 0)
  								{
- 									int num62 = 1;
+ 									int num69 = 1;
  									if (Main.rand.Next(2) == 0)
-@@ -1423,7 +_,7 @@
+@@ -1446,7 +_,7 @@
  									}
  									else
  									{
@@ -93,7 +93,7 @@
  										{
  											if (tile.frameX < 66)
  											{
-@@ -1986,7 +_,7 @@
+@@ -2009,7 +_,7 @@
  											}
  											else
  											{
@@ -102,7 +102,7 @@
  												{
  													WorldGen.SwitchMB(i, j);
  													return;
-@@ -2486,6 +_,7 @@
+@@ -2514,6 +_,7 @@
  						}
  					}
  				}
@@ -110,7 +110,7 @@
  			}
  		}
  
-@@ -2554,7 +_,7 @@
+@@ -2582,7 +_,7 @@
  			}
  		}
  
@@ -119,7 +119,7 @@
  		{
  			if (!Main.tile[i, j].active())
  			{
-@@ -2593,7 +_,7 @@
+@@ -2621,7 +_,7 @@
  			}
  		}
  

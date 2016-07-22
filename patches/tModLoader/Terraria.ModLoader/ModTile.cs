@@ -228,5 +228,24 @@ namespace Terraria.ModLoader
 		public virtual void ChangeWaterfallStyle(ref int style)
 		{
 		}
+
+		//TODO
+		//is sapling
+		//get sapling type - can support sapling
+		//can grow tree
+		//can grow epic tree
+		//tree dust
+		//tree can drop acorn
+		//tree wood drop
+		//tree drawing
+		//draw tree top
+		//draw tree branch
+		//can grow palm tree
+		//palm tree dust
+		//palm tree wood drop
+		//palm tree drawing
+		//draw palm tree top
+		//can grow cactus
+		//cactus drawing
 	}
 }

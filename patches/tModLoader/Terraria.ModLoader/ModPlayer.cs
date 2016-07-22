@@ -102,7 +102,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void SyncPlayer(bool newPlayer)
+		public virtual void SyncPlayer(int toWho, int fromWho, bool newPlayer)
 		{
 		}
 

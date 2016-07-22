@@ -20,11 +20,6 @@ namespace ExampleMod.NPCs
 			bounces = false;
 		}
 
-		public override bool Autoload(ref string name, ref string texture)
-		{
-			return mod.Properties.Autoload;
-		}
-
 		public override void SetDefaults()
 		{
 			npc.name = "Octopus";

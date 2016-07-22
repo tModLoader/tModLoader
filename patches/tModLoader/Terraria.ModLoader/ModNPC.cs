@@ -23,6 +23,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal string texture;
+		internal string[] altTextures;
 		public int aiType = 0;
 		public int animationType = 0;
 		public int bossBag = -1;
@@ -45,7 +46,7 @@ namespace Terraria.ModLoader
 			npc = new NPC();
 		}
 
-		public virtual bool Autoload(ref string name, ref string texture)
+		public virtual bool Autoload(ref string name, ref string texture, ref string[] altTextures)
 		{
 			return mod.Properties.Autoload;
 		}
@@ -248,6 +249,11 @@ namespace Terraria.ModLoader
 		public virtual string TownNPCName()
 		{
 			return "No-Name";
+		}
+
+		public virtual bool UsesPartyHat()
+		{
+			return true;
 		}
 
 		public virtual string GetChat()

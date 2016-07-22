@@ -16,11 +16,6 @@ namespace ExampleMod.NPCs
 			accelerationY = 0.1f;
 		}
 
-		public override bool Autoload(ref string name, ref string texture)
-		{
-			return mod.Properties.Autoload;
-		}
-
 		public override void SetDefaults()
 		{
 			npc.name = "Sarcophagus";

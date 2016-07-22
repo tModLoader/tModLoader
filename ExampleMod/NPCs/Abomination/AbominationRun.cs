@@ -7,7 +7,7 @@ namespace ExampleMod.NPCs.Abomination
 	//ported from my tAPI mod because I'm lazy
 	public class AbominationRun : ModNPC
 	{
-		public override bool Autoload(ref string name, ref string texture)
+		public override bool Autoload(ref string name, ref string texture, ref string[] altTextures)
 		{
 			texture = "ExampleMod/NPCs/Abomination/Abomination";
 			return mod.Properties.Autoload;

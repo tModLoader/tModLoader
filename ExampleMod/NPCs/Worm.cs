@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs
 {
 	//ported from my tAPI mod because I'm lazy
-	public class Worm : ModNPC
+	public abstract class Worm : ModNPC
 	{
 		/* ai[0] = follower
 		 * ai[1] = following
@@ -24,11 +24,6 @@ namespace ExampleMod.NPCs
 		public bool directional = false;
 		public float speed;
 		public float turnSpeed;
-
-		public override bool Autoload(ref string name, ref string texture)
-		{
-			return false;
-		}
 
 		public override void AI()
 		{

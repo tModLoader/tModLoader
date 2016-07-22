@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs
 {
 	//imported from my tAPI mod because I'm lazy
-	public class Fish : ModNPC
+	public abstract class Fish : ModNPC
 	{
 		protected float speed = 7f;
 		protected float speedY = 4f;
@@ -14,11 +14,6 @@ namespace ExampleMod.NPCs
 		protected bool targetDryPlayer = true;
 		protected float idleSpeed = 2f;
 		protected bool bounces = true;
-
-		public override bool Autoload(ref string name, ref string texture)
-		{
-			return false;
-		}
 
 		public override void AI()
 		{

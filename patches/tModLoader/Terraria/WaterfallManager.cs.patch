@@ -12,12 +12,12 @@
  		private const int minWet = 160;
  		private const int maxCount = 200;
  		private const int maxLength = 100;
--		private const int maxTypes = 22;
-+		internal const int maxTypes = 22;
+-		private const int maxTypes = 23;
++		internal const int maxTypes = 23;
  		private int qualityMax;
  		private int currentMax;
  		private WaterfallManager.WaterfallData[] waterfalls;
-@@ -217,7 +_,7 @@
+@@ -243,7 +_,7 @@
  			}
  		}
  
@@ -26,7 +26,7 @@
  		{
  			float num = 0f;
  			float num2 = 99999f;
-@@ -370,6 +_,7 @@
+@@ -419,6 +_,7 @@
  					if (num29 < 2)
  					{
  						int num30 = num12;
@@ -34,7 +34,7 @@
  						switch (num30)
  						{
  							case 1:
-@@ -451,6 +_,10 @@
+@@ -500,6 +_,10 @@
  								}
  								break;
  						}
@@ -45,7 +45,7 @@
  						Tile tile2 = Main.tile[num13, num14];
  						if (tile2 == null)
  						{
-@@ -554,6 +_,7 @@
+@@ -603,6 +_,7 @@
  						}
  						if (num40 != -1)
  						{
@@ -53,7 +53,7 @@
  							if (num40 == 160)
  							{
  								num12 = 2;
-@@ -562,6 +_,7 @@
+@@ -611,6 +_,7 @@
  							{
  								num12 = 15 + num40 - 262;
  							}
@@ -61,7 +61,7 @@
  						}
  						if (WorldGen.SolidTile(tile4) && !tile2.halfBrick())
  						{
-@@ -624,6 +_,10 @@
+@@ -673,6 +_,10 @@
  							num42 = 255f * num41;
  							num43 = 255f * num41;
  							num44 = 255f * num41;
@@ -72,7 +72,7 @@
  						}
  						color5 = new Color((int)num42, (int)num43, (int)num44, (int)num45);
  						if (num12 == 1)
-@@ -933,6 +_,7 @@
+@@ -982,6 +_,7 @@
  			{
  				this.DrawWaterfall(spriteBatch, 13, Main.liquidAlpha[10]);
  			}

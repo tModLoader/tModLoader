@@ -9,7 +9,7 @@
  	{
  		public static SkyManager Instance = new SkyManager();
  		private float _lastDepth;
-@@ -97,5 +_,16 @@
+@@ -98,5 +_,16 @@
  			}
  			return MathHelper.Clamp(num, 0f, 1f);
  		}

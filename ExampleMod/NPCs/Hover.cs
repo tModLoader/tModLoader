@@ -5,17 +5,12 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs
 {
 	//ported from my tAPI mod because I'm lazy
-	public class Hover : ModNPC
+	public abstract class Hover : ModNPC
 	{
 		protected float speed = 2f;
 		protected float acceleration = 0.1f;
 		protected float speedY = 1.5f;
 		protected float accelerationY = 0.04f;
-
-		public override bool Autoload(ref string name, ref string texture)
-		{
-			return false;
-		}
 
 		public override void AI()
 		{

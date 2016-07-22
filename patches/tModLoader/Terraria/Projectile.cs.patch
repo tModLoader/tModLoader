@@ -452,12 +452,12 @@
  														Rectangle value14 = new Rectangle((int)Main.player[this.owner].position.X, (int)Main.player[this.owner].position.Y, Main.player[this.owner].width, Main.player[this.owner].height);
  														if (rectangle5.Intersects(value14))
  														{
--															if (this.ai[1] > 0f && this.ai[1] < 3730f)
+-															if (this.ai[1] > 0f && this.ai[1] < 3770f)
 +															if (this.ai[1] > 0f && this.ai[1] < (float)ItemLoader.ItemCount)
  															{
  																int num594 = (int)this.ai[1];
  																Item item = new Item();
-@@ -36218,6 +_,11 @@
+@@ -36215,6 +_,11 @@
  			Main.projectileIdentity[this.owner, this.identity] = -1;
  			int num = this.timeLeft;
  			this.timeLeft = 0;
@@ -469,7 +469,7 @@
  			if (this.type == 634 || this.type == 635)
  			{
  				int num2 = Utils.SelectRandom<int>(Main.rand, new int[]
-@@ -40813,7 +_,13 @@
+@@ -40810,7 +_,13 @@
  									{
  										flag4 = false;
  									}
@@ -483,7 +483,7 @@
  									{
  										flag4 = false;
  									}
-@@ -41204,11 +_,17 @@
+@@ -41201,11 +_,17 @@
  					}
  				}
  			}

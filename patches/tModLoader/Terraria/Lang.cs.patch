@@ -16,7 +16,7 @@
  		public static string[] prefix = new string[84];
  		public static string the;
  
-@@ -3520,6 +_,10 @@
+@@ -3626,6 +_,10 @@
  
  		public static string npcName(int l, bool english = false)
  		{
@@ -27,7 +27,7 @@
  			if (Lang.lang <= 1 || english)
  			{
  				switch (l)
-@@ -32339,10 +_,21 @@
+@@ -32623,10 +_,21 @@
  							array = array2;
  						}
  						else
@@ -49,7 +49,7 @@
  						}
  						break;
  				}
-@@ -32355,6 +_,7 @@
+@@ -32639,6 +_,7 @@
  					text2 = text2 + " " + array[i];
  				}
  			}
@@ -57,7 +57,7 @@
  			if (text.Length > 0)
  			{
  				text2 = text2 + "\n" + text;
-@@ -33394,7 +_,7 @@
+@@ -33688,7 +_,7 @@
  #if CLIENT
  				if (Lang.mapLegend == null)
  				{

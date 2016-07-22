@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -79,6 +_,11 @@
+@@ -80,6 +_,11 @@
  					break;
  				}
  				int num = item.stack;
@@ -20,7 +20,7 @@
  				if (this.alchemy && Main.player[Main.myPlayer].alchemyTable)
  				{
  					if (num > 1)
-@@ -179,78 +_,26 @@
+@@ -180,78 +_,26 @@
  			{
  				return false;
  			}
@@ -107,7 +107,7 @@
  		}
  
  		public bool usePressurePlate(int invType, int reqType)
-@@ -259,67 +_,8 @@
+@@ -260,67 +_,8 @@
  			{
  				return false;
  			}
@@ -177,7 +177,7 @@
  		}
  
  		public static void FindRecipes()
-@@ -464,7 +_,7 @@
+@@ -466,7 +_,7 @@
  							flag2 = false;
  						}
  					}
@@ -186,7 +186,7 @@
  					{
  						Main.availableRecipe[Main.numAvailableRecipes] = num4;
  						Main.numAvailableRecipes++;
-@@ -553,6 +_,8 @@
+@@ -555,6 +_,8 @@
  					2007
  				});
  			RecipeGroupID.Snails = RecipeGroup.RegisterGroup("Snails", rec);
@@ -195,7 +195,7 @@
  		}
  
  		public static void SetupRecipes()
-@@ -10568,6 +_,7 @@
+@@ -10627,6 +_,7 @@
  			Recipe.AddRecipe();
  			Recipe.WallReturn();
  			Recipe.PlatformReturn();

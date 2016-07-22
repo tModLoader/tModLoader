@@ -259,11 +259,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void SyncPlayer(Player player, bool newPlayer)
+		public static void SyncPlayer(Player player, int toWho, int fromWho, bool newPlayer)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				modPlayer.SyncPlayer(newPlayer);
+				modPlayer.SyncPlayer(toWho, fromWho, newPlayer);
 			}
 		}
 

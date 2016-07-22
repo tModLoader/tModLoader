@@ -151,10 +151,12 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.nextNPC, nextNPC);
 			Array.Resize(ref Main.slimeRainNPC, nextNPC);
 			Array.Resize(ref Main.npcTexture, nextNPC);
+			Array.Resize(ref Main.npcAltTextures, nextNPC);
 			Array.Resize(ref Main.npcCatchable, nextNPC);
 			Array.Resize(ref Main.npcName, nextNPC);
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
+			Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
 			Array.Resize(ref NPCID.Sets.StatueSpawnedDropRarity, nextNPC);
 			Array.Resize(ref NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue, nextNPC);
@@ -164,6 +166,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref NPCID.Sets.TrailCacheLength, nextNPC);
 			Array.Resize(ref NPCID.Sets.MPAllowedEnemies, nextNPC);
 			Array.Resize(ref NPCID.Sets.TownCritter, nextNPC);
+			Array.Resize(ref NPCID.Sets.HatOffsetY, nextNPC);
 			Array.Resize(ref NPCID.Sets.FaceEmote, nextNPC);
 			Array.Resize(ref NPCID.Sets.ExtraFramesCount, nextNPC);
 			Array.Resize(ref NPCID.Sets.AttackFrameCount, nextNPC);
@@ -177,6 +180,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref NPCID.Sets.ExcludedFromDeathTally, nextNPC);
 			Array.Resize(ref NPCID.Sets.TechnicallyABoss, nextNPC);
 			Array.Resize(ref NPCID.Sets.MustAlwaysDraw, nextNPC);
+			Array.Resize(ref NPCID.Sets.ExtraTextureCount, nextNPC);
+			Array.Resize(ref NPCID.Sets.NPCFramingGroup, nextNPC);
 			for (int k = NPCID.Count; k < nextNPC; k++)
 			{
 				Main.NPCLoaded[k] = true;
@@ -974,6 +979,11 @@ namespace Terraria.ModLoader
 		public static string TownNPCName(int type)
 		{
 			return GetNPC(type)?.TownNPCName() ?? "";
+		}
+
+		public static bool UsesPartyHat(NPC npc)
+		{
+			return npc.modNPC?.UsesPartyHat() ?? true;
 		}
 		//in Terraria.NPC.GetChat before returning result add NPCLoader.GetChat(this, ref result);
 		public static void GetChat(NPC npc, ref string chat)
