@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Skies\PartySky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\PartySky.cs
-@@ -233,7 +_,7 @@
+@@ -242,7 +_,7 @@
  			}
  		}
  
@@ -9,7 +9,7 @@
  		{
  			if (this._active)
  			{
-@@ -246,7 +_,7 @@
+@@ -255,7 +_,7 @@
  			this._leaving = false;
  		}
  

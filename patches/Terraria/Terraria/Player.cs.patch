@@ -20,7 +20,7 @@
  						int num23 = -1;
  						switch (num21)
  						{
-@@ -33955,7 +_,7 @@
+@@ -33971,7 +_,7 @@
  													{
  														num244 = 0;
  													}
@@ -29,7 +29,7 @@
  													if (Main.netMode == 1)
  													{
  														NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1);
-@@ -36827,7 +_,7 @@
+@@ -36843,7 +_,7 @@
  				FileUtilities.Copy(path, path + ".bak", isCloudSave, true);
  			}
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
@@ -38,7 +38,7 @@
  			{
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(Player.ENCRYPTION_KEY, Player.ENCRYPTION_KEY), CryptoStreamMode.Write))
  				{
-@@ -37722,7 +_,6 @@
+@@ -37738,7 +_,6 @@
  			this.TouchedTiles = new List<Point>();
  			int[] array2 = new int[2];
  			this.hurtCooldowns = array2;

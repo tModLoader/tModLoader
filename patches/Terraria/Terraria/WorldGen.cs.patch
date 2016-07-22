@@ -534,7 +534,7 @@
  			Main.tile[x + 1, y].type = type;
  		}
  
-@@ -47308,11 +_,11 @@
+@@ -47312,11 +_,11 @@
  								}
  								else if ((num4 >= 0 && Main.tileSolid[num4] && !Main.tileNoAttach[num4]) || num4 == 124 || (num4 == 5 && num8 == 5 && num6 == 5))
  								{
@@ -548,7 +548,7 @@
  								}
  								else if (tile.wall > 0)
  								{
-@@ -47602,21 +_,21 @@
+@@ -47606,21 +_,21 @@
  								{
  									if (tile.frameY < 108 || tile.frameY > 54)
  									{
@@ -573,7 +573,7 @@
  									}
  								}
  								else
-@@ -47678,7 +_,7 @@
+@@ -47682,7 +_,7 @@
  									}
  									if (tile.frameY < 54 || tile.frameY > 90)
  									{
@@ -582,7 +582,7 @@
  									}
  								}
  								else if (num36 >= 0 && Main.tileMoss[num36])
-@@ -47693,7 +_,7 @@
+@@ -47697,7 +_,7 @@
  									}
  									if (tile.frameY < 108 || tile.frameY > 54)
  									{
@@ -591,7 +591,7 @@
  									}
  								}
  								else if (num37 >= 0 && Main.tileMoss[num37])
-@@ -47708,7 +_,7 @@
+@@ -47712,7 +_,7 @@
  									}
  									if (tile.frameY < 162 || tile.frameY > 198)
  									{

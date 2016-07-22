@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class Installer
 {
-    private static final String TERRARIA_VERSION = "v1.3.1.1";
+    private static final String TERRARIA_VERSION = "v1.3.2.1";
 
     public static void tryInstall(String[] files, File directory)
     {
