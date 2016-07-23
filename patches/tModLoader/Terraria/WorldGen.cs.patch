@@ -277,6 +277,15 @@
  			{
  				num++;
  			}
+@@ -10412,7 +_,7 @@
+ 			{
+ 				return false;
+ 			}
+-			if (tile.type != 53 && tile.type != 234 && tile.type != 116 && tile.type != 112)
++			if (tile.type != 53 && tile.type != 234 && tile.type != 116 && tile.type != 112 && !TileLoader.CanGrowModPalmTree(tile.type))
+ 			{
+ 				return false;
+ 			}
 @@ -10470,11 +_,11 @@
  		public static bool GrowEpicTree(int i, int y)
  		{
@@ -305,11 +314,16 @@
  					{
  						flag4 = true;
  					}
-@@ -11895,10 +_,16 @@
+@@ -11895,10 +_,21 @@
  						}
  					}
  					ushort type = tile3.type;
 +					TileLoader.TreeGrowthFXGore(type, ref num2);
++					if (num2 > 0)
++					{
++						break;
++					}
++					TileLoader.PalmTreeGrowthFXGore(type, ref num2);
 +					if (num2 > 0)
 +					{
 +						break;
@@ -578,30 +592,35 @@
  			{
  				int num2 = Chest.CreateChest(x - 1, y - 1, -1);
  				if (num2 == -1)
-@@ -30420,6 +_,7 @@
+@@ -30420,7 +_,7 @@
  					}
  				}
  			}
-+			//TODO - can grow cactus
- 			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234))
+-			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234))
++			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234 && !TileLoader.CanGrowModCactus(Main.tile[num2, num2].type)))
  			{
  				WorldGen.KillTile(i, j, false, false, false);
-@@ -30433,6 +_,7 @@
+ 				return true;
+@@ -30433,7 +_,7 @@
  					return true;
  				}
  			}
-+			//TODO - can grow cactus
- 			else if (i == num2 && (!Main.tile[i, j + 1].active() || (Main.tile[i, j + 1].type != 80 && Main.tile[i, j + 1].type != 53 && Main.tile[i, j + 1].type != 112 && Main.tile[i, j + 1].type != 116 && Main.tile[i, j + 1].type != 234)))
+-			else if (i == num2 && (!Main.tile[i, j + 1].active() || (Main.tile[i, j + 1].type != 80 && Main.tile[i, j + 1].type != 53 && Main.tile[i, j + 1].type != 112 && Main.tile[i, j + 1].type != 116 && Main.tile[i, j + 1].type != 234)))
++			else if (i == num2 && (!Main.tile[i, j + 1].active() || (Main.tile[i, j + 1].type != 80 && Main.tile[i, j + 1].type != 53 && Main.tile[i, j + 1].type != 112 && Main.tile[i, j + 1].type != 116 && Main.tile[i, j + 1].type != 234 && !TileLoader.CanGrowModCactus(Main.tile[i, j + 1].type))))
  			{
  				WorldGen.KillTile(i, j, false, false, false);
-@@ -30680,6 +_,7 @@
+ 				return true;
+@@ -30677,6 +_,10 @@
+ 				num2 = 53;
+ 			}
+ 			if (num2 == 112)
++			{
++				num2 = 53;
++			}
++			if (TileLoader.CanGrowModPalmTree(num2))
  			{
  				num2 = 53;
  			}
-+			//TODO - can grow palm tree
- 			if (num2 != 53 && num2 != type)
- 			{
- 				WorldGen.KillTile(i, j, false, false, false);
 @@ -30770,6 +_,10 @@
  			{
  				num4 = 2;
@@ -640,27 +659,29 @@
  							{
  								if (WallID.Sets.Conversion.Grass[wall] && wall != 69)
  								{
-@@ -31714,10 +_,12 @@
+@@ -31714,11 +_,11 @@
  			{
  				return;
  			}
-+			//TODO - can grow cactus
- 			if (Main.tile[i, j].type != 53 && Main.tile[i, j].type != 80 && Main.tile[i, j].type != 234 && Main.tile[i, j].type != 112 && Main.tile[i, j].type != 116)
+-			if (Main.tile[i, j].type != 53 && Main.tile[i, j].type != 80 && Main.tile[i, j].type != 234 && Main.tile[i, j].type != 112 && Main.tile[i, j].type != 116)
++			if (Main.tile[i, j].type != 53 && Main.tile[i, j].type != 80 && Main.tile[i, j].type != 234 && Main.tile[i, j].type != 112 && Main.tile[i, j].type != 116 && !TileLoader.CanGrowModCactus(Main.tile[i, j].type))
  			{
  				return;
  			}
-+			//TODO - can grow cactus
- 			if (Main.tile[i, j].type == 53 || Main.tile[i, j].type == 112 || Main.tile[i, j].type == 116 || Main.tile[i, j].type == 234)
+-			if (Main.tile[i, j].type == 53 || Main.tile[i, j].type == 112 || Main.tile[i, j].type == 116 || Main.tile[i, j].type == 234)
++			if (Main.tile[i, j].type == 53 || Main.tile[i, j].type == 112 || Main.tile[i, j].type == 116 || Main.tile[i, j].type == 234 || TileLoader.CanGrowModCactus(Main.tile[i, j].type))
  			{
  				if (Main.tile[i, j - 1].active() || Main.tile[i - 1, j - 1].active() || Main.tile[i + 1, j - 1].active())
-@@ -31742,6 +_,7 @@
+ 				{
+@@ -31742,7 +_,7 @@
  										return;
  									}
  								}
-+								//TODO - can grow cactus
- 								if (Main.tile[k, l].type == 53 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 234)
+-								if (Main.tile[k, l].type == 53 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 234)
++								if (Main.tile[k, l].type == 53 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 234 || TileLoader.CanGrowModCactus(Main.tile[k, l].type))
  								{
  									num4++;
+ 								}
 @@ -32895,10 +_,6 @@
  
  		public static bool PlaceTile(int i, int j, int type, bool mute = false, bool forced = false, int plr = -1, int style = 0)
@@ -895,11 +916,16 @@
  								}
  							}
  						}
-@@ -36084,6 +_,7 @@
+@@ -36080,10 +_,12 @@
+ 									{
+ 										num15 = 79;
+ 									}
++									//patch file: num29
+ 									if (Main.tile[i, num29].active() && Main.tile[i, num29].type == 112)
  									{
  										num15 = 77;
  									}
-+									//TODO - palm tree dust
++									TileLoader.PalmTreeDust(Main.tile[i, num29], ref num15);
  								}
  							}
  						}
@@ -971,14 +997,22 @@
  								}
  								int num58 = (int)Player.FindClosest(new Vector2((float)(num56 * 16), (float)(num57 * 16)), 16, 16);
  								int axe = Main.player[num58].inventory[Main.player[num58].selectedItem].axe;
-@@ -37725,6 +_,7 @@
+@@ -37706,6 +_,7 @@
+ 							if (Main.tile[i, num59].active())
+ 							{
+ 								ushort type = Main.tile[i, num59].type;
++								//patch file: type
+ 								if (type != 112)
+ 								{
+ 									if (type != 116)
+@@ -37724,6 +_,7 @@
+ 								{
  									num49 = 619;
  								}
++								TileLoader.DropPalmTreeWood(type, ref num49);
  							}
-+							//TODO - palm tree wood drop
  						}
  						else if (tile.type == 408)
- 						{
 @@ -39022,7 +_,8 @@
  						{
  							num49 = 2504;

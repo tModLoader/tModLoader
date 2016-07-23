@@ -1041,9 +1041,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static Texture2D GetTreeTexture(int type)
+		public static Texture2D GetTreeTexture(Tile tile)
 		{
-			return trees.ContainsKey(type) ? trees[type].GetTexture() : null;
+			return tile.active() && trees.ContainsKey(tile.type) ? trees[tile.type].GetTexture() : null;
 		}
 
 		public static Texture2D GetTreeTopTextures(int type)
@@ -1054,6 +1054,55 @@ namespace Terraria.ModLoader
 		public static Texture2D GetTreeBranchTextures(int type)
 		{
 			return trees.ContainsKey(type) ? trees[type].GetBranchTextures() : null;
+		}
+
+		public static bool CanGrowModPalmTree(int type)
+		{
+			return palmTrees.ContainsKey(type);
+		}
+
+		public static void PalmTreeDust(Tile tile, ref int dust)
+		{
+			if (tile.active() && palmTrees.ContainsKey(tile.type))
+			{
+				dust = palmTrees[tile.type].CreateDust();
+			}
+		}
+
+		public static void PalmTreeGrowthFXGore(int type, ref int gore)
+		{
+			if (palmTrees.ContainsKey(type))
+			{
+				gore = palmTrees[type].GrowthFXGore();
+			}
+		}
+
+		public static void DropPalmTreeWood(int type, ref int wood)
+		{
+			if (palmTrees.ContainsKey(type))
+			{
+				wood = palmTrees[type].DropWood();
+			}
+		}
+
+		public static Texture2D GetPalmTreeTexture(Tile tile)
+		{
+			return tile.active() && palmTrees.ContainsKey(tile.type) ? palmTrees[tile.type].GetTexture() : null;
+		}
+
+		public static Texture2D GetPalmTreeTopTextures(int type)
+		{
+			return palmTrees.ContainsKey(type) ? palmTrees[type].GetTopTextures() : null;
+		}
+
+		public static bool CanGrowModCactus(int type)
+		{
+			return cacti.ContainsKey(type);
+		}
+
+		public static Texture2D GetCactusTexture(int type)
+		{
+			return cacti.ContainsKey(type) ? cacti[type].GetTexture() : null;
 		}
 	}
 }

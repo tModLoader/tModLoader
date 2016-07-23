@@ -249,23 +249,5 @@ namespace Terraria.ModLoader
 		{
 			return -1;
 		}
-
-		//TODO
-		//* is sapling
-		//* get sapling type - can support sapling
-		//* can grow tree
-		//* tree dust
-		//* tree can drop acorn
-		//* tree wood drop
-		//* tree drawing
-		//* draw tree top
-		//* draw tree branch
-		//can grow palm tree
-		//palm tree dust
-		//palm tree wood drop
-		//palm tree drawing
-		//draw palm tree top
-		//can grow cactus
-		//cactus drawing
 	}
 }
