@@ -178,6 +178,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
+			Main.clrInput();
 			modListAll.Clear();
 			items.Clear();
 			TmodFile[] mods = ModLoader.FindMods();
