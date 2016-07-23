@@ -13,6 +13,7 @@ using Mono.Cecil;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
+using Terraria.UI;
 using System.Security.Cryptography;
 
 namespace Terraria.ModLoader
@@ -129,6 +130,8 @@ namespace Terraria.ModLoader
 				ModNet.AssignNetIDs();
 
 			MapLoader.SetupModMap();
+			ItemSorting.SetupWhiteLists();
+			
 			Interface.loadMods.SetProgressRecipes();
 			for (int k = 0; k < Recipe.maxRecipes; k++)
 			{
@@ -391,6 +394,7 @@ namespace Terraria.ModLoader
 			mods.Clear();
 			ResizeArrays(true);
 			MapLoader.UnloadModMap();
+			ItemSorting.SetupWhiteLists();
 			modHotKeys.Clear();
 			WorldHooks.Unload();
 			RecipeHooks.Unload();

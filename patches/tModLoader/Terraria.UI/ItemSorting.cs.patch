@@ -1,0 +1,20 @@
+--- src/Terraria\Terraria.UI\ItemSorting.cs
++++ src/tModLoader\Terraria.UI\ItemSorting.cs
+@@ -2,6 +_,7 @@
+ using System.Collections.Generic;
+ using System.Linq;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.UI
+ {
+@@ -920,7 +_,7 @@
+ 			list.Add(ItemSorting.ItemSortingLayers.LastTilesCommon);
+ 			list.Add(ItemSorting.ItemSortingLayers.LastNotTrash);
+ 			list.Add(ItemSorting.ItemSortingLayers.LastTrash);
+-			for (int i = -48; i < 3770; i++)
++			for (int i = -48; i < ItemLoader.ItemCount; i++)
+ 			{
+ 				Item item = new Item();
+ 				item.netDefaults(i);
+
