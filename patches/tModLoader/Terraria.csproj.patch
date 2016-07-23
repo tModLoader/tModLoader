@@ -96,7 +96,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -304,6 +_,117 @@
+@@ -304,6 +_,118 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -170,6 +170,7 @@
 +    <Compile Include="Terraria.ModLoader\ModBackgroundStyle.cs" />
 +    <Compile Include="Terraria.ModLoader\ModBuff.cs" />
 +    <Compile Include="Terraria.ModLoader\ModCompile.cs" />
++    <Compile Include="Terraria.ModLoader\ConvertiblePlants.cs" />
 +    <Compile Include="Terraria.ModLoader\ModDust.cs" />
 +    <Compile Include="Terraria.ModLoader\ModGore.cs" />
 +    <Compile Include="Terraria.ModLoader\ModHooks.cs" />
@@ -239,6 +240,7 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>"$(SolutionDir)4gb_patch.exe" "$(TargetPath)"
 +
@@ -267,5 +269,4 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>

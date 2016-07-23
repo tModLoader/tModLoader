@@ -45,6 +45,7 @@ namespace Terraria.ModLoader
 		public int dresserDrop = 0;
 		public bool bed = false;
 		public bool torch = false;
+		public bool sapling = false;
 
 		public void AddToArray(ref int[] array)
 		{
@@ -76,6 +77,21 @@ namespace Terraria.ModLoader
 				}
 				MapLoader.tileEntries[Type].Add(entry);
 			}
+		}
+
+		public void SetModTree(ModTree tree)
+		{
+			TileLoader.trees[Type] = tree;
+		}
+
+		public void SetModPalmTree(ModPalmTree palmTree)
+		{
+			TileLoader.palmTrees[Type] = palmTree;
+		}
+
+		public void SetModCactus(ModCactus cactus)
+		{
+			TileLoader.cacti[Type] = cactus;
 		}
 
 		public virtual bool Autoload(ref string name, ref string texture)
@@ -229,17 +245,21 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual int SaplingGrowthType(ref int style)
+		{
+			return -1;
+		}
+
 		//TODO
-		//is sapling
-		//get sapling type - can support sapling
-		//can grow tree
-		//can grow epic tree
-		//tree dust
-		//tree can drop acorn
-		//tree wood drop
-		//tree drawing
-		//draw tree top
-		//draw tree branch
+		//* is sapling
+		//* get sapling type - can support sapling
+		//* can grow tree
+		//* tree dust
+		//* tree can drop acorn
+		//* tree wood drop
+		//* tree drawing
+		//* draw tree top
+		//* draw tree branch
 		//can grow palm tree
 		//palm tree dust
 		//palm tree wood drop

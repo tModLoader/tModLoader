@@ -15,6 +15,7 @@ namespace ExampleMod.Tiles
 			dustType = mod.DustType("Sparkle");
 			drop = mod.ItemType("ExampleBlock");
 			AddMapEntry(new Color(200, 200, 200));
+			SetModTree(new ExampleTree());
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
@@ -32,6 +33,12 @@ namespace ExampleMod.Tiles
 		public override void ChangeWaterfallStyle(ref int style)
 		{
 			style = mod.GetWaterfallStyleSlot("ExampleWaterfallStyle");
+		}
+
+		public override int SaplingGrowthType(ref int style)
+		{
+			style = 0;
+			return mod.TileType("ExampleSapling");
 		}
 	}
 }

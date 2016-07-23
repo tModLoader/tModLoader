@@ -5183,7 +5183,7 @@
  			this.immuneAlpha = 0;
  			this.palladiumRegen = false;
  			this.iceBarrier = false;
-@@ -27712,7 +_,10 @@
+@@ -27712,10 +_,23 @@
  					bool flag3 = false;
  					bool flag4 = false;
  					TileObject tileObject = default(TileObject);
@@ -5194,7 +5194,21 @@
 +					else if (TileObjectData.CustomPlace(this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle) && this.inventory[this.selectedItem].createTile != 82)
  					{
  						flag4 = true;
- 						flag3 = TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, (int)((ushort)this.inventory[this.selectedItem].createTile), this.inventory[this.selectedItem].placeStyle, this.direction, out tileObject, false);
+-						flag3 = TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, (int)((ushort)this.inventory[this.selectedItem].createTile), this.inventory[this.selectedItem].placeStyle, this.direction, out tileObject, false);
++						int hackCreateTile = this.inventory[this.selectedItem].createTile;
++						int hackPlaceStyle = this.inventory[this.selectedItem].placeStyle;
++						if (hackCreateTile == TileID.Saplings)
++						{
++							Tile soil = Main.tile[Player.tileTargetX, Player.tileTargetY + 1];
++							if (soil.active())
++							{
++								TileLoader.SaplingGrowthType(soil.type, ref hackCreateTile, ref hackPlaceStyle);
++							}
++						}
++						flag3 = TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, hackCreateTile, hackPlaceStyle, this.direction, out tileObject, false);
+ 						int num26 = 0;
+ 						int num27 = 0;
+ 						int x = 0;
 @@ -27799,7 +_,7 @@
  								flag3 = true;
  							}
@@ -5273,6 +5287,25 @@
  				if (this.mount.Type == 8)
  				{
  					this.noItems = true;
+@@ -29601,7 +_,17 @@
+ 			if (Main.myPlayer == i && this.itemAnimation == 0 && TileObjectData.CustomPlace(item.createTile, item.placeStyle))
+ 			{
+ 				TileObject tileObject;
+-				TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, item.createTile, item.placeStyle, this.direction, out tileObject, true);
++				int hackCreateTile = item.createTile;
++				int hackPlaceStyle = item.placeStyle;
++				if (hackCreateTile == TileID.Saplings)
++				{
++					Tile soil = Main.tile[Player.tileTargetX, Player.tileTargetY + 1];
++					if (soil.active())
++					{
++						TileLoader.SaplingGrowthType(soil.type, ref hackCreateTile, ref hackPlaceStyle);
++					}
++				}
++				TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, hackCreateTile, hackPlaceStyle, this.direction, out tileObject, true);
+ 			}
+ 			if (this.controlUseItem && this.itemAnimation == 0 && this.releaseUseItem && item.useStyle > 0)
+ 			{
 @@ -29609,7 +_,7 @@
  				{
  					this.altFunctionUse = 2;
