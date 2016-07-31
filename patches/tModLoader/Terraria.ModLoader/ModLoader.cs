@@ -21,7 +21,7 @@ namespace Terraria.ModLoader
 	public static class ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
-		public static readonly Version version = new Version(0, 8, 3, 1);
+		public static readonly Version version = new Version(0, 8, 3, 2);
 		public static readonly string versionedName = "tModLoader v" + version;
 #if WINDOWS
 		public const bool windows = true;
@@ -308,7 +308,7 @@ namespace Terraria.ModLoader
 					if (nameMap.TryGetValue(dep.mod, out inst) && inst.properties.version < dep.target)
 					{
 						errored.Add(mod);
-						errorLog.AppendLine(mod.Name + " requires version " + dep.target + "+ of " + dep.target + 
+						errorLog.AppendLine(mod.Name + " requires version " + dep.target + "+ of " + dep.mod + 
 							" but version " + inst.properties.version + " is installed");
 					}
 				}
