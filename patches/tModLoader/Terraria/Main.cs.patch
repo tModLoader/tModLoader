@@ -150,10 +150,18 @@
  					}
  				});
  			Main.Configuration.Put("QuickLaunch", Main.SkipAssemblyLoad);
-+			//ModLoader.ModLoader.SaveConfiguration();
++			ModLoader.ModLoader.SaveConfiguration();
  			bool flag = Main.Configuration.Save(true);
  			return flag && PlayerInput.Save();
  		}
+@@ -2829,6 +_,7 @@
+ 					Main.cMapAlphaDown
+ 				};
+ 			}
++			ModLoader.ModLoader.LoadConfiguration();
+ 			PlayerInput.Load();
+ 			if (num2 < 165)
+ 			{
 @@ -2997,9 +_,11 @@
  				FileUtilities.Delete(Main.PlayerList[i].Path, Main.PlayerList[i].IsCloudSave);
  				FileUtilities.Delete(Main.PlayerList[i].Path + ".bak", Main.PlayerList[i].IsCloudSave);

@@ -117,6 +117,12 @@ namespace Terraria.ModLoader.UI
 
 		private void Publish(UIMouseEvent evt, UIElement listeningElement)
 		{
+			if (ModLoader.modBrowserPassphrase == "")
+			{
+				Main.menuMode = Interface.enterPassphraseMenuID;
+				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID);
+				return;
+			}
 			Main.PlaySound(10, -1, -1, 1);
 			try
 			{
@@ -162,6 +168,7 @@ namespace Terraria.ModLoader.UI
 						{ "description", bp.description },
 						{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
 						{ "modloaderversion", "tModLoader v"+theTModFile.tModLoaderVersion },
+						{ "passphrase", ModLoader.modBrowserPassphrase }
 					};
 					result = IO.UploadFile.UploadFiles(url, files, values);
 				}
