@@ -3073,6 +3073,15 @@
  				{
  					Main.spriteBatch.Draw(this.mapBG3Texture, new Microsoft.Xna.Framework.Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Microsoft.Xna.Framework.Color.White);
  				}
+@@ -45962,7 +_,7 @@
+ 			float num35 = (float)Main.textureMaxHeight * num16;
+ 			float num36 = num;
+ 			float num37 = 0f;
+-			for (int k = 0; k <= 4; k++)
++			for (int k = 0; k <= Main.mapTargetX - 1; k++)
+ 			{
+ 				if ((float)((k + 1) * Main.textureMaxWidth) > num6 && (float)(k * Main.textureMaxWidth) < num6 + num8)
+ 				{
 @@ -46414,6 +_,7 @@
  					}
  					else if (type >= num96 && type < num96 + num97)
