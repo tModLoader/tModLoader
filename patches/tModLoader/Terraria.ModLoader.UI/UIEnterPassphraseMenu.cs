@@ -72,7 +72,7 @@ namespace Terraria.ModLoader.UI
 			button3.OnClick += new UIElement.MouseEvent(VisitRegisterWebpage);
 			uIElement.Append(button3);
 
-			passcodeTextField = new UIInputTextField("Paste Passphrase");
+			passcodeTextField = new UIInputTextField("Paste Passphrase (ctrl-v)");
 			passcodeTextField.HAlign = 0.5f;
 			passcodeTextField.VAlign = 0.5f;
 			passcodeTextField.Left.Set(-100, 0);
