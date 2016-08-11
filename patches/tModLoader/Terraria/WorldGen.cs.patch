@@ -1066,6 +1066,15 @@
  		}
  
  		public static void SpreadDesertWalls(int wallDist, int i, int j)
+@@ -42697,7 +_,7 @@
+ 			}
+ 			if (Main.tile[i, j].wall == 0)
+ 			{
+-				Main.tile[i, j].wall = (byte)type;
++				Main.tile[i, j].wall = (ushort)type;
+ 				WorldGen.SquareWallFrame(i, j, true);
+ 				if (!mute)
+ 				{
 @@ -46524,11 +_,11 @@
  			if (Main.tile[i, j - 1].active())
  			{
