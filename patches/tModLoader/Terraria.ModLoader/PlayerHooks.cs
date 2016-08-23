@@ -728,7 +728,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void CatchFish(Player player, Item fishingRod, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
+		public static void CatchFish(Player player, Item fishingRod, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
 		{
 			int i = 0;
 			while (i < 58)
@@ -741,7 +741,7 @@ namespace Terraria.ModLoader
 			}
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				modPlayer.CatchFish(fishingRod, player.inventory[i], liquidType, poolSize, worldLayer, questFish, ref caughtType, ref junk);
+				modPlayer.CatchFish(fishingRod, player.inventory[i], power, liquidType, poolSize, worldLayer, questFish, ref caughtType, ref junk);
 			}
 		}
 

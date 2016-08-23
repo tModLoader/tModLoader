@@ -356,6 +356,14 @@
  						flag2 = true;
  					}
  				}
+@@ -11577,6 +_,7 @@
+ 				Main.player[this.owner].displayedFishingInfo = "Not Enough Water!";
+ 				return;
+ 			}
++			//patch file: num7
+ 			int num7 = Main.player[this.owner].FishingLevel();
+ 			if (num7 == 0)
+ 			{
 @@ -11643,6 +_,7 @@
  			}
  			else if ((double)num2 < Main.worldSurface)
@@ -393,7 +401,7 @@
  				}
  			}
 +			PlayerHooks.CatchFish(Main.player[this.owner], Main.player[this.owner].inventory[Main.player[this.owner].selectedItem],
-+				(flag ? 1 : (flag2 ? 2 : 0)), num5, num14, num22, ref num13, ref junk);
++				num7, (flag ? 1 : (flag2 ? 2 : 0)), num5, num14, num22, ref num13, ref junk);
  			if (num13 > 0)
  			{
  				if (Main.player[this.owner].sonarPotion)

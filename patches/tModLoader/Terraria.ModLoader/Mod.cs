@@ -877,6 +877,14 @@ namespace Terraria.ModLoader
 
 		public void AddPlayer(string name, ModPlayer player)
 		{
+			Type itemClass = typeof(Item);
+			Type intClass = typeof(int);
+			if (player.GetType().GetMethod("CatchFish", new Type[] {
+				itemClass, itemClass, intClass, intClass, intClass, intClass,
+				intClass.MakeByRefType(), typeof(bool).MakeByRefType() }) != null)
+			{
+				throw new OldHookException("ModPlayer.CatchFish");
+			}
 			player.Name = name;
 			players[name] = player;
 			player.mod = this;
