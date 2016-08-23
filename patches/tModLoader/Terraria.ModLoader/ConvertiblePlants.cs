@@ -24,9 +24,10 @@ namespace Terraria.ModLoader
 
 		public abstract Texture2D GetTexture();
 
-		public abstract Texture2D GetTopTextures();
+		public abstract Texture2D GetTopTextures(int i, int j, ref int frame, ref int frameWidth, ref int frameHeight,
+			ref int xOffsetLeft, ref int yOffset);
 
-		public abstract Texture2D GetBranchTextures();
+		public abstract Texture2D GetBranchTextures(int i, int j, int trunkOffset, ref int frame);
 	}
 
 	public abstract class ModPalmTree

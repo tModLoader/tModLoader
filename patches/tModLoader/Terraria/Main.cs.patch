@@ -1275,14 +1275,32 @@
  						}
  					}
  				}
-@@ -19322,8 +_,14 @@
+@@ -19305,6 +_,7 @@
+ 				{
+ 					if (type6 == 5 && frameY2 >= 198 && frameX2 >= 22)
+ 					{
++						//frame
+ 						int num326 = 0;
+ 						if (frameX2 == 22)
+ 						{
+@@ -19317,13 +_,24 @@
+ 								num326 = 2;
+ 							}
+ 							int num327 = 0;
++							//frame width
+ 							int num328 = 80;
++							//frame height
+ 							int num329 = 80;
++							//x offset left
  							int num330 = 32;
++							//y offset
  							int num331 = 0;
  							int num332 = num310;
 +							Texture2D modTopTextures = null;
  							while (num332 < num310 + 100)
  							{
-+								modTopTextures = TileLoader.GetTreeTopTextures(Main.tile[num309, num332].type);
++								modTopTextures = TileLoader.GetTreeTopTextures(Main.tile[num309, num332].type,
++									num309, num332, ref num326, ref num328, ref num329, ref num330, ref num331);
 +								if (modTopTextures != null)
 +								{
 +									break;
@@ -1308,14 +1326,15 @@
  							{
  								Main.spriteBatch.Draw(Main.treeTopAltTexture[num327, (int)tile7.color()], new Vector2((float)(num309 * 16 - (int)Main.screenPosition.X - num330), (float)(num310 * 16 - (int)Main.screenPosition.Y - num329 + 16 + num331)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(num326 * (num328 + 2), 0, num328, num329)), Lighting.GetColor(num309, num310), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  							}
-@@ -19451,8 +_,14 @@
+@@ -19451,8 +_,15 @@
  							}
  							int num334 = 0;
  							int num335 = num310;
 +							Texture2D modBranchTextures = null;
  							while (num335 < num310 + 100)
  							{
-+								modBranchTextures = TileLoader.GetTreeBranchTextures(Main.tile[num309 + 1, num335].type);
++								modBranchTextures = TileLoader.GetTreeBranchTextures(Main.tile[num309 + 1, num335].type,
++									num309, num335, 1, ref num326);
 +								if (modBranchTextures != null)
 +								{
 +									break;
@@ -1341,14 +1360,15 @@
  							{
  								Main.spriteBatch.Draw(Main.treeBranchAltTexture[num334, (int)tile7.color()], new Vector2((float)(num309 * 16 - (int)Main.screenPosition.X - 24), (float)(num310 * 16 - (int)Main.screenPosition.Y - 12)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, num326 * 42, 40, 40)), Lighting.GetColor(num309, num310), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  							}
-@@ -19547,8 +_,14 @@
+@@ -19547,8 +_,15 @@
  							}
  							int num337 = 0;
  							int num338 = num310;
 +							Texture2D modBranchTextures = null;
  							while (num338 < num310 + 100)
  							{
-+								modBranchTextures = TileLoader.GetTreeBranchTextures(Main.tile[num309 - 1, num338].type);
++								modBranchTextures = TileLoader.GetTreeBranchTextures(Main.tile[num309 - 1, num338].type,
++									num309, num338, -1, ref num326);
 +								if (modBranchTextures != null)
 +								{
 +									break;

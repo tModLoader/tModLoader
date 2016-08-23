@@ -1046,14 +1046,16 @@ namespace Terraria.ModLoader
 			return tile.active() && trees.ContainsKey(tile.type) ? trees[tile.type].GetTexture() : null;
 		}
 
-		public static Texture2D GetTreeTopTextures(int type)
+		public static Texture2D GetTreeTopTextures(int type, int i, int j, ref int frame,
+			ref int frameWidth, ref int frameHeight, ref int xOffsetLeft, ref int yOffset)
 		{
-			return trees.ContainsKey(type) ? trees[type].GetTopTextures() : null;
+			return trees.ContainsKey(type) ? trees[type].GetTopTextures(i, j, ref frame,
+				ref frameWidth, ref frameHeight, ref xOffsetLeft, ref yOffset) : null;
 		}
 
-		public static Texture2D GetTreeBranchTextures(int type)
+		public static Texture2D GetTreeBranchTextures(int type, int i, int j, int trunkOffset, ref int frame)
 		{
-			return trees.ContainsKey(type) ? trees[type].GetBranchTextures() : null;
+			return trees.ContainsKey(type) ? trees[type].GetBranchTextures(i, j, trunkOffset, ref frame) : null;
 		}
 
 		public static bool CanGrowModPalmTree(int type)
