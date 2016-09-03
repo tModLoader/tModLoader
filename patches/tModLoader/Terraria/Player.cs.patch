@@ -5383,16 +5383,18 @@
  									}
  									if (item.axe > 0)
  									{
-@@ -32981,6 +_,9 @@
+@@ -32981,7 +_,10 @@
  										{
  											int num228 = Player.tileTargetX;
  											int num229 = Player.tileTargetY;
-+											if (TileLoader.Slope(num228, num228, Main.tile[num228, num229].type))
++											if (TileLoader.Slope(num228, num229, Main.tile[num228, num229].type))
 +											{
 +											}
- 											if (TileID.Sets.Platforms[(int)Main.tile[num228, num229].type])
+-											if (TileID.Sets.Platforms[(int)Main.tile[num228, num229].type])
++											else if (TileID.Sets.Platforms[(int)Main.tile[num228, num229].type])
  											{
  												if (Main.tile[num228, num229].halfBrick())
+ 												{
 @@ -33657,6 +_,7 @@
  				}
  				else if (item.useStyle == 3)
