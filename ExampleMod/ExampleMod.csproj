@@ -201,6 +201,7 @@
     <Compile Include="Tiles\AnimatedLoom.cs" />
     <Compile Include="Tiles\BossTrophy.cs" />
     <Compile Include="Tiles\ElementalPurge.cs" />
+    <Compile Include="Tiles\ExampleAnimatedTile.cs" />
     <Compile Include="Tiles\ExampleBed.cs" />
     <Compile Include="Tiles\ExampleBlock.cs" />
     <Compile Include="Tiles\ExampleChair.cs" />
