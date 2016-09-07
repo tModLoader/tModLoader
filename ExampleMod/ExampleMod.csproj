@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Angle.cs" />
+    <Compile Include="Backgrounds\ExampleSurfaceBgStyle.cs" />
+    <Compile Include="Backgrounds\ExampleUgBgStyle.cs" />
     <Compile Include="Buffs\CarMount.cs" />
     <Compile Include="Buffs\EtherealFlames.cs" />
     <Compile Include="Buffs\ExampleLightPet.cs" />
@@ -75,6 +77,8 @@
     <Compile Include="ExampleMod.cs" />
     <Compile Include="ExamplePlayer.cs" />
     <Compile Include="ExampleWorld.cs" />
+    <Compile Include="Gores\ExampleDroplet.cs" />
+    <Compile Include="Gores\ExampleTreeFX.cs" />
     <Compile Include="Items\Abomination\AbominationBag.cs" />
     <Compile Include="Items\Abomination\Bubble.cs" />
     <Compile Include="Items\Abomination\ElementResidue.cs" />
@@ -110,6 +114,7 @@
     <Compile Include="Items\ExampleWings.cs" />
     <Compile Include="Items\ExplorerBag.cs" />
     <Compile Include="Items\Face.cs" />
+    <Compile Include="Items\Fertilizer.cs" />
     <Compile Include="Items\Placeable\AbominationTrophy.cs" />
     <Compile Include="Items\Placeable\BunnyTrophy.cs" />
     <Compile Include="Items\Placeable\ElementalPurge.cs" />
@@ -207,13 +212,17 @@
     <Compile Include="Tiles\ExampleMusicBox.cs" />
     <Compile Include="Tiles\ExamplePlant.cs" />
     <Compile Include="Tiles\ExamplePlatform.cs" />
+    <Compile Include="Tiles\ExampleSapling.cs" />
     <Compile Include="Tiles\ExampleStatue.cs" />
     <Compile Include="Tiles\ExampleTorch.cs" />
+    <Compile Include="Tiles\ExampleTree.cs" />
     <Compile Include="Tiles\ExampleWorkbench.cs" />
     <Compile Include="Tiles\MonsterBanner.cs" />
     <Compile Include="Tiles\VoidMonolith.cs" />
     <Compile Include="Tiles\VoidSky.cs" />
     <Compile Include="Walls\ExampleWall.cs" />
+    <Compile Include="Waters\ExampleWaterfallStyle.cs" />
+    <Compile Include="Waters\ExampleWaterStyle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="build.txt" />
