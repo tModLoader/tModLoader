@@ -1,38 +1,64 @@
 --- src/decompiled\Terraria.Net.Sockets\TcpSocket.cs
 +++ src/merged\Terraria.Net.Sockets\TcpSocket.cs
-@@ -57,8 +_,14 @@
+@@ -74,6 +_,7 @@
  
  		private void SendCallback(IAsyncResult result)
  		{
 +#if WINDOWS
- 			Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)result.AsyncState;
--			try
-+#else
-+			object[] array = (object[])result.AsyncState;
-+			LegacyNetBufferPool.ReturnBuffer((byte[])array[1]);
-+			Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)array[0];
-+#endif
-+            try
+ 			List<object> list = (List<object>)result.AsyncState;
+ 			try
  			{
- 				this._connection.GetStream().EndWrite(result);
- 				tuple.Item1(tuple.Item2);
-@@ -71,8 +_,17 @@
+@@ -84,6 +_,23 @@
+ 					tuple.Item1(tuple.Item2);
+ 				}
+ 			}
++#else
++			object[] expr_0D = (object[])result.AsyncState;
++			LegacyNetBufferPool.ReturnBuffer((byte[])expr_0D[1]);
++			List<object> list = (List<object>)expr_0D[0];
++			try
++			{
++				this._connection.GetStream().EndWrite(result);
++				using (List<object>.Enumerator enumerator = list.GetEnumerator())
++				{
++					while (enumerator.MoveNext())
++					{
++						Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)enumerator.Current;
++						tuple.Item1(tuple.Item2);
++					}
++				}
++			}
++#endif
+ 			catch (Exception)
+ 			{
+ 				((ISocket)this).Close();
+@@ -98,7 +_,16 @@
+ 			}
+ 			try
+ 			{
++#if WINDOWS
+ 				this._connection.GetStream().BeginWrite(this._packetBuffer, 0, this._packetBufferLength, new AsyncCallback(this.SendCallback), this._callbackBuffer);
++#else
++				byte[] array = LegacyNetBufferPool.RequestBuffer(this._packetBuffer, 0, this._packetBufferLength);
++				this._connection.GetStream().BeginWrite(array, 0, this._packetBufferLength, new AsyncCallback(this.SendCallback), new object[]
++				{
++					this._callbackBuffer,
++					array
++				});
++#endif
+ 			}
+ 			catch (Exception)
+ 			{
+@@ -111,7 +_,11 @@
  
  		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state)
  		{
 +#if WINDOWS
- 			this._connection.GetStream().BeginWrite(data, 0, size, new AsyncCallback(this.SendCallback), new Tuple<SocketSendCallback, object>(callback, state));
--		}
+ 			object item = new Tuple<SocketSendCallback, object>(callback, state);
 +#else
-+			byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);
-+			this._connection.GetStream().BeginWrite(array, 0, size, new AsyncCallback(this.SendCallback), new object[]
-+			{
-+				new Tuple<SocketSendCallback, object>(callback, state),
-+				array
-+			});
++			Tuple<SocketSendCallback, object> item = new Tuple<SocketSendCallback, object>(callback, state);
 +#endif
-+        }
- 
- 		void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
- 		{
+ 			if (size + this._packetBufferLength > 1024)
+ 			{
+ 				((ISocket)this).SendQueuedPackets();
 
