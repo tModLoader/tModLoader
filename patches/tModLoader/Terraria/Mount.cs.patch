@@ -25,7 +25,7 @@
  			public Texture2D backTexture;
  			public Texture2D backTextureGlow;
  			public Texture2D backTextureExtra;
-@@ -140,7 +_,7 @@
+@@ -141,7 +_,7 @@
  		public const float drillRotationChange = 0.05235988f;
  		public const float maxDrillLength = 48f;
  		public static int currentShader = 0;
@@ -34,7 +34,7 @@
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
  		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
-@@ -149,28 +_,28 @@
+@@ -150,28 +_,28 @@
  		public static int drillPickPower = 210;
  		public static int drillPickTime = 6;
  		public static int drillBeamCooldownMax = 1;
@@ -84,7 +84,7 @@
  
  		public bool Active
  		{
-@@ -1747,6 +_,10 @@
+@@ -1798,6 +_,10 @@
  
  		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
  		{
@@ -95,7 +95,7 @@
  			if (this._frameState != state)
  			{
  				this._frameState = state;
-@@ -2171,6 +_,7 @@
+@@ -2283,6 +_,7 @@
  		public void UpdateEffects(Player mountedPlayer)
  		{
  			mountedPlayer.autoJump = this.AutoJump;
@@ -103,7 +103,7 @@
  			switch (this._type)
  			{
  				case 8:
-@@ -2469,6 +_,7 @@
+@@ -2581,6 +_,7 @@
  		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
  		{
  			this._aiming = true;
@@ -111,11 +111,11 @@
  			switch (this._type)
  			{
  				case 8:
-@@ -2902,7 +_,7 @@
+@@ -3014,7 +_,7 @@
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
  		{
--			if (this._type == m || m <= -1 || m >= 14)
+-			if (this._type == m || m <= -1 || m >= 15)
 +			if (this._type == m || m <= -1 || m >= mounts.Length)
  			{
  				return;

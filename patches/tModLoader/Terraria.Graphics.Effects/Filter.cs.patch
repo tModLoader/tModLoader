@@ -9,14 +9,15 @@
  	{
  		public bool Active;
  		private ScreenShaderData _shader;
-@@ -28,13 +_,13 @@
+@@ -31,14 +_,14 @@
  			return this._shader;
  		}
  
 -		internal override void Activate(Vector2 position, params object[] args)
 +		public override void Activate(Vector2 position, params object[] args)
  		{
- 			this.TargetPosition = position;
+ 			this._shader.UseGlobalOpacity(this.Opacity);
+ 			this._shader.UseTargetPosition(position);
  			this.Active = true;
  		}
  

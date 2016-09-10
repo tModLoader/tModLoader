@@ -842,17 +842,17 @@ namespace Terraria.ModLoader
 		public static bool DrawHealthBar(NPC npc, ref float scale)
 		{
 			Vector2 position = new Vector2(npc.position.X + npc.width / 2, npc.position.Y + npc.gfxOffY);
-			if (Main.hbPosition == 1)
+			if (Main.HealthBarDrawSettings == 1)
 			{
 				position.Y += npc.height + 10f + Main.NPCAddHeight(npc.whoAmI);
 			}
-			else if (Main.hbPosition == 2)
+			else if (Main.HealthBarDrawSettings == 2)
 			{
 				position.Y -= 24f + Main.NPCAddHeight(npc.whoAmI) / 2f;
 			}
 			foreach (var hook in HookDrawHealthBar)
 			{
-				bool? result = hook(npc, Main.hbPosition, ref scale, ref position);
+				bool? result = hook(npc, Main.HealthBarDrawSettings, ref scale, ref position);
 				if (result.HasValue)
 				{
 					if (result.Value)
@@ -864,7 +864,7 @@ namespace Terraria.ModLoader
 			}
 			if (NPCLoader.IsModNPC(npc))
 			{
-				bool? result = npc.modNPC.DrawHealthBar(Main.hbPosition, ref scale, ref position);
+				bool? result = npc.modNPC.DrawHealthBar(Main.HealthBarDrawSettings, ref scale, ref position);
 				if (result.HasValue)
 				{
 					if (result.Value)

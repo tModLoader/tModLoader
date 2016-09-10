@@ -78,7 +78,7 @@ namespace Terraria.ModLoader
 				{
 					modHotkey.Value.mod.HotKeyPressed(modHotkey.Value.name);
 				}
-				// TODO - KeyDown, KeyUp, Down?
+				// TODO - Restructure - ModHotKey class? - KeyDown, KeyUp, Down?
 				//if (PlayerInput.Triggers.JustPressed.KeyStatus[modHotkey.Value.name])
 				//{
 				//}

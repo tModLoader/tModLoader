@@ -161,6 +161,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileFlame, nextTile);
 			Array.Resize(ref Main.tileFrame, nextTile);
 			Array.Resize(ref Main.tileFrameCounter, nextTile);
+			Array.Resize(ref Main.screenTileCounts, nextTile);
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);

@@ -80,7 +80,7 @@
  						NetMessage.SendData(6, -1, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
  						if (Netplay.Connection.State == 2)
  						{
-@@ -520,6 +_,10 @@
+@@ -521,6 +_,10 @@
  							Main.StopSlimeRain(true);
  						}
  						Main.invasionType = (int)this.reader.ReadSByte();
@@ -89,9 +89,9 @@
 +							WorldHooks.ReceiveCustomData(reader);
 +						}
  						Main.LobbyId = this.reader.ReadUInt64();
+ 						Sandstorm.IntendedSeverity = this.reader.ReadSingle();
  						if (Netplay.Connection.State == 3)
- 						{
-@@ -1114,7 +_,7 @@
+@@ -1115,7 +_,7 @@
  								tile.wire4(bitsByte12[7]);
  								if (tile.wall > 0)
  								{
@@ -100,7 +100,7 @@
  								}
  								if (flag8)
  								{
-@@ -1141,6 +_,7 @@
+@@ -1142,6 +_,7 @@
  						int pre = (int)this.reader.ReadByte();
  						int num60 = (int)this.reader.ReadByte();
  						int num61 = (int)this.reader.ReadInt16();
@@ -108,16 +108,16 @@
  						if (Main.netMode == 1)
  						{
  							if (num61 == 0)
-@@ -1150,7 +_,7 @@
+@@ -1151,7 +_,7 @@
  							}
  							int num62 = num59;
  							Item item = Main.item[num62];
--							bool newAndShiny = (item.newAndShiny || item.netID != num61) && ItemSlot.Options.HighlightNewItems && (num61 < 0 || num61 >= 3770 || !ItemID.Sets.NeverShiny[num61]);
+-							bool newAndShiny = (item.newAndShiny || item.netID != num61) && ItemSlot.Options.HighlightNewItems && (num61 < 0 || num61 >= 3797 || !ItemID.Sets.NeverShiny[num61]);
 +							bool newAndShiny = (item.newAndShiny || item.netID != num61) && ItemSlot.Options.HighlightNewItems && (num61 < 0 || !ItemID.Sets.NeverShiny[num61]);
  							item.netDefaults(num61);
  							item.newAndShiny = newAndShiny;
  							item.Prefix(pre);
-@@ -1158,6 +_,13 @@
+@@ -1159,6 +_,13 @@
  							item.position = position;
  							item.velocity = velocity;
  							item.active = true;
@@ -131,7 +131,7 @@
  							if (b == 90)
  							{
  								item.instanced = true;
-@@ -1203,6 +_,13 @@
+@@ -1204,6 +_,13 @@
  								item3.position = position;
  								item3.velocity = velocity;
  								item3.active = true;
@@ -145,8 +145,8 @@
  								item3.owner = Main.myPlayer;
  								if (flag9)
  								{
-@@ -1336,8 +_,8 @@
- 						if (Main.npcCatchable[nPC.type])
+@@ -1341,8 +_,8 @@
+ 						if (nPC.type >= 0 && nPC.type < 547 && Main.npcCatchable[nPC.type])
  						{
  							nPC.releaseOwner = (short)this.reader.ReadByte();
 -							return;
@@ -156,7 +156,7 @@
  						return;
  					}
  				case 24:
-@@ -1500,6 +_,7 @@
+@@ -1505,6 +_,7 @@
  						int num82 = (int)this.reader.ReadInt16();
  						BitsByte bitsByte15 = this.reader.ReadByte();
  						float[] array3 = new float[Projectile.maxAI];
@@ -164,7 +164,7 @@
  						for (int num83 = 0; num83 < Projectile.maxAI; num83++)
  						{
  							if (bitsByte15[num83])
-@@ -1516,6 +_,7 @@
+@@ -1521,6 +_,7 @@
  						{
  							num84 = -1;
  						}
@@ -172,7 +172,7 @@
  						if (Main.netMode == 2)
  						{
  							num81 = this.whoAmI;
-@@ -1569,6 +_,7 @@
+@@ -1574,6 +_,7 @@
  							projectile.projUUID = num84;
  							Main.projectileIdentity[num81, num84] = num85;
  						}
@@ -180,7 +180,7 @@
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
  						{
-@@ -1713,6 +_,14 @@
+@@ -1718,6 +_,14 @@
  						Main.chest[num99].item[num100].netDefaults(type4);
  						Main.chest[num99].item[num100].Prefix(pre2);
  						Main.chest[num99].item[num100].stack = stack4;
@@ -195,7 +195,7 @@
  						Recipe.FindRecipes();
  						return;
  					}
-@@ -1782,36 +_,57 @@
+@@ -1787,36 +_,57 @@
  						int num105 = (int)this.reader.ReadInt16();
  						int num106 = (int)this.reader.ReadInt16();
  						int num107 = (int)this.reader.ReadInt16();
@@ -268,7 +268,7 @@
  								{
  									if (tile2.frameX % 36 != 0)
  									{
-@@ -1832,7 +_,7 @@
+@@ -1837,7 +_,7 @@
  								}
  								else
  								{
@@ -277,7 +277,7 @@
  									{
  										return;
  									}
-@@ -1855,19 +_,23 @@
+@@ -1860,19 +_,23 @@
  						else
  						{
  							int num110 = (int)this.reader.ReadInt16();
@@ -304,7 +304,7 @@
  								{
  									Chest.DestroyChestDirect(num105, num106, num110);
  									WorldGen.KillTile(num105, num106, false, false, false);
-@@ -1878,7 +_,11 @@
+@@ -1883,7 +_,11 @@
  									WorldGen.KillTile(num105, num106, false, false, false);
  									return;
  								}
@@ -317,10 +317,10 @@
  								return;
  							}
  						}
-@@ -1913,6 +_,10 @@
- 						Player player9 = Main.player[num113];
+@@ -1919,6 +_,10 @@
  						player9.zone1 = this.reader.ReadByte();
  						player9.zone2 = this.reader.ReadByte();
+ 						player9.zone3 = this.reader.ReadByte();
 +						if (!ModNet.AllowVanillaClients)
 +						{
 +							PlayerHooks.ReceiveCustomBiomes(player9, reader);
@@ -328,7 +328,7 @@
  						if (Main.netMode == 2)
  						{
  							NetMessage.SendData(36, -1, this.whoAmI, "", num113, 0f, 0f, 0f, 0, 0, 0);
-@@ -1944,6 +_,11 @@
+@@ -1950,6 +_,11 @@
  						if (a2 == Netplay.ServerPassword)
  						{
  							Netplay.Clients[this.whoAmI].State = 1;
@@ -340,7 +340,7 @@
  							NetMessage.SendData(3, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
  							return;
  						}
-@@ -3425,9 +_,34 @@
+@@ -3439,9 +_,34 @@
  						}
  						return;
  					}
@@ -375,22 +375,22 @@
  			if (Main.netMode != 2)
  			{
  				return;
-@@ -3439,7 +_,7 @@
+@@ -3453,7 +_,7 @@
  			NetMessage.SendData(7, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
  			Main.SyncAnInvasion(this.whoAmI);
  			return;
--			IL_4928:
-+			IL_4928: //case 49
+-			IL_499F:
++			IL_499F: //case 49
  			if (Netplay.Connection.State == 6)
  			{
  				Netplay.Connection.State = 10;
-@@ -3449,7 +_,7 @@
+@@ -3463,7 +_,7 @@
  				return;
  			}
  			return;
--			IL_6457:
-+			IL_6457: //case 92
- 			int num217 = (int)this.reader.ReadInt16();
- 			float num218 = this.reader.ReadSingle();
+-			IL_64F2:
++			IL_64F2: //case 92
+ 			int num218 = (int)this.reader.ReadInt16();
  			float num219 = this.reader.ReadSingle();
+ 			float num220 = this.reader.ReadSingle();
 

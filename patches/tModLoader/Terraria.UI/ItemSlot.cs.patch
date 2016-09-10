@@ -100,7 +100,7 @@
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false)
  		{
--			if (type < 0 || type > 3770)
+-			if (type < 0 || type > 3797)
 +			if (type < 0)
  			{
  				return currentColor;

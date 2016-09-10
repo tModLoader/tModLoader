@@ -44,5 +44,6 @@ namespace Terraria.ID
 		public const short MartianMadness = 37;
 		public const short LunarBoss = 38;
 		public const short GoblinInvasion = 39;
+		public const short Sandstorm = 40;
 	}
 }

@@ -30,11 +30,11 @@
  				Main.player[Main.myPlayer].NPCBannerBuff[m] = false;
  			}
  			Main.player[Main.myPlayer].hasBanner = false;
-+			WorldHooks.ResetNearbyTileEffects();
- 			int[] tileCounts = WorldGen.tileCounts;
++			WorldHooks.ResetNearbyTileEffects();			
+ 			int[] screenTileCounts = Main.screenTileCounts;
+ 			Array.Clear(screenTileCounts, 0, screenTileCounts.Length);
  			num4 = Lighting.firstToLightX;
- 			num5 = Lighting.lastToLightX;
-@@ -622,6 +_,7 @@
+@@ -623,6 +_,7 @@
  			for (int n = num4; n < num5; n++)
  			{
  				Lighting.LightingState[] array3 = Lighting.states[n - Lighting.firstToLightX];
@@ -42,7 +42,7 @@
  				for (int num17 = num6; num17 < num7; num17++)
  				{
  					Lighting.LightingState lightingState3 = array3[num17 - Lighting.firstToLightY];
-@@ -773,7 +_,7 @@
+@@ -774,7 +_,7 @@
  							lightingState3.b2 = num20;
  						}
  					}
@@ -51,7 +51,7 @@
  					if (wall <= 137)
  					{
  						if (wall != 33)
-@@ -880,8 +_,10 @@
+@@ -881,8 +_,10 @@
  								break;
  						}
  					}
@@ -61,8 +61,8 @@
 +						bool closer = false;
  						if (n > num4 + num15 && n < num5 - num15 && num17 > num6 + num16 && num17 < num7 - num16)
  						{
- 							tileCounts[(int)tile.type]++;
-@@ -912,6 +_,7 @@
+ 							screenTileCounts[(int)tile.type]++;
+@@ -913,6 +_,7 @@
  								Main.player[Main.myPlayer].NPCBannerBuff[num29] = true;
  								Main.player[Main.myPlayer].hasBanner = true;
  							}
@@ -70,7 +70,7 @@
  						}
  						ushort type = tile.type;
  						if (type != 139)
-@@ -965,6 +_,11 @@
+@@ -966,6 +_,11 @@
  						{
  							Main.musicBox = (int)(tile.frameY / 36);
  						}
@@ -82,10 +82,10 @@
  						if (Main.tileBlockLight[(int)tile.type] && (Lighting.lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
  						{
  							lightingState3.stopLight = true;
-@@ -2444,16 +_,19 @@
+@@ -2445,16 +_,19 @@
  						}
  					}
- 					IL_3206:
+ 					IL_3212:
 +					TileLoader.ModifyLight(n, num17, tile.type, ref num18, ref num19, ref num20);
  					if (Lighting.RGB)
  					{
@@ -102,23 +102,23 @@
  						if (lightingState3.b2 < num20)
  						{
  							lightingState3.b2 = num20;
-@@ -2588,7 +_,7 @@
+@@ -2589,7 +_,7 @@
  			if (Main.player[Main.myPlayer].accOreFinder)
  			{
  				Main.player[Main.myPlayer].bestOre = -1;
--				for (int num61 = 0; num61 < 461; num61++)
+-				for (int num61 = 0; num61 < 463; num61++)
 +				for (int num61 = 0; num61 < Main.tileValue.Length; num61++)
  				{
- 					if (tileCounts[num61] > 0 && Main.tileValue[num61] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num61] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
+ 					if (screenTileCounts[num61] > 0 && Main.tileValue[num61] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num61] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
  					{
-@@ -2596,6 +_,7 @@
+@@ -2597,6 +_,7 @@
  					}
  				}
  			}
-+			WorldHooks.TileCountsAvailable(tileCounts);
- 			Array.Clear(tileCounts, 0, tileCounts.Length);
++			WorldHooks.TileCountsAvailable(screenTileCounts);
  			if (Main.holyTiles < 0)
  			{
+ 				Main.holyTiles = 0;
 @@ -2742,6 +_,7 @@
  							Lighting.wetLightB = 0f;
  							break;

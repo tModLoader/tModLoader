@@ -32,7 +32,7 @@
  				if (this.type >= 276 && this.type <= 282)
  				{
  					this.velocity.X = this.velocity.X * 0.98f;
-@@ -747,6 +_,7 @@
+@@ -773,6 +_,7 @@
  					}
  					Lighting.AddLight((int)((this.position.X + 32f * this.scale / 2f) / 16f), (int)((this.position.Y + 32f * this.scale / 2f) / 16f), num29, num30, num31);
  				}
@@ -40,7 +40,7 @@
  			}
  		}
  
-@@ -793,6 +_,7 @@
+@@ -819,6 +_,7 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
@@ -48,7 +48,7 @@
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type))
  			{
  				Main.gore[num].type = Main.rand.Next(11, 14);
-@@ -882,6 +_,14 @@
+@@ -908,6 +_,14 @@
  
  		public Color GetAlpha(Color newColor)
  		{

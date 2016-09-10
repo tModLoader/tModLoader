@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.Events\Sandstorm.cs
++++ src/tModLoader\Terraria.GameContent.Events\Sandstorm.cs
+@@ -227,7 +_,7 @@
+ 								num17 = (int)vector.Y / 16;
+ 								if (WorldGen.InWorld(num16, num17, 10) && Main.tile[num16, num17] != null)
+ 								{
+-									byte arg_5EC_0 = Main.tile[num16, num17].wall;
++									//byte arg_5EC_0 = Main.tile[num16, num17].wall;
+ 								}
+ 							}
+ 						}
+

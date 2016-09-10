@@ -101,7 +101,7 @@
  
  		public override void OnActivate()
  		{
-+			// TODO, only if new mod controls
++			// TODO, only if new mod controls -- seems to be cause of bug on reload.
 +			_bindsKeyboard.Clear();
 +			_bindsGamepad.Clear();
 +			_bindsKeyboardUI.Clear();
