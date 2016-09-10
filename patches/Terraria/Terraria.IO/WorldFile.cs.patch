@@ -1,15 +1,15 @@
 --- src/merged\Terraria.IO\WorldFile.cs
 +++ src/Terraria\Terraria.IO\WorldFile.cs
-@@ -1055,7 +_,7 @@
+@@ -1129,7 +_,7 @@
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(Main.invasionSizeStart);
  			writer.Write(WorldFile.tempCultistDelay);
--			writer.Write(541);
-+			writer.Write((short)541);
- 			for (int j = 0; j < 541; j++)
+-			writer.Write(547);
++			writer.Write((short)547);
+ 			for (int j = 0; j < 547; j++)
  			{
  				writer.Write(NPC.killCount[j]);
-@@ -1313,7 +_,7 @@
+@@ -1391,7 +_,7 @@
  				}
  			}
  			writer.Write(num);
@@ -18,7 +18,7 @@
  			for (int i = 0; i < 1000; i++)
  			{
  				Chest chest = Main.chest[i];
-@@ -1327,7 +_,7 @@
+@@ -1405,7 +_,7 @@
  						Item item = chest.item[l];
  						if (item == null)
  						{
@@ -27,7 +27,7 @@
  						}
  						else
  						{
-@@ -1911,7 +_,7 @@
+@@ -2003,7 +_,7 @@
  							}
  							else
  							{
@@ -36,7 +36,7 @@
  							}
  						}
  					}
-@@ -2515,7 +_,7 @@
+@@ -2607,7 +_,7 @@
  			}
  			try
  			{
@@ -45,7 +45,7 @@
  				{
  					using (BinaryReader binaryReader = new BinaryReader(stream))
  					{
-@@ -2648,7 +_,7 @@
+@@ -2740,7 +_,7 @@
  					buffer = new byte[num];
  					SocialAPI.Cloud.Read(file, buffer, num);
  				}

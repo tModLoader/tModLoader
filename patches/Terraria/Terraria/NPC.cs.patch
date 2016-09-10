@@ -1,6 +1,15 @@
 --- src/merged\Terraria\NPC.cs
 +++ src/Terraria\Terraria\NPC.cs
-@@ -45813,19 +_,16 @@
+@@ -45698,7 +_,7 @@
+ 															this.ai[0] = -300f;
+ 															this.netUpdate = true;
+ 														}
+-														base.Center + Vector2.UnitX * (float)this.direction * 200f;
++														Vector2 _ = base.Center + Vector2.UnitX * (float)this.direction * 200f;
+ 														Vector2 vector292 = base.Center + Vector2.UnitX * (float)this.direction * 50f - Vector2.UnitY * 6f;
+ 														if (this.ai[0] == 54f && Main.netMode != 1)
+ 														{
+@@ -46556,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -25,7 +34,7 @@
  						int num9;
  						if (this.frameCounter < 10.0)
  						{
-@@ -45957,19 +_,16 @@
+@@ -46700,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -50,7 +59,7 @@
  						int num13 = 0;
  						if (this.frameCounter < 16.0)
  						{
-@@ -46015,19 +_,16 @@
+@@ -46758,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -75,7 +84,7 @@
  						int num15;
  						if (this.frameCounter < 10.0)
  						{
-@@ -46196,19 +_,16 @@
+@@ -46939,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -100,7 +109,7 @@
  						bool flag = this.ai[0] == 3f;
  						int num29 = 0;
  						int num30 = 0;
-@@ -46321,19 +_,16 @@
+@@ -47064,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -125,7 +134,7 @@
  						bool flag2 = this.ai[0] == 16f;
  						int num34 = 0;
  						int num35 = -1;
-@@ -56990,7 +_,7 @@
+@@ -57854,7 +_,7 @@
  						{
  							if ((num54 == num51 - num53 || num54 == num51 + num53 || num55 == num52 - num53 || num55 == num52 + num53) && !Main.tile[num54, num55].active())
  							{
@@ -134,34 +143,34 @@
  								Main.tile[num54, num55].active(true);
  							}
  							Main.tile[num54, num55].lava(false);
-@@ -63938,7 +_,7 @@
- 					while ((double)num63 < 10.0 + dmg / 10.0)
+@@ -64998,7 +_,7 @@
+ 					while ((double)num69 < 10.0 + dmg / 10.0)
  					{
- 						int num64 = this.width / 4;
+ 						int num70 = this.width / 4;
 -						((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
 +						Vector2 _ = ((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
- 						int num65 = Dust.NewDust(base.Center - Vector2.One * (float)num64, num64 * 2, num64 * 2, 229, 0f, 0f, 0, default(Color), 1f);
- 						Dust dust27 = Main.dust[num65];
- 						Vector2 vector2 = Vector2.Normalize(dust27.position - base.Center);
-@@ -63961,7 +_,7 @@
- 					for (int num66 = 0; num66 < 60; num66++)
+ 						int num71 = Dust.NewDust(base.Center - Vector2.One * (float)num70, num70 * 2, num70 * 2, 229, 0f, 0f, 0, default(Color), 1f);
+ 						Dust dust31 = Main.dust[num71];
+ 						Vector2 vector2 = Vector2.Normalize(dust31.position - base.Center);
+@@ -65021,7 +_,7 @@
+ 					for (int num72 = 0; num72 < 60; num72++)
  					{
- 						int num67 = this.width / 4;
+ 						int num73 = this.width / 4;
 -						((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
 +						Vector2 _ = ((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
- 						int num68 = Dust.NewDust(base.Center - Vector2.One * (float)num67, num67 * 2, num67 * 2, 229, 0f, 0f, 0, default(Color), 1f);
- 						Dust dust28 = Main.dust[num68];
- 						Vector2 vector3 = Vector2.Normalize(dust28.position - base.Center);
-@@ -64839,7 +_,7 @@
- 					for (int num165 = 0; num165 < 60; num165++)
+ 						int num74 = Dust.NewDust(base.Center - Vector2.One * (float)num73, num73 * 2, num73 * 2, 229, 0f, 0f, 0, default(Color), 1f);
+ 						Dust dust32 = Main.dust[num74];
+ 						Vector2 vector3 = Vector2.Normalize(dust32.position - base.Center);
+@@ -65899,7 +_,7 @@
+ 					for (int num171 = 0; num171 < 60; num171++)
  					{
- 						int num166 = 25;
+ 						int num172 = 25;
 -						((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
 +						Vector2 _ = ((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
- 						int num167 = Dust.NewDust(base.Center - Vector2.One * (float)num166, num166 * 2, num166 * 2, 212, 0f, 0f, 0, default(Color), 1f);
- 						Dust dust43 = Main.dust[num167];
- 						Vector2 vector6 = Vector2.Normalize(dust43.position - base.Center);
-@@ -72150,7 +_,7 @@
+ 						int num173 = Dust.NewDust(base.Center - Vector2.One * (float)num172, num172 * 2, num172 * 2, 212, 0f, 0f, 0, default(Color), 1f);
+ 						Dust dust47 = Main.dust[num173];
+ 						Vector2 vector6 = Vector2.Normalize(dust47.position - base.Center);
+@@ -72702,7 +_,7 @@
  					{
  						if (this.boss)
  						{

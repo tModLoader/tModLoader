@@ -1,6 +1,6 @@
 --- src/merged\Terraria\NetMessage.cs
 +++ src/Terraria\Terraria\NetMessage.cs
-@@ -326,7 +_,7 @@
+@@ -328,7 +_,7 @@
  					writer.Write((byte)number5);
  					break;
  				case 18:
@@ -9,7 +9,7 @@
  					writer.Write((int)Main.time);
  					writer.Write(Main.sunModY);
  					writer.Write(Main.moonModY);
-@@ -335,7 +_,7 @@
+@@ -337,7 +_,7 @@
  					writer.Write((byte)number);
  					writer.Write((short)number2);
  					writer.Write((short)number3);
@@ -18,7 +18,7 @@
  					break;
  				case 20:
  				{
-@@ -1555,7 +_,7 @@
+@@ -1558,7 +_,7 @@
  								{
  									short[] arg_1FB_0 = array2;
  									short expr_1F3 = num2;
@@ -27,7 +27,7 @@
  									arg_1FB_0[(int)expr_1F3] = num9;
  								}
  							}
-@@ -1566,7 +_,7 @@
+@@ -1569,7 +_,7 @@
  								{
  									short[] arg_23C_0 = array2;
  									short expr_234 = num2;
@@ -36,7 +36,7 @@
  									arg_23C_0[(int)expr_234] = num10;
  								}
  							}
-@@ -1577,7 +_,7 @@
+@@ -1580,7 +_,7 @@
  								{
  									short[] arg_280_0 = array2;
  									short expr_278 = num2;
@@ -45,7 +45,7 @@
  									arg_280_0[(int)expr_278] = num11;
  								}
  							}
-@@ -1588,7 +_,7 @@
+@@ -1591,7 +_,7 @@
  								{
  									short[] arg_2C0_0 = array3;
  									short expr_2B7 = num3;
@@ -54,7 +54,7 @@
  									arg_2C0_0[(int)expr_2B7] = (short)num12;
  								}
  							}
-@@ -1599,7 +_,7 @@
+@@ -1602,7 +_,7 @@
  								{
  									short[] arg_300_0 = array3;
  									short expr_2F7 = num3;
@@ -63,7 +63,7 @@
  									arg_300_0[(int)expr_2F7] = (short)num13;
  								}
  							}
-@@ -1905,7 +_,7 @@
+@@ -1908,7 +_,7 @@
  								}
  								else
  								{

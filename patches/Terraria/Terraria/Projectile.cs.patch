@@ -1,12 +1,12 @@
 --- src/merged\Terraria\Projectile.cs
 +++ src/Terraria\Terraria\Projectile.cs
-@@ -12256,100 +_,34 @@
+@@ -12376,100 +_,34 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
  			{
--				if (<PrivateImplementationDetails>{B62727E3-3372-4562-BA97-CF6592B4FEC1}.$$method0x60009d3-1 == null)
+-				if (<PrivateImplementationDetails>{83AB6F7F-C169-4924-83FD-0029B5966D0D}.$$method0x6000a2f-1 == null)
 -				{
--					<PrivateImplementationDetails>{B62727E3-3372-4562-BA97-CF6592B4FEC1}.$$method0x60009d3-1 = new Dictionary<string, int>(14)
+-					<PrivateImplementationDetails>{83AB6F7F-C169-4924-83FD-0029B5966D0D}.$$method0x6000a2f-1 = new Dictionary<string, int>(14)
 -					{
 -						{
 -							"Tsuki",
@@ -67,7 +67,7 @@
 -					};
 -				}
 -				int num;
--				if (<PrivateImplementationDetails>{B62727E3-3372-4562-BA97-CF6592B4FEC1}.$$method0x60009d3-1.TryGetValue(name, out num))
+-				if (<PrivateImplementationDetails>{83AB6F7F-C169-4924-83FD-0029B5966D0D}.$$method0x6000a2f-1.TryGetValue(name, out num))
 -				{
 -					switch (num)
 -					{
@@ -129,16 +129,16 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -21148,7 +_,7 @@
+@@ -21268,7 +_,7 @@
  																int num689 = (int)(this.position.Y + (float)this.height) / 16;
  																if (WorldGen.SolidTile(num688, num689) || Main.tile[num688, num689].halfBrick() || Main.tile[num688, num689].slope() > 0)
  																{
--																	goto IL_1C752;
+-																	goto IL_1C754;
 +																	goto Block_1971;
  																}
  																if (TileID.Sets.Platforms[(int)Main.tile[num688, num689].type] && Main.tile[num688, num689].active() && !Main.tile[num688, num689].inActive())
  																{
-@@ -34748,7 +_,7 @@
+@@ -35234,7 +_,7 @@
  							for (int n = 0; n < 5; n++)
  							{
  								int num29 = this.width / 4;
