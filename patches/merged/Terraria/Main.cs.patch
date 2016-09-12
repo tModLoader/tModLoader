@@ -278,7 +278,7 @@
  		}
  
  		public string TooltipMousetextProcessor(string tooltip)
-@@ -41029,9 +_,14 @@
+@@ -41040,9 +_,14 @@
  		protected void QuitGame()
  		{
  			Main.SaveSettings();
@@ -294,7 +294,7 @@
  
  		protected Microsoft.Xna.Framework.Color randColor()
  		{
-@@ -41789,6 +_,16 @@
+@@ -41800,6 +_,16 @@
  							"\" -lang ",
  							Lang.lang
  						});
@@ -311,7 +311,7 @@
  						if (Main.ActiveWorldFileData.IsCloudSave)
  						{
  							text = text + " -cloudworld \"" + Main.worldPathName + "\"";
-@@ -43155,6 +_,7 @@
+@@ -43166,6 +_,7 @@
  						{
  							array7[num25] = 0.85f;
  						}
@@ -319,7 +319,7 @@
  						bool flag7 = true;
  						Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
  						System.Drawing.Rectangle bounds = Screen.FromPoint(form.Location).Bounds;
-@@ -43162,6 +_,9 @@
+@@ -43173,6 +_,9 @@
  						{
  							flag7 = false;
  						}
@@ -329,7 +329,7 @@
  						num2 = 210;
  						num4 = 55;
  						int num26 = 0;
-@@ -54476,6 +_,7 @@
+@@ -54487,6 +_,7 @@
  
  		private static void CheckMonoliths()
  		{
@@ -337,7 +337,7 @@
  			bool flag = Main.player[Main.myPlayer].ZoneTowerVortex || Main.player[Main.myPlayer].ZoneTowerNebula || Main.player[Main.myPlayer].ZoneTowerStardust || Main.player[Main.myPlayer].ZoneTowerSolar;
  			for (int i = 0; i < Main.MonolithFilterNames.Length; i++)
  			{
-@@ -54502,6 +_,7 @@
+@@ -54513,6 +_,7 @@
  					}
  				}
  			}
@@ -345,7 +345,7 @@
  		}
  
  		protected override void Draw(GameTime gameTime)
-@@ -54551,7 +_,9 @@
+@@ -54562,7 +_,9 @@
  			{
  				Main.maxQ = true;
  			}
@@ -355,7 +355,7 @@
  			Main.drawTime++;
  			Main.screenLastPosition = Main.screenPosition;
  			if (Main.stackSplit == 0)
-@@ -57590,6 +_,7 @@
+@@ -57601,6 +_,7 @@
  			CultistRitual.UpdateTime();
  			BirthdayParty.UpdateTime();
  			Sandstorm.UpdateTime();
@@ -363,7 +363,7 @@
  			if (NPC.MoonLordCountdown > 0)
  			{
  				float num5 = MathHelper.Clamp((float)Math.Sin((double)((float)NPC.MoonLordCountdown / 60f * 0.5f)) * 2f, 0f, 1f);
-@@ -57604,6 +_,7 @@
+@@ -57615,6 +_,7 @@
  			{
  				Filters.Scene.Deactivate("MoonLordShake", new object[0]);
  			}
@@ -371,7 +371,7 @@
  			if (NPC.MoonLordCountdown > 0)
  			{
  				NPC.MoonLordCountdown--;
-@@ -59190,6 +_,7 @@
+@@ -59201,6 +_,7 @@
  			{
  				Main.graphics.ToggleFullScreen();
  			}
@@ -379,7 +379,7 @@
  			Main.screenMaximized = (((Form)Control.FromHandle(Main.instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (Main.screenBorderless && Main.screenMaximized && !Main.graphics.IsFullScreen)
  			{
-@@ -59198,6 +_,9 @@
+@@ -59209,6 +_,9 @@
  			}
  			Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
  			bool flag = form.FormBorderStyle == FormBorderStyle.None;
@@ -389,7 +389,7 @@
  			if (!Main.instance.IsActive && (Main.screenBorderless || Main.screenMaximized || Main.graphics.IsFullScreen))
  			{
  				return;
-@@ -59207,6 +_,7 @@
+@@ -59218,6 +_,7 @@
  			int num4;
  			if (Main.screenBorderless || Main.screenMaximized || Main.graphics.IsFullScreen)
  			{
@@ -397,7 +397,7 @@
  				form.MinimumSize = new Size(0, 0);
  				if (Main.screenBorderless && !Main.graphics.IsFullScreen)
  				{
-@@ -59214,6 +_,7 @@
+@@ -59225,6 +_,7 @@
  					width = bounds.Width;
  					height = bounds.Height;
  				}
@@ -405,7 +405,7 @@
  				if (width > Main.maxScreenW)
  				{
  					float num = (float)height / (float)width;
-@@ -59243,18 +_,21 @@
+@@ -59254,18 +_,21 @@
  			}
  			else
  			{
@@ -427,7 +427,7 @@
  			if (!fullscreen && !flag2)
  			{
  				if (form.ClientSize.Width < Main.graphics.PreferredBackBufferWidth)
-@@ -59268,6 +_,11 @@
+@@ -59279,6 +_,11 @@
  					flag2 = true;
  				}
  			}
@@ -439,7 +439,7 @@
  			width &= 2147483646;
  			height &= 2147483646;
  			width = Math.Max(width, Main.minScreenW);
-@@ -59286,6 +_,7 @@
+@@ -59297,6 +_,7 @@
  				Main.graphics.ApplyChanges();
  				Main.PendingResolutionWidth = Main.screenWidth;
  				Main.PendingResolutionHeight = Main.screenHeight;
@@ -447,7 +447,7 @@
  				if (!fullscreen)
  				{
  					form.SendToBack();
-@@ -59303,6 +_,7 @@
+@@ -59314,6 +_,7 @@
  						form.FormBorderStyle = FormBorderStyle.Sizable;
  					}
  				}
