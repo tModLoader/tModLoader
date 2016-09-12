@@ -217,7 +217,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -476,9 +_,52 @@
+@@ -476,9 +_,53 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -242,8 +242,10 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
-+    <PostBuildEvent>"$(SolutionDir)4gb_patch.exe" "$(TargetPath)"
++    <PostBuildEvent>call "$(DevEnvDir)..\tools\vsvars32.bat"
++editbin /largeaddressaware "$(TargetPath)"
 +
 +SET RELEASEFILE=""
 +
@@ -270,5 +272,4 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>
