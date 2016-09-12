@@ -65,7 +65,7 @@ namespace Terraria.ModLoader
 		internal string description = "";
 		internal ModSide side;
 
-		public IEnumerable<ModReference> Refs(bool build) => 
+		public IEnumerable<ModReference> Refs(bool build) =>
 			build ? modReferences.Concat(weakReferences) : modReferences;
 
 		public IEnumerable<string> RefNames(bool build) => Refs(build).Select(dep => dep.mod);
@@ -162,18 +162,18 @@ namespace Terraria.ModLoader
 						properties.includePDB = value.ToLower() == "true";
 						break;
 					case "buildIgnore":
-						properties.buildIgnores = value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
+						properties.buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar)).Where(s => s.Length > 0).ToArray();
 						break;
 					case "languageVersion":
 						if (!int.TryParse(value, out properties.languageVersion))
-							throw new Exception("languageVersion not an int: "+value);
+							throw new Exception("languageVersion not an int: " + value);
 
 						if (properties.languageVersion < 4 || properties.languageVersion > 6)
-							throw new Exception("languageVersion ("+properties.languageVersion+") must be between 4 and 6");
+							throw new Exception("languageVersion (" + properties.languageVersion + ") must be between 4 and 6");
 						break;
 					case "side":
 						if (!Enum.TryParse(value, true, out properties.side))
-							throw new Exception("side is not one of (Both, Client, Server, NoSync): "+value);
+							throw new Exception("side is not one of (Both, Client, Server, NoSync): " + value);
 						break;
 				}
 			}
@@ -270,7 +270,7 @@ namespace Terraria.ModLoader
 					if (side != ModSide.Both)
 					{
 						writer.Write("side");
-						writer.Write((byte) side);
+						writer.Write((byte)side);
 					}
 					writer.Write("");
 				}
@@ -283,10 +283,10 @@ namespace Terraria.ModLoader
 		{
 			BuildProperties properties = new BuildProperties();
 			byte[] data = modFile.GetFile("Info");
-			
+
 			if (data.Length == 0)
 				return properties;
-			
+
 			using (BinaryReader reader = new BinaryReader(new MemoryStream(data)))
 			{
 				for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString())
@@ -357,7 +357,7 @@ namespace Terraria.ModLoader
 					}
 					if (tag == "side")
 					{
-						properties.side = (ModSide) reader.ReadByte();
+						properties.side = (ModSide)reader.ReadByte();
 					}
 				}
 			}
