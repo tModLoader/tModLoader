@@ -12,7 +12,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		private float intensity = 0f;
 		private int puritySpiritIndex;
 
-		public override void Update()
+		public override void Update(GameTime gameTime)
 		{
 			if (isActive && intensity < 1f)
 			{
