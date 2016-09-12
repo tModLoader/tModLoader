@@ -340,7 +340,7 @@
  							NetMessage.SendData(3, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
  							return;
  						}
-@@ -3439,9 +_,34 @@
+@@ -3435,9 +_,34 @@
  						}
  						return;
  					}
@@ -375,7 +375,7 @@
  			if (Main.netMode != 2)
  			{
  				return;
-@@ -3453,7 +_,7 @@
+@@ -3449,7 +_,7 @@
  			NetMessage.SendData(7, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
  			Main.SyncAnInvasion(this.whoAmI);
  			return;
@@ -384,12 +384,12 @@
  			if (Netplay.Connection.State == 6)
  			{
  				Netplay.Connection.State = 10;
-@@ -3463,7 +_,7 @@
+@@ -3459,7 +_,7 @@
  				return;
  			}
  			return;
--			IL_64F2:
-+			IL_64F2: //case 92
+-			IL_64E0:
++			IL_64E0: //case 92
  			int num218 = (int)this.reader.ReadInt16();
  			float num219 = this.reader.ReadSingle();
  			float num220 = this.reader.ReadSingle();

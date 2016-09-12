@@ -238,13 +238,11 @@
  				{
  					this.TargetClosest(true);
  					if (this.position.X < Main.player[this.target].position.X)
-@@ -20185,8 +_,14 @@
- 				if (Main.netMode != 1 && !flag42)
+@@ -20186,7 +_,13 @@
  				{
  					for (int num393 = 0; num393 < 200; num393++)
--					{
+ 					{
 -						if (Main.npc[num393].active && !Main.npc[num393].friendly && Main.npc[num393].damage > 0 && Main.npc[num393].Distance(base.Center) < num387 && (this.type != 453 || !NPCID.Sets.Skeletons.Contains(Main.npc[num393].netID)))
-+					{	
 +						bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[num393], this);
 +						if (modCanHit.HasValue && !modCanHit.Value)
 +						{

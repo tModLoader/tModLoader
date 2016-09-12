@@ -1316,7 +1316,7 @@
 +		}
 +
 +		public void VanillaUpdateAccessory(Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3)
-+		{ 
++		{
 +			if (!item.expertOnly || Main.expertMode)
 +			{
 +				if (item.type == 3015)

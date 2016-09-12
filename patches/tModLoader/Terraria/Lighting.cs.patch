@@ -30,7 +30,7 @@
  				Main.player[Main.myPlayer].NPCBannerBuff[m] = false;
  			}
  			Main.player[Main.myPlayer].hasBanner = false;
-+			WorldHooks.ResetNearbyTileEffects();			
++			WorldHooks.ResetNearbyTileEffects();
  			int[] screenTileCounts = Main.screenTileCounts;
  			Array.Clear(screenTileCounts, 0, screenTileCounts.Length);
  			num4 = Lighting.firstToLightX;
