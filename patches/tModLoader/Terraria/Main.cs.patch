@@ -1453,36 +1453,24 @@
  						{
  							Main.spriteBatch.Draw(Main.treeTopAltTexture[num333, (int)tile6.color()], new Vector2((float)(num300 * 16 - (int)Main.screenPosition.X - num337 + frameY3), (float)(num301 * 16 - (int)Main.screenPosition.Y - num336 + 16 + num338)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(num332 * (num335 + 2), y3, num335, num336)), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  						}
-@@ -19867,7 +_,29 @@
- 				}
- 			}
- 		}
-+//TODO -- this code seems to have changed a bit, integrate these patches
-+/*
- 
-+@@ -19709,7 +_,7 @@
-+ 		{
-+ 			for (int i = 0; i < 500; i++)
-+ 			{
-+-				if (Main.gore[i].active && Main.gore[i].type > 0 && Main.gore[i].type >= 706 && Main.gore[i].type <= 717 && (Main.gore[i].frame < 7 || Main.gore[i].frame > 9))
-++				if (Main.gore[i].active && Main.gore[i].type > 0 && ModGore.DrawBackGore(Main.gore[i]))
-+ 				{
-+ 					this.LoadGore(Main.gore[i].type);
-+ 					if (Main.gore[i].numFrames > 1)
-+@@ -19734,7 +_,7 @@
-+ 			{
-+ 				if (Main.gore[i].active && Main.gore[i].type > 0)
-+ 				{
-+-					if (Main.gore[i].type >= 706 && Main.gore[i].type <= 717 && (Main.gore[i].frame < 7 || Main.gore[i].frame > 9))
-++					if (ModGore.DrawBackGore(Main.gore[i]))
-+ 					{
-+ 						Main.drawBackGore = true;
-+ 					}
-+
-+*/
- 		protected void DrawGore()
- 		{
- 			Main.drawBackGore = false;
+@@ -19845,7 +_,7 @@
+ 				if (Main.gore[i].active && Main.gore[i].type > 0)
+ 				{
+ 					bool flag = false;
+-					if (((Main.gore[i].type >= 706 && Main.gore[i].type <= 717) || Main.gore[i].type == 943) && (Main.gore[i].frame < 7 || Main.gore[i].frame > 9))
++					if (ModGore.DrawBackGore(Main.gore[i]))
+ 					{
+ 						flag = true;
+ 					}
+@@ -19875,7 +_,7 @@
+ 			{
+ 				if (Main.gore[i].active && Main.gore[i].type > 0)
+ 				{
+-					if (((Main.gore[i].type >= 706 && Main.gore[i].type <= 717) || Main.gore[i].type == 943) && (Main.gore[i].frame < 7 || Main.gore[i].frame > 9))
++					if (ModGore.DrawBackGore(Main.gore[i]))
+ 					{
+ 						Main.drawBackGore = true;
+ 					}
 @@ -19899,7 +_,7 @@
  			TimeLogger.DetailedDrawTime(24);
  		}

@@ -93,7 +93,7 @@ namespace Terraria.ModLoader
 			{
 				return gore.modGore.DrawBehind(gore);
 			}
-			return gore.type >= 706 && gore.type <= 717 && (gore.frame < 7 || gore.frame > 9);
+			return ((gore.type >= 706 && gore.type <= 717) || gore.type == 943) && (gore.frame < 7 || gore.frame > 9);
 		}
 
 		public virtual void OnSpawn(Gore gore)
