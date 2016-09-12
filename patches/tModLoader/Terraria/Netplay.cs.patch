@@ -16,7 +16,28 @@
  using Terraria.IO;
  using Terraria.Net;
  using Terraria.Net.Sockets;
-@@ -48,6 +_,20 @@
+@@ -15,7 +_,7 @@
+ #if !WINDOWS
+ using Terraria.Social.Base;
+ #endif
+-#if SERVER
++#if SERVER && WINDOWS
+ using NATUPNPLib;
+ #endif
+ namespace Terraria
+@@ -38,8 +_,9 @@
+ 		public static bool disconnect = false;
+ 		public static bool spamCheck = false;
+ 		public static bool anyClients = false;
+-		#if SERVER
+-		public static UPnPNAT upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
++#if SERVER && WINDOWS
++		//public static UPnPNAT upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
++		public static NATUPNPLib.UPnPNAT upnpnat = new NATUPNPLib.UPnPNAT();
+ 		public static IStaticPortMappingCollection mappings = Netplay.upnpnat.StaticPortMappingCollection;
+ #endif
+ 		public static string portForwardIP;
+@@ -48,11 +_,25 @@
  
  		public static event Action OnDisconnect;
  
@@ -37,6 +58,21 @@
  		private static void OpenPort()
  		{
  			Netplay.portForwardIP = Netplay.GetLocalIPAddress();
+ 			Netplay.portForwardPort = Netplay.ListenPort;
+-#if SERVER
++#if SERVER && WINDOWS
+ 			if (Netplay.mappings != null)
+ 			{
+ 				foreach (IStaticPortMapping staticPortMapping in Netplay.mappings)
+@@ -73,7 +_,7 @@
+ 
+ 		public static void closePort()
+ 		{
+-#if SERVER
++#if SERVER && WINDOWS
+ 			if (Netplay.portForwardOpen)
+ 			{
+ 				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
 @@ -218,9 +_,9 @@
  				catch
  				{
