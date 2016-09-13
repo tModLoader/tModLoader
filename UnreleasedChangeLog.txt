@@ -1,18 +1,24 @@
-Changes from 0.8.2.1 to 0.8.2.2:
+Changes from 0.8.3.2 to 0.8.3.3:
 
 tModLoader
-Mod: 
-	PostDrawInterface(SpriteBatch spriteBatch)
-	PostDrawFullscreenMap(ref string mouseText)
-	PostUpdateInput()
+	Fixed bugs with too many Buffs in MP
+	Hopeful Fix for standalone servers on Linux and Mac
+	buildIgnore now accepts both / and \ regardless of OS
+	TileLoader.Slope bug fix
+	Added fishing power parameter to ModPlayer.CatchFish
+	Ability to change modded tree top/branch frames
+	Fixed bug with Walls
+	
+Need to Rebuild Mods
+	If you use CustomSky (Update method changed.)
+	If you use ModPlayer.CatchFish
 
 ExampleMod
-[Nothing yet]
+	Comprehensive ModRecipe Guide
+	Example of a Tile cut by weapons.
+	Example of an animated Tile
 
 To Document:
-	PostDrawInterface(SpriteBatch spriteBatch)
-	PostDrawFullscreenMap(ref string mouseText)
-	PostUpdateInput()
 
 TODO
 
