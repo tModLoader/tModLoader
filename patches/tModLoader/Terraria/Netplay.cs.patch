@@ -30,10 +30,9 @@
  		public static bool spamCheck = false;
  		public static bool anyClients = false;
 -		#if SERVER
--		public static UPnPNAT upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
 +#if SERVER && WINDOWS
-+		//public static UPnPNAT upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
-+		public static NATUPNPLib.UPnPNAT upnpnat = new NATUPNPLib.UPnPNAT();
+ 		public static UPnPNAT upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
++		//public static NATUPNPLib.UPnPNAT upnpnat = new NATUPNPLib.UPnPNAT();
  		public static IStaticPortMappingCollection mappings = Netplay.upnpnat.StaticPortMappingCollection;
  #endif
  		public static string portForwardIP;
