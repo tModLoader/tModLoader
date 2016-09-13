@@ -242,9 +242,8 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
-+    <PostBuildEvent>call "$(DevEnvDir)..\tools\vsvars32.bat"
++    <PostBuildEvent>call "$(VS140COMNTOOLS)vsvars32.bat"
 +editbin /largeaddressaware "$(TargetPath)"
 +
 +SET RELEASEFILE=""
@@ -272,4 +271,5 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
+

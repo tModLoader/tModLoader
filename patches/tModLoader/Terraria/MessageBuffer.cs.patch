@@ -340,6 +340,42 @@
  							NetMessage.SendData(3, this.whoAmI, -1, "", 0, 0f, 0f, 0f, 0, 0, 0);
  							return;
  						}
+@@ -2193,7 +_,7 @@
+ 						Player player12 = Main.player[num139];
+ 						for (int num140 = 0; num140 < 22; num140++)
+ 						{
+-							player12.buffType[num140] = (int)this.reader.ReadByte();
++							player12.buffType[num140] = (int)(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16());
+ 							if (player12.buffType[num140] > 0)
+ 							{
+ 								player12.buffTime[num140] = 60;
+@@ -2279,7 +_,7 @@
+ 				case 53:
+ 					{
+ 						int num144 = (int)this.reader.ReadInt16();
+-						int type5 = (int)this.reader.ReadByte();
++						int type5 = (int)(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16());
+ 						int time = (int)this.reader.ReadInt16();
+ 						Main.npc[num144].AddBuff(type5, time, true);
+ 						if (Main.netMode == 2)
+@@ -2299,7 +_,7 @@
+ 						NPC nPC2 = Main.npc[num145];
+ 						for (int num146 = 0; num146 < 5; num146++)
+ 						{
+-							nPC2.buffType[num146] = (int)this.reader.ReadByte();
++							nPC2.buffType[num146] = (int)(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16());
+ 							nPC2.buffTime[num146] = (int)this.reader.ReadInt16();
+ 						}
+ 						return;
+@@ -2307,7 +_,7 @@
+ 				case 55:
+ 					{
+ 						int num147 = (int)this.reader.ReadByte();
+-						int num148 = (int)this.reader.ReadByte();
++						int num148 = (int)(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16());
+ 						int num149 = this.reader.ReadInt32();
+ 						if (Main.netMode == 2 && num147 != this.whoAmI && !Main.pvpBuff[num148])
+ 						{
 @@ -3435,9 +_,34 @@
  						}
  						return;

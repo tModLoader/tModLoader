@@ -112,6 +112,51 @@
  							break;
  						}
  					case 38:
+@@ -722,7 +_,10 @@
+ 						writer.Write((byte)number);
+ 						for (int num15 = 0; num15 < 22; num15++)
+ 						{
+-							writer.Write((byte)Main.player[number].buffType[num15]);
++							if (ModNet.AllowVanillaClients)
++								writer.Write((byte)Main.player[number].buffType[num15]);
++							else
++								writer.Write((ushort)Main.player[number].buffType[num15]);
+ 						}
+ 						break;
+ 					case 51:
+@@ -736,20 +_,29 @@
+ 						break;
+ 					case 53:
+ 						writer.Write((short)number);
+-						writer.Write((byte)number2);
++						if (ModNet.AllowVanillaClients)
++							writer.Write((byte)number2);
++						else
++							writer.Write((ushort)number2);
+ 						writer.Write((short)number3);
+ 						break;
+ 					case 54:
+ 						writer.Write((short)number);
+ 						for (int num16 = 0; num16 < 5; num16++)
+ 						{
+-							writer.Write((byte)Main.npc[number].buffType[num16]);
++							if (ModNet.AllowVanillaClients)
++								writer.Write((byte)Main.npc[number].buffType[num16]);
++							else
++								writer.Write((ushort)Main.npc[number].buffType[num16]);
+ 							writer.Write((short)Main.npc[number].buffTime[num16]);
+ 						}
+ 						break;
+ 					case 55:
+ 						writer.Write((byte)number);
+-						writer.Write((byte)number2);
++						if (ModNet.AllowVanillaClients)
++							writer.Write((byte)number2);
++						else
++							writer.Write((ushort)number2);
+ 						writer.Write((int)number3);
+ 						break;
+ 					case 56:
 @@ -1485,7 +_,7 @@
  			int num5 = 0;
  			int num6 = 0;
