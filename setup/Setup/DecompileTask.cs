@@ -54,7 +54,8 @@ namespace Terraria.ModLoader.Setup
         private static readonly CSharpLanguage lang = new CSharpLanguage();
         private static readonly Guid clientGuid = new Guid("3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5");
         private static readonly Guid serverGuid = new Guid("85BF1171-A0DC-4696-BFA4-D6E9DC4E0830");
-		public static readonly Version version = new Version(1, 3, 3, 0);
+		public static readonly Version version = new Version(1, 3, 3, 1);
+		public static readonly Version versionAlt = new Version(1, 3, 3, 2); // For some reason, this update, only the server has an updated version.
 
         public string srcDir;
         private ModuleDefinition clientModule;
@@ -100,7 +101,7 @@ namespace Terraria.ModLoader.Setup
             resolver.baseModule = clientModule;
 
 			VersionCheck(clientModule.Assembly);
-			VersionCheck(serverModule.Assembly);
+			VersionCheckAlt(serverModule.Assembly);
 
             var options = new DecompilationOptions {
                 FullDecompilation = true,
@@ -145,6 +146,11 @@ namespace Terraria.ModLoader.Setup
 	    private void VersionCheck(AssemblyDefinition assembly) {
 			if (assembly.Name.Version != version)
 				throw new Exception($"{assembly.Name.Name} version {assembly.Name.Version}. Expected {version}");
+	    }
+
+		private void VersionCheckAlt(AssemblyDefinition assembly) {
+			if (assembly.Name.Version != versionAlt)
+				throw new Exception($"{assembly.Name.Name} version {assembly.Name.Version}. Expected {versionAlt}");
 	    }
 
 #region ReflectedMethods

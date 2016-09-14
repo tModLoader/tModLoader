@@ -10,7 +10,7 @@
 +			object[] expr_0B = (object[])result.AsyncState;
 +			LegacyNetBufferPool.ReturnBuffer((byte[])expr_0B[1]);
 +			Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)expr_0B[0];
-+#endif	
++#endif
  			try
  			{
  				this._connection.GetStream().EndWrite(result);

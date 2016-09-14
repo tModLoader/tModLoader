@@ -143,7 +143,7 @@
  								Main.tile[num54, num55].active(true);
  							}
  							Main.tile[num54, num55].lava(false);
-@@ -64998,7 +_,7 @@
+@@ -65017,7 +_,7 @@
  					while ((double)num69 < 10.0 + dmg / 10.0)
  					{
  						int num70 = this.width / 4;
@@ -152,7 +152,7 @@
  						int num71 = Dust.NewDust(base.Center - Vector2.One * (float)num70, num70 * 2, num70 * 2, 229, 0f, 0f, 0, default(Color), 1f);
  						Dust dust31 = Main.dust[num71];
  						Vector2 vector2 = Vector2.Normalize(dust31.position - base.Center);
-@@ -65021,7 +_,7 @@
+@@ -65040,7 +_,7 @@
  					for (int num72 = 0; num72 < 60; num72++)
  					{
  						int num73 = this.width / 4;
@@ -161,7 +161,7 @@
  						int num74 = Dust.NewDust(base.Center - Vector2.One * (float)num73, num73 * 2, num73 * 2, 229, 0f, 0f, 0, default(Color), 1f);
  						Dust dust32 = Main.dust[num74];
  						Vector2 vector3 = Vector2.Normalize(dust32.position - base.Center);
-@@ -65899,7 +_,7 @@
+@@ -65918,7 +_,7 @@
  					for (int num171 = 0; num171 < 60; num171++)
  					{
  						int num172 = 25;
@@ -170,7 +170,7 @@
  						int num173 = Dust.NewDust(base.Center - Vector2.One * (float)num172, num172 * 2, num172 * 2, 212, 0f, 0f, 0, default(Color), 1f);
  						Dust dust47 = Main.dust[num173];
  						Vector2 vector6 = Vector2.Normalize(dust47.position - base.Center);
-@@ -72702,7 +_,7 @@
+@@ -72721,7 +_,7 @@
  					{
  						if (this.boss)
  						{

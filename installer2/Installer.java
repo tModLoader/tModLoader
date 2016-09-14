@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class Installer
 {
-    private static final String TERRARIA_VERSION = "v1.3.3.1";
+    private static final String TERRARIA_VERSION = "v1.3.3.2";
 
     public static void tryInstall(String[] files, File directory)
     {
@@ -57,7 +57,10 @@ public class Installer
         }
         if (badFiles.length() > 1)
         {
-            messageBox("The following files were missing and could not be installed:" + badFiles + "All the other files have been installed properly.", JOptionPane.ERROR_MESSAGE);
+			if (badFiles.length() > 8)
+				messageBox("The following files were missing and could not be installed:" + badFiles + "All the other files have been installed properly. \n\n DID YOU FORGET TO UNZIP THE ZIP ARCHIVE BEFORE ATTEMPTING TO INSTALL?", JOptionPane.ERROR_MESSAGE);
+			else
+				messageBox("The following files were missing and could not be installed:" + badFiles + "All the other files have been installed properly.", JOptionPane.ERROR_MESSAGE);
             return;
         }
         messageBox("Installation successful!", JOptionPane.INFORMATION_MESSAGE);
