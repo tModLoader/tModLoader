@@ -316,6 +316,15 @@
  			}
  		}
  
+@@ -4199,7 +_,7 @@
+ 					}
+ 					else if (text == "version")
+ 					{
+-						Console.WriteLine("Terraria Server " + Main.versionNumber);
++						Console.WriteLine("Terraria Server " + Main.versionNumber + " - " + ModLoader.ModLoader.versionedName);
+ 					}
+ 					else
+ 					{
 @@ -4411,7 +_,7 @@
  		public static void InitLifeBytes()
  		{
