@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
+using Newtonsoft.Json;
 
 namespace Terraria.ModLoader.UI
 {
@@ -74,7 +75,6 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(button3);
 			UITextPanel button4 = new UITextPanel("Back", 1f, false);
 			button4.CopyStyle(button);
-			button4.Width.Set(-10f, 0.5f);
 			button4.Top.Set(-20f, 0f);
 			button4.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
 			button4.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
@@ -82,7 +82,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(button4);
 			UITextPanel button5 = new UITextPanel("Open Mods Folder", 1f, false);
 			button5.CopyStyle(button4);
-			button5.HAlign = 1f;
+			button5.HAlign = 0.5f;
 			button5.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
 			button5.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button5.OnClick += new UIElement.MouseEvent(OpenModsFolder);
@@ -99,6 +99,13 @@ namespace Terraria.ModLoader.UI
 			filterTextBox.Left.Set(-180f, 1f);
 			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(FilterList);
 			uIElement.Append(filterTextBox);
+			UITextPanel modListButton = new UITextPanel("Mod Lists", 1f, false);
+			modListButton.CopyStyle(button5);
+			modListButton.HAlign = 1f;
+			modListButton.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
+			modListButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+			modListButton.OnClick += new UIElement.MouseEvent(GotoModListMenu);
+			uIElement.Append(modListButton);
 			base.Append(uIElement);
 		}
 
@@ -130,6 +137,12 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModLoader.ModPath);
 			Process.Start(ModLoader.ModPath);
+		}
+
+		private static void GotoModListMenu(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(12, -1, -1, 1);
+			Main.menuMode = Interface.modListsMenuID;
 		}
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
