@@ -101,6 +101,15 @@
  		public static int hairStart = 0;
  		private static int oldHairStyle;
  		private static Microsoft.Xna.Framework.Color oldHairColor;
+@@ -2013,7 +_,7 @@
+ 		public static Player dresserDummy;
+ 		private bool _needToSetupDrawInterfaceLayers = true;
+ 		private List<MethodSequenceListItem> _drawInterfaceLayers;
+-		private static GameTime _drawInterfaceGameTime;
++		public static GameTime _drawInterfaceGameTime;
+ 		private static bool _MouseOversCanClear = false;
+ 		private static Vector2 _itemIconCacheScreenPosition;
+ 		private static int _itemIconCacheSelectedItemID;
 @@ -2051,12 +_,12 @@
  		};
  		private static float tranSpeed = 0.05f;
