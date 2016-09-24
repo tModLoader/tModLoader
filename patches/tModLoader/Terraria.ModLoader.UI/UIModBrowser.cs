@@ -26,6 +26,7 @@ namespace Terraria.ModLoader.UI
 		public bool loaded = false;
 		public SortModes sortMode = SortModes.RecentlyUpdated;
 		public UpdateFilter updateFilterMode = UpdateFilter.Available;
+		public SearchFilter searchFilterMode = SearchFilter.Name;
 		internal string filter;
 		private bool updateAvailable;
 		private string updateText;
@@ -117,6 +118,13 @@ namespace Terraria.ModLoader.UI
 			filterTextBox.Left.Set(-150, 1f);
 			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(SortList);
 			uIElement2.Append(filterTextBox);
+			UICycleImage SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 68, 0);
+			SearchFilterToggle.setCurrentState((int)searchFilterMode);
+			SearchFilterToggle.OnClick += (a, b) => Interface.modBrowser.searchFilterMode = searchFilterMode.Next();
+			SearchFilterToggle.OnClick += new UIElement.MouseEvent(this.SortList);
+			SearchFilterToggle.Left.Set(545f, 0f);
+			_categoryButtons.Add(SearchFilterToggle);
+			uIElement2.Append(SearchFilterToggle);
 			uIPanel.Append(uIElement2);
 		}
 
@@ -156,6 +164,9 @@ namespace Terraria.ModLoader.UI
 							break;
 						case 1:
 							text = Interface.modBrowser.updateFilterMode.ToFriendlyString();
+							break;
+						case 2:
+							text = Interface.modBrowser.searchFilterMode.ToFriendlyString();
 							break;
 						default:
 							text = "None";
@@ -412,6 +423,33 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
+	public static class SearchFilterModesExtensions
+	{
+		public static SearchFilter Next(this SearchFilter searchFilterMode)
+		{
+			switch (searchFilterMode)
+			{
+				case SearchFilter.Name:
+					return SearchFilter.Author;
+				case SearchFilter.Author:
+					return SearchFilter.Name;
+			}
+			return SearchFilter.Name;
+		}
+
+		public static string ToFriendlyString(this SearchFilter searchFilterMode)
+		{
+			switch (searchFilterMode)
+			{
+				case SearchFilter.Name:
+					return "Search by Mod name";
+				case SearchFilter.Author:
+					return "Search by Author name";
+			}
+			return "Unknown Sort";
+		}
+	}
+
 	public enum SortModes
 	{
 		DisplayNameAtoZ,
@@ -426,5 +464,11 @@ namespace Terraria.ModLoader.UI
 		All,
 		Available,
 		UpdateOnly,
+	}
+
+	public enum SearchFilter
+	{
+		Name,
+		Author,
 	}
 }

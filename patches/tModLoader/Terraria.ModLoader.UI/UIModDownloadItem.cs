@@ -98,9 +98,19 @@ namespace Terraria.ModLoader.UI
 		{
 			if (Interface.modBrowser.filter.Length > 0)
 			{
-				if (displayname.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1)
+				if (Interface.modBrowser.searchFilterMode == SearchFilter.Author)
 				{
-					return false;
+					if (author.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1)
+					{
+						return false;
+					}
+				}
+				else
+				{
+					if (displayname.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1)
+					{
+						return false;
+					}
 				}
 			}
 			switch (Interface.modBrowser.updateFilterMode)
