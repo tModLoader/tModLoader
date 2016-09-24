@@ -31,7 +31,7 @@ namespace ExampleMod.Items
 			// Start a new Recipe. (Prepend with "ModRecipe " if 1st recipe in code block.)
 			recipe = new ModRecipe(mod);
 			// Add a Vanilla Ingredient. 
-			// Look up TileIDs: https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Item-IDs
+			// Look up ItemIDs: https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Item-IDs
 			// To specify more than one ingredient, use multiple recipe.AddIngredient() calls.
 			recipe.AddIngredient(ItemID.DirtBlock);
 			// An optional 2nd argument will specifie a stack of the item. 
@@ -46,7 +46,7 @@ namespace ExampleMod.Items
 			recipe.AddRecipeGroup("Wood"); // check here for other vanilla groups: https://github.com/bluemagic123/tModLoader/wiki/ModRecipe#public-void-addrecipegroupstring-name-int-stack--1
 			// Here is using a mod recipe group. Check out ExampleMod.AddRecipeGroups() to see how to register a recipe group.
 			recipe.AddRecipeGroup("ExampleMod:ExampleItem", 2);
-			// To specify a crafting station, specify a tile. Look up IDs: https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Tile-IDs
+			// To specify a crafting station, specify a tile. Look up TileIDs: https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Tile-IDs
 			recipe.AddTile(TileID.WorkBenches);
 			// A mod Tile example. To specify more than one crafting station, use multiple recipe.AddTile() calls.
 			recipe.AddTile(mod, "ExampleWorkbench");
