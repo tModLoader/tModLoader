@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModListItem : UIPanel
+	internal class UIModPackItem : UIPanel
 	{
 		// Name -- > x in list disabled
 		// Super List             5 Total, 3 Loaded, 1 Disabled, 1 Missing
@@ -34,7 +34,7 @@ namespace Terraria.ModLoader.UI
 		UITextPanel enableListButton;
 		UITextPanel enableListOnlyButton;
 
-		public UIModListItem(string name, string[] mods)
+		public UIModPackItem(string name, string[] mods)
 		{
 			this.mods = mods;
 			this.numMods = mods.Length;
@@ -46,7 +46,7 @@ namespace Terraria.ModLoader.UI
 			{
 				string modname = mods[i];
 				bool found = false;
-				foreach (var item in UIModLists.mods)
+				foreach (var item in UIModPacks.mods)
 				{
 					if (item.name == modname)
 					{
@@ -179,10 +179,10 @@ namespace Terraria.ModLoader.UI
 
 		private static void EnableList(UIMouseEvent evt, UIElement listeningElement)
 		{
-			UIModListItem modListItem = ((UIModListItem)listeningElement.Parent);
+			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			foreach (string modname in modListItem.mods)
 			{
-				foreach (var item in UIModLists.mods)
+				foreach (var item in UIModPacks.mods)
 				{
 					if (item.name == modname)
 					{
@@ -190,7 +190,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 			}
-			Main.menuMode = Interface.modListsMenuID; // should reload, which should refresh enabled counts
+			Main.menuMode = Interface.modPacksMenuID; // should reload, which should refresh enabled counts
 
 			if (modListItem.numModsMissing > 0)
 			{
@@ -203,21 +203,21 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				Interface.infoMessage.SetMessage(missing);
-				Interface.infoMessage.SetGotoMenu(Interface.modListsMenuID);
+				Interface.infoMessage.SetGotoMenu(Interface.modPacksMenuID);
 				Main.menuMode = Interface.infoMessageID;
 			}
 		}
 
 		private static void EnableListOnly(UIMouseEvent evt, UIElement listeningElement)
 		{
-			UIModListItem modListItem = ((UIModListItem)listeningElement.Parent);
-			foreach (var item in UIModLists.mods)
+			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
+			foreach (var item in UIModPacks.mods)
 			{
 				ModLoader.DisableMod(item);
 			}
 			foreach (string modname in modListItem.mods)
 			{
-				foreach (var item in UIModLists.mods)
+				foreach (var item in UIModPacks.mods)
 				{
 					if (item.name == modname)
 					{
@@ -245,7 +245,7 @@ namespace Terraria.ModLoader.UI
 
 		private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement)
 		{
-			UIModListItem modListItem = ((UIModListItem)listeningElement.Parent);
+			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			Main.PlaySound(10, -1, -1, 1);
 			string message = "This list contains the following mods:\n";
 			for (int i = 0; i < modListItem.mods.Length; i++)
@@ -254,7 +254,7 @@ namespace Terraria.ModLoader.UI
 			}
 			//Interface.infoMessage.SetMessage($"This list contains the following mods:\n{String.Join("\n", ((UIModListItem)listeningElement.Parent).mods)}");
 			Interface.infoMessage.SetMessage(message);
-			Interface.infoMessage.SetGotoMenu(Interface.modListsMenuID);
+			Interface.infoMessage.SetGotoMenu(Interface.modPacksMenuID);
 			Main.menuMode = Interface.infoMessageID;
 		}
 	}

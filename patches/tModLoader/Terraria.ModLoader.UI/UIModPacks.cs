@@ -12,10 +12,10 @@ using Newtonsoft.Json;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModLists : UIState
+	internal class UIModPacks : UIState
 	{
 		private UIList modListList;
-		internal static string ModListSaveDirectory = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModLists";
+		internal static string ModListSaveDirectory = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModPacks";
 		internal static TmodFile[] mods;
 
 		public override void OnInitialize()
@@ -46,7 +46,7 @@ namespace Terraria.ModLoader.UI
 			scrollPanel.Append(uIScrollbar);
 			modListList.SetScrollbar(uIScrollbar);
 
-			UITextPanel titleTextPanel = new UITextPanel("Mod Lists", 0.8f, true);
+			UITextPanel titleTextPanel = new UITextPanel("Mod Packs", 0.8f, true);
 			titleTextPanel.HAlign = 0.5f;
 			titleTextPanel.Top.Set(-35f, 0f);
 			titleTextPanel.SetPadding(15f);
@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.UI
 			backButton.OnClick += new UIElement.MouseEvent(BackClick);
 			uIElement.Append(backButton);
 
-			UIColorTextPanel saveNewButton = new UIColorTextPanel("Save Enabled as New Mod List", Color.Green, 1f, false);
+			UIColorTextPanel saveNewButton = new UIColorTextPanel("Save Enabled as New Mod Pack", Color.Green, 1f, false);
 			saveNewButton.CopyStyle(backButton);
 			saveNewButton.HAlign = 1f;
 			saveNewButton.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
@@ -77,7 +77,7 @@ namespace Terraria.ModLoader.UI
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(11, -1, -1, 1);
-			Main.MenuUI.SetState(new UIVirtualKeyboard("Enter Mod List name", "", new UIVirtualKeyboard.KeyboardSubmitEvent(SaveModList), ()=>Main.menuMode = Interface.modListsMenuID, 0));
+			Main.MenuUI.SetState(new UIVirtualKeyboard("Enter Mod Pack name", "", new UIVirtualKeyboard.KeyboardSubmitEvent(SaveModList), ()=>Main.menuMode = Interface.modPacksMenuID, 0));
 			Main.menuMode = 888;
 		}
 
@@ -99,7 +99,7 @@ namespace Terraria.ModLoader.UI
 			string json = JsonConvert.SerializeObject(enabledMods, Newtonsoft.Json.Formatting.Indented);
 			File.WriteAllText(path, json);
 
-			Main.menuMode = Interface.modListsMenuID; // should reload
+			Main.menuMode = Interface.modPacksMenuID; // should reload
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -139,7 +139,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 
-				UIModListItem modItem = new UIModListItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
+				UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
 				modListList.Add(modItem);
 			}
 		}

@@ -99,12 +99,12 @@ namespace Terraria.ModLoader.UI
 			filterTextBox.Left.Set(-180f, 1f);
 			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(FilterList);
 			uIElement.Append(filterTextBox);
-			UITextPanel modListButton = new UITextPanel("Mod Lists", 1f, false);
+			UITextPanel modListButton = new UITextPanel("Mod Packs", 1f, false);
 			modListButton.CopyStyle(button5);
 			modListButton.HAlign = 1f;
 			modListButton.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
 			modListButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			modListButton.OnClick += new UIElement.MouseEvent(GotoModListMenu);
+			modListButton.OnClick += new UIElement.MouseEvent(GotoModPacksMenu);
 			uIElement.Append(modListButton);
 			base.Append(uIElement);
 		}
@@ -139,10 +139,10 @@ namespace Terraria.ModLoader.UI
 			Process.Start(ModLoader.ModPath);
 		}
 
-		private static void GotoModListMenu(UIMouseEvent evt, UIElement listeningElement)
+		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(12, -1, -1, 1);
-			Main.menuMode = Interface.modListsMenuID;
+			Main.menuMode = Interface.modPacksMenuID;
 		}
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
