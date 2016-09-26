@@ -219,7 +219,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -476,9 +_,52 @@
+@@ -476,9 +_,56 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -246,7 +246,11 @@
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 -</Project>
 +  <PropertyGroup>
-+    <PostBuildEvent>"$(SolutionDir)"largeaddresstool\editbin /largeaddressaware "$(TargetPath)"
++    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
++
++SET EDITBINOPTS=/largeaddressaware
++IF NOT %25CONFIGNAME:Debug=%25==%25CONFIGNAME%25 SET EDITBINOPTS=%25EDITBINOPTS%25 /stack:0x800000
++"$(SolutionDir)"largeaddresstool\editbin %25EDITBINOPTS%25 "$(TargetPath)"
 +
 +SET RELEASEFILE=""
 +
