@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.Generation\ActionGrass.cs
++++ src/tModLoader\Terraria.GameContent.Generation\ActionGrass.cs
+@@ -4,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Generation
+ {
+-	internal class ActionGrass : GenAction
++	public class ActionGrass : GenAction
+ 	{
+ 		public override bool Apply(Point origin, int x, int y, params object[] args)
+ 		{
+

@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.World.Generation\Actions.cs
++++ src/tModLoader\Terraria.World.Generation\Actions.cs
+@@ -5,7 +_,7 @@
+ 
+ namespace Terraria.World.Generation
+ {
+-	internal static class Actions
++	public static class Actions
+ 	{
+ 		public class ContinueWrapper : GenAction
+ 		{
+

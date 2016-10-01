@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.Generation\ActionVines.cs
++++ src/tModLoader\Terraria.GameContent.Generation\ActionVines.cs
+@@ -4,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Generation
+ {
+-	internal class ActionVines : GenAction
++	public class ActionVines : GenAction
+ 	{
+ 		private int _minLength;
+ 		private int _maxLength;
+

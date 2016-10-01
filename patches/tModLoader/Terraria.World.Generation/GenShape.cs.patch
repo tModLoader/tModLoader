@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.World.Generation\GenShape.cs
++++ src/tModLoader\Terraria.World.Generation\GenShape.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.World.Generation
+ {
+-	internal abstract class GenShape : GenBase
++	public abstract class GenShape : GenBase
+ 	{
+ 		private ShapeData _outputData;
+ 		protected bool _quitOnFail;
+

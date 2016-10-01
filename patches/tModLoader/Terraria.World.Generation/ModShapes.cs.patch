@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.World.Generation\ModShapes.cs
++++ src/tModLoader\Terraria.World.Generation\ModShapes.cs
+@@ -4,7 +_,7 @@
+ 
+ namespace Terraria.World.Generation
+ {
+-	internal static class ModShapes
++	public static class ModShapes
+ 	{
+ 		public class All : GenModShape
+ 		{
+

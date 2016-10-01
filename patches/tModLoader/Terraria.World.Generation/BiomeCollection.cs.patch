@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.World.Generation\BiomeCollection.cs
++++ src/tModLoader\Terraria.World.Generation\BiomeCollection.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.World.Generation
+ {
+-	internal static class BiomeCollection
++	public static class BiomeCollection
+ 	{
+ 		public static List<MicroBiome> Biomes = new List<MicroBiome>();
+ 	}
+

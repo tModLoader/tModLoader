@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.World.Generation\ShapeData.cs
++++ src/tModLoader\Terraria.World.Generation\ShapeData.cs
+@@ -6,7 +_,7 @@
+ 
+ namespace Terraria.World.Generation
+ {
+-	internal class ShapeData
++	public class ShapeData
+ 	{
+ 		private HashSet<Point16> _points;
+ 
+

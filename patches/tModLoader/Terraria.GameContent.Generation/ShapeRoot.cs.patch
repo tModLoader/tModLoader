@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.Generation\ShapeRoot.cs
++++ src/tModLoader\Terraria.GameContent.Generation\ShapeRoot.cs
+@@ -4,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Generation
+ {
+-	internal class ShapeRoot : GenShape
++	public class ShapeRoot : GenShape
+ 	{
+ 		private float _angle;
+ 		private float _startingSize;
+

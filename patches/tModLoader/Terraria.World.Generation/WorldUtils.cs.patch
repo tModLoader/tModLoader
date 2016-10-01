@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.World.Generation\WorldUtils.cs
++++ src/tModLoader\Terraria.World.Generation\WorldUtils.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.World.Generation
+ {
+-	internal static class WorldUtils
++	public static class WorldUtils
+ 	{
+ 		public static bool Gen(Point origin, GenShape shape, GenAction action)
+ 		{
+

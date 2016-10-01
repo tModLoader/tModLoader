@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.Generation\ShapeFloodFill.cs
++++ src/tModLoader\Terraria.GameContent.Generation\ShapeFloodFill.cs
+@@ -6,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Generation
+ {
+-	internal class ShapeFloodFill : GenShape
++	public class ShapeFloodFill : GenShape
+ 	{
+ 		private int _maximumActions;
+ 
+

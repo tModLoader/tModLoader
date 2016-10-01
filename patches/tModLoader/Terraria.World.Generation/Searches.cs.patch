@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.World.Generation\Searches.cs
++++ src/tModLoader\Terraria.World.Generation\Searches.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.World.Generation
+ {
+-	internal static class Searches
++	public static class Searches
+ 	{
+ 		public class Left : GenSearch
+ 		{
+

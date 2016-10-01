@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.World.Generation\Modifiers.cs
++++ src/tModLoader\Terraria.World.Generation\Modifiers.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.World.Generation
+ {
+-	internal static class Modifiers
++	public static class Modifiers
+ 	{
+ 		public class ShapeScale : GenAction
+ 		{
+

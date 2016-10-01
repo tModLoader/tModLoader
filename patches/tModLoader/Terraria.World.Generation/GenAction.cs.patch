@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.World.Generation\GenAction.cs
++++ src/tModLoader\Terraria.World.Generation\GenAction.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.World.Generation
+ {
+-	internal abstract class GenAction : GenBase
++	public abstract class GenAction : GenBase
+ 	{
+ 		public GenAction NextAction;
+ 		public ShapeData OutputData;
+

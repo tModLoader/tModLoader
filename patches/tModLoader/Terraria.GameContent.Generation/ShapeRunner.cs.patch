@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria.GameContent.Generation\ShapeRunner.cs
++++ src/tModLoader\Terraria.GameContent.Generation\ShapeRunner.cs
+@@ -4,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Generation
+ {
+-	internal class ShapeRunner : GenShape
++	public class ShapeRunner : GenShape
+ 	{
+ 		private float _startStrength;
+ 		private int _steps;
+
