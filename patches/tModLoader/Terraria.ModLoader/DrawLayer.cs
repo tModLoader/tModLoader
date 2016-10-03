@@ -11,7 +11,7 @@ namespace Terraria.ModLoader
 		public readonly Action<InfoType> layer;
 		public bool visible = true;
 
-		public DrawLayer(string mod, string name, Action<InfoType> layer)
+		protected DrawLayer(string mod, string name, Action<InfoType> layer)
 		{
 			this.mod = mod;
 			this.Name = name;
@@ -19,7 +19,7 @@ namespace Terraria.ModLoader
 			this.layer = layer;
 		}
 
-		public DrawLayer(string mod, string name, DrawLayer<InfoType> parent, Action<InfoType> layer)
+		protected DrawLayer(string mod, string name, DrawLayer<InfoType> parent, Action<InfoType> layer)
 		{
 			this.mod = mod;
 			this.Name = name;
@@ -27,21 +27,16 @@ namespace Terraria.ModLoader
 			this.layer = layer;
 		}
 
-		public bool ShouldDraw(object layerList)
+		public bool ShouldDraw<T>(IList<T> layers) where T : DrawLayer<InfoType>
 		{
 			if (!this.visible)
 			{
 				return false;
 			}
-			List<DrawLayer<InfoType>> layers = layerList as List<DrawLayer<InfoType>>;
-			if (layers == null)
-			{
-				return true;
-			}
 			DrawLayer<InfoType> parentLayer = this.parent;
 			while (parentLayer != null)
 			{
-				if (!parentLayer.visible || !layers.Contains(parentLayer))
+				if (!parentLayer.visible || !layers.Contains((T)parentLayer))
 				{
 					return false;
 				}
@@ -50,13 +45,9 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		public void Draw(InfoType drawInfo)
+		public virtual void Draw(ref InfoType drawInfo)
 		{
 			this.layer(drawInfo);
-		}
-
-		internal static void EmptyDelegate(InfoType drawInfo)
-		{
 		}
 	}
 
@@ -102,7 +93,7 @@ namespace Terraria.ModLoader
 
 		private static PlayerLayer CreateVanillaLayer(string name)
 		{
-			return new PlayerLayer("Terraria", name, EmptyDelegate);
+			return new PlayerLayer("Terraria", name, _ => {});
 		}
 	}
 
@@ -126,7 +117,7 @@ namespace Terraria.ModLoader
 
 		private static PlayerHeadLayer CreateVanillaLayer(string name)
 		{
-			return new PlayerHeadLayer("Terraria", name, EmptyDelegate);
+			return new PlayerHeadLayer("Terraria", name, _ => {});
 		}
 	}
 }
