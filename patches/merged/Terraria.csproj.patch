@@ -1,23 +1,21 @@
 --- src/decompiled\Terraria.csproj
 +++ src/merged\Terraria.csproj
-@@ -2,45 +_,96 @@
- <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-   <PropertyGroup>
-     <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
+@@ -1,49 +_,100 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+-  <PropertyGroup>
+-    <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
 -    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-+    <Configuration Condition=" '$(Configuration)' == '' ">WindowsDebug</Configuration>
-     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
 -    <OutputType>WinExe</OutputType>
-     <AssemblyName>Terraria</AssemblyName>
-     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-     <WarningLevel>4</WarningLevel>
-+    <DebugSymbols>true</DebugSymbols>
-+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-   </PropertyGroup>
-   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
-     <PlatformTarget>x86</PlatformTarget>
-   </PropertyGroup>
+-    <AssemblyName>Terraria</AssemblyName>
+-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+-    <WarningLevel>4</WarningLevel>
+-  </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+-    <PlatformTarget>x86</PlatformTarget>
+-  </PropertyGroup>
 -  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 -    <OutputPath>bin\Debug\</OutputPath>
 -    <DebugSymbols>true</DebugSymbols>
@@ -30,92 +28,124 @@
 -    <DebugType>pdbonly</DebugType>
 -    <Optimize>true</Optimize>
 -  </PropertyGroup>
-+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
-+    <OutputPath>bin\x86\WindowsRelease\</OutputPath>
-+    <DefineConstants>CLIENT; WINDOWS</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerRelease|x86'">
-+    <OutputPath>bin\x86\WindowsServerRelease\</OutputPath>
-+    <DefineConstants>SERVER; WINDOWS</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsDebug|x86'">
-+    <OutputPath>bin\x86\WindowsDebug\</OutputPath>
-+    <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
-+    <DefineConstants>DEBUG;SERVER; WINDOWS</DefineConstants>
-+    <OutputPath>bin\x86\WindowsServerDebug\</OutputPath>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
-+    <OutputPath>bin\x86\MacRelease\</OutputPath>
-+    <DefineConstants>CLIENT; MAC</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacServerRelease|x86'">
-+    <OutputPath>bin\x86\MacServerRelease\</OutputPath>
-+    <DefineConstants>SERVER; MAC</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxRelease|x86'">
-+    <OutputPath>bin\x86\LinuxRelease\</OutputPath>
-+    <DefineConstants>CLIENT; LINUX</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxServerRelease|x86'">
-+    <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
-+    <DefineConstants>SERVER; LINUX</DefineConstants>
-+  </PropertyGroup>
-+  <Choose>
-+    <When Condition="$(DefineConstants.Contains('DEBUG'))">
-+      <PropertyGroup>
-+        <Optimize>false</Optimize>
-+        <DebugType>full</DebugType>
-+      </PropertyGroup>
-+    </When>
-+    <Otherwise>
-+      <PropertyGroup>
-+        <Optimize>true</Optimize>
-+        <DebugType>pdbonly</DebugType>
-+      </PropertyGroup>
-+    </Otherwise>
-+  </Choose>
-+  <Choose>
-+    <When Condition="$(DefineConstants.Contains('CLIENT'))">
-+      <PropertyGroup>
-+        <OutputType>WinExe</OutputType>
-+      </PropertyGroup>
-+    </When>
-+    <Otherwise>
-+      <PropertyGroup>
-+        <OutputType>Exe</OutputType>
-+      </PropertyGroup>
-+    </Otherwise>
-+  </Choose>
-   <ItemGroup>
-+    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="System.Windows.Forms" />
+-  <ItemGroup>
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
+-    <Reference Include="System.Windows.Forms" />
 -    <Reference Include="Microsoft.Xna.Framework" />
-+    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-+    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="System" />
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" />
-+    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-+    <Reference Include="Steamworks.NET" />
-     <Reference Include="Newtonsoft.Json" />
-     <Reference Include="Ionic.Zip.CF" />
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
+-    <Reference Include="System" />
 -    <Reference Include="Steamworks.NET" />
+-    <Reference Include="System.Drawing" />
+-    <Reference Include="System.Core" />
 -    <Reference Include="Microsoft.Xna.Framework.Xact" />
-     <Reference Include="WindowsBase" />
-   </ItemGroup>
-   <ItemGroup>
-     <Compile Include="Extensions\EnumerationExtensions.cs" />
-+    <Compile Include="NATUPNPLib\IStaticPortMapping.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
-+    <Compile Include="NATUPNPLib\IStaticPortMappingCollection.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
-+    <Compile Include="NATUPNPLib\IUPnPNAT.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
-+    <Compile Include="NATUPNPLib\UPnPNAT.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
-     <Compile Include="Properties\AssemblyInfo.cs" />
-     <Compile Include="Terraria.Achievements\Achievement.cs" />
-     <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
+-    <Reference Include="Newtonsoft.Json" />
+-    <Reference Include="Ionic.Zip.CF" />
+-    <Reference Include="WindowsBase" />
+-  </ItemGroup>
+-  <ItemGroup>
+-    <Compile Include="Extensions\EnumerationExtensions.cs" />
+-    <Compile Include="Properties\AssemblyInfo.cs" />
+-    <Compile Include="Terraria.Achievements\Achievement.cs" />
+-    <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
++  <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++    <PropertyGroup>
++      <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
++     <Configuration Condition=" '$(Configuration)' == '' ">WindowsDebug</Configuration>
++      <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
++      <AssemblyName>Terraria</AssemblyName>
++      <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
++      <TargetFrameworkProfile>Client</TargetFrameworkProfile>
++      <WarningLevel>4</WarningLevel>
++     <DebugSymbols>true</DebugSymbols>
++     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
++    </PropertyGroup>
++    <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
++      <PlatformTarget>x86</PlatformTarget>
++    </PropertyGroup>
++   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
++     <OutputPath>bin\x86\WindowsRelease\</OutputPath>
++     <DefineConstants>CLIENT; WINDOWS</DefineConstants>
++   </PropertyGroup>
++   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerRelease|x86'">
++     <OutputPath>bin\x86\WindowsServerRelease\</OutputPath>
++     <DefineConstants>SERVER; WINDOWS</DefineConstants>
++   </PropertyGroup>
++   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsDebug|x86'">
++     <OutputPath>bin\x86\WindowsDebug\</OutputPath>
++     <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
++   </PropertyGroup>
++   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
++     <DefineConstants>DEBUG;SERVER; WINDOWS</DefineConstants>
++     <OutputPath>bin\x86\WindowsServerDebug\</OutputPath>
++   </PropertyGroup>
++   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
++     <OutputPath>bin\x86\MacRelease\</OutputPath>
++     <DefineConstants>CLIENT; MAC</DefineConstants>
++   </PropertyGroup>
++   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacServerRelease|x86'">
++     <OutputPath>bin\x86\MacServerRelease\</OutputPath>
++     <DefineConstants>SERVER; MAC</DefineConstants>
++   </PropertyGroup>
++   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxRelease|x86'">
++     <OutputPath>bin\x86\LinuxRelease\</OutputPath>
++     <DefineConstants>CLIENT; LINUX</DefineConstants>
++   </PropertyGroup>
++   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxServerRelease|x86'">
++     <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
++     <DefineConstants>SERVER; LINUX</DefineConstants>
++   </PropertyGroup>
++   <Choose>
++     <When Condition="$(DefineConstants.Contains('DEBUG'))">
++       <PropertyGroup>
++         <Optimize>false</Optimize>
++         <DebugType>full</DebugType>
++       </PropertyGroup>
++     </When>
++     <Otherwise>
++       <PropertyGroup>
++         <Optimize>true</Optimize>
++         <DebugType>pdbonly</DebugType>
++       </PropertyGroup>
++     </Otherwise>
++   </Choose>
++   <Choose>
++     <When Condition="$(DefineConstants.Contains('CLIENT'))">
++       <PropertyGroup>
++         <OutputType>WinExe</OutputType>
++       </PropertyGroup>
++     </When>
++     <Otherwise>
++       <PropertyGroup>
++         <OutputType>Exe</OutputType>
++       </PropertyGroup>
++     </Otherwise>
++   </Choose>
++    <ItemGroup>
++     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++      <Reference Include="System.Windows.Forms" />
++     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++      <Reference Include="System" />
++     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++     <Reference Include="Steamworks.NET" />
++      <Reference Include="Newtonsoft.Json" />
++      <Reference Include="Ionic.Zip.CF" />
++      <Reference Include="System.Core" />
++      <Reference Include="System.Drawing" />
++      <Reference Include="WindowsBase" />
++    </ItemGroup>
++    <ItemGroup>
++      <Compile Include="Extensions\EnumerationExtensions.cs" />
++     <Compile Include="NATUPNPLib\IStaticPortMapping.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
++     <Compile Include="NATUPNPLib\IStaticPortMappingCollection.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
++     <Compile Include="NATUPNPLib\IUPnPNAT.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
++     <Compile Include="NATUPNPLib\UPnPNAT.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
++      <Compile Include="Properties\AssemblyInfo.cs" />
++      <Compile Include="Terraria.Achievements\Achievement.cs" />
++      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
+     <Compile Include="Terraria.Achievements\AchievementCondition.cs" />
+     <Compile Include="Terraria.Achievements\AchievementManager.cs" />
+     <Compile Include="Terraria.Achievements\AchievementTracker.cs" />
 @@ -377,11 +_,13 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />
