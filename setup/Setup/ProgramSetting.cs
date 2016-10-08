@@ -1,4 +1,6 @@
-﻿namespace Terraria.ModLoader.Setup
+﻿using Terraria.ModLoader.Properties;
+
+namespace Terraria.ModLoader.Setup
 {
 	public class ProgramSetting<T>
 	{
@@ -9,12 +11,12 @@
 		}
 
 		public void Set(T value) {
-			Properties.Settings.Default[key] = value;
-			Properties.Settings.Default.Save();
+			Settings.Default[key] = value;
+			Settings.Default.Save();
 		}
 
 		public T Get() {
-			return (T)Properties.Settings.Default[key];
+			return (T)Settings.Default[key];
 		}
 	}
 }

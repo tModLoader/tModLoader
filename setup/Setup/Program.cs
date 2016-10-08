@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Terraria.ModLoader.Properties;
 
 namespace Terraria.ModLoader.Setup
 {
@@ -16,7 +17,10 @@ namespace Terraria.ModLoader.Setup
 	    public static readonly string libDir = Path.Combine(appDir, "..", "lib");
 		public static readonly string toolsDir = Path.Combine(appDir, "..", "tools");
         public static string LogDir => Path.Combine(baseDir, "logs");
-        public static ProgramSetting<bool> SuppressWarnings = new ProgramSetting<bool>("SuppressWarnings");
+
+		public static string SteamDir => Settings.Default.SteamDir;
+	    public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
+        public static string TerrariaServerPath => Path.Combine(SteamDir, "TerrariaServer.exe");
 
 		/// <summary>
         /// The main entry point for the application.
@@ -33,7 +37,7 @@ namespace Terraria.ModLoader.Setup
 			};
 
 			if (args.Length == 1 && args[0] == "--steamdir") {
-			    Console.WriteLine(Settings.SteamDir.Get());
+			    Console.WriteLine(SteamDir);
 			    return;
 			}
 
@@ -108,6 +112,35 @@ namespace Terraria.ModLoader.Setup
                 }
 
                 return process.ExitCode;
+            }
+        }
+
+		 public static bool SelectTerrariaDialog() {
+            while (true) {
+                var dialog = new OpenFileDialog {
+                    InitialDirectory = Path.GetFullPath(Directory.Exists(SteamDir) ? SteamDir : baseDir),
+                    Filter = "Terraria|Terraria.exe",
+                    Title = "Select Terraria.exe"
+                };
+
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return false;
+
+                string err = null;
+                if (Path.GetFileName(dialog.FileName) != "Terraria.exe")
+                    err = "File must be named Terraria.exe";
+                else if (!File.Exists(Path.Combine(Path.GetDirectoryName(dialog.FileName), "TerrariaServer.exe")))
+                    err = "TerrariaServer.exe does not exist in the same directory";
+
+                if (err != null) {
+                    if (MessageBox.Show(err, "Invalid Selection", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
+                        return false;
+                }
+                else {
+                    Settings.Default.SteamDir = Path.GetDirectoryName(dialog.FileName);
+                    Settings.Default.Save();
+                    return true;
+                }
             }
         }
     }

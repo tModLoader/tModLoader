@@ -10,7 +10,8 @@ using ICSharpCode.Decompiler.Ast;
 using ICSharpCode.ILSpy;
 using ICSharpCode.ILSpy.TextView;
 using Mono.Cecil;
-using static Terraria.ModLoader.Setup.Settings;
+using Terraria.ModLoader.Properties;
+using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup
 {
@@ -54,8 +55,8 @@ namespace Terraria.ModLoader.Setup
         private static readonly CSharpLanguage lang = new CSharpLanguage();
         private static readonly Guid clientGuid = new Guid("3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5");
         private static readonly Guid serverGuid = new Guid("85BF1171-A0DC-4696-BFA4-D6E9DC4E0830");
-		public static readonly Version version = new Version(1, 3, 3, 1);
-		public static readonly Version versionAlt = new Version(1, 3, 3, 2); // For some reason, this update, only the server has an updated version.
+		public static readonly Version clientVersion = new Version(Settings.Default.ClientVersion);
+		public static readonly Version serverVersion = new Version(Settings.Default.ServerVersion);
 
         public string srcDir;
         private ModuleDefinition clientModule;
@@ -100,8 +101,8 @@ namespace Terraria.ModLoader.Setup
 
             resolver.baseModule = clientModule;
 
-			VersionCheck(clientModule.Assembly);
-			VersionCheckAlt(serverModule.Assembly);
+			VersionCheck(clientModule.Assembly, clientVersion);
+			VersionCheck(serverModule.Assembly, serverVersion);
 
             var options = new DecompilationOptions {
                 FullDecompilation = true,
@@ -135,22 +136,17 @@ namespace Terraria.ModLoader.Setup
                 () => WriteProjectFile(serverModule, serverGuid, serverSources, serverResources, options)));
 			
             items.Add(new WorkItem("Writing Terraria"+lang.ProjectFileExtension+".user",
-				() => WriteProjectUserFile(clientModule, SteamDir.Get(), options)));
+				() => WriteProjectUserFile(clientModule, SteamDir, options)));
 
             items.Add(new WorkItem("Writing TerrariaServer"+lang.ProjectFileExtension+".user",
-				() => WriteProjectUserFile(serverModule, SteamDir.Get(), options)));
+				() => WriteProjectUserFile(serverModule, SteamDir, options)));
             
-            ExecuteParallel(items, maxDegree: SingleDecompileThread.Get() ? 1 : 0);
+            ExecuteParallel(items, maxDegree: Settings.Default.SingleDecompileThread ? 1 : 0);
         }
 
-	    private void VersionCheck(AssemblyDefinition assembly) {
+	    private void VersionCheck(AssemblyDefinition assembly, Version version) {
 			if (assembly.Name.Version != version)
 				throw new Exception($"{assembly.Name.Name} version {assembly.Name.Version}. Expected {version}");
-	    }
-
-		private void VersionCheckAlt(AssemblyDefinition assembly) {
-			if (assembly.Name.Version != versionAlt)
-				throw new Exception($"{assembly.Name.Name} version {assembly.Name.Version}. Expected {versionAlt}");
 	    }
 
 #region ReflectedMethods

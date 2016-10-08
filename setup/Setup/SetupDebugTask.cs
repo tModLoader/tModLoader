@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using static Terraria.ModLoader.Setup.Settings;
+using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup
 {
@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.Setup
         public override void Run() {
             taskInterface.SetStatus("Copying References");
 
-            var modCompile = Path.Combine(SteamDir.Get(), "ModCompile");
+            var modCompile = Path.Combine(SteamDir, "ModCompile");
 
             var references = new[] {"FNA.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll",
                 "System.Reflection.Metadata.dll", "Mono.Cecil.Pdb.dll" };
@@ -62,6 +62,6 @@ namespace Terraria.ModLoader.Setup
     <StartProgram>%steamdir%\tModLoaderServerDebug.exe</StartProgram>
     <StartWorkingDirectory>%steamdir%</StartWorkingDirectory>
   </PropertyGroup>
-</Project>".Replace("%steamdir%", SteamDir.Get());
+</Project>".Replace("%steamdir%", SteamDir);
     }
 }

@@ -107,7 +107,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup\ProgramSetting.cs" />
     <Compile Include="Setup\RegenSourceTask.cs" />
-    <Compile Include="Setup\Settings.cs" />
     <Compile Include="Setup\SelectFilesForm.cs">
       <SubType>Form</SubType>
     </Compile>

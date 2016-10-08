@@ -94,5 +94,23 @@ namespace Terraria.ModLoader.Properties {
                 this["tModLoaderDiffCutoff"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.3.3.1")]
+        public string ClientVersion {
+            get {
+                return ((string)(this["ClientVersion"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.3.3.2")]
+        public string ServerVersion {
+            get {
+                return ((string)(this["ServerVersion"]));
+            }
+        }
     }
 }

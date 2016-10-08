@@ -4,7 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using static Terraria.ModLoader.Setup.Settings;
+using Terraria.ModLoader.Properties;
+using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup
 {
@@ -20,12 +21,12 @@ namespace Terraria.ModLoader.Setup
 			InitializeComponent();
 
 			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
-			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/decompiled", "src/merged", "patches/merged", MergedDiffCutoff);
-			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/decompiled", "src/merged", "patches/merged", MergedDiffCutoff);
-			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/merged", "src/Terraria", "patches/Terraria", TerrariaDiffCutoff);
-			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria", TerrariaDiffCutoff);
-			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", tModLoaderDiffCutoff, FormatTask.tModLoaderFormat);
-			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", tModLoaderDiffCutoff, FormatTask.tModLoaderFormat);
+			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
+			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
+			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
+			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
+			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
+			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
             taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
             taskButtons[buttonFormat] = () => new FormatTask(this, FormatTask.tModLoaderFormat);
 
@@ -37,8 +38,8 @@ namespace Terraria.ModLoader.Setup
 				new SetupTask(this, new[] { buttonDecompile, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
 					.Select(b => taskButtons[b]()).ToArray());
 
-			menuItemWarnings.Checked = Program.SuppressWarnings.Get();
-			menuItemSingleDecompileThread.Checked = SingleDecompileThread.Get();
+			menuItemWarnings.Checked = Settings.Default.SuppressWarnings;
+			menuItemSingleDecompileThread.Checked = Settings.Default.SingleDecompileThread;
 
 			Closing += (sender, args) =>
 			{
@@ -92,19 +93,22 @@ namespace Terraria.ModLoader.Setup
 
 		private void menuItemWarnings_Click(object sender, EventArgs e)
 		{
-			Program.SuppressWarnings.Set(menuItemWarnings.Checked);
+			Settings.Default.SuppressWarnings = menuItemWarnings.Checked;
+			Settings.Default.Save();
 		}
 
 		private void menuItemSingleDecompileThread_Click(object sender, EventArgs e)
 		{
-			SingleDecompileThread.Set(menuItemSingleDecompileThread.Checked);
+			Settings.Default.SingleDecompileThread = menuItemSingleDecompileThread.Checked;
+			Settings.Default.Save();
 		}
 
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
 		{
-			MergedDiffCutoff.Set(new DateTime(2015, 1, 1));
-			TerrariaDiffCutoff.Set(new DateTime(2015, 1, 1));
-			tModLoaderDiffCutoff.Set(new DateTime(2015, 1, 1));
+			Settings.Default.MergedDiffCutoff = new DateTime(2015, 1, 1);
+			Settings.Default.TerrariaDiffCutoff = new DateTime(2015, 1, 1);
+			Settings.Default.tModLoaderDiffCutoff = new DateTime(2015, 1, 1);
+			Settings.Default.Save();
 		}
 
 		private void buttonTask_Click(object sender, EventArgs e)
@@ -132,7 +136,7 @@ namespace Terraria.ModLoader.Setup
 				if (!task.ConfigurationDialog())
 					return;
 
-				if (!Program.SuppressWarnings.Get() && !task.StartupWarning())
+				if (!Settings.Default.SuppressWarnings && !task.StartupWarning())
 					return;
 
 				try
@@ -153,7 +157,7 @@ namespace Terraria.ModLoader.Setup
 					return;
 				}
 
-				if ((task.Failed() || task.Warnings() && !Program.SuppressWarnings.Get()))
+				if ((task.Failed() || task.Warnings() && !Settings.Default.SuppressWarnings))
 					task.FinishedDialog();
 
 				Invoke(new Action(() =>
