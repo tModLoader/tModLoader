@@ -58,14 +58,14 @@ namespace Terraria.ModLoader.Setup
 		public static readonly Version clientVersion = new Version(Settings.Default.ClientVersion);
 		public static readonly Version serverVersion = new Version(Settings.Default.ServerVersion);
 
-		public string srcDir;
-		private ModuleDefinition clientModule;
-		private ModuleDefinition serverModule;
+		public readonly string srcDir;
+		public readonly bool serverOnly;
 
-		public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
+		public string FullSrcDir => Path.Combine(baseDir, srcDir);
 
-		public DecompileTask(ITaskInterface taskInterface, string srcDir) : base(taskInterface) {
+		public DecompileTask(ITaskInterface taskInterface, string srcDir, bool serverOnly = false) : base(taskInterface) {
 			this.srcDir = srcDir;
+			this.serverOnly = serverOnly;
 		}
 
 		public override bool ConfigurationDialog() {
@@ -88,37 +88,45 @@ namespace Terraria.ModLoader.Setup
 			if (Directory.Exists(FullSrcDir))
 				Directory.Delete(FullSrcDir, true);
 
-			var resolver = new EmbeddedAssemblyResolver();
-			var readParams = new ReaderParameters() { AssemblyResolver = resolver };
-
-			taskInterface.CancellationToken().ThrowIfCancellationRequested();
-			taskInterface.SetStatus("Loading Terraria.exe");
-			clientModule = ModuleDefinition.ReadModule(TerrariaPath, readParams);
-
-			taskInterface.CancellationToken().ThrowIfCancellationRequested();
-			taskInterface.SetStatus("Loading TerrariaServer.exe");
-			serverModule = ModuleDefinition.ReadModule(TerrariaServerPath, readParams);
-
-			resolver.baseModule = clientModule;
-
-			VersionCheck(clientModule.Assembly, clientVersion);
-			VersionCheck(serverModule.Assembly, serverVersion);
-
 			var options = new DecompilationOptions {
 				FullDecompilation = true,
 				CancellationToken = taskInterface.CancellationToken(),
 				SaveAsProjectDirectory = FullSrcDir
 			};
 
-			var clientSources = GetCodeFiles(clientModule, options).ToList();
+			var items = new List<WorkItem>();
+
+			var serverModule = ReadModule(TerrariaServerPath, serverVersion);
 			var serverSources = GetCodeFiles(serverModule, options).ToList();
-			var clientResources = GetResourceFiles(clientModule, options).ToList();
 			var serverResources = GetResourceFiles(serverModule, options).ToList();
 
-			var sources = CombineFiles(clientSources, serverSources, src => src.Key);
-			var resources = CombineFiles(clientResources, serverResources, res => res.Item1);
+			var sources = serverSources;
+			var resources = serverResources;
+			var infoModule = serverModule;
+			if (!serverOnly) {
+				var clientModule = !serverOnly ? ReadModule(TerrariaPath, clientVersion) : null;
+				var clientSources = GetCodeFiles(clientModule, options).ToList();
+				var clientResources = GetResourceFiles(clientModule, options).ToList();
 
-			var items = new List<WorkItem>();
+				sources = CombineFiles(clientSources, sources, src => src.Key);
+				resources = CombineFiles(clientResources, resources, res => res.Item1);
+				infoModule = clientModule;
+
+				items.Add(new WorkItem("Writing Terraria" + lang.ProjectFileExtension,
+					() => WriteProjectFile(clientModule, clientGuid, clientSources, clientResources, options)));
+
+				items.Add(new WorkItem("Writing Terraria" + lang.ProjectFileExtension + ".user",
+					() => WriteProjectUserFile(clientModule, SteamDir, options)));
+			}
+
+			items.Add(new WorkItem("Writing TerrariaServer"+lang.ProjectFileExtension,
+				() => WriteProjectFile(serverModule, serverGuid, serverSources, serverResources, options)));
+
+			items.Add(new WorkItem("Writing TerrariaServer"+lang.ProjectFileExtension+".user",
+				() => WriteProjectUserFile(serverModule, SteamDir, options)));
+			
+			items.Add(new WorkItem("Writing Assembly Info",
+				() => WriteAssemblyInfo(infoModule, options)));
 			
 			items.AddRange(sources.Select(src => new WorkItem(
 				"Decompiling: "+src.Key, () => DecompileSourceFile(src, options))));
@@ -126,27 +134,20 @@ namespace Terraria.ModLoader.Setup
 			items.AddRange(resources.Select(res => new WorkItem(
 				"Extracting: " + res.Item1, () => ExtractResource(res, options))));
 			
-			items.Add(new WorkItem("Writing Assembly Info",
-				() => WriteAssemblyInfo(clientModule, options)));
-			
-			items.Add(new WorkItem("Writing Terraria"+lang.ProjectFileExtension,
-				() => WriteProjectFile(clientModule, clientGuid, clientSources, clientResources, options)));
-
-			items.Add(new WorkItem("Writing TerrariaServer"+lang.ProjectFileExtension,
-				() => WriteProjectFile(serverModule, serverGuid, serverSources, serverResources, options)));
-			
-			items.Add(new WorkItem("Writing Terraria"+lang.ProjectFileExtension+".user",
-				() => WriteProjectUserFile(clientModule, SteamDir, options)));
-
-			items.Add(new WorkItem("Writing TerrariaServer"+lang.ProjectFileExtension+".user",
-				() => WriteProjectUserFile(serverModule, SteamDir, options)));
-			
 			ExecuteParallel(items, maxDegree: Settings.Default.SingleDecompileThread ? 1 : 0);
 		}
 
-		private void VersionCheck(AssemblyDefinition assembly, Version version) {
-			if (assembly.Name.Version != version)
-				throw new Exception($"{assembly.Name.Name} version {assembly.Name.Version}. Expected {version}");
+		protected ModuleDefinition ReadModule(string modulePath, Version version) {
+			taskInterface.SetStatus("Loading "+Path.GetFileName(modulePath));
+			var resolver = new EmbeddedAssemblyResolver();
+			var module = ModuleDefinition.ReadModule(modulePath, 
+				new ReaderParameters { AssemblyResolver = resolver});
+			resolver.baseModule = module;
+			
+			if (module.Assembly.Name.Version != version)
+				throw new Exception($"{module.Assembly.Name.Name} version {module.Assembly.Name.Version}. Expected {version}");
+
+			return module;
 		}
 
 #region ReflectedMethods

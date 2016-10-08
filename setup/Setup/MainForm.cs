@@ -28,7 +28,6 @@ namespace Terraria.ModLoader.Setup
 			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
 			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
 			taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
-			taskButtons[buttonFormat] = () => new FormatTask(this, FormatTask.tModLoaderFormat);
 
 			taskButtons[buttonRegenSource] = () =>
 				new RegenSourceTask(this, new[] { buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
@@ -109,6 +108,14 @@ namespace Terraria.ModLoader.Setup
 			Settings.Default.TerrariaDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.tModLoaderDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.Save();
+		}
+
+		private void menuItemDecompileServer_Click(object sender, EventArgs e) {
+			RunTask(new DecompileTask(this, "src/decompiled_server", true));
+		}
+
+		private void menuItemFormatCode_Click(object sender, EventArgs e) {
+			RunTask(new FormatTask(this, FormatTask.tModLoaderFormat));
 		}
 
 		private void buttonTask_Click(object sender, EventArgs e)
