@@ -89,22 +89,21 @@
 +    </Otherwise>
 +  </Choose>
    <ItemGroup>
+-    <Reference Include="Microsoft.Xna.Framework.Game" />
 +    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System.Windows.Forms" />
--    <Reference Include="Microsoft.Xna.Framework.Game" />
 -    <Reference Include="Microsoft.Xna.Framework" />
+-    <Reference Include="Microsoft.Xna.Framework.Graphics" />
 +    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
 +    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System" />
--    <Reference Include="Microsoft.Xna.Framework.Graphics" />
+     <Reference Include="Steamworks.NET" />
+     <Reference Include="System.Drawing" />
+     <Reference Include="System.Core" />
+-    <Reference Include="Microsoft.Xna.Framework.Xact" />
 +    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-+    <Reference Include="Steamworks.NET" />
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="Ionic.Zip.CF" />
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
--    <Reference Include="Steamworks.NET" />
--    <Reference Include="Microsoft.Xna.Framework.Xact" />
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
