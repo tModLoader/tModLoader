@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UICharacterListItem.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UICharacterListItem.cs
-@@ -1,14 +_,16 @@
+@@ -1,8 +_,10 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using System;
@@ -11,13 +11,6 @@
  using Terraria.Social;
  using Terraria.UI;
  
- namespace Terraria.GameContent.UI.Elements
- {
--	internal class UICharacterListItem : UIPanel
-+	public class UICharacterListItem : UIPanel
- 	{
- 		private PlayerFileData _data;
- 		private Texture2D _dividerTexture;
 @@ -22,6 +_,7 @@
  		private Texture2D _buttonFavoriteInactiveTexture;
  		private Texture2D _buttonPlayTexture;

@@ -1,14 +1,5 @@
 --- src/Terraria\Terraria.Graphics.Effects\Filter.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\Filter.cs
-@@ -4,7 +_,7 @@
- 
- namespace Terraria.Graphics.Effects
- {
--	internal class Filter : GameEffect
-+	public class Filter : GameEffect
- 	{
- 		public bool Active;
- 		private ScreenShaderData _shader;
 @@ -31,14 +_,14 @@
  			return this._shader;
  		}

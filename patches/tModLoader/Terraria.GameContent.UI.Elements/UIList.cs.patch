@@ -1,14 +1,5 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIList.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIList.cs
-@@ -6,7 +_,7 @@
- 
- namespace Terraria.GameContent.UI.Elements
- {
--	internal class UIList : UIElement
-+	public class UIList : UIElement
- 	{
- 		public delegate bool ElementSearchMethod(UIElement element);
- 
 @@ -33,7 +_,7 @@
  			}
  		}

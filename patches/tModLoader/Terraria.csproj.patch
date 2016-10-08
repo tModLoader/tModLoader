@@ -1,93 +1,53 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -27,8 +_,8 @@
-     <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
-+    <OutputPath>bin\x86\WindowsServerDebug\</OutputPath>
-     <DefineConstants>DEBUG;SERVER; WINDOWS</DefineConstants>
--    <OutputPath>bin\x86\WindowsServerDebug\</OutputPath>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
-     <OutputPath>bin\x86\MacRelease\</OutputPath>
-@@ -46,20 +_,9 @@
+@@ -46,11 +_,15 @@
      <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
      <DefineConstants>SERVER; LINUX</DefineConstants>
    </PropertyGroup>
--  <Choose>
--    <When Condition="$(DefineConstants.Contains('DEBUG'))">
--      <PropertyGroup>
--        <Optimize>false</Optimize>
--        <DebugType>full</DebugType>
--      </PropertyGroup>
--    </When>
--    <Otherwise>
--      <PropertyGroup>
--        <Optimize>true</Optimize>
--        <DebugType>pdbonly</DebugType>
--      </PropertyGroup>
--    </Otherwise>
--  </Choose>
 +  <PropertyGroup>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +  </PropertyGroup>
    <Choose>
-     <When Condition="$(DefineConstants.Contains('CLIENT'))">
+     <When Condition="$(DefineConstants.Contains('DEBUG'))">
        <PropertyGroup>
-@@ -72,16 +_,42 @@
-       </PropertyGroup>
-     </Otherwise>
-   </Choose>
-+  <Choose>
-+    <When Condition="$(DefineConstants.Contains('DEBUG'))">
-+      <PropertyGroup>
-+        <Optimize>false</Optimize>
-+        <DebugType>full</DebugType>
+         <Optimize>false</Optimize>
+         <DebugType>full</DebugType>
 +        <OutputType>Exe</OutputType>
-+      </PropertyGroup>
-+    </When>
-+    <Otherwise>
-+      <PropertyGroup>
-+        <Optimize>true</Optimize>
-+        <DebugType>pdbonly</DebugType>
-+      </PropertyGroup>
-+    </Otherwise>
-+  </Choose>
-   <ItemGroup>
+       </PropertyGroup>
+     </When>
+     <Otherwise>
+@@ -78,7 +_,9 @@
+     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="System" />
+-    <Reference Include="Steamworks.NET">
++    <Reference Include="System.XML" />
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86">
++      <SpecificVersion>False</SpecificVersion>
+       <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
+     </Reference>
+     <Reference Include="System.Drawing" />
+@@ -88,8 +_,18 @@
+       <SpecificVersion>False</SpecificVersion>
+       <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
+     </Reference>
 -    <Reference Include="Ionic.Zip.CF">
 -      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
-+    <Reference Include="FNA" Condition="!$(DefineConstants.Contains('WINDOWS'))">
-+      <HintPath>..\..\references\FNA.dll</HintPath>
-+    </Reference>
 +    <Reference Include="Ionic.Zip.Reduced">
 +      <SpecificVersion>False</SpecificVersion>
 +      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
-     </Reference>
-     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++    </Reference>
++    <Reference Include="FNA" Condition="!$(DefineConstants.Contains('WINDOWS'))">
++      <HintPath>..\..\references\FNA.dll</HintPath>
++    </Reference>
 +    <Reference Include="Mono.Cecil">
 +      <HintPath>..\..\references\Mono.Cecil.dll</HintPath>
 +    </Reference>
 +    <Reference Include="MP3Sharp">
 +      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
-+    </Reference>
-     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-       <SpecificVersion>False</SpecificVersion>
-       <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
--    <Reference Include="Steamworks.NET">
-+    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86">
-+      <SpecificVersion>False</SpecificVersion>
-       <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
-     </Reference>
-     <Reference Include="System.Windows.Forms" />
-@@ -91,6 +_,7 @@
-     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
-+    <Reference Include="System.XML" />
      <Reference Include="WindowsBase" />
    </ItemGroup>
-   <ItemGroup>
 @@ -286,6 +_,7 @@
      <Compile Include="Terraria.ID\ItemID.cs" />
      <Compile Include="Terraria.ID\MessageID.cs" />
@@ -244,7 +204,6 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -277,4 +236,5 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
+

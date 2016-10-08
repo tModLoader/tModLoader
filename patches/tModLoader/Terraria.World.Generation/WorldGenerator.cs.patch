@@ -1,15 +1,8 @@
 --- src/Terraria\Terraria.World.Generation\WorldGenerator.cs
 +++ src/tModLoader\Terraria.World.Generation\WorldGenerator.cs
-@@ -2,13 +_,14 @@
- using System.Collections.Generic;
- using System.Diagnostics;
- using Terraria.GameContent.UI.States;
-+using Terraria.ModLoader;
- 
- namespace Terraria.World.Generation
+@@ -7,8 +_,8 @@
  {
--	internal class WorldGenerator
-+	public class WorldGenerator
+ 	public class WorldGenerator
  	{
 -		private List<GenPass> _passes = new List<GenPass>();
 -		private float _totalLoadWeight;

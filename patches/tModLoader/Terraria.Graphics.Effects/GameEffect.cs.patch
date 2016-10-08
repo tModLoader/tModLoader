@@ -1,14 +1,5 @@
 --- src/Terraria\Terraria.Graphics.Effects\GameEffect.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\GameEffect.cs
-@@ -3,7 +_,7 @@
- 
- namespace Terraria.Graphics.Effects
- {
--	internal abstract class GameEffect
-+	public abstract class GameEffect
- 	{
- 		public float Opacity;
- 		protected bool _isLoaded;
 @@ -39,8 +_,8 @@
  		{
  		}
