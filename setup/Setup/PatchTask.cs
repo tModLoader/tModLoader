@@ -14,25 +14,25 @@ namespace Terraria.ModLoader.Setup
 		public readonly string baseDir;
 		public readonly string srcDir;
 		public readonly string patchDir;
-        public readonly ProgramSetting<DateTime> cutoff;
-        public readonly CSharpFormattingOptions format;
+		public readonly ProgramSetting<DateTime> cutoff;
+		public readonly CSharpFormattingOptions format;
 		private int warnings;
 		private int failures;
 		private StreamWriter logFile;
 
 		public string FullBaseDir => Path.Combine(Program.baseDir, baseDir);
-	    public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
-	    public string FullPatchDir => Path.Combine(Program.baseDir, patchDir);
+		public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
+		public string FullPatchDir => Path.Combine(Program.baseDir, patchDir);
 
-	    public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir,
-            ProgramSetting<DateTime> cutoff, CSharpFormattingOptions format = null) : base(taskInterface)
+		public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir,
+			ProgramSetting<DateTime> cutoff, CSharpFormattingOptions format = null) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
 			this.srcDir = srcDir;
 			this.patchDir = patchDir;
 			this.format = format;
-            this.cutoff = cutoff;
-        }
+			this.cutoff = cutoff;
+		}
 
 		public override bool StartupWarning()
 		{
@@ -52,10 +52,10 @@ namespace Terraria.ModLoader.Setup
 			var baseFiles = Directory.EnumerateFiles(FullBaseDir, "*", SearchOption.AllDirectories);
 			var patchFiles = Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories);
 
-		    var removedFileList = Path.Combine(FullPatchDir, DiffTask.RemovedFileList);
-            var removedFiles = File.Exists(removedFileList) ? new HashSet<string>(File.ReadAllLines(removedFileList)) : new HashSet<string>();
+			var removedFileList = Path.Combine(FullPatchDir, DiffTask.RemovedFileList);
+			var removedFiles = File.Exists(removedFileList) ? new HashSet<string>(File.ReadAllLines(removedFileList)) : new HashSet<string>();
 
-            var copyItems = new List<WorkItem>();
+			var copyItems = new List<WorkItem>();
 			var patchItems = new List<WorkItem>();
 			var formatItems = new List<WorkItem>();
 
@@ -94,10 +94,10 @@ namespace Terraria.ModLoader.Setup
 				ExecuteParallel(patchItems, false);
 			}
 			finally {
-			    logFile?.Close();
+				logFile?.Close();
 			}
 
-		    cutoff.Set(DateTime.Now);
+			cutoff.Set(DateTime.Now);
 		}
 
 		public override bool Failed()
@@ -113,7 +113,7 @@ namespace Terraria.ModLoader.Setup
 		public override void FinishedDialog()
 		{
 			MessageBox.Show(
-			    $"Patches applied with {failures} failures and {warnings} warnings.\nSee /logs/patch.log for details",
+				$"Patches applied with {failures} failures and {warnings} warnings.\nSee /logs/patch.log for details",
 				"Patch Results", MessageBoxButtons.OK, Failed() ? MessageBoxIcon.Error : MessageBoxIcon.Warning);
 		}
 
@@ -127,8 +127,8 @@ namespace Terraria.ModLoader.Setup
 				return;
 			}
 
-		    var patchText = File.ReadAllText(Path.Combine(FullPatchDir, relPath));
-		    patchText = PreparePatch(patchText);
+			var patchText = File.ReadAllText(Path.Combine(FullPatchDir, relPath));
+			patchText = PreparePatch(patchText);
 
 			CallPatch(patchText, Path.Combine(srcDir, patchFullName));
 
@@ -140,24 +140,24 @@ namespace Terraria.ModLoader.Setup
 				File.Delete(fuzzFile);
 		}
 
-        //generates destination hunk offsets and enforces windows line endings
-	    private static string PreparePatch(string patchText) {
-            var r = new Regex(DiffTask.HunkOffsetRegex);
-            var lines = patchText.Split('\n');
-	        int delta = 0;
-	        for (int i = 0; i < lines.Length; i++) {
-	            lines[i] = lines[i].TrimEnd();
-	            if (lines[i].StartsWith("@@")) {
-	                var m = r.Match(lines[i]);
-	                var hunkOffset = int.Parse(m.Groups[1].Value) + delta;
-	                delta += int.Parse(m.Groups[4].Value) - int.Parse(m.Groups[2].Value);
-	                lines[i] = m.Result($"@@ -$1,$2 +{hunkOffset},$4 @@");
-	            }
-	        }
-	        return string.Join(Environment.NewLine, lines);
-	    }
+		//generates destination hunk offsets and enforces windows line endings
+		private static string PreparePatch(string patchText) {
+			var r = new Regex(DiffTask.HunkOffsetRegex);
+			var lines = patchText.Split('\n');
+			int delta = 0;
+			for (int i = 0; i < lines.Length; i++) {
+				lines[i] = lines[i].TrimEnd();
+				if (lines[i].StartsWith("@@")) {
+					var m = r.Match(lines[i]);
+					var hunkOffset = int.Parse(m.Groups[1].Value) + delta;
+					delta += int.Parse(m.Groups[4].Value) - int.Parse(m.Groups[2].Value);
+					lines[i] = m.Result($"@@ -$1,$2 +{hunkOffset},$4 @@");
+				}
+			}
+			return string.Join(Environment.NewLine, lines);
+		}
 
-        private void Log(string text)
+		private void Log(string text)
 		{
 			lock (logFile)
 			{
@@ -171,11 +171,11 @@ namespace Terraria.ModLoader.Setup
 			var error = new StringBuilder();
 			var log = new StringBuilder();
 			Program.RunCmd(Program.toolsDir, Path.Combine(Program.toolsDir, "applydiff.exe"),
-			    $"-u -N -p0 -d {Program.baseDir} {srcFile}",
+				$"-u -N -p0 -d {Program.baseDir} {srcFile}",
 				s => { output.Append(s); lock(log) log.Append(s); },
 				s => { error.Append(s); lock(log) log.Append(s); },
-                patchText
-            );
+				patchText
+			);
 
 			Log(log.ToString());
 

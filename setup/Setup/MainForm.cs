@@ -27,12 +27,12 @@ namespace Terraria.ModLoader.Setup
 			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
 			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
-            taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
-            taskButtons[buttonFormat] = () => new FormatTask(this, FormatTask.tModLoaderFormat);
+			taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
+			taskButtons[buttonFormat] = () => new FormatTask(this, FormatTask.tModLoaderFormat);
 
-            taskButtons[buttonRegenSource] = () =>
-                new RegenSourceTask(this, new[] { buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
-                    .Select(b => taskButtons[b]()).ToArray());
+			taskButtons[buttonRegenSource] = () =>
+				new RegenSourceTask(this, new[] { buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+					.Select(b => taskButtons[b]()).ToArray());
 
 			taskButtons[buttonSetup] = () =>
 				new SetupTask(this, new[] { buttonDecompile, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
