@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 using Terraria.GameInput;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -32,6 +34,10 @@ namespace Terraria.ModLoader
 		public virtual Matrix ModifyTransformMatrix(Matrix Transform)
 		{
 			return Transform;
+		}
+
+		public virtual void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+		{
 		}
 
 		public virtual void PostDrawInterface(SpriteBatch spriteBatch)
@@ -105,6 +111,14 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.PostDrawFullscreenMap(ref mouseText);
+			}
+		}
+
+		internal static void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.ModifyInterfaceLayers(layers);
 			}
 		}
 
