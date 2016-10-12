@@ -229,7 +229,6 @@ namespace Terraria.ModLoader.IO
 			{
 				chest = Chest.CreateChest(x, y);
 			}
-            ErrorLogger.ClearLog();
 			if (chest >= 0)
 			{
 				PlayerIO.ReadInventory(Main.chest[chest].item, reader, true);
