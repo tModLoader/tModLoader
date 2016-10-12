@@ -21,7 +21,7 @@ namespace Terraria.ModLoader
 	public static class ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
-		public static readonly Version version = new Version(0, 8, 3, 4);
+		public static readonly Version version = new Version(0, 8, 3, 5);
 		public static readonly string versionedName = "tModLoader v" + version;
 #if WINDOWS
 		public const bool windows = true;
