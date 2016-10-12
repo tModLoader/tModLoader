@@ -86,6 +86,37 @@
  		{
  			get
  			{
+@@ -1497,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		public bool LiquidPlace(Tile checkTile)
++		public bool LiquidPlace(Tile checkTile, bool checkStay = false)
+ 		{
+ 			if (checkTile == null)
+ 			{
+@@ -1509,6 +_,10 @@
+ 				{
+ 					case 0:
+ 					case 2:
++						if (checkStay && !this.WaterDeath)
++						{
++							break;
++						}
+ 						if (this.WaterPlacement == LiquidPlacement.NotAllowed)
+ 						{
+ 							return false;
+@@ -1519,6 +_,10 @@
+ 						}
+ 						break;
+ 					case 1:
++						if (checkStay && !this.LavaDeath)
++						{
++							break;
++						}
+ 						if (this.LavaPlacement == LiquidPlacement.NotAllowed)
+ 						{
+ 							return false;
 @@ -1655,14 +_,14 @@
  			TileObjectData.newTile = new TileObjectData(TileObjectData._baseObject);
  		}
