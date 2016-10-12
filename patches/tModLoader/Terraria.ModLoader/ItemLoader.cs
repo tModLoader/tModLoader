@@ -86,9 +86,9 @@ namespace Terraria.ModLoader
 		private static Func<Item, Player, bool>[] HookGrabStyle;
 		private static Func<Item, Player, bool>[] HookOnPickup;
 		private static Func<Item, Color, Color?>[] HookGetAlpha;
-		private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale);
+		private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 		private static DelegatePreDrawInWorld[] HookPreDrawInWorld;
-		private static Action<Item, SpriteBatch, Color, Color, float, float>[] HookPostDrawInWorld;
+		private static Action<Item, SpriteBatch, Color, Color, float, float, int>[] HookPostDrawInWorld;
 		private static Func<Item, SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float, bool>[] HookPreDrawInInventory;
 		private static Action<Item, SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float>[] HookPostDrawInInventory;
 		private static Func<int, Vector2?>[] HookHoldoutOffset;
@@ -1202,16 +1202,16 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawItem after ItemSlot.GetItemLight call
 		//  if(!ItemLoader.PreDrawInWorld(item, Main.spriteBatch, color, alpha, ref rotation, ref scale)) { return; }
-		public static bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale)
+		public static bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
 			bool flag = true;
-			if (item.modItem != null && !item.modItem.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale))
+			if (item.modItem != null && !item.modItem.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI))
 			{
 				flag = false;
 			}
 			foreach (var hook in HookPreDrawInWorld)
 			{
-				if (!hook(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale))
+				if (!hook(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI))
 				{
 					flag = false;
 				}
@@ -1220,13 +1220,13 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawItem before every return (including for PreDrawInWorld) and at end of method call
 		//  ItemLoader.PostDrawInWorld(item, Main.spriteBatch, color, alpha, rotation, scale)
-		public static void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale)
+		public static void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
-			item.modItem?.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale);
+			item.modItem?.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 
 			foreach (var hook in HookPostDrawInWorld)
 			{
-				hook(item, spriteBatch, lightColor, alphaColor, rotation, scale);
+				hook(item, spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 			}
 		}
 		//in Terraria.UI.ItemSlot.Draw place item-drawing code inside if statement
