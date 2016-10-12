@@ -264,6 +264,21 @@ namespace Terraria.ModLoader
 
 		public void AddItem(string name, ModItem item, string texture)
 		{
+			Type colorClass = typeof(Microsoft.Xna.Framework.Color);
+			Type floatClass = typeof(float);
+			Type floatRefClass = floatClass.MakeByRefType();
+			if (item.GetType().GetMethod("PreDrawInWorld", new Type[] {
+				typeof(SpriteBatch), colorClass, colorClass, floatRefClass, floatRefClass,
+				}) != null)
+			{
+				throw new OldHookException("ModItem.PreDrawInWorld");
+			}
+			if (item.GetType().GetMethod("PostDrawInWorld", new Type[] {
+				typeof(SpriteBatch), colorClass, colorClass, floatClass, floatClass
+				}) != null)
+			{
+				throw new OldHookException("ModItem.PostDrawInWorld");
+			}
 			int id = ItemLoader.ReserveItemID();
 			item.item.name = name;
 			item.item.ResetStats(id);
@@ -302,6 +317,21 @@ namespace Terraria.ModLoader
 
 		public void AddGlobalItem(string name, GlobalItem globalItem)
 		{
+			Type colorClass = typeof(Microsoft.Xna.Framework.Color);
+			Type floatClass = typeof(float);
+			Type floatRefClass = floatClass.MakeByRefType();
+			if (globalItem.GetType().GetMethod("PreDrawInWorld", new Type[] {
+				typeof(Item), typeof(SpriteBatch), colorClass, colorClass, floatRefClass, floatRefClass
+				}) != null)
+			{
+				throw new OldHookException("GlobalItem.PreDrawInWorld");
+			}
+			if (globalItem.GetType().GetMethod("PostDrawInWorld", new Type[] {
+				typeof(Item), typeof(SpriteBatch), colorClass, colorClass, floatClass, floatClass
+				}) != null)
+			{
+				throw new OldHookException("GlobalItem.PostDrawInWorld");
+			}
 			Type type = globalItem.GetType();
 			globalItem.mod = this;
 			globalItem.Name = name;
