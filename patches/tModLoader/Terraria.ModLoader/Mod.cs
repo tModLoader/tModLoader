@@ -10,6 +10,7 @@ using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -30,6 +31,7 @@ namespace Terraria.ModLoader
 
 		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+		internal readonly IDictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
@@ -123,7 +125,27 @@ namespace Terraria.ModLoader
 								sounds[mp3Path] = null;
 							}
 							break;
-
+						case ".xnb":
+							string xnbPath = Path.ChangeExtension(path, null);
+							if (xnbPath.StartsWith("Fonts/"))
+							{
+								string fontFilenameNoExtension = Name + "_" + xnbPath.Replace('/', '_') + "_" + Version;
+								string fontFilename = fontFilenameNoExtension + ".xnb";
+								FontCacheIO.DeleteIfOlder(File.path, fontFilename);
+								if (!FontCacheIO.FontCacheAvailable(fontFilename))
+								{
+									FileUtilities.WriteAllBytes(FontCacheIO.FontCachePath + Path.DirectorySeparatorChar + fontFilename, data, false);
+								}
+								try
+								{
+									fonts[xnbPath] = Main.instance.Content.Load<SpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
+								}
+								catch
+								{
+									fonts[xnbPath] = null;
+								}
+							}
+							break;
 					}
 				}
 			}
@@ -1680,6 +1702,20 @@ namespace Terraria.ModLoader
 		public bool SoundExists(string name)
 		{
 			return sounds.ContainsKey(name);
+		}
+
+		public SpriteFont GetFont(string name)
+		{
+			SpriteFont font;
+			if (!fonts.TryGetValue(name, out font))
+				throw new MissingResourceException(name);
+
+			return font;
+		}
+
+		public bool FontExists(string name)
+		{
+			return fonts.ContainsKey(name);
 		}
 
 		/// <summary>
