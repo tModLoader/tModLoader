@@ -10,6 +10,10 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using Microsoft.Xna.Framework.Graphics;
+using ExampleMod.UI;
+using Terraria.UI;
+using Terraria.DataStructures;
 
 namespace ExampleMod
 {
@@ -18,6 +22,9 @@ namespace ExampleMod
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
 		private double pressedRandomBuffHotKeyTime;
+		public static SpriteFont exampleFont;
+		private UserInterface exampleUserInterface;
+		internal ExampleUI exampleUI;
 
 		public ExampleMod()
 		{
@@ -54,6 +61,11 @@ namespace ExampleMod
 				SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
+				exampleFont = GetFont("Fonts/ExampleFont");
+				exampleUI = new ExampleUI();
+				exampleUI.Activate();
+				exampleUserInterface = new UserInterface();
+				exampleUserInterface.SetState(exampleUI);
 			}
 		}
 
@@ -235,6 +247,10 @@ namespace ExampleMod
 			else if (command == "sound")
 			{
 				SoundCommand(args);
+			}
+			else if (command == "coin")
+			{
+				ExampleUI.visible = true;
 			}
 		}
 
@@ -457,6 +473,27 @@ namespace ExampleMod
 			Main.PlaySound(type, -1, -1, style);
 		}
 
+		public override void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+		{
+			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+			if (MouseTextIndex != -1)
+			{
+				layers.Insert(MouseTextIndex, new MethodSequenceListItem(
+					"ExampleMod: Coins Per Minute",
+					delegate
+					{
+						if (ExampleUI.visible)
+						{
+							exampleUserInterface.Update(Main._drawInterfaceGameTime);
+							exampleUI.Draw(Main.spriteBatch);
+						}
+						return true;
+					},
+					null)
+				);
+			}
+		}
+
 		//spawning helper methods imported from my tAPI mod
 		public static bool NoInvasion(NPCSpawnInfo spawnInfo)
 		{
@@ -575,6 +612,22 @@ namespace ExampleMod
 		SpawnNPC,
 		PuritySpirit,
 		HeroLives
+	}
+
+	public static class ExampleModExtensions
+	{
+		public static int CountItem(this Player player, int type)
+		{
+			int count = 0;
+			for (int i = 0; i < 58; i++)
+			{
+				if (type == player.inventory[i].type && player.inventory[i].stack > 0)
+				{
+					count += player.inventory[i].stack;
+				}
+			}
+			return count;
+		}
 	}
 }
 

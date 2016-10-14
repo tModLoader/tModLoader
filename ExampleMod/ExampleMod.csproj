@@ -207,6 +207,7 @@
     <Compile Include="Tiles\ExampleChair.cs" />
     <Compile Include="Tiles\ExampleChest.cs" />
     <Compile Include="Tiles\ExampleClock.cs" />
+    <Compile Include="Tiles\ExampleCutTile.cs" />
     <Compile Include="Tiles\ExampleDoorClosed.cs" />
     <Compile Include="Tiles\ExampleDoorOpen.cs" />
     <Compile Include="Tiles\ExampleDresser.cs" />
@@ -221,6 +222,7 @@
     <Compile Include="Tiles\MonsterBanner.cs" />
     <Compile Include="Tiles\VoidMonolith.cs" />
     <Compile Include="Tiles\VoidSky.cs" />
+    <Compile Include="UI\ExampleUI.cs" />
     <Compile Include="Walls\ExampleWall.cs" />
     <Compile Include="Waters\ExampleWaterfallStyle.cs" />
     <Compile Include="Waters\ExampleWaterStyle.cs" />
