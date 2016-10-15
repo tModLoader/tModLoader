@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using ExampleMod.Items.Armor;
 
 namespace ExampleMod
 {
@@ -37,7 +38,8 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElementHead + k);
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
-			RegisterHotKey("Random Buff", "P");
+            AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
+            RegisterHotKey("Random Buff", "P");
 			if (!Main.dedServ)
 			{
 				//Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
