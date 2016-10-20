@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 		private static DelegateNumGrappleHooks[] HookNumGrappleHooks;
 		private delegate void DelegateGrappleRetreatSpeed(Projectile projectile, Player player, ref float speed);
 		private static DelegateGrappleRetreatSpeed[] HookGrappleRetreatSpeed;
-		private static Action<Projectile, int, List<int>, List<int>, List<int>>[] HookDrawBehind;
+		private static Action<Projectile, int, List<int>, List<int>, List<int>, List<int>>[] HookDrawBehind;
 
 		internal static int ReserveProjectileID()
 		{
@@ -657,13 +657,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles)
+		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int>drawCacheProjsOverWiresUI)
 		{
-			projectile.modProjectile?.DrawBehind(index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles);
+			projectile.modProjectile?.DrawBehind(index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
 
 			foreach (var hook in HookDrawBehind)
 			{
-				hook(projectile, index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles);
+				hook(projectile, index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
 			}
 		}
 	}

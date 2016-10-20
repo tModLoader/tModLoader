@@ -1703,7 +1703,7 @@
  							this.DrawCacheProjsBehindProjectiles.Add(i);
  						}
  					}
-+					ProjectileLoader.DrawBehind(Main.projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles);
++					ProjectileLoader.DrawBehind(Main.projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverWiresUI);
  				}
  			}
  		}
