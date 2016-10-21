@@ -93,6 +93,7 @@
     <Compile Include="Items\Armor\ExampleHelmet.cs" />
     <Compile Include="Items\Armor\ExampleHood.cs" />
     <Compile Include="Items\Armor\ExampleLeggings.cs" />
+    <Compile Include="Items\Armor\ExampleRobe.cs" />
     <Compile Include="Items\Armor\PuritySpiritMask.cs" />
     <Compile Include="Items\Banners\OctopusBanner.cs" />
     <Compile Include="Items\Banners\SarcophagusBanner.cs" />
