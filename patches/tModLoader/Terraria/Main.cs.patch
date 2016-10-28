@@ -1703,7 +1703,7 @@
  							this.DrawCacheProjsBehindProjectiles.Add(i);
  						}
  					}
-+					ProjectileLoader.DrawBehind(Main.projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles);
++					ProjectileLoader.DrawBehind(Main.projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverWiresUI);
  				}
  			}
  		}
@@ -2956,6 +2956,22 @@
  				}
  			}
  		}
+@@ -36575,6 +_,7 @@
+ 			{
+ 				return;
+ 			}
++			this._needToSetupDrawInterfaceLayers = false;
+ 			this._drawInterfaceLayers = new List<MethodSequenceListItem>();
+ 			List<MethodSequenceListItem> arg_5FE_0 = this._drawInterfaceLayers;
+ 			MethodSequenceListItem[] array = new MethodSequenceListItem[42];
+@@ -36787,6 +_,7 @@
+ 			{
+ 				current.Skip = false;
+ 			}
++			ModHooks.ModifyInterfaceLayers(list);
+ 			MethodSequenceListItem.ExecuteSequence(list);
+ 		}
+ 
 @@ -37052,6 +_,8 @@
  
  		private void DrawInterface_33_MouseText()

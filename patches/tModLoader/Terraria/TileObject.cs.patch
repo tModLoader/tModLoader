@@ -9,6 +9,15 @@
  		{
  			TileObjectData tileData = TileObjectData.GetTileData(type, style, 0);
  			objectData = TileObject.Empty;
+@@ -326,7 +_,7 @@
+ 						for (int k = 0; k < tileData2.Height; k++)
+ 						{
+ 							Tile tileSafely = Framing.GetTileSafely(num8 + j, num9 + k);
+-							bool flag2 = !tileData2.LiquidPlace(tileSafely);
++							bool flag2 = !tileData2.LiquidPlace(tileSafely, checkStay);
+ 							bool flag3 = false;
+ 							if (tileData2.AnchorWall)
+ 							{
 @@ -341,7 +_,7 @@
  								}
  							}

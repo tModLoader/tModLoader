@@ -93,6 +93,7 @@
     <Compile Include="Items\Armor\ExampleHelmet.cs" />
     <Compile Include="Items\Armor\ExampleHood.cs" />
     <Compile Include="Items\Armor\ExampleLeggings.cs" />
+    <Compile Include="Items\Armor\ExampleRobe.cs" />
     <Compile Include="Items\Armor\PuritySpiritMask.cs" />
     <Compile Include="Items\Banners\OctopusBanner.cs" />
     <Compile Include="Items\Banners\SarcophagusBanner.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Items\EquipMaterial.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
+    <Compile Include="Items\ExampleHook.cs" />
     <Compile Include="Items\ExampleItem.cs" />
     <Compile Include="Items\ExampleLightPet.cs" />
     <Compile Include="Items\ExamplePet.cs" />
@@ -207,6 +209,7 @@
     <Compile Include="Tiles\ExampleChair.cs" />
     <Compile Include="Tiles\ExampleChest.cs" />
     <Compile Include="Tiles\ExampleClock.cs" />
+    <Compile Include="Tiles\ExampleCutTile.cs" />
     <Compile Include="Tiles\ExampleDoorClosed.cs" />
     <Compile Include="Tiles\ExampleDoorOpen.cs" />
     <Compile Include="Tiles\ExampleDresser.cs" />
@@ -221,6 +224,7 @@
     <Compile Include="Tiles\MonsterBanner.cs" />
     <Compile Include="Tiles\VoidMonolith.cs" />
     <Compile Include="Tiles\VoidSky.cs" />
+    <Compile Include="UI\ExampleUI.cs" />
     <Compile Include="Walls\ExampleWall.cs" />
     <Compile Include="Waters\ExampleWaterfallStyle.cs" />
     <Compile Include="Waters\ExampleWaterStyle.cs" />

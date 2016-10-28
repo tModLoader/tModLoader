@@ -23,6 +23,7 @@ namespace Terraria.ModLoader.UI
 		public string timeStamp;
 		public int downloads;
 		private Texture2D dividerTexture;
+		private Texture2D innerPanelTexture;
 		private UIText modName;
 		UITextPanel button2;
 		public bool update = false;
@@ -43,6 +44,7 @@ namespace Terraria.ModLoader.UI
 			this.exists = exists;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
+			this.innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
 			this.Height.Set(90f, 0f);
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
@@ -131,6 +133,34 @@ namespace Terraria.ModLoader.UI
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
+			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 180, innerDimensions.Y + 45);
+			this.DrawPanel(spriteBatch, drawPos, 180f);
+			this.DrawTimeText(spriteBatch, drawPos + new Vector2(5f, 5f));
+		}
+
+		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
+		{
+			spriteBatch.Draw(this.innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this.innerPanelTexture.Height)), Color.White);
+			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, this.innerPanelTexture.Height)), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle?(new Rectangle(16, 0, 8, this.innerPanelTexture.Height)), Color.White);
+		}
+
+		private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos)
+		{
+			if (timeStamp == "0000-00-00 00:00:00")
+			{
+				return;
+			}
+			try
+			{
+				DateTime MyDateTime = DateTime.Parse(timeStamp);
+				string text = TimeHelper.HumanTimeSpanString(MyDateTime);
+				Utils.DrawBorderString(spriteBatch, "Updated: " + text, drawPos, Color.White, 1f, 0f, 0f, -1);
+			}
+			catch
+			{
+				return;
+			}
 		}
 
 		public override void MouseOver(UIMouseEvent evt)
@@ -257,6 +287,53 @@ namespace Terraria.ModLoader.UI
 				}
 			}
 			return 0;
+		}
+	}
+
+	class TimeHelper
+	{
+		const int SECOND = 1;
+		const int MINUTE = 60 * SECOND;
+		const int HOUR = 60 * MINUTE;
+		const int DAY = 24 * HOUR;
+		const int MONTH = 30 * DAY;
+
+		public static string HumanTimeSpanString(DateTime yourDate)
+		{
+			var ts = new TimeSpan(DateTime.UtcNow.Ticks - yourDate.Ticks);
+			double delta = Math.Abs(ts.TotalSeconds);
+
+			if (delta < 1 * MINUTE)
+				return ts.Seconds == 1 ? "1 second ago" : ts.Seconds + " seconds ago";
+
+			if (delta < 2 * MINUTE)
+				return "1 minute ago";
+
+			if (delta < 45 * MINUTE)
+				return ts.Minutes + " minutes ago";
+
+			if (delta < 90 * MINUTE)
+				return "1 hour ago";
+
+			if (delta < 24 * HOUR)
+				return ts.Hours + " hours ago";
+
+			if (delta < 48 * HOUR)
+				return "1 day ago";
+
+			if (delta < 30 * DAY)
+				return ts.Days + " days ago";
+
+			if (delta < 12 * MONTH)
+			{
+				int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
+				return months <= 1 ? "1 month ago" : months + " mnths ago";
+			}
+			else
+			{
+				int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
+				return years <= 1 ? "1 year ago" : years + " years ago";
+			}
 		}
 	}
 }

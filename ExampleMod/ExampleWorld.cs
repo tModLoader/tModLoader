@@ -37,45 +37,59 @@ namespace ExampleMod
 		public override void SaveCustomData(BinaryWriter writer)
 		{
 			writer.Write(saveVersion);
-			byte flags = 0;
-			if (downedAbomination)
-			{
-				flags |= 1;
-			}
-			if (downedPuritySpirit)
-			{
-				flags |= 2;
-			}
+			BitsByte flags = new BitsByte();
+			flags[0] = downedAbomination;
+			flags[1] = downedPuritySpirit;
 			writer.Write(flags);
+
+			//If you prefer, you can use the BitsByte constructor approach as well.
+			//writer.Write(saveVersion);
+			//BitsByte flags = new BitsByte(downedAbomination, downedPuritySpirit);
+			//writer.Write(flags);
+
+			// This is another way to do the same thing, but with bitmasks and the bitwise OR assignment operator (the |=)
+			// Note that 1 and 2 here are bit masks. The next values in the pattern are 4,8,16,32,64,128. If you require more than 8 flags, make another byte.
+			//writer.Write(saveVersion);
+			//byte flags = 0;
+			//if (downedAbomination)
+			//{
+			//	flags |= 1;
+			//}
+			//if (downedPuritySpirit)
+			//{
+			//	flags |= 2;
+			//}
+			//writer.Write(flags);
 		}
 
 		public override void LoadCustomData(BinaryReader reader)
 		{
-			reader.ReadInt32();
-			byte flags = reader.ReadByte();
-			downedAbomination = ((flags & 1) == 1);
-			downedPuritySpirit = ((flags & 2) == 2);
+			int loadVersion = reader.ReadInt32();
+			if (loadVersion == 0)
+			{
+				BitsByte flags = reader.ReadByte();
+				downedAbomination = flags[0];
+				downedPuritySpirit = flags[1];
+			}
+			else
+			{
+				ErrorLogger.Log("ExampleMod: Unknown loadVersion: " + loadVersion);
+			}
 		}
 
 		public override void SendCustomData(BinaryWriter writer)
 		{
-			byte flags = 0;
-			if (downedAbomination)
-			{
-				flags |= 1;
-			}
-			if (downedPuritySpirit)
-			{
-				flags |= 2;
-			}
+			BitsByte flags = new BitsByte();
+			flags[0] = downedAbomination;
+			flags[1] = downedPuritySpirit;
 			writer.Write(flags);
 		}
 
 		public override void ReceiveCustomData(BinaryReader reader)
 		{
-			byte flags = reader.ReadByte();
-			downedAbomination = ((flags & 1) == 1);
-			downedPuritySpirit = ((flags & 2) == 2);
+			BitsByte flags = reader.ReadByte();
+			downedAbomination = flags[0];
+			downedPuritySpirit = flags[1];
 		}
 
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)

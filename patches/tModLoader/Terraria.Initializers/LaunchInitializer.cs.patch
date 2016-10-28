@@ -1,0 +1,18 @@
+--- src/Terraria\Terraria.Initializers\LaunchInitializer.cs
++++ src/tModLoader\Terraria.Initializers\LaunchInitializer.cs
+@@ -164,6 +_,14 @@
+ 			{
+ 				game.NewMOTD(newMOTD);
+ 			}
++			string modPath;
++			if ((modPath = LaunchInitializer.TryParameter(new string[]
++				{
++					"-modpath"
++				})) != null)
++			{
++				ModLoader.ModLoader.modPath = modPath;
++			}
+ 			string banFilePath;
+ 			if ((banFilePath = LaunchInitializer.TryParameter(new string[]
+ 				{
+
