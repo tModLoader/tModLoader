@@ -56,7 +56,12 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		public virtual bool PreKill(Projectile projectile, int timeLeft)
+        public virtual bool? CanCutTiles(Projectile projectile)
+        {
+            return null;
+        }
+
+        public virtual bool PreKill(Projectile projectile, int timeLeft)
 		{
 			return true;
 		}
