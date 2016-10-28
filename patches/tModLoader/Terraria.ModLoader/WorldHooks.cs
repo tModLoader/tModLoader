@@ -53,6 +53,7 @@ namespace Terraria.ModLoader
 		private static bool SendCustomData(ModWorld modWorld, BinaryWriter writer)
 		{
 			byte[] data;
+            modWorld.PreSaveCustomData();
 			using (MemoryStream stream = new MemoryStream())
 			{
 				using (BinaryWriter customWriter = new BinaryWriter(stream))

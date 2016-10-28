@@ -104,6 +104,7 @@ namespace Terraria.ModLoader
 		private static Action<Item, Recipe>[] HookOnCraft;
 		private static Action<Item, List<TooltipLine>>[] HookModifyTooltips;
 		private static Func<Item, bool>[] HookNeedsCustomSaving;
+        private static Action<Item>[] HookPreSaveCustomData;
 
 		static ItemLoader()
 		{
@@ -258,7 +259,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookAnglerChat, globalItems, g => g.AnglerChat);
 			ModLoader.BuildGlobalHook(ref HookOnCraft, globalItems, g => g.OnCraft);
 			ModLoader.BuildGlobalHook(ref HookModifyTooltips, globalItems, g => g.ModifyTooltips);
-			ModLoader.BuildGlobalHook(ref HookNeedsCustomSaving, globalItems, g => g.NeedsCustomSaving);
+            ModLoader.BuildGlobalHook(ref HookPreSaveCustomData, globalItems, g => g.PreSaveCustomData);
+            ModLoader.BuildGlobalHook(ref HookNeedsCustomSaving, globalItems, g => g.NeedsCustomSaving);
 		}
 
 		internal static void Unload()

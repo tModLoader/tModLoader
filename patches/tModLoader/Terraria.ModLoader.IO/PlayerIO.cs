@@ -248,6 +248,7 @@ namespace Terraria.ModLoader.IO
 		internal static bool WriteCustomData(ModPlayer modPlayer, BinaryWriter writer)
 		{
 			byte[] data;
+            modPlayer.PreSaveCustomData();
 			using (MemoryStream stream = new MemoryStream())
 			{
 				using (BinaryWriter customWriter = new BinaryWriter(stream))

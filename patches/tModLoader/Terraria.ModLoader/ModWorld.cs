@@ -28,6 +28,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+        public virtual void PreSaveCustomData()
+        {
+        }
+
 		public virtual void SaveCustomData(BinaryWriter writer)
 		{
 		}
