@@ -99,6 +99,11 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+        public virtual bool? CanCutTiles()
+        {
+            return null;
+        }
+
 		public virtual bool PreKill(int timeLeft)
 		{
 			return true;
