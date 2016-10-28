@@ -60,6 +60,10 @@ namespace Terraria.ModLoader
 		{
 		}
 
+        public virtual void PreUpdate()
+        {
+        }
+
 		public virtual void PostUpdate()
 		{
 		}

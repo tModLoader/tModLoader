@@ -134,6 +134,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+        public static void PreUpdate()
+        {
+            foreach (ModWorld modWorld in worlds)
+            {
+                modWorld.PreUpdate();
+            }
+        }
+
 		public static void PostUpdate()
 		{
 			foreach (ModWorld modWorld in worlds)
