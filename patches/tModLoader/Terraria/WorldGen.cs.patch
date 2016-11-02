@@ -1036,6 +1036,14 @@
  						{
  							Item.NewItem(i * 16, j * 16, 16, 16, num50, 1, false, -1, false, false);
  						}
+@@ -41006,6 +_,7 @@
+ 
+ 		public static void UpdateWorld()
+ 		{
++            WorldHooks.PreUpdate();
+ 			int num = 20;
+ 			int maxValue = 40;
+ 			if (Main.expertMode)
 @@ -41080,6 +_,7 @@
  				}
  				int num7 = WorldGen.genRand.Next(10, Main.maxTilesX - 10);

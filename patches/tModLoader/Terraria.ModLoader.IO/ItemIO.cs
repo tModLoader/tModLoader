@@ -93,6 +93,7 @@ namespace Terraria.ModLoader.IO
 		{
 			if (ItemLoader.IsModItem(item))
 			{
+                item.modItem.PreSaveCustomData();
 				byte[] data;
 				using (MemoryStream memoryStream = new MemoryStream())
 				{
@@ -111,6 +112,7 @@ namespace Terraria.ModLoader.IO
 				writer.Write((ushort)numGlobals);
 				foreach (GlobalItem globalItem in ItemLoader.globalItems)
 				{
+                    globalItem.PreSaveCustomData(item);
 					if (globalItem.NeedsCustomSaving(item))
 					{
 						byte[] data;
