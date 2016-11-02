@@ -20,7 +20,7 @@ namespace Terraria.ModLoader.UI
 		// More info? see list of mods.
 		// user will reload if needed (added)
 
-			// TODO update this list, delete this list buttons.
+		// TODO update this list button.
 
 		private Texture2D dividerTexture;
 		private Texture2D innerPanelTexture;
@@ -33,9 +33,12 @@ namespace Terraria.ModLoader.UI
 		private int numModsMissing;
 		UITextPanel enableListButton;
 		UITextPanel enableListOnlyButton;
+		private UIImageButton deleteButton;
+		private string filename;
 
 		public UIModPackItem(string name, string[] mods)
 		{
+			this.filename = name;
 			this.mods = mods;
 			this.numMods = mods.Length;
 			modMissing = new bool[mods.Length];
@@ -116,6 +119,11 @@ namespace Terraria.ModLoader.UI
 			enableListOnlyButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			enableListOnlyButton.OnClick += new UIElement.MouseEvent(EnableListOnly);
 			base.Append(enableListOnlyButton);
+
+			deleteButton = new UIImageButton(TextureManager.Load("Images/UI/ButtonDelete"));
+			deleteButton.Top.Set(40f, 0f);
+			deleteButton.OnClick += new UIElement.MouseEvent(this.DeleteButtonClick);
+			base.Append(deleteButton);
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
@@ -175,6 +183,18 @@ namespace Terraria.ModLoader.UI
 		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
 		{
 			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
+		}
+
+		private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement)
+		{
+			UIModPackItem modPackItem = ((UIModPackItem)listeningElement.Parent);
+			Directory.CreateDirectory(UIModPacks.ModListSaveDirectory);
+			string path = UIModPacks.ModListSaveDirectory + Path.DirectorySeparatorChar + modPackItem.filename + ".json";
+			if (File.Exists(path))
+			{
+				File.Delete(path);
+			}
+			Main.menuMode = Interface.modPacksMenuID;// should reload
 		}
 
 		private static void EnableList(UIMouseEvent evt, UIElement listeningElement)
