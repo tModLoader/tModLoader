@@ -104,7 +104,7 @@ namespace Terraria.ModLoader
 		private static Action<Item, Recipe>[] HookOnCraft;
 		private static Action<Item, List<TooltipLine>>[] HookModifyTooltips;
 		private static Func<Item, bool>[] HookNeedsCustomSaving;
-        private static Action<Item>[] HookPreSaveCustomData;
+		private static Action<Item>[] HookPreSaveCustomData;
 
 		static ItemLoader()
 		{
@@ -192,7 +192,7 @@ namespace Terraria.ModLoader
 			{
 				Main.anglerQuestItemNetIDs[vanillaQuestFishCount + k] = questFish[k];
 			}
-			
+
 			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalItems, g => g.SetDefaults);
 			ModLoader.BuildGlobalHook(ref HookCanUseItem, globalItems, g => g.CanUseItem);
 			ModLoader.BuildGlobalHook(ref HookCanUseItem, globalItems, g => g.CanUseItem);
@@ -259,8 +259,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookAnglerChat, globalItems, g => g.AnglerChat);
 			ModLoader.BuildGlobalHook(ref HookOnCraft, globalItems, g => g.OnCraft);
 			ModLoader.BuildGlobalHook(ref HookModifyTooltips, globalItems, g => g.ModifyTooltips);
-            ModLoader.BuildGlobalHook(ref HookPreSaveCustomData, globalItems, g => g.PreSaveCustomData);
-            ModLoader.BuildGlobalHook(ref HookNeedsCustomSaving, globalItems, g => g.NeedsCustomSaving);
+			ModLoader.BuildGlobalHook(ref HookPreSaveCustomData, globalItems, g => g.PreSaveCustomData);
+			ModLoader.BuildGlobalHook(ref HookNeedsCustomSaving, globalItems, g => g.NeedsCustomSaving);
 		}
 
 		internal static void Unload()
@@ -365,7 +365,8 @@ namespace Terraria.ModLoader
 		//in Terraria.Player.ItemCheck
 		//  inside block if (this.controlUseItem && this.itemAnimation == 0 && this.releaseUseItem && item.useStyle > 0)
 		//  set initial flag2 to ItemLoader.CanUseItem(item, this)
-		public static bool CanUseItem(Item item, Player player) {
+		public static bool CanUseItem(Item item, Player player)
+		{
 			bool flag = true;
 			if (item.modItem != null)
 			{
@@ -544,7 +545,8 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Player.ItemCheck add to beginning of pvp collision check
-		public static bool CanHitPvp(Item item, Player player, Player target) {
+		public static bool CanHitPvp(Item item, Player player, Player target)
+		{
 			foreach (var hook in HookCanHitPvp)
 			{
 				if (!hook(item, player, target))
@@ -831,7 +833,8 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.UI.ItemSlot.RightClick in end of item-opening if/else chain before final else
 		//  make else if(ItemLoader.CanRightClick(inv[slot]))
-		public static bool CanRightClick(Item item) {
+		public static bool CanRightClick(Item item)
+		{
 			if (!Main.mouseRight)
 			{
 				return false;
@@ -850,7 +853,8 @@ namespace Terraria.ModLoader
 			return false;
 		}
 		//in Terraria.UI.ItemSlot in block from CanRightClick call ItemLoader.RightClick(inv[slot], player)
-		public static void RightClick(Item item, Player player) {
+		public static void RightClick(Item item, Player player)
+		{
 			if (Main.mouseRightRelease)
 			{
 				item.modItem?.RightClick(player);

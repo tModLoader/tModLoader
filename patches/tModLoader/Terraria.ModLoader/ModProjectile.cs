@@ -99,10 +99,10 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-        public virtual bool? CanCutTiles()
-        {
-            return null;
-        }
+		public virtual bool? CanCutTiles()
+		{
+			return null;
+		}
 
 		public virtual bool PreKill(int timeLeft)
 		{
@@ -213,7 +213,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int>drawCacheProjsOverWiresUI)
+		public virtual void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI)
 		{
 		}
 	}

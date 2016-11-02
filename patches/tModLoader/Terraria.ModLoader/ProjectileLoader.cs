@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 		private delegate void DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
 		private static DelegateTileCollideStyle[] HookTileCollideStyle;
 		private static Func<Projectile, Vector2, bool>[] HookOnTileCollide;
-        private static Func<Projectile, bool?>[] HookCanCutTiles;
+		private static Func<Projectile, bool?>[] HookCanCutTiles;
 		private static Func<Projectile, int, bool>[] HookPreKill;
 		private static Action<Projectile, int>[] HookKill;
 		private static Func<Projectile, bool>[] HookCanDamage;
@@ -103,8 +103,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookShouldUpdatePosition, globalProjectiles, g => g.ShouldUpdatePosition);
 			ModLoader.BuildGlobalHook(ref HookTileCollideStyle, globalProjectiles, g => g.TileCollideStyle);
 			ModLoader.BuildGlobalHook(ref HookOnTileCollide, globalProjectiles, g => g.OnTileCollide);
-            ModLoader.BuildGlobalHook(ref HookCanCutTiles, globalProjectiles, g => g.CanCutTiles);
-            ModLoader.BuildGlobalHook(ref HookPreKill, globalProjectiles, g => g.PreKill);
+			ModLoader.BuildGlobalHook(ref HookCanCutTiles, globalProjectiles, g => g.CanCutTiles);
+			ModLoader.BuildGlobalHook(ref HookPreKill, globalProjectiles, g => g.PreKill);
 			ModLoader.BuildGlobalHook(ref HookKill, globalProjectiles, g => g.Kill);
 			ModLoader.BuildGlobalHook(ref HookCanDamage, globalProjectiles, g => g.CanDamage);
 			ModLoader.BuildGlobalHook(ref HookMinionContactDamage, globalProjectiles, g => g.MinionContactDamage);
@@ -316,27 +316,27 @@ namespace Terraria.ModLoader
 				return projectile.modProjectile.OnTileCollide(oldVelocity);
 			}
 			return true;
-        }
+		}
 
-        //in Terraria.Projectile.CanCutTiles, change to
-        //    if (!ProjectileLoader.CanCutTiles(this).HasValue)
-        //    {
-        //        return (this.aiStyle != 45 && this.aiStyle != 92 && this.aiStyle != 105 && this.aiStyle != 106 && this.type != 463 && this.type != 69 && this.type != 70 && this.type != 621 && this.type != 10 && this.type != 11 && this.type != 379 && this.type != 407 && this.type != 476 && this.type != 623 && (this.type< 625 || this.type> 628));
-        //    }
-        //    else return (ProjectileLoader.CanCutTiles(this).Value);
-        //when it returns null, it does the vanilla check
-        public static bool? CanCutTiles(Projectile projectile)
-        {
-            foreach (var hook in HookCanCutTiles)
-            {
-                return (hook(projectile));
-            }
-            if (projectile.modProjectile != null)
-            {
-                return projectile.modProjectile.CanCutTiles();
-            }
-            return null;
-        }
+		//in Terraria.Projectile.CanCutTiles, change to
+		//    if (!ProjectileLoader.CanCutTiles(this).HasValue)
+		//    {
+		//        return (this.aiStyle != 45 && this.aiStyle != 92 && this.aiStyle != 105 && this.aiStyle != 106 && this.type != 463 && this.type != 69 && this.type != 70 && this.type != 621 && this.type != 10 && this.type != 11 && this.type != 379 && this.type != 407 && this.type != 476 && this.type != 623 && (this.type< 625 || this.type> 628));
+		//    }
+		//    else return (ProjectileLoader.CanCutTiles(this).Value);
+		//when it returns null, it does the vanilla check
+		public static bool? CanCutTiles(Projectile projectile)
+		{
+			foreach (var hook in HookCanCutTiles)
+			{
+				return (hook(projectile));
+			}
+			if (projectile.modProjectile != null)
+			{
+				return projectile.modProjectile.CanCutTiles();
+			}
+			return null;
+		}
 
 		//in Terraria.Projectile.Kill before if statements determining kill behavior add
 		//  if(!ProjectileLoader.PreKill(this, num)) { this.active = false; return; }
@@ -680,7 +680,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int>drawCacheProjsOverWiresUI)
+		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI)
 		{
 			projectile.modProjectile?.DrawBehind(index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
 

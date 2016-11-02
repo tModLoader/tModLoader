@@ -363,11 +363,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
-        public virtual void PreSaveCustomData(Item item)
-        {
-        }
+		public virtual void PreSaveCustomData(Item item)
+		{
+		}
 
-        public virtual bool NeedsCustomSaving(Item item)
+		public virtual bool NeedsCustomSaving(Item item)
 		{
 			return false;
 		}

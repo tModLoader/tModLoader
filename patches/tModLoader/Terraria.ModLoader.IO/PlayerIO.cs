@@ -191,7 +191,7 @@ namespace Terraria.ModLoader.IO
 					{
 						if (ItemLoader.NeedsModSaving(inv[k]))
 						{
-							invWriter.Write((ushort) k);
+							invWriter.Write((ushort)k);
 							ItemIO.WriteItem(inv[k], invWriter, writeStack, writeFavorite);
 							count++;
 						}
@@ -211,10 +211,10 @@ namespace Terraria.ModLoader.IO
 		internal static void ReadInventory(Item[] inv, BinaryReader reader, bool readStack = false, bool readFavorite = false)
 		{
 			int count = reader.ReadUInt16();
-            for (int k = 0; k < count; k++)
-            {
-                ItemIO.ReadItem(inv[reader.ReadUInt16()], reader, readStack, readFavorite);
-            }
+			for (int k = 0; k < count; k++)
+			{
+				ItemIO.ReadItem(inv[reader.ReadUInt16()], reader, readStack, readFavorite);
+			}
 		}
 
 		internal static bool WriteCustomData(Player player, BinaryWriter writer)
@@ -248,7 +248,7 @@ namespace Terraria.ModLoader.IO
 		internal static bool WriteCustomData(ModPlayer modPlayer, BinaryWriter writer)
 		{
 			byte[] data;
-            modPlayer.PreSaveCustomData();
+			modPlayer.PreSaveCustomData();
 			using (MemoryStream stream = new MemoryStream())
 			{
 				using (BinaryWriter customWriter = new BinaryWriter(stream))
@@ -285,15 +285,15 @@ namespace Terraria.ModLoader.IO
 					{
 						using (BinaryReader customReader = new BinaryReader(stream))
 						{
-                            try
-                            {
-                                modPlayer.LoadCustomData(customReader);
-                            }
-                            catch (Exception e)
-                            {
-                                throw new CustomModDataException(mod,
-                                    "Error in reading custom player data for " + mod.Name, e);
-                            }
+							try
+							{
+								modPlayer.LoadCustomData(customReader);
+							}
+							catch (Exception e)
+							{
+								throw new CustomModDataException(mod,
+									"Error in reading custom player data for " + mod.Name, e);
+							}
 						}
 					}
 					if (modName == "ModLoader" && name == "MysteryPlayer")

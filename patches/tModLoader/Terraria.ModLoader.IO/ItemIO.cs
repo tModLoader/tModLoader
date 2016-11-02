@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.IO
 				writer.Write(Main.itemName[item.type]);
 			}
 			SaveCustomData(item, writer, false);
-			
+
 			writer.Write(item.prefix);
 
 			if (writeStack)
@@ -72,7 +72,7 @@ namespace Terraria.ModLoader.IO
 					((MysteryItem)item.modItem).Setup(modName, itemName, data, hasGlobalSaving);
 				}
 			}
-			
+
 			item.Prefix(reader.ReadByte());
 
 			if (readStack)
@@ -93,7 +93,7 @@ namespace Terraria.ModLoader.IO
 		{
 			if (ItemLoader.IsModItem(item))
 			{
-                item.modItem.PreSaveCustomData();
+				item.modItem.PreSaveCustomData();
 				byte[] data;
 				using (MemoryStream memoryStream = new MemoryStream())
 				{
@@ -112,7 +112,7 @@ namespace Terraria.ModLoader.IO
 				writer.Write((ushort)numGlobals);
 				foreach (GlobalItem globalItem in ItemLoader.globalItems)
 				{
-                    globalItem.PreSaveCustomData(item);
+					globalItem.PreSaveCustomData(item);
 					if (globalItem.NeedsCustomSaving(item))
 					{
 						byte[] data;

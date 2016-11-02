@@ -288,11 +288,11 @@
  		private bool CanCutTiles()
  		{
 -			return this.aiStyle != 45 && this.aiStyle != 92 && this.aiStyle != 105 && this.aiStyle != 106 && this.type != 463 && this.type != 69 && this.type != 70 && this.type != 621 && this.type != 10 && this.type != 11 && this.type != 379 && this.type != 407 && this.type != 476 && this.type != 623 && (this.type < 625 || this.type > 628);
-+            if (!ProjectileLoader.CanCutTiles(this).HasValue)
-+            {
-+                return (this.aiStyle != 45 && this.aiStyle != 92 && this.aiStyle != 105 && this.aiStyle != 106 && this.type != 463 && this.type != 69 && this.type != 70 && this.type != 621 && this.type != 10 && this.type != 11 && this.type != 379 && this.type != 407 && this.type != 476 && this.type != 623 && (this.type < 625 || this.type > 628));
-+            }
-+            else return (ProjectileLoader.CanCutTiles(this).Value);
++			if (!ProjectileLoader.CanCutTiles(this).HasValue)
++			{
++				return (this.aiStyle != 45 && this.aiStyle != 92 && this.aiStyle != 105 && this.aiStyle != 106 && this.type != 463 && this.type != 69 && this.type != 70 && this.type != 621 && this.type != 10 && this.type != 11 && this.type != 379 && this.type != 407 && this.type != 476 && this.type != 623 && (this.type < 625 || this.type > 628));
++			}
++			else return (ProjectileLoader.CanCutTiles(this).Value);
  		}
  
  		public bool Colliding(Rectangle myRect, Rectangle targetRect)

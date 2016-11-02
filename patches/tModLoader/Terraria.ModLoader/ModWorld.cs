@@ -28,9 +28,9 @@ namespace Terraria.ModLoader
 		{
 		}
 
-        public virtual void PreSaveCustomData()
-        {
-        }
+		public virtual void PreSaveCustomData()
+		{
+		}
 
 		public virtual void SaveCustomData(BinaryWriter writer)
 		{
@@ -64,9 +64,9 @@ namespace Terraria.ModLoader
 		{
 		}
 
-        public virtual void PreUpdate()
-        {
-        }
+		public virtual void PreUpdate()
+		{
+		}
 
 		public virtual void PostUpdate()
 		{

@@ -1040,7 +1040,7 @@
  
  		public static void UpdateWorld()
  		{
-+            WorldHooks.PreUpdate();
++			WorldHooks.PreUpdate();
  			int num = 20;
  			int maxValue = 40;
  			if (Main.expertMode)

@@ -435,11 +435,11 @@ namespace Terraria.ModLoader
 
 		public virtual bool CloneNewInstances => false;
 
-        public virtual void PreSaveCustomData()
-        {
-        }
+		public virtual void PreSaveCustomData()
+		{
+		}
 
-        public virtual void SaveCustomData(BinaryWriter writer)
+		public virtual void SaveCustomData(BinaryWriter writer)
 		{
 		}
 
