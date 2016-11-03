@@ -876,5 +876,33 @@ namespace Terraria.ModLoader
 				modPlayer.ModifyZoom(ref zoom);
 			}
 		}
+
+        public static void PlayerConnect(int playerIndex)
+        {
+            var player = Main.player[playerIndex];
+            foreach (ModPlayer modPlayer in player.modPlayers)
+            {
+                modPlayer.PlayerConnect(player);
+            }
+        }
+
+        public static void PlayerDisconnect(int playerIndex)
+        {
+            var player = Main.player[playerIndex];
+            foreach (ModPlayer modPlayer in player.modPlayers)
+            {
+                modPlayer.PlayerDisconnect(player);
+            }
+        }
+
+        // Do NOT hook into the Player.Hooks.OnEnterWorld event
+        public static void OnEnterWorld(int playerIndex)
+        {
+            var player = Main.player[playerIndex];
+            foreach (ModPlayer modPlayer in player.modPlayers)
+            {
+                modPlayer.OnEnterWorld(player);
+            }
+        }
 	}
 }

@@ -351,5 +351,17 @@ namespace Terraria.ModLoader
 		public virtual void ModifyZoom(ref float zoom)
 		{
 		}
-	}
+
+        public virtual void PlayerConnect(Player player)
+        {
+        }
+
+        public virtual void PlayerDisconnect(Player player)
+        {
+        }
+
+        public virtual void OnEnterWorld(Player player)
+        {
+        }
+    }
 }

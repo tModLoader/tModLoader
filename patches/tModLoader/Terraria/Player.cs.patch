@@ -10,6 +10,28 @@
  using Terraria.ObjectData;
  using Terraria.Social;
  using Terraria.UI;
+@@ -36,11 +_,13 @@
+ 			public static void PlayerConnect(int playerIndex)
+ 			{
+ 				PressurePlateHelper.ResetPlayer(playerIndex);
++                PlayerHooks.PlayerConnect(playerIndex);
+ 			}
+ 
+ 			public static void PlayerDisconnect(int playerIndex)
+ 			{
+ 				PressurePlateHelper.ResetPlayer(playerIndex);
++                PlayerHooks.PlayerDisconnect(playerIndex);
+ 			}
+ 
+ 			public static void EnterWorld(int playerIndex)
+@@ -49,6 +_,7 @@
+ 				{
+ 					Player.Hooks.OnEnterWorld(Main.player[playerIndex]);
+ 				}
++                PlayerHooks.OnEnterWorld(playerIndex);
+ 			}
+ 		}
+ 
 @@ -297,7 +_,7 @@
  		public const int defaultWidth = 20;
  		public const int defaultHeight = 42;
