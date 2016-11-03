@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 
 		internal static void Add(ModPlayer player)
 		{
-			indexes[player.mod.Name + ':'+player.Name] = players.Count;
+			indexes[player.mod.Name + ':' + player.Name] = players.Count;
 			players.Add(player);
 		}
 
@@ -877,32 +877,32 @@ namespace Terraria.ModLoader
 			}
 		}
 
-        public static void PlayerConnect(int playerIndex)
-        {
-            var player = Main.player[playerIndex];
-            foreach (ModPlayer modPlayer in player.modPlayers)
-            {
-                modPlayer.PlayerConnect(player);
-            }
-        }
+		public static void PlayerConnect(int playerIndex)
+		{
+			var player = Main.player[playerIndex];
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PlayerConnect(player);
+			}
+		}
 
-        public static void PlayerDisconnect(int playerIndex)
-        {
-            var player = Main.player[playerIndex];
-            foreach (ModPlayer modPlayer in player.modPlayers)
-            {
-                modPlayer.PlayerDisconnect(player);
-            }
-        }
+		public static void PlayerDisconnect(int playerIndex)
+		{
+			var player = Main.player[playerIndex];
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.PlayerDisconnect(player);
+			}
+		}
 
-        // Do NOT hook into the Player.Hooks.OnEnterWorld event
-        public static void OnEnterWorld(int playerIndex)
-        {
-            var player = Main.player[playerIndex];
-            foreach (ModPlayer modPlayer in player.modPlayers)
-            {
-                modPlayer.OnEnterWorld(player);
-            }
-        }
+		// Do NOT hook into the Player.Hooks.OnEnterWorld event
+		public static void OnEnterWorld(int playerIndex)
+		{
+			var player = Main.player[playerIndex];
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnEnterWorld(player);
+			}
+		}
 	}
 }

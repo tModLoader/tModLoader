@@ -14,13 +14,13 @@
  			public static void PlayerConnect(int playerIndex)
  			{
  				PressurePlateHelper.ResetPlayer(playerIndex);
-+                PlayerHooks.PlayerConnect(playerIndex);
++				PlayerHooks.PlayerConnect(playerIndex);
  			}
  
  			public static void PlayerDisconnect(int playerIndex)
  			{
  				PressurePlateHelper.ResetPlayer(playerIndex);
-+                PlayerHooks.PlayerDisconnect(playerIndex);
++				PlayerHooks.PlayerDisconnect(playerIndex);
  			}
  
  			public static void EnterWorld(int playerIndex)
@@ -28,7 +28,7 @@
  				{
  					Player.Hooks.OnEnterWorld(Main.player[playerIndex]);
  				}
-+                PlayerHooks.OnEnterWorld(playerIndex);
++				PlayerHooks.OnEnterWorld(playerIndex);
  			}
  		}
  
@@ -2530,7 +2530,7 @@
 +			for (int j = 0; j < 58; j++)
 +			{
 +				VanillaUpdateInventory(this.inventory[j]);
-+ 			}
++			}
 +			for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
 +			{
 +				VanillaUpdateEquip(this.armor[k]);
@@ -3744,7 +3744,7 @@
  			bool flag = this.ZoneRain && this.ZoneSnow;
  			bool flag2 = point.Y > Main.maxTilesY - 320;
  			bool flag3 = this.ZoneOverworldHeight && (point.X < 380 || point.X > Main.maxTilesX - 380);
-+// TODO, are these flags a problem?
++			// TODO, are these flags a problem?
 +			PlayerHooks.UpdateBiomes(this);
  			this.ManageSpecialBiomeVisuals("Stardust", this.ZoneTowerStardust, value4 - new Vector2(0f, 10f));
  			this.ManageSpecialBiomeVisuals("Nebula", this.ZoneTowerNebula, value3 - new Vector2(0f, 10f));
@@ -4522,7 +4522,7 @@
  			Item item = this.inventory[this.selectedItem];
  			if (this.mount.Active)
  			{
-+				MountLoader.UseAbility(this,Vector2.Zero,false);
++				MountLoader.UseAbility(this, Vector2.Zero, false);
  				if (this.mount.Type == 8)
  				{
  					this.noItems = true;

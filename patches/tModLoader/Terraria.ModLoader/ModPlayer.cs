@@ -352,16 +352,16 @@ namespace Terraria.ModLoader
 		{
 		}
 
-        public virtual void PlayerConnect(Player player)
-        {
-        }
+		public virtual void PlayerConnect(Player player)
+		{
+		}
 
-        public virtual void PlayerDisconnect(Player player)
-        {
-        }
+		public virtual void PlayerDisconnect(Player player)
+		{
+		}
 
-        public virtual void OnEnterWorld(Player player)
-        {
-        }
-    }
+		public virtual void OnEnterWorld(Player player)
+		{
+		}
+	}
 }
