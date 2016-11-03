@@ -83,7 +83,7 @@
  		}
  
  		public int GetBossHeadTextureIndex()
-@@ -1868,6 +_,7 @@
+@@ -1868,52 +_,79 @@
  			{
  				result = 12;
  			}
@@ -91,14 +91,119 @@
  			return result;
  		}
  
-@@ -1913,6 +_,7 @@
- 			{
- 				result = this.rotation;
- 			}
-+			NPCLoader.BossHeadRotation(this, ref result);
- 			return result;
++		// in case you want to go with the decompiled version, I cleaned it up a little, no code was removed. should allow for easier tml updating
++		//public float GetBossHeadRotation()
++		//{
++		//	float result = 0f;
++		//	int num = this.type;
++		//	bool flag = true;
++		//	if (num <= 68)
++		//	{
++		//		if (num == 35)
++		//		{
++		//			goto IL_3E;
++		//		}
++		//		if (num != 68)
++		//		{
++		//			flag = false;
++		//		}
++		//	}
++		//	else
++		//	{
++		//		if (num == 127)
++		//		{
++		//			goto IL_3E;
++		//		}
++		//		if (num != 262)
++		//		{
++		//			if (num != 345)
++		//			{
++		//				flag = false;
++		//			}
++		//			if (this.ai[0] == 2f)
++		//			{
++		//				flag = true;
++		//			}
++		//			else flag = false;
++		//		}
++		//	}
++		//	if (flag)
++		//		result = this.rotation;
++		//	NPCLoader.BossHeadRotation(this, ref result);
++		//	return result;
++		//	IL_3E:
++		//	if (this.ai[1] == 1f || this.ai[1] == 2f)
++		//	{
++		//		result = this.rotation;
++		//	}
++		//	NPCLoader.BossHeadRotation(this, ref result);
++		//	return result;
++		//}
++
++		// god bless yorai, vanilla checks 5 types
+ 		public float GetBossHeadRotation()
+ 		{
+-			float result = 0f;
+-			int num = this.type;
+-			if (num <= 68)
+-			{
+-				if (num == 35)
+-				{
+-					goto IL_3E;
+-				}
+-				if (num != 68)
+-				{
+-					return result;
+-				}
+-			}
+-			else
+-			{
+-				if (num == 127)
+-				{
+-					goto IL_3E;
+-				}
+-				if (num != 262)
+-				{
+-					if (num != 345)
+-					{
+-						return result;
+-					}
+-					if (this.ai[0] == 2f)
+-					{
+-						result = this.rotation;
+-						return result;
+-					}
+-					return result;
+-				}
+-			}
+-			result = this.rotation;
+-			return result;
+-			IL_3E:
+-			if (this.ai[1] == 1f || this.ai[1] == 2f)
+-			{
+-				result = this.rotation;
+-			}
+-			return result;
++			float rot = 0;
++			switch (type)
++			{
++				case NPCID.Plantera:
++				case NPCID.DungeonGuardian:
++					rot = rotation;
++					break;
++				case NPCID.SkeletronHead:
++				case NPCID.SkeletronPrime:
++					if (ai[1] == 1 || ai[1] == 2) rot = rotation;
++					break;
++				case NPCID.IceQueen:
++					if (ai[0] == 2) rot = rotation;
++					break;
++			}
++			NPCLoader.BossHeadRotation(this, ref rot);
++			return rot;
  		}
  
+ 		public SpriteEffects GetBossHeadSpriteEffects()
 @@ -1924,6 +_,7 @@
  			{
  				result = SpriteEffects.FlipHorizontally;
