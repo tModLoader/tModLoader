@@ -1,14 +1,30 @@
 --- src/Terraria\Terraria.GameInput\KeyConfiguration.cs
 +++ src/tModLoader\Terraria.GameInput\KeyConfiguration.cs
-@@ -22,6 +_,10 @@
- 			foreach (string current in PlayerInput.KnownTriggers)
+@@ -23,6 +_,10 @@
  			{
  				this.KeyStatus.Add(current, new List<string>());
-+			}
+ 			}
 +			foreach (var current in ModLoader.ModLoader.modHotKeys)
 +			{
-+				this.KeyStatus.Add(current.Value.displayName, new List<string>() /*{current.Value.defaultKey}*/);
- 			}
++				this.KeyStatus.Add(current.Value.displayName, new List<string>());
++			}
  		}
  
+ 		public void Processkey(TriggersSet set, string newKey)
+@@ -46,6 +_,15 @@
+ 			{
+ 				if (this.KeyStatus.ContainsKey(current.Key))
+ 				{
++					this.KeyStatus[current.Key].Clear();
++					foreach (string current2 in current.Value)
++					{
++						this.KeyStatus[current.Key].Add(current2);
++					}
++				}
++				else if (current.Key.Contains(":")) // This preserves unloaded mod hotkey values
++				{
++					this.KeyStatus.Add(current.Key, new List<string>());
+ 					this.KeyStatus[current.Key].Clear();
+ 					foreach (string current2 in current.Value)
+ 					{
 
