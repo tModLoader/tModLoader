@@ -150,6 +150,15 @@ namespace ExampleMod
 			}
 		}
 
+		public override void SetControls()
+		{
+			if (ExampleMod.RandomBuffHotKey.JustPressed)
+			{
+				int buff = Main.rand.Next(BuffID.Count);
+				player.AddBuff(buff, 600);
+			}
+		}
+
 		public override void PreUpdateBuffs()
 		{
 			if (heroLives > 0)
@@ -549,7 +558,7 @@ namespace ExampleMod
 			}
 		}
 
-		public static readonly PlayerLayer MiscEffectsBack = new PlayerLayer("ExampleMod", "MiscEffectsBack", PlayerLayer.MiscEffectsBack, delegate(PlayerDrawInfo drawInfo)
+		public static readonly PlayerLayer MiscEffectsBack = new PlayerLayer("ExampleMod", "MiscEffectsBack", PlayerLayer.MiscEffectsBack, delegate (PlayerDrawInfo drawInfo)
 			{
 				if (drawInfo.shadow != 0f)
 				{
@@ -567,7 +576,7 @@ namespace ExampleMod
 					Main.playerDrawData.Add(data);
 				}
 			});
-		public static readonly PlayerLayer MiscEffects = new PlayerLayer("ExampleMod", "MiscEffects", PlayerLayer.MiscEffectsFront, delegate(PlayerDrawInfo drawInfo)
+		public static readonly PlayerLayer MiscEffects = new PlayerLayer("ExampleMod", "MiscEffects", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
 			{
 				if (drawInfo.shadow != 0f)
 				{

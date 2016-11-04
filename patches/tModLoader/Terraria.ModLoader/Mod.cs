@@ -1515,9 +1515,9 @@ namespace Terraria.ModLoader
 			SoundLoader.tileToMusic[tileType][tileFrameY] = musicSlot;
 		}
 
-		public void RegisterHotKey(string name, string defaultKey)
+		public ModHotKey RegisterHotKey(string name, string defaultKey)
 		{
-			ModLoader.RegisterHotKey(this, name, defaultKey);
+			return ModLoader.RegisterHotKey(this, name, defaultKey);
 		}
 
 		internal void SetupContent()

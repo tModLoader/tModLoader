@@ -21,10 +21,10 @@ namespace ExampleMod
 	{
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
-		private double pressedRandomBuffHotKeyTime;
 		public static SpriteFont exampleFont;
 		private UserInterface exampleUserInterface;
 		internal ExampleUI exampleUI;
+		public static ModHotKey RandomBuffHotKey;
 
 		public ExampleMod()
 		{
@@ -44,7 +44,7 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElementHead + k);
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
-			RegisterHotKey("Random Buff", "P");
+			RandomBuffHotKey = RegisterHotKey("Random Buff", "P");
 			if (!Main.dedServ)
 			{
 				AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
@@ -132,19 +132,6 @@ namespace ExampleMod
 				if (Main.player[Main.myPlayer].active && Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(this).ZoneExample)
 				{
 					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
-				}
-			}
-		}
-
-		public override void HotKeyPressed(string name)
-		{
-			if (name == "Random Buff")
-			{
-				if (Math.Abs(Main.time - pressedRandomBuffHotKeyTime) > 60)
-				{
-					pressedRandomBuffHotKeyTime = Main.time;
-					int buff = Main.rand.Next(BuffID.Count);
-					Main.player[Main.myPlayer].AddBuff(buff, 600);
 				}
 			}
 		}
