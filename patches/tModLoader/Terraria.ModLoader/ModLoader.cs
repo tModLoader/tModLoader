@@ -44,6 +44,7 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<string, ModHotkey> modHotKeys = new Dictionary<string, ModHotkey>();
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
+		internal static string steamID64 = "";
 		internal static Action PostLoad;
 
 		internal static bool ModLoaded(string name)
@@ -578,6 +579,7 @@ namespace Terraria.ModLoader
 		internal static void SaveConfiguration()
 		{
 			Main.Configuration.Put("ModBrowserPassphrase", ModLoader.modBrowserPassphrase);
+			Main.Configuration.Put("SteamID64", ModLoader.steamID64);
 			//foreach (KeyValuePair<string, Tuple<Mod, string, string>> hotKey in modHotKeys)
 			//{
 			//	string name = hotKey.Value.Item1.Name + "_" + "HotKey" + "_" + hotKey.Key.Replace(' ', '_');
@@ -588,6 +590,7 @@ namespace Terraria.ModLoader
 		internal static void LoadConfiguration()
 		{
 			Main.Configuration.Get<string>("ModBrowserPassphrase", ref ModLoader.modBrowserPassphrase);
+			Main.Configuration.Get<string>("SteamID64", ref ModLoader.steamID64);
 		}
 
 		/// <summary>
