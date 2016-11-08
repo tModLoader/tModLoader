@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -9,8 +7,7 @@ namespace Terraria.ModLoader.Default
 	{
 		private string modName;
 		private string itemName;
-		private byte[] data;
-		private bool hasGlobalData;
+		private TagCompound data;
 
 		public override void SetDefaults()
 		{
@@ -20,29 +17,33 @@ namespace Terraria.ModLoader.Default
 			item.rare = 1;
 		}
 
-		internal void Setup(string modName, string itemName, byte[] data, bool hasGlobal)
+		internal void Setup(TagCompound tag)
 		{
-			this.modName = modName;
-			this.itemName = itemName;
-			this.data = data;
-			this.hasGlobalData = hasGlobal;
+			this.modName = tag.GetString("mod");
+			this.itemName = tag.GetString("name");
+			this.data = tag;
 			item.toolTip = "Mod: " + modName;
 			item.toolTip2 = "Item: " + itemName;
 		}
 
-		public override void SaveCustomData(BinaryWriter writer)
+		public override TagCompound Save()
 		{
-			if (hasGlobalData)
-			{
-				writer.Write("");
-			}
-			writer.Write(modName);
-			writer.Write(itemName);
-			writer.Write((ushort)data.Length);
-			writer.Write(data);
+			return data;
 		}
 
-		public override void LoadCustomData(BinaryReader reader)
+		public override void Load(TagCompound tag)
+		{
+			Setup(tag);
+			int type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
+			if (type > 0)
+			{
+				item.netDefaults(type);
+				item.modItem.Load(tag.GetCompound("data"));
+				ItemIO.LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
+			}
+		}
+
+		public override void LoadLegacy(BinaryReader reader)
 		{
 			string modName = reader.ReadString();
 			bool hasGlobal = false;
@@ -51,14 +52,19 @@ namespace Terraria.ModLoader.Default
 				hasGlobal = true;
 				modName = reader.ReadString();
 			}
-			Setup(modName, reader.ReadString(), ItemIO.GetCustomData(Int32.MaxValue, reader, hasGlobal), hasGlobal);
+			Load(new TagCompound {
+				["mod"] = modName,
+				["name"] = reader.ReadString(),
+				["hasGlobalSaving"] = hasGlobal,
+				["legacyData"] = ItemIO.LegacyModData(int.MaxValue, reader, hasGlobal)
+			});
+		}
 
-			var type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
-			if (type != 0)
-			{
-				item.netDefaults(type);
-				ItemIO.ReadCustomData(item, data, hasGlobalData);
-			}
+		public override ModItem Clone()
+		{
+			var clone = (MysteryItem)base.Clone();
+			clone.data = (TagCompound) data?.Clone();
+			return clone;
 		}
 	}
 }

@@ -86,7 +86,7 @@
  						Main.invasionType = (int)this.reader.ReadSByte();
 +						if (!ModNet.AllowVanillaClients)
 +						{
-+							WorldHooks.ReceiveCustomData(reader);
++							WorldIO.ReceiveModData(reader);
 +						}
  						Main.LobbyId = this.reader.ReadUInt64();
  						Sandstorm.IntendedSeverity = this.reader.ReadSingle();
@@ -100,14 +100,6 @@
  								}
  								if (flag8)
  								{
-@@ -1142,6 +_,7 @@
- 						int pre = (int)this.reader.ReadByte();
- 						int num60 = (int)this.reader.ReadByte();
- 						int num61 = (int)this.reader.ReadInt16();
-+						byte[] data = ItemIO.GetCustomData(num61, reader);
- 						if (Main.netMode == 1)
- 						{
- 							if (num61 == 0)
 @@ -1151,7 +_,7 @@
  							}
  							int num62 = num59;
@@ -117,31 +109,19 @@
  							item.netDefaults(num61);
  							item.newAndShiny = newAndShiny;
  							item.Prefix(pre);
-@@ -1159,6 +_,13 @@
+@@ -1159,6 +_,7 @@
  							item.position = position;
  							item.velocity = velocity;
  							item.active = true;
-+							try
-+							{
-+								ItemIO.ReadCustomData(item, data);
-+							}
-+							catch (CustomModDataException)
-+							{
-+							}
++							ItemIO.ReceiveModData(item, reader);
  							if (b == 90)
  							{
  								item.instanced = true;
-@@ -1204,6 +_,13 @@
+@@ -1204,6 +_,7 @@
  								item3.position = position;
  								item3.velocity = velocity;
  								item3.active = true;
-+								try
-+								{
-+									ItemIO.ReadCustomData(item3, data);
-+								}
-+								catch (CustomModDataException)
-+								{
-+								}
++								ItemIO.ReceiveModData(item3, reader);
  								item3.owner = Main.myPlayer;
  								if (flag9)
  								{
@@ -180,18 +160,11 @@
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
  						{
-@@ -1718,6 +_,14 @@
+@@ -1718,6 +_,7 @@
  						Main.chest[num99].item[num100].netDefaults(type4);
  						Main.chest[num99].item[num100].Prefix(pre2);
  						Main.chest[num99].item[num100].stack = stack4;
-+						byte[] data = ItemIO.GetCustomData(type4, reader);
-+						try
-+						{
-+							ItemIO.ReadCustomData(Main.chest[num99].item[num100], data);
-+						}
-+						catch (CustomModDataException)
-+						{
-+						}
++						ItemIO.ReceiveModData(Main.chest[num99].item[num100], reader);
  						Recipe.FindRecipes();
  						return;
  					}

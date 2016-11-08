@@ -7,6 +7,7 @@ using Terraria.World.Generation;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Generation;
 using System.Linq;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod
 {
@@ -34,14 +35,46 @@ namespace ExampleMod
 			VolcanoTremorTime = 0;
 		}
 
-		public override void SaveCustomData(BinaryWriter writer)
+		public override TagCompound Save()
 		{
-			writer.Write(saveVersion);
+			var downed = new List<string>();
+			if (downedAbomination) downed.Add("abomination");
+			if (downedPuritySpirit) downed.Add("puritySpirit");
+
+			return new TagCompound {
+				{"downed", downed}
+			};
+		}
+
+		public override void Load(TagCompound tag)
+		{
+			var downed = tag.GetList<string>("downed");
+			downedAbomination = downed.Contains("abomination");
+			downedPuritySpirit = downed.Contains("puritySpirit");
+		}
+
+		public override void LoadLegacy(BinaryReader reader)
+		{
+			int loadVersion = reader.ReadInt32();
+			if (loadVersion == 0)
+			{
+				BitsByte flags = reader.ReadByte();
+				downedAbomination = flags[0];
+				downedPuritySpirit = flags[1];
+			}
+			else
+			{
+				ErrorLogger.Log("ExampleMod: Unknown loadVersion: " + loadVersion);
+			}
+		}
+
+		public override void NetSend(BinaryWriter writer)
+		{
 			BitsByte flags = new BitsByte();
 			flags[0] = downedAbomination;
 			flags[1] = downedPuritySpirit;
 			writer.Write(flags);
-
+			
 			//If you prefer, you can use the BitsByte constructor approach as well.
 			//writer.Write(saveVersion);
 			//BitsByte flags = new BitsByte(downedAbomination, downedPuritySpirit);
@@ -62,30 +95,7 @@ namespace ExampleMod
 			//writer.Write(flags);
 		}
 
-		public override void LoadCustomData(BinaryReader reader)
-		{
-			int loadVersion = reader.ReadInt32();
-			if (loadVersion == 0)
-			{
-				BitsByte flags = reader.ReadByte();
-				downedAbomination = flags[0];
-				downedPuritySpirit = flags[1];
-			}
-			else
-			{
-				ErrorLogger.Log("ExampleMod: Unknown loadVersion: " + loadVersion);
-			}
-		}
-
-		public override void SendCustomData(BinaryWriter writer)
-		{
-			BitsByte flags = new BitsByte();
-			flags[0] = downedAbomination;
-			flags[1] = downedPuritySpirit;
-			writer.Write(flags);
-		}
-
-		public override void ReceiveCustomData(BinaryReader reader)
+		public override void NetReceive(BinaryReader reader)
 		{
 			BitsByte flags = reader.ReadByte();
 			downedAbomination = flags[0];

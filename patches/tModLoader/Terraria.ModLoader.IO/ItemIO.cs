@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
@@ -15,34 +16,187 @@ namespace Terraria.ModLoader.IO
 			writer.Write(ItemLoader.IsModItem(item) ? 0 : item.netID);
 		}
 
-		public static void WriteItem(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false)
+		public static TagCompound Save(Item item)
 		{
-			if (ItemLoader.NeedsGlobalCustomSaving(item) > 0)
-			{
-				writer.Write("");
-			}
+			var tag = new TagCompound();
+			if (item.type <= 0)
+				return tag;
+
 			if (item.modItem == null)
 			{
-				writer.Write("Terraria");
-				writer.Write(item.netID);
+				tag.SetTag("mod", "Terraria");
+				tag.SetTag("id", item.netID);
 			}
 			else
 			{
-				writer.Write(item.modItem.mod.Name);
-				writer.Write(Main.itemName[item.type]);
+				tag.SetTag("mod", item.modItem.mod.Name);
+				tag.SetTag("name", Main.itemName[item.type]);
+				tag.SetTag("data", item.modItem.Save());
 			}
-			SaveCustomData(item, writer, false);
 
-			writer.Write(item.prefix);
+			tag.SetTag("prefix", item.prefix);
 
-			if (writeStack)
-				writer.Write(item.stack);
+			if (item.stack > 1)
+				tag.SetTag("stack", item.stack);
 
-			if (writeFavorite)
-				writer.Write(item.favorited);
+			if (item.favorited)
+				tag.SetTag("fav", true);
+
+			tag.SetTag("globalData", SaveGlobals(item));
+
+			return tag;
 		}
 
-		public static void ReadItem(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
+		public static void Load(Item item, TagCompound tag)
+		{
+			if (tag.Count == 0)
+			{
+				item.netDefaults(0);
+				return;
+			}
+
+			string modName = tag.GetString("mod");
+			if (modName == "Terraria")
+			{
+				item.netDefaults(tag.GetInt("id"));
+				if (tag.HasTag("legacyData"))
+					LoadLegacyModData(item, tag.GetByteArray("legacyData"), tag.GetBool("hasGlobalSaving"));
+			}
+			else
+			{
+				int type = ModLoader.GetMod(modName)?.ItemType(tag.GetString("name")) ?? 0;
+				if (type > 0)
+				{
+					item.netDefaults(type);
+					if (tag.HasTag("legacyData"))
+						LoadLegacyModData(item, tag.GetByteArray("legacyData"), tag.GetBool("hasGlobalSaving"));
+					else
+						item.modItem.Load(tag.GetCompound("data"));
+				}
+				else
+				{
+					item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
+					((MysteryItem)item.modItem).Setup(tag);
+				}
+			}
+
+			item.Prefix(tag.GetByte("prefix"));
+			item.stack = tag.GetTag<int?>("stack") ?? 1;
+			item.favorited = tag.GetBool("fav");
+
+			if (!(item.modItem is MysteryItem))
+				LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
+		}
+
+		public static Item Load(TagCompound tag)
+		{
+			var item = new Item();
+			Load(item, tag);
+			return item;
+		}
+
+		internal static List<TagCompound> SaveGlobals(Item item)
+		{
+			if (item.modItem is MysteryItem)
+				return null; //MysteryItems cannot have global data
+
+			var list = new List<TagCompound>();
+			foreach (var globalItem in ItemLoader.globalItems)
+			{
+				if (!globalItem.NeedsSaving(item))
+					continue;
+
+				list.Add(new TagCompound {
+					["mod"] = globalItem.mod.Name,
+					["name"] = globalItem.Name,
+					["data"] = globalItem.Save(item)
+				});
+			}
+			return list.Count > 0 ? list : null;
+		}
+
+		internal static void LoadGlobals(Item item, IList<TagCompound> list)
+		{
+			foreach (var tag in list)
+			{
+				var mod = ModLoader.GetMod(tag.GetString("mod"));
+				var globalItem = mod?.GetGlobalItem(tag.GetString("name"));
+				if (globalItem != null)
+				{
+					try
+					{
+						globalItem.Load(item, tag.GetCompound("data"));
+					}
+					catch (Exception e)
+					{
+						throw new CustomModDataException(mod,
+							"Error in reading custom player data for " + mod.Name, e);
+					}
+				}
+				else
+				{
+					item.GetModInfo<MysteryGlobalItemInfo>(ModLoader.GetMod("ModLoader")).data.Add(tag);
+				}
+			}
+		}
+
+		public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavourite = false)
+		{
+			writer.Write((short)item.netID);
+			writer.Write(item.prefix);
+			if (writeStack) writer.Write((short)item.stack);
+			if (writeFavourite) writer.Write(item.favorited);
+			SendModData(item, writer);
+		}
+
+		public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
+		{
+			item.netDefaults(reader.ReadInt16());
+			item.Prefix(reader.ReadByte());
+			if (readStack) item.stack = reader.ReadInt16();
+			if (readFavorite) item.favorited = reader.ReadBoolean();
+			ReceiveModData(item, reader);
+		}
+
+		public static Item Receive(BinaryReader reader, bool readStack = false, bool readFavorite = false)
+		{
+			var item = new Item();
+			Receive(item, reader, readStack, readFavorite);
+			return item;
+		}
+
+		public static void SendModData(Item item, BinaryWriter writer)
+		{
+			writer.SafeWrite(w => item.modItem?.NetSend(w));
+			foreach (var globalItem in ItemLoader.NetGlobals)
+				writer.SafeWrite(w => globalItem.NetSend(item, w));
+		}
+
+		public static void ReceiveModData(Item item, BinaryReader reader)
+		{
+			try
+			{
+				reader.SafeRead(r => item.modItem?.NetRecieve(r));
+			}
+			catch (IOException)
+			{
+				//TODO inform modder/user
+			}
+
+			foreach (var globalItem in ItemLoader.NetGlobals)
+			{
+				try
+				{
+					reader.SafeRead(r => globalItem.NetReceive(item, r));
+				}
+				catch (IOException)
+				{
+					//TODO inform modder/user
+				}
+			}
+		}
+
+		public static void LoadLegacy(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
 		{
 			string modName = reader.ReadString();
 			bool hasGlobalSaving = false;
@@ -54,22 +208,28 @@ namespace Terraria.ModLoader.IO
 			if (modName == "Terraria")
 			{
 				item.netDefaults(reader.ReadInt32());
-				ReadCustomData(item, GetCustomData(item.type, reader, hasGlobalSaving), hasGlobalSaving);
+				LoadLegacyModData(item, LegacyModData(item.type, reader, hasGlobalSaving), hasGlobalSaving);
 			}
 			else
 			{
 				string itemName = reader.ReadString();
 				int type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
-				byte[] data = GetCustomData(type == 0 ? Int32.MaxValue : type, reader, hasGlobalSaving);
+				byte[] data = LegacyModData(type == 0 ? int.MaxValue : type, reader, hasGlobalSaving);
 				if (type != 0)
 				{
 					item.netDefaults(type);
-					ReadCustomData(item, data, hasGlobalSaving);
+					LoadLegacyModData(item, data, hasGlobalSaving);
 				}
 				else
 				{
 					item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
-					((MysteryItem)item.modItem).Setup(modName, itemName, data, hasGlobalSaving);
+					var tag = new TagCompound {
+						["mod"] = modName,
+						["name"] = itemName,
+						["hasGlobalSaving"] = hasGlobalSaving,
+						["legacyData"] = data
+					};
+					((MysteryItem)item.modItem).Setup(tag);
 				}
 			}
 
@@ -82,62 +242,7 @@ namespace Terraria.ModLoader.IO
 				item.favorited = reader.ReadBoolean();
 		}
 
-		public static Item ReadItem(BinaryReader reader, bool readStack = false, bool readFavorite = false)
-		{
-			var item = new Item();
-			ReadItem(item, reader, readStack, readFavorite);
-			return item;
-		}
-
-		public static void SaveCustomData(Item item, BinaryWriter writer, bool alwaysGlobal = true)
-		{
-			if (ItemLoader.IsModItem(item))
-			{
-				item.modItem.PreSaveCustomData();
-				byte[] data;
-				using (MemoryStream memoryStream = new MemoryStream())
-				{
-					using (BinaryWriter customWriter = new BinaryWriter(memoryStream))
-					{
-						item.modItem.SaveCustomData(customWriter);
-					}
-					data = memoryStream.ToArray();
-				}
-				writer.Write((ushort)data.Length);
-				writer.Write(data);
-			}
-			int numGlobals = ItemLoader.NeedsGlobalCustomSaving(item);
-			if (numGlobals > 0)
-			{
-				writer.Write((ushort)numGlobals);
-				foreach (GlobalItem globalItem in ItemLoader.globalItems)
-				{
-					globalItem.PreSaveCustomData(item);
-					if (globalItem.NeedsCustomSaving(item))
-					{
-						byte[] data;
-						using (MemoryStream memoryStream = new MemoryStream())
-						{
-							using (BinaryWriter customWriter = new BinaryWriter(memoryStream))
-							{
-								globalItem.SaveCustomData(item, customWriter);
-							}
-							data = memoryStream.ToArray();
-						}
-						writer.Write(globalItem.mod.Name);
-						writer.Write(globalItem.Name);
-						writer.Write((ushort)data.Length);
-						writer.Write(data);
-					}
-				}
-			}
-			else if (alwaysGlobal)
-			{
-				writer.Write((ushort)0);
-			}
-		}
-
-		public static byte[] GetCustomData(int type, BinaryReader reader, bool hasGlobalSaving = true)
+		internal static byte[] LegacyModData(int type, BinaryReader reader, bool hasGlobalSaving = true)
 		{
 			using (MemoryStream memoryStream = new MemoryStream())
 			{
@@ -167,7 +272,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static void ReadCustomData(Item item, byte[] data, bool hasGlobalSaving = true)
+		internal static void LoadLegacyModData(Item item, byte[] data, bool hasGlobalSaving = true)
 		{
 			using (BinaryReader reader = new BinaryReader(new MemoryStream(data)))
 			{
@@ -180,7 +285,7 @@ namespace Terraria.ModLoader.IO
 						{
 							try
 							{
-								item.modItem.LoadCustomData(customReader);
+								item.modItem.LoadLegacy(customReader);
 							}
 							catch (Exception e)
 							{
@@ -198,14 +303,15 @@ namespace Terraria.ModLoader.IO
 						string modName = reader.ReadString();
 						string globalName = reader.ReadString();
 						byte[] globalData = reader.ReadBytes(reader.ReadUInt16());
-						GlobalItem globalItem = ModLoader.GetMod(modName)?.GetGlobalItem(globalName) ?? null;
+						GlobalItem globalItem = ModLoader.GetMod(modName)?.GetGlobalItem(globalName);
+						//could support legacy global data in mystery globals but eh...
 						if (globalItem != null && globalData.Length > 0)
 						{
 							using (BinaryReader customReader = new BinaryReader(new MemoryStream(globalData)))
 							{
 								try
 								{
-									globalItem.LoadCustomData(item, customReader);
+									globalItem.LoadLegacy(item, customReader);
 								}
 								catch (Exception e)
 								{
@@ -216,6 +322,15 @@ namespace Terraria.ModLoader.IO
 						}
 					}
 				}
+			}
+		}
+
+		public static void LoadLegacyInventory(Item[] inv, BinaryReader reader, bool readStack = false, bool readFavorite = false)
+		{
+			int count = reader.ReadUInt16();
+			for (int k = 0; k < count; k++)
+			{
+				LoadLegacy(inv[reader.ReadUInt16()], reader, readStack, readFavorite);
 			}
 		}
 	}

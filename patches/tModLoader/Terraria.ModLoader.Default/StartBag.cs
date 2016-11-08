@@ -1,6 +1,6 @@
-using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -42,18 +42,25 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override void SaveCustomData(BinaryWriter writer)
+		public override TagCompound Save()
 		{
-			writer.Write((ushort)items.Count);
-			foreach (Item item in items)
-				ItemIO.WriteItem(item, writer, true);
+			return new TagCompound {["items"] = items.Select(ItemIO.Save).ToList()};
 		}
 
-		public override void LoadCustomData(BinaryReader reader)
+		public override void Load(TagCompound tag)
+		{
+			items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
+		}
+
+		public override void LoadLegacy(BinaryReader reader)
 		{
 			int count = reader.ReadUInt16();
 			for (int k = 0; k < count; k++)
-				AddItem(ItemIO.ReadItem(reader, true));
+			{
+				var item = new Item();
+				ItemIO.LoadLegacy(item, reader, true);
+				AddItem(item);
+			}
 		}
 	}
 }

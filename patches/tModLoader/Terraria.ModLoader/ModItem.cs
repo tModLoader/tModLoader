@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 using Terraria.DataStructures;
-using Terraria.ID;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -435,15 +434,24 @@ namespace Terraria.ModLoader
 
 		public virtual bool CloneNewInstances => false;
 
-		public virtual void PreSaveCustomData()
+		public virtual TagCompound Save()
+		{
+			return null;
+		}
+
+		public virtual void Load(TagCompound tag)
 		{
 		}
 
-		public virtual void SaveCustomData(BinaryWriter writer)
+		public virtual void LoadLegacy(BinaryReader reader)
 		{
 		}
 
-		public virtual void LoadCustomData(BinaryReader reader)
+		public virtual void NetSend(BinaryWriter writer)
+		{
+		}
+
+		public virtual void NetRecieve(BinaryReader reader)
 		{
 		}
 

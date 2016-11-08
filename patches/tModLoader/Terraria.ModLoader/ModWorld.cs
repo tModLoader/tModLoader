@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Terraria.ModLoader.IO;
 using Terraria.World.Generation;
 
 namespace Terraria.ModLoader
@@ -28,23 +29,24 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void PreSaveCustomData()
+		public virtual TagCompound Save()
+		{
+			return null;
+		}
+
+		public virtual void Load(TagCompound tag)
 		{
 		}
 
-		public virtual void SaveCustomData(BinaryWriter writer)
+		public virtual void LoadLegacy(BinaryReader reader)
 		{
 		}
 
-		public virtual void LoadCustomData(BinaryReader reader)
+		public virtual void NetSend(BinaryWriter writer)
 		{
 		}
 
-		public virtual void SendCustomData(BinaryWriter writer)
-		{
-		}
-
-		public virtual void ReceiveCustomData(BinaryReader reader)
+		public virtual void NetReceive(BinaryReader reader)
 		{
 		}
 

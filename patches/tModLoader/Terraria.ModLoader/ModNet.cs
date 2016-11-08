@@ -38,6 +38,9 @@ namespace Terraria.ModLoader
 
 		public static bool IsModdedClient(int i) => isModdedClient[i];
 
+		public static Mod GetMod(int netID) =>
+			netID >= 0 && netID < netMods.Length ? netMods[netID] : null;
+
 		private static Queue<ModHeader> downloadQueue = new Queue<ModHeader>();
 		private static ModHeader downloadingMod;
 		private static FileStream downloadingFile;
@@ -267,6 +270,9 @@ namespace Terraria.ModLoader
 			p.Write(netMods.Length);
 			foreach (var mod in netMods)
 				p.Write(mod.Name);
+			
+			ItemLoader.WriteNetGlobalOrder(p);
+			WorldHooks.WriteNetWorldOrder(p);
 
 			p.Send(toClient);
 		}
@@ -284,14 +290,17 @@ namespace Terraria.ModLoader
 					mod.netID = i;
 			}
 			netMods = list.ToArray();
+
+			ItemLoader.ReadNetGlobalOrder(reader);
+			WorldHooks.ReadNetWorldOrder(reader);
 		}
 
 		internal static void HandleModPacket(BinaryReader reader, int whoAmI) {
 			var id = reader.ReadInt16();
 			if (id < 0)
 				ReadNetIDs(reader);
-			else if (id < netMods.Length)
-				netMods[id]?.HandlePacket(reader, whoAmI);
+			else
+				GetMod(id)?.HandlePacket(reader, whoAmI);
 		}
 
 		internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
