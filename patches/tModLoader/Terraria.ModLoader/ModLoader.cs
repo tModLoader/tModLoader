@@ -579,12 +579,16 @@ namespace Terraria.ModLoader
 		{
 			Main.Configuration.Put("ModBrowserPassphrase", ModLoader.modBrowserPassphrase);
 			Main.Configuration.Put("SteamID64", ModLoader.steamID64);
+			Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
+			Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 		}
 
 		internal static void LoadConfiguration()
 		{
 			Main.Configuration.Get<string>("ModBrowserPassphrase", ref ModLoader.modBrowserPassphrase);
 			Main.Configuration.Get<string>("SteamID64", ref ModLoader.steamID64);
+			Main.Configuration.Get<bool>("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
+			Main.Configuration.Get<bool>("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 		}
 
 		/// <summary>

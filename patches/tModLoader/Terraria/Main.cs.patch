@@ -3114,13 +3114,35 @@
  					array9[num10] = Lang.menu[14];
  					if (this.selectedMenu == num10)
  					{
+@@ -41577,6 +_,7 @@
+ 						num2 = 210;
+ 						num4 = 37;
+ 						num5 = 8;
++						num5++; // Room for tModLoader settings option.
+ 						array4[num5 - 1] = 8;
+ 						for (int num18 = 0; num18 < num5; num18++)
+ 						{
+@@ -41630,6 +_,13 @@
+ 						{
+ 							Main.PlaySound(10, -1, -1, 1);
+ 							Main.menuMode = 1213;
++						}
++						num19++;
++						array9[num19] = "tModLoader " + Lang.menu[14]; //"tModLoader Settings"
++						if (this.selectedMenu == num19)
++						{
++							Main.PlaySound(10, -1, -1, 1);
++							Main.menuMode = Interface.tModLoaderSettingsID;
+ 						}
+ 						num19++;
+ 						array9[num19] = Lang.menu[5];
 @@ -42746,6 +_,10 @@
  							WorldGen.setWorldSize();
  						}
  					}
 +					else
 +					{
-+						Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5);
++						Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
 +					}
  				}
  			}

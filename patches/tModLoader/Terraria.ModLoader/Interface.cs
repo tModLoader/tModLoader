@@ -19,12 +19,13 @@ namespace Terraria.ModLoader
 		internal const int modBrowserID = 10007;
 		internal const int modInfoID = 10008;
 		internal const int downloadModID = 10009;
-		internal const int modControlsID = 10010;
+		//internal const int modControlsID = 10010;
 		internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
 		internal const int infoMessageID = 10013;
 		internal const int enterPassphraseMenuID = 10014;
 		internal const int modPacksMenuID = 10015;
+		internal const int tModLoaderSettingsID = 10016;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -91,9 +92,10 @@ namespace Terraria.ModLoader
 		//	}
 		//	virticalSpacing[numButtons - 1] = 8;
 		//}
+
 		//add to end of if else chain of Main.menuMode in Terraria.Main.DrawMenu
-		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num4);
-		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons)
+		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
+		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown)
 		{
 			if (Main.menuMode == modsMenuID)
 			{
@@ -176,6 +178,41 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(modPacksMenu);
 				Main.menuMode = 888;
 			}
+			else if (Main.menuMode == tModLoaderSettingsID)
+			{
+				offY = 210;
+				spacing = 42;
+				numButtons = 3;
+				buttonVerticalSpacing[numButtons - 1] = 18;
+				for (int i = 0; i < numButtons; i++)
+				{
+					buttonScales[i] = 0.75f;
+				}
+				int buttonIndex = 0;
+				buttonNames[buttonIndex] = (ModNet.downloadModsFromServers ? "Download Mods From Servers: On" : "Download Mods From Servers: Off");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(12, -1, -1, 1);
+					ModNet.downloadModsFromServers = !ModNet.downloadModsFromServers;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = (ModNet.onlyDownloadSignedMods ? "Only Download Signed Mods From Servers: On" : "Only Download Signed Mods From Servers: Off");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(12, -1, -1, 1);
+					ModNet.onlyDownloadSignedMods = !ModNet.onlyDownloadSignedMods;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = Lang.menu[5];
+				if (selectedMenu == buttonIndex || backButtonDown)
+				{
+					backButtonDown = false;
+					Main.menuMode = 11;
+					Main.PlaySound(11, -1, -1, 1);
+				}
+			}
 		}
 
 		internal static void ServerModMenu()
@@ -190,7 +227,7 @@ namespace Terraria.ModLoader
 				{
 					BuildProperties properties = BuildProperties.ReadModFile(mods[k]);
 					string name = properties.displayName;
-				    name = mods[k].name;
+					name = mods[k].name;
 					string line = (k + 1) + "\t\t" + name + "(";
 					line += (ModLoader.IsEnabled(mods[k]) ? "enabled" : "disabled") + ")";
 					Console.WriteLine(line);
