@@ -29,16 +29,13 @@
  			}
  		}
  
-@@ -154,10 +_,10 @@
- 			}
-			if (inputs != null)
-			{
-				for (int j = 0; j < inputs.Length; j += 2)
-				{
+@@ -156,7 +_,7 @@
+ 			{
+ 				for (int j = 0; j < inputs.Length; j += 2)
+ 				{
 -					array[(int)((short)inputs[j])] = (T)((object)inputs[j + 1]);
 +					array[(int)inputs[j]] = (T)((object)inputs[j + 1]);
-				}
-			}
+ 				}
+ 			}
  			return array;
- 		}
 

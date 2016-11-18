@@ -1,6 +1,6 @@
 --- src/merged\Terraria.GameContent.UI.States\UIVirtualKeyboard.cs
 +++ src/Terraria\Terraria.GameContent.UI.States\UIVirtualKeyboard.cs
-@@ -691,7 +_,7 @@
+@@ -695,7 +_,7 @@
  					this.CopyTextToChest();
  				}
  			}

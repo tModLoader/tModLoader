@@ -1,6 +1,6 @@
 --- src/merged\Terraria.csproj
 +++ src/Terraria\Terraria.csproj
-@@ -78,12 +_,19 @@
+@@ -78,11 +_,18 @@
      <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System" />
      <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
@@ -22,5 +22,4 @@
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="WindowsBase" />
    </ItemGroup>
-   <ItemGroup>
 

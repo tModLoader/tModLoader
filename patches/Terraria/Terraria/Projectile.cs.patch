@@ -1,6 +1,23 @@
 --- src/merged\Terraria\Projectile.cs
 +++ src/Terraria\Terraria\Projectile.cs
-@@ -12376,100 +_,34 @@
+@@ -7397,15 +_,7 @@
+ 					this.ignoreWater = true;
+ 					this.tileCollide = false;
+ 					this.manualDirectionChange = true;
+-					switch (this.type)
+-					{
+-					case 678:
+-					case 679:
+-						IL_D733:
+-						this.sentry = true;
+-						goto IL_E1D0;
+-					}
+-					goto IL_D733;
++					this.sentry = true;
+ 				}
+ 				if (this.type == 680)
+ 				{
+@@ -13283,100 +_,34 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
  			{
@@ -129,16 +146,16 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -21268,7 +_,7 @@
+@@ -22257,7 +_,7 @@
  																int num697 = (int)(this.position.Y + (float)this.height) / 16;
  																if (WorldGen.SolidTile(num696, num697) || Main.tile[num696, num697].halfBrick() || Main.tile[num696, num697].slope() > 0)
  																{
 -																	goto IL_1CAB1;
-+																	goto Block_1971;
++																	goto Block_1995;
  																}
  																if (TileID.Sets.Platforms[(int)Main.tile[num696, num697].type] && Main.tile[num696, num697].active() && !Main.tile[num696, num697].inActive())
  																{
-@@ -35234,7 +_,7 @@
+@@ -37218,7 +_,7 @@
  							for (int n = 0; n < 5; n++)
  							{
  								int num31 = this.width / 4;
@@ -147,4 +164,12 @@
  								int num32 = Dust.NewDust(base.Center - Vector2.One * (float)num31, num31 * 2, num31 * 2, 88, 0f, 0f, 0, default(Color), 1f);
  								Dust dust5 = Main.dust[num32];
  								Vector2 value3 = Vector2.Normalize(dust5.position - base.Center);
+@@ -39910,7 +_,6 @@
+ 				{
+ 					Vector2 mouseWorld3 = Main.MouseWorld;
+ 					Vector2 value3 = player.DirectionTo(mouseWorld3);
+-					value3 * 0f;
+ 				}
+ 				float num13 = this.rotation - 0.7853982f * (float)num10;
+ 				value2 = (num13 + ((num10 == -1) ? 3.14159274f : 0f)).ToRotationVector2() * (this.ai[0] / num) * scaleFactor;
 
