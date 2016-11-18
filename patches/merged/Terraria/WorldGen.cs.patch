@@ -1,7 +1,6 @@
 --- src/decompiled\Terraria\WorldGen.cs
 +++ src/merged\Terraria\WorldGen.cs
-@@ -14,11 +_,13 @@
- using Terraria.Graphics.Capture;
+@@ -15,10 +_,12 @@
  using Terraria.ID;
  using Terraria.IO;
  using Terraria.Localization;
@@ -15,7 +14,7 @@
  
  namespace Terraria
  {
-@@ -47011,6 +_,7 @@
+@@ -47260,6 +_,7 @@
  		public static bool UpdateMapTile(int i, int j, bool addToList = true)
  		{
  			bool result = false;
@@ -23,7 +22,7 @@
  			if (Main.mapEnabled && !WorldGen.noMapUpdate && !WorldGen.gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList)
  			{
  				result = true;
-@@ -47025,6 +_,7 @@
+@@ -47274,6 +_,7 @@
  					Main.refreshMap = true;
  				}
  			}

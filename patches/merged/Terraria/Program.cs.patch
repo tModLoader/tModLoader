@@ -8,9 +8,9 @@
  using System.Windows.Forms;
 +#endif
  using Terraria.Initializers;
+ using Terraria.Localization;
  using Terraria.Social;
- 
-@@ -12,7 +_,11 @@
+@@ -13,7 +_,11 @@
  {
  	public static class Program
  	{
@@ -22,7 +22,7 @@
  
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
-@@ -59,15 +_,23 @@
+@@ -60,15 +_,23 @@
  			for (int i = 0; i < array.Length; i++)
  			{
  				Type type = array[i];
@@ -48,7 +48,7 @@
  				}
  				Program.ThingsLoaded++;
  			}
-@@ -130,7 +_,11 @@
+@@ -132,7 +_,11 @@
  					{
  						Program.StartForceLoad();
  					};
@@ -60,7 +60,7 @@
  				}
  				catch (Exception e)
  				{
-@@ -149,7 +_,14 @@
+@@ -151,7 +_,14 @@
  					streamWriter.WriteLine(e);
  					streamWriter.WriteLine("");
  				}

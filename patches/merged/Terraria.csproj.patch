@@ -91,8 +91,8 @@
    <ItemGroup>
      <Reference Include="System.Windows.Forms" />
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
-+    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
 -    <Reference Include="Microsoft.Xna.Framework" />
++    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
 +    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System" />
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" />
@@ -115,7 +115,7 @@
      <Compile Include="Properties\AssemblyInfo.cs" />
      <Compile Include="Terraria.Achievements\Achievement.cs" />
      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
-@@ -377,11 +_,13 @@
+@@ -409,11 +_,13 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />
      <Compile Include="Terraria\ItemText.cs" />
@@ -130,7 +130,7 @@
      <Compile Include="Terraria\Main.cs" />
      <Compile Include="Terraria\MessageBuffer.cs" />
      <Compile Include="Terraria\Minecart.cs" />
-@@ -409,7 +_,7 @@
+@@ -443,7 +_,7 @@
      <Compile Include="Terraria\TimeLogger.cs" />
      <Compile Include="Terraria\Utils.cs" />
      <Compile Include="Terraria\WaterfallManager.cs" />

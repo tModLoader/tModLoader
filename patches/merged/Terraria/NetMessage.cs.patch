@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\NetMessage.cs
 +++ src/merged\Terraria\NetMessage.cs
-@@ -2039,6 +_,12 @@
+@@ -2075,6 +_,12 @@
  				}
  				catch
  				{

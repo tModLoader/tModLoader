@@ -22,7 +22,7 @@
  
  namespace Terraria
  {
-@@ -43,7 +_,11 @@
+@@ -44,7 +_,11 @@
  		public static bool spamCheck = false;
  
  		public static bool anyClients = false;
@@ -35,7 +35,7 @@
  		public static string portForwardIP;
  
  		public static int portForwardPort;
-@@ -56,10 +_,33 @@
+@@ -57,10 +_,33 @@
  		{
  			Netplay.portForwardIP = Netplay.GetLocalIPAddress();
  			Netplay.portForwardPort = Netplay.ListenPort;
@@ -69,7 +69,7 @@
  		}
  
  		public static string GetLocalIPAddress()
-@@ -198,7 +_,12 @@
+@@ -199,7 +_,12 @@
  				}
  				catch
  				{
@@ -83,7 +83,7 @@
  					{
  						flag = true;
  					}
-@@ -783,8 +_,20 @@
+@@ -740,8 +_,20 @@
  
  		public static void Initialize()
  		{

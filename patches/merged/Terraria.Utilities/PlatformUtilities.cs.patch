@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Utilities\PlatformUtilities.cs
 +++ src/merged\Terraria.Utilities\PlatformUtilities.cs
-@@ -1,18 +_,55 @@
+@@ -1,7 +_,14 @@
 +#if !WINDOWS
 +using SDL2;
 +#endif
@@ -15,12 +15,10 @@
  
  namespace Terraria.Utilities
  {
- 	public static class PlatformUtilities
- 	{
-		public const bool IsXNA = true;
-
-		public const bool IsFNA = false;
-		
+@@ -11,8 +_,38 @@
+ 
+ 		public const bool IsFNA = false;
+ 
 -		public static string GetClipboard()
 +#if !WINDOWS
 +		private struct SDL_Surface
@@ -57,7 +55,7 @@
  			string clipboardText = "";
  			Thread thread = new Thread(delegate
  			{
-@@ -26,11 +_,24 @@
+@@ -30,11 +_,24 @@
  					array[length++] = clipboardText[i];
  				}
  			}
@@ -84,7 +82,7 @@
  			Thread thread = new Thread(delegate
  			{
  				if (text.Length > 0)
-@@ -41,12 +_,62 @@
+@@ -45,12 +_,62 @@
  			thread.SetApartmentState(ApartmentState.STA);
  			thread.Start();
  			thread.Join();
