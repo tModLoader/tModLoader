@@ -15,11 +15,11 @@
  						tile.active(bitsByte11[0]);
 -						tile.wall = (bitsByte11[2] ? 1 : 0);
 +						tile.wall = (bitsByte11[2] ? (byte)1 : (byte)0);
- 						bool flag8 = bitsByte11[3];
+ 						bool flag9 = bitsByte11[3];
  						if (Main.netMode != 2)
  						{
--							tile.liquid = (flag8 ? 1 : 0);
-+							tile.liquid = (flag8 ? (byte)1 : (byte)0);
+-							tile.liquid = (flag9 ? 1 : 0);
++							tile.liquid = (flag9 ? (byte)1 : (byte)0);
  						}
  						tile.wire(bitsByte11[4]);
  						tile.halfBrick(bitsByte11[5]);

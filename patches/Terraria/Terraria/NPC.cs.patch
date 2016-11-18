@@ -1,14 +1,14 @@
 --- src/merged\Terraria\NPC.cs
 +++ src/Terraria\Terraria\NPC.cs
 @@ -46493,7 +_,7 @@
- 															this.ai[0] = -300f;
- 															this.netUpdate = true;
- 														}
--														base.Center + Vector2.UnitX * (float)this.direction * 200f;
-+														Vector2 _ = base.Center + Vector2.UnitX * (float)this.direction * 200f;
- 														Vector2 vector293 = base.Center + Vector2.UnitX * (float)this.direction * 50f - Vector2.UnitY * 6f;
- 														if (this.ai[0] == 54f && Main.netMode != 1)
- 														{
+																				this.ai[0] = -300f;
+																				this.netUpdate = true;
+																			}
+-																			base.Center + Vector2.UnitX * (float)this.direction * 200f;
++																			Vector2 _ = base.Center + Vector2.UnitX * (float)this.direction * 200f;
+																			Vector2 vector223 = base.Center + Vector2.UnitX * (float)this.direction * 50f - Vector2.UnitY * 6f;
+																			if (this.ai[0] == 54f && Main.netMode != 1)
+																			{
 @@ -51634,19 +_,16 @@
  						case 2:
  						case 4:

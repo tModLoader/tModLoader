@@ -118,17 +118,17 @@
  		public static string GetInputText(string oldString)
  		{
  #if CLIENT
--			Main.<>c__DisplayClass1d <>c__DisplayClass1d = new Main.<>c__DisplayClass1d();
--			<>c__DisplayClass1d.oldString = oldString;
+-			Main.<>c__DisplayClass1e <>c__DisplayClass1e = new Main.<>c__DisplayClass1e();
+-			<>c__DisplayClass1e.oldString = oldString;
  			if (!Main.hasFocus)
  			{
--				return <>c__DisplayClass1d.oldString;
+-				return <>c__DisplayClass1e.oldString;
 +				return oldString;
  			}
  			Main.inputTextEnter = false;
  			Main.inputTextEscape = false;
--			string text = <>c__DisplayClass1d.oldString;
--			<>c__DisplayClass1d.newKeys = "";
+-			string text = <>c__DisplayClass1e.oldString;
+-			<>c__DisplayClass1e.newKeys = "";
 +			string text = oldString;
 +			string newKeys = "";
  			if (text == null)
@@ -138,20 +138,20 @@
  				}
  				else if (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X))
  				{
--					PlatformUtilties.SetClipboard(<>c__DisplayClass1d.oldString);
-+					PlatformUtilties.SetClipboard(oldString);
+-					PlatformUtilities.SetClipboard(<>c__DisplayClass1e.oldString);
++					PlatformUtilities.SetClipboard(oldString);
  					text = "";
  				}
  				else if ((Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C)) || (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert)))
  				{
--					PlatformUtilties.SetClipboard(<>c__DisplayClass1d.oldString);
-+					PlatformUtilties.SetClipboard(oldString);
+-					PlatformUtilities.SetClipboard(<>c__DisplayClass1e.oldString);
++					PlatformUtilities.SetClipboard(oldString);
  				}
  				else if (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V))
  				{
--					Main.<>c__DisplayClass1d expr_13B = <>c__DisplayClass1d;
--					expr_13B.newKeys += PlatformUtilties.GetClipboard();
-+					newKeys += PlatformUtilties.GetClipboard();
+-					Main.<>c__DisplayClass1e expr_13B = <>c__DisplayClass1e;
+-					expr_13B.newKeys += PlatformUtilities.GetClipboard();
++					newKeys += PlatformUtilities.GetClipboard();
  				}
  			}
  			else
@@ -161,9 +161,9 @@
  					{
 -						Thread thread = new Thread(delegate
 -						{
--							if (<>c__DisplayClass1d.oldString.Length > 0)
+-							if (<>c__DisplayClass1e.oldString.Length > 0)
 -							{
--								Clipboard.SetText(<>c__DisplayClass1d.oldString);
+-								Clipboard.SetText(<>c__DisplayClass1e.oldString);
 +						Thread thread = new Thread((ThreadStart)delegate
 +						{
 +							if (oldString.Length > 0)
@@ -185,7 +185,7 @@
  									text2 = text2.Replace(string.Concat(text2[l--]), "");
  								}
  							}
--							<>c__DisplayClass1d.newKeys += text2;
+-							<>c__DisplayClass1e.newKeys += text2;
 +							newKeys += text2;
  						});
  						thread2.SetApartmentState(ApartmentState.STA);
@@ -194,14 +194,14 @@
  					}
  					else if (num >= 32 && num != 127)
  					{
--						Main.<>c__DisplayClass1d expr_25B = <>c__DisplayClass1d;
+-						Main.<>c__DisplayClass1e expr_25B = <>c__DisplayClass1e;
 -						expr_25B.newKeys += str;
 +						newKeys += str;
  					}
  				}
  			}
  			Main.keyCount = 0;
--			text += <>c__DisplayClass1d.newKeys;
+-			text += <>c__DisplayClass1e.newKeys;
 +			text += newKeys;
  			Main.oldInputText = Main.inputText;
  			Main.inputText = Keyboard.GetState();
@@ -229,7 +229,7 @@
 @@ -19695,9 +_,9 @@
  												}
  												Microsoft.Xna.Framework.Color color11 = color;
- 												Microsoft.Xna.Framework.Color color12 = array[num167];
+ 												Microsoft.Xna.Framework.Color color12 = array[num169];
 -												color11.R = (color.R + color12.R) / 2;
 -												color11.G = (color.G + color12.G) / 2;
 -												color11.B = (color.B + color12.B) / 2;
@@ -242,7 +242,7 @@
 @@ -19742,9 +_,9 @@
  												}
  												Microsoft.Xna.Framework.Color color13 = color;
- 												Microsoft.Xna.Framework.Color color14 = array[num170];
+ 												Microsoft.Xna.Framework.Color color14 = array[num172];
 -												color13.R = (color.R + color14.R) / 2;
 -												color13.G = (color.G + color14.G) / 2;
 -												color13.B = (color.B + color14.B) / 2;
@@ -256,38 +256,38 @@
  				}
  				if (type4 == 334 && frameX >= 5000)
  				{
--					short arg_D1B2_0 = frameY / 18;
-+					short arg_D1B2_0 = (short)(frameY / 18);
- 					int num309 = (int)frameX;
- 					int num310 = 0;
- 					int num311 = num309 % 5000;
+-					short arg_D4C2_0 = frameY / 18;
++					short arg_D4C2_0 = (short)(frameY / 18);
+ 					int num311 = (int)frameX;
+ 					int num312 = 0;
+ 					int num313 = num311 % 5000;
 @@ -21787,25 +_,23 @@
  								switch (m)
  								{
  								case 0:
--									IL_7EF:
+-									IL_2E2:
 +								default:
  									num3 = num2;
  									num4 = 0f;
--									goto IL_823;
+-									goto IL_316;
 +									break;
  								case 1:
  									num3 = -num2;
  									num4 = 0f;
--									goto IL_823;
+-									goto IL_316;
 +									break;
  								case 2:
  									num3 = 0f;
  									num4 = num2;
--									goto IL_823;
+-									goto IL_316;
 +									break;
  								case 3:
  									num3 = 0f;
  									num4 = -num2;
--									goto IL_823;
+-									goto IL_316;
 -								}
--								goto IL_7EF;
--								IL_823:
+-								goto IL_2E2;
+-								IL_316:
 +									break;
 +								}
  								position = new Vector2(player.position.X + num3, player.position.Y + player.gfxOffY + num4);
@@ -297,43 +297,43 @@
  								switch (n)
  								{
  								case 0:
--									IL_927:
+-									IL_41E:
 +								default:
  									num6 = num5;
  									num7 = 0f;
--									goto IL_95B;
+-									goto IL_452;
 +									break;
  								case 1:
  									num6 = -num5;
  									num7 = 0f;
--									goto IL_95B;
+-									goto IL_452;
 +									break;
  								case 2:
  									num6 = 0f;
  									num7 = num5;
--									goto IL_95B;
+-									goto IL_452;
 +									break;
  								case 3:
  									num6 = 0f;
  									num7 = -num5;
--									goto IL_95B;
+-									goto IL_452;
 -								}
--								goto IL_927;
--								IL_95B:
+-								goto IL_41E;
+-								IL_452:
 +									break;
 +								}
  								position = new Vector2(player.position.X + num6, player.position.Y + player.gfxOffY + num7);
  								this.DrawPlayer(player, position, player.fullRotation, player.fullRotationOrigin, player.ghostFade);
  							}
 @@ -23617,7 +_,7 @@
- 							if (type >= 87 && type <= 92)
- 							{
- 								Microsoft.Xna.Framework.Color alpha2 = Main.npc[i].GetAlpha(color9);
--								byte b4 = (Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3;
-+								byte b4 = (byte)((Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3);
- 								if (alpha2.R < b4)
- 								{
- 									alpha2.R = b4;
+								if (type >= 87 && type <= 92)
+								{
+									Microsoft.Xna.Framework.Color alpha6 = nPC.GetAlpha(color9);
+-									byte b5 = (Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3;
++									byte b5 = (byte)((Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3);
+									if (alpha6.R < b5)
+									{
+										alpha6.R = b5;
 @@ -27667,7 +_,7 @@
  					Microsoft.Xna.Framework.Color color32 = color25;
  					color32 = projectile.GetAlpha(color32);

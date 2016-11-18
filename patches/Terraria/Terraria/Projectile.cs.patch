@@ -4,9 +4,9 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
  			{
--				if (<PrivateImplementationDetails>{E28F23CB-C45E-48C8-B6D8-427CF868CC54}.$$method0x6000a3f-1 == null)
+-				if (<PrivateImplementationDetails>{1A817E40-F610-4B4B-BC36-818661A54EEB}.$$method0x6000b54-1 == null)
 -				{
--					<PrivateImplementationDetails>{E28F23CB-C45E-48C8-B6D8-427CF868CC54}.$$method0x6000a3f-1 = new Dictionary<string, int>(14)
+-					<PrivateImplementationDetails>{1A817E40-F610-4B4B-BC36-818661A54EEB}.$$method0x6000b54-1 = new Dictionary<string, int>(14)
 -					{
 -						{
 -							"Tsuki",
@@ -67,7 +67,7 @@
 -					};
 -				}
 -				int num;
--				if (<PrivateImplementationDetails>{E28F23CB-C45E-48C8-B6D8-427CF868CC54}.$$method0x6000a3f-1.TryGetValue(name, out num))
+-				if (<PrivateImplementationDetails>{1A817E40-F610-4B4B-BC36-818661A54EEB}.$$method0x6000b54-1.TryGetValue(name, out num))
 -				{
 -					switch (num)
 -					{
@@ -130,21 +130,21 @@
  			}
  			return (float)((int)indexing) / 6f;
 @@ -21268,7 +_,7 @@
- 																int num689 = (int)(this.position.Y + (float)this.height) / 16;
- 																if (WorldGen.SolidTile(num688, num689) || Main.tile[num688, num689].halfBrick() || Main.tile[num688, num689].slope() > 0)
+ 																int num697 = (int)(this.position.Y + (float)this.height) / 16;
+ 																if (WorldGen.SolidTile(num696, num697) || Main.tile[num696, num697].halfBrick() || Main.tile[num696, num697].slope() > 0)
  																{
--																	goto IL_1C754;
+-																	goto IL_1CAB1;
 +																	goto Block_1971;
  																}
- 																if (TileID.Sets.Platforms[(int)Main.tile[num688, num689].type] && Main.tile[num688, num689].active() && !Main.tile[num688, num689].inActive())
+ 																if (TileID.Sets.Platforms[(int)Main.tile[num696, num697].type] && Main.tile[num696, num697].active() && !Main.tile[num696, num697].inActive())
  																{
 @@ -35234,7 +_,7 @@
  							for (int n = 0; n < 5; n++)
  							{
- 								int num29 = this.width / 4;
+ 								int num31 = this.width / 4;
 -								((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
 +								Vector2 _ = ((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
- 								int num30 = Dust.NewDust(base.Center - Vector2.One * (float)num29, num29 * 2, num29 * 2, 88, 0f, 0f, 0, default(Color), 1f);
- 								Dust dust5 = Main.dust[num30];
+ 								int num32 = Dust.NewDust(base.Center - Vector2.One * (float)num31, num31 * 2, num31 * 2, 88, 0f, 0f, 0, default(Color), 1f);
+ 								Dust dust5 = Main.dust[num32];
  								Vector2 value3 = Vector2.Normalize(dust5.position - base.Center);
 
