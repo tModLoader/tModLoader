@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Graphics.Capture\CaptureCamera.cs
 +++ src/merged\Terraria.Graphics.Capture\CaptureCamera.cs
-@@ -5,8 +_,13 @@
+@@ -5,9 +_,14 @@
  using System.Drawing;
  using System.Drawing.Imaging;
  using System.IO;
@@ -8,6 +8,7 @@
  using System.Runtime.InteropServices;
 +#endif
  using System.Threading;
+ using Terraria.Localization;
 +#if !WINDOWS
 +using Terraria.Utilities;
 +#endif

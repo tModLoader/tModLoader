@@ -149,7 +149,7 @@
  			WorldGen.RandomizeBackgrounds();
  			WorldGen.RandomizeCaveBackgrounds();
  			WorldGen.RandomizeMoonState();
-@@ -8180,17 +_,20 @@
+@@ -8180,18 +_,21 @@
  				Main.ActivePlayerFileData.StartPlayTimer();
  				Player.Hooks.EnterWorld(Main.myPlayer);
  			}
@@ -165,6 +165,7 @@
  			{
  				return;
  			}
+			MessageBuffer.OnTileChangeReceived += new TileChangeReceivedEvent(this.OnTileChangeEvent);
  			Main.clientUUID = Guid.NewGuid().ToString();
 +#if CLIENT
  			keyBoardInput.newKeyEvent += delegate(char keyStroke)
@@ -194,11 +195,10 @@
  			foreach (DisplayMode current in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
  			{
  				if (current.Width >= Main.minScreenW && current.Height >= Main.minScreenH && current.Width <= Main.maxScreenW && current.Height <= Main.maxScreenH)
-@@ -9269,7 +_,31 @@
- 
- 		protected void UpdateMusic()
- 		{
--			if (Main.musicVolume == 0f)
+@@ -9269,6 +_,30 @@
+					}
+				}
+			}
 +#if !WINDOWS
 +			if (Main.engine != null)
 +			{
@@ -223,10 +223,9 @@
 +				}
 +			}
 +#endif
-+            if (Main.musicVolume == 0f)
+			if (Main.musicVolume == 0f)
  			{
  				Main.curMusic = 0;
- 			}
 @@ -12651,10 +_,12 @@
  			}
  			Main.MouseOversTryToClear();
@@ -265,8 +264,8 @@
  		public static string GetInputText(string oldString)
  		{
 +#if CLIENT
- 			Main.<>c__DisplayClass1d <>c__DisplayClass1d = new Main.<>c__DisplayClass1d();
- 			<>c__DisplayClass1d.oldString = oldString;
+ 			Main.<>c__DisplayClass1e <>c__DisplayClass1e = new Main.<>c__DisplayClass1e();
+ 			<>c__DisplayClass1e.oldString = oldString;
  			if (!Main.hasFocus)
 @@ -14969,6 +_,9 @@
  				}
@@ -355,10 +354,11 @@
  			Main.drawTime++;
  			Main.screenLastPosition = Main.screenPosition;
  			if (Main.stackSplit == 0)
-@@ -57611,6 +_,7 @@
+@@ -57611,7 +_,8 @@
  			CultistRitual.UpdateTime();
  			BirthdayParty.UpdateTime();
  			Sandstorm.UpdateTime();
+			DD2Event.UpdateTime();
 +#if CLIENT
  			if (NPC.MoonLordCountdown > 0)
  			{

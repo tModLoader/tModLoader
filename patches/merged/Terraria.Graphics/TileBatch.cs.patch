@@ -21,9 +21,9 @@
  		{
  			public Vector4 Source;
 @@ -30,9 +_,106 @@
- 		private Texture2D[] spriteTextures;
+ 		private Texture2D[] _spriteTextures;
  
- 		private int queuedSpriteCount;
+ 		private int _queuedSpriteCount;
 -
 -		private SpriteBatch _spriteBatch;
 -
@@ -127,19 +127,19 @@
 +        private SpriteBatch _spriteBatch;
 +
 +#if WINDOWS
- 		private static Vector2 vector2Zero;
+ 		private static Vector2 _vector2Zero;
  
- 		private static Rectangle? nullRectangle;
+ 		private static Rectangle? _nullRectangle;
 @@ -46,14 +_,27 @@
- 		private VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[8192];
+ 		private VertexPositionColorTexture[] _vertices = new VertexPositionColorTexture[8192];
  
- 		private int vertexBufferPosition;
+ 		private int _vertexBufferPosition;
 +#endif
  
  		public TileBatch(GraphicsDevice graphicsDevice)
  		{
 +#if WINDOWS
- 			this.graphicsDevice = graphicsDevice;
+ 			this._graphicsDevice = graphicsDevice;
 +#endif
  			this._spriteBatch = new SpriteBatch(graphicsDevice);
 +#if WINDOWS

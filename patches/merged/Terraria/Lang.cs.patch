@@ -1,8 +1,8 @@
 --- src/decompiled\Terraria\Lang.cs
 +++ src/merged\Terraria\Lang.cs
 @@ -1,6 +_,8 @@
- using System;
  using Terraria.ID;
+ using Terraria.Localization;
 +#if CLIENT
  using Terraria.Map;
 +#endif

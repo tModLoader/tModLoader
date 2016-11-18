@@ -13,7 +13,7 @@
  													}
  												}
 +#endif
- 												for (float num1637 = 0f; num1637 < this.ai[1] / 60f; num1637 += 1f)
+ 												for (float num1642 = 0f; num1642 < this.ai[1] / 60f; num1642 += 1f)
  												{
- 													Vector2 vector204 = Utils.RandomVector2(Main.rand, -1f, 1f);
+ 													Vector2 vector205 = Utils.RandomVector2(Main.rand, -1f, 1f);
 

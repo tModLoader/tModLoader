@@ -1,6 +1,6 @@
---- src/decompiled\Terraria.Utilities\PlatformUtilties.cs
-+++ src/merged\Terraria.Utilities\PlatformUtilties.cs
-@@ -1,14 +_,51 @@
+--- src/decompiled\Terraria.Utilities\PlatformUtilities.cs
++++ src/merged\Terraria.Utilities\PlatformUtilities.cs
+@@ -1,18 +_,55 @@
 +#if !WINDOWS
 +using SDL2;
 +#endif
@@ -15,8 +15,12 @@
  
  namespace Terraria.Utilities
  {
- 	public static class PlatformUtilties
+ 	public static class PlatformUtilities
  	{
+		public const bool IsXNA = true;
+
+		public const bool IsFNA = false;
+		
 -		public static string GetClipboard()
 +#if !WINDOWS
 +		private struct SDL_Surface

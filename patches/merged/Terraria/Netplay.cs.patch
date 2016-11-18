@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\Netplay.cs
 +++ src/merged\Terraria\Netplay.cs
-@@ -2,11 +_,20 @@
+@@ -2,12 +_,21 @@
  using System.IO;
  using System.Net;
  using System.Net.Sockets;
@@ -9,6 +9,7 @@
 +#endif
  using System.Threading;
  using Terraria.IO;
+ using Terraria.Localization;
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
