@@ -15,9 +15,9 @@
  
  namespace Terraria.Utilities
  {
-@@ -11,8 +_,38 @@
+@@ -17,8 +_,38 @@
  
- 		public const bool IsFNA = false;
+ 		public const bool IsLinux = false;
  
 -		public static string GetClipboard()
 +#if !WINDOWS
@@ -55,7 +55,7 @@
  			string clipboardText = "";
  			Thread thread = new Thread(delegate
  			{
-@@ -30,11 +_,24 @@
+@@ -36,11 +_,24 @@
  					array[length++] = clipboardText[i];
  				}
  			}
@@ -82,7 +82,7 @@
  			Thread thread = new Thread(delegate
  			{
  				if (text.Length > 0)
-@@ -45,12 +_,62 @@
+@@ -51,12 +_,62 @@
  			thread.SetApartmentState(ApartmentState.STA);
  			thread.Start();
  			thread.Join();
