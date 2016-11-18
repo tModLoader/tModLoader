@@ -53,9 +53,9 @@
 @@ -310,11 +_,9 @@
  				for (int j = Y; j <= Y + 1; j++)
  				{
- 					Tile expr_DD = Main.tile[i, j];
+ 					Tile expr_E8 = Main.tile[i, j];
 -					short num3;
- 					expr_DD.frameX -= num3;
+ 					expr_E8.frameX -= num3;
  					for (int k = 0; k < 4; k++)
  					{
 -						int type;
