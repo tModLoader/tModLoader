@@ -20,7 +20,7 @@
  							{
  								MapHelper.LoadMapVersion2(binaryReader, num);
  							}
-+							MapIO.ReadModFile(text2, isCloudSave);
++							MapIO.ReadModFile(text, isCloudSave);
  							Main.clearMap = true;
  							Main.loadMap = true;
  							Main.loadMapLock = true;

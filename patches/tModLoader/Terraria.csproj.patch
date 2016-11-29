@@ -176,7 +176,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -511,11 +_,58 @@
+@@ -511,11 +_,59 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -188,7 +188,7 @@
      <EmbeddedResource Include="Terraria.Localization.Content.English.Town.json" />
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
-   </ItemGroup>
++  </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonError.png" />
@@ -201,6 +201,7 @@
 +    <None Include="App.config">
 +      <SubType>Designer</SubType>
 +    </None>
+   </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)

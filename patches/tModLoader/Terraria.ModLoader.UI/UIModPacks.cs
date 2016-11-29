@@ -46,14 +46,14 @@ namespace Terraria.ModLoader.UI
 			scrollPanel.Append(uIScrollbar);
 			modListList.SetScrollbar(uIScrollbar);
 
-			UITextPanel titleTextPanel = new UITextPanel("Mod Packs", 0.8f, true);
+			UITextPanel<string> titleTextPanel = new UITextPanel<string>("Mod Packs", 0.8f, true);
 			titleTextPanel.HAlign = 0.5f;
 			titleTextPanel.Top.Set(-35f, 0f);
 			titleTextPanel.SetPadding(15f);
 			titleTextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(titleTextPanel);
 
-			UITextPanel backButton = new UITextPanel("Back", 1f, false);
+			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
 			backButton.Width.Set(-10f, 1f / 2f);
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;

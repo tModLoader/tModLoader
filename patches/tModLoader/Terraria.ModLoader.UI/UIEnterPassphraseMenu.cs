@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.UI
 	internal class UIEnterPassphraseMenu : UIState
 	{
 		string registerURL = "http://javid.ddns.net/tModLoader/register.php";
-		public UITextPanel uITextPanel;
+		public UITextPanel<string> uITextPanel;
 		internal UIInputTextField passcodeTextField;
 		private int gotoMenu = 0;
 
@@ -38,14 +38,14 @@ namespace Terraria.ModLoader.UI
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
 
-			uITextPanel = new UITextPanel("Please Enter Your Passcode", 0.8f, true);
+			uITextPanel = new UITextPanel<string>("Please Enter Your Passcode", 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
 
-			UITextPanel button = new UITextPanel("Back", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>("Back", 1f, false);
 			button.Width.Set(-10f, 0.5f);
 			button.Height.Set(25f, 0f);
 			button.VAlign = 1f;
@@ -55,7 +55,7 @@ namespace Terraria.ModLoader.UI
 			button.OnClick += new UIElement.MouseEvent(BackClick);
 			uIElement.Append(button);
 
-			UITextPanel button2 = new UITextPanel("Submit", 1f, false);
+			UITextPanel<string> button2 = new UITextPanel<string>("Submit", 1f, false);
 			button2.CopyStyle(button);
 			button2.HAlign = 1f;
 			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.UI
 			button2.OnClick += new UIElement.MouseEvent(OKClick);
 			uIElement.Append(button2);
 
-			UITextPanel button3 = new UITextPanel("Visit Website to Generate Passphrase", 1f, false);
+			UITextPanel<string> button3 = new UITextPanel<string>("Visit Website to Generate Passphrase", 1f, false);
 			button3.CopyStyle(button);
 			button3.Width.Set(0f, 1f);
 			button3.Top.Set(-20f, 0f);

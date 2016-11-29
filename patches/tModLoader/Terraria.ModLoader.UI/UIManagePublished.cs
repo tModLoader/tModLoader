@@ -14,7 +14,7 @@ namespace Terraria.ModLoader.UI
 	internal class UIManagePublished : UIState
 	{
 		private UIList myPublishedMods;
-		public UITextPanel uITextPanel;
+		public UITextPanel<string> uITextPanel;
 
 		public override void OnInitialize()
 		{
@@ -40,13 +40,13 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			myPublishedMods.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel("My Published Mods", 0.8f, true);
+			uITextPanel = new UITextPanel<string>("My Published Mods", 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
-			UITextPanel button3 = new UITextPanel("Back", 1f, false);
+			UITextPanel<string> button3 = new UITextPanel<string>("Back", 1f, false);
 			button3.VAlign = 1f;
 			button3.Height.Set(25f, 0f);
 			button3.Width.Set(-10f, 1f / 2f);

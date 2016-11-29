@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.UI
 			message.Height.Set(0f, 0.8f);
 			message.HAlign = 0.5f;
 			area.Append(message);
-			UITextPanel button = new UITextPanel("OK", 0.7f, true);
+			UITextPanel<string> button = new UITextPanel<string>("OK", 0.7f, true);
 			button.Width.Set(-10f, 0.5f);
 			button.Height.Set(50f, 0f);
 			button.Left.Set(0, .25f);

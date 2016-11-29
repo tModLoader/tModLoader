@@ -20,7 +20,7 @@ namespace Terraria.ModLoader.UI
 		public UIList modList;
 		public UIList modListAll;
 		public UIModDownloadItem selectedItem;
-		public UITextPanel uITextPanel;
+		public UITextPanel<string> uITextPanel;
 		UIInputTextField filterTextBox;
 		private List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		public bool loaded = false;
@@ -62,13 +62,13 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			modList.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel("Mod Browser", 0.8f, true);
+			uITextPanel = new UITextPanel<string>("Mod Browser", 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
-			UITextPanel button = new UITextPanel("Reload List", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>("Reload List", 1f, false);
 			button.Width.Set(-10f, 0.5f);
 			button.Height.Set(25f, 0f);
 			button.VAlign = 1f;
@@ -77,7 +77,7 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button.OnClick += new UIElement.MouseEvent(ReloadList);
 			uIElement.Append(button);
-			UITextPanel button3 = new UITextPanel("Back", 1f, false);
+			UITextPanel<string> button3 = new UITextPanel<string>("Back", 1f, false);
 			button3.Width.Set(-10f, 0.5f);
 			button3.Height.Set(25f, 0f);
 			button3.VAlign = 1f;

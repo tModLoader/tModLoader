@@ -184,10 +184,10 @@
  						Main.chest[num101].item[num102].netDefaults(type5);
  						Main.chest[num101].item[num102].Prefix(pre2);
  						Main.chest[num101].item[num102].stack = stack4;
-+						byte[] data = ItemIO.GetCustomData(type4, reader);
++						byte[] data = ItemIO.GetCustomData(type5, reader);
 +						try
 +						{
-+							ItemIO.ReadCustomData(Main.chest[num99].item[num100], data);
++							ItemIO.ReadCustomData(Main.chest[num101].item[num102], data);
 +						}
 +						catch (CustomModDataException)
 +						{
@@ -214,7 +214,7 @@
 -							{
 -								int num111 = WorldGen.PlaceChest(num107, num108, 21, false, num109);
 +						ushort modType = 0;
-+						if (b7 >= 100)
++						if (b8 >= 100)
 +						{
 +							modType = this.reader.ReadUInt16();
 +						}
@@ -358,15 +358,18 @@
  							if (player12.buffType[num142] > 0)
  							{
  								player12.buffTime[num142] = 60;
-@@ -2318,7 +_,7 @@
+@@ -2318,9 +_,9 @@
  				case 53:
  					{
  						int num146 = (int)this.reader.ReadInt16();
 -						int type6 = (int)this.reader.ReadByte();
 +						int type5 = (int)(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16());
  						int time = (int)this.reader.ReadInt16();
- 						Main.npc[num146].AddBuff(type6, time, true);
+-						Main.npc[num146].AddBuff(type6, time, true);
++						Main.npc[num146].AddBuff(type5, time, true);
  						if (Main.netMode == 2)
+ 						{
+ 							NetMessage.SendData(54, -1, -1, "", num146, 0f, 0f, 0f, 0, 0, 0);
 @@ -2338,7 +_,7 @@
  						NPC nPC2 = Main.npc[num147];
  						for (int num148 = 0; num148 < 5; num148++)

@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.UI
 		private Texture2D dividerTexture;
 		private Texture2D innerPanelTexture;
 		private UIText modName;
-		UITextPanel button2;
+		UITextPanel<string> button2;
 		public bool update = false;
 		public bool exists = false;
 
@@ -53,7 +53,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel button = new UITextPanel("More info", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>("More info", 1f, false);
 			button.Width.Set(100f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(10f, 0f);
@@ -66,7 +66,7 @@ namespace Terraria.ModLoader.UI
 			base.Append(button);
 			if (update || !exists)
 			{
-				button2 = new UITextPanel(this.update ? "Update" : "Download", 1f, false);
+				button2 = new UITextPanel<string>(this.update ? "Update" : "Download", 1f, false);
 				button2.CopyStyle(button);
 				button2.Width.Set(200f, 0f);
 				button2.Left.Set(150f, 0f);
