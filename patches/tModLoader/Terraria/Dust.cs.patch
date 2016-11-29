@@ -1,23 +1,23 @@
 --- src/Terraria\Terraria\Dust.cs
 +++ src/tModLoader\Terraria\Dust.cs
-@@ -3,6 +_,8 @@
- using Terraria.GameContent;
+@@ -4,6 +_,8 @@
  using Terraria.GameContent.Events;
  using Terraria.Graphics.Shaders;
+ using Terraria.Utilities;
 +using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -27,6 +_,7 @@
+@@ -28,6 +_,7 @@
  		public ArmorShaderData shader;
  		public object customData;
  		public bool firstFrame;
 +		internal int realType = -1;
  
- 		public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
+ 		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  		{
-@@ -171,6 +_,7 @@
+@@ -193,6 +_,7 @@
  					{
  						dust.alpha = 50;
  					}
@@ -25,7 +25,7 @@
  					if (dust.type != 34 && dust.type != 35 && dust.type != 152)
  					{
  						break;
-@@ -288,6 +_,10 @@
+@@ -303,6 +_,10 @@
  
  		public static int dustWater()
  		{
@@ -36,7 +36,7 @@
  			switch (Main.waterStyle)
  			{
  				case 2:
-@@ -328,6 +_,13 @@
+@@ -343,6 +_,13 @@
  					if (dust.active)
  					{
  						Dust.dCount += 1f;
@@ -50,16 +50,16 @@
  						if (dust.scale > 10f)
  						{
  							dust.active = false;
-@@ -1848,7 +_,7 @@
+@@ -1893,7 +_,7 @@
  							}
  							Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num106 * 0.7f, num106, num106 * 0.8f);
  						}
 -						else
 +						else if (modDust == null || !modDust.MidUpdate(dust))
  						{
- 							Dust expr_42F6_cp_0 = dust;
- 							expr_42F6_cp_0.velocity.X = expr_42F6_cp_0.velocity.X * 0.99f;
-@@ -2073,6 +_,7 @@
+ 							Dust expr_446A_cp_0 = dust;
+ 							expr_446A_cp_0.velocity.X = expr_446A_cp_0.velocity.X * 0.99f;
+@@ -2150,6 +_,7 @@
  						{
  							dust.active = false;
  						}
@@ -67,7 +67,7 @@
  					}
  				}
  				else
-@@ -2111,6 +_,15 @@
+@@ -2188,6 +_,15 @@
  
  		public Color GetAlpha(Color newColor)
  		{

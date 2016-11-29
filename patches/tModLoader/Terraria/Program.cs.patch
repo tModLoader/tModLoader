@@ -1,14 +1,14 @@
 --- src/Terraria\Terraria\Program.cs
 +++ src/tModLoader\Terraria\Program.cs
-@@ -9,6 +_,7 @@
- using System.Windows.Forms;
- #endif
+@@ -11,6 +_,7 @@
  using Terraria.Initializers;
-+using Terraria.ModLoader;
+ using Terraria.Localization;
  using Terraria.Social;
++using Terraria.ModLoader;
  
  namespace Terraria
-@@ -130,6 +_,15 @@
+ {
+@@ -131,6 +_,15 @@
  		public static void LaunchGame(string[] args)
  		{
  			Program.LaunchParameters = Utils.ParseArguements(args);
@@ -22,6 +22,6 @@
 +				return;
 +			}
  			ThreadPool.SetMinThreads(8, 8);
+ 			LanguageManager.Instance.SetLanguage("English");
  			using (Main main = new Main())
- 			{
 

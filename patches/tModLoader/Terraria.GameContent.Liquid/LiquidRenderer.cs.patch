@@ -1,9 +1,9 @@
 --- src/Terraria\Terraria.GameContent.Liquid\LiquidRenderer.cs
 +++ src/tModLoader\Terraria.GameContent.Liquid\LiquidRenderer.cs
-@@ -63,8 +_,8 @@
- 		};
- 		private static readonly Tile EMPTY_TILE = new Tile();
- 		public static LiquidRenderer Instance = new LiquidRenderer();
+@@ -66,8 +_,8 @@
+ 		private static readonly byte[] WAVE_MASK_STRENGTH;
+ 		private static readonly byte[] VISCOSITY_MASK;
+ 		public static LiquidRenderer Instance;
 -		private Tile[,] _tiles = Main.tile;
 -		private Texture2D[] _liquidTextures = new Texture2D[12];
 +		//private Tile[,] _tiles = Main.tile;
@@ -11,7 +11,7 @@
  		private LiquidRenderer.LiquidCache[] _cache = new LiquidRenderer.LiquidCache[41617];
  		private LiquidRenderer.LiquidDrawCache[] _drawCache = new LiquidRenderer.LiquidDrawCache[40001];
  		private int _animationFrame;
-@@ -92,7 +_,7 @@
+@@ -99,7 +_,7 @@
  				{
  					for (int j = rectangle.Y; j < rectangle.Y + rectangle.Height; j++)
  					{
@@ -19,5 +19,5 @@
 +						Tile tile = Main.tile[i, j];
  						if (tile == null)
  						{
- 							tile = LiquidRenderer.EMPTY_TILE;
+ 							tile = new Tile();
 

@@ -1,9 +1,9 @@
 --- src/Terraria\Terraria\Gore.cs
 +++ src/tModLoader\Terraria\Gore.cs
 @@ -1,11 +_,19 @@
- using Microsoft.Xna.Framework;
- using System;
- using Terraria.GameContent;
+ using Terraria.Graphics.Effects;
+ using Terraria.ID;
+ using Terraria.Utilities;
 +using Terraria.ModLoader;
  
  namespace Terraria
@@ -29,9 +29,9 @@
 +					return;
 +				}
 +				ModGore.SetupUpdateType(this);
+ 				bool flag = this.type >= 1024 && this.type <= 1026;
  				if (this.type >= 276 && this.type <= 282)
  				{
- 					this.velocity.X = this.velocity.X * 0.98f;
 @@ -773,6 +_,7 @@
  					}
  					Lighting.AddLight((int)((this.position.X + 32f * this.scale / 2f) / 16f), (int)((this.position.Y + 32f * this.scale / 2f) / 16f), num29, num30, num31);

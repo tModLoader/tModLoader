@@ -9,7 +9,7 @@
  		private bool _linkedAlternates;
  		private bool _usesCustomCanPlace;
  		private TileObjectAlternatesModule _alternates;
-@@ -34,33 +_,33 @@
+@@ -34,34 +_,34 @@
  		private bool _hasOwnTileObjectDraw;
  		private bool _hasOwnTileObjectStyle;
  		private bool _hasOwnTileObjectCoords;
@@ -38,6 +38,7 @@
 -		private static TileObjectData Style3x2;
 -		private static TileObjectData Style3x3;
 -		private static TileObjectData Style3x4;
+-		private static TileObjectData Style5x4;
 -		private static TileObjectData Style3x3Wall;
 -
 -		private bool LinkedAlternates
@@ -62,13 +63,14 @@
 +		public static TileObjectData Style3x2;
 +		public static TileObjectData Style3x3;
 +		public static TileObjectData Style3x4;
++		public static TileObjectData Style5x4;
 +		public static TileObjectData Style3x3Wall;
 +
 +		public bool LinkedAlternates
  		{
  			get
  			{
-@@ -91,7 +_,7 @@
+@@ -92,7 +_,7 @@
  			}
  		}
  
@@ -77,7 +79,7 @@
  		{
  			get
  			{
-@@ -645,7 +_,7 @@
+@@ -646,7 +_,7 @@
  			}
  		}
  
@@ -86,7 +88,7 @@
  		{
  			get
  			{
-@@ -1497,7 +_,7 @@
+@@ -1498,7 +_,7 @@
  			}
  		}
  
@@ -95,7 +97,7 @@
  		{
  			if (checkTile == null)
  			{
-@@ -1509,6 +_,10 @@
+@@ -1510,6 +_,10 @@
  				{
  					case 0:
  					case 2:
@@ -106,7 +108,7 @@
  						if (this.WaterPlacement == LiquidPlacement.NotAllowed)
  						{
  							return false;
-@@ -1519,6 +_,10 @@
+@@ -1520,6 +_,10 @@
  						}
  						break;
  					case 1:
@@ -117,7 +119,7 @@
  						if (this.LavaPlacement == LiquidPlacement.NotAllowed)
  						{
  							return false;
-@@ -1655,14 +_,14 @@
+@@ -1656,14 +_,14 @@
  			TileObjectData.newTile = new TileObjectData(TileObjectData._baseObject);
  		}
  
@@ -134,7 +136,7 @@
  		{
  			TileObjectData.newSubTile.Calculate();
  			List<TileObjectData> list;
-@@ -1687,7 +_,7 @@
+@@ -1688,7 +_,7 @@
  			TileObjectData.newSubTile = new TileObjectData(TileObjectData._baseObject);
  		}
  
@@ -143,7 +145,7 @@
  		{
  			TileObjectData.newAlternate.Calculate();
  			if (!TileObjectData.newTile._hasOwnAlternates)
-@@ -3512,7 +_,6 @@
+@@ -3544,7 +_,6 @@
  			};
  			TileObjectData.addAlternate(27);
  			TileObjectData.addTile(20);

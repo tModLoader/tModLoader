@@ -1,22 +1,23 @@
 --- src/Terraria\Terraria\Lang.cs
 +++ src/tModLoader\Terraria\Lang.cs
-@@ -1,5 +_,6 @@
- using System;
+@@ -2,6 +_,7 @@
+ using Terraria.GameContent.Events;
  using Terraria.ID;
+ using Terraria.Localization;
 +using Terraria.ModLoader;
  
  #if CLIENT
  using Terraria.Map;
-@@ -18,7 +_,7 @@
+@@ -20,7 +_,7 @@
  		public static string[] dt = new string[4];
  		public static string[] chestType = new string[52];
  		public static string[] dresserType = new string[28];
 -		public static string[] mapLegend;
 +		public static MapLegend mapLegend;
  		public static string[] prefix = new string[84];
- 		public static string the;
  
-@@ -3628,6 +_,10 @@
+ 		public static string GetBirthdayDialog(NPC n, bool english = false)
+@@ -3689,6 +_,10 @@
  
  		public static string npcName(int l, bool english = false)
  		{
@@ -27,7 +28,7 @@
  			if (Lang.lang <= 1 || english)
  			{
  				switch (l)
-@@ -32723,10 +_,21 @@
+@@ -33254,10 +_,21 @@
  							array = array2;
  						}
  						else
@@ -49,7 +50,7 @@
  						}
  						break;
  				}
-@@ -32739,6 +_,7 @@
+@@ -33270,6 +_,7 @@
  					text2 = text2 + " " + array[i];
  				}
  			}
@@ -57,7 +58,7 @@
  			if (text.Length > 0)
  			{
  				text2 = text2 + "\n" + text;
-@@ -33795,7 +_,7 @@
+@@ -35603,7 +_,7 @@
  #if CLIENT
  				if (Lang.mapLegend == null)
  				{

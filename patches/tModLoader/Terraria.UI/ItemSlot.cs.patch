@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.UI\ItemSlot.cs
 +++ src/tModLoader\Terraria.UI\ItemSlot.cs
-@@ -7,6 +_,7 @@
+@@ -8,6 +_,7 @@
  using Terraria.GameContent.UI.Chat;
  using Terraria.GameInput;
  using Terraria.ID;
@@ -8,16 +8,16 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -881,7 +_,7 @@
+@@ -888,7 +_,7 @@
  			if (context == 0)
  			{
  				flag = true;
--				if (Main.mouseRight && inv[slot].type >= 3318 && inv[slot].type <= 3332)
-+				if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || ItemLoader.IsModBossBag(inv[slot])))
+-				if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861))
++				if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || ItemLoader.IsModBossBag(inv[slot])))
  				{
  					if (Main.mouseRightRelease)
  					{
-@@ -998,6 +_,10 @@
+@@ -1005,6 +_,10 @@
  						inv[slot].stack = Main.rand.Next(20, 50);
  					}
  					Recipe.FindRecipes();
@@ -28,7 +28,7 @@
  				}
  				else
  				{
-@@ -1573,11 +_,17 @@
+@@ -1580,11 +_,17 @@
  				num9 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num9 / 2f;
  				Vector2 origin = rectangle2.Size() * (num8 / 2f - 0.5f);
@@ -51,7 +51,7 @@
  				if (ItemID.Sets.TrapSigned[item.type])
  				{
  					spriteBatch.Draw(Main.wireTexture, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle?(new Rectangle(4, 58, 8, 8)), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
-@@ -1804,7 +_,7 @@
+@@ -1826,7 +_,7 @@
  				}
  				if (player.armor[slot].wingSlot > 0 && item.wingSlot > 0)
  				{
@@ -60,7 +60,7 @@
  				}
  			}
  			for (int i = 0; i < player.armor.Length; i++)
-@@ -1825,7 +_,7 @@
+@@ -1847,7 +_,7 @@
  					return true;
  				}
  			}
@@ -69,7 +69,7 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success)
-@@ -1913,6 +_,15 @@
+@@ -1935,6 +_,15 @@
  						ItemSlot.accSlotCount = j - 3;
  					}
  				}
@@ -85,7 +85,7 @@
  				if (ItemSlot.accSlotCount >= num2)
  				{
  					ItemSlot.accSlotCount = 0;
-@@ -1928,6 +_,10 @@
+@@ -1950,6 +_,10 @@
  					{
  						num3 = k;
  					}
@@ -96,11 +96,11 @@
  				}
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
-@@ -2187,7 +_,7 @@
+@@ -2220,7 +_,7 @@
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false)
  		{
--			if (type < 0 || type > 3797)
+-			if (type < 0 || type > 3884)
 +			if (type < 0)
  			{
  				return currentColor;
