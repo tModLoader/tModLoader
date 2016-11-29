@@ -14,9 +14,9 @@
  using System.Threading;
 +using System.Threading.Tasks;
  using Terraria.IO;
+ using Terraria.Localization;
  using Terraria.Net;
- using Terraria.Net.Sockets;
-@@ -15,7 +_,7 @@
+@@ -17,7 +_,7 @@
  #if !WINDOWS
  using Terraria.Social.Base;
  #endif
@@ -25,7 +25,7 @@
  using NATUPNPLib;
  #endif
  namespace Terraria
-@@ -38,8 +_,9 @@
+@@ -40,8 +_,9 @@
  		public static bool disconnect = false;
  		public static bool spamCheck = false;
  		public static bool anyClients = false;
@@ -36,7 +36,7 @@
  		public static IStaticPortMappingCollection mappings = Netplay.upnpnat.StaticPortMappingCollection;
  #endif
  		public static string portForwardIP;
-@@ -48,11 +_,25 @@
+@@ -50,11 +_,25 @@
  
  		public static event Action OnDisconnect;
  
@@ -63,7 +63,7 @@
  			if (Netplay.mappings != null)
  			{
  				foreach (IStaticPortMapping staticPortMapping in Netplay.mappings)
-@@ -73,7 +_,7 @@
+@@ -75,7 +_,7 @@
  
  		public static void closePort()
  		{
@@ -72,7 +72,7 @@
  			if (Netplay.portForwardOpen)
  			{
  				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
-@@ -218,9 +_,9 @@
+@@ -220,9 +_,9 @@
  				catch
  				{
  #if MAC
@@ -85,7 +85,7 @@
  #endif
  					if (!Netplay.disconnect && Main.gameMenu)
  					{
-@@ -260,7 +_,7 @@
+@@ -258,7 +_,7 @@
  			}
  			Netplay.disconnect = false;
  			Netplay.Connection = new RemoteServer();
@@ -94,7 +94,7 @@
  		}
  
  		private static void InnerClientLoop()
-@@ -275,7 +_,7 @@
+@@ -273,7 +_,7 @@
  					{
  						if (NetMessage.buffer[256].checkBytes)
  						{
@@ -103,7 +103,7 @@
  						}
  						Netplay.Connection.IsActive = true;
  						if (Netplay.Connection.State == 0)
-@@ -359,7 +_,6 @@
+@@ -357,7 +_,6 @@
  									});
  							}
  						}
@@ -111,19 +111,19 @@
  					}
  					else if (Netplay.Connection.IsActive)
  					{
-@@ -438,7 +_,7 @@
+@@ -437,7 +_,7 @@
  			{
  				Netplay.Clients[num].Reset();
  				Netplay.Clients[num].Socket = client;
--				Console.WriteLine(client.GetRemoteAddress() + " is connecting...");
-+				//Console.WriteLine(client.GetRemoteAddress() + " is connecting...");
+-				Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress()));
++				//Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress()));
  			}
  			if (Netplay.FindNextOpenClientSlot() == -1)
  			{
-@@ -548,19 +_,27 @@
+@@ -543,19 +_,27 @@
  					}
  				}
- 				IL_165:
+ 				IL_151:
 +				if (NetMessage.buffer.Any(b => b.checkBytes) || Clients.Any(c => c.PendingTermination))
 +				{
 +					InvokeOnMainThread(() =>

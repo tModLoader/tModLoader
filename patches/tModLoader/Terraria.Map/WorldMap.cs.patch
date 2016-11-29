@@ -8,15 +8,15 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -96,6 +_,7 @@
- 			if (!FileUtilities.Exists(text2, isCloudSave))
+@@ -98,6 +_,7 @@
+ 			if (!FileUtilities.Exists(text, isCloudSave))
  			{
  				Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
-+                //patch file: text2
++                //patch file: text
  				return;
  			}
- 			using (MemoryStream memoryStream = new MemoryStream(FileUtilities.ReadAllBytes(text2, isCloudSave)))
-@@ -115,6 +_,7 @@
+ 			using (MemoryStream memoryStream = new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave)))
+@@ -117,6 +_,7 @@
  							{
  								MapHelper.LoadMapVersion2(binaryReader, num);
  							}
