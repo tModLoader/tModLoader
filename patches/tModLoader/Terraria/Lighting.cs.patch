@@ -1,14 +1,14 @@
 --- src/Terraria\Terraria\Lighting.cs
 +++ src/tModLoader\Terraria\Lighting.cs
-@@ -10,6 +_,7 @@
- using Terraria.DataStructures;
- using Terraria.GameContent;
+@@ -12,6 +_,7 @@
  using Terraria.Graphics;
+ using Terraria.ID;
+ using Terraria.Utilities;
 +using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -123,7 +_,7 @@
+@@ -125,7 +_,7 @@
  		private static int firstToLightY;
  		private static int lastToLightX;
  		private static int lastToLightY;
@@ -17,7 +17,7 @@
  		private static float negLight2 = 0.16f;
  		private static float wetLightR = 0.16f;
  		private static float wetLightG = 0.16f;
-@@ -131,7 +_,7 @@
+@@ -133,7 +_,7 @@
  		private static float honeyLightR = 0.16f;
  		private static float honeyLightG = 0.16f;
  		private static float honeyLightB = 0.16f;
@@ -26,7 +26,7 @@
  		private static int blueDir = 1;
  		private static int minX7;
  		private static int maxX7;
-@@ -610,6 +_,7 @@
+@@ -612,6 +_,7 @@
  				Main.player[Main.myPlayer].NPCBannerBuff[m] = false;
  			}
  			Main.player[Main.myPlayer].hasBanner = false;
@@ -34,7 +34,7 @@
  			int[] screenTileCounts = Main.screenTileCounts;
  			Array.Clear(screenTileCounts, 0, screenTileCounts.Length);
  			num4 = Lighting.firstToLightX;
-@@ -623,6 +_,7 @@
+@@ -625,6 +_,7 @@
  			for (int n = num4; n < num5; n++)
  			{
  				Lighting.LightingState[] array3 = Lighting.states[n - Lighting.firstToLightX];
@@ -42,7 +42,7 @@
  				for (int num17 = num6; num17 < num7; num17++)
  				{
  					Lighting.LightingState lightingState3 = array3[num17 - Lighting.firstToLightY];
-@@ -774,7 +_,7 @@
+@@ -776,7 +_,7 @@
  							lightingState3.b2 = num20;
  						}
  					}
@@ -51,7 +51,7 @@
  					if (wall <= 137)
  					{
  						if (wall != 33)
-@@ -881,8 +_,10 @@
+@@ -883,8 +_,10 @@
  								break;
  						}
  					}
@@ -62,15 +62,15 @@
  						if (n > num4 + num15 && n < num5 - num15 && num17 > num6 + num16 && num17 < num7 - num16)
  						{
  							screenTileCounts[(int)tile.type]++;
-@@ -913,6 +_,7 @@
- 								Main.player[Main.myPlayer].NPCBannerBuff[num29] = true;
- 								Main.player[Main.myPlayer].hasBanner = true;
+@@ -919,6 +_,7 @@
+ 									Main.player[Main.myPlayer].hasBanner = true;
+ 								}
  							}
 +							closer = true;
  						}
  						ushort type = tile.type;
  						if (type != 139)
-@@ -966,6 +_,11 @@
+@@ -972,6 +_,11 @@
  						{
  							Main.musicBox = (int)(tile.frameY / 36);
  						}
@@ -82,10 +82,10 @@
  						if (Main.tileBlockLight[(int)tile.type] && (Lighting.lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
  						{
  							lightingState3.stopLight = true;
-@@ -2445,16 +_,19 @@
+@@ -2455,16 +_,19 @@
  						}
  					}
- 					IL_3212:
+ 					IL_3257:
 +					TileLoader.ModifyLight(n, num17, tile.type, ref num18, ref num19, ref num20);
  					if (Lighting.RGB)
  					{
@@ -102,16 +102,16 @@
  						if (lightingState3.b2 < num20)
  						{
  							lightingState3.b2 = num20;
-@@ -2589,7 +_,7 @@
+@@ -2599,7 +_,7 @@
  			if (Main.player[Main.myPlayer].accOreFinder)
  			{
  				Main.player[Main.myPlayer].bestOre = -1;
--				for (int num61 = 0; num61 < 463; num61++)
-+				for (int num61 = 0; num61 < Main.tileValue.Length; num61++)
+-				for (int num62 = 0; num62 < 467; num62++)
++				for (int num62 = 0; num62 < Main.tileValue.Length; num62++)
  				{
- 					if (screenTileCounts[num61] > 0 && Main.tileValue[num61] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num61] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
+ 					if (screenTileCounts[num62] > 0 && Main.tileValue[num62] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num62] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
  					{
-@@ -2597,6 +_,7 @@
+@@ -2607,6 +_,7 @@
  					}
  				}
  			}
@@ -119,7 +119,7 @@
  			if (Main.holyTiles < 0)
  			{
  				Main.holyTiles = 0;
-@@ -2742,6 +_,7 @@
+@@ -2752,6 +_,7 @@
  							Lighting.wetLightB = 0f;
  							break;
  					}
