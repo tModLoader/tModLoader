@@ -1,8 +1,8 @@
 --- src/Terraria\Terraria.Graphics.Effects\FilterManager.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\FilterManager.cs
-@@ -205,5 +_,16 @@
+@@ -222,5 +_,16 @@
  		{
- 			return this._activeFilters.Count != 0;
+ 			return this.HasActiveFilter() || this.OnPostDraw != null;
  		}
 +
 +		internal void DeactivateAll()

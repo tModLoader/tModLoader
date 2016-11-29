@@ -1,16 +1,16 @@
 --- src/Terraria\Terraria.GameContent.UI.States\UICharacterSelect.cs
 +++ src/tModLoader\Terraria.GameContent.UI.States\UICharacterSelect.cs
-@@ -8,6 +_,7 @@
- using Terraria.IO;
+@@ -9,6 +_,7 @@
+ using Terraria.Localization;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.States
  {
-@@ -79,12 +_,7 @@
+@@ -80,12 +_,7 @@
  		{
- 			Main.PlaySound(10, -1, -1, 1);
+ 			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
  			Player player = new Player();
 -			player.inventory[0].SetDefaults("Copper Shortsword");
 -			player.inventory[0].Prefix(-1);

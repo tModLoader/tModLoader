@@ -84,7 +84,7 @@
  
  		public bool Active
  		{
-@@ -1798,6 +_,10 @@
+@@ -1802,6 +_,10 @@
  
  		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
  		{
@@ -95,7 +95,7 @@
  			if (this._frameState != state)
  			{
  				this._frameState = state;
-@@ -2283,6 +_,7 @@
+@@ -2287,6 +_,7 @@
  		public void UpdateEffects(Player mountedPlayer)
  		{
  			mountedPlayer.autoJump = this.AutoJump;
@@ -103,7 +103,7 @@
  			switch (this._type)
  			{
  				case 8:
-@@ -2581,6 +_,7 @@
+@@ -2585,6 +_,7 @@
  		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
  		{
  			this._aiming = true;
@@ -111,7 +111,7 @@
  			switch (this._type)
  			{
  				case 8:
-@@ -3014,7 +_,7 @@
+@@ -3018,7 +_,7 @@
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
  		{
