@@ -367,7 +367,7 @@ namespace ExampleMod
 		}
 
 		public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
-			ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText)
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
 		{
 			if (constantDamage > 0 || percentDamage > 0f)
 			{
@@ -391,7 +391,7 @@ namespace ExampleMod
 			constantDamage = 0;
 			percentDamage = 0f;
 			defenseEffect = -1f;
-			return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref deathText);
+			return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource);
 		}
 
 		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit)
@@ -451,7 +451,7 @@ namespace ExampleMod
 			}
 		}
 
-		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref string deathText)
+		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
 		{
 			if (heroLives > 0)
 			{
@@ -512,7 +512,7 @@ namespace ExampleMod
 			{
 				return;
 			}
-			if (player.HasBuff(BuffID.TwinEyesMinion) > -1 && liquidType == 0 && Main.rand.Next(3) == 0)
+			if (player.FindBuffIndex(BuffID.TwinEyesMinion) > -1 && liquidType == 0 && Main.rand.Next(3) == 0)
 			{
 				caughtType = mod.ItemType("SparklingSphere");
 			}
@@ -524,7 +524,7 @@ namespace ExampleMod
 
 		public override void GetFishingLevel(Item fishingRod, Item bait, ref int fishingLevel)
 		{
-			if (player.HasBuff(mod.BuffType("CarMount")) > -1)
+			if (player.FindBuffIndex(mod.BuffType("CarMount")) > -1)
 			{
 				fishingLevel = (int)(fishingLevel * 1.1f);
 			}
@@ -532,7 +532,7 @@ namespace ExampleMod
 
 		public override void GetDyeTraderReward(List<int> dyeItemIDsPool)
 		{
-			if (player.HasBuff(BuffID.UFOMount) > -1)
+			if (player.FindBuffIndex(BuffID.UFOMount) > -1)
 			{
 				dyeItemIDsPool.Clear();
 				dyeItemIDsPool.Add(ItemID.MartianArmorDye);

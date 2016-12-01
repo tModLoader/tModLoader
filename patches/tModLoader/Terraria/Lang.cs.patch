@@ -67,4 +67,12 @@
  				}
  				Lang.mapLegend[MapHelper.TileToLookup(4, 0)] = "Torch";
  				Lang.mapLegend[MapHelper.TileToLookup(4, 1)] = "Torch";
+@@ -38568,6 +_,7 @@
+ 			}
+ 		}
+ 
++		// TODO Hook into deathMsg? 
+ 		public static string deathMsg(int plr = -1, int npc = -1, int proj = -1, int other = -1, int projType = 0, int plrItemType = 0)
+ 		{
+ 			string text = "";
 

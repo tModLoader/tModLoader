@@ -125,7 +125,7 @@ namespace ExampleMod
 		{
 			if (Main.myPlayer != -1 && !Main.gameMenu)
 			{
-				if (Main.player[Main.myPlayer].active && Main.player[Main.myPlayer].HasBuff(this.BuffType("CarMount")) != -1)
+				if (Main.player[Main.myPlayer].active && Main.player[Main.myPlayer].FindBuffIndex(this.BuffType("CarMount")) != -1)
 				{
 					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
 				}
