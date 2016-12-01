@@ -1,6 +1,6 @@
 --- src/merged\Terraria\HitTile.cs
 +++ src/Terraria\Terraria\HitTile.cs
-@@ -140,11 +_,10 @@
+@@ -141,11 +_,10 @@
  			hitTileObject.animationDirection = (Main.rand.NextFloat() * 6.28318548f).ToRotationVector2() * 2f;
  			if (tileId != this.bufferLocation)
  			{
@@ -16,7 +16,7 @@
  						while (i > 1)
  						{
  							int num = this.order[i - 1];
-@@ -156,7 +_,6 @@
+@@ -157,7 +_,6 @@
  						goto IL_11A;
  					}
  				}
@@ -24,7 +24,7 @@
  			}
  			this.bufferLocation = this.order[20];
  			this.data[this.bufferLocation].Clear();
-@@ -176,11 +_,10 @@
+@@ -177,11 +_,10 @@
  				return;
  			}
  			this.data[tileId].Clear();
@@ -40,7 +40,7 @@
  					while (i < 20)
  					{
  						this.order[i] = this.order[i + 1];
-@@ -190,7 +_,6 @@
+@@ -191,7 +_,6 @@
  					return;
  				}
  			}

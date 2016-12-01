@@ -1,176 +1,201 @@
 --- src/merged\Terraria\NPC.cs
 +++ src/Terraria\Terraria\NPC.cs
-@@ -45698,7 +_,7 @@
- 															this.ai[0] = -300f;
- 															this.netUpdate = true;
- 														}
--														base.Center + Vector2.UnitX * (float)this.direction * 200f;
-+														Vector2 _ = base.Center + Vector2.UnitX * (float)this.direction * 200f;
- 														Vector2 vector292 = base.Center + Vector2.UnitX * (float)this.direction * 50f - Vector2.UnitY * 6f;
- 														if (this.ai[0] == 54f && Main.netMode != 1)
- 														{
-@@ -46556,19 +_,16 @@
+@@ -34777,7 +_,7 @@
+ 																				this.ai[0] = -300f;
+ 																				this.netUpdate = true;
+ 																			}
+-																			base.Center + Vector2.UnitX * (float)this.direction * 200f;
++																			Vector2 _ = base.Center + Vector2.UnitX * (float)this.direction * 200f;
+ 																			Vector2 vector223 = base.Center + Vector2.UnitX * (float)this.direction * 50f - Vector2.UnitY * 6f;
+ 																			if (this.ai[0] == 54f && Main.netMode != 1)
+ 																			{
+@@ -51729,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
--							goto IL_97D;
+-							goto IL_2E2B;
 +							break;
  						case 3:
--							IL_95E:
-+						default:
- 							if (num8 != 0)
- 							{
- 								this.frame.Y = 0;
- 								this.frameCounter = 0.0;
--								goto IL_97D;
--							}
--							goto IL_97D;
--						}
--						goto IL_95E;
--						IL_97D:
-+							}
-+							break;
-+						}
- 						int num9;
- 						if (this.frameCounter < 10.0)
- 						{
-@@ -46700,19 +_,16 @@
- 						case 2:
- 						case 4:
- 						case 5:
--							goto IL_DC7;
-+							break;
- 						case 3:
--							IL_DA8:
-+						default:
- 							if (num12 != 0)
- 							{
- 								this.frame.Y = 0;
- 								this.frameCounter = 0.0;
--								goto IL_DC7;
--							}
--							goto IL_DC7;
--						}
--						goto IL_DA8;
--						IL_DC7:
-+							}
-+							break;
-+						}
- 						int num13 = 0;
- 						if (this.frameCounter < 16.0)
- 						{
-@@ -46758,19 +_,16 @@
- 						case 2:
- 						case 4:
- 						case 5:
--							goto IL_F6F;
-+							break;
- 						case 3:
--							IL_F50:
-+						default:
- 							if (num14 != 0)
- 							{
- 								this.frame.Y = 0;
- 								this.frameCounter = 0.0;
--								goto IL_F6F;
--							}
--							goto IL_F6F;
--						}
--						goto IL_F50;
--						IL_F6F:
-+							}
-+							break;
-+						}
- 						int num15;
- 						if (this.frameCounter < 10.0)
- 						{
-@@ -46939,19 +_,16 @@
- 						case 2:
- 						case 4:
- 						case 5:
--							goto IL_1396;
-+							break;
- 						case 3:
--							IL_1377:
-+						default:
- 							if (num28 != 0)
- 							{
- 								this.frame.Y = 0;
- 								this.frameCounter = 0.0;
--								goto IL_1396;
--							}
--							goto IL_1396;
--						}
--						goto IL_1377;
--						IL_1396:
-+							}
-+							break;
-+						}
- 						bool flag = this.ai[0] == 3f;
- 						int num29 = 0;
- 						int num30 = 0;
-@@ -47064,19 +_,16 @@
- 						case 2:
- 						case 4:
- 						case 5:
--							goto IL_16FF;
-+							break;
- 						case 3:
--							IL_16E0:
+-							IL_2E0C:
 +						default:
  							if (num33 != 0)
  							{
  								this.frame.Y = 0;
  								this.frameCounter = 0.0;
--								goto IL_16FF;
+-								goto IL_2E2B;
 -							}
--							goto IL_16FF;
+-							goto IL_2E2B;
 -						}
--						goto IL_16E0;
--						IL_16FF:
+-						goto IL_2E0C;
+-						IL_2E2B:
 +							}
 +							break;
 +						}
- 						bool flag2 = this.ai[0] == 16f;
- 						int num34 = 0;
- 						int num35 = -1;
-@@ -57854,7 +_,7 @@
+ 						int num34;
+ 						if (this.frameCounter < 10.0)
  						{
- 							if ((num54 == num51 - num53 || num54 == num51 + num53 || num55 == num52 - num53 || num55 == num52 + num53) && !Main.tile[num54, num55].active())
+@@ -51873,19 +_,16 @@
+ 						case 2:
+ 						case 4:
+ 						case 5:
+-							goto IL_328A;
++							break;
+ 						case 3:
+-							IL_326B:
++						default:
+ 							if (num37 != 0)
  							{
--								Main.tile[num54, num55].type = (WorldGen.crimson ? 347 : 140);
-+								Main.tile[num54, num55].type = (WorldGen.crimson ? (ushort)347 : (ushort)140);
- 								Main.tile[num54, num55].active(true);
+ 								this.frame.Y = 0;
+ 								this.frameCounter = 0.0;
+-								goto IL_328A;
+-							}
+-							goto IL_328A;
+-						}
+-						goto IL_326B;
+-						IL_328A:
++							}
++							break;
++						}
+ 						int num38 = 0;
+ 						if (this.frameCounter < 16.0)
+ 						{
+@@ -51931,19 +_,16 @@
+ 						case 2:
+ 						case 4:
+ 						case 5:
+-							goto IL_3435;
++							break;
+ 						case 3:
+-							IL_3416:
++						default:
+ 							if (num39 != 0)
+ 							{
+ 								this.frame.Y = 0;
+ 								this.frameCounter = 0.0;
+-								goto IL_3435;
+-							}
+-							goto IL_3435;
+-						}
+-						goto IL_3416;
+-						IL_3435:
++							}
++							break;
++						}
+ 						int num40;
+ 						if (this.frameCounter < 10.0)
+ 						{
+@@ -51977,19 +_,16 @@
+ 						case 2:
+ 						case 4:
+ 						case 5:
+-							goto IL_3522;
++							break;
+ 						case 3:
+-							IL_3503:
++						default:
+ 							if (num41 != 0)
+ 							{
+ 								this.frame.Y = 0;
+ 								this.frameCounter = 0.0;
+-								goto IL_3522;
+-							}
+-							goto IL_3522;
+-						}
+-						goto IL_3503;
+-						IL_3522:
++							}
++							break;
++						}
+ 						int num42;
+ 						if (this.frameCounter >= 10.0)
+ 						{
+@@ -52157,19 +_,16 @@
+ 						case 2:
+ 						case 4:
+ 						case 5:
+-							goto IL_396C;
++							break;
+ 						case 3:
+-							IL_394D:
++						default:
+ 							if (num55 != 0)
+ 							{
+ 								this.frame.Y = 0;
+ 								this.frameCounter = 0.0;
+-								goto IL_396C;
+-							}
+-							goto IL_396C;
+-						}
+-						goto IL_394D;
+-						IL_396C:
++							}
++							break;
++						}
+ 						bool flag2 = this.ai[0] == 3f;
+ 						int num56 = 0;
+ 						int num57 = 0;
+@@ -52282,19 +_,16 @@
+ 						case 2:
+ 						case 4:
+ 						case 5:
+-							goto IL_3CE0;
++							break;
+ 						case 3:
+-							IL_3CC1:
++						default:
+ 							if (num60 != 0)
+ 							{
+ 								this.frame.Y = 0;
+ 								this.frameCounter = 0.0;
+-								goto IL_3CE0;
+-							}
+-							goto IL_3CE0;
+-						}
+-						goto IL_3CC1;
+-						IL_3CE0:
++							}
++							break;
++						}
+ 						bool flag3 = this.ai[0] == 16f;
+ 						int num61 = 0;
+ 						int num62 = -1;
+@@ -63522,7 +_,7 @@
+ 						{
+ 							if ((num55 == num52 - num54 || num55 == num52 + num54 || num56 == num53 - num54 || num56 == num53 + num54) && !Main.tile[num55, num56].active())
+ 							{
+-								Main.tile[num55, num56].type = (WorldGen.crimson ? 347 : 140);
++								Main.tile[num55, num56].type = (ushort)(WorldGen.crimson ? 347 : 140);
+ 								Main.tile[num55, num56].active(true);
  							}
- 							Main.tile[num54, num55].lava(false);
-@@ -65017,7 +_,7 @@
- 					while ((double)num69 < 10.0 + dmg / 10.0)
+ 							Main.tile[num55, num56].lava(false);
+@@ -71185,7 +_,7 @@
+ 					while ((double)num105 < 10.0 + dmg / 10.0)
  					{
- 						int num70 = this.width / 4;
+ 						int num106 = this.width / 4;
 -						((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
 +						Vector2 _ = ((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
- 						int num71 = Dust.NewDust(base.Center - Vector2.One * (float)num70, num70 * 2, num70 * 2, 229, 0f, 0f, 0, default(Color), 1f);
- 						Dust dust31 = Main.dust[num71];
- 						Vector2 vector2 = Vector2.Normalize(dust31.position - base.Center);
-@@ -65040,7 +_,7 @@
- 					for (int num72 = 0; num72 < 60; num72++)
+ 						int num107 = Dust.NewDust(base.Center - Vector2.One * (float)num106, num106 * 2, num106 * 2, 229, 0f, 0f, 0, default(Color), 1f);
+ 						Dust dust31 = Main.dust[num107];
+ 						Vector2 vector3 = Vector2.Normalize(dust31.position - base.Center);
+@@ -71208,7 +_,7 @@
+ 					for (int num108 = 0; num108 < 60; num108++)
  					{
- 						int num73 = this.width / 4;
+ 						int num109 = this.width / 4;
 -						((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
 +						Vector2 _ = ((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
- 						int num74 = Dust.NewDust(base.Center - Vector2.One * (float)num73, num73 * 2, num73 * 2, 229, 0f, 0f, 0, default(Color), 1f);
- 						Dust dust32 = Main.dust[num74];
- 						Vector2 vector3 = Vector2.Normalize(dust32.position - base.Center);
-@@ -65918,7 +_,7 @@
- 					for (int num171 = 0; num171 < 60; num171++)
+ 						int num110 = Dust.NewDust(base.Center - Vector2.One * (float)num109, num109 * 2, num109 * 2, 229, 0f, 0f, 0, default(Color), 1f);
+ 						Dust dust32 = Main.dust[num110];
+ 						Vector2 vector4 = Vector2.Normalize(dust32.position - base.Center);
+@@ -72086,7 +_,7 @@
+ 					for (int num207 = 0; num207 < 60; num207++)
  					{
- 						int num172 = 25;
+ 						int num208 = 25;
 -						((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
 +						Vector2 _ = ((float)Main.rand.NextDouble() * 6.28318548f).ToRotationVector2() * (float)Main.rand.Next(24, 41) / 8f;
- 						int num173 = Dust.NewDust(base.Center - Vector2.One * (float)num172, num172 * 2, num172 * 2, 212, 0f, 0f, 0, default(Color), 1f);
- 						Dust dust47 = Main.dust[num173];
- 						Vector2 vector6 = Vector2.Normalize(dust47.position - base.Center);
-@@ -72721,7 +_,7 @@
+ 						int num209 = Dust.NewDust(base.Center - Vector2.One * (float)num208, num208 * 2, num208 * 2, 212, 0f, 0f, 0, default(Color), 1f);
+ 						Dust dust47 = Main.dust[num209];
+ 						Vector2 vector7 = Vector2.Normalize(dust47.position - base.Center);
+@@ -78091,7 +_,7 @@
  					{
  						if (this.boss)
  						{

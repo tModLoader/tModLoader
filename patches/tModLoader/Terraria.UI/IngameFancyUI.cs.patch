@@ -1,14 +1,14 @@
 --- src/Terraria\Terraria.UI\IngameFancyUI.cs
 +++ src/tModLoader\Terraria.UI\IngameFancyUI.cs
-@@ -3,6 +_,7 @@
- using System;
- using Terraria.Achievements;
+@@ -5,6 +_,7 @@
  using Terraria.GameContent.UI.States;
-+using Terraria.ModLoader;
+ using Terraria.Localization;
  using Terraria.UI.Gamepad;
++using Terraria.ModLoader;
  
  namespace Terraria.UI
-@@ -82,6 +_,14 @@
+ {
+@@ -83,6 +_,14 @@
  						{
  							Main.defaultChestName = Lang.dresserType[(int)(Main.tile[player.chestX, player.chestY].frameX / 54)];
  						}

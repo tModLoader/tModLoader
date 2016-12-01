@@ -31,8 +31,8 @@ namespace Terraria.ModLoader.UI
 		private int numModsEnabled;
 		private int numModsDisabled;
 		private int numModsMissing;
-		UITextPanel enableListButton;
-		UITextPanel enableListOnlyButton;
+		UITextPanel<string> enableListButton;
+		UITextPanel<string> enableListOnlyButton;
 		private UIImageButton deleteButton;
 		private string filename;
 
@@ -84,7 +84,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 
-			UITextPanel viewListButton = new UITextPanel("View List", 1f, false);
+			UITextPanel<string> viewListButton = new UITextPanel<string>("View List", 1f, false);
 			viewListButton.Width.Set(100f, 0f);
 			viewListButton.Height.Set(30f, 0f);
 			viewListButton.Left.Set(430f, 0f);
@@ -96,7 +96,7 @@ namespace Terraria.ModLoader.UI
 			viewListButton.OnClick += new UIElement.MouseEvent(ViewListInfo);
 			base.Append(viewListButton);
 
-			enableListButton = new UITextPanel("Enable this List", 1f, false);
+			enableListButton = new UITextPanel<string>("Enable this List", 1f, false);
 			enableListButton.Width.Set(100f, 0f);
 			enableListButton.Height.Set(30f, 0f);
 			enableListButton.Left.Set(275f, 0f);
@@ -108,7 +108,7 @@ namespace Terraria.ModLoader.UI
 			enableListButton.OnClick += new UIElement.MouseEvent(EnableList);
 			base.Append(enableListButton);
 
-			enableListOnlyButton = new UITextPanel("Enable only this List", 1f, false);
+			enableListOnlyButton = new UITextPanel<string>("Enable only this List", 1f, false);
 			enableListOnlyButton.Width.Set(100f, 0f);
 			enableListOnlyButton.Height.Set(30f, 0f);
 			enableListOnlyButton.Left.Set(75f, 0f);

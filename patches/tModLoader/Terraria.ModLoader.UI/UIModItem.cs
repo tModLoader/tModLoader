@@ -17,7 +17,7 @@ namespace Terraria.ModLoader.UI
 		private UIText modName;
 		internal bool enabled;
 		BuildProperties properties;
-		UITextPanel button2;
+		UITextPanel<string> button2;
 		UIHoverImage keyImage;
 
 		public UIModItem(TmodFile mod)
@@ -42,7 +42,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 			this.enabled = ModLoader.IsEnabled(mod);
-			UITextPanel button = new UITextPanel("More info", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>("More info", 1f, false);
 			button.Width.Set(100f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(430f, 0f);
@@ -53,7 +53,7 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button.OnClick += new UIElement.MouseEvent(this.Moreinfo);
 			base.Append(button);
-			button2 = new UITextPanel(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
+			button2 = new UITextPanel<string>(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
 			button2.Width.Set(100f, 0f);
 			button2.Height.Set(30f, 0f);
 			button2.Left.Set(275f, 0f);

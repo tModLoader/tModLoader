@@ -1,6 +1,6 @@
 --- src/merged\Terraria.GameContent.Tile_Entities\TELogicSensor.cs
 +++ src/Terraria\Terraria.GameContent.Tile_Entities\TELogicSensor.cs
-@@ -142,7 +_,7 @@
+@@ -143,7 +_,7 @@
  			{
  				return;
  			}
@@ -9,7 +9,7 @@
  			this.On = onState;
  			if (Main.netMode == 2)
  			{
-@@ -282,7 +_,7 @@
+@@ -283,7 +_,7 @@
  
  		public static void GetFrame(int x, int y, TELogicSensor.LogicCheckType type, bool on)
  		{

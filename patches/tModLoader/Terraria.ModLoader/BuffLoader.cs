@@ -54,6 +54,7 @@ namespace Terraria.ModLoader
 			vanillaCanBeCleared[BuffID.WaterCandle] = false;
 			vanillaCanBeCleared[BuffID.Campfire] = false;
 			vanillaCanBeCleared[BuffID.HeartLamp] = false;
+			vanillaCanBeCleared[BuffID.NoBuilding] = false;
 		}
 
 		internal static int ReserveBuffID()

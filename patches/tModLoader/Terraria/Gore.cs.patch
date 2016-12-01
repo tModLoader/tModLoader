@@ -1,9 +1,9 @@
 --- src/Terraria\Terraria\Gore.cs
 +++ src/tModLoader\Terraria\Gore.cs
-@@ -1,11 +_,19 @@
- using Microsoft.Xna.Framework;
- using System;
- using Terraria.GameContent;
+@@ -5,11 +_,19 @@
+ using Terraria.Graphics.Effects;
+ using Terraria.ID;
+ using Terraria.Utilities;
 +using Terraria.ModLoader;
  
  namespace Terraria
@@ -20,7 +20,7 @@
  		public static int goreTime = 600;
  		public Vector2 position;
  		public Vector2 velocity;
-@@ -30,6 +_,11 @@
+@@ -34,6 +_,11 @@
  			}
  			if (this.active)
  			{
@@ -29,10 +29,10 @@
 +					return;
 +				}
 +				ModGore.SetupUpdateType(this);
+ 				bool flag = this.type >= 1024 && this.type <= 1026;
  				if (this.type >= 276 && this.type <= 282)
  				{
- 					this.velocity.X = this.velocity.X * 0.98f;
-@@ -773,6 +_,7 @@
+@@ -790,6 +_,7 @@
  					}
  					Lighting.AddLight((int)((this.position.X + 32f * this.scale / 2f) / 16f), (int)((this.position.Y + 32f * this.scale / 2f) / 16f), num29, num30, num31);
  				}
@@ -40,7 +40,7 @@
  			}
  		}
  
-@@ -819,6 +_,7 @@
+@@ -849,6 +_,7 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
@@ -48,7 +48,7 @@
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type))
  			{
  				Main.gore[num].type = Main.rand.Next(11, 14);
-@@ -908,6 +_,14 @@
+@@ -938,6 +_,14 @@
  
  		public Color GetAlpha(Color newColor)
  		{

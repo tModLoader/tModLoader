@@ -4,8 +4,8 @@
  	public class EmoteBubble
  	{
  		private const int frameSpeed = 8;
--		private static int[] CountNPCs = new int[547];
-+		internal static int[] CountNPCs = new int[547];
+-		private static int[] CountNPCs = new int[580];
++		internal static int[] CountNPCs = new int[580];
  		public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
  		private static List<int> toClean = new List<int>();
  		public static int NextID;

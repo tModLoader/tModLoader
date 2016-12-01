@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.ID\ItemID.cs
 +++ src/tModLoader\Terraria.ID\ItemID.cs
-@@ -215,7 +_,7 @@
+@@ -302,7 +_,7 @@
  					1103,
  					0,
  					3347,

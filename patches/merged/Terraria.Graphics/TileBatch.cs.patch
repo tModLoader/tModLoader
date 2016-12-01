@@ -20,10 +20,10 @@
  		private struct SpriteData
  		{
  			public Vector4 Source;
-@@ -30,9 +_,106 @@
- 		private Texture2D[] spriteTextures;
+@@ -32,9 +_,106 @@
+ 		private Texture2D[] _spriteTextures;
  
- 		private int queuedSpriteCount;
+ 		private int _queuedSpriteCount;
 -
 -		private SpriteBatch _spriteBatch;
 -
@@ -127,19 +127,19 @@
 +        private SpriteBatch _spriteBatch;
 +
 +#if WINDOWS
- 		private static Vector2 vector2Zero;
+ 		private static Vector2 _vector2Zero;
  
- 		private static Rectangle? nullRectangle;
-@@ -46,14 +_,27 @@
- 		private VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[8192];
+ 		private static Rectangle? _nullRectangle;
+@@ -48,14 +_,27 @@
+ 		private VertexPositionColorTexture[] _vertices = new VertexPositionColorTexture[8192];
  
- 		private int vertexBufferPosition;
+ 		private int _vertexBufferPosition;
 +#endif
  
  		public TileBatch(GraphicsDevice graphicsDevice)
  		{
 +#if WINDOWS
- 			this.graphicsDevice = graphicsDevice;
+ 			this._graphicsDevice = graphicsDevice;
 +#endif
  			this._spriteBatch = new SpriteBatch(graphicsDevice);
 +#if WINDOWS
@@ -159,8 +159,8 @@
 +#if WINDOWS
  		private void Allocate()
  		{
- 			if (this.vertexBuffer == null || this.vertexBuffer.IsDisposed)
-@@ -89,7 +_,7 @@
+ 			if (this._vertexBuffer == null || this._vertexBuffer.IsDisposed)
+@@ -91,7 +_,7 @@
  			}
  		}
  
@@ -168,8 +168,8 @@
 +        private void FlushRenderState()
  		{
  			this.Allocate();
- 			this.graphicsDevice.SetVertexBuffer(this.vertexBuffer);
-@@ -350,6 +_,285 @@
+ 			this._graphicsDevice.SetVertexBuffer(this._vertexBuffer);
+@@ -375,6 +_,285 @@
  				1f,
  				1f
  			};

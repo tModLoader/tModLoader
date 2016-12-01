@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Graphics.Effects\Filter.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\Filter.cs
-@@ -31,14 +_,14 @@
+@@ -32,14 +_,14 @@
  			return this._shader;
  		}
  

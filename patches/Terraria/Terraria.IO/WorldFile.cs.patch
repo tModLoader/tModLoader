@@ -4,12 +4,12 @@
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(Main.invasionSizeStart);
  			writer.Write(WorldFile.tempCultistDelay);
--			writer.Write(547);
-+			writer.Write((short)547);
- 			for (int j = 0; j < 547; j++)
+-			writer.Write(580);
++			writer.Write((short)580);
+ 			for (int j = 0; j < 580; j++)
  			{
  				writer.Write(NPC.killCount[j]);
-@@ -1391,7 +_,7 @@
+@@ -1393,7 +_,7 @@
  				}
  			}
  			writer.Write(num);
@@ -18,7 +18,7 @@
  			for (int i = 0; i < 1000; i++)
  			{
  				Chest chest = Main.chest[i];
-@@ -1405,7 +_,7 @@
+@@ -1407,7 +_,7 @@
  						Item item = chest.item[l];
  						if (item == null)
  						{
@@ -27,7 +27,7 @@
  						}
  						else
  						{
-@@ -2003,7 +_,7 @@
+@@ -2030,7 +_,7 @@
  							}
  							else
  							{
@@ -36,7 +36,7 @@
  							}
  						}
  					}
-@@ -2607,7 +_,7 @@
+@@ -2646,7 +_,7 @@
  			}
  			try
  			{
@@ -45,7 +45,7 @@
  				{
  					using (BinaryReader binaryReader = new BinaryReader(stream))
  					{
-@@ -2740,7 +_,7 @@
+@@ -2816,7 +_,7 @@
  					buffer = new byte[num];
  					SocialAPI.Cloud.Read(file, buffer, num);
  				}

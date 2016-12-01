@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.IO;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -181,7 +182,7 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
-			ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText)
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
 		{
 			return true;
 		}
@@ -195,12 +196,12 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore,
-			ref string deathText)
+			ref PlayerDeathReason damageSource)
 		{
 			return true;
 		}
 
-		public virtual void Kill(double damage, int hitDirection, bool pvp, string deathText)
+		public virtual void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 		{
 		}
 

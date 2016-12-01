@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.UI.States\UIManageControls.cs
 +++ src/tModLoader\Terraria.GameContent.UI.States\UIManageControls.cs
-@@ -36,7 +_,8 @@
+@@ -37,7 +_,8 @@
  			"sp10",
  			"sp11",
  			"sp12",
@@ -10,7 +10,7 @@
  		};
  		private static List<string> _BindingsHalfSingleLine = new List<string>
  		{
-@@ -44,7 +_,8 @@
+@@ -45,7 +_,8 @@
  			"sp10",
  			"sp11",
  			"sp12",
@@ -20,7 +20,7 @@
  		};
  		private bool OnKeyboard = true;
  		private bool OnGameplay = true;
-@@ -293,26 +_,39 @@
+@@ -294,26 +_,39 @@
  				"sp19",
  				"sp13"
  			};
@@ -60,7 +60,7 @@
  		}
  
  		private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode)
-@@ -352,6 +_,9 @@
+@@ -353,6 +_,9 @@
  				case 4:
  					uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Turquoise, 0.18f);
  					break;
@@ -70,7 +70,7 @@
  			}
  			this.CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
  			uIPanel.BackgroundColor = uIPanel.BackgroundColor.MultiplyRGBA(new Color(111, 111, 111));
-@@ -372,6 +_,9 @@
+@@ -373,6 +_,9 @@
  					break;
  				case 4:
  					text = Lang.menu[198];
@@ -79,8 +79,8 @@
 +					text = "Mod Controls";
  					break;
  			}
- 			uISortableElement.Append(new UITextPanel(text, 0.7f, false)
-@@ -545,6 +_,16 @@
+ 			uISortableElement.Append(new UITextPanel<string>(text, 0.7f, false)
+@@ -546,6 +_,16 @@
  						{
  							string copyableProfileName = UIManageControls.GetCopyableProfileName();
  							PlayerInput.CurrentProfile.CopyGamepadAdvancedSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
@@ -97,7 +97,7 @@
  						};
  						return uIElement7;
  					}
-@@ -661,6 +_,14 @@
+@@ -662,6 +_,14 @@
  
  		public override void OnActivate()
  		{

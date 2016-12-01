@@ -3,7 +3,7 @@
 @@ -8,7 +_,9 @@
  using System.Security.Permissions;
  
- [assembly: AssemblyVersion("1.3.3.3")]
+ [assembly: AssemblyVersion("1.3.4.3")]
 +#if !DEBUG
  [assembly: Debuggable(DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
 +#endif

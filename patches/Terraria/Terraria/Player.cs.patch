@@ -1,6 +1,6 @@
 --- src/merged\Terraria\Player.cs
 +++ src/Terraria\Terraria\Player.cs
-@@ -12121,7 +_,7 @@
+@@ -12654,7 +_,7 @@
  						{
  							list10.Add(tuple9);
  						}
@@ -9,27 +9,27 @@
  						if (Collision.HitWallSubstep(tuple9.Item1, tuple9.Item2))
  						{
  							list10.Add(tuple9);
-@@ -23836,8 +_,8 @@
+@@ -24766,8 +_,8 @@
  						flag2 = true;
- 						int num21 = (int)(Main.tile[myX, myY].frameX / 54);
- 						int num22 = (int)(Main.tile[myX, myY].frameY / 54);
--						short arg_AE7_0 = Main.tile[myX, myY].frameX % 54 / 18;
--						short arg_B01_0 = Main.tile[myX, myY].frameY % 54 / 18;
-+						short arg_AE7_0 = (short)(Main.tile[myX, myY].frameX % 54 / 18);
-+						short arg_B01_0 = (short)(Main.tile[myX, myY].frameY % 54 / 18);
- 						int num23 = -1;
- 						switch (num21)
+ 						int num22 = (int)(Main.tile[myX, myY].frameX / 54);
+ 						int num23 = (int)(Main.tile[myX, myY].frameY / 54);
+-						short arg_BE9_0 = Main.tile[myX, myY].frameX % 54 / 18;
+-						short arg_C03_0 = Main.tile[myX, myY].frameY % 54 / 18;
++						short arg_BE9_0 = (short) (Main.tile[myX, myY].frameX % 54 / 18);
++						short arg_C03_0 = (short) (Main.tile[myX, myY].frameY % 54 / 18);
+ 						int num24 = -1;
+ 						switch (num22)
  						{
-@@ -34467,7 +_,7 @@
+@@ -35693,7 +_,7 @@
  													{
- 														num249 = 0;
+ 														num258 = 0;
  													}
--													Main.tile[num233, num234].frameX = 22 * num249;
-+													Main.tile[num233, num234].frameX = (short)(22 * num249);
+-													Main.tile[num242, num243].frameX = 22 * num258;
++													Main.tile[num242, num243].frameX = (short) (22 * num258);
  													if (Main.netMode == 1)
  													{
- 														NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1);
-@@ -37358,7 +_,7 @@
+ 														NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1, TileChangeType.None);
+@@ -38974,7 +_,7 @@
  				FileUtilities.Copy(path, path + ".bak", isCloudSave, true);
  			}
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
@@ -38,7 +38,7 @@
  			{
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(Player.ENCRYPTION_KEY, Player.ENCRYPTION_KEY), CryptoStreamMode.Write))
  				{
-@@ -38257,7 +_,6 @@
+@@ -39907,7 +_,6 @@
  			this._shaderObstructionInternalValue = 1f;
  			int[] array2 = new int[2];
  			this.hurtCooldowns = array2;

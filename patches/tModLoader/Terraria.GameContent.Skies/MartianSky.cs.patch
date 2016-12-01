@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Skies\MartianSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\MartianSky.cs
-@@ -299,7 +_,7 @@
+@@ -300,7 +_,7 @@
  			}
  		}
  
@@ -9,7 +9,7 @@
  		{
  			this._activeUfos = 0;
  			this.GenerateUfos();
-@@ -308,7 +_,7 @@
+@@ -309,7 +_,7 @@
  			this._leaving = false;
  		}
  

@@ -1,25 +1,25 @@
 --- src/Terraria\Terraria\NetMessage.cs
 +++ src/tModLoader\Terraria\NetMessage.cs
-@@ -8,6 +_,8 @@
- using Terraria.GameContent.Tile_Entities;
- using Terraria.ID;
- using Terraria.IO;
-+using Terraria.ModLoader;
-+using Terraria.ModLoader.IO;
+@@ -11,6 +_,8 @@
+ using Terraria.Localization;
  using Terraria.Net.Sockets;
  using Terraria.Social;
++using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  
-@@ -43,7 +_,7 @@
+ namespace Terraria
+ {
+@@ -45,7 +_,7 @@
  				switch (msgType)
  				{
  					case 1:
--						writer.Write("Terraria" + Main.curRelease);
+-						writer.Write("Terraria" + 187);
 +						writer.Write(ModLoader.ModLoader.versionedName);
  						break;
  					case 2:
  						writer.Write(text);
-@@ -247,6 +_,10 @@
- 							bb8[3] = Sandstorm.Happening;
+@@ -257,6 +_,10 @@
+ 							bb8[7] = DD2Event.DownedInvasionT3;
  							writer.Write(bb8);
  							writer.Write((sbyte)Main.invasionType);
 +							if (!ModNet.AllowVanillaClients)
@@ -29,7 +29,7 @@
  							if (SocialAPI.Network != null)
  							{
  								writer.Write(SocialAPI.Network.GetLobbyId());
-@@ -413,7 +_,10 @@
+@@ -437,7 +_,10 @@
  									}
  									if (tile.wall > 0)
  									{
@@ -41,7 +41,7 @@
  									}
  									if (tile.liquid > 0 && Main.netMode == 2)
  									{
-@@ -440,6 +_,7 @@
+@@ -464,6 +_,7 @@
  								value = (short)item2.netID;
  							}
  							writer.Write(value);
@@ -49,7 +49,7 @@
  							break;
  						}
  					case 22:
-@@ -507,6 +_,7 @@
+@@ -531,6 +_,7 @@
  							{
  								writer.Write((byte)nPC.releaseOwner);
  							}
@@ -57,22 +57,22 @@
  							break;
  						}
  					case 24:
-@@ -552,10 +_,11 @@
- 									bb15[num10] = true;
+@@ -577,10 +_,11 @@
+ 									bb15[num11] = true;
  								}
  							}
--							if (projectile.type > 0 && projectile.type < 662 && ProjectileID.Sets.NeedsUUID[projectile.type])
+-							if (projectile.type > 0 && projectile.type < 714 && ProjectileID.Sets.NeedsUUID[projectile.type])
 +							if (projectile.type > 0 && ProjectileID.Sets.NeedsUUID[projectile.type])
  							{
  								bb15[Projectile.maxAI] = true;
  							}
 +							byte[] extraAI = ProjectileLoader.SendExtraAI(projectile, ref bb15);
  							writer.Write(bb15);
- 							for (int num11 = 0; num11 < Projectile.maxAI; num11++)
+ 							for (int num12 = 0; num12 < Projectile.maxAI; num12++)
  							{
-@@ -563,6 +_,11 @@
+@@ -588,6 +_,11 @@
  								{
- 									writer.Write(projectile.ai[num11]);
+ 									writer.Write(projectile.ai[num12]);
  								}
 +							}
 +							if (bb15[Projectile.maxAI + 1])
@@ -82,7 +82,7 @@
  							}
  							if (bb15[Projectile.maxAI])
  							{
-@@ -602,6 +_,7 @@
+@@ -627,6 +_,7 @@
  							writer.Write((short)item3.stack);
  							writer.Write(item3.prefix);
  							writer.Write(value3);
@@ -90,7 +90,7 @@
  							break;
  						}
  					case 33:
-@@ -642,6 +_,10 @@
+@@ -667,6 +_,10 @@
  						writer.Write((short)number2);
  						writer.Write((short)number3);
  						writer.Write((short)number4);
@@ -101,10 +101,10 @@
  						if (Main.netMode == 2)
  						{
  							Netplay.GetSectionX((int)number2);
-@@ -661,6 +_,10 @@
- 							writer.Write(player4.zone1);
+@@ -691,6 +_,10 @@
  							writer.Write(player4.zone2);
  							writer.Write(player4.zone3);
+ 							writer.Write(player4.zone4);
 +							if (!ModNet.AllowVanillaClients)
 +							{
 +								PlayerHooks.SendCustomBiomes(player4, writer);
@@ -112,19 +112,19 @@
  							break;
  						}
  					case 38:
-@@ -722,7 +_,10 @@
+@@ -752,7 +_,10 @@
  						writer.Write((byte)number);
- 						for (int num15 = 0; num15 < 22; num15++)
+ 						for (int num16 = 0; num16 < 22; num16++)
  						{
--							writer.Write((byte)Main.player[number].buffType[num15]);
+-							writer.Write((byte)Main.player[number].buffType[num16]);
 +							if (ModNet.AllowVanillaClients)
-+								writer.Write((byte)Main.player[number].buffType[num15]);
++								writer.Write((byte)Main.player[number].buffType[num16]);
 +							else
-+								writer.Write((ushort)Main.player[number].buffType[num15]);
++								writer.Write((ushort)Main.player[number].buffType[num16]);
  						}
  						break;
  					case 51:
-@@ -736,20 +_,29 @@
+@@ -766,20 +_,29 @@
  						break;
  					case 53:
  						writer.Write((short)number);
@@ -137,14 +137,14 @@
  						break;
  					case 54:
  						writer.Write((short)number);
- 						for (int num16 = 0; num16 < 5; num16++)
+ 						for (int num17 = 0; num17 < 5; num17++)
  						{
--							writer.Write((byte)Main.npc[number].buffType[num16]);
+-							writer.Write((byte)Main.npc[number].buffType[num17]);
 +							if (ModNet.AllowVanillaClients)
-+								writer.Write((byte)Main.npc[number].buffType[num16]);
++								writer.Write((byte)Main.npc[number].buffType[num17]);
 +							else
-+								writer.Write((ushort)Main.npc[number].buffType[num16]);
- 							writer.Write((short)Main.npc[number].buffTime[num16]);
++								writer.Write((ushort)Main.npc[number].buffType[num17]);
+ 							writer.Write((short)Main.npc[number].buffTime[num17]);
  						}
  						break;
  					case 55:
@@ -157,7 +157,7 @@
  						writer.Write((int)number3);
  						break;
  					case 56:
-@@ -1485,7 +_,7 @@
+@@ -1541,7 +_,7 @@
  			int num5 = 0;
  			int num6 = 0;
  			byte b = 0;
@@ -166,7 +166,7 @@
  			Tile tile = null;
  			for (int i = yStart; i < yStart + height; i++)
  			{
-@@ -1533,7 +_,7 @@
+@@ -1589,7 +_,7 @@
  								num5++;
  								b |= 32;
  							}
@@ -175,7 +175,7 @@
  							{
  								short num7 = (short)Chest.FindChest(j, i);
  								if (num7 != -1)
-@@ -1542,7 +_,7 @@
+@@ -1598,7 +_,7 @@
  									num += 1;
  								}
  							}
@@ -184,7 +184,7 @@
  							{
  								short num8 = (short)Chest.FindChest(j, i);
  								if (num8 != -1)
-@@ -1627,7 +_,17 @@
+@@ -1683,7 +_,17 @@
  						if (tile2.wall != 0)
  						{
  							b |= 4;
@@ -203,7 +203,7 @@
  							num5++;
  							if (tile2.wallColor() != 0)
  							{
-@@ -1863,7 +_,7 @@
+@@ -1919,7 +_,7 @@
  						}
  						if ((b3 & 4) == 4)
  						{
@@ -212,7 +212,7 @@
  							if ((b & 16) == 16)
  							{
  								tile.wallColor(reader.ReadByte());
-@@ -2333,6 +_,7 @@
+@@ -2406,6 +_,7 @@
  				{
  					NetMessage.SendData(5, toWho, fromWho, "", plr, (float)(58 + Main.player[plr].armor.Length + Main.player[plr].dye.Length + Main.player[plr].miscEquips.Length + 1 + m), (float)Main.player[plr].miscDyes[m].prefix, 0f, 0, 0, 0);
  				}

@@ -14,8 +14,8 @@ namespace Terraria.ModLoader.UI
 	{
 		internal UIElement uIElement;
 		public UIMessageBox modInfo;
-		public UITextPanel uITextPanel;
-		internal UITextPanel modHomepageButton;
+		public UITextPanel<string> uITextPanel;
+		internal UITextPanel<string> modHomepageButton;
 		private int gotoMenu = 0;
 		private string url = "";
 		private string info = "";
@@ -44,13 +44,13 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			modInfo.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel("Mod Info", 0.8f, true);
+			uITextPanel = new UITextPanel<string>("Mod Info", 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
-			modHomepageButton = new UITextPanel("Visit the Mod's Homepage for even more info", 1f, false);
+			modHomepageButton = new UITextPanel<string>("Visit the Mod's Homepage for even more info", 1f, false);
 			modHomepageButton.Width.Set(-10f, 1f);
 			modHomepageButton.Height.Set(25f, 0f);
 			modHomepageButton.VAlign = 1f;
@@ -59,7 +59,7 @@ namespace Terraria.ModLoader.UI
 			modHomepageButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			modHomepageButton.OnClick += new UIElement.MouseEvent(VisitModHomePage);
 			uIElement.Append(modHomepageButton);
-			UITextPanel backButton = new UITextPanel("Back", 1f, false);
+			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
 			backButton.Width.Set(-10f, 0.5f);
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;

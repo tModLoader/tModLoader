@@ -1,8 +1,8 @@
 --- src/merged\Terraria\Main.cs
 +++ src/Terraria\Terraria\Main.cs
-@@ -3811,39 +_,39 @@
- 			Main.Configuration.Put("SettingsUnlock_WorldEvil", Main.SettingsUnlock_WorldEvil);
- 			Main.Configuration.Put("SettingsEnabled_MinersWobble", Main.SettingsEnabled_MinersWobble);
+@@ -3928,39 +_,39 @@
+ 			Main.Configuration.Put("UseHeatDistortion", Main.UseHeatDistortion);
+ 			Main.Configuration.Put("WaveQuality", Main.WaveQuality);
  			Main.Configuration.Put("MouseColor", new Dictionary<string, byte>
 -			{
 -				{
@@ -72,7 +72,7 @@
  			Main.Configuration.Put("QuickLaunch", Main.SkipAssemblyLoad);
  			bool flag = Main.Configuration.Save(true);
  			return flag && PlayerInput.Save();
-@@ -12451,8 +_,7 @@
+@@ -12696,8 +_,7 @@
  							Main.butterflyCageMode[num17, num18] = (byte)Main.rand.Next(5);
  							if (Main.rand.Next(2) == 0)
  							{
@@ -82,7 +82,7 @@
  							}
  						}
  						int num19 = Main.rand.Next(3, 16);
-@@ -12494,13 +_,11 @@
+@@ -12739,13 +_,11 @@
  										{
  											if (Main.butterflyCageMode[num17, num18] >= 10)
  											{
@@ -98,7 +98,7 @@
  											}
  										}
  									}
-@@ -12524,13 +_,11 @@
+@@ -12769,13 +_,11 @@
  									{
  										if (Main.butterflyCageMode[num17, num18] >= 10)
  										{
@@ -114,56 +114,56 @@
  										}
  									}
  								}
-@@ -14910,16 +_,14 @@
+@@ -15203,16 +_,14 @@
  		public static string GetInputText(string oldString)
  		{
  #if CLIENT
--			Main.<>c__DisplayClass1d <>c__DisplayClass1d = new Main.<>c__DisplayClass1d();
--			<>c__DisplayClass1d.oldString = oldString;
+-			Main.<>c__DisplayClass1e <>c__DisplayClass1e = new Main.<>c__DisplayClass1e();
+-			<>c__DisplayClass1e.oldString = oldString;
  			if (!Main.hasFocus)
  			{
--				return <>c__DisplayClass1d.oldString;
+-				return <>c__DisplayClass1e.oldString;
 +				return oldString;
  			}
  			Main.inputTextEnter = false;
  			Main.inputTextEscape = false;
--			string text = <>c__DisplayClass1d.oldString;
--			<>c__DisplayClass1d.newKeys = "";
+-			string text = <>c__DisplayClass1e.oldString;
+-			<>c__DisplayClass1e.newKeys = "";
 +			string text = oldString;
 +			string newKeys = "";
  			if (text == null)
  			{
  				text = "";
-@@ -14933,17 +_,16 @@
+@@ -15226,17 +_,16 @@
  				}
  				else if (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X))
  				{
--					PlatformUtilties.SetClipboard(<>c__DisplayClass1d.oldString);
-+					PlatformUtilties.SetClipboard(oldString);
+-					PlatformUtilities.SetClipboard(<>c__DisplayClass1e.oldString);
++					PlatformUtilities.SetClipboard(oldString);
  					text = "";
  				}
  				else if ((Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C)) || (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert)))
  				{
--					PlatformUtilties.SetClipboard(<>c__DisplayClass1d.oldString);
-+					PlatformUtilties.SetClipboard(oldString);
+-					PlatformUtilities.SetClipboard(<>c__DisplayClass1e.oldString);
++					PlatformUtilities.SetClipboard(oldString);
  				}
  				else if (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V))
  				{
--					Main.<>c__DisplayClass1d expr_13B = <>c__DisplayClass1d;
--					expr_13B.newKeys += PlatformUtilties.GetClipboard();
-+					newKeys += PlatformUtilties.GetClipboard();
+-					Main.<>c__DisplayClass1e expr_13B = <>c__DisplayClass1e;
+-					expr_13B.newKeys += PlatformUtilities.GetClipboard();
++					newKeys += PlatformUtilities.GetClipboard();
  				}
  			}
  			else
-@@ -14952,11 +_,11 @@
+@@ -15245,11 +_,11 @@
  				{
  					if (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
  					{
 -						Thread thread = new Thread(delegate
 -						{
--							if (<>c__DisplayClass1d.oldString.Length > 0)
+-							if (<>c__DisplayClass1e.oldString.Length > 0)
 -							{
--								Clipboard.SetText(<>c__DisplayClass1d.oldString);
+-								Clipboard.SetText(<>c__DisplayClass1e.oldString);
 +						Thread thread = new Thread((ThreadStart)delegate
 +						{
 +							if (oldString.Length > 0)
@@ -172,7 +172,7 @@
  							}
  						});
  						thread.SetApartmentState(ApartmentState.STA);
-@@ -14968,7 +_,7 @@
+@@ -15261,7 +_,7 @@
  					}
  					if (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert))
  					{
@@ -181,43 +181,43 @@
  						{
  							string text2 = Clipboard.GetText();
  							for (int l = 0; l < text2.Length; l++)
-@@ -14978,7 +_,7 @@
+@@ -15271,7 +_,7 @@
  									text2 = text2.Replace(string.Concat(text2[l--]), "");
  								}
  							}
--							<>c__DisplayClass1d.newKeys += text2;
+-							<>c__DisplayClass1e.newKeys += text2;
 +							newKeys += text2;
  						});
  						thread2.SetApartmentState(ApartmentState.STA);
  						thread2.Start();
-@@ -15001,13 +_,12 @@
+@@ -15294,13 +_,12 @@
  					}
  					else if (num >= 32 && num != 127)
  					{
--						Main.<>c__DisplayClass1d expr_25B = <>c__DisplayClass1d;
+-						Main.<>c__DisplayClass1e expr_25B = <>c__DisplayClass1e;
 -						expr_25B.newKeys += str;
 +						newKeys += str;
  					}
  				}
  			}
  			Main.keyCount = 0;
--			text += <>c__DisplayClass1d.newKeys;
+-			text += <>c__DisplayClass1e.newKeys;
 +			text += newKeys;
  			Main.oldInputText = Main.inputText;
  			Main.inputText = Keyboard.GetState();
  			Microsoft.Xna.Framework.Input.Keys[] pressedKeys = Main.inputText.GetPressedKeys();
-@@ -19418,7 +_,7 @@
- 												expr_74CD_cp_0.velocity.Y = expr_74CD_cp_0.velocity.Y - 2f;
- 												Main.dust[num162].noGravity = true;
+@@ -19800,7 +_,7 @@
+ 												expr_76F9_cp_0.velocity.Y = expr_76F9_cp_0.velocity.Y - 2f;
+ 												Main.dust[num164].noGravity = true;
  											}
 -											color.A = Main.mouseTextColor / 2;
 +											color.A = (byte)(Main.mouseTextColor / 2);
  											color.G = Main.mouseTextColor;
  											color.B = Main.mouseTextColor;
  										}
-@@ -19430,8 +_,8 @@
- 												int num163 = Dust.NewDust(new Vector2((float)(j * 16), (float)(i * 16)), 16, 16, 43, 0f, 0f, 254, newColor, 0.5f);
- 												Main.dust[num163].velocity *= 0f;
+@@ -19812,8 +_,8 @@
+ 												int num165 = Dust.NewDust(new Vector2((float)(j * 16), (float)(i * 16)), 16, 16, 43, 0f, 0f, 254, newColor, 0.5f);
+ 												Main.dust[num165].velocity *= 0f;
  											}
 -											byte b4 = (Main.mouseTextColor + color.G * 2) / 3;
 -											byte b5 = (Main.mouseTextColor + color.B * 2) / 3;
@@ -226,10 +226,10 @@
  											if (b4 > color.G)
  											{
  												color.G = b4;
-@@ -19695,9 +_,9 @@
+@@ -20077,9 +_,9 @@
  												}
  												Microsoft.Xna.Framework.Color color11 = color;
- 												Microsoft.Xna.Framework.Color color12 = array[num167];
+ 												Microsoft.Xna.Framework.Color color12 = array[num169];
 -												color11.R = (color.R + color12.R) / 2;
 -												color11.G = (color.G + color12.G) / 2;
 -												color11.B = (color.B + color12.B) / 2;
@@ -239,10 +239,10 @@
  												if (flag17)
  												{
  													color11 = tile.actColor(color11);
-@@ -19742,9 +_,9 @@
+@@ -20124,9 +_,9 @@
  												}
  												Microsoft.Xna.Framework.Color color13 = color;
- 												Microsoft.Xna.Framework.Color color14 = array[num170];
+ 												Microsoft.Xna.Framework.Color color14 = array[num172];
 -												color13.R = (color.R + color14.R) / 2;
 -												color13.G = (color.G + color14.G) / 2;
 -												color13.B = (color.B + color14.B) / 2;
@@ -252,142 +252,150 @@
  												if (flag19)
  												{
  													color13 = tile.actColor(color13);
-@@ -20554,7 +_,7 @@
+@@ -20940,7 +_,7 @@
  				}
  				if (type4 == 334 && frameX >= 5000)
  				{
--					short arg_D1B2_0 = frameY / 18;
-+					short arg_D1B2_0 = (short)(frameY / 18);
- 					int num309 = (int)frameX;
- 					int num310 = 0;
- 					int num311 = num309 % 5000;
-@@ -21787,25 +_,23 @@
+-					short arg_D4C2_0 = frameY / 18;
++					short arg_D4C2_0 = (short)(frameY / 18);
+ 					int num311 = (int)frameX;
+ 					int num312 = 0;
+ 					int num313 = num311 % 5000;
+@@ -22036,25 +_,23 @@
  								switch (m)
  								{
  								case 0:
--									IL_7EF:
+-									IL_2E2:
 +								default:
  									num3 = num2;
  									num4 = 0f;
--									goto IL_823;
+-									goto IL_316;
 +									break;
  								case 1:
  									num3 = -num2;
  									num4 = 0f;
--									goto IL_823;
+-									goto IL_316;
 +									break;
  								case 2:
  									num3 = 0f;
  									num4 = num2;
--									goto IL_823;
+-									goto IL_316;
 +									break;
  								case 3:
  									num3 = 0f;
  									num4 = -num2;
--									goto IL_823;
+-									goto IL_316;
 -								}
--								goto IL_7EF;
--								IL_823:
+-								goto IL_2E2;
+-								IL_316:
 +									break;
 +								}
  								position = new Vector2(player.position.X + num3, player.position.Y + player.gfxOffY + num4);
  								this.DrawPlayer(player, position, player.fullRotation, player.fullRotationOrigin, player.ghostFade);
  							}
-@@ -21835,25 +_,23 @@
+@@ -22084,25 +_,23 @@
  								switch (n)
  								{
  								case 0:
--									IL_927:
+-									IL_41E:
 +								default:
  									num6 = num5;
  									num7 = 0f;
--									goto IL_95B;
+-									goto IL_452;
 +									break;
  								case 1:
  									num6 = -num5;
  									num7 = 0f;
--									goto IL_95B;
+-									goto IL_452;
 +									break;
  								case 2:
  									num6 = 0f;
  									num7 = num5;
--									goto IL_95B;
+-									goto IL_452;
 +									break;
  								case 3:
  									num6 = 0f;
  									num7 = -num5;
--									goto IL_95B;
+-									goto IL_452;
 -								}
--								goto IL_927;
--								IL_95B:
+-								goto IL_41E;
+-								IL_452:
 +									break;
 +								}
  								position = new Vector2(player.position.X + num6, player.position.Y + player.gfxOffY + num7);
  								this.DrawPlayer(player, position, player.fullRotation, player.fullRotationOrigin, player.ghostFade);
  							}
-@@ -23617,7 +_,7 @@
- 							if (type >= 87 && type <= 92)
- 							{
- 								Microsoft.Xna.Framework.Color alpha2 = Main.npc[i].GetAlpha(color9);
--								byte b4 = (Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3;
-+								byte b4 = (byte)((Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3);
- 								if (alpha2.R < b4)
+@@ -23718,7 +_,6 @@
+ 					Texture2D texture = Main.npcTexture[type];
+ 					Vector2 vector17 = nPC.Center - Main.screenPosition;
+ 					Microsoft.Xna.Framework.Rectangle frame = nPC.frame;
+-					frame.Size() / 2f;
+ 					SpriteEffects spriteEffects2 = spriteEffects ^ SpriteEffects.FlipHorizontally;
+ 					float rotation8 = nPC.rotation;
+ 					Microsoft.Xna.Framework.Color color20 = color9;
+@@ -24630,7 +_,7 @@
+ 								if (type >= 87 && type <= 92)
  								{
- 									alpha2.R = b4;
-@@ -27667,7 +_,7 @@
- 					Microsoft.Xna.Framework.Color color32 = color25;
- 					color32 = projectile.GetAlpha(color32);
- 					color32 *= (float)(num186 - num188) / 15f;
--					projectile.oldPos[num188] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
-+					Vector2 _ = projectile.oldPos[num188] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
- 					Main.spriteBatch.Draw(texture2D6, projectile.oldPos[num188] + new Vector2((float)projectile.width, (float)projectile.height) / 2f - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y4, texture2D6.Width, num185)), color32, projectile.rotation, new Vector2((float)texture2D6.Width / 2f, (float)num185 / 2f), MathHelper.Lerp(projectile.scale, value13, (float)num188 / 15f), spriteEffects, 0f);
+ 									Microsoft.Xna.Framework.Color alpha6 = nPC.GetAlpha(color9);
+-									byte b5 = (Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3;
++									byte b5 = (byte)((Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3);
+ 									if (alpha6.R < b5)
+ 									{
+ 										alpha6.R = b5;
+@@ -29103,7 +_,7 @@
+ 						Microsoft.Xna.Framework.Color color42 = color25;
+ 						color42 = projectile.GetAlpha(color42);
+ 						color42 *= (float)(num207 - num209) / 15f;
+-						projectile.oldPos[num209] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
++						Vector2 _ = projectile.oldPos[num209] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
+ 						Main.spriteBatch.Draw(texture2D11, projectile.oldPos[num209] + new Vector2((float)projectile.width, (float)projectile.height) / 2f - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y4, texture2D11.Width, num206)), color42, projectile.rotation, new Vector2((float)texture2D11.Width / 2f, (float)num206 / 2f), MathHelper.Lerp(projectile.scale, value18, (float)num209 / 15f), spriteEffects, 0f);
+ 					}
+ 					Main.spriteBatch.Draw(texture2D11, projectile.Center - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y4, texture2D11.Width, num206)), projectile.GetAlpha(color25), projectile.rotation, new Vector2((float)texture2D11.Width / 2f, (float)num206 / 2f), projectile.scale, spriteEffects, 0f);
+@@ -29122,7 +_,7 @@
+ 						Microsoft.Xna.Framework.Color color43 = color25;
+ 						color43 = projectile.GetAlpha(color43);
+ 						color43 *= (float)(num211 - num213) / 15f;
+-						projectile.oldPos[num213] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
++						Vector2 _ = projectile.oldPos[num213] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
+ 						Main.spriteBatch.Draw(texture2D12, projectile.oldPos[num213] + new Vector2((float)projectile.width, (float)projectile.height) / 2f - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y5, texture2D12.Width, num210)), color43, projectile.rotation, new Vector2((float)texture2D12.Width / 2f, (float)num210 / 2f), MathHelper.Lerp(projectile.scale, value19, (float)num213 / 15f), spriteEffects, 0f);
+ 					}
+ 					Main.spriteBatch.Draw(texture2D12, projectile.Center - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y5, texture2D12.Width, num210)), Microsoft.Xna.Framework.Color.White, projectile.rotation, new Vector2((float)texture2D12.Width / 2f, (float)num210 / 2f), projectile.scale + 0.2f, spriteEffects, 0f);
+@@ -29338,7 +_,7 @@
+ 					Vector2 vector29 = new Vector2(projectile.scale);
+ 					DelegateMethods.f_1 = 1f;
+ 					DelegateMethods.c_1 = value25 * 0.75f * projectile.Opacity;
+-					projectile.oldPos[0] + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
++					Vector2 _ = projectile.oldPos[0] + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
+ 					Utils.DrawLaser(Main.spriteBatch, tex, value26 - Main.screenPosition, value26 + projectile.velocity * num228 - Main.screenPosition, vector29, new Utils.LaserLineFraming(DelegateMethods.RainbowLaserDraw));
+ 					DelegateMethods.c_1 = new Microsoft.Xna.Framework.Color(255, 255, 255, 127) * 0.75f * projectile.Opacity;
+ 					Utils.DrawLaser(Main.spriteBatch, tex, value26 - Main.screenPosition, value26 + projectile.velocity * num228 - Main.screenPosition, vector29 / 2f, new Utils.LaserLineFraming(DelegateMethods.RainbowLaserDraw));
+@@ -29358,14 +_,14 @@
+ 					DelegateMethods.f_1 = 1f;
+ 					DelegateMethods.c_1 = c_;
+ 					DelegateMethods.i_1 = 54000 - (int)Main.time / 2;
+-					projectile.oldPos[0] + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
++					Vector2 _ = projectile.oldPos[0] + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
+ 					Utils.DrawLaser(Main.spriteBatch, tex2, value27 - Main.screenPosition, value27 + projectile.velocity * num229 - Main.screenPosition, vector30, new Utils.LaserLineFraming(DelegateMethods.TurretLaserDraw));
+ 					DelegateMethods.c_1 = new Microsoft.Xna.Framework.Color(255, 255, 255, 127) * 0.75f * projectile.Opacity;
+ 					Utils.DrawLaser(Main.spriteBatch, tex2, value27 - Main.screenPosition, value27 + projectile.velocity * num229 - Main.screenPosition, vector30 / 2f, new Utils.LaserLineFraming(DelegateMethods.TurretLaserDraw));
  				}
- 				Main.spriteBatch.Draw(texture2D6, projectile.Center - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y4, texture2D6.Width, num185)), projectile.GetAlpha(color25), projectile.rotation, new Vector2((float)texture2D6.Width / 2f, (float)num185 / 2f), projectile.scale, spriteEffects, 0f);
-@@ -27686,7 +_,7 @@
- 					Microsoft.Xna.Framework.Color color33 = color25;
- 					color33 = projectile.GetAlpha(color33);
- 					color33 *= (float)(num190 - num192) / 15f;
--					projectile.oldPos[num192] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
-+					Vector2 _ = projectile.oldPos[num192] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
- 					Main.spriteBatch.Draw(texture2D7, projectile.oldPos[num192] + new Vector2((float)projectile.width, (float)projectile.height) / 2f - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y5, texture2D7.Width, num189)), color33, projectile.rotation, new Vector2((float)texture2D7.Width / 2f, (float)num189 / 2f), MathHelper.Lerp(projectile.scale, value14, (float)num192 / 15f), spriteEffects, 0f);
- 				}
- 				Main.spriteBatch.Draw(texture2D7, projectile.Center - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y5, texture2D7.Width, num189)), Microsoft.Xna.Framework.Color.White, projectile.rotation, new Vector2((float)texture2D7.Width / 2f, (float)num189 / 2f), projectile.scale + 0.2f, spriteEffects, 0f);
-@@ -27902,7 +_,7 @@
- 				Vector2 vector28 = new Vector2(projectile.scale);
- 				DelegateMethods.f_1 = 1f;
- 				DelegateMethods.c_1 = value20 * 0.75f * projectile.Opacity;
--				projectile.oldPos[0] + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
-+				Vector2 _ = projectile.oldPos[0] + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
- 				Utils.DrawLaser(Main.spriteBatch, tex, value21 - Main.screenPosition, value21 + projectile.velocity * num207 - Main.screenPosition, vector28, new Utils.LaserLineFraming(DelegateMethods.RainbowLaserDraw));
- 				DelegateMethods.c_1 = new Microsoft.Xna.Framework.Color(255, 255, 255, 127) * 0.75f * projectile.Opacity;
- 				Utils.DrawLaser(Main.spriteBatch, tex, value21 - Main.screenPosition, value21 + projectile.velocity * num207 - Main.screenPosition, vector28 / 2f, new Utils.LaserLineFraming(DelegateMethods.RainbowLaserDraw));
-@@ -27922,14 +_,14 @@
- 				DelegateMethods.f_1 = 1f;
- 				DelegateMethods.c_1 = c_;
- 				DelegateMethods.i_1 = 54000 - (int)Main.time / 2;
--				projectile.oldPos[0] + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
-+				Vector2 _ = projectile.oldPos[0] + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
- 				Utils.DrawLaser(Main.spriteBatch, tex2, value22 - Main.screenPosition, value22 + projectile.velocity * num208 - Main.screenPosition, vector29, new Utils.LaserLineFraming(DelegateMethods.TurretLaserDraw));
- 				DelegateMethods.c_1 = new Microsoft.Xna.Framework.Color(255, 255, 255, 127) * 0.75f * projectile.Opacity;
- 				Utils.DrawLaser(Main.spriteBatch, tex2, value22 - Main.screenPosition, value22 + projectile.velocity * num208 - Main.screenPosition, vector29 / 2f, new Utils.LaserLineFraming(DelegateMethods.TurretLaserDraw));
- 			}
- 			else if (projectile.type == 611)
- 			{
--				projectile.position + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
-+				Vector2 _ = projectile.position + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
- 				Texture2D texture2D17 = Main.projectileTexture[projectile.type];
- 				Microsoft.Xna.Framework.Color alpha3 = projectile.GetAlpha(color25);
- 				if (projectile.velocity == Vector2.Zero)
-@@ -28633,7 +_,7 @@
- 					color52 = projectile.GetAlpha(color52);
- 					color52 *= (float)(num268 - num270) / 15f;
- 					Microsoft.Xna.Framework.Color alpha7 = projectile.GetAlpha(color25);
--					projectile.oldPos[num270] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
-+					Vector2 _ = projectile.oldPos[num270] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
- 					Main.spriteBatch.Draw(texture2D31, projectile.oldPos[num270] + new Vector2((float)projectile.width, (float)projectile.height) / 2f - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y12, texture2D31.Width, num267)), Microsoft.Xna.Framework.Color.Lerp(alpha7, color52, 0.3f), projectile.rotation, new Vector2((float)texture2D31.Width / 2f, (float)num267 / 2f), MathHelper.Lerp(projectile.scale, value45, (float)num270 / 15f), spriteEffects, 0f);
- 				}
- 				Main.spriteBatch.Draw(texture2D31, projectile.Center - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y12, texture2D31.Width, num267)), projectile.GetAlpha(color25), projectile.rotation, new Vector2((float)texture2D31.Width / 2f, (float)num267 / 2f), projectile.scale, spriteEffects, 0f);
-@@ -41435,7 +_,7 @@
+ 				else if (projectile.type == 611)
+ 				{
+-					projectile.position + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
++					Vector2 _ = projectile.position + new Vector2((float)projectile.width, (float)projectile.height) / 2f + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition;
+ 					Texture2D texture2D22 = Main.projectileTexture[projectile.type];
+ 					Microsoft.Xna.Framework.Color alpha3 = projectile.GetAlpha(color25);
+ 					if (projectile.velocity == Vector2.Zero)
+@@ -30281,7 +_,7 @@
+ 						color68 = projectile.GetAlpha(color68);
+ 						color68 *= (float)(num305 - num307) / 15f;
+ 						Microsoft.Xna.Framework.Color alpha7 = projectile.GetAlpha(color25);
+-						projectile.oldPos[num307] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
++						Vector2 _ = projectile.oldPos[num307] - Main.screenPosition + new Vector2(num149 + (float)num148, (float)(projectile.height / 2) + projectile.gfxOffY);
+ 						Main.spriteBatch.Draw(texture2D39, projectile.oldPos[num307] + new Vector2((float)projectile.width, (float)projectile.height) / 2f - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y13, texture2D39.Width, num304)), Microsoft.Xna.Framework.Color.Lerp(alpha7, color68, 0.3f), projectile.rotation, new Vector2((float)texture2D39.Width / 2f, (float)num304 / 2f), MathHelper.Lerp(projectile.scale, value54, (float)num307 / 15f), spriteEffects, 0f);
+ 					}
+ 					Main.spriteBatch.Draw(texture2D39, projectile.Center - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, y13, texture2D39.Width, num304)), projectile.GetAlpha(color25), projectile.rotation, new Vector2((float)texture2D39.Width / 2f, (float)num304 / 2f), projectile.scale, spriteEffects, 0f);
+@@ -43397,7 +_,7 @@
  				Main.screenPosition.X = 0f;
  			}
  			Main.background = 0;
@@ -396,7 +404,7 @@
  			Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color((int)b, (int)b, (int)b, 255);
  			this.logoRotation += this.logoRotationSpeed * 3E-05f;
  			if ((double)this.logoRotation > 0.1)
-@@ -44318,9 +_,9 @@
+@@ -46343,9 +_,9 @@
  						if (num57 == 4)
  						{
  							color7 = color;
@@ -409,7 +417,7 @@
  						}
  						int num58 = 255;
  						int num59 = (int)color7.R - (255 - num58);
-@@ -44430,9 +_,9 @@
+@@ -46455,9 +_,9 @@
  							if (num68 == 4)
  							{
  								color8 = color;
@@ -422,7 +430,7 @@
  							}
  							int num69 = (int)color8.R - (255 - num66);
  							if (num69 < 0)
-@@ -44505,9 +_,9 @@
+@@ -46530,9 +_,9 @@
  						break;
  					}
  					Microsoft.Xna.Framework.Color textColor = color;
@@ -435,7 +443,7 @@
  					int num76 = 255;
  					int num77 = (int)textColor.R - (255 - num76);
  					if (num77 < 0)
-@@ -44581,9 +_,9 @@
+@@ -46606,9 +_,9 @@
  						if (num85 == 4)
  						{
  							color9 = color;
@@ -448,7 +456,7 @@
  						}
  						int num86 = 255;
  						int num87 = (int)color9.R - (255 - num86);
-@@ -44671,9 +_,9 @@
+@@ -46696,9 +_,9 @@
  								color10 = color;
  								break;
  							}
@@ -461,7 +469,7 @@
  						}
  						int num93 = (int)(255f * (this.menuItemScale[num91] * 2f - 1f));
  						if (array[num91])
-@@ -44714,7 +_,7 @@
+@@ -46739,7 +_,7 @@
  							}
  							else
  							{
@@ -470,7 +478,7 @@
  							}
  						}
  						int num98 = 0;
-@@ -44856,9 +_,9 @@
+@@ -46881,9 +_,9 @@
  				if (num103 == 4)
  				{
  					color11 = color;
@@ -483,7 +491,7 @@
  				}
  				color11.A = (byte)((float)color11.A * 0.3f);
  				int num104 = 0;
-@@ -44891,9 +_,9 @@
+@@ -46916,9 +_,9 @@
  				if (num106 == 4)
  				{
  					color12 = color;
@@ -496,7 +504,7 @@
  				}
  				color12.A = (byte)((float)color12.A * 0.3f);
  				int num107 = 0;
-@@ -45636,9 +_,9 @@
+@@ -47661,9 +_,9 @@
  														}
  														break;
  													}
@@ -509,7 +517,7 @@
  													color4.R = (byte)((float)color4.R * x);
  													color4.G = (byte)((float)color4.G * y);
  													color4.B = (byte)((float)color4.B * z);
-@@ -45686,9 +_,9 @@
+@@ -47711,9 +_,9 @@
  													num29 = 8;
  													break;
  												}
@@ -522,7 +530,7 @@
  												color7.R = (byte)((float)color7.R * x);
  												color7.G = (byte)((float)color7.G * y);
  												color7.B = (byte)((float)color7.B * z);
-@@ -45955,9 +_,9 @@
+@@ -47980,9 +_,9 @@
  													}
  													break;
  												}
@@ -535,7 +543,7 @@
  												color15.R = (byte)((float)color15.R * x);
  												color15.G = (byte)((float)color15.G * y);
  												color15.B = (byte)((float)color15.B * z);
-@@ -45995,9 +_,9 @@
+@@ -48020,9 +_,9 @@
  													num57 = 8;
  													break;
  												}
@@ -548,7 +556,7 @@
  												color18.R = (byte)((float)color18.R * x);
  												color18.G = (byte)((float)color18.G * y);
  												color18.B = (byte)((float)color18.B * z);
-@@ -46237,9 +_,9 @@
+@@ -48262,9 +_,9 @@
  													}
  													break;
  												}
@@ -561,7 +569,7 @@
  												color26.R = (byte)((float)color26.R * x);
  												color26.G = (byte)((float)color26.G * y);
  												color26.B = (byte)((float)color26.B * z);
-@@ -46268,9 +_,9 @@
+@@ -48293,9 +_,9 @@
  													num77 = 8;
  													break;
  												}
@@ -574,7 +582,7 @@
  												color28.R = (byte)((float)color28.R * x);
  												color28.G = (byte)((float)color28.G * y);
  												color28.B = (byte)((float)color28.B * z);
-@@ -46807,9 +_,9 @@
+@@ -48832,9 +_,9 @@
  														}
  														break;
  													}
@@ -587,7 +595,7 @@
  													color4.R = (byte)((float)color4.R * num5);
  													color4.G = (byte)((float)color4.G * num6);
  													color4.B = (byte)((float)color4.B * num7);
-@@ -46857,9 +_,9 @@
+@@ -48882,9 +_,9 @@
  													num35 = 8;
  													break;
  												}
@@ -600,7 +608,7 @@
  												color7.R = (byte)((float)color7.R * num5);
  												color7.G = (byte)((float)color7.G * num6);
  												color7.B = (byte)((float)color7.B * num7);
-@@ -47126,9 +_,9 @@
+@@ -49151,9 +_,9 @@
  													}
  													break;
  												}
@@ -613,7 +621,7 @@
  												color15.R = (byte)((float)color15.R * num5);
  												color15.G = (byte)((float)color15.G * num6);
  												color15.B = (byte)((float)color15.B * num7);
-@@ -47166,9 +_,9 @@
+@@ -49191,9 +_,9 @@
  													num63 = 8;
  													break;
  												}
@@ -626,7 +634,7 @@
  												color18.R = (byte)((float)color18.R * num5);
  												color18.G = (byte)((float)color18.G * num6);
  												color18.B = (byte)((float)color18.B * num7);
-@@ -47402,9 +_,9 @@
+@@ -49427,9 +_,9 @@
  													}
  													break;
  												}
@@ -639,7 +647,7 @@
  												color26.R = (byte)((float)color26.R * num5);
  												color26.G = (byte)((float)color26.G * num6);
  												color26.B = (byte)((float)color26.B * num7);
-@@ -47433,9 +_,9 @@
+@@ -49458,9 +_,9 @@
  													num83 = 8;
  													break;
  												}
@@ -652,7 +660,7 @@
  												color28.R = (byte)((float)color28.R * num5);
  												color28.G = (byte)((float)color28.G * num6);
  												color28.B = (byte)((float)color28.B * num7);
-@@ -49353,9 +_,9 @@
+@@ -51312,9 +_,9 @@
  				}
  			}
  			Main.tileColor.A = 255;
@@ -665,7 +673,7 @@
  			Main.backColor = Main.bgColor;
  			Main.trueBackColor = Main.backColor;
  			Lighting.Initialize(true);
-@@ -50847,10 +_,10 @@
+@@ -52801,10 +_,10 @@
  										num26 = (float)color4.B * num17;
  										num27 = (float)color4.A * num17;
  										color4 = new Microsoft.Xna.Framework.Color((int)((byte)num24), (int)((byte)num25), (int)((byte)num26), (int)((byte)num27));
@@ -680,7 +688,7 @@
  										Main.spriteBatch.Draw(Main.liquidTexture[num12], value - Main.screenPosition + new Vector2((float)num28, (float)num29) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(value2.X + num28, value2.Y + num29, width, height)), color3, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  									}
  								}
-@@ -55706,9 +_,9 @@
+@@ -57637,9 +_,9 @@
  				}
  			}
  			Main.tileColor.A = 255;

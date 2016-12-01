@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.UI
 			message.Height.Set(0f, 0.8f);
 			message.HAlign = 0.5f;
 			area.Append(message);
-			UITextPanel button = new UITextPanel("Ignore", 0.7f, true);
+			UITextPanel<string> button = new UITextPanel<string>("Ignore", 0.7f, true);
 			button.Width.Set(-10f, 0.5f);
 			button.Height.Set(50f, 0f);
 			button.VAlign = 1f;
@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button.OnClick += new UIElement.MouseEvent(IgnoreClick);
 			area.Append(button);
-			UITextPanel button2 = new UITextPanel("Download", 0.7f, true);
+			UITextPanel<string> button2 = new UITextPanel<string>("Download", 0.7f, true);
 			button2.CopyStyle(button);
 			button2.HAlign = 1f;
 			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);

@@ -87,16 +87,16 @@ namespace Terraria.ModLoader.UI
 				}
 				else if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X))
 				{
-					PlatformUtilties.SetClipboard(oldString);
+					PlatformUtilities.SetClipboard(oldString);
 					text = "";
 				}
 				else if ((inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C)) || (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert)))
 				{
-					PlatformUtilties.SetClipboard(oldString);
+					PlatformUtilities.SetClipboard(oldString);
 				}
 				else if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V))
 				{
-					newKeys += PlatformUtilties.GetClipboard();
+					newKeys += PlatformUtilities.GetClipboard();
 				}
 			}
 			else

@@ -31,7 +31,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel button = new UITextPanel("Build", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>("Build", 1f, false);
 			button.Width.Set(100f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(10f, 0f);
@@ -42,7 +42,7 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			button.OnClick += new UIElement.MouseEvent(this.BuildMod);
 			base.Append(button);
-			UITextPanel button2 = new UITextPanel("Build + Reload", 1f, false);
+			UITextPanel<string> button2 = new UITextPanel<string>("Build + Reload", 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(200f, 0f);
 			button2.Left.Set(150f, 0f);
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.UI
 			base.Append(button2);
 			if (publishable)
 			{
-				UITextPanel button3 = new UITextPanel("Publish", 1f, false);
+				UITextPanel<string> button3 = new UITextPanel<string>("Publish", 1f, false);
 				button3.CopyStyle(button2);
 				button3.Width.Set(100f, 0f);
 				button3.Left.Set(390f, 0f);

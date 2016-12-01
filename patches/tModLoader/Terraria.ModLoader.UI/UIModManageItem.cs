@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.UI
 		public string author;
 		private Texture2D dividerTexture;
 		private UIText modName;
-		UITextPanel button2;
+		UITextPanel<string> button2;
 
 		public UIModManageItem(string displayname, string name, string version, string author, string downloads, string downloadsversion, string modloaderversion)
 		{
@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel button = new UITextPanel(downloads + " downloads (" + downloadsversion + " latest version)", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>(downloads + " downloads (" + downloadsversion + " latest version)", 1f, false);
 			button.Width.Set(260f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(10f, 0f);
@@ -47,7 +47,7 @@ namespace Terraria.ModLoader.UI
 			//	button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
 			//	button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
 			base.Append(button);
-			button2 = new UITextPanel("Unpublish", 1f, false);
+			button2 = new UITextPanel<string>("Unpublish", 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(150f, 0f);
 			button2.Left.Set(360f, 0f);

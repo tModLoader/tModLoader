@@ -1,19 +1,19 @@
 --- src/decompiled\Terraria\NPC.cs
 +++ src/merged\Terraria\NPC.cs
-@@ -39407,6 +_,7 @@
- 													31,
- 													229
- 												});
+@@ -29512,6 +_,7 @@
+ 																		31,
+ 																		229
+ 																	});
 +#if CLIENT
- 												if (flag164)
- 												{
- 													MoonlordDeathDrama.AddExplosion(vector203);
-@@ -39420,6 +_,7 @@
- 														dust14.scale = num1634;
- 													}
- 												}
+ 																	if (flag86)
+ 																	{
+ 																		MoonlordDeathDrama.AddExplosion(vector144);
+@@ -29525,6 +_,7 @@
+ 																			dust.scale = num1122;
+ 																		}
+ 																	}
 +#endif
- 												for (float num1637 = 0f; num1637 < this.ai[1] / 60f; num1637 += 1f)
- 												{
- 													Vector2 vector204 = Utils.RandomVector2(Main.rand, -1f, 1f);
+ 																	for (float num1125 = 0f; num1125 < this.ai[1] / 60f; num1125 += 1f)
+ 																	{
+ 																		Vector2 vector145 = Utils.RandomVector2(Main.rand, -1f, 1f);
 

@@ -4,8 +4,8 @@
  
  namespace Terraria.GameContent.UI.Elements
  {
--	internal class UITextBox : UITextPanel
-+	public class UITextBox : UITextPanel
+-	internal class UITextBox : UITextPanel<string>
++	public class UITextBox : UITextPanel<string>
  	{
  		private int _cursor;
  		private int _frameCount;

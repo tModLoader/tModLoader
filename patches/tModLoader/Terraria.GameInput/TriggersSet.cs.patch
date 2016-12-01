@@ -17,6 +17,6 @@
  			}
 +			ModLoader.ModHooks.HotKeyPressed();
  		}
- 	}
- }
+ 
+ 		public void CopyIntoDuringChat(Player p)
 

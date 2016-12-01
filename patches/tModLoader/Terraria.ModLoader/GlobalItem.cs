@@ -197,7 +197,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void ArmorSetShadows(Player player, string set, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
+		public virtual void ArmorSetShadows(Player player, string set)
 		{
 		}
 

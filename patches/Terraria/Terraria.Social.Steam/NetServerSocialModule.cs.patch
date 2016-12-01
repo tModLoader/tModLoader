@@ -1,6 +1,6 @@
 --- src/merged\Terraria.Social.Steam\NetServerSocialModule.cs
 +++ src/Terraria\Terraria.Social.Steam\NetServerSocialModule.cs
-@@ -37,7 +_,7 @@
+@@ -38,7 +_,7 @@
  			{
  				using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream))
  				{

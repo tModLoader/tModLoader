@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.Default
 			item.useStyle = 4;
 			item.width = 24;
 			item.height = 24;
-			item.useSound = 2;
+			item.UseSound = SoundID.Item2;
 			item.melee = true;
 			item.noMelee = true;
 			item.useAnimation = 25;
