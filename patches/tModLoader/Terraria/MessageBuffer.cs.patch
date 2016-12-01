@@ -100,14 +100,6 @@
  								}
  								if (flag9)
  								{
-@@ -1175,6 +_,7 @@
- 						int pre = (int)this.reader.ReadByte();
- 						int num62 = (int)this.reader.ReadByte();
- 						int num63 = (int)this.reader.ReadInt16();
-+						byte[] data = ItemIO.GetCustomData(num61, reader);
- 						if (Main.netMode == 1)
- 						{
- 							if (num63 == 0)
 @@ -1184,7 +_,7 @@
  							}
  							int num64 = num61;
@@ -117,7 +109,7 @@
  							item.netDefaults(num63);
  							item.newAndShiny = newAndShiny;
  							item.Prefix(pre);
-@@ -1192,6 +_,13 @@
+@@ -1192,6 +_,7 @@
  							item.position = position;
  							item.velocity = velocity;
  							item.active = true;
@@ -125,7 +117,7 @@
  							if (b == 90)
  							{
  								item.instanced = true;
-@@ -1237,6 +_,13 @@
+@@ -1237,6 +_,7 @@
  								item3.position = position;
  								item3.velocity = velocity;
  								item3.active = true;
@@ -168,18 +160,11 @@
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
  						{
-@@ -1755,6 +_,14 @@
+@@ -1755,6 +_,7 @@
  						Main.chest[num101].item[num102].netDefaults(type5);
  						Main.chest[num101].item[num102].Prefix(pre2);
  						Main.chest[num101].item[num102].stack = stack4;
-+						byte[] data = ItemIO.GetCustomData(type5, reader);
-+						try
-+						{
-+							ItemIO.ReadCustomData(Main.chest[num101].item[num102], data);
-+						}
-+						catch (CustomModDataException)
-+						{
-+						}
++						ItemIO.ReceiveModData(Main.chest[num101].item[num102], reader);
  						Recipe.FindRecipes();
  						return;
  					}
