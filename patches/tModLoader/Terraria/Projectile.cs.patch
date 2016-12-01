@@ -274,7 +274,7 @@
  								num36 = (int)((float)num36 * Main.expertDamage);
  							}
 -							Main.player[myPlayer2].Hurt(PlayerDeathReason.ByProjectilePVP(-1, this.whoAmI), num36 * 2, hitDirection2, false, false, false, num35);
-+							int realDamage = Main.player[myPlayer2].Hurt(PlayerDeathReason.ByProjectilePVP(-1, this.whoAmI), num36 * 2, hitDirection2, false, false, false, num35);
++							int realDamage = (int)Main.player[myPlayer2].Hurt(PlayerDeathReason.ByProjectilePVP(-1, this.whoAmI), num36 * 2, hitDirection2, false, false, false, num35);
  							if (this.trap)
  							{
  								Main.player[myPlayer2].trapDebuffSource = true;

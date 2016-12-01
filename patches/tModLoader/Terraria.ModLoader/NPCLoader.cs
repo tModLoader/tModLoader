@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 		internal static readonly IList<NPCInfo> infoList = new List<NPCInfo>();
 		internal static readonly IDictionary<string, int> infoIndexes = new Dictionary<string, int>();
 		private static int vanillaSkeletonCount = NPCID.Sets.Skeletons.Count;
-		private static readonly int[] shopToNPC = new int[Main.numShops - 1];
+		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		//in Terraria.Item.NewItem after setting Main.item[400] add
 		//  if(NPCLoader.blockLoot.Contains(Type)) { return num; }
 		public static readonly IList<int> blockLoot = new List<int>();
@@ -1023,7 +1023,7 @@ namespace Terraria.ModLoader
 				{
 					Main.playerInventory = true;
 					Main.npcChatText = "";
-					Main.npcShop = Main.numShops - 1;
+					Main.npcShop = Main.MaxShopIDs - 1;
 					Main.instance.shop[Main.npcShop].SetupShop(npc.type);
 				}
 			}

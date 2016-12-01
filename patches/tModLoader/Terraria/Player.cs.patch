@@ -1551,7 +1551,7 @@
  					{
  						newColor = new Color(97, 200, 255, 100);
  					}
-+					TileLoader.WalkDust(num3, ref num5, ref flag, ref newColor);
++					TileLoader.WalkDust(type, ref num2, ref flag, ref newColor);
  					if (!Falling)
  					{
  						float num3 = Math.Abs(this.velocity.X) / 3f;
@@ -1898,7 +1898,7 @@
  			{
  				this.armorEffectDrawOutlines = true;
  			}
-+			ItemLoader.ArmorSetShadows(player, ref flag, ref flag2, ref flag3, ref flag4);
++			ItemLoader.ArmorSetShadows(drawPlayer);
 +			// TODO, rename to this? SetArmorEffectVisuals
  			if (drawPlayer.stoned || drawPlayer.stealth != 1f)
  			{
@@ -2213,8 +2213,8 @@
  							this.UpdateMaxTurrets();
  						}
 -						else
-+						else if (PlayerHooks.Shoot(this, item, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74)
-+							&& ItemLoader.Shoot(item, this, ref vector2, ref num78, ref num79, ref num71, ref num73, ref num74))
++						else if (PlayerHooks.Shoot(this, item, ref vector2, ref num81, ref num82, ref num74, ref num76, ref num77)
++							&& ItemLoader.Shoot(item, this, ref vector2, ref num81, ref num82, ref num74, ref num76, ref num77))
  						{
  							int num219 = Projectile.NewProjectile(vector2.X, vector2.Y, num81, num82, num74, num76, num77, i, 0f, 0f);
  							if (item.type == 726)
@@ -2240,7 +2240,7 @@
  											int num242 = Player.tileTargetX;
  											int num243 = Player.tileTargetY;
 -											if (TileID.Sets.Platforms[(int)Main.tile[num242, num243].type])
-+											if (TileLoader.Slope(num233, num234, Main.tile[num233, num234].type))
++											if (TileLoader.Slope(num242, num243, Main.tile[num242, num243].type))
 +											{
 +											}
 +											else if (TileID.Sets.Platforms[(int)Main.tile[num242, num243].type])

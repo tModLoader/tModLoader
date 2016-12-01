@@ -992,7 +992,7 @@
  			{
  				result = 0;
  			}
-+			TileLoader.NumDust(i, j, tile.type, fail, ref result); // TODO, fix
++			TileLoader.NumDust(i, j, tileCache.type, fail, ref result); // TODO, fix
  			return result;
  		}
  
@@ -1027,7 +1027,7 @@
  			flag = true;
  			IL_2514:
 -			if (num < 0)
-+			if (!TileLoader.CreateDust(i, j, tile.type, ref num15) || num < 0) // TODO, fix
++			if (!TileLoader.CreateDust(i, j, tileCache.type, ref num) || num < 0) // TODO, fix
  			{
  				return 6000;
  			}

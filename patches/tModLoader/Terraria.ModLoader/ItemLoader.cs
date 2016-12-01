@@ -785,30 +785,30 @@ namespace Terraria.ModLoader
 			}
 		}
 		//in Terraria.Main.DrawPlayers after armor combinations setting flags call
-		//  ItemLoader.ArmorSetShadows(player, ref flag, ref flag2, ref flag3, ref flag4);
-		public static void ArmorSetShadows(Player player, ref bool longTrail, ref bool smallPulse, ref bool largePulse, ref bool shortTrail)
+		//  ItemLoader.ArmorSetShadows(player);
+		public static void ArmorSetShadows(Player player)
 		{
 			EquipTexture headTexture = EquipLoader.GetEquipTexture(EquipType.Head, player.head);
 			EquipTexture bodyTexture = EquipLoader.GetEquipTexture(EquipType.Body, player.body);
 			EquipTexture legTexture = EquipLoader.GetEquipTexture(EquipType.Legs, player.legs);
 			if (headTexture != null && headTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				headTexture.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				headTexture.ArmorSetShadows(player);
 			}
 			if (bodyTexture != null && bodyTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				bodyTexture.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				bodyTexture.ArmorSetShadows(player);
 			}
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 			{
-				legTexture.ArmorSetShadows(player, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+				legTexture.ArmorSetShadows(player);
 			}
 			foreach (GlobalItem globalItem in HookArmorSetShadows)
 			{
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 				{
-					globalItem.ArmorSetShadows(player, set, ref longTrail, ref smallPulse, ref largePulse, ref shortTrail);
+					globalItem.ArmorSetShadows(player, set);
 				}
 			}
 		}
