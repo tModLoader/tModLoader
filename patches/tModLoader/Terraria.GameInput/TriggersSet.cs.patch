@@ -11,12 +11,12 @@
  			}
  		}
  
-@@ -749,6 +_,7 @@
+@@ -713,6 +_,7 @@
  			{
  				this.HotbarScrollCD--;
  			}
 +			ModLoader.ModHooks.HotKeyPressed();
  		}
- 	}
- }
+ 
+ 		public void CopyIntoDuringChat(Player p)
 

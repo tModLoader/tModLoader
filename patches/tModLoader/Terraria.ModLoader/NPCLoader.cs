@@ -958,7 +958,7 @@ namespace Terraria.ModLoader
 		{
 			foreach (ModNPC npc in npcs)
 			{
-				if (npc.npc.townNPC && NPC.TypeToNum(npc.npc.type) >= 0 && !NPC.AnyNPCs(npc.npc.type) &&
+				if (npc.npc.townNPC && NPC.TypeToHeadIndex(npc.npc.type) >= 0 && !NPC.AnyNPCs(npc.npc.type) &&
 					npc.CanTownNPCSpawn(numTownNPCs, money))
 				{
 					Main.nextNPC[npc.npc.type] = true;

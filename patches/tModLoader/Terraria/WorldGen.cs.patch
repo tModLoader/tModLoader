@@ -899,6 +899,15 @@
  						{
  							Main.PlaySound(SoundID.Item27, i * 16, j * 16);
  						}
+@@ -35262,7 +_,7 @@
+ 							return;
+ 						}
+ 					}
+-					int num13 = WorldGen.KillTile_GetTileDustAmount(fail, tile);
++					int num13 = WorldGen.KillTile_GetTileDustAmount(fail, tile, i, j);
+ 					for (int num14 = 0; num14 < num13; num14++)
+ 					{
+ 						WorldGen.KillTile_MakeTileDust(i, j, tile);
 @@ -35288,7 +_,7 @@
  						WorldGen.SquareTileFrame(i, j, true);
  						return;
@@ -950,6 +959,14 @@
  									if (type4 <= 70)
  									{
  										if (type4 != 23)
+@@ -35859,6 +_,7 @@
+ 									{
+ 										num23 = 621;
+ 									}
++									TileLoader.DropTreeWood(type4, ref num23);
+ 								}
+ 								int num32 = (int)Player.FindClosest(new Vector2((float)(num30 * 16), (float)(num31 * 16)), 16, 16);
+ 								int axe = Main.player[num32].inventory[Main.player[num32].selectedItem].axe;
 @@ -35883,6 +_,7 @@
  							if (Main.tile[i, num33].active())
  							{
@@ -958,17 +975,14 @@
  								if (type4 != 112)
  								{
  									if (type4 != 116)
-@@ -36319,7 +_,9 @@
- 										Main.npc[num36].velocity.Y = (float)WorldGen.genRand.Next(-200, 201) * 0.002f;
- 										Main.npc[num36].netUpdate = true;
- 									}
--								}
-+									TileLoader.DropTreeWood(type, ref num49);
-+								}
-+								TileLoader.DropPalmTreeWood(type, ref num49);
+@@ -35901,6 +_,7 @@
+ 								{
+ 									num23 = 619;
+ 								}
++								TileLoader.DropPalmTreeWood(type4, ref num23);
  							}
  						}
- 						else if (tile.type == 221)
+ 						else if (tile.type == 408)
 @@ -37199,7 +_,8 @@
  						{
  							num23 = 2504;
@@ -988,11 +1002,20 @@
  						{
  							Item.NewItem(i * 16, j * 16, 16, 16, num24, 1, false, -1, false, false);
  						}
+@@ -37243,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache)
++		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache, int i, int j)
+ 		{
+ 			int result = 10;
+ 			if (tileCache.type == 231)
 @@ -37298,6 +_,7 @@
  			{
  				result = 0;
  			}
-+			TileLoader.NumDust(i, j, tileCache.type, fail, ref result); // TODO, fix
++			TileLoader.NumDust(i, j, tileCache.type, fail, ref result);
  			return result;
  		}
  

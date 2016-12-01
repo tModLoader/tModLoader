@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.Default;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -402,13 +403,13 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool PreHurt(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
-			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText)
+			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
 		{
 			bool flag = true;
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
-						ref playSound, ref genGore, ref deathText))
+						ref playSound, ref genGore, ref damageSource))
 				{
 					flag = false;
 				}
@@ -433,12 +434,12 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool PreKill(Player player, double damage, int hitDirection, bool pvp, ref bool playSound,
-			ref bool genGore, ref string deathText)
+			ref bool genGore, ref PlayerDeathReason damageSource)
 		{
 			bool flag = true;
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				if (!modPlayer.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref deathText))
+				if (!modPlayer.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource))
 				{
 					flag = false;
 				}
@@ -446,11 +447,11 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		public static void Kill(Player player, double damage, int hitDirection, bool pvp, string deathText)
+		public static void Kill(Player player, double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
-				modPlayer.Kill(damage, hitDirection, pvp, deathText);
+				modPlayer.Kill(damage, hitDirection, pvp, damageSource);
 			}
 		}
 

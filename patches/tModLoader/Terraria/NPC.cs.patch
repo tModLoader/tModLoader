@@ -182,14 +182,6 @@
  			{
  				this.buffImmune[l] = false;
  			}
-@@ -3376,6 +_,7 @@
- 			this.dryadBane = false;
- 			this.betsysCurse = false;
- 			this.oiled = false;
-+			NPCLoader.ResetEffects(this);
- 			for (int m = 0; m < NPC.maxAI; m++)
- 			{
- 				this.ai[m] = 0f;
 @@ -12345,9 +_,11 @@
  				this.scale = 1f;
  				this.rarity = 1;
@@ -239,14 +231,6 @@
  		{
  			if (this.aiStyle == 0)
  			{
-@@ -13915,6 +_,7 @@
- 							return;
- 						}
- 					}
-+					NPCLoader.BuffTownNPC(ref num379, ref this.defense);
- 				}
- 				else
- 				{
 @@ -39070,6 +_,7 @@
  		private void AI_007_TownEntities()
  		{
@@ -254,6 +238,14 @@
 +			//patch file: flag
  			bool flag = Main.raining;
  			if (!Main.dayTime)
+ 			{
+@@ -39149,6 +_,7 @@
+ 					num += 0.15f;
+ 					this.defense += 8;
+ 				}
++				NPCLoader.BuffTownNPC(ref num, ref this.defense);
+ 			}
+ 			if (this.type == 142 && Main.netMode != 1 && !Main.xMas)
  			{
 @@ -39228,7 +_,7 @@
  			{
@@ -390,6 +382,15 @@
  								{
  									bool flag25 = WorldGen.OpenDoor(num177, num178 - 1, this.direction);
  									if (!flag25)
+@@ -46012,7 +_,7 @@
+ 								bool flag3 = tileSafely.active() && Main.tileSolid[(int)tileSafely.type] && !Main.tileFrameImportant[(int)tileSafely.type];
+ 								if (flag2 && flag3)
+ 								{
+-									int num38 = WorldGen.KillTile_GetTileDustAmount(true, tileSafely);
++									int num38 = WorldGen.KillTile_GetTileDustAmount(true, tileSafely, i, j);
+ 									for (int k = 0; k < num38; k++)
+ 									{
+ 										Dust dust = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
 @@ -47838,6 +_,7 @@
  							}
  							else
@@ -729,6 +730,14 @@
  					{
  						this.buffTime[i] = time;
  					}
+@@ -77651,6 +_,7 @@
+ 					}
+ 				}
+ 				this.UpdateNPC_BuffFlagsReset();
++				NPCLoader.ResetEffects(this);
+ 				this.UpdateNPC_BuffSetFlags();
+ 				this.UpdateNPC_SoulDrainDebuff();
+ 				this.UpdateNPC_BuffClearExpiredBuffs();
 @@ -78327,6 +_,7 @@
  						num = 5;
  					}
@@ -750,7 +759,7 @@
  						float num3 = 1f;
  						NPC.GetMeleeCollisionData(hitbox, i, ref num, ref num3, ref hitbox2);
 -						if (hitbox.Intersects(hitbox2) && (this.type != 453 || !NPCID.Sets.Skeletons.Contains(nPC.netID)))
-+						bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[num39], this);
++						bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[i], this);
 +						if (modCanHit.HasValue && !modCanHit.Value)
 +						{
 +							continue;
