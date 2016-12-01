@@ -1894,6 +1894,15 @@
  						return;
  					}
  					if (this.shieldRaised)
+@@ -27657,6 +_,8 @@
+ 			{
+ 				this.armorEffectDrawOutlines = true;
+ 			}
++			ItemLoader.ArmorSetShadows(player, ref flag, ref flag2, ref flag3, ref flag4);
++			// TODO, rename to this? SetArmorEffectVisuals
+ 			if (drawPlayer.stoned || drawPlayer.stealth != 1f)
+ 			{
+ 				this.armorEffectDrawOutlines = false;
 @@ -27843,6 +_,7 @@
  					num = 135;
  				}
