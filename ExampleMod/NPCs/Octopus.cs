@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using ExampleMod.Projectiles;
+using Terraria.ID;
 
 namespace ExampleMod.NPCs
 {
@@ -31,8 +32,8 @@ namespace ExampleMod.NPCs
 			npc.height = 44;
 			npc.aiStyle = -1;
 			npc.noGravity = true;
-			npc.soundHit = 1;
-			npc.soundKilled = 1;
+			npc.HitSound = SoundID.NPCHit1;
+			npc.DeathSound = SoundID.NPCDeath1;
 			npc.value = Item.buyPrice(0, 0, 15, 0);
 			banner = npc.type;
 			bannerItem = mod.ItemType("OctopusBanner");

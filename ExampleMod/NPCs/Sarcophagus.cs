@@ -27,8 +27,8 @@ namespace ExampleMod.NPCs
 			npc.height = 56;
 			npc.aiStyle = -1;
 			npc.noGravity = true;
-			npc.soundHit = 1;
-			npc.soundKilled = 6;
+			npc.HitSound = SoundID.NPCHit1;
+			npc.DeathSound = SoundID.NPCDeath6;
 			npc.value = Item.buyPrice(0, 0, 15, 0);
 			npc.buffImmune[BuffID.Poisoned] = true;
 			npc.buffImmune[BuffID.Venom] = true;
@@ -85,7 +85,7 @@ namespace ExampleMod.NPCs
 							target.AddBuff(BuffID.Cursed, 240, true);
 							target.AddBuff(BuffID.Slow, 240, true);
 							target.AddBuff(BuffID.Darkness, 240, true);
-							if (target.HasBuff(BuffID.Cursed) >= 0 || target.HasBuff(BuffID.Slow) >= 0 || target.HasBuff(BuffID.Darkness) >= 0)
+							if (target.FindBuffIndex(BuffID.Cursed) >= 0 || target.FindBuffIndex(BuffID.Slow) >= 0 || target.FindBuffIndex(BuffID.Darkness) >= 0)
 							{
                                 target.GetModPlayer<ExamplePlayer>(mod).lockTime = 60;
 							}

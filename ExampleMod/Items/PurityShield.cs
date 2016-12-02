@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items
@@ -16,7 +17,7 @@ namespace ExampleMod.Items
 			item.useStyle = 1;
 			item.value = Item.sellPrice(2, 0, 0, 0);
 			item.rare = 11;
-			item.useSound = 79;
+			item.UseSound = SoundID.Item79;
 			item.noMelee = true;
 		}
 	}

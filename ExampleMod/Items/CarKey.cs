@@ -1,3 +1,4 @@
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items
@@ -15,7 +16,7 @@ namespace ExampleMod.Items
 			item.useStyle = 1;
 			item.value = 30000;
 			item.rare = 2;
-			item.useSound = 79;
+			item.UseSound = SoundID.Item79;
 			item.noMelee = true;
 			item.mountType = mod.MountType("Car");
 		}

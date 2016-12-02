@@ -39,9 +39,9 @@ namespace ExampleMod.NPCs
 					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BossItem"));
 				}
 			}
-			if (((npc.type == NPCID.Pumpking && Main.pumpkinMoon) || (npc.type == NPCID.IceQueen && Main.snowMoon)) && NPC.waveCount > 10)
+			if (((npc.type == NPCID.Pumpking && Main.pumpkinMoon) || (npc.type == NPCID.IceQueen && Main.snowMoon)) && NPC.waveNumber > 10)
 			{
-				int chance = NPC.waveCount - 10;
+				int chance = NPC.waveNumber - 10;
 				if (Main.expertMode)
 				{
 					chance++;
@@ -49,7 +49,7 @@ namespace ExampleMod.NPCs
 				if (Main.rand.Next(5) < chance)
 				{
 					int stack = 1;
-					if (NPC.waveCount >= 15)
+					if (NPC.waveNumber >= 15)
 					{
 						stack = Main.rand.Next(4, 7);
 						if (Main.expertMode)

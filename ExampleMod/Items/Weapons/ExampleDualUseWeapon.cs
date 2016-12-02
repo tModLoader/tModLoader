@@ -21,7 +21,7 @@ namespace ExampleMod.Items.Weapons
 			item.knockBack = 6;
 			item.value = 10000;
 			item.rare = 2;
-			item.useSound = 1;
+			item.UseSound = SoundID.Item1;
 			item.autoReuse = true;
 			item.shoot = ProjectileID.Bee;
 			item.shootSpeed = 5f;

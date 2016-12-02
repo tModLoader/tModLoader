@@ -14,7 +14,7 @@ namespace ExampleMod.Items
 			item.shoot = mod.ProjectileType("ExampleLightPet");
 			item.width = 16;
 			item.height = 30;
-			item.useSound = 2;
+			item.UseSound = SoundID.Item2;
 			item.useAnimation = 20;
 			item.useTime = 20;
 			item.rare = 8;

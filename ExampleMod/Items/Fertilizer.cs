@@ -17,7 +17,7 @@ namespace ExampleMod.Items
 			item.useAnimation = 15;
 			item.useTime = 10;
 			item.useStyle = 1;
-			item.useSound = 81;
+			item.UseSound = SoundID.Item81;
 			item.consumable = true;
 		}
 

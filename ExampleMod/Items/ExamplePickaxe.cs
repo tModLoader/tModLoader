@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items
@@ -21,7 +22,7 @@ namespace ExampleMod.Items
 			item.knockBack = 6;
 			item.value = 10000;
 			item.rare = 2;
-			item.useSound = 1;
+			item.UseSound = SoundID.Item1;
 			item.autoReuse = true;
 		}
 

@@ -490,10 +490,11 @@ namespace ExampleMod
 					return false;
 				}
 			}
-			if (healHurt > 0 && damage == 10.0 && hitDirection == 0 && deathText == " " + Lang.dt[1])
+			// TODO, make this possible again.
+			/*if (healHurt > 0 && damage == 10.0 && hitDirection == 0 && deathText == " " + Lang.dt[1])
 			{
 				deathText = " was dissolved by holy powers";
-			}
+			}*/
 			return true;
 		}
 

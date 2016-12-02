@@ -15,8 +15,8 @@ namespace ExampleMod.NPCs
 			npc.damage = 14;
 			npc.defense = 6;
 			npc.lifeMax = 200;
-			npc.soundHit = 1;
-			npc.soundKilled = 2;
+			npc.HitSound = SoundID.NPCHit1;
+			npc.DeathSound = SoundID.NPCDeath2;
 			npc.value = 60f;
 			npc.knockBackResist = 0.5f;
 			npc.aiStyle = 3;

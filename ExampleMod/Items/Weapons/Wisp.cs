@@ -20,7 +20,7 @@ namespace ExampleMod.Items.Weapons
 			item.value = Item.sellPrice(0, 0, 1, 0);
 			item.rare = 8;
 			item.shoot = mod.ProjectileType("Wisp");
-			item.ammo = mod.ProjectileType("Wisp");
+			item.ammo = item.type;
 		}
 
 		public override void AddRecipes()

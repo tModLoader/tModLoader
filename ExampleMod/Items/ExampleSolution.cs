@@ -10,7 +10,7 @@ namespace ExampleMod.Items
 		{
 			item.name = "Monochromatic Solution";
 			item.shoot = mod.ProjectileType("ExampleSolution") - ProjectileID.PureSpray;
-			item.ammo = ItemID.GreenSolution;
+			item.ammo = AmmoID.Solution;
 			item.width = 10;
 			item.height = 12;
 			item.value = Item.buyPrice(0, 0, 25, 0);

@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Weapons
@@ -22,7 +23,7 @@ namespace ExampleMod.Items.Weapons
 			item.knockBack = 3;
 			item.value = Item.buyPrice(0, 30, 0, 0);
 			item.rare = 9;
-			item.useSound = 44;
+			item.UseSound = SoundID.Item44;
 			item.shoot = mod.ProjectileType("PurityWisp");
 			item.shootSpeed = 10f;
 			item.buffType = mod.BuffType("PurityWisp");

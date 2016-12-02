@@ -23,11 +23,11 @@ namespace ExampleMod.Items.Weapons
 			item.knockBack = 4f;
 			item.value = Item.sellPrice(0, 10, 0, 0);
 			item.rare = 8;
-			item.useSound = mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo");
+			//item.UseSound = mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo");
 			item.autoReuse = true;
 			item.shoot = mod.ProjectileType("Wisp");
 			item.shootSpeed = 6f;
-			item.useAmmo = mod.ProjectileType("Wisp");
+			item.useAmmo = mod.ItemType("Wisp");
 		}
 
 		public override void AddRecipes()
