@@ -85,7 +85,7 @@ namespace Terraria.ModLoader.UI
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10, -1, -1, 1);
-			ModLoader.modBrowserPassphrase = passcodeTextField.currentString;
+			ModLoader.modBrowserPassphrase = passcodeTextField.currentString.Trim();
 			Main.SaveSettings();
 			Main.menuMode = this.gotoMenu;
 		}

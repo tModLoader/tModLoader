@@ -30,4 +30,13 @@
  #endif
  		}
  		#if !WINDOWS
+@@ -122,7 +_,7 @@
+ 		{
+ 			IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, imgWidth, imgHeight, 32, 255u, 65280u, 16711680u, 4278190080u);
+ 			SDL.SDL_LockSurface(intPtr);
+-			PlatformUtilties.SDL_Surface* ptr = (PlatformUtilties.SDL_Surface*)((void*)intPtr);
++			PlatformUtilities.SDL_Surface* ptr = (PlatformUtilities.SDL_Surface*)((void*)intPtr);
+ 			Marshal.Copy(data, 0, ptr->pixels, width * height * 4);
+ 			SDL.SDL_UnlockSurface(intPtr);
+ 			data = null;
 

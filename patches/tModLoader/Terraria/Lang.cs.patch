@@ -71,7 +71,7 @@
  			}
  		}
  
-+		// TODO Hook into deathMsg? 
++		// TODO Hook into deathMsg?
  		public static string deathMsg(int plr = -1, int npc = -1, int proj = -1, int other = -1, int projType = 0, int plrItemType = 0)
  		{
  			string text = "";

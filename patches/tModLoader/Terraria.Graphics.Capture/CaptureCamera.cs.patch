@@ -1,0 +1,21 @@
+--- src/Terraria\Terraria.Graphics.Capture\CaptureCamera.cs
++++ src/tModLoader\Terraria.Graphics.Capture\CaptureCamera.cs
+@@ -237,7 +_,7 @@
+ #else
+ 				using (FileStream fileStream = File.Create(filename))
+ 				{
+-					PlatformUtilties.SavePng(fileStream, width, height, width, height, this._outputData);
++					PlatformUtilities.SavePng(fileStream, width, height, width, height, this._outputData);
+ 				}
+ #endif
+ 				result = true;
+@@ -310,7 +_,7 @@
+ 			}
+ 			using (FileStream fileStream = File.Create(filename2))
+ 			{
+-				PlatformUtilties.SavePng(fileStream, width, height, width, height, this._outputData);
++				PlatformUtilities.SavePng(fileStream, width, height, width, height, this._outputData);
+ 			}
+ #endif
+ 		}
+

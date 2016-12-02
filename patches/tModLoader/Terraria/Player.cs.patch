@@ -2690,7 +2690,7 @@
 +		}
 +
 +		public void UpdateEquips(int i) //Noise for the Diff
-+		{ 
++		{
 +			for (int j = 0; j < 58; j++)
 +			{
 +				VanillaUpdateInventory(this.inventory[j]);
