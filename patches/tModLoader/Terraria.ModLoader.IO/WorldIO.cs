@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Terraria;
+using System.Security.Cryptography;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
@@ -12,62 +12,227 @@ namespace Terraria.ModLoader.IO
 {
 	internal static class WorldIO
 	{
-        public static CustomModDataException customDataFail = null;
+		public static CustomModDataException customDataFail;
 
-		private const byte numByteFlags = 1;
 		//add near end of Terraria.IO.WorldFile.saveWorld before releasing locks
-		internal static void WriteModFile(string path, bool isCloudSave)
+		internal static void Save(string path, bool isCloudSave)
 		{
 			path = Path.ChangeExtension(path, ".twld");
 			if (FileUtilities.Exists(path, isCloudSave))
-			{
-				FileUtilities.Copy(path, path + ".bak", isCloudSave, true);
-			}
-			byte[] flags;
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter writer = new BinaryWriter(stream))
-				{
-					flags = WriteModWorld(writer);
-					writer.Flush();
-					data = stream.ToArray();
-				}
-			}
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter writer = new BinaryWriter(stream))
-				{
-					byte limit;
-					for (limit = (byte)flags.Length; limit > 0; limit--)
-					{
-						if (flags[limit - 1] != 0)
-						{
-							break;
-						}
-					}
-					writer.Write(limit);
-					if (limit > 0)
-					{
-						writer.Write(flags, 0, limit);
-						writer.Write(data);
-					}
-					writer.Flush();
-					data = stream.ToArray();
-				}
-			}
+				FileUtilities.Copy(path, path + ".bak", isCloudSave);
+
+			var tag = new TagCompound {
+				["chests"] = SaveChests(),
+				["tiles"] =  TileIO.SaveTiles(),
+				["containers"] = TileIO.SaveContainers(),
+				["killCounts"] = SaveNPCKillCounts(),
+				["anglerQuest"] = SaveAnglerQuest(),
+				["modData"] = SaveModData()
+			};
+
+			var stream = new MemoryStream();
+			TagIO.ToStream(tag, stream);
+			var data = stream.ToArray();
 			FileUtilities.Write(path, data, data.Length, isCloudSave);
 		}
 		//add near end of Terraria.IO.WorldFile.loadWorld before setting failure and success
-		internal static void ReadModFile(string path, bool isCloudSave)
+		internal static void Load(string path, bool isCloudSave)
 		{
-            customDataFail = null;
+			customDataFail = null;
 			path = Path.ChangeExtension(path, ".twld");
 			if (!FileUtilities.Exists(path, isCloudSave))
+				return;
+			
+			var buf = FileUtilities.ReadAllBytes(path, isCloudSave);
+			if (buf[0] != 0x1F || buf[1] != 0x8B)
 			{
+				LoadLegacy(buf);
 				return;
 			}
-			byte[] buffer = FileUtilities.ReadAllBytes(path, isCloudSave);
+
+			var tag = TagIO.FromStream(new MemoryStream(buf));
+			LoadChests(tag.GetList<TagCompound>("chests"));
+			TileIO.LoadTiles(tag.GetCompound("tiles"));
+			TileIO.LoadContainers(tag.GetCompound("containers"));
+			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
+			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
+			try
+			{
+				LoadModData(tag.GetList<TagCompound>("modData"));
+			}
+			catch (CustomModDataException e)
+			{
+				customDataFail = e;
+				throw;
+			}
+		}
+
+		internal static List<TagCompound> SaveChests()
+		{
+			var list = new List<TagCompound>();
+			for (int k = 0; k < 1000; k++)
+			{
+				var chest = Main.chest[k];
+				if (chest == null)
+					continue;
+
+				var itemTagList = PlayerIO.SaveInventory(chest.item);
+				if (itemTagList == null) //doesn't need mod saving
+					continue;
+
+				list.Add(new TagCompound {
+					["items"] = itemTagList,
+					["x"] = chest.x,
+					["y"] = chest.y
+				});
+			}
+			return list;
+		}
+
+		internal static void LoadChests(IList<TagCompound> list)
+		{
+			foreach (var tag in list)
+			{
+				int x = tag.GetInt("x");
+				int y = tag.GetInt("y");
+				int chest = Chest.FindChest(x, y);
+				if (chest < 0)
+					chest = Chest.CreateChest(x, y);
+				if (chest >= 0)
+					PlayerIO.LoadInventory(Main.chest[chest].item, tag.GetList<TagCompound>("items"));
+			}
+		}
+
+		internal static List<TagCompound> SaveNPCKillCounts()
+		{
+			var list = new List<TagCompound>();
+			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++)
+			{
+				if (NPC.killCount[type] <= 0)
+					continue;
+
+				list.Add(new TagCompound {
+					["mod"] = NPCLoader.GetNPC(type).mod.Name,
+					["name"] = Main.npcName[type],
+					["count"] = NPC.killCount[type]
+				});
+			}
+			return list;
+		}
+
+		internal static void LoadNPCKillCounts(IList<TagCompound> list)
+		{
+			foreach (var tag in list)
+			{
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
+				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
+				if (type > 0)
+					NPC.killCount[type] = tag.GetInt("count");
+			}
+		}
+
+		internal static TagCompound SaveAnglerQuest()
+		{
+			if (Main.anglerQuest < ItemLoader.vanillaQuestFishCount)
+				return null;
+
+			int type = Main.anglerQuestItemNetIDs[Main.anglerQuest];
+			var modItem = ItemLoader.GetItem(type);
+
+			return new TagCompound {
+				["mod"] = modItem.mod.Name,
+				["itemName"] = Main.itemName[type]
+			};
+		}
+
+		internal static void LoadAnglerQuest(TagCompound tag)
+		{
+			var mod = ModLoader.GetMod(tag.GetString("mod"));
+			int type = mod?.ItemType(tag.GetString("itemName")) ?? 0;
+			if (type > 0)
+			{
+				for (int k = 0; k < Main.anglerQuestItemNetIDs.Length; k++)
+				{
+					if (Main.anglerQuestItemNetIDs[k] == type)
+					{
+						Main.anglerQuest = k;
+						return;
+					}
+				}
+			}
+			Main.AnglerQuestSwap();
+		}
+
+		internal static List<TagCompound> SaveModData()
+		{
+			var list = new List<TagCompound>();
+			foreach (var modWorld in WorldHooks.worlds)
+			{
+				var data = modWorld.Save();
+				if (data == null)
+					continue;
+
+				list.Add(new TagCompound {
+					["mod"] = modWorld.mod.Name,
+					["name"] = modWorld.Name,
+					["data"] = data
+				});
+			}
+			return list;
+		}
+
+		internal static void LoadModData(IList<TagCompound> list)
+		{
+			foreach (var tag in list)
+			{
+				var mod = ModLoader.GetMod(tag.GetString("mod"));
+				var modWorld = mod?.GetModWorld(tag.GetString("name"));
+				if (modWorld != null)
+				{
+					try
+					{
+						if (tag.HasTag("legacyData"))
+							modWorld.LoadLegacy(new BinaryReader(new MemoryStream(tag.GetByteArray("legacyData"))));
+						else
+							modWorld.Load(tag.GetCompound("data"));
+					}
+					catch (Exception e)
+					{
+						throw new CustomModDataException(mod,
+							"Error in reading custom world data for " + mod.Name, e);
+					}
+				}
+				else
+				{
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).data.Add(tag);
+				}
+			}
+		}
+
+		public static void SendModData(BinaryWriter writer)
+		{
+			foreach (var modWorld in WorldHooks.NetWorlds)
+				writer.SafeWrite(w => modWorld.NetSend(w));
+		}
+
+		public static void ReceiveModData(BinaryReader reader)
+		{
+			foreach (var modWorld in WorldHooks.NetWorlds)
+			{
+				try
+				{
+					reader.SafeRead(r => modWorld.NetReceive(r));
+				}
+				catch (IOException)
+				{
+					//TODO inform modder/user
+				}
+			}
+		}
+
+		private static void LoadLegacy(byte[] buffer)
+		{
+			const int numByteFlags = 1;
 			using (MemoryStream stream = new MemoryStream(buffer))
 			{
 				using (BinaryReader reader = new BinaryReader(stream))
@@ -82,50 +247,20 @@ namespace Terraria.ModLoader.IO
 					{
 						Array.Resize(ref flags, numByteFlags);
 					}
-                    try
-                    {
-                        ReadModWorld(flags, reader);
-                    }
-                    catch (CustomModDataException e)
-                    {
-                        customDataFail = e;
-                        throw;
-                    }
+					try
+					{
+						LoadLegacyModWorld(flags, reader);
+					}
+					catch (CustomModDataException e)
+					{
+						customDataFail = e;
+						throw;
+					}
 				}
 			}
 		}
 
-		internal static byte[] WriteModWorld(BinaryWriter writer)
-		{
-			byte[] flags = new byte[numByteFlags];
-			if (WriteChests(writer))
-			{
-				flags[0] |= 1;
-			}
-			if (TileIO.WriteTiles(writer))
-			{
-				flags[0] |= 2;
-			}
-			if (WriteNPCKillCounts(writer))
-			{
-				flags[0] |= 4;
-			}
-			if (TileIO.WriteContainers(writer))
-			{
-				flags[0] |= 8;
-			}
-			if (WriteAnglerQuest(writer))
-			{
-				flags[0] |= 16;
-			}
-			if (WriteCustomData(writer))
-			{
-				flags[0] |= 32;
-			}
-			return flags;
-		}
-
-		internal static void ReadModWorld(byte[] flags, BinaryReader reader)
+		private static void LoadLegacyModWorld(byte[] flags, BinaryReader reader)
 		{
 			if (flags.Length == 0)
 			{
@@ -133,15 +268,15 @@ namespace Terraria.ModLoader.IO
 			}
 			if ((flags[0] & 1) == 1)
 			{
-				ReadChests(reader);
+				LoadLegacyChests(reader);
 			}
 			if ((flags[0] & 2) == 2)
 			{
-				TileIO.ReadTiles(reader);
+				TileIO.LoadLegacyTiles(reader);
 			}
 			if ((flags[0] & 4) == 4)
 			{
-				ReadNPCKillCounts(reader);
+				LoadLegacyNPCKillCounts(reader);
 			}
 			if ((flags[0] & 8) == 8)
 			{
@@ -149,78 +284,24 @@ namespace Terraria.ModLoader.IO
 			}
 			if ((flags[0] & 16) == 16)
 			{
-				ReadAnglerQuest(reader);
+				LoadLegacyAnglerQuest(reader);
 			}
 			if ((flags[0] & 32) == 32)
 			{
-				ReadCustomData(reader);
+				LoadLegacyModData(reader);
 			}
 		}
 
-		internal static bool WriteChests(BinaryWriter writer)
-		{
-			short count = 0;
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter chestWriter = new BinaryWriter(stream))
-				{
-					for (int k = 0; k < 1000; k++)
-					{
-						Chest chest = Main.chest[k];
-						if (chest != null)
-						{
-							if (WriteChest(chest, chestWriter))
-							{
-								count++;
-							}
-						}
-					}
-					chestWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			if (count > 0)
-			{
-				writer.Write(count);
-				writer.Write(data);
-				return true;
-			}
-			return false;
-		}
-
-		internal static void ReadChests(BinaryReader reader)
+		private static void LoadLegacyChests(BinaryReader reader)
 		{
 			short count = reader.ReadInt16();
 			for (int k = 0; k < count; k++)
 			{
-				ReadChest(reader);
+				LoadLegacyChest(reader);
 			}
 		}
 
-		internal static bool WriteChest(Chest chest, BinaryWriter writer)
-		{
-			bool flag;
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter invWriter = new BinaryWriter(stream))
-				{
-					flag = PlayerIO.WriteInventory(chest.item, invWriter, true);
-					invWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			if (flag)
-			{
-				writer.Write(chest.x);
-				writer.Write(chest.y);
-				writer.Write(data);
-			}
-			return flag;
-		}
-
-		internal static void ReadChest(BinaryReader reader)
+		private static void LoadLegacyChest(BinaryReader reader)
 		{
 			int x = reader.ReadInt32();
 			int y = reader.ReadInt32();
@@ -231,46 +312,15 @@ namespace Terraria.ModLoader.IO
 			}
 			if (chest >= 0)
 			{
-				PlayerIO.ReadInventory(Main.chest[chest].item, reader, true);
+				ItemIO.LoadLegacyInventory(Main.chest[chest].item, reader, true);
 			}
 			else
 			{
-				PlayerIO.ReadInventory(new Item[40], reader, true);
+				ItemIO.LoadLegacyInventory(new Item[40], reader, true);
 			}
 		}
 
-		internal static bool WriteNPCKillCounts(BinaryWriter writer)
-		{
-			byte[] data;
-			ushort numCounts = 0;
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter countWriter = new BinaryWriter(stream))
-				{
-					for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++)
-					{
-						if (NPC.killCount[type] > 0)
-						{
-							countWriter.Write(NPCLoader.GetNPC(type).mod.Name);
-							countWriter.Write(Main.npcName[type]);
-							countWriter.Write(NPC.killCount[type]);
-							numCounts++;
-						}
-					}
-					countWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			if (numCounts > 0)
-			{
-				writer.Write(numCounts);
-				writer.Write(data);
-				return true;
-			}
-			return false;
-		}
-
-		internal static void ReadNPCKillCounts(BinaryReader reader)
+		private static void LoadLegacyNPCKillCounts(BinaryReader reader)
 		{
 			ushort numCounts = reader.ReadUInt16();
 			for (ushort k = 0; k < numCounts; k++)
@@ -287,20 +337,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static bool WriteAnglerQuest(BinaryWriter writer)
-		{
-			if (Main.anglerQuest >= ItemLoader.vanillaQuestFishCount)
-			{
-				int type = Main.anglerQuestItemNetIDs[Main.anglerQuest];
-				ModItem modItem = ItemLoader.GetItem(type);
-				writer.Write(modItem.mod.Name);
-				writer.Write(Main.itemName[type]);
-				return true;
-			}
-			return false;
-		}
-
-		internal static void ReadAnglerQuest(BinaryReader reader)
+		private static void LoadLegacyAnglerQuest(BinaryReader reader)
 		{
 			string modName = reader.ReadString();
 			string name = reader.ReadString();
@@ -329,58 +366,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static bool WriteCustomData(BinaryWriter writer)
-		{
-			ushort count = 0;
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter customWriter = new BinaryWriter(stream))
-				{
-					foreach (var modWorld in WorldHooks.worlds)
-					{
-						if (WriteCustomData(modWorld, customWriter))
-						{
-							count++;
-						}
-					}
-					customWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			if (count > 0)
-			{
-				writer.Write(count);
-				writer.Write(data);
-				return true;
-			}
-			return false;
-		}
-
-		internal static bool WriteCustomData(ModWorld modWorld, BinaryWriter writer)
-		{
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter customWriter = new BinaryWriter(stream))
-				{
-					modWorld.SaveCustomData(customWriter);
-					customWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			if (data.Length > 0)
-			{
-				writer.Write(modWorld.mod.Name);
-				writer.Write(modWorld.Name);
-				writer.Write((ushort)data.Length);
-				writer.Write(data);
-				return true;
-			}
-			return false;
-		}
-
-		internal static void ReadCustomData(BinaryReader reader)
+		private static void LoadLegacyModData(BinaryReader reader)
 		{
 			int count = reader.ReadUInt16();
 			for (int k = 0; k < count; k++)
@@ -396,29 +382,30 @@ namespace Terraria.ModLoader.IO
 					{
 						using (BinaryReader customReader = new BinaryReader(stream))
 						{
-                            try
-                            {
-                                modWorld.LoadCustomData(customReader);
-                            }
-                            catch (Exception e)
-                            {
-                                throw new CustomModDataException(mod,
-                                    "Error in reading custom world data for " + mod.Name, e);
-                            }
+							try
+							{
+								modWorld.LoadLegacy(customReader);
+							}
+							catch (Exception e)
+							{
+								throw new CustomModDataException(mod,
+									"Error in reading custom world data for " + mod.Name, e);
+							}
 						}
-					}
-					if (modName == "ModLoader" && name == "MysteryWorld")
-					{
-						((MysteryWorld)modWorld).RestoreData();
 					}
 				}
 				else
 				{
-					ModWorld mystery = ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld");
-					((MysteryWorld)mystery).AddData(modName, name, data);
+					var tag = new TagCompound {
+						["mod"] = modName,
+						["name"] = name,
+						["legacyData"] = data
+					};
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).data.Add(tag);
 				}
 			}
 		}
+
 		//add to end of Terraria.IO.WorldFileData.MoveToCloud
 		internal static void MoveToCloud(string localPath, string cloudPath)
 		{

@@ -8,6 +8,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.NPCs.PuritySpirit;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod
 {
@@ -58,13 +59,23 @@ namespace ExampleMod
 			badHeal = false;
 		}
 
-		public override void SaveCustomData(BinaryWriter writer)
+		public override TagCompound Save()
 		{
-			writer.Write(saveVersion);
-			writer.Write(score);
+			return new TagCompound {
+				{"score", score}
+			};
+			//note that C# 6.0 supports indexer initialisers
+			//return new TagCompound {
+			//	["score"] = score
+			//};
 		}
 
-		public override void LoadCustomData(BinaryReader reader)
+		public override void Load(TagCompound tag)
+		{
+			score = tag.GetInt("score");
+		}
+
+		public override void LoadLegacy(BinaryReader reader)
 		{
 			int loadVersion = reader.ReadInt32();
 			score = reader.ReadInt32();

@@ -24,7 +24,7 @@
  							writer.Write((sbyte)Main.invasionType);
 +							if (!ModNet.AllowVanillaClients)
 +							{
-+								WorldHooks.SendCustomData(writer);
++								WorldIO.SendModData(writer);
 +							}
  							if (SocialAPI.Network != null)
  							{
@@ -45,7 +45,7 @@
  								value = (short)item2.netID;
  							}
  							writer.Write(value);
-+							ItemIO.SaveCustomData(item2, writer);
++							ItemIO.SendModData(item2, writer);
  							break;
  						}
  					case 22:
@@ -86,7 +86,7 @@
  							writer.Write((short)item3.stack);
  							writer.Write(item3.prefix);
  							writer.Write(value3);
-+							ItemIO.SaveCustomData(item3, writer);
++							ItemIO.SendModData(item3, writer);
  							break;
  						}
  					case 33:

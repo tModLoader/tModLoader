@@ -8,10 +8,16 @@ namespace Terraria.ModLoader
 	public static class WorldHooks
 	{
 		internal static readonly IList<ModWorld> worlds = new List<ModWorld>();
+		internal static ModWorld[] NetWorlds;
 
 		internal static void Add(ModWorld modWorld)
 		{
 			worlds.Add(modWorld);
+		}
+
+		internal static void ResizeArrays()
+		{
+			NetWorlds = ModLoader.BuildGlobalHook<ModWorld, Action<BinaryWriter>>(worlds, w => w.NetSend);
 		}
 
 		internal static void Unload()
@@ -27,80 +33,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void SendCustomData(BinaryWriter writer)
+		internal static void WriteNetWorldOrder(BinaryWriter w)
 		{
-			ushort count = 0;
-			byte[] data;
-			using (MemoryStream stream = new MemoryStream())
+			w.Write((short)NetWorlds.Length);
+			foreach (var netWorld in NetWorlds)
 			{
-				using (BinaryWriter customWriter = new BinaryWriter(stream))
-				{
-					foreach (var modWorld in worlds)
-					{
-						if (SendCustomData(modWorld, customWriter))
-						{
-							count++;
-						}
-					}
-					customWriter.Flush();
-					data = stream.ToArray();
-				}
+				w.Write(netWorld.mod.netID);
+				w.Write(netWorld.Name);
 			}
-			writer.Write(count);
-			writer.Write(data);
 		}
 
-		private static bool SendCustomData(ModWorld modWorld, BinaryWriter writer)
+		internal static void ReadNetWorldOrder(BinaryReader r)
 		{
-			byte[] data;
-			modWorld.PreSaveCustomData();
-			using (MemoryStream stream = new MemoryStream())
-			{
-				using (BinaryWriter customWriter = new BinaryWriter(stream))
-				{
-					modWorld.SendCustomData(customWriter);
-					customWriter.Flush();
-					data = stream.ToArray();
-				}
-			}
-			if (data.Length > 0)
-			{
-				writer.Write(modWorld.mod.Name);
-				writer.Write(modWorld.Name);
-				writer.Write((ushort)data.Length);
-				writer.Write(data);
-				return true;
-			}
-			return false;
-		}
-
-		public static void ReceiveCustomData(BinaryReader reader)
-		{
-			int count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++)
-			{
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				byte[] data = reader.ReadBytes(reader.ReadUInt16());
-				Mod mod = ModLoader.GetMod(modName);
-				ModWorld modWorld = mod == null ? null : mod.GetModWorld(name);
-				if (modWorld != null)
-				{
-					using (MemoryStream stream = new MemoryStream(data))
-					{
-						using (BinaryReader customReader = new BinaryReader(stream))
-						{
-							try
-							{
-								modWorld.ReceiveCustomData(customReader);
-							}
-							catch
-							{
-							}
-						}
-					}
-				}
-			}
+			short n = r.ReadInt16();
+			NetWorlds = new ModWorld[n];
+			for (short i = 0; i < n; i++)
+				NetWorlds[i] = ModNet.GetMod(r.ReadInt16()).GetModWorld(r.ReadString());
 		}
 
 		public static void PreWorldGen()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +13,7 @@ namespace Terraria.ModLoader
 		private static int nextItem = ItemID.Count;
 		internal static readonly IList<ModItem> items = new List<ModItem>();
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
+		internal static GlobalItem[] NetGlobals;
 		internal static readonly IList<ItemInfo> infoList = new List<ItemInfo>();
 		internal static readonly IDictionary<string, int> infoIndexes = new Dictionary<string, int>();
 		internal static readonly IList<int> animations = new List<int>();
@@ -103,7 +105,7 @@ namespace Terraria.ModLoader
 		private static DelegateAnglerChat[] HookAnglerChat;
 		private static Action<Item, Recipe>[] HookOnCraft;
 		private static Action<Item, List<TooltipLine>>[] HookModifyTooltips;
-		private static Func<Item, bool>[] HookNeedsCustomSaving;
+		private static Func<Item, bool>[] HookNeedsSaving;
 		private static Action<Item>[] HookPreSaveCustomData;
 
 		static ItemLoader()
@@ -192,6 +194,8 @@ namespace Terraria.ModLoader
 			{
 				Main.anglerQuestItemNetIDs[vanillaQuestFishCount + k] = questFish[k];
 			}
+			
+			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
 
 			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalItems, g => g.SetDefaults);
 			ModLoader.BuildGlobalHook(ref HookCanUseItem, globalItems, g => g.CanUseItem);
@@ -259,8 +263,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookAnglerChat, globalItems, g => g.AnglerChat);
 			ModLoader.BuildGlobalHook(ref HookOnCraft, globalItems, g => g.OnCraft);
 			ModLoader.BuildGlobalHook(ref HookModifyTooltips, globalItems, g => g.ModifyTooltips);
-			ModLoader.BuildGlobalHook(ref HookPreSaveCustomData, globalItems, g => g.PreSaveCustomData);
-			ModLoader.BuildGlobalHook(ref HookNeedsCustomSaving, globalItems, g => g.NeedsCustomSaving);
+			ModLoader.BuildGlobalHook(ref HookNeedsSaving, globalItems, g => g.NeedsSaving);
 		}
 
 		internal static void Unload()
@@ -1452,26 +1455,27 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static int NeedsGlobalCustomSaving(Item item)
-		{
-			if (item.type == 0)
-			{
-				return 0;
-			}
-			int numGlobalData = 0;
-			foreach (var hook in HookNeedsCustomSaving)
-			{
-				if (hook(item))
-				{
-					numGlobalData++;
-				}
-			}
-			return numGlobalData;
-		}
-
 		public static bool NeedsModSaving(Item item)
 		{
-			return IsModItem(item) || NeedsGlobalCustomSaving(item) > 0;
+			return item.type != 0 && (IsModItem(item) || HookNeedsSaving.Count(hook => hook(item)) > 0);
+		}
+
+		internal static void WriteNetGlobalOrder(BinaryWriter w)
+		{
+			w.Write((short)NetGlobals.Length);
+			foreach (var globalItem in NetGlobals)
+			{
+				w.Write(globalItem.mod.netID);
+				w.Write(globalItem.Name);
+			}
+		}
+
+		internal static void ReadNetGlobalOrder(BinaryReader r)
+		{
+			short n = r.ReadInt16();
+			NetGlobals = new GlobalItem[n];
+			for (short i = 0; i < n; i++)
+				NetGlobals[i] = ModNet.GetMod(r.ReadInt16()).GetGlobalItem(r.ReadString());
 		}
 	}
 }

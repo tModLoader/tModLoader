@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Tile_Entities;
@@ -32,51 +33,83 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal static bool WriteTiles(BinaryWriter writer)
+		internal static TagCompound SaveTiles()
 		{
-			ISet<ushort> types = new HashSet<ushort>();
-			ISet<ushort> walls = new HashSet<ushort>();
-			for (int i = 0; i < Main.maxTilesX; i++)
+			var hasTile = new bool[TileLoader.TileCount];
+			var hasWall = new bool[WallLoader.WallCount];
+			var ms = new MemoryStream();
+			WriteTileData(new BinaryWriter(ms), hasTile, hasWall);
+			
+			var tileList = new List<TagCompound>();
+			for (int type = TileID.Count; type < hasTile.Length; type++)
 			{
-				for (int j = 0; j < Main.maxTilesY; j++)
-				{
-					Tile tile = Main.tile[i, j];
-					if (tile.active() && tile.type >= TileID.Count)
-					{
-						types.Add(tile.type);
-					}
-					if (tile.wall >= WallID.Count)
-					{
-						walls.Add(tile.wall);
-					}
-				}
+				if (!hasTile[type])
+					continue;
+				
+				var modTile = TileLoader.GetTile(type);
+				tileList.Add(new TagCompound {
+					["value"] = (short)type,
+					["mod"] = modTile.mod.Name,
+					["name"] = modTile.Name,
+					["framed"] = Main.tileFrameImportant[type],
+				});
 			}
-			if (types.Count > 0 || walls.Count > 0)
+			var wallList = new List<TagCompound>();
+			for (int wall = WallID.Count; wall < hasWall.Length; wall++)
 			{
-				writer.Write((ushort)types.Count);
-				foreach (ushort type in types)
-				{
-					writer.Write(type);
-					ModTile modTile = TileLoader.GetTile(type);
-					writer.Write(modTile.mod.Name);
-					writer.Write(modTile.Name);
-					writer.Write(Main.tileFrameImportant[type]);
-				}
-				writer.Write((ushort)walls.Count);
-				foreach (ushort wall in walls)
-				{
-					writer.Write(wall);
-					ModWall modWall = WallLoader.GetWall(wall);
-					writer.Write(modWall.mod.Name);
-					writer.Write(modWall.Name);
-				}
-				WriteTileData(writer);
-				return true;
+				if (!hasWall[wall])
+					continue;
+				
+				var modWall = WallLoader.GetWall(wall);
+				wallList.Add(new TagCompound {
+					["value"] = (short)wall,
+					["mod"] = modWall.mod.Name,
+					["name"] = modWall.Name,
+				});
 			}
-			return false;
+			if (tileList.Count == 0 && wallList.Count == 0)
+				return null;
+
+			return new TagCompound {
+				["tileMap"] = tileList,
+				["wallMap"] = wallList,
+				["data"] = ms.ToArray()
+			};
 		}
 
-		internal static void ReadTiles(BinaryReader reader)
+		internal static void LoadTiles(TagCompound tag)
+		{
+			if (!tag.HasTag("data"))
+				return;
+
+			var tables = TileTables.Create();
+			foreach (var tileTag in tag.GetList<TagCompound>("tileMap"))
+			{
+				ushort type = (ushort)tileTag.GetShort("value");
+				string modName = tileTag.GetString("mod");
+				string name = tileTag.GetString("name");
+				Mod mod = ModLoader.GetMod(modName);
+				tables.tiles[type] = mod == null ? (ushort)0 : (ushort)mod.TileType(name);
+				if (tables.tiles[type] == 0)
+				{
+					tables.tiles[type] = (ushort)ModLoader.GetMod("ModLoader").TileType("PendingMysteryTile");
+					tables.tileModNames[type] = modName;
+					tables.tileNames[type] = name;
+				}
+				tables.frameImportant[type] = tileTag.GetBool("framed");
+			}
+			foreach (var wallTag in tag.GetList<TagCompound>("tileMap"))
+			{
+				ushort wall = (ushort)wallTag.GetShort("value");
+				string modName = wallTag.GetString("mod");
+				string name = wallTag.GetString("name");
+				Mod mod = ModLoader.GetMod(modName);
+				tables.walls[wall] = mod == null ? (ushort)0 : (ushort)mod.WallType(name);
+			}
+			ReadTileData(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))), tables);
+		}
+
+		internal static void LoadLegacyTiles(BinaryReader reader)
 		{
 			TileTables tables = TileTables.Create();
 			ushort count = reader.ReadUInt16();
@@ -107,7 +140,7 @@ namespace Terraria.ModLoader.IO
 			ReadTileData(reader, tables);
 		}
 
-		internal static void WriteTileData(BinaryWriter writer)
+		internal static void WriteTileData(BinaryWriter writer, bool[] hasTile, bool[] hasWall)
 		{
 			byte skip = 0;
 			bool nextModTile = false;
@@ -127,7 +160,7 @@ namespace Terraria.ModLoader.IO
 					{
 						nextModTile = false;
 					}
-					WriteModTile(ref i, ref j, writer, ref nextModTile);
+					WriteModTile(ref i, ref j, writer, ref nextModTile, hasTile, hasWall);
 				}
 				else
 				{
@@ -184,7 +217,7 @@ namespace Terraria.ModLoader.IO
 			while (NextTile(ref i, ref j));
 		}
 
-		internal static void WriteModTile(ref int i, ref int j, BinaryWriter writer, ref bool nextModTile)
+		internal static void WriteModTile(ref int i, ref int j, BinaryWriter writer, ref bool nextModTile, bool[] hasTile, bool[] hasWall)
 		{
 			Tile tile = Main.tile[i, j];
 			byte flags = 0;
@@ -192,6 +225,7 @@ namespace Terraria.ModLoader.IO
 			int index = 1;
 			if (tile.active() && tile.type >= TileID.Count)
 			{
+				hasTile[tile.type] = true;
 				flags |= 1;
 				data[index] = (byte)tile.type;
 				index++;
@@ -225,6 +259,7 @@ namespace Terraria.ModLoader.IO
 			}
 			if (tile.wall >= WallID.Count)
 			{
+				hasWall[tile.wall] = true;
 				flags |= 16;
 				data[index] = (byte)tile.wall;
 				index++;
@@ -409,8 +444,10 @@ namespace Terraria.ModLoader.IO
 		}
 		//in Terraria.GameContent.Tile_Entities.TEItemFrame.WriteExtraData
 		//  if item is a mod item write 0 as the ID
-		internal static bool WriteContainers(BinaryWriter writer)
+		internal static TagCompound SaveContainers()
 		{
+			var ms = new MemoryStream();
+			var writer = new BinaryWriter(ms);
 			byte[] flags = new byte[1];
 			byte numFlags = 0;
 			ISet<int> headSlots = new HashSet<int>();
@@ -453,14 +490,14 @@ namespace Terraria.ModLoader.IO
 				if (itemFrame != null && ItemLoader.NeedsModSaving(itemFrame.item))
 				{
 					itemFrames.Add(itemFrame.ID, tileEntity);
-					flags[0] |= 2;
+					//flags[0] |= 2; legacy
 					numFlags = 1;
 				}
 				tileEntity++;
 			}
 			if (numFlags == 0)
 			{
-				return false;
+				return null;
 			}
 			writer.Write(numFlags);
 			writer.Write(flags, 0, numFlags);
@@ -492,17 +529,31 @@ namespace Terraria.ModLoader.IO
 				}
 				WriteContainerData(writer);
 			}
-			if ((flags[0] & 2) == 2)
+			var tag = new TagCompound();
+			tag.SetTag("data", ms.ToArray());
+
+			if (itemFrames.Count > 0)
 			{
-				writer.Write(itemFrames.Count);
-				foreach (int oldID in itemFrames.Keys)
-				{
-					TEItemFrame itemFrame = TileEntity.ByID[oldID] as TEItemFrame;
-					writer.Write(itemFrames[oldID]);
-					ItemIO.WriteItem(itemFrame.item, writer, true);
-				}
+				tag.SetTag("itemFrames", itemFrames.Select(entry =>
+					new TagCompound {
+						["id"] = entry.Value,
+						["item"] = ItemIO.Save(((TEItemFrame)TileEntity.ByID[entry.Key]).item)
+					}
+				));
 			}
-			return true;
+			return tag;
+		}
+
+		internal static void LoadContainers(TagCompound tag)
+		{
+			if (tag.HasTag("data"))
+				ReadContainers(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))));
+
+			foreach (var frameTag in tag.GetList<TagCompound>("itemFrames"))
+			{
+				TEItemFrame itemFrame = TileEntity.ByID[tag.GetInt("id")] as TEItemFrame;
+				ItemIO.Load(itemFrame.item, frameTag.GetCompound("item"));
+			}
 		}
 
 		internal static void ReadContainers(BinaryReader reader)
@@ -519,7 +570,7 @@ namespace Terraria.ModLoader.IO
 					string modName = reader.ReadString();
 					string name = reader.ReadString();
 					Mod mod = ModLoader.GetMod(modName);
-					tables.headSlots[slot] = mod == null ? 0 : mod.GetItem(name).item.headSlot;
+					tables.headSlots[slot] = mod?.GetItem(name).item.headSlot ?? 0;
 				}
 				count = reader.ReadUInt16();
 				for (int k = 0; k < count; k++)
@@ -528,7 +579,7 @@ namespace Terraria.ModLoader.IO
 					string modName = reader.ReadString();
 					string name = reader.ReadString();
 					Mod mod = ModLoader.GetMod(modName);
-					tables.bodySlots[slot] = mod == null ? 0 : mod.GetItem(name).item.bodySlot;
+					tables.bodySlots[slot] = mod?.GetItem(name).item.bodySlot ?? 0;
 				}
 				count = reader.ReadUInt16();
 				for (int k = 0; k < count; k++)
@@ -537,10 +588,11 @@ namespace Terraria.ModLoader.IO
 					string modName = reader.ReadString();
 					string name = reader.ReadString();
 					Mod mod = ModLoader.GetMod(modName);
-					tables.legSlots[slot] = mod == null ? 0 : mod.GetItem(name).item.legSlot;
+					tables.legSlots[slot] = mod?.GetItem(name).item.legSlot ?? 0;
 				}
 				ReadContainerData(reader, tables);
 			}
+			//legacy load
 			if ((flags[0] & 2) == 2)
 			{
 				int count = reader.ReadInt32();
@@ -548,7 +600,7 @@ namespace Terraria.ModLoader.IO
 				{
 					int id = reader.ReadInt32();
 					TEItemFrame itemFrame = TileEntity.ByID[id] as TEItemFrame;
-					ItemIO.ReadItem(itemFrame.item, reader, true);
+					ItemIO.LoadLegacy(itemFrame.item, reader, true);
 				}
 			}
 		}

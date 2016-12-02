@@ -23,7 +23,7 @@
  						binaryReader.Close();
  						memoryStream.Close();
 +						WorldHooks.SetupWorld();
-+						WorldIO.ReadModFile(Main.worldPathName, flag);
++						WorldIO.Load(Main.worldPathName, flag);
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
@@ -31,7 +31,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
  				}
-+				WorldIO.WriteModFile(Main.worldPathName, useCloudSaving);
++				WorldIO.Save(Main.worldPathName, useCloudSaving);
  				WorldGen.saveLock = false;
  			}
  			Main.serverGenLock = false;

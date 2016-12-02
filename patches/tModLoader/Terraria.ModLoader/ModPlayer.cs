@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
-using Terraria;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
@@ -66,11 +66,16 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void SaveCustomData(BinaryWriter writer)
+		public virtual TagCompound Save()
+		{
+			return null;
+		}
+
+		public virtual void Load(TagCompound tag)
 		{
 		}
 
-		public virtual void LoadCustomData(BinaryReader reader)
+		public virtual void LoadLegacy(BinaryReader reader)
 		{
 		}
 

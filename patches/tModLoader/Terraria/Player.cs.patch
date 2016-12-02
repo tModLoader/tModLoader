@@ -3991,7 +3991,7 @@
  					}
  				}
  			}
-+			PlayerIO.WriteModFile(player, path, isCloudSave);
++			PlayerIO.Save(player, path, isCloudSave);
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
@@ -3999,7 +3999,7 @@
  								player.bartenderQuestLog = binaryReader.ReadInt32();
  							}
  							player.skinVariant = (int)MathHelper.Clamp((float)player.skinVariant, 0f, 9f);
-+							PlayerIO.ReadModFile(player, playerPath, cloudSave);
++							PlayerIO.Load(player, playerPath, cloudSave);
  							for (int num36 = 3; num36 < 8 + player.extraAccessorySlots; num36++)
  							{
  								int type = player.armor[num36].type;

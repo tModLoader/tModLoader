@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -363,20 +363,29 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual void PreSaveCustomData(Item item)
-		{
-		}
-
-		public virtual bool NeedsCustomSaving(Item item)
+		public virtual bool NeedsSaving(Item item)
 		{
 			return false;
 		}
 
-		public virtual void SaveCustomData(Item item, BinaryWriter writer)
+		public virtual TagCompound Save(Item item)
+		{
+			return null;
+		}
+
+		public virtual void Load(Item item, TagCompound tag)
 		{
 		}
 
-		public virtual void LoadCustomData(Item item, BinaryReader reader)
+		public virtual void LoadLegacy(Item item, BinaryReader reader)
+		{
+		}
+
+		public virtual void NetSend(Item item, BinaryWriter writer)
+		{
+		}
+
+		public virtual void NetReceive(Item item, BinaryReader reader)
 		{
 		}
 	}

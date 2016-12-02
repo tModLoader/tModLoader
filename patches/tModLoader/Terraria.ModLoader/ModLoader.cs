@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,6 @@ using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
@@ -184,6 +182,7 @@ namespace Terraria.ModLoader
 			GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
 			WaterStyleLoader.ResizeArrays();
 			WaterfallStyleLoader.ResizeArrays();
+			WorldHooks.ResizeArrays();
 		}
 
 		internal static TmodFile[] FindMods()

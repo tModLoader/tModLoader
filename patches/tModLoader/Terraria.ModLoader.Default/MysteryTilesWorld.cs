@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
@@ -14,69 +16,43 @@ namespace Terraria.ModLoader.Default
 			pendingInfos.Clear();
 		}
 
-		public override void SaveCustomData(BinaryWriter writer)
+		public override TagCompound Save()
 		{
-			writer.Write(infos.Count);
-			foreach (MysteryTileInfo info in infos)
-			{
-				if (info == null)
-				{
-					writer.Write("");
-				}
-				else
-				{
-					writer.Write(info.modName);
-					writer.Write(info.name);
-					writer.Write(info.frameImportant);
-					if (info.frameImportant)
-					{
-						writer.Write(info.frameX);
-						writer.Write(info.frameY);
-					}
-				}
-			}
+			return new TagCompound {
+				["list"] = infos.Select(info => info?.Save() ?? new TagCompound()).ToList()
+			};
 		}
 
-		public override void LoadCustomData(BinaryReader reader)
+		public override void Load(TagCompound tag)
 		{
-			int count = reader.ReadInt32();
 			List<ushort> canRestore = new List<ushort>();
 			bool canRestoreFlag = false;
-			for (int k = 0; k < count; k++)
+			foreach (var infoTag in tag.GetList<TagCompound>("list"))
 			{
-				MysteryTileInfo info;
-				string modName = reader.ReadString();
-				if (modName.Length == 0)
+				if (!infoTag.HasTag("mod"))
 				{
 					infos.Add(null);
 					canRestore.Add(0);
+					continue;
 				}
-				else
-				{
-					string name = reader.ReadString();
-					bool frameImportant = reader.ReadBoolean();
-					if (frameImportant)
-					{
-						info = new MysteryTileInfo(modName, name, reader.ReadInt16(), reader.ReadInt16());
-					}
-					else
-					{
-						info = new MysteryTileInfo(modName, name);
-					}
-					infos.Add(info);
-					Mod mod = ModLoader.GetMod(modName);
-					ushort type = (ushort)(mod == null ? 0 : mod.TileType(name));
-					canRestore.Add(type);
-					if (type != 0)
-					{
-						canRestoreFlag = true;
-					}
-				}
+
+				string modName = infoTag.GetString("mod");
+				string name = infoTag.GetString("name");
+				bool frameImportant = infoTag.HasTag("frameX");
+				var info = frameImportant ? 
+					new MysteryTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY")) : 
+					new MysteryTileInfo(modName, name);
+				infos.Add(info);
+
+				int type = ModLoader.GetMod(modName)?.TileType(name) ?? 0;
+				canRestore.Add((ushort) type);
+				if (type != 0)
+					canRestoreFlag = true;
 			}
 			if (canRestoreFlag)
 			{
 				RestoreTiles(canRestore);
-				for (int k = 0; k < count; k++)
+				for (int k = 0; k < canRestore.Count; k++)
 				{
 					if (canRestore[k] > 0)
 					{
@@ -88,6 +64,34 @@ namespace Terraria.ModLoader.Default
 			{
 				ConfirmPendingInfo();
 			}
+		}
+
+		public override void LoadLegacy(BinaryReader reader)
+		{
+			var list = new List<TagCompound>();
+			int count = reader.ReadInt32();
+			for (int k = 0; k < count; k++)
+			{
+				string modName = reader.ReadString();
+				if (modName.Length == 0)
+				{
+					list.Add(new TagCompound());
+				}
+				else
+				{
+					var tag = new TagCompound {
+						["mod"] = modName,
+						["name"] = reader.ReadString(),
+					};
+					if (reader.ReadBoolean())
+					{
+						tag.SetTag("frameX", reader.ReadInt16());
+						tag.SetTag("frameY", reader.ReadInt16());
+					}
+					list.Add(tag);
+				}
+			}
+			Load(new TagCompound {["list"] = list});
 		}
 
 		private void RestoreTiles(List<ushort> canRestore)
@@ -202,6 +206,20 @@ namespace Terraria.ModLoader.Default
 				hash += frameX + frameY;
 			}
 			return hash;
+		}
+
+		public TagCompound Save()
+		{
+			var tag = new TagCompound {
+				["mod"] = modName,
+				["name"] = name,
+			};
+			if (frameImportant)
+			{
+				tag.SetTag("frameX", frameX);
+				tag.SetTag("frameY", frameY);
+			}
+			return tag;
 		}
 	}
 
