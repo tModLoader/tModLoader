@@ -22,6 +22,10 @@ namespace Terraria.ModLoader.Setup
 			private Dictionary<string, AssemblyDefinition> cache = new Dictionary<string, AssemblyDefinition>();
 			public ModuleDefinition baseModule;
 
+			public EmbeddedAssemblyResolver() {
+				AddSearchDirectory(SteamDir);
+			}
+
 			public override AssemblyDefinition Resolve(AssemblyNameReference name, ReaderParameters parameters) {
 				lock (this) {
 					AssemblyDefinition assemblyDefinition;
