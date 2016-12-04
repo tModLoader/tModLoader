@@ -355,7 +355,7 @@ namespace ExampleMod
 
 		public override void ResetNearbyTileEffects()
 		{
-			ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
+			ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
 			modPlayer.voidMonolith = false;
 			exampleTiles = 0;
 		}

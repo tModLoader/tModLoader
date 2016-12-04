@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace ExampleMod.NPCs
 {
@@ -273,7 +274,7 @@ namespace ExampleMod.NPCs
 							num195 = 20f;
 						}
 						npc.soundDelay = (int)num195;
-						Main.PlaySound(15, (int)npc.position.X, (int)npc.position.Y, 1);
+						Main.PlaySound(SoundID.Roar, npc.position, 1);
 					}
 					num193 = (float)System.Math.Sqrt((double)(num191 * num191 + num192 * num192));
 					float num196 = System.Math.Abs(num191);

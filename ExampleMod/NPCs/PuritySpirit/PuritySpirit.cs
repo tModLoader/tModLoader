@@ -953,7 +953,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			PuritySpiritMessageType type = (PuritySpiritMessageType)reader.ReadByte();
 			if (type == PuritySpiritMessageType.HeroPlayer)
 			{
-				Player player = Main.player[Main.myPlayer];
+				Player player = Main.LocalPlayer;
 				player.GetModPlayer<ExamplePlayer>(mod).heroLives = 3;
 			}
 			else if (type == PuritySpiritMessageType.TargetList)

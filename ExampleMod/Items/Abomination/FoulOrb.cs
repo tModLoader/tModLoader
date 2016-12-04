@@ -30,7 +30,7 @@ namespace ExampleMod.Items.Abomination
 		public override bool UseItem(Player player)
 		{
 			NPC.SpawnOnPlayer(player.whoAmI, mod.NPCType("Abomination"));
-			Main.PlaySound(15, (int)player.position.X, (int)player.position.Y, 0);
+			Main.PlaySound(SoundID.Roar, player.position, 0);
 			return true;
 		}
 

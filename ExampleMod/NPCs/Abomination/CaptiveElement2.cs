@@ -126,7 +126,7 @@ namespace ExampleMod.NPCs.Abomination
 					npc.damage += 20;
 				}
 				npc.localAI[0] = 1f;
-				Main.PlaySound(4, (int)npc.position.X, (int)npc.position.Y, 7);
+				Main.PlaySound(SoundID.NPCDeath7, npc.position);
 			}
 			//run away
 			if ((!player.active || player.dead || player.position.Y + player.height < hellLayer * 16) && run < 2)

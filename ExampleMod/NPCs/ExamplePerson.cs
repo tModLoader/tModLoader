@@ -170,7 +170,7 @@ namespace ExampleMod.NPCs
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHamaxe"));
 			nextSlot++;
-			if (Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod).ZoneExample)
+			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod).ZoneExample)
 			{
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleWings"));
 				nextSlot++;

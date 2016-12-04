@@ -125,11 +125,11 @@ namespace ExampleMod
 		{
 			if (Main.myPlayer != -1 && !Main.gameMenu)
 			{
-				if (Main.player[Main.myPlayer].active && Main.player[Main.myPlayer].FindBuffIndex(this.BuffType("CarMount")) != -1)
+				if (Main.LocalPlayer.active && Main.LocalPlayer.FindBuffIndex(this.BuffType("CarMount")) != -1)
 				{
 					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
 				}
-				if (Main.player[Main.myPlayer].active && Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(this).ZoneExample)
+				if (Main.LocalPlayer.active && Main.LocalPlayer.GetModPlayer<ExamplePlayer>(this).ZoneExample)
 				{
 					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
 				}
@@ -253,7 +253,7 @@ namespace ExampleMod
 			}
 			try
 			{
-				Player player = Main.player[Main.myPlayer];
+				Player player = Main.LocalPlayer;
 				int x;
 				int y;
 				int num = 1;
@@ -358,7 +358,7 @@ namespace ExampleMod
 			}
 			try
 			{
-				Player player = Main.player[Main.myPlayer];
+				Player player = Main.LocalPlayer;
 				int type;
 				if (!Int32.TryParse(args[0], out type))
 				{

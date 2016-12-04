@@ -59,13 +59,13 @@ namespace ExampleMod.UI
 
 		private void PlayButtonClicked(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuOpen);
 			moneyDiplay.ResetCoins();
 		}
 
 		private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuOpen);
 			visible = false;
 		}
 
@@ -93,7 +93,7 @@ namespace ExampleMod.UI
 			Vector2 MousePosition = new Vector2((float)Main.mouseX, (float)Main.mouseY);
 			if (coinCounterPanel.ContainsPoint(MousePosition))
 			{
-				Main.player[Main.myPlayer].mouseInterface = true;
+				Main.LocalPlayer.mouseInterface = true;
 			}
 			if (dragging)
 			{

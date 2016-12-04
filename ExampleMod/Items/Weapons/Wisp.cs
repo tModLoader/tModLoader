@@ -20,7 +20,7 @@ namespace ExampleMod.Items.Weapons
 			item.value = Item.sellPrice(0, 0, 1, 0);
 			item.rare = 8;
 			item.shoot = mod.ProjectileType("Wisp");
-			item.ammo = item.type;
+			item.ammo = item.type; // The first item in an ammo class sets the AmmoID to it's type
 		}
 
 		public override void AddRecipes()
@@ -41,12 +41,12 @@ namespace ExampleMod.Items.Weapons
 
 		public override bool RecipeAvailable()
 		{
-			return Main.player[Main.myPlayer].HasItem(mod.ItemType("SpectreGun"));
+			return Main.LocalPlayer.HasItem(mod.ItemType("SpectreGun"));
 		}
 
 		public override int ConsumeItem(int type, int numRequired)
 		{
-			if (type == ItemID.Ectoplasm && Main.player[Main.myPlayer].adjTile[mod.TileType("ExampleWorkbench")])
+			if (type == ItemID.Ectoplasm && Main.LocalPlayer.adjTile[mod.TileType("ExampleWorkbench")])
 			{
 				Main.PlaySound(2, -1, -1, mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo"));
 				return Main.rand.Next(2) == 0 ? 0 : 1;

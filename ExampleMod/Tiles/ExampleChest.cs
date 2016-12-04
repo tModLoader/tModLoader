@@ -75,7 +75,7 @@ namespace ExampleMod.Tiles
 
 		public override void RightClick(int i, int j)
 		{
-			Player player = Main.player[Main.myPlayer];
+			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
 			Main.mouseRightRelease = false;
 			int left = i;
@@ -90,14 +90,14 @@ namespace ExampleMod.Tiles
 			}
 			if (player.sign >= 0)
 			{
-				Main.PlaySound(11, -1, -1, 1);
+				Main.PlaySound(SoundID.MenuClose);
 				player.sign = -1;
 				Main.editSign = false;
 				Main.npcChatText = "";
 			}
 			if (Main.editChest)
 			{
-				Main.PlaySound(12, -1, -1, 1);
+				Main.PlaySound(SoundID.MenuTick);
 				Main.editChest = false;
 				Main.npcChatText = "";
 			}
@@ -112,7 +112,7 @@ namespace ExampleMod.Tiles
 				{
 					player.chest = -1;
 					Recipe.FindRecipes();
-					Main.PlaySound(11, -1, -1, 1);
+					Main.PlaySound(SoundID.MenuClose);
 				}
 				else
 				{
@@ -129,7 +129,7 @@ namespace ExampleMod.Tiles
 					if (chest == player.chest)
 					{
 						player.chest = -1;
-						Main.PlaySound(11, -1, -1, 1);
+						Main.PlaySound(SoundID.MenuClose);
 					}
 					else
 					{
@@ -138,7 +138,7 @@ namespace ExampleMod.Tiles
 						Main.recBigList = false;
 						player.chestX = left;
 						player.chestY = top;
-						Main.PlaySound(player.chest < 0 ? 10 : 12, -1, -1, 1);
+						Main.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
 					}
 					Recipe.FindRecipes();
 				}
@@ -147,7 +147,7 @@ namespace ExampleMod.Tiles
 
 		public override void MouseOver(int i, int j)
 		{
-			Player player = Main.player[Main.myPlayer];
+			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
 			int left = i;
 			int top = j;
@@ -181,7 +181,7 @@ namespace ExampleMod.Tiles
 		public override void MouseOverFar(int i, int j)
 		{
 			MouseOver(i, j);
-			Player player = Main.player[Main.myPlayer];
+			Player player = Main.LocalPlayer;
 			if (player.showItemIconText == "")
 			{
 				player.showItemIcon = false;

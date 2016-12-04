@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles
@@ -45,7 +46,7 @@ namespace ExampleMod.Projectiles
 
 		public virtual void PlaySound()
 		{
-			Main.PlaySound(2, (int)projectile.position.X, (int)projectile.position.Y, 20);
+			Main.PlaySound(SoundID.Item20, projectile.position);
 		}
 
 		public virtual void CreateDust()

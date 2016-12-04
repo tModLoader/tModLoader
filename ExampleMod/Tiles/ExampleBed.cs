@@ -34,7 +34,7 @@ namespace ExampleMod.Tiles
 
 		public override void RightClick(int i, int j)
 		{
-			Player player = Main.player[Main.myPlayer];
+			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
 			int spawnX = i - tile.frameX / 18;
 			int spawnY = j + 2;
@@ -58,7 +58,7 @@ namespace ExampleMod.Tiles
 
 		public override void MouseOver(int i, int j)
 		{
-			Player player = Main.player[Main.myPlayer];
+			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.showItemIcon = true;
 			player.showItemIcon2 = mod.ItemType("ExampleBed");

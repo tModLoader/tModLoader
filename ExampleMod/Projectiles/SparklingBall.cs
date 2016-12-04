@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles
@@ -45,7 +46,7 @@ namespace ExampleMod.Projectiles
 					projectile.velocity.Y = -oldVelocity.Y;
 				}
 				projectile.velocity *= 0.75f;
-				Main.PlaySound(2, (int)projectile.position.X, (int)projectile.position.Y, 10);
+				Main.PlaySound(SoundID.Item10, projectile.position);
 			}
 			return false;
 		}
@@ -56,7 +57,7 @@ namespace ExampleMod.Projectiles
 			{
 				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, mod.DustType("Sparkle"), projectile.oldVelocity.X * 0.5f, projectile.oldVelocity.Y * 0.5f);
 			}
-			Main.PlaySound(2, (int)projectile.position.X, (int)projectile.position.Y, 25);
+			Main.PlaySound(SoundID.Item25, projectile.position);
 		}
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

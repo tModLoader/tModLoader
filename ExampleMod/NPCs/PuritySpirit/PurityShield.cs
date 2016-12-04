@@ -51,11 +51,11 @@ namespace ExampleMod.NPCs.PuritySpirit
 			{
 				if (modOwner.targets.Contains(Main.myPlayer))
 				{
-					Main.PlaySound(2, -1, -1, 2);
+					Main.PlaySound(SoundID.Item2);
 				}
 				else
 				{
-					Main.PlaySound(2, (int)npc.position.X, (int)npc.position.Y, 2);
+					Main.PlaySound(SoundID.Item2, npc.position);
 				}
 				npc.localAI[0] = 1f;
 			}

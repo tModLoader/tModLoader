@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace ExampleMod.Projectiles.PuritySpirit
 {
@@ -34,14 +35,14 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.ai[1] += 1f;
 			if (projectile.ai[1] == charge)
 			{
-				ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
 				if (modPlayer.heroLives > 0)
 				{
-					Main.PlaySound(29, -1, -1, 104);
+					Main.PlaySound(SoundID.Zombie, -1, -1, 104);
 				}
 				else
 				{
-					Main.PlaySound(29, (int)projectile.Center.X, (int)projectile.Center.Y, 104);
+					Main.PlaySound(SoundID.Zombie, projectile.Center, 104);
 				}
 				projectile.hostile = true;
 			}

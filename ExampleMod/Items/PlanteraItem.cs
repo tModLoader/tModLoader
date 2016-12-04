@@ -29,7 +29,7 @@ namespace ExampleMod.Items
 		public override bool UseItem(Player player)
 		{
 			NPC.SpawnOnPlayer(player.whoAmI, NPCID.Plantera);
-			Main.PlaySound(15, (int)player.position.X, (int)player.position.Y, 0);
+			Main.PlaySound(SoundID.Roar, player.position, 0);
 			return true;
 		}
 

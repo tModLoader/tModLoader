@@ -46,7 +46,7 @@ namespace ExampleMod.Tiles
 		{
 			if (closer)
 			{
-				Player player = Main.player[Main.myPlayer];
+				Player player = Main.LocalPlayer;
 				int style = Main.tile[i, j].frameX / 18;
 				string type;
 				switch (style)

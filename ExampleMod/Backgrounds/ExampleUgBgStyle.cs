@@ -7,7 +7,7 @@ namespace ExampleMod.Backgrounds
 	{
 		public override bool ChooseBgStyle()
 		{
-			return Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod).ZoneExample;
+			return Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod).ZoneExample;
 		}
 
 		public override void FillTextureArray(int[] textureSlots)

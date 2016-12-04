@@ -34,7 +34,7 @@ namespace ExampleMod.Tiles
 		{
 			if (Main.tile[i, j].frameY >= 56)
 			{
-				ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
 				modPlayer.voidMonolith = true;
 			}
 		}
@@ -75,13 +75,13 @@ namespace ExampleMod.Tiles
 
 		public override void RightClick(int i, int j)
 		{
-			Main.PlaySound(28, i * 16, j * 16, 0);
+			Main.PlaySound(SoundID.Mech, i * 16, j * 16, 0);
 			HitWire(i, j);
 		}
 
 		public override void MouseOver(int i, int j)
 		{
-			Player player = Main.player[Main.myPlayer];
+			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.showItemIcon = true;
 			player.showItemIcon2 = mod.ItemType("VoidMonolith");

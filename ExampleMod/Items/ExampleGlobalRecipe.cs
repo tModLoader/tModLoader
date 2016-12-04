@@ -34,7 +34,7 @@ namespace Items
 			if (hasGel && Main.rand.Next(10) == 0)
 			{
 				Main.NewText("Revenge for our fallen brothers!!!", Color.Green.R, Color.Green.G, Color.Green.B);
-				Player player = Main.player[Main.myPlayer];
+				Player player = Main.LocalPlayer;
 				for (int i = 0; i < 5; i++)
 				{
 					NPC.NewNPC((int)(player.Center.X - 10 + i * 5), (int)player.Center.Y, slimeChoices[Main.rand.Next(slimeChoices.Length)]);

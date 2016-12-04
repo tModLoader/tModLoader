@@ -485,7 +485,7 @@ namespace ExampleMod
 					{
 						player.hurtCooldowns[k] = player.longInvince ? 180 : 120;
 					}
-					Main.PlaySound(2, (int)player.position.X, (int)player.position.Y, 29);
+					Main.PlaySound(SoundID.Item29, player.position);
 					reviveTime = 60;
 					return false;
 				}

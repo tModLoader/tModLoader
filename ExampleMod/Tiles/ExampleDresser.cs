@@ -40,7 +40,7 @@ namespace ExampleMod.Tiles
 
 		public override void RightClick(int i, int j)
 		{
-			Player player = Main.player[Main.myPlayer];
+			Player player = Main.LocalPlayer;
 			if (Main.tile[Player.tileTargetX, Player.tileTargetY].frameY == 0)
 			{
 				Main.CancelClothesWindow(true);
@@ -51,14 +51,14 @@ namespace ExampleMod.Tiles
 				int top = Player.tileTargetY - (int)(Main.tile[Player.tileTargetX, Player.tileTargetY].frameY / 18);
 				if (player.sign > -1)
 				{
-					Main.PlaySound(11, -1, -1, 1);
+					Main.PlaySound(SoundID.MenuClose);
 					player.sign = -1;
 					Main.editSign = false;
 					Main.npcChatText = string.Empty;
 				}
 				if (Main.editChest)
 				{
-					Main.PlaySound(12, -1, -1, 1);
+					Main.PlaySound(SoundID.MenuTick);
 					Main.editChest = false;
 					Main.npcChatText = string.Empty;
 				}
@@ -73,7 +73,7 @@ namespace ExampleMod.Tiles
 					{
 						player.chest = -1;
 						Recipe.FindRecipes();
-						Main.PlaySound(11, -1, -1, 1);
+						Main.PlaySound(SoundID.MenuClose);
 					}
 					else
 					{
@@ -92,14 +92,14 @@ namespace ExampleMod.Tiles
 						{
 							player.chest = -1;
 							Recipe.FindRecipes();
-							Main.PlaySound(11, -1, -1, 1);
+							Main.PlaySound(SoundID.MenuClose);
 						}
 						else if (num213 != player.chest && player.chest == -1)
 						{
 							player.chest = num213;
 							Main.playerInventory = true;
 							Main.recBigList = false;
-							Main.PlaySound(10, -1, -1, 1);
+							Main.PlaySound(SoundID.MenuOpen);
 							player.chestX = left;
 							player.chestY = top;
 						}
@@ -108,7 +108,7 @@ namespace ExampleMod.Tiles
 							player.chest = num213;
 							Main.playerInventory = true;
 							Main.recBigList = false;
-							Main.PlaySound(12, -1, -1, 1);
+							Main.PlaySound(SoundID.MenuTick);
 							player.chestX = left;
 							player.chestY = top;
 						}
@@ -129,7 +129,7 @@ namespace ExampleMod.Tiles
 
 		public override void MouseOverFar(int i, int j)
 		{
-			Player player = Main.player[Main.myPlayer];
+			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[Player.tileTargetX, Player.tileTargetY];
 			int left = Player.tileTargetX;
 			int top = Player.tileTargetY;
@@ -171,7 +171,7 @@ namespace ExampleMod.Tiles
 
 		public override void MouseOver(int i, int j)
 		{
-			Player player = Main.player[Main.myPlayer];
+			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[Player.tileTargetX, Player.tileTargetY];
 			int left = Player.tileTargetX;
 			int top = Player.tileTargetY;

@@ -73,7 +73,7 @@ namespace ExampleMod.NPCs
 				}
 				if (ai == -60f || ai == -120f)
 				{
-					Main.PlaySound(4, (int)npc.position.X, (int)npc.position.Y, 6);
+					Main.PlaySound(SoundID.NPCDeath6, npc.position);
 				}
 				if (ai == -1f)
 				{

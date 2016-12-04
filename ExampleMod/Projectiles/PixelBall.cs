@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 
 namespace ExampleMod.Projectiles
 {
@@ -30,7 +31,7 @@ namespace ExampleMod.Projectiles
 
 		public override void PlaySound()
 		{
-			Main.PlaySound(2, (int)projectile.position.X, (int)projectile.position.Y, 33);
+			Main.PlaySound(SoundID.Item33, projectile.position);
 		}
 
 		public override string GetName()

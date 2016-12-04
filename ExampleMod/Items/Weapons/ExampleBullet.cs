@@ -20,7 +20,7 @@ namespace ExampleMod.Items.Weapons
 			item.rare = 2;
 			item.shoot = mod.ProjectileType("ExampleBullet");
 			item.shootSpeed = 16f;
-			item.ammo = ProjectileID.Bullet;
+			item.ammo = AmmoID.Bullet;
 		}
 
 		public override void AddRecipes()

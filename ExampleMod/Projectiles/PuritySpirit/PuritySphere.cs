@@ -87,14 +87,14 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			}
 			if (timer == maxTimer)
 			{
-				ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
 				if (modPlayer.heroLives > 0)
 				{
-					Main.PlaySound(2, -1, -1, 12);
+					Main.PlaySound(SoundID.Item12);
 				}
 				else
 				{
-					Main.PlaySound(2, (int)projectile.Center.X, (int)projectile.Center.Y, 12);
+					Main.PlaySound(SoundID.Item12, projectile.position);
 				}
 				projectile.hostile = true;
 			}

@@ -46,14 +46,14 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			}
 			if (projectile.localAI[0] % 10 == 0)
 			{
-				ExamplePlayer modPlayer = Main.player[Main.myPlayer].GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
 				if (modPlayer.heroLives > 0)
 				{
-					Main.PlaySound(2, -1, -1, 20);
+					Main.PlaySound(SoundID.Item20);
 				}
 				else
 				{
-					Main.PlaySound(2, (int)projectile.Center.X, (int)projectile.Center.Y, 20);
+					Main.PlaySound(SoundID.Item20, projectile.position);
 				}
 			}
 			if (projectile.localAI[0] > 60f)
