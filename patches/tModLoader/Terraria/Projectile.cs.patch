@@ -130,8 +130,8 @@
 +						{
 +							continue;
 +						}
-+						bool immunityTimerActive = (!this.usesLocalNPCImmunity && !this.usesIDStaticNPCImmunity) || (this.usesLocalNPCImmunity && this.localNPCImmunity[i] == 0) || (this.usesIDStaticNPCImmunity && Projectile.perIDStaticNPCImmunity[this.type][i] == 0);
-+						if (immunityTimerActive)
++						bool immunityTimerInactive = (!this.usesLocalNPCImmunity && !this.usesIDStaticNPCImmunity) || (this.usesLocalNPCImmunity && this.localNPCImmunity[i] == 0) || (this.usesIDStaticNPCImmunity && Projectile.perIDStaticNPCImmunity[this.type][i] == 0);
++						if (!immunityTimerInactive)
 +						{
 +							continue;
 +						}

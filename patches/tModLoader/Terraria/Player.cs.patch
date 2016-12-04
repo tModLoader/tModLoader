@@ -2459,7 +2459,7 @@
  						{
  							int num7 = 0;
  							if (Main.curMusic == 1)
-@@ -9651,154 +_,159 @@
+@@ -9651,154 +_,160 @@
  							}
  							if (Main.curMusic == 28)
  							{
@@ -2668,6 +2668,7 @@
 +						}
 +						this.wingsLogic = item.wingSlot;
 +					}
++					ItemLoader.UpdateAccessory(item, this, hideVisual);
 +				}
 +			}
 +		}
