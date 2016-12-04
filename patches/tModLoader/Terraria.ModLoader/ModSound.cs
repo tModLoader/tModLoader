@@ -12,8 +12,9 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		public virtual void PlaySound(ref SoundEffectInstance soundInstance, float volume, float pan, SoundType type)
+		public virtual SoundEffectInstance PlaySound(ref SoundEffectInstance soundInstance, float volume, float pan, SoundType type)
 		{
+			return soundInstance;
 		}
 	}
 }

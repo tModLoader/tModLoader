@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader
 {
@@ -48,6 +49,19 @@ namespace Terraria.ModLoader
 			else
 			{
 				return 0;
+			}
+		}
+
+		// TODO: Should we just get rid of the soundType Enum?
+		internal static LegacySoundStyle GetLegacySoundSlot(SoundType type, string sound)
+		{
+			if (sounds[type].ContainsKey(sound))
+			{
+				return new LegacySoundStyle((int)type, sounds[type][sound]);
+			}
+			else
+			{
+				return null;
 			}
 		}
 
@@ -103,7 +117,7 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.PlaySound before checking type to play sound add
 		//  if (SoundLoader.PlayModSound(type, num, num2, num3)) { return; }
-		internal static bool PlayModSound(int type, int style, float volume, float pan)
+		internal static bool PlayModSound(int type, int style, float volume, float pan, ref SoundEffectInstance soundEffectInstance)
 		{
 			SoundType soundType;
 			switch (type)
@@ -127,7 +141,7 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			modSounds[soundType][style].PlaySound(ref GetSoundInstanceArray(soundType)[style], volume, pan, soundType);
+			soundEffectInstance = modSounds[soundType][style].PlaySound(ref GetSoundInstanceArray(soundType)[style], volume, pan, soundType);
 			return true;
 		}
 

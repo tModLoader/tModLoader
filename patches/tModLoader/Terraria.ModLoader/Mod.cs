@@ -11,6 +11,7 @@ using Terraria.ID;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader
 {
@@ -1380,6 +1381,11 @@ namespace Terraria.ModLoader
 			return SoundLoader.GetSoundSlot(type, Name + '/' + name);
 		}
 
+		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name)
+		{
+			return SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
+		}
+
 		private void AutoloadSounds(IList<Type> modSounds)
 		{
 			var modSoundNames = modSounds.ToDictionary(t => t.Namespace + "." + t.Name);
@@ -1405,7 +1411,7 @@ namespace Terraria.ModLoader
 				}
 				ModSound modSound = null;
 				Type t;
-				if (modSoundNames.TryGetValue(sound.Replace('/', '.'), out t))
+				if (modSoundNames.TryGetValue((Name + '/' + sound).Replace('/', '.'), out t))
 					modSound = (ModSound)Activator.CreateInstance(t);
 
 				AddSound(soundType, Name + '/' + sound, modSound);

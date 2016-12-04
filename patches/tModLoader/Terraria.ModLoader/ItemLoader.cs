@@ -147,6 +147,9 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Item.itemCaches, nextItem);
 			Array.Resize(ref Item.staff, nextItem);
 			Array.Resize(ref Item.claw, nextItem);
+			Array.Resize(ref ItemID.Sets.BannerStrength, nextItem);
+			Array.Resize(ref ItemID.Sets.KillsToBanner, nextItem);
+			Array.Resize(ref ItemID.Sets.CanFishInLava, nextItem);
 			//Array.Resize(ref ItemID.Sets.TextureCopyLoad, nextItem); //not needed?
 			Array.Resize(ref ItemID.Sets.TrapSigned, nextItem);
 			Array.Resize(ref ItemID.Sets.Deprecated, nextItem);

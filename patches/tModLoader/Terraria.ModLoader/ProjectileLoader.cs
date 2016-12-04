@@ -79,21 +79,32 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.projHook, nextProjectile);
 			Array.Resize(ref Main.projFrames, nextProjectile);
 			Array.Resize(ref Main.projPet, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.MinionShot, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.SentryShot, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.ForcePlateDetection, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.TrailingMode, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.TrailCacheLength, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.LightPet, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.Homing, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.IsADD2Turret, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.TurretFeature, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.MinionTargettingFeature, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.MinionSacrificable, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.DontAttachHideToAlpha, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.NeedsUUID, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.StardustDragon, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.NoLiquidDistortion, nextProjectile);
 			for (int k = ProjectileID.Count; k < nextProjectile; k++)
 			{
 				Main.projectileLoaded[k] = true;
 				Main.projFrames[k] = 1;
 				ProjectileID.Sets.TrailingMode[k] = -1;
 				ProjectileID.Sets.TrailCacheLength[k] = 10;
+			}
+			Array.Resize(ref Projectile.perIDStaticNPCImmunity, nextProjectile);
+			for (int i = 0; i < nextProjectile; i++)
+			{
+				Projectile.perIDStaticNPCImmunity[i] = new int[200];
 			}
 
 			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalProjectiles, g => g.SetDefaults);

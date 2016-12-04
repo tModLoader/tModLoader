@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader
 {

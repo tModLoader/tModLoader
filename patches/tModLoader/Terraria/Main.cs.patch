@@ -3596,25 +3596,27 @@
  						}
  					}
  				}
-@@ -59369,6 +_,11 @@
+@@ -59369,7 +_,11 @@
  						return result;
  					}
  					SoundEffectInstance soundEffectInstance = null;
-+					// TODO, return soundEffectInstance from PlayModSound
-+					if (SoundLoader.PlayModSound(type, num, num2, num3))
+-					if (type == 0)
++					if (SoundLoader.PlayModSound(type, num, num2, num3, ref soundEffectInstance))
 +					{
-+						//return;
++						// Modders can return null to not play anything (prevent overlap), return the original sound effect (restarts sound), or return a new sound effect instance to allow overlapping sound.
 +					}
- 					if (type == 0)
++					else if (type == 0)
  					{
  						int num7 = Main.rand.Next(3);
-@@ -59986,18 +_,60 @@
+ 						Main.soundInstanceDig[num7].Stop();
+@@ -59986,18 +_,61 @@
  						soundEffectInstance.Pan = num3;
  						Main.trackableSoundInstances[num] = soundEffectInstance;
  					}
 +					// TODO, trackable sounds? verify working. return soundEffectInstance
 +					else if (type == SoundLoader.customSoundType)
 +					{
++						Main.NewText("type == SoundLoader.customSoundType "  + num);
 +						SoundLoader.customSoundInstances[num].Stop();
 +						SoundLoader.customSoundInstances[num] = SoundLoader.customSounds[num].CreateInstance();
 +						SoundLoader.customSoundInstances[num].Volume = num2;
