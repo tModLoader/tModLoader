@@ -43,6 +43,24 @@
  		public static void Initialize()
  		{
  			Main.InputProfiles.OnProcessText += new Preferences.TextProcessAction(PlayerInput.PrettyPrintProfiles);
+@@ -486,8 +_,15 @@
+ 			PlayerInput._canReleaseRebindingLock = true;
+ 			PlayerInput.VerifyBuildingMode();
+ 			PlayerInput.MouseInput();
+-			PlayerInput.KeyboardInput();
+-			PlayerInput.GamePadInput();
++			PlayerInput.KeyboardInput(); 
++			// ugly hack: While reloading,  Main.player[Main.myPlayer]'s Selected item might be a mod item, so 
++			// bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
++			// Will thrown an index out of range.
++			try
++			{
++				PlayerInput.GamePadInput();
++			}
++			catch { }
+ 			PlayerInput.Triggers.Update();
+ 			PlayerInput.PostInput();
+ 			PlayerInput.ScrollWheelDelta = PlayerInput.ScrollWheelValue - PlayerInput.ScrollWheelValueOld;
 @@ -1462,6 +_,10 @@
  							c.KeyStatus["Hotbar8"].Add("D8");
  							c.KeyStatus["Hotbar9"].Add("D9");
