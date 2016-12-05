@@ -94,8 +94,8 @@ namespace ExampleMod.NPCs.Abomination
 			npc.lavaImmune = true;
 			npc.noGravity = true;
 			npc.noTileCollide = true;
-			npc.HitSound = SoundID.Item1;
-			npc.DeathSound = SoundID.Item1;
+			npc.HitSound = SoundID.NPCHit1;
+			npc.DeathSound = SoundID.NPCDeath1;
 			npc.buffImmune[24] = true;
 			music = MusicID.Boss2;
 		}

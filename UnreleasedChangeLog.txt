@@ -10,7 +10,11 @@ ExampleMod
 	
 
 To Document:
-	Need new parameters for ArmorSetShadows, others?
+	ArmorSetShadows
+	PreKill
+	Kill
+	Save/Loads
+	GetLegacySound
 
 TODO
 

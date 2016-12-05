@@ -18,10 +18,12 @@ namespace Terraria.ModLoader.UI
 		private string mod;
 		private Texture2D dividerTexture;
 		private UIText modName;
+		private DateTime lastBuildTime;
 
-		public UIModSourceItem(string mod, bool publishable)
+		public UIModSourceItem(string mod, bool publishable, DateTime lastBuildTime)
 		{
 			this.mod = mod;
+			this.lastBuildTime = lastBuildTime;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.Height.Set(90f, 0f);
@@ -95,6 +97,16 @@ namespace Terraria.ModLoader.UI
 		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
 		{
 			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
+		}
+
+		public override int CompareTo(object obj)
+		{
+			UIModSourceItem uIModSourceItem = obj as UIModSourceItem;
+			if (uIModSourceItem == null)
+			{
+				return base.CompareTo(obj);
+			}
+			return uIModSourceItem.lastBuildTime.CompareTo(lastBuildTime);
 		}
 
 		private void BuildMod(UIMouseEvent evt, UIElement listeningElement)

@@ -137,15 +137,17 @@ namespace Terraria.ModLoader.UI
 			foreach (string mod in mods)
 			{
 				bool publishable = false;
+				DateTime lastBuildTime = new DateTime();
 				foreach (TmodFile file in modFiles)
 				{
 					if (Path.GetFileNameWithoutExtension(file.path).Equals(Path.GetFileName(mod)))
 					{
+						lastBuildTime = File.GetLastWriteTime(file.path);
 						publishable = true;
 						break;
 					}
 				}
-				modList.Add(new UIModSourceItem(mod, publishable));
+				modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
 			}
 		}
 	}
