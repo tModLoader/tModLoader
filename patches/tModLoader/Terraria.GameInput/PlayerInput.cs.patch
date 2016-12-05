@@ -43,14 +43,12 @@
  		public static void Initialize()
  		{
  			Main.InputProfiles.OnProcessText += new Preferences.TextProcessAction(PlayerInput.PrettyPrintProfiles);
-@@ -486,8 +_,15 @@
- 			PlayerInput._canReleaseRebindingLock = true;
+@@ -487,7 +_,14 @@
  			PlayerInput.VerifyBuildingMode();
  			PlayerInput.MouseInput();
--			PlayerInput.KeyboardInput();
+ 			PlayerInput.KeyboardInput();
 -			PlayerInput.GamePadInput();
-+			PlayerInput.KeyboardInput(); 
-+			// ugly hack: While reloading,  Main.player[Main.myPlayer]'s Selected item might be a mod item, so 
++			// ugly hack: While reloading,  Main.player[Main.myPlayer]'s Selected item might be a mod item, so
 +			// bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
 +			// Will thrown an index out of range.
 +			try

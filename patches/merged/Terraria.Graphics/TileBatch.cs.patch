@@ -20,7 +20,7 @@
  		private struct SpriteData
  		{
  			public Vector4 Source;
-@@ -32,9 +_,106 @@
+@@ -32,9 +_,109 @@
  		private Texture2D[] _spriteTextures;
  
  		private int _queuedSpriteCount;
@@ -97,7 +97,10 @@
 +
 +			public void AddBatch(TileBatch.BatchDrawInfo batch)
 +			{
-+				this.BatchDraws[this.BatchDrawCount++] = batch;
++				TileBatch.BatchDrawInfo[] arg_18_0 = this.BatchDraws;
++				int batchDrawCount = this.BatchDrawCount;
++				this.BatchDrawCount = batchDrawCount + 1;
++				arg_18_0[batchDrawCount] = batch;
 +			}
 +		}
 +

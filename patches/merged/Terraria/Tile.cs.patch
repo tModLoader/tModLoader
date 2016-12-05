@@ -1,0 +1,16 @@
+--- src/decompiled\Terraria\Tile.cs
++++ src/merged\Terraria\Tile.cs
+@@ -1,8 +_,12 @@
+ using Microsoft.Xna.Framework;
+ using System;
++using System.Runtime.InteropServices;
+ 
+ namespace Terraria
+ {
++#if !WINDOWS
++	[StructLayout(LayoutKind.Sequential, Pack = 1)]
++#endif
+ 	public class Tile
+ 	{
+ 		public const int Type_Solid = 0;
+

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Utilities\PlatformUtilities.cs
 +++ src/tModLoader\Terraria.Utilities\PlatformUtilities.cs
-@@ -92,7 +_,8 @@
+@@ -110,7 +_,8 @@
  		{
  #if WINDOWS
  			string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "My Games");
@@ -10,7 +10,7 @@
  #endif
  #if MAC
  			string text = Environment.GetEnvironmentVariable("HOME");
-@@ -101,7 +_,8 @@
+@@ -119,7 +_,8 @@
  				return ".";
  			}
  			text += "/Library/Application Support";
@@ -20,7 +20,7 @@
  #endif
  #if LINUX
  			string text = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-@@ -114,7 +_,8 @@
+@@ -132,7 +_,8 @@
  				}
  				text += "/.local/share";
   			}
@@ -30,13 +30,4 @@
  #endif
  		}
  		#if !WINDOWS
-@@ -122,7 +_,7 @@
- 		{
- 			IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, imgWidth, imgHeight, 32, 255u, 65280u, 16711680u, 4278190080u);
- 			SDL.SDL_LockSurface(intPtr);
--			PlatformUtilties.SDL_Surface* ptr = (PlatformUtilties.SDL_Surface*)((void*)intPtr);
-+			PlatformUtilities.SDL_Surface* ptr = (PlatformUtilities.SDL_Surface*)((void*)intPtr);
- 			Marshal.Copy(data, 0, ptr->pixels, width * height * 4);
- 			SDL.SDL_UnlockSurface(intPtr);
- 			data = null;
 

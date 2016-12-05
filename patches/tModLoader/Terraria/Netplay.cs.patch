@@ -72,19 +72,6 @@
  			if (Netplay.portForwardOpen)
  			{
  				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
-@@ -220,9 +_,9 @@
- 				catch
- 				{
- #if MAC
--                    Thread.Sleep(200);
--                    Netplay.Connection.Socket.Close();
--                    Netplay.Connection.Socket = new TcpSocket();
-+					Thread.Sleep(200);
-+					Netplay.Connection.Socket.Close();
-+					Netplay.Connection.Socket = new TcpSocket();
- #endif
- 					if (!Netplay.disconnect && Main.gameMenu)
- 					{
 @@ -258,7 +_,7 @@
  			}
  			Netplay.disconnect = false;

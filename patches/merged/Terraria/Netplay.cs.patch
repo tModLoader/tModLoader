@@ -70,20 +70,18 @@
  		}
  
  		public static string GetLocalIPAddress()
-@@ -200,7 +_,12 @@
+@@ -200,6 +_,11 @@
  				}
  				catch
  				{
--					if (!Netplay.disconnect && Main.gameMenu)
 +#if MAC
-+                    Thread.Sleep(200);
-+                    Netplay.Connection.Socket.Close();
-+                    Netplay.Connection.Socket = new TcpSocket();
++					Thread.Sleep(200);
++					Netplay.Connection.Socket.Close();
++					Netplay.Connection.Socket = new TcpSocket();
 +#endif
-+                    if (!Netplay.disconnect && Main.gameMenu)
+ 					if (!Netplay.disconnect && Main.gameMenu)
  					{
  						flag = true;
- 					}
 @@ -741,8 +_,20 @@
  
  		public static void Initialize()
