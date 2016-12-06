@@ -42,3 +42,7 @@ Change DualUseWeapon Sprite
   -Packet 34 now reads and sends the same amount of bytes regardless of if a server or client send it.
 ✔ -Renamed Player.HasBuff to Player.FindBuffIndex
   -Cut out a bunch of NPC Update / AI methods into smaller ones, this was mainly to fix linux servers crashing in vanilla but worth mentioning.
+  -added PlayerDeathreason.ByCustomReason(string reasonText) (so you can write your own custom reasons, only for english)
+  -added float[] ProjectileID.Sets.YoyosLifeTimeMultiplier , allows setting custom yoyo lifetime durations, defaults to -1 which is infinite
+  -added float[] ProjectileID.Sets.YoyosMaximumRange , allows to set yoyo custom maximum range, defaults to 200
+  -added float[] ProjectileID.Sets.YoyosTopSpeed , allows to set the yoyo's speed, defaults to 10
