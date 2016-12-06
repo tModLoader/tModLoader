@@ -2862,6 +2862,14 @@
  											{
  												Main.player[Main.myPlayer].DelBuff(l);
  												l = -1;
+@@ -34553,6 +_,7 @@
+ 								Main.PlaySound(12, -1, -1, 1, 1f, 0f);
+ 								return;
+ 							}
++							NPCLoader.OnChatButtonClicked(true);
+ 						}
+ 					}
+ 					else if (Main.npcChatFocus3 && Main.player[Main.myPlayer].talkNPC >= 0)
 @@ -34612,6 +_,7 @@
  							Main.HelpText();
  							Main.npcChatText = Lang.BartenderHelpText(Main.npc[Main.player[Main.myPlayer].talkNPC]);
@@ -2870,14 +2878,6 @@
  					}
  				}
  			}
-@@ -34894,6 +_,7 @@
- 									Main.PlaySound(12, -1, -1, 1, 1f, 0f);
- 								}
- 							}
-+							NPCLoader.OnChatButtonClicked(true);
- 						}
- 					}
- 				}
 @@ -35369,14 +_,13 @@
  							int num31 = (int)(Main.player[Main.myPlayer].manaSickReduction * 100f) + 1;
  							Main.buffString = Main.buffString + num31 + "%";

@@ -1587,6 +1587,7 @@ namespace Terraria.ModLoader
 			{
 				Main.npcTexture[npc.npc.type] = ModLoader.GetTexture(npc.texture);
 				Main.npcName[npc.npc.type] = npc.npc.name;
+				Main.npcNameEnglish[npc.npc.type] = npc.npc.name;
 				NPCLoader.SetupNPCInfo(npc.npc);
 				npc.SetDefaults();
 				if (npc.npc.lifeMax > 32767 || npc.npc.boss)
