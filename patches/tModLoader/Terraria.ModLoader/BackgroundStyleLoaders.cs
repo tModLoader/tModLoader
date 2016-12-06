@@ -144,6 +144,7 @@ namespace Terraria.ModLoader
 
 		public static void DrawFarTexture()
 		{
+			// TODO: Causes background to flicker during load because Main.bgAlpha2 is resized after surfaceBgStyles is added to in AutoLoad.
 			foreach (var style in surfaceBgStyles)
 			{
 				int slot = style.Slot;
