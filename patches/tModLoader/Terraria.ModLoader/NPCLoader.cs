@@ -193,6 +193,7 @@ namespace Terraria.ModLoader
 			{
 				Main.NPCLoaded[k] = true;
 				Main.npcFrameCount[k] = 1;
+				NPCID.Sets.TrailingMode[k] = -1;
 				NPCID.Sets.StatueSpawnedDropRarity[k] = -1f;
 				NPCID.Sets.TrailCacheLength[k] = 10;
 				NPCID.Sets.DangerDetectRange[k] = -1;

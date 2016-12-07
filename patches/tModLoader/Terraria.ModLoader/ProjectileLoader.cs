@@ -79,6 +79,10 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.projHook, nextProjectile);
 			Array.Resize(ref Main.projFrames, nextProjectile);
 			Array.Resize(ref Main.projPet, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.YoyosLifeTimeMultiplier, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.YoyosMaximumRange, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.YoyosTopSpeed, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.CanDistortWater, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.MinionShot, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.SentryShot, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.ForcePlateDetection, nextProjectile);
@@ -96,6 +100,10 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ProjectileID.Sets.NoLiquidDistortion, nextProjectile);
 			for (int k = ProjectileID.Count; k < nextProjectile; k++)
 			{
+				ProjectileID.Sets.YoyosLifeTimeMultiplier[k] = -1;
+				ProjectileID.Sets.YoyosMaximumRange[k] = 200f;
+				ProjectileID.Sets.YoyosTopSpeed[k] = 10f;
+				ProjectileID.Sets.CanDistortWater[k] = true;
 				Main.projectileLoaded[k] = true;
 				Main.projFrames[k] = 1;
 				ProjectileID.Sets.TrailingMode[k] = -1;

@@ -174,6 +174,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.Conversion.Sandstone, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Thorn, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Moss, nextTile);
+			Array.Resize(ref TileID.Sets.ForAdvancedCollision.ForSandshark, nextTile);
 			Array.Resize(ref TileID.Sets.Platforms, nextTile);
 			Array.Resize(ref TileID.Sets.DrawsWalls, nextTile);
 			Array.Resize(ref TileID.Sets.GemsparkFramingTypes, nextTile);

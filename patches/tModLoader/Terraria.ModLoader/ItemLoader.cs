@@ -180,6 +180,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ItemID.Sets.SingleUseInGamepad, nextItem);
 			for (int k = ItemID.Count; k < nextItem; k++)
 			{
+				ItemID.Sets.BannerStrength[k] = new ItemID.BannerEffect(1f);
+				ItemID.Sets.KillsToBanner[k] = 50;
 				Item.itemCaches[k] = -1;
 				//ItemID.Sets.TextureCopyLoad[k] = -1;
 				ItemID.Sets.ExtractinatorMode[k] = -1;
