@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -98,6 +_,7 @@
+@@ -103,6 +_,7 @@
  			if (!FileUtilities.Exists(text, isCloudSave))
  			{
  				Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
@@ -16,7 +16,7 @@
  				return;
  			}
  			using (MemoryStream memoryStream = new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave)))
-@@ -117,6 +_,7 @@
+@@ -122,6 +_,7 @@
  							{
  								MapHelper.LoadMapVersion2(binaryReader, num);
  							}
