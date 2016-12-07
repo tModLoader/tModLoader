@@ -1,14 +1,13 @@
 --- src/merged\Terraria.ID\SetFactory.cs
 +++ src/Terraria\Terraria.ID\SetFactory.cs
-@@ -71,18 +_,19 @@
+@@ -90,18 +_,19 @@
  			return result;
  		}
  
 -		public void Recycle<T>(T[] buffer)
-+		public void Recycle(bool[] buffer)
- 		{
- 			lock (this._queueLock)
- 			{
+-		{
+-			lock (this._queueLock)
+-			{
 -				if (typeof(T).Equals(typeof(bool)))
 -				{
 -					this._boolBufferCache.Enqueue((bool[])buffer);
@@ -17,6 +16,10 @@
 -				{
 -					this._intBufferCache.Enqueue((int[])buffer);
 -				}
++		public void Recycle(bool[] buffer)
++		{
++			lock (this._queueLock)
++			{
 +				this._boolBufferCache.Enqueue(buffer);
 +			}
 +		}
@@ -29,7 +32,7 @@
  			}
  		}
  
-@@ -156,7 +_,7 @@
+@@ -193,7 +_,7 @@
  			{
  				for (int j = 0; j < inputs.Length; j += 2)
  				{
