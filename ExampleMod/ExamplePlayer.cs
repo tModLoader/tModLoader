@@ -490,11 +490,10 @@ namespace ExampleMod
 					return false;
 				}
 			}
-			// TODO, make this possible again.
-			/*if (healHurt > 0 && damage == 10.0 && hitDirection == 0 && deathText == " " + Lang.dt[1])
+			if (healHurt > 0 && damage == 10.0 && hitDirection == 0 && damageSource.SourceOtherIndex == 8)
 			{
-				deathText = " was dissolved by holy powers";
-			}*/
+				damageSource = PlayerDeathReason.ByCustomReason(" was dissolved by holy powers");
+			}
 			return true;
 		}
 
