@@ -3081,6 +3081,18 @@
  			bool flag = this.selectedItem != 58 && this.controlUseTile && !this.tileInteractionHappened && this.releaseUseItem && !this.controlUseItem && !this.mouseInterface && !CaptureManager.Instance.Active && !Main.HoveringOverAnNPC && !Main.SmartInteractShowingGenuine;
  			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3384)
  			{
+@@ -23209,6 +_,11 @@
+ 				this.controlUseItem = true;
+ 			}
+ 			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[this.inventory[this.selectedItem].shoot])
++			{
++				this.altFunctionUse = 1;
++				this.controlUseItem = true;
++			}
++			if(flag && this.altFunctionUse == 0 && ItemLoader.AltFunctionUse(this.inventory[this.selectedItem], this))
+ 			{
+ 				this.altFunctionUse = 1;
+ 				this.controlUseItem = true;
 @@ -23329,6 +_,9 @@
  
  		public void ScrollHotbar(int Offset)
