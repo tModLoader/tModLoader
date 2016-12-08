@@ -331,6 +331,18 @@
  					num35 = 6;
  					num36 = 0.4f;
  				}
+@@ -40516,6 +_,11 @@
+ 						num36 = 0.1f;
+ 					}
+ 				}
++				NPCLoader.TownNPCAttackStrength(this, ref num32, ref knockBack2);
++				NPCLoader.TownNPCAttackCooldown(this, ref num34, ref maxValue3);
++				NPCLoader.TownNPCAttackProj(this, ref num31, ref num33);
++				NPCLoader.TownNPCAttackProjSpeed(this, ref scaleFactor2, ref num35, ref num36);
++				NPCLoader.TownNPCAttackShoot(this, ref flag17);
+ 				if (Main.expertMode)
+ 				{
+ 					num32 = (int)((float)num32 * Main.expertNPCDamage);
 @@ -40626,21 +_,25 @@
  				if (this.type == 54)
  				{
@@ -357,6 +369,18 @@
  					maxValue4 = 5;
  					knockBack3 = 3f;
  					num45 = 20f;
+@@ -40666,6 +_,11 @@
+ 					maxValue4 = 1;
+ 					knockBack3 = 3f;
+ 				}
++				NPCLoader.TownNPCAttackStrength(this, ref num42, ref knockBack3);
++				NPCLoader.TownNPCAttackCooldown(this, ref num44, ref maxValue4);
++				NPCLoader.TownNPCAttackProj(this, ref num41, ref num43);
++				NPCLoader.TownNPCAttackProjSpeed(this, ref scaleFactor3, ref num45, ref num48);
++				NPCLoader.TownNPCAttackMagic(this, ref num47);
+ 				if (Main.expertMode)
+ 				{
+ 					num42 = (int)((float)num42 * Main.expertNPCDamage);
 @@ -40790,11 +_,15 @@
  				else if (this.type == 353)
  				{
