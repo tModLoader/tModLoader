@@ -1,0 +1,62 @@
+--- src/Terraria\Terraria\TexturePackSupport.cs
++++ src/tModLoader\Terraria\TexturePackSupport.cs
+@@ -5,6 +_,7 @@
+ using System.Collections.Generic;
+ using System.Diagnostics;
+ using System.IO;
++using System.Linq;
+ 
+ namespace Terraria
+ {
+@@ -12,7 +_,7 @@
+ 	{
+ 		public static bool Enabled = false;
+ 		public static int ReplacedTextures = 0;
+-		private static ZipFile texturePack;
++		private static List<ZipFile> texturePacks = new List<ZipFile>();
+ 		private static Dictionary<string, ZipEntry> entries = new Dictionary<string, ZipEntry>();
+ 		private static Stopwatch test = new Stopwatch();
+ 
+@@ -46,6 +_,7 @@
+ 			return texture2D;
+ 		}
+ 
++		/*
+ 		public static void FindTexturePack()
+ 		{
+ 			string savePath = Main.SavePath;
+@@ -61,5 +_,33 @@
+ 				TexturePackSupport.entries.Add(current.FileName.Replace("/", "\\"), current);
+ 			}
+ 		}
++		*/
++
++		// TODO: Implement a Priority System (similar to Mods UI menu), save priority? For now, alphabetical, so later in alphabet actually takes priority. Or, we can ignore entries that already exist in dictionary to keep it A to Z
++		public static void FindTexturePacks()
++		{
++			string texturePacksPath = Path.Combine(Main.SavePath, "TexturePacks");
++			if (Enabled)
++			{
++				Directory.CreateDirectory(texturePacksPath);
++			}
++
++			TexturePackSupport.entries.Clear();
++			TexturePackSupport.texturePacks.Clear();
++			if (Directory.Exists(texturePacksPath))
++			{
++				List<string> files = Directory.GetFiles(texturePacksPath).ToList();
++				files.Sort();
++				foreach (string fileName in files)
++				{
++					ZipFile zipFile = ZipFile.Read(File.OpenRead(fileName));
++					TexturePackSupport.texturePacks.Add(zipFile);
++					foreach (ZipEntry current in zipFile.Entries)
++					{
++						TexturePackSupport.entries.Add(current.FileName.Replace("/", "\\"), current);
++					}
++				}
++			}
++		}
+ 	}
+ }
+

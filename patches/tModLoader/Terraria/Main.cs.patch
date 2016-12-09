@@ -2186,8 +2186,9 @@
  			{
  				TexturePackSupport.Enabled = true;
  			}
+-			TexturePackSupport.FindTexturePack();
 +
- 			TexturePackSupport.FindTexturePack();
++			TexturePackSupport.FindTexturePacks();
 +			for (int i = 1; i < 42; i++)
 +			{
 +				Main.music[i] = new MusicWrapper();
@@ -40877,9 +40878,4 @@
  			Main.menuMode = 888;
  			Main._blockFancyUIWhileLoading = true;
  			Main.LoadPlayers();
-@@ -60324,4 +_,4 @@
- 			}
- 		}
- 	}
--}
-+}
+

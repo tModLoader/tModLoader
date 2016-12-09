@@ -182,7 +182,7 @@ namespace Terraria.ModLoader
 			{
 				offY = 210;
 				spacing = 42;
-				numButtons = 3;
+				numButtons = 4;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++)
 				{
@@ -202,6 +202,14 @@ namespace Terraria.ModLoader
 				{
 					Main.PlaySound(12, -1, -1, 1);
 					ModNet.onlyDownloadSignedMods = !ModNet.onlyDownloadSignedMods;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? "Experimental Features: On" : "Experimental Features: Off");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(12, -1, -1, 1);
+					Main.UseExperimentalFeatures = !Main.UseExperimentalFeatures;
 				}
 
 				buttonIndex++;
