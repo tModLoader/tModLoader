@@ -18,6 +18,15 @@
  					break;
  				case 20:
  				{
+@@ -677,7 +_,7 @@
+ 					}
+ 					else
+ 					{
+-						writer.Write(0);
++						writer.Write((short)0);
+ 					}
+ 					break;
+ 				case 35:
 @@ -1616,7 +_,7 @@
  								{
  									short[] arg_1FB_0 = array2;

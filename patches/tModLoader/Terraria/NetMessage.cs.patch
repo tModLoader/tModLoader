@@ -90,17 +90,17 @@
  							break;
  						}
  					case 33:
-@@ -668,6 +_,10 @@
- 						writer.Write((short)number2);
- 						writer.Write((short)number3);
- 						writer.Write((short)number4);
+@@ -677,6 +_,10 @@
+ 						else
+ 						{
+ 							writer.Write((short)0);
++						}
 +						if (number >= 100)
 +						{
 +							writer.Write((ushort)number6);
-+						}
- 						if (Main.netMode == 2)
- 						{
- 							Netplay.GetSectionX((int)number2);
+ 						}
+ 						break;
+ 					case 35:
 @@ -692,6 +_,10 @@
  							writer.Write(player4.zone2);
  							writer.Write(player4.zone3);

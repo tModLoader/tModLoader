@@ -32,17 +32,17 @@ Change DualUseWeapon Sprite
 ✔ -Added Player.HeldItem - returns player.inventory[player.selectedItem]
 ✔ -Added int[] NPCID.Sets.TrailingMode - controls how your npc updates its shadows/old position and rotation arrays for drawing purposes
   -Added OnUpdate for UIElements
-  -Added a bunch of Player.armorEffectDraw____  - setting those in PlayerFrame() will make the player use visual effects such as shadow trail, pulsing and more.
+✔ -Added a bunch of Player.armorEffectDraw____  - setting those in PlayerFrame() will make the player use visual effects such as shadow trail, pulsing and more.
   -Added Item.IsAir return item.type <= 0 || item.stack <= 0
   -Deprecated Net Messages 26, 44 - they were replaced by 117 & 118 respectively.
   -Changed the arguments for Player.Hurt & Player.KillMe - both now contains a mandatory PlayerDeathReason damage source.
 ✔ -Standardized all ammo IDs to use Item IDS of the first ammo in their type! Also added AmmoID class so you can just write names instead of having to look existing ammos up!
   -Added NPC.lifeRegenExpectedLossPerSecond - it defaults at '-1' , setting it to a value higher than 0 (such as 5) will make enemy DOT debuffs use the number for their number popup ticks...
   -Added 'melee hit' damage scaling for all appropriate types of damage instead of just melee (so you can have a swinging magic weapon with proper crit chance and damage)
-  -Packet 34 now reads and sends the same amount of bytes regardless of if a server or client send it.
+✔ -Packet 34 now reads and sends the same amount of bytes regardless of if a server or client send it.
 ✔ -Renamed Player.HasBuff to Player.FindBuffIndex
-  -Cut out a bunch of NPC Update / AI methods into smaller ones, this was mainly to fix linux servers crashing in vanilla but worth mentioning.
-  -added PlayerDeathreason.ByCustomReason(string reasonText) (so you can write your own custom reasons, only for english)
-  -added float[] ProjectileID.Sets.YoyosLifeTimeMultiplier , allows setting custom yoyo lifetime durations, defaults to -1 which is infinite
-  -added float[] ProjectileID.Sets.YoyosMaximumRange , allows to set yoyo custom maximum range, defaults to 200
-  -added float[] ProjectileID.Sets.YoyosTopSpeed , allows to set the yoyo's speed, defaults to 10
+✔ -Cut out a bunch of NPC Update / AI methods into smaller ones, this was mainly to fix linux servers crashing in vanilla but worth mentioning.
+✔ -added PlayerDeathreason.ByCustomReason(string reasonText) (so you can write your own custom reasons, only for english)
+✔ -added float[] ProjectileID.Sets.YoyosLifeTimeMultiplier , allows setting custom yoyo lifetime durations, defaults to -1 which is infinite
+✔ -added float[] ProjectileID.Sets.YoyosMaximumRange , allows to set yoyo custom maximum range, defaults to 200
+✔ -added float[] ProjectileID.Sets.YoyosTopSpeed , allows to set the yoyo's speed, defaults to 10
