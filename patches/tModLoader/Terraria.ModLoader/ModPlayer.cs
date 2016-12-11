@@ -371,7 +371,7 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		public virtual  void ProcessTriggers(TriggersSet triggersSet)
+		public virtual void ProcessTriggers(TriggersSet triggersSet)
 		{
 		}
 	}

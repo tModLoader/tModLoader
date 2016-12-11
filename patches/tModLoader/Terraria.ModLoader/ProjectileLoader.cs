@@ -348,13 +348,13 @@ namespace Terraria.ModLoader
 		{
 			foreach (var hook in HookCanCutTiles)
 			{
-				return (hook(projectile));
+				bool? canCutTiles = hook(projectile);
+				if (canCutTiles.HasValue)
+				{
+					return canCutTiles.Value;
+				}
 			}
-			if (projectile.modProjectile != null)
-			{
-				return projectile.modProjectile.CanCutTiles();
-			}
-			return null;
+			return projectile.modProjectile?.CanCutTiles();
 		}
 
 		//in Terraria.Projectile.Kill before if statements determining kill behavior add
