@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.Default;
 using Terraria.DataStructures;
+using Terraria.GameInput;
 
 namespace Terraria.ModLoader
 {
@@ -480,6 +481,14 @@ namespace Terraria.ModLoader
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				modPlayer.GetWeaponDamage(item, ref damage);
+			}
+		}
+
+		public static void ProcessTriggers(Player player, TriggersSet triggersSet)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.ProcessTriggers(triggersSet);
 			}
 		}
 

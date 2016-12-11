@@ -9,6 +9,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.NPCs.PuritySpirit;
 using Terraria.ModLoader.IO;
+using Terraria.GameInput;
 
 namespace ExampleMod
 {
@@ -161,7 +162,7 @@ namespace ExampleMod
 			}
 		}
 
-		public override void SetControls()
+		public override void ProcessTriggers(TriggersSet triggersSet)
 		{
 			if (ExampleMod.RandomBuffHotKey.JustPressed)
 			{

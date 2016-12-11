@@ -362,7 +362,7 @@ namespace ExampleMod.NPCs.Abomination
 			dontDamage = (player.Center - npc.Center).Length() > sphereRadius;
 		}
 
-		public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit)
+		public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
 			Player player = Main.player[projectile.owner];
 			dontDamage = player.active && (player.Center - npc.Center).Length() > sphereRadius;

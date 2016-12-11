@@ -786,7 +786,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			return CanBeHitByPlayer(Main.player[projectile.owner]);
 		}
 
-		public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit)
+		public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
 			if (ProjectileID.Sets.StardustDragon[projectile.type])
 			{
