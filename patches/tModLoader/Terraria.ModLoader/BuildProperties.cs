@@ -55,8 +55,8 @@ namespace Terraria.ModLoader
 		internal Version version = new Version(1, 0);
 		internal string displayName = "";
 		internal bool noCompile = false;
-		internal bool hideCode = true;
-		internal bool hideResources = true;
+		internal bool hideCode = false;
+		internal bool hideResources = false;
 		internal bool includeSource = false;
 		internal bool includePDB = false;
 		internal bool editAndContinue = false;
@@ -150,10 +150,10 @@ namespace Terraria.ModLoader
 						properties.noCompile = value.ToLower() == "true";
 						break;
 					case "hideCode":
-						properties.hideCode = value.ToLower() != "false";
+						properties.hideCode = value.ToLower() == "true";
 						break;
 					case "hideResources":
-						properties.hideResources = value.ToLower() != "false";
+						properties.hideResources = value.ToLower() == "true";
 						break;
 					case "includeSource":
 						properties.includeSource = value.ToLower() == "true";
