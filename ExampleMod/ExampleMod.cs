@@ -149,7 +149,7 @@ namespace ExampleMod
 		{
 			if (!Main.gameMenu)
 			{
-				ExampleWorld world = (ExampleWorld)GetModWorld("ExampleWorld");
+				ExampleWorld world = GetModWorld<ExampleWorld>();
 				if (world.VolcanoTremorTime > 0)
 				{
 					if (world.VolcanoTremorTime % ShakeLength == 0)
@@ -532,7 +532,7 @@ namespace ExampleMod
 				// This message sent by the server to initialize the Volcano Tremor on clients
 				case ExampleModMessageType.SetTremorTime:
 					int tremorTime = reader.ReadInt32();
-					ExampleWorld world = (ExampleWorld)GetModWorld("ExampleWorld");
+					ExampleWorld world = GetModWorld<ExampleWorld>();
 					world.VolcanoTremorTime = tremorTime;
 					break;
 				// This message sent by the server to initialize the Volcano Rubble.

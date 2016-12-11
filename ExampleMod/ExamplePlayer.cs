@@ -191,7 +191,7 @@ namespace ExampleMod
 				}
 				if (heroLives == 1)
 				{
-					player.AddBuff(mod.BuffType("HeroOne"), 2);
+					player.AddBuff(mod.BuffType<Buffs.HeroOne>(), 2); // Consider using this alternate method call for maintainable code.
 				}
 				else if (heroLives == 2)
 				{

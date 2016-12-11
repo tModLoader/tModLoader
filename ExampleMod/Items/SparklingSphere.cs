@@ -52,7 +52,7 @@ namespace ExampleMod.Items
 			Vector2 position = GetLightPosition(player) - new Vector2(20f, 20f);
 			if (Main.rand.Next(10) == 0)
 			{
-				Dust.NewDust(player.position, player.width, player.height, mod.DustType("Sparkle"));
+				Dust.NewDust(player.position, player.width, player.height, mod.DustType<Dusts.Sparkle>());
 			}
 			if (Main.rand.Next(3) == 0)
 			{

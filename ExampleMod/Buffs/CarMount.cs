@@ -15,7 +15,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.mount.SetMount(mod.MountType("Car"), player);
+			player.mount.SetMount(mod.MountType<Mounts.Car>(), player);
 			player.buffTime[buffIndex] = 10;
 		}
 	}

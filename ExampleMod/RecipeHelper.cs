@@ -48,9 +48,10 @@ namespace ExampleMod
 			recipe.AddTile(null, "ExampleWorkbench");
 			recipe.SetResult(ItemID.MechanicalSkull, 20);
 			recipe.AddRecipe();
+			// Here we see another way to retrieve type ids from classnames. Useful for those who program in an IDE who wish to avoid spelling mistakes.
 			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "BossItem", 10);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddIngredient(mod.ItemType<Items.BossItem>(), 10);
+			recipe.AddTile(mod.TileType<Tiles.ExampleWorkbench>());
 			recipe.SetResult(ItemID.LihzahrdPowerCell, 20);
 			recipe.AddRecipe();
 		}
