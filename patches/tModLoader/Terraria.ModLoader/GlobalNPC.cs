@@ -125,7 +125,7 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit)
+		public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
 		}
 

@@ -30,7 +30,7 @@ namespace Terraria.ModLoader
 		private static Func<Projectile, bool>[] HookCanDamage;
 		private static Func<Projectile, bool>[] HookMinionContactDamage;
 		private static Func<Projectile, NPC, bool?>[] HookCanHitNPC;
-		private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit);
+		private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection);
 		private static DelegateModifyHitNPC[] HookModifyHitNPC;
 		private static Action<Projectile, NPC, int, float, bool>[] HookOnHitNPC;
 		private static Func<Projectile, Player, bool>[] HookCanHitPvp;
@@ -448,13 +448,13 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 		//in Terraria.Projectile.Damage before calling StatusNPC call this and add local knockback variable
-		public static void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit)
+		public static void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
-			projectile.modProjectile?.ModifyHitNPC(target, ref damage, ref knockback, ref crit);
+			projectile.modProjectile?.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
 
 			foreach (var hook in HookModifyHitNPC)
 			{
-				hook(projectile, target, ref damage, ref knockback, ref crit);
+				hook(projectile, target, ref damage, ref knockback, ref crit, ref hitDirection);
 			}
 		}
 		//in Terraria.Projectile.Damage before penetration check for NPCs call this

@@ -50,7 +50,7 @@ namespace Terraria.ModLoader
 		private static DelegateModifyHitByItem[] HookModifyHitByItem;
 		private static Action<NPC, Player, Item, int, float, bool>[] HookOnHitByItem;
 		private static Func<NPC, Projectile, bool?>[] HookCanBeHitByProjectile;
-		private delegate void DelegateModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit);
+		private delegate void DelegateModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection);
 		private static DelegateModifyHitByProjectile[] HookModifyHitByProjectile;
 		private static Action<NPC, Projectile, int, float, bool>[] HookOnHitByProjectile;
 		private delegate bool DelegateStrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit);
@@ -728,13 +728,13 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 		//in Terraria.Projectile.Damage call after ProjectileLoader.ModifyHitNPC
-		public static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit)
+		public static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
-			npc.modNPC?.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit);
+			npc.modNPC?.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit, ref hitDirection);
 
 			foreach (var hook in HookModifyHitByProjectile)
 			{
-				hook(npc, projectile, ref damage, ref knockback, ref crit);
+				hook(npc, projectile, ref damage, ref knockback, ref crit, ref hitDirection);
 			}
 		}
 		//in Terraria.Projectile.Damage call after ProjectileLoader.OnHitNPC

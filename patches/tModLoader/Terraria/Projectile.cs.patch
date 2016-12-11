@@ -183,17 +183,34 @@
  									{
  										num8 = (int)((float)num8 * 0.75f);
  									}
-@@ -9247,6 +_,10 @@
+@@ -9247,6 +_,15 @@
  										Main.player[this.owner].parryDamageBuff = false;
  										Main.player[this.owner].ClearBuff(198);
  									}
 +									float knockback = this.knockBack;
-+									ProjectileLoader.ModifyHitNPC(this, Main.npc[i], ref num8, ref knockback, ref flag5);
-+									NPCLoader.ModifyHitByProjectile(Main.npc[i], this, ref num8, ref knockback, ref flag5);
-+									PlayerHooks.ModifyHitNPCWithProj(this, Main.npc[i], ref num8, ref knockback, ref flag5);
++									int hitDirection = this.direction;
++									if (this.type == 697 || this.type == 699 || this.type == 707 || this.type == 708)
++									{
++										hitDirection = ((Main.player[this.owner].Center.X < Main.npc[i].Center.X) ? 1 : -1);
++									}
++									ProjectileLoader.ModifyHitNPC(this, Main.npc[i], ref num8, ref knockback, ref flag5, ref hitDirection);
++									NPCLoader.ModifyHitByProjectile(Main.npc[i], this, ref num8, ref knockback, ref flag5, ref hitDirection);
++									PlayerHooks.ModifyHitNPCWithProj(this, Main.npc[i], ref num8, ref knockback, ref flag5, ref hitDirection);
  									this.StatusNPC(i);
  									if (flag4 && this.type != 221 && this.type != 227 && this.type != 614)
  									{
+@@ -9257,11 +_,6 @@
+ 										this.ai[1] = -1f;
+ 										this.netUpdate = true;
+ 									}
+-									int hitDirection = this.direction;
+-									if (this.type == 697 || this.type == 699 || this.type == 707 || this.type == 708)
+-									{
+-										hitDirection = ((Main.player[this.owner].Center.X < Main.npc[i].Center.X) ? 1 : -1);
+-									}
+ 									if (flag4 && !this.hostile && Main.player[this.owner].armorPenetration > 0)
+ 									{
+ 										num8 += Main.npc[i].checkArmorPenetration(Main.player[this.owner].armorPenetration);
 @@ -9269,11 +_,11 @@
  									int num21;
  									if (flag4)
