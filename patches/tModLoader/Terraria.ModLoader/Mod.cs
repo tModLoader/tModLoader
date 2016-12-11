@@ -1159,6 +1159,11 @@ namespace Terraria.ModLoader
 			return mountData.Type;
 		}
 
+		public int MountType<T>() where T : ModMountData
+		{
+			return MountType(typeof(T).Name);
+		}
+
 		public void AddModWorld(string name, ModWorld modWorld)
 		{
 			modWorld.Name = name;
@@ -1389,6 +1394,11 @@ namespace Terraria.ModLoader
 		public int GetGoreSlot(string name)
 		{
 			return ModGore.GetGoreSlot(Name + '/' + name);
+		}
+
+		public int GetGoreSlot<T>() where T : ModGore
+		{
+			return GetGoreSlot(typeof(T).Name);
 		}
 
 		private void AutoloadGores(IList<Type> modGores)
