@@ -1,12 +1,49 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -46,11 +_,15 @@
+@@ -17,40 +_,52 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
+     <OutputPath>bin\x86\WindowsRelease\</OutputPath>
+     <DefineConstants>CLIENT; WINDOWS</DefineConstants>
++    <PlatformTarget>x86</PlatformTarget>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerRelease|x86'">
+     <OutputPath>bin\x86\WindowsServerRelease\</OutputPath>
+     <DefineConstants>SERVER; WINDOWS</DefineConstants>
++    <PlatformTarget>x86</PlatformTarget>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsDebug|x86'">
+     <OutputPath>bin\x86\WindowsDebug\</OutputPath>
+     <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
++    <PlatformTarget>x86</PlatformTarget>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
+     <DefineConstants>DEBUG;SERVER; WINDOWS</DefineConstants>
+     <OutputPath>bin\x86\WindowsServerDebug\</OutputPath>
++    <PlatformTarget>x86</PlatformTarget>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
+     <OutputPath>bin\x86\MacRelease\</OutputPath>
+     <DefineConstants>CLIENT; MAC</DefineConstants>
++    <PlatformTarget>x64</PlatformTarget>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacServerRelease|x86'">
+     <OutputPath>bin\x86\MacServerRelease\</OutputPath>
+     <DefineConstants>SERVER; MAC</DefineConstants>
++    <PlatformTarget>x64</PlatformTarget>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxRelease|x86'">
+     <OutputPath>bin\x86\LinuxRelease\</OutputPath>
+     <DefineConstants>CLIENT; LINUX</DefineConstants>
++    <PlatformTarget>x64</PlatformTarget>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxServerRelease|x86'">
      <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
      <DefineConstants>SERVER; LINUX</DefineConstants>
-   </PropertyGroup>
++    <PlatformTarget>x64</PlatformTarget>
++  </PropertyGroup>
 +  <PropertyGroup>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
-+  </PropertyGroup>
+   </PropertyGroup>
    <Choose>
      <When Condition="$(DefineConstants.Contains('DEBUG'))">
        <PropertyGroup>
@@ -181,7 +218,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -511,11 +_,59 @@
+@@ -511,11 +_,58 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -208,6 +245,7 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -240,6 +278,4 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
-+
-
++</Project>

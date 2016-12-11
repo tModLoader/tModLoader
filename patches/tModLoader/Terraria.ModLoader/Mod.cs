@@ -338,6 +338,11 @@ namespace Terraria.ModLoader
 			return item.item.type;
 		}
 
+		public int ItemType<T>() where T : ModItem
+		{
+			return ItemType(typeof(T).Name);
+		}
+
 		public void AddGlobalItem(string name, GlobalItem globalItem)
 		{
 			Type colorClass = typeof(Microsoft.Xna.Framework.Color);
@@ -580,6 +585,11 @@ namespace Terraria.ModLoader
 			return (int)tile.Type;
 		}
 
+		public int TileType<T>() where T : ModTile
+		{
+			return TileType(typeof(T).Name);
+		}
+
 		public void AddGlobalTile(string name, GlobalTile globalTile)
 		{
 			globalTile.mod = this;
@@ -732,6 +742,11 @@ namespace Terraria.ModLoader
 			}
 			return projectile.projectile.type;
 		}
+		
+		public int ProjectileType<T>() where T : ModProjectile
+		{
+			return ProjectileType(typeof(T).Name);
+		}
 
 		public void AddGlobalProjectile(string name, GlobalProjectile globalProjectile)
 		{
@@ -827,6 +842,11 @@ namespace Terraria.ModLoader
 				return 0;
 			}
 			return npc.npc.type;
+		}
+		
+		public int NPCType<T>() where T : ModNPC
+		{
+			return NPCType(typeof(T).Name);
 		}
 
 		public void AddGlobalNPC(string name, GlobalNPC globalNPC)
@@ -1153,6 +1173,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+		
+		public T GetModWorld<T>() where T : ModWorld
+		{
+			return (T)GetModWorld(typeof(T).Name);
 		}
 
 		public void AddUgBgStyle(string name, ModUgBgStyle ugBgStyle)
