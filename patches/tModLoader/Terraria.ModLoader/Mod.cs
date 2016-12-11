@@ -540,6 +540,11 @@ namespace Terraria.ModLoader
 			return dust.Type;
 		}
 
+		public int DustType<T>() where T : ModDust
+		{
+			return DustType(typeof(T).Name);
+		}
+
 		private void AutoloadDust(Type type)
 		{
 			ModDust dust = (ModDust)Activator.CreateInstance(type);
@@ -664,6 +669,11 @@ namespace Terraria.ModLoader
 				return 0;
 			}
 			return (int)wall.Type;
+		}
+
+		public int WallType<T>() where T : ModWall
+		{
+			return WallType(typeof(T).Name);
 		}
 
 		public void AddGlobalWall(string name, GlobalWall globalWall)
@@ -1006,6 +1016,11 @@ namespace Terraria.ModLoader
 				return 0;
 			}
 			return buff.Type;
+		}
+
+		public int BuffType<T>() where T : ModBuff
+		{
+			return BuffType(typeof(T).Name);
 		}
 
 		public void AddGlobalBuff(string name, GlobalBuff globalBuff)
