@@ -98,7 +98,7 @@ namespace Terraria.ModLoader.IO
 				}
 				tables.frameImportant[type] = tileTag.GetBool("framed");
 			}
-			foreach (var wallTag in tag.GetList<TagCompound>("tileMap"))
+			foreach (var wallTag in tag.GetList<TagCompound>("wallMap"))
 			{
 				ushort wall = (ushort)wallTag.GetShort("value");
 				string modName = wallTag.GetString("mod");
