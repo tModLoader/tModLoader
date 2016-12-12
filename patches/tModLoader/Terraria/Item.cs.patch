@@ -86,14 +86,25 @@
  				{
  					if (Main.itemName[i] == ItemName)
  					{
+@@ -2307,6 +_,10 @@
+ 				case 578:
+ 					return 266;
+ 			}
++			if (i >= NPCID.Count) // in NPCtoBanner method
++			{
++				return NPCLoader.GetNPC(i).banner;
++			}
+ 			return 0;
+ 		}
+ 
 @@ -2832,6 +_,10 @@
  					return 561;
  				case 266:
  					return 578;
 +			}
-+			if (i >= NPCID.Count)
++			if (i >= NPCID.Count) // in BannerToNPC method
 +			{
-+				return NPCLoader.GetNPC(i).banner; // todo: check this usage. we added return i; before.
++				return i;
  			}
  			return 0;
  		}
