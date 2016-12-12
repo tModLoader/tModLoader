@@ -16,6 +16,7 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
 		internal static readonly IList<NPCInfo> infoList = new List<NPCInfo>();
 		internal static readonly IDictionary<string, int> infoIndexes = new Dictionary<string, int>();
+		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
 		private static int vanillaSkeletonCount = NPCID.Sets.Skeletons.Count;
 		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		//in Terraria.Item.NewItem after setting Main.item[400] add
@@ -265,6 +266,7 @@ namespace Terraria.ModLoader
 			globalNPCs.Clear();
 			infoList.Clear();
 			infoIndexes.Clear();
+			bannerToItem.Clear();
 			while (NPCID.Sets.Skeletons.Count > vanillaSkeletonCount)
 			{
 				NPCID.Sets.Skeletons.RemoveAt(NPCID.Sets.Skeletons.Count - 1);

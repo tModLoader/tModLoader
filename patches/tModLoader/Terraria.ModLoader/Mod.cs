@@ -1640,6 +1640,10 @@ namespace Terraria.ModLoader
 				Main.npcNameEnglish[npc.npc.type] = npc.npc.name;
 				NPCLoader.SetupNPCInfo(npc.npc);
 				npc.SetDefaults();
+				if(npc.banner !=0)
+				{
+					NPCLoader.bannerToItem[npc.banner] = npc.bannerItem;
+				}
 				if (npc.npc.lifeMax > 32767 || npc.npc.boss)
 				{
 					Main.npcLifeBytes[npc.npc.type] = 4;
