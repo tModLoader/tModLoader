@@ -1562,7 +1562,7 @@
  						int num = 0;
  						for (int i = 0; i < list.Count; i++)
  						{
-@@ -4171,6 +_,7 @@
+@@ -4171,11 +_,20 @@
  								num = text3.Length;
  							}
  						}
@@ -1570,6 +1570,19 @@
  						int num2 = (num + 1) / 8;
  						for (int j = 0; j < list.Count; j++)
  						{
+ 							string text4 = Language.Exists("CLI." + list[j] + "_Example") ? Language.GetTextValue("CLI." + list[j] + "_Example") : Language.GetTextValue("CLI." + list[j] + "_Command");
+ 							Console.WriteLine(text4 + new string('\t', num2 - text4.Length / 8) + Language.GetTextValue("CLI." + list[j] + "_Description"));
++						}
++						Console.WriteLine("ModList" + new string('\t', num2 - "ModList".Length / 8) + "Displays a list of loaded mods.");
++					}
++					else if(text == "modlist")
++					{
++						foreach(string modname in ModLoader.ModLoader.GetLoadedMods())
++						{
++							Console.WriteLine(modname);
+ 						}
+ 					}
+ 					else if (text == Language.GetTextValue("CLI.Settle_Command"))
 @@ -4249,6 +_,7 @@
  						{
  							num3 += 54000.0;
