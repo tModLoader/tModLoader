@@ -45,6 +45,8 @@ namespace Terraria.ModLoader
 			for (int k = GoreID.Count; k < nextGore; k++)
 			{
 				Main.goreLoaded[k] = true;
+				GoreID.Sets.DisappearSpeed[k] = 1;
+				GoreID.Sets.DisappearSpeedAlpha[k] = 1;
 			}
 			foreach (string texture in gores.Keys)
 			{

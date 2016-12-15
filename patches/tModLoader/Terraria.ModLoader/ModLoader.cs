@@ -19,7 +19,7 @@ namespace Terraria.ModLoader
 	public static class ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
-		public static readonly Version version = new Version(0, 9, 0, 2);
+		public static readonly Version version = new Version(0, 9, 0, 3);
 		public static readonly string versionedName = "tModLoader v" + version;
 #if WINDOWS
 		public const bool windows = true;
@@ -170,7 +170,7 @@ namespace Terraria.ModLoader
 			TileLoader.ResizeArrays(unloading);
 			WallLoader.ResizeArrays(unloading);
 			ProjectileLoader.ResizeArrays();
-			NPCLoader.ResizeArrays();
+			NPCLoader.ResizeArrays(unloading);
 			NPCHeadLoader.ResizeAndFillArrays();
 			ModGore.ResizeAndFillArrays();
 			SoundLoader.ResizeAndFillArrays();

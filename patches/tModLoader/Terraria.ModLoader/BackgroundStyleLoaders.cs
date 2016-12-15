@@ -144,6 +144,10 @@ namespace Terraria.ModLoader
 
 		public static void DrawFarTexture()
 		{
+			if (!GlobalBgStyleLoader.loaded)
+			{
+				return;
+			}
 			// TODO: Causes background to flicker during load because Main.bgAlpha2 is resized after surfaceBgStyles is added to in AutoLoad.
 			foreach (var style in surfaceBgStyles)
 			{
@@ -173,6 +177,10 @@ namespace Terraria.ModLoader
 
 		public static void DrawMiddleTexture()
 		{
+			if (!GlobalBgStyleLoader.loaded)
+			{
+				return;
+			}
 			foreach (var style in surfaceBgStyles)
 			{
 				int slot = style.Slot;
@@ -201,6 +209,10 @@ namespace Terraria.ModLoader
 
 		public static void DrawCloseBackground(int style)
 		{
+			if (!GlobalBgStyleLoader.loaded)
+			{
+				return;
+			}
 			if (Main.bgAlpha[style] <= 0f)
 			{
 				return;

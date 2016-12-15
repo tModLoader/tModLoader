@@ -11,6 +11,7 @@ namespace Terraria.ModLoader
 {
 	public static class NPCLoader
 	{
+		internal static bool loaded = false;
 		private static int nextNPC = NPCID.Count;
 		internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
@@ -146,7 +147,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.DrawNPCs and Terraria.NPC.NPCLoot remove type too high check
 		//replace a lot of 540 immediates
 		//in Terraria.GameContent.UI.EmoteBubble make CountNPCs internal
-		internal static void ResizeArrays()
+		internal static void ResizeArrays(bool unloading)
 		{
 			Array.Resize(ref Main.NPCLoaded, nextNPC);
 			Array.Resize(ref Main.nextNPC, nextNPC);
@@ -257,10 +258,16 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookTownNPCAttackSwing, globalNPCs, g => g.TownNPCAttackSwing);
 			ModLoader.BuildGlobalHook(ref HookDrawTownAttackGun, globalNPCs, g => g.DrawTownAttackGun);
 			ModLoader.BuildGlobalHook(ref HookDrawTownAttackSwing, globalNPCs, g => g.DrawTownAttackSwing);
+
+			if (!unloading)
+			{
+				loaded = true;
+			}
 		}
 
 		internal static void Unload()
 		{
+			loaded = false;
 			npcs.Clear();
 			nextNPC = NPCID.Count;
 			globalNPCs.Clear();
