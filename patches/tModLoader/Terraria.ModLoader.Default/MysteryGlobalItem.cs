@@ -23,8 +23,8 @@ namespace Terraria.ModLoader.Default
 
 	public class MysteryGlobalItemInfo : ItemInfo
 	{
-		internal IList<TagCompound> data;
-		public bool HasData => data != null && data.Count > 0;
+		internal IList<TagCompound> data = new List<TagCompound>();
+		public bool HasData => data.Count > 0;
 
 		public override ItemInfo Clone()
 		{
