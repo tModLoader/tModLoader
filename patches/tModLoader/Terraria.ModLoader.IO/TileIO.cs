@@ -539,7 +539,7 @@ namespace Terraria.ModLoader.IO
 						["id"] = entry.Value,
 						["item"] = ItemIO.Save(((TEItemFrame)TileEntity.ByID[entry.Key]).item)
 					}
-				));
+				).ToList());
 			}
 			return tag;
 		}
