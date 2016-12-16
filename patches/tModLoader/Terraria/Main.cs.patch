@@ -19817,10 +19817,10 @@
  				}
  			}
 +
-+			Position.Y -= (float)((int)num5 / 2);
++			Position.Y -= (float)((int)num4 / 2);
 +			goto layerLoopContinue;
 +			balloonAccLayer:
-+			Position.Y += (float)((int)num5 / 2);
++			Position.Y += (float)((int)num4 / 2);
  			if (drawPlayer.balloon > 0)
  			{
  				int num64 = DateTime.Now.Millisecond % 800 / 200;
