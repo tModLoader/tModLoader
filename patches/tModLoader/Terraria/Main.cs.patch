@@ -25957,7 +25957,7 @@
  				IL_44:
  				if (Main.mH + 600 > Main.screenHeight)
  				{
-@@ -39543,86 +_,112 @@
+@@ -39543,86 +_,113 @@
  							{
  								scale = 1.5f;
  							}
@@ -26064,6 +26064,7 @@
 +
 +							if (!NPCLoader.DrawHealthBar(Main.npc[i], ref scale))
 +							{
++								Main.npc[i].position -= Main.npc[i].visualOffset;
 +								continue;
 +							}
 +
