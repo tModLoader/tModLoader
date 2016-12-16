@@ -7,3 +7,5 @@
 *.cache
 *.force
 solutions/**/*.zip
+installer2/*.class
+installer2/*.jar

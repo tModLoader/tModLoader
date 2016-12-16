@@ -125,6 +125,7 @@ namespace Terraria.ModLoader
 			shopToNPC[18] = NPCID.Stylist;
 			shopToNPC[19] = NPCID.TravellingMerchant;
 			shopToNPC[20] = NPCID.SkeletonMerchant;
+			shopToNPC[21] = NPCID.DD2Bartender;
 		}
 
 		internal static int ReserveNPCID()

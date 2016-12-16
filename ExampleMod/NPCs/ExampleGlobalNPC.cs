@@ -10,7 +10,7 @@ namespace ExampleMod.NPCs
 	{
 		public override void ResetEffects(NPC npc)
 		{
-            npc.GetModInfo<ExampleNPCInfo>(mod).eFlames = false;
+			npc.GetModInfo<ExampleNPCInfo>(mod).eFlames = false;
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage)
@@ -138,6 +138,25 @@ namespace ExampleMod.NPCs
 				spawnRate = (int)(spawnRate * 5f);
 				maxSpawns = (int)(maxSpawns * 5f);
 			}
-        }
+		}
+
+		public override void SetupShop(int type, Chest shop, ref int nextSlot)
+		{
+			if (type == NPCID.Dryad)
+			{
+				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.CarKey>());
+				nextSlot++;
+
+				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.CarKey>());
+				shop.item[nextSlot].shopCustomPrice = new int?(2);
+				shop.item[nextSlot].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
+				nextSlot++;
+
+				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.CarKey>());
+				shop.item[nextSlot].shopCustomPrice = new int?(3);
+				shop.item[nextSlot].shopSpecialCurrency = ExampleMod.FaceCustomCurrencyID;
+				nextSlot++;
+			}
+		}
 	}
 }

@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ExampleMod.UI;
 using Terraria.UI;
 using Terraria.DataStructures;
+using Terraria.GameContent.UI;
 
 namespace ExampleMod
 {
@@ -25,6 +26,7 @@ namespace ExampleMod
 		private UserInterface exampleUserInterface;
 		internal ExampleUI exampleUI;
 		public static ModHotKey RandomBuffHotKey;
+		public static int FaceCustomCurrencyID;
 
 		public ExampleMod()
 		{
@@ -45,6 +47,7 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
 			RandomBuffHotKey = RegisterHotKey("Random Buff", "P");
+			FaceCustomCurrencyID = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ItemType<Items.Face>(), 999L));
 			if (!Main.dedServ)
 			{
 				AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
