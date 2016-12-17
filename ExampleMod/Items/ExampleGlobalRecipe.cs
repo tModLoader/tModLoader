@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Items
+namespace ExampleMod.Items
 {
 	class ExampleGlobalRecipe : GlobalRecipe
 	{

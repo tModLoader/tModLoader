@@ -100,7 +100,19 @@ namespace ExampleMod.Items.Weapons
 			return new Vector2(10, 0);
 		}*/
 
-		// How can I get a Clockwork Assult Riffle Effect?
+		// How can I make the shots appear out of the muzzle exactly?
+		// Also, when I do this, how do I prevent shooting through tiles?
+		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		{
+			Vector2 muzzleOffset = Vector2.Normalize(new Vector2(speedX, speedY)) * 25f;
+			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
+			{
+				position += muzzleOffset;
+			}
+			return true;
+		}*/
+
+		// How can I get a "Clockwork Assult Riffle" effect?
 		// 3 round burst, only consume 1 ammo for burst. Delay between bursts, use reuseDelay
 		/*	The following changes to SetDefaults()
 		 	item.useAnimation = 12;
