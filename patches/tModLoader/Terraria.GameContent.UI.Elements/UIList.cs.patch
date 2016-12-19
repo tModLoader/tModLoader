@@ -9,4 +9,20 @@
  		protected UIScrollbar _scrollbar;
  		private UIElement _innerList = new UIList.UIInnerList();
  		private float _innerListHeight;
+@@ -77,6 +_,15 @@
+ 		{
+ 			this._items.Add(item);
+ 			this._innerList.Append(item);
++			this.UpdateOrder();
++			this._innerList.Recalculate();
++		}
++
++		public virtual void AddRange(IEnumerable<UIElement> items)
++		{
++			this._items.AddRange(items);
++			foreach (var item in items)
++				this._innerList.Append(item);
+ 			this.UpdateOrder();
+ 			this._innerList.Recalculate();
+ 		}
 

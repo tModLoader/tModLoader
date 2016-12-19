@@ -144,10 +144,7 @@ namespace Terraria.ModLoader.UI
 		{
 			filter = filterTextBox.currentString;
 			modList.Clear();
-			foreach (UIModDownloadItem item in modListAll._items.Where(item => item.PassFilters()))
-			{
-				modList.Add(item);
-			}
+			modList.AddRange(modListAll._items.Where(item => item.PassFilters()));
 			modList.UpdateOrder();
 		}
 
