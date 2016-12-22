@@ -113,6 +113,10 @@ namespace Terraria.ModLoader
 
 		public void AddTile(int tileID)
 		{
+			if (tileID < 0 || tileID >= TileLoader.TileCount)
+			{
+				throw new RecipeException("No tile has ID " + tileID);
+			}
 			this.requiredTile[numTiles] = tileID;
 			numTiles++;
 		}
