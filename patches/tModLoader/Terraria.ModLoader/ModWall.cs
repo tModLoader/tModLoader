@@ -92,6 +92,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool CanExplode(int i, int j)
+		{
+			return true;
+		}
+
 		public virtual ushort GetMapOption(int i, int j)
 		{
 			return 0;

@@ -23,6 +23,7 @@ namespace Terraria.ModLoader
 		private static DelegateDrop[] HookDrop;
 		private delegate void DelegateKillWall(int i, int j, int type, ref bool fail);
 		private static DelegateKillWall[] HookKillWall;
+		private static Func<int, int, int, bool>[] HookCanExplode;
 		private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 		private static DelegateModifyLight[] HookModifyLight;
 		private static Action<int, int, int>[] HookRandomUpdate;
@@ -92,6 +93,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookCreateDust, globalWalls, g => g.CreateDust);
 			ModLoader.BuildGlobalHook(ref HookDrop, globalWalls, g => g.Drop);
 			ModLoader.BuildGlobalHook(ref HookKillWall, globalWalls, g => g.KillWall);
+			ModLoader.BuildGlobalHook(ref HookCanExplode, globalWalls, g => g.CanExplode);
 			ModLoader.BuildGlobalHook(ref HookModifyLight, globalWalls, g => g.ModifyLight);
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalWalls, g => g.RandomUpdate);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalWalls, g => g.PreDraw);
@@ -210,6 +212,18 @@ namespace Terraria.ModLoader
 			{
 				hook(i, j, type, ref fail);
 			}
+		}
+
+		public static bool CanExplode(int i, int j, int type)
+		{
+			foreach (var hook in HookCanExplode)
+			{
+				if (!hook(i, j, type))
+				{
+					return false;
+				}
+			}
+			return GetWall(type)?.CanExplode(i, j) ?? true;
 		}
 		//in Terraria.Lighting.PreRenderPhase after wall modifies light call
 		//  WallLoader.ModifyLight(n, num17, wall, ref num18, ref num19, ref num20);

@@ -553,6 +553,15 @@
  									{
  										flag4 = false;
  									}
+@@ -45795,7 +_,7 @@
+ 									{
+ 										for (int num830 = num825 - 1; num830 <= num825 + 1; num830++)
+ 										{
+-											if (Main.tile[num829, num830] != null && Main.tile[num829, num830].wall > 0 && flag3)
++											if (Main.tile[num829, num830] != null && Main.tile[num829, num830].wall > 0 && flag3 && WallLoader.CanExplode(num829, num830, Main.tile[num829, num830].wall))
+ 											{
+ 												WorldGen.KillWall(num829, num830, false);
+ 												if (Main.tile[num829, num830].wall == 0 && Main.netMode != 0)
 @@ -46142,11 +_,17 @@
  					}
  				}

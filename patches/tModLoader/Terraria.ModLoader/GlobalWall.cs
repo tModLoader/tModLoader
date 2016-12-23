@@ -48,6 +48,11 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual bool CanExplode(int i, int j, int type)
+		{
+			return true;
+		}
+
 		public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
 		{
 		}
