@@ -66,6 +66,17 @@
  		{
  			if (Main.netMode == 1)
  			{
+@@ -916,6 +_,10 @@
+ 			}
+ 			if (tile.active())
+ 			{
++				if (!TileLoader.PreHitWire(i, j, type))
++				{
++					return;
++				}
+ 				if (type == 144)
+ 				{
+ 					Wiring.HitSwitch(i, j);
 @@ -1340,7 +_,7 @@
  									NetMessage.SendData(19, -1, -1, "", 4 + flag4.ToInt(), (float)i, (float)j, 0f, 0, 0, 0);
  									return;

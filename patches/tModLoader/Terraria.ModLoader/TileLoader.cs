@@ -69,6 +69,7 @@ namespace Terraria.ModLoader
 		private static Action<int, int, int>[] HookMouseOver;
 		private static Action<int, int, int>[] HookMouseOverFar;
 		private static Func<int, int, int, Item, bool>[] HookAutoSelect;
+		private static Func<int, int, int, bool>[] HookPreHitWire;
 		private static Action<int, int, int>[] HookHitWire;
 		private static Func<int, int, int, bool>[] HookSlope;
 		private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
@@ -249,6 +250,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookMouseOver, globalTiles, g => g.MouseOver);
 			ModLoader.BuildGlobalHook(ref HookMouseOverFar, globalTiles, g => g.MouseOverFar);
 			ModLoader.BuildGlobalHook(ref HookAutoSelect, globalTiles, g => g.AutoSelect);
+			ModLoader.BuildGlobalHook(ref HookPreHitWire, globalTiles, g => g.PreHitWire);
 			ModLoader.BuildGlobalHook(ref HookHitWire, globalTiles, g => g.HitWire);
 			ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
 			ModLoader.BuildGlobalHook(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
@@ -924,6 +926,18 @@ namespace Terraria.ModLoader
 				}
 			}
 			return -1;
+		}
+
+		public static bool PreHitWire(int i, int j, int type)
+		{
+			foreach (var hook in HookPreHitWire)
+			{
+				if (!hook(i, j, type))
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 		//in Terraria.Wiring make the following public:
 		//  _wireList, _toProcess, _teleport, _inPumpX, _inPumpY, _numInPump, _outPumpX, _outPumpY, _numOutPump CheckMech, TripWire

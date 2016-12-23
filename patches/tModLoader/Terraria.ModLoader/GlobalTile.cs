@@ -156,6 +156,11 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
+		public virtual bool PreHitWire(int i, int j, int type)
+		{
+			return true;
+		}
+
 		public virtual void HitWire(int i, int j, int type)
 		{
 		}
