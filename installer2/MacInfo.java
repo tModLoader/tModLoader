@@ -15,6 +15,8 @@ public class MacInfo
             "Terraria.exe",
             "ModCompile/tModLoaderWindows.exe",
             "tModLoaderServer.exe",
+            "tModLoaderServer",
+            "tModLoaderServer.bin.osx",
             "MP3Sharp.dll",
             "Ionic.Zip.Reduced.dll",
             "Mono.Cecil.dll",

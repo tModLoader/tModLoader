@@ -50,6 +50,8 @@ call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Windows %vers
 :: Mac release
 copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\Terraria.exe" /y
 copy ..\src\tModLoader\bin\x86\MacServerRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer.exe" /y
+copy ReleaseExtras\tModLoaderServer "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer" /y
+copy ReleaseExtras\tModLoaderServer.bin.osx "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer.bin.osx" /y
 :: ModCompile
 copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\ModCompile\tModLoaderWindows.exe" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.dll" /y
@@ -70,6 +72,9 @@ call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Mac %version%
 :: Linux release
 copy ..\src\tModLoader\bin\x86\LinuxRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\Terraria.exe" /y
 copy ..\src\tModLoader\bin\x86\LinuxServerRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.exe" /y
+copy ReleaseExtras\tModLoaderServer "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer" /y
+copy ReleaseExtras\tModLoaderServer.bin.x86 "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.bin.x86" /y
+copy ReleaseExtras\tModLoaderServer.bin.x86_64 "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.bin.x86_64" /y
 :: ModCompile
 copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\ModCompile\tModLoaderWindows.exe" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.dll" /y

@@ -27875,20 +27875,19 @@
  						if (Main.ActiveWorldFileData.IsCloudSave)
  						{
  							text = text + " -cloudworld \"" + Main.worldPathName + "\"";
-@@ -42575,17 +_,15 @@
- 						{
+@@ -42576,9 +_,9 @@
  							text = text + " -world \"" + Main.worldPathName + "\"";
  						}
--#if WINDOWS
+ #if WINDOWS
 -						this.tServer.StartInfo.FileName = "TerrariaServer.exe";
--#else
--						this.tServer.StartInfo.FileName = "TerrariaServer";
--#endif
-+
 +						this.tServer.StartInfo.FileName = "tModLoaderServer.exe";
+ #else
+-						this.tServer.StartInfo.FileName = "TerrariaServer";
++						this.tServer.StartInfo.FileName = "tModLoaderServer";
+ #endif
  						this.tServer.StartInfo.Arguments = text;
  						if (Main.libPath != "")
- 						{
+@@ -42586,6 +_,7 @@
  							ProcessStartInfo expr_F4F = this.tServer.StartInfo;
  							expr_F4F.Arguments = expr_F4F.Arguments + " -loadlib " + Main.libPath;
  						}
@@ -28786,27 +28785,23 @@
  						if (this.selectedMenu == 5 || flag5)
  						{
  							flag5 = false;
-@@ -44006,7 +_,8 @@
+@@ -44006,6 +_,7 @@
  						{
  							array7[num25] = 0.85f;
  						}
--#if WINDOWS
 +
-+						#if WINDOWS
+ #if WINDOWS
  						bool flag7 = true;
  						Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
- 						System.Drawing.Rectangle bounds = Screen.FromPoint(form.Location).Bounds;
-@@ -44014,20 +_,21 @@
+@@ -44014,6 +_,7 @@
  						{
  							flag7 = false;
  						}
--#else
 +
-+						#else
+ #else
  						bool flag7 = false;
--#endif
-+						#endif
- 						num2 = 210;
+ #endif
+@@ -44021,13 +_,13 @@
  						num4 = 55;
  						int num26 = 0;
  						array9[num26] = string.Concat(new object[]
@@ -34547,21 +34542,6 @@
  			base.GraphicsDevice.SetRenderTarget(this.wallTarget);
  			base.GraphicsDevice.DepthStencilState = new DepthStencilState
  			{
-@@ -51886,11 +_,11 @@
- 			};
- 			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
- 			Main.spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
--#if WINDOWS
-+			#if WINDOWS
- 			Main.tileBatch.Begin();
--#else
-+			#else
- 			Main.tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
--#endif
-+			#endif
- 			if (Main.ignoreErrors)
- 			{
- 				try
 @@ -51904,6 +_,7 @@
  					goto IL_7A;
  				}
@@ -36947,15 +36927,6 @@
  									Main.spriteBatch.Draw(Main.tileCrackTexture, new Vector2((float)(x * 16 - (int)Main.screenPosition.X), (float)(y * 16 - (int)Main.screenPosition.Y)) + zero, new Microsoft.Xna.Framework.Rectangle?(value), Lighting.GetColor(x, y), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  								}
  							}
-@@ -55251,7 +_,7 @@
- 
- 		private static void CheckMonoliths()
- 		{
--#if CLIENT
-+			#if CLIENT
- 			bool flag = Main.player[Main.myPlayer].ZoneTowerVortex || Main.player[Main.myPlayer].ZoneTowerNebula || Main.player[Main.myPlayer].ZoneTowerStardust || Main.player[Main.myPlayer].ZoneTowerSolar;
- 			for (int i = 0; i < Main.MonolithFilterNames.Length; i++)
- 			{
 @@ -55261,6 +_,7 @@
  					{
  						Filters.Scene.Activate(Main.MonolithFilterNames[Main.monolithType], default(Vector2), new object[0]);
@@ -36964,7 +36935,7 @@
  					if (!SkyManager.Instance[Main.MonolithSkyNames[i]].IsActive())
  					{
  						SkyManager.Instance.Activate(Main.MonolithSkyNames[i], default(Vector2), new object[0]);
-@@ -55272,13 +_,15 @@
+@@ -55272,12 +_,14 @@
  					{
  						Filters.Scene.Deactivate(Main.MonolithFilterNames[i], new object[0]);
  					}
@@ -36975,12 +36946,10 @@
  					}
  				}
  			}
--#endif
 +
-+			#endif
+ #endif
  		}
  
- 		private void GraphicsDeviceLost(object sender, EventArgs evt)
 @@ -55300,10 +_,24 @@
  
  		private void DoDraw(GameTime gameTime)
@@ -37040,17 +37009,15 @@
  			Stopwatch stopwatch = new Stopwatch();
  			stopwatch.Start();
  			Main.fpsCount++;
-@@ -55344,13 +_,15 @@
+@@ -55344,6 +_,7 @@
  			{
  				Main.maxQ = true;
  			}
--#if CLIENT
 +
-+			#if CLIENT
+ #if CLIENT
  			this.UpdateDisplaySettings();
--#endif
-+			#endif
- 			if (Main.OnPreDraw != null)
+ #endif
+@@ -55351,6 +_,7 @@
  			{
  				Main.OnPreDraw(gameTime);
  			}
@@ -39369,7 +39336,7 @@
  						if (Main.dayRate > 0 && num4 > 0 && (flag || Main.expertMode) && Main.rand.Next(num4) == 0)
  						{
  							Main.StartSlimeRain(true);
-@@ -58383,21 +_,24 @@
+@@ -58383,14 +_,17 @@
  					}
  				}
  			}
@@ -39387,15 +39354,7 @@
  			Main.UpdateSundial();
  			Main.time += (double)Main.dayRate;
  			CultistRitual.UpdateTime();
- 			BirthdayParty.UpdateTime();
- 			Sandstorm.UpdateTime();
- 			DD2Event.UpdateTime();
--#if CLIENT
-+			#if CLIENT
- 			if (NPC.MoonLordCountdown > 0)
- 			{
- 				float num5 = MathHelper.Clamp((float)Math.Sin((double)((float)NPC.MoonLordCountdown / 60f * 0.5f)) * 2f, 0f, 1f);
-@@ -58406,13 +_,15 @@
+@@ -58406,12 +_,14 @@
  				{
  					Filters.Scene.Activate("MoonLordShake", Main.player[Main.myPlayer].position, new object[0]);
  				}
@@ -39406,12 +39365,10 @@
  			{
  				Filters.Scene.Deactivate("MoonLordShake", new object[0]);
  			}
--#endif
 +
-+			#endif
+ #endif
  			if (NPC.MoonLordCountdown > 0)
  			{
- 				NPC.MoonLordCountdown--;
 @@ -58421,6 +_,7 @@
  					NPC.SpawnOnPlayer((int)Player.FindClosest(new Vector2((float)(Main.maxTilesX / 2), (float)Main.worldSurface / 2f) * 16f, 0, 0), 398);
  				}
@@ -40192,18 +40149,6 @@
  				default:
  					return;
  			}
-@@ -59280,9 +_,9 @@
- 		public static void PlaySoundInstance(SoundEffectInstance sound)
- 		{
- 			sound.Play();
--#if !WINDOWS
-+			#if !WINDOWS
- 			ActiveSoundInstances.Add(sound);
--#endif
-+			#endif
- 		}
- 
- 		public static ActiveSound GetActiveSound(SlotId id)
 @@ -59291,6 +_,7 @@
  			{
  				return Main._trackedSounds[id];
@@ -40250,7 +40195,7 @@
  			ActiveSound value2 = new ActiveSound(style, position);
  			return Main._trackedSounds.Add(value2);
  		}
-@@ -59342,17 +_,18 @@
+@@ -59342,6 +_,7 @@
  			{
  				return SlotId.Invalid;
  			}
@@ -40258,19 +40203,6 @@
  			ActiveSound value = new ActiveSound(style);
  			return Main._trackedSounds.Add(value);
  		}
- 
- 		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f)
- 		{
--#if !WINDOWS
-+			#if !WINDOWS
- 			object audioLock = Main._audioLock;
- 			lock (audioLock)
- 			{
--#endif
-+				#endif
- 				int num = Style;
- 				try
- 				{
 @@ -59361,11 +_,13 @@
  						SoundEffectInstance result = null;
  						return result;
@@ -40609,7 +40541,7 @@
  							soundEffectInstance = Main.soundInstanceRoar[num19];
  						}
  						else if (type == 37)
-@@ -60056,23 +_,72 @@
+@@ -60056,22 +_,71 @@
  							soundEffectInstance.Pan = num3;
  							Main.trackableSoundInstances[num] = soundEffectInstance;
  						}
@@ -40676,16 +40608,12 @@
 +				}
 +
  				return null;
--#if !WINDOWS
--			}
--#endif
-+				#if !WINDOWS
-+			}
+ #if !WINDOWS
+ 			}
 +
-+			#endif
+ #endif
  		}
  
- 		public static void ClearPendingPlayerSelectCallbacks()
 @@ -60088,6 +_,7 @@
  				Main._pendingCharacterSelect = null;
  				return;
@@ -40721,28 +40649,23 @@
  			Main.menuMode = 13;
  			Main.clrInput();
  		}
-@@ -60143,28 +_,31 @@
+@@ -60143,6 +_,7 @@
  			{
  				Main.graphics.ToggleFullScreen();
  			}
--#if WINDOWS
 +
-+			#if WINDOWS
+ #if WINDOWS
  			Main.screenMaximized = (((Form)Control.FromHandle(Main.instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (Main.screenBorderless && Main.screenMaximized && !Main.graphics.IsFullScreen)
- 			{
+@@ -60150,6 +_,7 @@
  				Main.screenMaximized = false;
  				((Form)Control.FromHandle(Main.instance.Window.Handle)).WindowState = FormWindowState.Normal;
  			}
 +
  			Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
  			bool flag = form.FormBorderStyle == FormBorderStyle.None;
--#else
-+			#else
- 			Main.screenMaximized = false;
--#endif
-+			#endif
- 			if (!Main.instance.IsActive && (Main.screenBorderless || Main.screenMaximized || Main.graphics.IsFullScreen))
+ #else
+@@ -60159,6 +_,7 @@
  			{
  				return;
  			}
@@ -40750,23 +40673,15 @@
  			bool flag2 = false;
  			int num3;
  			int num4;
- 			if (Main.screenBorderless || Main.screenMaximized || Main.graphics.IsFullScreen)
- 			{
--#if WINDOWS
-+				#if WINDOWS
- 				form.MinimumSize = new Size(0, 0);
- 				if (Main.screenBorderless && !Main.graphics.IsFullScreen)
- 				{
-@@ -60172,19 +_,22 @@
+@@ -60172,6 +_,7 @@
  					width = bounds.Width;
  					height = bounds.Height;
  				}
--#endif
 +
-+				#endif
+ #endif
  				if (width > Main.maxScreenW)
  				{
- 					float num = (float)height / (float)width;
+@@ -60179,12 +_,14 @@
  					width = Main.maxScreenW;
  					height = (int)(num * (float)width);
  				}
@@ -40781,34 +40696,23 @@
  				if (!Main.graphics.IsFullScreen)
  				{
  					num3 = Math.Max(Main.graphics.PreferredBackBufferWidth, Main.graphics.GraphicsDevice.Viewport.Width);
-@@ -60202,21 +_,23 @@
- 			}
- 			else
- 			{
--#if WINDOWS
-+				#if WINDOWS
- 				form.MinimumSize = new Size(Main.minScreenW, Main.minScreenH);
- 				if (flag)
- 				{
+@@ -60209,6 +_,7 @@
  					width = Main.displayWidth[0];
  					height = Main.displayHeight[0];
  				}
--#endif
 +
-+				#endif
+ #endif
  				width = Math.Min(width, Main.maxScreenW);
  				height = Math.Min(height, Main.maxScreenH);
- 				num3 = Main.graphics.GraphicsDevice.Viewport.Width;
+@@ -60216,6 +_,7 @@
  				num4 = Main.graphics.GraphicsDevice.Viewport.Height;
  				flag2 = (Main.graphics.PreferredBackBufferWidth != Main.graphics.GraphicsDevice.Viewport.Width || Main.graphics.PreferredBackBufferHeight != Main.graphics.GraphicsDevice.Viewport.Height);
  			}
--#if WINDOWS
 +
-+			#if WINDOWS
+ #if WINDOWS
  			if (!fullscreen && !flag2)
  			{
- 				if (form.ClientSize.Width < Main.graphics.PreferredBackBufferWidth)
-@@ -60224,13 +_,15 @@
+@@ -60224,12 +_,14 @@
  					width = form.ClientSize.Width;
  					flag2 = true;
  				}
@@ -40819,12 +40723,10 @@
  					flag2 = true;
  				}
  			}
--#endif
 +
-+			#endif
+ #endif
  			width &= 2147483646;
  			height &= 2147483646;
- 			width = Math.Max(width, Main.minScreenW);
 @@ -60242,6 +_,7 @@
  				{
  					Main.renderNow = true;
@@ -40833,22 +40735,12 @@
  				Main.screenWidth = width;
  				Main.screenHeight = height;
  				Main.graphics.PreferredBackBufferWidth = Main.screenWidth;
-@@ -60249,7 +_,7 @@
- 				Main.graphics.ApplyChanges();
- 				Main.PendingResolutionWidth = Main.screenWidth;
- 				Main.PendingResolutionHeight = Main.screenHeight;
--#if WINDOWS
-+				#if WINDOWS
- 				if (!fullscreen)
- 				{
- 					form.SendToBack();
 @@ -60267,15 +_,18 @@
  						form.FormBorderStyle = FormBorderStyle.Sizable;
  					}
  				}
--#endif
 +
-+				#endif
+ #endif
  				Lighting.Initialize(true);
  				if (!Main.drawToScreen)
  				{
