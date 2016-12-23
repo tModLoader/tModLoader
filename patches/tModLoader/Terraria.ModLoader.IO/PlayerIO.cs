@@ -28,6 +28,7 @@ namespace Terraria.ModLoader.IO
 				["miscDyes"] = SaveInventory(player.miscDyes),
 				["bank"] = SaveInventory(player.bank.item),
 				["bank2"] = SaveInventory(player.bank2.item),
+				["bank3"] = SaveInventory(player.bank3.item),
 				["modData"] = SaveModData(player),
 				["modBuffs"] = SaveModBuffs(player)
 			};
