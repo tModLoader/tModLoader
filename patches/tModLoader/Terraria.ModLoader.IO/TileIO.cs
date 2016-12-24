@@ -710,6 +710,7 @@ namespace Terraria.ModLoader.IO
 				if (tileEntity != null)
 				{
 					ModTileEntity newEntity = ModTileEntity.ConstructFromBase(tileEntity);
+					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
 					if (tag.HasTag("data"))
 					{

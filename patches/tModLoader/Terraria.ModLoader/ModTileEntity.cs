@@ -206,6 +206,11 @@ namespace Terraria.ModLoader
 
 		public abstract bool ValidTile(int i, int j);
 
+		public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
+		{
+			return -1;
+		}
+
 		public virtual void OnNetPlace()
 		{
 		}
