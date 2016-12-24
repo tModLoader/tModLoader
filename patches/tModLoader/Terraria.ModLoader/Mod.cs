@@ -81,6 +81,11 @@ namespace Terraria.ModLoader
 
 		internal void Autoload()
 		{
+			if (GetType().GetMethod("ChatInput", new Type[] { typeof(string) }) != null)
+			{
+				throw new OldHookException("Mod.ChatInput");
+			}
+
 			if (!Main.dedServ && File != null)
 			{
 				foreach (var file in File)

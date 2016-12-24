@@ -195,7 +195,7 @@ namespace ExampleMod
 			return Transform;
 		}
 
-		public override void ChatInput(string text)
+		public override void ChatInput(string text, ref bool broadcast)
 		{
 			if (text[0] != '/')
 			{
@@ -218,30 +218,37 @@ namespace ExampleMod
 			if (command == "npc")
 			{
 				NPCCommand(args);
+				broadcast = false;
 			}
 			else if (command == "npcType")
 			{
 				NPCTypeCommand(args);
+				broadcast = false;
 			}
 			else if (command == "addTime")
 			{
 				AddTimeCommand(args);
+				broadcast = false;
 			}
 			else if (command == "item")
 			{
 				ItemCommand(args);
+				broadcast = false;
 			}
 			else if (command == "score")
 			{
 				ScoreCommand(args);
+				broadcast = false;
 			}
 			else if (command == "sound")
 			{
 				SoundCommand(args);
+				broadcast = false;
 			}
 			else if (command == "coin")
 			{
 				ExampleUI.visible = true;
+				broadcast = false;
 			}
 		}
 
