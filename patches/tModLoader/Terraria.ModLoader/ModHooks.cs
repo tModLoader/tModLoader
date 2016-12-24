@@ -11,7 +11,7 @@ namespace Terraria.ModLoader
 {
 	public abstract partial class Mod
 	{
-		public virtual void ChatInput(string text)
+		public virtual void ChatInput(string text, ref bool broadcast)
 		{
 		}
 
@@ -58,16 +58,15 @@ namespace Terraria.ModLoader
 	{
 		//in Terraria.Main.do_Update after processing chat input call ModHooks.ChatText(Main.chatText);
 		//in Terraria.Main.do_Update for if statement checking whether chat can be opened remove Main.netMode == 1
-		internal static void ChatInput(string text)
+		internal static void ChatInput(string text, ref bool broadcast)
 		{
-			if (text.Length > 0)
+			if (text.Length <= 0) return;
+			foreach (var mod in ModLoader.mods.Values)
 			{
-				foreach (Mod mod in ModLoader.mods.Values)
-				{
-					mod.ChatInput(text);
-				}
+				mod.ChatInput(text, ref broadcast);
 			}
 		}
+        
 		//in Terraria.Main.UpdateMusic before updating music boxes call ModHooks.UpdateMusic(ref this.newMusic);
 		internal static void UpdateMusic(ref int music)
 		{
