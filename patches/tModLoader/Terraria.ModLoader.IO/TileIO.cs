@@ -707,9 +707,10 @@ namespace Terraria.ModLoader.IO
 			{
 				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
 				ModTileEntity tileEntity = mod?.GetTileEntity(tag.GetString("name"));
+				ModTileEntity newEntity;
 				if (tileEntity != null)
 				{
-					ModTileEntity newEntity = ModTileEntity.ConstructFromBase(tileEntity);
+					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
 					if (tag.HasTag("data"))
@@ -717,6 +718,10 @@ namespace Terraria.ModLoader.IO
 						try
 						{
 							newEntity.Load(tag.GetCompound("data"));
+							if (newEntity is MysteryTileEntity)
+							{
+								((MysteryTileEntity)newEntity).TryRestore(ref newEntity);
+							}
 						}
 						catch (Exception e)
 						{
@@ -724,21 +729,25 @@ namespace Terraria.ModLoader.IO
 							"Error in reading " + tileEntity.Name + " tile entity data for " + mod.Name, e);
 						}
 					}
-					if (tileEntity.ValidTile(newEntity.Position.X, newEntity.Position.Y))
-					{
-						newEntity.ID = TileEntity.AssignNewID();
-						TileEntity.ByID[newEntity.ID] = newEntity;
-						TileEntity other;
-						if (TileEntity.ByPosition.TryGetValue(newEntity.Position, out other))
-						{
-							TileEntity.ByID.Remove(other.ID);
-						}
-						TileEntity.ByPosition[newEntity.Position] = newEntity;
-					}
 				}
 				else
 				{
-
+					tileEntity = ModLoader.GetMod("ModLoader").GetTileEntity("MysteryTileEntity");
+					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
+					newEntity.type = (byte)tileEntity.Type;
+					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
+					((MysteryTileEntity)newEntity).SetData(tag);
+				}
+				if (tileEntity.ValidTile(newEntity.Position.X, newEntity.Position.Y))
+				{
+					newEntity.ID = TileEntity.AssignNewID();
+					TileEntity.ByID[newEntity.ID] = newEntity;
+					TileEntity other;
+					if (TileEntity.ByPosition.TryGetValue(newEntity.Position, out other))
+					{
+						TileEntity.ByID.Remove(other.ID);
+					}
+					TileEntity.ByPosition[newEntity.Position] = newEntity;
 				}
 			}
 		}

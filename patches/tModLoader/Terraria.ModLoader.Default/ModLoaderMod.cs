@@ -30,6 +30,7 @@ namespace Terraria.ModLoader.Default
 			AddItem("AprilFools", new AprilFools(), "Terraria/Item_3389");
 			AddTile("MysteryTile", new MysteryTile(), "ModLoader/MysteryTile");
 			AddTile("PendingMysteryTile", new MysteryTile(), "ModLoader/MysteryTile");
+			AddTileEntity("MysteryTileEntity", new MysteryTileEntity());
 			AddPlayer("MysteryPlayer", new MysteryPlayer());
 			AddModWorld("MysteryWorld", new MysteryWorld());
 			AddModWorld("MysteryTilesWorld", new MysteryTilesWorld());
