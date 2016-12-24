@@ -6164,7 +6164,7 @@
  					string a = Main.chatText;
  					Main.chatText = Main.GetInputText(Main.chatText);
  					int num6 = Main.screenWidth - 330;
-@@ -13100,16 +_,19 @@
+@@ -13100,17 +_,23 @@
  							Main.chatText = Main.chatText.Substring(0, Main.chatText.Length - 1);
  						}
  					}
@@ -6176,15 +6176,21 @@
 +
  					if (Main.inputTextEnter && Main.chatRelease)
  					{
- 						if (Main.chatText != "")
+-						if (Main.chatText != "")
++						var broadcast = true;
++						ModHooks.ChatInput(Main.chatText, ref broadcast);
++
++						if (Main.chatText != "" && broadcast)
  						{
  							NetMessage.SendData(25, -1, -1, Main.chatText, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
  						}
+-						if (Main.netMode == 0 && Main.chatText != "")
 +
- 						if (Main.netMode == 0 && Main.chatText != "")
++						if (Main.netMode == 0 && Main.chatText != "" && broadcast)
  						{
  							Microsoft.Xna.Framework.Color white = Microsoft.Xna.Framework.Color.White;
-@@ -13121,11 +_,14 @@
+ 							if (Main.player[Main.myPlayer].difficulty == 2)
+@@ -13121,11 +_,13 @@
  							{
  								white = Main.mcColor;
  							}
@@ -6195,7 +6201,6 @@
  							Main.NewTextMultiline(text, false, white, Main.TextMaxLengthForScreen);
  						}
 +
-+						ModHooks.ChatInput(Main.chatText);
  						Main.chatText = "";
  						Main.drawingPlayerChat = false;
  						Main.chatRelease = false;
