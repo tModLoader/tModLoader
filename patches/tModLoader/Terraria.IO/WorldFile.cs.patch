@@ -96,4 +96,20 @@
  						{
  							writer.Write((short)0);
  						}
+@@ -2834,10 +_,13 @@
+ 
+ 		private static int SaveTileEntities(BinaryWriter writer)
+ 		{
+-			writer.Write(TileEntity.ByID.Count);
++			writer.Write(TileEntity.ByID.Count - ModTileEntity.CountInWorld());
+ 			foreach (KeyValuePair<int, TileEntity> current in TileEntity.ByID)
+ 			{
+-				TileEntity.Write(writer, current.Value, false);
++				if (current.Value.type < ModTileEntity.numVanilla)
++				{
++					TileEntity.Write(writer, current.Value, false);
++				}
+ 			}
+ 			return (int)writer.BaseStream.Position;
+ 		}
 

@@ -361,6 +361,15 @@
  						int num151 = this.reader.ReadInt32();
  						if (Main.netMode == 2 && num149 != this.whoAmI && !Main.pvpBuff[num150])
  						{
+@@ -2974,7 +_,7 @@
+ 							return;
+ 						}
+ 						TileEntity tileEntity2;
+-						if (TileEntity.ByID.TryGetValue(num189, out tileEntity2) && (tileEntity2 is TETrainingDummy || tileEntity2 is TEItemFrame || tileEntity2 is TELogicSensor))
++						if (TileEntity.ByID.TryGetValue(num189, out tileEntity2) && (tileEntity2 is TETrainingDummy || tileEntity2 is TEItemFrame || tileEntity2 is TELogicSensor || tileEntity2 is ModTileEntity))
+ 						{
+ 							TileEntity.ByID.Remove(num189);
+ 							TileEntity.ByPosition.Remove(tileEntity2.Position);
 @@ -3562,9 +_,34 @@
  						}
  						return;

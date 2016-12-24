@@ -40,6 +40,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
 		internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
 		internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
+		internal readonly IDictionary<string, ModTileEntity> tileEntities = new Dictionary<string, ModTileEntity>();
 		internal readonly IDictionary<string, ModWall> walls = new Dictionary<string, ModWall>();
 		internal readonly IDictionary<string, GlobalWall> globalWalls = new Dictionary<string, GlobalWall>();
 		internal readonly IDictionary<string, ModProjectile> projectiles = new Dictionary<string, ModProjectile>();
@@ -181,6 +182,10 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(GlobalTile)))
 				{
 					AutoloadGlobalTile(type);
+				}
+				else if (type.IsSubclassOf(typeof(ModTileEntity)))
+				{
+					AutoloadTileEntity(type);
 				}
 				else if (type.IsSubclassOf(typeof(ModWall)))
 				{
@@ -635,6 +640,50 @@ namespace Terraria.ModLoader
 			if (globalTile.Autoload(ref name))
 			{
 				AddGlobalTile(name, globalTile);
+			}
+		}
+
+		public void AddTileEntity(string name, ModTileEntity entity)
+		{
+			int id = ModTileEntity.ReserveTileEntityID();
+			entity.mod = this;
+			entity.Name = name;
+			entity.Type = id;
+			entity.type = (byte)id;
+			tileEntities[name] = entity;
+			ModTileEntity.tileEntities.Add(entity);
+		}
+
+		public ModTileEntity GetTileEntity(string name)
+		{
+			if (tileEntities.ContainsKey(name))
+			{
+				return tileEntities[name];
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		public int TileEntityType(string name)
+		{
+			ModTileEntity tileEntity = GetTileEntity(name);
+			if (tileEntity == null)
+			{
+				return -1;
+			}
+			return tileEntity.Type;
+		}
+
+		private void AutoloadTileEntity(Type type)
+		{
+			ModTileEntity tileEntity = (ModTileEntity)Activator.CreateInstance(type);
+			tileEntity.mod = this;
+			string name = type.Name;
+			if (tileEntity.Autoload(ref name))
+			{
+				AddTileEntity(name, tileEntity);
 			}
 		}
 
@@ -1702,6 +1751,7 @@ namespace Terraria.ModLoader
 			dusts.Clear();
 			tiles.Clear();
 			globalTiles.Clear();
+			tileEntities.Clear();
 			walls.Clear();
 			globalWalls.Clear();
 			projectiles.Clear();

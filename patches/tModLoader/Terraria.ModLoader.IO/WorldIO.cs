@@ -25,6 +25,7 @@ namespace Terraria.ModLoader.IO
 				["chests"] = SaveChests(),
 				["tiles"] =  TileIO.SaveTiles(),
 				["containers"] = TileIO.SaveContainers(),
+				["tileEntities"] = TileIO.SaveTileEntities(),
 				["killCounts"] = SaveNPCKillCounts(),
 				["anglerQuest"] = SaveAnglerQuest(),
 				["modData"] = SaveModData()
@@ -54,6 +55,15 @@ namespace Terraria.ModLoader.IO
 			LoadChests(tag.GetList<TagCompound>("chests"));
 			TileIO.LoadTiles(tag.GetCompound("tiles"));
 			TileIO.LoadContainers(tag.GetCompound("containers"));
+			try
+			{
+				TileIO.LoadTileEntities(tag.GetList<TagCompound>("tileEntities"));
+			}
+			catch (CustomModDataException e)
+			{
+				customDataFail = e;
+				throw;
+			}
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
 			try

@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.IO
 {
@@ -677,6 +678,68 @@ namespace Terraria.ModLoader.IO
 				return slot >= Main.numArmorLegs;
 			}
 			return false;
+		}
+
+		internal static List<TagCompound> SaveTileEntities()
+		{
+			List<TagCompound> list = new List<TagCompound>();
+			foreach (KeyValuePair<int, TileEntity> pair in TileEntity.ByID)
+			{
+				if (pair.Value.type >= ModTileEntity.numVanilla)
+				{
+					ModTileEntity tileEntity = (ModTileEntity)pair.Value;
+					list.Add(new TagCompound
+					{
+						["mod"] = tileEntity.mod.Name,
+						["name"] = tileEntity.Name,
+						["X"] = tileEntity.Position.X,
+						["Y"] = tileEntity.Position.Y,
+						["data"] = tileEntity.Save()
+					});
+				}
+			}
+			return list;
+		}
+
+		internal static void LoadTileEntities(IList<TagCompound> list)
+		{
+			foreach (TagCompound tag in list)
+			{
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
+				ModTileEntity tileEntity = mod?.GetTileEntity(tag.GetString("name"));
+				if (tileEntity != null)
+				{
+					ModTileEntity newEntity = ModTileEntity.ConstructFromBase(tileEntity);
+					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
+					if (tag.HasTag("data"))
+					{
+						try
+						{
+							newEntity.Load(tag.GetCompound("data"));
+						}
+						catch (Exception e)
+						{
+							throw new CustomModDataException(mod,
+							"Error in reading " + tileEntity.Name + " tile entity data for " + mod.Name, e);
+						}
+					}
+					if (tileEntity.ValidTile(newEntity.Position.X, newEntity.Position.Y))
+					{
+						newEntity.ID = TileEntity.AssignNewID();
+						TileEntity.ByID[newEntity.ID] = newEntity;
+						TileEntity other;
+						if (TileEntity.ByPosition.TryGetValue(newEntity.Position, out other))
+						{
+							TileEntity.ByID.Remove(other.ID);
+						}
+						TileEntity.ByPosition[newEntity.Position] = newEntity;
+					}
+				}
+				else
+				{
+
+				}
+			}
 		}
 	}
 }
