@@ -137,6 +137,35 @@ namespace Terraria.ModLoader
 			return newEntity.ID;
 		}
 
+		public void Kill(int i, int j)
+		{
+			Point16 pos = new Point16(i, j);
+			if (ByPosition.ContainsKey(pos))
+			{
+				TileEntity tileEntity = ByPosition[pos];
+				if (tileEntity.type == Type)
+				{
+					((ModTileEntity)tileEntity).OnKill();
+					ByID.Remove(tileEntity.ID);
+					ByPosition.Remove(pos);
+				}
+			}
+		}
+
+		public int Find(int i, int j)
+		{
+			Point16 pos = new Point16(i, j);
+			if (ByPosition.ContainsKey(pos))
+			{
+				TileEntity tileEntity = ByPosition[pos];
+				if (tileEntity.type == Type)
+				{
+					return tileEntity.ID;
+				}
+			}
+			return -1;
+		}
+
 		public override sealed void WriteExtraData(BinaryWriter writer, bool networkSend)
 		{
 			if (networkSend)
@@ -186,6 +215,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void PostGlobalUpdate()
+		{
+		}
+
+		public virtual void OnKill()
 		{
 		}
 	}
