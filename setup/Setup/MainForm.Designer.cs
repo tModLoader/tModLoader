@@ -301,6 +301,7 @@ namespace Terraria.ModLoader.Setup
 			// 
 			// formatCodeToolStripMenuItem
 			// 
+			this.formatCodeToolStripMenuItem.Enabled = false;
 			this.formatCodeToolStripMenuItem.Name = "formatCodeToolStripMenuItem";
 			this.formatCodeToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
 			this.formatCodeToolStripMenuItem.Text = "Format Code";
