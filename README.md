@@ -26,4 +26,4 @@ When that's all done, you should have the tModLoader source in the src folder. O
 
 ### Committing changes
 
-So you've made some changes to Terraria and want to commit them. Run setup.bat again, then click on Diff tModLoader. This will create patch files with the changes you've made. Finally, all you'll need to do is commit the patches folder.
+So you've made some changes to Terraria and want to commit them. Run setup.bat again, then click on Diff tModLoader. This will create patch files with the changes you've made. Finally, all you'll need to do is commit the patches folder. Take a look at the changes indicated in the commit to ensure that only the changes you want are included, and not any other accidental modifications or reformattings. 
