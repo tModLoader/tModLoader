@@ -102,6 +102,10 @@ namespace Terraria.ModLoader
 		private static DelegateDrawTownAttackGun[] HookDrawTownAttackGun;
 		private delegate void DelegateDrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset);
 		private static DelegateDrawTownAttackSwing[] HookDrawTownAttackSwing;
+		private delegate void DelegateSetChatButtons(ref string button, ref string button2);
+		private static DelegateSetChatButtons[] HookSetChatButtons;
+		private delegate void DelegateOnChatButtonClicked(bool firstButton, ref bool shop);
+		private static DelegateOnChatButtonClicked[] HookOnChatButtonClicked;
 
 		static NPCLoader()
 		{
@@ -259,6 +263,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookTownNPCAttackSwing, globalNPCs, g => g.TownNPCAttackSwing);
 			ModLoader.BuildGlobalHook(ref HookDrawTownAttackGun, globalNPCs, g => g.DrawTownAttackGun);
 			ModLoader.BuildGlobalHook(ref HookDrawTownAttackSwing, globalNPCs, g => g.DrawTownAttackSwing);
+			ModLoader.BuildGlobalHook(ref HookSetChatButtons, globalNPCs, g => g.SetChatButtons);
+			ModLoader.BuildGlobalHook(ref HookOnChatButtonClicked, globalNPCs, g => g.OnChatButtonClicked);
 
 			if (!unloading)
 			{
