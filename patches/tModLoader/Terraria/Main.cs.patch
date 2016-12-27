@@ -6177,16 +6177,16 @@
  					if (Main.inputTextEnter && Main.chatRelease)
  					{
 -						if (Main.chatText != "")
-+						var broadcast = true;
-+						ModHooks.ChatInput(Main.chatText, ref broadcast);
++						var show = true;
++						CommandManager.ProcessInput(Main.chatText, CommandType.Chat, ref show);
 +
-+						if (Main.chatText != "" && broadcast)
++						if (Main.chatText != "" && show)
  						{
  							NetMessage.SendData(25, -1, -1, Main.chatText, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
  						}
 -						if (Main.netMode == 0 && Main.chatText != "")
 +
-+						if (Main.netMode == 0 && Main.chatText != "" && broadcast)
++						if (Main.netMode == 0 && Main.chatText != "" && show)
  						{
  							Microsoft.Xna.Framework.Color white = Microsoft.Xna.Framework.Color.White;
  							if (Main.player[Main.myPlayer].difficulty == 2)
