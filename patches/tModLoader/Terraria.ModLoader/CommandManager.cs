@@ -6,8 +6,8 @@ namespace Terraria.ModLoader
 {
 	public static class CommandManager
 	{
-		internal static readonly IDictionary<string, List<ModCommand>> ChatCommands = new Dictionary<string, List<ModCommand>>();
-		internal static readonly IDictionary<string, List<ModCommand>> ServerCommands = new Dictionary<string, List<ModCommand>>();
+		internal static readonly IDictionary<string, List<ModCommand>> ChatCommands = new Dictionary<string, List<ModCommand>>(StringComparer.OrdinalIgnoreCase);
+		internal static readonly IDictionary<string, List<ModCommand>> ServerCommands = new Dictionary<string, List<ModCommand>>(StringComparer.OrdinalIgnoreCase);
 
 		internal static List<ModCommand> GetCommandList(CommandType type, string cmd)
 		{

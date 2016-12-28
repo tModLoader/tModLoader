@@ -1,15 +1,29 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Commands
 {
 	public class NpcCommand : ModCommand
 	{
-		public override CommandType Type => CommandType.Chat;
-		public override string Command => "npc";
-		public override string Usage => "/npc type [x] [y] [number]; x and y may be preceded by ~ to use position relative to player";
-		public override bool Show => false;
+		public override CommandType Type
+		{
+			get { return CommandType.Chat; }
+		}
+
+		public override string Command
+		{
+			get { return "npc"; }
+		}
+
+		public override string Usage
+		{
+			get { return "/npc type [x] [y] [number]; x and y may be preceded by ~ to use position relative to player"; }
+		}
+
+		public override bool Show
+		{
+			get { return false; }
+		}
 
 		public override bool VerifyArguments(string[] args)
 		{
@@ -20,14 +34,14 @@ namespace ExampleMod.Commands
 		public override void Action(string[] args)
 		{
 			var type = int.Parse(args[0]);
-			Player player = Main.LocalPlayer;
+			var player = Main.LocalPlayer;
 			int x;
 			int y;
-			int num = 1;
+			var num = 1;
 			if (args.Length > 2)
 			{
-				bool relativeX = false;
-				bool relativeY = false;
+				var relativeX = false;
+				var relativeY = false;
 				if (args[1][0] == '~')
 				{
 					relativeX = true;
@@ -38,39 +52,30 @@ namespace ExampleMod.Commands
 					relativeY = true;
 					args[2] = args[2].Substring(1);
 				}
-				if (!Int32.TryParse(args[1], out x))
+				if (!int.TryParse(args[1], out x))
 				{
 					x = 0;
 					relativeX = true;
 				}
-				if (!Int32.TryParse(args[2], out y))
+				if (!int.TryParse(args[2], out y))
 				{
 					y = 0;
 					relativeY = true;
 				}
 				if (relativeX)
-				{
-					x += (int)player.Bottom.X;
-				}
+					x += (int) player.Bottom.X;
 				if (relativeY)
-				{
-					y += (int)player.Bottom.Y;
-				}
+					y += (int) player.Bottom.Y;
 				if (args.Length > 3)
-				{
-					if (!Int32.TryParse(args[3], out num))
-					{
+					if (!int.TryParse(args[3], out num))
 						num = 1;
-					}
-				}
 			}
 			else
 			{
-				x = (int)player.Bottom.X;
-				y = (int)player.Bottom.Y;
+				x = (int) player.Bottom.X;
+				y = (int) player.Bottom.Y;
 			}
-			for (int k = 0; k < num; k++)
-			{
+			for (var k = 0; k < num; k++)
 				if (Main.netMode == 0)
 				{
 					NPC.NewNPC(x, y, type);
@@ -78,13 +83,12 @@ namespace ExampleMod.Commands
 				else if (Main.netMode == 1)
 				{
 					var netMessage = Mod.GetPacket();
-					netMessage.Write((byte)ExampleModMessageType.SpawnNPC);
+					netMessage.Write((byte) ExampleModMessageType.SpawnNPC);
 					netMessage.Write(x);
 					netMessage.Write(y);
 					netMessage.Write(type);
 					netMessage.Send();
 				}
-			}
 		}
 	}
 }
