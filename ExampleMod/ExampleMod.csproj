@@ -63,6 +63,13 @@
     <Compile Include="Buffs\PurityWisp.cs" />
     <Compile Include="Buffs\Undead.cs" />
     <Compile Include="Buffs\Undead2.cs" />
+    <Compile Include="Commands\AddTimeCommand.cs" />
+    <Compile Include="Commands\CoinCommand.cs" />
+    <Compile Include="Commands\ItemCommand.cs" />
+    <Compile Include="Commands\NpcCommand.cs" />
+    <Compile Include="Commands\NpcTypeCommand.cs" />
+    <Compile Include="Commands\ScoreCommand.cs" />
+    <Compile Include="Commands\SoundCommand.cs" />
     <Compile Include="Dusts\Bubble.cs" />
     <Compile Include="Dusts\EtherealFlame.cs" />
     <Compile Include="Dusts\ExampleSolution.cs" />
