@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Terraria.ModLoader
@@ -37,6 +38,8 @@ namespace Terraria.ModLoader
 
 		internal static string[] Parse(string text) => text.Substring(1).Split(' ');
 
+		internal static void PrintUsage(ModCommand mc) => Main.NewText("Usage: " + mc.Usage);
+
 		internal static void ProcessInput(string input, CommandType type, ref bool show)
 		{
 			var cmd = Parse(input);
@@ -48,12 +51,20 @@ namespace Terraria.ModLoader
 
 			show = mc.Show;
 			if (cmdList.Count > 1)
-				Main.NewText("Error: Multiple definitions of command " + mc.Command);
+				Main.NewText("Error: Multiple definitions of command /" + mc.Command);
+			else if (!mc.VerifyArguments(args))
+				PrintUsage(mc);
 			else
-				if (mc.VerifyArguments(args))
-					mc.Action(args);
-				else
-					Main.NewText(mc.Usage);
+			{
+					try
+					{
+						mc.Action(args);
+					}
+					catch
+					{
+						PrintUsage(mc);
+					}
+			}
 		}
 	}
 }
