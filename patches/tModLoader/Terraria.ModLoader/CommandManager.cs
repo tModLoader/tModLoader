@@ -36,14 +36,13 @@ namespace Terraria.ModLoader
 			ServerCommands.Clear();
 		}
 
-		internal static string[] Parse(string text) => text.Substring(1).Split(' ');
+		internal static string[] ParseCommand(string text) => text.Substring(1).Split(' ');
 
 		internal static void PrintUsage(ModCommand mc) => Main.NewText("Usage: " + mc.Usage);
 
 		internal static void ProcessInput(string input, CommandType type, ref bool show)
 		{
-			var cmd = Parse(input);
-			if (input.Length <= 0) return;
+			var cmd = ParseCommand(input);
 			var cmdList = GetCommandList(type, cmd[0]);
 			if (cmdList == null) return;
 			var args = cmd.Skip(1).ToArray();

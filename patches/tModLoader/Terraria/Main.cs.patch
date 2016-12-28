@@ -6164,7 +6164,7 @@
  					string a = Main.chatText;
  					Main.chatText = Main.GetInputText(Main.chatText);
  					int num6 = Main.screenWidth - 330;
-@@ -13100,17 +_,23 @@
+@@ -13100,17 +_,24 @@
  							Main.chatText = Main.chatText.Substring(0, Main.chatText.Length - 1);
  						}
  					}
@@ -6178,7 +6178,8 @@
  					{
 -						if (Main.chatText != "")
 +						var show = true;
-+						CommandManager.ProcessInput(Main.chatText, CommandType.Chat, ref show);
++						if (Main.chatText.Length > 0 && Main.chatText[0] == '/')
++						  CommandManager.ProcessInput(Main.chatText, CommandType.Chat, ref show);
 +
 +						if (Main.chatText != "" && show)
  						{
