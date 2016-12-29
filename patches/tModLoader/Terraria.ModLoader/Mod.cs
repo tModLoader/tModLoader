@@ -280,6 +280,10 @@ namespace Terraria.ModLoader
 				{
 					AutoloadGlobalRecipe(type);
 				}
+				else if (type.IsSubclassOf(typeof(ModCommand)))
+				{
+					AutoloadCommand(type);
+				}
 			}
 			if (Properties.AutoloadGores)
 			{
@@ -293,6 +297,16 @@ namespace Terraria.ModLoader
 			{
 				AutoloadBackgrounds();
 			}
+		}
+
+		public void AddCommand(string name, ModCommand mc)
+		{
+			mc.Name = name;
+
+			if (mc.Type == CommandType.Chat)
+				CommandManager.Add(mc);
+			else
+				CommandManager.Add(mc);
 		}
 
 		public void AddItem(string name, ModItem item, string texture)
@@ -1559,6 +1573,15 @@ namespace Terraria.ModLoader
 			{
 				AddGlobalRecipe(name, globalRecipe);
 			}
+		}
+
+		private void AutoloadCommand(Type type)
+		{
+			var mc = (ModCommand) Activator.CreateInstance(type);
+			mc.Mod = this;
+			var name = type.Name;
+			if (mc.Autoload(ref name))
+				AddCommand(name, mc);
 		}
 
 		public GlobalRecipe GetGlobalRecipe(string name)

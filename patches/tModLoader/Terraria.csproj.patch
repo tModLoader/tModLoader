@@ -89,7 +89,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -344,6 +_,130 @@
+@@ -344,6 +_,132 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -152,6 +152,7 @@
 +    <Compile Include="Terraria.ModLoader\BackgroundTextureLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\BuffLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\BuildProperties.cs" />
++    <Compile Include="Terraria.ModLoader\CommandManager.cs" />
 +    <Compile Include="Terraria.ModLoader\DrawInfo.cs" />
 +    <Compile Include="Terraria.ModLoader\EntityInfo.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipLoader.cs" />
@@ -173,6 +174,7 @@
 +    <Compile Include="Terraria.ModLoader\Mod.cs" />
 +    <Compile Include="Terraria.ModLoader\ModBackgroundStyle.cs" />
 +    <Compile Include="Terraria.ModLoader\ModBuff.cs" />
++    <Compile Include="Terraria.ModLoader\ModCommand.cs" />
 +    <Compile Include="Terraria.ModLoader\ModCompile.cs" />
 +    <Compile Include="Terraria.ModLoader\ConvertiblePlants.cs" />
 +    <Compile Include="Terraria.ModLoader\ModDust.cs" />
