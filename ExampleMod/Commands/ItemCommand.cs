@@ -17,37 +17,40 @@ namespace ExampleMod.Commands
 
 		public override string Usage
 		{
-			get { return "/item [type|name] [stack]"; }
+			get { return "/item <type|name> [stack]\nReplace spaces in item name with underscores"; }
 		}
 
-		public override bool Show
+		public override string Description 
 		{
-			get { return false; }
+			get { return "Spawn an item"; }
 		}
 
-		public override bool VerifyArguments(string[] args)
+		public override void Action(CommandCaller caller, string input, string[] args)
 		{
-			return args.Length == 2;
-		}
-
-		public override void Action(string[] args)
-		{
-			var player = Main.LocalPlayer;
 			int type;
 			if (!int.TryParse(args[0], out type))
 			{
-				args[0] = args[0].Replace("_", " ");
+				var name = args[0].Replace("_", " ");
+				var item = new Item();
 				for (var k = 0; k < Main.itemName.Length; k++)
-					if (args[0] == Main.itemName[k])
+				{
+					item.SetDefaults(k, true);
+					if (name == Main.itemName[k] || name == item.name)
 					{
 						type = k;
 						break;
 					}
+				}
+
+				if (type == 0)
+					throw new UsageException("Unknown item: "+ name);
 			}
-			int stack;
-			if (args.Length < 2 || !int.TryParse(args[1], out stack))
-				stack = 1;
-			player.QuickSpawnItem(type, stack);
+
+			int stack = 1;
+			if (args.Length >= 2)
+				stack = int.Parse(args[1]);
+
+			caller.Player.QuickSpawnItem(type, stack);
 		}
 	}
 }

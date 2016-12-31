@@ -1562,27 +1562,31 @@
  						int num = 0;
  						for (int i = 0; i < list.Count; i++)
  						{
-@@ -4171,11 +_,20 @@
+@@ -4171,13 +_,23 @@
  								num = text3.Length;
  							}
  						}
++
++						var modHelpList = CommandManager.GetHelp(CommandType.Console);
++						foreach (var entry in modHelpList)
++							if (entry.Item1.Length > num)
++								num = entry.Item1.Length;
 +
  						int num2 = (num + 1) / 8;
  						for (int j = 0; j < list.Count; j++)
  						{
  							string text4 = Language.Exists("CLI." + list[j] + "_Example") ? Language.GetTextValue("CLI." + list[j] + "_Example") : Language.GetTextValue("CLI." + list[j] + "_Command");
  							Console.WriteLine(text4 + new string('\t', num2 - text4.Length / 8) + Language.GetTextValue("CLI." + list[j] + "_Description"));
-+						}
-+						Console.WriteLine("ModList" + new string('\t', num2 - "ModList".Length / 8) + "Displays a list of loaded mods.");
-+					}
-+					else if(text == "modlist")
-+					{
-+						foreach(string modname in ModLoader.ModLoader.GetLoadedMods())
-+						{
-+							Console.WriteLine(modname);
  						}
- 					}
+-					}
++						
++						foreach (var entry in modHelpList)
++							Console.WriteLine(entry.Item1 + new string('\t', num2 - entry.Item1.Length / 8) + entry.Item2);
++					}
++					else if (CommandManager.HandleCommand(text, new ConsoleCommandCaller())) {}
  					else if (text == Language.GetTextValue("CLI.Settle_Command"))
+ 					{
+ 						if (!Liquid.panicMode)
 @@ -4249,6 +_,7 @@
  						{
  							num3 += 54000.0;
@@ -6164,7 +6168,7 @@
  					string a = Main.chatText;
  					Main.chatText = Main.GetInputText(Main.chatText);
  					int num6 = Main.screenWidth - 330;
-@@ -13100,17 +_,24 @@
+@@ -13100,17 +_,23 @@
  							Main.chatText = Main.chatText.Substring(0, Main.chatText.Length - 1);
  						}
  					}
@@ -6177,17 +6181,16 @@
  					if (Main.inputTextEnter && Main.chatRelease)
  					{
 -						if (Main.chatText != "")
-+						var show = true;
-+						if (Main.chatText.Length > 0 && Main.chatText[0] == '/')
-+						  CommandManager.ProcessInput(Main.chatText, CommandType.Chat, ref show);
++						var handled = chatText.Length > 0 && chatText[0] == '/' &&
++								CommandManager.HandleCommand(chatText, new ChatCommandCaller());
 +
-+						if (Main.chatText != "" && show)
++						if (Main.chatText != "" && !handled)
  						{
  							NetMessage.SendData(25, -1, -1, Main.chatText, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
  						}
 -						if (Main.netMode == 0 && Main.chatText != "")
 +
-+						if (Main.netMode == 0 && Main.chatText != "" && show)
++						if (Main.netMode == 0 && Main.chatText != "" && !handled)
  						{
  							Microsoft.Xna.Framework.Color white = Microsoft.Xna.Framework.Color.White;
  							if (Main.player[Main.myPlayer].difficulty == 2)

@@ -302,11 +302,9 @@ namespace Terraria.ModLoader
 		public void AddCommand(string name, ModCommand mc)
 		{
 			mc.Name = name;
-
-			if (mc.Type == CommandType.Chat)
-				CommandManager.Add(mc);
-			else
-				CommandManager.Add(mc);
+			mc.Mod = this;
+			
+			CommandManager.Add(mc);
 		}
 
 		public void AddItem(string name, ModItem item, string texture)

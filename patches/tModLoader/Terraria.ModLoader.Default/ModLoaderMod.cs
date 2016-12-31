@@ -34,6 +34,8 @@ namespace Terraria.ModLoader.Default
 			AddPlayer("MysteryPlayer", new MysteryPlayer());
 			AddModWorld("MysteryWorld", new MysteryWorld());
 			AddModWorld("MysteryTilesWorld", new MysteryTilesWorld());
+			AddCommand("HelpCommand", new HelpCommand());
+			AddCommand("ModlistCommand", new ModlistCommand());
 		}
 
 		private static void LoadTextures()

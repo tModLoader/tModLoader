@@ -20,30 +20,21 @@ namespace ExampleMod.Commands
 			get { return "/sound type style"; }
 		}
 
-		public override bool Show
+		public override string Description 
 		{
-			get { return false; }
+			get { return "Play sounds by id"; }
 		}
 
-		public override bool VerifyArguments(string[] args)
-		{
-			return args.Length == 2;
-		}
-
-		public override void Action(string[] args)
+		public override void Action(CommandCaller caller, string input, string[] args)
 		{
 			int type;
 			if (!int.TryParse(args[0], out type))
-			{
-				Main.NewText(args[0] + " is not an integer");
-				return;
-			}
+				throw new UsageException(args[0] + " is not an integer");
+			
 			int style;
 			if (!int.TryParse(args[1], out style))
-			{
-				Main.NewText(args[1] + " is not an integer");
-				return;
-			}
+				throw new UsageException(args[1] + " is not an integer");
+			
 			Main.PlaySound(type, -1, -1, style);
 		}
 	}

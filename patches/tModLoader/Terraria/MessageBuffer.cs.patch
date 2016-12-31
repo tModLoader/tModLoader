@@ -136,6 +136,15 @@
  						return;
  					}
  				case 24:
+@@ -1426,6 +_,8 @@
+ 						{
+ 							return;
+ 						}
++						if (CommandManager.HandleCommand(text, new PlayerCommandCaller(Main.player[this.whoAmI])))
++							return;
+ 						string text3 = text.ToLower();
+ 						if (text3 == Lang.mp[6] || text3 == Lang.mp[21])
+ 						{
 @@ -1544,6 +_,7 @@
  						int num84 = (int)this.reader.ReadInt16();
  						BitsByte bitsByte15 = this.reader.ReadByte();

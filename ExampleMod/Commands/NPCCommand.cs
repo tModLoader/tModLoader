@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Commands
@@ -7,7 +8,7 @@ namespace ExampleMod.Commands
 	{
 		public override CommandType Type
 		{
-			get { return CommandType.Chat; }
+			get { return CommandType.World; }
 		}
 
 		public override string Command
@@ -17,24 +18,20 @@ namespace ExampleMod.Commands
 
 		public override string Usage
 		{
-			get { return "/npc type [x] [y] [number]; x and y may be preceded by ~ to use position relative to player"; }
+			get { return "/npc type [x] [y] [number]\nx and y may be preceded by ~ to use position relative to player"; }
 		}
 
-		public override bool Show
+		public override string Description 
 		{
-			get { return false; }
+			get { return "Spawn an npc"; }
 		}
 
-		public override bool VerifyArguments(string[] args)
+		public override void Action(CommandCaller caller, string input, string[] args)
 		{
 			int type;
-			return args.Length == 4 && int.TryParse(args[0], out type);
-		}
-
-		public override void Action(string[] args)
-		{
-			var type = int.Parse(args[0]);
-			var player = Main.LocalPlayer;
+			if (!int.TryParse(args[0], out type))
+				throw new UsageException(args[0] + " is not an integer");
+			
 			int x;
 			int y;
 			var num = 1;
@@ -63,32 +60,24 @@ namespace ExampleMod.Commands
 					relativeY = true;
 				}
 				if (relativeX)
-					x += (int) player.Bottom.X;
+					x += (int) caller.Player.Bottom.X;
 				if (relativeY)
-					y += (int) player.Bottom.Y;
+					y += (int) caller.Player.Bottom.Y;
 				if (args.Length > 3)
 					if (!int.TryParse(args[3], out num))
 						num = 1;
 			}
 			else
 			{
-				x = (int) player.Bottom.X;
-				y = (int) player.Bottom.Y;
+				x = (int) caller.Player.Bottom.X;
+				y = (int) caller.Player.Bottom.Y;
 			}
 			for (var k = 0; k < num; k++)
-				if (Main.netMode == 0)
-				{
-					NPC.NewNPC(x, y, type);
-				}
-				else if (Main.netMode == 1)
-				{
-					var netMessage = Mod.GetPacket();
-					netMessage.Write((byte) ExampleModMessageType.SpawnNPC);
-					netMessage.Write(x);
-					netMessage.Write(y);
-					netMessage.Write(type);
-					netMessage.Send();
-				}
+			{
+				int slot = NPC.NewNPC(x, y, type);
+				//if (Main.netMode == 2 && slot < 200)
+				//	NetMessage.SendData(MessageID.SyncNPC, -1, -1, "", slot);
+			}
 		}
 	}
 }

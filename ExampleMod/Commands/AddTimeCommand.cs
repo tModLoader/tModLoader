@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Commands
@@ -7,7 +8,7 @@ namespace ExampleMod.Commands
 	{
 		public override CommandType Type
 		{
-			get { return CommandType.Chat; }
+			get { return CommandType.World; }
 		}
 
 		public override string Command
@@ -20,20 +21,29 @@ namespace ExampleMod.Commands
 			get { return "/addTime numTicks"; }
 		}
 
-		public override bool Show
+		public override string Description 
 		{
-			get { return false; }
+			get { return "Add or rewind world time"; }
 		}
 
-		public override bool VerifyArguments(string[] args)
+		public override void Action(CommandCaller caller, string input, string[] args)
 		{
-			int amount;
-			return args.Length == 1 && int.TryParse(args[0], out amount);
-		}
+			double fullTime = Main.time;
+			if (!Main.dayTime)
+				fullTime += 54000.0;
 
-		public override void Action(string[] args)
-		{
-			Main.time += int.Parse(args[0]);
+			fullTime += int.Parse(args[0]);
+			fullTime %= 86400.0;
+			if (fullTime < 0)
+				fullTime += 86400;
+
+			Main.dayTime = fullTime < 54000;
+			Main.time = fullTime;
+			if (!Main.dayTime)
+				Main.time -= 54000;
+
+			if (Main.netMode == 2)
+				NetMessage.SendData(MessageID.WorldInfo);
 		}
 	}
 }

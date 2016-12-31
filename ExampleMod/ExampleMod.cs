@@ -1,4 +1,3 @@
-using System;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -8,7 +7,6 @@ using ExampleMod.NPCs.PuritySpirit;
 using ExampleMod.Tiles;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using ExampleMod.UI;
@@ -292,9 +290,6 @@ namespace ExampleMod
 						}
 					}
 					break;
-				case ExampleModMessageType.SpawnNPC:
-					NPC.NewNPC(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
-					break;
 				case ExampleModMessageType.PuritySpirit:
 					PuritySpirit spirit = Main.npc[reader.ReadInt32()].modNPC as PuritySpirit;
 					if (spirit != null && spirit.npc.active)
@@ -331,7 +326,6 @@ namespace ExampleMod
 	{
 		SetTremorTime,
 		VolcanicRubbleMultiplayerFix,
-		SpawnNPC,
 		PuritySpirit,
 		HeroLives
 	}

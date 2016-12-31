@@ -15,22 +15,12 @@ namespace ExampleMod.Commands
 			get { return "coin"; }
 		}
 
-		public override string Usage
+		public override string Description 
 		{
-			get { return "/coin"; }
+			get { return "Show the coin rate UI"; }
 		}
 
-		public override bool Show
-		{
-			get { return false; }
-		}
-
-		public override bool VerifyArguments(string[] args)
-		{
-			return args.Length == 0;
-		}
-
-		public override void Action(string[] args)
+		public override void Action(CommandCaller caller, string input, string[] args)
 		{
 			ExampleUI.visible = true;
 		}

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Commands
@@ -20,21 +21,16 @@ namespace ExampleMod.Commands
 			get { return "/npcType modName npcName"; }
 		}
 
-		public override bool Show
+		public override string Description
 		{
-			get { return false; }
+			get { return "Find mod npc ids"; }
 		}
 
-		public override bool VerifyArguments(string[] args)
-		{
-			return args.Length == 2;
-		}
-
-		public override void Action(string[] args)
+		public override void Action(CommandCaller caller, string input, string[] args)
 		{
 			var mod = ModLoader.GetMod(args[0]);
 			var type = mod == null ? 0 : mod.NPCType(args[1]);
-			Main.NewText(type.ToString(), 255, 255, 0);
+			caller.Reply(type.ToString(), Color.Yellow);
 		}
 	}
 }
