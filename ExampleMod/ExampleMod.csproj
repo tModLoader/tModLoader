@@ -230,6 +230,7 @@
     <Compile Include="Tiles\ExampleTree.cs" />
     <Compile Include="Tiles\ExampleWorkbench.cs" />
     <Compile Include="Tiles\MonsterBanner.cs" />
+    <Compile Include="Tiles\TEElementalPurge.cs" />
     <Compile Include="Tiles\VoidMonolith.cs" />
     <Compile Include="Tiles\VoidSky.cs" />
     <Compile Include="UI\ExampleUI.cs" />
