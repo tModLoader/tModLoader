@@ -138,12 +138,26 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.) False will keep everything the same. True, you need to handle all animations in your own code.")]
 		public virtual void WingUpdate(Player player, bool inUse)
 		{
 			if (item != null)
 			{
 				item.WingUpdate(player, inUse);
 			}
+		}
+
+		public virtual bool NewWingUpdate(Player player, bool inUse)
+		{
+			if (item != null)
+			{
+				if (item.NewWingUpdate(player, inUse))
+				{
+					return true;
+				}
+				WingUpdate(player, inUse);
+			}
+			return false;
 		}
 	}
 }

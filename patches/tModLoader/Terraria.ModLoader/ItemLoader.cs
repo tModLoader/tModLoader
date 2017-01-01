@@ -75,11 +75,11 @@ namespace Terraria.ModLoader
 		private static DelegateDrawArmorColor[] HookDrawArmorColor;
 		private delegate void DelegateArmorArmGlowMask(int slot, Player drawPlayer, float shadow, ref int glowMask, ref Color color);
 		private static DelegateArmorArmGlowMask[] HookArmorArmGlowMask;
-		private delegate void DelegateVerticalWingSpeeds(Item item, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
+		private delegate void DelegateVerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
 		private static DelegateVerticalWingSpeeds[] HookVerticalWingSpeeds;
-		private delegate void DelegateHorizontalWingSpeeds(Item item, ref float speed, ref float acceleration);
+		private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);
 		private static DelegateHorizontalWingSpeeds[] HookHorizontalWingSpeeds;
-		private static Action<int, Player, bool>[] HookWingUpdate;
+		private static Func<int, Player, bool, bool>[] HookWingUpdate;
 		private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
 		private static DelegateUpdate[] HookUpdate;
 		private static Action<Item>[] HookPostUpdate;
@@ -248,7 +248,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookArmorArmGlowMask, globalItems, g => g.ArmorArmGlowMask);
 			ModLoader.BuildGlobalHook(ref HookVerticalWingSpeeds, globalItems, g => g.VerticalWingSpeeds);
 			ModLoader.BuildGlobalHook(ref HookHorizontalWingSpeeds, globalItems, g => g.HorizontalWingSpeeds);
-			ModLoader.BuildGlobalHook(ref HookWingUpdate, globalItems, g => g.WingUpdate);
+			ModLoader.BuildGlobalHook(ref HookWingUpdate, globalItems, g => g.NewWingUpdate);
 			ModLoader.BuildGlobalHook(ref HookUpdate, globalItems, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookPostUpdate, globalItems, g => g.PostUpdate);
 			ModLoader.BuildGlobalHook(ref HookGrabRange, globalItems, g => g.GrabRange);
@@ -1091,12 +1091,12 @@ namespace Terraria.ModLoader
 			{
 				return;
 			}
-			item.modItem?.VerticalWingSpeeds(ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
+			item.modItem?.VerticalWingSpeeds(player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
 				ref maxAscentMultiplier, ref constantAscend);
 
 			foreach (var hook in HookVerticalWingSpeeds)
 			{
-				hook(item, ref ascentWhenFalling, ref ascentWhenRising,
+				hook(item, player, ref ascentWhenFalling, ref ascentWhenRising,
 					ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
 			}
 		}
@@ -1109,27 +1109,35 @@ namespace Terraria.ModLoader
 			{
 				return;
 			}
-			item.modItem?.HorizontalWingSpeeds(ref player.accRunSpeed, ref player.runAcceleration);
+			item.modItem?.HorizontalWingSpeeds(player, ref player.accRunSpeed, ref player.runAcceleration);
 
 			foreach (var hook in HookHorizontalWingSpeeds)
 			{
-				hook(item, ref player.accRunSpeed, ref player.runAcceleration);
+				hook(item, player, ref player.accRunSpeed, ref player.runAcceleration);
 			}
 		}
 
-		public static void WingUpdate(Player player, bool inUse)
+		public static bool WingUpdate(Player player, bool inUse)
 		{
 			if (player.wings <= 0)
 			{
-				return;
+				return false;
 			}
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wings);
-			texture?.WingUpdate(player, inUse);
+			bool? retVal = texture?.NewWingUpdate(player, inUse);
+			if (retVal == null)
+			{
+				retVal = false;
+			}
 
 			foreach (var hook in HookWingUpdate)
 			{
-				hook(player.wings, player, inUse);
+				if (hook(player.wings, player, inUse))
+				{
+					retVal = true;
+				}
 			}
+			return (bool)retVal;
 		}
 		//in Terraria.Item.UpdateItem before item movement (denoted by ItemID.Sets.ItemNoGravity)
 		//  call ItemLoader.Update(this, ref num, ref num2)
