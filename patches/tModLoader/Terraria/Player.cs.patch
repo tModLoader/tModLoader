@@ -3028,10 +3028,37 @@
  				}
  				else
  				{
-+					ItemLoader.WingUpdate(this, flag19);
++					bool isCustomWings = ItemLoader.WingUpdate(this, flag19);
  					if (flag19)
  					{
  						if (this.wings == 10 && Main.rand.Next(2) == 0)
+@@ -21476,7 +_,7 @@
+ 							}
+ 						}
+ 					}
+-					else
++					else if (!isCustomWings)
+ 					{
+ 						int num91 = 4;
+ 						if (this.wings == 32)
+@@ -21535,7 +_,7 @@
+ 						}
+ 						this.rocketTime = 0;
+ 					}
+-					if (flag19 && this.wings != 4 && this.wings != 22 && this.wings != 0 && this.wings != 24 && this.wings != 28 && this.wings != 30 && this.wings != 33)
++					if (flag19 && this.wings != 4 && this.wings != 22 && this.wings != 0 && this.wings != 24 && this.wings != 28 && this.wings != 30 && this.wings != 33 && !isCustomWings)
+ 					{
+ 						if (this.wingFrame == 3)
+ 						{
+@@ -21901,7 +_,7 @@
+ 										}
+ 									}
+ 								}
+-								else if (this.wings != 22 && this.wings != 28)
++								else if (this.wings != 22 && this.wings != 28 && !isCustomWings)
+ 								{
+ 									if (this.wings == 30)
+ 									{
 @@ -22831,6 +_,7 @@
  			this.grappling[0] = -1;
  			this.grapCount = 0;

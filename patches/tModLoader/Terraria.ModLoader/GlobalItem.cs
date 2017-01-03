@@ -263,17 +263,37 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		[method: Obsolete("Use the overloaded method with the player parameter.")]
 		public virtual void VerticalWingSpeeds(Item item, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
 		}
 
+		public virtual void VerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
+	ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+		{
+			VerticalWingSpeeds(item, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
+		}
+
+		[method: Obsolete("Use the overloaded method with the player parameter.")]
 		public virtual void HorizontalWingSpeeds(Item item, ref float speed, ref float acceleration)
 		{
 		}
 
+		public virtual void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
+		{
+			HorizontalWingSpeeds(item, ref speed, ref acceleration);
+		}
+
+		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.) False will keep everything the same. True, you need to handle all animations in your own code.")]
 		public virtual void WingUpdate(int wings, Player player, bool inUse)
 		{
+		}
+
+		public virtual bool NewWingUpdate(int wings, Player player, bool inUse)
+		{
+			WingUpdate(wings, player, inUse);
+			return false;
 		}
 
 		public virtual void Update(Item item, ref float gravity, ref float maxFallSpeed)
