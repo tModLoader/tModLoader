@@ -6,6 +6,9 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using System.Collections.Generic;
+using Terraria.World.Generation;
+using Terraria.GameContent.Generation;
 
 namespace ExampleMod.Tiles
 {
@@ -69,19 +72,42 @@ namespace ExampleMod.Tiles
 
 	public class ExampleStatueModWorld : ModWorld
 	{
-		public override void PreWorldGen()
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
 		{
-			WorldGen.SetupStatueList();
-			if (WorldGen.statueList.Any(point => point.X == mod.TileType("ExampleStatue")))
+			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Reset"));
+			if (ShiniesIndex != -1)
 			{
-				return;
-			}
-			Array.Resize(ref WorldGen.statueList, WorldGen.statueList.Length + 50);
-			for (int i = WorldGen.statueList.Length - 50; i < WorldGen.statueList.Length; i++)
-			{
-				WorldGen.statueList[i] = new Point16(mod.TileType("ExampleStatue"), 0);
-				WorldGen.StatuesWithTraps.Add(i);
+				tasks.Insert(ShiniesIndex + 1, new PassLegacy("Example Mod Ores", delegate (GenerationProgress progress)
+				{
+					progress.Message = "Adding ExampleMod Statue";
+
+					if (WorldGen.statueList.Any(point => point.X == mod.TileType("ExampleStatue")))
+					{
+						return;
+					}
+					Array.Resize(ref WorldGen.statueList, WorldGen.statueList.Length + 50);
+					for (int i = WorldGen.statueList.Length - 50; i < WorldGen.statueList.Length; i++)
+					{
+						WorldGen.statueList[i] = new Point16(mod.TileType("ExampleStatue"), 0);
+						WorldGen.StatuesWithTraps.Add(i);
+					}
+
+				}));
 			}
 		}
+		//public override void PreWorldGen()
+		//{
+		//	WorldGen.SetupStatueList();
+		//	if (WorldGen.statueList.Any(point => point.X == mod.TileType("ExampleStatue")))
+		//	{
+		//		return;
+		//	}
+		//	Array.Resize(ref WorldGen.statueList, WorldGen.statueList.Length + 50);
+		//	for (int i = WorldGen.statueList.Length - 50; i < WorldGen.statueList.Length; i++)
+		//	{
+		//		WorldGen.statueList[i] = new Point16(mod.TileType("ExampleStatue"), 0);
+		//		WorldGen.StatuesWithTraps.Add(i);
+		//	}
+		//}
 	}
 }
