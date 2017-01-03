@@ -21,8 +21,8 @@ namespace Terraria.ModLoader
 		public Assembly Code { get; internal set; }
 
 		public virtual string Name => File.name;
-		public Version tModLoaderVersion => File?.tModLoaderVersion ?? ModLoader.version;
-		public Version Version => File?.version ?? ModLoader.version;
+		public virtual Version tModLoaderVersion => File.tModLoaderVersion;
+		public virtual Version Version => File.version;
 
 		public ModProperties Properties { get; protected set; }
 		public ModSide Side { get; internal set; }

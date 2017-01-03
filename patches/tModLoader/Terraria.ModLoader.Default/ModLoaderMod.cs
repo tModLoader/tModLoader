@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,10 +13,13 @@ namespace Terraria.ModLoader.Default
 		private static Texture2D mysteryTileTexture;
 
 		public override string Name => "ModLoader";
+		public override Version Version => ModLoader.version;
+		public override Version tModLoaderVersion => ModLoader.version;
 
 		internal ModLoaderMod()
 		{
 			Side = ModSide.NoSync;
+			DisplayName = "tModLoader";
 		}
 
 		public override void Load()
