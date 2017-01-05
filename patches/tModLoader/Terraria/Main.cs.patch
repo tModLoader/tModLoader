@@ -1579,7 +1579,7 @@
  							Console.WriteLine(text4 + new string('\t', num2 - text4.Length / 8) + Language.GetTextValue("CLI." + list[j] + "_Description"));
  						}
 -					}
-+						
++
 +						foreach (var entry in modHelpList)
 +							Console.WriteLine(entry.Item1 + new string('\t', num2 - entry.Item1.Length / 8) + entry.Item2);
 +					}
@@ -3854,16 +3854,17 @@
  							this.newMusic = 40;
  						}
 +
-+						if (Main.musicBox >= Main.maxMusic)
-+						{
-+							this.newMusic = Main.musicBox;
-+						}
-+
  						if (Main.musicBox == 39)
  						{
  							this.newMusic = 41;
  						}
- 					}
+-					}
++
++						if (Main.musicBox >= Main.maxMusic)
++						{
++							this.newMusic = Main.musicBox;
++						}
++					}
 +
  					Main.curMusic = this.newMusic;
  					float num8 = 1f;
