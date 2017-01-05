@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Xml;
 using System.Collections.Generic;
@@ -25,7 +24,8 @@ namespace Terraria.ModLoader.UI
 		public UITextPanel<string> uITextPanel;
 		UIInputTextField filterTextBox;
 		private List<UICycleImage> _categoryButtons = new List<UICycleImage>();
-		public bool loaded = false;
+		UITextPanel<string> reloadButton;
+		public bool loading;
 		public SortModes sortMode = SortModes.RecentlyUpdated;
 		public UpdateFilter updateFilterMode = UpdateFilter.Available;
 		public SearchFilter searchFilterMode = SearchFilter.Name;
@@ -70,23 +70,23 @@ namespace Terraria.ModLoader.UI
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
-			UITextPanel<string> button = new UITextPanel<string>("Reload List", 1f, false);
-			button.Width.Set(-10f, 0.5f);
-			button.Height.Set(25f, 0f);
-			button.VAlign = 1f;
-			button.Top.Set(-65f, 0f);
-			button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button.OnClick += new UIElement.MouseEvent(ReloadList);
-			uIElement.Append(button);
+			reloadButton = new UITextPanel<string>("Loading...", 1f, false);
+			reloadButton.Width.Set(-10f, 0.5f);
+			reloadButton.Height.Set(25f, 0f);
+			reloadButton.VAlign = 1f;
+			reloadButton.Top.Set(-65f, 0f);
+			reloadButton.OnMouseOver += FadedMouseOver;
+			reloadButton.OnMouseOut += FadedMouseOut;
+			reloadButton.OnClick += ReloadList;
+			uIElement.Append(reloadButton);
 			UITextPanel<string> button3 = new UITextPanel<string>("Back", 1f, false);
 			button3.Width.Set(-10f, 0.5f);
 			button3.Height.Set(25f, 0f);
 			button3.VAlign = 1f;
 			button3.Top.Set(-20f, 0f);
-			button3.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button3.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button3.OnClick += new UIElement.MouseEvent(BackClick);
+			button3.OnMouseOver += FadedMouseOver;
+			button3.OnMouseOut += FadedMouseOut;
+			button3.OnClick += BackClick;
 			uIElement.Append(button3);
 			base.Append(uIElement);
 			UIElement uIElement2 = new UIElement();
@@ -101,15 +101,21 @@ namespace Terraria.ModLoader.UI
 				{
 					uIToggleImage = new UICycleImage(texture, 5, 32, 32, 0, 0);
 					uIToggleImage.setCurrentState((int)sortMode);
-					uIToggleImage.OnClick += (a, b) => Interface.modBrowser.sortMode = sortMode.Next();
-					uIToggleImage.OnClick += new UIElement.MouseEvent(this.SortList);
+					uIToggleImage.OnClick += (a, b) =>
+					{
+						sortMode = sortMode.Next();
+						SortList();
+					};
 				}
 				else
 				{
 					uIToggleImage = new UICycleImage(texture, 3, 32, 32, 34, 0);
 					uIToggleImage.setCurrentState((int)updateFilterMode);
-					uIToggleImage.OnClick += (a, b) => Interface.modBrowser.updateFilterMode = updateFilterMode.Next();
-					uIToggleImage.OnClick += new UIElement.MouseEvent(this.SortList);
+					uIToggleImage.OnClick += (a, b) =>
+					{
+						updateFilterMode = updateFilterMode.Next();
+						SortList();
+					};
 				}
 				uIToggleImage.Left.Set((float)(j * 36 + 8), 0f);
 				_categoryButtons.Add(uIToggleImage);
@@ -118,26 +124,21 @@ namespace Terraria.ModLoader.UI
 			filterTextBox = new UIInputTextField("Type to search");
 			filterTextBox.Top.Set(5, 0f);
 			filterTextBox.Left.Set(-150, 1f);
-			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(SortList);
+			filterTextBox.OnTextChange += (sender, e) => SortList();
 			uIElement2.Append(filterTextBox);
 			UICycleImage SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 68, 0);
 			SearchFilterToggle.setCurrentState((int)searchFilterMode);
-			SearchFilterToggle.OnClick += (a, b) => Interface.modBrowser.searchFilterMode = searchFilterMode.Next();
-			SearchFilterToggle.OnClick += new UIElement.MouseEvent(this.SortList);
+			SearchFilterToggle.OnClick += (a, b) =>
+			{
+				searchFilterMode = searchFilterMode.Next();
+				SortList();
+			};
 			SearchFilterToggle.Left.Set(545f, 0f);
 			_categoryButtons.Add(SearchFilterToggle);
 			uIElement2.Append(SearchFilterToggle);
 			uIPanel.Append(uIElement2);
-		}
 
-		private void SortList(object sender, EventArgs e)
-		{
-			SortList();
-		}
-
-		private void SortList(UIMouseEvent evt, UIElement listeningElement)
-		{
-			SortList();
+			PopulateModBrowser();
 		}
 
 		private void SortList()
@@ -226,59 +227,64 @@ namespace Terraria.ModLoader.UI
 			Interface.modBrowser.aNewModDownloaded = false;
 		}
 
-		private static void ReloadList(UIMouseEvent evt, UIElement listeningElement)
+		private void ReloadList(UIMouseEvent evt, UIElement listeningElement)
 		{
+			if (loading)
+				return;
+
 			Main.PlaySound(10, -1, -1, 1);
-			Interface.modBrowser.loaded = false;
-			Main.menuMode = Interface.modBrowserID;
+			reloadButton.SetText("Reloading...");
+			PopulateModBrowser();
 		}
 
 		public override void OnActivate()
 		{
 			Main.clrInput();
-			if (!loaded)
+		}
+
+		private void PopulateModBrowser()
+		{
+			loading = true;
+			SetHeading("Mod Browser");
+			modListAll.Clear();
+			try
 			{
-				uITextPanel.SetText("Mod Browser", 0.8f, true);
-				modListAll.Clear();
-				try
-				{
-					ServicePointManager.Expect100Continue = false;
-					string url = "http://javid.ddns.net/tModLoader/listmods.php";
-					var values = new NameValueCollection
+				ServicePointManager.Expect100Continue = false;
+				string url = "http://javid.ddns.net/tModLoader/listmods.php";
+				var values = new NameValueCollection
 					{
 						{ "modloaderversion", ModLoader.versionedName },
 					};
-					using (WebClient client = new WebClient())
-					{
-						ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
-						client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(UploadComplete);
-						client.UploadValuesAsync(new Uri(url), "POST", values);
-					}
-				}
-				catch (WebException e)
+				using (WebClient client = new WebClient())
 				{
-					if (e.Status == WebExceptionStatus.Timeout)
-					{
-						uITextPanel.SetText("Mod Browser OFFLINE (Busy)", 0.8f, true);
-						return;
-					}
-					if (e.Status == WebExceptionStatus.ProtocolError)
-					{
-						var resp = (HttpWebResponse)e.Response;
-						if (resp.StatusCode == HttpStatusCode.NotFound)
-						{
-							uITextPanel.SetText("Mod Browser OFFLINE (404)", 0.8f, true);
-							return;
-						}
-						uITextPanel.SetText("Mod Browser OFFLINE..", 0.8f, true);
-						return;
-					}
+					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
+					client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(UploadComplete);
+					client.UploadValuesAsync(new Uri(url), "POST", values);
 				}
-				catch (Exception e)
+			}
+			catch (WebException e)
+			{
+				if (e.Status == WebExceptionStatus.Timeout)
 				{
-					ErrorLogger.LogModBrowserException(e);
+					SetHeading("Mod Browser OFFLINE (Busy)");
 					return;
 				}
+				if (e.Status == WebExceptionStatus.ProtocolError)
+				{
+					var resp = (HttpWebResponse)e.Response;
+					if (resp.StatusCode == HttpStatusCode.NotFound)
+					{
+						SetHeading("Mod Browser OFFLINE (404)");
+						return;
+					}
+					SetHeading("Mod Browser OFFLINE..");
+					return;
+				}
+			}
+			catch (Exception e)
+			{
+				ErrorLogger.LogModBrowserException(e);
+				return;
 			}
 		}
 
@@ -294,11 +300,11 @@ namespace Terraria.ModLoader.UI
 					HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
 					if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
 					{
-						uITextPanel.SetText("Mod Browser OFFLINE (Busy)", 0.8f, true);
+						SetHeading("Mod Browser OFFLINE (Busy)");
 					}
 					else
 					{
-						uITextPanel.SetText("Mod Browser OFFLINE (Unknown)", 0.8f, true);
+						SetHeading("Mod Browser OFFLINE (Unknown)");
 					}
 				}
 			}
@@ -316,8 +322,9 @@ namespace Terraria.ModLoader.UI
 					modBuildProperties.Add(BuildProperties.ReadModFile(tmodfile));
 				}
 				PopulateFromXML(modBuildProperties, xmlDoc);
-				loaded = true;
 			}
+			loading = false;
+			reloadButton.SetText("Reload Mods");
 		}
 
 		private void PopulateFromXML(List<BuildProperties> modBuildProperties, XmlDocument xmlDoc)
@@ -360,9 +367,9 @@ namespace Terraria.ModLoader.UI
 								}
 							}
 							UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, description, homepage, download, downloads, timeStamp, update, exists);
-							modListAll.Add(modItem);
+							modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
 						}
-						SortList(null, null);
+						SortList();
 					}
 				}
 			}
@@ -371,6 +378,12 @@ namespace Terraria.ModLoader.UI
 				ErrorLogger.LogModBrowserException(e);
 				return;
 			}
+		}
+
+		private void SetHeading(string heading)
+		{
+			uITextPanel.SetText(heading, 0.8f, true);
+			uITextPanel.Recalculate();
 		}
 
 		public XmlDocument GetDataFromUrl(string url)
