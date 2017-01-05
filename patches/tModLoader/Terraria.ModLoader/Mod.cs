@@ -328,6 +328,10 @@ namespace Terraria.ModLoader
 			item.item.name = name;
 			item.item.ResetStats(id);
 			item.item.modItem = item;
+			if (items.ContainsKey(name))
+			{
+				throw new Exception("You tried to add 2 ModItems with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.");
+			}
 			items[name] = item;
 			ItemLoader.items.Add(item);
 			item.texture = texture;
