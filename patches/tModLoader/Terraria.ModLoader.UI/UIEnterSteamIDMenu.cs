@@ -15,11 +15,11 @@ using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIEnterPassphraseMenu : UIState
+	internal class UIEnterSteamIDMenu : UIState
 	{
 		string registerURL = "http://javid.ddns.net/tModLoader/register.php";
 		public UITextPanel<string> uITextPanel;
-		internal UIInputTextField passcodeTextField;
+		internal UIInputTextField steamIDTextField;
 		private int gotoMenu = 0;
 
 		public override void OnInitialize()
@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
 
-			uITextPanel = new UITextPanel<string>("Please Enter Your Passcode", 0.8f, true);
+			uITextPanel = new UITextPanel<string>("Please Enter Your SteamID", 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
@@ -63,21 +63,21 @@ namespace Terraria.ModLoader.UI
 			button2.OnClick += OKClick;
 			uIElement.Append(button2);
 
-			UITextPanel<string> button3 = new UITextPanel<string>("Visit Website to Generate Passphrase", 1f, false);
-			button3.CopyStyle(button);
-			button3.Width.Set(0f, 1f);
-			button3.Top.Set(-20f, 0f);
-			button3.OnMouseOver += FadedMouseOver;
-			button3.OnMouseOut += FadedMouseOut;
-			button3.OnClick += VisitRegisterWebpage;
-			uIElement.Append(button3);
+			//UITextPanel<string> button3 = new UITextPanel<string>("Visit Website to Generate Passphrase", 1f, false);
+			//button3.CopyStyle(button);
+			//button3.Width.Set(0f, 1f);
+			//button3.Top.Set(-20f, 0f);
+			//button3.OnMouseOver += FadedMouseOver;
+			//button3.OnMouseOut += FadedMouseOut;
+			//button3.OnClick += VisitRegisterWebpage;
+			//uIElement.Append(button3);
 
-			passcodeTextField = new UIInputTextField("Paste Passphrase (ctrl-v)");
-			passcodeTextField.HAlign = 0.5f;
-			passcodeTextField.VAlign = 0.5f;
-			passcodeTextField.Left.Set(-100, 0);
-			passcodeTextField.OnTextChange += new UIInputTextField.EventHandler(OnTextChange);
-			uIPanel.Append(passcodeTextField);
+			steamIDTextField = new UIInputTextField("Paste SteamID (ctrl-v)");
+			steamIDTextField.HAlign = 0.5f;
+			steamIDTextField.VAlign = 0.5f;
+			steamIDTextField.Left.Set(-100, 0);
+			steamIDTextField.OnTextChange += new UIInputTextField.EventHandler(OnTextChange);
+			uIPanel.Append(steamIDTextField);
 
 			base.Append(uIElement);
 		}
@@ -85,14 +85,9 @@ namespace Terraria.ModLoader.UI
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10, -1, -1, 1);
-			ModLoader.modBrowserPassphrase = passcodeTextField.currentString.Trim();
+			ModLoader.steamID64 = steamIDTextField.currentString.Trim();
 			Main.SaveSettings();
-#if GOG
-			Main.menuMode = Interface.enterSteamIDMenuID;
-			Interface.enterSteamIDMenu.SetGotoMenu(this.gotoMenu);
-#else
 			Main.menuMode = this.gotoMenu;
-#endif
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)

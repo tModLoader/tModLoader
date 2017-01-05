@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 
@@ -26,6 +27,7 @@ namespace Terraria.ModLoader
 		internal const int enterPassphraseMenuID = 10014;
 		internal const int modPacksMenuID = 10015;
 		internal const int tModLoaderSettingsID = 10016;
+		internal const int enterSteamIDMenuID = 10017;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -39,6 +41,7 @@ namespace Terraria.ModLoader
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
 		internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
 		internal static UIModPacks modPacksMenu = new UIModPacks();
+		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
@@ -173,6 +176,11 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(enterPassphraseMenu);
 				Main.menuMode = 888;
 			}
+			else if (Main.menuMode == enterSteamIDMenuID)
+			{
+				Main.MenuUI.SetState(enterSteamIDMenu);
+				Main.menuMode = 888;
+			}
 			else if (Main.menuMode == modPacksMenuID)
 			{
 				Main.MenuUI.SetState(modPacksMenu);
@@ -182,7 +190,7 @@ namespace Terraria.ModLoader
 			{
 				offY = 210;
 				spacing = 42;
-				numButtons = 4;
+				numButtons = 5;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++)
 				{
@@ -192,7 +200,7 @@ namespace Terraria.ModLoader
 				buttonNames[buttonIndex] = (ModNet.downloadModsFromServers ? "Download Mods From Servers: On" : "Download Mods From Servers: Off");
 				if (selectedMenu == buttonIndex)
 				{
-					Main.PlaySound(12, -1, -1, 1);
+					Main.PlaySound(SoundID.MenuTick);
 					ModNet.downloadModsFromServers = !ModNet.downloadModsFromServers;
 				}
 
@@ -200,7 +208,7 @@ namespace Terraria.ModLoader
 				buttonNames[buttonIndex] = (ModNet.onlyDownloadSignedMods ? "Only Download Signed Mods From Servers: On" : "Only Download Signed Mods From Servers: Off");
 				if (selectedMenu == buttonIndex)
 				{
-					Main.PlaySound(12, -1, -1, 1);
+					Main.PlaySound(SoundID.MenuTick);
 					ModNet.onlyDownloadSignedMods = !ModNet.onlyDownloadSignedMods;
 				}
 
@@ -208,8 +216,17 @@ namespace Terraria.ModLoader
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? "Experimental Features: On" : "Experimental Features: Off");
 				if (selectedMenu == buttonIndex)
 				{
-					Main.PlaySound(12, -1, -1, 1);
+					Main.PlaySound(SoundID.MenuTick);
 					Main.UseExperimentalFeatures = !Main.UseExperimentalFeatures;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = "Clear Mod Browser Credentials";
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(SoundID.MenuTick);
+					ModLoader.modBrowserPassphrase = "";
+					ModLoader.steamID64 = "";
 				}
 
 				buttonIndex++;
