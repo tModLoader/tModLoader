@@ -7879,6 +7879,14 @@
  			float num20 = num19;
  			int a = (int)Main.mouseTextColor;
  			if (Main.npcShop > 0)
+@@ -14888,6 +_,7 @@
+ 				int storeValue = Main.toolTip.GetStoreValue();
+ 				if (Main.toolTip.shopSpecialCurrency != -1)
+ 				{
++					tooltipNames[num4] = "SpecialPrice";
+ 					CustomCurrencyManager.GetPriceText(Main.toolTip.shopSpecialCurrency, array, ref num4, storeValue);
+ 					color = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(255f * num20)), (int)((byte)(255f * num20)), a);
+ 				}
 @@ -14906,79 +_,90 @@
  						{
  							num25 = 1;
