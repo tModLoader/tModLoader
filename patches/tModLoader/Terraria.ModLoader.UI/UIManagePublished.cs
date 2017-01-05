@@ -87,7 +87,11 @@ namespace Terraria.ModLoader.UI
 				IO.UploadFile[] files = new IO.UploadFile[0];
 				var values = new NameValueCollection
 				{
+#if GOG
+					{ "steamid64", ModLoader.steamID64 },
+#else
 					{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
+#endif
 					{ "modloaderversion", ModLoader.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};

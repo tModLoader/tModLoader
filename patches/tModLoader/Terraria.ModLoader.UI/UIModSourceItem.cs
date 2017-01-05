@@ -178,8 +178,11 @@ namespace Terraria.ModLoader.UI
 						{ "author", bp.author },
 						{ "homepage", bp.homepage },
 						{ "description", bp.description },
-						// TODO: If GOG version, use ModLoader.steamID64. Should Steam users also have this option?
+#if GOG
+						{ "steamid64", ModLoader.steamID64 },
+#else
 						{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
+#endif
 						{ "modloaderversion", "tModLoader v"+theTModFile.tModLoaderVersion },
 						{ "passphrase", ModLoader.modBrowserPassphrase }
 					};

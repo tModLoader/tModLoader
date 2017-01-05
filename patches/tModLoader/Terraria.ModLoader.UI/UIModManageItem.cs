@@ -107,7 +107,11 @@ namespace Terraria.ModLoader.UI
 				var values = new NameValueCollection
 				{
 					{ "name", this.name },
+#if GOG
+					{ "steamid64", ModLoader.steamID64 },
+#else
 					{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
+#endif
 					{ "modloaderversion", ModLoader.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
