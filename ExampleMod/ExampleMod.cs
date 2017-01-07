@@ -14,6 +14,8 @@ using Microsoft.Xna.Framework.Graphics;
 using ExampleMod.UI;
 using Terraria.UI;
 using Terraria.DataStructures;
+using Terraria.GameContent.UI;
+using ExampleMod.Fonts;
 
 namespace ExampleMod
 {
@@ -22,9 +24,11 @@ namespace ExampleMod
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
 		public static SpriteFont exampleFont;
+        public static SpriteFontX exampleCustomFont;
 		private UserInterface exampleUserInterface;
 		internal ExampleUI exampleUI;
 		public static ModHotKey RandomBuffHotKey;
+		public static int FaceCustomCurrencyID;
 
 		public ExampleMod()
 		{
@@ -45,6 +49,7 @@ namespace ExampleMod
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
 			RandomBuffHotKey = RegisterHotKey("Random Buff", "P");
+			FaceCustomCurrencyID = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ItemType<Items.Face>(), 999L));
 			if (!Main.dedServ)
 			{
 				AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
@@ -67,6 +72,8 @@ namespace ExampleMod
 				exampleUI.Activate();
 				exampleUserInterface = new UserInterface();
 				exampleUserInterface.SetState(exampleUI);
+                exampleCustomFont = new SpriteFontX(new System.Drawing.Font("Arial", 12), Main.graphics, 
+                    System.Drawing.Text.TextRenderingHint.ClearTypeGridFit);
 			}
 		}
 
@@ -191,8 +198,16 @@ namespace ExampleMod
 			}
 			return Transform;
 		}
+        public override void PostDrawInterface(SpriteBatch spriteBatch)
+        {
+            /* Example SpriteFontX drawing process
+             *  
+             *  spriteBatch.DrawString(exampleCustomFont, "Test String", new Vector2(500, 500), Color.Yellow);
+             * 
+             */
 
-		public override void ChatInput(string text)
+        }
+        public override void ChatInput(string text, ref bool broadcast)
 		{
 			if (text[0] != '/')
 			{
@@ -215,30 +230,37 @@ namespace ExampleMod
 			if (command == "npc")
 			{
 				NPCCommand(args);
+				broadcast = false;
 			}
 			else if (command == "npcType")
 			{
 				NPCTypeCommand(args);
+				broadcast = false;
 			}
 			else if (command == "addTime")
 			{
 				AddTimeCommand(args);
+				broadcast = false;
 			}
 			else if (command == "item")
 			{
 				ItemCommand(args);
+				broadcast = false;
 			}
 			else if (command == "score")
 			{
 				ScoreCommand(args);
+				broadcast = false;
 			}
 			else if (command == "sound")
 			{
 				SoundCommand(args);
+				broadcast = false;
 			}
 			else if (command == "coin")
 			{
 				ExampleUI.visible = true;
+				broadcast = false;
 			}
 		}
 
