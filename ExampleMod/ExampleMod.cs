@@ -24,7 +24,7 @@ namespace ExampleMod
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
 		public static SpriteFont exampleFont;
-        public static SpriteFontX exampleCustomFont;
+        	public static SpriteFontX exampleCustomFont;
 		private UserInterface exampleUserInterface;
 		internal ExampleUI exampleUI;
 		public static ModHotKey RandomBuffHotKey;
@@ -72,8 +72,9 @@ namespace ExampleMod
 				exampleUI.Activate();
 				exampleUserInterface = new UserInterface();
 				exampleUserInterface.SetState(exampleUI);
-                exampleCustomFont = new SpriteFontX(new System.Drawing.Font("Arial", 12), Main.graphics, 
-                    System.Drawing.Text.TextRenderingHint.ClearTypeGridFit);
+				//Example loading process
+                		exampleCustomFont = new SpriteFontX(new System.Drawing.Font("Arial", 12), Main.graphics, 
+                    			System.Drawing.Text.TextRenderingHint.ClearTypeGridFit);
 			}
 		}
 
