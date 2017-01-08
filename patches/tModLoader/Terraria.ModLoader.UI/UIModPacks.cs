@@ -58,16 +58,16 @@ namespace Terraria.ModLoader.UI
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;
 			backButton.Top.Set(-20f, 0f);
-			backButton.OnMouseOver += FadedMouseOver;
-			backButton.OnMouseOut += FadedMouseOut;
+			backButton.OnMouseOver += UICommon.FadedMouseOver;
+			backButton.OnMouseOut += UICommon.FadedMouseOut;
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
 			UIColorTextPanel saveNewButton = new UIColorTextPanel("Save Enabled as New Mod Pack", Color.Green, 1f, false);
 			saveNewButton.CopyStyle(backButton);
 			saveNewButton.HAlign = 1f;
-			saveNewButton.OnMouseOver += FadedMouseOver;
-			saveNewButton.OnMouseOut += FadedMouseOut;
+			saveNewButton.OnMouseOver += UICommon.FadedMouseOver;
+			saveNewButton.OnMouseOut += UICommon.FadedMouseOut;
 			saveNewButton.OnClick += SaveNewModList;
 			uIElement.Append(saveNewButton);
 
@@ -106,17 +106,6 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(11, -1, -1, 1);
 			Main.menuMode = Interface.modsMenuID;
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		public override void OnActivate()

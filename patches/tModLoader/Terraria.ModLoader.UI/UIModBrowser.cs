@@ -75,8 +75,8 @@ namespace Terraria.ModLoader.UI
 			reloadButton.Height.Set(25f, 0f);
 			reloadButton.VAlign = 1f;
 			reloadButton.Top.Set(-65f, 0f);
-			reloadButton.OnMouseOver += FadedMouseOver;
-			reloadButton.OnMouseOut += FadedMouseOut;
+			reloadButton.OnMouseOver += UICommon.FadedMouseOver;
+			reloadButton.OnMouseOut += UICommon.FadedMouseOut;
 			reloadButton.OnClick += ReloadList;
 			uIElement.Append(reloadButton);
 			UITextPanel<string> button3 = new UITextPanel<string>("Back", 1f, false);
@@ -84,8 +84,8 @@ namespace Terraria.ModLoader.UI
 			button3.Height.Set(25f, 0f);
 			button3.VAlign = 1f;
 			button3.Top.Set(-20f, 0f);
-			button3.OnMouseOver += FadedMouseOver;
-			button3.OnMouseOut += FadedMouseOut;
+			button3.OnMouseOver += UICommon.FadedMouseOver;
+			button3.OnMouseOut += UICommon.FadedMouseOut;
 			button3.OnClick += BackClick;
 			uIElement.Append(button3);
 			base.Append(uIElement);
@@ -194,17 +194,6 @@ namespace Terraria.ModLoader.UI
 				Interface.updateMessage.SetURL(updateURL);
 				Main.menuMode = Interface.updateMessageID;
 			}
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)

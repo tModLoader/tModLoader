@@ -40,16 +40,16 @@ namespace Terraria.ModLoader.UI
 			button.Top.Set(40f, 0f);
 			button.PaddingTop -= 2f;
 			button.PaddingBottom -= 2f;
-			button.OnMouseOver += FadedMouseOver;
-			button.OnMouseOut += FadedMouseOut;
+			button.OnMouseOver += UICommon.FadedMouseOver;
+			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += this.BuildMod;
 			base.Append(button);
 			UITextPanel<string> button2 = new UITextPanel<string>("Build + Reload", 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(200f, 0f);
 			button2.Left.Set(150f, 0f);
-			button2.OnMouseOver += FadedMouseOver;
-			button2.OnMouseOut += FadedMouseOut;
+			button2.OnMouseOver += UICommon.FadedMouseOver;
+			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.BuildAndReload;
 			base.Append(button2);
 			if (publishable)
@@ -58,8 +58,8 @@ namespace Terraria.ModLoader.UI
 				button3.CopyStyle(button2);
 				button3.Width.Set(100f, 0f);
 				button3.Left.Set(390f, 0f);
-				button3.OnMouseOver += FadedMouseOver;
-				button3.OnMouseOut += FadedMouseOut;
+				button3.OnMouseOver += UICommon.FadedMouseOver;
+				button3.OnMouseOut += UICommon.FadedMouseOut;
 				button3.OnClick += this.Publish;
 				base.Append(button3);
 			}
@@ -86,17 +86,6 @@ namespace Terraria.ModLoader.UI
 			base.MouseOut(evt);
 			this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		public override int CompareTo(object obj)

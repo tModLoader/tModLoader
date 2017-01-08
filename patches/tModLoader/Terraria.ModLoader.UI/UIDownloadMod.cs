@@ -27,8 +27,8 @@ namespace Terraria.ModLoader.UI
 			cancel.VAlign = 0.5f;
 			cancel.HAlign = 0.5f;
 			cancel.Top.Set(170f, 0f);
-			cancel.OnMouseOver += FadedMouseOver;
-			cancel.OnMouseOut += FadedMouseOut;
+			cancel.OnMouseOver += UICommon.FadedMouseOver;
+			cancel.OnMouseOut += UICommon.FadedMouseOut;
 			cancel.OnClick += CancelClick;
 			base.Append(cancel);
 		}
@@ -54,17 +54,6 @@ namespace Terraria.ModLoader.UI
 		{
 			//loadProgress?.SetText("Downloading: " + name + " -- " + count+"/" + len);
 			loadProgress?.SetProgress((float)count / len);
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		private void CancelClick(UIMouseEvent evt, UIElement listeningElement)

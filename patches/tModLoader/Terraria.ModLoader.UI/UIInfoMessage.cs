@@ -28,8 +28,8 @@ namespace Terraria.ModLoader.UI
 			button.Left.Set(0, .25f);
 			button.VAlign = 1f;
 			button.Top.Set(-30f, 0f);
-			button.OnMouseOver += FadedMouseOver;
-			button.OnMouseOut += FadedMouseOut;
+			button.OnMouseOver += UICommon.FadedMouseOver;
+			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += OKClick;
 			area.Append(button);
 			base.Append(area);
@@ -43,17 +43,6 @@ namespace Terraria.ModLoader.UI
 		internal void SetGotoMenu(int gotoMenu)
 		{
 			this.gotoMenu = gotoMenu;
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)

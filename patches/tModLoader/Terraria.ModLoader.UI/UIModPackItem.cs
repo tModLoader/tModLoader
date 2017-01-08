@@ -91,8 +91,8 @@ namespace Terraria.ModLoader.UI
 			viewListButton.Top.Set(40f, 0f);
 			viewListButton.PaddingTop -= 2f;
 			viewListButton.PaddingBottom -= 2f;
-			viewListButton.OnMouseOver += FadedMouseOver;
-			viewListButton.OnMouseOut += FadedMouseOut;
+			viewListButton.OnMouseOver += UICommon.FadedMouseOver;
+			viewListButton.OnMouseOut += UICommon.FadedMouseOut;
 			viewListButton.OnClick += ViewListInfo;
 			base.Append(viewListButton);
 
@@ -103,8 +103,8 @@ namespace Terraria.ModLoader.UI
 			enableListButton.Top.Set(40f, 0f);
 			enableListButton.PaddingTop -= 2f;
 			enableListButton.PaddingBottom -= 2f;
-			enableListButton.OnMouseOver += FadedMouseOver;
-			enableListButton.OnMouseOut += FadedMouseOut;
+			enableListButton.OnMouseOver += UICommon.FadedMouseOver;
+			enableListButton.OnMouseOut += UICommon.FadedMouseOut;
 			enableListButton.OnClick += EnableList;
 			base.Append(enableListButton);
 
@@ -115,8 +115,8 @@ namespace Terraria.ModLoader.UI
 			enableListOnlyButton.Top.Set(40f, 0f);
 			enableListOnlyButton.PaddingTop -= 2f;
 			enableListOnlyButton.PaddingBottom -= 2f;
-			enableListOnlyButton.OnMouseOver += FadedMouseOver;
-			enableListOnlyButton.OnMouseOut += FadedMouseOut;
+			enableListOnlyButton.OnMouseOver += UICommon.FadedMouseOver;
+			enableListOnlyButton.OnMouseOut += UICommon.FadedMouseOut;
 			enableListOnlyButton.OnClick += EnableListOnly;
 			base.Append(enableListOnlyButton);
 
@@ -172,17 +172,6 @@ namespace Terraria.ModLoader.UI
 			base.MouseOut(evt);
 			this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement)

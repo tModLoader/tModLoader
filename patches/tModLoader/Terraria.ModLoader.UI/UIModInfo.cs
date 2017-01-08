@@ -55,8 +55,8 @@ namespace Terraria.ModLoader.UI
 			modHomepageButton.Height.Set(25f, 0f);
 			modHomepageButton.VAlign = 1f;
 			modHomepageButton.Top.Set(-65f, 0f);
-			modHomepageButton.OnMouseOver += FadedMouseOver;
-			modHomepageButton.OnMouseOut += FadedMouseOut;
+			modHomepageButton.OnMouseOver += UICommon.FadedMouseOver;
+			modHomepageButton.OnMouseOut += UICommon.FadedMouseOut;
 			modHomepageButton.OnClick += VisitModHomePage;
 			uIElement.Append(modHomepageButton);
 			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
@@ -64,8 +64,8 @@ namespace Terraria.ModLoader.UI
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;
 			backButton.Top.Set(-20f, 0f);
-			backButton.OnMouseOver += FadedMouseOver;
-			backButton.OnMouseOut += FadedMouseOut;
+			backButton.OnMouseOver += UICommon.FadedMouseOver;
+			backButton.OnMouseOut += UICommon.FadedMouseOut;
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 			base.Append(uIElement);
@@ -93,17 +93,6 @@ namespace Terraria.ModLoader.UI
 		internal void SetURL(string url)
 		{
 			this.url = url;
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)

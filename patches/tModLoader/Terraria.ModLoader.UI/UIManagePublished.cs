@@ -51,22 +51,11 @@ namespace Terraria.ModLoader.UI
 			button3.Height.Set(25f, 0f);
 			button3.Width.Set(-10f, 1f / 2f);
 			button3.Top.Set(-20f, 0f);
-			button3.OnMouseOver += FadedMouseOver;
-			button3.OnMouseOut += FadedMouseOut;
+			button3.OnMouseOver += UICommon.FadedMouseOver;
+			button3.OnMouseOut += UICommon.FadedMouseOut;
 			button3.OnClick += BackClick;
 			uIElement.Append(button3);
 			base.Append(uIElement);
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)

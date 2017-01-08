@@ -28,15 +28,15 @@ namespace Terraria.ModLoader.UI
 			button.Height.Set(50f, 0f);
 			button.VAlign = 1f;
 			button.Top.Set(-30f, 0f);
-			button.OnMouseOver += FadedMouseOver;
-			button.OnMouseOut += FadedMouseOut;
+			button.OnMouseOver += UICommon.FadedMouseOver;
+			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += ContinueClick;
 			area.Append(button);
 			UITextPanel<string> button2 = new UITextPanel<string>("Open Logs", 0.7f, true);
 			button2.CopyStyle(button);
 			button2.HAlign = 1f;
-			button2.OnMouseOver += FadedMouseOver;
-			button2.OnMouseOut += FadedMouseOut;
+			button2.OnMouseOver += UICommon.FadedMouseOver;
+			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += OpenFile;
 			area.Append(button2);
 			base.Append(area);
@@ -60,17 +60,6 @@ namespace Terraria.ModLoader.UI
 		internal void SetFile(string file)
 		{
 			this.file = file;
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement)

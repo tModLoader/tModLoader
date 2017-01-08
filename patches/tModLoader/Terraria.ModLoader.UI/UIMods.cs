@@ -55,36 +55,36 @@ namespace Terraria.ModLoader.UI
 			button.Height.Set(25f, 0f);
 			button.VAlign = 1f;
 			button.Top.Set(-65f, 0f);
-			button.OnMouseOver += FadedMouseOver;
-			button.OnMouseOut += FadedMouseOut;
+			button.OnMouseOver += UICommon.FadedMouseOver;
+			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += this.EnableAll;
 			uIElement.Append(button);
 			UIColorTextPanel button2 = new UIColorTextPanel("Disable All", Color.Red, 1f, false);
 			button2.CopyStyle(button);
 			button2.HAlign = 0.5f;
-			button2.OnMouseOver += FadedMouseOver;
-			button2.OnMouseOut += FadedMouseOut;
+			button2.OnMouseOver += UICommon.FadedMouseOver;
+			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.DisableAll;
 			uIElement.Append(button2);
 			UITextPanel<string> button3 = new UITextPanel<string>("Reload Mods", 1f, false);
 			button3.CopyStyle(button);
 			button3.HAlign = 1f;
-			button3.OnMouseOver += FadedMouseOver;
-			button3.OnMouseOut += FadedMouseOut;
+			button3.OnMouseOver += UICommon.FadedMouseOver;
+			button3.OnMouseOut += UICommon.FadedMouseOut;
 			button3.OnClick += ReloadMods;
 			uIElement.Append(button3);
 			UITextPanel<string> button4 = new UITextPanel<string>("Back", 1f, false);
 			button4.CopyStyle(button);
 			button4.Top.Set(-20f, 0f);
-			button4.OnMouseOver += FadedMouseOver;
-			button4.OnMouseOut += FadedMouseOut;
+			button4.OnMouseOver += UICommon.FadedMouseOver;
+			button4.OnMouseOut += UICommon.FadedMouseOut;
 			button4.OnClick += BackClick;
 			uIElement.Append(button4);
 			UITextPanel<string> button5 = new UITextPanel<string>("Open Mods Folder", 1f, false);
 			button5.CopyStyle(button4);
 			button5.HAlign = 0.5f;
-			button5.OnMouseOver += FadedMouseOver;
-			button5.OnMouseOut += FadedMouseOut;
+			button5.OnMouseOver += UICommon.FadedMouseOver;
+			button5.OnMouseOut += UICommon.FadedMouseOut;
 			button5.OnClick += OpenModsFolder;
 			uIElement.Append(button5);
 			UIPanel panel = new UIPanel();
@@ -102,22 +102,11 @@ namespace Terraria.ModLoader.UI
 			UITextPanel<string> modListButton = new UITextPanel<string>("Mod Packs", 1f, false);
 			modListButton.CopyStyle(button5);
 			modListButton.HAlign = 1f;
-			modListButton.OnMouseOver += FadedMouseOver;
-			modListButton.OnMouseOut += FadedMouseOut;
+			modListButton.OnMouseOver += UICommon.FadedMouseOver;
+			modListButton.OnMouseOut += UICommon.FadedMouseOut;
 			modListButton.OnClick += GotoModPacksMenu;
 			uIElement.Append(modListButton);
 			base.Append(uIElement);
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)

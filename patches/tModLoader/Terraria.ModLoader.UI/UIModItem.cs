@@ -49,8 +49,8 @@ namespace Terraria.ModLoader.UI
 			button.Top.Set(40f, 0f);
 			button.PaddingTop -= 2f;
 			button.PaddingBottom -= 2f;
-			button.OnMouseOver += FadedMouseOver;
-			button.OnMouseOut += FadedMouseOut;
+			button.OnMouseOver += UICommon.FadedMouseOver;
+			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += this.Moreinfo;
 			base.Append(button);
 			button2 = new UITextPanel<string>(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
@@ -60,8 +60,8 @@ namespace Terraria.ModLoader.UI
 			button2.Top.Set(40f, 0f);
 			button2.PaddingTop -= 2f;
 			button2.PaddingBottom -= 2f;
-			button2.OnMouseOver += FadedMouseOver;
-			button2.OnMouseOut += FadedMouseOut;
+			button2.OnMouseOver += UICommon.FadedMouseOver;
+			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.ToggleEnabled;
 			base.Append(button2);
 			if (mod.ValidModBrowserSignature)
@@ -135,17 +135,6 @@ namespace Terraria.ModLoader.UI
 			base.MouseOut(evt);
 			this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		internal void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement)

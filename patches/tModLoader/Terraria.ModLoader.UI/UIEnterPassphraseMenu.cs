@@ -50,16 +50,16 @@ namespace Terraria.ModLoader.UI
 			button.Height.Set(25f, 0f);
 			button.VAlign = 1f;
 			button.Top.Set(-65f, 0f);
-			button.OnMouseOver += FadedMouseOver;
-			button.OnMouseOut += FadedMouseOut;
+			button.OnMouseOver += UICommon.FadedMouseOver;
+			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += BackClick;
 			uIElement.Append(button);
 
 			UITextPanel<string> button2 = new UITextPanel<string>("Submit", 1f, false);
 			button2.CopyStyle(button);
 			button2.HAlign = 1f;
-			button2.OnMouseOver += FadedMouseOver;
-			button2.OnMouseOut += FadedMouseOut;
+			button2.OnMouseOver += UICommon.FadedMouseOver;
+			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += OKClick;
 			uIElement.Append(button2);
 
@@ -67,8 +67,8 @@ namespace Terraria.ModLoader.UI
 			button3.CopyStyle(button);
 			button3.Width.Set(0f, 1f);
 			button3.Top.Set(-20f, 0f);
-			button3.OnMouseOver += FadedMouseOver;
-			button3.OnMouseOut += FadedMouseOut;
+			button3.OnMouseOver += UICommon.FadedMouseOver;
+			button3.OnMouseOut += UICommon.FadedMouseOut;
 			button3.OnClick += VisitRegisterWebpage;
 			uIElement.Append(button3);
 
@@ -109,17 +109,6 @@ namespace Terraria.ModLoader.UI
 
 		private void OnTextChange(object sender, EventArgs e)
 		{
-		}
-
-		private static void FadedMouseOver(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1);
-			((UIPanel)evt.Target).BackgroundColor = new Color(73, 94, 171);
-		}
-
-		private static void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
-		{
-			((UIPanel)evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
 		internal void SetGotoMenu(int gotoMenu)
