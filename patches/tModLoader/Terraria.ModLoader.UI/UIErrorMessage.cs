@@ -28,16 +28,16 @@ namespace Terraria.ModLoader.UI
 			button.Height.Set(50f, 0f);
 			button.VAlign = 1f;
 			button.Top.Set(-30f, 0f);
-			button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button.OnClick += new UIElement.MouseEvent(ContinueClick);
+			button.OnMouseOver += FadedMouseOver;
+			button.OnMouseOut += FadedMouseOut;
+			button.OnClick += ContinueClick;
 			area.Append(button);
 			UITextPanel<string> button2 = new UITextPanel<string>("Open Logs", 0.7f, true);
 			button2.CopyStyle(button);
 			button2.HAlign = 1f;
-			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button2.OnClick += new UIElement.MouseEvent(OpenFile);
+			button2.OnMouseOver += FadedMouseOver;
+			button2.OnMouseOut += FadedMouseOut;
+			button2.OnClick += OpenFile;
 			area.Append(button2);
 			base.Append(area);
 		}

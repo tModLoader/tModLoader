@@ -58,17 +58,17 @@ namespace Terraria.ModLoader.UI
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;
 			backButton.Top.Set(-20f, 0f);
-			backButton.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			backButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			backButton.OnClick += new UIElement.MouseEvent(BackClick);
+			backButton.OnMouseOver += FadedMouseOver;
+			backButton.OnMouseOut += FadedMouseOut;
+			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
 			UIColorTextPanel saveNewButton = new UIColorTextPanel("Save Enabled as New Mod Pack", Color.Green, 1f, false);
 			saveNewButton.CopyStyle(backButton);
 			saveNewButton.HAlign = 1f;
-			saveNewButton.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			saveNewButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			saveNewButton.OnClick += new UIElement.MouseEvent(SaveNewModList);
+			saveNewButton.OnMouseOver += FadedMouseOver;
+			saveNewButton.OnMouseOut += FadedMouseOut;
+			saveNewButton.OnClick += SaveNewModList;
 			uIElement.Append(saveNewButton);
 
 			base.Append(uIElement);

@@ -51,9 +51,9 @@ namespace Terraria.ModLoader.UI
 			button3.Height.Set(25f, 0f);
 			button3.Width.Set(-10f, 1f / 2f);
 			button3.Top.Set(-20f, 0f);
-			button3.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button3.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button3.OnClick += new UIElement.MouseEvent(BackClick);
+			button3.OnMouseOver += FadedMouseOver;
+			button3.OnMouseOut += FadedMouseOut;
+			button3.OnClick += BackClick;
 			uIElement.Append(button3);
 			base.Append(uIElement);
 		}

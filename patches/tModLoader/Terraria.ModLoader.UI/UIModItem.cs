@@ -29,7 +29,7 @@ namespace Terraria.ModLoader.UI
 			this.Height.Set(90f, 0f);
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
-			//base.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
+			//base.OnClick += this.ToggleEnabled;
 			properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : mod.name;
 			text += " v" + mod.version;
@@ -49,9 +49,9 @@ namespace Terraria.ModLoader.UI
 			button.Top.Set(40f, 0f);
 			button.PaddingTop -= 2f;
 			button.PaddingBottom -= 2f;
-			button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button.OnClick += new UIElement.MouseEvent(this.Moreinfo);
+			button.OnMouseOver += FadedMouseOver;
+			button.OnMouseOut += FadedMouseOut;
+			button.OnClick += this.Moreinfo;
 			base.Append(button);
 			button2 = new UITextPanel<string>(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
 			button2.Width.Set(100f, 0f);
@@ -60,9 +60,9 @@ namespace Terraria.ModLoader.UI
 			button2.Top.Set(40f, 0f);
 			button2.PaddingTop -= 2f;
 			button2.PaddingBottom -= 2f;
-			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button2.OnClick += new UIElement.MouseEvent(this.ToggleEnabled);
+			button2.OnMouseOver += FadedMouseOver;
+			button2.OnMouseOut += FadedMouseOut;
+			button2.OnClick += this.ToggleEnabled;
 			base.Append(button2);
 			if (mod.ValidModBrowserSignature)
 			{

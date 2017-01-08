@@ -91,9 +91,9 @@ namespace Terraria.ModLoader.UI
 			viewListButton.Top.Set(40f, 0f);
 			viewListButton.PaddingTop -= 2f;
 			viewListButton.PaddingBottom -= 2f;
-			viewListButton.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			viewListButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			viewListButton.OnClick += new UIElement.MouseEvent(ViewListInfo);
+			viewListButton.OnMouseOver += FadedMouseOver;
+			viewListButton.OnMouseOut += FadedMouseOut;
+			viewListButton.OnClick += ViewListInfo;
 			base.Append(viewListButton);
 
 			enableListButton = new UITextPanel<string>("Enable this List", 1f, false);
@@ -103,9 +103,9 @@ namespace Terraria.ModLoader.UI
 			enableListButton.Top.Set(40f, 0f);
 			enableListButton.PaddingTop -= 2f;
 			enableListButton.PaddingBottom -= 2f;
-			enableListButton.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			enableListButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			enableListButton.OnClick += new UIElement.MouseEvent(EnableList);
+			enableListButton.OnMouseOver += FadedMouseOver;
+			enableListButton.OnMouseOut += FadedMouseOut;
+			enableListButton.OnClick += EnableList;
 			base.Append(enableListButton);
 
 			enableListOnlyButton = new UITextPanel<string>("Enable only this List", 1f, false);
@@ -115,14 +115,14 @@ namespace Terraria.ModLoader.UI
 			enableListOnlyButton.Top.Set(40f, 0f);
 			enableListOnlyButton.PaddingTop -= 2f;
 			enableListOnlyButton.PaddingBottom -= 2f;
-			enableListOnlyButton.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			enableListOnlyButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			enableListOnlyButton.OnClick += new UIElement.MouseEvent(EnableListOnly);
+			enableListOnlyButton.OnMouseOver += FadedMouseOver;
+			enableListOnlyButton.OnMouseOut += FadedMouseOut;
+			enableListOnlyButton.OnClick += EnableListOnly;
 			base.Append(enableListOnlyButton);
 
 			deleteButton = new UIImageButton(TextureManager.Load("Images/UI/ButtonDelete"));
 			deleteButton.Top.Set(40f, 0f);
-			deleteButton.OnClick += new UIElement.MouseEvent(this.DeleteButtonClick);
+			deleteButton.OnClick += this.DeleteButtonClick;
 			base.Append(deleteButton);
 		}
 

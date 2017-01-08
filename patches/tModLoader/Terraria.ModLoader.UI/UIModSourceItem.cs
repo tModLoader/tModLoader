@@ -40,17 +40,17 @@ namespace Terraria.ModLoader.UI
 			button.Top.Set(40f, 0f);
 			button.PaddingTop -= 2f;
 			button.PaddingBottom -= 2f;
-			button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button.OnClick += new UIElement.MouseEvent(this.BuildMod);
+			button.OnMouseOver += FadedMouseOver;
+			button.OnMouseOut += FadedMouseOut;
+			button.OnClick += this.BuildMod;
 			base.Append(button);
 			UITextPanel<string> button2 = new UITextPanel<string>("Build + Reload", 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(200f, 0f);
 			button2.Left.Set(150f, 0f);
-			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button2.OnClick += new UIElement.MouseEvent(this.BuildAndReload);
+			button2.OnMouseOver += FadedMouseOver;
+			button2.OnMouseOut += FadedMouseOut;
+			button2.OnClick += this.BuildAndReload;
 			base.Append(button2);
 			if (publishable)
 			{
@@ -58,12 +58,12 @@ namespace Terraria.ModLoader.UI
 				button3.CopyStyle(button2);
 				button3.Width.Set(100f, 0f);
 				button3.Left.Set(390f, 0f);
-				button3.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-				button3.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-				button3.OnClick += new UIElement.MouseEvent(this.Publish);
+				button3.OnMouseOver += FadedMouseOver;
+				button3.OnMouseOut += FadedMouseOut;
+				button3.OnClick += this.Publish;
 				base.Append(button3);
 			}
-			base.OnDoubleClick += new UIElement.MouseEvent(this.BuildAndReload);
+			base.OnDoubleClick += this.BuildAndReload;
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)

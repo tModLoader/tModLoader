@@ -28,16 +28,16 @@ namespace Terraria.ModLoader.UI
 			button.Height.Set(50f, 0f);
 			button.VAlign = 1f;
 			button.Top.Set(-30f, 0f);
-			button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button.OnClick += new UIElement.MouseEvent(IgnoreClick);
+			button.OnMouseOver += FadedMouseOver;
+			button.OnMouseOut += FadedMouseOut;
+			button.OnClick += IgnoreClick;
 			area.Append(button);
 			UITextPanel<string> button2 = new UITextPanel<string>("Download", 0.7f, true);
 			button2.CopyStyle(button);
 			button2.HAlign = 1f;
-			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button2.OnClick += new UIElement.MouseEvent(OpenURL);
+			button2.OnMouseOver += FadedMouseOver;
+			button2.OnMouseOut += FadedMouseOut;
+			button2.OnClick += OpenURL;
 			area.Append(button2);
 			base.Append(area);
 		}

@@ -44,16 +44,16 @@ namespace Terraria.ModLoader.UI
 			button.Top.Set(40f, 0f);
 			button.PaddingTop -= 2f;
 			button.PaddingBottom -= 2f;
-			//	button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			//	button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
+			//	button.OnMouseOver += FadedMouseOver;
+			//	button.OnMouseOut += FadedMouseOut;
 			base.Append(button);
 			button2 = new UITextPanel<string>("Unpublish", 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(150f, 0f);
 			button2.Left.Set(360f, 0f);
-			button2.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button2.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button2.OnClick += new UIElement.MouseEvent(this.Unpublish);
+			button2.OnMouseOver += FadedMouseOver;
+			button2.OnMouseOut += FadedMouseOut;
+			button2.OnClick += this.Unpublish;
 			base.Append(button2);
 		}
 
