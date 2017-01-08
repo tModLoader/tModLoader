@@ -347,8 +347,6 @@ namespace Terraria.ModLoader.UI
 							string name = xmlNode2.SelectSingleNode("name").InnerText;
 							string version = xmlNode2.SelectSingleNode("version").InnerText;
 							string author = xmlNode2.SelectSingleNode("author").InnerText;
-							string description = xmlNode2.SelectSingleNode("description").InnerText;
-							string homepage = xmlNode2.SelectSingleNode("homepage").InnerText;
 							string download = xmlNode2.SelectSingleNode("download").InnerText;
 							string timeStamp = xmlNode2.SelectSingleNode("updateTimeStamp").InnerText;
 							int downloads;
@@ -366,7 +364,7 @@ namespace Terraria.ModLoader.UI
 									}
 								}
 							}
-							UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, description, homepage, download, downloads, timeStamp, update, exists);
+							UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, download, downloads, timeStamp, update, exists);
 							modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
 						}
 						SortList();

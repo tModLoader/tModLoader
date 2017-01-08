@@ -8,6 +8,11 @@ using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Net;
 using System.Net.Security;
+using System.Collections.Specialized;
+using System.Xml;
+using System.Text;
+using Terraria.ID;
+using Newtonsoft.Json.Linq;
 
 namespace Terraria.ModLoader.UI
 {
@@ -17,8 +22,6 @@ namespace Terraria.ModLoader.UI
 		public string displayname;
 		public string version;
 		public string author;
-		public string description;
-		public string homepage;
 		public string download;
 		public string timeStamp;
 		public int downloads;
@@ -29,14 +32,12 @@ namespace Terraria.ModLoader.UI
 		public bool update = false;
 		public bool exists = false;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string description, string homepage, string download, int downloads, string timeStamp, bool update, bool exists)
+		public UIModDownloadItem(string displayname, string name, string version, string author, string download, int downloads, string timeStamp, bool update, bool exists)
 		{
 			this.displayname = displayname;
 			this.mod = name;
 			this.version = version;
 			this.author = author;
-			this.description = description;
-			this.homepage = homepage;
 			this.download = download;
 			this.downloads = downloads;
 			this.timeStamp = timeStamp;
@@ -60,9 +61,9 @@ namespace Terraria.ModLoader.UI
 			button.Top.Set(40f, 0f);
 			button.PaddingTop -= 2f;
 			button.PaddingBottom -= 2f;
-			button.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			button.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			button.OnClick += new UIElement.MouseEvent(this.Moreinfo);
+			button.OnMouseOver += FadedMouseOver;
+			button.OnMouseOut += FadedMouseOut;
+			button.OnClick += RequestMoreinfo;
 			base.Append(button);
 			if (update || !exists)
 			{
@@ -75,7 +76,7 @@ namespace Terraria.ModLoader.UI
 				button2.OnClick += new UIElement.MouseEvent(this.DownloadMod);
 				base.Append(button2);
 			}
-			base.OnDoubleClick += new UIElement.MouseEvent(this.Moreinfo);
+			base.OnDoubleClick += RequestMoreinfo;
 		}
 
 		public override int CompareTo(object obj)
@@ -265,13 +266,47 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		internal void Moreinfo(UIMouseEvent evt, UIElement listeningElement)
+		internal void RequestMoreinfo(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuOpen);
+			try
+			{
+				ServicePointManager.Expect100Continue = false;
+				string url = "http://javid.ddns.net/tModLoader/moddescription.php";
+				var values = new NameValueCollection
+					{
+						{ "modname", mod },
+					};
+				using (WebClient client = new WebClient())
+				{
+					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
+					client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(Moreinfo);
+					client.UploadValuesAsync(new Uri(url), "POST", values);
+				}
+			}
+			catch (Exception e)
+			{
+				ErrorLogger.LogModBrowserException(e);
+				return;
+			}
+		}
+
+		internal void Moreinfo(Object sender, UploadValuesCompletedEventArgs e)
+		{
+			string description = "There was a problem, try again";
+			string homepage = "";
+			if (!e.Cancelled)
+			{
+				string response = Encoding.UTF8.GetString(e.Result);
+				JObject joResponse = JObject.Parse(response);
+				description = (string)joResponse["description"];
+				homepage = (string)joResponse["homepage"];
+			}
+
 			Interface.modInfo.SetModName(this.displayname);
-			Interface.modInfo.SetModInfo(this.description);
+			Interface.modInfo.SetModInfo(description);
 			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);
-			Interface.modInfo.SetURL(this.homepage);
+			Interface.modInfo.SetURL(homepage);
 			Main.menuMode = Interface.modInfoID;
 		}
 

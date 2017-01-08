@@ -55,9 +55,9 @@ namespace Terraria.ModLoader.UI
 			modHomepageButton.Height.Set(25f, 0f);
 			modHomepageButton.VAlign = 1f;
 			modHomepageButton.Top.Set(-65f, 0f);
-			modHomepageButton.OnMouseOver += new UIElement.MouseEvent(FadedMouseOver);
-			modHomepageButton.OnMouseOut += new UIElement.MouseEvent(FadedMouseOut);
-			modHomepageButton.OnClick += new UIElement.MouseEvent(VisitModHomePage);
+			modHomepageButton.OnMouseOver += FadedMouseOver;
+			modHomepageButton.OnMouseOut += FadedMouseOut;
+			modHomepageButton.OnClick += VisitModHomePage;
 			uIElement.Append(modHomepageButton);
 			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
 			backButton.Width.Set(-10f, 0.5f);
