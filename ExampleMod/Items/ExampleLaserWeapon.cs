@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Items.Weapons
+namespace ExampleMod.Items
 {
     public class ExampleLaserWeapon: ModItem
     {
