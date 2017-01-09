@@ -152,6 +152,7 @@
     <Compile Include="Items\Weapons\ExampleBullet.cs" />
     <Compile Include="Items\Weapons\ExampleCloneItem.cs" />
     <Compile Include="Items\Weapons\ExampleGun.cs" />
+    <Compile Include="Items\Weapons\ExampleLaserWeapon.cs" />
     <Compile Include="Items\Weapons\ExampleStaff.cs" />
     <Compile Include="Items\Weapons\ExampleDualUseWeapon.cs" />
     <Compile Include="Items\Weapons\ExampleSword.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Projectiles\ExampleBehindTilesProjectile.cs" />
     <Compile Include="Projectiles\ExampleBullet.cs" />
     <Compile Include="Projectiles\ExampleCloneProjectile.cs" />
+    <Compile Include="Projectiles\ExampleLaser.cs" />
     <Compile Include="Projectiles\ExampleSolution.cs" />
     <Compile Include="Projectiles\HealProj.cs" />
     <Compile Include="Projectiles\Minions\HoverShooter.cs" />
