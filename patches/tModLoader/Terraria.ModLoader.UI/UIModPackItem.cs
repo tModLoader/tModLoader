@@ -101,7 +101,7 @@ namespace Terraria.ModLoader.UI
 			enableListButton = new UITextPanel<string>("Enable this List", 1f, false);
 			enableListButton.Width.Set(100f, 0f);
 			enableListButton.Height.Set(30f, 0f);
-			enableListButton.Left.Set(275f, 0f);
+			enableListButton.Left.Set(273f, 0f);
 			enableListButton.Top.Set(40f, 0f);
 			enableListButton.PaddingTop -= 2f;
 			enableListButton.PaddingBottom -= 2f;
@@ -125,8 +125,8 @@ namespace Terraria.ModLoader.UI
 			viewInModBrowserButton = new UITextPanel<string>("View Mods in Mod Browser", 1f, false);
 			viewInModBrowserButton.Width.Set(50f, 0f);
 			viewInModBrowserButton.Height.Set(30f, 0f);
-			viewInModBrowserButton.Left.Set(25f, 0f);
-			viewInModBrowserButton.Top.Set(66f, 0f);
+			viewInModBrowserButton.Left.Set(75f, 0f);
+			viewInModBrowserButton.Top.Set(80f, 0f);
 			viewInModBrowserButton.PaddingTop -= 2f;
 			viewInModBrowserButton.PaddingBottom -= 2f;
 			viewInModBrowserButton.OnMouseOver += UICommon.FadedMouseOver;
