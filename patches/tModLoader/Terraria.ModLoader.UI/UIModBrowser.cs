@@ -13,6 +13,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Security;
 using System.Text;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.UI
 {
@@ -35,6 +36,7 @@ namespace Terraria.ModLoader.UI
 		private string updateURL;
 		public bool aModUpdated = false;
 		public bool aNewModDownloaded = false;
+		public List<string> specialModPackFilter;
 
 		public override void OnInitialize()
 		{
@@ -141,7 +143,7 @@ namespace Terraria.ModLoader.UI
 			PopulateModBrowser();
 		}
 
-		private void SortList()
+		internal void SortList()
 		{
 			filter = filterTextBox.currentString;
 			modList.Clear();
@@ -198,7 +200,7 @@ namespace Terraria.ModLoader.UI
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(11, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;
 			if (Interface.modBrowser.aModUpdated)
 			{
@@ -221,7 +223,8 @@ namespace Terraria.ModLoader.UI
 			if (loading)
 				return;
 
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuOpen);
+			specialModPackFilter = null;
 			reloadButton.SetText("Reloading...");
 			PopulateModBrowser();
 		}
