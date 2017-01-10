@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.Enums;
 
 namespace ExampleMod.Projectiles
 {
@@ -23,6 +24,7 @@ namespace ExampleMod.Projectiles
 			projectile.penetrate = -1;
 			projectile.tileCollide = false;
 			projectile.magic = true;
+			projectile.hide = true;
 		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -99,21 +101,25 @@ namespace ExampleMod.Projectiles
 		/// </summary>
 		public override void AI()
 		{
+			
 			Vector2 mousePos = Main.MouseWorld;
 			Player player = Main.player[projectile.owner];
 
 			#region Set projectile position
-			Vector2 diff = mousePos - player.Center;
-			diff.Normalize();
-			projectile.position = player.Center + diff * _moveDist;
-			projectile.timeLeft = 2;
-			int dir = projectile.position.X > player.position.X ? 1 : -1;
-			player.ChangeDir(dir);
-			player.heldProj = projectile.whoAmI;
-			player.itemTime = 2;
-			player.itemAnimation = 2;
-			player.itemRotation = (float)Math.Atan2(diff.Y * dir, diff.X * dir);
-			#endregion
+			if (projectile.owner == Main.myPlayer) // Multiplayer support
+			{
+				Vector2 diff = mousePos - player.Center;
+				diff.Normalize();
+				projectile.position = player.Center + diff * _moveDist;
+				projectile.timeLeft = 2;
+				int dir = projectile.position.X > player.position.X ? 1 : -1;
+				player.ChangeDir(dir);
+				player.heldProj = projectile.whoAmI;
+				player.itemTime = 2;
+				player.itemAnimation = 2;
+				player.itemRotation = (float)Math.Atan2(diff.Y * dir, diff.X * dir);
+				#endregion
+			}
 
 
 			#region Charging process
@@ -188,6 +194,11 @@ namespace ExampleMod.Projectiles
 				dust.velocity.Y = -Math.Abs(dust.velocity.Y);
 			}
 			#endregion
+		}
+
+		public override bool ShouldUpdatePosition()
+		{
+			return false;
 		}
 	}
 }
