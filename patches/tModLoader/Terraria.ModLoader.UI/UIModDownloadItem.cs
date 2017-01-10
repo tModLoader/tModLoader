@@ -99,6 +99,10 @@ namespace Terraria.ModLoader.UI
 
 		public override bool PassFilters()
 		{
+			if(Interface.modBrowser.specialModPackFilter != null && !Interface.modBrowser.specialModPackFilter.Contains(mod))
+			{
+				return false;
+			}
 			if (Interface.modBrowser.filter.Length > 0)
 			{
 				if (Interface.modBrowser.searchFilterMode == SearchFilter.Author)
