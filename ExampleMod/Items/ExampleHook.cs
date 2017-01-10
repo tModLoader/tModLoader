@@ -120,37 +120,26 @@ namespace ExampleMod.Items
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
-			Vector2 mountedCenter = Main.player[projectile.owner].MountedCenter;
-			Vector2 vector14 = new Vector2(projectile.position.X + (float)projectile.width * 0.5f, projectile.position.Y + (float)projectile.height * 0.5f);
-			float num84 = mountedCenter.X - vector14.X;
-			float num85 = mountedCenter.Y - vector14.Y;
-			float rotation13 = (float)Math.Atan2((double)num85, (double)num84) - 1.57f;
-			bool flag11 = true;
-			while (flag11)
-			{
-				float num86 = (float)Math.Sqrt((double)(num84 * num84 + num85 * num85));
-				if (num86 < 30f)
-				{
-					flag11 = false;
-				}
-				else if (float.IsNaN(num86))
-				{
-					flag11 = false;
-				}
-				else
-				{
-					num86 = 24f / num86;
-					num84 *= num86;
-					num85 *= num86;
-					vector14.X += num84;
-					vector14.Y += num85;
-					num84 = mountedCenter.X - vector14.X;
-					num85 = mountedCenter.Y - vector14.Y;
-					Color color15 = Lighting.GetColor((int)vector14.X / 16, (int)(vector14.Y / 16f));
-					Main.spriteBatch.Draw(mod.GetTexture("Items/ExampleHookChain"), new Vector2(vector14.X - Main.screenPosition.X, vector14.Y - Main.screenPosition.Y), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.chain30Texture.Width, Main.chain30Texture.Height)), color15, rotation13, new Vector2((float)Main.chain30Texture.Width * 0.5f, (float)Main.chain30Texture.Height * 0.5f), 1f, SpriteEffects.None, 0f);
-				}
-			}
-			return true;
+		    Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
+		    Vector2 center = projectile.Center;
+		    Vector2 distToProj = playerCenter - projectile.Center;
+		    float projRotation = distToProj.ToRotation() - 1.57f;
+		    float distance = distToProj.Length();
+		    while(distance > 30f && !float.IsNaN(distance)) 
+		    				{	
+			distToProj.Normalize();                 //get unit vector
+			distToProj *= 24f;                      //speed = 24
+			center += distToProj;                   //update draw position
+			distToProj = playerCenter - center;    //update distance
+			distance = distToProj.Length();
+			Color drawColor = Lighting.GetColor((int)(center.X / 16f), (int)(center.Y / 16f));
+
+			//Draw chain
+			spriteBatch.Draw(mod.GetTexture("Items/ExampleHookChain"), new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
+			    new Rectangle(0, 0, Main.chain30Texture.Width, Main.chain30Texture.Height), drawColor, projRotation,
+			    new Vector2(Main.chain30Texture.Width * 0.5f, Main.chain30Texture.Height * 0.5f), 1f, SpriteEffects.None, 0f);
+		    }
+		    return true;
 		}
 	}
 
