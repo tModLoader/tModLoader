@@ -33,7 +33,7 @@ namespace ExampleMod.Projectiles
 			{
 				Vector2 unit = _targetPos - Main.player[projectile.owner].Center;
 				unit.Normalize();
-				DrawLaser(spriteBatch, Main.projectileTexture[projectile.type], Main.player[projectile.owner].Center, unit, 5, projectile.damage, -1.57f, 1, 1000, Color.White, 95);
+				DrawLaser(spriteBatch, Main.projectileTexture[projectile.type], Main.player[projectile.owner].Center, unit, 5, projectile.damage, -1.57f, 1f, 1000f, Color.White, 95);
 			}
 			return false;
 
@@ -58,12 +58,12 @@ namespace ExampleMod.Projectiles
 			}
 			#endregion
 
-			#region Draw laser head
+			#region Draw laser tail
 			spriteBatch.Draw(texture, start + unit * (transDist - step) - Main.screenPosition,
 				new Rectangle(0, 0, 28, 26), Color.White, r, new Vector2(28 / 2, 26 / 2), scale, 0, 0);
 			#endregion
 
-			#region Draw laser tail
+			#region Draw laser head
 			spriteBatch.Draw(texture, start + (_moveDist + step) * unit - Main.screenPosition,
 				new Rectangle(0, 52, 28, 26), Color.White, r, new Vector2(28 / 2, 26 / 2), scale, 0, 0);
 			#endregion
@@ -199,6 +199,14 @@ namespace ExampleMod.Projectiles
 		public override bool ShouldUpdatePosition()
 		{
 			return false;
+		}
+
+		public override void CutTiles()
+		{
+			DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
+			Vector2 unit = (Main.player[projectile.owner].Center - _targetPos);
+			unit.Normalize();
+			Utils.PlotTileLine(projectile.Center, projectile.Center - unit * 5f, (float)(projectile.width + 16) * projectile.scale, new Utils.PerLinePoint(DelegateMethods.CutTiles));
 		}
 	}
 }

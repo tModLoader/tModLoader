@@ -61,6 +61,10 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
+		public virtual void CutTiles(Projectile projectile)
+		{
+		}
+
 		public virtual bool PreKill(Projectile projectile, int timeLeft)
 		{
 			return true;

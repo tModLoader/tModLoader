@@ -25,6 +25,7 @@ namespace Terraria.ModLoader
 		private static DelegateTileCollideStyle[] HookTileCollideStyle;
 		private static Func<Projectile, Vector2, bool>[] HookOnTileCollide;
 		private static Func<Projectile, bool?>[] HookCanCutTiles;
+		private static Action<Projectile>[] HookCutTiles;
 		private static Func<Projectile, int, bool>[] HookPreKill;
 		private static Action<Projectile, int>[] HookKill;
 		private static Func<Projectile, bool>[] HookCanDamage;
@@ -123,6 +124,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookTileCollideStyle, globalProjectiles, g => g.TileCollideStyle);
 			ModLoader.BuildGlobalHook(ref HookOnTileCollide, globalProjectiles, g => g.OnTileCollide);
 			ModLoader.BuildGlobalHook(ref HookCanCutTiles, globalProjectiles, g => g.CanCutTiles);
+			ModLoader.BuildGlobalHook(ref HookCutTiles, globalProjectiles, g => g.CutTiles);
 			ModLoader.BuildGlobalHook(ref HookPreKill, globalProjectiles, g => g.PreKill);
 			ModLoader.BuildGlobalHook(ref HookKill, globalProjectiles, g => g.Kill);
 			ModLoader.BuildGlobalHook(ref HookCanDamage, globalProjectiles, g => g.CanDamage);
@@ -355,6 +357,18 @@ namespace Terraria.ModLoader
 				}
 			}
 			return projectile.modProjectile?.CanCutTiles();
+		}
+
+		//in Terraria.Projectile.CutTiles
+		// before AchievementsHelper.CurrentlyMining = false;
+		// add: ProjectileLoader.CutTiles(this);
+		public static void CutTiles(Projectile projectile)
+		{
+			foreach (var hook in HookCutTiles)
+			{
+				hook(projectile);
+			}
+			projectile.modProjectile?.CutTiles();
 		}
 
 		//in Terraria.Projectile.Kill before if statements determining kill behavior add

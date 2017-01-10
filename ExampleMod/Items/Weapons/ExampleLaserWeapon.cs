@@ -16,7 +16,6 @@ namespace ExampleMod.Items.Weapons
 			item.damage = 40;
 			item.toolTip = "Shoot a laser beam that can eliminate everything...";
 			item.noMelee = true;
-			item.noUseGraphic = true;
 			item.magic = true;
 			item.channel = true;                            //Channel so that you can held the weapon
 			item.mana = 5;

@@ -315,7 +315,14 @@
  						}
  						bool flag9 = true;
  						if (flag9)
-@@ -10006,6 +_,11 @@
+@@ -10000,12 +_,18 @@
+ 					DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
+ 					Utils.PlotTileLine(base.Center + f.ToRotationVector2() * -num5, base.Center + f.ToRotationVector2() * num5, (float)this.width * this.scale, new Utils.PerLinePoint(DelegateMethods.CutTiles));
+ 				}
++				ProjectileLoader.CutTiles(this);
+ 				AchievementsHelper.CurrentlyMining = false;
+ 			}
+ 		}
  
  		private bool CanCutTiles()
  		{
