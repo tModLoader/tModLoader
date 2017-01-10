@@ -8,11 +8,11 @@ using Terraria.ID;
 
 namespace ExampleMod.Projectiles
 {
-	class ExampleLaser : ModProjectile
+	public class ExampleLaser : ModProjectile
 	{
-		Vector2 _targetPos;         //Ending position of the laser beam
-		int _charge;                //The charge level of the weapon
-		float _moveDis = 95f;       //The distance charge particle from the player center
+		private Vector2 _targetPos;         //Ending position of the laser beam
+		private int _charge;                //The charge level of the weapon
+		private float _moveDist = 95f;       //The distance charge particle from the player center
 
 		public override void SetDefaults()
 		{
@@ -40,24 +40,31 @@ namespace ExampleMod.Projectiles
 		/// <summary>
 		/// The core function of drawing a laser
 		/// </summary>
-		public void DrawLaser(SpriteBatch sb, Texture2D tex, Vector2 start, Vector2 unit, float step, int damage, float rotation = 0f, float scale = 1f, float maxDis = 2000f, Color color = default(Color), int transdis = 50)
+		public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 unit, float step, int damage, float rotation = 0f, float scale = 1f, float maxDist = 2000f, Color color = default(Color), int transDist = 50)
 		{
-			Vector2 orig = start;
+			Vector2 origin = start;
 			float r = unit.ToRotation() + rotation;
-			for (float i = transdis; i <= _moveDis; i += step)
+
+			#region Draw laser body
+			for (float i = transDist; i <= _moveDist; i += step)
 			{
 				Color c = Color.White;
-				orig = start + i * unit;
-				sb.Draw(tex, orig - Main.screenPosition,
-					new Rectangle(0, 26, 28, 26), i < transdis ? Color.Transparent : c, r,
+				origin = start + i * unit;
+				spriteBatch.Draw(texture, origin - Main.screenPosition,
+					new Rectangle(0, 26, 28, 26), i < transDist ? Color.Transparent : c, r,
 					new Vector2(28 / 2, 26 / 2), scale, 0, 0);
 			}
-			//Draw laser head
-			sb.Draw(tex, start + unit * (transdis - step) - Main.screenPosition,
+			#endregion
+
+			#region Draw laser head
+			spriteBatch.Draw(texture, start + unit * (transDist - step) - Main.screenPosition,
 				new Rectangle(0, 0, 28, 26), Color.White, r, new Vector2(28 / 2, 26 / 2), scale, 0, 0);
-			//Draw laser tail
-			sb.Draw(tex, start + (_moveDis + step) * unit - Main.screenPosition,
+			#endregion
+
+			#region Draw laser tail
+			spriteBatch.Draw(texture, start + (_moveDist + step) * unit - Main.screenPosition,
 				new Rectangle(0, 52, 28, 26), Color.White, r, new Vector2(28 / 2, 26 / 2), scale, 0, 0);
+			#endregion
 		}
 
 		/// <summary>
@@ -71,7 +78,7 @@ namespace ExampleMod.Projectiles
 				Vector2 unit = (Main.player[projectile.owner].Center - _targetPos);
 				unit.Normalize();
 				float point = 0f;
-				if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), p.Center - 95f * unit, p.Center - unit * _moveDis, 22, ref point))
+				if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), p.Center - 95f * unit, p.Center - unit * _moveDist, 22, ref point))
 				{
 					return true;
 				}
@@ -87,39 +94,44 @@ namespace ExampleMod.Projectiles
 			target.immune[projectile.owner] = 5;
 		}
 
+		/// <summary>
+		/// The AI of the projectile
+		/// </summary>
 		public override void AI()
 		{
-			Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-			Player p = Main.player[projectile.owner];
+			Vector2 mousePos = Main.MouseWorld;
+			Player player = Main.player[projectile.owner];
+
 			#region Set projectile position
-			Vector2 diff = mousePos - p.Center;
+			Vector2 diff = mousePos - player.Center;
 			diff.Normalize();
-			projectile.position = p.Center + diff * _moveDis;
+			projectile.position = player.Center + diff * _moveDist;
 			projectile.timeLeft = 2;
-			int dir = projectile.position.X > p.position.X ? 1 : -1;
-			p.ChangeDir(dir);
-			p.heldProj = projectile.whoAmI;
-			p.itemTime = 2;
-			p.itemAnimation = 2;
-			p.itemRotation = (float)Math.Atan2(diff.Y * dir, diff.X * dir);
+			int dir = projectile.position.X > player.position.X ? 1 : -1;
+			player.ChangeDir(dir);
+			player.heldProj = projectile.whoAmI;
+			player.itemTime = 2;
+			player.itemAnimation = 2;
+			player.itemRotation = (float)Math.Atan2(diff.Y * dir, diff.X * dir);
 			#endregion
 
 
 			#region Charging process
-			if (!p.channel)             //If player is not firing the weapon
+			// Kill the projectile if the player stops channeling
+			if (!player.channel)
 			{
 				projectile.Kill();
 			}
 			else
 			{
-				if (Main.time % 10 < 1 && !p.CheckMana(p.inventory[p.selectedItem].mana, true))
+				if (Main.time % 10 < 1 && !player.CheckMana(player.inventory[player.selectedItem].mana, true))
 				{
 					projectile.Kill();
 				}
-				Vector2 offset = mousePos - p.Center;
+				Vector2 offset = mousePos - player.Center;
 				offset.Normalize();
-				offset *= _moveDis - 20;
-				Vector2 dustPos = p.Center + offset - new Vector2(10, 10);
+				offset *= _moveDist - 20;
+				Vector2 dustPos = player.Center + offset - new Vector2(10, 10);
 				if (_charge < 100)
 				{
 					_charge++;
@@ -143,20 +155,20 @@ namespace ExampleMod.Projectiles
 
 			#region Set laser tail position and dusts
 			if (_charge < 100) return;
-			Vector2 start = p.Center;
-			Vector2 unit = (p.Center - mousePos);
+			Vector2 start = player.Center;
+			Vector2 unit = (player.Center - mousePos);
 			unit.Normalize();
 			unit *= -1;
-			for (_moveDis = 95f; _moveDis <= 2200; _moveDis += 5)
+			for (_moveDist = 95f; _moveDist <= 2200; _moveDist += 5)
 			{
-				start = p.Center + unit * _moveDis;
-				if (!Collision.CanHit(p.Center, 1, 1, start, 1, 1))
+				start = player.Center + unit * _moveDist;
+				if (!Collision.CanHit(player.Center, 1, 1, start, 1, 1))
 				{
-					_moveDis -= 5f;
+					_moveDist -= 5f;
 					break;
 				}
 			}
-			_targetPos = p.Center + unit * _moveDis;
+			_targetPos = player.Center + unit * _moveDist;
 
 			//Imported dust code from source because I'm lazy
 			for (int i = 0; i < 2; ++i)
