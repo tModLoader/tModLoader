@@ -120,26 +120,26 @@ namespace ExampleMod.Items
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
-		    Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
-		    Vector2 center = projectile.Center;
-		    Vector2 distToProj = playerCenter - projectile.Center;
-		    float projRotation = distToProj.ToRotation() - 1.57f;
-		    float distance = distToProj.Length();
-		    while(distance > 30f && !float.IsNaN(distance)) 
-		    {	
-			distToProj.Normalize();                 //get unit vector
-			distToProj *= 24f;                      //speed = 24
-			center += distToProj;                   //update draw position
-			distToProj = playerCenter - center;    //update distance
-			distance = distToProj.Length();
-			Color drawColor = lightColor;
+			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
+			Vector2 center = projectile.Center;
+			Vector2 distToProj = playerCenter - projectile.Center;
+			float projRotation = distToProj.ToRotation() - 1.57f;
+			float distance = distToProj.Length();
+			while (distance > 30f && !float.IsNaN(distance))
+			{
+				distToProj.Normalize();                 //get unit vector
+				distToProj *= 24f;                      //speed = 24
+				center += distToProj;                   //update draw position
+				distToProj = playerCenter - center;    //update distance
+				distance = distToProj.Length();
+				Color drawColor = lightColor;
 
-			//Draw chain
-			spriteBatch.Draw(mod.GetTexture("Items/ExampleHookChain"), new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
-			    new Rectangle(0, 0, Main.chain30Texture.Width, Main.chain30Texture.Height), drawColor, projRotation,
-			    new Vector2(Main.chain30Texture.Width * 0.5f, Main.chain30Texture.Height * 0.5f), 1f, SpriteEffects.None, 0f);
-		    }
-		    return true;
+				//Draw chain
+				spriteBatch.Draw(mod.GetTexture("Items/ExampleHookChain"), new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
+					new Rectangle(0, 0, Main.chain30Texture.Width, Main.chain30Texture.Height), drawColor, projRotation,
+					new Vector2(Main.chain30Texture.Width * 0.5f, Main.chain30Texture.Height * 0.5f), 1f, SpriteEffects.None, 0f);
+			}
+			return true;
 		}
 	}
 
