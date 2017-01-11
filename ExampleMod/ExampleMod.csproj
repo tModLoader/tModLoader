@@ -44,6 +44,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Terraria">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
+    </Reference>
     <Reference Include="tModLoaderDebug">
       <HintPath>C:\Program Files (x86)\Steam\SteamApps\common\Terraria\tModLoaderDebug.exe</HintPath>
     </Reference>
@@ -114,6 +117,7 @@
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleHook.cs" />
     <Compile Include="Items\ExampleItem.cs" />
+    <Compile Include="Items\Weapons\ExampleJavelin.cs" />
     <Compile Include="Items\ExampleLightPet.cs" />
     <Compile Include="Items\ExamplePet.cs" />
     <Compile Include="Items\ExamplePickaxe.cs" />
@@ -153,6 +157,7 @@
     <Compile Include="Items\Weapons\ExampleCloneItem.cs" />
     <Compile Include="Items\Weapons\ExampleGun.cs" />
     <Compile Include="Items\Weapons\ExampleLaserWeapon.cs" />
+    <Compile Include="Items\Weapons\ExampleSpear.cs" />
     <Compile Include="Items\Weapons\ExampleStaff.cs" />
     <Compile Include="Items\Weapons\ExampleDualUseWeapon.cs" />
     <Compile Include="Items\Weapons\ExampleSword.cs" />
@@ -185,8 +190,10 @@
     <Compile Include="Projectiles\ExampleBehindTilesProjectile.cs" />
     <Compile Include="Projectiles\ExampleBullet.cs" />
     <Compile Include="Projectiles\ExampleCloneProjectile.cs" />
+    <Compile Include="Projectiles\ExampleJavelinProjectile.cs" />
     <Compile Include="Projectiles\ExampleLaser.cs" />
     <Compile Include="Projectiles\ExampleSolution.cs" />
+    <Compile Include="Projectiles\ExampleSpearProjectile.cs" />
     <Compile Include="Projectiles\HealProj.cs" />
     <Compile Include="Projectiles\Minions\HoverShooter.cs" />
     <Compile Include="Projectiles\Minions\Minion.cs" />
