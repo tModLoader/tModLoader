@@ -175,7 +175,7 @@ namespace ExampleMod.Projectiles
 					projectile.velocity.Y = projectile.velocity.Y + velYmult;
 				}
 				// Make sure to set the rotation accordingly to the velocity, and add some to work around the sprite's rotation
-				projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(90f); // Please notice the MathHelper usage, offset the rotation by 90% because the sprite's rotation is not aligned!
+				projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(90f); // Please notice the MathHelper usage, offset the rotation by 90 degrees (to radians because rotation uses radians) because the sprite's rotation is not aligned!
 
 				// Manually added these, spawn some random dusts as the javelin travels
 				if (Main.rand.Next(3) == 0)
