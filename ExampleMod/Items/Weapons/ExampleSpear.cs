@@ -28,15 +28,15 @@ namespace ExampleMod.Items.Weapons
 			item.UseSound = SoundID.Item1;
 			item.shoot = mod.ProjectileType<ExampleSpearProjectile>();
 			item.value = 1000;
-			item.noMelee = true;
-			item.noUseGraphic = true;
+			item.noMelee = true; // Important
+			item.noUseGraphic = true; // Important
 			item.melee = true;
-			item.autoReuse = true;
+			item.autoReuse = true; // Most spears dont autoReuse, but it's possible
 		}
 
 		public override bool CanUseItem(Player player)
 		{
-			return player.ownedProjectileCounts[item.shoot] < 1;
+			return player.ownedProjectileCounts[item.shoot] < 1; // This is to ensure the spear doesn't bug out when using autoReuse = true
 		}
 	}
 }
