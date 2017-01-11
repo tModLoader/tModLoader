@@ -3204,6 +3204,15 @@
  		}
  
  		private void TryLandingOnDetonator()
+@@ -25750,7 +_,7 @@
+ 		{
+ 			for (int j = 0; j < 400; j++)
+ 			{
+-				if (Main.item[j].active && Main.item[j].noGrabDelay == 0 && Main.item[j].owner == i)
++				if (Main.item[j].active && Main.item[j].noGrabDelay == 0 && Main.item[j].owner == i && ItemLoader.CanPickup(Main.item[j], this))
+ 				{
+ 					int num = Player.defaultItemGrabRange;
+ 					if (this.goldRing && Main.item[j].type >= 71 && Main.item[j].type <= 74)
 @@ -25773,10 +_,20 @@
  					{
  						num += 100;
@@ -3225,8 +3234,12 @@
  							if (ItemID.Sets.NebulaPickup[Main.item[j].type])
  							{
  								Main.PlaySound(7, (int)this.position.X, (int)this.position.Y, 1, 1f, 0f);
-@@ -25841,7 +_,10 @@
- 					else if (new Rectangle((int)this.position.X - num, (int)this.position.Y - num, this.width + num * 2, this.height + num * 2).Intersects(new Rectangle((int)Main.item[j].position.X, (int)Main.item[j].position.Y, Main.item[j].width, Main.item[j].height)) && this.ItemSpace(Main.item[j]))
+@@ -25838,10 +_,13 @@
+ 							}
+ 						}
+ 					}
+-					else if (new Rectangle((int)this.position.X - num, (int)this.position.Y - num, this.width + num * 2, this.height + num * 2).Intersects(new Rectangle((int)Main.item[j].position.X, (int)Main.item[j].position.Y, Main.item[j].width, Main.item[j].height)) && this.ItemSpace(Main.item[j]))
++					else if (new Rectangle((int)this.position.X - num, (int)this.position.Y - num, this.width + num * 2, this.height + num * 2).Intersects(new Rectangle((int)Main.item[j].position.X, (int)Main.item[j].position.Y, Main.item[j].width, Main.item[j].height)) && (this.ItemSpace(Main.item[j]) || ItemLoader.ExtraPickupSpace(Main.item[j], this)))
  					{
  						Main.item[j].beingGrabbed = true;
 -						if (this.manaMagnet && (Main.item[j].type == 184 || Main.item[j].type == 1735 || Main.item[j].type == 1868))

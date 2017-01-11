@@ -37,11 +37,9 @@ namespace ExampleMod.Items
 
 		public override bool GrabStyle(Player player)
 		{
-			float range = 5f;
 			Vector2 vectorItemToPlayer = player.Center - item.Center;
-			float distanceToPlayer = Vector2.Distance(player.Center, item.Center);
-			float InverseDistanceToPlayer = range / distanceToPlayer;
-			item.velocity = item.velocity + -vectorItemToPlayer * InverseDistanceToPlayer * .02f;
+			Vector2 movement = -vectorItemToPlayer.SafeNormalize(default(Vector2)) * 0.1f;
+			item.velocity = item.velocity + movement;
 			item.velocity = Collision.TileCollision(item.position, item.velocity, item.width, item.height);
 			return true;
 		}

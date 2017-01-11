@@ -91,7 +91,9 @@ namespace Terraria.ModLoader
 		private delegate void DelegateGrabRange(Item item, Player player, ref int grabRange);
 		private static DelegateGrabRange[] HookGrabRange;
 		private static Func<Item, Player, bool>[] HookGrabStyle;
+		private static Func<Item, Player, bool>[] HookCanPickup;
 		private static Func<Item, Player, bool>[] HookOnPickup;
+		private static Func<Item, Player, bool>[] HookExtraPickupSpace;
 		private static Func<Item, Color, Color?>[] HookGetAlpha;
 		private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 		private static DelegatePreDrawInWorld[] HookPreDrawInWorld;
@@ -261,7 +263,9 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookPostUpdate, globalItems, g => g.PostUpdate);
 			ModLoader.BuildGlobalHook(ref HookGrabRange, globalItems, g => g.GrabRange);
 			ModLoader.BuildGlobalHook(ref HookGrabStyle, globalItems, g => g.GrabStyle);
+			ModLoader.BuildGlobalHook(ref HookCanPickup, globalItems, g => g.CanPickup);
 			ModLoader.BuildGlobalHook(ref HookOnPickup, globalItems, g => g.OnPickup);
+			ModLoader.BuildGlobalHook(ref HookExtraPickupSpace, globalItems, g => g.ExtraPickupSpace);
 			ModLoader.BuildGlobalHook(ref HookGetAlpha, globalItems, g => g.GetAlpha);
 			ModLoader.BuildGlobalHook(ref HookPreDrawInWorld, globalItems, g => g.PreDrawInWorld);
 			ModLoader.BuildGlobalHook(ref HookPostDrawInWorld, globalItems, g => g.PostDrawInWorld);
@@ -1202,6 +1206,19 @@ namespace Terraria.ModLoader
 			}
 			return false;
 		}
+		//in Terraria.Player.GrabItems first per item if statement add
+		//  && ItemLoader.CanPickup(Main.item[j], this)
+		public static bool CanPickup(Item item, Player player)
+		{
+			foreach (var hook in HookCanPickup)
+			{
+				if (!hook(item, player))
+				{
+					return false;
+				}
+			}
+			return item.modItem?.CanPickup(player) ?? true;
+		}
 		//in Terraria.Player.GrabItems before special pickup effects add
 		//  if(!ItemLoader.OnPickup(Main.item[j], this)) { Main.item[j] = new Item(); continue; }
 		public static bool OnPickup(Item item, Player player)
@@ -1213,11 +1230,20 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			if (item.modItem != null)
+			return item.modItem?.OnPickup(player) ?? true;
+		}
+		//in Terraria.Player.GrabItems before grab effect
+		//  (this.ItemSpace(Main.item[j]) || ItemLoader.ExtraPickupSpace(Main.item[j], this)
+		public static bool ExtraPickupSpace(Item item, Player player)
+		{
+			foreach (var hook in HookExtraPickupSpace)
 			{
-				return item.modItem.OnPickup(player);
+				if (!hook(item, player))
+				{
+					return false;
+				}
 			}
-			return true;
+			return item.modItem?.ExtraPickupSpace(player) ?? true;
 		}
 		//in Terraria.UI.ItemSlot.GetItemLight remove type too high check
 		//in beginning of Terraria.Item.GetAlpha call

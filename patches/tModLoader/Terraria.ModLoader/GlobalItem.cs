@@ -313,9 +313,19 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
+		public virtual bool CanPickup(Item item, Player player)
+		{
+			return true;
+		}
+
 		public virtual bool OnPickup(Item item, Player player)
 		{
 			return true;
+		}
+
+		public virtual bool ExtraPickupSpace(Item item, Player player)
+		{
+			return false;
 		}
 
 		public virtual Color? GetAlpha(Item item, Color lightColor)
