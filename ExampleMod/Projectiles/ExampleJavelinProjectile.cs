@@ -10,6 +10,7 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleJavelinProjectile : ModProjectile
 	{
+		// Brought to you with <3 by Gorateron
 		public override void SetDefaults()
 		{
 			projectile.name = "Javelin";
@@ -23,167 +24,193 @@ namespace ExampleMod.Projectiles
 
 		public override void TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
 		{
+			// For going through platforms and such, javelins use a tad smaller size
 			width = 10;
 			height = 10;
 		}
 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
+			// Inflate some target hitboxes if they are beyond 8,8 size
 			if (targetHitbox.Width > 8 && targetHitbox.Height > 8)
 			{
 				targetHitbox.Inflate(-targetHitbox.Width / 8, -targetHitbox.Height / 8);
 			}
+			// Return if the hitboxes intersects, which means the javelin collides or not
 			return projHitbox.Intersects(targetHitbox);
 		}
 
 		public override void Kill(int timeLeft)
 		{
-			Main.PlaySound(0, (int)projectile.position.X, (int)projectile.position.Y, 1, 1f, 0f);
-			Vector2 vector11 = projectile.position;
-			Vector2 value23 = (projectile.rotation - 1.57079637f).ToRotationVector2();
-			vector11 += value23 * 16f;
-			for (int num356 = 0; num356 < 20; num356++)
+			Main.PlaySound(0, (int)projectile.position.X, (int)projectile.position.Y, 1, 1f, 0f); // Play a death sound
+			Vector2 usePos = projectile.position; // Position to use for dusts
+			Vector2 rotVector = (projectile.rotation - 1.57079637f).ToRotationVector2(); // rotation vector to use for dust velocity
+			usePos += rotVector * 16f;
+
+			// Spawn some dusts upon javelin death
+			for (int i = 0; i < 20; i++)
 			{
-				int num357 = Dust.NewDust(vector11, projectile.width, projectile.height, 81, 0f, 0f, 0, default(Color), 1f);
-				Main.dust[num357].position = (Main.dust[num357].position + projectile.Center) / 2f;
-				Main.dust[num357].velocity += value23 * 2f;
-				Main.dust[num357].velocity *= 0.5f;
-				Main.dust[num357].noGravity = true;
-				vector11 -= value23 * 8f;
+				// Create a new dust
+				int dustIndex = Dust.NewDust(usePos, projectile.width, projectile.height, 81, 0f, 0f, 0, default(Color), 1f);
+				Dust currentDust = Main.dust[dustIndex];
+				// Modify some of the dust behaviour
+				currentDust.position = (currentDust.position + projectile.Center) / 2f;
+				currentDust.velocity += rotVector * 2f;
+				currentDust.velocity *= 0.5f;
+				currentDust.noGravity = true;
+				usePos -= rotVector * 8f;
 			}
+
 			int item = 0;
+			// Give the javelin some chance to drop and be able to be picked up again, this is an example of an exact drop chance (18%)
 			if (Main.rand.NextFloat() <= 0.18f)
 			{
-				item = Item.NewItem((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height, 3378, 1, false, 0, false, false);
+				item = Item.NewItem((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height, projectile.type, 1, false, 0, false, false);
 			}
+
+			// Sync the drop for multiplayer
+			// Note the usage of Terraria.ID.MessageID, please use this!
 			if (Main.netMode == 1 && item >= 0)
 			{
-				NetMessage.SendData(21, -1, -1, "", item, 1f, 0f, 0f, 0, 0, 0);
+				NetMessage.SendData(Terraria.ID.MessageID.SyncItem, -1, -1, "", item, 1f, 0f, 0f, 0, 0, 0);
 			}
 		}
 
 		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
-			projectile.ai[0] = 1f;
-			projectile.ai[1] = (float)target.whoAmI;
-			projectile.velocity = (target.Center - projectile.Center) * 0.75f;
-			projectile.netUpdate = true;
-			target.AddBuff(169, 900, false);
+			projectile.ai[0] = 1f; // Set ai0 state to 1f
+			projectile.ai[1] = (float)target.whoAmI; // Set the target whoAmI
+			projectile.velocity = (target.Center - projectile.Center) * 0.75f; // Change velocity based on delta center of targets (difference between entity centers)
+			projectile.netUpdate = true; // netUpdate this javelin
+			target.AddBuff(169, 900, false); // Unsure what this does, but it was in the vanilla code
 
-			projectile.damage = 0;
-			int num27 = 6;
-			if (projectile.type == 614)
+			projectile.damage = 0; // Makes sure the sticking javelins do not deal damage anymore
+			// The following code handles the javelin sticking to the enemy hit.
+
+			int maxStickingJavelins = 6; // This seems to be the max. amount of javelins being able to attach
+			Point[] stickingJavelins = new Point[maxStickingJavelins]; // The point array holding for sticking javelins
+			int javelinIndex = 0; // The javelin index
+			for (int i = 0; i < Main.maxProjectiles; i++) // Loop all projectiles
 			{
-				num27 = 10;
-			}
-			if (projectile.type == 636)
-			{
-				num27 = 8;
-			}
-			Point[] array2 = new Point[num27];
-			int num28 = 0;
-			for (int l = 0; l < 1000; l++)
-			{
-				if (l != projectile.whoAmI && Main.projectile[l].active && Main.projectile[l].owner == Main.myPlayer && Main.projectile[l].type == projectile.type && Main.projectile[l].ai[0] == 1f && Main.projectile[l].ai[1] == (float)target.whoAmI)
+				Projectile currentProjectile = Main.projectile[i];
+				if (i != projectile.whoAmI  // Make sure the looped projectile is not the current javelin
+					&& currentProjectile.active // Make sure the projectile is active
+					&& currentProjectile.owner == Main.myPlayer // Make sure the projectile's owner is the client's player
+					&& currentProjectile.type == projectile.type // Make sure the projectile is of the same type as this javelin
+					&& currentProjectile.ai[0] == 1f // Make sure ai0 state is set to 1f (set earlier in ModifyHitNPC)
+					&& currentProjectile.ai[1] == (float)target.whoAmI) // Make sure ai1 is set to the target whoAmI (set earlier in ModifyHitNPC)
 				{
-					array2[num28++] = new Point(l, Main.projectile[l].timeLeft);
-					if (num28 >= array2.Length)
+					stickingJavelins[javelinIndex++] = new Point(i, currentProjectile.timeLeft); // Add the current projectile's index and timeleft to the point array
+					if (javelinIndex >= stickingJavelins.Length) // If the javelin's index is bigger than or equal to the point array's length, break
 					{
 						break;
 					}
 				}
 			}
-			if (num28 >= array2.Length)
+			// Here we loop the other javelins if new javelin needs to take an older javelin's place.
+			if (javelinIndex >= stickingJavelins.Length)
 			{
-				int num29 = 0;
-				for (int m = 1; m < array2.Length; m++)
+				int oldJavelinIndex = 0;
+				// Loop our point array
+				for (int i = 1; i < stickingJavelins.Length; i++)
 				{
-					if (array2[m].Y < array2[num29].Y)
+					// Remove the already existing javelin if it's timeLeft value (which is the Y value in our point array) is smaller than the new javelin's timeLeft
+					if (stickingJavelins[i].Y < stickingJavelins[oldJavelinIndex].Y)
 					{
-						num29 = m;
+						oldJavelinIndex = i; // Remember the index of the removed javelin
 					}
 				}
-				Main.projectile[array2[num29].X].Kill();
+				// Remember that the X value in our point array was equal to the index of that javelin, so it's used here to kill it.
+				Main.projectile[stickingJavelins[oldJavelinIndex].X].Kill();
 			}
 		}
+		
+		// Change this number if you want to alter how long the javelin can travel at a constant speed
+		private const float maxTicks = 45f;
+		// Change this number if you want to alter how the alpha changes
+		private const int alphaReduction = 25;
 
 		public override void AI()
 		{
-			int num972 = 25;
+			// Slowly remove alpha as it is present
 			if (projectile.alpha > 0)
 			{
-				projectile.alpha -= num972;
+				projectile.alpha -= alphaReduction;
 			}
+			// If alpha gets lower than 0, set it to 0
 			if (projectile.alpha < 0)
 			{
 				projectile.alpha = 0;
 			}
+			// If ai0 is 0f, run this code. This is the 'movement' code for the javelin as long as it isn't sticking to a target
 			if (projectile.ai[0] == 0f)
 			{
 				projectile.ai[1] += 1f;
-				if (projectile.ai[1] >= 45f)
+				// For a little while, the javelin will travel with the same speed, but after this, the javelin drops velocity very quickly.
+				if (projectile.ai[1] >= maxTicks)
 				{
-					float num975 = 0.98f;
-					float num976 = 0.35f;
-					if (projectile.type == 636)
-					{
-						num975 = 0.995f;
-						num976 = 0.15f;
-					}
-					projectile.ai[1] = 45f;
-					projectile.velocity.X = projectile.velocity.X * num975;
-					projectile.velocity.Y = projectile.velocity.Y + num976;
+					// Change these multiplication factors to alter the javelin's movement change after 45 ticks
+					float velXmult = 0.98f; // x velocity factor, every AI update the x velocity will be 98% of the original speed
+					float velYmult = 0.35f; // y velocity factor, every AI update the y velocity will be be 0.35f bigger of the original speed, causing the javelin to drop to the ground
+					projectile.ai[1] = maxTicks; // set ai1 to maxTicks continuously
+					projectile.velocity.X = projectile.velocity.X * velXmult;
+					projectile.velocity.Y = projectile.velocity.Y + velYmult;
 				}
+				// Make sure to set the rotation accordingly to the velocity, and add some to work around the sprite's rotation
 				projectile.rotation = projectile.velocity.ToRotation() + 1.57079637f;
+
+				// Manually added these, spawn some random dusts as the javelin travels
 				if (Main.rand.Next(3) == 0)
 				{
-					int num260 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, mod.DustType<Dusts.Sparkle>(), projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 200, default(Color), 1.2f);
-					Main.dust[num260].velocity += projectile.velocity * 0.3f;
-					Main.dust[num260].velocity *= 0.2f;
+					int dustIndex = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, mod.DustType<Dusts.Sparkle>(), projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 200, default(Color), 1.2f);
+					Main.dust[dustIndex].velocity += projectile.velocity * 0.3f;
+					Main.dust[dustIndex].velocity *= 0.2f;
 				}
 				if (Main.rand.Next(4) == 0)
 				{
-					int num261 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, mod.DustType<Dusts.Smoke>(), 0f, 0f, 254, default(Color), 0.3f);
-					Main.dust[num261].velocity += projectile.velocity * 0.5f;
-					Main.dust[num261].velocity *= 0.5f;
+					int dustIndex = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, mod.DustType<Dusts.Smoke>(), 0f, 0f, 254, default(Color), 0.3f);
+					Main.dust[dustIndex].velocity += projectile.velocity * 0.5f;
+					Main.dust[dustIndex].velocity *= 0.5f;
 					return;
 				}
 			}
+			// This code is ran when the javelin is sticking to a target
 			if (projectile.ai[0] == 1f)
 			{
-				projectile.ignoreWater = true;
-				projectile.tileCollide = false;
-				int num977 = 15;
-				bool flag53 = false;
-				bool flag54 = false;
-				projectile.localAI[0] += 1f;
-				if (projectile.localAI[0] % 30f == 0f)
+				// These 2 could probably be moved to the ModifyNPCHit hook, but in vanilla they are present in the AI
+				projectile.ignoreWater = true; // Make sure the projectile ignores water
+				projectile.tileCollide = false; // Make sure the projectile doesn't collide with tiles anymore
+				int aiFactor = 15; // Change this factor to change the 'lifetime' of this sticking javelin
+				bool killProj = false; // if true, kill projectile at the end
+				bool hitEffect = false; // if true, perform a hit effect
+				projectile.localAI[0] += 1f; 
+				// Every 30 ticks, the javelin will perform a hit effect
+				hitEffect = projectile.localAI[0] % 30f == 0f;
+				int projTargetIndex = (int)projectile.ai[1];
+				if (projectile.localAI[0] >= (float)(60 * aiFactor)) // If it's time for this javelin to die, kill it
 				{
-					flag54 = true;
+					killProj = true;
 				}
-				int num978 = (int)projectile.ai[1];
-				if (projectile.localAI[0] >= (float)(60 * num977))
+				else if (projTargetIndex < 0 || projTargetIndex >= 200) // If the index is past its limits, kill the javelin
 				{
-					flag53 = true;
+					killProj = true;
 				}
-				else if (num978 < 0 || num978 >= 200)
+				else if (Main.npc[projTargetIndex].active && !Main.npc[projTargetIndex].dontTakeDamage) // If the target is active and can take damage
 				{
-					flag53 = true;
-				}
-				else if (Main.npc[num978].active && !Main.npc[num978].dontTakeDamage)
-				{
-					projectile.Center = Main.npc[num978].Center - projectile.velocity * 2f;
-					projectile.gfxOffY = Main.npc[num978].gfxOffY;
-					if (flag54)
+					// Set the projectile's position relative to the target's center
+					projectile.Center = Main.npc[projTargetIndex].Center - projectile.velocity * 2f;
+					projectile.gfxOffY = Main.npc[projTargetIndex].gfxOffY;
+					if (hitEffect) // Perform a hit effect here
 					{
-						Main.npc[num978].HitEffect(0, 1.0);
+						Main.npc[projTargetIndex].HitEffect(0, 1.0);
 					}
 				}
-				else
+				else // Otherwise, kill the projectile
 				{
-					flag53 = true;
+					killProj = true;
 				}
-				if (flag53)
+
+				if (killProj) // Kill the projectile
 				{
 					projectile.Kill();
 				}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,10 +12,11 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetDefaults()
 		{
+			// Alter any of these values as you see fit, but you should probably keep useStyle on 1, as well as the noUseGraphic and noMelee bools
 			item.name = "Example Javelin";
-			item.shoot = mod.ProjectileType<Projectiles.ExampleJavelinProjectile>();
+			item.shoot = mod.ProjectileType<Projectiles.ExampleJavelinProjectile>(); // Notice a newer way to get projectile types, much cleaner than using strings!
 			item.shootSpeed = 10f;
-			item.damage = 29;
+			item.damage = 45;
 			item.knockBack = 5f;
 			item.thrown = true;
 			item.useStyle = 1;
@@ -28,8 +30,8 @@ namespace ExampleMod.Items.Weapons
 			item.noUseGraphic = true;
 			item.noMelee = true;
 			item.autoReuse = true;
-			item.value = 50;
-			item.rare = 1;
+			item.value = Item.sellPrice(0, 0, 5, 0);
+			item.rare = 5;
 		}
 	}
 }
