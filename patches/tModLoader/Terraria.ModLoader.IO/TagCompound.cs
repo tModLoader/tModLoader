@@ -22,8 +22,16 @@ namespace Terraria.ModLoader.IO
 			if (value == null)
 				RemoveTag(key);
 			else {
-				TagIO.TypeCheck(value.GetType());
-				dict.Add(key, value);
+				if (value is TagSerializable)
+				{
+					TagCompound serialized = (value as TagSerializable).Serialize();
+					dict.Add(key, serialized);
+				}
+				else
+				{
+					TagIO.TypeCheck(value.GetType());
+					dict.Add(key, value);
+				}
 			}
 		}
 
@@ -71,6 +79,11 @@ namespace Terraria.ModLoader.IO
 		public double GetAsDouble(string key) {
 			var o = GetTag<object>(key);
 			return o as double? ?? o as float? ?? 0;
+		}
+
+		public T GetSerializable<T>(string key) where T : TagSerializable
+		{
+			return TagSerializables.Deserialize<T>(GetCompound(key));
 		}
 
 		public object Clone() {
