@@ -226,7 +226,7 @@ namespace Terraria.ModLoader
 				{
 					Main.PlaySound(SoundID.MenuTick);
 					ModLoader.modBrowserPassphrase = "";
-					ModLoader.steamID64 = "";
+					ModLoader.SteamID64 = "";
 				}
 
 				buttonIndex++;

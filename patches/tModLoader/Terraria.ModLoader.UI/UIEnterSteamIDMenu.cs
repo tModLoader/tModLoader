@@ -85,7 +85,7 @@ namespace Terraria.ModLoader.UI
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10, -1, -1, 1);
-			ModLoader.steamID64 = steamIDTextField.currentString.Trim();
+			ModLoader.SteamID64 = steamIDTextField.currentString.Trim();
 			Main.SaveSettings();
 			Main.menuMode = this.gotoMenu;
 		}

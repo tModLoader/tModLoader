@@ -167,11 +167,7 @@ namespace Terraria.ModLoader.UI
 						{ "author", bp.author },
 						{ "homepage", bp.homepage },
 						{ "description", bp.description },
-#if GOG
-						{ "steamid64", ModLoader.steamID64 },
-#else
-						{ "steamid64", Steamworks.SteamUser.GetSteamID().ToString() },
-#endif
+						{ "steamid64", ModLoader.SteamID64 },
 						{ "modloaderversion", "tModLoader v"+theTModFile.tModLoaderVersion },
 						{ "passphrase", ModLoader.modBrowserPassphrase }
 					};
