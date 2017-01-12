@@ -11,9 +11,10 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleLaser : ModProjectile
 	{
+		private const int maxCharge = 50;
 		private Vector2 _targetPos;         //Ending position of the laser beam
 		private int _charge;                //The charge level of the weapon
-		private float _moveDist = 95f;       //The distance charge particle from the player center
+		private float _moveDist = 60f;       //The distance charge particle from the player center
 
 		public override void SetDefaults()
 		{
@@ -29,11 +30,11 @@ namespace ExampleMod.Projectiles
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
-			if (_charge == 100)
+			if (_charge == maxCharge)
 			{
 				Vector2 unit = _targetPos - Main.player[projectile.owner].Center;
 				unit.Normalize();
-				DrawLaser(spriteBatch, Main.projectileTexture[projectile.type], Main.player[projectile.owner].Center, unit, 5, projectile.damage, -1.57f, 1f, 1000f, Color.White, 95);
+				DrawLaser(spriteBatch, Main.projectileTexture[projectile.type], Main.player[projectile.owner].Center, unit, 5, projectile.damage, -1.57f, 1f, 1000f, Color.White, (int)60);
 			}
 			return false;
 
@@ -74,7 +75,7 @@ namespace ExampleMod.Projectiles
 		/// </summary>
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
-			if (_charge == 100)
+			if (_charge == maxCharge)
 			{
 				Player p = Main.player[projectile.owner];
 				Vector2 unit = (Main.player[projectile.owner].Center - _targetPos);
@@ -138,7 +139,7 @@ namespace ExampleMod.Projectiles
 				offset.Normalize();
 				offset *= _moveDist - 20;
 				Vector2 dustPos = player.Center + offset - new Vector2(10, 10);
-				if (_charge < 100)
+				if (_charge < maxCharge)
 				{
 					_charge++;
 				}
@@ -160,7 +161,7 @@ namespace ExampleMod.Projectiles
 
 
 			#region Set laser tail position and dusts
-			if (_charge < 100) return;
+			if (_charge < maxCharge) return;
 			Vector2 start = player.Center;
 			Vector2 unit = (player.Center - mousePos);
 			unit.Normalize();
@@ -174,7 +175,7 @@ namespace ExampleMod.Projectiles
 					break;
 				}
 			}
-			_targetPos = player.Center + unit * _moveDist;
+			_targetPos = player.Center + unit *  _moveDist;
 
 			//Imported dust code from source because I'm lazy
 			for (int i = 0; i < 2; ++i)
@@ -185,11 +186,25 @@ namespace ExampleMod.Projectiles
 				Dust dust = Main.dust[Dust.NewDust(_targetPos, 0, 0, 226, dustVel.X, dustVel.Y, 0, new Color(), 1f)];
 				dust.noGravity = true;
 				dust.scale = 1.2f;
+				// At this part, I was messing with the dusts going across the laser beam very fast, but only really works properly horizontally now
+				unit = Main.MouseWorld - Main.player[projectile.owner].Center;
+				unit.Normalize();
+				unit *= (projectile.width + projectile.height) / 2f;
+				dust = Main.dust[Dust.NewDust(Main.player[projectile.owner].Center + unit * (5), 0,0, 226, unit.X, unit.Y, 0, new Color(), 1f)];
+				dust.fadeIn = 0f;
+				dust.noGravity = true;
+				dust.scale = 0.88f;
 			}
 			if (Main.rand.Next(5) == 0)
 			{
 				Vector2 offset = projectile.velocity.RotatedBy(1.57f, new Vector2()) * ((float)Main.rand.NextDouble() - 0.5f) * projectile.width;
 				Dust dust = Main.dust[Dust.NewDust(_targetPos + offset - Vector2.One * 4f, 8, 8, 31, 0.0f, 0.0f, 100, new Color(), 1.5f)];
+				dust.velocity = dust.velocity * 0.5f;
+				dust.velocity.Y = -Math.Abs(dust.velocity.Y);
+
+			    unit = _targetPos - Main.player[projectile.owner].Center;
+				unit.Normalize();
+				dust = Main.dust[Dust.NewDust(Main.player[projectile.owner].Center + 55 * unit, 8, 8, 31, 0.0f, 0.0f, 100, new Color(), 1.5f)];
 				dust.velocity = dust.velocity * 0.5f;
 				dust.velocity.Y = -Math.Abs(dust.velocity.Y);
 			}
