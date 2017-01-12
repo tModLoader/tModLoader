@@ -2,9 +2,10 @@ Changes from 0.9.1 to 0.9.1.1:
 
 tModLoader
 	So much.
-	NetModeID for easy netMode value access
-	LangID
+	Terraria.ID.NetmodeID for easy netMode value access (e.g. if (Main.netMode = NetmodeID.MultiplayerClient))
+	Terraria.ID.LangID for easy language value access (e.g. if (Lang.lang == LangID.English))
 	CanPickup and ExtraPickupSpace for special pickup considerations
+	Added CutTiles() hook for projectiles (see ExampleLaser for an example)
 	View in Mod Browser button for Mod Packs -- Easily download mods from ModPacks you find on internet
 	Mod Browser more responsive, no more duplicate entries
 	Alternate Currency Tooltip fix
@@ -19,7 +20,7 @@ Need to Rebuild Mods
 	
 
 ExampleMod
-	ExampleSpear
+	ExampleSpear -- Features autoReuse on a spear
 	ExampleJavelin -- Retrievable ammo drops
 	ExampleLaserWeapon -- Channel, Custom draw, Custom Hitbox, CutTiles
 
