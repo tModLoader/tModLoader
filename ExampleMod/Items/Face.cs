@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.UI.Chat;
 
 namespace ExampleMod.Items
 {
@@ -15,6 +16,8 @@ namespace ExampleMod.Items
 			item.width = 20;
 			item.height = 20;
 			item.toolTip = "How are you feeling today?";
+			// See here for help on using Tags: http://terraria.gamepedia.com/Chat#Tags
+			item.toolTip2 = "[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:" + item.type + "][i:" + mod.ItemType<CarKey>() + "][i/s123:" + ItemID.Ectoplasm + "]";
 			item.value = 100;
 			item.rare = 1;
 			ItemID.Sets.ItemNoGravity[item.type] = true;

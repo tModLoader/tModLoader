@@ -8003,7 +8003,7 @@
  					num4++;
  					if (num21 > 0)
  					{
-@@ -15008,11 +_,16 @@
+@@ -15008,31 +_,43 @@
  				else if (Main.toolTip.type != 3817)
  				{
  					array[num4] = Lang.tip[51];
@@ -8020,7 +8020,11 @@
  			int num26 = 0;
  			for (int j = 0; j < num4; j++)
  			{
-@@ -15021,18 +_,22 @@
++				/*
+ 				Vector2 vector = Main.fontMouseText.MeasureString(array[j]);
++				*/
++				Vector2 vector = ChatManager.GetStringSize(Main.fontMouseText, array[j], Vector2.One);
+ 				if (vector.X > zero.X)
  				{
  					zero.X = vector.X;
  				}
