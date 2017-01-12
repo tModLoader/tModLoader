@@ -1,48 +1,50 @@
-Changes from 0.8.3.5 to 0.9.0.0:
+Changes from 0.9.1 to 0.9.1.1:
 
 tModLoader
 	So much.
+	NetModeID for easy netMode value access
+	LangID
+	CanPickup and ExtraPickupSpace for special pickup considerations
+	View in Mod Browser button for Mod Packs -- Easily download mods from ModPacks you find on internet
+	Mod Browser more responsive, no more duplicate entries
+	Alternate Currency Tooltip fix
+	GOG -> menu for steamid entry and a clear credentials button in settings
+	Prevent modding mistake of duplicate ModItems with same name
+	NewWingUpdate...? (document?)
+	ModCommands -- ChatInput now gone, documented?
+	
 	
 Need to Rebuild Mods
-	All
-
-ExampleMod
+	If you use ChatInput
 	
 
+ExampleMod
+	ExampleSpear
+	ExampleJavelin -- Retrievable ammo drops
+	ExampleLaserWeapon -- Channel, Custom draw, Custom Hitbox, CutTiles
+
 To Document:
-	ArmorSetShadows
-	PreKill
-	Kill
 	Save/Loads
-	GetLegacySound
+	GlobalItem
+		CanPickup
+		ExtraPickupSpace
+	ItemLoader
+		CanPickup
+		ExtraPickupSpace
+	ModItem
+		CanPickup
+		ExtraPickupSpace
 
 TODO
 
-Fix ExampleStatue Stack overflow, pngs
+Fix ExampleStatue Stack overflow, pngs --> basically you can't place anything bigger than 1x1 in worldgen
 
 Make an Example Soul Sprite
 Change DualUseWeapon Sprite
 
 1.3.4: mods related changelog
-✔ -Added bool[] ProjectileID.Sets.MinionShot - shots from minions are flagged here
-✔ -Added bool[] ProjectileID.Sets.SentryShot - shots from sentries are flagged here
-? -Added bool[] TileID.Sets.DrawsWalls - tiles like closed doors use this
-✔ -Added bool[] ItemID.Sets.CanFishInLava - fishing rods can now use this to allow themselves to fish in lava.
-✔ -Added Main.LocalPlayer - returns Main.player[Main.myPlayer]
-✔ -Added Player.HeldItem - returns player.inventory[player.selectedItem]
-✔ -Added int[] NPCID.Sets.TrailingMode - controls how your npc updates its shadows/old position and rotation arrays for drawing purposes
-  -Added OnUpdate for UIElements
-✔ -Added a bunch of Player.armorEffectDraw____  - setting those in PlayerFrame() will make the player use visual effects such as shadow trail, pulsing and more.
-  -Added Item.IsAir return item.type <= 0 || item.stack <= 0
   -Deprecated Net Messages 26, 44 - they were replaced by 117 & 118 respectively.
   -Changed the arguments for Player.Hurt & Player.KillMe - both now contains a mandatory PlayerDeathReason damage source.
-✔ -Standardized all ammo IDs to use Item IDS of the first ammo in their type! Also added AmmoID class so you can just write names instead of having to look existing ammos up!
   -Added NPC.lifeRegenExpectedLossPerSecond - it defaults at '-1' , setting it to a value higher than 0 (such as 5) will make enemy DOT debuffs use the number for their number popup ticks...
   -Added 'melee hit' damage scaling for all appropriate types of damage instead of just melee (so you can have a swinging magic weapon with proper crit chance and damage)
-✔ -Packet 34 now reads and sends the same amount of bytes regardless of if a server or client send it.
-✔ -Renamed Player.HasBuff to Player.FindBuffIndex
-✔ -Cut out a bunch of NPC Update / AI methods into smaller ones, this was mainly to fix linux servers crashing in vanilla but worth mentioning.
-✔ -added PlayerDeathreason.ByCustomReason(string reasonText) (so you can write your own custom reasons, only for english)
-✔ -added float[] ProjectileID.Sets.YoyosLifeTimeMultiplier , allows setting custom yoyo lifetime durations, defaults to -1 which is infinite
-✔ -added float[] ProjectileID.Sets.YoyosMaximumRange , allows to set yoyo custom maximum range, defaults to 200
-✔ -added float[] ProjectileID.Sets.YoyosTopSpeed , allows to set the yoyo's speed, defaults to 10
+  
