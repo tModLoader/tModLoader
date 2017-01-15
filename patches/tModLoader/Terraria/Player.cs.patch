@@ -3880,7 +3880,7 @@
  					{
  						NetMessage.SendData(34, -1, -1, "", 3, (float)x, (float)y, 0f, 0, 0, 0);
  					}
-@@ -37878,14 +_,31 @@
+@@ -37878,22 +_,45 @@
  
  		public void DropItems()
  		{
@@ -3915,7 +3915,10 @@
  					Main.item[num].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  					Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  					Main.item[num].noGrabDelay = 100;
-@@ -37894,6 +_,10 @@
+ 					Main.item[num].newAndShiny = false;
++					Main.item[num].modItem = this.inventory[i].modItem;
++					Main.item[num].itemInfo = this.inventory[i].itemInfo;
+ 					if (Main.netMode == 1)
  					{
  						NetMessage.SendData(21, -1, -1, "", num, 0f, 0f, 0f, 0, 0, 0);
  					}
@@ -3926,6 +3929,42 @@
  				}
  				this.inventory[i] = new Item();
  				if (i < this.armor.Length)
+@@ -37908,6 +_,8 @@
+ 						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+ 						Main.item[num2].noGrabDelay = 100;
+ 						Main.item[num2].newAndShiny = false;
++						Main.item[num2].modItem = this.armor[i].modItem;
++						Main.item[num2].itemInfo = this.armor[i].itemInfo;
+ 						if (Main.netMode == 1)
+ 						{
+ 							NetMessage.SendData(21, -1, -1, "", num2, 0f, 0f, 0f, 0, 0, 0);
+@@ -37927,6 +_,8 @@
+ 						Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+ 						Main.item[num3].noGrabDelay = 100;
+ 						Main.item[num3].newAndShiny = false;
++						Main.item[num3].modItem = this.dye[i].modItem;
++						Main.item[num3].itemInfo = this.dye[i].itemInfo;
+ 						if (Main.netMode == 1)
+ 						{
+ 							NetMessage.SendData(21, -1, -1, "", num3, 0f, 0f, 0f, 0, 0, 0);
+@@ -37946,6 +_,8 @@
+ 						Main.item[num4].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+ 						Main.item[num4].noGrabDelay = 100;
+ 						Main.item[num4].newAndShiny = false;
++						Main.item[num4].modItem = this.miscEquips[i].modItem;
++						Main.item[num4].itemInfo = this.miscEquips[i].itemInfo;
+ 						if (Main.netMode == 1)
+ 						{
+ 							NetMessage.SendData(21, -1, -1, "", num4, 0f, 0f, 0f, 0, 0, 0);
+@@ -37965,6 +_,8 @@
+ 						Main.item[num5].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+ 						Main.item[num5].noGrabDelay = 100;
+ 						Main.item[num5].newAndShiny = false;
++						Main.item[num5].modItem = this.miscDyes[i].modItem;
++						Main.item[num5].itemInfo = this.miscDyes[i].itemInfo;
+ 						if (Main.netMode == 1)
+ 						{
+ 							NetMessage.SendData(21, -1, -1, "", num5, 0f, 0f, 0f, 0, 0, 0);
 @@ -37973,12 +_,7 @@
  					this.miscDyes[i] = new Item();
  				}
