@@ -64,9 +64,9 @@ namespace ExampleMod.Projectiles
 
 			int item = 0;
 			// Give the javelin some chance to drop and be able to be picked up again, this is an example of an exact drop chance (18%)
-			if (Main.rand.NextFloat() <= 0.18f)
+			if (Main.rand.NextFloat() < 0.18f)
 			{
-				item = Item.NewItem((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height, projectile.type, 1, false, 0, false, false);
+				item = Item.NewItem((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height, mod.ItemType<Items.Weapons.ExampleJavelin>(), 1, false, 0, false, false);
 			}
 
 			// Sync the drop for multiplayer
