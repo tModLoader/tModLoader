@@ -73,6 +73,7 @@
     <Compile Include="Commands\NpcTypeCommand.cs" />
     <Compile Include="Commands\ScoreCommand.cs" />
     <Compile Include="Commands\SoundCommand.cs" />
+    <Compile Include="Commands\VolcanoCommand.cs" />
     <Compile Include="Dusts\Bubble.cs" />
     <Compile Include="Dusts\EtherealFlame.cs" />
     <Compile Include="Dusts\ExampleSolution.cs" />
