@@ -86,6 +86,21 @@
  				{
  					if (Main.itemName[i] == ItemName)
  					{
+@@ -1317,6 +_,14 @@
+ 						return true;
+ 					}
+ 					num++;
++				}
++			}
++			foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values)
++			{
++				if (recipeGroup.ValidItems.Contains(this.type))
++				{
++					this.material = true;
++					return true;
+ 				}
+ 			}
+ 			int num2 = this.type;
 @@ -1638,6 +_,10 @@
  			else
  			{
