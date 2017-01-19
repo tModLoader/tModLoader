@@ -10,7 +10,7 @@ namespace ExampleMod.Items
 		{
 			if (item.type == ItemID.CopperShortsword)
 			{
-				item.damage = 50;
+				item.damage = 50;		//Changed original CopperShortsword's damage to 50!
 			}
 		}
 	}
