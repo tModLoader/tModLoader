@@ -26,8 +26,8 @@ namespace ExampleMod.Items.Weapons
 			item.UseSound = SoundID.Item44;
 			item.shoot = mod.ProjectileType("PurityWisp");
 			item.shootSpeed = 10f;
-			item.buffType = mod.BuffType("PurityWisp");
-			item.buffTime = 3600;
+			item.buffType = mod.BuffType("PurityWisp");	//The buff added to player after used the item
+			item.buffTime = 3600;				//The duration of the buff, here is 60 seconds
 		}
 	}
 }
