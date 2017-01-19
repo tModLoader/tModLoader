@@ -17,8 +17,8 @@ namespace ExampleMod.Items
 			item.toolTip = "This is a modded hamaxe.";
 			item.useTime = 15;
 			item.useAnimation = 15;
-			item.axe = 30;
-			item.hammer = 100;
+			item.axe = 30;			//How much axe power the weapon has, note that the real axe power is mutilplied by 5
+			item.hammer = 100;		//How much hammer power the weapon has
 			item.useStyle = 1;
 			item.knockBack = 6;
 			item.value = 10000;
