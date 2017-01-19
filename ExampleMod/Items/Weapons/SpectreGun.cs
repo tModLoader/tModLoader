@@ -27,7 +27,7 @@ namespace ExampleMod.Items.Weapons
 			item.autoReuse = true;
 			item.shoot = mod.ProjectileType("Wisp");
 			item.shootSpeed = 6f;
-			item.useAmmo = mod.ItemType("Wisp");
+			item.useAmmo = mod.ItemType("Wisp");		//Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
 		}
 
 		public override void AddRecipes()
