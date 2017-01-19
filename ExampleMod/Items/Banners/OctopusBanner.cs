@@ -20,7 +20,7 @@ namespace ExampleMod.Items.Banners
 			item.rare = 1;
 			item.value = Item.buyPrice(0, 0, 10, 0);
 			item.createTile = mod.TileType("MonsterBanner");
-			item.placeStyle = 1;
+			item.placeStyle = 1;		//Place style means which frame(Horizontally) of the tile should be placed
 		}
 	}
 }
