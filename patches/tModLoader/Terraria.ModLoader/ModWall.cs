@@ -122,5 +122,9 @@ namespace Terraria.ModLoader
 		public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 		}
+
+		public virtual void PlaceInWorld(int i, int j, Item item)
+		{
+		}
 	}
 }

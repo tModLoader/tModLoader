@@ -86,5 +86,9 @@ namespace Terraria.ModLoader
 		//public virtual void WorldGenModifyHardmodeTaskList(List<GenPass> list)
 		//{
 		//}
+
+		public virtual void PostDrawTiles()
+		{
+		}
 	}
 }

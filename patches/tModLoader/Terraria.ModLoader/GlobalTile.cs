@@ -178,5 +178,9 @@ namespace Terraria.ModLoader
 		{
 			return -1;
 		}
+
+		public virtual void PlaceInWorld(int i, int j, Item item)
+		{
+		}
 	}
 }
