@@ -114,5 +114,13 @@ namespace Terraria.ModLoader
 				modWorld.ChooseWaterStyle(ref style);
 			}
 		}
+
+		public static void PostDrawTiles()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostDrawTiles();
+			}
+		}
 	}
 }

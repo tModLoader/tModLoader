@@ -38201,7 +38201,7 @@
  				Overlays.Scene.Draw(Main.spriteBatch, RenderLayers.TilesAndNPCs);
  				if (!Main.mapFullscreen && Main.mapStyle == 2)
  				{
-@@ -56830,8 +_,10 @@
+@@ -56830,11 +_,16 @@
  							goto IL_4183;
  						}
  					}
@@ -38212,6 +38212,12 @@
  				IL_4183:
  				TimeLogger.DetailedDrawReset();
  				Main.spriteBatch.End();
++
++				WorldHooks.PostDrawTiles();
++
+ 				TimeLogger.DetailedDrawTime(35);
+ 				this.SortDrawCacheWorms();
+ 				this.DrawCachedProjs(this.DrawCacheProjsBehindProjectiles, true);
 @@ -56850,12 +_,14 @@
  						Main.essDir = -1;
  						Main.essScale = 1f;

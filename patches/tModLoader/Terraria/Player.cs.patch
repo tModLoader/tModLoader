@@ -3504,6 +3504,28 @@
  						{
  							if (Main.tile[Player.tileTargetX, Player.tileTargetY].wall > 0)
  							{
+@@ -30137,6 +_,8 @@
+ 							{
+ 								Main.blockMouse = true;
+ 							}
++
++							TileLoader.PlaceInWorld(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem]);
+ 						}
+ 					}
+ 				}
+@@ -30160,9 +_,12 @@
+ 						this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed);
+ 						return;
+ 					}
++
+ 					WorldGen.PlaceWall(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem].createWall, false);
++
+ 					if ((int)Main.tile[Player.tileTargetX, Player.tileTargetY].wall == this.inventory[this.selectedItem].createWall)
+ 					{
++						WallLoader.PlaceInWorld(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem]);
+ 						this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed);
+ 						if (Main.netMode == 1)
+ 						{
 @@ -30348,7 +_,7 @@
  			int num2 = 25;
  			int num3 = 50;

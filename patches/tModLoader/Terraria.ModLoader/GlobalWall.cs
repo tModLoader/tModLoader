@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 
 namespace Terraria.ModLoader
 {
@@ -67,6 +68,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
+		{
+		}
+
+		public virtual void PlaceInWorld(int i, int j, Item item)
 		{
 		}
 	}

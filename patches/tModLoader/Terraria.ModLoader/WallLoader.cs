@@ -29,6 +29,7 @@ namespace Terraria.ModLoader
 		private static Action<int, int, int>[] HookRandomUpdate;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
+		private static Action<int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveWallID()
 		{
@@ -98,6 +99,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalWalls, g => g.RandomUpdate);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalWalls, g => g.PreDraw);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalWalls, g => g.PostDraw);
+			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalWalls, g => g.PlaceInWorld);
 
 			if (!unloading)
 			{
@@ -284,6 +286,20 @@ namespace Terraria.ModLoader
 			{
 				hook(i, j, type, spriteBatch);
 			}
+		}
+
+		public static void PlaceInWorld(int i, int j, Item item)
+		{
+			int type = item.createWall;
+			if(type < 0)
+				return;
+
+			foreach (var hook in HookPlaceInWorld)
+			{
+				hook(i, j, item);
+			}
+
+			GetWall(type)?.PlaceInWorld(i, j, item);
 		}
 	}
 }

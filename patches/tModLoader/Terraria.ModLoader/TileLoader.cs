@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.ID;
 using Terraria.ObjectData;
 
@@ -76,6 +77,7 @@ namespace Terraria.ModLoader
 		private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 		private delegate int DelegateSaplingGrowthType(int type, ref int style);
 		private static DelegateSaplingGrowthType[] HookSaplingGrowthType;
+		private static Action<int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveTileID()
 		{
@@ -255,6 +257,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
 			ModLoader.BuildGlobalHook(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
 			ModLoader.BuildGlobalHook(ref HookSaplingGrowthType, globalTiles, g => g.SaplingGrowthType);
+			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
 
 			if (!unloading)
 			{
@@ -1122,6 +1125,20 @@ namespace Terraria.ModLoader
 		public static Texture2D GetCactusTexture(int type)
 		{
 			return cacti.ContainsKey(type) ? cacti[type].GetTexture() : null;
+		}
+
+		public static void PlaceInWorld(int i, int j, Item item)
+		{
+			int type = item.createTile;
+			if(type < 0)
+				return;
+
+			foreach (var hook in HookPlaceInWorld)
+			{
+				hook(i, j, item);
+			}
+
+			GetTile(type)?.PlaceInWorld(i, j, item);
 		}
 	}
 }
