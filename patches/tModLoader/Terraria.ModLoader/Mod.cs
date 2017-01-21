@@ -162,7 +162,7 @@ namespace Terraria.ModLoader
 
 			IList<Type> modGores = new List<Type>();
 			IList<Type> modSounds = new List<Type>();
-			foreach (Type type in Code.GetTypes().OrderBy(type=>type.FullName))
+			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
 			{
 				if (type.IsAbstract)
 				{
@@ -299,11 +299,41 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal void AutoloadConfig()
+		{
+			if (Code == null)
+				return;
+
+			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
+			{
+				if (type.IsAbstract)
+				{
+					continue;
+				}
+				if (type.IsSubclassOf(typeof(ModConfig)))
+				{
+					var mc = (ModConfig)Activator.CreateInstance(type);
+					mc.mod = this;
+					var name = type.Name;
+					if (mc.Autoload(ref name))
+						AddConfig(name, mc);
+				}
+			}
+		}
+
+		public void AddConfig(string name, ModConfig mc)
+		{
+			mc.Name = name;
+			mc.mod = this;
+
+			ConfigManager.Add(mc);
+		}
+
 		public void AddCommand(string name, ModCommand mc)
 		{
 			mc.Name = name;
 			mc.Mod = this;
-			
+
 			CommandManager.Add(mc);
 		}
 
@@ -822,7 +852,7 @@ namespace Terraria.ModLoader
 			}
 			return projectile.projectile.type;
 		}
-		
+
 		public int ProjectileType<T>() where T : ModProjectile
 		{
 			return ProjectileType(typeof(T).Name);
@@ -923,7 +953,7 @@ namespace Terraria.ModLoader
 			}
 			return npc.npc.type;
 		}
-		
+
 		public int NPCType<T>() where T : ModNPC
 		{
 			return NPCType(typeof(T).Name);
@@ -1264,7 +1294,7 @@ namespace Terraria.ModLoader
 				return null;
 			}
 		}
-		
+
 		public T GetModWorld<T>() where T : ModWorld
 		{
 			return (T)GetModWorld(typeof(T).Name);
@@ -1579,7 +1609,7 @@ namespace Terraria.ModLoader
 
 		private void AutoloadCommand(Type type)
 		{
-			var mc = (ModCommand) Activator.CreateInstance(type);
+			var mc = (ModCommand)Activator.CreateInstance(type);
 			mc.Mod = this;
 			var name = type.Name;
 			if (mc.Autoload(ref name))
@@ -1719,7 +1749,7 @@ namespace Terraria.ModLoader
 				Main.npcNameEnglish[npc.npc.type] = npc.npc.name;
 				NPCLoader.SetupNPCInfo(npc.npc);
 				npc.SetDefaults();
-				if(npc.banner !=0)
+				if (npc.banner != 0)
 				{
 					NPCLoader.bannerToItem[npc.banner] = npc.bannerItem;
 				}

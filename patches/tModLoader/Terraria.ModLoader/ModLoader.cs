@@ -113,6 +113,7 @@ namespace Terraria.ModLoader
 				Interface.loadMods.SetProgressInit(mod.Name, num, mods.Count);
 				try
 				{
+					mod.AutoloadConfig();
 					mod.Autoload();
 					mod.Load();
 				}

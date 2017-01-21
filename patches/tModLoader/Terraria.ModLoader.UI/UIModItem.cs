@@ -6,6 +6,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.UI
 {
@@ -18,7 +19,9 @@ namespace Terraria.ModLoader.UI
 		internal bool enabled;
 		BuildProperties properties;
 		UITextPanel<string> button2;
+		UITextPanel<string> configButton;
 		UIHoverImage keyImage;
+		ModConfig modConfig;
 
 		public UIModItem(TmodFile mod)
 		{
@@ -64,6 +67,23 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.ToggleEnabled;
 			base.Append(button2);
+
+			if (ModLoader.ModLoaded(mod.name) && ConfigManager.Configs.ContainsKey(ModLoader.GetMod(mod.name))) // and has config
+			{
+				modConfig = ConfigManager.Configs[ModLoader.GetMod(mod.name)][0];
+				configButton = new UITextPanel<string>("Config", 1f, false);
+				configButton.Width.Set(100f, 0f);
+				configButton.Height.Set(30f, 0f);
+				configButton.Left.Set(170f, 0f);
+				configButton.Top.Set(40f, 0f);
+				configButton.PaddingTop -= 2f;
+				configButton.PaddingBottom -= 2f;
+				configButton.OnMouseOver += UICommon.FadedMouseOver;
+				configButton.OnMouseOut += UICommon.FadedMouseOut;
+				configButton.OnClick += this.OpenConfig;
+				base.Append(configButton);
+			}
+
 			if (mod.ValidModBrowserSignature)
 			{
 				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], "This mod originated from the Mod Browser");
@@ -73,12 +93,12 @@ namespace Terraria.ModLoader.UI
 			if (ModLoader.ModLoaded(mod.name))
 			{
 				Mod loadedMod = ModLoader.GetMod(mod.name);
-				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count	};
-				string[] strings = { " items", " NPCs", " tiles", " walls", " buffs", " mounts"};
+				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count };
+				string[] strings = { " items", " NPCs", " tiles", " walls", " buffs", " mounts" };
 				int xOffset = -40;
 				for (int i = 0; i < values.Length; i++)
 				{
-					if(values[i] > 0)
+					if (values[i] > 0)
 					{
 						Texture2D iconTexture = ModLoader.GetTexture("Terraria/UI" + Path.DirectorySeparatorChar + "InfoIcon_" + i);
 						keyImage = new UIHoverImage(iconTexture, values[i] + strings[i]);
@@ -153,6 +173,13 @@ namespace Terraria.ModLoader.UI
 			Interface.modInfo.SetGotoMenu(Interface.modsMenuID);
 			Interface.modInfo.SetURL(properties.homepage);
 			Main.menuMode = Interface.modInfoID;
+		}
+
+		internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(SoundID.MenuOpen);
+			Interface.modConfig.SetMod(ModLoader.GetMod(mod.name), modConfig);
+			Main.menuMode = Interface.modConfigID;
 		}
 
 		public override bool PassFilters()

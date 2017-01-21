@@ -85,6 +85,7 @@
     <Compile Include="Dusts\Smoke.cs" />
     <Compile Include="Dusts\Sparkle.cs" />
     <Compile Include="Dusts\SpectreDust.cs" />
+    <Compile Include="ExampleConfig.cs" />
     <Compile Include="ExampleCustomCurrency.cs" />
     <Compile Include="ExampleMod.cs" />
     <Compile Include="ExamplePlayer.cs" />
