@@ -1086,7 +1086,7 @@ namespace Terraria.ModLoader
 			if (player.wingsLogic >= Main.maxWings)
 			{
 				EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic);
-				if (texture != null)
+				if (texture != null && texture.item != null)
 				{
 					return texture.item.item;
 				}
@@ -1101,6 +1101,9 @@ namespace Terraria.ModLoader
 			Item item = GetWing(player);
 			if (item == null)
 			{
+				EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic)?.VerticalWingSpeeds(
+					player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
+					ref maxAscentMultiplier, ref constantAscend);
 				return;
 			}
 			item.modItem?.VerticalWingSpeeds(player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
@@ -1124,6 +1127,8 @@ namespace Terraria.ModLoader
 			Item item = GetWing(player);
 			if (item == null)
 			{
+				EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic)?.HorizontalWingSpeeds(
+					player, ref player.accRunSpeed, ref player.runAcceleration);
 				return;
 			}
 			item.modItem?.HorizontalWingSpeeds(player, ref player.accRunSpeed, ref player.runAcceleration);
