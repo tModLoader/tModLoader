@@ -2,12 +2,10 @@ using System;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
-using System.Xml;
 using System.Net;
-using System.Web;
-using System.IO;
 using System.Collections.Specialized;
-using System.Text;
+using Terraria.ID;
+using Newtonsoft.Json.Linq;
 
 namespace Terraria.ModLoader.UI
 {
@@ -46,21 +44,21 @@ namespace Terraria.ModLoader.UI
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
-			UITextPanel<string> button3 = new UITextPanel<string>("Back", 1f, false);
-			button3.VAlign = 1f;
-			button3.Height.Set(25f, 0f);
-			button3.Width.Set(-10f, 1f / 2f);
-			button3.Top.Set(-20f, 0f);
-			button3.OnMouseOver += UICommon.FadedMouseOver;
-			button3.OnMouseOut += UICommon.FadedMouseOut;
-			button3.OnClick += BackClick;
-			uIElement.Append(button3);
+			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
+			backButton.VAlign = 1f;
+			backButton.Height.Set(25f, 0f);
+			backButton.Width.Set(-10f, 1f / 2f);
+			backButton.Top.Set(-20f, 0f);
+			backButton.OnMouseOver += UICommon.FadedMouseOver;
+			backButton.OnMouseOut += UICommon.FadedMouseOut;
+			backButton.OnClick += BackClick;
+			uIElement.Append(backButton);
 			base.Append(uIElement);
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(11, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = Interface.modSourcesID;
 		}
 
@@ -68,7 +66,7 @@ namespace Terraria.ModLoader.UI
 		{
 			myPublishedMods.Clear();
 			uITextPanel.SetText("My Published Mods", 0.8f, true);
-			String xmlText = "";
+			string response = "";
 			try
 			{
 				System.Net.ServicePointManager.Expect100Continue = false;
@@ -81,7 +79,7 @@ namespace Terraria.ModLoader.UI
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
 				byte[] result = IO.UploadFile.UploadFiles(url, files, values);
-				xmlText = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
+				response = System.Text.Encoding.UTF8.GetString(result);
 			}
 			catch (WebException e)
 			{
@@ -100,18 +98,19 @@ namespace Terraria.ModLoader.UI
 			}
 			try
 			{
-				XmlDocument xmlDoc = new XmlDocument();
-				xmlDoc.LoadXml(xmlText);
-				foreach (XmlNode xmlNode in xmlDoc.DocumentElement)
+				JArray a = JArray.Parse(response);
+
+				foreach (JObject o in a.Children<JObject>())
 				{
-					string displayname = xmlNode.SelectSingleNode("displayname").InnerText;
-					string name = xmlNode.SelectSingleNode("name").InnerText;
-					string version = xmlNode.SelectSingleNode("version").InnerText;
-					string author = xmlNode.SelectSingleNode("author").InnerText;
-					string downloads = xmlNode.SelectSingleNode("downloads").InnerText;
-					string downloadsversion = xmlNode.SelectSingleNode("downloadsversion").InnerText;
-					string modloaderversion = xmlNode.SelectSingleNode("modloaderversion").InnerText;
-					UIModManageItem modItem = new UIModManageItem(displayname, name, version, author, downloads, downloadsversion, modloaderversion);
+					UIModManageItem modItem = new UIModManageItem(
+						(string)o["displayname"],
+						(string)o["name"],
+						(string)o["version"],
+						(string)o["author"],
+						(string)o["downloads"],
+						(string)o["downloadsversion"],
+						(string)o["modloaderversion"]
+					);
 					myPublishedMods.Add(modItem);
 				}
 			}
