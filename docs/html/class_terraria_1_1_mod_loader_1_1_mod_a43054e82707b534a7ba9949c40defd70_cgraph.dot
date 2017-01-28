@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.Mod.AutoloadNPCInfo"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node154 [label="Terraria.ModLoader.Mod.Autoload\lNPCInfo",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node154 -> Node155 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node155 [label="Terraria.ModLoader.Entity\lInfo.Autoload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_entity_info.html#ad6106e44acde5ad4899ec815d9e7a21e"];
-}

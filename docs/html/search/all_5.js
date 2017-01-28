@@ -1,15 +1,12 @@
 var searchData=
 [
   ['eacenabled',['eacEnabled',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#af35474d57f0810fd47ba7d4d7a2cedce',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
-  ['eclipse',['Eclipse',['../class_terraria_1_1_i_d_1_1_music_i_d.html#a0237dd6f9e7fd96f330aeb32c997e895',1,'Terraria::ID::MusicID']]],
   ['editspawnpool',['EditSpawnPool',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af1732616b382d9e346a26763475188b0',1,'Terraria::ModLoader::GlobalNPC']]],
   ['editspawnrange',['EditSpawnRange',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa1d334e4354e574e6660581805280b23',1,'Terraria.ModLoader.GlobalNPC.EditSpawnRange()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aecd6e6cc37c287e1d477db243364b0b9',1,'Terraria.ModLoader.NPCLoader.EditSpawnRange()']]],
   ['editspawnrate',['EditSpawnRate',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a63bf497418d5bbb5592355a2f44f31a5',1,'Terraria.ModLoader.GlobalNPC.EditSpawnRate()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa3c1075b462bc4c9bccb800492ad1c18',1,'Terraria.ModLoader.NPCLoader.EditSpawnRate()']]],
-  ['eerie',['Eerie',['../class_terraria_1_1_i_d_1_1_music_i_d.html#a72c8b099af913c323a7166840b3125b4',1,'Terraria::ID::MusicID']]],
   ['enableeac',['EnableEaC',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a9d80010aa1b56a4d51d208f240652d42',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['encapsulatename',['EncapsulateName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#acb7a0b19359fe4ce746d033d880a623c',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['encapsulatereferences',['EncapsulateReferences',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac5c3718bc5def39e46596eec59f0123c',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
-  ['english',['English',['../class_terraria_1_1_i_d_1_1_lang_i_d.html#a0c7914231a7624bc38d4ef3193591433',1,'Terraria::ID::LangID']]],
   ['entityinfo',['EntityInfo',['../class_terraria_1_1_mod_loader_1_1_entity_info.html',1,'Terraria::ModLoader']]],
   ['entityinfo_2ecs',['EntityInfo.cs',['../_entity_info_8cs.html',1,'']]],
   ['equals',['Equals',['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_info.html#ad60ceed981cde5cd7baef3a526685272',1,'Terraria::ModLoader::Default::MysteryTileInfo']]],

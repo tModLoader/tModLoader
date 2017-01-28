@@ -27,9 +27,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">1.3.3.4/0.9.1</span>
+   &#160;<span id="projectnumber">0.9.1.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -93,17 +94,12 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_defa
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_world__inherit__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_default_8_mystery_world_inherit__map" alt="Inheritance graph"/></div>
-<!-- MAP 0 -->
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.Default.MysteryWorld:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_world__coll__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_default_8_mystery_world_coll__map" alt="Collaboration graph"/></div>
-<!-- MAP 1 -->
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+ <div class="center">
+  <img src="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_world.png" usemap="#Terraria.ModLoader.Default.MysteryWorld_map" alt=""/>
+  <map id="Terraria.ModLoader.Default.MysteryWorld_map" name="Terraria.ModLoader.Default.MysteryWorld_map">
+<area href="class_terraria_1_1_mod_loader_1_1_mod_world.html" alt="Terraria.ModLoader.ModWorld" shape="rect" coords="0,0,254,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -111,7 +107,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4a6810f2d49d2cc84a5c0012e3b65e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad15b3f7230a2e5b5ef6b47a4774429d3"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_world.html#ad15b3f7230a2e5b5ef6b47a4774429d3">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="separator:ad15b3f7230a2e5b5ef6b47a4774429d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74a4c009a2debff414c623f6aa185d77"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_world.html#a74a4c009a2debff414c623f6aa185d77">LoadLegacy</a> (<a class="el" href="class_binary_reader.html">BinaryReader</a> reader)</td></tr>
+<tr class="memitem:a74a4c009a2debff414c623f6aa185d77"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_world.html#a74a4c009a2debff414c623f6aa185d77">LoadLegacy</a> (BinaryReader reader)</td></tr>
 <tr class="separator:a74a4c009a2debff414c623f6aa185d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb5a6696a4dd36c753913e46a11e5d53"><td class="memItemLeft" align="right" valign="top">override <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_world.html#afb5a6696a4dd36c753913e46a11e5d53">Save</a> ()</td></tr>
 <tr class="separator:afb5a6696a4dd36c753913e46a11e5d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,9 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a19083066738a43f6c572b12874aaaf85 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80b0fd5f98d260664332ce94b185e1a4 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a80b0fd5f98d260664332ce94b185e1a4">ModifyWorldGenTasks</a> (List&lt; GenPass &gt; tasks, ref float totalWeight)</td></tr>
 <tr class="separator:a80b0fd5f98d260664332ce94b185e1a4 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf20d147cc364d10b4b137999b5c26b5 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#aaf20d147cc364d10b4b137999b5c26b5">NetReceive</a> (<a class="el" href="class_binary_reader.html">BinaryReader</a> reader)</td></tr>
+<tr class="memitem:aaf20d147cc364d10b4b137999b5c26b5 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#aaf20d147cc364d10b4b137999b5c26b5">NetReceive</a> (BinaryReader reader)</td></tr>
 <tr class="separator:aaf20d147cc364d10b4b137999b5c26b5 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58fe0616b0c4135ec038025e67268561 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a58fe0616b0c4135ec038025e67268561">NetSend</a> (<a class="el" href="class_binary_writer.html">BinaryWriter</a> writer)</td></tr>
+<tr class="memitem:a58fe0616b0c4135ec038025e67268561 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a58fe0616b0c4135ec038025e67268561">NetSend</a> (BinaryWriter writer)</td></tr>
 <tr class="separator:a58fe0616b0c4135ec038025e67268561 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3310e15636ae38f138979d54dbe4b35 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ab3310e15636ae38f138979d54dbe4b35">PostDrawTiles</a> ()</td></tr>
 <tr class="separator:ab3310e15636ae38f138979d54dbe4b35 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_world"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,7 +167,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -201,7 +197,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -225,14 +221,14 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">override void Terraria.ModLoader.Default.MysteryWorld.LoadLegacy </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_binary_reader.html">BinaryReader</a>&#160;</td>
+          <td class="paramtype">BinaryReader&#160;</td>
           <td class="paramname"><em>reader</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -263,7 +259,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -275,16 +271,13 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Documents/My Games/Terraria/Modding/tModLoader/patches/tModLoader/Terraria.ModLoader.Default/<a class="el" href="_mystery_world_8cs_source.html">MysteryWorld.cs</a></li>
-</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_terraria.html">Terraria</a></li><li class="navelem"><a class="el" href="namespace_terraria_1_1_mod_loader.html">ModLoader</a></li><li class="navelem"><a class="el" href="namespace_terraria_1_1_mod_loader_1_1_default.html">Default</a></li><li class="navelem"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_world.html">MysteryWorld</a></li>
-    <li class="footer">Generated on Fri Jan 27 2017 19:14:14 for Terraria ModLoader by
+    <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

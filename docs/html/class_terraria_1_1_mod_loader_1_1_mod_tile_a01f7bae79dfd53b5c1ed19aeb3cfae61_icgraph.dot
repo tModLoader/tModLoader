@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.ModTile.SetDefaults"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node76 [label="Terraria.ModLoader.ModTile.\lSetDefaults",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node76 -> Node77 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node77 [label="Terraria.ModLoader.TileLoader.\lIsModMusicBox",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_tile_loader.html#a62c88b8eb4a959b6120e0da5386ba6f0"];
-}

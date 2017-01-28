@@ -27,9 +27,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">1.3.3.4/0.9.1</span>
+   &#160;<span id="projectnumber">0.9.1.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -93,23 +94,18 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_i_o_
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler__inherit__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_i_o_8_tag_i_o_8_byte_handler_inherit__map" alt="Inheritance graph"/></div>
-<!-- MAP 0 -->
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.IO.TagIO.ByteHandler:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler__coll__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_i_o_8_tag_i_o_8_byte_handler_coll__map" alt="Collaboration graph"/></div>
-<!-- MAP 1 -->
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+ <div class="center">
+  <img src="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler.png" usemap="#Terraria.ModLoader.IO.TagIO.ByteHandler_map" alt=""/>
+  <map id="Terraria.ModLoader.IO.TagIO.ByteHandler_map" name="Terraria.ModLoader.IO.TagIO.ByteHandler_map">
+<area href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html" alt="Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; byte &gt;" shape="rect" coords="0,0,325,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa001c00b36f1f9e17593c2994e909b17"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler.html#aa001c00b36f1f9e17593c2994e909b17">ByteHandler</a> (Func&lt; <a class="el" href="class_binary_reader.html">BinaryReader</a>, byte &gt; reader, Action&lt; <a class="el" href="class_binary_writer.html">BinaryWriter</a>, byte &gt; writer)</td></tr>
+<tr class="memitem:aa001c00b36f1f9e17593c2994e909b17"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler.html#aa001c00b36f1f9e17593c2994e909b17">ByteHandler</a> (Func&lt; BinaryReader, byte &gt; reader, Action&lt; BinaryWriter, byte &gt; writer)</td></tr>
 <tr class="separator:aa001c00b36f1f9e17593c2994e909b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab990f51659d7a93d4acdd77e7e464a15"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler.html#ab990f51659d7a93d4acdd77e7e464a15">Write</a> (<a class="el" href="class_binary_writer.html">BinaryWriter</a> w, object v)</td></tr>
+<tr class="memitem:ab990f51659d7a93d4acdd77e7e464a15"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler.html#ab990f51659d7a93d4acdd77e7e464a15">Write</a> (BinaryWriter w, object v)</td></tr>
 <tr class="separator:ab990f51659d7a93d4acdd77e7e464a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -121,17 +117,20 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Terraria.ModLoader.IO.TagIO.ByteHandler.ByteHandler </td>
           <td>(</td>
-          <td class="paramtype">Func&lt; <a class="el" href="class_binary_reader.html">BinaryReader</a>, byte &gt;&#160;</td>
+          <td class="paramtype">Func&lt; BinaryReader, byte &gt;&#160;</td>
           <td class="paramname"><em>reader</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Action&lt; <a class="el" href="class_binary_writer.html">BinaryWriter</a>, byte &gt;&#160;</td>
+          <td class="paramtype">Action&lt; BinaryWriter, byte &gt;&#160;</td>
           <td class="paramname"><em>writer</em>&#160;</td>
         </tr>
         <tr>
@@ -140,6 +139,11 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00060">60</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
@@ -152,11 +156,14 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">override void Terraria.ModLoader.IO.TagIO.ByteHandler.Write </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_binary_writer.html">BinaryWriter</a>&#160;</td>
+          <td class="paramtype">BinaryWriter&#160;</td>
           <td class="paramname"><em>w</em>, </td>
         </tr>
         <tr>
@@ -171,22 +178,24 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00063">63</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            {</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">if</span> (v is <span class="keywordtype">bool</span>)</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    base.Write(w, (byte)((<span class="keywordtype">bool</span>)v ? 1 : 0));</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                <span class="keywordflow">else</span></div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    base.Write(w, v);</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            }</div></div><!-- fragment -->
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Documents/My Games/Terraria/Modding/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/<a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a></li>
-</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_terraria.html">Terraria</a></li><li class="navelem"><a class="el" href="namespace_terraria_1_1_mod_loader.html">ModLoader</a></li><li class="navelem"><a class="el" href="namespace_terraria_1_1_mod_loader_1_1_i_o.html">IO</a></li><li class="navelem"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html">TagIO</a></li><li class="navelem"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler.html">ByteHandler</a></li>
-    <li class="footer">Generated on Fri Jan 27 2017 19:14:15 for Terraria ModLoader by
+    <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

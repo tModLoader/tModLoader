@@ -64,9 +64,9 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "banner", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a47e6b54fb0926e906276e95c15cd0fd8", null ],
     [ "bannerItem", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6e6c5d4d8db4f78b7143df8dfd8b5f29", null ],
     [ "bossBag", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab618ea4188158ae253b8389d618bc22d", null ],
+    [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a5a48b2626b19632afea505112f712c50", null ],
     [ "drawOffsetY", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7bc8cbe91923866dd137b7cdfb17caa6", null ],
     [ "music", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aab0a42de5692b33351e9e2bbac6cb6d1", null ],
-    [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a5a48b2626b19632afea505112f712c50", null ],
     [ "mod", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9ce9cc54ec7752b36975c391eb1ce0d2", null ],
     [ "npc", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0", null ]
 ];

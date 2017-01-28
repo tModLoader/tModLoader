@@ -24,7 +24,6 @@ var searchData=
   ['helditem',['HeldItem',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#acb4b40493cdbdc293e2cc7d047078af8',1,'Terraria::ModLoader::PlayerLayer']]],
   ['heldprojback',['HeldProjBack',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#af352f07c95f634510bb0c451689c9a06',1,'Terraria::ModLoader::PlayerLayer']]],
   ['heldprojfront',['HeldProjFront',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a5f6fd2f3bb5407f9486b96781326c3eb',1,'Terraria::ModLoader::PlayerLayer']]],
-  ['hell',['Hell',['../class_terraria_1_1_i_d_1_1_music_i_d.html#a1da8cc875e946861100f53c931cfdeae',1,'Terraria::ID::MusicID']]],
   ['helpcommand_2ecs',['HelpCommand.cs',['../_help_command_8cs.html',1,'']]],
   ['hijackgetdata',['HijackGetData',['../class_terraria_1_1_mod_loader_1_1_mod.html#a6ce58eb4ee02d58d03d5ad8f4b648d6c',1,'Terraria::ModLoader::Mod']]],
   ['hiteffect',['HitEffect',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afc85c885fbec3533348e87c8def9d886',1,'Terraria.ModLoader.GlobalNPC.HitEffect()'],['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a22d1c3de35a14161c20c5544a35b5420',1,'Terraria.ModLoader.ModNPC.HitEffect()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1f87c81d569643d4b88d271ba22f3c5b',1,'Terraria.ModLoader.NPCLoader.HitEffect()']]],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['payloadhandler',['PayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;']]],
+  ['payloadhandler',['PayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler']]],
   ['payloadhandler_3c_20byte_20_3e',['PayloadHandler&lt; byte &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria::ModLoader::IO::TagIO']]],
   ['playerdrawinfo',['PlayerDrawInfo',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html',1,'Terraria::ModLoader']]],
   ['playerheaddrawinfo',['PlayerHeadDrawInfo',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html',1,'Terraria::ModLoader']]],

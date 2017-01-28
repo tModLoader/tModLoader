@@ -34,7 +34,6 @@ var searchData=
   ['modworld',['ModWorld',['../class_terraria_1_1_mod_loader_1_1_mod_world.html',1,'Terraria::ModLoader']]],
   ['modworldhooks',['ModWorldHooks',['../class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html',1,'Terraria::ModLoader']]],
   ['mountloader',['MountLoader',['../class_terraria_1_1_mod_loader_1_1_mount_loader.html',1,'Terraria::ModLoader']]],
-  ['musicid',['MusicID',['../class_terraria_1_1_i_d_1_1_music_i_d.html',1,'Terraria::ID']]],
   ['musicwrapper',['MusicWrapper',['../class_terraria_1_1_mod_loader_1_1_music_wrapper.html',1,'Terraria::ModLoader']]],
   ['mysteryglobalitem',['MysteryGlobalItem',['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_global_item.html',1,'Terraria::ModLoader::Default']]],
   ['mysteryglobaliteminfo',['MysteryGlobalItemInfo',['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_global_item_info.html',1,'Terraria::ModLoader::Default']]],

@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.EquipTexture.UpdateVanity"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node42 [label="Terraria.ModLoader.Equip\lTexture.UpdateVanity",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node42 -> Node43 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node43 [label="Terraria.ModLoader.ItemLoader.\lUpdateVanity",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a74f5b7e0fdbcc2e20e834d7601245e3c"];
-}

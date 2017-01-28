@@ -21,7 +21,6 @@ var searchData=
   ['frameimportant',['frameImportant',['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_info.html#a287ac19a48a0055d6e795d6b979b7441',1,'Terraria::ModLoader::Default::MysteryTileInfo']]],
   ['framex',['frameX',['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_info.html#a1a3573b497325a501f597defb1b35aee',1,'Terraria.ModLoader.Default.MysteryTileInfo.frameX()'],['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_frame.html#ac8e63a21b59d506e01105d26ba0b8b8c',1,'Terraria.ModLoader.Default.MysteryTileFrame.frameX()'],['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_frame.html#a48ed0a2a0d17147a4f13e1a64d68c933',1,'Terraria.ModLoader.Default.MysteryTileFrame.FrameX()']]],
   ['framey',['frameY',['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_info.html#a705c19d541ec5f4af0602cb122d92637',1,'Terraria.ModLoader.Default.MysteryTileInfo.frameY()'],['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_frame.html#a8d103ad35a9f3e7d3c24334140ee36ee',1,'Terraria.ModLoader.Default.MysteryTileFrame.frameY()'],['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_frame.html#abf967580e502cae59aad5a20727d3a31',1,'Terraria.ModLoader.Default.MysteryTileFrame.FrameY()']]],
-  ['french',['French',['../class_terraria_1_1_i_d_1_1_lang_i_d.html#ae5a49d91a1f3350b796a26c9f5bd781a',1,'Terraria::ID::LangID']]],
   ['fromfile',['FromFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#acce7382a98854f9ee3af15557fc23405',1,'Terraria::ModLoader::IO::TagIO']]],
   ['fromstream',['FromStream',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a5bb8177c2bd4cf1f285823c4a93a3c25',1,'Terraria::ModLoader::IO::TagIO']]],
   ['fromtile',['FromTile',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#adac24a887bf8f87339a3b47521e379fa',1,'Terraria::ModLoader::MapLegend']]],
@@ -31,6 +30,5 @@ var searchData=
   ['frontextra',['FrontExtra',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398acb87ecd0146e4043453f646f8ec64a8a',1,'Terraria::ModLoader']]],
   ['frontextraglow',['FrontExtraGlow',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aa1227743ed969deb8c75c2f841620983',1,'Terraria::ModLoader']]],
   ['frontglow',['FrontGlow',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aeb2f12de52987b96bc59c077116d2f26',1,'Terraria::ModLoader']]],
-  ['frontshader',['frontShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a98d4f8a7fd8d11e63cb66fc444b528eb',1,'Terraria::ModLoader::PlayerDrawInfo']]],
-  ['frostmoon',['FrostMoon',['../class_terraria_1_1_i_d_1_1_music_i_d.html#a0953e55e6109edda0ddbd303f8c29078',1,'Terraria::ID::MusicID']]]
+  ['frontshader',['frontShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a98d4f8a7fd8d11e63cb66fc444b528eb',1,'Terraria::ModLoader::PlayerDrawInfo']]]
 ];

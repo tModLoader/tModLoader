@@ -8,6 +8,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_world =
     [ "ModifyWorldGenTasks", "class_terraria_1_1_mod_loader_1_1_mod_world.html#a80b0fd5f98d260664332ce94b185e1a4", null ],
     [ "NetReceive", "class_terraria_1_1_mod_loader_1_1_mod_world.html#aaf20d147cc364d10b4b137999b5c26b5", null ],
     [ "NetSend", "class_terraria_1_1_mod_loader_1_1_mod_world.html#a58fe0616b0c4135ec038025e67268561", null ],
+    [ "PostDrawTiles", "class_terraria_1_1_mod_loader_1_1_mod_world.html#ab3310e15636ae38f138979d54dbe4b35", null ],
     [ "PostUpdate", "class_terraria_1_1_mod_loader_1_1_mod_world.html#a8aeb836a6fba220225717e124c2d6312", null ],
     [ "PostWorldGen", "class_terraria_1_1_mod_loader_1_1_mod_world.html#a822fd4813716b16996815d746e6f1b42", null ],
     [ "PreUpdate", "class_terraria_1_1_mod_loader_1_1_mod_world.html#ad1e9ea8fc667b3e439e26edf7289cdaf", null ],

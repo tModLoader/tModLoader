@@ -7,6 +7,7 @@ var class_terraria_1_1_mod_loader_1_1_music_wrapper =
     [ "Stop", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html#a6f2a431b64ef6825942f39158d82d208", null ],
     [ "Stop", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html#a605cf9ddc91034797e764595e5dbc4b9", null ],
     [ "Stop", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html#a91c24ad88d477398ec55bd4b44969418", null ],
+    [ "modMusic", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html#ae057cd798d9027aefd50f9277afc9eb0", null ],
     [ "IsDisposed", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html#a611d8d6d50edc7a700d0237d06cf3192", null ],
     [ "IsPaused", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html#aa6ca41df2c90f17378c8425adc60f6e6", null ],
     [ "IsPlaying", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html#af631c33a1a938e94afd8ee5e8a64c22a", null ],

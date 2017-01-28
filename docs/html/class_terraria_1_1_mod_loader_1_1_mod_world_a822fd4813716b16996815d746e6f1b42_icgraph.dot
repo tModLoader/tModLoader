@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.ModWorld.PostWorldGen"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node27 [label="Terraria.ModLoader.ModWorld.\lPostWorldGen",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node27 -> Node28 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node28 [label="Terraria.ModLoader.World\lHooks.PostWorldGen",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_world_hooks.html#acb01c87e23c6d080a47af406bf4ea84c"];
-}

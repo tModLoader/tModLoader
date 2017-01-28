@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.PlayerHooks.UpdateBadLifeRegen"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node204 [label="Terraria.ModLoader.Player\lHooks.UpdateBadLifeRegen",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node204 -> Node205 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node205 [label="Terraria.ModLoader.ModPlayer.\lUpdateBadLifeRegen",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ad4ada9b7e09919a8dbfea901c8e509c0"];
-}

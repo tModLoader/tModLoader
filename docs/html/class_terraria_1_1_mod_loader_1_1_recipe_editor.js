@@ -13,5 +13,6 @@ var class_terraria_1_1_mod_loader_1_1_recipe_editor =
     [ "SetNeedLava", "class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a2dfc10260c5b99f067abe0e64b4cc801", null ],
     [ "SetNeedWater", "class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a663633422081356aeca0f47db74f8f51", null ],
     [ "SetResult", "class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a616174581036bd5b8138b950889ce436", null ],
-    [ "SetResult", "class_terraria_1_1_mod_loader_1_1_recipe_editor.html#af0b7952c033510cb2c1e91ba8c732b97", null ]
+    [ "SetResult", "class_terraria_1_1_mod_loader_1_1_recipe_editor.html#af0b7952c033510cb2c1e91ba8c732b97", null ],
+    [ "recipe", "class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4876678df738da21ad10601db82f66f1", null ]
 ];

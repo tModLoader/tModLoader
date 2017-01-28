@@ -27,9 +27,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">1.3.3.4/0.9.1</span>
+   &#160;<span id="projectnumber">0.9.1.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -94,17 +95,13 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_defa
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_global_item_info__inherit__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_default_8_mystery_global_item_info_inherit__map" alt="Inheritance graph"/></div>
-<!-- MAP 0 -->
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.Default.MysteryGlobalItemInfo:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_global_item_info__coll__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_default_8_mystery_global_item_info_coll__map" alt="Collaboration graph"/></div>
-<!-- MAP 1 -->
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+ <div class="center">
+  <img src="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_global_item_info.png" usemap="#Terraria.ModLoader.Default.MysteryGlobalItemInfo_map" alt=""/>
+  <map id="Terraria.ModLoader.Default.MysteryGlobalItemInfo_map" name="Terraria.ModLoader.Default.MysteryGlobalItemInfo_map">
+<area href="class_terraria_1_1_mod_loader_1_1_item_info.html" alt="Terraria.ModLoader.ItemInfo" shape="rect" coords="0,56,300,80"/>
+<area href="class_terraria_1_1_mod_loader_1_1_entity_info.html" alt="Terraria.ModLoader.EntityInfo" shape="rect" coords="0,0,300,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -149,7 +146,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -160,15 +157,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="_entity_info_8cs_source.html#l00027">Terraria.ModLoader.ItemInfo.Clone()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            var clone = (MysteryGlobalItemInfo)base.Clone();</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">if</span> (data != null)</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                clone.data = <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html">TagIO</a>.Clone(data);</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span> clone;</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html">Terraria.ModLoader.IO.TagIO</a></div><div class="ttdef"><b>Definition:</b> <a href="_tag_i_o_8cs_source.html#l00011">TagIO.cs:11</a></div></div>
-</div><!-- fragment --><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_global_item_info_a582b090628f16afd95da2a9434bd97ca_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_global_item_info_a582b090628f16afd95da2a9434bd97ca_cgraph" alt=""/></div>
-<!-- MAP 2 -->
-</div>
-
+</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -188,16 +177,13 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Documents/My Games/Terraria/Modding/tModLoader/patches/tModLoader/Terraria.ModLoader.Default/<a class="el" href="_mystery_global_item_8cs_source.html">MysteryGlobalItem.cs</a></li>
-</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_terraria.html">Terraria</a></li><li class="navelem"><a class="el" href="namespace_terraria_1_1_mod_loader.html">ModLoader</a></li><li class="navelem"><a class="el" href="namespace_terraria_1_1_mod_loader_1_1_default.html">Default</a></li><li class="navelem"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_global_item_info.html">MysteryGlobalItemInfo</a></li>
-    <li class="footer">Generated on Fri Jan 27 2017 19:14:13 for Terraria ModLoader by
+    <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

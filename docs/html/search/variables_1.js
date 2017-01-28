@@ -4,8 +4,6 @@ var searchData=
   ['aitype',['aiType',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a82e4bee564b54f8863d73fb632087457',1,'Terraria.ModLoader.ModNPC.aiType()'],['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa348d2c84755d8da68bb470cf35ab28d',1,'Terraria.ModLoader.ModProjectile.aiType()']]],
   ['alpha',['alpha',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a02234b8518a76470e3300cef0ac49050',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
   ['althair',['AltHair',['../class_terraria_1_1_mod_loader_1_1_player_head_layer.html#a3840459994b7559cd7a709d47b040027',1,'Terraria::ModLoader::PlayerHeadLayer']]],
-  ['altoverworldday',['AltOverworldDay',['../class_terraria_1_1_i_d_1_1_music_i_d.html#ad309aa375058a447d54139225cee8a32',1,'Terraria::ID::MusicID']]],
-  ['altunderground',['AltUnderground',['../class_terraria_1_1_i_d_1_1_music_i_d.html#ad2b436b8ca3b275c8ff3ad6fe14092bf',1,'Terraria::ID::MusicID']]],
   ['animationframeheight',['animationFrameHeight',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#aa930670da7f13271c4e4767817086e46',1,'Terraria::ModLoader::ModTile']]],
   ['animationtype',['animationType',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a601a9cc244b839e962fa14266e55969e',1,'Terraria::ModLoader::ModNPC']]],
   ['armglowmask',['armGlowMask',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a96380c5980fdc10a77c6d96213ddc0ca',1,'Terraria::ModLoader::PlayerDrawInfo']]],

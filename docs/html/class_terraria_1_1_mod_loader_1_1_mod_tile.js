@@ -26,6 +26,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_tile =
     [ "MouseOverFar", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a01f49534030c2d4c02009e4918c05587", null ],
     [ "NearbyEffects", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a10cca98611fc831d5d06c1f53644996a", null ],
     [ "NumDust", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a5627e9c1d5959535a6041c9852fe8604", null ],
+    [ "PlaceInWorld", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#ad9ee660958e686bf661360a72878a819", null ],
     [ "PostDraw", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#ad6f4d05e13dc9098ec6f99c2a81628a7", null ],
     [ "PostSetDefaults", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#ab0fc8ff564415d20026a14b4975f3efc", null ],
     [ "PreDraw", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a603750a0d4c6c2e11ccd887bba90d49a", null ],

@@ -1,11 +1,21 @@
 var searchData=
 [
-  ['underground',['Underground',['../class_terraria_1_1_i_d_1_1_music_i_d.html#aa95fa0e06cb7d56a062e201aaf7add11',1,'Terraria::ID::MusicID']]],
-  ['undergroundcorruption',['UndergroundCorruption',['../class_terraria_1_1_i_d_1_1_music_i_d.html#a25b671238be5592342a98b314b91f913',1,'Terraria::ID::MusicID']]],
-  ['undergroundcrimson',['UndergroundCrimson',['../class_terraria_1_1_i_d_1_1_music_i_d.html#aad867a551e1a74650cc2282500ad2301',1,'Terraria::ID::MusicID']]],
-  ['undergroundhallow',['UndergroundHallow',['../class_terraria_1_1_i_d_1_1_music_i_d.html#a03ecd6a6a88e311ba077ac0d88682c55',1,'Terraria::ID::MusicID']]],
-  ['undershirtcolor',['underShirtColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#aa28d03b01f38b4cd5cc82e10d0fc7d88',1,'Terraria::ModLoader::PlayerDrawInfo']]],
-  ['updatetype',['updateType',['../class_terraria_1_1_mod_loader_1_1_mod_dust.html#a18e783583878c109c264f68125124624',1,'Terraria.ModLoader.ModDust.updateType()'],['../class_terraria_1_1_mod_loader_1_1_mod_gore.html#a589d5d0f815d6cdd045727e926e0b0e6',1,'Terraria.ModLoader.ModGore.updateType()']]],
-  ['upperarmorcolor',['upperArmorColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a6747ab5463475b4f40742851ed4d20d8',1,'Terraria::ModLoader::PlayerDrawInfo']]],
-  ['usage',['Usage',['../class_terraria_1_1_mod_loader_1_1_mod_command.html#ab53c5d3bbea6259e97df8004901d99e4',1,'Terraria::ModLoader::ModCommand']]]
+  ['validmodbrowsersignature',['validModBrowserSignature',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#aba3282c404e65571ebfac1292836ede3',1,'Terraria::ModLoader::IO::TmodFile']]],
+  ['vanillabackgroundtexturecount',['vanillaBackgroundTextureCount',['../class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#a5b287f692744ea43ed3127d3a1e7f3b6',1,'Terraria::ModLoader::BackgroundTextureLoader']]],
+  ['vanillabossheadcount',['vanillaBossHeadCount',['../class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#a0129c32614ef33d2444daf688a771ff2',1,'Terraria::ModLoader::NPCHeadLoader']]],
+  ['vanillacanbecleared',['vanillaCanBeCleared',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#ab2ac33171e48d29b67cb48eb18fc1d93',1,'Terraria::ModLoader::BuffLoader']]],
+  ['vanillachaircount',['vanillaChairCount',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a398102e5d586ccc51bf7dbac4c7bef87',1,'Terraria::ModLoader::TileLoader']]],
+  ['vanilladoorcount',['vanillaDoorCount',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a3475331d8d31712fd1378835a92bbd4a',1,'Terraria::ModLoader::TileLoader']]],
+  ['vanillaheadcount',['vanillaHeadCount',['../class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#a6addaaceb899fd7c27cac588f1c4bd68',1,'Terraria::ModLoader::NPCHeadLoader']]],
+  ['vanillalongerexpertdebuff',['vanillaLongerExpertDebuff',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a850e02183031de3bf2127baefd090982',1,'Terraria::ModLoader::BuffLoader']]],
+  ['vanillaskeletoncount',['vanillaSkeletonCount',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ac8258580b2fe062e674e876aa80fd2d3',1,'Terraria::ModLoader::NPCLoader']]],
+  ['vanillasurfacebgstylecount',['vanillaSurfaceBgStyleCount',['../class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html#af7027f7be3ce1e23f621cd5dc2eb7412',1,'Terraria::ModLoader::SurfaceBgStyleLoader']]],
+  ['vanillatablecount',['vanillaTableCount',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ae4d7b80736f9ce955f03451605ee92d8',1,'Terraria::ModLoader::TileLoader']]],
+  ['vanillatorchcount',['vanillaTorchCount',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#afeba5ca9f6d25d0a0eb1b1d4816587f2',1,'Terraria::ModLoader::TileLoader']]],
+  ['vanillaugbgstylecount',['vanillaUgBgStyleCount',['../class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a5f9c51bbff00613866edaf857f566660',1,'Terraria::ModLoader::UgBgStyleLoader']]],
+  ['vanillawatercount',['vanillaWaterCount',['../class_terraria_1_1_mod_loader_1_1_water_style_loader.html#a6cafc0f3b8897ca3f0db7a5534bf8b98',1,'Terraria::ModLoader::WaterStyleLoader']]],
+  ['vanillawaterfallcount',['vanillaWaterfallCount',['../class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html#a2011ff3a776e3d43c7fa6fdb7da4ac75',1,'Terraria::ModLoader::WaterfallStyleLoader']]],
+  ['version',['Version',['../class_terraria_1_1_mod_loader_1_1_mod.html#a25e6f7b4866109d4137e7ace4e78ee64',1,'Terraria.ModLoader.Mod.Version()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a155292bc6cbf691818480e24d443c4d0',1,'Terraria.ModLoader.ModLoader.version()'],['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#afb1345c51dbaab24b883a7d1adebff87',1,'Terraria.ModLoader.ModNet.ModHeader.version()']]],
+  ['versionedname',['versionedName',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ad492cc67d552a98b9b58fd49ac7bf427',1,'Terraria::ModLoader::ModLoader']]],
+  ['visible',['visible',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#acf5af1491117c4c92ca720992b7bc714',1,'Terraria::ModLoader::DrawLayer']]]
 ];

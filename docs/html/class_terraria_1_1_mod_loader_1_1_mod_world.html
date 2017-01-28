@@ -27,9 +27,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">1.3.3.4/0.9.1</span>
+   &#160;<span id="projectnumber">0.9.1.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -94,9 +95,13 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world__inherit__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_mod_world_inherit__map" alt="Inheritance graph"/></div>
-<!-- MAP 0 -->
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+ <div class="center">
+  <img src="class_terraria_1_1_mod_loader_1_1_mod_world.png" usemap="#Terraria.ModLoader.ModWorld_map" alt=""/>
+  <map id="Terraria.ModLoader.ModWorld_map" name="Terraria.ModLoader.ModWorld_map">
+<area href="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tiles_world.html" alt="Terraria.ModLoader.Default.MysteryTilesWorld" shape="rect" coords="0,56,280,80"/>
+<area href="class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_world.html" alt="Terraria.ModLoader.Default.MysteryWorld" shape="rect" coords="290,56,570,80"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -108,13 +113,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adeaf03c2c6361b70d0c0eabca94641d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d5993331e9a2e313242e2f7ba19bedc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a2d5993331e9a2e313242e2f7ba19bedc">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="separator:a2d5993331e9a2e313242e2f7ba19bedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af48790520c83765471a8b7a16888d605"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#af48790520c83765471a8b7a16888d605">LoadLegacy</a> (<a class="el" href="class_binary_reader.html">BinaryReader</a> reader)</td></tr>
+<tr class="memitem:af48790520c83765471a8b7a16888d605"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#af48790520c83765471a8b7a16888d605">LoadLegacy</a> (BinaryReader reader)</td></tr>
 <tr class="separator:af48790520c83765471a8b7a16888d605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80b0fd5f98d260664332ce94b185e1a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a80b0fd5f98d260664332ce94b185e1a4">ModifyWorldGenTasks</a> (List&lt; GenPass &gt; tasks, ref float totalWeight)</td></tr>
 <tr class="separator:a80b0fd5f98d260664332ce94b185e1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf20d147cc364d10b4b137999b5c26b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#aaf20d147cc364d10b4b137999b5c26b5">NetReceive</a> (<a class="el" href="class_binary_reader.html">BinaryReader</a> reader)</td></tr>
+<tr class="memitem:aaf20d147cc364d10b4b137999b5c26b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#aaf20d147cc364d10b4b137999b5c26b5">NetReceive</a> (BinaryReader reader)</td></tr>
 <tr class="separator:aaf20d147cc364d10b4b137999b5c26b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58fe0616b0c4135ec038025e67268561"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a58fe0616b0c4135ec038025e67268561">NetSend</a> (<a class="el" href="class_binary_writer.html">BinaryWriter</a> writer)</td></tr>
+<tr class="memitem:a58fe0616b0c4135ec038025e67268561"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a58fe0616b0c4135ec038025e67268561">NetSend</a> (BinaryWriter writer)</td></tr>
 <tr class="separator:a58fe0616b0c4135ec038025e67268561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3310e15636ae38f138979d54dbe4b35"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ab3310e15636ae38f138979d54dbe4b35">PostDrawTiles</a> ()</td></tr>
 <tr class="separator:ab3310e15636ae38f138979d54dbe4b35"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,26 +168,18 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00023">23</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_mod_8cs_source.html#l01245">Terraria.ModLoader.Mod.AutoloadModWorld()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_mod_8cs_source.html#l01255">Terraria.ModLoader.Mod.AutoloadModWorld()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        {</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a478f12391dc74bb1571c3c3f4a10f0d6">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00027">Mod.cs:27</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00010">ModProperties.cs:10</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_world_html_a478f12391dc74bb1571c3c3f4a10f0d6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a478f12391dc74bb1571c3c3f4a10f0d6">Terraria.ModLoader.ModWorld.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdef"><b>Definition:</b> <a href="_mod_world_8cs_source.html#l00012">ModWorld.cs:12</a></div></div>
-</div><!-- fragment --><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_ada5461d774c15becc93f19ef5f66c1e1_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_ada5461d774c15becc93f19ef5f66c1e1_icgraph" alt=""/></div>
-<!-- MAP 1 -->
-</div>
-
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a19083066738a43f6c572b12874aaaf85"></a>
@@ -204,7 +201,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -212,15 +209,7 @@ Properties</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00081">81</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_world_hooks_8cs_source.html#l00110">Terraria.ModLoader.WorldHooks.ChooseWaterStyle()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div></div><!-- fragment --><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a19083066738a43f6c572b12874aaaf85_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a19083066738a43f6c572b12874aaaf85_icgraph" alt=""/></div>
-<!-- MAP 2 -->
-</div>
-
+<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a id="adeaf03c2c6361b70d0c0eabca94641d7"></a>
@@ -241,7 +230,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -271,7 +260,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -294,14 +283,14 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">virtual void Terraria.ModLoader.ModWorld.LoadLegacy </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_binary_reader.html">BinaryReader</a>&#160;</td>
+          <td class="paramtype">BinaryReader&#160;</td>
           <td class="paramname"><em>reader</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -341,7 +330,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -349,15 +338,7 @@ Properties</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_world_hooks_8cs_source.html#l00062">Terraria.ModLoader.WorldHooks.ModifyWorldGenTasks()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div></div><!-- fragment --><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a80b0fd5f98d260664332ce94b185e1a4_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a80b0fd5f98d260664332ce94b185e1a4_icgraph" alt=""/></div>
-<!-- MAP 3 -->
-</div>
-
+<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a id="aaf20d147cc364d10b4b137999b5c26b5"></a>
@@ -372,14 +353,14 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">virtual void Terraria.ModLoader.ModWorld.NetReceive </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_binary_reader.html">BinaryReader</a>&#160;</td>
+          <td class="paramtype">BinaryReader&#160;</td>
           <td class="paramname"><em>reader</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -400,14 +381,14 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">virtual void Terraria.ModLoader.ModWorld.NetSend </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_binary_writer.html">BinaryWriter</a>&#160;</td>
+          <td class="paramtype">BinaryWriter&#160;</td>
           <td class="paramname"><em>writer</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -434,7 +415,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -442,15 +423,7 @@ Properties</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00090">90</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_world_hooks_8cs_source.html#l00118">Terraria.ModLoader.WorldHooks.PostDrawTiles()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div></div><!-- fragment --><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_ab3310e15636ae38f138979d54dbe4b35_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_ab3310e15636ae38f138979d54dbe4b35_icgraph" alt=""/></div>
-<!-- MAP 4 -->
-</div>
-
+<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a8aeb836a6fba220225717e124c2d6312"></a>
@@ -471,7 +444,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -479,15 +452,7 @@ Properties</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00073">73</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_world_hooks_8cs_source.html#l00094">Terraria.ModLoader.WorldHooks.PostUpdate()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div></div><!-- fragment --><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a8aeb836a6fba220225717e124c2d6312_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a8aeb836a6fba220225717e124c2d6312_icgraph" alt=""/></div>
-<!-- MAP 5 -->
-</div>
-
+<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a822fd4813716b16996815d746e6f1b42"></a>
@@ -508,7 +473,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -516,15 +481,7 @@ Properties</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00061">61</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_world_hooks_8cs_source.html#l00070">Terraria.ModLoader.WorldHooks.PostWorldGen()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div></div><!-- fragment --><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a822fd4813716b16996815d746e6f1b42_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a822fd4813716b16996815d746e6f1b42_icgraph" alt=""/></div>
-<!-- MAP 6 -->
-</div>
-
+<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a id="ad1e9ea8fc667b3e439e26edf7289cdaf"></a>
@@ -545,7 +502,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -553,15 +510,7 @@ Properties</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00069">69</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_world_hooks_8cs_source.html#l00086">Terraria.ModLoader.WorldHooks.PreUpdate()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div></div><!-- fragment --><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_ad1e9ea8fc667b3e439e26edf7289cdaf_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_ad1e9ea8fc667b3e439e26edf7289cdaf_icgraph" alt=""/></div>
-<!-- MAP 7 -->
-</div>
-
+<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a8cd6d1e08c6aadfc53a037d6aee2f7d7"></a>
@@ -582,7 +531,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -590,15 +539,7 @@ Properties</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00053">53</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_world_hooks_8cs_source.html#l00054">Terraria.ModLoader.WorldHooks.PreWorldGen()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div></div><!-- fragment --><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a8cd6d1e08c6aadfc53a037d6aee2f7d7_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a8cd6d1e08c6aadfc53a037d6aee2f7d7_icgraph" alt=""/></div>
-<!-- MAP 8 -->
-</div>
-
+<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a9c34c46918ff1d37ddd3d814cfae121f"></a>
@@ -619,7 +560,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -627,15 +568,7 @@ Properties</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00065">65</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_world_hooks_8cs_source.html#l00078">Terraria.ModLoader.WorldHooks.ResetNearbyTileEffects()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div></div><!-- fragment --><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a9c34c46918ff1d37ddd3d814cfae121f_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a9c34c46918ff1d37ddd3d814cfae121f_icgraph" alt=""/></div>
-<!-- MAP 9 -->
-</div>
-
+<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a id="af88355a462a040293fa29556b8279aea"></a>
@@ -656,7 +589,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -686,7 +619,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -694,15 +627,7 @@ Properties</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00077">77</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_world_hooks_8cs_source.html#l00102">Terraria.ModLoader.WorldHooks.TileCountsAvailable()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div></div><!-- fragment --><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-10-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a60089c548af2378c1baec051cb7a86bb_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a60089c548af2378c1baec051cb7a86bb_icgraph" alt=""/></div>
-<!-- MAP 10 -->
-</div>
-
+<div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
@@ -728,7 +653,7 @@ Properties</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00012">12</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_mod_8cs_source.html#l01237">Terraria.ModLoader.Mod.AddModWorld()</a>, and <a class="el" href="_mod_8cs_source.html#l01245">Terraria.ModLoader.Mod.AutoloadModWorld()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_mod_8cs_source.html#l01247">Terraria.ModLoader.Mod.AddModWorld()</a>, and <a class="el" href="_mod_8cs_source.html#l01255">Terraria.ModLoader.Mod.AutoloadModWorld()</a>.</p>
 
 </div>
 </div>
@@ -754,20 +679,17 @@ Properties</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mod_world_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_mod_8cs_source.html#l01237">Terraria.ModLoader.Mod.AddModWorld()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_mod_8cs_source.html#l01247">Terraria.ModLoader.Mod.AddModWorld()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Documents/My Games/Terraria/Modding/tModLoader/patches/tModLoader/Terraria.ModLoader/<a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a></li>
-</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_terraria.html">Terraria</a></li><li class="navelem"><a class="el" href="namespace_terraria_1_1_mod_loader.html">ModLoader</a></li><li class="navelem"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html">ModWorld</a></li>
-    <li class="footer">Generated on Fri Jan 27 2017 19:14:10 for Terraria ModLoader by
+    <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -18,5 +18,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_recipe =
     [ "SetResult", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html#aae2ead4bce828b8c8019076ebe1edae5", null ],
     [ "SetResult", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a3a4b3bccc369edc256fd87efb9f3a0da", null ],
     [ "mod", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html#ab6ad59659e1a6297a652c7cd5368afcb", null ],
+    [ "numIngredients", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a82a9249ca1a5913abc30ec379e6784e4", null ],
+    [ "numTiles", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a9ab2b344e03d295f6bf41abf30a699dc", null ],
     [ "RecipeIndex", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a08412b227392b32ca1f7bb23321e8d58", null ]
 ];
