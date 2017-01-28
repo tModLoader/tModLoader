@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ItemLoader.UpdateArmorSet" name="Terraria.ModLoader.ItemLoader.UpdateArmorSet">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#a9ea562f4cb6d576abae4b59452e7bccd" title="Terraria.ModLoader.Global\lItem.IsArmorSet" alt="" coords="259,5,433,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#a75ca1e08364214425742ffc6b76121ae" title="Terraria.ModLoader.Global\lItem.UpdateArmorSet" alt="" coords="259,71,433,112"/>
+</map>

@@ -8,7 +8,6 @@ var searchData=
   ['handoffshader',['handOffShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ac82885103aa4cea00157311088f8b303',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['handonacc',['HandOnAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#adc9a875c630c775489e431334e5f490f',1,'Terraria::ModLoader::PlayerLayer']]],
   ['handonshader',['handOnShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a5677f9f838f427bf82609a0a6263a88a',1,'Terraria::ModLoader::PlayerDrawInfo']]],
-  ['hasdata',['HasData',['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_global_item_info.html#a6cd3f447365874bbedf90ee060e807b0',1,'Terraria::ModLoader::Default::MysteryGlobalItemInfo']]],
   ['hash',['hash',['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#a663a55c32328ccc63426d72eb09ae43b',1,'Terraria::ModLoader::ModNet::ModHeader']]],
   ['head',['Head',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a732ad53e80ded32174049fbf58754fcc',1,'Terraria.ModLoader.PlayerLayer.Head()'],['../class_terraria_1_1_mod_loader_1_1_player_head_layer.html#ab817a445bee164a16256be49d11b3528',1,'Terraria.ModLoader.PlayerHeadLayer.Head()']]],
   ['headarmorshader',['headArmorShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a40e4e36bc44f68113263c6b60bca7868',1,'Terraria::ModLoader::PlayerDrawInfo']]],
@@ -183,6 +182,5 @@ var searchData=
   ['hookuseitemhitbox',['HookUseItemHitbox',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ab0f7ed7a3882ec398b65ab0bc0c2e895',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookusestyle',['HookUseStyle',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a7caac6f782a2477c64a00f2667a498f1',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookverticalwingspeeds',['HookVerticalWingSpeeds',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a7a98c097d9e091936b6d17e59abc88e3',1,'Terraria::ModLoader::ItemLoader']]],
-  ['hookwingupdate',['HookWingUpdate',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a22af1474582c20139a8773ace147365e',1,'Terraria::ModLoader::ItemLoader']]],
-  ['hour',['HOUR',['../class_terraria_1_1_mod_loader_1_1_u_i_1_1_time_helper.html#a44754d927135908875820cadb66f9a40',1,'Terraria::ModLoader::UI::TimeHelper']]]
+  ['hookwingupdate',['HookWingUpdate',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a22af1474582c20139a8773ace147365e',1,'Terraria::ModLoader::ItemLoader']]]
 ];

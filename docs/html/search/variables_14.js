@@ -7,6 +7,5 @@ var searchData=
   ['weakdependencies',['weakDependencies',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ae643996c2853e9920e00158a40170f55',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['windows',['windows',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae1c2677390744cbfe231c6dceafc8059',1,'Terraria::ModLoader::ModLoader']]],
   ['wings',['Wings',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a4f496f608b10704ccca7da3296bf4c9e',1,'Terraria::ModLoader::PlayerLayer']]],
-  ['wingshader',['wingShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a171e1518ea671261ece3711ebd3b9eb4',1,'Terraria::ModLoader::PlayerDrawInfo']]],
-  ['writer',['writer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#aceb88a2bd04afaf9749fe1615a4943ef',1,'Terraria::ModLoader::IO::TagIO::PayloadHandler']]]
+  ['wingshader',['wingShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a171e1518ea671261ece3711ebd3b9eb4',1,'Terraria::ModLoader::PlayerDrawInfo']]]
 ];

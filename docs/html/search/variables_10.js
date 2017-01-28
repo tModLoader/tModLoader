@@ -3,7 +3,6 @@ var searchData=
   ['saferangex',['safeRangeX',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a019c1f1fb493b8ceb88fb399d88011a1',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['sapling',['sapling',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a2f579064218f05fb5a60980f05f1c9cd',1,'Terraria::ModLoader::ModTile']]],
   ['scale',['scale',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a0d798e58bee16fffe307d17ebf89b7c4',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
-  ['second',['SECOND',['../class_terraria_1_1_mod_loader_1_1_u_i_1_1_time_helper.html#ac4746dc90018158b4c8b66d69d33df13',1,'Terraria::ModLoader::UI::TimeHelper']]],
   ['shadow',['shadow',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a239fc65cac4eee399c8e26c0a2ce98b8',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['shieldacc',['ShieldAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#aa30b56c1ab7f1e63b5bde83f9dc8fd10',1,'Terraria::ModLoader::PlayerLayer']]],
   ['shieldshader',['shieldShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad8b79526ecbbf1bcfe73b9acac2c0926',1,'Terraria::ModLoader::PlayerDrawInfo']]],
@@ -24,6 +23,5 @@ var searchData=
   ['spidercave',['spiderCave',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a10c3b0e027716d413775e959b981ea10',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['spritebatch',['spriteBatch',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a157ca091fcdb30a0a6c83643e7907538',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
   ['spriteeffects',['spriteEffects',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a80d821ac2266c2c412d6dc359d1dba6e',1,'Terraria.ModLoader.PlayerDrawInfo.spriteEffects()'],['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a3e3ec364079b4e7db1ec709bc19e82c4',1,'Terraria.ModLoader.PlayerHeadDrawInfo.spriteEffects()']]],
-  ['steamid64',['steamID64',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#afc7651ad2b53d988265a0c1ddad6ff5e',1,'Terraria::ModLoader::ModLoader']]],
-  ['stringhandler',['StringHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a88f67ce0a5f71c3e12f264a0f0877781',1,'Terraria::ModLoader::IO::TagIO']]]
+  ['steamid64',['steamID64',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#afc7651ad2b53d988265a0c1ddad6ff5e',1,'Terraria::ModLoader::ModLoader']]]
 ];

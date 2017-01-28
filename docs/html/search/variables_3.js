@@ -6,10 +6,8 @@ var searchData=
   ['chest',['chest',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#ad96d2fbabfdc4c848c51a3029b4905ef',1,'Terraria::ModLoader::ModTile']]],
   ['chestdrop',['chestDrop',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a41cd13516f1d54f9c1d53ab583c76273',1,'Terraria::ModLoader::ModTile']]],
   ['chunk_5fsize',['CHUNK_SIZE',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#aa80fb5bd418f807364eec0f4c1e3fbb9',1,'Terraria::ModLoader::ModNet']]],
-  ['clone',['clone',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#a5fc6c6276be40092ebffd4a4db71f2c6',1,'Terraria::ModLoader::IO::TagIO::PayloadHandler']]],
   ['clonenewinstances',['CloneNewInstances',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a4034c592b448f335b82414fb2dead1b1',1,'Terraria.ModLoader.ModItem.CloneNewInstances()'],['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a5a48b2626b19632afea505112f712c50',1,'Terraria.ModLoader.ModNPC.CloneNewInstances()'],['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a864e34b0e52742d1533fe7e5b2d7236d',1,'Terraria.ModLoader.ModPlayer.CloneNewInstances()'],['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aff2b8c209db7160f70959cfbe360013f',1,'Terraria.ModLoader.ModProjectile.CloneNewInstances()']]],
   ['closedoorid',['closeDoorID',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6605bf06cc4adbfaa6a609cce58d7424',1,'Terraria::ModLoader::ModTile']]],
   ['cooldownslot',['cooldownSlot',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab05ba7944840367c4d42838c561ce75b',1,'Terraria::ModLoader::ModProjectile']]],
-  ['count',['Count',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a546328535535759db8c68cec1c1cf302',1,'Terraria::ModLoader::IO::TagCompound']]],
   ['customsoundtype',['customSoundType',['../class_terraria_1_1_mod_loader_1_1_sound_loader.html#a6aa5ef5849dec0efaaf48092ed596c75',1,'Terraria::ModLoader::SoundLoader']]]
 ];

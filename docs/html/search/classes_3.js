@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['drawlayer',['DrawLayer',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html',1,'Terraria::ModLoader']]],
-  ['drawlayer_3c_20playerdrawinfo_20_3e',['DrawLayer&lt; PlayerDrawInfo &gt;',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html',1,'Terraria::ModLoader']]],
-  ['drawlayer_3c_20playerheaddrawinfo_20_3e',['DrawLayer&lt; PlayerHeadDrawInfo &gt;',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html',1,'Terraria::ModLoader']]]
+  ['entityinfo',['EntityInfo',['../class_terraria_1_1_mod_loader_1_1_entity_info.html',1,'Terraria::ModLoader']]],
+  ['equiploader',['EquipLoader',['../class_terraria_1_1_mod_loader_1_1_equip_loader.html',1,'Terraria::ModLoader']]],
+  ['equiptexture',['EquipTexture',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html',1,'Terraria::ModLoader']]],
+  ['errorlogger',['ErrorLogger',['../class_terraria_1_1_mod_loader_1_1_error_logger.html',1,'Terraria::ModLoader']]],
+  ['exception',['Exception',['../class_exception.html',1,'']]]
 ];

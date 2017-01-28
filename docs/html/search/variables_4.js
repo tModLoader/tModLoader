@@ -1,12 +1,9 @@
 var searchData=
 [
-  ['data',['data',['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_item.html#a05a660a71da906e0456de89d5927f474',1,'Terraria.ModLoader.Default.MysteryItem.data()'],['../class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_entity.html#aee05a18ec34923d76ec8ca21ad7f8a44',1,'Terraria.ModLoader.Default.MysteryTileEntity.data()']]],
-  ['day',['DAY',['../class_terraria_1_1_mod_loader_1_1_u_i_1_1_time_helper.html#a9bfe1f569ddb79ba46220fcdfcc7dfa0',1,'Terraria::ModLoader::UI::TimeHelper']]],
   ['dependencies',['dependencies',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a75c3e6abd05c040d8cf0965f81a84547',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['dependents',['dependents',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a5c9de86a25361d7c4588740e88b2cf86',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['description',['Description',['../class_terraria_1_1_mod_loader_1_1_mod_command.html#ac807de4b57a97d5ee2c6105ceff5d4b9',1,'Terraria::ModLoader::ModCommand']]],
   ['desertcave',['desertCave',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a2d05ed125dcfd4ddb200fcfee3b810c4',1,'Terraria::ModLoader::NPCSpawnInfo']]],
-  ['dict',['dict',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c',1,'Terraria::ModLoader::IO::TagCompound']]],
   ['disablesmartcursor',['disableSmartCursor',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a08ffa633e41dff9e482d868dd4886c5d',1,'Terraria::ModLoader::ModTile']]],
   ['downloadingfile',['downloadingFile',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6',1,'Terraria::ModLoader::ModNet']]],
   ['downloadinglength',['downloadingLength',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#aae814b95283be86b1b3d858effecfe30',1,'Terraria::ModLoader::ModNet']]],

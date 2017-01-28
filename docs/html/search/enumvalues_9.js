@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['name',['Name',['../namespace_terraria_1_1_mod_loader_1_1_u_i.html#a98003e1c599756a3cb54233ed1b8a7f2a49ee3087348e8d44e1feda1917443987',1,'Terraria::ModLoader::UI']]],
-  ['neck',['Neck',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a6833e5c3ce1911011c2bb97d48a0a24b',1,'Terraria::ModLoader']]],
-  ['nosync',['NoSync',['../namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06ae4246767f134af73780a229d9e364a0b',1,'Terraria::ModLoader']]],
-  ['npchit',['NPCHit',['../namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794',1,'Terraria::ModLoader']]],
-  ['npckilled',['NPCKilled',['../namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06ad71465dddb92c3fa7565999b6e53f19c',1,'Terraria::ModLoader']]]
+  ['waist',['Waist',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282ad96414f5cfbd621bb6368bb260d5240c',1,'Terraria::ModLoader']]],
+  ['wings',['Wings',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a703e7b3b4e2a07715552e466e0d231bd',1,'Terraria::ModLoader']]],
+  ['world',['World',['../namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6',1,'Terraria::ModLoader']]]
 ];

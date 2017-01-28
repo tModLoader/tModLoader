@@ -1,0 +1,32 @@
+<map id="Terraria.ModLoader.ModLoader.GetTexture" name="Terraria.ModLoader.ModLoader.GetTexture">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a6dec81443d46c9904a00522d66b9c025" title="Terraria.ModLoader.Mod.Add\lBackgroundTexture" alt="" coords="275,5,464,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#aaaf8a0bbde18da64d25babc2bf40648a" title="Terraria.ModLoader.Mod.Add\lBossHeadTexture" alt="" coords="275,71,464,112"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a35e24b2d8b9d749c129d8219023b0ec0" title="Terraria.ModLoader.Mod.AddDust" alt="" coords="261,137,477,163"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a62fce9d3fcd8d1283f01b556b9238326" title="Terraria.ModLoader.Mod.Add\lEquipTexture" alt="" coords="275,188,464,229"/>
+<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a4d4f0790c6c09b485ae7478388b7399c" title="Terraria.ModLoader.Mod.Add\lFlameTexture" alt="" coords="275,253,464,295"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Terraria.ModLoader.Mod.Add\lMount" alt="" coords="275,319,464,360"/>
+<area shape="rect" id="node8" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a1e739bc6de6fac144b8342cfc0370406" title="Terraria.ModLoader.Mod.Add\lNPCHeadTexture" alt="" coords="275,384,464,425"/>
+<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#acec6846e4b16fa559531e838dfc51de9" title="Terraria.ModLoader.Background\lTextureLoader.GetBackgroundSlot" alt="" coords="259,449,480,491"/>
+<area shape="rect" id="node11" href="$class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#a89950f2a9433a2c981916550c78703ae" title="Terraria.ModLoader.NPCHead\lLoader.GetBossHeadSlot" alt="" coords="272,515,467,556"/>
+<area shape="rect" id="node12" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Terraria.ModLoader.Equip\lLoader.GetEquipTexture" alt="" coords="284,580,455,621"/>
+<area shape="rect" id="node29" href="$class_terraria_1_1_mod_loader_1_1_mod_gore.html#a0389af470e7132ffbdf2bd67550157f0" title="Terraria.ModLoader.ModGore.\lGetGoreSlot" alt="" coords="272,645,467,687"/>
+<area shape="rect" id="node31" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Terraria.ModLoader.Mod.Register\lHotKey" alt="" coords="262,711,477,752"/>
+<area shape="rect" id="node10" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a25f3d2d6199bfebf7a2b80c44abad71f" title="Terraria.ModLoader.Mod.Get\lBackgroundSlot" alt="" coords="537,24,724,65"/>
+<area shape="rect" id="node13" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#afc7a52d4db0c80643c9537cf6d6cf653" title="Terraria.ModLoader.ItemLoader.\lArmorArmGlowMask" alt="" coords="528,89,733,131"/>
+<area shape="rect" id="node14" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#afa662b41f42817230101c10acad7ae47" title="Terraria.ModLoader.ItemLoader.\lArmorSetShadows" alt="" coords="528,155,733,196"/>
+<area shape="rect" id="node15" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a8bcdd0626e0786d5f6b12ea3feeb3e27" title="Terraria.ModLoader.ItemLoader.\lDrawArmorColor" alt="" coords="528,220,733,261"/>
+<area shape="rect" id="node16" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#af4b69680d895c6260093081f845ddd83" title="Terraria.ModLoader.ItemLoader.\lDrawBody" alt="" coords="528,285,733,327"/>
+<area shape="rect" id="node17" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a0ac9e01d6ac5b850ea557f49f3cccc57" title="Terraria.ModLoader.ItemLoader.\lDrawHair" alt="" coords="528,351,733,392"/>
+<area shape="rect" id="node18" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#aa32305687bb151e5098a89b7d9cf43ec" title="Terraria.ModLoader.ItemLoader.\lDrawHands" alt="" coords="528,416,733,457"/>
+<area shape="rect" id="node19" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a7b9463e05c08aab7f506e5e6796a8d97" title="Terraria.ModLoader.ItemLoader.\lDrawHead" alt="" coords="528,481,733,523"/>
+<area shape="rect" id="node20" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#ae9b78c43cf2796a560a267c89264d762" title="Terraria.ModLoader.ItemLoader.\lDrawLegs" alt="" coords="528,547,733,588"/>
+<area shape="rect" id="node21" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a16923c1ce3247780b7c75f155d38f662" title="Terraria.ModLoader.ItemLoader.\lGetWing" alt="" coords="528,612,733,653"/>
+<area shape="rect" id="node22" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#ad0e201a10ba3a7c2dabefebac13b4eb9" title="Terraria.ModLoader.ItemLoader.\lHorizontalWingSpeeds" alt="" coords="528,677,733,719"/>
+<area shape="rect" id="node23" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a040ee98f9ddb5a1c555b0a08e7ea31de" title="Terraria.ModLoader.ItemLoader.\lPreUpdateVanitySet" alt="" coords="528,743,733,784"/>
+<area shape="rect" id="node24" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a3ec5963739590edef9dcdde9e3a3e024" title="Terraria.ModLoader.ItemLoader.\lSetMatch" alt="" coords="528,808,733,849"/>
+<area shape="rect" id="node25" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a74f5b7e0fdbcc2e20e834d7601245e3c" title="Terraria.ModLoader.ItemLoader.\lUpdateVanity" alt="" coords="528,873,733,915"/>
+<area shape="rect" id="node26" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a5866cf3c0858190e8cc63460329bd5a4" title="Terraria.ModLoader.ItemLoader.\lUpdateVanitySet" alt="" coords="528,939,733,980"/>
+<area shape="rect" id="node27" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a6eeea936b5fb5d9c5776807ac186e3b7" title="Terraria.ModLoader.ItemLoader.\lVerticalWingSpeeds" alt="" coords="528,1004,733,1045"/>
+<area shape="rect" id="node28" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a0d4fc974b572ac7e8ba55036e6b46584" title="Terraria.ModLoader.ItemLoader.\lWingUpdate" alt="" coords="528,1069,733,1111"/>
+<area shape="rect" id="node30" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a56d5c669c1e1a55c061e158e7a6bf046" title="Terraria.ModLoader.Mod.Get\lGoreSlot" alt="" coords="537,1135,724,1176"/>
+</map>

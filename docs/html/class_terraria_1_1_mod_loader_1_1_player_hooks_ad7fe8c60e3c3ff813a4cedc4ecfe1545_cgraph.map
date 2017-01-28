@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.PlayerHooks.SetStartInventory" name="Terraria.ModLoader.PlayerHooks.SetStartInventory">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Terraria.ModLoader.ModLoader.\lGetMod" alt="" coords="235,5,440,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2" title="Terraria.ModLoader.Mod.ItemType" alt="" coords="228,71,447,98"/>
+</map>

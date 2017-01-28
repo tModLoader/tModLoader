@@ -1,0 +1,13 @@
+<map id="Terraria.ModLoader.Mod.RegisterHotKey" name="Terraria.ModLoader.Mod.RegisterHotKey">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a16371460b0bd1d377b030eea499ada7b" title="Terraria.ModLoader.ModItem.\lGetAnimation" alt="" coords="283,5,473,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Terraria.ModLoader.ModLoader.\lGetTexture" alt="" coords="275,71,481,112"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a881f32079654472e92b5c7013e3f30c5" title="Terraria.ModLoader.ModLoader.\lRegisterHotKey" alt="" coords="275,136,481,177"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_wall.html#a62871274fb0f222ebd18e7917d562b71" title="Terraria.ModLoader.Global\lWall.SetDefaults" alt="" coords="291,201,465,243"/>
+<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_mod_buff.html#afea8807b0b4d89785177f30965821fe2" title="Terraria.ModLoader.ModBuff.\lSetDefaults" alt="" coords="284,267,472,308"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_global_tile.html#ab98f5b2949277faeb8ccf2e52ba1e304" title="Terraria.ModLoader.Global\lTile.SetDefaults" alt="" coords="291,332,465,373"/>
+<area shape="rect" id="node8" href="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a332b03efe6a21a9ba3abd344d66c9c0d" title="Terraria.ModLoader.ModProjectile.\lSetDefaults" alt="" coords="268,397,488,439"/>
+<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_mod_wall.html#a8ef2e5554dd8f96bdb01dfe255812131" title="Terraria.ModLoader.ModWall.\lSetDefaults" alt="" coords="282,463,474,504"/>
+<area shape="rect" id="node10" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a" title="Terraria.ModLoader.ModNPC.\lSetDefaults" alt="" coords="281,528,475,569"/>
+<area shape="rect" id="node11" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a6d9fbbb1dec7e25959a345a9e4f78428" title="Called when an item is initialized " alt="" coords="283,593,473,635"/>
+<area shape="rect" id="node12" href="$class_terraria_1_1_mod_loader_1_1_mod_dust.html#ae40da1253a003b27d36c0e642ab35a1d" title="Terraria.ModLoader.ModDust.\lSetDefaults" alt="" coords="281,659,475,700"/>
+</map>

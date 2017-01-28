@@ -2,7 +2,6 @@ var searchData=
 [
   ['acceptrecipegroup',['AcceptRecipeGroup',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd',1,'Terraria::ModLoader::RecipeEditor']]],
   ['action',['Action',['../class_terraria_1_1_mod_loader_1_1_mod_command.html#a5af7daa9bde5cebd40eb03494441c9e2',1,'Terraria::ModLoader::ModCommand']]],
-  ['add',['Add',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#af8c8cae7796cb19d97997ef7d5ca8eec',1,'Terraria.ModLoader.IO.TagCompound.Add(string key, object value)'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#abee90c109bd3d85d885da676cd394891',1,'Terraria.ModLoader.IO.TagCompound.Add(KeyValuePair&lt; string, object &gt; entry)']]],
   ['addbackgroundtexture',['AddBackgroundTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#a6dec81443d46c9904a00522d66b9c025',1,'Terraria::ModLoader::Mod']]],
   ['addbossheadtexture',['AddBossHeadTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#aaaf8a0bbde18da64d25babc2bf40648a',1,'Terraria::ModLoader::Mod']]],
   ['addbuff',['AddBuff',['../class_terraria_1_1_mod_loader_1_1_mod.html#a55288ca705db7b2771c9d38b9a98594b',1,'Terraria::ModLoader::Mod']]],
@@ -41,7 +40,6 @@ var searchData=
   ['addrecipegroup',['AddRecipeGroup',['../class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a0a526e0738553946a70609cb99964ae0',1,'Terraria.ModLoader.ModRecipe.AddRecipeGroup()'],['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a8d10dc01c3f3243a24cba0b3d19a6970',1,'Terraria.ModLoader.RecipeFinder.AddRecipeGroup()']]],
   ['addrecipegroups',['AddRecipeGroups',['../class_terraria_1_1_mod_loader_1_1_mod.html#a61276e741d6a939b25f065e1099ff70b',1,'Terraria::ModLoader::Mod']]],
   ['addrecipes',['AddRecipes',['../class_terraria_1_1_mod_loader_1_1_mod.html#adbfe825532c8fffbac263bf8732b93b6',1,'Terraria.ModLoader.Mod.AddRecipes()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#add2f98fcaf12f32319273e4747590ef4',1,'Terraria.ModLoader.ModItem.AddRecipes()']]],
-  ['addrecipesexception',['AddRecipesException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_add_recipes_exception.html#a4c199acb0a2793b3445ee4acd970b3bb',1,'Terraria::ModLoader::Exceptions::AddRecipesException']]],
   ['addsound',['AddSound',['../class_terraria_1_1_mod_loader_1_1_mod.html#a69d7e56dcfcd228f47704d9a2fb5c9a1',1,'Terraria::ModLoader::Mod']]],
   ['addsurfacebgstyle',['AddSurfaceBgStyle',['../class_terraria_1_1_mod_loader_1_1_mod.html#aeb8e86a5ffd24bb016470689ec5f9461',1,'Terraria::ModLoader::Mod']]],
   ['addtexture',['AddTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#a7160332fbf277e146418ca29a4529299',1,'Terraria::ModLoader::Mod']]],

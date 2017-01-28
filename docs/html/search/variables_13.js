@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['validmodbrowsersignature',['validModBrowserSignature',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#aba3282c404e65571ebfac1292836ede3',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['vanillabackgroundtexturecount',['vanillaBackgroundTextureCount',['../class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#a5b287f692744ea43ed3127d3a1e7f3b6',1,'Terraria::ModLoader::BackgroundTextureLoader']]],
   ['vanillabossheadcount',['vanillaBossHeadCount',['../class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#a0129c32614ef33d2444daf688a771ff2',1,'Terraria::ModLoader::NPCHeadLoader']]],
   ['vanillacanbecleared',['vanillaCanBeCleared',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#ab2ac33171e48d29b67cb48eb18fc1d93',1,'Terraria::ModLoader::BuffLoader']]],

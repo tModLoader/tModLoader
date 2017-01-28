@@ -15,11 +15,7 @@ var searchData=
   ['banner',['banner',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a47e6b54fb0926e906276e95c15cd0fd8',1,'Terraria::ModLoader::ModNPC']]],
   ['banneritem',['bannerItem',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6e6c5d4d8db4f78b7143df8dfd8b5f29',1,'Terraria::ModLoader::ModNPC']]],
   ['bed',['bed',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a20eb169106fcf5771e14c757c3de2185',1,'Terraria::ModLoader::ModTile']]],
-  ['bigendian_2ecs',['BigEndian.cs',['../_big_endian_8cs.html',1,'']]],
-  ['bigendianreader',['BigEndianReader',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader.html',1,'Terraria.ModLoader.IO.BigEndianReader'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader.html#a6411ffd184f7ea633ab182f639fb8887',1,'Terraria.ModLoader.IO.BigEndianReader.BigEndianReader()']]],
-  ['bigendianwriter',['BigEndianWriter',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html',1,'Terraria.ModLoader.IO.BigEndianWriter'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a96c7e2a456848a92ed5980203558b85d',1,'Terraria.ModLoader.IO.BigEndianWriter.BigEndianWriter()']]],
-  ['binaryio',['BinaryIO',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html',1,'Terraria::ModLoader::IO']]],
-  ['binaryio_2ecs',['BinaryIO.cs',['../_binary_i_o_8cs.html',1,'']]],
+  ['binarywriter',['BinaryWriter',['../class_binary_writer.html',1,'']]],
   ['biomehaircolor',['BiomeHairColor',['../class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a39969f6b16e974379d8ff2d9d994d0b9',1,'Terraria::ModLoader::ModWaterStyle']]],
   ['blockloot',['blockLoot',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d7e5eeea530b3e0ae7b47fb5e414bf8',1,'Terraria::ModLoader::NPCLoader']]],
   ['body',['Body',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#adc5045a73cc11c77fe6ea20d61d06dab',1,'Terraria.ModLoader.PlayerLayer.Body()'],['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282aac101b32dda4448cf13a93fe283dddd8',1,'Terraria.ModLoader.Body()']]],
@@ -43,6 +39,5 @@ var searchData=
   ['bufftype_3c_20t_20_3e',['BuffType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a00596eb992453f702a1b7ba59eee2e45',1,'Terraria::ModLoader::Mod']]],
   ['builddlllines',['buildDllLines',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a93a6a7a56d6d0017141d1644e9b7c8f4',1,'Terraria::ModLoader::ErrorLogger']]],
   ['buildingmod',['BuildingMod',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html',1,'Terraria.ModLoader.ModCompile.BuildingMod'],['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#a50883060a4be6e39c451d379ae58c4b1',1,'Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod()']]],
-  ['buildproperties_2ecs',['BuildProperties.cs',['../_build_properties_8cs.html',1,'']]],
-  ['bytehandler',['ByteHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler.html',1,'Terraria.ModLoader.IO.TagIO.ByteHandler'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_byte_handler.html#aa001c00b36f1f9e17593c2994e909b17',1,'Terraria.ModLoader.IO.TagIO.ByteHandler.ByteHandler()']]]
+  ['buildproperties_2ecs',['BuildProperties.cs',['../_build_properties_8cs.html',1,'']]]
 ];

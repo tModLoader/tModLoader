@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['npcheadloader_2ecs',['NPCHeadLoader.cs',['../_n_p_c_head_loader_8cs.html',1,'']]],
-  ['npcloader_2ecs',['NPCLoader.cs',['../_n_p_c_loader_8cs.html',1,'']]],
-  ['npcspawninfo_2ecs',['NPCSpawnInfo.cs',['../_n_p_c_spawn_info_8cs.html',1,'']]]
+  ['recipeeditor_2ecs',['RecipeEditor.cs',['../_recipe_editor_8cs.html',1,'']]],
+  ['recipefinder_2ecs',['RecipeFinder.cs',['../_recipe_finder_8cs.html',1,'']]],
+  ['recipegrouphelper_2ecs',['RecipeGroupHelper.cs',['../_recipe_group_helper_8cs.html',1,'']]],
+  ['recipehooks_2ecs',['RecipeHooks.cs',['../_recipe_hooks_8cs.html',1,'']]]
 ];

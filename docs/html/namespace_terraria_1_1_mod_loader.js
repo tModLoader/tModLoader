@@ -1,9 +1,5 @@
 var namespace_terraria_1_1_mod_loader =
 [
-    [ "Default", "namespace_terraria_1_1_mod_loader_1_1_default.html", "namespace_terraria_1_1_mod_loader_1_1_default" ],
-    [ "Exceptions", "namespace_terraria_1_1_mod_loader_1_1_exceptions.html", "namespace_terraria_1_1_mod_loader_1_1_exceptions" ],
-    [ "IO", "namespace_terraria_1_1_mod_loader_1_1_i_o.html", "namespace_terraria_1_1_mod_loader_1_1_i_o" ],
-    [ "UI", "namespace_terraria_1_1_mod_loader_1_1_u_i.html", "namespace_terraria_1_1_mod_loader_1_1_u_i" ],
     [ "BackgroundTextureLoader", "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html", "class_terraria_1_1_mod_loader_1_1_background_texture_loader" ],
     [ "BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", "class_terraria_1_1_mod_loader_1_1_buff_loader" ],
     [ "CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", "interface_terraria_1_1_mod_loader_1_1_command_caller" ],

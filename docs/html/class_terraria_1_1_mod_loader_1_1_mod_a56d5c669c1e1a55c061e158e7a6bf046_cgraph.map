@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.Mod.GetGoreSlot" name="Terraria.ModLoader.Mod.GetGoreSlot">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_gore.html#a0389af470e7132ffbdf2bd67550157f0" title="Terraria.ModLoader.ModGore.\lGetGoreSlot" alt="" coords="240,5,435,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Terraria.ModLoader.ModLoader.\lGetTexture" alt="" coords="483,5,688,47"/>
+</map>

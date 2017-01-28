@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['displaynameatoz',['DisplayNameAtoZ',['../namespace_terraria_1_1_mod_loader_1_1_u_i.html#a241cd358183fa54c58da5b7e83d2b09fa90a13f6cb9915e2ffae4e7395a10d576',1,'Terraria::ModLoader::UI']]],
-  ['displaynameztoa',['DisplayNameZtoA',['../namespace_terraria_1_1_mod_loader_1_1_u_i.html#a241cd358183fa54c58da5b7e83d2b09fa45afbc6a95cc628888b8858705502c29',1,'Terraria::ModLoader::UI']]],
-  ['downloadsascending',['DownloadsAscending',['../namespace_terraria_1_1_mod_loader_1_1_u_i.html#a241cd358183fa54c58da5b7e83d2b09faf98b5b788360770ae884cd1824c86d54',1,'Terraria::ModLoader::UI']]],
-  ['downloadsdescending',['DownloadsDescending',['../namespace_terraria_1_1_mod_loader_1_1_u_i.html#a241cd358183fa54c58da5b7e83d2b09fa7e476a43647ea059e5666770ffaad39b',1,'Terraria::ModLoader::UI']]]
+  ['handsoff',['HandsOff',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a82206cf9172a00672eca497f53addc56',1,'Terraria::ModLoader']]],
+  ['handson',['HandsOn',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a5ba4819d417294c8f4de41f1401efa81',1,'Terraria::ModLoader']]],
+  ['head',['Head',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a98921133d10fbdb0fb6dbb7b2648befe',1,'Terraria::ModLoader']]]
 ];

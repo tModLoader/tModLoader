@@ -9,8 +9,6 @@ var searchData=
   ['finish',['Finish',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#a84bd87fba12532acbbc22aa4e7ebe996',1,'Terraria::ModLoader::ModPacket']]],
   ['fontexists',['FontExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#ade5d55a43735a11dded9db34d5f73305',1,'Terraria::ModLoader::Mod']]],
   ['frameeffects',['FrameEffects',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a155cba1e22cce620d994dac9d88e993e',1,'Terraria.ModLoader.ModPlayer.FrameEffects()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a460c2b183e3a96ee8d626ecae17c8d67',1,'Terraria.ModLoader.PlayerHooks.FrameEffects()']]],
-  ['fromfile',['FromFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#acce7382a98854f9ee3af15557fc23405',1,'Terraria::ModLoader::IO::TagIO']]],
-  ['fromstream',['FromStream',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a5bb8177c2bd4cf1f285823c4a93a3c25',1,'Terraria::ModLoader::IO::TagIO']]],
   ['fromtile',['FromTile',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#adac24a887bf8f87339a3b47521e379fa',1,'Terraria::ModLoader::MapLegend']]],
   ['fromtype',['FromType',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#a9958c49d708107b8be02bc53a47aa5ee',1,'Terraria::ModLoader::MapLegend']]]
 ];
