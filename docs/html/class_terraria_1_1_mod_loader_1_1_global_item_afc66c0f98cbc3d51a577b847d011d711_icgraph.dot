@@ -1,0 +1,13 @@
+digraph "Terraria.ModLoader.GlobalItem.IsVanitySet"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node80 [label="Terraria.ModLoader.Global\lItem.IsVanitySet",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node80 -> Node81 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="Terraria.ModLoader.ItemLoader.\lArmorSetShadows",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader.html#afa662b41f42817230101c10acad7ae47"];
+  Node80 -> Node82 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node82 [label="Terraria.ModLoader.ItemLoader.\lPreUpdateVanitySet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a040ee98f9ddb5a1c555b0a08e7ea31de"];
+  Node80 -> Node83 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node83 [label="Terraria.ModLoader.ItemLoader.\lUpdateVanitySet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a5866cf3c0858190e8cc63460329bd5a4"];
+}

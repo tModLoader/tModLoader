@@ -1,0 +1,31 @@
+digraph "Terraria.ModLoader.ModLoader.GetMod"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node13 [label="Terraria.ModLoader.ModLoader.\lGetMod",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node13 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="Terraria.ModLoader.Default.\lMysteryTilesWorld.ConfirmPendingInfo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tiles_world.html#a3920b02bdd051d4d9445ff23440de1df"];
+  Node13 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="Terraria.ModLoader.Default.\lMysteryTilesWorld.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tiles_world.html#ad8a45161caf3bfc30391440d247c9389"];
+  Node13 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="Terraria.ModLoader.Default.\lMysteryItem.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_item.html#a3aec67c772106a0509fa6721db37f098"];
+  Node13 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="Terraria.ModLoader.Default.\lMysteryTileEntity.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_entity.html#a8a244808456884bf3cebb92100cc754d"];
+  Node13 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="Terraria.ModLoader.IO.Item\lIO.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a6d85be6826465184a0c159ff793b69b6"];
+  Node18 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="Terraria.ModLoader.Default.\lStartBag.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html#aac5cc5c84236ef7a9322bba88485985e"];
+  Node13 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="Terraria.ModLoader.IO.Item\lIO.LoadLegacy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a0fc1412d46dee67b9a2031f05e5d0560"];
+  Node20 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="Terraria.ModLoader.Default.\lStartBag.LoadLegacy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html#a7c8a75be45fe15ec3c2401798afb41c3"];
+  Node13 -> Node22 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="Terraria.ModLoader.Command\lManager.Matches",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_command_manager.html#a4727c449168dce8069e2ebdecb0a6475"];
+  Node13 -> Node23 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="Terraria.ModLoader.Player\lHooks.ReceiveCustomBiomes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#a8f2a717cebd8bc342596b7ac3c2d1669"];
+  Node13 -> Node24 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="Terraria.ModLoader.Default.\lMysteryTilesWorld.RestoreTiles",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tiles_world.html#ae3f3558c5711aee8c6af37d272682440"];
+  Node13 -> Node25 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node25 [label="Terraria.ModLoader.Player\lHooks.SetStartInventory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad7fe8c60e3c3ff813a4cedc4ecfe1545"];
+}

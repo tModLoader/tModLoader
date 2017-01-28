@@ -1,0 +1,27 @@
+digraph "Terraria.ModLoader.Default.StartBag.Load"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2 [label="Terraria.ModLoader.Default.\lStartBag.Load",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.IO.Item\lIO.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a6d85be6826465184a0c159ff793b69b6"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Terraria.ModLoader.IO.Tag\lCompound.GetString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#ac05f361e74b11d7fddaf60e4c3ab3fd7"];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Terraria.ModLoader.IO.Tag\lCompound.GetInt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a8c222cd0a447787c97371c5ad36cfb0b"];
+  Node3 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Terraria.ModLoader.IO.Tag\lCompound.HasTag",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aef825e36993f1860d5012627394068a9"];
+  Node3 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Terraria.ModLoader.IO.Tag\lCompound.GetByteArray",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aada15ef3bf3bc4f1d2b8cb0a3963108f"];
+  Node3 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="Terraria.ModLoader.IO.Tag\lCompound.GetBool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a1290e4b50bd24212af9de7fbb5b3827f"];
+  Node3 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Terraria.ModLoader.ModLoader.\lGetMod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af"];
+  Node3 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Terraria.ModLoader.Mod.ItemType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2"];
+  Node3 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="Terraria.ModLoader.IO.Tag\lCompound.GetCompound",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a753b1f987e208031a74ee33546612fb3"];
+  Node3 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Terraria.ModLoader.IO.Tag\lCompound.GetByte",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#ac14565446fdd2b4080a9eeaac2c5da3e"];
+}

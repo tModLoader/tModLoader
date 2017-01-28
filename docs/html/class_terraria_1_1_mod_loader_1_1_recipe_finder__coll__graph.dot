@@ -1,0 +1,14 @@
+digraph "Terraria.ModLoader.RecipeFinder"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="Terraria.ModLoader.Recipe\lFinder",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" result" ,fontname="Helvetica"];
+  Node2 [label="Item",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" items" ,fontname="Helvetica"];
+  Node3 [label="List\< Item \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" groups\ntiles" ,fontname="Helvetica"];
+  Node4 [label="List\< int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" needHoney\nneedWater\nneedLava" ,fontname="Helvetica"];
+  Node5 [label="bool",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

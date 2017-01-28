@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.Mod.AutoloadUgBgStyle"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node178 [label="Terraria.ModLoader.Mod.Autoload\lUgBgStyle",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node178 -> Node179 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node179 [label="Terraria.ModLoader.ModUg\lBgStyle.Autoload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html#a51445ebbc96e5bf81a0fcda7d9b1abf0"];
+}

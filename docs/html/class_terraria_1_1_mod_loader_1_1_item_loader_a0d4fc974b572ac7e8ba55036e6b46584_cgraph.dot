@@ -1,0 +1,13 @@
+digraph "Terraria.ModLoader.ItemLoader.WingUpdate"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node255 [label="Terraria.ModLoader.ItemLoader.\lWingUpdate",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node255 -> Node256 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node256 [label="Terraria.ModLoader.Equip\lLoader.GetEquipTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575"];
+  Node256 -> Node257 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node257 [label="Terraria.ModLoader.ModLoader.\lGetTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18"];
+  Node255 -> Node258 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node258 [label="Terraria.ModLoader.Equip\lTexture.NewWingUpdate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#a5450d466608dbc5b67198e16a0812d43"];
+}

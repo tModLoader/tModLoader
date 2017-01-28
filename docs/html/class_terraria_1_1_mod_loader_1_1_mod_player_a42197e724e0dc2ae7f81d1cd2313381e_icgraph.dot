@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.ModPlayer.ModifyHitByNPC"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node85 [label="Terraria.ModLoader.ModPlayer.\lModifyHitByNPC",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node85 -> Node86 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node86 [label="Terraria.ModLoader.Player\lHooks.ModifyHitByNPC",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#a8d94c613f2f526ec1f6d4e5455fd6b8d"];
+}

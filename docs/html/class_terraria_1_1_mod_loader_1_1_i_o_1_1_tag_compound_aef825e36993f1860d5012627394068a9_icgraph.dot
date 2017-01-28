@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.IO.TagCompound.HasTag"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node61 [label="Terraria.ModLoader.IO.Tag\lCompound.HasTag",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node61 -> Node62 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node62 [label="Terraria.ModLoader.IO.Item\lIO.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a6d85be6826465184a0c159ff793b69b6"];
+  Node62 -> Node63 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node63 [label="Terraria.ModLoader.Default.\lStartBag.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html#aac5cc5c84236ef7a9322bba88485985e"];
+}

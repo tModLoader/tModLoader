@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.ModTileEntity.ConstructFromBase"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="Terraria.ModLoader.ModTile\lEntity.ConstructFromBase",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Terraria.ModLoader.Default.\lMysteryTileEntity.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_default_1_1_mystery_tile_entity.html#a8a244808456884bf3cebb92100cc754d"];
+}

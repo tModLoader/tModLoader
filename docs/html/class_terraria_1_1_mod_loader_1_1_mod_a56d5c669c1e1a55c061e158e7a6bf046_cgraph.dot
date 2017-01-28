@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.Mod.GetGoreSlot"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node245 [label="Terraria.ModLoader.Mod.Get\lGoreSlot",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node245 -> Node246 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node246 [label="Terraria.ModLoader.ModGore.\lGetGoreSlot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_gore.html#a0389af470e7132ffbdf2bd67550157f0"];
+  Node246 -> Node247 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node247 [label="Terraria.ModLoader.ModLoader.\lGetTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18"];
+}

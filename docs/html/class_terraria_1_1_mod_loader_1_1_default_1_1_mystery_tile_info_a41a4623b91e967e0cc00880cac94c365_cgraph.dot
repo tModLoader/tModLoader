@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.Default.MysteryTileInfo.Save"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node8 [label="Terraria.ModLoader.Default.\lMysteryTileInfo.Save",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Terraria.ModLoader.IO.Tag\lCompound.SetTag",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a0c1094c41ca0000d3ebf63421cd4d941"];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Terraria.ModLoader.IO.Tag\lIO.TypeCheck",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a465d53f7a484973d18ccad873c094b9d"];
+}

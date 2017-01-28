@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.ModPlayer.OnHitPvpWithProj"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node133 [label="Terraria.ModLoader.ModPlayer.\lOnHitPvpWithProj",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node133 -> Node134 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node134 [label="Terraria.ModLoader.Player\lHooks.OnHitPvpWithProj",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#ab2433b83e2cf8d5a6a003a2018bb5d0e"];
+}
