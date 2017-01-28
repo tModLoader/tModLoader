@@ -27,6 +27,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
    &#160;<span id="projectnumber">0.9.1.1</span>
@@ -159,7 +160,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aae2ead4bce828b8c8019076ebe1edae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the result of this recipe with the given item name from the given mod, and with the given stack stack. If the mod parameter is null, then it will automatically use an item from the mod creating this recipe.  <a href="#aae2ead4bce828b8c8019076ebe1edae5">More...</a><br /></td></tr>
 <tr class="separator:aae2ead4bce828b8c8019076ebe1edae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a4b3bccc369edc256fd87efb9f3a0da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a3a4b3bccc369edc256fd87efb9f3a0da">SetResult</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html">ModItem</a> item, int stack=1)</td></tr>
-<tr class="memdesc:a3a4b3bccc369edc256fd87efb9f3a0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the result of this recipe to the given type of item and stack size. Useful in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#add2f98fcaf12f32319273e4747590ef4">ModItem.AddRecipes</a>.  <a href="#a3a4b3bccc369edc256fd87efb9f3a0da">More...</a><br /></td></tr>
+<tr class="memdesc:a3a4b3bccc369edc256fd87efb9f3a0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the result of this recipe to the given type of item and stack size. Useful in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#add2f98fcaf12f32319273e4747590ef4" title="This is essentially the same as Mod.AddRecipes. Do note that this will be called for every instance o...">ModItem.AddRecipes</a>.  <a href="#a3a4b3bccc369edc256fd87efb9f3a0da">More...</a><br /></td></tr>
 <tr class="separator:a3a4b3bccc369edc256fd87efb9f3a0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -396,7 +397,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mod_recipe_8cs_source.html#l00143">143</a> of file <a class="el" href="_mod_recipe_8cs_source.html">ModRecipe.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="_mod_item_8cs_source.html#l00016">Terraria.ModLoader.ModItem.item</a>.</p>
+<p class="reference">References <a class="el" href="_mod_item_8cs_source.html#l00025">Terraria.ModLoader.ModItem.item</a>.</p>
 <div class="fragment"><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        {</div><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a103af1570ac56557e56cefb688ba637e">AddIngredient</a>(item.item.type, stack);</div><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_recipe_html_a103af1570ac56557e56cefb688ba637e"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a103af1570ac56557e56cefb688ba637e">Terraria.ModLoader.ModRecipe.AddIngredient</a></div><div class="ttdeci">void AddIngredient(int itemID, int stack=1)</div><div class="ttdoc">Adds an ingredient to this recipe with the given item type and stack size. Ex: recipe.AddIngredient(ItemID.IronAxe) </div><div class="ttdef"><b>Definition:</b> <a href="_mod_recipe_8cs_source.html#l00091">ModRecipe.cs:91</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -919,7 +920,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets the result of this recipe to the given type of item and stack size. Useful in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#add2f98fcaf12f32319273e4747590ef4">ModItem.AddRecipes</a>. </p>
+<p>Sets the result of this recipe to the given type of item and stack size. Useful in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#add2f98fcaf12f32319273e4747590ef4" title="This is essentially the same as Mod.AddRecipes. Do note that this will be called for every instance o...">ModItem.AddRecipes</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item.</td></tr>
@@ -930,7 +931,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mod_recipe_8cs_source.html#l00081">81</a> of file <a class="el" href="_mod_recipe_8cs_source.html">ModRecipe.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="_mod_item_8cs_source.html#l00016">Terraria.ModLoader.ModItem.item</a>.</p>
+<p class="reference">References <a class="el" href="_mod_item_8cs_source.html#l00025">Terraria.ModLoader.ModItem.item</a>.</p>
 <div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html#af62ddda8bdb99edce1b54376c70095c1">SetResult</a>(item.item.type, stack);</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_recipe_html_af62ddda8bdb99edce1b54376c70095c1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html#af62ddda8bdb99edce1b54376c70095c1">Terraria.ModLoader.ModRecipe.SetResult</a></div><div class="ttdeci">void SetResult(int itemID, int stack=1)</div><div class="ttdoc">Sets the result of this recipe with the given item type and stack size. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_recipe_8cs_source.html#l00031">ModRecipe.cs:31</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1025,9 +1026,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Documents/My Games/Terraria/Modding/tModLoader/src/tModLoader/Terraria.ModLoader/<a class="el" href="_mod_recipe_8cs_source.html">ModRecipe.cs</a></li>
-</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

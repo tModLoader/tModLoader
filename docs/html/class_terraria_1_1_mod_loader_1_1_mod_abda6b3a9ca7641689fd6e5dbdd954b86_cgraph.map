@@ -1,7 +1,7 @@
 <map id="Terraria.ModLoader.Mod.AutoloadItem" name="Terraria.ModLoader.Mod.AutoloadItem">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a5138adcff2d5ff9e18b749548b7317dd" title="Terraria.ModLoader.ModItem.\lAutoload" alt="" coords="303,5,494,47"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a3a5b981a600b8dc922f94c7cf1fc250d" title="Terraria.ModLoader.ModItem.\lAutoloadEquip" alt="" coords="303,71,494,112"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a4688052985a7a3064d46eac49bb66a7d" title="Terraria.ModLoader.ModItem.\lAutoloadFlame" alt="" coords="303,136,494,177"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a5138adcff2d5ff9e18b749548b7317dd" title="Allows you to automatically load an item instead of using Mod.AddItem. Return true to allow autoloadi..." alt="" coords="303,5,494,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a3a5b981a600b8dc922f94c7cf1fc250d" title="This method is called when Autoload adds an equipment type. This allows you to specify equipment text..." alt="" coords="303,71,494,112"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a4688052985a7a3064d46eac49bb66a7d" title="Allows you to specify a texture path to the flame texture for this item when it is autoloaded..." alt="" coords="303,136,494,177"/>
 <area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a" title="Terraria.ModLoader.ModLoader.\lTextureExists" alt="" coords="296,201,501,243"/>
 <area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6" title="Terraria.ModLoader.Mod.Texture\lExists" alt="" coords="549,201,759,243"/>
 </map>
