@@ -1,5 +1,5 @@
 <map id="Terraria.ModLoader.Mod.ItemType" name="Terraria.ModLoader.Mod.ItemType">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a7c390feb8cf0a3212de31b53ad5bcfc2" title="Terraria.ModLoader.ModRecipe.\lAddIngredient" alt="" coords="272,5,479,47"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_recipe.html#aae2ead4bce828b8c8019076ebe1edae5" title="Terraria.ModLoader.ModRecipe.\lSetResult" alt="" coords="272,71,479,112"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a7c390feb8cf0a3212de31b53ad5bcfc2" title="Adds an ingredient to this recipe with the given item name from the given mod, and with the given sta..." alt="" coords="272,5,479,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_recipe.html#aae2ead4bce828b8c8019076ebe1edae5" title="Sets the result of this recipe with the given item name from the given mod, and with the given stack ..." alt="" coords="272,71,479,112"/>
 <area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad7fe8c60e3c3ff813a4cedc4ecfe1545" title="Terraria.ModLoader.Player\lHooks.SetStartInventory" alt="" coords="288,136,463,177"/>
 </map>

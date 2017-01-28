@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#ab73794a7ec58f6836ed9e52f714dfc5c":[1,0,0,0,67,12],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#aba3e39a0342331efae7da0eb8d0d2cbb":[1,0,0,0,67,11],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#abcdd5a864dd8e5d84d229daa7e06445e":[1,0,0,0,67,48],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ac18565a116359a55d1010f2a08507ddf":[1,0,0,0,67,62],
@@ -163,8 +164,8 @@ var NAVTREEINDEX8 =
 "functions_t.html":[1,3,0,19],
 "functions_u.html":[1,3,0,20],
 "functions_v.html":[1,3,0,21],
-"functions_vars.html":[1,3,2,0],
 "functions_vars.html":[1,3,2],
+"functions_vars.html":[1,3,2,0],
 "functions_vars_a.html":[1,3,2,1],
 "functions_vars_b.html":[1,3,2,2],
 "functions_vars_c.html":[1,3,2,3],
@@ -192,8 +193,8 @@ var NAVTREEINDEX8 =
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558":[1,0,0,0,2,1],
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#a6be9f02c2ce7c0adb64d427c52984527":[1,0,0,0,2,0],
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897":[1,0,0,0,2,2],
-"namespace_terraria.html":[1,0,0],
 "namespace_terraria.html":[0,0,0],
+"namespace_terraria.html":[1,0,0],
 "namespace_terraria_1_1_mod_loader.html":[1,0,0,0],
 "namespace_terraria_1_1_mod_loader.html":[0,0,0,0],
 "namespacemembers.html":[0,1,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a540c3839d5fa6954ae13a028d8e2a746":[1,0,0,0,55,8],
 "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a5677f9f838f427bf82609a0a6263a88a":[1,0,0,0,55,24],
 "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a6747ab5463475b4f40742851ed4d20d8":[1,0,0,0,55,48],
-"struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a68ec5e96e1180303d3501eb69474d620":[1,0,0,0,55,33],
-"struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a74dbc6851d6fed1b1f8e0928592a2eba":[1,0,0,0,55,15]
+"struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a68ec5e96e1180303d3501eb69474d620":[1,0,0,0,55,33]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"class_terraria_1_1_mod_loader_1_1_mount_loader.html#afc42f4be821d79f888eaee667dc57faa":[1,0,0,0,49,0],
 "class_terraria_1_1_mod_loader_1_1_music_wrapper.html":[1,0,0,0,50],
 "class_terraria_1_1_mod_loader_1_1_music_wrapper.html#a1d02e99c8e10943141d0eabf8e3456b4":[1,0,0,0,50,2],
 "class_terraria_1_1_mod_loader_1_1_music_wrapper.html#a605cf9ddc91034797e764595e5dbc4b9":[1,0,0,0,50,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad7fe8c60e3c3ff813a4cedc4ecfe1545":[1,0,0,0,58,63],
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#adac0c88837a0edb536ab068d4ace287f":[1,0,0,0,58,31],
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#adcda86f9ea811c4516a655f5d5c1e987":[1,0,0,0,58,71],
-"class_terraria_1_1_mod_loader_1_1_player_hooks.html#ae1fcfd5c2f7ec055af735ac6a4a674c9":[1,0,0,0,58,64],
-"class_terraria_1_1_mod_loader_1_1_player_hooks.html#ae4993237f10af04a07dc1fddac22f7fb":[1,0,0,0,58,61]
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#ae1fcfd5c2f7ec055af735ac6a4a674c9":[1,0,0,0,58,64]
 };

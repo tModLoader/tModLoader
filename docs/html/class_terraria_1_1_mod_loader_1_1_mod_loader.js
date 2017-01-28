@@ -20,6 +20,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "ImagePath", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65b7a720428c518f86def4274239282d", null ],
     [ "loadedMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a4dba1c360d13f869232c24c5964cec5c", null ],
     [ "LoadedMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f", null ],
+    [ "loadOrder", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#af88cc5994695afbd0032f9ba5eaf88ba", null ],
     [ "ModCount", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a55b743e8b6af63233a618f244f71334f", null ],
     [ "ModPath", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a18cb9779b2c2fe7709b67d08c5836c4f", null ],
     [ "ModSourcePath", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65d6fb535bb0f112020ebe47261a31f0", null ],
