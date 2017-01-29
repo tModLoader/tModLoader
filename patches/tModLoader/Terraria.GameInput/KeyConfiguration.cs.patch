@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria.GameInput\KeyConfiguration.cs
 +++ src/tModLoader\Terraria.GameInput\KeyConfiguration.cs
+@@ -7,6 +_,7 @@
+ 	public class KeyConfiguration
+ 	{
+ 		public Dictionary<string, List<string>> KeyStatus = new Dictionary<string, List<string>>();
++		public Dictionary<string, List<string>> UnloadedModKeyStatus;
+ 
+ 		public bool DoGrappleAndInteractShareTheSameKey
+ 		{
 @@ -22,6 +_,10 @@
  			foreach (string current in PlayerInput.KnownTriggers)
  			{
@@ -11,20 +19,41 @@
  			}
  		}
  
-@@ -63,6 +_,15 @@
+@@ -53,6 +_,7 @@
+ 
+ 		public void ReadPreferences(Dictionary<string, List<string>> dict)
+ 		{
++			UnloadedModKeyStatus = new Dictionary<string, List<string>>();
+ 			foreach (KeyValuePair<string, List<string>> current in dict)
+ 			{
+ 				if (this.KeyStatus.ContainsKey(current.Key))
+@@ -63,6 +_,14 @@
  						this.KeyStatus[current.Key].Add(current2);
  					}
  				}
 +				else if (current.Key.Contains(":")) // This preserves unloaded mod hotkey values
 +				{
-+					this.KeyStatus.Add(current.Key, new List<string>());
-+					this.KeyStatus[current.Key].Clear();
++					UnloadedModKeyStatus[current.Key] = new List<string>();
 +					foreach (string current2 in current.Value)
 +					{
-+						this.KeyStatus[current.Key].Add(current2);
++						UnloadedModKeyStatus[current.Key].Add(current2);
 +					}
 +				}
  			}
  		}
  
+@@ -70,6 +_,13 @@
+ 		{
+ 			Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>();
+ 			foreach (KeyValuePair<string, List<string>> current in this.KeyStatus)
++			{
++				if (current.Value.Count > 0)
++				{
++					dictionary.Add(current.Key, current.Value.ToList<string>());
++				}
++			}
++			foreach (KeyValuePair<string, List<string>> current in UnloadedModKeyStatus)
+ 			{
+ 				if (current.Value.Count > 0)
+ 				{
 
