@@ -40569,7 +40569,7 @@
  							soundEffectInstance = Main.soundInstanceRoar[num19];
  						}
  						else if (type == 37)
-@@ -60056,22 +_,71 @@
+@@ -60056,22 +_,70 @@
  							soundEffectInstance.Pan = num3;
  							Main.trackableSoundInstances[num] = soundEffectInstance;
  						}
@@ -40577,7 +40577,6 @@
 +						// TODO, trackable sounds? verify working. return soundEffectInstance
 +						else if (type == SoundLoader.customSoundType)
 +						{
-+							Main.NewText("type == SoundLoader.customSoundType " + num);
 +							SoundLoader.customSoundInstances[num].Stop();
 +							SoundLoader.customSoundInstances[num] = SoundLoader.customSounds[num].CreateInstance();
 +							SoundLoader.customSoundInstances[num].Volume = num2;
