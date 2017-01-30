@@ -67,6 +67,9 @@ rm -rf *
 # to NO, which it is by default. So creating the file just in case.
 echo "" > .nojekyll
 
+# Copy the base index.html 
+cp $TRAVIS_BUILD_DIR/solutions/documentation/index.html index.html
+
 ################################################################################
 ##### Generate the Doxygen code documentation and log the output.          #####
 echo 'Generating Doxygen code documentation...'
