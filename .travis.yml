@@ -1,0 +1,37 @@
+# This will run on Travis' 'new' container-based infrastructure
+sudo: false
+
+language: csharp
+
+# Blacklist
+branches:
+  only:
+    - master
+
+# Environment variables
+env:
+  global:
+    - GH_REPO_NAME: tModLoader
+    - DOXYFILE: $TRAVIS_BUILD_DIR/solutions/documentation/Doxyfile
+    - GH_REPO_REF: github.com/JavidPack/tModLoader.git
+
+# Install dependencies
+addons:
+  apt:
+    packages:
+      - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
+
+# Build your code e.g. by calling make
+script:
+  - pwd
+  - ls
+
+# Generate and deploy documentation
+after_success:
+  - cd $TRAVIS_BUILD_DIR
+  - chmod +x solutions/documentation/generateAndPublishDocumentation.sh
+  - ./solutions/documentation/generateAndPublishDocumentation.sh
