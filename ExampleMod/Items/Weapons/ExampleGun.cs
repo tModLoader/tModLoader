@@ -64,6 +64,9 @@ namespace ExampleMod.Items.Weapons
 			for (int i = 0; i < numberProjectiles; i++)
 			{
 				Vector2 perturbedSpeed = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(30)); // 30 degree spread.
+				// If you want to randomize the speed to stagger the projectiles
+				// float scale = 1f - (Main.rand.NextFloat() * .3f);
+				// perturbedSpeed = perturbedSpeed * scale; 
 				Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockBack, player.whoAmI);
 			}
 			return false; // return false because we don't want tmodloader to shoot projectile

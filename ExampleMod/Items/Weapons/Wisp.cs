@@ -49,7 +49,7 @@ namespace ExampleMod.Items.Weapons
 			if (type == ItemID.Ectoplasm && Main.LocalPlayer.adjTile[mod.TileType("ExampleWorkbench")])
 			{
 				Main.PlaySound(2, -1, -1, mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo"));
-				return Main.rand.Next(2) == 0 ? 0 : 1;
+				return Main.rand.Next(2) == 0 ? 0 : 1; //You have half chance to not consume your materials
 			}
 			return base.ConsumeItem(type, numRequired);
 		}

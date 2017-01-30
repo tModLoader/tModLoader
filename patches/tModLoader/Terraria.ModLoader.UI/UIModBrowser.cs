@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Security;
 using System.Text;
 using Terraria.ID;
+using Newtonsoft.Json.Linq;
 
 namespace Terraria.ModLoader.UI
 {
@@ -81,15 +82,15 @@ namespace Terraria.ModLoader.UI
 			reloadButton.OnMouseOut += UICommon.FadedMouseOut;
 			reloadButton.OnClick += ReloadList;
 			uIElement.Append(reloadButton);
-			UITextPanel<string> button3 = new UITextPanel<string>("Back", 1f, false);
-			button3.Width.Set(-10f, 0.5f);
-			button3.Height.Set(25f, 0f);
-			button3.VAlign = 1f;
-			button3.Top.Set(-20f, 0f);
-			button3.OnMouseOver += UICommon.FadedMouseOver;
-			button3.OnMouseOut += UICommon.FadedMouseOut;
-			button3.OnClick += BackClick;
-			uIElement.Append(button3);
+			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
+			backButton.Width.Set(-10f, 0.5f);
+			backButton.Height.Set(25f, 0f);
+			backButton.VAlign = 1f;
+			backButton.Top.Set(-20f, 0f);
+			backButton.OnMouseOver += UICommon.FadedMouseOver;
+			backButton.OnMouseOut += UICommon.FadedMouseOut;
+			backButton.OnClick += BackClick;
+			uIElement.Append(backButton);
 			base.Append(uIElement);
 			UIElement uIElement2 = new UIElement();
 			uIElement2.Width.Set(0f, 1f);
@@ -302,9 +303,8 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (!e.Cancelled)
 			{
-				XmlDocument xmlDoc = new XmlDocument();
 				byte[] result = e.Result;
-				xmlDoc.LoadXml(Encoding.UTF8.GetString(result, 0, result.Length));
+				string response = System.Text.Encoding.UTF8.GetString(result);
 
 				// TODO: UI will still be unresponsive here
 				TmodFile[] modFiles = ModLoader.FindMods();
@@ -313,55 +313,51 @@ namespace Terraria.ModLoader.UI
 				{
 					modBuildProperties.Add(BuildProperties.ReadModFile(tmodfile));
 				}
-				PopulateFromXML(modBuildProperties, xmlDoc);
+				PopulateFromJSON(modBuildProperties, response);
 			}
 			loading = false;
 			reloadButton.SetText("Reload Mods");
 		}
 
-		private void PopulateFromXML(List<BuildProperties> modBuildProperties, XmlDocument xmlDoc)
+		private void PopulateFromJSON(List<BuildProperties> modBuildProperties, string json)
 		{
 			try
 			{
-				foreach (XmlNode xmlNode in xmlDoc.DocumentElement)
+				JObject jsonObject = JObject.Parse(json);
+				JObject updateObject = (JObject)jsonObject["update"];
+				if(updateObject != null)
 				{
-					if (xmlNode.Name.Equals("update"))
-					{
-						updateAvailable = true;
-						updateText = xmlNode.SelectSingleNode("message").InnerText;
-						updateURL = xmlNode.SelectSingleNode("url").InnerText;
-					}
-					else if (xmlNode.Name.Equals("modlist"))
-					{
-						foreach (XmlNode xmlNode2 in xmlNode)
-						{
-							string displayname = xmlNode2.SelectSingleNode("displayname").InnerText;
-							string name = xmlNode2.SelectSingleNode("name").InnerText;
-							string version = xmlNode2.SelectSingleNode("version").InnerText;
-							string author = xmlNode2.SelectSingleNode("author").InnerText;
-							string download = xmlNode2.SelectSingleNode("download").InnerText;
-							string timeStamp = xmlNode2.SelectSingleNode("updateTimeStamp").InnerText;
-							int downloads;
-							Int32.TryParse(xmlNode2.SelectSingleNode("downloads").InnerText, out downloads);
-							bool exists = false;
-							bool update = false;
-							foreach (BuildProperties bp in modBuildProperties)
-							{
-								if (bp.displayName.Equals(displayname))
-								{
-									exists = true;
-									if (!bp.version.Equals(new Version(version.Substring(1))))
-									{
-										update = true;
-									}
-								}
-							}
-							UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, download, downloads, timeStamp, update, exists);
-							modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
-						}
-						SortList();
-					}
+					updateAvailable = true;
+					updateText = (string)updateObject["message"];
+					updateURL = (string)updateObject["url"];
 				}
+				JArray modlist = (JArray)jsonObject["modlist"];
+				foreach (JObject mod in modlist.Children<JObject>())
+				{
+					string displayname = (string)mod["displayname"];
+					string name = (string)mod["name"];
+					string version = (string)mod["version"];
+					string author = (string)mod["author"];
+					string download = (string)mod["download"];
+					int downloads = (int)mod["downloads"];
+					string timeStamp = (string)mod["updateTimeStamp"];
+					bool exists = false;
+					bool update = false;
+					foreach (BuildProperties bp in modBuildProperties)
+					{
+						if (bp.displayName.Equals(displayname))
+						{
+							exists = true;
+							if (!bp.version.Equals(new Version(version.Substring(1))))
+							{
+								update = true;
+							}
+						}
+					}
+					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, download, downloads, timeStamp, update, exists);
+					modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
+				}
+				SortList();
 			}
 			catch (Exception e)
 			{

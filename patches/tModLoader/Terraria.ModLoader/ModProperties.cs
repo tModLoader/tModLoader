@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Terraria.ModLoader
 {
 	public struct ModProperties
@@ -11,5 +6,13 @@ namespace Terraria.ModLoader
 		public bool AutoloadGores;
 		public bool AutoloadSounds;
 		public bool AutoloadBackgrounds;
+
+		internal static ModProperties AutoLoadAll = new ModProperties()
+		{
+			Autoload = true,
+			AutoloadGores = true,
+			AutoloadSounds = true,
+			AutoloadBackgrounds = true
+		};
 	}
 }

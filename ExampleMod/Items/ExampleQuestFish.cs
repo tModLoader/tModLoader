@@ -13,7 +13,7 @@ namespace ExampleMod.Items
 			item.width = 26;
 			item.height = 26;
 			item.uniqueStack = true;
-			item.rare = -11;
+			item.rare = -11;		//The rarity of -11 gives the item orange color
 		}
 
 		public override bool IsQuestFish()

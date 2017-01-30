@@ -87,6 +87,21 @@
  				{
  					if (Main.itemName[i] == ItemName)
  					{
+@@ -1317,6 +_,14 @@
+ 						return true;
+ 					}
+ 					num++;
++				}
++			}
++			foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values)
++			{
++				if (recipeGroup.ValidItems.Contains(this.type))
++				{
++					this.material = true;
++					return true;
+ 				}
+ 			}
+ 			int num2 = this.type;
 @@ -1638,6 +_,10 @@
  			else
  			{
@@ -265,4 +280,13 @@
  		}
  
  		public Item DeepClone()
+@@ -47115,6 +_,8 @@
+ 			this.stack = 0;
+ 			this.netID = 0;
+ 			this.name = "";
++			this.modItem = null;
++			this.itemInfo = new ItemInfo[0];
+ 		}
+ 
+ 		public void OnPurchase(Item item)
 

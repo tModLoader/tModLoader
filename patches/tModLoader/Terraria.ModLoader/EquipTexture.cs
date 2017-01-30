@@ -138,6 +138,24 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public virtual void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
+	ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+		{
+			if (item != null)
+			{
+				item.VerticalWingSpeeds(player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
+					ref maxAscentMultiplier, ref constantAscend);
+			}
+		}
+
+		public virtual void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration)
+		{
+			if (item != null)
+			{
+				item.HorizontalWingSpeeds(player, ref speed, ref acceleration);
+			}
+		}
+
 		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.) False will keep everything the same. True, you need to handle all animations in your own code.")]
 		public virtual void WingUpdate(Player player, bool inUse)
 		{

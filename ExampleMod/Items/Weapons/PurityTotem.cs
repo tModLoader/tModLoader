@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,8 +27,27 @@ namespace ExampleMod.Items.Weapons
 			item.UseSound = SoundID.Item44;
 			item.shoot = mod.ProjectileType("PurityWisp");
 			item.shootSpeed = 10f;
-			item.buffType = mod.BuffType("PurityWisp");
-			item.buffTime = 3600;
+			item.buffType = mod.BuffType("PurityWisp");	//The buff added to player after used the item
+			item.buffTime = 3600;				//The duration of the buff, here is 60 seconds
+		}
+		
+		public override bool AltFunctionUse(Player player)
+		{
+			return true;
+		}
+		
+		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		{
+			return player.altFunctionUse != 2;
+		}
+		
+		public override bool UseItem(Player player)
+		{
+			if(player.altFunctionUse == 2)
+			{
+				player.MinionNPCTargetAim();
+			}
+			return base.UseItem(player);
 		}
 	}
 }

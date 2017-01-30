@@ -24,6 +24,7 @@ namespace ExampleMod.Projectiles.Minions
 			projectile.ignoreWater = true;
 			ProjectileID.Sets.MinionSacrificable[projectile.type] = true;
 			ProjectileID.Sets.Homing[projectile.type] = true;
+			ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true; //This is necessary for right-click targetting
 			inertia = 20f;
 			shoot = mod.ProjectileType("PurityBolt");
 			shootSpeed = 12f;
