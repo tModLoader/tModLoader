@@ -1,4 +1,4 @@
-# This will run on Travis' 'new' container-based infrastructure
+# This will not run on Travis' 'new' container-based infrastructure
 sudo: required
 
 language: csharp
@@ -13,7 +13,7 @@ env:
   global:
     - GH_REPO_NAME: tModLoader
     - DOXYFILE: $TRAVIS_BUILD_DIR/solutions/documentation/Doxyfile
-    - GH_REPO_REF: github.com/JavidPack/tModLoader.git
+    - GH_REPO_REF: github.com/bluemagic123/tModLoader.git
 
 # Install dependencies
 addons:
