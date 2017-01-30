@@ -338,7 +338,7 @@ namespace Terraria.ModLoader.UI
 					string name = (string)mod["name"];
 					string version = (string)mod["version"];
 					string author = (string)mod["author"];
-					string download = (string)mod["displayname"];
+					string download = (string)mod["download"];
 					int downloads = (int)mod["downloads"];
 					string timeStamp = (string)mod["updateTimeStamp"];
 					bool exists = false;

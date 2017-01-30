@@ -344,7 +344,7 @@ namespace Terraria.ModLoader
 		public void AddCommand(string name, ModCommand mc)
 		{
 			mc.Name = name;
-			mc.Mod = this;
+			mc.mod = this;
 			
 			CommandManager.Add(mc);
 		}
@@ -2073,7 +2073,7 @@ namespace Terraria.ModLoader
 		private void AutoloadCommand(Type type)
 		{
 			var mc = (ModCommand) Activator.CreateInstance(type);
-			mc.Mod = this;
+			mc.mod = this;
 			var name = type.Name;
 			if (mc.Autoload(ref name))
 				AddCommand(name, mc);

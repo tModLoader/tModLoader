@@ -28,7 +28,7 @@ namespace ExampleMod.Commands
 			string message = "Did you hear something....A Volcano! Find Cover!";
 			Color messageColor = Color.Orange;
 			NetMessage.SendData(25, -1, -1, message, 255, messageColor.R, messageColor.G, messageColor.B, 0);
-			ExampleWorld exampleWorld = Mod.GetModWorld<ExampleWorld>();
+			ExampleWorld exampleWorld = mod.GetModWorld<ExampleWorld>();
 			exampleWorld.VolcanoCountdown = ExampleWorld.DefaultVolcanoCountdown;
 			exampleWorld.VolcanoCooldown = ExampleWorld.DefaultVolcanoCooldown;
 		}
