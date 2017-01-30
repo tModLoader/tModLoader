@@ -1,10 +1,11 @@
-﻿using Terraria.ModLoader.IO;
+﻿using System;
+using Terraria.ModLoader.IO;
 
 namespace Terraria
 {
 	public partial class Item : TagSerializable
 	{
-		public static readonly TagDeserializer<Item> DESERIALIZER = new TagDeserializer<Item>(ItemIO.Load);
+		public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
 		public TagCompound SerializeData()
 		{

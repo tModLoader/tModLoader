@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Terraria.ModLoader.IO
 {
@@ -84,6 +85,11 @@ namespace Terraria.ModLoader.IO
 		public T GetSerializable<T>(string key) where T : TagSerializable
 		{
 			return TagSerializables.Deserialize<T>(GetCompound(key));
+		}
+
+		public IList<T> GetSerializableList<T>(string key) where T : TagSerializable
+		{
+			return GetList<TagCompound>(key).Select(tag => TagSerializables.Deserialize<T>(tag)).ToList();
 		}
 
 		public object Clone() {

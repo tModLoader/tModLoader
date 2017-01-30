@@ -421,6 +421,7 @@ namespace Terraria.ModLoader
 			WorldHooks.Unload();
 			RecipeHooks.Unload();
 			CommandManager.Unload();
+			TagSerializables.Reset();
 			GameContent.UI.CustomCurrencyManager.Initialize();
 
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
