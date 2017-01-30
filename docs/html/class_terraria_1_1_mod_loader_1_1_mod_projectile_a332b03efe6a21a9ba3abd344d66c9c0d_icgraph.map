@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.ModProjectile.SetDefaults" name="Terraria.ModLoader.ModProjectile.SetDefaults">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa4bd74eb4726fe09583d635f72a669b2" title="Terraria.ModLoader.ModProjectile.\lAutoload" alt="" coords="273,5,493,47"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Terraria.ModLoader.Mod.Register\lHotKey" alt="" coords="276,71,491,112"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a2cc06bb68e395f20ede259d09eb91b05" title="Terraria.ModLoader.Mod.Autoload\lProjectile" alt="" coords="541,5,759,47"/>
-</map>

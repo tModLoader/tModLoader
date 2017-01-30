@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.Mod.AddMount" name="Terraria.ModLoader.Mod.AddMount">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Terraria.ModLoader.ModLoader.\lGetTexture" alt="" coords="243,5,448,47"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a" title="Terraria.ModLoader.ModLoader.\lTextureExists" alt="" coords="243,71,448,112"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6" title="Terraria.ModLoader.Mod.Texture\lExists" alt="" coords="496,71,705,112"/>
-</map>

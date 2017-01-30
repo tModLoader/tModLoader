@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.ModNPC.SetDefaults" name="Terraria.ModLoader.ModNPC.SetDefaults">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aaf8303dd0a30d0ae359128e951374351" title="Terraria.ModLoader.ModNPC.\lAutoloadHead" alt="" coords="257,5,451,47"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Terraria.ModLoader.Mod.Register\lHotKey" alt="" coords="247,71,461,112"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ad77577c0eeaae460a0f0652b70897259" title="Terraria.ModLoader.Mod.AutoloadNPC" alt="" coords="509,13,753,39"/>
-</map>

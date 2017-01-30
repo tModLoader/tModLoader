@@ -1,9 +1,0 @@
-<map id="Terraria.ModLoader.Mod.AutoloadNPC" name="Terraria.ModLoader.Mod.AutoloadNPC">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#abb047caa31b8ca34497ac4168356c711" title="Terraria.ModLoader.ModNPC.\lAutoload" alt="" coords="303,5,497,47"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aaf8303dd0a30d0ae359128e951374351" title="Terraria.ModLoader.ModNPC.\lAutoloadHead" alt="" coords="303,71,497,112"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aeb0d9d1bfee842c0e232de398756f869" title="Terraria.ModLoader.ModLoader.\lFileExists" alt="" coords="297,136,503,177"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a" title="Terraria.ModLoader.ModLoader.\lTextureExists" alt="" coords="297,201,503,243"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a" title="Terraria.ModLoader.ModNPC.\lSetDefaults" alt="" coords="559,71,752,112"/>
-<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ac6060b44af6ea4bf0db551886ea796d9" title="Terraria.ModLoader.Mod.File\lExists" alt="" coords="562,136,749,177"/>
-<area shape="rect" id="node8" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6" title="Terraria.ModLoader.Mod.Texture\lExists" alt="" coords="551,201,760,243"/>
-</map>

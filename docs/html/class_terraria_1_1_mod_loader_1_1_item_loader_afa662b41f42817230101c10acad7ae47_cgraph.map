@@ -1,8 +1,0 @@
-<map id="Terraria.ModLoader.ItemLoader.ArmorSetShadows" name="Terraria.ModLoader.ItemLoader.ArmorSetShadows">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#a8de3969ef1244999f9a92e5fa8bc87af" title="Terraria.ModLoader.Equip\lTexture.ArmorSetShadows" alt="" coords="259,5,436,47"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#aa0157164b6840e3d0fdcb1fc2e297c20" title="Terraria.ModLoader.Global\lItem.ArmorSetShadows" alt="" coords="260,71,435,112"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Terraria.ModLoader.Equip\lLoader.GetEquipTexture" alt="" coords="262,136,433,177"/>
-<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#acd4647b2d645c915743daa3b734919f7" title="Terraria.ModLoader.Equip\lTexture.IsVanitySet" alt="" coords="262,201,433,243"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#afc66c0f98cbc3d51a577b847d011d711" title="Terraria.ModLoader.Global\lItem.IsVanitySet" alt="" coords="260,267,435,308"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Terraria.ModLoader.ModLoader.\lGetTexture" alt="" coords="484,136,689,177"/>
-</map>

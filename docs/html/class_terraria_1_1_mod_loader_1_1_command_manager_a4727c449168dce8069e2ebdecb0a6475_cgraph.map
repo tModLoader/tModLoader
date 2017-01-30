@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.CommandManager.Matches" name="Terraria.ModLoader.CommandManager.Matches">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_command.html#a5af7daa9bde5cebd40eb03494441c9e2" title="Terraria.ModLoader.ModCommand.\lAction" alt="" coords="249,5,475,47"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Terraria.ModLoader.ModLoader.\lGetMod" alt="" coords="259,71,465,112"/>
-<area shape="rect" id="node4" href="$interface_terraria_1_1_mod_loader_1_1_command_caller.html#a6be9f02c2ce7c0adb64d427c52984527" title="Terraria.ModLoader.Command\lCaller.Reply" alt="" coords="264,136,460,177"/>
-</map>

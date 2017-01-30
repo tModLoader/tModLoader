@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.Mod.AutoloadItem" name="Terraria.ModLoader.Mod.AutoloadItem">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a5138adcff2d5ff9e18b749548b7317dd" title="Allows you to automatically load an item instead of using Mod.AddItem. Return true to allow autoloadi..." alt="" coords="307,5,499,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a" title="Terraria.ModLoader.ModLoader.\lTextureExists" alt="" coords="300,74,505,121"/>
+</map>

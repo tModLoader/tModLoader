@@ -1,8 +1,0 @@
-<map id="Terraria.ModLoader.ItemLoader.UpdateVanitySet" name="Terraria.ModLoader.ItemLoader.UpdateVanitySet">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Terraria.ModLoader.Equip\lLoader.GetEquipTexture" alt="" coords="261,5,431,47"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#acd4647b2d645c915743daa3b734919f7" title="Terraria.ModLoader.Equip\lTexture.IsVanitySet" alt="" coords="261,71,431,112"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#afc66c0f98cbc3d51a577b847d011d711" title="Terraria.ModLoader.Global\lItem.IsVanitySet" alt="" coords="259,136,433,177"/>
-<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#abd69a9fb53d2d6ec87763c26d052e8fa" title="Terraria.ModLoader.Equip\lTexture.UpdateVanitySet" alt="" coords="261,201,431,243"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#acea1ec4dfa7de3501671ec24cb5dd3a2" title="Terraria.ModLoader.Global\lItem.UpdateVanitySet" alt="" coords="259,267,433,308"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Terraria.ModLoader.ModLoader.\lGetTexture" alt="" coords="481,5,687,47"/>
-</map>

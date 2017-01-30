@@ -1,5 +1,0 @@
-Install Doxygen (http://www.stack.nl/~dimitri/doxygen/) and open the Doxygen file to generate the documentation
-Graphviz (http://www.graphviz.org/) is needed for Doxygen to work correctly.
-
-Update this branch on release of new tModLoader
-Keep source up to date with c# XML comments.

@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.ItemLoader.DrawHair" name="Terraria.ModLoader.ItemLoader.DrawHair">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#a9c5a7f1317f2f0773632f29f22070628" title="Terraria.ModLoader.Equip\lTexture.DrawHair" alt="" coords="259,5,429,47"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Terraria.ModLoader.Equip\lLoader.GetEquipTexture" alt="" coords="259,71,429,112"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Terraria.ModLoader.ModLoader.\lGetTexture" alt="" coords="477,71,683,112"/>
-</map>
