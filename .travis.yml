@@ -1,0 +1,42 @@
+# This will not run on Travis' 'new' container-based infrastructure
+sudo: required
+
+language: csharp
+
+# Blacklist
+branches:
+  only:
+    - master
+
+# Environment variables
+env:
+  global:
+    - GH_REPO_NAME: tModLoader
+    - DOXYFILE: $TRAVIS_BUILD_DIR/solutions/documentation/Doxyfile
+    - GH_REPO_REF: github.com/bluemagic123/tModLoader.git
+
+# Install dependencies
+addons:
+  apt:
+    packages:
+      - doxygen
+      - doxygen-doc
+      - graphviz
+
+before_install:
+    - sudo apt-get install python-software-properties 
+    - sudo apt-add-repository -y ppa:libreoffice/libreoffice-4-2
+    - sudo apt-get update
+    - sudo apt-get install doxygen
+      
+# Build your code e.g. by calling make
+script:
+  - pwd
+  - doxygen -v
+  - ls
+
+# Generate and deploy documentation
+after_success:
+  - cd $TRAVIS_BUILD_DIR
+  - chmod +x solutions/documentation/generateAndPublishDocumentation.sh
+  - ./solutions/documentation/generateAndPublishDocumentation.sh
