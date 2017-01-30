@@ -3,6 +3,9 @@ sudo: required
 
 language: csharp
 
+notifications:
+  email: false
+
 # Blacklist
 branches:
   only:
