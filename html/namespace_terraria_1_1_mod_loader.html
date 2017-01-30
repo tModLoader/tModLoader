@@ -178,6 +178,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_cactus.html">ModCactus</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html">ModCommand</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents a chat or console command. Use the CommandType to specify the scope of the command.  <a href="class_terraria_1_1_mod_loader_1_1_mod_command.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>ModCompile</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,6 +299,7 @@ Enumerations</h2></td></tr>
 <a class="el" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">CommandType.Console</a> = 4, 
 <a class="el" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6">CommandType.World</a> = 8
  }</td></tr>
+<tr class="memdesc:a51831af9dcf185fae859c62878081d26"><td class="mdescLeft">&#160;</td><td class="mdescRight">A flag enum representing context where this command operates. <a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26">More...</a><br/></td></tr>
 <tr class="separator:a51831af9dcf185fae859c62878081d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5632221fbbd1ad7f37983e2b9400282"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a> { <br/>
 &#160;&#160;<a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a98921133d10fbdb0fb6dbb7b2648befe">EquipType.Head</a>, 
@@ -360,28 +362,34 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>A flag enum representing context where this command operates.</p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a51831af9dcf185fae859c62878081d26a55dcdf017b51fc96f7b5f9d63013b95d"></a>Chat</em>&#160;</td><td class="fielddoc">
+<p>Command can be used in Chat in SP and MP.</p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9"></a>Server</em>&#160;</td><td class="fielddoc">
+<p>Command is executed by server in MP.</p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f"></a>Console</em>&#160;</td><td class="fielddoc">
+<p>Command can be used in server console during MP.</p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6"></a>World</em>&#160;</td><td class="fielddoc">
+<p>Command can be used in Chat in SP and MP, but executes on the Server in MP. (singleplayer ? Chat : Server)</p>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00007">7</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a55dcdf017b51fc96f7b5f9d63013b95d">Chat</a> = 1, <span class="comment">//client command</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9">Server</a> = 2, <span class="comment">//server command</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Console</a> = 4, <span class="comment">//console command</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6">World</a> = 8 <span class="comment">//singleplayer ? Chat : Server</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    }</div>
-<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6">Terraria.ModLoader.World</a></div></div>
-<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26a55dcdf017b51fc96f7b5f9d63013b95d"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a55dcdf017b51fc96f7b5f9d63013b95d">Terraria.ModLoader.Chat</a></div></div>
-<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Terraria.ModLoader.Console</a></div></div>
-<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9">Terraria.ModLoader.Server</a></div></div>
+<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00008">8</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a55dcdf017b51fc96f7b5f9d63013b95d">Chat</a> = 1,</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9">Server</a> = 2,</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Console</a> = 4,</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6">World</a> = 8</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6">Terraria.ModLoader.World</a></div><div class="ttdoc">Command can be used in Chat in SP and MP, but executes on the Server in MP. (singleplayer ...</div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26a55dcdf017b51fc96f7b5f9d63013b95d"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a55dcdf017b51fc96f7b5f9d63013b95d">Terraria.ModLoader.Chat</a></div><div class="ttdoc">Command can be used in Chat in SP and MP.</div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Terraria.ModLoader.Console</a></div><div class="ttdoc">Command can be used in server console during MP.</div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9">Terraria.ModLoader.Server</a></div><div class="ttdoc">Command is executed by server in MP.</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -484,7 +492,7 @@ Enumerations</h2></td></tr>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a130c5b3473c57faa76e2a1c54e26f88e">Both</a>, <a class="code" href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a577d7068826de925ea2aec01dbadf5e4">Client</a>, <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9">Server</a>, <a class="code" href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06ae4246767f134af73780a229d9e364a0b">NoSync</a></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    }</div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a1c82c6b1930a8ee5c45efb091a036b06a130c5b3473c57faa76e2a1c54e26f88e"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a130c5b3473c57faa76e2a1c54e26f88e">Terraria.ModLoader.Both</a></div></div>
-<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9">Terraria.ModLoader.Server</a></div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9">Terraria.ModLoader.Server</a></div><div class="ttdoc">Command is executed by server in MP.</div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a1c82c6b1930a8ee5c45efb091a036b06ae4246767f134af73780a229d9e364a0b"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06ae4246767f134af73780a229d9e364a0b">Terraria.ModLoader.NoSync</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a1c82c6b1930a8ee5c45efb091a036b06a577d7068826de925ea2aec01dbadf5e4"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a577d7068826de925ea2aec01dbadf5e4">Terraria.ModLoader.Client</a></div></div>
 </div><!-- fragment -->

@@ -712,7 +712,7 @@ Private Member Functions</h2></td></tr>
 <p>Definition at line <a class="el" href="_mod_8cs_source.html#l00344">344</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        {</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;            mc.Name = name;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            mc.Mod = <span class="keyword">this</span>;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            mc.mod = <span class="keyword">this</span>;</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;            </div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;            CommandManager.Add(mc);</div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        }</div>
@@ -2758,7 +2758,7 @@ Private Member Functions</h2></td></tr>
 <p>Definition at line <a class="el" href="_mod_8cs_source.html#l02073">2073</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l02074"></a><span class="lineno"> 2074</span>&#160;        {</div>
 <div class="line"><a name="l02075"></a><span class="lineno"> 2075</span>&#160;            var mc = (ModCommand) Activator.CreateInstance(type);</div>
-<div class="line"><a name="l02076"></a><span class="lineno"> 2076</span>&#160;            mc.Mod = <span class="keyword">this</span>;</div>
+<div class="line"><a name="l02076"></a><span class="lineno"> 2076</span>&#160;            mc.mod = <span class="keyword">this</span>;</div>
 <div class="line"><a name="l02077"></a><span class="lineno"> 2077</span>&#160;            var name = type.Name;</div>
 <div class="line"><a name="l02078"></a><span class="lineno"> 2078</span>&#160;            <span class="keywordflow">if</span> (mc.Autoload(ref name))</div>
 <div class="line"><a name="l02079"></a><span class="lineno"> 2079</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a5b184beb12e724540f0e0ca11fc2845f">AddCommand</a>(name, mc);</div>

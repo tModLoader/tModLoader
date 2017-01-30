@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModCommand Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class represents a chat or console command. Use the CommandType to specify the scope of the command.  
+ <a href="class_terraria_1_1_mod_loader_1_1_mod_command.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.ModCommand:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -128,31 +131,40 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5af7daa9bde5cebd40eb03494441c9e2"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a5af7daa9bde5cebd40eb03494441c9e2">Action</a> (<a class="el" href="interface_terraria_1_1_mod_loader_1_1_command_caller.html">CommandCaller</a> caller, string input, string[] args)</td></tr>
+<tr class="memdesc:a5af7daa9bde5cebd40eb03494441c9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The code that is executed when the command is triggered. <a href="#a5af7daa9bde5cebd40eb03494441c9e2">More...</a><br/></td></tr>
 <tr class="separator:a5af7daa9bde5cebd40eb03494441c9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6644dee96b64cf7f85526ef8d53d307a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a6644dee96b64cf7f85526ef8d53d307a">Autoload</a> (ref string name)</td></tr>
+<tr class="memdesc:a6644dee96b64cf7f85526ef8d53d307a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Autoload this command, defaults to Mod.Properties.Autoload. <a href="#a6644dee96b64cf7f85526ef8d53d307a">More...</a><br/></td></tr>
 <tr class="separator:a6644dee96b64cf7f85526ef8d53d307a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ac807de4b57a97d5ee2c6105ceff5d4b9"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#ac807de4b57a97d5ee2c6105ceff5d4b9">Description</a> =&gt; &quot;&quot;</td></tr>
+<tr class="memdesc:ac807de4b57a97d5ee2c6105ceff5d4b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A short description of this command. <a href="#ac807de4b57a97d5ee2c6105ceff5d4b9">More...</a><br/></td></tr>
 <tr class="separator:ac807de4b57a97d5ee2c6105ceff5d4b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab53c5d3bbea6259e97df8004901d99e4"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#ab53c5d3bbea6259e97df8004901d99e4">Usage</a> =&gt; &quot;/&quot; + <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a0baffa44571dd5dedc9bb278a94fad4e">Command</a></td></tr>
+<tr class="memdesc:ab53c5d3bbea6259e97df8004901d99e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A short usage explanation for this command. <a href="#ab53c5d3bbea6259e97df8004901d99e4">More...</a><br/></td></tr>
 <tr class="separator:ab53c5d3bbea6259e97df8004901d99e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a0baffa44571dd5dedc9bb278a94fad4e"><td class="memItemLeft" align="right" valign="top">abstract string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a0baffa44571dd5dedc9bb278a94fad4e">Command</a><code> [get]</code></td></tr>
+<tr class="memdesc:a0baffa44571dd5dedc9bb278a94fad4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The desired text to trigger this command. <a href="#a0baffa44571dd5dedc9bb278a94fad4e">More...</a><br/></td></tr>
 <tr class="separator:a0baffa44571dd5dedc9bb278a94fad4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a417edb3a9b3b3e54bbb4de2dfa30a3c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a417edb3a9b3b3e54bbb4de2dfa30a3c2">Mod</a><code> [get, set]</code></td></tr>
-<tr class="separator:a417edb3a9b3b3e54bbb4de2dfa30a3c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2628918bef8e9d2546bfcca3d331457"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#af2628918bef8e9d2546bfcca3d331457">mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:af2628918bef8e9d2546bfcca3d331457"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html" title="This class represents a chat or console command. Use the CommandType to specify the scope of the comm...">ModCommand</a> belongs to. <a href="#af2628918bef8e9d2546bfcca3d331457">More...</a><br/></td></tr>
+<tr class="separator:af2628918bef8e9d2546bfcca3d331457"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43d8b722b80cd5e7be1ce2188f0421b6"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a43d8b722b80cd5e7be1ce2188f0421b6">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a43d8b722b80cd5e7be1ce2188f0421b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal name of this command. <a href="#a43d8b722b80cd5e7be1ce2188f0421b6">More...</a><br/></td></tr>
 <tr class="separator:a43d8b722b80cd5e7be1ce2188f0421b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5691c1b52fc3b7f9f6de2c8cf71fbe27"><td class="memItemLeft" align="right" valign="top">abstract <a class="el" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26">CommandType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a5691c1b52fc3b7f9f6de2c8cf71fbe27">Type</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5691c1b52fc3b7f9f6de2c8cf71fbe27"><td class="mdescLeft">&#160;</td><td class="mdescRight">A flag enum representing context where this command operates. <a href="#a5691c1b52fc3b7f9f6de2c8cf71fbe27">More...</a><br/></td></tr>
 <tr class="separator:a5691c1b52fc3b7f9f6de2c8cf71fbe27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00022">22</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
+<div class="textblock"><p>This class represents a chat or console command. Use the CommandType to specify the scope of the command. </p>
+
+<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00030">30</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a5af7daa9bde5cebd40eb03494441c9e2"></a>
 <div class="memitem">
@@ -192,6 +204,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>The code that is executed when the command is triggered.</p>
+
 </div>
 </div>
 <a class="anchor" id="a6644dee96b64cf7f85526ef8d53d307a"></a>
@@ -216,6 +230,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Autoload this command, defaults to Mod.Properties.Autoload.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -229,7 +245,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00029">29</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
+<p>A short description of this command.</p>
+
+<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00043">43</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
 
 </div>
 </div>
@@ -243,7 +261,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00028">28</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
+<p>A short usage explanation for this command.</p>
+
+<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00041">41</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
 
 </div>
 </div>
@@ -266,11 +286,13 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00026">26</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
+<p>The desired text to trigger this command.</p>
+
+<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00037">37</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a417edb3a9b3b3e54bbb4de2dfa30a3c2"></a>
+<a class="anchor" id="af2628918bef8e9d2546bfcca3d331457"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -278,7 +300,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> Terraria.ModLoader.ModCommand.Mod</td>
+          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> Terraria.ModLoader.ModCommand.mod</td>
         </tr>
       </table>
   </td>
@@ -288,7 +310,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00024">24</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
+<p>The <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html" title="This class represents a chat or console command. Use the CommandType to specify the scope of the comm...">ModCommand</a> belongs to.</p>
+
+<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00033">33</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
 
 </div>
 </div>
@@ -310,7 +334,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00025">25</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
+<p>Internal name of this command.</p>
+
+<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00035">35</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
 
 </div>
 </div>
@@ -332,7 +358,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00027">27</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
+<p>A flag enum representing context where this command operates.</p>
+
+<p>Definition at line <a class="el" href="_mod_command_8cs_source.html#l00039">39</a> of file <a class="el" href="_mod_command_8cs_source.html">ModCommand.cs</a>.</p>
 
 </div>
 </div>

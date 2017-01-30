@@ -170,7 +170,7 @@ $(document).ready(function(){initNavTree('_command_manager_8cs_source.html','');
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    mc = cmdList.SingleOrDefault(c =&gt; c.Mod == mod);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    mc = cmdList.SingleOrDefault(c =&gt; c.mod == mod);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                    <span class="keywordflow">if</span> (mc == null)</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                        caller.Reply(<span class="stringliteral">&quot;Mod: &quot;</span> + modName + <span class="stringliteral">&quot; does not have a &quot;</span> + name + <span class="stringliteral">&quot; command.&quot;</span>, Color.Red);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                }</div>
@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('_command_manager_8cs_source.html','');
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            {</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                caller.Reply(<span class="stringliteral">&quot;Multiple definitions of command /&quot;</span> + name + <span class="stringliteral">&quot;. Try:&quot;</span>, Color.Red);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">foreach</span> (var c <span class="keywordflow">in</span> cmdList)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                    caller.Reply(c.Mod.Name + <span class="stringliteral">&quot;:&quot;</span> + c.Command, Color.LawnGreen);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                    caller.Reply(c.mod.Name + <span class="stringliteral">&quot;:&quot;</span> + c.Command, Color.LawnGreen);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            }</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            {</div>
@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('_command_manager_8cs_source.html','');
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                {</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                    <span class="keywordtype">string</span> cmd = mc.Command;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                    <span class="keywordflow">if</span> (cmdList.Count &gt; 1)</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                        cmd = mc.Mod.Name + <span class="stringliteral">&quot;:&quot;</span> + cmd;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                        cmd = mc.mod.Name + <span class="stringliteral">&quot;:&quot;</span> + cmd;</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                    list.Add(<span class="keyword">new</span> Tuple&lt;string, string&gt;(cmd, mc.Description));</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                }</div>
@@ -244,12 +244,12 @@ $(document).ready(function(){initNavTree('_command_manager_8cs_source.html','');
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    }</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;}</div>
 <div class="ttc" id="class_exception_html"><div class="ttname"><a href="class_exception.html">Exception</a></div></div>
-<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26">Terraria.ModLoader.CommandType</a></div><div class="ttdeci">CommandType</div><div class="ttdef"><b>Definition:</b> <a href="_mod_command_8cs_source.html#l00007">ModCommand.cs:7</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_command_html_a0baffa44571dd5dedc9bb278a94fad4e"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a0baffa44571dd5dedc9bb278a94fad4e">Terraria.ModLoader.ModCommand.Command</a></div><div class="ttdeci">abstract string Command</div><div class="ttdef"><b>Definition:</b> <a href="_mod_command_8cs_source.html#l00026">ModCommand.cs:26</a></div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26">Terraria.ModLoader.CommandType</a></div><div class="ttdeci">CommandType</div><div class="ttdoc">A flag enum representing context where this command operates.</div><div class="ttdef"><b>Definition:</b> <a href="_mod_command_8cs_source.html#l00008">ModCommand.cs:8</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_command_html_a0baffa44571dd5dedc9bb278a94fad4e"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a0baffa44571dd5dedc9bb278a94fad4e">Terraria.ModLoader.ModCommand.Command</a></div><div class="ttdeci">abstract string Command</div><div class="ttdoc">The desired text to trigger this command.</div><div class="ttdef"><b>Definition:</b> <a href="_mod_command_8cs_source.html#l00037">ModCommand.cs:37</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_command_manager_html_a4727c449168dce8069e2ebdecb0a6475"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_command_manager.html#a4727c449168dce8069e2ebdecb0a6475">Terraria.ModLoader.CommandManager.Matches</a></div><div class="ttdeci">static bool Matches(CommandType commandType, CommandType callerType)</div><div class="ttdef"><b>Definition:</b> <a href="_command_manager_8cs_source.html#l00012">CommandManager.cs:12</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_command_manager_html_a3641357f743ede79a33d1e97814c516b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_command_manager.html#a3641357f743ede79a33d1e97814c516b">Terraria.ModLoader.CommandManager.GetHelp</a></div><div class="ttdeci">static List&lt; Tuple&lt; string, string &gt; &gt; GetHelp(CommandType type)</div><div class="ttdef"><b>Definition:</b> <a href="_command_manager_8cs_source.html#l00123">CommandManager.cs:123</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_command_manager_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_command_manager.html">Terraria.ModLoader.CommandManager</a></div><div class="ttdef"><b>Definition:</b> <a href="_command_manager_8cs_source.html#l00008">CommandManager.cs:8</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_command_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_command.html">Terraria.ModLoader.ModCommand</a></div><div class="ttdef"><b>Definition:</b> <a href="_mod_command_8cs_source.html#l00022">ModCommand.cs:22</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_command_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_command.html">Terraria.ModLoader.ModCommand</a></div><div class="ttdoc">This class represents a chat or console command. Use the CommandType to specify the scope of the comm...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_command_8cs_source.html#l00030">ModCommand.cs:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
