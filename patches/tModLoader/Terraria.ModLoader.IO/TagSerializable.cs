@@ -11,11 +11,11 @@ namespace Terraria.ModLoader.IO
 
 	public static class TagSerializables
 	{
-		internal static IDictionary<string, Type> typeCache = new Dictionary<string, Type>();
+		internal static IDictionary<string, Delegate> deserializerCache = new Dictionary<string, Delegate>();
 
 		internal static void Reset()
 		{
-			typeCache.Clear();
+			deserializerCache.Clear();
 		}
 
 		public static TagCompound Serialize(TagSerializable obj)
@@ -34,42 +34,34 @@ namespace Terraria.ModLoader.IO
 			if (tag == null)
 				return default(T);
 
-			Type type = GetType(tag.GetString("type"));
+			Func<TagCompound, T> deserializer = GetDeserializer<T>(tag.GetString("type"));
+			TagCompound dataTag = tag.HasTag("data") ? tag.GetCompound("data") : null;
+			return deserializer(dataTag);
+		}
+
+		private static Func<TagCompound, T> GetDeserializer<T>(string name) where T : TagSerializable
+		{
+			if (deserializerCache.ContainsKey(name))
+				return (Func<TagCompound, T>)Delegate.CreateDelegate(typeof(Func<TagCompound, T>), deserializerCache[name].GetInvocationList()[0].Method);
+
+			Type type = Type.GetType(name);
 			if (type == null)
-				throw new TypeUnloadedException();
+			{
+				foreach (Mod mod in ModLoader.LoadedMods)
+				{
+					type = mod.Code.GetType(name);
+					if (type == null)
+						throw new TypeUnloadedException();
+				}
+			}
 
 			FieldInfo deserializerField = type.GetField("DESERIALIZER");
 			if (deserializerField == null)
 				throw new Exception(string.Format("Missing deserializer for type {0}.", type.FullName));
 
 			Func<TagCompound, T> deserializer = (Func<TagCompound, T>)deserializerField.GetValue(null);
-			TagCompound dataTag = tag.HasTag("data") ? tag.GetCompound("data") : null;
-			return deserializer(dataTag);
-		}
-
-		private static Type GetType(string name)
-		{
-			if (typeCache.ContainsKey(name))
-				return typeCache[name];
-
-			Type type = Type.GetType(name);
-			if (type != null)
-			{
-				typeCache[name] = type;
-				return type;
-			}
-
-			foreach (Mod mod in ModLoader.LoadedMods)
-			{
-				type = mod.Code.GetType(name);
-				if (type != null)
-				{
-					typeCache[name] = type;
-					return type;
-				}
-			}
-
-			return null;
+			deserializerCache[name] = deserializer;
+			return deserializer;
 		}
 	}
 
