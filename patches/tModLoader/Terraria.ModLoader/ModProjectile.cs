@@ -186,34 +186,62 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		/// <summary>
+		/// Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.
+		/// </summary>
 		public virtual void PostDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
 		}
 
+		/// <summary>
+		/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
+		/// </summary>
 		public virtual bool? CanUseGrapple(Player player)
 		{
 			return null;
 		}
 
+		/// <summary>
+		/// Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.
+		/// </summary>
 		public virtual bool? SingleGrappleHook(Player player)
 		{
 			return null;
 		}
 
+		/// <summary>
+		/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
+		/// </summary>
 		public virtual void UseGrapple(Player player, ref int type)
 		{
 		}
 
+		/// <summary>
+		/// How far away this grappling hook can travel away from its player before it retracts.
+		/// </summary>
 		public virtual float GrappleRange()
 		{
 			return 300f;
 		}
 
+		/// <summary>
+		/// How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.
+		/// </summary>
 		public virtual void NumGrappleHooks(Player player, ref int numHooks)
 		{
 		}
 
+		/// <summary>
+		/// The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24.
+		/// </summary>
 		public virtual void GrappleRetreatSpeed(Player player, ref float speed)
+		{
+		}
+
+		/// <summary>
+		/// The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but bat hook uses 16.
+		/// </summary>
+		public virtual void GrapplePullSpeed(Player player, ref float speed)
 		{
 		}
 

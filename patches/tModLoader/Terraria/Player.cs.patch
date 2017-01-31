@@ -2921,6 +2921,14 @@
  			this.velocity.Y = this.velocity.Y - num * this.gravDir;
  			if (this.gravDir == 1f)
  			{
+@@ -17456,6 +_,7 @@
+ 				{
+ 					num9 = 13f;
+ 				}
++				ProjectileLoader.GrapplePullSpeed(Main.projectile[this.grappling[0]], this, ref num9);
+ 				float num10;
+ 				if (num8 > num9)
+ 				{
 @@ -18167,6 +_,7 @@
  				{
  					bool flag = true;

@@ -54,6 +54,8 @@ namespace Terraria.ModLoader
 		private static DelegateNumGrappleHooks[] HookNumGrappleHooks;
 		private delegate void DelegateGrappleRetreatSpeed(Projectile projectile, Player player, ref float speed);
 		private static DelegateGrappleRetreatSpeed[] HookGrappleRetreatSpeed;
+		private delegate void DelegateGrapplePullSpeed(Projectile projectile, Player player, ref float speed);
+		private static DelegateGrappleRetreatSpeed[] HookGrapplePullSpeed;
 		private static Action<Projectile, int, List<int>, List<int>, List<int>, List<int>>[] HookDrawBehind;
 
 		internal static int ReserveProjectileID()
@@ -148,6 +150,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookUseGrapple, globalProjectiles, g => g.UseGrapple);
 			ModLoader.BuildGlobalHook(ref HookNumGrappleHooks, globalProjectiles, g => g.NumGrappleHooks);
 			ModLoader.BuildGlobalHook(ref HookGrappleRetreatSpeed, globalProjectiles, g => g.GrappleRetreatSpeed);
+			ModLoader.BuildGlobalHook(ref HookGrapplePullSpeed, globalProjectiles, g => g.GrapplePullSpeed);
 			ModLoader.BuildGlobalHook(ref HookDrawBehind, globalProjectiles, g => g.DrawBehind);
 		}
 
@@ -708,6 +711,16 @@ namespace Terraria.ModLoader
 			projectile.modProjectile?.GrappleRetreatSpeed(player, ref speed);
 
 			foreach (var hook in HookGrappleRetreatSpeed)
+			{
+				hook(projectile, player, ref speed);
+			}
+		}
+		
+		public static void GrapplePullSpeed(Projectile projectile, Player player, ref float speed)
+		{
+			projectile.modProjectile?.GrapplePullSpeed(player, ref speed);
+
+			foreach (var hook in HookGrapplePullSpeed)
 			{
 				hook(projectile, player, ref speed);
 			}
