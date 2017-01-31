@@ -12,6 +12,7 @@ var class_terraria_1_1_mod_loader_1_1_global_projectile =
     [ "CutTiles", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a71b11f64254f701d32aee669c732d3ae", null ],
     [ "DrawBehind", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ad6854d6aeb986550382b01a4592dc4dc", null ],
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a7b67b1fc3ff53a59a66cb0fe82410778", null ],
+    [ "GrapplePullSpeed", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a13d107cf7fb3ee9bc26eb2b2750994ea", null ],
     [ "GrappleRetreatSpeed", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#af3cebf7f17f07bd9f39e2a75fd6af915", null ],
     [ "Kill", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a1d449abeb4ee387b6b2ebe33da5693aa", null ],
     [ "MinionContactDamage", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab216a84d7301f86afada25f4b9f17156", null ],

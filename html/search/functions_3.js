@@ -28,6 +28,7 @@ var searchData=
   ['delegategetweapondamage',['DelegateGetWeaponDamage',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a554783d54dae10355a7188caac16bc73',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegategetweaponknockback',['DelegateGetWeaponKnockback',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ac5b1c5c5d3e683365dee0c5bb89704a9',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegategrabrange',['DelegateGrabRange',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a8ad81af84490d6804d6e746ee8b6b37e',1,'Terraria::ModLoader::ItemLoader']]],
+  ['delegategrapplepullspeed',['DelegateGrapplePullSpeed',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a2744e597c3133cba11b7a4b7592bc2d3',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['delegategrappleretreatspeed',['DelegateGrappleRetreatSpeed',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a952da66f954dc6993d3b9444c957470c',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['delegatehorizontalwingspeeds',['DelegateHorizontalWingSpeeds',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a6fb98e97ea8f4ce1077437e6d6c6f812',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegatekilltile',['DelegateKillTile',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#aa302db51e71127ad510c8d5a1575e806',1,'Terraria::ModLoader::TileLoader']]],

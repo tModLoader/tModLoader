@@ -13,6 +13,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_projectile =
     [ "CutTiles", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4b548cb172688ca803e439ada0d966a8", null ],
     [ "DrawBehind", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a8f3e860e67589f1ba01c03b6420f0042", null ],
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a48f04db7c4e6636b043bc62020ff1342", null ],
+    [ "GrapplePullSpeed", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ac9e36df5bf854f5fa06da9932f6429ac", null ],
     [ "GrappleRange", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a86f51aaaa2585bf0b04c3b5291ee8014", null ],
     [ "GrappleRetreatSpeed", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#adf427ac7f49f9c3a28ed60fde7b39909", null ],
     [ "Kill", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab6ada2add80fed8a7a311044246cdefd", null ],

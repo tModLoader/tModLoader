@@ -94,6 +94,7 @@ var searchData=
   ['hookgetweaponknockback',['HookGetWeaponKnockback',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ae924ca3f7702df5b1cab972f25bbedcf',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookgrabrange',['HookGrabRange',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a71082b175bdeed49daba490ec4e47b57',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookgrabstyle',['HookGrabStyle',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a36b8de5efce44fd5a834e0fe7ddec0e6',1,'Terraria::ModLoader::ItemLoader']]],
+  ['hookgrapplepullspeed',['HookGrapplePullSpeed',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9f61e97a76630a2c5ec8bb5082c21a59',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['hookgrappleretreatspeed',['HookGrappleRetreatSpeed',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#adc5fee5b0b544655ed03740bbd811649',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['hookhiteffect',['HookHitEffect',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a579b8585800678136e0d7a9bafb3c19e',1,'Terraria::ModLoader::NPCLoader']]],
   ['hookhitwire',['HookHitWire',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#acab36347e32d4869f4ce616eedc390c6',1,'Terraria::ModLoader::TileLoader']]],
