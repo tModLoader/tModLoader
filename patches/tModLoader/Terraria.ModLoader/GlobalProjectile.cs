@@ -185,7 +185,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but bat hook uses 16.
+		/// The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16.
 		/// </summary>
 		public virtual void GrapplePullSpeed(Projectile projectile, Player player, ref float speed)
 		{
