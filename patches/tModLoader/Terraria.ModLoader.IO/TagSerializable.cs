@@ -42,7 +42,7 @@ namespace Terraria.ModLoader.IO
 		private static Func<TagCompound, T> GetDeserializer<T>(string name) where T : TagSerializable
 		{
 			if (deserializerCache.ContainsKey(name))
-				return (Func<TagCompound, T>)Delegate.CreateDelegate(typeof(Func<TagCompound, T>), deserializerCache[name].GetInvocationList()[0].Method);
+				return (Func<TagCompound, T>)deserializerCache[name];
 
 			Type type = Type.GetType(name);
 			if (type == null)
