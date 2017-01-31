@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Terraria;
+using System.Net;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
@@ -304,6 +304,58 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+		}
+
+		internal static void ServerModBrowserMenu()
+		{
+			bool exit = false;
+			Console.Clear();
+			while (!exit)
+			{
+				Console.WriteLine();
+				Console.WriteLine("b\t\tReturn to world menu");
+				Console.WriteLine();
+				Console.WriteLine("Type an exact ModName to download: ");
+				string command = Console.ReadLine();
+				if (command == null)
+				{
+					command = "";
+				}
+				if (command == "b" || command == "B")
+				{
+					exit = true;
+				}
+				else
+				{
+					string modname = command;
+					try
+					{
+						System.Net.ServicePointManager.ServerCertificateValidationCallback = (o, certificate, chain, errors) => true;
+						using (WebClient client = new WebClient())
+						{
+							string downloadURL = client.DownloadString($"http://javid.ddns.net/tModLoader/tools/querymoddownloadurl.php?modname={modname}");
+							if (downloadURL.StartsWith("Failed"))
+							{
+								Console.WriteLine(downloadURL);
+							}
+							else
+							{
+								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod";
+								client.DownloadFile(downloadURL, tempFile);
+								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
+								File.Delete(tempFile);
+							}
+							while (Console.KeyAvailable)
+								Console.ReadKey(true);
+						}
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine("Error: Could not download " + modname + " -- " + e.ToString());
+					}
+				}
+			}
+			Console.Clear();
 		}
 	}
 }

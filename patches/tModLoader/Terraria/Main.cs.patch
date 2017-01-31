@@ -1184,11 +1184,12 @@
  					string text2 = Language.GetTextValue("CLI.NewWorld_Command");
  					string text3 = Language.GetTextValue("CLI.DeleteWorld_Example");
  					int num = (Math.Max(Main.newWorldName.Length, text3.Length) + 1) / 8;
-@@ -3624,6 +_,7 @@
+@@ -3624,6 +_,8 @@
  					text3 = text3 + new string('\t', num - text3.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  					Console.WriteLine(text2);
  					Console.WriteLine(text3);
 +					Console.WriteLine("m\t\tMods Menu");
++					Console.WriteLine("b\t\tMod Browser");
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  					string text4 = Console.ReadLine();
@@ -1335,7 +1336,7 @@
  						IL_726:
  						Main.statusText = string.Format("{0:0.0%} - " + generationProgress.Message + " - {1:0.0%}", generationProgress.TotalProgress, generationProgress.Value);
  						if (Main.oldStatusText != Main.statusText)
-@@ -3885,12 +_,19 @@
+@@ -3885,12 +_,24 @@
  							Console.WriteLine(Main.statusText);
  							goto IL_783;
  						}
@@ -1345,6 +1346,11 @@
 +					else if (text4 == "m" || text4 == "M")
 +					{
 +						Interface.ServerModMenu();
++						continue;
++					}
++					else if (text4 == "b" || text4 == "b")
++					{
++						Interface.ServerModBrowserMenu();
 +						continue;
 +					}
  					else
