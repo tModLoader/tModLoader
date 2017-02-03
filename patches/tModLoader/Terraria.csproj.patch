@@ -89,7 +89,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -344,6 +_,137 @@
+@@ -344,6 +_,139 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -117,6 +117,8 @@
 +    <Compile Include="Terraria.ModLoader.IO\FontCacheIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\ItemIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\MapIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TagSerializer.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TagPrinter.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TagSerializable.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TileIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TmodFile.cs" />

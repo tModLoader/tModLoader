@@ -1,114 +1,114 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Terraria.ModLoader.IO
 {
 	//Tag compounds contained named values, serialisable as per the NBT spec http://minecraft.gamepedia.com/NBT_format
 	//All primitive data types are supported as well as byte[], int[] and Lists of other supported data types
-	//Lists must be strongly typed. Lists of Lists will be read as IList<IList> not List<IList<int>>
-	//bool is supported with an extension to the nbt spec, serialised as a byte. IList<bool> is not recommended
+	//Lists of Lists are internally stored as IList<IList>
+	//Modification of lists stored in a TagCompound will only work if there were no type conversions involved and is not advised
+	//bool is supported using TagConverter, serialised as a byte. IList<bool> will serialise as IList<byte> (quite inefficient)
+	//Additional conversions can be added using TagConverter
 	public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	{
 		private Dictionary<string, object> dict = new Dictionary<string, object>();
-		public T GetTag<T>(string key) {
+		public T Get<T>(string key) {
 			object tag = null;
 			dict.TryGetValue(key, out tag);
-			return (T) tag;
-		}
-
-		//if value is null, calls RemoveTag, also performs type checking
-		public void SetTag(string key, object value) {
-			if (value == null)
-				RemoveTag(key);
-			else {
-				if (value is TagSerializable)
-				{
-					TagCompound serialized = (value as TagSerializable).Serialize();
-					dict.Add(key, serialized);
-				}
-				else
-				{
-					TagIO.TypeCheck(value.GetType());
-					dict.Add(key, value);
-				}
+			try {
+				return TagIO.Deserialize<T>(tag);
+			}
+			catch (Exception e) {
+				throw new IOException(
+					$"NBT Deserialization (type={typeof(T)}," +
+					$"entry={TagPrinter.Print(new KeyValuePair<string, object>(key, tag))})", e);
 			}
 		}
 
-		public bool HasTag(string key) => dict.ContainsKey(key);
-		public bool RemoveTag(string key) => dict.Remove(key);
-		
-		//NBT spec getters
-		public byte GetByte(string key) => GetTag<byte?>(key) ?? 0;
-		public short GetShort(string key) => GetTag<short?>(key) ?? 0;
-		public int GetInt(string key) => GetTag<int?>(key) ?? 0;
-		public long GetLong(string key) => GetTag<long?>(key) ?? 0;
-		public float GetFloat(string key) => GetTag<float?>(key) ?? 0;
-		public double GetDouble(string key) => GetTag<double?>(key) ?? 0;
-		public byte[] GetByteArray(string key) => GetTag<byte[]>(key) ?? new byte[0];
-		public int[] GetIntArray(string key) => GetTag<int[]>(key) ?? new int[0];
-		public string GetString(string key) => GetTag<string>(key) ?? "";
-		public IList<T> GetList<T>(string key) => GetTag<IList<T>>(key) ?? new List<T>();
-		public TagCompound GetCompound(string key) => GetTag<TagCompound>(key) ?? new TagCompound();
-		
-		//extension to the NBT spec, boolean as byte
-		public bool GetBool(string key)
-		{
-			var o = GetTag<object>(key);
-			if (o is byte)
-				return (byte)o != 0;
+		//if value is null, calls RemoveTag, also performs type checking
+		public void Set(string key, object value) {
+			if (value == null) {
+				Remove(key);
+				return;
+			}
 
-			return o as bool? ?? false;
+			try {
+				dict.Add(key, TagIO.Serialize(value));
+			}
+			catch (IOException e) {
+				var valueInfo = "value=" + value;
+				if (value.GetType().ToString() != value.ToString())
+					valueInfo = "type=" + value.GetType() + "," + valueInfo;
+				throw new IOException($"NBT Serialization (key={key},{valueInfo})", e);
+			}
 		}
 
+		public bool ContainsKey(string key) => dict.ContainsKey(key);
+		public bool Remove(string key) => dict.Remove(key);
+		
+		[Obsolete] public T GetTag<T>(string key) => Get<T>(key);
+		[Obsolete] public void SetTag(string key, object value) => Set(key, value);
+		[Obsolete] public bool HasTag(string key) => ContainsKey(key);
+		[Obsolete] public bool RemoveTag(string key) => Remove(key);
+
+		//NBT spec getters
+		public byte GetByte(string key) => Get<byte>(key);
+		public short GetShort(string key) => Get<short>(key);
+		public int GetInt(string key) => Get<int>(key);
+		public long GetLong(string key) => Get<long>(key);
+		public float GetFloat(string key) => Get<float>(key);
+		public double GetDouble(string key) => Get<double>(key);
+		public byte[] GetByteArray(string key) => Get<byte[]>(key);
+		public int[] GetIntArray(string key) => Get<int[]>(key);
+		public string GetString(string key) => Get<string>(key);
+		public List<T> GetList<T>(string key) => Get<List<T>>(key);
+		public TagCompound GetCompound(string key) => Get<TagCompound>(key);
+		public bool GetBool(string key) => Get<bool>(key);
+
+		//type expansion helpers
 		public short GetAsShort(string key) {
-			var o = GetTag<object>(key);
+			var o = Get<object>(key);
 			return o as short? ?? o as byte? ?? 0;
 		}
 
 		public int GetAsInt(string key) {
-			var o = GetTag<object>(key);
+			var o = Get<object>(key);
 			return o as int? ?? o as short? ?? o as byte? ?? 0;
 		}
 
 		public long GetAsLong(string key) {
-			var o = GetTag<object>(key);
+			var o = Get<object>(key);
 			return o as long? ?? o as int? ?? o as short? ?? o as byte? ?? 0;
 		}
 
 		public double GetAsDouble(string key) {
-			var o = GetTag<object>(key);
+			var o = Get<object>(key);
 			return o as double? ?? o as float? ?? 0;
-		}
-
-		public T GetSerializable<T>(string key) where T : TagSerializable
-		{
-			return TagSerializables.Deserialize<T>(GetCompound(key));
-		}
-
-		public IList<T> GetSerializableList<T>(string key) where T : TagSerializable
-		{
-			return GetList<TagCompound>(key).Select(tag => TagSerializables.Deserialize<T>(tag)).ToList();
 		}
 
 		public object Clone() {
 			var copy = new TagCompound();
 			foreach (var entry in this)
-				if (entry.Value != null)
-					copy.SetTag(entry.Key, TagIO.Clone(entry.Value));
+				copy.Set(entry.Key, TagIO.Clone(entry.Value));
 
 			return copy;
 		}
-		
+
+		public override string ToString() {
+			return TagPrinter.Print(this);
+		}
+
 		public object this[string key] {
-			get { return GetTag<object>(key); }
-			set { SetTag(key, value); }
+			get { return Get<object>(key); }
+			set { Set(key, value); }
 		}
 
 		//collection initialiser
-		public void Add(string key, object value) => SetTag(key, value);
-		public void Add(KeyValuePair<string, object> entry) => SetTag(entry.Key, entry.Value);
+		public void Add(string key, object value) => Set(key, value);
+		public void Add(KeyValuePair<string, object> entry) => Set(entry.Key, entry.Value);
 
 		//delegate some collection implementations
 		public void Clear() { dict.Clear(); }
