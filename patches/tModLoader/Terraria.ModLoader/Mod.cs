@@ -2235,6 +2235,7 @@ namespace Terraria.ModLoader
 				Main.projFrames[projectile.projectile.type] = 1;
 				ProjectileLoader.SetupProjectileInfo(projectile.projectile);
 				projectile.SetDefaults();
+				Main.projName[modProjectile.projectile.type] = modProjectile.projectile.name;
 				if (projectile.projectile.hostile)
 				{
 					Main.projHostile[projectile.projectile.type] = true;
