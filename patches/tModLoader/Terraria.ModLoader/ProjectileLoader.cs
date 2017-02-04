@@ -82,7 +82,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.projHook, nextProjectile);
 			Array.Resize(ref Main.projFrames, nextProjectile);
 			Array.Resize(ref Main.projPet, nextProjectile);
-			Array.Resize(ref Main.projName, ProjectileLoader.nextProjectile);
+			Array.Resize(ref Main.projName, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosLifeTimeMultiplier, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosMaximumRange, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosTopSpeed, nextProjectile);
