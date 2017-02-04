@@ -2341,14 +2341,14 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02419">2419</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02420"></a><span class="lineno"> 2420</span>&#160;        {</div>
-<div class="line"><a name="l02421"></a><span class="lineno"> 2421</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6">TextureExists</a>(name))</div>
-<div class="line"><a name="l02422"></a><span class="lineno"> 2422</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ModNameException(<span class="stringliteral">&quot;Texture already exist: &quot;</span> + name);</div>
-<div class="line"><a name="l02423"></a><span class="lineno"> 2423</span>&#160;</div>
-<div class="line"><a name="l02424"></a><span class="lineno"> 2424</span>&#160;            textures[name] = texture;</div>
-<div class="line"><a name="l02425"></a><span class="lineno"> 2425</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a7dc7c15a681b04deeab2765ba889adf6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6">Terraria.ModLoader.Mod.TextureExists</a></div><div class="ttdeci">bool TextureExists(string name)</div><div class="ttdoc">Shorthand for calling ModLoader.TextureExists(this.FileName(name)). </div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l02408">Mod.cs:2408</a></div></div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02420">2420</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02421"></a><span class="lineno"> 2421</span>&#160;        {</div>
+<div class="line"><a name="l02422"></a><span class="lineno"> 2422</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6">TextureExists</a>(name))</div>
+<div class="line"><a name="l02423"></a><span class="lineno"> 2423</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> ModNameException(<span class="stringliteral">&quot;Texture already exist: &quot;</span> + name);</div>
+<div class="line"><a name="l02424"></a><span class="lineno"> 2424</span>&#160;</div>
+<div class="line"><a name="l02425"></a><span class="lineno"> 2425</span>&#160;            textures[name] = texture;</div>
+<div class="line"><a name="l02426"></a><span class="lineno"> 2426</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a7dc7c15a681b04deeab2765ba889adf6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6">Terraria.ModLoader.Mod.TextureExists</a></div><div class="ttdeci">bool TextureExists(string name)</div><div class="ttdoc">Shorthand for calling ModLoader.TextureExists(this.FileName(name)). </div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l02409">Mod.cs:2409</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -4238,10 +4238,10 @@ Private Member Functions</h2></td></tr>
 
 <p>Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method. </p>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02497">2497</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02498"></a><span class="lineno"> 2498</span>&#160;        {</div>
-<div class="line"><a name="l02499"></a><span class="lineno"> 2499</span>&#160;            <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l02500"></a><span class="lineno"> 2500</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02498">2498</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02499"></a><span class="lineno"> 2499</span>&#160;        {</div>
+<div class="line"><a name="l02500"></a><span class="lineno"> 2500</span>&#160;            <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l02501"></a><span class="lineno"> 2501</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -4336,10 +4336,10 @@ Private Member Functions</h2></td></tr>
 
 <p>Used to check if a custom Effect exists </p>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02489">2489</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02490"></a><span class="lineno"> 2490</span>&#160;        {</div>
-<div class="line"><a name="l02491"></a><span class="lineno"> 2491</span>&#160;            <span class="keywordflow">return</span> effects.ContainsKey(name);</div>
-<div class="line"><a name="l02492"></a><span class="lineno"> 2492</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02490">2490</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02491"></a><span class="lineno"> 2491</span>&#160;        {</div>
+<div class="line"><a name="l02492"></a><span class="lineno"> 2492</span>&#160;            <span class="keywordflow">return</span> effects.ContainsKey(name);</div>
+<div class="line"><a name="l02493"></a><span class="lineno"> 2493</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -4366,10 +4366,10 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02385">2385</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02386"></a><span class="lineno"> 2386</span>&#160;        {</div>
-<div class="line"><a name="l02387"></a><span class="lineno"> 2387</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a">File</a> != null &amp;&amp; File.HasFile(name);</div>
-<div class="line"><a name="l02388"></a><span class="lineno"> 2388</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02386">2386</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02387"></a><span class="lineno"> 2387</span>&#160;        {</div>
+<div class="line"><a name="l02388"></a><span class="lineno"> 2388</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a">File</a> != null &amp;&amp; File.HasFile(name);</div>
+<div class="line"><a name="l02389"></a><span class="lineno"> 2389</span>&#160;        }</div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_abcf803a30ed15881f71d248320d3fe2a"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a">Terraria.ModLoader.Mod.File</a></div><div class="ttdeci">TmodFile File</div><div class="ttdoc">The TmodFile object created when tModLoader reads this mod. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00026">Mod.cs:26</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -4390,10 +4390,10 @@ Private Member Functions</h2></td></tr>
 
 <p>Used to check if a custom SpriteFont exists </p>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02468">2468</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02469"></a><span class="lineno"> 2469</span>&#160;        {</div>
-<div class="line"><a name="l02470"></a><span class="lineno"> 2470</span>&#160;            <span class="keywordflow">return</span> fonts.ContainsKey(name);</div>
-<div class="line"><a name="l02471"></a><span class="lineno"> 2471</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02469">2469</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02470"></a><span class="lineno"> 2470</span>&#160;        {</div>
+<div class="line"><a name="l02471"></a><span class="lineno"> 2471</span>&#160;            <span class="keywordflow">return</span> fonts.ContainsKey(name);</div>
+<div class="line"><a name="l02472"></a><span class="lineno"> 2472</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -4555,14 +4555,14 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02477">2477</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02478"></a><span class="lineno"> 2478</span>&#160;        {</div>
-<div class="line"><a name="l02479"></a><span class="lineno"> 2479</span>&#160;            Effect effect;</div>
-<div class="line"><a name="l02480"></a><span class="lineno"> 2480</span>&#160;            <span class="keywordflow">if</span> (!effects.TryGetValue(name, out effect))</div>
-<div class="line"><a name="l02481"></a><span class="lineno"> 2481</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingResourceException(name);</div>
-<div class="line"><a name="l02482"></a><span class="lineno"> 2482</span>&#160;</div>
-<div class="line"><a name="l02483"></a><span class="lineno"> 2483</span>&#160;            <span class="keywordflow">return</span> effect;</div>
-<div class="line"><a name="l02484"></a><span class="lineno"> 2484</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02478">2478</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02479"></a><span class="lineno"> 2479</span>&#160;        {</div>
+<div class="line"><a name="l02480"></a><span class="lineno"> 2480</span>&#160;            Effect effect;</div>
+<div class="line"><a name="l02481"></a><span class="lineno"> 2481</span>&#160;            <span class="keywordflow">if</span> (!effects.TryGetValue(name, out effect))</div>
+<div class="line"><a name="l02482"></a><span class="lineno"> 2482</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingResourceException(name);</div>
+<div class="line"><a name="l02483"></a><span class="lineno"> 2483</span>&#160;</div>
+<div class="line"><a name="l02484"></a><span class="lineno"> 2484</span>&#160;            <span class="keywordflow">return</span> effect;</div>
+<div class="line"><a name="l02485"></a><span class="lineno"> 2485</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -4662,10 +4662,10 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02375">2375</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02376"></a><span class="lineno"> 2376</span>&#160;        {</div>
-<div class="line"><a name="l02377"></a><span class="lineno"> 2377</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a">File</a>?.GetFile(name);</div>
-<div class="line"><a name="l02378"></a><span class="lineno"> 2378</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02376">2376</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02377"></a><span class="lineno"> 2377</span>&#160;        {</div>
+<div class="line"><a name="l02378"></a><span class="lineno"> 2378</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a">File</a>?.GetFile(name);</div>
+<div class="line"><a name="l02379"></a><span class="lineno"> 2379</span>&#160;        }</div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_abcf803a30ed15881f71d248320d3fe2a"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a">Terraria.ModLoader.Mod.File</a></div><div class="ttdeci">TmodFile File</div><div class="ttdoc">The TmodFile object created when tModLoader reads this mod. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00026">Mod.cs:26</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -4692,14 +4692,14 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02456">2456</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02457"></a><span class="lineno"> 2457</span>&#160;        {</div>
-<div class="line"><a name="l02458"></a><span class="lineno"> 2458</span>&#160;            SpriteFont font;</div>
-<div class="line"><a name="l02459"></a><span class="lineno"> 2459</span>&#160;            <span class="keywordflow">if</span> (!fonts.TryGetValue(name, out font))</div>
-<div class="line"><a name="l02460"></a><span class="lineno"> 2460</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingResourceException(name);</div>
-<div class="line"><a name="l02461"></a><span class="lineno"> 2461</span>&#160;</div>
-<div class="line"><a name="l02462"></a><span class="lineno"> 2462</span>&#160;            <span class="keywordflow">return</span> font;</div>
-<div class="line"><a name="l02463"></a><span class="lineno"> 2463</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02457">2457</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02458"></a><span class="lineno"> 2458</span>&#160;        {</div>
+<div class="line"><a name="l02459"></a><span class="lineno"> 2459</span>&#160;            SpriteFont font;</div>
+<div class="line"><a name="l02460"></a><span class="lineno"> 2460</span>&#160;            <span class="keywordflow">if</span> (!fonts.TryGetValue(name, out font))</div>
+<div class="line"><a name="l02461"></a><span class="lineno"> 2461</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingResourceException(name);</div>
+<div class="line"><a name="l02462"></a><span class="lineno"> 2462</span>&#160;</div>
+<div class="line"><a name="l02463"></a><span class="lineno"> 2463</span>&#160;            <span class="keywordflow">return</span> font;</div>
+<div class="line"><a name="l02464"></a><span class="lineno"> 2464</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -5327,15 +5327,15 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02508">2508</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02509"></a><span class="lineno"> 2509</span>&#160;        {</div>
-<div class="line"><a name="l02510"></a><span class="lineno"> 2510</span>&#160;            <span class="keywordflow">if</span> (netID &lt; 0)</div>
-<div class="line"><a name="l02511"></a><span class="lineno"> 2511</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_exception.html">Exception</a>(<span class="stringliteral">&quot;Cannot get packet for &quot;</span> + <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Name</a> + <span class="stringliteral">&quot; because it does not exist on the other side&quot;</span>);</div>
-<div class="line"><a name="l02512"></a><span class="lineno"> 2512</span>&#160;</div>
-<div class="line"><a name="l02513"></a><span class="lineno"> 2513</span>&#160;            var p = <span class="keyword">new</span> ModPacket(MessageID.ModPacket, capacity + 5);</div>
-<div class="line"><a name="l02514"></a><span class="lineno"> 2514</span>&#160;            p.Write(netID);</div>
-<div class="line"><a name="l02515"></a><span class="lineno"> 2515</span>&#160;            <span class="keywordflow">return</span> p;</div>
-<div class="line"><a name="l02516"></a><span class="lineno"> 2516</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02509">2509</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02510"></a><span class="lineno"> 2510</span>&#160;        {</div>
+<div class="line"><a name="l02511"></a><span class="lineno"> 2511</span>&#160;            <span class="keywordflow">if</span> (netID &lt; 0)</div>
+<div class="line"><a name="l02512"></a><span class="lineno"> 2512</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_exception.html">Exception</a>(<span class="stringliteral">&quot;Cannot get packet for &quot;</span> + <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Name</a> + <span class="stringliteral">&quot; because it does not exist on the other side&quot;</span>);</div>
+<div class="line"><a name="l02513"></a><span class="lineno"> 2513</span>&#160;</div>
+<div class="line"><a name="l02514"></a><span class="lineno"> 2514</span>&#160;            var p = <span class="keyword">new</span> ModPacket(MessageID.ModPacket, capacity + 5);</div>
+<div class="line"><a name="l02515"></a><span class="lineno"> 2515</span>&#160;            p.Write(netID);</div>
+<div class="line"><a name="l02516"></a><span class="lineno"> 2516</span>&#160;            <span class="keywordflow">return</span> p;</div>
+<div class="line"><a name="l02517"></a><span class="lineno"> 2517</span>&#160;        }</div>
 <div class="ttc" id="class_exception_html"><div class="ttname"><a href="class_exception.html">Exception</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a8206e4bf920a7562a972dcb7c9e2ef09"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Terraria.ModLoader.Mod.Name</a></div><div class="ttdeci">virtual string Name</div><div class="ttdoc">Stores the name of the mod. This name serves as the mod&#39;s identification, and also helps with saving ...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00035">Mod.cs:35</a></div></div>
 </div><!-- fragment -->
@@ -5407,14 +5407,14 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02433">2433</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02434"></a><span class="lineno"> 2434</span>&#160;        {</div>
-<div class="line"><a name="l02435"></a><span class="lineno"> 2435</span>&#160;            SoundEffect sound;</div>
-<div class="line"><a name="l02436"></a><span class="lineno"> 2436</span>&#160;            <span class="keywordflow">if</span> (!sounds.TryGetValue(name, out sound))</div>
-<div class="line"><a name="l02437"></a><span class="lineno"> 2437</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingResourceException(name);</div>
-<div class="line"><a name="l02438"></a><span class="lineno"> 2438</span>&#160;</div>
-<div class="line"><a name="l02439"></a><span class="lineno"> 2439</span>&#160;            <span class="keywordflow">return</span> sound;</div>
-<div class="line"><a name="l02440"></a><span class="lineno"> 2440</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02434">2434</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02435"></a><span class="lineno"> 2435</span>&#160;        {</div>
+<div class="line"><a name="l02436"></a><span class="lineno"> 2436</span>&#160;            SoundEffect sound;</div>
+<div class="line"><a name="l02437"></a><span class="lineno"> 2437</span>&#160;            <span class="keywordflow">if</span> (!sounds.TryGetValue(name, out sound))</div>
+<div class="line"><a name="l02438"></a><span class="lineno"> 2438</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingResourceException(name);</div>
+<div class="line"><a name="l02439"></a><span class="lineno"> 2439</span>&#160;</div>
+<div class="line"><a name="l02440"></a><span class="lineno"> 2440</span>&#160;            <span class="keywordflow">return</span> sound;</div>
+<div class="line"><a name="l02441"></a><span class="lineno"> 2441</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -5551,14 +5551,14 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02394">2394</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02395"></a><span class="lineno"> 2395</span>&#160;        {</div>
-<div class="line"><a name="l02396"></a><span class="lineno"> 2396</span>&#160;            Texture2D t;</div>
-<div class="line"><a name="l02397"></a><span class="lineno"> 2397</span>&#160;            <span class="keywordflow">if</span> (!textures.TryGetValue(name, out t))</div>
-<div class="line"><a name="l02398"></a><span class="lineno"> 2398</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingResourceException(name);</div>
-<div class="line"><a name="l02399"></a><span class="lineno"> 2399</span>&#160;</div>
-<div class="line"><a name="l02400"></a><span class="lineno"> 2400</span>&#160;            <span class="keywordflow">return</span> t;</div>
-<div class="line"><a name="l02401"></a><span class="lineno"> 2401</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02395">2395</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02396"></a><span class="lineno"> 2396</span>&#160;        {</div>
+<div class="line"><a name="l02397"></a><span class="lineno"> 2397</span>&#160;            Texture2D t;</div>
+<div class="line"><a name="l02398"></a><span class="lineno"> 2398</span>&#160;            <span class="keywordflow">if</span> (!textures.TryGetValue(name, out t))</div>
+<div class="line"><a name="l02399"></a><span class="lineno"> 2399</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingResourceException(name);</div>
+<div class="line"><a name="l02400"></a><span class="lineno"> 2400</span>&#160;</div>
+<div class="line"><a name="l02401"></a><span class="lineno"> 2401</span>&#160;            <span class="keywordflow">return</span> t;</div>
+<div class="line"><a name="l02402"></a><span class="lineno"> 2402</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -6575,10 +6575,10 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02447">2447</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02448"></a><span class="lineno"> 2448</span>&#160;        {</div>
-<div class="line"><a name="l02449"></a><span class="lineno"> 2449</span>&#160;            <span class="keywordflow">return</span> sounds.ContainsKey(name);</div>
-<div class="line"><a name="l02450"></a><span class="lineno"> 2450</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02448">2448</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02449"></a><span class="lineno"> 2449</span>&#160;        {</div>
+<div class="line"><a name="l02450"></a><span class="lineno"> 2450</span>&#160;            <span class="keywordflow">return</span> sounds.ContainsKey(name);</div>
+<div class="line"><a name="l02451"></a><span class="lineno"> 2451</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -6605,10 +6605,10 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02408">2408</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l02409"></a><span class="lineno"> 2409</span>&#160;        {</div>
-<div class="line"><a name="l02410"></a><span class="lineno"> 2410</span>&#160;            <span class="keywordflow">return</span> textures.ContainsKey(name);</div>
-<div class="line"><a name="l02411"></a><span class="lineno"> 2411</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_8cs_source.html#l02409">2409</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l02410"></a><span class="lineno"> 2410</span>&#160;        {</div>
+<div class="line"><a name="l02411"></a><span class="lineno"> 2411</span>&#160;            <span class="keywordflow">return</span> textures.ContainsKey(name);</div>
+<div class="line"><a name="l02412"></a><span class="lineno"> 2412</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
