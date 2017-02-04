@@ -57,6 +57,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
 		internal readonly IDictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
+		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
@@ -191,6 +192,41 @@ namespace Terraria.ModLoader
 									fonts[xnbPath] = null;
 								}
 							}
+							else if (xnbPath.StartsWith("Effects/"))
+							{
+								string effectFilenameNoExtension = Name + "_" + xnbPath.Replace('/', '_') + "_" + Version;
+								string effectFilename = effectFilenameNoExtension + ".xnb";
+								try
+								{
+									using (MemoryStream ms = new MemoryStream(data))
+									using (BinaryReader br = new BinaryReader(ms))
+									{
+										char x = (char)br.ReadByte();//x
+										char n = (char)br.ReadByte();//n
+										char b = (char)br.ReadByte();//b
+										char w = (char)br.ReadByte();//w
+										byte xnbFormatVersion = br.ReadByte();//5
+										byte flags = br.ReadByte();//flags
+										UInt32 compressedDataSize = br.ReadUInt32();
+										if ((flags & 0x80) != 0)
+										{
+											UInt32 decompressedDataSize = br.ReadUInt32();
+										}
+										int typeReaderCount = br.ReadVarInt();
+										string typeReaderName = br.ReadString();
+										int typeReaderVersion = br.ReadInt32();
+										int sharedResourceCount = br.ReadVarInt();
+										int typeid = br.ReadVarInt();
+										UInt32 size = br.ReadUInt32();
+										byte[] effectBytecode = br.ReadBytes((int)size);
+										effects[xnbPath] = new Effect(Main.instance.GraphicsDevice, effectBytecode);
+									}
+								}
+								catch
+								{
+									effects[xnbPath] = null;
+								}
+							}
 							break;
 					}
 				}
@@ -201,7 +237,7 @@ namespace Terraria.ModLoader
 
 			IList<Type> modGores = new List<Type>();
 			IList<Type> modSounds = new List<Type>();
-			foreach (Type type in Code.GetTypes().OrderBy(type=>type.FullName))
+			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
 			{
 				if (type.IsAbstract)
 				{
@@ -345,7 +381,7 @@ namespace Terraria.ModLoader
 		{
 			mc.Name = name;
 			mc.mod = this;
-			
+
 			CommandManager.Add(mc);
 		}
 
@@ -2072,7 +2108,7 @@ namespace Terraria.ModLoader
 
 		private void AutoloadCommand(Type type)
 		{
-			var mc = (ModCommand) Activator.CreateInstance(type);
+			var mc = (ModCommand)Activator.CreateInstance(type);
 			mc.mod = this;
 			var name = type.Name;
 			if (mc.Autoload(ref name))
@@ -2251,7 +2287,7 @@ namespace Terraria.ModLoader
 				Main.npcNameEnglish[npc.npc.type] = npc.npc.name;
 				NPCLoader.SetupNPCInfo(npc.npc);
 				npc.SetDefaults();
-				if(npc.banner !=0)
+				if (npc.banner != 0)
 				{
 					NPCLoader.bannerToItem[npc.banner] = npc.bannerItem;
 				}
@@ -2432,6 +2468,27 @@ namespace Terraria.ModLoader
 		public bool FontExists(string name)
 		{
 			return fonts.ContainsKey(name);
+		}
+
+		/// <summary>
+		/// Gets an Effect loaded from the specified path.
+		/// </summary>
+		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
+		public Effect GetEffect(string name)
+		{
+			Effect effect;
+			if (!effects.TryGetValue(name, out effect))
+				throw new MissingResourceException(name);
+
+			return effect;
+		}
+
+		/// <summary>
+		/// Used to check if a custom Effect exists
+		/// </summary>
+		public bool EffectExists(string name)
+		{
+			return effects.ContainsKey(name);
 		}
 
 		/// <summary>
