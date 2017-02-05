@@ -49,7 +49,7 @@ namespace Terraria.ModLoader.Default
 
 		public override void Load(TagCompound tag)
 		{
-			items = tag.GetList<Item>("items");
+			items = tag.Get<List<Item>>("items");
 		}
 
 		public override void LoadLegacy(BinaryReader reader)

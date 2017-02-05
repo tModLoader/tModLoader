@@ -64,7 +64,7 @@ namespace Terraria.ModLoader.IO
 		public byte[] GetByteArray(string key) => Get<byte[]>(key);
 		public int[] GetIntArray(string key) => Get<int[]>(key);
 		public string GetString(string key) => Get<string>(key);
-		public List<T> GetList<T>(string key) => Get<List<T>>(key);
+		public IList<T> GetList<T>(string key) => Get<List<T>>(key);
 		public TagCompound GetCompound(string key) => Get<TagCompound>(key);
 		public bool GetBool(string key) => Get<bool>(key);
 
