@@ -17,6 +17,7 @@ namespace Terraria.ModLoader.IO
 		public abstract IList DeserializeList(IList value);
 
 		private static IDictionary<Type, TagSerializer> serializers = new Dictionary<Type, TagSerializer>();
+		private static IDictionary<string, Type> typeNameCache = new Dictionary<string, Type>();
 
 		static TagSerializer() {
 			Reload();
@@ -24,6 +25,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static void Reload() {
 			serializers.Clear();
+			typeNameCache.Clear();
 			AddSerializer(new BoolTagSerializer());
 			AddSerializer(new UShortTagSerializer());
 			AddSerializer(new UIntTagSerializer());
@@ -48,6 +50,24 @@ namespace Terraria.ModLoader.IO
 
 		public static void AddSerializer(TagSerializer serializer) {
 			serializers.Add(serializer.Type, serializer);
+		}
+
+		protected static Type GetType(string name) {
+			Type type;
+			if (typeNameCache.TryGetValue(name, out type))
+				return type;
+
+			type = Type.GetType(name);
+			if (type != null)
+				return typeNameCache[name] = type;
+
+			foreach (var mod in ModLoader.LoadedMods) {
+				type = mod.Code?.GetType(name);
+				if (type != null)
+					return typeNameCache[name] = type;
+			}
+
+			return null;
 		}
 	}
 

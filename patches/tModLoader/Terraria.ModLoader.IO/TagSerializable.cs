@@ -17,13 +17,13 @@ namespace Terraria.ModLoader.IO
 		public TagSerializableSerializer() {
 			var type = typeof(T);
 			var field = type.GetField("DESERIALIZER");
-			if (field == null)
-				throw new ArgumentException($"Missing deserializer for type {type.FullName}.");
-			if (field.FieldType != typeof(Func<TagCompound, T>))
-				throw new ArgumentException(
-					$"Invalid deserializer field type {field.FieldType} in {type.FullName} expected {typeof(Func<TagCompound, T>)}.");
+			if (field != null) {
+				if (field.FieldType != typeof(Func<TagCompound, T>))
+					throw new ArgumentException(
+						$"Invalid deserializer field type {field.FieldType} in {type.FullName} expected {typeof(Func<TagCompound, T>)}.");
 
-			deserializer = (Func<TagCompound, T>)field.GetValue(null);
+				deserializer = (Func<TagCompound, T>)field.GetValue(null);
+			}
 		}
 
 		public override TagCompound Serialize(T value) {
@@ -33,6 +33,16 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public override T Deserialize(TagCompound tag) {
+			if (tag.ContainsKey("<type>") && tag.GetString("<type>") != Type.FullName) {
+				var instType = GetType(tag.GetString("<type>"));
+				TagSerializer instSerializer;
+				if (instType != null && Type.IsAssignableFrom(instType) && TryGetSerializer(instType, out instSerializer))
+					return (T) instSerializer.Deserialize(tag);
+			}
+			
+			if (deserializer == null)
+				throw new ArgumentException($"Missing deserializer for type '{Type.FullName}'.");
+
 			return deserializer(tag);
 		}
 	}

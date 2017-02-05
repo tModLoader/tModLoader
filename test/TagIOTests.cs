@@ -6,20 +6,31 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
 
-namespace tModLoaderTests
+namespace Terraria.ModLoader
 {
 	[TestClass]
 	public class TagIOTests
 	{
+		private class MockMod : Mod
+		{
+			public MockMod() {
+				typeof(Mod).GetProperty("Code", BindingFlags.Instance | BindingFlags.Public)
+					.SetValue(this, typeof(MockMod).Assembly);
+			}
+		}
+
 		[ClassInitialize]
 		public static void ClassInit(TestContext context) {
+			//initialize a server context for Item IO
 			Main.dedServ = true;
 			var main = new Main();
 			typeof(Main).GetMethod("Initialize", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(main, new object[0]);
+
+			//add a mock mod for TagSerializable type resolving
+			typeof(ModLoader).GetField("loadedMods", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, new Mod[] {new MockMod() });
 		}
 
 		private void AssertEqual(object o1, object o2) {
@@ -686,6 +697,7 @@ namespace tModLoaderTests
 			}
 			catch (IOException e) {
 				Assert.AreEqual(e.Message, "NBT Deserialization (type=Terraria.Item,entry=int \"item\" = 0)");
+				Assert.AreEqual(e.InnerException.Message, "Unable to cast object of type 'System.Int32' to type 'Terraria.ModLoader.IO.TagCompound'.");
 			}
 
 			try {
@@ -756,6 +768,86 @@ namespace tModLoaderTests
 			AssertEqual(arr1, arr2);
 			arr1[3] = 0;
 			Assert.IsFalse(Enumerable.SequenceEqual(arr1, arr2));
+		}
+
+		class A : TagSerializable
+		{
+			public virtual TagCompound SerializeData() => new TagCompound();
+		}
+
+		class B : A
+		{
+			public static Func<TagCompound, B> DESERIALIZER = tag => new B();
+		}
+
+		class C : B
+		{
+			public new static Func<TagCompound, C> DESERIALIZER = tag => new C(tag.GetInt("value"));
+			public int value;
+
+			public C(int value) {
+				this.value = value;
+			}
+
+			public override TagCompound SerializeData() => new TagCompound { { "value", value } };
+		}
+
+		class C2 : TagSerializable
+		{
+			public new static Func<TagCompound, C2> DESERIALIZER = tag => new C2(tag.GetInt("value"));
+			public int value;
+
+			public C2(int value) {
+				this.value = value;
+			}
+
+			public TagCompound SerializeData() => new TagCompound { { "value", value } };
+		}
+
+		[TestMethod]
+		public void TestSerializableInheritance() {
+			var tag = new TagCompound {
+				["a"] = new A(),//no deserializer so unable to get it back
+				["b"] = new B(),
+				["c"] = new C(10),
+				["list"] = new List<A> {new B(), new C(12)}
+			};
+
+			//can use Get<A> even though A does not have a deserializer provided that the instance has <type> that is subtype of A
+			Assert.IsTrue(tag.Get<A>("b") is B);
+			Assert.IsTrue(tag.Get<A>("c") is C);
+			Assert.IsTrue(tag.Get<B>("c") is C);
+
+			var list = tag.GetList<A>("list");
+			Assert.IsTrue(list[0] is B);
+			Assert.IsTrue(list[1] is C);
+
+			var list2 = tag.GetList<B>("list");
+			Assert.IsTrue(list2[1] is C);
+
+			//missing deserializer for A
+			try {
+				tag.Get<A>("a");
+				Assert.Fail("Test method did not throw expected exception System.IO.IOException.");
+			}
+			catch (IOException e) {
+				Assert.AreEqual(e.Message, @"NBT Deserialization (type=Terraria.ModLoader.TagIOTests+A,entry=object ""a"" {
+  string ""<type>"" = ""Terraria.ModLoader.TagIOTests+A""
+})");
+				Assert.AreEqual(e.InnerException.Message, "Missing deserializer for type 'Terraria.ModLoader.TagIOTests+A'.");
+			}
+		}
+
+		[TestMethod]
+		public void TestSerializableRefactoring() {
+			var tag = new TagCompound {
+				["c"] = new C(15),
+				["list"] = new List<C> { new C(17) }
+			};
+			//can get C as C2 because their deserializers are compatible
+			Assert.AreEqual(tag.Get<C2>("c").value, 15);
+			Assert.AreEqual(tag.GetList<C2>("list")[0].value, 17);
+			//note that inheritance won't work unless the C2 deserializer deliberately looks at the <type> field
 		}
 	}
 }
