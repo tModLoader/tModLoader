@@ -89,7 +89,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -344,6 +_,136 @@
+@@ -344,6 +_,139 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -117,6 +117,9 @@
 +    <Compile Include="Terraria.ModLoader.IO\FontCacheIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\ItemIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\MapIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TagSerializer.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TagPrinter.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TagSerializable.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TileIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TmodFile.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\UploadFile.cs" />
@@ -226,6 +229,14 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
+@@ -468,6 +_,7 @@
+     <Compile Include="Terraria\IngameOptions.cs" />
+     <Compile Include="Terraria\Item.cs" />
+     <Compile Include="Terraria\ItemText.cs" />
++    <Compile Include="Terraria\Item_tML.cs" />
+     <Compile Include="Terraria\keyBoardInput.cs" Condition="$(DefineConstants.Contains('CLIENT'))" />
+     <Compile Include="Terraria\Lang.cs" />
+     <Compile Include="Terraria\Lighting.cs" />
 @@ -511,11 +_,58 @@
    </ItemGroup>
    <ItemGroup>

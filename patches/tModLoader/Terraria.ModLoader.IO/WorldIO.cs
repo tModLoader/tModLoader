@@ -201,7 +201,7 @@ namespace Terraria.ModLoader.IO
 				{
 					try
 					{
-						if (tag.HasTag("legacyData"))
+						if (tag.ContainsKey("legacyData"))
 							modWorld.LoadLegacy(new BinaryReader(new MemoryStream(tag.GetByteArray("legacyData"))));
 						else
 							modWorld.Load(tag.GetCompound("data"));

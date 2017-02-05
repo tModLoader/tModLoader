@@ -80,7 +80,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadTiles(TagCompound tag)
 		{
-			if (!tag.HasTag("data"))
+			if (!tag.ContainsKey("data"))
 				return;
 
 			var tables = TileTables.Create();
@@ -531,11 +531,11 @@ namespace Terraria.ModLoader.IO
 				WriteContainerData(writer);
 			}
 			var tag = new TagCompound();
-			tag.SetTag("data", ms.ToArray());
+			tag.Set("data", ms.ToArray());
 
 			if (itemFrames.Count > 0)
 			{
-				tag.SetTag("itemFrames", itemFrames.Select(entry =>
+				tag.Set("itemFrames", itemFrames.Select(entry =>
 					new TagCompound {
 						["id"] = entry.Value,
 						["item"] = ItemIO.Save(((TEItemFrame)TileEntity.ByID[entry.Key]).item)
@@ -547,7 +547,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadContainers(TagCompound tag)
 		{
-			if (tag.HasTag("data"))
+			if (tag.ContainsKey("data"))
 				ReadContainers(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))));
 
 			foreach (var frameTag in tag.GetList<TagCompound>("itemFrames"))
@@ -713,7 +713,7 @@ namespace Terraria.ModLoader.IO
 					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
-					if (tag.HasTag("data"))
+					if (tag.ContainsKey("data"))
 					{
 						try
 						{
