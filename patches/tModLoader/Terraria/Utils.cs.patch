@@ -1,0 +1,28 @@
+--- src/Terraria\Terraria\Utils.cs
++++ src/tModLoader\Terraria\Utils.cs
+@@ -516,9 +_,24 @@
+ 			return array;
+ 		}
+ 
++		public static bool NextBool(this UnifiedRandom r)
++		{
++			return r.NextDouble() < .5;
++		}
++
+ 		public static float NextFloat(this UnifiedRandom r)
+ 		{
+ 			return (float)r.NextDouble();
++		}
++
++		public static float NextFloat(this UnifiedRandom r, float maxValue)
++		{
++			return (float)r.NextDouble() * maxValue;
++		}
++
++		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue)
++		{
++			return (float)r.NextDouble() * (maxValue - minValue) + minValue;
+ 		}
+ 
+ 		public static float NextFloatDirection(this UnifiedRandom r)
+
