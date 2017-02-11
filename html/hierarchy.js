@@ -70,6 +70,7 @@ var hierarchy =
     [ "Terraria.ModLoader.MusicWrapper", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html", null ],
     [ "Terraria.ModLoader.NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", null ],
     [ "Terraria.ModLoader.NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", null ],
+    [ "Terraria.ModLoader.NPCSpawnHelper", "class_terraria_1_1_mod_loader_1_1_n_p_c_spawn_helper.html", null ],
     [ "Terraria.ModLoader.NPCSpawnInfo", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html", null ],
     [ "Terraria.ModLoader.PlayerDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html", null ],
     [ "Terraria.ModLoader.PlayerHeadDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html", null ],
@@ -79,6 +80,7 @@ var hierarchy =
     [ "Terraria.ModLoader.RecipeFinder", "class_terraria_1_1_mod_loader_1_1_recipe_finder.html", null ],
     [ "Terraria.ModLoader.RecipeHooks", "class_terraria_1_1_mod_loader_1_1_recipe_hooks.html", null ],
     [ "Terraria.ModLoader.SoundLoader", "class_terraria_1_1_mod_loader_1_1_sound_loader.html", null ],
+    [ "Terraria.ModLoader.SpawnCondition", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html", null ],
     [ "Terraria.ModLoader.SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", null ],
     [ "TileEntity", "class_tile_entity.html", [
       [ "Terraria.ModLoader.ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", null ]

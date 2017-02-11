@@ -173,6 +173,10 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "NPCLoader.cs", "_n_p_c_loader_8cs.html", [
       [ "NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader" ]
     ] ],
+    [ "NPCSpawnHelper.cs", "_n_p_c_spawn_helper_8cs.html", [
+      [ "NPCSpawnHelper", "class_terraria_1_1_mod_loader_1_1_n_p_c_spawn_helper.html", null ],
+      [ "SpawnCondition", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html", "class_terraria_1_1_mod_loader_1_1_spawn_condition" ]
+    ] ],
     [ "NPCSpawnInfo.cs", "_n_p_c_spawn_info_8cs.html", [
       [ "NPCSpawnInfo", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info" ]
     ] ],

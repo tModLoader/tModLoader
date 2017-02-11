@@ -1,10 +1,13 @@
 var searchData=
 [
+  ['darkmummy',['DarkMummy',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ac33abc76db4fc12b65d16fdab03801c2',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['defaultwatercritter',['DefaultWaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ac1ee371f225f1f684c00e529d370c088',1,'Terraria::ModLoader::SpawnCondition']]],
   ['dependencies',['dependencies',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a75c3e6abd05c040d8cf0965f81a84547',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['dependents',['dependents',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a5c9de86a25361d7c4588740e88b2cf86',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['description',['Description',['../class_terraria_1_1_mod_loader_1_1_mod_command.html#ac807de4b57a97d5ee2c6105ceff5d4b9',1,'Terraria::ModLoader::ModCommand']]],
-  ['desertcave',['desertCave',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a2d05ed125dcfd4ddb200fcfee3b810c4',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['desertcave',['DesertCave',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a475a145a78b7251a8444afbd9dfdc06b',1,'Terraria.ModLoader.SpawnCondition.DesertCave()'],['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a2d05ed125dcfd4ddb200fcfee3b810c4',1,'Terraria.ModLoader.NPCSpawnInfo.desertCave()']]],
   ['disablesmartcursor',['disableSmartCursor',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a08ffa633e41dff9e482d868dd4886c5d',1,'Terraria::ModLoader::ModTile']]],
+  ['doctorbones',['DoctorBones',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a7019033032c2107b0d31d52268b988ce',1,'Terraria::ModLoader::SpawnCondition']]],
   ['downloadingfile',['downloadingFile',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6',1,'Terraria::ModLoader::ModNet']]],
   ['downloadinglength',['downloadingLength',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#aae814b95283be86b1b3d858effecfe30',1,'Terraria::ModLoader::ModNet']]],
   ['downloadingmod',['downloadingMod',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2',1,'Terraria::ModLoader::ModNet']]],
@@ -24,5 +27,8 @@ var searchData=
   ['dresser',['dresser',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a125b4cf8b3b5f6df2f741e04c594e056',1,'Terraria::ModLoader::ModTile']]],
   ['dresserdrop',['dresserDrop',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6f7bde71246c41e527f49e1bcbf95b0b',1,'Terraria::ModLoader::ModTile']]],
   ['drop',['drop',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a37295f3be76008d083ffdacebe0fa6a9',1,'Terraria.ModLoader.ModTile.drop()'],['../class_terraria_1_1_mod_loader_1_1_mod_wall.html#a7dc02bd5778a1411f4c5ceda311729ae',1,'Terraria.ModLoader.ModWall.drop()']]],
+  ['dungeon',['Dungeon',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a581fe329a29c04e6ed525e79e5742ce8',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['dungeonguardian',['DungeonGuardian',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a389bccc1dceb8ce9bbe3ae9e1c2e229f',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['dungeonnormal',['DungeonNormal',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a1933a310825df550a7f9aa0ee25cca73',1,'Terraria::ModLoader::SpawnCondition']]],
   ['dusttype',['dustType',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#acb29b9805a72524b6de8106705b24cfe',1,'Terraria.ModLoader.ModTile.dustType()'],['../class_terraria_1_1_mod_loader_1_1_mod_wall.html#a2b63876aee2b887ad2c5cc197da5f4b4',1,'Terraria.ModLoader.ModWall.dustType()']]]
 ];

@@ -9,10 +9,12 @@ var searchData=
   ['walltype',['WallType',['../class_terraria_1_1_mod_loader_1_1_mod.html#af340bf9dfb387a748ee760e9bccd48dc',1,'Terraria::ModLoader::Mod']]],
   ['walltype_3c_20t_20_3e',['WallType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#aebc821e0b8d7140739c3261c23c9e4aa',1,'Terraria::ModLoader::Mod']]],
   ['water',['water',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a0a875d4463252e0a7c96d77123ebcbad',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['watercritter',['WaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a8150149a776c7a8e458e8de2b415116e',1,'Terraria::ModLoader::SpawnCondition']]],
   ['waterfallstyleloader',['WaterfallStyleLoader',['../class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html',1,'Terraria::ModLoader']]],
   ['waterstylecount',['WaterStyleCount',['../class_terraria_1_1_mod_loader_1_1_water_style_loader.html#a5041de98d67f19fc02f79faa66b56791',1,'Terraria::ModLoader::WaterStyleLoader']]],
   ['waterstyleloader',['WaterStyleLoader',['../class_terraria_1_1_mod_loader_1_1_water_style_loader.html',1,'Terraria::ModLoader']]],
   ['waterstyleloader_2ecs',['WaterStyleLoader.cs',['../_water_style_loader_8cs.html',1,'']]],
+  ['watersurface',['WaterSurface',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad04077a5e04bb5aeae4af21ba347e6c9',1,'Terraria::ModLoader::SpawnCondition']]],
   ['weakdependencies',['weakDependencies',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ae643996c2853e9920e00158a40170f55',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['weakdepname',['WeakDepName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a02b7417ef7a92de374f735302631561f',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['windows',['windows',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae1c2677390744cbfe231c6dceafc8059',1,'Terraria::ModLoader::ModLoader']]],
@@ -24,5 +26,8 @@ var searchData=
   ['worldgenpostgen',['WorldGenPostGen',['../class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html#aa625c397f69a1ad3e49bc6bfd16a7f8e',1,'Terraria::ModLoader::ModWorldHooks']]],
   ['worldhooks',['WorldHooks',['../class_terraria_1_1_mod_loader_1_1_world_hooks.html',1,'Terraria::ModLoader']]],
   ['worldhooks_2ecs',['WorldHooks.cs',['../_world_hooks_8cs.html',1,'']]],
+  ['wormcritter',['WormCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad0c9e5bc7dce146093692ca3fec7c17c',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['wraith',['Wraith',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a02a19fdfa58040226209c8ab3f7adaa1',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['wraithnewmoon',['WraithNewMoon',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a28d32093c98349444597f90fc0da7fcc',1,'Terraria::ModLoader::SpawnCondition']]],
   ['writeextradata',['WriteExtraData',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ac9e40959685f686d505ce021827211a5',1,'Terraria::ModLoader::ModTileEntity']]]
 ];

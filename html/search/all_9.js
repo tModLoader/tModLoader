@@ -1,11 +1,13 @@
 var searchData=
 [
   ['ibuildstatus',['IBuildStatus',['../interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html',1,'Terraria::ModLoader::ModCompile']]],
+  ['icegolem',['IceGolem',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a94bf56b7bcc8ff6b997a211672bdd896',1,'Terraria::ModLoader::SpawnCondition']]],
   ['imagepath',['ImagePath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65b7a720428c518f86def4274239282d',1,'Terraria::ModLoader::ModLoader']]],
   ['indexes',['indexes',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad668aa929984715c3d439cc1051bcabb',1,'Terraria::ModLoader::PlayerHooks']]],
   ['initialize',['Initialize',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a7b06737bb45ee8fae87eb4c989b40da6',1,'Terraria.ModLoader.ModPlayer.Initialize()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6f3043872c696c1531599e0273be6cab',1,'Terraria.ModLoader.ModTileEntity.Initialize()'],['../class_terraria_1_1_mod_loader_1_1_mod_world.html#adeaf03c2c6361b70d0c0eabca94641d7',1,'Terraria.ModLoader.ModWorld.Initialize()']]],
+  ['innerthird',['InnerThird',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a349f9947f04186b4e43285c35f592b12',1,'Terraria::ModLoader::SpawnCondition']]],
   ['interface_2ecs',['Interface.cs',['../_interface_8cs.html',1,'']]],
-  ['invasion',['invasion',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eb193778914243d9a2a00f08b1bcf67',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['invasion',['Invasion',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af5c63fa8152be1f8ab27336edea50760',1,'Terraria.ModLoader.SpawnCondition.Invasion()'],['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eb193778914243d9a2a00f08b1bcf67',1,'Terraria.ModLoader.NPCSpawnInfo.invasion()']]],
   ['isanglerquestavailable',['IsAnglerQuestAvailable',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a5a61ec22b6991616cad881bfc21c0696',1,'Terraria.ModLoader.GlobalItem.IsAnglerQuestAvailable()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a12c471e74f4e242296f5ede45fa3d2b0',1,'Terraria.ModLoader.ItemLoader.IsAnglerQuestAvailable()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a96dd26858841172db14aa3798635c2ba',1,'Terraria.ModLoader.ModItem.IsAnglerQuestAvailable()']]],
   ['isarmorset',['IsArmorSet',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a9ea562f4cb6d576abae4b59452e7bccd',1,'Terraria.ModLoader.GlobalItem.IsArmorSet()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a324513758f139965b9c5d13c588c5517',1,'Terraria.ModLoader.ModItem.IsArmorSet()']]],
   ['ischest',['IsChest',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a384ced08408667764c62d480170b9721',1,'Terraria::ModLoader::TileLoader']]],

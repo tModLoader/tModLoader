@@ -1,6 +1,10 @@
 var searchData=
 [
+  ['ocean',['Ocean',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae65bb31b4b0fd34318c4fb001c114a7e',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['oceanangler',['OceanAngler',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a67d02405c628cbf19defe959d6a64167',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['oceanmonster',['OceanMonster',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aab7742d0a9a8c5db93d1f95b23be69e0',1,'Terraria::ModLoader::SpawnCondition']]],
   ['old',['Old',['../class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a80075f235592b2b6e8419f86db38a051',1,'Terraria::ModLoader::ModHotKey']]],
+  ['oldonesarmy',['OldOnesArmy',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad8dce19d1c0a8fcd1331f984025e6300',1,'Terraria::ModLoader::SpawnCondition']]],
   ['onchatbuttonclicked',['OnChatButtonClicked',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1ee36b9bb95769ce0c242ee45fdf73d2',1,'Terraria.ModLoader.ModNPC.OnChatButtonClicked()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a866e9f26ad79ed221f9278ca65b39f9e',1,'Terraria.ModLoader.NPCLoader.OnChatButtonClicked()']]],
   ['oncraft',['OnCraft',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a249ba5f11f5876c86ae83412cd1e6598',1,'Terraria.ModLoader.GlobalItem.OnCraft()'],['../class_terraria_1_1_mod_loader_1_1_global_recipe.html#aab876a7e2421ad9a0efeec4a2c0ac99a',1,'Terraria.ModLoader.GlobalRecipe.OnCraft()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a5c5e519b42cfc2ebcfda9b0cefe98ad6',1,'Terraria.ModLoader.ItemLoader.OnCraft()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a7531a27b227757d9bc54400dcd6e9877',1,'Terraria.ModLoader.ModItem.OnCraft()'],['../class_terraria_1_1_mod_loader_1_1_mod_recipe.html#aa08e23a05f2777ba929f5cb9762cf27f',1,'Terraria.ModLoader.ModRecipe.OnCraft()'],['../class_terraria_1_1_mod_loader_1_1_recipe_hooks.html#a57ca1e610a05308544c85afb58dc3c03',1,'Terraria.ModLoader.RecipeHooks.OnCraft()']]],
   ['onenterworld',['OnEnterWorld',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a6c573a92f3a8df8f393ca26492d7eb3b',1,'Terraria.ModLoader.ModPlayer.OnEnterWorld()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a5eb8615ff4b95fd1dc7e6a61ef3498c2',1,'Terraria.ModLoader.PlayerHooks.OnEnterWorld()']]],
@@ -22,5 +26,18 @@ var searchData=
   ['openbossbag',['OpenBossBag',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a26a04e0f6b5c69e8e50f020b6b83b5b6',1,'Terraria.ModLoader.ItemLoader.OpenBossBag()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53a548e1400eada55a6526d2f320d6c',1,'Terraria.ModLoader.ModItem.OpenBossBag()']]],
   ['opendoorid',['OpenDoorID',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a9e16060039b7bb467e8e025ac42627d7',1,'Terraria.ModLoader.TileLoader.OpenDoorID()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a5b97707910c9ef35487ada2139c679ae',1,'Terraria.ModLoader.ModTile.openDoorID()']]],
   ['openvanillabag',['OpenVanillaBag',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f',1,'Terraria.ModLoader.GlobalItem.OpenVanillaBag()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ade1e4bae9c5338483c565e66b63ad332',1,'Terraria.ModLoader.ItemLoader.OpenVanillaBag()']]],
-  ['overridecolor',['overrideColor',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#af22965163fa53144bf2a087773b85ae4',1,'Terraria::ModLoader::TooltipLine']]]
+  ['overridecolor',['overrideColor',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#af22965163fa53144bf2a087773b85ae4',1,'Terraria::ModLoader::TooltipLine']]],
+  ['overworld',['Overworld',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a9fa604b25de61d828fa3350e1463a963',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworldday',['OverworldDay',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ab20dcffcb0522a2040a23a7d4e354f74',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworlddaybirdcritter',['OverworldDayBirdCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a48c98e9647c12a1bdd8878a14cf518a4',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworlddaygrasscritter',['OverworldDayGrassCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a2e34aa3e64ab6c807fabff7ed2ecc003',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworlddaysandcritter',['OverworldDaySandCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a6330d405999ab66c0e76a93c152020b0',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworlddaysnowcritter',['OverworldDaySnowCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a83d890c782f17e40d23107f961a6a22d',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworldhallow',['OverworldHallow',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a6ec55de72122c67e48a6cfbb7f8caaa4',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworldmimic',['OverworldMimic',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a1169cac7839f35e81ecc71674ce45b0f',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworldmorningbirdcritter',['OverworldMorningBirdCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a95c695f8b2c95f62edb0620705c2b524',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworldmushroom',['OverworldMushroom',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a6898c05096e81f5b622925464decb6ae',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworldunderwatercritter',['OverworldUnderwaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a1e04e6c0dc6422e616cfa027ef49b1ef',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworldwatercritter',['OverworldWaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a36b107b61b6b40748569f2f6315c16c0',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['overworldwatersurfacecritter',['OverworldWaterSurfaceCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aa0fb3fa1363e700e0b44200993c118f8',1,'Terraria::ModLoader::SpawnCondition']]]
 ];

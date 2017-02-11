@@ -14,6 +14,7 @@ var searchData=
   ['finish',['Finish',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#a84bd87fba12532acbbc22aa4e7ebe996',1,'Terraria::ModLoader::ModPacket']]],
   ['fontexists',['FontExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#ade5d55a43735a11dded9db34d5f73305',1,'Terraria::ModLoader::Mod']]],
   ['frameeffects',['FrameEffects',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a155cba1e22cce620d994dac9d88e993e',1,'Terraria.ModLoader.ModPlayer.FrameEffects()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a460c2b183e3a96ee8d626ecae17c8d67',1,'Terraria.ModLoader.PlayerHooks.FrameEffects()']]],
+  ['frogcritter',['FrogCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a0576ddf1b86463287a14626af1a375bf',1,'Terraria::ModLoader::SpawnCondition']]],
   ['fromtile',['FromTile',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#adac24a887bf8f87339a3b47521e379fa',1,'Terraria::ModLoader::MapLegend']]],
   ['fromtype',['FromType',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#a9958c49d708107b8be02bc53a47aa5ee',1,'Terraria::ModLoader::MapLegend']]],
   ['front',['Front',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a5835bab1ade0060909e31a06af2e2cde',1,'Terraria.ModLoader.Front()'],['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a5835bab1ade0060909e31a06af2e2cde',1,'Terraria.ModLoader.Front()']]],
@@ -21,5 +22,7 @@ var searchData=
   ['frontextra',['FrontExtra',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398acb87ecd0146e4043453f646f8ec64a8a',1,'Terraria::ModLoader']]],
   ['frontextraglow',['FrontExtraGlow',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aa1227743ed969deb8c75c2f841620983',1,'Terraria::ModLoader']]],
   ['frontglow',['FrontGlow',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aeb2f12de52987b96bc59c077116d2f26',1,'Terraria::ModLoader']]],
-  ['frontshader',['frontShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a98d4f8a7fd8d11e63cb66fc444b528eb',1,'Terraria::ModLoader::PlayerDrawInfo']]]
+  ['frontshader',['frontShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a98d4f8a7fd8d11e63cb66fc444b528eb',1,'Terraria::ModLoader::PlayerDrawInfo']]],
+  ['frostlegion',['FrostLegion',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#add3059ef2523a887dbd521e1fb53b444',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['frostmoon',['FrostMoon',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a9be44e557bfee2a9392ec64beac2a153',1,'Terraria::ModLoader::SpawnCondition']]]
 ];

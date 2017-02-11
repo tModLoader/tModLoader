@@ -13,6 +13,7 @@ var struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info =
     [ "playerSafe", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aedf609963b14f1e49cbd78745b9b09d1", null ],
     [ "safeRangeX", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a019c1f1fb493b8ceb88fb399d88011a1", null ],
     [ "sky", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aaf1db6c1c5c57bc85b858ce0505c164e", null ],
+    [ "spawnTileType", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a3ca2535d11081e71301b32f291329055", null ],
     [ "spawnTileX", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aed52fe7f29e8f48655d7b7865b17efb7", null ],
     [ "spawnTileY", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a6f106aed6cd8ea4fb3efa22960fa5500", null ],
     [ "spiderCave", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a10c3b0e027716d413775e959b981ea10", null ],
