@@ -658,12 +658,13 @@
  												flag11 = true;
  											}
  										}
-@@ -65424,8 +_,33 @@
+@@ -65424,8 +_,34 @@
  								}
  							}
  						}
 +						spawnInfo.spawnTileX = num;
 +						spawnInfo.spawnTileY = num2;
++						spawnInfo.spawnTileType = num3;
 +						spawnInfo.player = Main.player[j];
 +						spawnInfo.sky = flag;
 +						spawnInfo.lihzahrd = flag2;

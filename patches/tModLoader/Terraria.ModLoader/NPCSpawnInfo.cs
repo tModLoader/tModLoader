@@ -9,6 +9,8 @@ namespace Terraria.ModLoader
 		//num
 		public int spawnTileY;
 		//num2
+		public int spawnTileType;
+		//num3
 		public Player player;
 		//Main.player[j]
 		public int playerFloorX;
