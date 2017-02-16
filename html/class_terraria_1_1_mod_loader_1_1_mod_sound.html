@@ -114,20 +114,26 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModSound Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class allows you to customize how a sound you add is played. To use this, pass an instance to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a69d7e56dcfcd228f47704d9a2fb5c9a1" title="Adds the given sound file to the game as the given type of sound and with the given custom sound play...">Mod.AddSound</a>, or if you are autoloading sounds, give an overriding class the same name as the file with the sound you are adding.  
+ <a href="class_terraria_1_1_mod_loader_1_1_mod_sound.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab79f314a7dab9c6e95eb1bc8390fa0e5"><td class="memItemLeft" align="right" valign="top">virtual SoundEffectInstance&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html#ab79f314a7dab9c6e95eb1bc8390fa0e5">PlaySound</a> (ref SoundEffectInstance soundInstance, float volume, float pan, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type)</td></tr>
+<tr class="memdesc:ab79f314a7dab9c6e95eb1bc8390fa0e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this hook to customize how this sound is played. If this sound is already currently playing, you have the option to call soundInstance.Stop(). You must eventually assign the result of sound.CreateInstance() to soundInstace. Afterwards, you can modify soundInstance.Volume, soundInstance.Pan, and soundInstance.Pitch to your liking. The default volume and pan have been passed as parameters. Volume measures loudness, pan measures how far to the left or right the sound is, and pitch measures the octave. Finally, call Main.PlaySoundInstance(soundInstance).  <a href="#ab79f314a7dab9c6e95eb1bc8390fa0e5">More...</a><br/></td></tr>
 <tr class="separator:ab79f314a7dab9c6e95eb1bc8390fa0e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:af96e0f27b33af5337f999385aca13b00"><td class="memItemLeft" align="right" valign="top">SoundEffect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html#af96e0f27b33af5337f999385aca13b00">sound</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:af96e0f27b33af5337f999385aca13b00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SoundEffect instance of the sound that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> controls. This is here so you can call CreateInstance on it.  <a href="#af96e0f27b33af5337f999385aca13b00">More...</a><br/></td></tr>
 <tr class="separator:af96e0f27b33af5337f999385aca13b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_sound_8cs_source.html#l00007">7</a> of file <a class="el" href="_mod_sound_8cs_source.html">ModSound.cs</a>.</p>
+<div class="textblock"><p>This class allows you to customize how a sound you add is played. To use this, pass an instance to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a69d7e56dcfcd228f47704d9a2fb5c9a1" title="Adds the given sound file to the game as the given type of sound and with the given custom sound play...">Mod.AddSound</a>, or if you are autoloading sounds, give an overriding class the same name as the file with the sound you are adding. </p>
+
+<p>Definition at line <a class="el" href="_mod_sound_8cs_source.html#l00010">10</a> of file <a class="el" href="_mod_sound_8cs_source.html">ModSound.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ab79f314a7dab9c6e95eb1bc8390fa0e5"></a>
 <div class="memitem">
@@ -173,10 +179,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_sound_8cs_source.html#l00015">15</a> of file <a class="el" href="_mod_sound_8cs_source.html">ModSound.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">return</span> soundInstance;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
+<p>Override this hook to customize how this sound is played. If this sound is already currently playing, you have the option to call soundInstance.Stop(). You must eventually assign the result of sound.CreateInstance() to soundInstace. Afterwards, you can modify soundInstance.Volume, soundInstance.Pan, and soundInstance.Pitch to your liking. The default volume and pan have been passed as parameters. Volume measures loudness, pan measures how far to the left or right the sound is, and pitch measures the octave. Finally, call Main.PlaySoundInstance(soundInstance). </p>
+
+<p>Definition at line <a class="el" href="_mod_sound_8cs_source.html#l00024">24</a> of file <a class="el" href="_mod_sound_8cs_source.html">ModSound.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keywordflow">return</span> soundInstance;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -199,7 +207,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_sound_8cs_source.html#l00010">10</a> of file <a class="el" href="_mod_sound_8cs_source.html">ModSound.cs</a>.</p>
+<p>The SoundEffect instance of the sound that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> controls. This is here so you can call CreateInstance on it. </p>
+
+<p>Definition at line <a class="el" href="_mod_sound_8cs_source.html#l00016">16</a> of file <a class="el" href="_mod_sound_8cs_source.html">ModSound.cs</a>.</p>
 
 </div>
 </div>

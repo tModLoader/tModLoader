@@ -113,6 +113,9 @@ $(document).ready(function(){initNavTree('struct_terraria_1_1_mod_loader_1_1_mod
 <div class="title">Terraria.ModLoader.ModProperties Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This is a struct that stores the properties of a mod. Without setting it in your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> constructor, all properties default to true.  
+ <a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.ModProperties:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -126,17 +129,22 @@ $(document).ready(function(){initNavTree('struct_terraria_1_1_mod_loader_1_1_mod
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a087996f5753cf503e72090d39ab7e30b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a></td></tr>
+<tr class="memdesc:a087996f5753cf503e72090d39ab7e30b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.  <a href="#a087996f5753cf503e72090d39ab7e30b">More...</a><br/></td></tr>
 <tr class="separator:a087996f5753cf503e72090d39ab7e30b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae6b80f1ec219e29d73538b4203f0a7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#aae6b80f1ec219e29d73538b4203f0a7b">AutoloadBackgrounds</a></td></tr>
+<tr class="memdesc:aae6b80f1ec219e29d73538b4203f0a7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a6dec81443d46c9904a00522d66b9c025" title="Adds a texture to the list of background textures and assigns it a background texture slot...">Mod.AddBackgroundTexture</a>.  <a href="#aae6b80f1ec219e29d73538b4203f0a7b">More...</a><br/></td></tr>
 <tr class="separator:aae6b80f1ec219e29d73538b4203f0a7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16c8e5757c9dc2222f6ba228f7e5904b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a16c8e5757c9dc2222f6ba228f7e5904b">AutoloadGores</a></td></tr>
+<tr class="memdesc:a16c8e5757c9dc2222f6ba228f7e5904b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_gore.html" title="This class allows you to customize the behavior of a custom gore. Create a new instance of this and p...">ModGore</a> classes that share names with the images. This means you do not need to manually call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a0f77bc7cc6bb96b5c825c9b008b0ac70" title="Adds the given texture to the game as a custom gore, with the given custom gore behavior. If no custom gore behavior is provided, the custom gore will have the default vanilla behavior. ">Mod.AddGore</a>.  <a href="#a16c8e5757c9dc2222f6ba228f7e5904b">More...</a><br/></td></tr>
 <tr class="separator:a16c8e5757c9dc2222f6ba228f7e5904b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0244d40fda762b6bd1ba844fbd4bff0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a0244d40fda762b6bd1ba844fbd4bff0f">AutoloadSounds</a></td></tr>
+<tr class="memdesc:a0244d40fda762b6bd1ba844fbd4bff0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, Sounds/NPCKilled to add them as npcKilled sounds, and Sounds/Music to add them as music tracks. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.  <a href="#a0244d40fda762b6bd1ba844fbd4bff0f">More...</a><br/></td></tr>
 <tr class="separator:a0244d40fda762b6bd1ba844fbd4bff0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00003">3</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
+<div class="textblock"><p>This is a struct that stores the properties of a mod. Without setting it in your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> constructor, all properties default to true. </p>
+
+<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00006">6</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a087996f5753cf503e72090d39ab7e30b"></a>
 <div class="memitem">
@@ -148,7 +156,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00005">5</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
+<p>Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods. </p>
+
+<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00011">11</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
 
 </div>
 </div>
@@ -162,7 +172,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00008">8</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
+<p>Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a6dec81443d46c9904a00522d66b9c025" title="Adds a texture to the list of background textures and assigns it a background texture slot...">Mod.AddBackgroundTexture</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00023">23</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
 
 </div>
 </div>
@@ -176,7 +188,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00006">6</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
+<p>Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_gore.html" title="This class allows you to customize the behavior of a custom gore. Create a new instance of this and p...">ModGore</a> classes that share names with the images. This means you do not need to manually call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a0f77bc7cc6bb96b5c825c9b008b0ac70" title="Adds the given texture to the game as a custom gore, with the given custom gore behavior. If no custom gore behavior is provided, the custom gore will have the default vanilla behavior. ">Mod.AddGore</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00015">15</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
 
 </div>
 </div>
@@ -190,7 +204,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00007">7</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
+<p>Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, Sounds/NPCKilled to add them as npcKilled sounds, and Sounds/Music to add them as music tracks. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html" title="This class allows you to customize how a sound you add is played. To use this, pass an instance to Mo...">ModSound</a> classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound. </p>
+
+<p>Definition at line <a class="el" href="_mod_properties_8cs_source.html#l00019">19</a> of file <a class="el" href="_mod_properties_8cs_source.html">ModProperties.cs</a>.</p>
 
 </div>
 </div>

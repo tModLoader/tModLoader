@@ -26,7 +26,7 @@ var class_terraria_1_1_mod_loader_1_1_wall_loader =
     [ "HookKillWall", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a4bfa233e0297257e565af6d295ff6880", null ],
     [ "HookModifyLight", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a6e8569349b6a1c6c4dd17e5e730e2652", null ],
     [ "HookNumDust", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#aa7a5b9dc93e92b11816ee05bf00f840c", null ],
-    [ "HookPlaceInWorld", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a1c76d75ced0ebfd57d711197fe5ed217", null ],
+    [ "HookPlaceInWorld", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a8580211020b6d60c017521508bfcd15e", null ],
     [ "HookPostDraw", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a6f0417c2f83dfa6928d62221422e20f0", null ],
     [ "HookPreDraw", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a594f30835e931eec3218c2748d8a489e", null ],
     [ "HookRandomUpdate", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a986ab927e9ba60ae8b0013f72ccb08ee", null ],

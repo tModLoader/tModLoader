@@ -117,6 +117,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModDust Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class represents a type of dust that is added by a mod. Only one instance of this class will ever exist for each type of dust you add.  
+ <a href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.ModDust:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -130,37 +133,49 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab3c7ebf96d19b4aa4deb475b7760fb1d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#ab3c7ebf96d19b4aa4deb475b7760fb1d">Autoload</a> (ref string name, ref string texture)</td></tr>
+<tr class="memdesc:ab3c7ebf96d19b4aa4deb475b7760fb1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically add a type of dust without having to use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a35e24b2d8b9d749c129d8219023b0ec0" title="Adds a type of dust to your mod with the specified name. Create an instance of ModDust normally...">Mod.AddDust</a>. By default returns the mod's Autoload property. Return true to automatically add the dust. Name will be initialized to the dust's class name, and Texture will be initialized to the dust's namespace and overriding class name with periods replaced with slashes. The name parameter determines the internal name and the texture parameter determines the texture path.  <a href="#ab3c7ebf96d19b4aa4deb475b7760fb1d">More...</a><br/></td></tr>
 <tr class="separator:ab3c7ebf96d19b4aa4deb475b7760fb1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a595d1d941a4efceaf52161c72b67d16b"><td class="memItemLeft" align="right" valign="top">virtual Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a595d1d941a4efceaf52161c72b67d16b">GetAlpha</a> (Dust dust, Color lightColor)</td></tr>
+<tr class="memdesc:a595d1d941a4efceaf52161c72b67d16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to override the color this dust will draw in. Return null to draw it in the normal light color; returns null by default. Note that the dust.noLight field makes the dust ignore lighting and draw in full brightness, and can be set in OnSpawn instead of having to return Color.White here.  <a href="#a595d1d941a4efceaf52161c72b67d16b">More...</a><br/></td></tr>
 <tr class="separator:a595d1d941a4efceaf52161c72b67d16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a432ce1ee01beee1b52f8814540c1f1a9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a432ce1ee01beee1b52f8814540c1f1a9">MidUpdate</a> (Dust dust)</td></tr>
+<tr class="memdesc:a432ce1ee01beee1b52f8814540c1f1a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add behavior to this dust on top of the default dust behavior. Return true if you're applying your own behavior; return false to make the dust slow down by itself. Normally you will want this to return true.  <a href="#a432ce1ee01beee1b52f8814540c1f1a9">More...</a><br/></td></tr>
 <tr class="separator:a432ce1ee01beee1b52f8814540c1f1a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4716ad247673f0cd67b5adbdbc6acf8f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a4716ad247673f0cd67b5adbdbc6acf8f">OnSpawn</a> (Dust dust)</td></tr>
+<tr class="memdesc:a4716ad247673f0cd67b5adbdbc6acf8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify a dust's fields when it is created.  <a href="#a4716ad247673f0cd67b5adbdbc6acf8f">More...</a><br/></td></tr>
 <tr class="separator:a4716ad247673f0cd67b5adbdbc6acf8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae40da1253a003b27d36c0e642ab35a1d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#ae40da1253a003b27d36c0e642ab35a1d">SetDefaults</a> ()</td></tr>
+<tr class="memdesc:ae40da1253a003b27d36c0e642ab35a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a>'s updateType field and modify the Terraria.GameContent.ChildSafety.SafeDust array.  <a href="#ae40da1253a003b27d36c0e642ab35a1d">More...</a><br/></td></tr>
 <tr class="separator:ae40da1253a003b27d36c0e642ab35a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44c328fcde3b224cd0a968c53dc488f7"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a44c328fcde3b224cd0a968c53dc488f7">Update</a> (Dust dust)</td></tr>
+<tr class="memdesc:a44c328fcde3b224cd0a968c53dc488f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize how you want this type of dust to behave. Return true to allow for vanilla dust updating to also take place; will return true by default. Normally you will want this to return false.  <a href="#a44c328fcde3b224cd0a968c53dc488f7">More...</a><br/></td></tr>
 <tr class="separator:a44c328fcde3b224cd0a968c53dc488f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:afe80059dd56be18b6eb1fd9ef940cb29"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html">ModDust</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#afe80059dd56be18b6eb1fd9ef940cb29">GetDust</a> (int type)</td></tr>
+<tr class="memdesc:afe80059dd56be18b6eb1fd9ef940cb29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a> instance with the given type. Returns null if no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a> with the given type exists.  <a href="#afe80059dd56be18b6eb1fd9ef940cb29">More...</a><br/></td></tr>
 <tr class="separator:afe80059dd56be18b6eb1fd9ef940cb29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a18e783583878c109c264f68125124624"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a18e783583878c109c264f68125124624">updateType</a> = -1</td></tr>
+<tr class="memdesc:a18e783583878c109c264f68125124624"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to choose a type of dust for this type of dust to copy the behavior of. Defaults to -1, which means that no behavior is copied. <a href="#a18e783583878c109c264f68125124624">More...</a><br/></td></tr>
 <tr class="separator:a18e783583878c109c264f68125124624"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a397724ea1f64d1cf97cc9ccf11861492"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a397724ea1f64d1cf97cc9ccf11861492">mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a397724ea1f64d1cf97cc9ccf11861492"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod that added this type of dust.  <a href="#a397724ea1f64d1cf97cc9ccf11861492">More...</a><br/></td></tr>
 <tr class="separator:a397724ea1f64d1cf97cc9ccf11861492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a657ec9211252ef3d04ebca3ed37a33cb"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a657ec9211252ef3d04ebca3ed37a33cb">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a657ec9211252ef3d04ebca3ed37a33cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this type of dust.  <a href="#a657ec9211252ef3d04ebca3ed37a33cb">More...</a><br/></td></tr>
 <tr class="separator:a657ec9211252ef3d04ebca3ed37a33cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4289599558a78cfddf304d6cd31328af"><td class="memItemLeft" align="right" valign="top">Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a4289599558a78cfddf304d6cd31328af">Texture</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a4289599558a78cfddf304d6cd31328af"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sprite sheet that this type of dust uses. Normally a sprite sheet will consist of a vertical alignment of three 10 x 10 pixel squares, each one containing a possible look for the dust.  <a href="#a4289599558a78cfddf304d6cd31328af">More...</a><br/></td></tr>
 <tr class="separator:a4289599558a78cfddf304d6cd31328af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c4d21a59e6d4fa71e9682a3479a01dd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a8c4d21a59e6d4fa71e9682a3479a01dd">Type</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a8c4d21a59e6d4fa71e9682a3479a01dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of this type of dust.  <a href="#a8c4d21a59e6d4fa71e9682a3479a01dd">More...</a><br/></td></tr>
 <tr class="separator:a8c4d21a59e6d4fa71e9682a3479a01dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
@@ -169,8 +184,9 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:aa384bf7dd8fe0fdf6e0b8fa04c5bfa3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00010">10</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<div class="textblock"><p>This class represents a type of dust that is added by a mod. Only one instance of this class will ever exist for each type of dust you add. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00013">13</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ab3c7ebf96d19b4aa4deb475b7760fb1d"></a>
 <div class="memitem">
@@ -204,12 +220,14 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00114">114</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<p>Allows you to automatically add a type of dust without having to use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a35e24b2d8b9d749c129d8219023b0ec0" title="Adds a type of dust to your mod with the specified name. Create an instance of ModDust normally...">Mod.AddDust</a>. By default returns the mod's Autoload property. Return true to automatically add the dust. Name will be initialized to the dust's class name, and Texture will be initialized to the dust's namespace and overriding class name with periods replaced with slashes. The name parameter determines the internal name and the texture parameter determines the texture path. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00136">136</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00761">Terraria.ModLoader.Mod.AutoloadDust()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        {</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div>
+<div class="fragment"><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        {</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -256,10 +274,12 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00148">148</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        {</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        }</div>
+<p>Allows you to override the color this dust will draw in. Return null to draw it in the normal light color; returns null by default. Note that the dust.noLight field makes the dust ignore lighting and draw in full brightness, and can be set in OnSpawn instead of having to return Color.White here. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00187">187</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -285,10 +305,12 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00042">42</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">return</span> type &gt;= DustID.Count &amp;&amp; type &lt; DustCount ? dusts[type - DustID.Count] : null;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
+<p>Gets the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a> instance with the given type. Returns null if no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a> with the given type exists. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00061">61</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">return</span> type &gt;= DustID.Count &amp;&amp; type &lt; DustCount ? dusts[type - DustID.Count] : null;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -314,10 +336,12 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00134">134</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        {</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        }</div>
+<p>Allows you to add behavior to this dust on top of the default dust behavior. Return true if you're applying your own behavior; return false to make the dust slow down by itself. Normally you will want this to return true. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00169">169</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        {</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -343,9 +367,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00123">123</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        }</div>
+<p>Allows you to modify a dust's fields when it is created. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00151">151</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        {</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -370,9 +396,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00119">119</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        {</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div>
+<p>Allows you to set this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a>'s updateType field and modify the Terraria.GameContent.ChildSafety.SafeDust array. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00144">144</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        {</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -398,10 +426,12 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00129">129</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
+<p>Allows you to customize how you want this type of dust to behave. Return true to allow for vanilla dust updating to also take place; will return true by default. Normally you will want this to return false. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00161">161</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        {</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -424,7 +454,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00012">12</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00015">15</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
 
 </div>
 </div>
@@ -438,7 +468,9 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00014">14</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<p>Allows you to choose a type of dust for this type of dust to copy the behavior of. Defaults to -1, which means that no behavior is copied.</p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
 
 </div>
 </div>
@@ -461,7 +493,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00029">29</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<p>The mod that added this type of dust. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00042">42</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00708">Terraria.ModLoader.Mod.AddDust()</a>.</p>
 
@@ -485,7 +519,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00017">17</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<p>The internal name of this type of dust. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00024">24</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
 
 </div>
 </div>
@@ -507,7 +543,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00023">23</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<p>The sprite sheet that this type of dust uses. Normally a sprite sheet will consist of a vertical alignment of three 10 x 10 pixel squares, each one containing a possible look for the dust. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00033">33</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
 
 </div>
 </div>
@@ -529,7 +567,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00035">35</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
+<p>The ID of this type of dust. </p>
+
+<p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00051">51</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
 
 </div>
 </div>

@@ -114,60 +114,59 @@ $(document).ready(function(){initNavTree('_mod_hotkey_8cs_source.html','');});
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>Terraria.ModLoader</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html">    8</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html">ModHotKey</a></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <span class="keyword">internal</span> readonly <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <span class="keyword">internal</span> readonly <span class="keywordtype">string</span> name; <span class="comment">// name from modder: &quot;Random Buff&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keyword">internal</span> readonly <span class="keywordtype">string</span> displayName; <span class="comment">// display name: &quot;Example Mod: Random Buff&quot; -- unique AKA _keyName</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keyword">internal</span> readonly <span class="keywordtype">string</span> defaultKey; <span class="comment">// from mod.Load</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="keyword">internal</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html">ModHotKey</a>(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, <span class="keywordtype">string</span> name, <span class="keywordtype">string</span> defaultKey)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            this.mod = mod;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            this.name = name;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            this.defaultKey = defaultKey;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            this.displayName = mod.Name + <span class="stringliteral">&quot;: &quot;</span> + name;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="comment">// Gets the currently assigned keybindings. Useful for prompts, tooltips, informing users.</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a48fa65a5c634d3aa656fb145fc14db9c">   24</a></span>&#160;        <span class="keyword">public</span> List&lt;string&gt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a48fa65a5c634d3aa656fb145fc14db9c">GetAssignedKeys</a>(InputMode mode = InputMode.Keyboard)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keywordflow">return</span> PlayerInput.CurrentProfile.InputModes[mode].KeyStatus[displayName];</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> RetroCurrent</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a78f6c0c928b44fd0810a97bc212b4382">   30</a></span>&#160;        {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keyword">get</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                <span class="keywordflow">if</span> (Main.drawingPlayerChat || Main.player[Main.myPlayer].talkNPC != -1 || Main.player[Main.myPlayer].sign != -1) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keywordflow">return</span> Current;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> Current</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a4e8375d5be966ec564963c805d054665">   39</a></span>&#160;        {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> PlayerInput.Triggers.Current.KeyStatus[displayName]; }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> JustPressed</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a325f7773e0ba4d81d3e03f18a3a58224">   44</a></span>&#160;        {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> PlayerInput.Triggers.JustPressed.KeyStatus[displayName]; }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> JustReleased</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a0de4ef1d36bba60692684804ba575408">   49</a></span>&#160;        {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> PlayerInput.Triggers.JustReleased.KeyStatus[displayName]; }</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html">   11</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html">ModHotKey</a></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keyword">internal</span> readonly <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keyword">internal</span> readonly <span class="keywordtype">string</span> name; <span class="comment">// name from modder: &quot;Random Buff&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="keyword">internal</span> readonly <span class="keywordtype">string</span> displayName; <span class="comment">// display name: &quot;Example Mod: Random Buff&quot; -- unique AKA _keyName</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">internal</span> readonly <span class="keywordtype">string</span> defaultKey; <span class="comment">// from mod.Load</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keyword">internal</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html">ModHotKey</a>(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, <span class="keywordtype">string</span> name, <span class="keywordtype">string</span> defaultKey)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            this.mod = mod;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            this.name = name;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            this.defaultKey = defaultKey;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            this.displayName = mod.Name + <span class="stringliteral">&quot;: &quot;</span> + name;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        }</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a48fa65a5c634d3aa656fb145fc14db9c">   31</a></span>&#160;        <span class="keyword">public</span> List&lt;string&gt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a48fa65a5c634d3aa656fb145fc14db9c">GetAssignedKeys</a>(InputMode mode = InputMode.Keyboard)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordflow">return</span> PlayerInput.CurrentProfile.InputModes[mode].KeyStatus[displayName];</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> RetroCurrent</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a78f6c0c928b44fd0810a97bc212b4382">   37</a></span>&#160;        {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keyword">get</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <span class="keywordflow">if</span> (Main.drawingPlayerChat || Main.player[Main.myPlayer].talkNPC != -1 || Main.player[Main.myPlayer].sign != -1) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="keywordflow">return</span> Current;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> Current</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a4e8375d5be966ec564963c805d054665">   49</a></span>&#160;        {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> PlayerInput.Triggers.Current.KeyStatus[displayName]; }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> Old</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a80075f235592b2b6e8419f86db38a051">   54</a></span>&#160;        {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> PlayerInput.Triggers.Old.KeyStatus[displayName]; }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_hot_key_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html">Terraria.ModLoader.ModHotKey</a></div><div class="ttdef"><b>Definition:</b> <a href="_mod_hotkey_8cs_source.html#l00008">ModHotkey.cs:8</a></div></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> JustPressed</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a325f7773e0ba4d81d3e03f18a3a58224">   57</a></span>&#160;        {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> PlayerInput.Triggers.JustPressed.KeyStatus[displayName]; }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> JustReleased</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a0de4ef1d36bba60692684804ba575408">   65</a></span>&#160;        {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> PlayerInput.Triggers.JustReleased.KeyStatus[displayName]; }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> Old</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a80075f235592b2b6e8419f86db38a051">   73</a></span>&#160;        {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">get</span> { <span class="keywordflow">return</span> PlayerInput.Triggers.Old.KeyStatus[displayName]; }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_hot_key_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html">Terraria.ModLoader.ModHotKey</a></div><div class="ttdoc">Represents a loaded hotkey. It is suggested to access the hotkey status only in ModPlayer.ProcessTriggers. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hotkey_8cs_source.html#l00011">ModHotkey.cs:11</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html">Terraria.ModLoader.Mod</a></div><div class="ttdoc">Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00021">Mod.cs:21</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_hot_key_html_a48fa65a5c634d3aa656fb145fc14db9c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a48fa65a5c634d3aa656fb145fc14db9c">Terraria.ModLoader.ModHotKey.GetAssignedKeys</a></div><div class="ttdeci">List&lt; string &gt; GetAssignedKeys(InputMode mode=InputMode.Keyboard)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hotkey_8cs_source.html#l00024">ModHotkey.cs:24</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_hot_key_html_a48fa65a5c634d3aa656fb145fc14db9c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a48fa65a5c634d3aa656fb145fc14db9c">Terraria.ModLoader.ModHotKey.GetAssignedKeys</a></div><div class="ttdeci">List&lt; string &gt; GetAssignedKeys(InputMode mode=InputMode.Keyboard)</div><div class="ttdoc">Gets the currently assigned keybindings. Useful for prompts, tooltips, informing users. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hotkey_8cs_source.html#l00031">ModHotkey.cs:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

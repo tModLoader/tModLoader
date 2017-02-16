@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModWall Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type.  
+ <a href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.ModWall:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -128,63 +131,88 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af812dbaae129c1fc393a694b337669bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#af812dbaae129c1fc393a694b337669bf">AddMapEntry</a> (Color color, string name=&quot;&quot;)</td></tr>
+<tr class="memdesc:af812dbaae129c1fc393a694b337669bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.  <a href="#af812dbaae129c1fc393a694b337669bf">More...</a><br/></td></tr>
 <tr class="separator:af812dbaae129c1fc393a694b337669bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad214c23fe31cd509dd0c26bd85cbcf2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#ad214c23fe31cd509dd0c26bd85cbcf2e">AddMapEntry</a> (Color color, string name, Func&lt; string, int, int, string &gt; nameFunc)</td></tr>
+<tr class="memdesc:ad214c23fe31cd509dd0c26bd85cbcf2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.  <a href="#ad214c23fe31cd509dd0c26bd85cbcf2e">More...</a><br/></td></tr>
 <tr class="separator:ad214c23fe31cd509dd0c26bd85cbcf2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b9855075312c5bd2859e6a1e169789d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a5b9855075312c5bd2859e6a1e169789d">AnimateWall</a> (ref byte frame, ref byte frameCounter)</td></tr>
+<tr class="memdesc:a5b9855075312c5bd2859e6a1e169789d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to animate your wall. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame.  <a href="#a5b9855075312c5bd2859e6a1e169789d">More...</a><br/></td></tr>
 <tr class="separator:a5b9855075312c5bd2859e6a1e169789d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae666e7352ab01dfab8b25212bca0a895"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#ae666e7352ab01dfab8b25212bca0a895">Autoload</a> (ref string name, ref string texture)</td></tr>
+<tr class="memdesc:ae666e7352ab01dfab8b25212bca0a895"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the name and texture path of this wall when it is autoloaded. Return true to autoload this wall. When a wall is autoloaded, that means you do not need to manually call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a8a88e102920c0596be47c89571f03160" title="Adds a type of wall to the game with the specified name and texture. ">Mod.AddWall</a>. By default returns the mod's autoload property.  <a href="#ae666e7352ab01dfab8b25212bca0a895">More...</a><br/></td></tr>
 <tr class="separator:ae666e7352ab01dfab8b25212bca0a895"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35d294ae08919df4344c0433642868f4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a35d294ae08919df4344c0433642868f4">CanExplode</a> (int i, int j)</td></tr>
+<tr class="memdesc:a35d294ae08919df4344c0433642868f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the wall at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.  <a href="#a35d294ae08919df4344c0433642868f4">More...</a><br/></td></tr>
 <tr class="separator:a35d294ae08919df4344c0433642868f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd08a8791f6e0357c0dec43e386ad509"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#acd08a8791f6e0357c0dec43e386ad509">CreateDust</a> (int i, int j, ref int type)</td></tr>
+<tr class="memdesc:acd08a8791f6e0357c0dec43e386ad509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the default type of dust created when the wall at the given coordinates is hit. Return false to stop the default dust (the type parameter) from being created. Returns true by default.  <a href="#acd08a8791f6e0357c0dec43e386ad509">More...</a><br/></td></tr>
 <tr class="separator:acd08a8791f6e0357c0dec43e386ad509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4060d05de1bdfb5549d20b2204f04dc"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#af4060d05de1bdfb5549d20b2204f04dc">Drop</a> (int i, int j, ref int type)</td></tr>
+<tr class="memdesc:af4060d05de1bdfb5549d20b2204f04dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which items the wall at the given coordinates drops. Return false to stop the game from dropping the tile's default item (the type parameter). Returns true by default.  <a href="#af4060d05de1bdfb5549d20b2204f04dc">More...</a><br/></td></tr>
 <tr class="separator:af4060d05de1bdfb5549d20b2204f04dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70c29a33f0fba029b347b8dae73ae80e"><td class="memItemLeft" align="right" valign="top">virtual ushort&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a70c29a33f0fba029b347b8dae73ae80e">GetMapOption</a> (int i, int j)</td></tr>
+<tr class="memdesc:a70c29a33f0fba029b347b8dae73ae80e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to choose which minimap entry the wall at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.  <a href="#a70c29a33f0fba029b347b8dae73ae80e">More...</a><br/></td></tr>
 <tr class="separator:a70c29a33f0fba029b347b8dae73ae80e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7c5b271b6f090c9810e1181d57b35ba"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#aa7c5b271b6f090c9810e1181d57b35ba">KillSound</a> (int i, int j)</td></tr>
+<tr class="memdesc:aa7c5b271b6f090c9810e1181d57b35ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which sound you want to play when the wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the wall. Returns true by default.  <a href="#aa7c5b271b6f090c9810e1181d57b35ba">More...</a><br/></td></tr>
 <tr class="separator:aa7c5b271b6f090c9810e1181d57b35ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e154201c19225ab3992d2d75f87bfe4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a8e154201c19225ab3992d2d75f87bfe4">KillWall</a> (int i, int j, ref bool fail)</td></tr>
+<tr class="memdesc:a8e154201c19225ab3992d2d75f87bfe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when the tile at the given coordinates is killed or hit with a hammer. Fail determines whether the tile is mined (whether it is killed).  <a href="#a8e154201c19225ab3992d2d75f87bfe4">More...</a><br/></td></tr>
 <tr class="separator:a8e154201c19225ab3992d2d75f87bfe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74645c373ed9daad3c7a49550277d06e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a74645c373ed9daad3c7a49550277d06e">ModifyLight</a> (int i, int j, ref float r, ref float g, ref float b)</td></tr>
+<tr class="memdesc:a74645c373ed9daad3c7a49550277d06e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how much light this wall emits. This can also let you light up the block in front of this wall.  <a href="#a74645c373ed9daad3c7a49550277d06e">More...</a><br/></td></tr>
 <tr class="separator:a74645c373ed9daad3c7a49550277d06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29f912c61578079455228cbe78a89a96"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a29f912c61578079455228cbe78a89a96">NumDust</a> (int i, int j, bool fail, ref int num)</td></tr>
+<tr class="memdesc:a29f912c61578079455228cbe78a89a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change how many dust particles are created when the wall at the given coordinates is hit.  <a href="#a29f912c61578079455228cbe78a89a96">More...</a><br/></td></tr>
 <tr class="separator:a29f912c61578079455228cbe78a89a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc87eea403a85b67b23b81d1427ce384"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#acc87eea403a85b67b23b81d1427ce384">PlaceInWorld</a> (int i, int j, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
+<tr class="memdesc:acc87eea403a85b67b23b81d1427ce384"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after this wall is placed in the world by way of the item provided.  <a href="#acc87eea403a85b67b23b81d1427ce384">More...</a><br/></td></tr>
 <tr class="separator:acc87eea403a85b67b23b81d1427ce384"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af05b47fe0f4b6b4054dd00609e2acf43"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#af05b47fe0f4b6b4054dd00609e2acf43">PostDraw</a> (int i, int j, SpriteBatch spriteBatch)</td></tr>
+<tr class="memdesc:af05b47fe0f4b6b4054dd00609e2acf43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of the wall at the given coordinates.  <a href="#af05b47fe0f4b6b4054dd00609e2acf43">More...</a><br/></td></tr>
 <tr class="separator:af05b47fe0f4b6b4054dd00609e2acf43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e6b4aa1a37ada414c481f9356232ee5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a2e6b4aa1a37ada414c481f9356232ee5">PreDraw</a> (int i, int j, SpriteBatch spriteBatch)</td></tr>
+<tr class="memdesc:a2e6b4aa1a37ada414c481f9356232ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind the wall at the given coordinates. Return false to stop the game from drawing the wall normally. Returns true by default.  <a href="#a2e6b4aa1a37ada414c481f9356232ee5">More...</a><br/></td></tr>
 <tr class="separator:a2e6b4aa1a37ada414c481f9356232ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b194aeea4481bd121598e0845294cf3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a8b194aeea4481bd121598e0845294cf3">RandomUpdate</a> (int i, int j)</td></tr>
+<tr class="memdesc:a8b194aeea4481bd121598e0845294cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the world randomly decides to update the tile containing this wall in a given tick. Useful for things such as growing or spreading.  <a href="#a8b194aeea4481bd121598e0845294cf3">More...</a><br/></td></tr>
 <tr class="separator:a8b194aeea4481bd121598e0845294cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ef2e5554dd8f96bdb01dfe255812131"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a8ef2e5554dd8f96bdb01dfe255812131">SetDefaults</a> ()</td></tr>
+<tr class="memdesc:a8ef2e5554dd8f96bdb01dfe255812131"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the properties of this wall. Many properties are stored as arrays throughout <a class="el" href="namespace_terraria.html">Terraria</a>'s code.  <a href="#a8ef2e5554dd8f96bdb01dfe255812131">More...</a><br/></td></tr>
 <tr class="separator:a8ef2e5554dd8f96bdb01dfe255812131"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a7dc02bd5778a1411f4c5ceda311729ae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a7dc02bd5778a1411f4c5ceda311729ae">drop</a> = 0</td></tr>
+<tr class="memdesc:a7dc02bd5778a1411f4c5ceda311729ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default type of item dropped when this wall is killed. Defaults to 0, which means no item.  <a href="#a7dc02bd5778a1411f4c5ceda311729ae">More...</a><br/></td></tr>
 <tr class="separator:a7dc02bd5778a1411f4c5ceda311729ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b63876aee2b887ad2c5cc197da5f4b4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a2b63876aee2b887ad2c5cc197da5f4b4">dustType</a> = 0</td></tr>
+<tr class="memdesc:a2b63876aee2b887ad2c5cc197da5f4b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default type of dust made when this wall is hit. Defaults to 0.  <a href="#a2b63876aee2b887ad2c5cc197da5f4b4">More...</a><br/></td></tr>
 <tr class="separator:a2b63876aee2b887ad2c5cc197da5f4b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee5b552c3134301c2d4811e83933b935"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#aee5b552c3134301c2d4811e83933b935">soundStyle</a> = 1</td></tr>
+<tr class="memdesc:aee5b552c3134301c2d4811e83933b935"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default style of sound made when this wall is hit. Defaults to 1.  <a href="#aee5b552c3134301c2d4811e83933b935">More...</a><br/></td></tr>
 <tr class="separator:aee5b552c3134301c2d4811e83933b935"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eaf57f9424ffcff0499e8565544bc63"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a9eaf57f9424ffcff0499e8565544bc63">soundType</a> = 0</td></tr>
+<tr class="memdesc:a9eaf57f9424ffcff0499e8565544bc63"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default type of sound made when this wall is hit. Defaults to 0.  <a href="#a9eaf57f9424ffcff0499e8565544bc63">More...</a><br/></td></tr>
 <tr class="separator:a9eaf57f9424ffcff0499e8565544bc63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:afc268e1968446b6f1a8beb8110d129c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#afc268e1968446b6f1a8beb8110d129c0">mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:afc268e1968446b6f1a8beb8110d129c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod which has added this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html" title="This class represents a type of wall that can be added by a mod. Only one instance of this class will...">ModWall</a>.  <a href="#afc268e1968446b6f1a8beb8110d129c0">More...</a><br/></td></tr>
 <tr class="separator:afc268e1968446b6f1a8beb8110d129c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa04bb390fe1906d40a9b87ec8b6d8cb3"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#aa04bb390fe1906d40a9b87ec8b6d8cb3">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:aa04bb390fe1906d40a9b87ec8b6d8cb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of this type of wall.  <a href="#aa04bb390fe1906d40a9b87ec8b6d8cb3">More...</a><br/></td></tr>
 <tr class="separator:aa04bb390fe1906d40a9b87ec8b6d8cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfc54ec4ada24f4b3fb549b69cbc19b0"><td class="memItemLeft" align="right" valign="top">ushort&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:adfc54ec4ada24f4b3fb549b69cbc19b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal ID of this type of wall.  <a href="#adfc54ec4ada24f4b3fb549b69cbc19b0">More...</a><br/></td></tr>
 <tr class="separator:adfc54ec4ada24f4b3fb549b69cbc19b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00009">9</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="textblock"><p>This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00012">12</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="af812dbaae129c1fc393a694b337669bf"></a>
 <div class="memitem">
@@ -210,19 +238,21 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00035">35</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">if</span> (!MapLoader.initialized)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                MapEntry entry = <span class="keyword">new</span> MapEntry(color, name);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <span class="keywordflow">if</span> (!MapLoader.wallEntries.Keys.Contains(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>))</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                    MapLoader.wallEntries[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>] = <span class="keyword">new</span> List&lt;MapEntry&gt;();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                MapLoader.wallEntries[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>].Add(entry);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_wall_html_adfc54ec4ada24f4b3fb549b69cbc19b0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Terraria.ModLoader.ModWall.Type</a></div><div class="ttdeci">ushort Type</div><div class="ttdef"><b>Definition:</b> <a href="_mod_wall_8cs_source.html#l00024">ModWall.cs:24</a></div></div>
+<p>Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00062">62</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">if</span> (!MapLoader.initialized)</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                MapEntry entry = <span class="keyword">new</span> MapEntry(color, name);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                <span class="keywordflow">if</span> (!MapLoader.wallEntries.Keys.Contains(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>))</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    MapLoader.wallEntries[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>] = <span class="keyword">new</span> List&lt;MapEntry&gt;();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                MapLoader.wallEntries[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>].Add(entry);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_wall_html_adfc54ec4ada24f4b3fb549b69cbc19b0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Terraria.ModLoader.ModWall.Type</a></div><div class="ttdeci">ushort Type</div><div class="ttdoc">The internal ID of this type of wall. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_wall_8cs_source.html#l00036">ModWall.cs:36</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -256,19 +286,21 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00048">48</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">if</span> (!MapLoader.initialized)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                MapEntry entry = <span class="keyword">new</span> MapEntry(color, name, nameFunc);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keywordflow">if</span> (!MapLoader.wallEntries.Keys.Contains(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>))</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                    MapLoader.wallEntries[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>] = <span class="keyword">new</span> List&lt;MapEntry&gt;();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                MapLoader.wallEntries[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>].Add(entry);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_wall_html_adfc54ec4ada24f4b3fb549b69cbc19b0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Terraria.ModLoader.ModWall.Type</a></div><div class="ttdeci">ushort Type</div><div class="ttdef"><b>Definition:</b> <a href="_mod_wall_8cs_source.html#l00024">ModWall.cs:24</a></div></div>
+<p>Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00078">78</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">if</span> (!MapLoader.initialized)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                MapEntry entry = <span class="keyword">new</span> MapEntry(color, name, nameFunc);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <span class="keywordflow">if</span> (!MapLoader.wallEntries.Keys.Contains(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>))</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    MapLoader.wallEntries[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>] = <span class="keyword">new</span> List&lt;MapEntry&gt;();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                MapLoader.wallEntries[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Type</a>].Add(entry);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_wall_html_adfc54ec4ada24f4b3fb549b69cbc19b0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0">Terraria.ModLoader.ModWall.Type</a></div><div class="ttdeci">ushort Type</div><div class="ttdoc">The internal ID of this type of wall. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_wall_8cs_source.html#l00036">ModWall.cs:36</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -304,9 +336,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00113">113</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
+<p>Allows you to animate your wall. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00179">179</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        {</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -342,12 +376,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00061">61</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<p>Allows you to modify the name and texture path of this wall when it is autoloaded. Return true to autoload this wall. When a wall is autoloaded, that means you do not need to manually call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a8a88e102920c0596be47c89571f03160" title="Adds a type of wall to the game with the specified name and texture. ">Mod.AddWall</a>. By default returns the mod's autoload property. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00094">94</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l01031">Terraria.ModLoader.Mod.AutoloadWall()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
+<div class="fragment"><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -394,10 +430,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00095">95</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<p>Whether or not the wall at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00149">149</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -439,12 +477,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00079">79</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            type = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a2b63876aee2b887ad2c5cc197da5f4b4">dustType</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_wall_html_a2b63876aee2b887ad2c5cc197da5f4b4"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a2b63876aee2b887ad2c5cc197da5f4b4">Terraria.ModLoader.ModWall.dustType</a></div><div class="ttdeci">int dustType</div><div class="ttdef"><b>Definition:</b> <a href="_mod_wall_8cs_source.html#l00032">ModWall.cs:32</a></div></div>
+<p>Allows you to modify the default type of dust created when the wall at the given coordinates is hit. Return false to stop the default dust (the type parameter) from being created. Returns true by default. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00124">124</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            type = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a2b63876aee2b887ad2c5cc197da5f4b4">dustType</a>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_wall_html_a2b63876aee2b887ad2c5cc197da5f4b4"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a2b63876aee2b887ad2c5cc197da5f4b4">Terraria.ModLoader.ModWall.dustType</a></div><div class="ttdeci">int dustType</div><div class="ttdoc">The default type of dust made when this wall is hit. Defaults to 0. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_wall_8cs_source.html#l00053">ModWall.cs:53</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -486,12 +526,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00085">85</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            type = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a7dc02bd5778a1411f4c5ceda311729ae">drop</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_wall_html_a7dc02bd5778a1411f4c5ceda311729ae"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a7dc02bd5778a1411f4c5ceda311729ae">Terraria.ModLoader.ModWall.drop</a></div><div class="ttdeci">int drop</div><div class="ttdef"><b>Definition:</b> <a href="_mod_wall_8cs_source.html#l00033">ModWall.cs:33</a></div></div>
+<p>Allows you to customize which items the wall at the given coordinates drops. Return false to stop the game from dropping the tile's default item (the type parameter). Returns true by default. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00133">133</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            type = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a7dc02bd5778a1411f4c5ceda311729ae">drop</a>;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_wall_html_a7dc02bd5778a1411f4c5ceda311729ae"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a7dc02bd5778a1411f4c5ceda311729ae">Terraria.ModLoader.ModWall.drop</a></div><div class="ttdeci">int drop</div><div class="ttdoc">The default type of item dropped when this wall is killed. Defaults to 0, which means no item...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_wall_8cs_source.html#l00057">ModWall.cs:57</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -527,10 +569,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00100">100</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div>
+<p>Allows you to choose which minimap entry the wall at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00157">157</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -566,12 +610,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00070">70</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<p>Allows you to customize which sound you want to play when the wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the wall. Returns true by default. </p>
 
-<p>Referenced by <a class="el" href="_wall_loader_8cs_source.html#l00149">Terraria.ModLoader.WallLoader.KillSound()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00109">109</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_wall_loader_8cs_source.html#l00155">Terraria.ModLoader.WallLoader.KillSound()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -624,9 +670,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00091">91</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
+<p>Allows you to determine what happens when the tile at the given coordinates is killed or hit with a hammer. Fail determines whether the tile is mined (whether it is killed). </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00142">142</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -680,9 +728,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00105">105</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
+<p>Allows you to determine how much light this wall emits. This can also let you light up the block in front of this wall. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00165">165</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -730,9 +780,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00075">75</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        }</div>
+<p>Allows you to change how many dust particles are created when the wall at the given coordinates is hit. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00117">117</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        {</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -774,9 +826,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00126">126</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
+<p>Called after this wall is placed in the world by way of the item provided. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00201">201</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -818,9 +872,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00122">122</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        }</div>
+<p>Allows you to draw things in front of the wall at the given coordinates. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00194">194</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        {</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -862,10 +918,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00117">117</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div>
+<p>Allows you to draw things behind the wall at the given coordinates. Return false to stop the game from drawing the wall normally. Returns true by default. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00186">186</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        {</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -901,9 +959,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00109">109</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div>
+<p>Called whenever the world randomly decides to update the tile containing this wall in a given tick. Useful for things such as growing or spreading. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00172">172</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        {</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -928,9 +988,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00066">66</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
+<p>Allows you to set the properties of this wall. Many properties are stored as arrays throughout <a class="el" href="namespace_terraria.html">Terraria</a>'s code. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00102">102</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -945,7 +1007,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00033">33</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<p>The default type of item dropped when this wall is killed. Defaults to 0, which means no item. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
 
 </div>
 </div>
@@ -959,7 +1023,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00032">32</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<p>The default type of dust made when this wall is hit. Defaults to 0. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00053">53</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
 
 </div>
 </div>
@@ -973,7 +1039,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00031">31</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<p>The default style of sound made when this wall is hit. Defaults to 1. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00049">49</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
 
 </div>
 </div>
@@ -987,7 +1055,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00030">30</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<p>The default type of sound made when this wall is hit. Defaults to 0. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00045">45</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1080,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00012">12</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<p>The mod which has added this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html" title="This class represents a type of wall that can be added by a mod. Only one instance of this class will...">ModWall</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
 
 </div>
 </div>
@@ -1032,7 +1104,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<p>The name of this type of wall. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00027">27</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
 
 </div>
 </div>
@@ -1054,7 +1128,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00024">24</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
+<p>The internal ID of this type of wall. </p>
+
+<p>Definition at line <a class="el" href="_mod_wall_8cs_source.html#l00036">36</a> of file <a class="el" href="_mod_wall_8cs_source.html">ModWall.cs</a>.</p>
 
 </div>
 </div>

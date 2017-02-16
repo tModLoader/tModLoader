@@ -114,52 +114,74 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModWorld Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a> instance represents an extension of a World. You can store fields in the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a> classes to keep track of mod-specific information on the world. It also contains hooks to insert your code into the world generation process.  
+ <a href="class_terraria_1_1_mod_loader_1_1_mod_world.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ada5461d774c15becc93f19ef5f66c1e1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ada5461d774c15becc93f19ef5f66c1e1">Autoload</a> (ref string name)</td></tr>
+<tr class="memdesc:ada5461d774c15becc93f19ef5f66c1e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically add a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a> instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ab33e96bff6f25a168d2962f64718628f" title="Adds a ModWorld to this mod with the given name. ">Mod.AddModWorld</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a>.  <a href="#ada5461d774c15becc93f19ef5f66c1e1">More...</a><br/></td></tr>
 <tr class="separator:ada5461d774c15becc93f19ef5f66c1e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19083066738a43f6c572b12874aaaf85"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a19083066738a43f6c572b12874aaaf85">ChooseWaterStyle</a> (ref int style)</td></tr>
+<tr class="memdesc:a19083066738a43f6c572b12874aaaf85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the water style (determines water color) that is currently being used.  <a href="#a19083066738a43f6c572b12874aaaf85">More...</a><br/></td></tr>
 <tr class="separator:a19083066738a43f6c572b12874aaaf85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adeaf03c2c6361b70d0c0eabca94641d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#adeaf03c2c6361b70d0c0eabca94641d7">Initialize</a> ()</td></tr>
+<tr class="memdesc:adeaf03c2c6361b70d0c0eabca94641d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the world is loaded. This can be used to initialize data structures, etc.  <a href="#adeaf03c2c6361b70d0c0eabca94641d7">More...</a><br/></td></tr>
 <tr class="separator:adeaf03c2c6361b70d0c0eabca94641d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d5993331e9a2e313242e2f7ba19bedc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a2d5993331e9a2e313242e2f7ba19bedc">Load</a> (TagCompound tag)</td></tr>
+<tr class="memdesc:a2d5993331e9a2e313242e2f7ba19bedc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data you have saved for this world.  <a href="#a2d5993331e9a2e313242e2f7ba19bedc">More...</a><br/></td></tr>
 <tr class="separator:a2d5993331e9a2e313242e2f7ba19bedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af48790520c83765471a8b7a16888d605"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#af48790520c83765471a8b7a16888d605">LoadLegacy</a> (BinaryReader reader)</td></tr>
+<tr class="memdesc:af48790520c83765471a8b7a16888d605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load pre-v0.9 custom data you have saved for this world.  <a href="#af48790520c83765471a8b7a16888d605">More...</a><br/></td></tr>
 <tr class="separator:af48790520c83765471a8b7a16888d605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80b0fd5f98d260664332ce94b185e1a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a80b0fd5f98d260664332ce94b185e1a4">ModifyWorldGenTasks</a> (List&lt; GenPass &gt; tasks, ref float totalWeight)</td></tr>
+<tr class="memdesc:a80b0fd5f98d260664332ce94b185e1a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon.  <a href="#a80b0fd5f98d260664332ce94b185e1a4">More...</a><br/></td></tr>
 <tr class="separator:a80b0fd5f98d260664332ce94b185e1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf20d147cc364d10b4b137999b5c26b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#aaf20d147cc364d10b4b137999b5c26b5">NetReceive</a> (BinaryReader reader)</td></tr>
+<tr class="memdesc:aaf20d147cc364d10b4b137999b5c26b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do things with custom data that is received between clients and server.  <a href="#aaf20d147cc364d10b4b137999b5c26b5">More...</a><br/></td></tr>
 <tr class="separator:aaf20d147cc364d10b4b137999b5c26b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58fe0616b0c4135ec038025e67268561"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a58fe0616b0c4135ec038025e67268561">NetSend</a> (<a class="el" href="class_binary_writer.html">BinaryWriter</a> writer)</td></tr>
+<tr class="memdesc:a58fe0616b0c4135ec038025e67268561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data between clients and server. This is useful for syncing information such as bosses that have been defeated.  <a href="#a58fe0616b0c4135ec038025e67268561">More...</a><br/></td></tr>
 <tr class="separator:a58fe0616b0c4135ec038025e67268561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3310e15636ae38f138979d54dbe4b35"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ab3310e15636ae38f138979d54dbe4b35">PostDrawTiles</a> ()</td></tr>
+<tr class="memdesc:ab3310e15636ae38f138979d54dbe4b35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after drawing Tiles. Can be used for drawing a tile overlay akin to wires. Note that spritebatch should be begun and ended within this method.  <a href="#ab3310e15636ae38f138979d54dbe4b35">More...</a><br/></td></tr>
 <tr class="separator:ab3310e15636ae38f138979d54dbe4b35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aeb836a6fba220225717e124c2d6312"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a8aeb836a6fba220225717e124c2d6312">PostUpdate</a> ()</td></tr>
+<tr class="memdesc:a8aeb836a6fba220225717e124c2d6312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method to have things happen in the world. In vanilla <a class="el" href="namespace_terraria.html">Terraria</a>, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night. This hook is called every frame.  <a href="#a8aeb836a6fba220225717e124c2d6312">More...</a><br/></td></tr>
 <tr class="separator:a8aeb836a6fba220225717e124c2d6312"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a822fd4813716b16996815d746e6f1b42"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a822fd4813716b16996815d746e6f1b42">PostWorldGen</a> ()</td></tr>
+<tr class="memdesc:a822fd4813716b16996815d746e6f1b42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method to place tiles in the world after world generation is complete.  <a href="#a822fd4813716b16996815d746e6f1b42">More...</a><br/></td></tr>
 <tr class="separator:a822fd4813716b16996815d746e6f1b42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1e9ea8fc667b3e439e26edf7289cdaf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ad1e9ea8fc667b3e439e26edf7289cdaf">PreUpdate</a> ()</td></tr>
+<tr class="memdesc:ad1e9ea8fc667b3e439e26edf7289cdaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method to have things happen in the world. In vanilla <a class="el" href="namespace_terraria.html">Terraria</a>, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night. This hook is called every frame.  <a href="#ad1e9ea8fc667b3e439e26edf7289cdaf">More...</a><br/></td></tr>
 <tr class="separator:ad1e9ea8fc667b3e439e26edf7289cdaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd6d1e08c6aadfc53a037d6aee2f7d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a8cd6d1e08c6aadfc53a037d6aee2f7d7">PreWorldGen</a> ()</td></tr>
+<tr class="memdesc:a8cd6d1e08c6aadfc53a037d6aee2f7d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows a mod to run code before a world is generated.  <a href="#a8cd6d1e08c6aadfc53a037d6aee2f7d7">More...</a><br/></td></tr>
 <tr class="separator:a8cd6d1e08c6aadfc53a037d6aee2f7d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c34c46918ff1d37ddd3d814cfae121f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a9c34c46918ff1d37ddd3d814cfae121f">ResetNearbyTileEffects</a> ()</td></tr>
+<tr class="memdesc:a9c34c46918ff1d37ddd3d814cfae121f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to reset any fields you set in any of your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a10cca98611fc831d5d06c1f53644996a">ModTile.NearbyEffects</a> hooks back to their default values.  <a href="#a9c34c46918ff1d37ddd3d814cfae121f">More...</a><br/></td></tr>
 <tr class="separator:a9c34c46918ff1d37ddd3d814cfae121f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af88355a462a040293fa29556b8279aea"><td class="memItemLeft" align="right" valign="top">virtual TagCompound&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#af88355a462a040293fa29556b8279aea">Save</a> ()</td></tr>
+<tr class="memdesc:af88355a462a040293fa29556b8279aea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.  <a href="#af88355a462a040293fa29556b8279aea">More...</a><br/></td></tr>
 <tr class="separator:af88355a462a040293fa29556b8279aea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60089c548af2378c1baec051cb7a86bb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a60089c548af2378c1baec051cb7a86bb">TileCountsAvailable</a> (int[] tileCounts)</td></tr>
+<tr class="memdesc:a60089c548af2378c1baec051cb7a86bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. The tileCounts parameter stores the tile count indexed by tile type.  <a href="#a60089c548af2378c1baec051cb7a86bb">More...</a><br/></td></tr>
 <tr class="separator:a60089c548af2378c1baec051cb7a86bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a478f12391dc74bb1571c3c3f4a10f0d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a478f12391dc74bb1571c3c3f4a10f0d6">mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a478f12391dc74bb1571c3c3f4a10f0d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod that added this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a>.  <a href="#a478f12391dc74bb1571c3c3f4a10f0d6">More...</a><br/></td></tr>
 <tr class="separator:a478f12391dc74bb1571c3c3f4a10f0d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22ed14d7ba5984b0d2bf1eec1e138e43"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a22ed14d7ba5984b0d2bf1eec1e138e43">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a22ed14d7ba5984b0d2bf1eec1e138e43"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a>. Used for distinguishing between multiple ModWorlds added by a single <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>.  <a href="#a22ed14d7ba5984b0d2bf1eec1e138e43">More...</a><br/></td></tr>
 <tr class="separator:a22ed14d7ba5984b0d2bf1eec1e138e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00009">9</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="textblock"><p>A <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a> instance represents an extension of a World. You can store fields in the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a> classes to keep track of mod-specific information on the world. It also contains hooks to insert your code into the world generation process. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00012">12</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ada5461d774c15becc93f19ef5f66c1e1"></a>
 <div class="memitem">
@@ -183,12 +205,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00023">23</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<p>Allows you to automatically add a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a> instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ab33e96bff6f25a168d2962f64718628f" title="Adds a ModWorld to this mod with the given name. ">Mod.AddModWorld</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00035">35</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l01654">Terraria.ModLoader.Mod.AutoloadModWorld()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        }</div>
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -225,9 +249,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00081">81</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div>
+<p>Allows you to change the water style (determines water color) that is currently being used. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00135">135</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        {</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -252,9 +278,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00028">28</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
+<p>Called whenever the world is loaded. This can be used to initialize data structures, etc. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00043">43</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -280,9 +308,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00037">37</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
+<p>Allows you to load custom data you have saved for this world. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00058">58</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -308,9 +338,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00041">41</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
+<p>Allows you to load pre-v0.9 custom data you have saved for this world. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00065">65</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -346,9 +378,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
+<p>A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00093">93</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -374,9 +408,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00049">49</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<p>Allows you to do things with custom data that is received between clients and server. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00079">79</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -402,9 +438,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00045">45</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        }</div>
+<p>Allows you to send custom data between clients and server. This is useful for syncing information such as bosses that have been defeated. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00072">72</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -429,9 +467,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00090">90</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div>
+<p>Called after drawing Tiles. Can be used for drawing a tile overlay akin to wires. Note that spritebatch should be begun and ended within this method. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00148">148</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        {</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -456,9 +496,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00073">73</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
+<p>Use this method to have things happen in the world. In vanilla <a class="el" href="namespace_terraria.html">Terraria</a>, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night. This hook is called every frame. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00121">121</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -483,9 +525,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00061">61</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div>
+<p>Use this method to place tiles in the world after world generation is complete. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00100">100</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -510,9 +554,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00069">69</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
+<p>Use this method to have things happen in the world. In vanilla <a class="el" href="namespace_terraria.html">Terraria</a>, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night. This hook is called every frame. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00114">114</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        {</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -537,9 +583,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00053">53</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
+<p>Allows a mod to run code before a world is generated. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00086">86</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -564,9 +612,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00065">65</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<p>Use this to reset any fields you set in any of your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a10cca98611fc831d5d06c1f53644996a">ModTile.NearbyEffects</a> hooks back to their default values. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00107">107</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -591,10 +641,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00032">32</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div>
+<p>Allows you to save custom data for this world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00050">50</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -620,9 +672,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00077">77</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
+<p>Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. The tileCounts parameter stores the tile count indexed by tile type. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00128">128</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        {</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -645,7 +699,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00012">12</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<p>The mod that added this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 </div>
 </div>
@@ -667,7 +723,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
+<p>The name of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a>. Used for distinguishing between multiple ModWorlds added by a single <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00027">27</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
 </div>
 </div>

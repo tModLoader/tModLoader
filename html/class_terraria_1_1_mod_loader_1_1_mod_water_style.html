@@ -114,6 +114,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModWaterStyle Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below.  
+ <a href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.ModWaterStyle:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -127,32 +130,43 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a46cab03a2cd47c509f6025f5d0718bd8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a46cab03a2cd47c509f6025f5d0718bd8">Autoload</a> (ref string name, ref string texture, ref string blockTexture)</td></tr>
+<tr class="memdesc:a46cab03a2cd47c509f6025f5d0718bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically add a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html" title="Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below. ">ModWaterStyle</a> instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ad4f20eea97fe31adffa4483ff24e1e5b" title="Adds the given water style to the game with the given name, texture path, and block texture path...">Mod.AddWaterStyle</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, and texture is initialized to the namespace and overriding class name with periods replaced with slashes. BlockTexture is initialized to texture with "_Block" added at the end. Use this to either force or stop an autoload, change the name that identifies this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html" title="Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below. ">ModWaterStyle</a>, and/or change the texture paths used by this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html" title="Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below. ">ModWaterStyle</a>.  <a href="#a46cab03a2cd47c509f6025f5d0718bd8">More...</a><br/></td></tr>
 <tr class="separator:a46cab03a2cd47c509f6025f5d0718bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39969f6b16e974379d8ff2d9d994d0b9"><td class="memItemLeft" align="right" valign="top">virtual Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a39969f6b16e974379d8ff2d9d994d0b9">BiomeHairColor</a> ()</td></tr>
+<tr class="memdesc:a39969f6b16e974379d8ff2d9d994d0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hair color resulting from the biome hair dye when this water style is in use.  <a href="#a39969f6b16e974379d8ff2d9d994d0b9">More...</a><br/></td></tr>
 <tr class="separator:a39969f6b16e974379d8ff2d9d994d0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab32a21465ad930bd6d3ff7ff42d54efb"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#ab32a21465ad930bd6d3ff7ff42d54efb">ChooseWaterfallStyle</a> ()</td></tr>
+<tr class="memdesc:ab32a21465ad930bd6d3ff7ff42d54efb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the waterfall style the game should use when this water style is in use.  <a href="#ab32a21465ad930bd6d3ff7ff42d54efb">More...</a><br/></td></tr>
 <tr class="separator:ab32a21465ad930bd6d3ff7ff42d54efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ca032617b6b72bd0382919b2bfca430"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a6ca032617b6b72bd0382919b2bfca430">ChooseWaterStyle</a> ()</td></tr>
+<tr class="memdesc:a6ca032617b6b72bd0382919b2bfca430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the conditions have been met for this water style to be used. Typically Main.bgStyle is checked to determine whether a water style should be used. Returns false by default.  <a href="#a6ca032617b6b72bd0382919b2bfca430">More...</a><br/></td></tr>
 <tr class="separator:a6ca032617b6b72bd0382919b2bfca430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51592d920537ede237a9ea791255dda1"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a51592d920537ede237a9ea791255dda1">GetDropletGore</a> ()</td></tr>
+<tr class="memdesc:a51592d920537ede237a9ea791255dda1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the gore that represents droplets of water falling down from a block.  <a href="#a51592d920537ede237a9ea791255dda1">More...</a><br/></td></tr>
 <tr class="separator:a51592d920537ede237a9ea791255dda1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56033539d5b322f615f675a80527214a"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a56033539d5b322f615f675a80527214a">GetSplashDust</a> ()</td></tr>
+<tr class="memdesc:a56033539d5b322f615f675a80527214a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the dust that is created when anything splashes in water.  <a href="#a56033539d5b322f615f675a80527214a">More...</a><br/></td></tr>
 <tr class="separator:a56033539d5b322f615f675a80527214a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af29875155b7c2c0c754676f06912e526"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#af29875155b7c2c0c754676f06912e526">LightColorMultiplier</a> (ref float r, ref float g, ref float b)</td></tr>
+<tr class="memdesc:af29875155b7c2c0c754676f06912e526"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the light levels of the tiles behind the water. The light color components will be multiplied by the parameters.  <a href="#af29875155b7c2c0c754676f06912e526">More...</a><br/></td></tr>
 <tr class="separator:af29875155b7c2c0c754676f06912e526"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a04d51607a61e0aeed6929ac0547d280d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a04d51607a61e0aeed6929ac0547d280d">mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a04d51607a61e0aeed6929ac0547d280d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod that added this style of water.  <a href="#a04d51607a61e0aeed6929ac0547d280d">More...</a><br/></td></tr>
 <tr class="separator:a04d51607a61e0aeed6929ac0547d280d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a906a407c9a02f124796c37c3b76a8dfb"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a906a407c9a02f124796c37c3b76a8dfb">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a906a407c9a02f124796c37c3b76a8dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this water style.  <a href="#a906a407c9a02f124796c37c3b76a8dfb">More...</a><br/></td></tr>
 <tr class="separator:a906a407c9a02f124796c37c3b76a8dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f4e85b702b3aeffc71f7ab3bc11f431"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a1f4e85b702b3aeffc71f7ab3bc11f431">Type</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a1f4e85b702b3aeffc71f7ab3bc11f431"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the water style.  <a href="#a1f4e85b702b3aeffc71f7ab3bc11f431">More...</a><br/></td></tr>
 <tr class="separator:a1f4e85b702b3aeffc71f7ab3bc11f431"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00008">8</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+<div class="textblock"><p>Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below. </p>
+
+<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00011">11</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a46cab03a2cd47c509f6025f5d0718bd8"></a>
 <div class="memitem">
@@ -192,12 +206,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00031">31</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+<p>Allows you to automatically add a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html" title="Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below. ">ModWaterStyle</a> instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ad4f20eea97fe31adffa4483ff24e1e5b" title="Adds the given water style to the game with the given name, texture path, and block texture path...">Mod.AddWaterStyle</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, and texture is initialized to the namespace and overriding class name with periods replaced with slashes. BlockTexture is initialized to texture with "_Block" added at the end. Use this to either force or stop an autoload, change the name that identifies this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html" title="Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below. ">ModWaterStyle</a>, and/or change the texture paths used by this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html" title="Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below. ">ModWaterStyle</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00046">46</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l01866">Terraria.ModLoader.Mod.AutoloadWaterStyle()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
+<div class="fragment"><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -233,10 +249,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00054">54</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> Color(28, 216, 94);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
+<p>Allows you to change the hair color resulting from the biome hair dye when this water style is in use. </p>
+
+<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00087">87</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> Color(28, 216, 94);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -261,6 +279,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>The ID of the waterfall style the game should use when this water style is in use. </p>
+
 </div>
 </div>
 <a class="anchor" id="a6ca032617b6b72bd0382919b2bfca430"></a>
@@ -284,12 +304,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00036">36</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+<p>Whether the conditions have been met for this water style to be used. Typically Main.bgStyle is checked to determine whether a water style should be used. Returns false by default. </p>
 
-<p>Referenced by <a class="el" href="_water_style_loader_8cs_source.html#l00046">Terraria.ModLoader.WaterStyleLoader.ChooseWaterStyle()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00054">54</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_water_style_loader_8cs_source.html#l00052">Terraria.ModLoader.WaterStyleLoader.ChooseWaterStyle()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -325,6 +347,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>The ID of the gore that represents droplets of water falling down from a block. </p>
+
 </div>
 </div>
 <a class="anchor" id="a56033539d5b322f615f675a80527214a"></a>
@@ -347,6 +371,8 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>The ID of the dust that is created when anything splashes in water. </p>
 
 </div>
 </div>
@@ -388,12 +414,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00047">47</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            r = 0.88f;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            g = 0.96f;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            b = 1.015f;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
+<p>Allows you to modify the light levels of the tiles behind the water. The light color components will be multiplied by the parameters. </p>
+
+<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00077">77</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            r = 0.88f;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            g = 0.96f;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            b = 1.015f;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -416,7 +444,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00011">11</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+<p>The mod that added this style of water. </p>
+
+<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00017">17</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
 
 </div>
 </div>
@@ -438,7 +468,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00017">17</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+<p>The internal name of this water style. </p>
+
+<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00026">26</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
 
 </div>
 </div>
@@ -460,9 +492,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00023">23</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+<p>The ID of the water style. </p>
 
-<p>Referenced by <a class="el" href="_water_style_loader_8cs_source.html#l00122">Terraria.ModLoader.WaterStyleLoader.DrawWaterfall()</a>.</p>
+<p>Definition at line <a class="el" href="_mod_water_style_8cs_source.html#l00035">35</a> of file <a class="el" href="_mod_water_style_8cs_source.html">ModWaterStyle.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_water_style_loader_8cs_source.html#l00128">Terraria.ModLoader.WaterStyleLoader.DrawWaterfall()</a>.</p>
 
 </div>
 </div>
