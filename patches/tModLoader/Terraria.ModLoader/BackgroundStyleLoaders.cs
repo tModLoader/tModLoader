@@ -20,6 +20,9 @@ namespace Terraria.ModLoader
 			return reserve;
 		}
 
+		/// <summary>
+		/// Returns the ModUgBgStyle object with the given ID.
+		/// </summary>
 		public static ModUgBgStyle GetUgBgStyle(int style)
 		{
 			return style >= vanillaUgBgStyleCount && style < nextUgBgStyle
@@ -88,6 +91,9 @@ namespace Terraria.ModLoader
 			return reserve;
 		}
 
+		/// <summary>
+		/// Returns the ModSurfaceBgStyle object with the given ID.
+		/// </summary>
 		public static ModSurfaceBgStyle GetSurfaceBgStyle(int style)
 		{
 			return style >= vanillaSurfaceBgStyleCount && style < nextSurfaceBgStyle

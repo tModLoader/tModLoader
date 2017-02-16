@@ -6,24 +6,37 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior.
+	/// </summary>
+	/// <seealso cref="Terraria.DataStructures.TileEntity" />
 	public abstract class ModTileEntity : TileEntity
 	{
 		public const int numVanilla = 3;
 		private static int nextTileEntity = numVanilla;
 		internal static readonly List<ModTileEntity> tileEntities = new List<ModTileEntity>();
 
+		/// <summary>
+		/// The mod that added this ModTileEntity.
+		/// </summary>
 		public Mod mod
 		{
 			get;
 			internal set;
 		}
 
+		/// <summary>
+		/// The internal name of this ModTileEntity.
+		/// </summary>
 		public string Name
 		{
 			get;
 			internal set;
 		}
 
+		/// <summary>
+		/// The numeric type used to identify this kind of tile entity.
+		/// </summary>
 		public int Type
 		{
 			get;
@@ -43,6 +56,9 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
+		/// <summary>
+		/// Gets the base ModTileEntity object with the given type.
+		/// </summary>
 		public static ModTileEntity GetTileEntity(int type)
 		{
 			return type >= numVanilla && type < nextTileEntity ? tileEntities[type - numVanilla] : null;
@@ -54,6 +70,9 @@ namespace Terraria.ModLoader
 			tileEntities.Clear();
 		}
 
+		/// <summary>
+		/// Returns the number of modded tile entities that exist in the world currently being played.
+		/// </summary>
 		public static int CountInWorld()
 		{
 			int count = 0;
@@ -67,6 +86,9 @@ namespace Terraria.ModLoader
 			return count;
 		}
 
+		/// <summary>
+		/// You should never use this. It is only included here for completion's sake.
+		/// </summary>
 		public static void Initialize()
 		{
 			_UpdateStart += UpdateStartInternal;
@@ -90,6 +112,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// You should never use this. It is only included here for completion's sake.
+		/// </summary>
 		public static void NetPlaceEntity(int i, int j, int type)
 		{
 			ModTileEntity tileEntity = GetTileEntity(type);
@@ -107,6 +132,9 @@ namespace Terraria.ModLoader
 			NetMessage.SendData(86, -1, -1, "", id, i, j, 0f, 0, 0, 0);
 		}
 
+		/// <summary>
+		/// Returns a new ModTileEntity with the same class, mod, name, and type as the ModTileEntity with the given type. It is very rare that you should have to use this.
+		/// </summary>
 		public static ModTileEntity ConstructFromType(int type)
 		{
 			ModTileEntity tileEntity = GetTileEntity(type);
@@ -117,6 +145,9 @@ namespace Terraria.ModLoader
 			return ConstructFromBase(tileEntity);
 		}
 
+		/// <summary>
+		/// Returns a new ModTileEntity with the same class, mod, name, and type as the parameter. It is very rare that you should have to use this.
+		/// </summary>
 		public static ModTileEntity ConstructFromBase(ModTileEntity tileEntity)
 		{
 			ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType());
@@ -126,6 +157,9 @@ namespace Terraria.ModLoader
 			return newEntity;
 		}
 
+		/// <summary>
+		/// A helper method that places this kind of tile entity in the given coordinates for you.
+		/// </summary>
 		public int Place(int i, int j)
 		{
 			ModTileEntity newEntity = ConstructFromBase(this);
@@ -137,6 +171,9 @@ namespace Terraria.ModLoader
 			return newEntity.ID;
 		}
 
+		/// <summary>
+		/// A helper method that removes this kind of tile entity from the given coordinates for you.
+		/// </summary>
 		public void Kill(int i, int j)
 		{
 			Point16 pos = new Point16(i, j);
@@ -152,6 +189,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Returns the entity ID of this kind of tile entity at the given coordinates for you.
+		/// </summary>
 		public int Find(int i, int j)
 		{
 			Point16 pos = new Point16(i, j);
@@ -166,6 +206,9 @@ namespace Terraria.ModLoader
 			return -1;
 		}
 
+		/// <summary>
+		/// Don't use this. It is included only for completion's sake.
+		/// </summary>
 		public override sealed void WriteExtraData(BinaryWriter writer, bool networkSend)
 		{
 			if (networkSend)
@@ -174,6 +217,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Don't use this. It is included only for completion's sake.
+		/// </summary>
 		public override sealed void ReadExtraData(BinaryReader reader, bool networkSend)
 		{
 			if (networkSend)
@@ -182,47 +228,81 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Allows you to automatically load a tile entity instead of using Mod.AddTileEntity. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or change the default display name.
+		/// </summary>
 		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
 		}
 
+		/// <summary>
+		/// Allows you to save custom data for this tile entity.
+		/// </summary>
+		/// <returns></returns>
 		public virtual TagCompound Save()
 		{
 			return null;
 		}
 
+		/// <summary>
+		/// Allows you to load the custom data you have saved for this tile entity.
+		/// </summary>
 		public virtual void Load(TagCompound tag)
 		{
 		}
 
+		/// <summary>
+		/// Allows you to send custom data for this tile entity between client and server.
+		/// </summary>
 		public virtual void NetSend(BinaryWriter writer)
 		{
 		}
 
+		/// <summary>
+		/// Receives the data sent in the NetSend hook.
+		/// </summary>
 		public virtual void NetReceive(BinaryReader reader)
 		{
 		}
 
+		/// <summary>
+		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
+		/// </summary>
 		public abstract bool ValidTile(int i, int j);
 
+		/// <summary>
+		/// This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.
+		/// </summary>
 		public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
 		{
 			return -1;
 		}
 
+		/// <summary>
+		/// Code that should be run when this tile entity is placed by means of server-syncing.
+		/// </summary>
 		public virtual void OnNetPlace()
 		{
 		}
 
+		/// <summary>
+		/// Code that should be run before all tile entities in the world update.
+		/// </summary>
 		public virtual void PreGlobalUpdate()
 		{
 		}
 
+		/// <summary>
+		/// Code that should be run after all tile entities in the world update.
+		/// </summary>
 		public virtual void PostGlobalUpdate()
 		{
 		}
 
+		/// <summary>
+		/// This method only gets called in the Kill method. If you plan to use that, you can put code here to make things happen when it is called.
+		/// </summary>
 		public virtual void OnKill()
 		{
 		}

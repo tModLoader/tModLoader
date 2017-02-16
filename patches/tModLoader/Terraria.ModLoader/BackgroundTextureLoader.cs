@@ -5,6 +5,9 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This is the class that keeps track of all modded background textures and their slots/IDs.
+	/// </summary>
 	public static class BackgroundTextureLoader
 	{
 		public const int vanillaBackgroundTextureCount = Main.maxBackgrounds;
@@ -18,6 +21,9 @@ namespace Terraria.ModLoader
 			return reserve;
 		}
 
+		/// <summary>
+		/// Returns the slot/ID of the background texture with the given name.
+		/// </summary>
 		public static int GetBackgroundSlot(string texture)
 		{
 			if (backgrounds.ContainsKey(texture))
