@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.ModTileEntity.NetPlaceEntity" name="Terraria.ModLoader.ModTileEntity.NetPlaceEntity">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0" title="Terraria.ModLoader.ModTile\lEntity.ValidTile" alt="" coords="237,5,421,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0" title="Whether or not this tile entity is allowed to survive at the given coordinates. You should check whet..." alt="" coords="237,5,421,51"/>
 </map>

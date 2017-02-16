@@ -118,6 +118,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModTileEntity Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior.  
+ <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Terraria.ModLoader.ModTileEntity:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -140,51 +143,73 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:addfffafc879f8c79ffdcadf2a869f222"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#addfffafc879f8c79ffdcadf2a869f222">Autoload</a> (ref string name)</td></tr>
+<tr class="memdesc:addfffafc879f8c79ffdcadf2a869f222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically load a tile entity instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac758a026da85e5af75b52e19cc5ccf6a" title="Manually add a tile entity during Load. ">Mod.AddTileEntity</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or change the default display name.  <a href="#addfffafc879f8c79ffdcadf2a869f222">More...</a><br/></td></tr>
 <tr class="separator:addfffafc879f8c79ffdcadf2a869f222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0d39d082f95d385270f7e9dac364ade"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ac0d39d082f95d385270f7e9dac364ade">Find</a> (int i, int j)</td></tr>
+<tr class="memdesc:ac0d39d082f95d385270f7e9dac364ade"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the entity ID of this kind of tile entity at the given coordinates for you.  <a href="#ac0d39d082f95d385270f7e9dac364ade">More...</a><br/></td></tr>
 <tr class="separator:ac0d39d082f95d385270f7e9dac364ade"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7e63e2229713a48df4a8b39de1dd73f"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#af7e63e2229713a48df4a8b39de1dd73f">Hook_AfterPlacement</a> (int i, int j, int type, int style, int direction)</td></tr>
+<tr class="memdesc:af7e63e2229713a48df4a8b39de1dd73f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#af7badd6d334706506a28800830b2152d" title="Gets the ModTileEntity of this mod corresponding to the given name. Returns null if no ModTileEntity ...">Mod.GetTileEntity</a>.  <a href="#af7e63e2229713a48df4a8b39de1dd73f">More...</a><br/></td></tr>
 <tr class="separator:af7e63e2229713a48df4a8b39de1dd73f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec3cee3a57bbd5c80de025bc6cabda96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#aec3cee3a57bbd5c80de025bc6cabda96">Kill</a> (int i, int j)</td></tr>
+<tr class="memdesc:aec3cee3a57bbd5c80de025bc6cabda96"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that removes this kind of tile entity from the given coordinates for you.  <a href="#aec3cee3a57bbd5c80de025bc6cabda96">More...</a><br/></td></tr>
 <tr class="separator:aec3cee3a57bbd5c80de025bc6cabda96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ec9d15e6d446e6ae119f09d73c5d871"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a2ec9d15e6d446e6ae119f09d73c5d871">Load</a> (TagCompound tag)</td></tr>
+<tr class="memdesc:a2ec9d15e6d446e6ae119f09d73c5d871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load the custom data you have saved for this tile entity.  <a href="#a2ec9d15e6d446e6ae119f09d73c5d871">More...</a><br/></td></tr>
 <tr class="separator:a2ec9d15e6d446e6ae119f09d73c5d871"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10b649bfa56b08515c32f5b19500fe67"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a10b649bfa56b08515c32f5b19500fe67">NetReceive</a> (BinaryReader reader)</td></tr>
+<tr class="memdesc:a10b649bfa56b08515c32f5b19500fe67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives the data sent in the NetSend hook.  <a href="#a10b649bfa56b08515c32f5b19500fe67">More...</a><br/></td></tr>
 <tr class="separator:a10b649bfa56b08515c32f5b19500fe67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9343522d862e8a27a69d1389a51cead4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9343522d862e8a27a69d1389a51cead4">NetSend</a> (<a class="el" href="class_binary_writer.html">BinaryWriter</a> writer)</td></tr>
+<tr class="memdesc:a9343522d862e8a27a69d1389a51cead4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data for this tile entity between client and server.  <a href="#a9343522d862e8a27a69d1389a51cead4">More...</a><br/></td></tr>
 <tr class="separator:a9343522d862e8a27a69d1389a51cead4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89c493aad8800f3588b859880f7d7c40"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a89c493aad8800f3588b859880f7d7c40">OnKill</a> ()</td></tr>
+<tr class="memdesc:a89c493aad8800f3588b859880f7d7c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method only gets called in the Kill method. If you plan to use that, you can put code here to make things happen when it is called.  <a href="#a89c493aad8800f3588b859880f7d7c40">More...</a><br/></td></tr>
 <tr class="separator:a89c493aad8800f3588b859880f7d7c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bf7f4a651e76e775887c79e3c1a1a90"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6bf7f4a651e76e775887c79e3c1a1a90">OnNetPlace</a> ()</td></tr>
+<tr class="memdesc:a6bf7f4a651e76e775887c79e3c1a1a90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code that should be run when this tile entity is placed by means of server-syncing.  <a href="#a6bf7f4a651e76e775887c79e3c1a1a90">More...</a><br/></td></tr>
 <tr class="separator:a6bf7f4a651e76e775887c79e3c1a1a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd6ecccaa16bdc0a936430439a37c1f5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#afd6ecccaa16bdc0a936430439a37c1f5">Place</a> (int i, int j)</td></tr>
+<tr class="memdesc:afd6ecccaa16bdc0a936430439a37c1f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that places this kind of tile entity in the given coordinates for you.  <a href="#afd6ecccaa16bdc0a936430439a37c1f5">More...</a><br/></td></tr>
 <tr class="separator:afd6ecccaa16bdc0a936430439a37c1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a392aebfb691d1f2ad9b794da63a48e27"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a392aebfb691d1f2ad9b794da63a48e27">PostGlobalUpdate</a> ()</td></tr>
+<tr class="memdesc:a392aebfb691d1f2ad9b794da63a48e27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code that should be run after all tile entities in the world update.  <a href="#a392aebfb691d1f2ad9b794da63a48e27">More...</a><br/></td></tr>
 <tr class="separator:a392aebfb691d1f2ad9b794da63a48e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bba74f83ef3aa8dcf418b0182951544"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0bba74f83ef3aa8dcf418b0182951544">PreGlobalUpdate</a> ()</td></tr>
+<tr class="memdesc:a0bba74f83ef3aa8dcf418b0182951544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code that should be run before all tile entities in the world update.  <a href="#a0bba74f83ef3aa8dcf418b0182951544">More...</a><br/></td></tr>
 <tr class="separator:a0bba74f83ef3aa8dcf418b0182951544"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5a36cad19a35b35f63b08fc6fdf5234"><td class="memItemLeft" align="right" valign="top">override sealed void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#af5a36cad19a35b35f63b08fc6fdf5234">ReadExtraData</a> (BinaryReader reader, bool networkSend)</td></tr>
+<tr class="memdesc:af5a36cad19a35b35f63b08fc6fdf5234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Don't use this. It is included only for completion's sake.  <a href="#af5a36cad19a35b35f63b08fc6fdf5234">More...</a><br/></td></tr>
 <tr class="separator:af5a36cad19a35b35f63b08fc6fdf5234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cec6ece263dbf25d364fdb538151f4f"><td class="memItemLeft" align="right" valign="top">virtual TagCompound&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a4cec6ece263dbf25d364fdb538151f4f">Save</a> ()</td></tr>
+<tr class="memdesc:a4cec6ece263dbf25d364fdb538151f4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this tile entity.  <a href="#a4cec6ece263dbf25d364fdb538151f4f">More...</a><br/></td></tr>
 <tr class="separator:a4cec6ece263dbf25d364fdb538151f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a196c8616a4924fdf45458314fd0ec2b0"><td class="memItemLeft" align="right" valign="top">abstract bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0">ValidTile</a> (int i, int j)</td></tr>
+<tr class="memdesc:a196c8616a4924fdf45458314fd0ec2b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.  <a href="#a196c8616a4924fdf45458314fd0ec2b0">More...</a><br/></td></tr>
 <tr class="separator:a196c8616a4924fdf45458314fd0ec2b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9e40959685f686d505ce021827211a5"><td class="memItemLeft" align="right" valign="top">override sealed void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ac9e40959685f686d505ce021827211a5">WriteExtraData</a> (<a class="el" href="class_binary_writer.html">BinaryWriter</a> writer, bool networkSend)</td></tr>
+<tr class="memdesc:ac9e40959685f686d505ce021827211a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Don't use this. It is included only for completion's sake.  <a href="#ac9e40959685f686d505ce021827211a5">More...</a><br/></td></tr>
 <tr class="separator:ac9e40959685f686d505ce021827211a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0a022f7b80deccc7ee66aa262a2ea261"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html">ModTileEntity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261">ConstructFromBase</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html">ModTileEntity</a> tileEntity)</td></tr>
+<tr class="memdesc:a0a022f7b80deccc7ee66aa262a2ea261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> with the same class, mod, name, and type as the parameter. It is very rare that you should have to use this.  <a href="#a0a022f7b80deccc7ee66aa262a2ea261">More...</a><br/></td></tr>
 <tr class="separator:a0a022f7b80deccc7ee66aa262a2ea261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a539d9ed909c10852fb78924634373b23"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html">ModTileEntity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a539d9ed909c10852fb78924634373b23">ConstructFromType</a> (int type)</td></tr>
+<tr class="memdesc:a539d9ed909c10852fb78924634373b23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> with the same class, mod, name, and type as the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> with the given type. It is very rare that you should have to use this.  <a href="#a539d9ed909c10852fb78924634373b23">More...</a><br/></td></tr>
 <tr class="separator:a539d9ed909c10852fb78924634373b23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf1ec2387497edcc90fbac40c3bd8491"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#abf1ec2387497edcc90fbac40c3bd8491">CountInWorld</a> ()</td></tr>
+<tr class="memdesc:abf1ec2387497edcc90fbac40c3bd8491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of modded tile entities that exist in the world currently being played.  <a href="#abf1ec2387497edcc90fbac40c3bd8491">More...</a><br/></td></tr>
 <tr class="separator:abf1ec2387497edcc90fbac40c3bd8491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c1ee41785862fc54392fe5dd08ffe6c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html">ModTileEntity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a1c1ee41785862fc54392fe5dd08ffe6c">GetTileEntity</a> (int type)</td></tr>
+<tr class="memdesc:a1c1ee41785862fc54392fe5dd08ffe6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the base <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> object with the given type.  <a href="#a1c1ee41785862fc54392fe5dd08ffe6c">More...</a><br/></td></tr>
 <tr class="separator:a1c1ee41785862fc54392fe5dd08ffe6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f3043872c696c1531599e0273be6cab"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6f3043872c696c1531599e0273be6cab">Initialize</a> ()</td></tr>
+<tr class="memdesc:a6f3043872c696c1531599e0273be6cab"><td class="mdescLeft">&#160;</td><td class="mdescRight">You should never use this. It is only included here for completion's sake.  <a href="#a6f3043872c696c1531599e0273be6cab">More...</a><br/></td></tr>
 <tr class="separator:a6f3043872c696c1531599e0273be6cab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad27a28c41e66a411ea2c601b5c60ac33"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad27a28c41e66a411ea2c601b5c60ac33">NetPlaceEntity</a> (int i, int j, int type)</td></tr>
+<tr class="memdesc:ad27a28c41e66a411ea2c601b5c60ac33"><td class="mdescLeft">&#160;</td><td class="mdescRight">You should never use this. It is only included here for completion's sake.  <a href="#ad27a28c41e66a411ea2c601b5c60ac33">More...</a><br/></td></tr>
 <tr class="separator:ad27a28c41e66a411ea2c601b5c60ac33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -195,10 +220,13 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:ac4e5a6019d4893c84ec0cbe335fc63b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ac4e5a6019d4893c84ec0cbe335fc63b0">mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ac4e5a6019d4893c84ec0cbe335fc63b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod that added this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a>.  <a href="#ac4e5a6019d4893c84ec0cbe335fc63b0">More...</a><br/></td></tr>
 <tr class="separator:ac4e5a6019d4893c84ec0cbe335fc63b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a04a242638d18e36202d8e43be463c0"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a8a04a242638d18e36202d8e43be463c0">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a8a04a242638d18e36202d8e43be463c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a>.  <a href="#a8a04a242638d18e36202d8e43be463c0">More...</a><br/></td></tr>
 <tr class="separator:a8a04a242638d18e36202d8e43be463c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0375ceaa1a457d0b34df406c43267436"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Type</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a0375ceaa1a457d0b34df406c43267436"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numeric type used to identify this kind of tile entity.  <a href="#a0375ceaa1a457d0b34df406c43267436">More...</a><br/></td></tr>
 <tr class="separator:a0375ceaa1a457d0b34df406c43267436"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
@@ -214,8 +242,10 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:a3a475a59350b2dc3a955adfb19cb020c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00009">9</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="textblock"><p>Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. </p>
+<dl class="section see"><dt>See Also</dt><dd>Terraria.DataStructures.TileEntity</dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00013">13</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="addfffafc879f8c79ffdcadf2a869f222"></a>
 <div class="memitem">
@@ -239,12 +269,14 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00185">185</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<p>Allows you to automatically load a tile entity instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac758a026da85e5af75b52e19cc5ccf6a" title="Manually add a tile entity during Load. ">Mod.AddTileEntity</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or change the default display name. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00234">234</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00931">Terraria.ModLoader.Mod.AutoloadTileEntity()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        {</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div>
+<div class="fragment"><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        {</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -281,14 +313,16 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00120">120</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType());</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            newEntity.mod = tileEntity.mod;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            newEntity.Name = tileEntity.Name;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            newEntity.Type = tileEntity.Type;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <span class="keywordflow">return</span> newEntity;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        }</div>
+<p>Returns a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> with the same class, mod, name, and type as the parameter. It is very rare that you should have to use this. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00151">151</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        {</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType());</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            newEntity.mod = tileEntity.mod;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            newEntity.Name = tileEntity.Name;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            newEntity.Type = tileEntity.Type;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <span class="keywordflow">return</span> newEntity;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -314,17 +348,19 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00110">110</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            ModTileEntity tileEntity = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a1c1ee41785862fc54392fe5dd08ffe6c">GetTileEntity</a>(type);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">if</span> (tileEntity == null)</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261">ConstructFromBase</a>(tileEntity);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a1c1ee41785862fc54392fe5dd08ffe6c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a1c1ee41785862fc54392fe5dd08ffe6c">Terraria.ModLoader.ModTileEntity.GetTileEntity</a></div><div class="ttdeci">static ModTileEntity GetTileEntity(int type)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00046">ModTileEntity.cs:46</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0a022f7b80deccc7ee66aa262a2ea261"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261">Terraria.ModLoader.ModTileEntity.ConstructFromBase</a></div><div class="ttdeci">static ModTileEntity ConstructFromBase(ModTileEntity tileEntity)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00120">ModTileEntity.cs:120</a></div></div>
+<p>Returns a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> with the same class, mod, name, and type as the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> with the given type. It is very rare that you should have to use this. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00138">138</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        {</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            ModTileEntity tileEntity = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a1c1ee41785862fc54392fe5dd08ffe6c">GetTileEntity</a>(type);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">if</span> (tileEntity == null)</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            {</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261">ConstructFromBase</a>(tileEntity);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a1c1ee41785862fc54392fe5dd08ffe6c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a1c1ee41785862fc54392fe5dd08ffe6c">Terraria.ModLoader.ModTileEntity.GetTileEntity</a></div><div class="ttdeci">static ModTileEntity GetTileEntity(int type)</div><div class="ttdoc">Gets the base ModTileEntity object with the given type. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00062">ModTileEntity.cs:62</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0a022f7b80deccc7ee66aa262a2ea261"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261">Terraria.ModLoader.ModTileEntity.ConstructFromBase</a></div><div class="ttdeci">static ModTileEntity ConstructFromBase(ModTileEntity tileEntity)</div><div class="ttdoc">Returns a new ModTileEntity with the same class, mod, name, and type as the parameter. It is very rare that you should have to use this. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00151">ModTileEntity.cs:151</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -349,19 +385,21 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordtype">int</span> count = 0;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">foreach</span> (KeyValuePair&lt;int, TileEntity&gt; pair <span class="keywordflow">in</span> ByID)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">if</span> (pair.Value.type &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">numVanilla</a>)</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    count++;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">return</span> count;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a9b2c69c9930520fe7001701e62496b11"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">Terraria.ModLoader.ModTileEntity.numVanilla</a></div><div class="ttdeci">const int numVanilla</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00011">ModTileEntity.cs:11</a></div></div>
+<p>Returns the number of modded tile entities that exist in the world currently being played. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00076">76</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordtype">int</span> count = 0;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">foreach</span> (KeyValuePair&lt;int, TileEntity&gt; pair <span class="keywordflow">in</span> ByID)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                <span class="keywordflow">if</span> (pair.Value.type &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">numVanilla</a>)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                    count++;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">return</span> count;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a9b2c69c9930520fe7001701e62496b11"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">Terraria.ModLoader.ModTileEntity.numVanilla</a></div><div class="ttdeci">const int numVanilla</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00015">ModTileEntity.cs:15</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -389,20 +427,22 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00155">155</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            Point16 pos = <span class="keyword">new</span> Point16(i, j);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordflow">if</span> (ByPosition.ContainsKey(pos))</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <a class="code" href="class_tile_entity.html">TileEntity</a> tileEntity = ByPosition[pos];</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                <span class="keywordflow">if</span> (tileEntity.type == <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Type</a>)</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                    <span class="keywordflow">return</span> tileEntity.ID;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                }</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0375ceaa1a457d0b34df406c43267436"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Terraria.ModLoader.ModTileEntity.Type</a></div><div class="ttdeci">int Type</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00028">ModTileEntity.cs:28</a></div></div>
+<p>Returns the entity ID of this kind of tile entity at the given coordinates for you. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00195">195</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        {</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            Point16 pos = <span class="keyword">new</span> Point16(i, j);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            <span class="keywordflow">if</span> (ByPosition.ContainsKey(pos))</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            {</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                <a class="code" href="class_tile_entity.html">TileEntity</a> tileEntity = ByPosition[pos];</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                <span class="keywordflow">if</span> (tileEntity.type == <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Type</a>)</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                    <span class="keywordflow">return</span> tileEntity.ID;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                }</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            }</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0375ceaa1a457d0b34df406c43267436"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Terraria.ModLoader.ModTileEntity.Type</a></div><div class="ttdeci">int Type</div><div class="ttdoc">The numeric type used to identify this kind of tile entity. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00041">ModTileEntity.cs:41</a></div></div>
 <div class="ttc" id="class_tile_entity_html"><div class="ttname"><a href="class_tile_entity.html">TileEntity</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -429,12 +469,14 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00046">46</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> type &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">numVanilla</a> &amp;&amp; type &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a3a475a59350b2dc3a955adfb19cb020c">nextTileEntity</a> ? tileEntities[type - <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">numVanilla</a>] : null;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a9b2c69c9930520fe7001701e62496b11"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">Terraria.ModLoader.ModTileEntity.numVanilla</a></div><div class="ttdeci">const int numVanilla</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00011">ModTileEntity.cs:11</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a3a475a59350b2dc3a955adfb19cb020c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a3a475a59350b2dc3a955adfb19cb020c">Terraria.ModLoader.ModTileEntity.nextTileEntity</a></div><div class="ttdeci">static int nextTileEntity</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00012">ModTileEntity.cs:12</a></div></div>
+<p>Gets the base <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> object with the given type. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00062">62</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">return</span> type &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">numVanilla</a> &amp;&amp; type &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a3a475a59350b2dc3a955adfb19cb020c">nextTileEntity</a> ? tileEntities[type - <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">numVanilla</a>] : null;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a9b2c69c9930520fe7001701e62496b11"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11">Terraria.ModLoader.ModTileEntity.numVanilla</a></div><div class="ttdeci">const int numVanilla</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00015">ModTileEntity.cs:15</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a3a475a59350b2dc3a955adfb19cb020c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a3a475a59350b2dc3a955adfb19cb020c">Terraria.ModLoader.ModTileEntity.nextTileEntity</a></div><div class="ttdeci">static int nextTileEntity</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00016">ModTileEntity.cs:16</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -488,10 +530,12 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00209">209</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        {</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        }</div>
+<p>This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#af7badd6d334706506a28800830b2152d" title="Gets the ModTileEntity of this mod corresponding to the given name. Returns null if no ModTileEntity ...">Mod.GetTileEntity</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00277">277</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        {</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -516,15 +560,17 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00070">70</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            _UpdateStart += <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a584b05d0d7cf0eea49425a3c93c641ef">UpdateStartInternal</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            _UpdateEnd += <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ab374a265f585e1e7172d00429bdb869e">UpdateEndInternal</a>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            _NetPlaceEntity += <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad27a28c41e66a411ea2c601b5c60ac33">NetPlaceEntity</a>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_ad27a28c41e66a411ea2c601b5c60ac33"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad27a28c41e66a411ea2c601b5c60ac33">Terraria.ModLoader.ModTileEntity.NetPlaceEntity</a></div><div class="ttdeci">static void NetPlaceEntity(int i, int j, int type)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00093">ModTileEntity.cs:93</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a584b05d0d7cf0eea49425a3c93c641ef"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a584b05d0d7cf0eea49425a3c93c641ef">Terraria.ModLoader.ModTileEntity.UpdateStartInternal</a></div><div class="ttdeci">static void UpdateStartInternal()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00077">ModTileEntity.cs:77</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_ab374a265f585e1e7172d00429bdb869e"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ab374a265f585e1e7172d00429bdb869e">Terraria.ModLoader.ModTileEntity.UpdateEndInternal</a></div><div class="ttdeci">static void UpdateEndInternal()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00085">ModTileEntity.cs:85</a></div></div>
+<p>You should never use this. It is only included here for completion's sake. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00092">92</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            _UpdateStart += <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a584b05d0d7cf0eea49425a3c93c641ef">UpdateStartInternal</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            _UpdateEnd += <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ab374a265f585e1e7172d00429bdb869e">UpdateEndInternal</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            _NetPlaceEntity += <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad27a28c41e66a411ea2c601b5c60ac33">NetPlaceEntity</a>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_ad27a28c41e66a411ea2c601b5c60ac33"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad27a28c41e66a411ea2c601b5c60ac33">Terraria.ModLoader.ModTileEntity.NetPlaceEntity</a></div><div class="ttdeci">static void NetPlaceEntity(int i, int j, int type)</div><div class="ttdoc">You should never use this. It is only included here for completion&#39;s sake. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00118">ModTileEntity.cs:118</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a584b05d0d7cf0eea49425a3c93c641ef"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a584b05d0d7cf0eea49425a3c93c641ef">Terraria.ModLoader.ModTileEntity.UpdateStartInternal</a></div><div class="ttdeci">static void UpdateStartInternal()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00099">ModTileEntity.cs:99</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_ab374a265f585e1e7172d00429bdb869e"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ab374a265f585e1e7172d00429bdb869e">Terraria.ModLoader.ModTileEntity.UpdateEndInternal</a></div><div class="ttdeci">static void UpdateEndInternal()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00107">ModTileEntity.cs:107</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -552,21 +598,23 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00140">140</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        {</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            Point16 pos = <span class="keyword">new</span> Point16(i, j);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            <span class="keywordflow">if</span> (ByPosition.ContainsKey(pos))</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            {</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                <a class="code" href="class_tile_entity.html">TileEntity</a> tileEntity = ByPosition[pos];</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                <span class="keywordflow">if</span> (tileEntity.type == <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Type</a>)</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                {</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                    ((ModTileEntity)tileEntity).OnKill();</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                    ByID.Remove(tileEntity.ID);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    ByPosition.Remove(pos);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                }</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            }</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0375ceaa1a457d0b34df406c43267436"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Terraria.ModLoader.ModTileEntity.Type</a></div><div class="ttdeci">int Type</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00028">ModTileEntity.cs:28</a></div></div>
+<p>A helper method that removes this kind of tile entity from the given coordinates for you. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00177">177</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            Point16 pos = <span class="keyword">new</span> Point16(i, j);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            <span class="keywordflow">if</span> (ByPosition.ContainsKey(pos))</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            {</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                <a class="code" href="class_tile_entity.html">TileEntity</a> tileEntity = ByPosition[pos];</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                <span class="keywordflow">if</span> (tileEntity.type == <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Type</a>)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                    ((ModTileEntity)tileEntity).OnKill();</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                    ByID.Remove(tileEntity.ID);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                    ByPosition.Remove(pos);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                }</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            }</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0375ceaa1a457d0b34df406c43267436"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Terraria.ModLoader.ModTileEntity.Type</a></div><div class="ttdeci">int Type</div><div class="ttdoc">The numeric type used to identify this kind of tile entity. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00041">ModTileEntity.cs:41</a></div></div>
 <div class="ttc" id="class_tile_entity_html"><div class="ttname"><a href="class_tile_entity.html">TileEntity</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -593,9 +641,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00195">195</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        {</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        }</div>
+<p>Allows you to load the custom data you have saved for this tile entity. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00251">251</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        {</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -637,25 +687,27 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00093">93</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<p>You should never use this. It is only included here for completion's sake. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00118">118</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
 
 <p>References <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0">Terraria.ModLoader.ModTileEntity.ValidTile()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            ModTileEntity tileEntity = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a1c1ee41785862fc54392fe5dd08ffe6c">GetTileEntity</a>(type);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">if</span> (tileEntity == null)</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordflow">if</span> (!tileEntity.ValidTile(i, j))</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordtype">int</span> <span class="keywordtype">id</span> = tileEntity.Place(i, j);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            ModTileEntity newEntity = (ModTileEntity)ByID[<span class="keywordtype">id</span>];</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            newEntity.OnNetPlace();</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            NetMessage.SendData(86, -1, -1, <span class="stringliteral">&quot;&quot;</span>, id, i, j, 0f, 0, 0, 0);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a1c1ee41785862fc54392fe5dd08ffe6c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a1c1ee41785862fc54392fe5dd08ffe6c">Terraria.ModLoader.ModTileEntity.GetTileEntity</a></div><div class="ttdeci">static ModTileEntity GetTileEntity(int type)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00046">ModTileEntity.cs:46</a></div></div>
+<div class="fragment"><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            ModTileEntity tileEntity = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a1c1ee41785862fc54392fe5dd08ffe6c">GetTileEntity</a>(type);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <span class="keywordflow">if</span> (tileEntity == null)</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">if</span> (!tileEntity.ValidTile(i, j))</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            <span class="keywordtype">int</span> <span class="keywordtype">id</span> = tileEntity.Place(i, j);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            ModTileEntity newEntity = (ModTileEntity)ByID[<span class="keywordtype">id</span>];</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            newEntity.OnNetPlace();</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            NetMessage.SendData(86, -1, -1, <span class="stringliteral">&quot;&quot;</span>, id, i, j, 0f, 0, 0, 0);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a1c1ee41785862fc54392fe5dd08ffe6c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a1c1ee41785862fc54392fe5dd08ffe6c">Terraria.ModLoader.ModTileEntity.GetTileEntity</a></div><div class="ttdeci">static ModTileEntity GetTileEntity(int type)</div><div class="ttdoc">Gets the base ModTileEntity object with the given type. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00062">ModTileEntity.cs:62</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
@@ -664,7 +716,7 @@ Static Private Attributes</h2></td></tr>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_ad27a28c41e66a411ea2c601b5c60ac33_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_entity_ad27a28c41e66a411ea2c601b5c60ac33_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_ad27a28c41e66a411ea2c601b5c60ac33_cgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_ad27a28c41e66a411ea2c601b5c60ac33_cgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0" title="Terraria.ModLoader.ModTile\lEntity.ValidTile" alt="" coords="237,5,421,51"/></map>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0" title="Whether or not this tile entity is allowed to survive at the given coordinates. You should check whet..." alt="" coords="237,5,421,51"/></map>
 </div>
 </p>
 
@@ -692,9 +744,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00203">203</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        {</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        }</div>
+<p>Receives the data sent in the NetSend hook. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00265">265</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        {</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -720,9 +774,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00199">199</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        {</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        }</div>
+<p>Allows you to send custom data for this tile entity between client and server. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00258">258</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        {</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -747,9 +803,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00226">226</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        {</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        }</div>
+<p>This method only gets called in the Kill method. If you plan to use that, you can put code here to make things happen when it is called. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00306">306</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        {</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -774,9 +832,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00214">214</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        {</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        }</div>
+<p>Code that should be run when this tile entity is placed by means of server-syncing. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00285">285</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        {</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -804,18 +864,20 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00129">129</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            ModTileEntity newEntity = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261">ConstructFromBase</a>(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            newEntity.Position = <span class="keyword">new</span> Point16(i, j);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            newEntity.ID = AssignNewID();</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            newEntity.type = (byte)<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Type</a>;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            ByID[newEntity.ID] = newEntity;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            ByPosition[newEntity.Position] = newEntity;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keywordflow">return</span> newEntity.ID;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0375ceaa1a457d0b34df406c43267436"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Terraria.ModLoader.ModTileEntity.Type</a></div><div class="ttdeci">int Type</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00028">ModTileEntity.cs:28</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0a022f7b80deccc7ee66aa262a2ea261"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261">Terraria.ModLoader.ModTileEntity.ConstructFromBase</a></div><div class="ttdeci">static ModTileEntity ConstructFromBase(ModTileEntity tileEntity)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00120">ModTileEntity.cs:120</a></div></div>
+<p>A helper method that places this kind of tile entity in the given coordinates for you. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00163">163</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            ModTileEntity newEntity = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261">ConstructFromBase</a>(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            newEntity.Position = <span class="keyword">new</span> Point16(i, j);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            newEntity.ID = AssignNewID();</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            newEntity.type = (byte)<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Type</a>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            ByID[newEntity.ID] = newEntity;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            ByPosition[newEntity.Position] = newEntity;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keywordflow">return</span> newEntity.ID;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0375ceaa1a457d0b34df406c43267436"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436">Terraria.ModLoader.ModTileEntity.Type</a></div><div class="ttdeci">int Type</div><div class="ttdoc">The numeric type used to identify this kind of tile entity. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00041">ModTileEntity.cs:41</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a0a022f7b80deccc7ee66aa262a2ea261"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261">Terraria.ModLoader.ModTileEntity.ConstructFromBase</a></div><div class="ttdeci">static ModTileEntity ConstructFromBase(ModTileEntity tileEntity)</div><div class="ttdoc">Returns a new ModTileEntity with the same class, mod, name, and type as the parameter. It is very rare that you should have to use this. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00151">ModTileEntity.cs:151</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -840,9 +902,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00222">222</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        {</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        }</div>
+<p>Code that should be run after all tile entities in the world update. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00299">299</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -867,9 +931,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00218">218</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        }</div>
+<p>Code that should be run before all tile entities in the world update. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00292">292</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        {</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -897,14 +963,16 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00177">177</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        {</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <span class="keywordflow">if</span> (networkSend)</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            {</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a10b649bfa56b08515c32f5b19500fe67">NetReceive</a>(reader);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            }</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a10b649bfa56b08515c32f5b19500fe67"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a10b649bfa56b08515c32f5b19500fe67">Terraria.ModLoader.ModTileEntity.NetReceive</a></div><div class="ttdeci">virtual void NetReceive(BinaryReader reader)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00203">ModTileEntity.cs:203</a></div></div>
+<p>Don't use this. It is included only for completion's sake. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00223">223</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        {</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keywordflow">if</span> (networkSend)</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            {</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a10b649bfa56b08515c32f5b19500fe67">NetReceive</a>(reader);</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            }</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a10b649bfa56b08515c32f5b19500fe67"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a10b649bfa56b08515c32f5b19500fe67">Terraria.ModLoader.ModTileEntity.NetReceive</a></div><div class="ttdeci">virtual void NetReceive(BinaryReader reader)</div><div class="ttdoc">Receives the data sent in the NetSend hook. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00265">ModTileEntity.cs:265</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -929,10 +997,13 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00190">190</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        }</div>
+<p>Allows you to save custom data for this tile entity. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00243">243</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        {</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -957,13 +1028,13 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00085">85</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">foreach</span> (ModTileEntity tileEntity <span class="keywordflow">in</span> tileEntities)</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                tileEntity.PostGlobalUpdate();</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00107">107</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">foreach</span> (ModTileEntity tileEntity <span class="keywordflow">in</span> tileEntities)</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                tileEntity.PostGlobalUpdate();</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -988,13 +1059,13 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00077">77</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">foreach</span> (ModTileEntity tileEntity <span class="keywordflow">in</span> tileEntities)</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                tileEntity.PreGlobalUpdate();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00099">99</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keywordflow">foreach</span> (ModTileEntity tileEntity <span class="keywordflow">in</span> tileEntities)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                tileEntity.PreGlobalUpdate();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1030,7 +1101,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Referenced by <a class="el" href="_mod_tile_entity_8cs_source.html#l00093">Terraria.ModLoader.ModTileEntity.NetPlaceEntity()</a>.</p>
+<p>Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame. </p>
+
+<p>Referenced by <a class="el" href="_mod_tile_entity_8cs_source.html#l00118">Terraria.ModLoader.ModTileEntity.NetPlaceEntity()</a>.</p>
 
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -1039,7 +1112,7 @@ Static Private Attributes</h2></td></tr>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_a196c8616a4924fdf45458314fd0ec2b0_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_entity_a196c8616a4924fdf45458314fd0ec2b0_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_a196c8616a4924fdf45458314fd0ec2b0_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_a196c8616a4924fdf45458314fd0ec2b0_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad27a28c41e66a411ea2c601b5c60ac33" title="Terraria.ModLoader.ModTile\lEntity.NetPlaceEntity" alt="" coords="237,5,421,51"/></map>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad27a28c41e66a411ea2c601b5c60ac33" title="You should never use this. It is only included here for completion&#39;s sake. " alt="" coords="237,5,421,51"/></map>
 </div>
 </p>
 
@@ -1069,14 +1142,16 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00169">169</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        {</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keywordflow">if</span> (networkSend)</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9343522d862e8a27a69d1389a51cead4">NetSend</a>(writer);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            }</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a9343522d862e8a27a69d1389a51cead4"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9343522d862e8a27a69d1389a51cead4">Terraria.ModLoader.ModTileEntity.NetSend</a></div><div class="ttdeci">virtual void NetSend(BinaryWriter writer)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00199">ModTileEntity.cs:199</a></div></div>
+<p>Don't use this. It is included only for completion's sake. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00212">212</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        {</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <span class="keywordflow">if</span> (networkSend)</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            {</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9343522d862e8a27a69d1389a51cead4">NetSend</a>(writer);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            }</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_html_a9343522d862e8a27a69d1389a51cead4"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9343522d862e8a27a69d1389a51cead4">Terraria.ModLoader.ModTileEntity.NetSend</a></div><div class="ttdeci">virtual void NetSend(BinaryWriter writer)</div><div class="ttdoc">Allows you to send custom data for this tile entity between client and server. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_entity_8cs_source.html#l00258">ModTileEntity.cs:258</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1099,7 +1174,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00012">12</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00016">16</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
 
 </div>
 </div>
@@ -1113,7 +1188,7 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00011">11</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00015">15</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
 
 </div>
 </div>
@@ -1136,7 +1211,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00016">16</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<p>The mod that added this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00023">23</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
 
 </div>
 </div>
@@ -1158,7 +1235,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00022">22</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<p>The internal name of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00032">32</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
 
 </div>
 </div>
@@ -1180,7 +1259,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00028">28</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
+<p>The numeric type used to identify this kind of tile entity. </p>
+
+<p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00041">41</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
 
 </div>
 </div>

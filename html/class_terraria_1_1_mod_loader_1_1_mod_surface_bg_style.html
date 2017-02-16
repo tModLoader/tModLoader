@@ -114,36 +114,50 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModSurfaceBgStyle Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.  
+ <a href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1690cf5fd8b465ee59b00bec906c0f2d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#a1690cf5fd8b465ee59b00bec906c0f2d">Autoload</a> (ref string name)</td></tr>
+<tr class="memdesc:a1690cf5fd8b465ee59b00bec906c0f2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically add a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds. ">ModSurfaceBgStyle</a> instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#aeb8e86a5ffd24bb016470689ec5f9461" title="Adds the given surface background style with the given name to this mod. ">Mod.AddSurfaceBgStyle</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds. ">ModSurfaceBgStyle</a>.  <a href="#a1690cf5fd8b465ee59b00bec906c0f2d">More...</a><br/></td></tr>
 <tr class="separator:a1690cf5fd8b465ee59b00bec906c0f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ee3887cd1ac8f124780921574527d63"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#a7ee3887cd1ac8f124780921574527d63">ChooseBgStyle</a> ()</td></tr>
+<tr class="memdesc:a7ee3887cd1ac8f124780921574527d63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.  <a href="#a7ee3887cd1ac8f124780921574527d63">More...</a><br/></td></tr>
 <tr class="separator:a7ee3887cd1ac8f124780921574527d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab95044420d38f142c4f851f6b08bf886"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#ab95044420d38f142c4f851f6b08bf886">ChooseCloseTexture</a> (ref float scale, ref double parallax, ref float a, ref float b)</td></tr>
+<tr class="memdesc:ab95044420d38f142c4f851f6b08bf886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine which texture is drawn in the closest part of the background. This also lets you modify the scale and parallax (as well as two unfortunately-unknown parameters).  <a href="#ab95044420d38f142c4f851f6b08bf886">More...</a><br/></td></tr>
 <tr class="separator:ab95044420d38f142c4f851f6b08bf886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac0f172fb9a68117eff3aa3d400c85ef"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#aac0f172fb9a68117eff3aa3d400c85ef">ChooseFarTexture</a> ()</td></tr>
+<tr class="memdesc:aac0f172fb9a68117eff3aa3d400c85ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine which texture is drawn in the very back of the background. <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a25f3d2d6199bfebf7a2b80c44abad71f" title="Gets the texture slot corresponding to the specified texture name. Shorthand for calling BackgroundTe...">Mod.GetBackgroundSlot</a> may be useful here, as well as for the other texture-choosing hooks.  <a href="#aac0f172fb9a68117eff3aa3d400c85ef">More...</a><br/></td></tr>
 <tr class="separator:aac0f172fb9a68117eff3aa3d400c85ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a218765ba93b2770175846580cb98cf"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#a4a218765ba93b2770175846580cb98cf">ChooseMiddleTexture</a> ()</td></tr>
+<tr class="memdesc:a4a218765ba93b2770175846580cb98cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine which texture is drawn in the middle of the background.  <a href="#a4a218765ba93b2770175846580cb98cf">More...</a><br/></td></tr>
 <tr class="separator:a4a218765ba93b2770175846580cb98cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1482de07bb6d01ff3b2470ac1b71f050"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#a1482de07bb6d01ff3b2470ac1b71f050">ModifyFarFades</a> (float[] fades, float transitionSpeed)</td></tr>
+<tr class="memdesc:a1482de07bb6d01ff3b2470ac1b71f050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the transparency of all background styles that exist. In general, you should move the index equal to this style's slot closer to 1, and all other indexes closer to 0. The transitionSpeed parameter is what you should add/subtract to each element of the fades parameter. See the ExampleMod for an example.  <a href="#a1482de07bb6d01ff3b2470ac1b71f050">More...</a><br/></td></tr>
 <tr class="separator:a1482de07bb6d01ff3b2470ac1b71f050"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5f2166979e8e0bd87eef36ea09b6bec"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#ac5f2166979e8e0bd87eef36ea09b6bec">PreDrawCloseBackground</a> (SpriteBatch spriteBatch)</td></tr>
+<tr class="memdesc:ac5f2166979e8e0bd87eef36ea09b6bec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives you complete freedom over how the closest part of the background is drawn. Return true for ChooseCloseTexture to have an effect; return false to disable tModLoader's own code for drawing the close background.  <a href="#ac5f2166979e8e0bd87eef36ea09b6bec">More...</a><br/></td></tr>
 <tr class="separator:ac5f2166979e8e0bd87eef36ea09b6bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a1a791a8b1599e6911ddf04216365c2bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#a1a791a8b1599e6911ddf04216365c2bb">mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a1a791a8b1599e6911ddf04216365c2bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod that added this surface background style.  <a href="#a1a791a8b1599e6911ddf04216365c2bb">More...</a><br/></td></tr>
 <tr class="separator:a1a791a8b1599e6911ddf04216365c2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba9d604173ca91e3fe34d2d1107a1c44"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#aba9d604173ca91e3fe34d2d1107a1c44">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:aba9d604173ca91e3fe34d2d1107a1c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this surface background style.  <a href="#aba9d604173ca91e3fe34d2d1107a1c44">More...</a><br/></td></tr>
 <tr class="separator:aba9d604173ca91e3fe34d2d1107a1c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a915bcb631d8d83299480a2d76bd564e8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#a915bcb631d8d83299480a2d76bd564e8">Slot</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a915bcb631d8d83299480a2d76bd564e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of this surface background style.  <a href="#a915bcb631d8d83299480a2d76bd564e8">More...</a><br/></td></tr>
 <tr class="separator:a915bcb631d8d83299480a2d76bd564e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00039">39</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<div class="textblock"><p>Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00063">63</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a1690cf5fd8b465ee59b00bec906c0f2d"></a>
 <div class="memitem">
@@ -167,12 +181,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00059">59</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<p>Allows you to automatically add a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds. ">ModSurfaceBgStyle</a> instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#aeb8e86a5ffd24bb016470689ec5f9461" title="Adds the given surface background style with the given name to this mod. ">Mod.AddSurfaceBgStyle</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds. ">ModSurfaceBgStyle</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00095">95</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l01778">Terraria.ModLoader.Mod.AutoloadSurfaceBgStyle()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div>
+<div class="fragment"><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -208,10 +224,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00064">64</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<p>Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00103">103</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -259,10 +277,22 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00086">86</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
+<p>Allows you to determine which texture is drawn in the closest part of the background. This also lets you modify the scale and parallax (as well as two unfortunately-unknown parameters). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scale</td><td>The scale.</td></tr>
+    <tr><td class="paramname">parallax</td><td>The parallax value.</td></tr>
+    <tr><td class="paramname">a</td><td>a?</td></tr>
+    <tr><td class="paramname">b</td><td>b?</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00145">145</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        {</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -287,10 +317,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00071">71</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
+<p>Allows you to determine which texture is drawn in the very back of the background. <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a25f3d2d6199bfebf7a2b80c44abad71f" title="Gets the texture slot corresponding to the specified texture name. Shorthand for calling BackgroundTe...">Mod.GetBackgroundSlot</a> may be useful here, as well as for the other texture-choosing hooks. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00116">116</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -315,10 +347,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00076">76</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
+<p>Allows you to determine which texture is drawn in the middle of the background. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00124">124</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -354,6 +388,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Allows you to modify the transparency of all background styles that exist. In general, you should move the index equal to this style's slot closer to 1, and all other indexes closer to 0. The transitionSpeed parameter is what you should add/subtract to each element of the fades parameter. See the ExampleMod for an example. </p>
+
 </div>
 </div>
 <a class="anchor" id="ac5f2166979e8e0bd87eef36ea09b6bec"></a>
@@ -378,10 +414,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00081">81</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
+<p>Gives you complete freedom over how the closest part of the background is drawn. Return true for ChooseCloseTexture to have an effect; return false to disable tModLoader's own code for drawing the close background. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00132">132</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        {</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -404,7 +442,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00042">42</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<p>The mod that added this surface background style. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00069">69</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 
 </div>
 </div>
@@ -426,7 +466,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00048">48</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<p>The internal name of this surface background style. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00078">78</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 
 </div>
 </div>
@@ -448,7 +490,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00054">54</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<p>The ID of this surface background style. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00087">87</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 
 </div>
 </div>

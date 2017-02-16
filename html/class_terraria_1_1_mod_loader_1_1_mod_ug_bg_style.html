@@ -114,28 +114,38 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModUgBgStyle Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds.  
+ <a href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a51445ebbc96e5bf81a0fcda7d9b1abf0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html#a51445ebbc96e5bf81a0fcda7d9b1abf0">Autoload</a> (ref string name)</td></tr>
+<tr class="memdesc:a51445ebbc96e5bf81a0fcda7d9b1abf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically add a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds. ">ModUgBgStyle</a> instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9666156b5add36e5e49c3d75c881fdfd" title="Adds the given underground background style with the given name to this mod. ">Mod.AddUgBgStyle</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds. ">ModUgBgStyle</a>.  <a href="#a51445ebbc96e5bf81a0fcda7d9b1abf0">More...</a><br/></td></tr>
 <tr class="separator:a51445ebbc96e5bf81a0fcda7d9b1abf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0a9f970ccdbd2868a7ba950f0dc20dd"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html#ac0a9f970ccdbd2868a7ba950f0dc20dd">ChooseBgStyle</a> ()</td></tr>
+<tr class="memdesc:ac0a9f970ccdbd2868a7ba950f0dc20dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.  <a href="#ac0a9f970ccdbd2868a7ba950f0dc20dd">More...</a><br/></td></tr>
 <tr class="separator:ac0a9f970ccdbd2868a7ba950f0dc20dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ab2089ff14163ec63ec03a3249cad2e"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html#a9ab2089ff14163ec63ec03a3249cad2e">FillTextureArray</a> (int[] textureSlots)</td></tr>
+<tr class="memdesc:a9ab2089ff14163ec63ec03a3249cad2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine which textures make up the background by assigning their background slots/IDs to the given array. <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a25f3d2d6199bfebf7a2b80c44abad71f" title="Gets the texture slot corresponding to the specified texture name. Shorthand for calling BackgroundTe...">Mod.GetBackgroundSlot</a> may be useful here. Index 0 is the texture on the border of the ground and sky layers. Index 1 is the texture drawn between rock and ground layers. Index 2 is the texture on the border of ground and rock layers. Index 3 is the texture drawn in the rock layer. The border images are 160x16 pixels, and the others are 160x96, but it seems like the right 32 pixels of each is a duplicate of the far left 32 pixels.  <a href="#a9ab2089ff14163ec63ec03a3249cad2e">More...</a><br/></td></tr>
 <tr class="separator:a9ab2089ff14163ec63ec03a3249cad2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a8a832a680daffbcdf501b98af524945f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html#a8a832a680daffbcdf501b98af524945f">mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a8a832a680daffbcdf501b98af524945f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod that added this underground background style.  <a href="#a8a832a680daffbcdf501b98af524945f">More...</a><br/></td></tr>
 <tr class="separator:a8a832a680daffbcdf501b98af524945f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a0a634803a75a46887163eb78536404"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html#a1a0a634803a75a46887163eb78536404">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a1a0a634803a75a46887163eb78536404"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this underground background style.  <a href="#a1a0a634803a75a46887163eb78536404">More...</a><br/></td></tr>
 <tr class="separator:a1a0a634803a75a46887163eb78536404"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00006fd879dc9abc966e5ca779ccbf9d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html#a00006fd879dc9abc966e5ca779ccbf9d">Slot</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a00006fd879dc9abc966e5ca779ccbf9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of this underground background style.  <a href="#a00006fd879dc9abc966e5ca779ccbf9d">More...</a><br/></td></tr>
 <tr class="separator:a00006fd879dc9abc966e5ca779ccbf9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00006">6</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<div class="textblock"><p>Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00009">9</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a51445ebbc96e5bf81a0fcda7d9b1abf0"></a>
 <div class="memitem">
@@ -159,12 +169,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00026">26</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<p>Allows you to automatically add a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds. ">ModUgBgStyle</a> instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9666156b5add36e5e49c3d75c881fdfd" title="Adds the given underground background style with the given name to this mod. ">Mod.AddUgBgStyle</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds. ">ModUgBgStyle</a>. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00041">41</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l01724">Terraria.ModLoader.Mod.AutoloadUgBgStyle()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        }</div>
+<div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -200,10 +212,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00031">31</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
+<p>Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00049">49</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -229,6 +243,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Allows you to determine which textures make up the background by assigning their background slots/IDs to the given array. <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a25f3d2d6199bfebf7a2b80c44abad71f" title="Gets the texture slot corresponding to the specified texture name. Shorthand for calling BackgroundTe...">Mod.GetBackgroundSlot</a> may be useful here. Index 0 is the texture on the border of the ground and sky layers. Index 1 is the texture drawn between rock and ground layers. Index 2 is the texture on the border of ground and rock layers. Index 3 is the texture drawn in the rock layer. The border images are 160x16 pixels, and the others are 160x96, but it seems like the right 32 pixels of each is a duplicate of the far left 32 pixels. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
@@ -250,7 +266,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00009">9</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<p>The mod that added this underground background style. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00015">15</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 
 </div>
 </div>
@@ -272,7 +290,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00015">15</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<p>The internal name of this underground background style. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00024">24</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 
 </div>
 </div>
@@ -294,7 +314,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00021">21</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
+<p>The ID of this underground background style. </p>
+
+<p>Definition at line <a class="el" href="_mod_background_style_8cs_source.html#l00033">33</a> of file <a class="el" href="_mod_background_style_8cs_source.html">ModBackgroundStyle.cs</a>.</p>
 
 </div>
 </div>

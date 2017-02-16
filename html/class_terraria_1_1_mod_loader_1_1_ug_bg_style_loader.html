@@ -132,6 +132,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad4ecc806a3ee8639089a17dafbe20adb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#ad4ecc806a3ee8639089a17dafbe20adb">FillTextureArray</a> (int style, int[] textureSlots)</td></tr>
 <tr class="separator:ad4ecc806a3ee8639089a17dafbe20adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1920e2529e358ed593853378a0e6079a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html">ModUgBgStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a1920e2529e358ed593853378a0e6079a">GetUgBgStyle</a> (int style)</td></tr>
+<tr class="memdesc:a1920e2529e358ed593853378a0e6079a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds. ">ModUgBgStyle</a> object with the given ID.  <a href="#a1920e2529e358ed593853378a0e6079a">More...</a><br/></td></tr>
 <tr class="separator:a1920e2529e358ed593853378a0e6079a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -170,24 +171,24 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_background_style_loaders_8cs_source.html#l00039">39</a> of file <a class="el" href="_background_style_loaders_8cs_source.html">BackgroundStyleLoaders.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">if</span> (!GlobalBgStyleLoader.loaded)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">foreach</span> (var ugBgStyle <span class="keywordflow">in</span> ugBgStyles)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="keywordflow">if</span> (ugBgStyle.ChooseBgStyle())</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                    style = ugBgStyle.Slot;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">foreach</span> (var hook <span class="keywordflow">in</span> GlobalBgStyleLoader.HookChooseUgBgStyle)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                hook(ref style);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_background_style_loaders_8cs_source.html#l00042">42</a> of file <a class="el" href="_background_style_loaders_8cs_source.html">BackgroundStyleLoaders.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">if</span> (!GlobalBgStyleLoader.loaded)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">foreach</span> (var ugBgStyle <span class="keywordflow">in</span> ugBgStyles)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keywordflow">if</span> (ugBgStyle.ChooseBgStyle())</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                    style = ugBgStyle.Slot;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">foreach</span> (var hook <span class="keywordflow">in</span> GlobalBgStyleLoader.HookChooseUgBgStyle)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                hook(ref style);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -223,23 +224,23 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_background_style_loaders_8cs_source.html#l00058">58</a> of file <a class="el" href="_background_style_loaders_8cs_source.html">BackgroundStyleLoaders.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">if</span> (!GlobalBgStyleLoader.loaded)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            var ugBgStyle = <a class="code" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a1920e2529e358ed593853378a0e6079a">GetUgBgStyle</a>(style);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">if</span> (ugBgStyle != null)</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                ugBgStyle.FillTextureArray(textureSlots);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">foreach</span> (var hook <span class="keywordflow">in</span> GlobalBgStyleLoader.HookFillUgTextureArray)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                hook(style, textureSlots);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader_html_a1920e2529e358ed593853378a0e6079a"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a1920e2529e358ed593853378a0e6079a">Terraria.ModLoader.UgBgStyleLoader.GetUgBgStyle</a></div><div class="ttdeci">static ModUgBgStyle GetUgBgStyle(int style)</div><div class="ttdef"><b>Definition:</b> <a href="_background_style_loaders_8cs_source.html#l00023">BackgroundStyleLoaders.cs:23</a></div></div>
+<p>Definition at line <a class="el" href="_background_style_loaders_8cs_source.html#l00061">61</a> of file <a class="el" href="_background_style_loaders_8cs_source.html">BackgroundStyleLoaders.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">if</span> (!GlobalBgStyleLoader.loaded)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            var ugBgStyle = <a class="code" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a1920e2529e358ed593853378a0e6079a">GetUgBgStyle</a>(style);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">if</span> (ugBgStyle != null)</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                ugBgStyle.FillTextureArray(textureSlots);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">foreach</span> (var hook <span class="keywordflow">in</span> GlobalBgStyleLoader.HookFillUgTextureArray)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                hook(style, textureSlots);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader_html_a1920e2529e358ed593853378a0e6079a"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a1920e2529e358ed593853378a0e6079a">Terraria.ModLoader.UgBgStyleLoader.GetUgBgStyle</a></div><div class="ttdeci">static ModUgBgStyle GetUgBgStyle(int style)</div><div class="ttdoc">Returns the ModUgBgStyle object with the given ID. </div><div class="ttdef"><b>Definition:</b> <a href="_background_style_loaders_8cs_source.html#l00026">BackgroundStyleLoaders.cs:26</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -265,11 +266,13 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_background_style_loaders_8cs_source.html#l00023">23</a> of file <a class="el" href="_background_style_loaders_8cs_source.html">BackgroundStyleLoaders.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">return</span> style &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a5f9c51bbff00613866edaf857f566660">vanillaUgBgStyleCount</a> &amp;&amp; style &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a58321dfe1637e2672c80d6c2018d1c60">nextUgBgStyle</a></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                ? ugBgStyles[style - <a class="code" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a5f9c51bbff00613866edaf857f566660">vanillaUgBgStyleCount</a>] : null;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
+<p>Returns the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds. ">ModUgBgStyle</a> object with the given ID. </p>
+
+<p>Definition at line <a class="el" href="_background_style_loaders_8cs_source.html#l00026">26</a> of file <a class="el" href="_background_style_loaders_8cs_source.html">BackgroundStyleLoaders.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <span class="keywordflow">return</span> style &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a5f9c51bbff00613866edaf857f566660">vanillaUgBgStyleCount</a> &amp;&amp; style &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a58321dfe1637e2672c80d6c2018d1c60">nextUgBgStyle</a></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                ? ugBgStyles[style - <a class="code" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a5f9c51bbff00613866edaf857f566660">vanillaUgBgStyleCount</a>] : null;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader_html_a5f9c51bbff00613866edaf857f566660"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a5f9c51bbff00613866edaf857f566660">Terraria.ModLoader.UgBgStyleLoader.vanillaUgBgStyleCount</a></div><div class="ttdeci">const int vanillaUgBgStyleCount</div><div class="ttdef"><b>Definition:</b> <a href="_background_style_loaders_8cs_source.html#l00012">BackgroundStyleLoaders.cs:12</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader_html_a58321dfe1637e2672c80d6c2018d1c60"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a58321dfe1637e2672c80d6c2018d1c60">Terraria.ModLoader.UgBgStyleLoader.nextUgBgStyle</a></div><div class="ttdeci">static int nextUgBgStyle</div><div class="ttdef"><b>Definition:</b> <a href="_background_style_loaders_8cs_source.html#l00013">BackgroundStyleLoaders.cs:13</a></div></div>
 </div><!-- fragment -->
