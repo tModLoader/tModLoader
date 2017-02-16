@@ -16,9 +16,13 @@ using System.Security.Cryptography;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This serves as the central class which loads mods. It contains many static fields and methods related to mods and their contents.
+	/// </summary>
 	public static class ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
+		/// <summary>The name and version number of tModLoader.</summary>
 		public static readonly Version version = new Version(0, 9, 1, 1);
 		public static readonly string versionedName = "tModLoader v" + version;
 #if WINDOWS
@@ -32,8 +36,10 @@ namespace Terraria.ModLoader
 		public const bool gog = false;
 #endif
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
+		/// <summary>The file path in which mods are stored.</summary>
 		public static string ModPath => modPath;
 		internal static string modPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
+		/// <summary>The file path in which mod sources are stored. Mod sources are the code and images that developers work with.</summary>
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
 		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
 		internal const int earliestRelease = 149;
@@ -72,6 +78,9 @@ namespace Terraria.ModLoader
 
 		public static int ModCount => loadedMods.Length;
 
+		/// <summary>
+		/// Gets the instance of the Mod with the specified name.
+		/// </summary>
 		public static Mod GetMod(string name)
 		{
 			Mod m;
@@ -86,6 +95,9 @@ namespace Terraria.ModLoader
 
 		public static Mod[] LoadedMods => (Mod[])loadedMods.Clone();
 
+		/// <summary>
+		/// Returns an array containing the names of all loaded mods. The array entries will be in the reverse order in which the mods were loaded.
+		/// </summary>
 		public static string[] GetLoadedMods()
 		{
 			return loadOrder.ToArray();
@@ -509,6 +521,10 @@ namespace Terraria.ModLoader
 			subName = name.Substring(slash + 1);
 		}
 
+		/// <summary>
+		/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static byte[] GetFileBytes(string name)
 		{
 			string modName, subName;
@@ -521,6 +537,9 @@ namespace Terraria.ModLoader
 			return mod.GetFileBytes(subName);
 		}
 
+		/// <summary>
+		/// Returns whether or not a file with the specified name exists.
+		/// </summary>
 		public static bool FileExists(string name)
 		{
 			if (!name.Contains('/'))
@@ -533,6 +552,10 @@ namespace Terraria.ModLoader
 			return mod != null && mod.FileExists(subName);
 		}
 
+		/// <summary>
+		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/FileNameWithoutExtension" will reference an image from the "terraria/Content/Images" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static Texture2D GetTexture(string name)
 		{
 			if (Main.dedServ)
@@ -550,6 +573,9 @@ namespace Terraria.ModLoader
 			return mod.GetTexture(subName);
 		}
 
+		/// <summary>
+		/// Returns whether or not a texture with the specified name exists.
+		/// </summary>
 		public static bool TextureExists(string name)
 		{
 			if (!name.Contains('/'))
@@ -565,6 +591,10 @@ namespace Terraria.ModLoader
 			return mod != null && mod.TextureExists(subName);
 		}
 
+		/// <summary>
+		/// Gets the sound with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the sound does not exist. Note: SoundEffect is in the Microsoft.Xna.Framework.Audio namespace.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static SoundEffect GetSound(string name)
 		{
 			if (Main.dedServ)
@@ -580,6 +610,9 @@ namespace Terraria.ModLoader
 			return mod.GetSound(subName);
 		}
 
+		/// <summary>
+		/// Returns whether or not a sound with the specified name exists.
+		/// </summary>
 		public static bool SoundExists(string name)
 		{
 			if (!name.Contains('/'))

@@ -5,6 +5,9 @@ using Terraria.World.Generation;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This is where all ModWorld hooks are gathered and called.
+	/// </summary>
 	public static class WorldHooks
 	{
 		internal static readonly IList<ModWorld> worlds = new List<ModWorld>();

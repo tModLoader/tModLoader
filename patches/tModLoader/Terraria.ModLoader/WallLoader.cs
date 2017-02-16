@@ -7,6 +7,9 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This serves as the central class from which wall-related functions are supported and carried out.
+	/// </summary>
 	public static class WallLoader
 	{
 		private static int nextWall = WallID.Count;
@@ -29,7 +32,7 @@ namespace Terraria.ModLoader
 		private static Action<int, int, int>[] HookRandomUpdate;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
-		private static Action<int, int, Item>[] HookPlaceInWorld;
+		private static Action<int, int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveWallID()
 		{
@@ -42,6 +45,9 @@ namespace Terraria.ModLoader
 
 		internal static int WallCount => nextWall;
 
+		/// <summary>
+		/// Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null.
+		/// </summary>
 		public static ModWall GetWall(int type)
 		{
 			return type >= WallID.Count && type < WallCount ? walls[type - WallID.Count] : null;
@@ -296,7 +302,7 @@ namespace Terraria.ModLoader
 
 			foreach (var hook in HookPlaceInWorld)
 			{
-				hook(i, j, item);
+				hook(i, j, type, item);
 			}
 
 			GetWall(type)?.PlaceInWorld(i, j, item);
