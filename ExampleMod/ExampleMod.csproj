@@ -164,6 +164,7 @@
     <Compile Include="Items\Weapons\ExampleStaff.cs" />
     <Compile Include="Items\Weapons\ExampleDualUseWeapon.cs" />
     <Compile Include="Items\Weapons\ExampleSword.cs" />
+    <Compile Include="Items\Weapons\ExampleYoyo.cs" />
     <Compile Include="Items\Weapons\PurityTotem.cs" />
     <Compile Include="Items\Weapons\SpectreGun.cs" />
     <Compile Include="Items\Weapons\Wisp.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Projectiles\ExampleLaser.cs" />
     <Compile Include="Projectiles\ExampleSolution.cs" />
     <Compile Include="Projectiles\ExampleSpearProjectile.cs" />
+    <Compile Include="Projectiles\ExampleYoyo.cs" />
     <Compile Include="Projectiles\HealProj.cs" />
     <Compile Include="Projectiles\Minions\HoverShooter.cs" />
     <Compile Include="Projectiles\Minions\Minion.cs" />
