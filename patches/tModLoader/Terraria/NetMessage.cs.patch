@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\NetMessage.cs
 +++ src/tModLoader\Terraria\NetMessage.cs
-@@ -11,6 +_,8 @@
+@@ -11,13 +_,15 @@
  using Terraria.Localization;
  using Terraria.Net.Sockets;
  using Terraria.Social;
@@ -9,6 +9,25 @@
  
  namespace Terraria
  {
+ 	public class NetMessage
+ 	{
+ 		public static MessageBuffer[] buffer = new MessageBuffer[257];
+-		private static PlayerDeathReason _currentPlayerDeathReason;
++		public static PlayerDeathReason _currentPlayerDeathReason;
+ 
+ 		public static void SendData(int msgType, int remoteClient = -1, int ignoreClient = -1, string text = "", int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0)
+ 		{
+@@ -29,6 +_,10 @@
+ 			if (Main.netMode == 2 && remoteClient >= 0)
+ 			{
+ 				num = remoteClient;
++			}
++			if (ModNet.HijackSendData(num, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7))
++			{
++				return;
+ 			}
+ 			lock (NetMessage.buffer[num])
+ 			{
 @@ -45,7 +_,7 @@
  				switch (msgType)
  				{

@@ -49,6 +49,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent.
+		/// </summary>
+		public virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, string text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
+		{
+			return false;
+		}
+
+		/// <summary>
 		/// Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)
 		/// </summary>
 		public virtual Matrix ModifyTransformMatrix(Matrix Transform)
