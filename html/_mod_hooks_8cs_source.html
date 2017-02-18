@@ -137,115 +137,121 @@ $(document).ready(function(){initNavTree('_mod_hooks_8cs_source.html','');});
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac12293f15f8a00257b20a5affc25fa2e">   54</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> Matrix <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac12293f15f8a00257b20a5affc25fa2e">ModifyTransformMatrix</a>(Matrix Transform)</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#a314ae3d6081dbb923458a3aac852d17b">   54</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a314ae3d6081dbb923458a3aac852d17b">HijackSendData</a>(<span class="keywordtype">int</span> whoAmI, <span class="keywordtype">int</span> msgType, <span class="keywordtype">int</span> remoteClient, <span class="keywordtype">int</span> ignoreClient, <span class="keywordtype">string</span> text, <span class="keywordtype">int</span> number, <span class="keywordtype">float</span> number2, <span class="keywordtype">float</span> number3, <span class="keywordtype">float</span> number4, <span class="keywordtype">int</span> number5, <span class="keywordtype">int</span> number6, <span class="keywordtype">int</span> number7)</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> Transform;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#a567e898429d7851d9c8418e9176fdd4b">   63</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a567e898429d7851d9c8418e9176fdd4b">ModifyInterfaceLayers</a>(List&lt;MethodSequenceListItem&gt; layers)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac12293f15f8a00257b20a5affc25fa2e">   62</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> Matrix <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac12293f15f8a00257b20a5affc25fa2e">ModifyTransformMatrix</a>(Matrix Transform)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">return</span> Transform;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9cab728dabe85fe39eccff20b79d86e5">   73</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9cab728dabe85fe39eccff20b79d86e5">PostDrawInterface</a>(SpriteBatch spriteBatch)</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac230f956119a8a6c36d28e763c912528">   81</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac230f956119a8a6c36d28e763c912528">PostDrawFullscreenMap</a>(ref <span class="keywordtype">string</span> mouseText)</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#a567e898429d7851d9c8418e9176fdd4b">   71</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a567e898429d7851d9c8418e9176fdd4b">ModifyInterfaceLayers</a>(List&lt;MethodSequenceListItem&gt; layers)</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9cab728dabe85fe39eccff20b79d86e5">   81</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9cab728dabe85fe39eccff20b79d86e5">PostDrawInterface</a>(SpriteBatch spriteBatch)</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f56ef1812ae8423233b39a00bfd9406">   88</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f56ef1812ae8423233b39a00bfd9406">PostUpdateInput</a>()</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#a3dc3da5f2b4d76789764639cf5e91c6d">   95</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a3dc3da5f2b4d76789764639cf5e91c6d">PreSaveAndQuit</a>()</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    }</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac230f956119a8a6c36d28e763c912528">   89</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac230f956119a8a6c36d28e763c912528">PostDrawFullscreenMap</a>(ref <span class="keywordtype">string</span> mouseText)</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f56ef1812ae8423233b39a00bfd9406">   96</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f56ef1812ae8423233b39a00bfd9406">PostUpdateInput</a>()</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">class </span>ModHooks</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="comment">//in Terraria.Main.UpdateMusic before updating music boxes call ModHooks.UpdateMusic(ref this.newMusic);</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> UpdateMusic(ref <span class="keywordtype">int</span> music)</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod.html#a3dc3da5f2b4d76789764639cf5e91c6d">  103</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a3dc3da5f2b4d76789764639cf5e91c6d">PreSaveAndQuit</a>()</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                mod.UpdateMusic(ref music);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="comment">// Pretty much deprecated. </span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> HotKeyPressed()</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">foreach</span> (var modHotkey <span class="keywordflow">in</span> ModLoader.modHotKeys)</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            {</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                <span class="keywordflow">if</span> (PlayerInput.Triggers.Current.KeyStatus[modHotkey.Value.displayName])</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                    modHotkey.Value.mod.HotKeyPressed(modHotkey.Value.name);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            }</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> Matrix ModifyTransformMatrix(Matrix Transform)</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            {</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                Transform = mod.ModifyTransformMatrix(Transform);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">class </span>ModHooks</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="comment">//in Terraria.Main.UpdateMusic before updating music boxes call ModHooks.UpdateMusic(ref this.newMusic);</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> UpdateMusic(ref <span class="keywordtype">int</span> music)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                mod.UpdateMusic(ref music);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="comment">// Pretty much deprecated. </span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> HotKeyPressed()</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">foreach</span> (var modHotkey <span class="keywordflow">in</span> ModLoader.modHotKeys)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                <span class="keywordflow">if</span> (PlayerInput.Triggers.Current.KeyStatus[modHotkey.Value.displayName])</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                    modHotkey.Value.mod.HotKeyPressed(modHotkey.Value.name);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                }</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            <span class="keywordflow">return</span> Transform;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> PostDrawFullscreenMap(ref <span class="keywordtype">string</span> mouseText)</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            {</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                mod.PostDrawFullscreenMap(ref mouseText);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> Matrix ModifyTransformMatrix(Matrix Transform)</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        {</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                Transform = mod.ModifyTransformMatrix(Transform);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keywordflow">return</span> Transform;</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        }</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> ModifyInterfaceLayers(List&lt;MethodSequenceListItem&gt; layers)</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> PostDrawFullscreenMap(ref <span class="keywordtype">string</span> mouseText)</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        {</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            {</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                mod.ModifyInterfaceLayers(layers);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                mod.PostDrawFullscreenMap(ref mouseText);</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            }</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        }</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> PostDrawInterface(SpriteBatch spriteBatch)</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> ModifyInterfaceLayers(List&lt;MethodSequenceListItem&gt; layers)</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        {</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                mod.PostDrawInterface(spriteBatch);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                mod.ModifyInterfaceLayers(layers);</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            }</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        }</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> PostUpdateInput()</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> PostDrawInterface(SpriteBatch spriteBatch)</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        {</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                mod.PostUpdateInput();</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                mod.PostDrawInterface(spriteBatch);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            }</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        }</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> PreSaveAndQuit()</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> PostUpdateInput()</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        {</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                mod.PreSaveAndQuit();</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                mod.PostUpdateInput();</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            }</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        }</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    }</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;}</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keywordtype">void</span> PreSaveAndQuit()</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        {</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordflow">foreach</span> (Mod mod <span class="keywordflow">in</span> ModLoader.mods.Values)</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            {</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                mod.PreSaveAndQuit();</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            }</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;}</div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_ad065cd0795e3f1abbb4328bed221508c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#ad065cd0795e3f1abbb4328bed221508c">Terraria.ModLoader.Mod.UpdateMusic</a></div><div class="ttdeci">virtual void UpdateMusic(ref int music)</div><div class="ttdoc">Allows you to determine what music should currently play. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00018">ModHooks.cs:18</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a6ce58eb4ee02d58d03d5ad8f4b648d6c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a6ce58eb4ee02d58d03d5ad8f4b648d6c">Terraria.ModLoader.Mod.HijackGetData</a></div><div class="ttdeci">virtual bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)</div><div class="ttdoc">Allows you to modify net message / packet information that is received before the game can act on it...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00046">ModHooks.cs:46</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_aa682b689f90ed0c2c8190f587af54bd9"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#aa682b689f90ed0c2c8190f587af54bd9">Terraria.ModLoader.Mod.HotKeyPressed</a></div><div class="ttdeci">virtual void HotKeyPressed(string name)</div><div class="ttdoc">Called when a hotkey is pressed. Check against the name to verify particular hotkey that was pressed...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00026">ModHooks.cs:26</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a348865b876891d72bf9079768c414705"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a348865b876891d72bf9079768c414705">Terraria.ModLoader.Mod.HandlePacket</a></div><div class="ttdeci">virtual void HandlePacket(BinaryReader reader, int whoAmI)</div><div class="ttdoc">Called whenever a net message / packet is received from a client (if this is a server) or the server ...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00035">ModHooks.cs:35</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_ac230f956119a8a6c36d28e763c912528"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#ac230f956119a8a6c36d28e763c912528">Terraria.ModLoader.Mod.PostDrawFullscreenMap</a></div><div class="ttdeci">virtual void PostDrawFullscreenMap(ref string mouseText)</div><div class="ttdoc">Called while the fullscreen map is active. Allows custom drawing to the map. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00081">ModHooks.cs:81</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_ac12293f15f8a00257b20a5affc25fa2e"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#ac12293f15f8a00257b20a5affc25fa2e">Terraria.ModLoader.Mod.ModifyTransformMatrix</a></div><div class="ttdeci">virtual Matrix ModifyTransformMatrix(Matrix Transform)</div><div class="ttdoc">Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.) </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00054">ModHooks.cs:54</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a3dc3da5f2b4d76789764639cf5e91c6d"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a3dc3da5f2b4d76789764639cf5e91c6d">Terraria.ModLoader.Mod.PreSaveAndQuit</a></div><div class="ttdeci">virtual void PreSaveAndQuit()</div><div class="ttdoc">Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing ou...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00095">ModHooks.cs:95</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a9cab728dabe85fe39eccff20b79d86e5"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a9cab728dabe85fe39eccff20b79d86e5">Terraria.ModLoader.Mod.PostDrawInterface</a></div><div class="ttdeci">virtual void PostDrawInterface(SpriteBatch spriteBatch)</div><div class="ttdoc">Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00073">ModHooks.cs:73</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a567e898429d7851d9c8418e9176fdd4b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a567e898429d7851d9c8418e9176fdd4b">Terraria.ModLoader.Mod.ModifyInterfaceLayers</a></div><div class="ttdeci">virtual void ModifyInterfaceLayers(List&lt; MethodSequenceListItem &gt; layers)</div><div class="ttdoc">Allows you to modify the elements of the in-game interface that get drawn. MethodSequenceListItem can...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00063">ModHooks.cs:63</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a9f56ef1812ae8423233b39a00bfd9406"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f56ef1812ae8423233b39a00bfd9406">Terraria.ModLoader.Mod.PostUpdateInput</a></div><div class="ttdeci">virtual void PostUpdateInput()</div><div class="ttdoc">Called after the input keys are polled. Allows for modifying things like scroll wheel if your custom ...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00088">ModHooks.cs:88</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a314ae3d6081dbb923458a3aac852d17b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a314ae3d6081dbb923458a3aac852d17b">Terraria.ModLoader.Mod.HijackSendData</a></div><div class="ttdeci">virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, string text, int number, float number2, float number3, float number4, int number5, int number6, int number7)</div><div class="ttdoc">Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00054">ModHooks.cs:54</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_ac230f956119a8a6c36d28e763c912528"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#ac230f956119a8a6c36d28e763c912528">Terraria.ModLoader.Mod.PostDrawFullscreenMap</a></div><div class="ttdeci">virtual void PostDrawFullscreenMap(ref string mouseText)</div><div class="ttdoc">Called while the fullscreen map is active. Allows custom drawing to the map. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00089">ModHooks.cs:89</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_ac12293f15f8a00257b20a5affc25fa2e"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#ac12293f15f8a00257b20a5affc25fa2e">Terraria.ModLoader.Mod.ModifyTransformMatrix</a></div><div class="ttdeci">virtual Matrix ModifyTransformMatrix(Matrix Transform)</div><div class="ttdoc">Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.) </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00062">ModHooks.cs:62</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a3dc3da5f2b4d76789764639cf5e91c6d"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a3dc3da5f2b4d76789764639cf5e91c6d">Terraria.ModLoader.Mod.PreSaveAndQuit</a></div><div class="ttdeci">virtual void PreSaveAndQuit()</div><div class="ttdoc">Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing ou...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00103">ModHooks.cs:103</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a9cab728dabe85fe39eccff20b79d86e5"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a9cab728dabe85fe39eccff20b79d86e5">Terraria.ModLoader.Mod.PostDrawInterface</a></div><div class="ttdeci">virtual void PostDrawInterface(SpriteBatch spriteBatch)</div><div class="ttdoc">Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00081">ModHooks.cs:81</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a567e898429d7851d9c8418e9176fdd4b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a567e898429d7851d9c8418e9176fdd4b">Terraria.ModLoader.Mod.ModifyInterfaceLayers</a></div><div class="ttdeci">virtual void ModifyInterfaceLayers(List&lt; MethodSequenceListItem &gt; layers)</div><div class="ttdoc">Allows you to modify the elements of the in-game interface that get drawn. MethodSequenceListItem can...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00071">ModHooks.cs:71</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a9f56ef1812ae8423233b39a00bfd9406"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f56ef1812ae8423233b39a00bfd9406">Terraria.ModLoader.Mod.PostUpdateInput</a></div><div class="ttdeci">virtual void PostUpdateInput()</div><div class="ttdoc">Called after the input keys are polled. Allows for modifying things like scroll wheel if your custom ...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00096">ModHooks.cs:96</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -395,6 +395,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ce58eb4ee02d58d03d5ad8f4b648d6c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a6ce58eb4ee02d58d03d5ad8f4b648d6c">HijackGetData</a> (ref byte messageType, ref BinaryReader reader, int playerNumber)</td></tr>
 <tr class="memdesc:a6ce58eb4ee02d58d03d5ad8f4b648d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify net message / packet information that is received before the game can act on it.  <a href="#a6ce58eb4ee02d58d03d5ad8f4b648d6c">More...</a><br/></td></tr>
 <tr class="separator:a6ce58eb4ee02d58d03d5ad8f4b648d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a314ae3d6081dbb923458a3aac852d17b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a314ae3d6081dbb923458a3aac852d17b">HijackSendData</a> (int whoAmI, int msgType, int remoteClient, int ignoreClient, string text, int number, float number2, float number3, float number4, int number5, int number6, int number7)</td></tr>
+<tr class="memdesc:a314ae3d6081dbb923458a3aac852d17b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent.  <a href="#a314ae3d6081dbb923458a3aac852d17b">More...</a><br/></td></tr>
+<tr class="separator:a314ae3d6081dbb923458a3aac852d17b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa682b689f90ed0c2c8190f587af54bd9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#aa682b689f90ed0c2c8190f587af54bd9">HotKeyPressed</a> (string name)</td></tr>
 <tr class="memdesc:aa682b689f90ed0c2c8190f587af54bd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a hotkey is pressed. Check against the name to verify particular hotkey that was pressed. (Using the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html" title="Represents a loaded hotkey. It is suggested to access the hotkey status only in ModPlayer.ProcessTriggers. ">ModHotKey</a> is more recommended.)  <a href="#aa682b689f90ed0c2c8190f587af54bd9">More...</a><br/></td></tr>
 <tr class="separator:aa682b689f90ed0c2c8190f587af54bd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5919,6 +5922,107 @@ Private Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="a314ae3d6081dbb923458a3aac852d17b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.Mod.HijackSendData </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>whoAmI</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>msgType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>remoteClient</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ignoreClient</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>number</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>number2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>number3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>number4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>number5</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>number6</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>number7</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent. </p>
+
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00054">54</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="aa682b689f90ed0c2c8190f587af54bd9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -6089,9 +6193,9 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00063">63</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00071">71</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -6119,10 +6223,10 @@ Private Member Functions</h2></td></tr>
 
 <p>Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.) </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00054">54</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> Transform;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00062">62</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">return</span> Transform;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -6306,9 +6410,9 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00081">81</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00089">89</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -6343,9 +6447,9 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00073">73</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00081">81</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -6401,9 +6505,9 @@ Private Member Functions</h2></td></tr>
 
 <p>Called after the input keys are polled. Allows for modifying things like scroll wheel if your custom drawing should capture that. </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00088">88</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00096">96</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -6430,9 +6534,9 @@ Private Member Functions</h2></td></tr>
 
 <p>Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player. </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00095">95</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00103">103</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>

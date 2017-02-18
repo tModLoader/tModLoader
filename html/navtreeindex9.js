@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"functions_func_w.html":[1,3,1,20],
 "functions_g.html":[1,3,0,7],
 "functions_h.html":[1,3,0,8],
 "functions_i.html":[1,3,0,9],
@@ -46,8 +47,8 @@ var NAVTREEINDEX9 =
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558":[1,0,0,0,2,1],
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#a6be9f02c2ce7c0adb64d427c52984527":[1,0,0,0,2,0],
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897":[1,0,0,0,2,2],
-"namespace_terraria.html":[1,0,0],
 "namespace_terraria.html":[0,0,0],
+"namespace_terraria.html":[1,0,0],
 "namespace_terraria_1_1_mod_loader.html":[0,0,0,0],
 "namespace_terraria_1_1_mod_loader.html":[1,0,0,0],
 "namespacemembers.html":[0,1,0],

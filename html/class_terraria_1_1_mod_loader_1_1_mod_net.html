@@ -199,17 +199,17 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00145">145</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                                              {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">downloadingMod</a> = downloadQueue.Dequeue();</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6">downloadingFile</a> = null;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            var p = <span class="keyword">new</span> ModPacket(MessageID.ModFile);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            p.Write(downloadingMod.name);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            p.Send();</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_a43e250ca8ddeced80d32cbcc773888a2"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">Terraria.ModLoader.ModNet.downloadingMod</a></div><div class="ttdeci">static ModHeader downloadingMod</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00045">ModNet.cs:45</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_afdaa62eb30981b94122fd7d7560f9cd6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6">Terraria.ModLoader.ModNet.downloadingFile</a></div><div class="ttdeci">static FileStream downloadingFile</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00046">ModNet.cs:46</a></div></div>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00150">150</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">downloadingMod</a> = downloadQueue.Dequeue();</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6">downloadingFile</a> = null;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            var p = <span class="keyword">new</span> ModPacket(MessageID.ModFile);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            p.Write(downloadingMod.name);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            p.Send();</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_a43e250ca8ddeced80d32cbcc773888a2"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">Terraria.ModLoader.ModNet.downloadingMod</a></div><div class="ttdeci">static ModHeader downloadingMod</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00047">ModNet.cs:47</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_afdaa62eb30981b94122fd7d7560f9cd6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6">Terraria.ModLoader.ModNet.downloadingFile</a></div><div class="ttdeci">static FileStream downloadingFile</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00048">ModNet.cs:48</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -282,18 +282,18 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00256">256</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                                        {</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            Main.ActivePlayerFileData = Player.GetFileData(Main.ActivePlayerFileData.Path, Main.ActivePlayerFileData.IsCloudSave);</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            Main.ActivePlayerFileData.SetAsActive();</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <span class="comment">//from Netplay.ClientLoopSetup</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            Main.player[Main.myPlayer].hostile = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            Main.menuMode = 10;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ab34e665297766ff71a00a9812fa88acb">OnModsDownloaded</a>(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_ab34e665297766ff71a00a9812fa88acb"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ab34e665297766ff71a00a9812fa88acb">Terraria.ModLoader.ModNet.OnModsDownloaded</a></div><div class="ttdeci">static void OnModsDownloaded(bool needsReload)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00240">ModNet.cs:240</a></div></div>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00267">267</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            Main.ActivePlayerFileData = Player.GetFileData(Main.ActivePlayerFileData.Path, Main.ActivePlayerFileData.IsCloudSave);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            Main.ActivePlayerFileData.SetAsActive();</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <span class="comment">//from Netplay.ClientLoopSetup</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            Main.player[Main.myPlayer].hostile = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            Main.menuMode = 10;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ab34e665297766ff71a00a9812fa88acb">OnModsDownloaded</a>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_ab34e665297766ff71a00a9812fa88acb"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ab34e665297766ff71a00a9812fa88acb">Terraria.ModLoader.ModNet.OnModsDownloaded</a></div><div class="ttdeci">static void OnModsDownloaded(bool needsReload)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00250">ModNet.cs:250</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -319,27 +319,27 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00240">240</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00250">250</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
 <p>References <a class="el" href="_mod_loader_8cs_source.html#l00096">Terraria.ModLoader.ModLoader.LoadedMods</a>.</p>
-<div class="fragment"><div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                                                               {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            <span class="keywordflow">if</span> (needsReload)</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            {</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                ModLoader.PostLoad = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#af08b022c78c7eccb5d20735a3e75bfb0">NetReload</a>;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                ModLoader.Reload();</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            }</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">downloadingMod</a> = null;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd">netMods</a> = null;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">foreach</span> (var mod <span class="keywordflow">in</span> ModLoader.LoadedMods)</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                mod.netID = -1;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            <span class="keyword">new</span> ModPacket(MessageID.SyncMods).Send();</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_af08b022c78c7eccb5d20735a3e75bfb0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#af08b022c78c7eccb5d20735a3e75bfb0">Terraria.ModLoader.ModNet.NetReload</a></div><div class="ttdeci">static void NetReload()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00256">ModNet.cs:256</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_a43e250ca8ddeced80d32cbcc773888a2"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">Terraria.ModLoader.ModNet.downloadingMod</a></div><div class="ttdeci">static ModHeader downloadingMod</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00045">ModNet.cs:45</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_ae8f1236c3d6398b75ca02a4a520db9dd"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd">Terraria.ModLoader.ModNet.netMods</a></div><div class="ttdeci">static Mod[] netMods</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00037">ModNet.cs:37</a></div></div>
+<div class="fragment"><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        {</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            <span class="keywordflow">if</span> (needsReload)</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            {</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                ModLoader.PostLoad = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#af08b022c78c7eccb5d20735a3e75bfb0">NetReload</a>;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                ModLoader.Reload();</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            }</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">downloadingMod</a> = null;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd">netMods</a> = null;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            <span class="keywordflow">foreach</span> (var mod <span class="keywordflow">in</span> ModLoader.LoadedMods)</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                mod.netID = -1;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="keyword">new</span> ModPacket(MessageID.SyncMods).Send();</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_af08b022c78c7eccb5d20735a3e75bfb0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#af08b022c78c7eccb5d20735a3e75bfb0">Terraria.ModLoader.ModNet.NetReload</a></div><div class="ttdeci">static void NetReload()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00267">ModNet.cs:267</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_a43e250ca8ddeced80d32cbcc773888a2"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">Terraria.ModLoader.ModNet.downloadingMod</a></div><div class="ttdeci">static ModHeader downloadingMod</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00047">ModNet.cs:47</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_ae8f1236c3d6398b75ca02a4a520db9dd"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd">Terraria.ModLoader.ModNet.netMods</a></div><div class="ttdeci">static Mod[] netMods</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00039">ModNet.cs:39</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -365,26 +365,26 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00280">280</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                                                            {</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            var mods = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f">ModLoader.LoadedMods</a>;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            var list = <span class="keyword">new</span> List&lt;Mod&gt;();</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            var n = reader.ReadInt32();</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">short</span> i = 0; i &lt; n; i++)</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            {</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                var name = reader.ReadString();</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                var mod = mods.SingleOrDefault(m =&gt; m.Name == name);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                list.Add(mod);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                <span class="keywordflow">if</span> (mod != null) <span class="comment">//nosync mod that doesn&#39;t exist on the client</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                    mod.netID = i;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            }</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd">netMods</a> = list.ToArray();</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            ItemLoader.ReadNetGlobalOrder(reader);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            WorldHooks.ReadNetWorldOrder(reader);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00293">293</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        {</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            var mods = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f">ModLoader.LoadedMods</a>;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            var list = <span class="keyword">new</span> List&lt;Mod&gt;();</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            var n = reader.ReadInt32();</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">short</span> i = 0; i &lt; n; i++)</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            {</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                var name = reader.ReadString();</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                var mod = mods.SingleOrDefault(m =&gt; m.Name == name);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                list.Add(mod);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                <span class="keywordflow">if</span> (mod != null) <span class="comment">//nosync mod that doesn&#39;t exist on the client</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                    mod.netID = i;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            }</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd">netMods</a> = list.ToArray();</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            ItemLoader.ReadNetGlobalOrder(reader);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;            WorldHooks.ReadNetWorldOrder(reader);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        }</div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_loader_html_aac69e449f7df7b685a640b53c574c00f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f">Terraria.ModLoader.ModLoader.LoadedMods</a></div><div class="ttdeci">static Mod[] LoadedMods</div><div class="ttdef"><b>Definition:</b> <a href="_mod_loader_8cs_source.html#l00096">ModLoader.cs:96</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_ae8f1236c3d6398b75ca02a4a520db9dd"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd">Terraria.ModLoader.ModNet.netMods</a></div><div class="ttdeci">static Mod[] netMods</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00037">ModNet.cs:37</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_ae8f1236c3d6398b75ca02a4a520db9dd"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd">Terraria.ModLoader.ModNet.netMods</a></div><div class="ttdeci">static Mod[] netMods</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00039">ModNet.cs:39</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -407,7 +407,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00154">154</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00160">160</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
 </div>
 </div>
@@ -429,7 +429,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00046">46</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00048">48</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
 </div>
 </div>
@@ -451,7 +451,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00047">47</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00049">49</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
 </div>
 </div>
@@ -473,7 +473,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00045">45</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00047">47</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
 </div>
 </div>
@@ -495,7 +495,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00044">44</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00046">46</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
 </div>
 </div>
@@ -517,7 +517,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00037">37</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00039">39</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
 </div>
 </div>
@@ -540,7 +540,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00032">32</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00033">33</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
 </div>
 </div>

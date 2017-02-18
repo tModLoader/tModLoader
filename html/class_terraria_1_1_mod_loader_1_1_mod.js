@@ -118,6 +118,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "GetWaterStyle", "class_terraria_1_1_mod_loader_1_1_mod.html#a6def5809063588619a9c31a703ac0d24", null ],
     [ "HandlePacket", "class_terraria_1_1_mod_loader_1_1_mod.html#a348865b876891d72bf9079768c414705", null ],
     [ "HijackGetData", "class_terraria_1_1_mod_loader_1_1_mod.html#a6ce58eb4ee02d58d03d5ad8f4b648d6c", null ],
+    [ "HijackSendData", "class_terraria_1_1_mod_loader_1_1_mod.html#a314ae3d6081dbb923458a3aac852d17b", null ],
     [ "HotKeyPressed", "class_terraria_1_1_mod_loader_1_1_mod.html#aa682b689f90ed0c2c8190f587af54bd9", null ],
     [ "ItemType", "class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2", null ],
     [ "ItemType< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#a9c69a2521f46ffba1f4c1bb4bd831b11", null ],
