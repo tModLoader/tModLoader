@@ -28,6 +28,5 @@ var searchData=
   ['worldhooks_2ecs',['WorldHooks.cs',['../_world_hooks_8cs.html',1,'']]],
   ['wormcritter',['WormCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad0c9e5bc7dce146093692ca3fec7c17c',1,'Terraria::ModLoader::SpawnCondition']]],
   ['wraith',['Wraith',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a02a19fdfa58040226209c8ab3f7adaa1',1,'Terraria::ModLoader::SpawnCondition']]],
-  ['wraithnewmoon',['WraithNewMoon',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a28d32093c98349444597f90fc0da7fcc',1,'Terraria::ModLoader::SpawnCondition']]],
   ['writeextradata',['WriteExtraData',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ac9e40959685f686d505ce021827211a5',1,'Terraria::ModLoader::ModTileEntity']]]
 ];

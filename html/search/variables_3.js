@@ -5,6 +5,8 @@ var searchData=
   ['carpetshader',['carpetShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#abc87fa8a99aa707204ad643c64aa818b',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['cavejellyfish',['CaveJellyfish',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a61f282fec3732ccc99bd6d82786297e9',1,'Terraria::ModLoader::SpawnCondition']]],
   ['cavepiranha',['CavePiranha',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae5f1f48bc576a9d58575dc3c8f777d83',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['cavern',['Cavern',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a83185ce17199d7f97ae0b22bc376fab0',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['chance',['Chance',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a3fb51d4a60714c1c14ae7ebc31d2fd73',1,'Terraria.ModLoader.SpawnCondition.Chance()'],['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#afe0654b0f537c5e3a31527e121d80853',1,'Terraria.ModLoader.SpawnCondition.chance()']]],
   ['chest',['chest',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#ad96d2fbabfdc4c848c51a3029b4905ef',1,'Terraria::ModLoader::ModTile']]],
   ['chestdrop',['chestDrop',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a41cd13516f1d54f9c1d53ab583c76273',1,'Terraria::ModLoader::ModTile']]],
   ['children',['children',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a2d268259618bb921ef9dd2c6c88e4d1b',1,'Terraria::ModLoader::SpawnCondition']]],

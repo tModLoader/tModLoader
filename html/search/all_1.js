@@ -2,6 +2,7 @@ var searchData=
 [
   ['acceptrecipegroup',['AcceptRecipeGroup',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd',1,'Terraria::ModLoader::RecipeEditor']]],
   ['action',['Action',['../class_terraria_1_1_mod_loader_1_1_mod_command.html#a5af7daa9bde5cebd40eb03494441c9e2',1,'Terraria::ModLoader::ModCommand']]],
+  ['active',['Active',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a214a878252541b15e32c0f36c8dcbc6a',1,'Terraria.ModLoader.SpawnCondition.Active()'],['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a8da0fb295154f126cf99fa9c103a2247',1,'Terraria.ModLoader.SpawnCondition.active()']]],
   ['addbackgroundtexture',['AddBackgroundTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#a6dec81443d46c9904a00522d66b9c025',1,'Terraria::ModLoader::Mod']]],
   ['addbossheadtexture',['AddBossHeadTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#aaaf8a0bbde18da64d25babc2bf40648a',1,'Terraria::ModLoader::Mod']]],
   ['addbuff',['AddBuff',['../class_terraria_1_1_mod_loader_1_1_mod.html#a55288ca705db7b2771c9d38b9a98594b',1,'Terraria::ModLoader::Mod']]],
