@@ -27,7 +27,6 @@ namespace ExampleMod.NPCs
 
 		public override float CanSpawn(NPCSpawnInfo spawnInfo)
 		{
-			return spawnInfo.spawnTileY < Main.rockLayer && !Main.dayTime ? 0.5f : 0f;
 			return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
 		}
 

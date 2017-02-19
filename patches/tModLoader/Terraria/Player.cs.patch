@@ -3736,6 +3736,15 @@
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num312 = 0; num312 < 200; num312++)
+@@ -35767,6 +_,8 @@
+ 						{
+ 							num314 += num314 * (1f - this.stealth);
+ 						}
++						ItemLoader.GetWeaponKnockback(this.inventory[this.selectedItem], this, ref num314);
++						PlayerHooks.GetWeaponKnockback(this, this.inventory[this.selectedItem], ref num314);
+ 						List<ushort> list2 = null;
+ 						int type5 = item.type;
+ 						if (type5 == 213)
 @@ -35850,7 +_,23 @@
  								{
  									if (!Main.npc[num323].dontTakeDamage)
