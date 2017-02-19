@@ -925,6 +925,8 @@ namespace Terraria.ModLoader
 		//  int spawn = spawnChoice.Value; if(spawn != 0) { goto endVanillaSpawn; }
 		public static int? ChooseSpawn(NPCSpawnInfo spawnInfo)
 		{
+			NPCSpawnHelper.Reset();
+			NPCSpawnHelper.DoChecks(spawnInfo);
 			IDictionary<int, float> pool = new Dictionary<int, float>();
 			pool[0] = 1f;
 			foreach (ModNPC npc in npcs)

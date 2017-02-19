@@ -147,8 +147,15 @@ namespace ExampleMod.NPCs
 
 		public override float CanSpawn(NPCSpawnInfo spawnInfo)
 		{
-			Tile tile = Main.tile[spawnInfo.spawnTileX, spawnInfo.spawnTileY];
-			return ExampleMod.NoZoneNormalSpawn(spawnInfo) && (tile.type == 53 || tile.type == 112 || tile.type == 116 || tile.type == 234 || spawnInfo.desertCave) && !spawnInfo.playerSafe && ExampleWorld.downedAbomination ? 0.5f : 0f;
+			if (spawnInfo.playerSafe || !ExampleWorld.downedAbomination)
+			{
+				return 0f;
+			}
+			if (SpawnCondition.DesertCave.Chance > 0f)
+			{
+				return SpawnCondition.DesertCave.Chance / 3f;
+			}
+			return SpawnCondition.Mummy.Chance + SpawnCondition.LightMummy.Chance + SpawnCondition.DarkMummy.Chance;
 		}
 	}
 }
