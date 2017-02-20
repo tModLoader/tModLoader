@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.Mod.AddMusicBox" name="Terraria.ModLoader.Mod.AddMusicBox">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a1e8f5f5f4245b184038a9e6d1abbf4d3" title="Terraria.ModLoader.ItemLoader.\lGetItem" alt="" coords="247,5,452,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a1e8f5f5f4245b184038a9e6d1abbf4d3" title="Gets the ModItem instance corresponding to the specified type. Returns null if no modded item has the..." alt="" coords="247,5,452,51"/>
 <area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_tile_loader.html#a046d2f0670d83bdc212241b0f87ff2de" title="Terraria.ModLoader.TileLoader.\lGetTile" alt="" coords="248,74,451,121"/>
 </map>

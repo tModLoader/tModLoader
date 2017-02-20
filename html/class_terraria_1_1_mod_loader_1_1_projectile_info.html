@@ -113,6 +113,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_proj
 <div class="title">Terraria.ModLoader.ProjectileInfo Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiated with a list of instances of each <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a> loaded and can be accessed through Projectile.GetModInfo method calls  
+ <a href="class_terraria_1_1_mod_loader_1_1_projectile_info.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Terraria.ModLoader.ProjectileInfo:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -120,7 +123,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_proj
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_projectile_info__inherit__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_projectile_info_inherit__map" alt="Inheritance graph"/></div>
 <map name="_terraria_8_mod_loader_8_projectile_info_inherit__map" id="_terraria_8_mod_loader_8_projectile_info_inherit__map">
-<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_entity_info.html" title="EntityInfo" alt="" coords="73,5,151,35"/></map>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_entity_info.html" title="There are three classes called ItemInfo, ProjectileInfo, and NPCInfo. You can override any of these t..." alt="" coords="73,5,151,35"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.ProjectileInfo:</div>
@@ -129,12 +132,13 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_proj
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_projectile_info__coll__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_projectile_info_coll__map" alt="Collaboration graph"/></div>
 <map name="_terraria_8_mod_loader_8_projectile_info_coll__map" id="_terraria_8_mod_loader_8_projectile_info_coll__map">
-<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_entity_info.html" title="EntityInfo" alt="" coords="73,5,151,35"/></map>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_entity_info.html" title="There are three classes called ItemInfo, ProjectileInfo, and NPCInfo. You can override any of these t..." alt="" coords="73,5,151,35"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4981f74c406f8a0cac3ff3428bead669"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html">ProjectileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html#a4981f74c406f8a0cac3ff3428bead669">Clone</a> ()</td></tr>
+<tr class="memdesc:a4981f74c406f8a0cac3ff3428bead669"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a>. By default this will return a memberwise clone; you will want to override this if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a> contains object references.  <a href="#a4981f74c406f8a0cac3ff3428bead669">More...</a><br/></td></tr>
 <tr class="separator:a4981f74c406f8a0cac3ff3428bead669"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_terraria_1_1_mod_loader_1_1_entity_info"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_terraria_1_1_mod_loader_1_1_entity_info')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_entity_info.html">Terraria.ModLoader.EntityInfo</a></td></tr>
 <tr class="memitem:ad6106e44acde5ad4899ec815d9e7a21e inherit pub_methods_class_terraria_1_1_mod_loader_1_1_entity_info"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_entity_info.html#ad6106e44acde5ad4899ec815d9e7a21e">Autoload</a> (ref string name)</td></tr>
@@ -149,8 +153,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:ad83d4d2b14f0f07b58fa8211106abab1 inherit properties_class_terraria_1_1_mod_loader_1_1_entity_info"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00033">33</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
+<div class="textblock"><p>This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiated with a list of instances of each <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a> loaded and can be accessed through Projectile.GetModInfo method calls </p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_terraria_1_1_mod_loader_1_1_entity_info.html" title="There are three classes called ItemInfo, ProjectileInfo, and NPCInfo. You can override any of these t...">Terraria.ModLoader.EntityInfo</a></dd></dl>
+
+<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00048">48</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a4981f74c406f8a0cac3ff3428bead669"></a>
 <div class="memitem">
@@ -173,10 +179,13 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00035">35</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">return</span> (ProjectileInfo)MemberwiseClone();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div>
+<p>Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a>. By default this will return a memberwise clone; you will want to override this if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a> contains object references. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00054">54</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> (ProjectileInfo)MemberwiseClone();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
