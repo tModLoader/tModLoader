@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Security;
 using System.Text;
 using Terraria.ID;
+using Terraria.UI.Gamepad;
 using Newtonsoft.Json.Linq;
 
 namespace Terraria.ModLoader.UI
@@ -197,9 +198,10 @@ namespace Terraria.ModLoader.UI
 				Interface.updateMessage.SetURL(updateURL);
 				Main.menuMode = Interface.updateMessageID;
 			}
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
 		}
 
-		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
+		public static void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;

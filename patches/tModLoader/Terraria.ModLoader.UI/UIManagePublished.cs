@@ -5,7 +5,9 @@ using Terraria.UI;
 using System.Net;
 using System.Collections.Specialized;
 using Terraria.ID;
+using Terraria.UI.Gamepad;
 using Newtonsoft.Json.Linq;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader.UI
 {
@@ -60,6 +62,13 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = Interface.modSourcesID;
+		}
+
+		public override void Draw(SpriteBatch spriteBatch)
+		{
+			base.Draw(spriteBatch);
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
+			UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modSourcesID;
 		}
 
 		public override void OnActivate()

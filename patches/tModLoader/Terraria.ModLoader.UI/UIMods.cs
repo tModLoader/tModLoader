@@ -4,9 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 using Newtonsoft.Json;
 
 namespace Terraria.ModLoader.UI
@@ -176,6 +178,12 @@ namespace Terraria.ModLoader.UI
 			{
 				modList.Add(item);
 			}
+		}
+
+		public override void Draw(SpriteBatch spriteBatch)
+		{
+			base.Draw(spriteBatch);
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
 		public override void OnActivate()

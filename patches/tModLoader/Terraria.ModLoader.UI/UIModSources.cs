@@ -2,8 +2,10 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI
@@ -116,6 +118,12 @@ namespace Terraria.ModLoader.UI
 			ModLoader.reloadAfterBuild = true;
 			ModLoader.buildAll = true;
 			Main.menuMode = Interface.buildAllModsID;
+		}
+
+		public override void Draw(SpriteBatch spriteBatch)
+		{
+			base.Draw(spriteBatch);
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
 		public override void OnActivate()

@@ -4,8 +4,10 @@ using System.IO;
 using System.Xml;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI
@@ -105,6 +107,13 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(10, -1, -1, 1);
 			Process.Start(url);
+		}
+
+		public override void Draw(SpriteBatch spriteBatch)
+		{
+			base.Draw(spriteBatch);
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
+			UILinkPointNavigator.Shortcuts.BackButtonGoto = this.gotoMenu;
 		}
 
 		public override void OnActivate()
