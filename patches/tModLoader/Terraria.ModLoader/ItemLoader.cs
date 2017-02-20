@@ -26,6 +26,8 @@ namespace Terraria.ModLoader
 		private static Action<Item, Player>[] HookUseStyle;
 		private static Action<Item, Player>[] HookHoldStyle;
 		private static Action<Item, Player>[] HookHoldItem;
+		private static Func<Item, Player, float>[] HookUseTimeMultiplier;
+		private static Func<Item, Player, float>[] HookMeleeSpeedMultiplier;
 		private delegate void DelegateGetWeaponDamage(Item item, Player player, ref int damage);
 		private static DelegateGetWeaponDamage[] HookGetWeaponDamage;
 		private delegate void DelegateGetWeaponKnockback(Item item, Player player, ref float knockback);
@@ -215,6 +217,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookUseStyle, globalItems, g => g.UseStyle);
 			ModLoader.BuildGlobalHook(ref HookHoldStyle, globalItems, g => g.HoldStyle);
 			ModLoader.BuildGlobalHook(ref HookHoldItem, globalItems, g => g.HoldItem);
+			ModLoader.BuildGlobalHook(ref HookUseTimeMultiplier, globalItems, g => g.UseTimeMultiplier);
+			ModLoader.BuildGlobalHook(ref HookMeleeSpeedMultiplier, globalItems, g => g.MeleeSpeedMultiplier);
 			ModLoader.BuildGlobalHook(ref HookGetWeaponDamage, globalItems, g => g.GetWeaponDamage);
 			ModLoader.BuildGlobalHook(ref HookGetWeaponKnockback, globalItems, g => g.GetWeaponKnockback);
 			ModLoader.BuildGlobalHook(ref HookConsumeAmmo, globalItems, g => g.ConsumeAmmo);
@@ -431,6 +435,26 @@ namespace Terraria.ModLoader
 			{
 				hook(item, player);
 			}
+		}
+
+		public static float UseTimeMultiplier(Item item, Player player)
+		{
+			float multiplier = item.modItem?.UseTimeMultiplier(player) ?? 1f;
+			foreach (var hook in HookUseTimeMultiplier)
+			{
+				multiplier *= hook(item, player);
+			}
+			return multiplier;
+		}
+
+		public static float MeleeSpeedMultiplier(Item item, Player player)
+		{
+			float multiplier = item.modItem?.MeleeSpeedMultiplier(player) ?? 1f;
+			foreach (var hook in HookMeleeSpeedMultiplier)
+			{
+				multiplier *= hook(item, player);
+			}
+			return multiplier;
 		}
 
 		public static void GetWeaponDamage(Item item, Player player, ref int damage)

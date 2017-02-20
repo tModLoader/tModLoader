@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria.GameInput\PlayerInput.cs
 +++ src/tModLoader\Terraria.GameInput\PlayerInput.cs
+@@ -8,6 +_,7 @@
+ using Terraria.GameContent.UI.States;
+ using Terraria.ID;
+ using Terraria.IO;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
 @@ -307,6 +_,42 @@
  			}
  		}
@@ -59,6 +67,15 @@
  			PlayerInput.Triggers.Update();
  			PlayerInput.PostInput();
  			PlayerInput.ScrollWheelDelta = PlayerInput.ScrollWheelValue - PlayerInput.ScrollWheelValueOld;
+@@ -1158,7 +_,7 @@
+ 						int num = 6;
+ 						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
+ 						{
+-							num = player.inventory[player.selectedItem].useTime;
++							num = (int)(player.inventory[player.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(player, player.inventory[player.selectedItem]));
+ 						}
+ 						PlayerInput.DpadSnapCooldown[i] = num;
+ 						value += value2;
 @@ -1462,6 +_,10 @@
  							c.KeyStatus["Hotbar8"].Add("D8");
  							c.KeyStatus["Hotbar9"].Add("D9");

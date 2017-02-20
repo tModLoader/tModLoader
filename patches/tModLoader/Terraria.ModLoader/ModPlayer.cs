@@ -215,6 +215,16 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual float UseTimeMultiplier(Item item)
+		{
+			return 1f;
+		}
+
+		public virtual float MeleeSpeedMultiplier(Item item)
+		{
+			return 1f;
+		}
+
 		public virtual void GetWeaponDamage(Item item, ref int damage)
 		{
 		}

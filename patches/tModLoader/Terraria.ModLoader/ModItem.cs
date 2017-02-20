@@ -168,6 +168,16 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		public virtual float UseTimeMultiplier(Player player)
+		{
+			return 1f;
+		}
+
+		public virtual float MeleeSpeedMultiplier(Player player)
+		{
+			return 1f;
+		}
+
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>

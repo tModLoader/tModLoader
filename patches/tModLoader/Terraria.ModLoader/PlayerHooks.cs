@@ -476,6 +476,37 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static float UseTimeMultiplier(Player player, Item item)
+		{
+			float multiplier = 1f;
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				multiplier *= modPlayer.UseTimeMultiplier(item);
+			}
+			return multiplier;
+		}
+
+		public static float TotalUseTimeMultiplier(Player player, Item item)
+		{
+			return UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player);
+		}
+
+		public static float MeleeSpeedMultiplier(Player player, Item item)
+		{
+			float multiplier = 1f;
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				multiplier *= modPlayer.MeleeSpeedMultiplier(item);
+			}
+			return multiplier;
+		}
+
+		public static float TotalMeleeSpeedMultiplier(Player player, Item item)
+		{
+			return TotalUseTimeMultiplier(player, item) * MeleeSpeedMultiplier(player, item)
+				* ItemLoader.MeleeSpeedMultiplier(item, player);
+		}
+
 		public static void GetWeaponDamage(Player player, Item item, ref int damage)
 		{
 			foreach (ModPlayer modPlayer in player.modPlayers)

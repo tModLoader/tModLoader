@@ -36,6 +36,7 @@ namespace ExampleMod
 		public bool purityMinion = false;
 		public bool examplePet = false;
 		public bool exampleLightPet = false;
+		public bool exampleShield = false;
 
 		public bool ZoneExample = false;
 
@@ -52,6 +53,7 @@ namespace ExampleMod
 			purityMinion = false;
 			examplePet = false;
 			exampleLightPet = false;
+			exampleShield = false;
 		}
 
 		public override void UpdateDead()
@@ -496,6 +498,11 @@ namespace ExampleMod
 				damageSource = PlayerDeathReason.ByCustomReason(" was dissolved by holy powers");
 			}
 			return true;
+		}
+
+		public override float UseTimeMultiplier(Item item)
+		{
+			return exampleShield ? 1.5f : 1f;
 		}
 
 		public override void AnglerQuestReward(float quality, List<Item> rewardItems)
