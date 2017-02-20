@@ -24,6 +24,7 @@ var class_terraria_1_1_mod_loader_1_1_player_hooks =
     [ "Hurt", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a525dd8f8eceb593f7cc44a6f0f47ac15", null ],
     [ "Kill", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a3808da1c0d17ef55ee9575ff1c46df11", null ],
     [ "MeleeEffects", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad365e8b9ac18929106abc9f85176b96e", null ],
+    [ "MeleeSpeedMultiplier", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a55dce021d078e4a364112d3d926be0cf", null ],
     [ "ModifyDrawInfo", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#aa9f4b92af68053999850d32e7234334e", null ],
     [ "ModifyHitByNPC", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a8d94c613f2f526ec1f6d4e5455fd6b8d", null ],
     [ "ModifyHitByProjectile", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a76e70ed09a1537d9d40279cac6c1d038", null ],
@@ -68,6 +69,8 @@ var class_terraria_1_1_mod_loader_1_1_player_hooks =
     [ "SetupStartInventory", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad6fcad8c4122b40c73f155475e4c683d", null ],
     [ "Shoot", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad70a5b0269638efade6ed3f34f26aa27", null ],
     [ "SyncPlayer", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a3c4bfe3ab9439bc79fccd1c43cbbb233", null ],
+    [ "TotalMeleeSpeedMultiplier", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a1a227129a4dd20d9076a3f2cef375d5f", null ],
+    [ "TotalUseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a9bd01c29baa931eed9e6a336843eea3b", null ],
     [ "UpdateBadLifeRegen", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a238af84ac9fab141122a5d747bfb8de3", null ],
     [ "UpdateBiomes", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a412ff584fb885277dbfab8bb4622bfcd", null ],
     [ "UpdateBiomeVisuals", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ac2daf29f66dbb091940286f01fccc4f7", null ],
@@ -75,6 +78,7 @@ var class_terraria_1_1_mod_loader_1_1_player_hooks =
     [ "UpdateEquips", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#af1cf653d653237307f2703a90ff2ccef", null ],
     [ "UpdateLifeRegen", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ac64c95052dba1f86bc4bdb4c61f203e1", null ],
     [ "UpdateVanityAccessories", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#acc3858020c00b97f7e9f26f0bdc3d04d", null ],
+    [ "UseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a9592d69cbbbb3fdf6b3407298af537a6", null ],
     [ "indexes", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad668aa929984715c3d439cc1051bcabb", null ],
     [ "players", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a4fbd579f2b8c6294bbdbb01418d7a399", null ]
 ];

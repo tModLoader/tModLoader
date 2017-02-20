@@ -22,6 +22,8 @@ var searchData=
   ['tooltipline_2ecs',['TooltipLine.cs',['../_tooltip_line_8cs.html',1,'']]],
   ['torch',['torch',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#afbe1c8db2e449068ac201af997ac218c',1,'Terraria::ModLoader::ModTile']]],
   ['tostring',['ToString',['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#a07b956fc2bb3c83b0f815afa3caf8b83',1,'Terraria::ModLoader::ModNet::ModHeader']]],
+  ['totalmeleespeedmultiplier',['TotalMeleeSpeedMultiplier',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a1a227129a4dd20d9076a3f2cef375d5f',1,'Terraria::ModLoader::PlayerHooks']]],
+  ['totalusetimemultiplier',['TotalUseTimeMultiplier',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a9bd01c29baa931eed9e6a336843eea3b',1,'Terraria::ModLoader::PlayerHooks']]],
   ['towncritter',['TownCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a78bb4d6d65c2da43c4d547caf1645b2f',1,'Terraria::ModLoader::SpawnCondition']]],
   ['towndefaultwatercritter',['TownDefaultWaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a89a5658e43c33b91140917d7f16fd568',1,'Terraria::ModLoader::SpawnCondition']]],
   ['towngeneralcritter',['TownGeneralCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#acbd4f2c2307d9118e4fab7614c17e2ab',1,'Terraria::ModLoader::SpawnCondition']]],

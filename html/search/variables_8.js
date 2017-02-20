@@ -101,6 +101,7 @@ var searchData=
   ['hookkilltile',['HookKillTile',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad5bce382b0d7ade932d3eff0fff9442a',1,'Terraria::ModLoader::TileLoader']]],
   ['hookkillwall',['HookKillWall',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a4bfa233e0297257e565af6d295ff6880',1,'Terraria::ModLoader::WallLoader']]],
   ['hookmeleeeffects',['HookMeleeEffects',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a7460b6e44a9ddc642a5c998fffddcca3',1,'Terraria::ModLoader::ItemLoader']]],
+  ['hookmeleespeedmultiplier',['HookMeleeSpeedMultiplier',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a2eeb165ee637a4adcefbaa9d257401e1',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookminioncontactdamage',['HookMinionContactDamage',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#adc2a37b6f735b8ff464ba587199ff476',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['hookmodifybufftip',['HookModifyBuffTip',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a1382f83d211a83b6983a5022e83ead34',1,'Terraria::ModLoader::BuffLoader']]],
   ['hookmodifyhitbyitem',['HookModifyHitByItem',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#acc2237734685f338af6b01c4a20856ed',1,'Terraria::ModLoader::NPCLoader']]],
@@ -186,6 +187,7 @@ var searchData=
   ['hookuseitemframe',['HookUseItemFrame',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a9ededb39c33f40d5d57272485d32f34c',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookuseitemhitbox',['HookUseItemHitbox',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ab0f7ed7a3882ec398b65ab0bc0c2e895',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookusestyle',['HookUseStyle',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a7caac6f782a2477c64a00f2667a498f1',1,'Terraria::ModLoader::ItemLoader']]],
+  ['hookusetimemultiplier',['HookUseTimeMultiplier',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a1fb8578a9f05e848eb19d9a693ec37a7',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookverticalwingspeeds',['HookVerticalWingSpeeds',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a7a98c097d9e091936b6d17e59abc88e3',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookwingupdate',['HookWingUpdate',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a22af1474582c20139a8773ace147365e',1,'Terraria::ModLoader::ItemLoader']]],
   ['hoppinjack',['HoppinJack',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a9072c7867cf87d192059bf8476853dd8',1,'Terraria::ModLoader::SpawnCondition']]]
