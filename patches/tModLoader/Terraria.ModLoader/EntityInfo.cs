@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 	}
 
 	/// <summary>
-	/// This class serves as a way of adding custom info to Items. Every item will be instantiated with a list of instances of each ProjectileInfo loaded and can be accessed through Item.GetModInfo method calls
+	/// This class serves as a way of adding custom info to Items. Every item will be instantiated with a list of instances of each ItemInfo loaded and can be accessed through Item.GetModInfo method calls
 	/// </summary>
 	/// <seealso cref="Terraria.ModLoader.EntityInfo" />
 	public class ItemInfo : EntityInfo
@@ -58,7 +58,7 @@ namespace Terraria.ModLoader
 	}
 
 	/// <summary>
-	/// This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list of instances of each ProjectileInfo loaded and can be accessed through NPC.GetModInfo method calls
+	/// This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list of instances of each NPCInfo loaded and can be accessed through NPC.GetModInfo method calls
 	/// </summary>
 	/// <seealso cref="Terraria.ModLoader.EntityInfo" />
 	public class NPCInfo : EntityInfo
