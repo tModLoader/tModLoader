@@ -52,7 +52,7 @@ var searchData=
   ['delegatesetuptravelshop',['DelegateSetupTravelShop',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a21774895b20792ed60e293fa771735b2',1,'Terraria::ModLoader::NPCLoader']]],
   ['delegateshoot',['DelegateShoot',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a3127f6ced5fe706c5be938702a6e1c68',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegatestrikenpc',['DelegateStrikeNPC',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#acf69d88b16330cce26550f5ff76631ea',1,'Terraria::ModLoader::NPCLoader']]],
-  ['delegatetilecollidestyle',['DelegateTileCollideStyle',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a670c1505bccd6e7825e15336ef0d9b9b',1,'Terraria::ModLoader::ProjectileLoader']]],
+  ['delegatetilecollidestyle',['DelegateTileCollideStyle',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a47599c9f90ffc2a55896d27bdd76cf6c',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['delegatetileframe',['DelegateTileFrame',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#afd1eb30d2618073d0e35b0cf5e23e8f8',1,'Terraria::ModLoader::TileLoader']]],
   ['delegatetownnpcattackcooldown',['DelegateTownNPCAttackCooldown',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#af0e5a905ef5feddfc63457b7c401a81d',1,'Terraria::ModLoader::NPCLoader']]],
   ['delegatetownnpcattackmagic',['DelegateTownNPCAttackMagic',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a53d69ddaedc01ebacc1419904f2bbd42',1,'Terraria::ModLoader::NPCLoader']]],
