@@ -6,8 +6,14 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This class consists of functions that write error messages to text files for you to read. It also lets you write logs to text files.
+	/// </summary>
 	public static class ErrorLogger
 	{
+		/// <summary>
+		/// The file path to which logs are written and stored.
+		/// </summary>
 		public static readonly string LogPath = Path.Combine(Main.SavePath, "Logs");
 		internal static string CompileErrorPath = Path.Combine(LogPath, "Compile Errors.txt");
 		private static readonly string[] buildDllLines =
@@ -189,6 +195,9 @@ namespace Terraria.ModLoader
 			Main.menuMode = Interface.errorMessageID;
 		}
 
+		/// <summary>
+		/// You can use this method for your own testing purposes. The message will be added to the Logs.txt file in the Logs folder.
+		/// </summary>
 		public static void Log(string message)
 		{
 			Directory.CreateDirectory(LogPath);
@@ -198,6 +207,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Deletes all text in the Logs.txt file.
+		/// </summary>
 		public static void ClearLog()
 		{
 			Directory.CreateDirectory(LogPath);

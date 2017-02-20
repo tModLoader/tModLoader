@@ -210,10 +210,10 @@ namespace Terraria.ModLoader
 		/// This is called before the weapon creates a projectile. You can use it to create special effects, such as changing the speed, changing the initial position, and/or firing multiple projectiles. Return false to stop the game from shooting the default projectile (do this if you manually spawn your own projectile). Returns true by default.
 		/// </summary>
 		/// <param name="player">The player.</param>
-		/// <param name="position">The spawn position.</param>
-		/// <param name="speedX">The speed x.</param>
-		/// <param name="speedY">The speed y.</param>
-		/// <param name="type">The projectile type.</param>
+		/// <param name="position">The shoot spawn position.</param>
+		/// <param name="speedX">The speed x calculated from shootSpeed and mouse position.</param>
+		/// <param name="speedY">The speed y calculated from shootSpeed and mouse position.</param>
+		/// <param name="type">The projectile type choosen by ammo and weapon.</param>
 		/// <param name="damage">The projectile damage.</param>
 		/// <param name="knockBack">The projectile knock back.</param>
 		/// <returns></returns>
@@ -458,10 +458,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to determine special visual effects this vanity set has on the player without having to code them yourself. Note that this hook is only ever called through this item's associated equipment texture. Use the player.armorEffectDraw bools to activate the desired effects.
-		/// <example>
-		/// player.armorEffectDrawShadow = true;
-		/// </example>
 		/// </summary>
+		/// <example><code>player.armorEffectDrawShadow = true;</code></example>
 		/// <param name="player">The player.</param>
 		public virtual void ArmorSetShadows(Player player)
 		{
