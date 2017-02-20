@@ -1059,6 +1059,14 @@ namespace Terraria.ModLoader
 		/// <param name="texture">The texture.</param>
 		public void AddProjectile(string name, ModProjectile projectile, string texture)
 		{
+			Type intRefClass = typeof(int).MakeByRefType();
+			MethodInfo method = projectile.GetType().GetMethod("TileCollideStyle", new Type[] {
+					intRefClass, intRefClass, typeof(bool).MakeByRefType()
+				});
+			if (method != null && method.ReturnType == typeof(void))
+			{
+				throw new OldHookException("ModProjectile.TileCollideStyle");
+			}
 			int id = ProjectileLoader.ReserveProjectileID();
 			projectile.projectile.name = name;
 			projectile.Name = name;
@@ -1118,6 +1126,14 @@ namespace Terraria.ModLoader
 		/// <param name="globalProjectile">The global projectile.</param>
 		public void AddGlobalProjectile(string name, GlobalProjectile globalProjectile)
 		{
+			Type intRefClass = typeof(int).MakeByRefType();
+			MethodInfo method = globalProjectile.GetType().GetMethod("TileCollideStyle", new Type[] {
+					typeof(Projectile), intRefClass, intRefClass, typeof(bool).MakeByRefType()
+				});
+			if (method != null && method.ReturnType == typeof(void))
+			{
+				throw new OldHookException("GlobalProjectile.TileCollideStyle");
+			}
 			globalProjectile.mod = this;
 			globalProjectile.Name = name;
 			this.globalProjectiles[name] = globalProjectile;

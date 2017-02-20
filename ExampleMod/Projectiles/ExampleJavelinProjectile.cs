@@ -22,11 +22,12 @@ namespace ExampleMod.Projectiles
 			projectile.penetrate = 3;
 		}
 
-		public override void TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
+		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
 		{
 			// For going through platforms and such, javelins use a tad smaller size
 			width = 10;
 			height = 10;
+			return true;
 		}
 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)

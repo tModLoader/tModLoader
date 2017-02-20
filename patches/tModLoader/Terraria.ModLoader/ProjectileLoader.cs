@@ -21,7 +21,7 @@ namespace Terraria.ModLoader
 		private static Action<Projectile>[] HookAI;
 		private static Action<Projectile>[] HookPostAI;
 		private static Func<Projectile, bool>[] HookShouldUpdatePosition;
-		private delegate void DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
+		private delegate bool DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
 		private static DelegateTileCollideStyle[] HookTileCollideStyle;
 		private static Func<Projectile, Vector2, bool>[] HookOnTileCollide;
 		private static Func<Projectile, bool?>[] HookCanCutTiles;
@@ -316,14 +316,21 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Projectile.Update before adjusting velocity to tile collisions add
 		//  ProjectileLoader.TileCollideStyle(this, ref num25, ref num26, ref flag4);
-		public static void TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
+		public static bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
 		{
-			projectile.modProjectile?.TileCollideStyle(ref width, ref height, ref fallThrough);
+			if (IsModProjectile(projectile) && !projectile.modProjectile.TileCollideStyle(ref width, ref height, ref fallThrough))
+			{
+				return false;
+			}
 
 			foreach (var hook in HookTileCollideStyle)
 			{
-				hook(projectile, ref width, ref height, ref fallThrough);
+				if (!hook(projectile, ref width, ref height, ref fallThrough))
+				{
+					return false;
+				}
 			}
+			return true;
 		}
 		//in Terraria.Projectile.Update before if/else chain for tile collide behavior add
 		//  if(!ProjectileLoader.OnTileCollide(this, velocity)) { } else

@@ -47,8 +47,9 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		public virtual void TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
+		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
 		{
+			return true;
 		}
 
 		public virtual bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
