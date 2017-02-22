@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.Mod.AutoloadGlobalProjectile" name="Terraria.ModLoader.Mod.AutoloadGlobalProjectile">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0471abad2053e2634e193c409ade60f5" title="Terraria.ModLoader.Global\lProjectile.Autoload" alt="" coords="273,5,447,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0471abad2053e2634e193c409ade60f5" title="Allows you to automatically load a GlobalProjectile instead of using Mod.AddGlobalProjectile. Return true to allow autoloading; by default returns the mod&#39;s autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name. " alt="" coords="273,5,447,51"/>
 </map>
