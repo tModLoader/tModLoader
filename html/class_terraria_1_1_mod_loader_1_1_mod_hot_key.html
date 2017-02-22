@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_mod_hot_key-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -124,7 +125,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_hot_key__coll__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_mod_hot_key_coll__map" alt="Collaboration graph"/></div>
 <map name="_terraria_8_mod_loader_8_mod_hot_key_coll__map" id="_terraria_8_mod_loader_8_mod_hot_key_coll__map">
-<area shape="rect" id="node4" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co..." alt="" coords="363,1252,525,1281"/></map>
+<area shape="rect" id="node4" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co..." alt="" coords="363,1247,525,1276"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -133,20 +134,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a48fa65a5c634d3aa656fb145fc14db9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the currently assigned keybindings. Useful for prompts, tooltips, informing users.  <a href="#a48fa65a5c634d3aa656fb145fc14db9c">More...</a><br/></td></tr>
 <tr class="separator:a48fa65a5c634d3aa656fb145fc14db9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:a4e8375d5be966ec564963c805d054665"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a4e8375d5be966ec564963c805d054665">Current</a><code> [get]</code></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a4e8375d5be966ec564963c805d054665"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a4e8375d5be966ec564963c805d054665">Current</a> =&gt; PlayerInput.Triggers.Current.KeyStatus[displayName]</td></tr>
 <tr class="memdesc:a4e8375d5be966ec564963c805d054665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this hotkey is pressed currently. Useful for createing a behavior that relies on the hotkey being held down.  <a href="#a4e8375d5be966ec564963c805d054665">More...</a><br/></td></tr>
 <tr class="separator:a4e8375d5be966ec564963c805d054665"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a325f7773e0ba4d81d3e03f18a3a58224"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a325f7773e0ba4d81d3e03f18a3a58224">JustPressed</a><code> [get]</code></td></tr>
+<tr class="memitem:a325f7773e0ba4d81d3e03f18a3a58224"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a325f7773e0ba4d81d3e03f18a3a58224">JustPressed</a> =&gt; PlayerInput.Triggers.JustPressed.KeyStatus[displayName]</td></tr>
 <tr class="memdesc:a325f7773e0ba4d81d3e03f18a3a58224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this hotkey was just released this update. This is a fire-once-per-press behavior.  <a href="#a325f7773e0ba4d81d3e03f18a3a58224">More...</a><br/></td></tr>
 <tr class="separator:a325f7773e0ba4d81d3e03f18a3a58224"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0de4ef1d36bba60692684804ba575408"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a0de4ef1d36bba60692684804ba575408">JustReleased</a><code> [get]</code></td></tr>
+<tr class="memitem:a0de4ef1d36bba60692684804ba575408"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a0de4ef1d36bba60692684804ba575408">JustReleased</a> =&gt; PlayerInput.Triggers.JustReleased.KeyStatus[displayName]</td></tr>
 <tr class="memdesc:a0de4ef1d36bba60692684804ba575408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this hotkey was just released this update.  <a href="#a0de4ef1d36bba60692684804ba575408">More...</a><br/></td></tr>
 <tr class="separator:a0de4ef1d36bba60692684804ba575408"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80075f235592b2b6e8419f86db38a051"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a80075f235592b2b6e8419f86db38a051">Old</a><code> [get]</code></td></tr>
+<tr class="memitem:a80075f235592b2b6e8419f86db38a051"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a80075f235592b2b6e8419f86db38a051">Old</a> =&gt; PlayerInput.Triggers.Old.KeyStatus[displayName]</td></tr>
 <tr class="memdesc:a80075f235592b2b6e8419f86db38a051"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this hotkey was pressed the previous update.  <a href="#a80075f235592b2b6e8419f86db38a051">More...</a><br/></td></tr>
 <tr class="separator:a80075f235592b2b6e8419f86db38a051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
 <tr class="memitem:a78f6c0c928b44fd0810a97bc212b4382"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a78f6c0c928b44fd0810a97bc212b4382">RetroCurrent</a><code> [get]</code></td></tr>
 <tr class="separator:a78f6c0c928b44fd0810a97bc212b4382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -185,103 +189,72 @@ Properties</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<h2 class="groupheader">Property Documentation</h2>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a4e8375d5be966ec564963c805d054665"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Terraria.ModLoader.ModHotKey.Current</td>
+          <td class="memname">bool Terraria.ModLoader.ModHotKey.Current =&gt; PlayerInput.Triggers.Current.KeyStatus[displayName]</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Returns true if this hotkey is pressed currently. Useful for createing a behavior that relies on the hotkey being held down. </p>
 
-<p>Definition at line <a class="el" href="_mod_hotkey_8cs_source.html#l00049">49</a> of file <a class="el" href="_mod_hotkey_8cs_source.html">ModHotkey.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_hotkey_8cs_source.html#l00048">48</a> of file <a class="el" href="_mod_hotkey_8cs_source.html">ModHotkey.cs</a>.</p>
 
 </div>
 </div>
 <a class="anchor" id="a325f7773e0ba4d81d3e03f18a3a58224"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Terraria.ModLoader.ModHotKey.JustPressed</td>
+          <td class="memname">bool Terraria.ModLoader.ModHotKey.JustPressed =&gt; PlayerInput.Triggers.JustPressed.KeyStatus[displayName]</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Returns true if this hotkey was just released this update. This is a fire-once-per-press behavior. </p>
 
-<p>Definition at line <a class="el" href="_mod_hotkey_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_hotkey_8cs_source.html">ModHotkey.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_hotkey_8cs_source.html#l00053">53</a> of file <a class="el" href="_mod_hotkey_8cs_source.html">ModHotkey.cs</a>.</p>
 
 </div>
 </div>
 <a class="anchor" id="a0de4ef1d36bba60692684804ba575408"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Terraria.ModLoader.ModHotKey.JustReleased</td>
+          <td class="memname">bool Terraria.ModLoader.ModHotKey.JustReleased =&gt; PlayerInput.Triggers.JustReleased.KeyStatus[displayName]</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Returns true if this hotkey was just released this update. </p>
 
-<p>Definition at line <a class="el" href="_mod_hotkey_8cs_source.html#l00065">65</a> of file <a class="el" href="_mod_hotkey_8cs_source.html">ModHotkey.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_hotkey_8cs_source.html#l00058">58</a> of file <a class="el" href="_mod_hotkey_8cs_source.html">ModHotkey.cs</a>.</p>
 
 </div>
 </div>
 <a class="anchor" id="a80075f235592b2b6e8419f86db38a051"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Terraria.ModLoader.ModHotKey.Old</td>
+          <td class="memname">bool Terraria.ModLoader.ModHotKey.Old =&gt; PlayerInput.Triggers.Old.KeyStatus[displayName]</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Returns true if this hotkey was pressed the previous update. </p>
 
-<p>Definition at line <a class="el" href="_mod_hotkey_8cs_source.html#l00073">73</a> of file <a class="el" href="_mod_hotkey_8cs_source.html">ModHotkey.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_hotkey_8cs_source.html#l00063">63</a> of file <a class="el" href="_mod_hotkey_8cs_source.html">ModHotkey.cs</a>.</p>
 
 </div>
 </div>
+<h2 class="groupheader">Property Documentation</h2>
 <a class="anchor" id="a78f6c0c928b44fd0810a97bc212b4382"></a>
 <div class="memitem">
 <div class="memproto">

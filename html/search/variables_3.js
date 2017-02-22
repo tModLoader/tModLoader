@@ -19,5 +19,6 @@ var searchData=
   ['corruptwatercritter',['CorruptWaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a5ac32a7bd8a6c9c674d4e66805269aa2',1,'Terraria::ModLoader::SpawnCondition']]],
   ['corruptworm',['CorruptWorm',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a0225f3ae33e6145345d33f2d14bd579e',1,'Terraria::ModLoader::SpawnCondition']]],
   ['crimson',['Crimson',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af7a5afe818518bf8156c1dd1bff041e4',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['current',['Current',['../class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a4e8375d5be966ec564963c805d054665',1,'Terraria::ModLoader::ModHotKey']]],
   ['customsoundtype',['customSoundType',['../class_terraria_1_1_mod_loader_1_1_sound_loader.html#a6aa5ef5849dec0efaaf48092ed596c75',1,'Terraria::ModLoader::SoundLoader']]]
 ];
