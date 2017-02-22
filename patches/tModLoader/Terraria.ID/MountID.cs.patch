@@ -3,7 +3,7 @@
 @@ -16,5 +_,21 @@
  		}
  
- 		public static int Count = 15;
+ 		public const int Count = 15;
 +
 +		public const int Rudolph = 0;
 +		public const int Bunny = 1;
