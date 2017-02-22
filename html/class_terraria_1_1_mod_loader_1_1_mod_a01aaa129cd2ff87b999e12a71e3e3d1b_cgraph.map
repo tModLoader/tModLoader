@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.Mod.AutoloadPlayer" name="Terraria.ModLoader.Mod.AutoloadPlayer">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#af2a28d3c043a84ede9cfb4f5e10672c1" title="Terraria.ModLoader.ModPlayer.\lAutoload" alt="" coords="273,5,476,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#af2a28d3c043a84ede9cfb4f5e10672c1" title="Allows you to automatically add a ModPlayer instead of using Mod.AddPlayer. Return true to allow auto..." alt="" coords="273,5,476,51"/>
 </map>

@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.PlayerHooks.CanHitPvpWithProj" name="Terraria.ModLoader.PlayerHooks.CanHitPvpWithProj">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ae4d308298d0ec916701fc5864f2bce07" title="Terraria.ModLoader.ModPlayer.\lCanHitPvpWithProj" alt="" coords="233,5,436,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ae4d308298d0ec916701fc5864f2bce07" title="Allows you to determine whether a projectile created by this player can hit the given opponent player..." alt="" coords="233,5,436,51"/>
 </map>
