@@ -113,9 +113,6 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_reci
 <div class="title">Terraria.ModLoader.RecipeHooks Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is where all <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html">ModRecipe</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_recipe.html" title="This class provides hooks that control all recipes in the game. ">GlobalRecipe</a> hooks are gathered and called.  
- <a href="class_terraria_1_1_mod_loader_1_1_recipe_hooks.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.RecipeHooks:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -129,16 +126,13 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_reci
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a57ca1e610a05308544c85afb58dc3c03"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_hooks.html#a57ca1e610a05308544c85afb58dc3c03">OnCraft</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, Recipe recipe)</td></tr>
-<tr class="memdesc:a57ca1e610a05308544c85afb58dc3c03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make anything happen when a player uses this recipe.  <a href="#a57ca1e610a05308544c85afb58dc3c03">More...</a><br/></td></tr>
 <tr class="separator:a57ca1e610a05308544c85afb58dc3c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9f1ed645419af945440ca71f26aca5b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_hooks.html#ab9f1ed645419af945440ca71f26aca5b">RecipeAvailable</a> (Recipe recipe)</td></tr>
-<tr class="memdesc:ab9f1ed645419af945440ca71f26aca5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not the conditions are met for this recipe to be available for the player to use.  <a href="#ab9f1ed645419af945440ca71f26aca5b">More...</a><br/></td></tr>
 <tr class="separator:ab9f1ed645419af945440ca71f26aca5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This is where all <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html">ModRecipe</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_recipe.html" title="This class provides hooks that control all recipes in the game. ">GlobalRecipe</a> hooks are gathered and called. </p>
-
-<p>Definition at line <a class="el" href="_recipe_hooks_8cs_source.html#l00010">10</a> of file <a class="el" href="_recipe_hooks_8cs_source.html">RecipeHooks.cs</a>.</p>
+<div class="textblock">
+<p>Definition at line <a class="el" href="_recipe_hooks_8cs_source.html#l00007">7</a> of file <a class="el" href="_recipe_hooks_8cs_source.html">RecipeHooks.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a57ca1e610a05308544c85afb58dc3c03"></a>
 <div class="memitem">
@@ -172,27 +166,18 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make anything happen when a player uses this recipe. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">item</td><td>The item crafted.</td></tr>
-    <tr><td class="paramname">recipe</td><td>The recipe used to craft the item.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="_recipe_hooks_8cs_source.html#l00071">71</a> of file <a class="el" href="_recipe_hooks_8cs_source.html">RecipeHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            ModRecipe modRecipe = recipe as ModRecipe;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">if</span> (modRecipe != null)</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                modRecipe.OnCraft(item);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">foreach</span> (GlobalRecipe globalRecipe <span class="keywordflow">in</span> globalRecipes)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                globalRecipe.OnCraft(item, recipe);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_recipe_hooks_8cs_source.html#l00058">58</a> of file <a class="el" href="_recipe_hooks_8cs_source.html">RecipeHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            ModRecipe modRecipe = recipe as ModRecipe;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">if</span> (modRecipe != null)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                modRecipe.OnCraft(item);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">foreach</span> (GlobalRecipe globalRecipe <span class="keywordflow">in</span> globalRecipes)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                globalRecipe.OnCraft(item, recipe);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -218,33 +203,24 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns whether or not the conditions are met for this recipe to be available for the player to use. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">recipe</td><td>The recipe to check.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Whether or not the conditions are met for this recipe.</dd></dl>
-
-<p>Definition at line <a class="el" href="_recipe_hooks_8cs_source.html#l00049">49</a> of file <a class="el" href="_recipe_hooks_8cs_source.html">RecipeHooks.cs</a>.</p>
+<p>Definition at line <a class="el" href="_recipe_hooks_8cs_source.html#l00041">41</a> of file <a class="el" href="_recipe_hooks_8cs_source.html">RecipeHooks.cs</a>.</p>
 
 <p>References <a class="el" href="_global_recipe_8cs_source.html#l00037">Terraria.ModLoader.GlobalRecipe.RecipeAvailable()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00216">Terraria.ModLoader.ModRecipe.RecipeAvailable()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            ModRecipe modRecipe = recipe as ModRecipe;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">if</span> (modRecipe != null &amp;&amp; !modRecipe.RecipeAvailable())</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">foreach</span> (GlobalRecipe globalRecipe <span class="keywordflow">in</span> globalRecipes)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">if</span> (!globalRecipe.RecipeAvailable(recipe))</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
+<div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            ModRecipe modRecipe = recipe as ModRecipe;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">if</span> (modRecipe != null &amp;&amp; !modRecipe.RecipeAvailable())</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">foreach</span> (GlobalRecipe globalRecipe <span class="keywordflow">in</span> globalRecipes)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keywordflow">if</span> (!globalRecipe.RecipeAvailable(recipe))</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
