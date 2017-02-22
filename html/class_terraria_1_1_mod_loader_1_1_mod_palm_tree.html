@@ -113,32 +113,23 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModPalmTree Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This class represents a type of modded palm tree. The palm tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted. This class encapsulates several functions that distinguish each type of palm tree from each other. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a8a9dbf17647df43cb1af21d47a9363cc" title="Allows this tile to grow the given modded palm tree. ">ModTile.SetModPalmTree</a> or <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a0086ec6a893e1673c93ec70c61edf048" title="Allows the given type of tile to grow the given modded palm tree. ">GlobalTile.AddModPalmTree</a> to make a tile able to grow this kind of palm tree.  
- <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acffaa71eb58c8ceef669e50a15c8dc5c"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#acffaa71eb58c8ceef669e50a15c8dc5c">CreateDust</a> ()</td></tr>
-<tr class="memdesc:acffaa71eb58c8ceef669e50a15c8dc5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of dust created when this palm tree is destroyed. Returns 215 by default.  <a href="#acffaa71eb58c8ceef669e50a15c8dc5c">More...</a><br/></td></tr>
 <tr class="separator:acffaa71eb58c8ceef669e50a15c8dc5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76101e9e28d3be3668b7b3bc487f05f0"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a76101e9e28d3be3668b7b3bc487f05f0">DropWood</a> ()</td></tr>
-<tr class="memdesc:a76101e9e28d3be3668b7b3bc487f05f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the item that is dropped in bulk when this palm tree is destroyed.  <a href="#a76101e9e28d3be3668b7b3bc487f05f0">More...</a><br/></td></tr>
 <tr class="separator:a76101e9e28d3be3668b7b3bc487f05f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04f1f5af8b47f5645231ba3a6bce1419"><td class="memItemLeft" align="right" valign="top">abstract Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a04f1f5af8b47f5645231ba3a6bce1419">GetTexture</a> ()</td></tr>
-<tr class="memdesc:a04f1f5af8b47f5645231ba3a6bce1419"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture that represents the tile sheet used for drawing this palm tree.  <a href="#a04f1f5af8b47f5645231ba3a6bce1419">More...</a><br/></td></tr>
 <tr class="separator:a04f1f5af8b47f5645231ba3a6bce1419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76a1c25dd336f9dacbf383a4befcbbdc"><td class="memItemLeft" align="right" valign="top">abstract Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a76a1c25dd336f9dacbf383a4befcbbdc">GetTopTextures</a> ()</td></tr>
-<tr class="memdesc:a76a1c25dd336f9dacbf383a4befcbbdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree tops that can be drawn above this palm tree.  <a href="#a76a1c25dd336f9dacbf383a4befcbbdc">More...</a><br/></td></tr>
 <tr class="separator:a76a1c25dd336f9dacbf383a4befcbbdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa15e4e3308f9de9d4b8e95bc8259ed0b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#aa15e4e3308f9de9d4b8e95bc8259ed0b">GrowthFXGore</a> ()</td></tr>
-<tr class="memdesc:aa15e4e3308f9de9d4b8e95bc8259ed0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created to represent leaves when this palm tree grows on-screen. Returns -1 by default.  <a href="#aa15e4e3308f9de9d4b8e95bc8259ed0b">More...</a><br/></td></tr>
 <tr class="separator:aa15e4e3308f9de9d4b8e95bc8259ed0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class represents a type of modded palm tree. The palm tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted. This class encapsulates several functions that distinguish each type of palm tree from each other. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a8a9dbf17647df43cb1af21d47a9363cc" title="Allows this tile to grow the given modded palm tree. ">ModTile.SetModPalmTree</a> or <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a0086ec6a893e1673c93ec70c61edf048" title="Allows the given type of tile to grow the given modded palm tree. ">GlobalTile.AddModPalmTree</a> to make a tile able to grow this kind of palm tree. </p>
-
-<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00078">78</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
+<div class="textblock">
+<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00033">33</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="acffaa71eb58c8ceef669e50a15c8dc5c"></a>
 <div class="memitem">
@@ -161,13 +152,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the type of dust created when this palm tree is destroyed. Returns 215 by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00084">84</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">return</span> 215;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00035">35</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">return</span> 215;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -192,9 +180,6 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The ID of the item that is dropped in bulk when this palm tree is destroyed. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
 </div>
 </div>
 <a class="anchor" id="a04f1f5af8b47f5645231ba3a6bce1419"></a>
@@ -217,9 +202,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Return the texture that represents the tile sheet used for drawing this palm tree. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -244,9 +226,6 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the texture containing the possible tree tops that can be drawn above this palm tree. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
 </div>
 </div>
 <a class="anchor" id="aa15e4e3308f9de9d4b8e95bc8259ed0b"></a>
@@ -270,13 +249,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the type of gore created to represent leaves when this palm tree grows on-screen. Returns -1 by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00093">93</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00040">40</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -113,38 +113,27 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="title">Terraria.ModLoader.ModTree Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This class represents a type of modded tree. The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted. This class encapsulates several functions that distinguish each type of tree from each other. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a31b61333ecefc242829a37575eba1869" title="Allows this tile to grow the given modded tree. ">ModTile.SetModTree</a> or <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a3841dd4112247ff5ce14c48d7c9abf6a" title="Allows the given type of tile to grow the given modded tree. ">GlobalTile.AddModTree</a> to make a tile able to grow this kind of tree.  
- <a href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a45ed7309fb0d5b8529ce3171d466882c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a45ed7309fb0d5b8529ce3171d466882c">CanDropAcorn</a> ()</td></tr>
-<tr class="memdesc:a45ed7309fb0d5b8529ce3171d466882c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tree can drop acorns. Returns true by default.  <a href="#a45ed7309fb0d5b8529ce3171d466882c">More...</a><br/></td></tr>
 <tr class="separator:a45ed7309fb0d5b8529ce3171d466882c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a193103af2e365f63b101c6ab0cc91994"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a193103af2e365f63b101c6ab0cc91994">CreateDust</a> ()</td></tr>
-<tr class="memdesc:a193103af2e365f63b101c6ab0cc91994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of dust created when this tree is destroyed. Returns 7 by default.  <a href="#a193103af2e365f63b101c6ab0cc91994">More...</a><br/></td></tr>
 <tr class="separator:a193103af2e365f63b101c6ab0cc91994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35ffba7080fe0aae709e2ef18480630c"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a35ffba7080fe0aae709e2ef18480630c">DropWood</a> ()</td></tr>
-<tr class="memdesc:a35ffba7080fe0aae709e2ef18480630c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the item that is dropped in bulk when this tree is destroyed.  <a href="#a35ffba7080fe0aae709e2ef18480630c">More...</a><br/></td></tr>
 <tr class="separator:a35ffba7080fe0aae709e2ef18480630c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55fabecc97598c5ffb78de5917af9286"><td class="memItemLeft" align="right" valign="top">abstract Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a55fabecc97598c5ffb78de5917af9286">GetBranchTextures</a> (int i, int j, int trunkOffset, ref int frame)</td></tr>
-<tr class="memdesc:a55fabecc97598c5ffb78de5917af9286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree branches that can be drawn next to this tree. The trunkOffset parameter can be added to i to get the x-coordinate of the tree's trunk.  <a href="#a55fabecc97598c5ffb78de5917af9286">More...</a><br/></td></tr>
 <tr class="separator:a55fabecc97598c5ffb78de5917af9286"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa74904b04e0f05c71696eb6ede328e35"><td class="memItemLeft" align="right" valign="top">abstract Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#aa74904b04e0f05c71696eb6ede328e35">GetTexture</a> ()</td></tr>
-<tr class="memdesc:aa74904b04e0f05c71696eb6ede328e35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture that represents the tile sheet used for drawing this tree.  <a href="#aa74904b04e0f05c71696eb6ede328e35">More...</a><br/></td></tr>
 <tr class="separator:aa74904b04e0f05c71696eb6ede328e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf17781a75291fb5996d050b9f788154"><td class="memItemLeft" align="right" valign="top">abstract Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#abf17781a75291fb5996d050b9f788154">GetTopTextures</a> (int i, int j, ref int frame, ref int frameWidth, ref int frameHeight, ref int xOffsetLeft, ref int yOffset)</td></tr>
-<tr class="memdesc:abf17781a75291fb5996d050b9f788154"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree tops that can be drawn above this tree.  <a href="#abf17781a75291fb5996d050b9f788154">More...</a><br/></td></tr>
 <tr class="separator:abf17781a75291fb5996d050b9f788154"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef79b722138aa6bfbd3452b4cf0a92b4"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#aef79b722138aa6bfbd3452b4cf0a92b4">GrowthFXGore</a> ()</td></tr>
-<tr class="memdesc:aef79b722138aa6bfbd3452b4cf0a92b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created to represent leaves when this tree grows on-screen. Returns -1 by default.  <a href="#aef79b722138aa6bfbd3452b4cf0a92b4">More...</a><br/></td></tr>
 <tr class="separator:aef79b722138aa6bfbd3452b4cf0a92b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class represents a type of modded tree. The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted. This class encapsulates several functions that distinguish each type of tree from each other. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a31b61333ecefc242829a37575eba1869" title="Allows this tile to grow the given modded tree. ">ModTile.SetModTree</a> or <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a3841dd4112247ff5ce14c48d7c9abf6a" title="Allows the given type of tile to grow the given modded tree. ">GlobalTile.AddModTree</a> to make a tile able to grow this kind of tree. </p>
-
-<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00009">9</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
+<div class="textblock">
+<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00006">6</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a45ed7309fb0d5b8529ce3171d466882c"></a>
 <div class="memitem">
@@ -167,13 +156,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Whether or not this tree can drop acorns. Returns true by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00033">33</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00018">18</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -198,13 +184,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the type of dust created when this tree is destroyed. Returns 7 by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00015">15</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">return</span> 7;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00008">8</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;            <span class="keywordflow">return</span> 7;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -228,9 +211,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>The ID of the item that is dropped in bulk when this tree is destroyed. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -278,18 +258,6 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the texture containing the possible tree branches that can be drawn next to this tree. The trunkOffset parameter can be added to i to get the x-coordinate of the tree's trunk. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">trunkOffset</td><td></td></tr>
-    <tr><td class="paramname">frame</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
 </div>
 </div>
 <a class="anchor" id="aa74904b04e0f05c71696eb6ede328e35"></a>
@@ -312,9 +280,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Return the texture that represents the tile sheet used for drawing this tree. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -380,21 +345,6 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the texture containing the possible tree tops that can be drawn above this tree. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">frame</td><td></td></tr>
-    <tr><td class="paramname">frameWidth</td><td></td></tr>
-    <tr><td class="paramname">frameHeight</td><td></td></tr>
-    <tr><td class="paramname">xOffsetLeft</td><td></td></tr>
-    <tr><td class="paramname">yOffset</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
 </div>
 </div>
 <a class="anchor" id="aef79b722138aa6bfbd3452b4cf0a92b4"></a>
@@ -418,13 +368,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the type of gore created to represent leaves when this tree grows on-screen. Returns -1 by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00024">24</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_convertible_plants_8cs_source.html#l00013">13</a> of file <a class="el" href="_convertible_plants_8cs_source.html">ConvertiblePlants.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>

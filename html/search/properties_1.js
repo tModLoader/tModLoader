@@ -2,5 +2,6 @@ var searchData=
 [
   ['code',['Code',['../class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78',1,'Terraria::ModLoader::Mod']]],
   ['command',['Command',['../class_terraria_1_1_mod_loader_1_1_mod_command.html#a0baffa44571dd5dedc9bb278a94fad4e',1,'Terraria::ModLoader::ModCommand']]],
-  ['commandtype',['CommandType',['../interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558',1,'Terraria::ModLoader::CommandCaller']]]
+  ['commandtype',['CommandType',['../interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558',1,'Terraria::ModLoader::CommandCaller']]],
+  ['current',['Current',['../class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a4e8375d5be966ec564963c805d054665',1,'Terraria::ModLoader::ModHotKey']]]
 ];

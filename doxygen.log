@@ -990,5 +990,5 @@ Patching output file 83/86
 Patching output file 84/86
 Patching output file 85/86
 Patching output file 86/86
-lookup cache used 9650/131072 hits=78637 misses=9982
+lookup cache used 9644/131072 hits=78493 misses=9974
 finished...
