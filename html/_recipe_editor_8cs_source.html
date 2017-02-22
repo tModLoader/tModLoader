@@ -113,216 +113,216 @@ $(document).ready(function(){initNavTree('_recipe_editor_8cs_source.html','');})
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>Terraria.ModLoader</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html">RecipeEditor</a></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4876678df738da21ad10601db82f66f1">    9</a></span>&#160;        <span class="keyword">private</span> Recipe <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4876678df738da21ad10601db82f66f1">recipe</a>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#aadf54b2bbefbec6a348a0dc18af43c9f">   11</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#aadf54b2bbefbec6a348a0dc18af43c9f">RecipeEditor</a>(Recipe recipe)</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            this.recipe = recipe;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        }</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#ae627c3f5be0a1b7def18de20ab56d760">   16</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#ae627c3f5be0a1b7def18de20ab56d760">AddIngredient</a>(<span class="keywordtype">int</span> itemID, <span class="keywordtype">int</span> stack = 1)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">if</span> (itemID &lt;= 0 || itemID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html">ItemLoader</a>.ItemCount)</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item has ID &quot;</span> + itemID);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredItem[k].type == 0)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                    recipe.requiredItem[k].SetDefaults(itemID, <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                    recipe.requiredItem[k].stack = stack;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredItem[k].type == itemID)</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                    recipe.requiredItem[k].stack += stack;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                }</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;Recipe already has maximum number of ingredients&quot;</span>);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a5e9714f46cb280fc73eb7efdc1c780d1">   39</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a5e9714f46cb280fc73eb7efdc1c780d1">SetIngredientStack</a>(<span class="keywordtype">int</span> itemID, <span class="keywordtype">int</span> stack)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">if</span> (itemID &lt;= 0 || itemID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html">ItemLoader</a>.ItemCount)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item has ID &quot;</span> + itemID);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredItem[k].type == itemID)</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                    recipe.requiredItem[k].stack = stack;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a448e707c0f6e78ceb200ee7e8df9c4f9">   56</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a448e707c0f6e78ceb200ee7e8df9c4f9">DeleteIngredient</a>(<span class="keywordtype">int</span> itemID)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">if</span> (itemID &lt;= 0 || itemID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html">ItemLoader</a>.ItemCount)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item has ID &quot;</span> + itemID);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredItem[k].type == itemID)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = k; j &lt; Recipe.maxRequirements - 1; j++)</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                        recipe.requiredItem[j] = recipe.requiredItem[j + 1];</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                    recipe.requiredItem[Recipe.maxRequirements - 1] = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd">   77</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd">AcceptRecipeGroup</a>(<span class="keywordtype">string</span> groupName)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordtype">int</span> groupID;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">if</span> (!RecipeGroup.recipeGroupIDs.TryGetValue(groupName, out groupID))</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No recipe group is named &quot;</span> + groupName);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">if</span> (recipe.acceptedGroups.Contains(groupID))</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            recipe.acceptedGroups.Add(groupID);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a64228b62f486a57f7a04979d43d7d0f9">   92</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a64228b62f486a57f7a04979d43d7d0f9">RejectRecipeGroup</a>(<span class="keywordtype">string</span> groupName)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordtype">int</span> groupID;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">if</span> (!RecipeGroup.recipeGroupIDs.TryGetValue(groupName, out groupID))</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No recipe group is named &quot;</span> + groupName);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">return</span> recipe.acceptedGroups.Remove(groupID);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a616174581036bd5b8138b950889ce436">  102</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a616174581036bd5b8138b950889ce436">SetResult</a>(<span class="keywordtype">int</span> itemID, <span class="keywordtype">int</span> stack = 1)</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">if</span> (itemID &lt;= 0 || itemID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html">ItemLoader</a>.ItemCount)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item has ID &quot;</span> + itemID);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            recipe.createItem.SetDefaults(itemID);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            recipe.createItem.stack = stack;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#af0b7952c033510cb2c1e91ba8c732b97">  112</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#af0b7952c033510cb2c1e91ba8c732b97">SetResult</a>(<span class="keywordtype">string</span> itemName, <span class="keywordtype">int</span> stack = 1)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            recipe.createItem.SetDefaults(itemName);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">if</span> (recipe.createItem.type == 0)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item is named &quot;</span> + itemName);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            recipe.createItem.stack = stack;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9ada1f60c3b50ba03975e7be5ee5d0cc">  122</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9ada1f60c3b50ba03975e7be5ee5d0cc">AddTile</a>(<span class="keywordtype">int</span> tileID)</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="keywordflow">if</span> (tileID &lt; 0 || tileID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html">TileLoader</a>.TileCount)</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            {</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No tile has ID &quot;</span> + tileID);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html">   10</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html">RecipeEditor</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4876678df738da21ad10601db82f66f1">   12</a></span>&#160;        <span class="keyword">private</span> Recipe <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4876678df738da21ad10601db82f66f1">recipe</a>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#aadf54b2bbefbec6a348a0dc18af43c9f">   18</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#aadf54b2bbefbec6a348a0dc18af43c9f">RecipeEditor</a>(Recipe recipe)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            this.recipe = recipe;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#ae627c3f5be0a1b7def18de20ab56d760">   28</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#ae627c3f5be0a1b7def18de20ab56d760">AddIngredient</a>(<span class="keywordtype">int</span> itemID, <span class="keywordtype">int</span> stack = 1)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">if</span> (itemID &lt;= 0 || itemID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html">ItemLoader</a>.ItemCount)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item has ID &quot;</span> + itemID);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredItem[k].type == 0)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                    recipe.requiredItem[k].SetDefaults(itemID, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                    recipe.requiredItem[k].stack = stack;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredItem[k].type == itemID)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    recipe.requiredItem[k].stack += stack;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;Recipe already has maximum number of ingredients&quot;</span>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a5e9714f46cb280fc73eb7efdc1c780d1">   57</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a5e9714f46cb280fc73eb7efdc1c780d1">SetIngredientStack</a>(<span class="keywordtype">int</span> itemID, <span class="keywordtype">int</span> stack)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">if</span> (itemID &lt;= 0 || itemID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html">ItemLoader</a>.ItemCount)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item has ID &quot;</span> + itemID);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredItem[k].type == itemID)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    recipe.requiredItem[k].stack = stack;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a448e707c0f6e78ceb200ee7e8df9c4f9">   79</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a448e707c0f6e78ceb200ee7e8df9c4f9">DeleteIngredient</a>(<span class="keywordtype">int</span> itemID)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">if</span> (itemID &lt;= 0 || itemID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html">ItemLoader</a>.ItemCount)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item has ID &quot;</span> + itemID);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredItem[k].type == itemID)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = k; j &lt; Recipe.maxRequirements - 1; j++)</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                        recipe.requiredItem[j] = recipe.requiredItem[j + 1];</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                    recipe.requiredItem[Recipe.maxRequirements - 1] = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd">  105</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd">AcceptRecipeGroup</a>(<span class="keywordtype">string</span> groupName)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordtype">int</span> groupID;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">if</span> (!RecipeGroup.recipeGroupIDs.TryGetValue(groupName, out groupID))</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No recipe group is named &quot;</span> + groupName);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keywordflow">if</span> (recipe.acceptedGroups.Contains(groupID))</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            recipe.acceptedGroups.Add(groupID);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a64228b62f486a57f7a04979d43d7d0f9">  125</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a64228b62f486a57f7a04979d43d7d0f9">RejectRecipeGroup</a>(<span class="keywordtype">string</span> groupName)</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordtype">int</span> groupID;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <span class="keywordflow">if</span> (!RecipeGroup.recipeGroupIDs.TryGetValue(groupName, out groupID))</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredTile[k] == -1)</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                {</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                    recipe.requiredTile[k] = tileID;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                }</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredTile[k] == tileID)</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                }</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            }</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;Recipe already has maximum number of tiles&quot;</span>);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9c2569159767cf327a30488b2e66f456">  143</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9c2569159767cf327a30488b2e66f456">DeleteTile</a>(<span class="keywordtype">int</span> tileID)</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        {</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <span class="keywordflow">if</span> (tileID &lt; 0 || tileID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html">TileLoader</a>.TileCount)</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No tile has ID &quot;</span> + tileID);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            }</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            {</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredTile[k] == tileID)</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = k; j &lt; Recipe.maxRequirements - 1; j++)</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                        recipe.requiredTile[j] = recipe.requiredTile[j + 1];</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    }</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                    recipe.requiredTile[Recipe.maxRequirements - 1] = -1;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        }</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a663633422081356aeca0f47db74f8f51">  164</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a663633422081356aeca0f47db74f8f51">SetNeedWater</a>(<span class="keywordtype">bool</span> needWater)</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            recipe.needWater = needWater;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
-<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a2dfc10260c5b99f067abe0e64b4cc801">  169</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a2dfc10260c5b99f067abe0e64b4cc801">SetNeedLava</a>(<span class="keywordtype">bool</span> needLava)</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        {</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            recipe.needLava = needLava;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        }</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a428708455128f049047ca7ac9e57cb82">  174</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a428708455128f049047ca7ac9e57cb82">SetNeedHoney</a>(<span class="keywordtype">bool</span> needHoney)</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        {</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            recipe.needHoney = needHoney;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        }</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
-<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4f495e75b86e3a31adb2d3b606b2432b">  179</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4f495e75b86e3a31adb2d3b606b2432b">DeleteRecipe</a>()</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        {</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.numRecipes; k++)</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                <span class="keywordflow">if</span> (Main.recipe[k] == recipe)</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No recipe group is named &quot;</span> + groupName);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <span class="keywordflow">return</span> recipe.acceptedGroups.Remove(groupID);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        }</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a616174581036bd5b8138b950889ce436">  140</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a616174581036bd5b8138b950889ce436">SetResult</a>(<span class="keywordtype">int</span> itemID, <span class="keywordtype">int</span> stack = 1)</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <span class="keywordflow">if</span> (itemID &lt;= 0 || itemID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html">ItemLoader</a>.ItemCount)</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item has ID &quot;</span> + itemID);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            recipe.createItem.SetDefaults(itemID);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            recipe.createItem.stack = stack;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        }</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#af0b7952c033510cb2c1e91ba8c732b97">  155</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#af0b7952c033510cb2c1e91ba8c732b97">SetResult</a>(<span class="keywordtype">string</span> itemName, <span class="keywordtype">int</span> stack = 1)</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            recipe.createItem.SetDefaults(itemName);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordflow">if</span> (recipe.createItem.type == 0)</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No item is named &quot;</span> + itemName);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            recipe.createItem.stack = stack;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
+<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9ada1f60c3b50ba03975e7be5ee5d0cc">  170</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9ada1f60c3b50ba03975e7be5ee5d0cc">AddTile</a>(<span class="keywordtype">int</span> tileID)</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <span class="keywordflow">if</span> (tileID &lt; 0 || tileID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html">TileLoader</a>.TileCount)</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            {</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No tile has ID &quot;</span> + tileID);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            }</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredTile[k] == -1)</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                {</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                    recipe.requiredTile[k] = tileID;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                }</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredTile[k] == tileID)</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                {</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = k; j &lt; Recipe.numRecipes - 1; j++)</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                    {</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                        Main.recipe[j] = Main.recipe[j + 1];</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                    }</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                    Main.recipe[Recipe.numRecipes - 1] = <span class="keyword">new</span> Recipe();</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                    Recipe.numRecipes--;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                }</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            }</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        }</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;}</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a9ada1f60c3b50ba03975e7be5ee5d0cc"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9ada1f60c3b50ba03975e7be5ee5d0cc">Terraria.ModLoader.RecipeEditor.AddTile</a></div><div class="ttdeci">bool AddTile(int tileID)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00122">RecipeEditor.cs:122</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a663633422081356aeca0f47db74f8f51"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a663633422081356aeca0f47db74f8f51">Terraria.ModLoader.RecipeEditor.SetNeedWater</a></div><div class="ttdeci">void SetNeedWater(bool needWater)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00164">RecipeEditor.cs:164</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html">Terraria.ModLoader.RecipeEditor</a></div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00007">RecipeEditor.cs:7</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a9c2569159767cf327a30488b2e66f456"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9c2569159767cf327a30488b2e66f456">Terraria.ModLoader.RecipeEditor.DeleteTile</a></div><div class="ttdeci">bool DeleteTile(int tileID)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00143">RecipeEditor.cs:143</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a428708455128f049047ca7ac9e57cb82"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a428708455128f049047ca7ac9e57cb82">Terraria.ModLoader.RecipeEditor.SetNeedHoney</a></div><div class="ttdeci">void SetNeedHoney(bool needHoney)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00174">RecipeEditor.cs:174</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a5e9714f46cb280fc73eb7efdc1c780d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a5e9714f46cb280fc73eb7efdc1c780d1">Terraria.ModLoader.RecipeEditor.SetIngredientStack</a></div><div class="ttdeci">bool SetIngredientStack(int itemID, int stack)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00039">RecipeEditor.cs:39</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a2dfc10260c5b99f067abe0e64b4cc801"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a2dfc10260c5b99f067abe0e64b4cc801">Terraria.ModLoader.RecipeEditor.SetNeedLava</a></div><div class="ttdeci">void SetNeedLava(bool needLava)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00169">RecipeEditor.cs:169</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a64228b62f486a57f7a04979d43d7d0f9"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a64228b62f486a57f7a04979d43d7d0f9">Terraria.ModLoader.RecipeEditor.RejectRecipeGroup</a></div><div class="ttdeci">bool RejectRecipeGroup(string groupName)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00092">RecipeEditor.cs:92</a></div></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                }</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            }</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;Recipe already has maximum number of tiles&quot;</span>);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        }</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
+<div class="line"><a name="l00196"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9c2569159767cf327a30488b2e66f456">  196</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9c2569159767cf327a30488b2e66f456">DeleteTile</a>(<span class="keywordtype">int</span> tileID)</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            <span class="keywordflow">if</span> (tileID &lt; 0 || tileID &gt;= <a class="code" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html">TileLoader</a>.TileCount)</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            {</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> RecipeException(<span class="stringliteral">&quot;No tile has ID &quot;</span> + tileID);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            }</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.maxRequirements; k++)</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            {</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                <span class="keywordflow">if</span> (recipe.requiredTile[k] == tileID)</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                {</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = k; j &lt; Recipe.maxRequirements - 1; j++)</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                    {</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                        recipe.requiredTile[j] = recipe.requiredTile[j + 1];</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                    }</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                    recipe.requiredTile[Recipe.maxRequirements - 1] = -1;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;                }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            }</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        }</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
+<div class="line"><a name="l00221"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a663633422081356aeca0f47db74f8f51">  221</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a663633422081356aeca0f47db74f8f51">SetNeedWater</a>(<span class="keywordtype">bool</span> needWater)</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        {</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            recipe.needWater = needWater;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        }</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a2dfc10260c5b99f067abe0e64b4cc801">  230</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a2dfc10260c5b99f067abe0e64b4cc801">SetNeedLava</a>(<span class="keywordtype">bool</span> needLava)</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        {</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            recipe.needLava = needLava;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        }</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a428708455128f049047ca7ac9e57cb82">  239</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a428708455128f049047ca7ac9e57cb82">SetNeedHoney</a>(<span class="keywordtype">bool</span> needHoney)</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        {</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            recipe.needHoney = needHoney;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        }</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
+<div class="line"><a name="l00248"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4f495e75b86e3a31adb2d3b606b2432b">  248</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4f495e75b86e3a31adb2d3b606b2432b">DeleteRecipe</a>()</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        {</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; Recipe.numRecipes; k++)</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            {</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                <span class="keywordflow">if</span> (Main.recipe[k] == recipe)</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                {</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = k; j &lt; Recipe.numRecipes - 1; j++)</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                    {</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                        Main.recipe[j] = Main.recipe[j + 1];</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                    }</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                    Main.recipe[Recipe.numRecipes - 1] = <span class="keyword">new</span> Recipe();</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                    Recipe.numRecipes--;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            }</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        }</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;}</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a9ada1f60c3b50ba03975e7be5ee5d0cc"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9ada1f60c3b50ba03975e7be5ee5d0cc">Terraria.ModLoader.RecipeEditor.AddTile</a></div><div class="ttdeci">bool AddTile(int tileID)</div><div class="ttdoc">Adds the crafting station with the given tile ID to the recipe. Returns true if the operation was suc...</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00170">RecipeEditor.cs:170</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a663633422081356aeca0f47db74f8f51"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a663633422081356aeca0f47db74f8f51">Terraria.ModLoader.RecipeEditor.SetNeedWater</a></div><div class="ttdeci">void SetNeedWater(bool needWater)</div><div class="ttdoc">A convenience method for setting recipe.needWater. </div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00221">RecipeEditor.cs:221</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html">Terraria.ModLoader.RecipeEditor</a></div><div class="ttdoc">This class allows you to make any changes you want to a recipe, whether it be adding/removing ingredi...</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00010">RecipeEditor.cs:10</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a9c2569159767cf327a30488b2e66f456"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9c2569159767cf327a30488b2e66f456">Terraria.ModLoader.RecipeEditor.DeleteTile</a></div><div class="ttdeci">bool DeleteTile(int tileID)</div><div class="ttdoc">Removes the crafting station with the given tile ID as a requirement from the recipe. Returns true if the operation was successful. Returns false if the recipe did not require the tile in the first place. Can also throw a RecipeException. </div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00196">RecipeEditor.cs:196</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a428708455128f049047ca7ac9e57cb82"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a428708455128f049047ca7ac9e57cb82">Terraria.ModLoader.RecipeEditor.SetNeedHoney</a></div><div class="ttdeci">void SetNeedHoney(bool needHoney)</div><div class="ttdoc">A convenience method for setting recipe.needHoney. </div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00239">RecipeEditor.cs:239</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a5e9714f46cb280fc73eb7efdc1c780d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a5e9714f46cb280fc73eb7efdc1c780d1">Terraria.ModLoader.RecipeEditor.SetIngredientStack</a></div><div class="ttdeci">bool SetIngredientStack(int itemID, int stack)</div><div class="ttdoc">Sets the stack requirement of the ingredient with the given item ID in the recipe. Returns true if the operation was successful. Returns false if the recipe does not contain the ingredient. Can also throw a RecipeException. </div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00057">RecipeEditor.cs:57</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a2dfc10260c5b99f067abe0e64b4cc801"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a2dfc10260c5b99f067abe0e64b4cc801">Terraria.ModLoader.RecipeEditor.SetNeedLava</a></div><div class="ttdeci">void SetNeedLava(bool needLava)</div><div class="ttdoc">A convenience method for setting recipe.needLava. </div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00230">RecipeEditor.cs:230</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a64228b62f486a57f7a04979d43d7d0f9"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a64228b62f486a57f7a04979d43d7d0f9">Terraria.ModLoader.RecipeEditor.RejectRecipeGroup</a></div><div class="ttdeci">bool RejectRecipeGroup(string groupName)</div><div class="ttdoc">Removes the recipe group with the given name from the recipe. This is the opposite of AcceptRecipeGro...</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00125">RecipeEditor.cs:125</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tile_loader_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tile_loader.html">Terraria.ModLoader.TileLoader</a></div><div class="ttdef"><b>Definition:</b> <a href="_tile_loader_8cs_source.html#l00011">TileLoader.cs:11</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a448e707c0f6e78ceb200ee7e8df9c4f9"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a448e707c0f6e78ceb200ee7e8df9c4f9">Terraria.ModLoader.RecipeEditor.DeleteIngredient</a></div><div class="ttdeci">bool DeleteIngredient(int itemID)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00056">RecipeEditor.cs:56</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a616174581036bd5b8138b950889ce436"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a616174581036bd5b8138b950889ce436">Terraria.ModLoader.RecipeEditor.SetResult</a></div><div class="ttdeci">void SetResult(int itemID, int stack=1)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00102">RecipeEditor.cs:102</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a448e707c0f6e78ceb200ee7e8df9c4f9"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a448e707c0f6e78ceb200ee7e8df9c4f9">Terraria.ModLoader.RecipeEditor.DeleteIngredient</a></div><div class="ttdeci">bool DeleteIngredient(int itemID)</div><div class="ttdoc">Deletes the ingredient requirement with the given ID from the recipe. Returns true if the operation w...</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00079">RecipeEditor.cs:79</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a616174581036bd5b8138b950889ce436"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a616174581036bd5b8138b950889ce436">Terraria.ModLoader.RecipeEditor.SetResult</a></div><div class="ttdeci">void SetResult(int itemID, int stack=1)</div><div class="ttdoc">A convenience method for setting the result of the recipe. Similar to calling recipe.createItem.SetDefaults(itemID), followed by recipe.createItem.stack = stack. Can also throw a RecipeException. </div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00140">RecipeEditor.cs:140</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.Item</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a4876678df738da21ad10601db82f66f1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4876678df738da21ad10601db82f66f1">Terraria.ModLoader.RecipeEditor.recipe</a></div><div class="ttdeci">Recipe recipe</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00009">RecipeEditor.cs:9</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a4876678df738da21ad10601db82f66f1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4876678df738da21ad10601db82f66f1">Terraria.ModLoader.RecipeEditor.recipe</a></div><div class="ttdeci">Recipe recipe</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00012">RecipeEditor.cs:12</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_item_loader_html"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_item_loader.html">Terraria.ModLoader.ItemLoader</a></div><div class="ttdoc">This serves as the central class from which item-related functions are carried out. It also stores a list of mod items by ID. </div><div class="ttdef"><b>Definition:</b> <a href="_item_loader_8cs_source.html#l00014">ItemLoader.cs:14</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_ae627c3f5be0a1b7def18de20ab56d760"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#ae627c3f5be0a1b7def18de20ab56d760">Terraria.ModLoader.RecipeEditor.AddIngredient</a></div><div class="ttdeci">void AddIngredient(int itemID, int stack=1)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00016">RecipeEditor.cs:16</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a4f495e75b86e3a31adb2d3b606b2432b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4f495e75b86e3a31adb2d3b606b2432b">Terraria.ModLoader.RecipeEditor.DeleteRecipe</a></div><div class="ttdeci">bool DeleteRecipe()</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00179">RecipeEditor.cs:179</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_aadf54b2bbefbec6a348a0dc18af43c9f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#aadf54b2bbefbec6a348a0dc18af43c9f">Terraria.ModLoader.RecipeEditor.RecipeEditor</a></div><div class="ttdeci">RecipeEditor(Recipe recipe)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00011">RecipeEditor.cs:11</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_af0b7952c033510cb2c1e91ba8c732b97"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#af0b7952c033510cb2c1e91ba8c732b97">Terraria.ModLoader.RecipeEditor.SetResult</a></div><div class="ttdeci">void SetResult(string itemName, int stack=1)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00112">RecipeEditor.cs:112</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a1b3673f1c79d82b8571f2f98295fcfcd"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd">Terraria.ModLoader.RecipeEditor.AcceptRecipeGroup</a></div><div class="ttdeci">bool AcceptRecipeGroup(string groupName)</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00077">RecipeEditor.cs:77</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_ae627c3f5be0a1b7def18de20ab56d760"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#ae627c3f5be0a1b7def18de20ab56d760">Terraria.ModLoader.RecipeEditor.AddIngredient</a></div><div class="ttdeci">void AddIngredient(int itemID, int stack=1)</div><div class="ttdoc">Adds an ingredient with the given item ID and stack size to the recipe. If the recipe already contain...</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00028">RecipeEditor.cs:28</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a4f495e75b86e3a31adb2d3b606b2432b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4f495e75b86e3a31adb2d3b606b2432b">Terraria.ModLoader.RecipeEditor.DeleteRecipe</a></div><div class="ttdeci">bool DeleteRecipe()</div><div class="ttdoc">Completely removes the recipe from the game, making it unusable. Returns true if the operation was su...</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00248">RecipeEditor.cs:248</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_aadf54b2bbefbec6a348a0dc18af43c9f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#aadf54b2bbefbec6a348a0dc18af43c9f">Terraria.ModLoader.RecipeEditor.RecipeEditor</a></div><div class="ttdeci">RecipeEditor(Recipe recipe)</div><div class="ttdoc">Creates a recipe editor that acts on the given recipe. </div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00018">RecipeEditor.cs:18</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_af0b7952c033510cb2c1e91ba8c732b97"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#af0b7952c033510cb2c1e91ba8c732b97">Terraria.ModLoader.RecipeEditor.SetResult</a></div><div class="ttdeci">void SetResult(string itemName, int stack=1)</div><div class="ttdoc">A convenience method for setting the result of the recipe. This uses the vanilla item name instead of...</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00155">RecipeEditor.cs:155</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_recipe_editor_html_a1b3673f1c79d82b8571f2f98295fcfcd"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd">Terraria.ModLoader.RecipeEditor.AcceptRecipeGroup</a></div><div class="ttdeci">bool AcceptRecipeGroup(string groupName)</div><div class="ttdoc">Adds the recipe group with the given name to the recipe. Note that, unlike ModRecipe and RecipeFinder...</div><div class="ttdef"><b>Definition:</b> <a href="_recipe_editor_8cs_source.html#l00105">RecipeEditor.cs:105</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
