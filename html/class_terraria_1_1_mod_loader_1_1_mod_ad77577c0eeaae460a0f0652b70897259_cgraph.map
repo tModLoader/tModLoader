@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.Mod.AutoloadNPC" name="Terraria.ModLoader.Mod.AutoloadNPC">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#abb047caa31b8ca34497ac4168356c711" title="Terraria.ModLoader.ModNPC.\lAutoload" alt="" coords="308,5,503,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#abb047caa31b8ca34497ac4168356c711" title="Allows you to automatically load an NPC instead of using Mod.AddNPC. Return true to allow autoloading..." alt="" coords="308,5,503,51"/>
 <area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a" title="Returns whether or not a texture with the specified name exists. " alt="" coords="303,74,508,121"/>
 </map>

@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.NPCLoader.CanTownNPCSpawn" name="Terraria.ModLoader.NPCLoader.CanTownNPCSpawn">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a78b4fdd2fb59c1812e03568478be3757" title="Terraria.ModLoader.ModNPC.\lCanTownNPCSpawn" alt="" coords="265,5,460,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a78b4fdd2fb59c1812e03568478be3757" title="Whether or not the conditions have been met for this town NPC to be able to move into town..." alt="" coords="265,5,460,51"/>
 </map>
