@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.PlayerLayer" name="Terraria.ModLoader.PlayerLayer">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html" title="DrawLayer\&lt; PlayerDrawInfo \&gt;" alt="" coords="60,232,257,261"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html" title="Terraria.ModLoader.DrawLayer\l\&lt; InfoType \&gt;" alt="" coords="172,118,372,165"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html" title="This class represents a layer of the drawing of an object, using a certain type of InfoType to help w..." alt="" coords="60,232,257,261"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html" title="This class represents a layer of the drawing of an object, using a certain type of InfoType to help w..." alt="" coords="172,118,372,165"/>
 </map>

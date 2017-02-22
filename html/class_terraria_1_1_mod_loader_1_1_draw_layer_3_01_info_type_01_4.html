@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_draw
 <div class="title">Terraria.ModLoader.DrawLayer&lt; InfoType &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class represents a layer of the drawing of an object, using a certain type of InfoType to help with its drawing.  
+ <a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Terraria.ModLoader.DrawLayer&lt; InfoType &gt;:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -122,7 +125,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_draw
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4__inherit__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_draw_layer_3_01_info_type_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="_terraria_8_mod_loader_8_draw_layer_3_01_info_type_01_4_inherit__map" id="_terraria_8_mod_loader_8_draw_layer_3_01_info_type_01_4_inherit__map">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_head_layer.html" title="Terraria.ModLoader.Player\lHeadLayer" alt="" coords="5,102,179,149"/><area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_player_layer.html" title="Terraria.ModLoader.Player\lLayer" alt="" coords="203,102,376,149"/></map>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_head_layer.html" title="This class represents a DrawLayer for the player&#39;s map icon, and uses PlayerDrawHeadInfo as its InfoT..." alt="" coords="5,102,179,149"/><area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_player_layer.html" title="This class represents a DrawLayer for the player, and uses PlayerDrawInfo as its InfoType. Drawing should be done by adding Terraria.DataStructures.DrawData objects to Main.playerDrawData. " alt="" coords="203,102,376,149"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.DrawLayer&lt; InfoType &gt;:</div>
@@ -137,33 +140,49 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_draw
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4a6a12496e2480e1d52b29943af4140e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a4a6a12496e2480e1d52b29943af4140e">Draw</a> (ref InfoType drawInfo)</td></tr>
+<tr class="memdesc:a4a6a12496e2480e1d52b29943af4140e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes this DrawLayer's layer action.  <a href="#a4a6a12496e2480e1d52b29943af4140e">More...</a><br/></td></tr>
 <tr class="separator:a4a6a12496e2480e1d52b29943af4140e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42cc879828f24c6f4b2035117c3efa6a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a42cc879828f24c6f4b2035117c3efa6a">ShouldDraw&lt; T &gt;</a> (IList&lt; T &gt; layers)</td></tr>
+<tr class="memdesc:a42cc879828f24c6f4b2035117c3efa6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this layer should be drawn. Returns false if visible is false. If layerList is of type List&lt;<a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html" title="This class represents a layer of the drawing of an object, using a certain type of InfoType to help w...">DrawLayer&lt;InfoType&gt;</a>&gt; and parent is not null, this will also return false if the parent is not drawn.  <a href="#a42cc879828f24c6f4b2035117c3efa6a">More...</a><br/></td></tr>
 <tr class="separator:a42cc879828f24c6f4b2035117c3efa6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa9055d5c3e7fb290ff972b73824082d1"><td class="memItemLeft" align="right" valign="top">readonly Action&lt; InfoType &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">layer</a></td></tr>
+<tr class="memdesc:aa9055d5c3e7fb290ff972b73824082d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The delegate of this method, which can either do the actual drawing or add draw data, depending on what kind of layer this is.  <a href="#aa9055d5c3e7fb290ff972b73824082d1">More...</a><br/></td></tr>
 <tr class="separator:aa9055d5c3e7fb290ff972b73824082d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a658d1c402048cda47caf6c7909949f7c"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">mod</a></td></tr>
+<tr class="memdesc:a658d1c402048cda47caf6c7909949f7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the mod to which this DrawLayer belongs.  <a href="#a658d1c402048cda47caf6c7909949f7c">More...</a><br/></td></tr>
 <tr class="separator:a658d1c402048cda47caf6c7909949f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a351414795641dae14c730926cd6c7b37"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a351414795641dae14c730926cd6c7b37">Name</a></td></tr>
+<tr class="memdesc:a351414795641dae14c730926cd6c7b37"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name which identifies this DrawLayer.  <a href="#a351414795641dae14c730926cd6c7b37">More...</a><br/></td></tr>
 <tr class="separator:a351414795641dae14c730926cd6c7b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab655430c48d6ee75580d4b4d641c7de1"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a4ce5cc8546ff779c734afbcc421dbc84">DrawLayer</a>&lt; InfoType &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#ab655430c48d6ee75580d4b4d641c7de1">parent</a></td></tr>
+<tr class="memdesc:ab655430c48d6ee75580d4b4d641c7de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parent of this DrawLayer. If the parent is not drawn, this layer will not be drawn either. Defaults to null, which skips the parent check.  <a href="#ab655430c48d6ee75580d4b4d641c7de1">More...</a><br/></td></tr>
 <tr class="separator:ab655430c48d6ee75580d4b4d641c7de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf5af1491117c4c92ca720992b7bc714"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#acf5af1491117c4c92ca720992b7bc714">visible</a> = true</td></tr>
+<tr class="memdesc:acf5af1491117c4c92ca720992b7bc714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this DrawLayer should be drawn. For vanilla layers, this will be set to true before all drawing-related hooks are called. For modded layers, you must set this to true or false yourself.  <a href="#acf5af1491117c4c92ca720992b7bc714">More...</a><br/></td></tr>
 <tr class="separator:acf5af1491117c4c92ca720992b7bc714"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a4ce5cc8546ff779c734afbcc421dbc84"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a4ce5cc8546ff779c734afbcc421dbc84">DrawLayer</a> (string <a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">mod</a>, string name, Action&lt; InfoType &gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">layer</a>)</td></tr>
+<tr class="memdesc:a4ce5cc8546ff779c734afbcc421dbc84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a DrawLayer with the given mod name, identifier name, and drawing action.  <a href="#a4ce5cc8546ff779c734afbcc421dbc84">More...</a><br/></td></tr>
 <tr class="separator:a4ce5cc8546ff779c734afbcc421dbc84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb139644948beb348d866d4bc20dcea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a6fb139644948beb348d866d4bc20dcea">DrawLayer</a> (string <a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">mod</a>, string name, DrawLayer&lt; InfoType &gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#ab655430c48d6ee75580d4b4d641c7de1">parent</a>, Action&lt; InfoType &gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">layer</a>)</td></tr>
+<tr class="memdesc:a6fb139644948beb348d866d4bc20dcea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a DrawLayer with the given mod name, identifier name, parent layer, and drawing action.  <a href="#a6fb139644948beb348d866d4bc20dcea">More...</a><br/></td></tr>
 <tr class="separator:a6fb139644948beb348d866d4bc20dcea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00006">6</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<div class="textblock"><p>This class represents a layer of the drawing of an object, using a certain type of InfoType to help with its drawing. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">InfoType</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00010">10</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a4ce5cc8546ff779c734afbcc421dbc84"></a>
 <div class="memitem">
@@ -203,15 +222,25 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00014">14</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            this.mod = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">mod</a>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            this.Name = name;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            this.parent = null;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            this.layer = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">layer</a>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_aa9055d5c3e7fb290ff972b73824082d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.layer</a></div><div class="ttdeci">readonly Action&lt; InfoType &gt; layer</div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00011">DrawLayer.cs:11</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_a658d1c402048cda47caf6c7909949f7c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.mod</a></div><div class="ttdeci">readonly string mod</div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00008">DrawLayer.cs:8</a></div></div>
+<p>Creates a DrawLayer with the given mod name, identifier name, and drawing action. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td></td></tr>
+    <tr><td class="paramname">name</td><td></td></tr>
+    <tr><td class="paramname">layer</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00039">39</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            this.mod = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">mod</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            this.Name = name;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            this.parent = null;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            this.layer = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">layer</a>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_aa9055d5c3e7fb290ff972b73824082d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.layer</a></div><div class="ttdeci">readonly Action&lt; InfoType &gt; layer</div><div class="ttdoc">The delegate of this method, which can either do the actual drawing or add draw data, depending on what kind of layer this is. </div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00027">DrawLayer.cs:27</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_a658d1c402048cda47caf6c7909949f7c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.mod</a></div><div class="ttdeci">readonly string mod</div><div class="ttdoc">The name of the mod to which this DrawLayer belongs. </div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00015">DrawLayer.cs:15</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -259,16 +288,27 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00022">22</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            this.mod = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">mod</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            this.Name = name;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            this.parent = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#ab655430c48d6ee75580d4b4d641c7de1">parent</a>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            this.layer = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">layer</a>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_ab655430c48d6ee75580d4b4d641c7de1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#ab655430c48d6ee75580d4b4d641c7de1">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.parent</a></div><div class="ttdeci">readonly DrawLayer&lt; InfoType &gt; parent</div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00010">DrawLayer.cs:10</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_aa9055d5c3e7fb290ff972b73824082d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.layer</a></div><div class="ttdeci">readonly Action&lt; InfoType &gt; layer</div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00011">DrawLayer.cs:11</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_a658d1c402048cda47caf6c7909949f7c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.mod</a></div><div class="ttdeci">readonly string mod</div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00008">DrawLayer.cs:8</a></div></div>
+<p>Creates a DrawLayer with the given mod name, identifier name, parent layer, and drawing action. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td></td></tr>
+    <tr><td class="paramname">name</td><td></td></tr>
+    <tr><td class="paramname">parent</td><td></td></tr>
+    <tr><td class="paramname">layer</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00054">54</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            this.mod = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">mod</a>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            this.Name = name;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            this.parent = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#ab655430c48d6ee75580d4b4d641c7de1">parent</a>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            this.layer = <a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">layer</a>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_ab655430c48d6ee75580d4b4d641c7de1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#ab655430c48d6ee75580d4b4d641c7de1">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.parent</a></div><div class="ttdeci">readonly DrawLayer&lt; InfoType &gt; parent</div><div class="ttdoc">The parent of this DrawLayer. If the parent is not drawn, this layer will not be drawn either...</div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00023">DrawLayer.cs:23</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_aa9055d5c3e7fb290ff972b73824082d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.layer</a></div><div class="ttdeci">readonly Action&lt; InfoType &gt; layer</div><div class="ttdoc">The delegate of this method, which can either do the actual drawing or add draw data, depending on what kind of layer this is. </div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00027">DrawLayer.cs:27</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_a658d1c402048cda47caf6c7909949f7c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#a658d1c402048cda47caf6c7909949f7c">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.mod</a></div><div class="ttdeci">readonly string mod</div><div class="ttdoc">The name of the mod to which this DrawLayer belongs. </div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00015">DrawLayer.cs:15</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -295,10 +335,18 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00048">48</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            this.layer(drawInfo);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<p>Invokes this DrawLayer's layer action. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">drawInfo</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00090">90</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            this.layer(drawInfo);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -315,6 +363,21 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Whether or not this layer should be drawn. Returns false if visible is false. If layerList is of type List&lt;<a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html" title="This class represents a layer of the drawing of an object, using a certain type of InfoType to help w...">DrawLayer&lt;InfoType&gt;</a>&gt; and parent is not null, this will also return false if the parent is not drawn. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">layers</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -323,27 +386,27 @@ Protected Member Functions</h2></td></tr>
 </dl>
 </div>
 
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00030">30</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00068">68</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
 
-<p>References <a class="el" href="_draw_layer_8cs_source.html#l00012">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.visible</a>.</p>
-<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                                                           : DrawLayer&lt;InfoType&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">if</span> (!this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#acf5af1491117c4c92ca720992b7bc714">visible</a>)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            DrawLayer&lt;InfoType&gt; parentLayer = this.parent;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">while</span> (parentLayer != null)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                <span class="keywordflow">if</span> (!parentLayer.visible || !layers.Contains((T)parentLayer))</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                parentLayer = parentLayer.parent;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_acf5af1491117c4c92ca720992b7bc714"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#acf5af1491117c4c92ca720992b7bc714">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.visible</a></div><div class="ttdeci">bool visible</div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00012">DrawLayer.cs:12</a></div></div>
+<p>References <a class="el" href="_draw_layer_8cs_source.html#l00031">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.visible</a>.</p>
+<div class="fragment"><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                                                           : DrawLayer&lt;InfoType&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">if</span> (!this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#acf5af1491117c4c92ca720992b7bc714">visible</a>)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            DrawLayer&lt;InfoType&gt; parentLayer = this.parent;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">while</span> (parentLayer != null)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">if</span> (!parentLayer.visible || !layers.Contains((T)parentLayer))</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                parentLayer = parentLayer.parent;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4_html_acf5af1491117c4c92ca720992b7bc714"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#acf5af1491117c4c92ca720992b7bc714">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.visible</a></div><div class="ttdeci">bool visible</div><div class="ttdoc">Whether or not this DrawLayer should be drawn. For vanilla layers, this will be set to true before al...</div><div class="ttdef"><b>Definition:</b> <a href="_draw_layer_8cs_source.html#l00031">DrawLayer.cs:31</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -358,7 +421,9 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00011">11</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<p>The delegate of this method, which can either do the actual drawing or add draw data, depending on what kind of layer this is. </p>
+
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00027">27</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
 
 </div>
 </div>
@@ -372,7 +437,9 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00008">8</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<p>The name of the mod to which this DrawLayer belongs. </p>
+
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00015">15</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
 
 </div>
 </div>
@@ -386,7 +453,9 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00009">9</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<p>The name which identifies this DrawLayer. </p>
+
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00019">19</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
 
 </div>
 </div>
@@ -400,7 +469,9 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00010">10</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<p>The parent of this DrawLayer. If the parent is not drawn, this layer will not be drawn either. Defaults to null, which skips the parent check. </p>
+
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00023">23</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
 
 </div>
 </div>
@@ -414,9 +485,11 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00012">12</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+<p>Whether or not this DrawLayer should be drawn. For vanilla layers, this will be set to true before all drawing-related hooks are called. For modded layers, you must set this to true or false yourself. </p>
 
-<p>Referenced by <a class="el" href="_draw_layer_8cs_source.html#l00030">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.ShouldDraw&lt; T &gt;()</a>.</p>
+<p>Definition at line <a class="el" href="_draw_layer_8cs_source.html#l00031">31</a> of file <a class="el" href="_draw_layer_8cs_source.html">DrawLayer.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_draw_layer_8cs_source.html#l00068">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;.ShouldDraw&lt; T &gt;()</a>.</p>
 
 </div>
 </div>

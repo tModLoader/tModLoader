@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.DrawLayer&lt; InfoType &gt;" name="Terraria.ModLoader.DrawLayer&lt; InfoType &gt;">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_player_head_layer.html" title="Terraria.ModLoader.Player\lHeadLayer" alt="" coords="5,102,179,149"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_player_layer.html" title="Terraria.ModLoader.Player\lLayer" alt="" coords="203,102,376,149"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_player_head_layer.html" title="This class represents a DrawLayer for the player&#39;s map icon, and uses PlayerDrawHeadInfo as its InfoT..." alt="" coords="5,102,179,149"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_player_layer.html" title="This class represents a DrawLayer for the player, and uses PlayerDrawInfo as its InfoType. Drawing should be done by adding Terraria.DataStructures.DrawData objects to Main.playerDrawData. " alt="" coords="203,102,376,149"/>
 </map>
