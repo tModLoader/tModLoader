@@ -116,9 +116,6 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_equi
 <div class="title">Terraria.ModLoader.EquipLoader Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures.  
- <a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.EquipLoader:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -132,7 +129,6 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_equi
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a87c1e9bb37d938a07111fa76bae78575"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html">EquipTexture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575">GetEquipTexture</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a> type, int slot)</td></tr>
-<tr class="memdesc:a87c1e9bb37d938a07111fa76bae78575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the equipment texture for the specified equipment type and ID.  <a href="#a87c1e9bb37d938a07111fa76bae78575">More...</a><br/></td></tr>
 <tr class="separator:a87c1e9bb37d938a07111fa76bae78575"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -152,9 +148,8 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:a2cb330c224aad0edb60c4f76d0c08d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures. </p>
-
-<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00011">11</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
+<div class="textblock">
+<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00008">8</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a6f29f0695eaea5f40fb00bc6ff462a44"></a>
 <div class="memitem">
@@ -177,20 +172,20 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00026">26</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a> type <span class="keywordflow">in</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a95d4c93ab5bc1685cfcf13f75e200ef5">EquipTypes</a>)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a2cb330c224aad0edb60c4f76d0c08d70">nextEquip</a>[type] = GetNumVanilla(type);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                equipTextures[type] = <span class="keyword">new</span> Dictionary&lt;int, EquipTexture&gt;();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            slotToId[EquipType.Head] = <span class="keyword">new</span> Dictionary&lt;int, int&gt;();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            slotToId[EquipType.Body] = <span class="keyword">new</span> Dictionary&lt;int, int&gt;();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            slotToId[EquipType.Legs] = <span class="keyword">new</span> Dictionary&lt;int, int&gt;();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_equip_loader_html_a95d4c93ab5bc1685cfcf13f75e200ef5"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a95d4c93ab5bc1685cfcf13f75e200ef5">Terraria.ModLoader.EquipLoader.EquipTypes</a></div><div class="ttdeci">static readonly EquipType[] EquipTypes</div><div class="ttdef"><b>Definition:</b> <a href="_equip_loader_8cs_source.html#l00024">EquipLoader.cs:24</a></div></div>
+<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00023">23</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a> type <span class="keywordflow">in</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a95d4c93ab5bc1685cfcf13f75e200ef5">EquipTypes</a>)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a2cb330c224aad0edb60c4f76d0c08d70">nextEquip</a>[type] = GetNumVanilla(type);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                equipTextures[type] = <span class="keyword">new</span> Dictionary&lt;int, EquipTexture&gt;();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            slotToId[EquipType.Head] = <span class="keyword">new</span> Dictionary&lt;int, int&gt;();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            slotToId[EquipType.Body] = <span class="keyword">new</span> Dictionary&lt;int, int&gt;();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            slotToId[EquipType.Legs] = <span class="keyword">new</span> Dictionary&lt;int, int&gt;();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_equip_loader_html_a95d4c93ab5bc1685cfcf13f75e200ef5"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a95d4c93ab5bc1685cfcf13f75e200ef5">Terraria.ModLoader.EquipLoader.EquipTypes</a></div><div class="ttdeci">static readonly EquipType[] EquipTypes</div><div class="ttdef"><b>Definition:</b> <a href="_equip_loader_8cs_source.html#l00021">EquipLoader.cs:21</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_ab5632221fbbd1ad7f37983e2b9400282"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">Terraria.ModLoader.EquipType</a></div><div class="ttdeci">EquipType</div><div class="ttdoc">This is an enum of all the types of equipment that exist. An equipment type is defined as a type or l...</div><div class="ttdef"><b>Definition:</b> <a href="_equip_type_8cs_source.html#l00008">EquipType.cs:8</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_equip_loader_html_a2cb330c224aad0edb60c4f76d0c08d70"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a2cb330c224aad0edb60c4f76d0c08d70">Terraria.ModLoader.EquipLoader.nextEquip</a></div><div class="ttdeci">static readonly IDictionary&lt; EquipType, int &gt; nextEquip</div><div class="ttdef"><b>Definition:</b> <a href="_equip_loader_8cs_source.html#l00014">EquipLoader.cs:14</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_equip_loader_html_a2cb330c224aad0edb60c4f76d0c08d70"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a2cb330c224aad0edb60c4f76d0c08d70">Terraria.ModLoader.EquipLoader.nextEquip</a></div><div class="ttdeci">static readonly IDictionary&lt; EquipType, int &gt; nextEquip</div><div class="ttdef"><b>Definition:</b> <a href="_equip_loader_8cs_source.html#l00011">EquipLoader.cs:11</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -227,27 +222,17 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the equipment texture for the specified equipment type and ID. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">type</td><td></td></tr>
-    <tr><td class="paramname">slot</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00051">51</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">if</span> (equipTextures[type].ContainsKey(slot))</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keywordflow">return</span> equipTextures[type][slot];</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00042">42</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">if</span> (equipTextures[type].ContainsKey(slot))</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordflow">return</span> equipTextures[type][slot];</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -270,7 +255,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00024">24</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00021">21</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00859">Terraria.ModLoader.ItemLoader.UpdateVanity()</a>.</p>
 
@@ -294,7 +279,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00014">14</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_equip_loader_8cs_source.html#l00011">11</a> of file <a class="el" href="_equip_loader_8cs_source.html">EquipLoader.cs</a>.</p>
 
 </div>
 </div>
