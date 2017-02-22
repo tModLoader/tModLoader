@@ -41,6 +41,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The internal name of this ModProjectile.
 		/// </summary>
+		/// <value>
+		/// The name.
+		/// </value>
 		public string Name
 		{
 			get;
@@ -83,7 +86,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The internal name.</param>
 		/// <param name="texture">The texture path.</param>
-		/// <returns></returns>
+		/// <returns>Whether or not to autoload.</returns>
 		public virtual bool Autoload(ref string name, ref string texture)
 		{
 			return mod.Properties.Autoload;
@@ -114,7 +117,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine how this projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Whether or not to stop other AI.</returns>
 		public virtual bool PreAI()
 		{
 			return true;
@@ -137,7 +140,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// If you are storing AI information outside of the projectile.ai array, use this to send that AI information between clients and servers.
 		/// </summary>
-		/// <param name="writer"></param>
 		public virtual void SendExtraAI(BinaryWriter writer)
 		{
 		}
@@ -145,7 +147,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Use this to receive information that was sent in SendExtraAI.
 		/// </summary>
-		/// <param name="reader"></param>
 		public virtual void ReceiveExtraAI(BinaryReader reader)
 		{
 		}
@@ -153,7 +154,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Whether or not this projectile should update its position based on factors such as its velocity, whether it is in liquid, etc. Return false to make its velocity have no effect on its position. Returns true by default.
 		/// </summary>
-		/// <returns></returns>
 		public virtual bool ShouldUpdatePosition()
 		{
 			return true;
@@ -165,7 +165,6 @@ namespace Terraria.ModLoader
 		/// <param name="width">Width of the hitbox.</param>
 		/// <param name="height">Height of the hitbox.</param>
 		/// <param name="fallThrough">If the projectile can fall through platforms etc.</param>
-		/// <returns></returns>
 		public virtual bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
 		{
 			return true;
@@ -175,7 +174,6 @@ namespace Terraria.ModLoader
 		/// Allows you to determine what happens when this projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default.
 		/// </summary>
 		/// <param name="oldVelocity">The velocity of the projectile upon collision.</param>
-		/// <returns></returns>
 		public virtual bool OnTileCollide(Vector2 oldVelocity)
 		{
 			return true;
@@ -184,7 +182,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla decision.
 		/// </summary>
-		/// <returns></returns>
 		public virtual bool? CanCutTiles()
 		{
 			return null;
@@ -200,8 +197,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine whether the vanilla code for Kill and the Kill hook will be called. Return false to stop them from being called. Returns true by default. Note that this does not stop the projectile from dying.
 		/// </summary>
-		/// <param name="timeLeft"></param>
-		/// <returns></returns>
 		public virtual bool PreKill(int timeLeft)
 		{
 			return true;
@@ -210,7 +205,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. 
 		/// </summary>
-		/// <param name="timeLeft"></param>
 		public virtual void Kill(int timeLeft)
 		{
 		}
@@ -218,7 +212,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Whether or not this projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Returns true by default.
 		/// </summary>
-		/// <returns></returns>
 		public virtual bool CanDamage()
 		{
 			return true;
@@ -227,7 +220,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Whether or not this minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if this projectile is considered a pet.
 		/// </summary>
-		/// <returns></returns>
 		public virtual bool MinionContactDamage()
 		{
 			return false;
@@ -236,8 +228,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine whether this projectile can hit the given NPC. Return true to allow hitting the target, return false to block this projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 		/// </summary>
-		/// <param name="target"></param>
-		/// <returns></returns>
+		/// <param name="target">The target.</param>
 		public virtual bool? CanHitNPC(NPC target)
 		{
 			return null;
@@ -246,11 +237,11 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the damage, knockback, etc., that this projectile does to an NPC.
 		/// </summary>
-		/// <param name="target"></param>
-		/// <param name="damage"></param>
-		/// <param name="knockback"></param>
-		/// <param name="crit"></param>
-		/// <param name="hitDirection"></param>
+		/// <param name="target">The target.</param>
+		/// <param name="damage">The modifiable damage.</param>
+		/// <param name="knockback">The modifiable knockback.</param>
+		/// <param name="crit">The modifiable crit.</param>
+		/// <param name="hitDirection">The modifiable hit direction.</param>
 		public virtual void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
 		}
@@ -258,10 +249,10 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs).
 		/// </summary>
-		/// <param name="target"></param>
-		/// <param name="damage"></param>
-		/// <param name="knockback"></param>
-		/// <param name="crit"></param>
+		/// <param name="target">The target.</param>
+		/// <param name="damage">The damage.</param>
+		/// <param name="knockback">The knockback.</param>
+		/// <param name="crit">The critical hit.</param>
 		public virtual void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
 		}
@@ -269,8 +260,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine whether this projectile can hit the given opponent player. Return false to block this projectile from hitting the target. Returns true by default.
 		/// </summary>
-		/// <param name="target"></param>
-		/// <returns></returns>
+		/// <param name="target">The target</param>
 		public virtual bool CanHitPvp(Player target)
 		{
 			return true;
@@ -279,9 +269,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the damage, etc., that this projectile does to an opponent player.
 		/// </summary>
-		/// <param name="target"></param>
-		/// <param name="damage"></param>
-		/// <param name="crit"></param>
+		/// <param name="target">The target.</param>
+		/// <param name="damage">The modifiable damage.</param>
+		/// <param name="crit">The modifiable crit.</param>
 		public virtual void ModifyHitPvp(Player target, ref int damage, ref bool crit)
 		{
 		}
@@ -289,9 +279,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to create special effects when this projectile hits an opponent player.
 		/// </summary>
-		/// <param name="target"></param>
-		/// <param name="damage"></param>
-		/// <param name="crit"></param>
+		/// <param name="target">The target.</param>
+		/// <param name="damage">The damage.</param>
+		/// <param name="crit">The critical hit.</param>
 		public virtual void OnHitPvp(Player target, int damage, bool crit)
 		{
 		}
@@ -299,8 +289,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine whether this hostile projectile can hit the given player. Return false to block this projectile from hitting the target. Returns true by default.
 		/// </summary>
-		/// <param name="target"></param>
-		/// <returns></returns>
+		/// <param name="target">The target.</param>
 		public virtual bool CanHitPlayer(Player target)
 		{
 			return true;
@@ -309,9 +298,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the damage, etc., that this hostile projectile does to a player.
 		/// </summary>
-		/// <param name="target"></param>
-		/// <param name="damage"></param>
-		/// <param name="crit"></param>
+		/// <param name="target">The target.</param>
+		/// <param name="damage">The modifiable damage.</param>
+		/// <param name="crit">The modifiable crit.</param>
 		public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
 		{
 		}
@@ -319,9 +308,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to create special effects when this hostile projectile hits a player.
 		/// </summary>
-		/// <param name="target"></param>
-		/// <param name="damage"></param>
-		/// <param name="crit"></param>
+		/// <param name="target">The target.</param>
+		/// <param name="damage">The damage.</param>
+		/// <param name="crit">The critical hit.</param>
 		public virtual void OnHitPlayer(Player target, int damage, bool crit)
 		{
 		}
@@ -329,9 +318,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to use custom collision detection between this projectile and a player or NPC that this projectile can damage. Useful for things like diagonal lasers, projectiles that leave a trail behind them, etc.
 		/// </summary>
-		/// <param name="projHitbox"></param>
-		/// <param name="targetHitbox"></param>
-		/// <returns></returns>
+		/// <param name="projHitbox">The hitbox of the projectile.</param>
+		/// <param name="targetHitbox">The hitbox of the target.</param>
+		/// <returns>Whether they collide or not.</returns>
 		public virtual bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
 			return null;
@@ -340,8 +329,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
 		/// </summary>
-		/// <param name="lightColor"></param>
-		/// <returns></returns>
 		public virtual Color? GetAlpha(Color lightColor)
 		{
 			return null;
@@ -350,8 +337,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to draw things behind this projectile. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 		/// </summary>
-		/// <param name="spriteBatch"></param>
-		/// <returns></returns>
 		public virtual bool PreDrawExtras(SpriteBatch spriteBatch)
 		{
 			return true;
@@ -360,9 +345,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to draw things behind this projectile, or to modify the way this projectile is drawn. Return false to stop the game from drawing the projectile (useful if you're manually drawing the projectile). Returns true by default.
 		/// </summary>
-		/// <param name="spriteBatch"></param>
-		/// <param name="lightColor"></param>
-		/// <returns></returns>
 		public virtual bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
 			return true;
@@ -430,11 +412,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
 		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="drawCacheProjsBehindNPCsAndTiles"></param>
-		/// <param name="drawCacheProjsBehindNPCs"></param>
-		/// <param name="drawCacheProjsBehindProjectiles"></param>
-		/// <param name="drawCacheProjsOverWiresUI"></param>
 		public virtual void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI)
 		{
 		}
