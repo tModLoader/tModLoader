@@ -130,13 +130,16 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_enti
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad6106e44acde5ad4899ec815d9e7a21e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_entity_info.html#ad6106e44acde5ad4899ec815d9e7a21e">Autoload</a> (ref string name)</td></tr>
+<tr class="memdesc:ad6106e44acde5ad4899ec815d9e7a21e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically add an <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_info.html" title="This class serves as a way of adding custom info to Items. Every item will be instantiated with a lis...">ItemInfo</a>, a <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a>, or an <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a> instead of using the respective Add method in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of information storage.  <a href="#ad6106e44acde5ad4899ec815d9e7a21e">More...</a><br/></td></tr>
 <tr class="separator:ad6106e44acde5ad4899ec815d9e7a21e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a4eeedd3b6593fcd1adc3ea32116951b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_entity_info.html#a4eeedd3b6593fcd1adc3ea32116951b1">mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a4eeedd3b6593fcd1adc3ea32116951b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod that has added this type of information storage.  <a href="#a4eeedd3b6593fcd1adc3ea32116951b1">More...</a><br/></td></tr>
 <tr class="separator:a4eeedd3b6593fcd1adc3ea32116951b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad83d4d2b14f0f07b58fa8211106abab1"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_entity_info.html#ad83d4d2b14f0f07b58fa8211106abab1">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ad83d4d2b14f0f07b58fa8211106abab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of this type of information storage.  <a href="#ad83d4d2b14f0f07b58fa8211106abab1">More...</a><br/></td></tr>
 <tr class="separator:ad83d4d2b14f0f07b58fa8211106abab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -166,12 +169,21 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00022">22</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
+<p>Allows you to automatically add an <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_info.html" title="This class serves as a way of adding custom info to Items. Every item will be instantiated with a lis...">ItemInfo</a>, a <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a>, or an <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a> instead of using the respective Add method in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of information storage. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00033">33</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00691">Terraria.ModLoader.Mod.AutoloadItemInfo()</a>, <a class="el" href="_mod_8cs_source.html#l01381">Terraria.ModLoader.Mod.AutoloadNPCInfo()</a>, and <a class="el" href="_mod_8cs_source.html#l01196">Terraria.ModLoader.Mod.AutoloadProjectileInfo()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div>
+<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span> mod.Properties.Autoload;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
 </div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -205,7 +217,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00011">11</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
+<p>The mod that has added this type of information storage. </p>
+
+<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00014">14</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -227,7 +241,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00017">17</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
+<p>The name of this type of information storage. </p>
+
+<p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00023">23</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
 
 </div>
 </div>
