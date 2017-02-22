@@ -45,33 +45,21 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns true if this hotkey is pressed currently. Useful for createing a behavior that relies on the hotkey being held down.
 		/// </summary>
-		public bool Current
-		{
-			get { return PlayerInput.Triggers.Current.KeyStatus[displayName]; }
-		}
+		public bool Current => PlayerInput.Triggers.Current.KeyStatus[displayName];
 
 		/// <summary>
 		/// Returns true if this hotkey was just released this update. This is a fire-once-per-press behavior.
 		/// </summary>
-		public bool JustPressed
-		{
-			get { return PlayerInput.Triggers.JustPressed.KeyStatus[displayName]; }
-		}
+		public bool JustPressed => PlayerInput.Triggers.JustPressed.KeyStatus[displayName];
 
 		/// <summary>
 		/// Returns true if this hotkey was just released this update.
 		/// </summary>
-		public bool JustReleased
-		{
-			get { return PlayerInput.Triggers.JustReleased.KeyStatus[displayName]; }
-		}
+		public bool JustReleased => PlayerInput.Triggers.JustReleased.KeyStatus[displayName];
 
 		/// <summary>
 		/// Returns true if this hotkey was pressed the previous update.
 		/// </summary>
-		public bool Old
-		{
-			get { return PlayerInput.Triggers.Old.KeyStatus[displayName]; }
-		}
+		public bool Old => PlayerInput.Triggers.Old.KeyStatus[displayName];
 	}
 }
