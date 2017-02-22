@@ -4,6 +4,9 @@ using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This is where all ModRecipe and GlobalRecipe hooks are gathered and called.
+	/// </summary>
 	public static class RecipeHooks
 	{
 		internal static readonly IList<GlobalRecipe> globalRecipes = new List<GlobalRecipe>();
@@ -38,6 +41,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Returns whether or not the conditions are met for this recipe to be available for the player to use.
+		/// </summary>
+		/// <param name="recipe">The recipe to check.</param>
+		/// <returns>Whether or not the conditions are met for this recipe.</returns>
 		public static bool RecipeAvailable(Recipe recipe)
 		{
 			ModRecipe modRecipe = recipe as ModRecipe;
@@ -55,6 +63,11 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		/// <summary>
+		/// Allows you to make anything happen when a player uses this recipe.
+		/// </summary>
+		/// <param name="item">The item crafted.</param>
+		/// <param name="recipe">The recipe used to craft the item.</param>
 		public static void OnCraft(Item item, Recipe recipe)
 		{
 			ModRecipe modRecipe = recipe as ModRecipe;
