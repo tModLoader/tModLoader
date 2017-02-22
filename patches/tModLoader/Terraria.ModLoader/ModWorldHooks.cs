@@ -25,15 +25,15 @@ namespace Terraria.ModLoader
 		{
 			foreach (ModWorld modWorld in modWorlds)
 			{
-				modWorld.WorldGenPostGen();
+				modWorld.PostWorldGen();
 			}
 		}
 
-		public static void WorldGenModifyTaskList(List<GenPass> _passes)
+		public static void WorldGenModifyTaskList(List<GenPass> _passes, ref float _totalWeigtht)
 		{
 			foreach (ModWorld modWorld in modWorlds)
 			{
-				modWorld.WorldGenModifyTaskList(_passes);
+				modWorld.ModifyWorldGenTasks(_passes, ref _totalWeigtht);
 			}
 		}
 	}

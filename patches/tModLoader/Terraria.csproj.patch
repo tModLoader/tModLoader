@@ -81,15 +81,19 @@
        <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
      </Reference>
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-@@ -308,6 +_,7 @@
+@@ -306,8 +_,11 @@
+     <Compile Include="Terraria.ID\InvasionID.cs" />
+     <Compile Include="Terraria.ID\ItemAlternativeFunctionID.cs" />
      <Compile Include="Terraria.ID\ItemID.cs" />
++    <Compile Include="Terraria.ID\LangID.cs" />
      <Compile Include="Terraria.ID\MessageID.cs" />
      <Compile Include="Terraria.ID\MountID.cs" />
 +    <Compile Include="Terraria.ID\MusicID.cs" />
++    <Compile Include="Terraria.ID\NetmodeID.cs" />
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -344,6 +_,140 @@
+@@ -344,6 +_,141 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -205,6 +209,7 @@
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWaterStyle.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWorld.cs" />
++    <Compile Include="Terraria.ModLoader\ModWorldHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCSpawnHelper.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeEditor.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeFinder.cs" />
