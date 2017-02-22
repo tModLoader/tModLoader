@@ -7,18 +7,29 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class EntityInfo
 	{
+		/// <summary>
+		/// The mod that has added this type of information storage.
+		/// </summary>
 		public Mod mod
 		{
 			get;
 			internal set;
 		}
 
+		/// <summary>
+		/// The name of this type of information storage.
+		/// </summary>
 		public string Name
 		{
 			get;
 			internal set;
 		}
 
+		/// <summary>
+		/// Allows you to automatically add an ItemInfo, a ProjectileInfo, or an NPCInfo instead of using the respective Add method in Mod. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of information storage.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
