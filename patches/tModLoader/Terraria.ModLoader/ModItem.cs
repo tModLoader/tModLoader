@@ -52,8 +52,7 @@ namespace Terraria.ModLoader
 
 		public ModItem()
 		{
-			item = new Item();
-			item.modItem = this;
+			item = new Item {modItem = this};
 		}
 
 		/// <summary>
@@ -62,7 +61,7 @@ namespace Terraria.ModLoader
 		/// <param name="tooltip">The tooltip.</param>
 		public void AddTooltip(string tooltip)
 		{
-			if (item.toolTip == null || item.toolTip.Length == 0)
+			if (string.IsNullOrEmpty(item.toolTip))
 			{
 				item.toolTip = tooltip;
 			}
@@ -78,7 +77,7 @@ namespace Terraria.ModLoader
 		/// <param name="tooltip">The tooltip.</param>
 		public void AddTooltip2(string tooltip)
 		{
-			if (item.toolTip2 == null || item.toolTip2.Length == 0)
+			if (string.IsNullOrEmpty(item.toolTip2))
 			{
 				item.toolTip2 = tooltip;
 			}
