@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.PlayerHooks.Shoot" name="Terraria.ModLoader.PlayerHooks.Shoot">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a3f06ebdab0af3b5f825c6a706599a38b" title="Terraria.ModLoader.ModPlayer.\lShoot" alt="" coords="231,5,433,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a3f06ebdab0af3b5f825c6a706599a38b" title="This is called before this player&#39;s weapon creates a projectile. You can use it to create special eff..." alt="" coords="231,5,433,51"/>
 </map>

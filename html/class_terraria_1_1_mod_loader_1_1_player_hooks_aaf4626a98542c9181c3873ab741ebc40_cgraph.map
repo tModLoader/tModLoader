@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.PlayerHooks.PreItemCheck" name="Terraria.ModLoader.PlayerHooks.PreItemCheck">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#afad2f1f641434d74394d8424a2f30a1a" title="Terraria.ModLoader.ModPlayer.\lPreItemCheck" alt="" coords="231,5,433,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#afad2f1f641434d74394d8424a2f30a1a" title="Allows you to do anything before the update code for the player&#39;s held item is run. Return false to stop the held item update code from being run (for example, if the player is frozen). Returns true by default. " alt="" coords="231,5,433,51"/>
 </map>
