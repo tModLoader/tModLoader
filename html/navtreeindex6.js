@@ -13,7 +13,7 @@ var NAVTREEINDEX6 =
 "class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html":[1,0,0,0,48],
 "class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html#aa625c397f69a1ad3e49bc6bfd16a7f8e":[1,0,0,0,48,1],
 "class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html#aaa70d1bb41e619a26ff8263ad0e2acc6":[1,0,0,0,48,2],
-"class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html#afd89b60fd5d076c517fbf9ee7a9948fd":[1,0,0,0,48,0],
+"class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html#aff35f0cd12de981c81f7733c2d4e7b73":[1,0,0,0,48,0],
 "class_terraria_1_1_mod_loader_1_1_mount_loader.html":[1,0,0,0,49],
 "class_terraria_1_1_mod_loader_1_1_mount_loader.html#a09e19c4faa1e5f105a6f282abaf9da6f":[1,0,0,0,49,1],
 "class_terraria_1_1_mod_loader_1_1_mount_loader.html#a53c5e92a42d9c7107de8d55650c1d763":[1,0,0,0,49,3],
