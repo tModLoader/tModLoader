@@ -114,6 +114,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_tool
 <div class="title">Terraria.ModLoader.TooltipLine Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class serves as a way to store information about a line of tooltip for an item. You will create and manipulate objects of this class if you use the ModifyTooltips hook.  
+ <a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.TooltipLine:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -127,26 +130,34 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_tool
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:adb1d300be37fc859dd86e9e8d044ed80"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#adb1d300be37fc859dd86e9e8d044ed80">TooltipLine</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> <a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ae81fb147caadce49c7e4eca48e3be684">mod</a>, string name, string <a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">text</a>)</td></tr>
+<tr class="memdesc:adb1d300be37fc859dd86e9e8d044ed80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a tooltip line object with the given mod, identifier name, and text. These are the names of the vanilla tooltip lines, in the order in which they appear, along with their functions. All of them will have a mod name of "Terraria". Remember that most of these tooltip lines will not exist depending on the item. "ItemName" - The name of the item. "Favorite" - Tells if the item is favorited. "FavoriteDesc" - Tells what it means when an item is favorited. "Social" - Tells if the item is in a social slot. "SocialDesc" - Tells what it means for an item to be in a social slot. "Damage" - The damage value and type of the weapon. "CritChance" - The critical strike chance of the weapon. "Speed" - The use speed of the weapon. "Knockback" - The knockback of the weapon. "FishingPower" - Tells the fishing power of the fishing pole. "NeedsBait" - Tells that a fishing pole requires bait. "BaitPower" - The bait power of the bait. "Equipable" - Tells that an item is equipable. "WandConsumes" - Tells what item a tile wand consumes. "Quest" - Tells that this is a quest item. "Vanity" - Tells that this is a vanity item. "Defense" - Tells how much defense the item gives when equipped. "PickPower" - The item's pickaxe power. "AxePower" - The item's axe power. "HammerPower" - The item's hammer power. "TileBoost" - How much farther the item can reach than normal items. "HealLife" - How much health the item recovers when used. "HealMana" - How much mana the item recovers when used. "UseMana" - Tells how much mana the item consumes upon usage. "Placeable" - Tells if the item is placeable. "Ammo" - Tells if the item is ammo. "Consumable" - Tells if the item is consumable. "Material" - Tells if the item can be used to craft something. "Tooltip" - The tooltip field of the item. "Tooltip2" - The tooltip2 field of the item. "EtherianManaWarning" - Warning about how the item can't be used without Etherian Mana until the Eternia Crystal has been defeated. "WellFedExpert" - In expert mode, tells that food increases life renegeration. "BuffTime" - Tells how long the item's buff lasts. "OneDropLogo" - The One Drop logo for yoyos.This is a specially-marked tooltip line that has no text. "PrefixDamage" - The damage modifier of the prefix. "PrefixSpeed" - The usage speed modifier of the prefix. "PrefixCritChance" - The critical strike chance modifier of the prefix. "PrefixUseMana" - The mana consumption modifier of the prefix. "PrefixSize" - The melee size modifier of the prefix. "PrefixShootSpeed" - The shootSpeed modifier of the prefix. "PrefixKnockback" - The knockback modifier of the prefix. "PrefixAccDefense" - The defense modifier of the accessory prefix. "PrefixAccMaxMana" - The maximum mana modifier of the accessory prefix. "PrefixAccCritChance" - The critical strike chance modifier of the accessory prefix. "PrefixAccDamage" - The damage modifier of the accessory prefix. "PrefixAccMoveSpeed" - The movement speed modifier of the accessory prefix. "PrefixAccMeleeSpeed" - The melee speed modifier of the accessory prefix. "SetBonus" - The set bonus description of the armor set. "Expert" - Tells whether the item is from expert-mode. "SpecialPrice" - Tells the alternate currency price of an item. "Price" - Tells the price of an item.  <a href="#adb1d300be37fc859dd86e9e8d044ed80">More...</a><br/></td></tr>
 <tr class="separator:adb1d300be37fc859dd86e9e8d044ed80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a5a998c87573cd4944c0966e7b3409588"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#a5a998c87573cd4944c0966e7b3409588">isModifier</a> = false</td></tr>
+<tr class="memdesc:a5a998c87573cd4944c0966e7b3409588"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red.  <a href="#a5a998c87573cd4944c0966e7b3409588">More...</a><br/></td></tr>
 <tr class="separator:a5a998c87573cd4944c0966e7b3409588"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7efdb3feea743c6755643e82c5e5ff3b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#a7efdb3feea743c6755643e82c5e5ff3b">isModifierBad</a> = false</td></tr>
+<tr class="memdesc:a7efdb3feea743c6755643e82c5e5ff3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If isModifier is true, this determines whether the tooltip is colored green or red.  <a href="#a7efdb3feea743c6755643e82c5e5ff3b">More...</a><br/></td></tr>
 <tr class="separator:a7efdb3feea743c6755643e82c5e5ff3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae81fb147caadce49c7e4eca48e3be684"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ae81fb147caadce49c7e4eca48e3be684">mod</a></td></tr>
+<tr class="memdesc:ae81fb147caadce49c7e4eca48e3be684"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the mod adding this tooltip line. This will be "Terraria" for all vanilla tooltip lines.  <a href="#ae81fb147caadce49c7e4eca48e3be684">More...</a><br/></td></tr>
 <tr class="separator:ae81fb147caadce49c7e4eca48e3be684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3cc4c9901181e7f30f9d44b33b16b3f"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#aa3cc4c9901181e7f30f9d44b33b16b3f">Name</a></td></tr>
+<tr class="memdesc:aa3cc4c9901181e7f30f9d44b33b16b3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the tooltip, used to help you identify its function.  <a href="#aa3cc4c9901181e7f30f9d44b33b16b3f">More...</a><br/></td></tr>
 <tr class="separator:aa3cc4c9901181e7f30f9d44b33b16b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af22965163fa53144bf2a087773b85ae4"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#af22965163fa53144bf2a087773b85ae4">overrideColor</a> = null</td></tr>
+<tr class="memdesc:af22965163fa53144bf2a087773b85ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">This completely overrides the color the tooltip is drawn in. If it is set to null (the default value) then the tooltip's color will not be overridden.  <a href="#af22965163fa53144bf2a087773b85ae4">More...</a><br/></td></tr>
 <tr class="separator:af22965163fa53144bf2a087773b85ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0cc989c7b3960ac7af7dfa959e0d91c"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">text</a></td></tr>
+<tr class="memdesc:ac0cc989c7b3960ac7af7dfa959e0d91c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The actual text that this tooltip displays.  <a href="#ac0cc989c7b3960ac7af7dfa959e0d91c">More...</a><br/></td></tr>
 <tr class="separator:ac0cc989c7b3960ac7af7dfa959e0d91c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00006">6</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<div class="textblock"><p>This class serves as a way to store information about a line of tooltip for an item. You will create and manipulate objects of this class if you use the ModifyTooltips hook. </p>
+
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00009">9</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="adb1d300be37fc859dd86e9e8d044ed80"></a>
 <div class="memitem">
@@ -178,13 +189,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00016">16</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            this.mod = mod.Name;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            this.Name = name;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            this.text = <a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">text</a>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tooltip_line_html_ac0cc989c7b3960ac7af7dfa959e0d91c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">Terraria.ModLoader.TooltipLine.text</a></div><div class="ttdeci">string text</div><div class="ttdef"><b>Definition:</b> <a href="_tooltip_line_8cs_source.html#l00010">TooltipLine.cs:10</a></div></div>
+<p>Creates a tooltip line object with the given mod, identifier name, and text. These are the names of the vanilla tooltip lines, in the order in which they appear, along with their functions. All of them will have a mod name of "Terraria". Remember that most of these tooltip lines will not exist depending on the item. "ItemName" - The name of the item. "Favorite" - Tells if the item is favorited. "FavoriteDesc" - Tells what it means when an item is favorited. "Social" - Tells if the item is in a social slot. "SocialDesc" - Tells what it means for an item to be in a social slot. "Damage" - The damage value and type of the weapon. "CritChance" - The critical strike chance of the weapon. "Speed" - The use speed of the weapon. "Knockback" - The knockback of the weapon. "FishingPower" - Tells the fishing power of the fishing pole. "NeedsBait" - Tells that a fishing pole requires bait. "BaitPower" - The bait power of the bait. "Equipable" - Tells that an item is equipable. "WandConsumes" - Tells what item a tile wand consumes. "Quest" - Tells that this is a quest item. "Vanity" - Tells that this is a vanity item. "Defense" - Tells how much defense the item gives when equipped. "PickPower" - The item's pickaxe power. "AxePower" - The item's axe power. "HammerPower" - The item's hammer power. "TileBoost" - How much farther the item can reach than normal items. "HealLife" - How much health the item recovers when used. "HealMana" - How much mana the item recovers when used. "UseMana" - Tells how much mana the item consumes upon usage. "Placeable" - Tells if the item is placeable. "Ammo" - Tells if the item is ammo. "Consumable" - Tells if the item is consumable. "Material" - Tells if the item can be used to craft something. "Tooltip" - The tooltip field of the item. "Tooltip2" - The tooltip2 field of the item. "EtherianManaWarning" - Warning about how the item can't be used without Etherian Mana until the Eternia Crystal has been defeated. "WellFedExpert" - In expert mode, tells that food increases life renegeration. "BuffTime" - Tells how long the item's buff lasts. "OneDropLogo" - The One Drop logo for yoyos.This is a specially-marked tooltip line that has no text. "PrefixDamage" - The damage modifier of the prefix. "PrefixSpeed" - The usage speed modifier of the prefix. "PrefixCritChance" - The critical strike chance modifier of the prefix. "PrefixUseMana" - The mana consumption modifier of the prefix. "PrefixSize" - The melee size modifier of the prefix. "PrefixShootSpeed" - The shootSpeed modifier of the prefix. "PrefixKnockback" - The knockback modifier of the prefix. "PrefixAccDefense" - The defense modifier of the accessory prefix. "PrefixAccMaxMana" - The maximum mana modifier of the accessory prefix. "PrefixAccCritChance" - The critical strike chance modifier of the accessory prefix. "PrefixAccDamage" - The damage modifier of the accessory prefix. "PrefixAccMoveSpeed" - The movement speed modifier of the accessory prefix. "PrefixAccMeleeSpeed" - The melee speed modifier of the accessory prefix. "SetBonus" - The set bonus description of the armor set. "Expert" - Tells whether the item is from expert-mode. "SpecialPrice" - Tells the alternate currency price of an item. "Price" - Tells the price of an item. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td>The mod instance</td></tr>
+    <tr><td class="paramname">name</td><td>The name of the tooltip</td></tr>
+    <tr><td class="paramname">text</td><td>The content of the tooltip</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00096">96</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            this.mod = mod.Name;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            this.Name = name;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            this.text = <a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">text</a>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tooltip_line_html_ac0cc989c7b3960ac7af7dfa959e0d91c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">Terraria.ModLoader.TooltipLine.text</a></div><div class="ttdeci">string text</div><div class="ttdoc">The actual text that this tooltip displays. </div><div class="ttdef"><b>Definition:</b> <a href="_tooltip_line_8cs_source.html#l00022">TooltipLine.cs:22</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -199,7 +220,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00011">11</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red. </p>
+
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00026">26</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -213,7 +236,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00012">12</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>If isModifier is true, this determines whether the tooltip is colored green or red. </p>
+
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00030">30</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -227,7 +252,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00008">8</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>The name of the mod adding this tooltip line. This will be "Terraria" for all vanilla tooltip lines. </p>
+
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00014">14</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -241,7 +268,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00009">9</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>The name of the tooltip, used to help you identify its function. </p>
+
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00018">18</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -255,7 +284,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00014">14</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>This completely overrides the color the tooltip is drawn in. If it is set to null (the default value) then the tooltip's color will not be overridden. </p>
+
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00034">34</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -269,7 +300,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00010">10</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>The actual text that this tooltip displays. </p>
+
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00022">22</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
 </div>
 </div>

@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_n_p_
 <div class="title">Terraria.ModLoader.NPCHeadLoader Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class serves as a central place from which NPC head slots are stored and NPC head textures are assigned. This can be used to obtain the corresponding slots to head textures.  
+ <a href="class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.NPCHeadLoader:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -128,15 +131,19 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_n_p_
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a89950f2a9433a2c981916550c78703ae"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#a89950f2a9433a2c981916550c78703ae">GetBossHeadSlot</a> (string texture)</td></tr>
+<tr class="memdesc:a89950f2a9433a2c981916550c78703ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the index of the boss head texture corresponding to the given texture path.  <a href="#a89950f2a9433a2c981916550c78703ae">More...</a><br/></td></tr>
 <tr class="separator:a89950f2a9433a2c981916550c78703ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab002e373efd84676ba6081d3b242dab6"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#ab002e373efd84676ba6081d3b242dab6">GetHeadSlot</a> (string texture)</td></tr>
+<tr class="memdesc:ab002e373efd84676ba6081d3b242dab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the index of the head texture corresponding to the given texture path.  <a href="#ab002e373efd84676ba6081d3b242dab6">More...</a><br/></td></tr>
 <tr class="separator:ab002e373efd84676ba6081d3b242dab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a0129c32614ef33d2444daf688a771ff2"><td class="memItemLeft" align="right" valign="top">static readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#a0129c32614ef33d2444daf688a771ff2">vanillaBossHeadCount</a> = Main.npcHeadBossTexture.Length</td></tr>
+<tr class="memdesc:a0129c32614ef33d2444daf688a771ff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of vanilla boss head textures that exist.  <a href="#a0129c32614ef33d2444daf688a771ff2">More...</a><br/></td></tr>
 <tr class="separator:a0129c32614ef33d2444daf688a771ff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6addaaceb899fd7c27cac588f1c4bd68"><td class="memItemLeft" align="right" valign="top">static readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#a6addaaceb899fd7c27cac588f1c4bd68">vanillaHeadCount</a> = Main.npcHeadTexture.Length</td></tr>
+<tr class="memdesc:a6addaaceb899fd7c27cac588f1c4bd68"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of vanilla town NPC head textures that exist.  <a href="#a6addaaceb899fd7c27cac588f1c4bd68">More...</a><br/></td></tr>
 <tr class="separator:a6addaaceb899fd7c27cac588f1c4bd68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
@@ -147,8 +154,9 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:ab8b03b6c33ab39570c282743d43430e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00008">8</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
+<div class="textblock"><p>This class serves as a central place from which NPC head slots are stored and NPC head textures are assigned. This can be used to obtain the corresponding slots to head textures. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00011">11</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a89950f2a9433a2c981916550c78703ae"></a>
 <div class="memitem">
@@ -172,17 +180,26 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00050">50</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">if</span> (bossHeads.ContainsKey(texture))</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keywordflow">return</span> bossHeads[texture];</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
+<p>Gets the index of the boss head texture corresponding to the given texture path. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00069">69</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">if</span> (bossHeads.ContainsKey(texture))</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keywordflow">return</span> bossHeads[texture];</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -208,17 +225,26 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00038">38</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">if</span> (heads.ContainsKey(texture))</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="keywordflow">return</span> heads[texture];</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        }</div>
+<p>Gets the index of the head texture corresponding to the given texture path. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>Relative texture path</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The index of the texture in the heads array, -1 if not found.</dd></dl>
+
+<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00052">52</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">if</span> (heads.ContainsKey(texture))</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordflow">return</span> heads[texture];</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -241,7 +267,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00013">13</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00022">22</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
 
 </div>
 </div>
@@ -263,7 +289,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00012">12</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00021">21</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
 
 </div>
 </div>
@@ -285,7 +311,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00011">11</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
+<p>The number of vanilla boss head textures that exist. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00020">20</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
 
 </div>
 </div>
@@ -307,7 +335,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00010">10</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
+<p>The number of vanilla town NPC head textures that exist. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_head_loader_8cs_source.html#l00016">16</a> of file <a class="el" href="_n_p_c_head_loader_8cs_source.html">NPCHeadLoader.cs</a>.</p>
 
 </div>
 </div>

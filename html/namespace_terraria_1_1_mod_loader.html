@@ -129,6 +129,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_command_caller.html">CommandCaller</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_command_manager.html">CommandManager</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This serves as the central class from which <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html" title="This class represents a chat or console command. Use the CommandType to specify the scope of the comm...">ModCommand</a> functions are supported and carried out.  <a href="class_terraria_1_1_mod_loader_1_1_command_manager.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>ConsoleCommandCaller</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -219,6 +220,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This serves as the central class which loads mods. It contains many static fields and methods related to mods and their contents.  <a href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html">ModMountData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should...">Mod.AddMount</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_net.html">ModNet</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -241,6 +243,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a struct that stores the properties of a mod. Without setting it in your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> constructor, all properties default to true.  <a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html">ModRecipe</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes. However, it provides methods that simplify recipe creation. Recipes are added by creating new instances of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html" title="This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes...">ModRecipe</a>, then calling the AddRecipe method.  <a href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_sound.html">ModSound</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class allows you to customize how a sound you add is played. To use this, pass an instance to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a69d7e56dcfcd228f47704d9a2fb5c9a1" title="Adds the given sound file to the game as the given type of sound and with the given custom sound play...">Mod.AddSound</a>, or if you are autoloading sounds, give an overriding class the same name as the file with the sound you are adding.  <a href="class_terraria_1_1_mod_loader_1_1_mod_sound.html#details">More...</a><br/></td></tr>
@@ -249,6 +252,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.  <a href="class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html">ModTile</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html">ModTileEntity</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#details">More...</a><br/></td></tr>
@@ -272,19 +276,24 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a> instance represents an extension of a World. You can store fields in the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a> classes to keep track of mod-specific information on the world. It also contains hooks to insert your code into the world generation process.  <a href="class_terraria_1_1_mod_loader_1_1_mod_world.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mount_loader.html">MountLoader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This serves as the central place from which mounts are stored and mount-related functions are carried out.  <a href="class_terraria_1_1_mod_loader_1_1_mount_loader.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_music_wrapper.html">MusicWrapper</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html">NPCHeadLoader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class serves as a central place from which NPC head slots are stored and NPC head textures are assigned. This can be used to obtain the corresponding slots to head textures.  <a href="class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html">NPCInfo</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list of instances of each <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a> loaded and can be accessed through NPC.GetModInfo method calls  <a href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html">NPCLoader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This serves as the central class from which NPC-related functions are carried out. It also stores a list of mod NPCs by ID.  <a href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_spawn_helper.html">NPCSpawnHelper</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This server as a central class to help modders spawn their npcs. It's basically the vanilla spawn code if-else chains condensed into objects. See ExampleMod for usages.  <a href="class_terraria_1_1_mod_loader_1_1_n_p_c_spawn_helper.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html">NPCSpawnInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct which can hold various spawn information of an npc  <a href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>PlayerCommandCaller</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -296,6 +305,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents a DrawLayer for the player's map icon, and uses PlayerDrawHeadInfo as its InfoType. Drawing should be done directly through drawInfo.spriteBatch.  <a href="class_terraria_1_1_mod_loader_1_1_player_head_layer.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html">PlayerHooks</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where all <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> hooks are gathered and called.  <a href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_layer.html">PlayerLayer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents a DrawLayer for the player, and uses <a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_draw_info.html">PlayerDrawInfo</a> as its InfoType. Drawing should be done by adding Terraria.DataStructures.DrawData objects to Main.playerDrawData.  <a href="class_terraria_1_1_mod_loader_1_1_player_layer.html#details">More...</a><br/></td></tr>
@@ -304,6 +314,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiated with a list of instances of each <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a> loaded and can be accessed through Projectile.GetModInfo method calls  <a href="class_terraria_1_1_mod_loader_1_1_projectile_info.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html">ProjectileLoader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This serves as the central class from which projectile-related functions are carried out. It also stores a list of mod projectiles by ID.  <a href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html">RecipeEditor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class allows you to make any changes you want to a recipe, whether it be adding/removing ingredients, changing the result, or removing the recipe entirely.  <a href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#details">More...</a><br/></td></tr>
@@ -314,7 +325,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>RecipeGroupHelper</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_hooks.html">RecipeHooks</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where all <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html">ModRecipe</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_recipe.html" title="This class provides hooks that control all recipes in the game. ">GlobalRecipe</a> hooks are gathered and called.  <a href="class_terraria_1_1_mod_loader_1_1_recipe_hooks.html#details">More...</a><br/></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where all <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html" title="This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes...">ModRecipe</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_recipe.html" title="This class provides hooks that control all recipes in the game. ">GlobalRecipe</a> hooks are gathered and called.  <a href="class_terraria_1_1_mod_loader_1_1_recipe_hooks.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html">SoundLoader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class is used to keep track of and support the existence of custom sounds that have been added to the game.  <a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#details">More...</a><br/></td></tr>
@@ -324,10 +335,13 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html">SurfaceBgStyleLoader</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html">TileLoader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This serves as the central class from which tile-related functions are supported and carried out.  <a href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html">TooltipLine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class serves as a way to store information about a line of tooltip for an item. You will create and manipulate objects of this class if you use the ModifyTooltips hook.  <a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html">UgBgStyleLoader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This serves as the central class from which <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html" title="Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds. ">ModUgBgStyle</a> functions are supported and carried out.  <a href="class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_usage_exception.html">UsageException</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -337,6 +351,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html">WaterfallStyleLoader</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_water_style_loader.html">WaterStyleLoader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This serves as the central class from which WaterStyle functions are supported and carried out.  <a href="class_terraria_1_1_mod_loader_1_1_water_style_loader.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html">WorldHooks</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where all <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html" title="A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes ...">ModWorld</a> hooks are gathered and called.  <a href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#details">More...</a><br/></td></tr>
@@ -392,6 +407,7 @@ Enumerations</h2></td></tr>
 <a class="el" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aa1227743ed969deb8c75c2f841620983">MountTextureType.FrontExtraGlow</a>
 <br/>
  }</td></tr>
+<tr class="memdesc:a555e5c41bc6d6a2a44f1e088f86a5398"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is an enum of all possible types of extra mount textures for custom mounts. Use these as keys in the extraTextures dictionary passed to Mod.AddMount to give your mount front and back textures.  <a href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398">More...</a><br/></td></tr>
 <tr class="separator:a555e5c41bc6d6a2a44f1e088f86a5398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6da2ec2c957a412deb3c606b0f710f06"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> { <br/>
 &#160;&#160;<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">SoundType.Item</a> = 2, 
@@ -402,6 +418,7 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217">SoundType.Music</a> = 51
 <br/>
  }</td></tr>
+<tr class="memdesc:a6da2ec2c957a412deb3c606b0f710f06"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is an enum of the types of sound you can add to the game. This is used for determining whether a sound is a music or a sound effect. If it's a sound effect, it's also used for determining the "type" passed to Main.PlaySound (first parameter) that is required in order for a sound to play; 2 for item sounds, 3 for npcHit sounds, 4 for npcKilled sounds, and SoundLoader.customSoundType for anything else.  <a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">More...</a><br/></td></tr>
 <tr class="separator:a6da2ec2c957a412deb3c606b0f710f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
@@ -570,6 +587,8 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This is an enum of all possible types of extra mount textures for custom mounts. Use these as keys in the extraTextures dictionary passed to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should...">Mod.AddMount</a> to give your mount front and back textures. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a555e5c41bc6d6a2a44f1e088f86a5398a0557fa923dcee4d0f86b1409f5c2167f"></a>Back</em>&#160;</td><td class="fielddoc">
 </td></tr>
@@ -589,17 +608,17 @@ Enumerations</h2></td></tr>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="_mount_texture_type_8cs_source.html#l00005">5</a> of file <a class="el" href="_mount_texture_type_8cs_source.html">MountTextureType.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a0557fa923dcee4d0f86b1409f5c2167f">Back</a>,</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a43b915321cec0be31d4fe4ca7cffda32">BackGlow</a>,</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a5f09cad998384d4996e3be2382185536">BackExtra</a>,</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a9f859b94f7cec1b90caccce652049c06">BackExtraGlow</a>,</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a5835bab1ade0060909e31a06af2e2cde">Front</a>,</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aeb2f12de52987b96bc59c077116d2f26">FrontGlow</a>,</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398acb87ecd0146e4043453f646f8ec64a8a">FrontExtra</a>,</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aa1227743ed969deb8c75c2f841620983">FrontExtraGlow</a></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    }</div>
+<p>Definition at line <a class="el" href="_mount_texture_type_8cs_source.html#l00008">8</a> of file <a class="el" href="_mount_texture_type_8cs_source.html">MountTextureType.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a0557fa923dcee4d0f86b1409f5c2167f">Back</a>,</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a43b915321cec0be31d4fe4ca7cffda32">BackGlow</a>,</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a5f09cad998384d4996e3be2382185536">BackExtra</a>,</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a9f859b94f7cec1b90caccce652049c06">BackExtraGlow</a>,</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a5835bab1ade0060909e31a06af2e2cde">Front</a>,</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aeb2f12de52987b96bc59c077116d2f26">FrontGlow</a>,</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398acb87ecd0146e4043453f646f8ec64a8a">FrontExtra</a>,</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aa1227743ed969deb8c75c2f841620983">FrontExtraGlow</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a555e5c41bc6d6a2a44f1e088f86a5398a5f09cad998384d4996e3be2382185536"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a5f09cad998384d4996e3be2382185536">Terraria.ModLoader.BackExtra</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a555e5c41bc6d6a2a44f1e088f86a5398a43b915321cec0be31d4fe4ca7cffda32"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a43b915321cec0be31d4fe4ca7cffda32">Terraria.ModLoader.BackGlow</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a555e5c41bc6d6a2a44f1e088f86a5398acb87ecd0146e4043453f646f8ec64a8a"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398acb87ecd0146e4043453f646f8ec64a8a">Terraria.ModLoader.FrontExtra</a></div></div>
@@ -620,6 +639,8 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This is an enum of the types of sound you can add to the game. This is used for determining whether a sound is a music or a sound effect. If it's a sound effect, it's also used for determining the "type" passed to Main.PlaySound (first parameter) that is required in order for a sound to play; 2 for item sounds, 3 for npcHit sounds, 4 for npcKilled sounds, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#a6aa5ef5849dec0efaaf48092ed596c75" title="This value should be passed as the first parameter to Main.PlaySound whenever you want to play a cust...">SoundLoader.customSoundType</a> for anything else. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679"></a>Item</em>&#160;</td><td class="fielddoc">
 </td></tr>
@@ -633,14 +654,14 @@ Enumerations</h2></td></tr>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="_sound_type_8cs_source.html#l00011">11</a> of file <a class="el" href="_sound_type_8cs_source.html">SoundType.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> = 2,</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794">NPCHit</a> = 3,</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06ad71465dddb92c3fa7565999b6e53f19c">NPCKilled</a> = 4,</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af">Custom</a> = 50,</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217">Music</a> = 51</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div>
+<p>Definition at line <a class="el" href="_sound_type_8cs_source.html#l00014">14</a> of file <a class="el" href="_sound_type_8cs_source.html">SoundType.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> = 2,</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794">NPCHit</a> = 3,</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06ad71465dddb92c3fa7565999b6e53f19c">NPCKilled</a> = 4,</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af">Custom</a> = 50,</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217">Music</a> = 51</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217">Terraria.ModLoader.Music</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af">Terraria.ModLoader.Custom</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.Item</a></div></div>

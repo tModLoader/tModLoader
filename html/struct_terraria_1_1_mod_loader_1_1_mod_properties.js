@@ -1,5 +1,6 @@
 var struct_terraria_1_1_mod_loader_1_1_mod_properties =
 [
+    [ "AutoLoadAll", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a3195c6c51a1b73d3190e789a58490d1d", null ],
     [ "Autoload", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b", null ],
     [ "AutoloadBackgrounds", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html#aae6b80f1ec219e29d73538b4203f0a7b", null ],
     [ "AutoloadGores", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a16c8e5757c9dc2222f6ba228f7e5904b", null ],
