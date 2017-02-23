@@ -25,7 +25,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Automatically return a ModProperties object which has all AutoLoad values set to true.
 		/// </summary>
-		public static ModProperties AutoLoadAll() =>
+		public static ModProperties AutoLoadAll { get; } =
 			new ModProperties()
 			{
 				Autoload = true,
