@@ -3,6 +3,10 @@ using Terraria;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// A struct which can hold various spawn information of an npc
+	/// </summary>
 	public struct NPCSpawnInfo
 	{
 		public int spawnTileX;

@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which ModUgBgStyle functions are supported and carried out.
+	/// </summary>
 	public static class UgBgStyleLoader
 	{
 		public const int vanillaUgBgStyleCount = 18;

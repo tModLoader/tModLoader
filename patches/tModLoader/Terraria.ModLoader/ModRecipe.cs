@@ -6,18 +6,28 @@ using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes. However, it provides methods that simplify recipe creation. Recipes are added by creating new instances of ModRecipe, then calling the AddRecipe method.
+	/// </summary>
 	public class ModRecipe : Recipe
 	{
 		public readonly Mod mod;
 		private int numIngredients = 0;
 		private int numTiles = 0;
 
+		/// <summary>
+		/// The index of the recipe in the Main.recipe array.
+		/// </summary>
 		public int RecipeIndex
 		{
 			get;
 			private set;
 		}
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="mod">The mod the recipe originates from.</param>
 		public ModRecipe(Mod mod)
 		{
 			this.mod = mod;
@@ -56,7 +66,7 @@ namespace Terraria.ModLoader
 		/// <param name="mod">The mod the item originates from.</param>
 		/// <param name="itemName">Name of the item.</param>
 		/// <param name="stack">The stack.</param>
-		/// <exception cref="RecipeException"></exception>
+		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
 		public void SetResult(Mod mod, string itemName, int stack = 1)
 		{
 			if (mod == null)
@@ -118,7 +128,7 @@ namespace Terraria.ModLoader
 		/// <param name="mod">The mod.</param>
 		/// <param name="itemName">Name of the item.</param>
 		/// <param name="stack">The stack.</param>
-		/// <exception cref="RecipeException"></exception>
+		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
 		public void AddIngredient(Mod mod, string itemName, int stack = 1)
 		{
 			if (mod == null)
@@ -183,7 +193,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="mod">The mod.</param>
 		/// <param name="tileName">Name of the tile.</param>
-		/// <exception cref="RecipeException"></exception>
+		/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using ModRecipe.AddTile(tileID).</exception>
 		public void AddTile(Mod mod, string tileName)
 		{
 			if (mod == null)
@@ -212,7 +222,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Whether or not the conditions are met for this recipe to be available for the player to use. This hook can be used for conditions unrelated to items or tiles (for example, biome or time).
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Whether or not the conditions are met for this recipe to be available for the player to use.</returns>
 		public virtual bool RecipeAvailable()
 		{
 			return true;

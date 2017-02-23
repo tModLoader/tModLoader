@@ -7,6 +7,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	internal class BuildProperties
 	{
 		internal struct ModReference

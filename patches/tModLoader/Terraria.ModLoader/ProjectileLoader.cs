@@ -8,6 +8,10 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which projectile-related functions are carried out. It also stores a list of mod projectiles by ID.
+	/// </summary>
 	public static class ProjectileLoader
 	{
 		private static int nextProjectile = ProjectileID.Count;
@@ -69,6 +73,11 @@ namespace Terraria.ModLoader
 
 		internal static int ProjectileCount => nextProjectile;
 
+		/// <summary>
+		/// Gets the ModProjectile instance corresponding to the specified type.
+		/// </summary>
+		/// <param name="type">The type of the projectile</param>
+		/// <returns>The ModProjectile instance in the projectiles array, null if not found.</returns>
 		public static ModProjectile GetProjectile(int type)
 		{
 			return type >= ProjectileID.Count && type < ProjectileCount ? projectiles[type - ProjectileID.Count] : null;

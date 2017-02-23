@@ -5,6 +5,7 @@ using Terraria;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	/// <summary>
 	/// This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures.
 	/// </summary>

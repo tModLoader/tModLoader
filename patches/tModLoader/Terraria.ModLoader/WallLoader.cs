@@ -7,6 +7,7 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	/// <summary>
 	/// This serves as the central class from which wall-related functions are supported and carried out.
 	/// </summary>

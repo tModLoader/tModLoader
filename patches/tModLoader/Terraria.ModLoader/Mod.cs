@@ -42,7 +42,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual Version Version => File.version;
 
-		public ModProperties Properties { get; protected set; } = ModProperties.AutoLoadAll;
+		public ModProperties Properties { get; protected set; } = ModProperties.AutoLoadAll();
 		/// <summary>
 		/// The ModSide that controls how this mod is synced between client and server.
 		/// </summary>

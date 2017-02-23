@@ -22,12 +22,16 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public bool AutoloadBackgrounds;
 
-		internal static ModProperties AutoLoadAll = new ModProperties()
-		{
-			Autoload = true,
-			AutoloadGores = true,
-			AutoloadSounds = true,
-			AutoloadBackgrounds = true
-		};
+		/// <summary>
+		/// Automatically return a ModProperties object which has all AutoLoad values set to true.
+		/// </summary>
+		public static ModProperties AutoLoadAll() =>
+			new ModProperties()
+			{
+				Autoload = true,
+				AutoloadGores = true,
+				AutoloadSounds = true,
+				AutoloadBackgrounds = true
+			};
 	}
 }

@@ -6,8 +6,15 @@ using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which WaterStyle functions are supported and carried out.
+	/// </summary>
 	public static class WaterStyleLoader
 	{
+		/// <summary>
+		/// The maximum amount of liquids in vanilla.
+		/// </summary>
 		public const int vanillaWaterCount = Main.maxLiquidTypes;
 		private static int nextWaterStyle = vanillaWaterCount;
 		internal static readonly IList<ModWaterStyle> waterStyles = new List<ModWaterStyle>();

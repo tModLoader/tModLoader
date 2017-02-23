@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	public struct PlayerDrawInfo
 	{
 		public Player drawPlayer;
@@ -59,6 +60,7 @@ namespace Terraria.ModLoader
 		public Vector2 legOrigin;
 	}
 
+	//todo: further documentation
 	public struct PlayerHeadDrawInfo
 	{
 		public SpriteBatch spriteBatch;

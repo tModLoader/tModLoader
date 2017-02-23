@@ -6,6 +6,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	/// <summary>
 	/// This class consists of functions that write error messages to text files for you to read. It also lets you write logs to text files.
 	/// </summary>

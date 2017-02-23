@@ -5,6 +5,10 @@ using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which ModCommand functions are supported and carried out.
+	/// </summary>
 	public static class CommandManager
 	{
 		internal static readonly IDictionary<string, List<ModCommand>> Commands = new Dictionary<string, List<ModCommand>>(StringComparer.OrdinalIgnoreCase);

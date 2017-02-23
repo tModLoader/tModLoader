@@ -8,6 +8,10 @@ using Terraria.ObjectData;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which tile-related functions are supported and carried out.
+	/// </summary>
 	public static class TileLoader
 	{
 		//make Terraria.ObjectData.TileObjectData._data internal
@@ -90,6 +94,11 @@ namespace Terraria.ModLoader
 
 		internal static int TileCount => nextTile;
 
+		/// <summary>
+		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
+		/// </summary>
+		/// <param name="type">The type of the ModTile</param>
+		/// <returns>The ModTile instance in the tiles array, null if not found.</returns>
 		public static ModTile GetTile(int type)
 		{
 			return type >= TileID.Count && type < TileCount ? tiles[type - TileID.Count] : null;

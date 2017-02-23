@@ -5,9 +5,18 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This class serves as a central place from which NPC head slots are stored and NPC head textures are assigned. This can be used to obtain the corresponding slots to head textures.
+	/// </summary>
 	public static class NPCHeadLoader
 	{
+		/// <summary>
+		/// The number of vanilla town NPC head textures that exist.
+		/// </summary>
 		public static readonly int vanillaHeadCount = Main.npcHeadTexture.Length;
+		/// <summary>
+		/// The number of vanilla boss head textures that exist.
+		/// </summary>
 		public static readonly int vanillaBossHeadCount = Main.npcHeadBossTexture.Length;
 		private static int nextHead = vanillaHeadCount;
 		private static int nextBossHead = vanillaBossHeadCount;
@@ -35,6 +44,11 @@ namespace Terraria.ModLoader
 			return reserve;
 		}
 
+		/// <summary>
+		/// Gets the index of the head texture corresponding to the given texture path.
+		/// </summary>
+		/// <param name="texture">Relative texture path</param>
+		/// <returns>The index of the texture in the heads array, -1 if not found.</returns>
 		public static int GetHeadSlot(string texture)
 		{
 			if (heads.ContainsKey(texture))
@@ -47,6 +61,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Gets the index of the boss head texture corresponding to the given texture path.
+		/// </summary>
+		/// <param name="texture"></param>
+		/// <returns></returns>
 		public static int GetBossHeadSlot(string texture)
 		{
 			if (bossHeads.ContainsKey(texture))

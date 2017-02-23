@@ -11,6 +11,7 @@ using Terraria.ModLoader.IO;
 using static Terraria.ModLoader.ModLoader;
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
     internal class ModCompile
     {
         public interface IBuildStatus

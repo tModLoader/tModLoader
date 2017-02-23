@@ -6,11 +6,19 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This serves as the central place from which mounts are stored and mount-related functions are carried out.
+	/// </summary>
 	public static class MountLoader
 	{
 		private static int nextMount = MountID.Count;
 		internal static readonly IDictionary<int, ModMountData> mountDatas = new Dictionary<int, ModMountData>();
 
+		/// <summary>
+		/// Gets the ModMountData instance corresponding to the given type. Returns null if no ModMountData has the given type.
+		/// </summary>
+		/// <param name="type">The type of the mount.</param>
+		/// <returns>Null if not found, otherwise the ModMountData associated with the mount.</returns>
 		public static ModMountData GetMount(int type)
 		{
 			if (mountDatas.ContainsKey(type))
@@ -71,6 +79,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		//todo: this is never called, why is this in here?
 		internal static bool CustomBodyFrame(Mount.MountData mount)
 		{
 			if (IsModMountData(mount) && mount.modMountData.CustomBodyFrame())
@@ -79,6 +88,12 @@ namespace Terraria.ModLoader
 			}
 			return false;
 		}
+		/// <summary>
+		/// Allows you to make things happen when the mouse is clicked while the mount is active.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="mousePosition"></param>
+		/// <param name="toggleOn"></param>
 		public static void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
 		{
 			if (IsModMountData(player.mount._data))
@@ -86,6 +101,12 @@ namespace Terraria.ModLoader
 				player.mount._data.modMountData.UseAbility(player, mousePosition, toggleOn);
 			}
 		}
+		/// <summary>
+		/// Allows you to make things happen when the mount ability is aiming (while charging).
+		/// </summary>
+		/// <param name="mount"></param>
+		/// <param name="player"></param>
+		/// <param name="mousePosition"></param>
 		public static void AimAbility(Mount mount, Player player, Vector2 mousePosition)
 		{
 			if (IsModMountData(mount._data))

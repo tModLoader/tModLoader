@@ -5,6 +5,7 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	/// <summary>
 	/// This is the class that keeps track of all modded background textures and their slots/IDs.
 	/// </summary>

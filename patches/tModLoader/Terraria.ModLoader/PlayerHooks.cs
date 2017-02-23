@@ -10,6 +10,10 @@ using Terraria.GameInput;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This is where all ModPlayer hooks are gathered and called.
+	/// </summary>
 	public static class PlayerHooks
 	{
 		private static readonly IList<ModPlayer> players = new List<ModPlayer>();
