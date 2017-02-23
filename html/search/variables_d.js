@@ -15,7 +15,6 @@ var searchData=
   ['modmusic',['modMusic',['../class_terraria_1_1_mod_loader_1_1_music_wrapper.html#ae057cd798d9027aefd50f9277afc9eb0',1,'Terraria::ModLoader::MusicWrapper']]],
   ['modpath',['ModPath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a18cb9779b2c2fe7709b67d08c5836c4f',1,'Terraria::ModLoader::ModLoader']]],
   ['modsourcepath',['ModSourcePath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65d6fb535bb0f112020ebe47261a31f0',1,'Terraria::ModLoader::ModLoader']]],
-  ['modworlds',['modWorlds',['../class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html#aaa70d1bb41e619a26ff8263ad0e2acc6',1,'Terraria::ModLoader::ModWorldHooks']]],
   ['mountback',['MountBack',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a0ecdf0fac44aac1cd7a80eeea98dcf8f',1,'Terraria::ModLoader::PlayerLayer']]],
   ['mountcolor',['mountColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a4219f889804b62f6d4fac023e7f1f5bd',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['mountfront',['MountFront',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#af75c8f3741bb21d9d64a7e26fd7a784e',1,'Terraria::ModLoader::PlayerLayer']]],

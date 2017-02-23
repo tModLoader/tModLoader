@@ -157,9 +157,6 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "ModWorld.cs", "_mod_world_8cs.html", [
       [ "ModWorld", "class_terraria_1_1_mod_loader_1_1_mod_world.html", "class_terraria_1_1_mod_loader_1_1_mod_world" ]
     ] ],
-    [ "ModWorldHooks.cs", "_mod_world_hooks_8cs.html", [
-      [ "ModWorldHooks", "class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html", "class_terraria_1_1_mod_loader_1_1_mod_world_hooks" ]
-    ] ],
     [ "MountLoader.cs", "_mount_loader_8cs.html", [
       [ "MountLoader", "class_terraria_1_1_mod_loader_1_1_mount_loader.html", "class_terraria_1_1_mod_loader_1_1_mount_loader" ]
     ] ],

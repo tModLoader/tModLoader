@@ -22,8 +22,6 @@ var searchData=
   ['wingshader',['wingShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a171e1518ea671261ece3711ebd3b9eb4',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['wingupdate',['WingUpdate',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#a8cc7b350ce57033afea295c5de854f98',1,'Terraria.ModLoader.EquipTexture.WingUpdate()'],['../class_terraria_1_1_mod_loader_1_1_global_item.html#a435d774db489af4721ca933a87a643aa',1,'Terraria.ModLoader.GlobalItem.WingUpdate()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a0d4fc974b572ac7e8ba55036e6b46584',1,'Terraria.ModLoader.ItemLoader.WingUpdate()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ac9274f96404fb0fded7de49d781a8589',1,'Terraria.ModLoader.ModItem.WingUpdate()']]],
   ['world',['World',['../namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26af5a7924e621e84c9280a9a27e1bcb7f6',1,'Terraria::ModLoader']]],
-  ['worldgenmodifytasklist',['WorldGenModifyTaskList',['../class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html#aff35f0cd12de981c81f7733c2d4e7b73',1,'Terraria::ModLoader::ModWorldHooks']]],
-  ['worldgenpostgen',['WorldGenPostGen',['../class_terraria_1_1_mod_loader_1_1_mod_world_hooks.html#aa625c397f69a1ad3e49bc6bfd16a7f8e',1,'Terraria::ModLoader::ModWorldHooks']]],
   ['worldhooks',['WorldHooks',['../class_terraria_1_1_mod_loader_1_1_world_hooks.html',1,'Terraria::ModLoader']]],
   ['worldhooks_2ecs',['WorldHooks.cs',['../_world_hooks_8cs.html',1,'']]],
   ['wormcritter',['WormCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad0c9e5bc7dce146093692ca3fec7c17c',1,'Terraria::ModLoader::SpawnCondition']]],
