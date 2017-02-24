@@ -230,7 +230,7 @@ namespace Terraria.ModLoader
 					files.Add(file);
 				}
 			}
-			return files.ToArray();
+			return files.OrderBy(x=>x.name).ToArray();
 		}
 
 		private static bool LoadMods()
