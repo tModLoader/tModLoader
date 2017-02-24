@@ -2929,6 +2929,23 @@
  				float num10;
  				if (num8 > num9)
  				{
+@@ -18143,6 +_,7 @@
+ 			this.slippy = (num3 == 161 || num3 == 162 || num3 == 163 || num3 == 164 || num3 == 200 || num3 == 127);
+ 			this.slippy2 = (num3 == 197);
+ 			this.powerrun = (num3 == 198);
++			TileLoader.FloorVisuals(num3, this);
+ 			if (Main.tile[num - 1, num2].slope() != 0 || Main.tile[num, num2].slope() != 0 || Main.tile[num + 1, num2].slope() != 0)
+ 			{
+ 				num3 = -1;
+@@ -18156,7 +_,7 @@
+ 
+ 		private void MakeFloorDust(bool Falling, int type)
+ 		{
+-			if (type == 147 || type == 25 || type == 53 || type == 189 || type == 0 || type == 123 || type == 57 || type == 112 || type == 116 || type == 196 || type == 193 || type == 195 || type == 197 || type == 199 || type == 229 || type == 371)
++			if (type == 147 || type == 25 || type == 53 || type == 189 || type == 0 || type == 123 || type == 57 || type == 112 || type == 116 || type == 196 || type == 193 || type == 195 || type == 197 || type == 199 || type == 229 || type == 371 || TileLoader.HasWalkDust(type))
+ 			{
+ 				int num = 1;
+ 				if (Falling)
 @@ -18167,6 +_,7 @@
  				{
  					bool flag = true;

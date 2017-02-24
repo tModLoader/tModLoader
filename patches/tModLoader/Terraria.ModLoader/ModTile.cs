@@ -470,6 +470,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to make something happen when a player stands on this type of tile. For example, you can make the player slide as if on ice.
+		/// </summary>
+		/// <param name="player"></param>
+		public virtual void FloorVisuals(Player player)
+		{
+		}
+
+		/// <summary>
 		/// Whether or not this tile creates dust when the player walks on it. Returns false by default.
 		/// </summary>
 		public virtual bool HasWalkDust()

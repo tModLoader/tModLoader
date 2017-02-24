@@ -401,6 +401,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to make something happen when a player stands on the given type of tile. For example, you can make the player slide as if on ice.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="player"></param>
+		public virtual void FloorVisuals(int type, Player player)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to change the style of waterfall that passes through or over any tile.
 		/// </summary>
 		/// <param name="type"></param>

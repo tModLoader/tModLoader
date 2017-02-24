@@ -77,6 +77,7 @@ namespace Terraria.ModLoader
 		private static Func<int, int, int, bool>[] HookPreHitWire;
 		private static Action<int, int, int>[] HookHitWire;
 		private static Func<int, int, int, bool>[] HookSlope;
+		private static Action<int, Player>[] HookFloorVisuals;
 		private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
 		private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 		private delegate int DelegateSaplingGrowthType(int type, ref int style);
@@ -264,6 +265,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookPreHitWire, globalTiles, g => g.PreHitWire);
 			ModLoader.BuildGlobalHook(ref HookHitWire, globalTiles, g => g.HitWire);
 			ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
+			ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
 			ModLoader.BuildGlobalHook(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
 			ModLoader.BuildGlobalHook(ref HookSaplingGrowthType, globalTiles, g => g.SaplingGrowthType);
 			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
@@ -962,6 +964,16 @@ namespace Terraria.ModLoader
 			foreach (var hook in HookHitWire)
 			{
 				hook(i, j, type);
+			}
+		}
+
+		public static void FloorVisuals(int type, Player player)
+		{
+			GetTile(type)?.FloorVisuals(player);
+
+			foreach (var hook in HookFloorVisuals)
+			{
+				hook(type, player);
 			}
 		}
 		//in Terraria.Player.ItemCheck in poundRelease if statement before sloping if statements add
