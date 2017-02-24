@@ -30,9 +30,10 @@ namespace Terraria.ModLoader.UI
 		private UIText modName;
 		UITextPanel<string> button2;
 		public bool update = false;
+		public bool updateIsDowngrade = false;
 		public bool exists = false;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string download, int downloads, string timeStamp, bool update, bool exists)
+		public UIModDownloadItem(string displayname, string name, string version, string author, string download, int downloads, string timeStamp, bool update, bool updateIsDowngrade, bool exists)
 		{
 			this.displayname = displayname;
 			this.mod = name;
@@ -42,6 +43,7 @@ namespace Terraria.ModLoader.UI
 			this.downloads = downloads;
 			this.timeStamp = timeStamp;
 			this.update = update;
+			this.updateIsDowngrade = updateIsDowngrade;
 			this.exists = exists;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
@@ -67,7 +69,7 @@ namespace Terraria.ModLoader.UI
 			base.Append(button);
 			if (update || !exists)
 			{
-				button2 = new UITextPanel<string>(this.update ? "Update" : "Download", 1f, false);
+				button2 = new UITextPanel<string>(this.update ? (updateIsDowngrade ? "Downgrade" : "Update") : "Download", 1f, false);
 				button2.CopyStyle(button);
 				button2.Width.Set(200f, 0f);
 				button2.Left.Set(150f, 0f);

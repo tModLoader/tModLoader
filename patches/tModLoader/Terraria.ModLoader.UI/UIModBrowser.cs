@@ -327,7 +327,7 @@ namespace Terraria.ModLoader.UI
 			{
 				JObject jsonObject = JObject.Parse(json);
 				JObject updateObject = (JObject)jsonObject["update"];
-				if(updateObject != null)
+				if (updateObject != null)
 				{
 					updateAvailable = true;
 					updateText = (string)updateObject["message"];
@@ -345,6 +345,7 @@ namespace Terraria.ModLoader.UI
 					string timeStamp = (string)mod["updateTimeStamp"];
 					bool exists = false;
 					bool update = false;
+					bool updateIsDowngrade = false;
 					foreach (BuildProperties bp in modBuildProperties)
 					{
 						if (bp.displayName.Equals(displayname))
@@ -353,10 +354,14 @@ namespace Terraria.ModLoader.UI
 							if (!bp.version.Equals(new Version(version.Substring(1))))
 							{
 								update = true;
+								if (bp.version > new Version(version.Substring(1)))
+								{
+									updateIsDowngrade = true;
+								}
 							}
 						}
 					}
-					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, download, downloads, timeStamp, update, exists);
+					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, download, downloads, timeStamp, update, updateIsDowngrade, exists);
 					modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
 				}
 				SortList();
