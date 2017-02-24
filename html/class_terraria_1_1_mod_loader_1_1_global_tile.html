@@ -171,6 +171,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a20513e5708b6792f9c37d010d0698f4d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a20513e5708b6792f9c37d010d0698f4d">DropCritterChance</a> (int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)</td></tr>
 <tr class="memdesc:a20513e5708b6792f9c37d010d0698f4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.  <a href="#a20513e5708b6792f9c37d010d0698f4d">More...</a><br/></td></tr>
 <tr class="separator:a20513e5708b6792f9c37d010d0698f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b6ea8306dfa056be4a1e51182aa8c8c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a3b6ea8306dfa056be4a1e51182aa8c8c">FloorVisuals</a> (int type, Player player)</td></tr>
+<tr class="memdesc:a3b6ea8306dfa056be4a1e51182aa8c8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a player stands on the given type of tile. For example, you can make the player slide as if on ice.  <a href="#a3b6ea8306dfa056be4a1e51182aa8c8c">More...</a><br/></td></tr>
+<tr class="separator:a3b6ea8306dfa056be4a1e51182aa8c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1425f575127b73aafa5e251d970fc28f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1425f575127b73aafa5e251d970fc28f">HitWire</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:a1425f575127b73aafa5e251d970fc28f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a wire current passes through any tile.  <a href="#a1425f575127b73aafa5e251d970fc28f">More...</a><br/></td></tr>
 <tr class="separator:a1425f575127b73aafa5e251d970fc28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -801,9 +804,9 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00408">408</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        {</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00417">417</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        {</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1129,6 +1132,53 @@ Properties</h2></td></tr>
 <p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00135">135</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        {</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a3b6ea8306dfa056be4a1e51182aa8c8c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalTile.FloorVisuals </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make something happen when a player stands on the given type of tile. For example, you can make the player slide as if on ice. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td></td></tr>
+    <tr><td class="paramname">player</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00408">408</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        {</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1677,9 +1727,9 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00429">429</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        {</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00438">438</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        {</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2013,10 +2063,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00418">418</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        {</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00427">427</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        {</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>

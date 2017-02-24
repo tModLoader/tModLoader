@@ -175,6 +175,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9f714d7a715609fe99d54aacf6fdd77f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a9f714d7a715609fe99d54aacf6fdd77f">DropCritterChance</a> (int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)</td></tr>
 <tr class="memdesc:a9f714d7a715609fe99d54aacf6fdd77f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.  <a href="#a9f714d7a715609fe99d54aacf6fdd77f">More...</a><br/></td></tr>
 <tr class="separator:a9f714d7a715609fe99d54aacf6fdd77f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf16e1a9ae58c5cb4d317761f25f4946"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#abf16e1a9ae58c5cb4d317761f25f4946">FloorVisuals</a> (Player player)</td></tr>
+<tr class="memdesc:abf16e1a9ae58c5cb4d317761f25f4946"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a player stands on this type of tile. For example, you can make the player slide as if on ice.  <a href="#abf16e1a9ae58c5cb4d317761f25f4946">More...</a><br/></td></tr>
+<tr class="separator:abf16e1a9ae58c5cb4d317761f25f4946"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f9c26b8416bae73b86fabdd0171b3de"><td class="memItemLeft" align="right" valign="top">virtual ushort&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a5f9c26b8416bae73b86fabdd0171b3de">GetMapOption</a> (int i, int j)</td></tr>
 <tr class="memdesc:a5f9c26b8416bae73b86fabdd0171b3de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to choose which minimap entry the tile at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.  <a href="#a5f9c26b8416bae73b86fabdd0171b3de">More...</a><br/></td></tr>
 <tr class="separator:a5f9c26b8416bae73b86fabdd0171b3de"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -597,7 +600,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00448">448</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00913">Terraria.ModLoader.TileLoader.AutoSelect()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00915">Terraria.ModLoader.TileLoader.AutoSelect()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        {</div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;        }</div>
@@ -658,7 +661,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00291">291</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00635">Terraria.ModLoader.TileLoader.CanExplode()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00637">Terraria.ModLoader.TileLoader.CanExplode()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        {</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        }</div>
@@ -808,9 +811,9 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00494">494</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;        {</div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00502">502</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        {</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -919,7 +922,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00319">319</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00679">Terraria.ModLoader.TileLoader.Dangersense()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00681">Terraria.ModLoader.TileLoader.Dangersense()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        {</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        }</div>
@@ -1039,7 +1042,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00253">253</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00581">Terraria.ModLoader.TileLoader.Drop()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00583">Terraria.ModLoader.TileLoader.Drop()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        {</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        }</div>
@@ -1122,6 +1125,42 @@ Properties</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="abf16e1a9ae58c5cb4d317761f25f4946"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModTile.FloorVisuals </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make something happen when a player stands on this type of tile. For example, you can make the player slide as if on ice. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00476">476</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        {</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="a5f9c26b8416bae73b86fabdd0171b3de"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1193,10 +1232,10 @@ Properties</h2></td></tr>
 
 <p>Whether or not this tile creates dust when the player walks on it. Returns false by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00475">475</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        {</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00483">483</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;        {</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1349,7 +1388,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00214">214</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00522">Terraria.ModLoader.TileLoader.KillSound()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00524">Terraria.ModLoader.TileLoader.KillSound()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        {</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        }</div>
@@ -1751,9 +1790,9 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00514">514</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        {</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00522">522</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        {</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2018,10 +2057,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00503">503</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        {</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00511">511</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;        {</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2418,9 +2457,9 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00486">486</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;        {</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00494">494</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;        {</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2439,7 +2478,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00078">78</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00858">Terraria.ModLoader.TileLoader.AdjTiles()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00860">Terraria.ModLoader.TileLoader.AdjTiles()</a>.</p>
 
 </div>
 </div>
@@ -2585,7 +2624,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00058">58</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00581">Terraria.ModLoader.TileLoader.Drop()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00583">Terraria.ModLoader.TileLoader.Drop()</a>.</p>
 
 </div>
 </div>
@@ -2619,7 +2658,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00066">66</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00826">Terraria.ModLoader.TileLoader.MineDamage()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00828">Terraria.ModLoader.TileLoader.MineDamage()</a>.</p>
 
 </div>
 </div>
@@ -2637,7 +2676,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00070">70</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00834">Terraria.ModLoader.TileLoader.PickPowerCheck()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00836">Terraria.ModLoader.TileLoader.PickPowerCheck()</a>.</p>
 
 </div>
 </div>

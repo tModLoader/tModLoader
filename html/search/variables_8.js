@@ -79,6 +79,7 @@ var searchData=
   ['hookextractinatoruse',['HookExtractinatorUse',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a28149cc20695f68229b47600d0b12a86',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookextrapickupspace',['HookExtraPickupSpace',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a7ec62604420c678c9e63bab8e8904b42',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookfindframe',['HookFindFrame',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#abd48c0ccfa926251ee4443623c0c77cb',1,'Terraria::ModLoader::NPCLoader']]],
+  ['hookfloorvisuals',['HookFloorVisuals',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ae058d7f33fbe59c0808ddb38bfbbf72d',1,'Terraria::ModLoader::TileLoader']]],
   ['hookgetalpha',['HookGetAlpha',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#afafb1074c43d10584cbbaf12c3b2209d',1,'Terraria.ModLoader.ItemLoader.HookGetAlpha()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a2247583e5aa075864afc71dd71b73764',1,'Terraria.ModLoader.NPCLoader.HookGetAlpha()'],['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a271388ee961fd78ed93923a7aabad8ba',1,'Terraria.ModLoader.ProjectileLoader.HookGetAlpha()']]],
   ['hookgetchat',['HookGetChat',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a86a149c0396a8ebb46d660c966149361',1,'Terraria::ModLoader::NPCLoader']]],
   ['hookgetweapondamage',['HookGetWeaponDamage',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a709066a5c6f531b6d627d40e860bc81c',1,'Terraria::ModLoader::ItemLoader']]],
