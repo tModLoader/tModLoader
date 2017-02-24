@@ -327,7 +327,7 @@ $(document).ready(function(){initNavTree('_mod_loader_8cs_source.html','');});
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                    files.Add(file);</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                }</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            }</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            <span class="keywordflow">return</span> files.ToArray();</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            <span class="keywordflow">return</span> files.OrderBy(x=&gt;x.name).ToArray();</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        }</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
 <div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a2eba7838b05c10a440b60c844a0f55f0">  236</a></span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a2eba7838b05c10a440b60c844a0f55f0">LoadMods</a>()</div>
