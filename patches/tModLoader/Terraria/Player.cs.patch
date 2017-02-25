@@ -4604,6 +4604,14 @@
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse)
+@@ -37251,6 +_,7 @@
+ 					Damage = (int)((double)((float)Damage) * 1.2);
+ 				}
+ 				KnockBack += item.knockBack;
++				ItemLoader.PickAmmo(item, this, ref shoot, ref speed, ref Damage, ref KnockBack);
+ 				bool flag2 = dontConsume;
+ 				if (sItem.type == 3245)
+ 				{
 @@ -37311,7 +_,7 @@
  				{
  					flag2 = true;

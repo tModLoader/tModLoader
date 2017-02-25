@@ -35,6 +35,8 @@ namespace Terraria.ModLoader
 		private static DelegateGetWeaponDamage[] HookGetWeaponDamage;
 		private delegate void DelegateGetWeaponKnockback(Item item, Player player, ref float knockback);
 		private static DelegateGetWeaponKnockback[] HookGetWeaponKnockback;
+		private delegate void DelegatePickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
+		private static DelegatePickAmmo[] HookPickAmmo;
 		private static Func<Item, Player, bool>[] HookConsumeAmmo;
 		private delegate bool DelegateShoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack);
 		private static DelegateShoot[] HookShoot;
@@ -227,6 +229,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookMeleeSpeedMultiplier, globalItems, g => g.MeleeSpeedMultiplier);
 			ModLoader.BuildGlobalHook(ref HookGetWeaponDamage, globalItems, g => g.GetWeaponDamage);
 			ModLoader.BuildGlobalHook(ref HookGetWeaponKnockback, globalItems, g => g.GetWeaponKnockback);
+			ModLoader.BuildGlobalHook(ref HookPickAmmo, globalItems, g => g.PickAmmo);
 			ModLoader.BuildGlobalHook(ref HookConsumeAmmo, globalItems, g => g.ConsumeAmmo);
 			ModLoader.BuildGlobalHook(ref HookShoot, globalItems, g => g.Shoot);
 			ModLoader.BuildGlobalHook(ref HookUseItemHitbox, globalItems, g => g.UseItemHitbox);
@@ -513,6 +516,19 @@ namespace Terraria.ModLoader
 		public static bool CheckProjOnSwing(Player player, Item item)
 		{
 			return item.modItem == null || !item.modItem.projOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
+		}
+
+		/// <summary>
+		/// Calls ModItem.PickAmmo, then all GlobalItem.PickAmmo hooks.
+		/// </summary>
+		public static void PickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback)
+		{
+			item.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback);
+
+			foreach (var hook in HookPickAmmo)
+			{
+				hook(item, player, ref type, ref speed, ref damage, ref knockback);
+			}
 		}
 
 		//near end of Terraria.Player.PickAmmo before flag2 is checked add
