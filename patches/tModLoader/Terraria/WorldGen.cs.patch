@@ -1238,7 +1238,7 @@
  									}
  								}
 -								else if (num53 == 147)
-+								else if (TileID.Sets.Snow[num53])
++								else if (num53 > -1 && TileID.Sets.Snow[num53])
  								{
  									WorldGen.TileFrame(i, j - 1, false, false);
  									if (WorldGen.mergeDown)
@@ -1247,7 +1247,7 @@
  									}
  								}
 -								else if (num58 == 147)
-+								else if (TileID.Sets.Snow[num58])
++								else if (num58 > -1 && TileID.Sets.Snow[num58])
  								{
  									WorldGen.TileFrame(i, j + 1, false, false);
  									if (WorldGen.mergeUp)
@@ -1256,7 +1256,7 @@
  									}
  								}
 -								else if (num55 == 147)
-+								else if (TileID.Sets.Snow[num55])
++								else if (num55 > -1 && TileID.Sets.Snow[num55])
  								{
  									WorldGen.TileFrame(i - 1, j, false, false);
  									if (WorldGen.mergeRight)
@@ -1265,7 +1265,7 @@
  									}
  								}
 -								else if (num56 == 147)
-+								else if (TileID.Sets.Snow[num56])
++								else if (num56 > -1 && TileID.Sets.Snow[num56])
  								{
  									WorldGen.TileFrame(i + 1, j, false, false);
  									if (WorldGen.mergeLeft)
@@ -1274,22 +1274,22 @@
  									}
  								}
 -								if (num53 == 2 || num53 == 23 || num53 == 109 || num53 == 199)
-+								if (TileID.Sets.Grass[num53])
++								if (num53 > -1 && TileID.Sets.Grass[num53])
  								{
  									num53 = num;
  								}
 -								if (num58 == 2 || num58 == 23 || num58 == 109 || num58 == 199)
-+								if (TileID.Sets.Grass[num58])
++								if (num58 > -1 && TileID.Sets.Grass[num58])
  								{
  									num58 = num;
  								}
 -								if (num55 == 2 || num55 == 23 || num55 == 109 || num55 == 199)
-+								if (TileID.Sets.Grass[num55])
++								if (num55 > -1 && TileID.Sets.Grass[num55])
  								{
  									num55 = num;
  								}
 -								if (num56 == 2 || num56 == 23 || num56 == 109 || num56 == 199)
-+								if (TileID.Sets.Grass[num56])
++								if (num56 > -1 && TileID.Sets.Grass[num56])
  								{
  									num56 = num;
  								}
@@ -1298,7 +1298,7 @@
  									num52 = num;
  								}
 -								else if (num52 == 2 || num52 == 23 || num52 == 109 || num52 == 199)
-+								else if (TileID.Sets.Grass[num52])
++								else if (num52 > -1 && TileID.Sets.Grass[num52])
  								{
  									num52 = num;
  								}
@@ -1307,7 +1307,7 @@
  									num54 = num;
  								}
 -								else if (num54 == 2 || num54 == 23 || num54 == 109 || num54 == 199)
-+								else if (TileID.Sets.Grass[num54])
++								else if (num54 > -1 && TileID.Sets.Grass[num54])
  								{
  									num54 = num;
  								}
@@ -1316,7 +1316,7 @@
  									num57 = num;
  								}
 -								else if (num57 == 2 || num57 == 23 || num57 == 109 || num57 == 199)
-+								else if (TileID.Sets.Grass[num57])
++								else if (num57 > -1 && TileID.Sets.Grass[num57])
  								{
  									num57 = num;
  								}
@@ -1325,7 +1325,7 @@
  									num59 = num;
  								}
 -								else if (num59 == 2 || num59 == 23 || num59 == 109 || num59 == 199)
-+								else if (TileID.Sets.Grass[num59])
++								else if (num59 > -1 && TileID.Sets.Grass[num59])
  								{
  									num59 = num;
  								}
