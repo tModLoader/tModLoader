@@ -22,9 +22,11 @@ namespace ExampleMod.Items.Abomination
 			item.consumable = true;
 		}
 
+		// We use the CanUseItem hook to prevent a player from using this item while the boss is present in the world.
 		public override bool CanUseItem(Player player)
 		{
-			return NPC.downedPlantBoss && player.position.Y / 16f > Main.maxTilesY - 200 && !NPC.AnyNPCs(mod.NPCType("Abomination")) && !NPC.AnyNPCs(mod.NPCType("CaptiveElement")) && !NPC.AnyNPCs(mod.NPCType("CaptiveElement2"));
+			// "player.ZoneUnderworldHeight" could also be written as "player.position.Y / 16f > Main.maxTilesY - 200"
+			return NPC.downedPlantBoss && player.ZoneUnderworldHeight && !NPC.AnyNPCs(mod.NPCType("Abomination")) && !NPC.AnyNPCs(mod.NPCType("CaptiveElement")) && !NPC.AnyNPCs(mod.NPCType("CaptiveElement2"));
 		}
 
 		public override bool UseItem(Player player)

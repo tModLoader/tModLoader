@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs.Abomination
 {
 	//ported from my tAPI mod because I'm lazy
+	// Abomination is a multi-stage boss.
 	public class Abomination : ModNPC
 	{
 		private static int hellLayer
@@ -344,11 +345,13 @@ namespace ExampleMod.NPCs.Abomination
 			}
 		}
 
+		// We use this hook to prevent any loot from dropping. We do this because this is a multistage npc and it shouldn't drop anything until the final form is dead.
 		public override bool PreNPCLoot()
 		{
 			return false;
 		}
 
+		// We use this method to inflict a debuff on a player on contact. OnFire is inflicted 100% of the time in expert, and 50% of the time on non-expert mode.
 		public override void OnHitPlayer(Player player, int damage, bool crit)
 		{
 			if (Main.expertMode || Main.rand.Next(2) == 0)
