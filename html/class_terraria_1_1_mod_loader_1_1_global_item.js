@@ -55,6 +55,7 @@ var class_terraria_1_1_mod_loader_1_1_global_item =
     [ "OnHitPvp", "class_terraria_1_1_mod_loader_1_1_global_item.html#a1012ef03107ee55049b7ffb4713e1979", null ],
     [ "OnPickup", "class_terraria_1_1_mod_loader_1_1_global_item.html#a9afe15e7b9c359bee44dbdec1594d457", null ],
     [ "OpenVanillaBag", "class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f", null ],
+    [ "PickAmmo", "class_terraria_1_1_mod_loader_1_1_global_item.html#a72388f01c5226d661f0f3334948e382e", null ],
     [ "PostDrawInInventory", "class_terraria_1_1_mod_loader_1_1_global_item.html#a6143e484997884665bdee7ef94eaa171", null ],
     [ "PostDrawInWorld", "class_terraria_1_1_mod_loader_1_1_global_item.html#a55ff7fdacf69c68a2cbd0ae2a62157cb", null ],
     [ "PostReforge", "class_terraria_1_1_mod_loader_1_1_global_item.html#a6d47e96fc33d54d4ebc8938461c2d9bc", null ],

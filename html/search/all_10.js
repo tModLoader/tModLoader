@@ -6,6 +6,7 @@ var searchData=
   ['parent',['parent',['../class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#ab655430c48d6ee75580d4b4d641c7de1',1,'Terraria::ModLoader::DrawLayer&lt; InfoType &gt;']]],
   ['path',['path',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#ab7f934126a02cd2f89cafd4647dd29b9',1,'Terraria.ModLoader.ModCompile.BuildingMod.path()'],['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#a5fd2a16466037e348b5593cf4d367ecc',1,'Terraria.ModLoader.ModNet.ModHeader.path()']]],
   ['pause',['Pause',['../class_terraria_1_1_mod_loader_1_1_music_wrapper.html#af14310764b7a26da3c858f084468a7ab',1,'Terraria::ModLoader::MusicWrapper']]],
+  ['pickammo',['PickAmmo',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a72388f01c5226d661f0f3334948e382e',1,'Terraria.ModLoader.GlobalItem.PickAmmo()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#abf5513e75efc840365545fc71e726137',1,'Terraria.ModLoader.ItemLoader.PickAmmo()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ae2075eb78b069d64abfb30a3565b015f',1,'Terraria.ModLoader.ModItem.PickAmmo()']]],
   ['pickpowercheck',['PickPowerCheck',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad3969b766d46d9c70709064648e57052',1,'Terraria::ModLoader::TileLoader']]],
   ['pirates',['Pirates',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af5bbadbc818777dc5333a45251914b17',1,'Terraria::ModLoader::SpawnCondition']]],
   ['place',['Place',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#afd6ecccaa16bdc0a936430439a37c1f5',1,'Terraria::ModLoader::ModTileEntity']]],
@@ -80,6 +81,6 @@ var searchData=
   ['projectiletype',['ProjectileType',['../class_terraria_1_1_mod_loader_1_1_mod.html#af4f124bac1905b018a8f24ab866c0d5f',1,'Terraria::ModLoader::Mod']]],
   ['projectiletype_3c_20t_20_3e',['ProjectileType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a57a3c83d55b8817f00f3dd26f4029a46',1,'Terraria::ModLoader::Mod']]],
   ['projonswing',['projOnSwing',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abe9fcfbfbdb4b5dedd9859aa8f1f5b36',1,'Terraria::ModLoader::ModItem']]],
-  ['properties',['properties',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad66ceae780a51e4824580d5424c11447',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.properties()'],['../class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea',1,'Terraria.ModLoader.Mod.Properties()']]],
+  ['properties',['Properties',['../class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea',1,'Terraria.ModLoader.Mod.Properties()'],['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad66ceae780a51e4824580d5424c11447',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.properties()']]],
   ['pumpkinmoon',['PumpkinMoon',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a614cb0d20f75c0396f5535e9a25f4fac',1,'Terraria::ModLoader::SpawnCondition']]]
 ];
