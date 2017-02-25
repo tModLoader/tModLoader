@@ -1,0 +1,24 @@
+--- src/Terraria\Terraria.ID\TileID.cs
++++ src/tModLoader\Terraria.ID\TileID.cs
+@@ -290,6 +_,20 @@
+ 					455
+ 				});
+ 			public static bool[] AllTiles = TileID.Sets.Factory.CreateBoolSet(true, new int[0]);
++			public static bool[] Stone = TileID.Sets.Factory.CreateBoolSet(new int[]
++				{
++					1,
++					117,
++					25,
++					203
++				});
++			public static bool[] Grass = TileID.Sets.Factory.CreateBoolSet(new int[]
++				{
++					2,
++					23,
++					109,
++					199
++				});
+ 			public static bool[] Mud = TileID.Sets.Factory.CreateBoolSet(new int[]
+ 				{
+ 					59
+

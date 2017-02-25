@@ -197,6 +197,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.TileInteractRead, nextTile);
 			Array.Resize(ref TileID.Sets.HasOutlines, nextTile);
 			Array.Resize(ref TileID.Sets.AllTiles, nextTile);
+			Array.Resize(ref TileID.Sets.Stone, nextTile);
+			Array.Resize(ref TileID.Sets.Grass, nextTile);
 			Array.Resize(ref TileID.Sets.Mud, nextTile);
 			Array.Resize(ref TileID.Sets.Snow, nextTile);
 			Array.Resize(ref TileID.Sets.Ices, nextTile);

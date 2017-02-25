@@ -1183,6 +1183,199 @@
  							}
  							return;
  						}
+@@ -48716,11 +_,11 @@
+ 								num58 = -1;
+ 								num56 = -1;
+ 							}
+-							if (num == 147)
++							if (TileID.Sets.Snow[num])
+ 							{
+ 								WorldGen.TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Ices, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 							}
+-							else if (num == 161 || num == 163 || num == 164 || num == 200)
++							else if (TileID.Sets.Ices[num])
+ 							{
+ 								WorldGen.TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Snow, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 							}
+@@ -48730,7 +_,7 @@
+ 							}
+ 							else if (Main.tileBrick[num])
+ 							{
+-								if (num == 60 || num == 70)
++								if (TileID.Sets.GrassSpecial[num])
+ 								{
+ 									WorldGen.TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Mud, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 								}
+@@ -48743,7 +_,7 @@
+ 							{
+ 								WorldGen.TileMergeAttempt(num, Main.tilePile, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 							}
+-							if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && num58 == 165)
++							if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && num58 == 165)
+ 							{
+ 								if (tile3.frameY == 72)
+ 								{
+@@ -48754,7 +_,7 @@
+ 									num58 = num;
+ 								}
+ 							}
+-							if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && num53 == 165)
++							if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && num53 == 165)
+ 							{
+ 								if (tile2.frameY == 90)
+ 								{
+@@ -48776,7 +_,7 @@
+ 									num53 = num;
+ 								}
+ 							}
+-							if ((num == 200 || num == 161 || num == 163 || num == 164) && num58 == 165)
++							if (TileID.Sets.Ices[num] && num58 == 165)
+ 							{
+ 								num58 = num;
+ 							}
+@@ -48920,7 +_,7 @@
+ 										num53 = num;
+ 									}
+ 								}
+-								else if (num53 == 147)
++								else if (TileID.Sets.Snow[num53])
+ 								{
+ 									WorldGen.TileFrame(i, j - 1, false, false);
+ 									if (WorldGen.mergeDown)
+@@ -48936,7 +_,7 @@
+ 										num58 = num;
+ 									}
+ 								}
+-								else if (num58 == 147)
++								else if (TileID.Sets.Snow[num58])
+ 								{
+ 									WorldGen.TileFrame(i, j + 1, false, false);
+ 									if (WorldGen.mergeUp)
+@@ -48952,7 +_,7 @@
+ 										num55 = num;
+ 									}
+ 								}
+-								else if (num55 == 147)
++								else if (TileID.Sets.Snow[num55])
+ 								{
+ 									WorldGen.TileFrame(i - 1, j, false, false);
+ 									if (WorldGen.mergeRight)
+@@ -48968,7 +_,7 @@
+ 										num56 = num;
+ 									}
+ 								}
+-								else if (num56 == 147)
++								else if (TileID.Sets.Snow[num56])
+ 								{
+ 									WorldGen.TileFrame(i + 1, j, false, false);
+ 									if (WorldGen.mergeLeft)
+@@ -48976,19 +_,19 @@
+ 										num56 = num;
+ 									}
+ 								}
+-								if (num53 == 2 || num53 == 23 || num53 == 109 || num53 == 199)
++								if (TileID.Sets.Grass[num53])
+ 								{
+ 									num53 = num;
+ 								}
+-								if (num58 == 2 || num58 == 23 || num58 == 109 || num58 == 199)
++								if (TileID.Sets.Grass[num58])
+ 								{
+ 									num58 = num;
+ 								}
+-								if (num55 == 2 || num55 == 23 || num55 == 109 || num55 == 199)
++								if (TileID.Sets.Grass[num55])
+ 								{
+ 									num55 = num;
+ 								}
+-								if (num56 == 2 || num56 == 23 || num56 == 109 || num56 == 199)
++								if (TileID.Sets.Grass[num56])
+ 								{
+ 									num56 = num;
+ 								}
+@@ -48996,7 +_,7 @@
+ 								{
+ 									num52 = num;
+ 								}
+-								else if (num52 == 2 || num52 == 23 || num52 == 109 || num52 == 199)
++								else if (TileID.Sets.Grass[num52])
+ 								{
+ 									num52 = num;
+ 								}
+@@ -49004,7 +_,7 @@
+ 								{
+ 									num54 = num;
+ 								}
+-								else if (num54 == 2 || num54 == 23 || num54 == 109 || num54 == 199)
++								else if (TileID.Sets.Grass[num54])
+ 								{
+ 									num54 = num;
+ 								}
+@@ -49012,7 +_,7 @@
+ 								{
+ 									num57 = num;
+ 								}
+-								else if (num57 == 2 || num57 == 23 || num57 == 109 || num57 == 199)
++								else if (TileID.Sets.Grass[num57])
+ 								{
+ 									num57 = num;
+ 								}
+@@ -49020,7 +_,7 @@
+ 								{
+ 									num59 = num;
+ 								}
+-								else if (num59 == 2 || num59 == 23 || num59 == 109 || num59 == 199)
++								else if (TileID.Sets.Grass[num59])
+ 								{
+ 									num59 = num;
+ 								}
+@@ -49081,7 +_,7 @@
+ 									WorldGen.TileMergeAttemptFrametest(i, j, num, 57, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 								}
+ 							}
+-							else if (num == 58 || num == 76 || num == 75)
++							else if (TileID.Sets.HellSpecial[num])
+ 							{
+ 								WorldGen.TileMergeAttempt(-2, 57, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 							}
+@@ -49090,7 +_,7 @@
+ 								WorldGen.TileMergeAttempt(-2, 1, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 								WorldGen.TileMergeAttemptFrametest(i, j, num, TileID.Sets.HellSpecial, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 							}
+-							else if (num == 59)
++							else if (TileID.Sets.Mud[num])
+ 							{
+ 								if ((double)j > Main.rockLayer)
+ 								{
+@@ -49128,11 +_,11 @@
+ 							{
+ 								WorldGen.TileMergeAttempt(-2, 189, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 							}
+-							else if (num == 147)
++							else if (TileID.Sets.Snow[num])
+ 							{
+ 								WorldGen.TileMergeAttemptFrametest(i, j, num, TileID.Sets.IcesSlush, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 							}
+-							else if (num == 161 || num == 163 || num == 164 || num == 200 || num == 224)
++							else if (TileID.Sets.IcesSlush[num])
+ 							{
+ 								WorldGen.TileMergeAttempt(-2, 147, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 							}
+@@ -49258,12 +_,12 @@
+ 								num56 = num;
+ 								WorldGen.mergeRight = true;
+ 							}
+-							if (num == 2 || num == 23 || num == 60 || num == 70 || num == 109 || num == 199 || Main.tileMoss[num])
++							if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num])
+ 							{
+ 								flag8 = true;
+ 								WorldGen.TileMergeAttemptWeird(num, -1, Main.tileSolid, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 								int num63 = 0;
+-								if (num == 60 || num == 70)
++								if (TileID.Sets.GrassSpecial[num])
+ 								{
+ 									num63 = 59;
+ 								}
 @@ -51904,7 +_,7 @@
  									if (tile3 != null && !tile3.active())
  									{
