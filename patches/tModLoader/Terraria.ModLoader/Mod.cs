@@ -781,6 +781,10 @@ namespace Terraria.ModLoader
 			int id = TileLoader.ReserveTileID();
 			tile.Name = name;
 			tile.Type = (ushort)id;
+			if (tiles.ContainsKey(name))
+			{
+				throw new Exception("You tried to add 2 ModTile with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddTile with 2 tiles of the same name.");
+			}
 			tiles[name] = tile;
 			TileLoader.tiles.Add(tile);
 			tile.texture = texture;
@@ -1071,6 +1075,10 @@ namespace Terraria.ModLoader
 			projectile.projectile.name = name;
 			projectile.Name = name;
 			projectile.projectile.type = id;
+			if (projectiles.ContainsKey(name))
+			{
+				throw new Exception("You tried to add 2 ModProjectile with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddProjectile with 2 projectiles of the same name.");
+			}
 			projectiles[name] = projectile;
 			ProjectileLoader.projectiles.Add(projectile);
 			projectile.texture = texture;
@@ -1216,6 +1224,10 @@ namespace Terraria.ModLoader
 			int id = NPCLoader.ReserveNPCID();
 			npc.npc.name = name;
 			npc.npc.type = id;
+			if (npcs.ContainsKey(name))
+			{
+				throw new Exception("You tried to add 2 ModNPC with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddNPC with 2 npcs of the same name.");
+			}
 			npcs[name] = npc;
 			NPCLoader.npcs.Add(npc);
 			npc.texture = texture;
@@ -1433,6 +1445,10 @@ namespace Terraria.ModLoader
 			int id = BuffLoader.ReserveBuffID();
 			buff.Name = name;
 			buff.Type = id;
+			if (buffs.ContainsKey(name))
+			{
+				throw new Exception("You tried to add 2 ModBuff with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddBuff with 2 buffs of the same name.");
+			}
 			buffs[name] = buff;
 			BuffLoader.buffs.Add(buff);
 			buff.texture = texture;
