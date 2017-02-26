@@ -249,6 +249,7 @@ namespace Terraria.ModLoader.UI
 				var values = new NameValueCollection
 					{
 						{ "modloaderversion", ModLoader.versionedName },
+						{ "platform", ModLoader.compressedPlatformRepresentation },
 					};
 				using (WebClient client = new WebClient())
 				{

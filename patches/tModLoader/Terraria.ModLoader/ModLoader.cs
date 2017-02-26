@@ -30,11 +30,22 @@ namespace Terraria.ModLoader
 #else
 		public const bool windows = false;
 #endif
+#if LINUX
+		public const bool linux = true;
+#else
+		public const bool linux = false;
+#endif
+#if MAC
+		public const bool mac = true;
+#else
+		public const bool mac = false;
+#endif
 #if GOG
 		public const bool gog = true;
 #else
 		public const bool gog = false;
 #endif
+		public static string compressedPlatformRepresentation = (windows ? "w" : (linux ? "l" : "m")) + (gog ? "g" : "s");
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		/// <summary>The file path in which mods are stored.</summary>
 		public static string ModPath => modPath;
