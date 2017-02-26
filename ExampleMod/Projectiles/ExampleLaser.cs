@@ -14,17 +14,17 @@ namespace ExampleMod.Projectiles
 		private const int MAX_CHARGE = 50;
 		private const float MOVE_DISTANCE = 60f;       //The distance charge particle from the player center
 
-        public float Distance
-        {
-            get { return projectile.ai[0]; }
-            set { projectile.ai[0] = value; }
-        }
+        	public float Distance
+        	{
+            		get { return projectile.ai[0]; }
+            		set { projectile.ai[0] = value; }
+        	}
 
-        public float Charge
-        {
-            get { return projectile.localAI[0]; }
-            set { projectile.localAI[0] = value; }
-        }
+        	public float Charge
+        	{
+            		get { return projectile.localAI[0]; }
+            		set { projectile.localAI[0] = value; }
+        	}
 
 		public override void SetDefaults()
 		{
@@ -119,23 +119,24 @@ namespace ExampleMod.Projectiles
 			{
 				Vector2 diff = mousePos - player.Center;
 				diff.Normalize();
-                projectile.velocity = diff;
-                projectile.netUpdate = true;
+                		projectile.velocity = diff;
+				projectile.direction = Main.MouseWorld.X > player.position.X ? 1 : -1;
+                		projectile.netUpdate = true;
 			}
-            projectile.position = player.Center + projectile.velocity * MOVE_DISTANCE;
-            projectile.timeLeft = 2;
-            int dir = projectile.position.X > player.position.X ? 1 : -1;
-            player.ChangeDir(dir);
-            player.heldProj = projectile.whoAmI;
-            player.itemTime = 2;
-            player.itemAnimation = 2;
-            player.itemRotation = (float)Math.Atan2(projectile.velocity.Y * dir, 
-                projectile.velocity.X * dir);
-            #endregion
+            		projectile.position = player.Center + projectile.velocity * MOVE_DISTANCE;
+            		projectile.timeLeft = 2;
+            		int dir = projectile.direction;
+            		player.ChangeDir(dir);
+            		player.heldProj = projectile.whoAmI;
+            		player.itemTime = 2;
+            		player.itemAnimation = 2;
+            		player.itemRotation = (float)Math.Atan2(projectile.velocity.Y * dir, 
+                		projectile.velocity.X * dir);
+            		#endregion
 
-            #region Charging process
-            // Kill the projectile if the player stops channeling
-            if (!player.channel)
+            		#region Charging process
+            		// Kill the projectile if the player stops channeling
+            		if (!player.channel)
 			{
 				projectile.Kill();
 			}
@@ -145,14 +146,14 @@ namespace ExampleMod.Projectiles
 				{
 					projectile.Kill();
 				}
-                Vector2 offset = projectile.velocity;
+                		Vector2 offset = projectile.velocity;
 				offset *= MOVE_DISTANCE - 20;
 				Vector2 pos = player.Center + offset - new Vector2(10, 10);
 				if (Charge < MAX_CHARGE)
 				{
 					Charge++;
 				}
-                int chargeFact = (int)(Charge / 20f);
+                		int chargeFact = (int)(Charge / 20f);
 				Vector2 dustVelocity = Vector2.UnitX * 18f;
 				dustVelocity = dustVelocity.RotatedBy(projectile.rotation - 1.57f, default(Vector2));
 				Vector2 spawnPos = projectile.Center + dustVelocity;
@@ -172,7 +173,7 @@ namespace ExampleMod.Projectiles
 			#region Set laser tail position and dusts
 			if (Charge < MAX_CHARGE) return;
 			Vector2 start = player.Center;
-            Vector2 unit = projectile.velocity;
+            		Vector2 unit = projectile.velocity;
 			unit.Normalize();
 			unit *= -1;
 			for (Distance = MOVE_DISTANCE; Distance <= 2200; Distance += 5)
@@ -180,12 +181,12 @@ namespace ExampleMod.Projectiles
 				start = player.Center + unit * Distance;
 				if (!Collision.CanHit(player.Center, 1, 1, start, 1, 1))
 				{
-                    Distance -= 5;
+                    			Distance -= 5;
 					break;
 				}
 			}
 
-            Vector2 dustPos = player.Center + projectile.velocity * Distance;
+            		Vector2 dustPos = player.Center + projectile.velocity * Distance;
 			//Imported dust code from source because I'm lazy
 			for (int i = 0; i < 2; ++i)
 			{
@@ -225,7 +226,7 @@ namespace ExampleMod.Projectiles
 		public override void CutTiles()
 		{
 			DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
-            Vector2 unit = projectile.velocity;
+            		Vector2 unit = projectile.velocity;
 			Utils.PlotTileLine(projectile.Center, projectile.Center - unit * 5f, (float)(projectile.width + 16) * projectile.scale, new Utils.PerLinePoint(DelegateMethods.CutTiles));
 		}
 	}
