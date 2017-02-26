@@ -1,5 +1,8 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_mod_loader_1_1_world_hooks.html#afac834cbc27b096e172caec25c45fff0":[1,0,0,0,75,8],
+"class_tile_entity.html":[1,0,4],
+"classes.html":[1,1],
 "dir_33550c180f9cedd6db1017f362610614.html":[2,0,0,0],
 "dir_563615b9ae08cf63712a5de713529dc7.html":[2,0,0,0,0],
 "dir_b2dee0249ca1c6e98736e679cc6a5269.html":[2,0,0],
@@ -83,8 +86,8 @@ var NAVTREEINDEX9 =
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897":[1,0,0,0,2,2],
 "namespace_terraria.html":[0,0,0],
 "namespace_terraria.html":[1,0,0],
-"namespace_terraria_1_1_mod_loader.html":[1,0,0,0],
 "namespace_terraria_1_1_mod_loader.html":[0,0,0,0],
+"namespace_terraria_1_1_mod_loader.html":[1,0,0,0],
 "namespacemembers.html":[0,1,0],
 "namespacemembers_enum.html":[0,1,1],
 "namespacemembers_eval.html":[0,1,2],
