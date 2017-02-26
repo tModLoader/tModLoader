@@ -210,7 +210,7 @@ namespace Terraria.ModLoader
 			Bartender = new SpawnCondition((info) => !NPC.savedBartender && DD2Event.ReadyToFindBartender
 				&& !NPC.AnyNPCs(NPCID.BartenderUnconscious) && !info.water, 1f / 80f);
 			SpiderCave = new SpawnCondition((info) => GetTile(info).wall == WallID.SpiderUnsafe || info.spiderCave);
-			DesertCave = new SpawnCondition((info) => (WallID.Sets.Conversion.HardenedSand[info.spawnTileType]
+			DesertCave = new SpawnCondition((info) => (WallID.Sets.Conversion.HardenedSand[GetTile(info).wall]
 				|| WallID.Sets.Conversion.Sandstone[GetTile(info).wall] || info.desertCave)
 				&& WorldGen.checkUnderground(info.spawnTileX, info.spawnTileY));
 			HardmodeJungleWater = new SpawnCondition((info) => Main.hardMode && info.water && info.player.ZoneJungle, 2f / 3f);
