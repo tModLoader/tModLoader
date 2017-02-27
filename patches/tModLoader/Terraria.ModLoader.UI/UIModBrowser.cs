@@ -103,11 +103,11 @@ namespace Terraria.ModLoader.UI
 			{
 				if (j == 0)
 				{
-					uIToggleImage = new UICycleImage(texture, 5, 32, 32, 0, 0);
+					uIToggleImage = new UICycleImage(texture, 6, 32, 32, 0, 0);
 					uIToggleImage.setCurrentState((int)sortMode);
 					uIToggleImage.OnClick += (a, b) =>
 					{
-						sortMode = sortMode.Next();
+						sortMode = sortMode.NextEnum();
 						SortList();
 					};
 				}
@@ -117,7 +117,7 @@ namespace Terraria.ModLoader.UI
 					uIToggleImage.setCurrentState((int)updateFilterMode);
 					uIToggleImage.OnClick += (a, b) =>
 					{
-						updateFilterMode = updateFilterMode.Next();
+						updateFilterMode = updateFilterMode.NextEnum();
 						SortList();
 					};
 				}
@@ -134,7 +134,7 @@ namespace Terraria.ModLoader.UI
 			SearchFilterToggle.setCurrentState((int)searchFilterMode);
 			SearchFilterToggle.OnClick += (a, b) =>
 			{
-				searchFilterMode = searchFilterMode.Next();
+				searchFilterMode = searchFilterMode.NextEnum();
 				SortList();
 			};
 			SearchFilterToggle.Left.Set(545f, 0f);
@@ -343,6 +343,7 @@ namespace Terraria.ModLoader.UI
 					string author = (string)mod["author"];
 					string download = (string)mod["download"];
 					int downloads = (int)mod["downloads"];
+					int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
 					string timeStamp = (string)mod["updateTimeStamp"];
 					bool exists = false;
 					bool update = false;
@@ -362,7 +363,7 @@ namespace Terraria.ModLoader.UI
 							}
 						}
 					}
-					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, download, downloads, timeStamp, update, updateIsDowngrade, exists);
+					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, download, downloads, hot, timeStamp, update, updateIsDowngrade, exists);
 					modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
 				}
 				SortList();
@@ -411,24 +412,6 @@ namespace Terraria.ModLoader.UI
 
 	public static class SortModesExtensions
 	{
-		public static SortModes Next(this SortModes sortmode)
-		{
-			switch (sortmode)
-			{
-				case SortModes.DisplayNameAtoZ:
-					return SortModes.DisplayNameZtoA;
-				case SortModes.DisplayNameZtoA:
-					return SortModes.DownloadsDescending;
-				case SortModes.DownloadsDescending:
-					return SortModes.DownloadsAscending;
-				case SortModes.DownloadsAscending:
-					return SortModes.RecentlyUpdated;
-				case SortModes.RecentlyUpdated:
-					return SortModes.DisplayNameAtoZ;
-			}
-			return SortModes.DisplayNameAtoZ;
-		}
-
 		public static string ToFriendlyString(this SortModes sortmode)
 		{
 			switch (sortmode)
@@ -443,6 +426,8 @@ namespace Terraria.ModLoader.UI
 					return "Sort by downloads ascending";
 				case SortModes.RecentlyUpdated:
 					return "Sort by recently updated";
+				case SortModes.Hot:
+					return "Sort by popularity";
 			}
 			return "Unknown Sort";
 		}
@@ -450,20 +435,6 @@ namespace Terraria.ModLoader.UI
 
 	public static class UpdateFilterModesExtensions
 	{
-		public static UpdateFilter Next(this UpdateFilter updateFilterMode)
-		{
-			switch (updateFilterMode)
-			{
-				case UpdateFilter.All:
-					return UpdateFilter.Available;
-				case UpdateFilter.Available:
-					return UpdateFilter.UpdateOnly;
-				case UpdateFilter.UpdateOnly:
-					return UpdateFilter.All;
-			}
-			return UpdateFilter.All;
-		}
-
 		public static string ToFriendlyString(this UpdateFilter updateFilterMode)
 		{
 			switch (updateFilterMode)
@@ -481,18 +452,6 @@ namespace Terraria.ModLoader.UI
 
 	public static class SearchFilterModesExtensions
 	{
-		public static SearchFilter Next(this SearchFilter searchFilterMode)
-		{
-			switch (searchFilterMode)
-			{
-				case SearchFilter.Name:
-					return SearchFilter.Author;
-				case SearchFilter.Author:
-					return SearchFilter.Name;
-			}
-			return SearchFilter.Name;
-		}
-
 		public static string ToFriendlyString(this SearchFilter searchFilterMode)
 		{
 			switch (searchFilterMode)
@@ -513,6 +472,7 @@ namespace Terraria.ModLoader.UI
 		DownloadsDescending,
 		DownloadsAscending,
 		RecentlyUpdated,
+		Hot,
 	}
 
 	public enum UpdateFilter

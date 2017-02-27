@@ -1,9 +1,18 @@
 --- src/Terraria\Terraria\Utils.cs
 +++ src/tModLoader\Terraria\Utils.cs
-@@ -516,9 +_,24 @@
+@@ -516,9 +_,33 @@
  			return array;
  		}
  
++		public static T NextEnum<T>(this T src) where T : struct
++		{
++			if (!typeof(T).IsEnum) throw new ArgumentException(String.Format("Argumnent {0} is not an Enum", typeof(T).FullName));
++
++			T[] Arr = (T[])Enum.GetValues(src.GetType());
++			int j = Array.IndexOf<T>(Arr, src) + 1;
++			return (Arr.Length == j) ? Arr[0] : Arr[j];
++		}
++
 +		public static bool NextBool(this UnifiedRandom r)
 +		{
 +			return r.NextDouble() < .5;

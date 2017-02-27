@@ -25,6 +25,7 @@ namespace Terraria.ModLoader.UI
 		public string download;
 		public string timeStamp;
 		public int downloads;
+		public int hot;
 		private Texture2D dividerTexture;
 		private Texture2D innerPanelTexture;
 		private UIText modName;
@@ -33,7 +34,7 @@ namespace Terraria.ModLoader.UI
 		public bool updateIsDowngrade = false;
 		public bool exists = false;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string download, int downloads, string timeStamp, bool update, bool updateIsDowngrade, bool exists)
+		public UIModDownloadItem(string displayname, string name, string version, string author, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, bool exists)
 		{
 			this.displayname = displayname;
 			this.mod = name;
@@ -41,6 +42,7 @@ namespace Terraria.ModLoader.UI
 			this.author = author;
 			this.download = download;
 			this.downloads = downloads;
+			this.hot = hot;
 			this.timeStamp = timeStamp;
 			this.update = update;
 			this.updateIsDowngrade = updateIsDowngrade;
@@ -95,6 +97,8 @@ namespace Terraria.ModLoader.UI
 					return -1 * this.downloads.CompareTo((obj as UIModDownloadItem).downloads);
 				case SortModes.RecentlyUpdated:
 					return -1 * this.timeStamp.CompareTo((obj as UIModDownloadItem).timeStamp);
+				case SortModes.Hot:
+					return -1 * this.hot.CompareTo((obj as UIModDownloadItem).hot);
 			}
 			return base.CompareTo(obj);
 		}
