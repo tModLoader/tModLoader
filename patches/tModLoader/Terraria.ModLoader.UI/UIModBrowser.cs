@@ -184,7 +184,7 @@ namespace Terraria.ModLoader.UI
 					}
 					if (vector.X > (float)Main.screenWidth - x)
 					{
-						vector.X = (float)(Main.screenWidth - 460);
+						vector.X = (float)(Main.screenWidth - x - 30);
 					}
 					Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 					return;
