@@ -43,6 +43,12 @@ namespace Terraria.ModLoader.UI
 			base.Click(evt);
 		}
 
+		public override void RightClick(UIMouseEvent evt)
+		{
+			currentState = (currentState + states - 1) % states;
+			base.RightClick(evt);
+		}
+
 		internal void setCurrentState(int sortMode)
 		{
 			currentState = sortMode;

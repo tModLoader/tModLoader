@@ -110,6 +110,11 @@ namespace Terraria.ModLoader.UI
 						sortMode = sortMode.NextEnum();
 						SortList();
 					};
+					uIToggleImage.OnRightClick += (a, b) =>
+					{
+						sortMode = sortMode.PreviousEnum();
+						SortList();
+					};
 				}
 				else
 				{
@@ -118,6 +123,11 @@ namespace Terraria.ModLoader.UI
 					uIToggleImage.OnClick += (a, b) =>
 					{
 						updateFilterMode = updateFilterMode.NextEnum();
+						SortList();
+					};
+					uIToggleImage.OnRightClick += (a, b) =>
+					{
+						updateFilterMode = updateFilterMode.PreviousEnum();
 						SortList();
 					};
 				}
@@ -135,6 +145,11 @@ namespace Terraria.ModLoader.UI
 			SearchFilterToggle.OnClick += (a, b) =>
 			{
 				searchFilterMode = searchFilterMode.NextEnum();
+				SortList();
+			};
+			SearchFilterToggle.OnRightClick += (a, b) =>
+			{
+				searchFilterMode = searchFilterMode.PreviousEnum();
 				SortList();
 			};
 			SearchFilterToggle.Left.Set(545f, 0f);
