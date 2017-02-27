@@ -3466,7 +3466,8 @@
  							}
 +
  							IL_4D9:
- 							if (NPCID.Sets.BelongsToInvasionOldOnesArmy[Main.npc[l].type])
+-							if (NPCID.Sets.BelongsToInvasionOldOnesArmy[Main.npc[l].type])
++							if (Main.npc[l].type < NPCID.Sets.BelongsToInvasionOldOnesArmy.Length && NPCID.Sets.BelongsToInvasionOldOnesArmy[Main.npc[l].type])
  							{
  								num2 = 12;
  							}
