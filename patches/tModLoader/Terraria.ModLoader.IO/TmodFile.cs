@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal byte[] signature { get; private set; } = new byte[256];
-		
+
 		private bool? validModBrowserSignature;
 		internal bool ValidModBrowserSignature
 		{
@@ -88,8 +88,11 @@ namespace Terraria.ModLoader.IO
 
 		internal void Save()
 		{
-			var dataStream = new MemoryStream();
-			using (var writer = new BinaryWriter(new DeflateStream(dataStream, CompressionMode.Compress)))
+			using (var fileStream = File.Create(path))
+			using (var dataStream = new MemoryStream())
+			using (var writerStream = new DeflateStream(dataStream, CompressionMode.Compress))
+			using (BinaryWriter writer = new BinaryWriter(writerStream),
+								fileWriter = new BinaryWriter(fileStream))
 			{
 				writer.Write(name);
 				writer.Write(version.ToString());
@@ -101,18 +104,15 @@ namespace Terraria.ModLoader.IO
 					writer.Write(entry.Value.Length);
 					writer.Write(entry.Value);
 				}
-			}
-			var data = dataStream.ToArray();
-			hash = SHA1.Create().ComputeHash(data);
+				var data = dataStream.ToArray();
+				hash = SHA1.Create().ComputeHash(data);
 
-			using (var writer = new BinaryWriter(File.Create(path)))
-			{
-				writer.Write(Encoding.ASCII.GetBytes("TMOD"));
-				writer.Write(ModLoader.version.ToString());
-				writer.Write(hash);
-				writer.Write(signature);
-				writer.Write(data.Length);
-				writer.Write(data);
+				fileWriter.Write(Encoding.ASCII.GetBytes("TMOD"));
+				fileWriter.Write(ModLoader.version.ToString());
+				fileWriter.Write(hash);
+				fileWriter.Write(signature);
+				fileWriter.Write(data.Length);
+				fileWriter.Write(data);
 			}
 		}
 
@@ -121,7 +121,8 @@ namespace Terraria.ModLoader.IO
 			try
 			{
 				byte[] data;
-				using (var reader = new BinaryReader(File.OpenRead(path)))
+				using (var fileStream = File.OpenRead(path))
+				using (var reader = new BinaryReader(fileStream))
 				{
 					if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
 						throw new Exception("Magic Header != \"TMOD\"");
@@ -135,7 +136,9 @@ namespace Terraria.ModLoader.IO
 						throw new Exception("Hash mismatch, data blob has been modified or corrupted");
 				}
 
-				using (var reader = new BinaryReader(new DeflateStream(new MemoryStream(data), CompressionMode.Decompress)))
+				using (var memoryStream = new MemoryStream(data))
+				using (var deflateStream = new DeflateStream(memoryStream,CompressionMode.Decompress))
+				using (var reader = new BinaryReader(deflateStream))
 				{
 					name = reader.ReadString();
 					version = new Version(reader.ReadString());

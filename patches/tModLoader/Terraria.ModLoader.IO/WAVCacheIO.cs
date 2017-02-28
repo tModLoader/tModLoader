@@ -71,8 +71,9 @@ namespace Terraria.ModLoader.IO
 			const ushort wBitsPerSample = 16;
 			const int headerSize = 44;
 
-			using (var output = new MemoryStream())
-			using (var input = new MP3Sharp.MP3Stream(new MemoryStream(data)))
+			using (MemoryStream output = new MemoryStream(),
+								datastream = new MemoryStream(data))
+			using (var input = new MP3Sharp.MP3Stream(datastream))
 			using (var writer = new BinaryWriter(output, Encoding.UTF8))
 			{
 				output.Position = headerSize;

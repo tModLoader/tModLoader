@@ -38,44 +38,50 @@ namespace Terraria.ModLoader.IO
 		{
 			var hasTile = new bool[TileLoader.TileCount];
 			var hasWall = new bool[WallLoader.WallCount];
-			var ms = new MemoryStream();
-			WriteTileData(new BinaryWriter(ms), hasTile, hasWall);
-			
-			var tileList = new List<TagCompound>();
-			for (int type = TileID.Count; type < hasTile.Length; type++)
+			using (var ms = new MemoryStream())
+			using (var writer = new BinaryWriter(ms))
 			{
-				if (!hasTile[type])
-					continue;
-				
-				var modTile = TileLoader.GetTile(type);
-				tileList.Add(new TagCompound {
-					["value"] = (short)type,
-					["mod"] = modTile.mod.Name,
-					["name"] = modTile.Name,
-					["framed"] = Main.tileFrameImportant[type],
-				});
-			}
-			var wallList = new List<TagCompound>();
-			for (int wall = WallID.Count; wall < hasWall.Length; wall++)
-			{
-				if (!hasWall[wall])
-					continue;
-				
-				var modWall = WallLoader.GetWall(wall);
-				wallList.Add(new TagCompound {
-					["value"] = (short)wall,
-					["mod"] = modWall.mod.Name,
-					["name"] = modWall.Name,
-				});
-			}
-			if (tileList.Count == 0 && wallList.Count == 0)
-				return null;
+				WriteTileData(writer, hasTile, hasWall);
 
-			return new TagCompound {
-				["tileMap"] = tileList,
-				["wallMap"] = wallList,
-				["data"] = ms.ToArray()
-			};
+				var tileList = new List<TagCompound>();
+				for (int type = TileID.Count; type < hasTile.Length; type++)
+				{
+					if (!hasTile[type])
+						continue;
+
+					var modTile = TileLoader.GetTile(type);
+					tileList.Add(new TagCompound
+					{
+						["value"] = (short) type,
+						["mod"] = modTile.mod.Name,
+						["name"] = modTile.Name,
+						["framed"] = Main.tileFrameImportant[type],
+					});
+				}
+				var wallList = new List<TagCompound>();
+				for (int wall = WallID.Count; wall < hasWall.Length; wall++)
+				{
+					if (!hasWall[wall])
+						continue;
+
+					var modWall = WallLoader.GetWall(wall);
+					wallList.Add(new TagCompound
+					{
+						["value"] = (short) wall,
+						["mod"] = modWall.mod.Name,
+						["name"] = modWall.Name,
+					});
+				}
+				if (tileList.Count == 0 && wallList.Count == 0)
+					return null;
+
+				return new TagCompound
+				{
+					["tileMap"] = tileList,
+					["wallMap"] = wallList,
+					["data"] = ms.ToArray()
+				};
+			}
 		}
 
 		internal static void LoadTiles(TagCompound tag)
@@ -107,7 +113,9 @@ namespace Terraria.ModLoader.IO
 				Mod mod = ModLoader.GetMod(modName);
 				tables.walls[wall] = mod == null ? (ushort)0 : (ushort)mod.WallType(name);
 			}
-			ReadTileData(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))), tables);
+			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
+			using (var reader = new BinaryReader(memoryStream))
+				ReadTileData(reader, tables);
 		}
 
 		internal static void LoadLegacyTiles(BinaryReader reader)
