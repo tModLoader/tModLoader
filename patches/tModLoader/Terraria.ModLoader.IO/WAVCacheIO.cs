@@ -63,15 +63,15 @@ namespace Terraria.ModLoader.IO
 
 		public static SoundEffect CacheMP3(string wavCacheFilename, byte[] data)
 		{
-			ushort wFormatTag = 1;
 			ushort nChannels;
 			uint nSamplesPerSec;
 			uint nAvgBytesPerSec;
 			ushort nBlockAlign;
-			ushort wBitsPerSample = 16;
+			const ushort wFormatTag = 1;
+			const ushort wBitsPerSample = 16;
 			const int headerSize = 44;
-			var output = new MemoryStream();
 
+			using (var output = new MemoryStream())
 			using (var input = new MP3Sharp.MP3Stream(new MemoryStream(data)))
 			{
 				using (var writer = new BinaryWriter(output, Encoding.UTF8))
