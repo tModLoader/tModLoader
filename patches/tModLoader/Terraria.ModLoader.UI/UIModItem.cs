@@ -6,6 +6,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
+using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
@@ -64,6 +65,14 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.ToggleEnabled;
 			base.Append(button2);
+			if (properties.modReferences.Length > 0 && !enabled)
+			{
+				string refs = String.Join(", ", properties.modReferences.Select(x => x.mod));
+				keyImage = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs);
+				keyImage.Left.Set(265, 0f);
+				keyImage.Top.Set(50f, 0f);
+				base.Append(keyImage);
+			}
 			if (mod.ValidModBrowserSignature)
 			{
 				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], "This mod originated from the Mod Browser");
@@ -73,14 +82,14 @@ namespace Terraria.ModLoader.UI
 			if (ModLoader.ModLoaded(mod.name))
 			{
 				Mod loadedMod = ModLoader.GetMod(mod.name);
-				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count	};
-				string[] strings = { " items", " NPCs", " tiles", " walls", " buffs", " mounts"};
+				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count };
+				string[] strings = { " items", " NPCs", " tiles", " walls", " buffs", " mounts" };
 				int xOffset = -40;
 				for (int i = 0; i < values.Length; i++)
 				{
-					if(values[i] > 0)
+					if (values[i] > 0)
 					{
-						Texture2D iconTexture = ModLoader.GetTexture("Terraria/UI" + Path.DirectorySeparatorChar + "InfoIcon_" + i);
+						Texture2D iconTexture = Main.instance.infoIconTexture[i];
 						keyImage = new UIHoverImage(iconTexture, values[i] + strings[i]);
 						keyImage.Left.Set(xOffset, 1f);
 						base.Append(keyImage);
