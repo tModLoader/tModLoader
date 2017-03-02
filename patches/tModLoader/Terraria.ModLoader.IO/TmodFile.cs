@@ -88,31 +88,35 @@ namespace Terraria.ModLoader.IO
 
 		internal void Save()
 		{
-			using (var fileStream = File.Create(path))
 			using (var dataStream = new MemoryStream())
-			using (var writerStream = new DeflateStream(dataStream, CompressionMode.Compress))
-			using (BinaryWriter writer = new BinaryWriter(writerStream),
-								fileWriter = new BinaryWriter(fileStream))
 			{
-				writer.Write(name);
-				writer.Write(version.ToString());
-
-				writer.Write(files.Count);
-				foreach (var entry in files)
+				using (var writerStream = new DeflateStream(dataStream, CompressionMode.Compress))
+				using (var writer = new BinaryWriter(writerStream))
 				{
-					writer.Write(entry.Key);
-					writer.Write(entry.Value.Length);
-					writer.Write(entry.Value);
+					writer.Write(name);
+					writer.Write(version.ToString());
+
+					writer.Write(files.Count);
+					foreach (var entry in files)
+					{
+						writer.Write(entry.Key);
+						writer.Write(entry.Value.Length);
+						writer.Write(entry.Value);
+					}
 				}
 				var data = dataStream.ToArray();
 				hash = SHA1.Create().ComputeHash(data);
 
-				fileWriter.Write(Encoding.ASCII.GetBytes("TMOD"));
-				fileWriter.Write(ModLoader.version.ToString());
-				fileWriter.Write(hash);
-				fileWriter.Write(signature);
-				fileWriter.Write(data.Length);
-				fileWriter.Write(data);
+				using (var fileStream = File.Create(path))
+				using (var fileWriter = new BinaryWriter(fileStream))
+				{
+					fileWriter.Write(Encoding.ASCII.GetBytes("TMOD"));
+					fileWriter.Write(ModLoader.version.ToString());
+					fileWriter.Write(hash);
+					fileWriter.Write(signature);
+					fileWriter.Write(data.Length);
+					fileWriter.Write(data);
+				}
 			}
 		}
 
@@ -137,7 +141,7 @@ namespace Terraria.ModLoader.IO
 				}
 
 				using (var memoryStream = new MemoryStream(data))
-				using (var deflateStream = new DeflateStream(memoryStream,CompressionMode.Decompress))
+				using (var deflateStream = new DeflateStream(memoryStream, CompressionMode.Decompress))
 				using (var reader = new BinaryReader(deflateStream))
 				{
 					name = reader.ReadString();
