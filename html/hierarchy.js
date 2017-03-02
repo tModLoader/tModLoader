@@ -59,6 +59,7 @@ var hierarchy =
     [ "Terraria.ModLoader.ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", null ],
     [ "Terraria.ModLoader.ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html", null ],
     [ "Terraria.ModLoader.ModProperties", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html", null ],
+    [ "Terraria.ModLoader.ModSideExtensions", "class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html", null ],
     [ "Terraria.ModLoader.ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", null ],
     [ "Terraria.ModLoader.ModSurfaceBgStyle", "class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html", null ],
     [ "Terraria.ModLoader.ModTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html", null ],

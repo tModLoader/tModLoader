@@ -20,6 +20,7 @@ var searchData=
   ['modprojectile',['ModProjectile',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html',1,'Terraria::ModLoader']]],
   ['modproperties',['ModProperties',['../struct_terraria_1_1_mod_loader_1_1_mod_properties.html',1,'Terraria::ModLoader']]],
   ['modrecipe',['ModRecipe',['../class_terraria_1_1_mod_loader_1_1_mod_recipe.html',1,'Terraria::ModLoader']]],
+  ['modsideextensions',['ModSideExtensions',['../class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html',1,'Terraria::ModLoader']]],
   ['modsound',['ModSound',['../class_terraria_1_1_mod_loader_1_1_mod_sound.html',1,'Terraria::ModLoader']]],
   ['modsurfacebgstyle',['ModSurfaceBgStyle',['../class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html',1,'Terraria::ModLoader']]],
   ['modtile',['ModTile',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html',1,'Terraria::ModLoader']]],

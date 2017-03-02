@@ -1,5 +1,6 @@
 var _mod_side_8cs =
 [
+    [ "ModSideExtensions", "class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html", "class_terraria_1_1_mod_loader_1_1_mod_side_extensions" ],
     [ "ModSide", "_mod_side_8cs.html#a1c82c6b1930a8ee5c45efb091a036b06", [
       [ "Both", "_mod_side_8cs.html#a1c82c6b1930a8ee5c45efb091a036b06a130c5b3473c57faa76e2a1c54e26f88e", null ],
       [ "Client", "_mod_side_8cs.html#a1c82c6b1930a8ee5c45efb091a036b06a577d7068826de925ea2aec01dbadf5e4", null ],

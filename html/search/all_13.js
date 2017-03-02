@@ -17,6 +17,7 @@ var searchData=
   ['tiletype',['TileType',['../class_terraria_1_1_mod_loader_1_1_mod.html#a5d371832fbdd332b57deb42f062f7be0',1,'Terraria::ModLoader::Mod']]],
   ['tiletype_3c_20t_20_3e',['TileType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a0c887a071d74dc17e2561c0992be07f8',1,'Terraria::ModLoader::Mod']]],
   ['tmodloaderversion',['tModLoaderVersion',['../class_terraria_1_1_mod_loader_1_1_mod.html#ad6eec5ecd13b9a42378033a8a2a6d608',1,'Terraria::ModLoader::Mod']]],
+  ['tofriendlystring',['ToFriendlyString',['../class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html#ac02f4ec543a08a039f6f46b1103dd008',1,'Terraria::ModLoader::ModSideExtensions']]],
   ['tooltipline',['TooltipLine',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#adb1d300be37fc859dd86e9e8d044ed80',1,'Terraria::ModLoader::TooltipLine']]],
   ['tooltipline',['TooltipLine',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html',1,'Terraria::ModLoader']]],
   ['tooltipline_2ecs',['TooltipLine.cs',['../_tooltip_line_8cs.html',1,'']]],

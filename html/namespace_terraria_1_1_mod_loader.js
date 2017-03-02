@@ -38,6 +38,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html", "class_terraria_1_1_mod_loader_1_1_mod_projectile" ],
     [ "ModProperties", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html", "struct_terraria_1_1_mod_loader_1_1_mod_properties" ],
     [ "ModRecipe", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html", "class_terraria_1_1_mod_loader_1_1_mod_recipe" ],
+    [ "ModSideExtensions", "class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html", "class_terraria_1_1_mod_loader_1_1_mod_side_extensions" ],
     [ "ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", "class_terraria_1_1_mod_loader_1_1_mod_sound" ],
     [ "ModSurfaceBgStyle", "class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html", "class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style" ],
     [ "ModTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html", "class_terraria_1_1_mod_loader_1_1_mod_tile" ],
