@@ -262,7 +262,8 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="spriteBatch"></param>
 		/// <param name="drawColor"></param>
-		public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor)
+		/// <param name="nextSpecialDrawIndex">The special draw count. Use with Main.specX and Main.specY and then increment to draw special things after the main tile drawing loop is complete via DrawSpecial.</param>
+		public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
 		}
 
@@ -274,6 +275,15 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="spriteBatch"></param>
 		public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
+		{
+		}
+
+		/// <summary>
+		/// Special Draw. Only called if coordinates are placed in Main.specX/Y during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
+		/// </summary>
+		/// <param name="i">The i.</param>
+		/// <param name="j">The j.</param>
+		public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch)
 		{
 		}
 

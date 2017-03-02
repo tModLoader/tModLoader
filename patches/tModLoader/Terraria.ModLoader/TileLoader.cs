@@ -62,9 +62,10 @@ namespace Terraria.ModLoader
 		private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 		private static Action[] HookAnimateTile;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
-		private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor);
+		private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex);
 		private static DelegateDrawEffects[] HookDrawEffects;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
+		private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
 		private static Action<int, int, int>[] HookRandomUpdate;
 		private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 		private static DelegateTileFrame[] HookTileFrame;
@@ -256,6 +257,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
 			ModLoader.BuildGlobalHook(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalTiles, g => g.PostDraw);
+			ModLoader.BuildGlobalHook(ref HookSpecialDraw, globalTiles, g => g.SpecialDraw);
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
 			ModLoader.BuildGlobalHook(ref HookTileFrame, globalTiles, g => g.TileFrame);
 			ModLoader.BuildGlobalHook(ref HookCanPlace, globalTiles, g => g.CanPlace);
@@ -783,12 +785,12 @@ namespace Terraria.ModLoader
 			return GetTile(type)?.PreDraw(i, j, spriteBatch) ?? true;
 		}
 
-		public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor)
+		public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
-			GetTile(type)?.DrawEffects(i, j, spriteBatch, ref drawColor);
+			GetTile(type)?.DrawEffects(i, j, spriteBatch, ref drawColor, ref nextSpecialDrawIndex);
 			foreach (var hook in HookDrawEffects)
 			{
-				hook(i, j, type, spriteBatch, ref drawColor);
+				hook(i, j, type, spriteBatch, ref drawColor, ref nextSpecialDrawIndex);
 			}
 		}
 		//in Terraria.Main.Draw after if statement checking whether texture2D is null call
@@ -802,6 +804,20 @@ namespace Terraria.ModLoader
 				hook(i, j, type, spriteBatch);
 			}
 		}
+
+		/// <summary>
+		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called from DrawTiles after the draw loop, allowing for basically another layer above tiles.  Main.specX and Main.specY are used to specify tiles to call SpecialDraw on. Use DrawEffects hook to queue for SpecialDraw. 
+		/// </summary>
+		public static void SpecialDraw(int type, int specX, int specY, SpriteBatch spriteBatch)
+		{
+			GetTile(type)?.SpecialDraw(specX, specY, spriteBatch);
+
+			foreach (var hook in HookSpecialDraw)
+			{
+				hook(specX, specY, type, spriteBatch);
+			}
+		}
+
 		//in Terraria.WorldGen.UpdateWorld in the while loops updating certain numbers of tiles at end of null check if statements
 		//  add TileLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].type; for the first loop
 		//  add TileLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].type; for the second loop

@@ -189,7 +189,7 @@
  		public static Preferences Configuration = new Preferences(Main.SavePath + Path.DirectorySeparatorChar + "config.json", false, false);
  		public static Preferences InputProfiles = new Preferences(Main.SavePath + Path.DirectorySeparatorChar + "input profiles.json", false, false);
  		public static string[] itemName = new string[3884];
-@@ -2036,7 +_,7 @@
+@@ -2036,14 +_,14 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
  		public static int selectedWorld = 0;
@@ -198,6 +198,15 @@
  		public static int menuSkip = 0;
  		private static Item cpItem = new Item();
  		public int textBlinkerCount;
+ 		public int textBlinkerState;
+ 		public static string newWorldName = "";
+-		private static int[] specX = new int[1000];
+-		private static int[] specY = new int[1000];
++		public static int[] specX = new int[1000];
++		public static int[] specY = new int[1000];
+ 		public static bool HoveringOverAnNPC = false;
+ 		public static string hoverItemName = "";
+ 		public static Microsoft.Xna.Framework.Color inventoryBack = new Microsoft.Xna.Framework.Color(220, 220, 220, 220);
 @@ -2052,7 +_,7 @@
  		private static int UI_ScreenAnchorX = Main.screenWidth - 800;
  		private static int UIDisplay_ManaPerStar = 20;
@@ -10226,7 +10235,7 @@
  												{
  													white = new Microsoft.Xna.Framework.Color(50, 255, 100, 255);
  												}
-+
++												// TODO, ModTile hook for Shine color.
  												int num90 = Dust.NewDust(new Vector2((float)(j * 16), (float)(i * 16)), 16, 16, 43, 0f, 0f, 254, white, 0.5f);
  												Main.dust[num90].velocity *= 0f;
  											}
@@ -10472,7 +10481,7 @@
  								Main.spriteBatch.Draw(Main.shroomCapTexture, new Vector2((float)(j * 16 - (int)Main.screenPosition.X - 22), (float)(i * 16 - (int)Main.screenPosition.Y - 26)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(num104 * 62, 0, 60, 42)), Lighting.GetColor(j, i), 0f, default(Vector2), 1f, effects, 0f);
  							}
 +
-+							TileLoader.DrawEffects(j, i, type, Main.spriteBatch, ref color);
++							TileLoader.DrawEffects(j, i, type, Main.spriteBatch, ref color, ref num3);
  							if (color.R >= 1 || color.G >= 1 || color.B >= 1)
  							{
  								Tile tile2 = Main.tile[j + 1, i];
@@ -12146,10 +12155,13 @@
  						{
  							Main.spriteBatch.Draw(Main.treeTopAltTexture[num335, (int)tile6.color()], new Vector2((float)(num302 * 16 - (int)Main.screenPosition.X - num339 + frameY3), (float)(num303 * 16 - (int)Main.screenPosition.Y - num338 + 16 + num340)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(num334 * (num337 + 2), y3, num337, num338)), Lighting.GetColor(num302, num303), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  						}
-@@ -20146,16 +_,19 @@
+@@ -20145,17 +_,21 @@
+ 				catch
  				{
  				}
- 			}
+-			}
++				TileLoader.SpecialDraw(type4, num302, num303, Main.spriteBatch);
++			}
 +
  			if (TileObject.objectPreview.Active && Main.player[Main.myPlayer].showItemIcon && Main.placementPreview && !CaptureManager.Instance.Active)
  			{
