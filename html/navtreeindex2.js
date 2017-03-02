@@ -1,12 +1,13 @@
 var NAVTREEINDEX2 =
 {
+"class_terraria_1_1_mod_loader_1_1_global_tile.html#aa4e74f8f2d6ddbf7eb4e0c00d7adc6c2":[1,0,0,0,15,14],
+"class_terraria_1_1_mod_loader_1_1_global_tile.html#aa7f321d426e22879208b26d391cc6286":[1,0,0,0,15,9],
 "class_terraria_1_1_mod_loader_1_1_global_tile.html#ab11111b678186be34cd6cea3ba860a25":[1,0,0,0,15,32],
 "class_terraria_1_1_mod_loader_1_1_global_tile.html#ab74b2737dd0f3351a328dbfb363fd433":[1,0,0,0,15,6],
 "class_terraria_1_1_mod_loader_1_1_global_tile.html#ab98f5b2949277faeb8ccf2e52ba1e304":[1,0,0,0,15,33],
-"class_terraria_1_1_mod_loader_1_1_global_tile.html#abd7e991de75582c8ac50b8f3a83c52e1":[1,0,0,0,15,36],
-"class_terraria_1_1_mod_loader_1_1_global_tile.html#abe8bbde6ac3862dcbb31686f78953232":[1,0,0,0,15,38],
+"class_terraria_1_1_mod_loader_1_1_global_tile.html#abd7e991de75582c8ac50b8f3a83c52e1":[1,0,0,0,15,37],
+"class_terraria_1_1_mod_loader_1_1_global_tile.html#abe8bbde6ac3862dcbb31686f78953232":[1,0,0,0,15,39],
 "class_terraria_1_1_mod_loader_1_1_global_tile.html#abf8afee6c3f52064dcb7454f79a3d9a9":[1,0,0,0,15,31],
-"class_terraria_1_1_mod_loader_1_1_global_tile.html#ad3e3d5559ca3d94cb1a7f6bae5229e32":[1,0,0,0,15,14],
 "class_terraria_1_1_mod_loader_1_1_global_tile.html#adec30c147c382f5adec9e4534ead5022":[1,0,0,0,15,34],
 "class_terraria_1_1_mod_loader_1_1_global_tile.html#adf22ff3d8a42c9338dde6c2045bb98ed":[1,0,0,0,15,10],
 "class_terraria_1_1_mod_loader_1_1_global_tile.html#ae0704b7c0026c5192737cfa1961aedf4":[1,0,0,0,15,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "class_terraria_1_1_mod_loader_1_1_mod.html#a34fbb533991ad5a328a3f0c897b5e4a7":[1,0,0,0,20,15],
 "class_terraria_1_1_mod_loader_1_1_mod.html#a35563b1649ca9175be9b0c1a9d9b37aa":[1,0,0,0,20,137],
 "class_terraria_1_1_mod_loader_1_1_mod.html#a35e24b2d8b9d749c129d8219023b0ec0":[1,0,0,0,20,4],
-"class_terraria_1_1_mod_loader_1_1_mod.html#a38ac11ee561ed7c0b78c6618f886b9eb":[1,0,0,0,20,150],
-"class_terraria_1_1_mod_loader_1_1_mod.html#a39adda16701748f5da5f0c6fda3f1ff3":[1,0,0,0,20,42]
+"class_terraria_1_1_mod_loader_1_1_mod.html#a38ac11ee561ed7c0b78c6618f886b9eb":[1,0,0,0,20,150]
 };

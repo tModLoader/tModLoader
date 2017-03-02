@@ -74,7 +74,7 @@ var searchData=
   ['modmountdata',['ModMountData',['../class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a3b657795b4bc72dd5a28c91aaa02bf6d',1,'Terraria::ModLoader::ModMountData']]],
   ['modmountdata',['ModMountData',['../class_terraria_1_1_mod_loader_1_1_mod_mount_data.html',1,'Terraria::ModLoader']]],
   ['modmountdata_2ecs',['ModMountData.cs',['../_mod_mount_data_8cs.html',1,'']]],
-  ['modmusic',['ModMusic',['../class_terraria_1_1_mod_loader_1_1_music_wrapper.html#afee807a2e3bd0e61ac1e5a508154075a',1,'Terraria.ModLoader.MusicWrapper.ModMusic()'],['../class_terraria_1_1_mod_loader_1_1_music_wrapper.html#ae057cd798d9027aefd50f9277afc9eb0',1,'Terraria.ModLoader.MusicWrapper.modMusic()']]],
+  ['modmusic',['modMusic',['../class_terraria_1_1_mod_loader_1_1_music_wrapper.html#ae057cd798d9027aefd50f9277afc9eb0',1,'Terraria.ModLoader.MusicWrapper.modMusic()'],['../class_terraria_1_1_mod_loader_1_1_music_wrapper.html#afee807a2e3bd0e61ac1e5a508154075a',1,'Terraria.ModLoader.MusicWrapper.ModMusic()']]],
   ['modnet',['ModNet',['../class_terraria_1_1_mod_loader_1_1_mod_net.html',1,'Terraria::ModLoader']]],
   ['modnet_2ecs',['ModNet.cs',['../_mod_net_8cs.html',1,'']]],
   ['modnpc',['ModNPC',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html',1,'Terraria::ModLoader']]],

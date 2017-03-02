@@ -165,6 +165,7 @@ var searchData=
   ['hooksinglegrapplehook',['HookSingleGrappleHook',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a8ea80f22dcfc68df758bb5e545cae4ca',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['hookslope',['HookSlope',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a75cd30f69db43f2d50ac7ca54c472cd7',1,'Terraria::ModLoader::TileLoader']]],
   ['hookspawnnpc',['HookSpawnNPC',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a3a4823d8f2bea09ee64bfacd43c42f6c',1,'Terraria::ModLoader::NPCLoader']]],
+  ['hookspecialdraw',['HookSpecialDraw',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a79535c0d7bd736b04cbc7a086829ee29',1,'Terraria::ModLoader::TileLoader']]],
   ['hookstrikenpc',['HookStrikeNPC',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a830c53dbb92ebb1b1c9a2146d13d22ec',1,'Terraria::ModLoader::NPCLoader']]],
   ['hooktilecollidestyle',['HookTileCollideStyle',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9da30130ae47c527b9715de52d024bc9',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['hooktileframe',['HookTileFrame',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a113d6eee02db5bf854fc26212580e7fc',1,'Terraria::ModLoader::TileLoader']]],
