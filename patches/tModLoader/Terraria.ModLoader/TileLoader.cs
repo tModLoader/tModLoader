@@ -747,16 +747,27 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
 		//in Terraria.Main.Draw after small if statements setting num15 call
 		//  TileLoader.SetAnimationFrame(type, ref num15);
-		public static void SetAnimationFrame(int type, ref int frameY)
+		/// <summary>
+		/// Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type]; and then calls ModTile.AnimateIndividualTile
+		/// </summary>
+		/// <param name="type">The tile type.</param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="frameXOffset">The offset to frameX.</param>
+		/// <param name="frameYOffset">The offset to frameY.</param>
+		public static void SetAnimationFrame(int type, int i, int j, ref int frameXOffset, ref int frameYOffset)
 		{
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
 			{
-				frameY = modTile.animationFrameHeight * Main.tileFrame[type];
+				frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];
+				modTile.AnimateIndividualTile(type, i, j, ref frameXOffset, ref frameYOffset);
 			}
 		}
+
 		//in Terraria.Main.Draw after calling SetAnimationFrame call
 		//  if(!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
 		//  { TileLoader.PostDraw(j, i, type, Main.spriteBatch); continue; }

@@ -8942,7 +8942,7 @@
  							}
  						}
 +
-+						TileLoader.SetAnimationFrame(type, ref num15);
++						TileLoader.SetAnimationFrame(type, j, i, ref num16, ref num15);
 +						if (!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
 +						{
 +							TileLoader.PostDraw(j, i, type, Main.spriteBatch);

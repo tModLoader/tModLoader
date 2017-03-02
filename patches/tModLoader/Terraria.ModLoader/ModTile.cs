@@ -340,7 +340,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to animate your tile. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame. This is called once an update. Use SetAnimationFrame to animate specific tile instances directly.
+		/// Allows you to animate your tile. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame. This is called once an update. Use AnimateIndividualTile to animate specific tile instances directly.
 		/// </summary>
 		/// <example><code>if (++frameCounter > 8)
 		///{
@@ -353,6 +353,19 @@ namespace Terraria.ModLoader
 		///	or, to mimic another tile, simply:
 		///	<code>frame = Main.tileFrame[TileID.FireflyinaBottle];</code></example>
 		public virtual void AnimateTile(ref int frame, ref int frameCounter)
+		{
+		}
+
+		/// <summary>
+		/// Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and frameYOffset should be used to specify an offset from the tiles frameX and frameY. "frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];" will already be set before this hook is called, taking into account the TileID-wide animation set via AnimateTile. 
+		/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to acheive unique animation behaviors without having to manually draw the tile via PreDraw. 
+		/// </summary>
+		/// <param name="type">The tile type.</param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="frameXOffset">The offset to frameX.</param>
+		/// <param name="frameYOffset">The offset to frameY.</param>
+		public virtual void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset)
 		{
 		}
 

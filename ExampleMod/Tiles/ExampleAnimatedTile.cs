@@ -23,6 +23,8 @@ namespace ExampleMod.Tiles
 			//Can't use this since texture is virtical.
 			//animationFrameHeight = 56;
 		}
+		// Our textures animation frames are arranged horizontally, which isn't typical, so here we specify animationFrameWidth which we use later in AnimateIndividualTile
+		int animationFrameWidth = 18;
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
 		{
@@ -31,9 +33,38 @@ namespace ExampleMod.Tiles
 			b = 0.12f;
 		}
 
-		int animationFrameWidth = 18;
+		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects)
+		{
+			// Flips the sprite if x coord is odd. Makes the tile more interesting.
+			if (i % 2 == 1)
+			{
+				spriteEffects = SpriteEffects.FlipHorizontally;
+			}
+		}
 
-		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+		public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset)
+		{
+			 // Tweak the frame drawn by x position so tiles next to each other are off-sync and look much more interesting.
+			int uniqueAnimationFrame = Main.tileFrame[Type] + i;
+			if (i % 2 == 0)
+			{
+				uniqueAnimationFrame += 3;
+			}
+			if (i % 3 == 0)
+			{
+				uniqueAnimationFrame += 3;
+			}
+			if (i % 4 == 0)
+			{
+				uniqueAnimationFrame += 3;
+			}
+			uniqueAnimationFrame = uniqueAnimationFrame % 6;
+
+			frameXOffset = uniqueAnimationFrame * animationFrameWidth;
+		}
+
+		// Below is an example completely manually drawing a tile. It shows some interesting concepts that may be useful for more advanced things.
+		/*public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 			// Flips the sprite
 			SpriteEffects effects = SpriteEffects.None;
@@ -82,7 +113,7 @@ namespace ExampleMod.Tiles
 				Lighting.GetColor(i, j), 0f, default(Vector2), 1f, effects, 0f);
 
 			return false; // return false to stop vanilla draw.
-		}
+		}*/
 
 		public override void AnimateTile(ref int frame, ref int frameCounter)
 		{
