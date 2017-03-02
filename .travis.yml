@@ -27,8 +27,7 @@ addons:
       - graphviz
 
 before_install:
-    - sudo apt-get install python-software-properties 
-    - sudo apt-add-repository -y ppa:libreoffice/libreoffice-4-2
+    - sudo apt-add-repository -y ppa:vidavidorra/precise-backport
     - sudo apt-get update
     - sudo apt-get install doxygen
       
