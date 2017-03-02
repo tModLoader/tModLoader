@@ -7,9 +7,12 @@ var hierarchy =
     [ "Terraria.ModLoader.BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", null ],
     [ "Terraria.ModLoader.CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", null ],
     [ "Terraria.ModLoader.CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", null ],
-    [ "Terraria.ModLoader.DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html", [
-      [ "Terraria.ModLoader.PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", null ],
+    [ "Terraria.ModLoader.DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", null ],
+    [ "Terraria.ModLoader.DrawLayer< PlayerDrawInfo >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", [
       [ "Terraria.ModLoader.PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", null ]
+    ] ],
+    [ "Terraria.ModLoader.DrawLayer< PlayerHeadDrawInfo >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", [
+      [ "Terraria.ModLoader.PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", null ]
     ] ],
     [ "Terraria.ModLoader.EntityInfo", "class_terraria_1_1_mod_loader_1_1_entity_info.html", [
       [ "Terraria.ModLoader.ItemInfo", "class_terraria_1_1_mod_loader_1_1_item_info.html", null ],

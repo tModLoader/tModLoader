@@ -27,7 +27,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "PlayerHeadDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info" ]
     ] ],
     [ "DrawLayer.cs", "_draw_layer_8cs.html", [
-      [ "DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html", "class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4" ],
+      [ "DrawLayer", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", "class_terraria_1_1_mod_loader_1_1_draw_layer" ],
       [ "PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", "class_terraria_1_1_mod_loader_1_1_player_head_layer" ],
       [ "PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", "class_terraria_1_1_mod_loader_1_1_player_layer" ]
     ] ],

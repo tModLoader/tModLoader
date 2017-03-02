@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.EquipTexture.HorizontalWingSpeeds" name="Terraria.ModLoader.EquipTexture.HorizontalWingSpeeds">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#ad0e201a10ba3a7c2dabefebac13b4eb9" title="If the player is using wings, this uses the result of GetWing, and calls ModItem.HorizontalWingSpeeds..." alt="" coords="257,5,463,51"/>
+</map>

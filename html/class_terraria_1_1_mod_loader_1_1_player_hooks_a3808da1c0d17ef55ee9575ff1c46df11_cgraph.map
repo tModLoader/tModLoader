@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.Kill" name="Terraria.ModLoader.PlayerHooks.Kill">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a45e271dac4c1ebab80b8d0818c7a673c" title="Allows you to make anything happen when the player dies. " alt="" coords="231,13,452,43"/>
+</map>

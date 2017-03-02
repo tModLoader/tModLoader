@@ -1,3 +1,5 @@
 <map id="Terraria.ModLoader.WaterStyleLoader.ChooseWaterStyle" name="Terraria.ModLoader.WaterStyleLoader.ChooseWaterStyle">
 <area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a6ca032617b6b72bd0382919b2bfca430" title="Whether the conditions have been met for this water style to be used. Typically Main.bgStyle is checked to determine whether a water style should be used. Returns false by default. " alt="" coords="260,5,457,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_world_hooks.html#aea14ab9f4f7eb78bc10e93acfe8e895b" title="Terraria.ModLoader.World\lHooks.ChooseWaterStyle" alt="" coords="272,74,445,121"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod_world.html#a19083066738a43f6c572b12874aaaf85" title="Allows you to change the water style (determines water color) that is currently being used..." alt="" coords="508,74,708,121"/>
 </map>

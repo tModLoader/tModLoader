@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.OnHitPvpWithProj" name="Terraria.ModLoader.PlayerHooks.OnHitPvpWithProj">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a91309cb667e23771797bb11f3c078878" title="Allows you to create special effects when a projectile created by this player hits an opponent player..." alt="" coords="231,5,433,51"/>
+</map>

@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.UpdateDead" name="Terraria.ModLoader.PlayerHooks.UpdateDead">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a0b6b68a8bcbc2d8e88d0839a43608668" title="Similar to UpdateDead, except this is only called when the player is dead. If this is called..." alt="" coords="231,5,433,51"/>
+</map>

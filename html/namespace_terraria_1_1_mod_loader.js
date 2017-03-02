@@ -4,7 +4,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", "class_terraria_1_1_mod_loader_1_1_buff_loader" ],
     [ "CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", "interface_terraria_1_1_mod_loader_1_1_command_caller" ],
     [ "CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", "class_terraria_1_1_mod_loader_1_1_command_manager" ],
-    [ "DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html", "class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4" ],
+    [ "DrawLayer", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", "class_terraria_1_1_mod_loader_1_1_draw_layer" ],
     [ "EntityInfo", "class_terraria_1_1_mod_loader_1_1_entity_info.html", "class_terraria_1_1_mod_loader_1_1_entity_info" ],
     [ "EquipLoader", "class_terraria_1_1_mod_loader_1_1_equip_loader.html", "class_terraria_1_1_mod_loader_1_1_equip_loader" ],
     [ "EquipTexture", "class_terraria_1_1_mod_loader_1_1_equip_texture.html", "class_terraria_1_1_mod_loader_1_1_equip_texture" ],

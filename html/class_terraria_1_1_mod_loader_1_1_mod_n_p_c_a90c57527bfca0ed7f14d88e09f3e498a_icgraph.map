@@ -1,0 +1,5 @@
+<map id="Terraria.ModLoader.ModNPC.SetDefaults" name="Terraria.ModLoader.ModNPC.SetDefaults">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aaf8303dd0a30d0ae359128e951374351" title="Allows you to control the path to this NPC&#39;s head texture when it is autoloaded. The headTexture defa..." alt="" coords="261,5,456,51"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are ..." alt="" coords="251,74,467,121"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ad77577c0eeaae460a0f0652b70897259" title="Terraria.ModLoader.Mod.AutoloadNPC" alt="" coords="516,13,761,43"/>
+</map>

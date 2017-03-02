@@ -1,7 +1,7 @@
 var searchData=
 [
   ['lacbeetle',['LacBeetle',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af3a010466ec021f37571df001c1f079c',1,'Terraria::ModLoader::SpawnCondition']]],
-  ['layer',['layer',['../class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html#aa9055d5c3e7fb290ff972b73824082d1',1,'Terraria::ModLoader::DrawLayer&lt; InfoType &gt;']]],
+  ['layer',['layer',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#aa9055d5c3e7fb290ff972b73824082d1',1,'Terraria::ModLoader::DrawLayer']]],
   ['legacyhorizontalwingspeeds',['LegacyHorizontalWingSpeeds',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#adc4dc51f33d8305df12d07d19661b3f6',1,'Terraria::ModLoader::ItemLoader']]],
   ['legacyverticalwingspeeds',['LegacyVerticalWingSpeeds',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ab155ab3de2dfb81c1564d93d6d2b934f',1,'Terraria::ModLoader::ItemLoader']]],
   ['legacywingupdate',['LegacyWingUpdate',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#acf4151da8e9f4fddd7c46e567307d12c',1,'Terraria::ModLoader::ItemLoader']]],

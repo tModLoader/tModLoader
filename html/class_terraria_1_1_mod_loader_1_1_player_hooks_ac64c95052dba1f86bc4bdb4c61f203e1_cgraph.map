@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.UpdateLifeRegen" name="Terraria.ModLoader.PlayerHooks.UpdateLifeRegen">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a24e9cd74df89ef1a39093b457f9af952" title="Allows you to increase the player&#39;s life regeneration based on its state. This can be done by increme..." alt="" coords="231,5,433,51"/>
+</map>
