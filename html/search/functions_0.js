@@ -60,6 +60,7 @@ var searchData=
   ['anglerquestchat',['AnglerQuestChat',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ac7fedbda0e561959eefd688955c6e614',1,'Terraria::ModLoader::ModItem']]],
   ['anglerquestreward',['AnglerQuestReward',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#af58b9852f0aa053b294553324b0dcdf1',1,'Terraria.ModLoader.ModPlayer.AnglerQuestReward()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a79d1241a9fd07ca355463e426c2465dd',1,'Terraria.ModLoader.PlayerHooks.AnglerQuestReward()']]],
   ['animateditemframe',['AnimatedItemFrame',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a0ab2225be8832afd4212a562a2ec5c81',1,'Terraria::ModLoader::ItemLoader']]],
+  ['animateindividualtile',['AnimateIndividualTile',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a46dd9ce911663e3e5075cfe6e5543735',1,'Terraria::ModLoader::ModTile']]],
   ['animatetile',['AnimateTile',['../class_terraria_1_1_mod_loader_1_1_global_tile.html#a7eccf0ca48646e841ead05b15f2dd28d',1,'Terraria.ModLoader.GlobalTile.AnimateTile()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6ec8460becadc0e768d0f58ba11d9a2e',1,'Terraria.ModLoader.ModTile.AnimateTile()']]],
   ['animatetiles',['AnimateTiles',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#aeca82b8cc7241174a39f9479dbe5530e',1,'Terraria::ModLoader::TileLoader']]],
   ['animatewall',['AnimateWall',['../class_terraria_1_1_mod_loader_1_1_mod_wall.html#a5b9855075312c5bd2859e6a1e169789d',1,'Terraria::ModLoader::ModWall']]],

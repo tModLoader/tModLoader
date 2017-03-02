@@ -493,7 +493,7 @@ Generating caller graph for function Terraria.ModLoader.ModRecipe.RecipeAvailabl
 Generating docs for compound Terraria::ModLoader::ModSound...
 Generating docs for compound Terraria::ModLoader::ModSurfaceBgStyle...
 Generating caller graph for function Terraria.ModLoader.ModSurfaceBgStyle.Autoload
-Generating docs for compound Terraria::ModLoade/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:454: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
+Generating docs for compound Terraria::ModLoade/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:467: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
   parameter 'item'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:259: warning: The following parameters of Terraria.ModLoader.ModTile.CanKillTile(int i, int j, ref bool blockDamaged) are not documented:
   parameter 'blockDamaged'
@@ -501,7 +501,7 @@ Generating docs for compound Terraria::ModLoade/home/travis/build/bluemagic123/t
   parameter 'type'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:315: warning: The following parameters of Terraria.ModLoader.ModTile.Dangersense(int i, int j, Player player) are not documented:
   parameter 'player'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:370: warning: The following parameters of Terraria.ModLoader.ModTile.DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:383: warning: The following parameters of Terraria.ModLoader.ModTile.DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor) are not documented:
   parameter 'spriteBatch'
   parameter 'drawColor'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:240: warning: The following parameters of Terraria.ModLoader.ModTile.DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) are not documented:
@@ -524,9 +524,9 @@ Generating docs for compound Terraria::ModLoade/home/travis/build/bluemagic123/t
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:220: warning: The following parameters of Terraria.ModLoader.ModTile.NumDust(int i, int j, bool fail, ref int num) are not documented:
   parameter 'fail'
   parameter 'num'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:379: warning: The following parameters of Terraria.ModLoader.ModTile.PostDraw(int i, int j, SpriteBatch spriteBatch) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:392: warning: The following parameters of Terraria.ModLoader.ModTile.PostDraw(int i, int j, SpriteBatch spriteBatch) are not documented:
   parameter 'spriteBatch'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:360: warning: The following parameters of Terraria.ModLoader.ModTile.PreDraw(int i, int j, SpriteBatch spriteBatch) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:373: warning: The following parameters of Terraria.ModLoader.ModTile.PreDraw(int i, int j, SpriteBatch spriteBatch) are not documented:
   parameter 'spriteBatch'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:334: warning: The following parameters of Terraria.ModLoader.ModTile.SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) are not documented:
   parameter 'width'
@@ -534,7 +534,7 @@ Generating docs for compound Terraria::ModLoade/home/travis/build/bluemagic123/t
   parameter 'height'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:325: warning: The following parameters of Terraria.ModLoader.ModTile.SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) are not documented:
   parameter 'spriteEffects'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:407: warning: The following parameters of Terraria.ModLoader.ModTile.TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:420: warning: The following parameters of Terraria.ModLoader.ModTile.TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) are not documented:
   parameter 'resetFrame'
   parameter 'noBreak'
 r::ModTile...
@@ -982,5 +982,5 @@ Patching output file 82/85
 Patching output file 83/85
 Patching output file 84/85
 Patching output file 85/85
-lookup cache used 9654/131072 hits=79106 misses=9983
+lookup cache used 9658/131072 hits=79142 misses=9987
 finished...

@@ -71,7 +71,7 @@ var class_terraria_1_1_mod_loader_1_1_tile_loader =
     [ "Resize2DArray< T >", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#aa48fea1bba9480a0550b886ccf2c1386", null ],
     [ "RightClick", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a7f59c2ef12dcc98f04552c4abb1b0fea", null ],
     [ "SaplingGrowthType", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2cafade783145461772990eecfb3dd39", null ],
-    [ "SetAnimationFrame", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#aeb2a9b46665b464a97eb2168d11bf774", null ],
+    [ "SetAnimationFrame", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#aa79d0c5dd4df116f4f3bde7ec8c91bc5", null ],
     [ "SetDrawPositions", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a6470cd76125120b7af5bb68b4a3e6db4", null ],
     [ "SetSpriteEffects", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a6955346c282c07cbe8dccdc4ff442888", null ],
     [ "Slope", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ac68c240afc654cfe6979cad7bd5bbf22", null ],

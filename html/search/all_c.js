@@ -30,6 +30,6 @@ var searchData=
   ['loadorder',['loadOrder',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#af88cc5994695afbd0032f9ba5eaf88ba',1,'Terraria::ModLoader::ModLoader']]],
   ['log',['Log',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a389b47286140d38044d0f0470a556225',1,'Terraria::ModLoader::ErrorLogger']]],
   ['logpath',['LogPath',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#aa9a8c718043dbefec4d9f3e44e39ccaa',1,'Terraria::ModLoader::ErrorLogger']]],
-  ['longerexpertdebuff',['longerExpertDebuff',['../class_terraria_1_1_mod_loader_1_1_mod_buff.html#a8bef7bf37c676c76987291fe878f8ed0',1,'Terraria.ModLoader.ModBuff.longerExpertDebuff()'],['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#af0b8606154d66c37a9ec015479eaca0c',1,'Terraria.ModLoader.BuffLoader.LongerExpertDebuff()']]],
+  ['longerexpertdebuff',['LongerExpertDebuff',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#af0b8606154d66c37a9ec015479eaca0c',1,'Terraria.ModLoader.BuffLoader.LongerExpertDebuff()'],['../class_terraria_1_1_mod_loader_1_1_mod_buff.html#a8bef7bf37c676c76987291fe878f8ed0',1,'Terraria.ModLoader.ModBuff.longerExpertDebuff()']]],
   ['lowerarmorcolor',['lowerArmorColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#af0004f3bc1772245d3b17f439ba4084c',1,'Terraria::ModLoader::PlayerDrawInfo']]]
 ];

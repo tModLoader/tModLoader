@@ -3,6 +3,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_tile =
     [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a99309aca68c28b20dc5b0077fd57e20c", null ],
     [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a95693c1c73aaa781e549e2fde5098102", null ],
     [ "AddToArray", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#aca4b939ee9f5e667154e0728c5bfa3ca", null ],
+    [ "AnimateIndividualTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a46dd9ce911663e3e5075cfe6e5543735", null ],
     [ "AnimateTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6ec8460becadc0e768d0f58ba11d9a2e", null ],
     [ "Autoload", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a8966d0785463aef87d2c78c617c2e15e", null ],
     [ "AutoSelect", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a1f295d50d096827db82e0c0b812cbf29", null ],

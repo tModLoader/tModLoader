@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_mod_loader_1_1_world_hooks.html#af325d22b83091f0f38f8661f5954d2fe":[1,0,0,0,75,7],
 "class_terraria_1_1_mod_loader_1_1_world_hooks.html#afac834cbc27b096e172caec25c45fff0":[1,0,0,0,75,8],
 "class_tile_entity.html":[1,0,4],
 "classes.html":[1,1],
@@ -53,8 +54,8 @@ var NAVTREEINDEX9 =
 "functions_t.html":[1,3,0,19],
 "functions_u.html":[1,3,0,20],
 "functions_v.html":[1,3,0,21],
-"functions_vars.html":[1,3,2,0],
 "functions_vars.html":[1,3,2],
+"functions_vars.html":[1,3,2,0],
 "functions_vars_a.html":[1,3,2,1],
 "functions_vars_b.html":[1,3,2,2],
 "functions_vars_c.html":[1,3,2,3],

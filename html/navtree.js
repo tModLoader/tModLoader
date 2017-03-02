@@ -34,10 +34,10 @@ var NAVTREEINDEX =
 "class_terraria_1_1_mod_loader_1_1_mod.html#a3d385fffbf96e8f4e5f8b677be2652b1",
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac7fedbda0e561959eefd688955c6e614",
 "class_terraria_1_1_mod_loader_1_1_mod_player.html#aef699093a790693391a6ad7fbba3caf8",
-"class_terraria_1_1_mod_loader_1_1_mod_world.html#a22ed14d7ba5984b0d2bf1eec1e138e43",
-"class_terraria_1_1_mod_loader_1_1_player_hooks.html#aac8f6d459f47c9501c0eeb3990f9e22c",
-"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a8da0fb295154f126cf99fa9c103a2247",
-"class_terraria_1_1_mod_loader_1_1_world_hooks.html#afac834cbc27b096e172caec25c45fff0"
+"class_terraria_1_1_mod_loader_1_1_mod_world.html#a19083066738a43f6c572b12874aaaf85",
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#aa9f4b92af68053999850d32e7234334e",
+"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a89a5658e43c33b91140917d7f16fd568",
+"class_terraria_1_1_mod_loader_1_1_world_hooks.html#af325d22b83091f0f38f8661f5954d2fe"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
