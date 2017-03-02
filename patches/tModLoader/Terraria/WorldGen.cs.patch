@@ -754,6 +754,17 @@
  					{
  						WorldGen.PlaceChest(i, j, (ushort)type, false, style);
  						WorldGen.SquareTileFrame(i, j, true);
+@@ -33747,6 +_,10 @@
+ 					else if (type == 314)
+ 					{
+ 						Minecart.PlaceTrack(tile, style);
++					}
++					else if (type >= TileID.Count && TileObjectData.GetTileData(type, style) != null)
++					{
++						PlaceObject(i, j, type, mute, style);
+ 					}
+ 					else
+ 					{
 @@ -33813,7 +_,11 @@
  					{
  						fail = true;
@@ -1394,4 +1405,16 @@
  									{
  										flag19 = false;
  									}
+@@ -52052,7 +_,11 @@
+ 							if (rectangle.X != frameX && rectangle.Y != frameY && frameX >= 0 && frameY >= 0)
+ 							{
+ 								WorldGen.tileReframeCount++;
++#if DEBUG
++								if (WorldGen.tileReframeCount < 20)
++#else
+ 								if (WorldGen.tileReframeCount < 100)
++#endif
+ 								{
+ 									bool flag21 = WorldGen.mergeUp;
+ 									bool flag22 = WorldGen.mergeDown;
 

@@ -9,4 +9,13 @@
  			{
  				225,
  				41,
+@@ -571,7 +_,7 @@
+ 					}
+ 				}
+ 				int num18 = current11.Width / 8 + 3;
+-				WorldGen.SetupStatueList();
++				// Commented out because it makes no sense: WorldGen.SetupStatueList();
+ 				while (num18 > 0)
+ 				{
+ 					int num19 = GenBase._random.Next(current11.Width - 3) + 1 + current11.X;
 
