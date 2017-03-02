@@ -24,6 +24,8 @@ namespace Terraria.ModLoader.UI
 		public string author;
 		public string download;
 		public string timeStamp;
+		public string modreferences;
+		public ModSide modside;
 		public int downloads;
 		public int hot;
 		private Texture2D dividerTexture;
@@ -34,12 +36,14 @@ namespace Terraria.ModLoader.UI
 		public bool updateIsDowngrade = false;
 		public bool exists = false;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, bool exists)
+		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, bool exists)
 		{
 			this.displayname = displayname;
 			this.mod = name;
 			this.version = version;
 			this.author = author;
+			this.modreferences = modreferences;
+			this.modside = modside;
 			this.download = download;
 			this.downloads = downloads;
 			this.hot = hot;
@@ -80,6 +84,13 @@ namespace Terraria.ModLoader.UI
 				button2.OnClick += this.DownloadMod;
 				base.Append(button2);
 			}
+			if (modreferences.Length > 0)
+			{
+				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + modreferences);
+				modReferenceIcon.Left.Set(115, 0f);
+				modReferenceIcon.Top.Set(50f, 0f);
+				Append(modReferenceIcon);
+			}
 			base.OnDoubleClick += RequestMoreinfo;
 		}
 
@@ -105,7 +116,7 @@ namespace Terraria.ModLoader.UI
 
 		public override bool PassFilters()
 		{
-			if(Interface.modBrowser.specialModPackFilter != null && !Interface.modBrowser.specialModPackFilter.Contains(mod))
+			if (Interface.modBrowser.specialModPackFilter != null && !Interface.modBrowser.specialModPackFilter.Contains(mod))
 			{
 				return false;
 			}

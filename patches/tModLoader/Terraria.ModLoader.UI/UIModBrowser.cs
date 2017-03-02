@@ -360,6 +360,13 @@ namespace Terraria.ModLoader.UI
 					int downloads = (int)mod["downloads"];
 					int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
 					string timeStamp = (string)mod["updateTimeStamp"];
+					//string[] modreferences = ((string)mod["modreferences"]).Split(',');
+					string modreferences = (string)mod["modreferences"];
+					ModSide modside = ModSide.Both; // TODO: add filter option for modside.
+					string modsideString = (string)mod["modside"];
+					if(modsideString == "Client") modside = ModSide.Client;
+					if(modsideString == "Server") modside = ModSide.Server;
+					if(modsideString == "NoSync") modside = ModSide.NoSync;
 					bool exists = false;
 					bool update = false;
 					bool updateIsDowngrade = false;
@@ -378,7 +385,7 @@ namespace Terraria.ModLoader.UI
 							}
 						}
 					}
-					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, download, downloads, hot, timeStamp, update, updateIsDowngrade, exists);
+					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, modreferences, modside, download, downloads, hot, timeStamp, update, updateIsDowngrade, exists);
 					modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
 				}
 				SortList();

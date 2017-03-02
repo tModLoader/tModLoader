@@ -12,4 +12,23 @@
 		/// <summary>This means that the mod could have effects client-side and could have effects server-side. The client will not download this mod if it connects to a server with this mod, and the client will not disable this mod if it connects to a server without this mod. If a client connects to a server and both have this mod, then IDs will still be synchronized. This is useful if you want optional extra features when both the client and server have this mod.</summary>
 		NoSync
 	}
+
+	public static class ModSideExtensions
+	{
+		public static string ToFriendlyString(this ModSide sortmode)
+		{
+			switch (sortmode)
+			{
+				case ModSide.Both:
+					return "Both";
+				case ModSide.Client:
+					return "Client";
+				case ModSide.Server:
+					return "Server";
+				case ModSide.NoSync:
+					return "NoSync";
+			}
+			return "Unknown";
+		}
+	}
 }

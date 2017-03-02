@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections.Specialized;
 using Terraria.ModLoader.IO;
+using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
@@ -169,7 +170,9 @@ namespace Terraria.ModLoader.UI
 						{ "description", bp.description },
 						{ "steamid64", ModLoader.SteamID64 },
 						{ "modloaderversion", "tModLoader v"+theTModFile.tModLoaderVersion },
-						{ "passphrase", ModLoader.modBrowserPassphrase }
+						{ "passphrase", ModLoader.modBrowserPassphrase },
+						{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
+						{ "modside", bp.side.ToFriendlyString() },
 					};
 					result = IO.UploadFile.UploadFiles(url, files, values);
 				}

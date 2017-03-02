@@ -68,10 +68,10 @@ namespace Terraria.ModLoader.UI
 			if (properties.modReferences.Length > 0 && !enabled)
 			{
 				string refs = String.Join(", ", properties.modReferences.Select(x => x.mod));
-				keyImage = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs);
-				keyImage.Left.Set(265, 0f);
-				keyImage.Top.Set(50f, 0f);
-				base.Append(keyImage);
+				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs);
+				modReferenceIcon.Left.Set(265, 0f);
+				modReferenceIcon.Top.Set(50f, 0f);
+				base.Append(modReferenceIcon);
 			}
 			if (mod.ValidModBrowserSignature)
 			{
