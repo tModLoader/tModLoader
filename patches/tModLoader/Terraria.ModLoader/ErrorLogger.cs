@@ -35,10 +35,15 @@ namespace Terraria.ModLoader
 			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
 
-		internal static void LogCompileErrors(CompilerErrorCollection errors)
+		internal static void LogCompileErrors(CompilerErrorCollection errors, bool forWindows)
 		{
 			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
-			Console.WriteLine(errorHeader);
+			string badInstallHint = "";
+			if(!forWindows && ModLoader.windows)
+			{
+				badInstallHint = "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well." + Environment.NewLine + Environment.NewLine;
+			}
+			Console.WriteLine(errorHeader + badInstallHint);
 			Directory.CreateDirectory(LogPath);
 			CompilerError displayError = null;
 			using (var writer = File.CreateText(CompileErrorPath))
@@ -51,7 +56,7 @@ namespace Terraria.ModLoader
 						displayError = error;
 				}
 			}
-			Interface.errorMessage.SetMessage(errorHeader + displayError);
+			Interface.errorMessage.SetMessage(errorHeader + badInstallHint + displayError);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 			Interface.errorMessage.SetFile(CompileErrorPath);
 		}

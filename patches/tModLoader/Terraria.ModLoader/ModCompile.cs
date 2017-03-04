@@ -364,7 +364,7 @@ namespace Terraria.ModLoader
                 }
 
                 if (results.Errors.HasErrors) {
-                    ErrorLogger.LogCompileErrors(results.Errors);
+                    ErrorLogger.LogCompileErrors(results.Errors, forWindows);
                     return;
                 }
 
