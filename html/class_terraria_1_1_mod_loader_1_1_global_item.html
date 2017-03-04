@@ -191,6 +191,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0edc645e49d4ae2ddb75f4fa1df28391"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. An extractType of 0 represents the default extraction (Silt and Slush). By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.  <a href="#a0edc645e49d4ae2ddb75f4fa1df28391">More...</a><br /></td></tr>
 <tr class="separator:a0edc645e49d4ae2ddb75f4fa1df28391"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ccf55859a7676ea49fd7e15c64dae35"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2ccf55859a7676ea49fd7e15c64dae35">ExtraPickupSpace</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, Player player)</td></tr>
+<tr class="memdesc:a2ccf55859a7676ea49fd7e15c64dae35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it.  <a href="#a2ccf55859a7676ea49fd7e15c64dae35">More...</a><br /></td></tr>
 <tr class="separator:a2ccf55859a7676ea49fd7e15c64dae35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e7f8130872df2d2b2f9c7f54ff8da23"><td class="memItemLeft" align="right" valign="top">virtual Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a9e7f8130872df2d2b2f9c7f54ff8da23">GetAlpha</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, Color lightColor)</td></tr>
 <tr class="memdesc:a9e7f8130872df2d2b2f9c7f54ff8da23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which an item is drawn. Return null to use the default color (normally light color). Returns null by default.  <a href="#a9e7f8130872df2d2b2f9c7f54ff8da23">More...</a><br /></td></tr>
@@ -1369,7 +1370,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p></p>
+<p>Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it. </p>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00559">559</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;        {</div><div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;        }</div></div><!-- fragment -->

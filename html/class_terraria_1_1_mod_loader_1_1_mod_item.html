@@ -221,10 +221,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac53dd0f4d41cf3b0a6171416b8ef2d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify what item, and in what quantity, is obtained when this item is fed into the Extractinator. By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.  <a href="#ac53dd0f4d41cf3b0a6171416b8ef2d9c">More...</a><br /></td></tr>
 <tr class="separator:ac53dd0f4d41cf3b0a6171416b8ef2d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5292a3a11ea0ae98c6100a7b303c467"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ac5292a3a11ea0ae98c6100a7b303c467">ExtraPickupSpace</a> (Player player)</td></tr>
-<tr class="memdesc:ac5292a3a11ea0ae98c6100a7b303c467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default.  <a href="#ac5292a3a11ea0ae98c6100a7b303c467">More...</a><br /></td></tr>
+<tr class="memdesc:ac5292a3a11ea0ae98c6100a7b303c467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it.  <a href="#ac5292a3a11ea0ae98c6100a7b303c467">More...</a><br /></td></tr>
 <tr class="separator:ac5292a3a11ea0ae98c6100a7b303c467"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfa5895f0e52f0df7c833558b0f23b86"><td class="memItemLeft" align="right" valign="top">virtual Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acfa5895f0e52f0df7c833558b0f23b86">GetAlpha</a> (Color lightColor)</td></tr>
-<tr class="memdesc:acfa5895f0e52f0df7c833558b0f23b86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the alpha.  <a href="#acfa5895f0e52f0df7c833558b0f23b86">More...</a><br /></td></tr>
+<tr class="memdesc:acfa5895f0e52f0df7c833558b0f23b86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default.  <a href="#acfa5895f0e52f0df7c833558b0f23b86">More...</a><br /></td></tr>
 <tr class="separator:acfa5895f0e52f0df7c833558b0f23b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16371460b0bd1d377b030eea499ada7b"><td class="memItemLeft" align="right" valign="top">virtual DrawAnimation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a16371460b0bd1d377b030eea499ada7b">GetAnimation</a> ()</td></tr>
 <tr class="memdesc:a16371460b0bd1d377b030eea499ada7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to create an animation for your item. In general you will return a new Terraria.DataStructures.DrawAnimationVertical(int frameDuration, int frameCount).  <a href="#a16371460b0bd1d377b030eea499ada7b">More...</a><br /></td></tr>
@@ -1667,7 +1667,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default. </p>
+<p>Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player.</td></tr>
@@ -1702,7 +1702,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the alpha. </p>
+<p>Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">lightColor</td><td>Color of the light.</td></tr>
