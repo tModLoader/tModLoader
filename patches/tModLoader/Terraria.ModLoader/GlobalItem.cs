@@ -538,7 +538,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// 
+		/// Allows you to determine whether or not the item can be picked up
 		/// </summary>
 		public virtual bool CanPickup(Item item, Player player)
 		{
