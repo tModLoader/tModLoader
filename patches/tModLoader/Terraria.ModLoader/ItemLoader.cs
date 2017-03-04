@@ -1513,12 +1513,12 @@ namespace Terraria.ModLoader
 		{
 			foreach (var hook in HookExtraPickupSpace)
 			{
-				if (!hook(item, player))
+				if (hook(item, player))
 				{
-					return false;
+					return true;
 				}
 			}
-			return item.modItem?.ExtraPickupSpace(player) ?? true;
+			return item.modItem?.ExtraPickupSpace(player) ?? false;
 		}
 
 		//in Terraria.UI.ItemSlot.GetItemLight remove type too high check

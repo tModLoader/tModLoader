@@ -730,7 +730,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default.
+		/// Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
@@ -740,7 +740,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the alpha.
+		/// Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default.
 		/// </summary>
 		/// <param name="lightColor">Color of the light.</param>
 		/// <returns></returns>
