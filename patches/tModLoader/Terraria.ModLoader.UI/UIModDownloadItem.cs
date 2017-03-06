@@ -13,6 +13,7 @@ using System.Xml;
 using System.Text;
 using Terraria.ID;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
@@ -89,6 +90,15 @@ namespace Terraria.ModLoader.UI
 				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + modreferences);
 				modReferenceIcon.Left.Set(115, 0f);
 				modReferenceIcon.Top.Set(50f, 0f);
+				modReferenceIcon.OnClick += (s, e) =>
+				{
+					UIModDownloadItem modListItem = ((UIModDownloadItem)e.Parent);
+					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').ToList();
+					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies";// Toolong of \n" + modListItem.modName.Text;
+					Interface.modBrowser.filterTextBox.currentString = "";
+					Interface.modBrowser.SortList();
+					Main.PlaySound(SoundID.MenuOpen);
+				};
 				Append(modReferenceIcon);
 			}
 			base.OnDoubleClick += RequestMoreinfo;
@@ -116,7 +126,7 @@ namespace Terraria.ModLoader.UI
 
 		public override bool PassFilters()
 		{
-			if (Interface.modBrowser.specialModPackFilter != null && !Interface.modBrowser.specialModPackFilter.Contains(mod))
+			if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(mod))
 			{
 				return false;
 			}

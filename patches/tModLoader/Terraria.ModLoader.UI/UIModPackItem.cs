@@ -235,7 +235,9 @@ namespace Terraria.ModLoader.UI
 		{
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			Interface.modBrowser.Activate();
-			Interface.modBrowser.specialModPackFilter = modListItem.mods.ToList();
+			Interface.modBrowser.filterTextBox.currentString = "";
+			Interface.modBrowser.SpecialModPackFilter = modListItem.mods.ToList();
+			Interface.modBrowser.SpecialModPackFilterTitle = "Modlist";// Too long: " + modListItem.modName.Text;
 			Interface.modBrowser.SortList();
 			Main.PlaySound(SoundID.MenuOpen);
 			Main.menuMode = Interface.modBrowserID;

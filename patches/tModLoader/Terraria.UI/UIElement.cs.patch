@@ -11,6 +11,18 @@
  		public event UIElement.ScrollWheelEvent OnScrollWheel;
  
  		public bool IsMouseHovering
+@@ -135,6 +_,11 @@
+ 				current.Parent = null;
+ 			}
+ 			this.Elements.Clear();
++		}
++
++		public bool HasChild(UIElement child)
++		{
++			return Elements.Contains(child);
+ 		}
+ 
+ 		public virtual void Draw(SpriteBatch spriteBatch)
 @@ -399,6 +_,54 @@
  			}
  		}

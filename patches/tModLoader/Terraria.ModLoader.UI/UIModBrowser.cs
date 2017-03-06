@@ -24,10 +24,13 @@ namespace Terraria.ModLoader.UI
 		public UIList modList;
 		public UIList modListAll;
 		public UIModDownloadItem selectedItem;
+		UIElement uIElement;
+		UIPanel uIPanel;
 		public UITextPanel<string> uITextPanel;
-		UIInputTextField filterTextBox;
+		internal UIInputTextField filterTextBox;
 		private List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		UITextPanel<string> reloadButton;
+		UITextPanel<string> clearButton;
 		public bool loading;
 		public SortModes sortMode = SortModes.RecentlyUpdated;
 		public UpdateFilter updateFilterMode = UpdateFilter.Available;
@@ -38,17 +41,46 @@ namespace Terraria.ModLoader.UI
 		private string updateURL;
 		public bool aModUpdated = false;
 		public bool aNewModDownloaded = false;
-		public List<string> specialModPackFilter;
+		private string _specialModPackFilterTitle;
+		internal string SpecialModPackFilterTitle
+		{
+			get { return _specialModPackFilterTitle; }
+			set
+			{
+				clearButton.SetText("Clear Special Filter: " + value);
+				_specialModPackFilterTitle = value;
+			}
+		}
+		private List<string> _specialModPackFilter;
+		public List<string> SpecialModPackFilter
+		{
+			get { return _specialModPackFilter; }
+			set
+			{
+				if (_specialModPackFilter != null && value == null)
+				{
+					uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+					uIElement.RemoveChild(clearButton);
+				}
+				else if (_specialModPackFilter == null && value != null)
+				{
+					uIPanel.BackgroundColor = Color.Purple * 0.7f;
+					uIElement.Append(clearButton);
+				}
+				_specialModPackFilter = value;
+			}
+		}
+
 
 		public override void OnInitialize()
 		{
-			UIElement uIElement = new UIElement();
+			uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
 			uIElement.MaxWidth.Set(600f, 0f);
 			uIElement.Top.Set(220f, 0f);
 			uIElement.Height.Set(-220f, 1f);
 			uIElement.HAlign = 0.5f;
-			UIPanel uIPanel = new UIPanel();
+			uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
@@ -92,7 +124,25 @@ namespace Terraria.ModLoader.UI
 			backButton.OnMouseOut += UICommon.FadedMouseOut;
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
+
+			clearButton = new UITextPanel<string>("Clear Special Filter: ??", 1f, false);
+			clearButton.Width.Set(-10f, 0.5f);
+			clearButton.Height.Set(25f, 0f);
+			clearButton.HAlign = 1f;
+			clearButton.VAlign = 1f;
+			clearButton.Top.Set(-65f, 0f);
+			clearButton.BackgroundColor = Color.Purple * 0.7f;
+			clearButton.OnMouseOver += (s, e) => UICommon.CustomFadedMouseOver(Color.Purple, s, e);
+			clearButton.OnMouseOut += (s, e) => UICommon.CustomFadedMouseOut(Color.Purple * 0.7f, s, e);
+			clearButton.OnClick += (s, e) =>
+			{
+				Interface.modBrowser.SpecialModPackFilter = null;
+				Interface.modBrowser.SpecialModPackFilterTitle = null;
+				Interface.modBrowser.SortList();
+				Main.PlaySound(SoundID.MenuTick);
+			};
 			base.Append(uIElement);
+
 			UIElement uIElement2 = new UIElement();
 			uIElement2.Width.Set(0f, 1f);
 			uIElement2.Height.Set(32f, 0f);
@@ -242,7 +292,8 @@ namespace Terraria.ModLoader.UI
 				return;
 
 			Main.PlaySound(SoundID.MenuOpen);
-			specialModPackFilter = null;
+			SpecialModPackFilter = null;
+			SpecialModPackFilterTitle = null;
 			reloadButton.SetText("Reloading...");
 			PopulateModBrowser();
 		}
@@ -364,9 +415,9 @@ namespace Terraria.ModLoader.UI
 					string modreferences = (string)mod["modreferences"];
 					ModSide modside = ModSide.Both; // TODO: add filter option for modside.
 					string modsideString = (string)mod["modside"];
-					if(modsideString == "Client") modside = ModSide.Client;
-					if(modsideString == "Server") modside = ModSide.Server;
-					if(modsideString == "NoSync") modside = ModSide.NoSync;
+					if (modsideString == "Client") modside = ModSide.Client;
+					if (modsideString == "Server") modside = ModSide.Server;
+					if (modsideString == "NoSync") modside = ModSide.NoSync;
 					bool exists = false;
 					bool update = false;
 					bool updateIsDowngrade = false;
