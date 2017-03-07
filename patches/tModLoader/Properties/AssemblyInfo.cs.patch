@@ -10,4 +10,9 @@
  [assembly: AssemblyCompany("Re-Logic")]
  [assembly: AssemblyCopyright("Copyright © Re-Logic 2016")]
  [assembly: AssemblyDescription("")]
+@@ -23,3 +_,4 @@
+ //[assembly: TargetFramework(".NETFramework,Version=v4.0,Profile=Client", FrameworkDisplayName = ".NET Framework 4 Client Profile")]
+ [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
+ [module: UnverifiableCode]
++[assembly: InternalsVisibleTo("tModLoaderTests")]
 

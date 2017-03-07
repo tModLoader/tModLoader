@@ -42,6 +42,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SortingTests.cs" />
     <Compile Include="TagIOTests.cs" />
   </ItemGroup>
   <ItemGroup>

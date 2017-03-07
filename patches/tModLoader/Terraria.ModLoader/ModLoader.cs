@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -261,7 +262,9 @@ namespace Terraria.ModLoader
 
 			try
 			{
-				modsToLoad = TopoSort(modsToLoad, false);
+				EnsureDependenciesExist(modsToLoad, false);
+				EnsureTargetVersionsMet(modsToLoad);
+				modsToLoad = Sort(modsToLoad);
 			}
 			catch (ModSortingException e)
 			{
@@ -326,86 +329,107 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static List<LoadingMod> TopoSort(ICollection<LoadingMod> mods, bool building)
-		{
+		internal static void EnsureDependenciesExist(ICollection<LoadingMod> mods, bool includeWeak) {
 			var nameMap = mods.ToDictionary(mod => mod.Name);
 			var errored = new HashSet<LoadingMod>();
 			var errorLog = new StringBuilder();
-
-			//ensure dependencies exist
+			
 			foreach (var mod in mods)
-				foreach (var depName in mod.properties.RefNames(building))
-					if (!nameMap.ContainsKey(depName))
-					{
+				foreach (var depName in mod.properties.RefNames(includeWeak))
+					if (!nameMap.ContainsKey(depName)) {
 						errored.Add(mod);
-						errorLog.AppendLine("Missing mod: " + depName + " required by " + mod.Name);
+						errorLog.AppendLine("Missing mod: " + depName + " required by " + mod);
 					}
 
 			if (errored.Count > 0)
 				throw new ModSortingException(errored, errorLog.ToString());
+		}
 
-			//ensure target versions are met
+		internal static void EnsureTargetVersionsMet(ICollection<LoadingMod> mods) {
+			var nameMap = mods.ToDictionary(mod => mod.Name);
+			var errored = new HashSet<LoadingMod>();
+			var errorLog = new StringBuilder();
+
 			foreach (var mod in mods)
-				foreach (var dep in mod.properties.Refs(true))
-				{
+				foreach (var dep in mod.properties.Refs(true)) {
 					LoadingMod inst;
-					if (nameMap.TryGetValue(dep.mod, out inst) && inst.properties.version < dep.target)
-					{
+					if (nameMap.TryGetValue(dep.mod, out inst) && inst.properties.version < dep.target) {
 						errored.Add(mod);
-						errorLog.AppendLine(mod.Name + " requires version " + dep.target + "+ of " + dep.mod +
+						errorLog.AppendLine(mod + " requires version " + dep.target + "+ of " + dep.mod +
 							" but version " + inst.properties.version + " is installed");
 					}
 				}
 
 			if (errored.Count > 0)
 				throw new ModSortingException(errored, errorLog.ToString());
+		}
 
-			//build graph
-			var modsBefore = mods.ToDictionary(mod => mod.Name, mod => mod.properties.sortAfter.ToList());
-			foreach (var mod in mods)
-				foreach (var before in mod.properties.sortBefore)
-					modsBefore[before].Add(mod.Name);
+		internal static void EnsureSyncedDependencyStability(TopoSort<LoadingMod> synced, TopoSort<LoadingMod> full) {
+			var errored = new HashSet<LoadingMod>();
+			var errorLog = new StringBuilder();
 
+			foreach (var mod in synced.list) {
+				var chains = new List<List<LoadingMod>>();
+				//define recursive chain finding method
+				Action<LoadingMod, Stack<LoadingMod>> FindChains = null;
+				FindChains = (search, stack) => {
+					stack.Push(search);
 
-			var visiting = new Stack<LoadingMod>();
-			var sorted = new List<LoadingMod>();
-
-			Action<LoadingMod> Visit = null;
-			Visit = mod =>
-			{
-				if (sorted.Contains(mod) || errored.Contains(mod))
-					return;
-
-				visiting.Push(mod);
-				foreach (var depName in modsBefore[mod.Name].Where(nameMap.ContainsKey))
-				{
-					var dep = nameMap[depName];
-					if (visiting.Contains(dep))
-					{
-						var cycle = dep.Name;
-						foreach (var entry in visiting)
-						{
-							errored.Add(entry);
-							cycle = entry.Name + " -> " + cycle;
-							if (entry == dep) break;
-						}
-						errorLog.AppendLine("Dependency Cycle: " + cycle);
-						continue;
+					if (search.properties.side == ModSide.Both && stack.Count > 1) {
+						if (stack.Count > 2)//direct Both -> Both references are ignored
+							chains.Add(stack.Reverse().ToList());
+					} else {//recursively build the chain, all entries in stack should be unsynced
+						foreach (var dep in full.Dependencies(search))
+							FindChains(dep, stack);
 					}
 
-					Visit(dep);
-				}
-				visiting.Pop();
-				sorted.Add(mod);
-			};
+					stack.Pop();
+				};
+				FindChains(mod, new Stack<LoadingMod>());
 
-			foreach (var mod in mods)
-				Visit(mod);
+				if (chains.Count == 0)
+					continue;
 
-			if (errored.Count > 0)
+				var syncedDependencies = synced.AllDependencies(mod);
+				foreach (var chain in chains)
+					if (!syncedDependencies.Contains(chain.Last())) {
+						errored.Add(mod);
+						errorLog.AppendLine(mod + " indirectly depends on " + chain.Last() + " via " + string.Join(" -> ", chain));
+					}
+			}
+
+			if (errored.Count > 0) {
+				errorLog.AppendLine("Some of these mods may not exist on both client and server. Add a direct sort entries or weak references.");
 				throw new ModSortingException(errored, errorLog.ToString());
+			}
+		}
 
-			return sorted;
+		private static TopoSort<LoadingMod> BuildSort(ICollection<LoadingMod> mods) {
+			var nameMap = mods.ToDictionary(mod => mod.Name);
+			return new TopoSort<LoadingMod>(mods,
+				mod => mod.properties.sortAfter.Where(nameMap.ContainsKey).Select(name => nameMap[name]),
+				mod => mod.properties.sortBefore.Where(nameMap.ContainsKey).Select(name => nameMap[name]));
+		}
+
+		internal static List<LoadingMod> Sort(ICollection<LoadingMod> mods)
+		{
+			var preSorted = mods.OrderBy(mod => mod.Name).ToList();
+			var syncedSort = BuildSort(preSorted.Where(mod => mod.properties.side == ModSide.Both).ToList());
+			var fullSort = BuildSort(preSorted);
+			EnsureSyncedDependencyStability(syncedSort, fullSort);
+
+			try {
+				var syncedList = syncedSort.Sort();
+
+				//preserve synced order
+				for (int i = 1; i < syncedList.Count; i++)
+					fullSort.AddEntry(syncedList[i - 1], syncedList[i]);
+
+				return fullSort.Sort();
+			}
+			catch (TopoSort<LoadingMod>.SortingException e) {
+				throw new ModSortingException(e.set, e.Message);
+			}
 		}
 
 		internal static void Unload()
@@ -693,6 +717,8 @@ namespace Terraria.ModLoader
 			public readonly BuildProperties properties;
 
 			public string Name => modFile.name;
+
+			public override string ToString() => Name;
 
 			public LoadingMod(TmodFile modFile, BuildProperties properties)
 			{
