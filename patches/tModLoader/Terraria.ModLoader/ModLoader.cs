@@ -514,7 +514,7 @@ namespace Terraria.ModLoader
 		internal static string[] FindModSources()
 		{
 			Directory.CreateDirectory(ModSourcePath);
-			return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => dir != ".vs").ToArray();
+			return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => new DirectoryInfo(dir).Name != ".vs").ToArray();
 		}
 
 		internal static void BuildAllMods()
