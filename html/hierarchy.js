@@ -23,6 +23,7 @@ var hierarchy =
     [ "Terraria.ModLoader.EquipTexture", "class_terraria_1_1_mod_loader_1_1_equip_texture.html", null ],
     [ "Terraria.ModLoader.ErrorLogger", "class_terraria_1_1_mod_loader_1_1_error_logger.html", null ],
     [ "Exception", "class_exception.html", [
+      [ "Terraria.ModLoader.TopoSort< T >.SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html", null ],
       [ "Terraria.ModLoader.UsageException", "class_terraria_1_1_mod_loader_1_1_usage_exception.html", null ]
     ] ],
     [ "Terraria.ModLoader.GlobalBgStyle", "class_terraria_1_1_mod_loader_1_1_global_bg_style.html", null ],
@@ -90,6 +91,7 @@ var hierarchy =
     ] ],
     [ "Terraria.ModLoader.TileLoader", "class_terraria_1_1_mod_loader_1_1_tile_loader.html", null ],
     [ "Terraria.ModLoader.TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", null ],
+    [ "Terraria.ModLoader.TopoSort< T >", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", null ],
     [ "Terraria.ModLoader.UgBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html", null ],
     [ "Terraria.ModLoader.WallLoader", "class_terraria_1_1_mod_loader_1_1_wall_loader.html", null ],
     [ "Terraria.ModLoader.WaterfallStyleLoader", "class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html", null ],

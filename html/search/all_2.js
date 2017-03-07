@@ -36,8 +36,8 @@ var searchData=
   ['both',['Both',['../namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a130c5b3473c57faa76e2a1c54e26f88e',1,'Terraria::ModLoader']]],
   ['boundcavenpc',['BoundCaveNPC',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aef2b5645c0220631057215a63bc220db',1,'Terraria::ModLoader::SpawnCondition']]],
   ['buf',['buf',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#afab9c69b776cce58ebabb87b2758c575',1,'Terraria::ModLoader::ModPacket']]],
-  ['buffloader',['BuffLoader',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#ac99195b4bdba9f8c77e29f07dbc60bef',1,'Terraria::ModLoader::BuffLoader']]],
   ['buffloader',['BuffLoader',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html',1,'Terraria::ModLoader']]],
+  ['buffloader',['BuffLoader',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#ac99195b4bdba9f8c77e29f07dbc60bef',1,'Terraria::ModLoader::BuffLoader']]],
   ['buffloader_2ecs',['BuffLoader.cs',['../_buff_loader_8cs.html',1,'']]],
   ['bufftownnpc',['BuffTownNPC',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ad6815d7134a83a69d25be338163ad6fb',1,'Terraria.ModLoader.GlobalNPC.BuffTownNPC()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae90339e990dbc9b5a350cc4c1550abe6',1,'Terraria.ModLoader.NPCLoader.BuffTownNPC()']]],
   ['bufftype',['BuffType',['../class_terraria_1_1_mod_loader_1_1_mod.html#a05e3499466a6248fde49e7643d987133',1,'Terraria::ModLoader::Mod']]],
@@ -45,5 +45,7 @@ var searchData=
   ['builddlllines',['buildDllLines',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a93a6a7a56d6d0017141d1644e9b7c8f4',1,'Terraria::ModLoader::ErrorLogger']]],
   ['buildingmod',['BuildingMod',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html',1,'Terraria::ModLoader::ModCompile']]],
   ['buildingmod',['BuildingMod',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#a50883060a4be6e39c451d379ae58c4b1',1,'Terraria::ModLoader::ModCompile::BuildingMod']]],
-  ['buildproperties_2ecs',['BuildProperties.cs',['../_build_properties_8cs.html',1,'']]]
+  ['buildproperties_2ecs',['BuildProperties.cs',['../_build_properties_8cs.html',1,'']]],
+  ['buildset',['BuildSet',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#a8fceff4c28a1bc57e154c14aaf4604be',1,'Terraria::ModLoader::TopoSort']]],
+  ['buildsort',['BuildSort',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a8cf1a1359e60d686facab731299c6da4',1,'Terraria::ModLoader::ModLoader']]]
 ];

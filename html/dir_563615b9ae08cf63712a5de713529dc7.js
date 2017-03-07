@@ -203,6 +203,10 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "TooltipLine.cs", "_tooltip_line_8cs.html", [
       [ "TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_tooltip_line" ]
     ] ],
+    [ "TopoSort.cs", "_topo_sort_8cs.html", [
+      [ "SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception" ],
+      [ "TopoSort", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", "class_terraria_1_1_mod_loader_1_1_topo_sort" ]
+    ] ],
     [ "WallLoader.cs", "_wall_loader_8cs.html", [
       [ "WallLoader", "class_terraria_1_1_mod_loader_1_1_wall_loader.html", "class_terraria_1_1_mod_loader_1_1_wall_loader" ]
     ] ],

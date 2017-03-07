@@ -72,6 +72,8 @@ var searchData=
   ['deleteingredient',['DeleteIngredient',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a448e707c0f6e78ceb200ee7e8df9c4f9',1,'Terraria::ModLoader::RecipeEditor']]],
   ['deleterecipe',['DeleteRecipe',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4f495e75b86e3a31adb2d3b606b2432b',1,'Terraria::ModLoader::RecipeEditor']]],
   ['deletetile',['DeleteTile',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9c2569159767cf327a30488b2e66f456',1,'Terraria::ModLoader::RecipeEditor']]],
+  ['dependencies',['Dependencies',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#ab1814a04c5538ae6d8f942914eb83290',1,'Terraria::ModLoader::TopoSort']]],
+  ['dependents',['Dependents',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#a1e1ad665a6f72dea42559d37e7068cc8',1,'Terraria::ModLoader::TopoSort']]],
   ['disablesmartcursor',['DisableSmartCursor',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad646fc6fbf857656987ad7e46608e234',1,'Terraria::ModLoader::TileLoader']]],
   ['displayname',['DisplayName',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a725012941d57c1294527158c8d631169',1,'Terraria::ModLoader::NPCLoader']]],
   ['dllname',['DllName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ab3abd4e5185e46221525287e41a1f6f8',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],

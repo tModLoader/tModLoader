@@ -71,6 +71,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader" ],
     [ "TileLoader", "class_terraria_1_1_mod_loader_1_1_tile_loader.html", "class_terraria_1_1_mod_loader_1_1_tile_loader" ],
     [ "TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_tooltip_line" ],
+    [ "TopoSort", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", "class_terraria_1_1_mod_loader_1_1_topo_sort" ],
     [ "UgBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader" ],
     [ "UsageException", "class_terraria_1_1_mod_loader_1_1_usage_exception.html", "class_terraria_1_1_mod_loader_1_1_usage_exception" ],
     [ "WallLoader", "class_terraria_1_1_mod_loader_1_1_wall_loader.html", "class_terraria_1_1_mod_loader_1_1_wall_loader" ],
