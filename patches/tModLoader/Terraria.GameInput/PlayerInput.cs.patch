@@ -67,6 +67,16 @@
  			PlayerInput.Triggers.Update();
  			PlayerInput.PostInput();
  			PlayerInput.ScrollWheelDelta = PlayerInput.ScrollWheelValue - PlayerInput.ScrollWheelValueOld;
+@@ -682,7 +_,8 @@
+ 				keyConfiguration.Processkey(PlayerInput.Triggers.Current, Buttons.RightTrigger.ToString());
+ 				flag = true;
+ 			}
+-			bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
++			// We might just need a bool for while reloading. 
++			bool flag4 = player.inventory[player.selectedItem].type < ItemID.Sets.GamepadWholeScreenUseRange.Length && ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
+ 			int num3 = player.inventory[player.selectedItem].tileBoost + ItemID.Sets.GamepadExtraRange[player.inventory[player.selectedItem].type];
+ 			if (player.yoyoString && ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type])
+ 			{
 @@ -1158,7 +_,7 @@
  						int num = 6;
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
