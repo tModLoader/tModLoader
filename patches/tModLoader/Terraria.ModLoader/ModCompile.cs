@@ -185,11 +185,13 @@ namespace Terraria.ModLoader
                     status.SetProgress(0, 2);
                     CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
                 }
+                if (winDLL == null)
+                    return false;
 
                 status.SetStatus("Compiling " + mod + " for Mono...");
                 status.SetProgress(1, 2);
                 CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
-                if (winDLL == null || monoDLL == null)
+                if (monoDLL == null)
                     return false;
             }
 
