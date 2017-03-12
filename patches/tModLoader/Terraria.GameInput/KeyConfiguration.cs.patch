@@ -4,7 +4,7 @@
  	public class KeyConfiguration
  	{
  		public Dictionary<string, List<string>> KeyStatus = new Dictionary<string, List<string>>();
-+		public Dictionary<string, List<string>> UnloadedModKeyStatus;
++		public Dictionary<string, List<string>> UnloadedModKeyStatus = new Dictionary<string, List<string>>();
  
  		public bool DoGrappleAndInteractShareTheSameKey
  		{

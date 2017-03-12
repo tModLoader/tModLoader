@@ -27748,6 +27748,15 @@
  				num4 = 50;
  				num2 = 200;
  				array4[1] = 25;
+@@ -42251,7 +_,7 @@
+ 				{
+ 					Lang.lang = this.selectedMenu;
+ 					Lang.setLang(false);
+-					Main.menuMode = 0;
++					Main.menuMode = ModLoader.Interface.loadModsID;
+ 					Main.PlaySound(10, -1, -1, 1, 1f, 0f);
+ 					Main.SaveSettings();
+ 				}
 @@ -42282,6 +_,7 @@
  				{
  					array9[0] = Lang.menu[102];
