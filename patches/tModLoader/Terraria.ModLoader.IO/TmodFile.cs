@@ -172,14 +172,16 @@ namespace Terraria.ModLoader.IO
 			return null;
 		}
 
-		public byte[] GetMainAssembly(bool windows = ModLoader.windows)
+		public byte[] GetMainAssembly(bool? windows = null)
 		{
-			return HasFile("All.dll") ? GetFile("All.dll") : windows ? GetFile("Windows.dll") : GetFile("Mono.dll");
+			bool isWindows = windows.GetValueOrDefault(ModLoader.windows);
+			return HasFile("All.dll") ? GetFile("All.dll") : isWindows ? GetFile("Windows.dll") : GetFile("Mono.dll");
 		}
 
-		public byte[] GetMainPDB(bool windows = ModLoader.windows)
+		public byte[] GetMainPDB(bool? windows = null)
 		{
-			return HasFile("All.pdb") ? GetFile("All.pdb") : windows ? GetFile("Windows.pdb") : GetFile("Mono.pdb");
+			bool isWindows = windows.GetValueOrDefault(ModLoader.windows);
+			return HasFile("All.pdb") ? GetFile("All.pdb") : isWindows ? GetFile("Windows.pdb") : GetFile("Mono.pdb");
 		}
 	}
 }

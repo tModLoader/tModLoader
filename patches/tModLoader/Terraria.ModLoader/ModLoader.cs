@@ -24,29 +24,29 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		/// <summary>The name and version number of tModLoader.</summary>
-		public static readonly Version version = new Version(0, 9, 1, 1);
+		public static readonly Version version = new Version(0, 9, 2);
 		public static readonly string versionedName = "tModLoader v" + version;
 #if WINDOWS
-		public const bool windows = true;
+		public static readonly bool windows = true;
 #else
-		public const bool windows = false;
+		public static readonly bool windows = false;
 #endif
 #if LINUX
-		public const bool linux = true;
+		public static readonly bool linux = true;
 #else
-		public const bool linux = false;
+		public static readonly bool linux = false;
 #endif
 #if MAC
-		public const bool mac = true;
+		public static readonly bool mac = true;
 #else
-		public const bool mac = false;
+		public static readonly bool mac = false;
 #endif
 #if GOG
-		public const bool gog = true;
+		public static readonly bool gog = true;
 #else
-		public const bool gog = false;
+		public static readonly bool gog = false;
 #endif
-		public static string compressedPlatformRepresentation = (windows ? "w" : (linux ? "l" : "m")) + (gog ? "g" : "s");
+		public static readonly string compressedPlatformRepresentation = (windows ? "w" : (linux ? "l" : "m")) + (gog ? "g" : "s");
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		/// <summary>The file path in which mods are stored.</summary>
 		public static string ModPath => modPath;
