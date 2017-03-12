@@ -1,10 +1,10 @@
-Changes from 0.9.1 to 0.9.1.1:
+Changes from 0.9.1 to 0.9.2:
 
 tModLoader
-	So, so much...
-	ModCommands -- ChatInput now gone, documented?
-	TagSerializable - allows easy serialization of classes into TagCompound
-	Autoload Effects (.xnb) from the folder Effects/
+	Major Features:
+		ModCommands -- ChatInput now gone
+		TagSerializable - allows easy serialization of classes into TagCompound
+		Autoload Effects (.xnb) from the folder "Effects/"
 	
 	New Hooks:
 		Mod PreSaveAndQuit -- Called when user clicks SaveAndQuit
@@ -34,6 +34,8 @@ tModLoader
 		Mod.ChatInput -- functionality replaced by ModCommand
 	
 	Bug Fixes:
+		Mods are now correctly sorted, fixing many cross-platform bugs. (Such as ItemIDs out of sync, causing items to magically transform)
+		Fixed an potential issue with trap projectiles
 		Alternate Currency Tooltip fix
 		The bug when player is killed by mod projectile
 		Some Tile framing bugs
@@ -75,6 +77,7 @@ tModLoader
 		The tModLoader github wiki is now used for modding guides and other references.
 	
 ExampleMod
+	ExampleMod -- Spawning Tiles in worldgen, traps.
 	ExampleSpear -- Features autoReuse on a spear
 	ExampleJavelin -- Retrievable ammo drops
 	ExampleLaserWeapon -- Channel, Custom draw, Custom Hitbox, CutTiles
