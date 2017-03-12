@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.Mod.AutoloadGlobalTile" name="Terraria.ModLoader.Mod.AutoloadGlobalTile">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_tile.html#ab74b2737dd0f3351a328dbfb363fd433" title="Allows you to automatically load a GlobalTile instead of using Mod.AddGlobalTile. Return true to allo..." alt="" coords="273,5,447,51"/>
+</map>

@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.SendCustomBiomes" name="Terraria.ModLoader.PlayerHooks.SendCustomBiomes">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ad4d50f250fda2b3df2e45ef78c85013d" title="Allows you to send custom biome information between client and server. " alt="" coords="239,5,441,51"/>
+</map>

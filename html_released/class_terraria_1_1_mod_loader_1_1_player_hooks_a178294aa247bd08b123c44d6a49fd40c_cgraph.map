@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.PostHurt" name="Terraria.ModLoader.PlayerHooks.PostHurt">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a229ce725992fed1702e8f48865dfd024" title="Allows you to make anything happen when the player takes damage. " alt="" coords="231,5,433,51"/>
+</map>

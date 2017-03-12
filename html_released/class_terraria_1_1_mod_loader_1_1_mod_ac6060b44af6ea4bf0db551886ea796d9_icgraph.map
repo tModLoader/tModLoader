@@ -1,0 +1,5 @@
+<map id="Terraria.ModLoader.Mod.FileExists" name="Terraria.ModLoader.Mod.FileExists">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aeb0d9d1bfee842c0e232de398756f869" title="Returns whether or not a file with the specified name exists. " alt="" coords="244,35,449,82"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a1e739bc6de6fac144b8342cfc0370406" title="Assigns a head texture to the given town NPC type. " alt="" coords="528,5,717,51"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ad77577c0eeaae460a0f0652b70897259" title="Terraria.ModLoader.Mod.AutoloadNPC" alt="" coords="500,75,745,104"/>
+</map>

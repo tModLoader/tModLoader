@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.DrawEffects" name="Terraria.ModLoader.PlayerHooks.DrawEffects">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a911a5c8e32ac82672b6cbfab4dc4c168" title="Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the idnexes of any gore you create to Main.playerDrawGore. " alt="" coords="231,5,433,51"/>
+</map>

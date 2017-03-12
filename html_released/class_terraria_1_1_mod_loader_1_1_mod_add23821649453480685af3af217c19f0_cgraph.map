@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.Mod.AutoloadModWorld" name="Terraria.ModLoader.Mod.AutoloadModWorld">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_world.html#ada5461d774c15becc93f19ef5f66c1e1" title="Allows you to automatically add a ModWorld instead of using Mod.AddModWorld. Return true to allow aut..." alt="" coords="273,5,473,51"/>
+</map>

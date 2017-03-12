@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.GlobalRecipe.OnCraft" name="Terraria.ModLoader.GlobalRecipe.OnCraft">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_recipe_hooks.html#a57ca1e610a05308544c85afb58dc3c03" title="Allows you to make anything happen when a player uses this recipe. " alt="" coords="229,5,408,51"/>
+</map>

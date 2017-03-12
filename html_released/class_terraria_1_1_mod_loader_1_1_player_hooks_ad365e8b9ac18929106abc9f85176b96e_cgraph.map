@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.MeleeEffects" name="Terraria.ModLoader.PlayerHooks.MeleeEffects">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a48027ba9e2e4188d3b73b49fa60071f2" title="Allows you to give this player&#39;s melee weapon special effects, such as creating light or dust..." alt="" coords="231,5,433,51"/>
+</map>
