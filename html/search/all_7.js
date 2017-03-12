@@ -86,7 +86,7 @@ var searchData=
   ['globalwall_2ecs',['GlobalWall.cs',['../_global_wall_8cs.html',1,'']]],
   ['goblinarmy',['GoblinArmy',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a7fc01b3d038322a7e87427bd07234729',1,'Terraria::ModLoader::SpawnCondition']]],
   ['goblinscout',['GoblinScout',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a980f557822afc70c1d6c5847d151fea2',1,'Terraria::ModLoader::SpawnCondition']]],
-  ['gog',['gog',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0a7aa5ef9692c709a153418203ab1e2a',1,'Terraria::ModLoader::ModLoader']]],
+  ['gog',['gog',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a191014086a6e58e2099d1b1250f070a0',1,'Terraria::ModLoader::ModLoader']]],
   ['grabrange',['GrabRange',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a0cbc00596766f38559f90e29427ce13c',1,'Terraria.ModLoader.GlobalItem.GrabRange()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ade51caf5ee0d11160df42d06b31acf41',1,'Terraria.ModLoader.ItemLoader.GrabRange()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a1f5a9d2747d4a5412e98e88eb5065e5b',1,'Terraria.ModLoader.ModItem.GrabRange()']]],
   ['grabstyle',['GrabStyle',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a8e17a066b619e5ed49b68c6c9e0b3c0f',1,'Terraria.ModLoader.GlobalItem.GrabStyle()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ac3b6c0ef953e60ab376063ea6717441f',1,'Terraria.ModLoader.ItemLoader.GrabStyle()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a1ae4da771af03f10ebecb0b2b43b2b75',1,'Terraria.ModLoader.ModItem.GrabStyle()']]],
   ['granite',['granite',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a675f1ac3b085bb8785c7519121ab2c21',1,'Terraria::ModLoader::NPCSpawnInfo']]],

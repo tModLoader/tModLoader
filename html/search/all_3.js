@@ -69,7 +69,7 @@ var searchData=
   ['commandmanager',['CommandManager',['../class_terraria_1_1_mod_loader_1_1_command_manager.html',1,'Terraria::ModLoader']]],
   ['commandmanager_2ecs',['CommandManager.cs',['../_command_manager_8cs.html',1,'']]],
   ['commandtype',['CommandType',['../interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558',1,'Terraria.ModLoader.CommandCaller.CommandType()'],['../namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26',1,'Terraria.ModLoader.CommandType()']]],
-  ['compressedplatformrepresentation',['compressedPlatformRepresentation',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a51246d44a79cfe7548dc05ce9e468000',1,'Terraria::ModLoader::ModLoader']]],
+  ['compressedplatformrepresentation',['compressedPlatformRepresentation',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac488859bd72975ab52aba41c3fd4f0d7',1,'Terraria::ModLoader::ModLoader']]],
   ['condition',['condition',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ab8b307adc6963ba98e55c5789cd1e1bb',1,'Terraria::ModLoader::SpawnCondition']]],
   ['console',['Console',['../namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f',1,'Terraria::ModLoader']]],
   ['consolebuildstatus',['ConsoleBuildStatus',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_console_build_status.html',1,'Terraria::ModLoader::ModCompile']]],
