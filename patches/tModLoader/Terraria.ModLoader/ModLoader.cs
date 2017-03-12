@@ -171,7 +171,10 @@ namespace Terraria.ModLoader
 			}
 
 			if (Main.dedServ)
+			{
 				ModNet.AssignNetIDs();
+				Main.player[255] = new Player();
+			}
 
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
