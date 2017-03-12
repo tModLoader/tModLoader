@@ -348,7 +348,7 @@ namespace Terraria.ModLoader
             };
 
             compileOptions.ReferencedAssemblies.AddRange(refs.ToArray());
-            var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories).Where(file => !mod.properties.ignoreFile(file.Substring(mod.path.Length + 1))).ToArray();
 
             try {
                 CompilerResults results;
