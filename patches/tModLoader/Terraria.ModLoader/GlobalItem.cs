@@ -492,15 +492,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Obsolete: WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.) False will keep everything the same. True, you need to handle all animations in your own code.
+		/// Obsolete: WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)
 		/// </summary>
-		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.) False will keep everything the same. True, you need to handle all animations in your own code.")]
+		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)")]
 		public virtual void WingUpdate(int wings, Player player, bool inUse)
 		{
 		}
 
 		/// <summary>
-		/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights.
+		/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. False will keep everything the same. True, you need to handle all animations in your own code.
 		/// </summary>
 		public virtual bool NewWingUpdate(int wings, Player player, bool inUse)
 		{

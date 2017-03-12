@@ -262,7 +262,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows for wing textures to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when this wing texture visually appears on the player. Use to animate wings, create dusts, invoke sounds, and create lights. By default this will call the associated ModItem's WingUpdate if there is an associated ModItem.
+		/// Obsolete: WingUpdate will return a bool value later.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="inUse"></param>

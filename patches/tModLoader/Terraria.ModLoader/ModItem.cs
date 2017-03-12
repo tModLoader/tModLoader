@@ -605,13 +605,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the speeds at which you rise and fall when these wings are equipped.
+		/// Obsolete: Use the overloaded method with the player parameter.
 		/// </summary>
-		/// <param name="ascentWhenFalling">The ascent when falling.</param>
-		/// <param name="ascentWhenRising">The ascent when rising.</param>
-		/// <param name="maxCanAscendMultiplier">The maximum can ascend multiplier.</param>
-		/// <param name="maxAscentMultiplier">The maximum ascent multiplier.</param>
-		/// <param name="constantAscend">The constant ascend.</param>
 		[method: Obsolete("Use the overloaded method with the player parameter.")]
 		public virtual void VerticalWingSpeeds(ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
@@ -634,10 +629,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify these wing's horizontal flight speed and acceleration.
+		/// Obsolete: Use the overloaded method with the player parameter.
 		/// </summary>
-		/// <param name="speed">The speed.</param>
-		/// <param name="acceleration">The acceleration.</param>
 		[method: Obsolete("Use the overloaded method with the player parameter.")]
 		public virtual void HorizontalWingSpeeds(ref float speed, ref float acceleration)
 		{
@@ -655,17 +648,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture.
+		/// Obsolete: WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)
 		/// </summary>
-		/// <param name="player">The player.</param>
-		/// <param name="inUse">if set to <c>true</c> [in use].</param>
-		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.) False will keep everything the same. True, you need to handle all animations in your own code.")]
+		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)")]
 		public virtual void WingUpdate(Player player, bool inUse)
 		{
 		}
 
 		/// <summary>
-		/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture.
+		/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <param name="inUse">if set to <c>true</c> [in use].</param>

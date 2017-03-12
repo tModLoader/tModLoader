@@ -27,6 +27,8 @@ namespace Terraria.ModLoader
 		private static Func<Projectile, bool>[] HookShouldUpdatePosition;
 		private delegate bool DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
 		private static DelegateTileCollideStyle[] HookTileCollideStyle;
+		private delegate void DelegateLegacyTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
+		private static DelegateLegacyTileCollideStyle[] LegacyHookTileCollideStyle;
 		private static Func<Projectile, Vector2, bool>[] HookOnTileCollide;
 		private static Func<Projectile, bool?>[] HookCanCutTiles;
 		private static Action<Projectile>[] HookCutTiles;
@@ -133,7 +135,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookAI, globalProjectiles, g => g.AI);
 			ModLoader.BuildGlobalHook(ref HookPostAI, globalProjectiles, g => g.PostAI);
 			ModLoader.BuildGlobalHook(ref HookShouldUpdatePosition, globalProjectiles, g => g.ShouldUpdatePosition);
-			ModLoader.BuildGlobalHook(ref HookTileCollideStyle, globalProjectiles, g => g.TileCollideStyle);
+			ModLoader.BuildGlobalHook(ref HookTileCollideStyle, globalProjectiles, g => g.NewTileCollideStyle);
+			ModLoader.BuildGlobalHook(ref LegacyHookTileCollideStyle, globalProjectiles, g => g.TileCollideStyle);
 			ModLoader.BuildGlobalHook(ref HookOnTileCollide, globalProjectiles, g => g.OnTileCollide);
 			ModLoader.BuildGlobalHook(ref HookCanCutTiles, globalProjectiles, g => g.CanCutTiles);
 			ModLoader.BuildGlobalHook(ref HookCutTiles, globalProjectiles, g => g.CutTiles);
@@ -327,7 +330,7 @@ namespace Terraria.ModLoader
 		//  ProjectileLoader.TileCollideStyle(this, ref num25, ref num26, ref flag4);
 		public static bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
 		{
-			if (IsModProjectile(projectile) && !projectile.modProjectile.TileCollideStyle(ref width, ref height, ref fallThrough))
+			if (IsModProjectile(projectile) && !projectile.modProjectile.NewTileCollideStyle(ref width, ref height, ref fallThrough))
 			{
 				return false;
 			}
@@ -338,6 +341,10 @@ namespace Terraria.ModLoader
 				{
 					return false;
 				}
+			}
+			foreach (var hook in LegacyHookTileCollideStyle)
+			{
+				hook(projectile, ref width, ref height, ref fallThrough);
 			}
 			return true;
 		}
@@ -732,7 +739,7 @@ namespace Terraria.ModLoader
 				hook(projectile, player, ref speed);
 			}
 		}
-		
+
 		public static void GrapplePullSpeed(Projectile projectile, Player player, ref float speed)
 		{
 			projectile.modProjectile?.GrapplePullSpeed(player, ref speed);

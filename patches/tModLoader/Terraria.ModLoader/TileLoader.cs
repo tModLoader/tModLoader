@@ -64,6 +64,8 @@ namespace Terraria.ModLoader
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 		private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex);
 		private static DelegateDrawEffects[] HookDrawEffects;
+		private delegate void DelegateLegacyDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor);
+		private static DelegateLegacyDrawEffects[] LegacyHookDrawEffects;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
 		private static Action<int, int, int>[] HookRandomUpdate;
@@ -256,6 +258,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
 			ModLoader.BuildGlobalHook(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
+			ModLoader.BuildGlobalHook(ref LegacyHookDrawEffects, globalTiles, g => g.DrawEffects);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalTiles, g => g.PostDraw);
 			ModLoader.BuildGlobalHook(ref HookSpecialDraw, globalTiles, g => g.SpecialDraw);
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
@@ -791,6 +794,10 @@ namespace Terraria.ModLoader
 			foreach (var hook in HookDrawEffects)
 			{
 				hook(i, j, type, spriteBatch, ref drawColor, ref nextSpecialDrawIndex);
+			}
+			foreach (var hook in LegacyHookDrawEffects)
+			{
+				hook(i, j, type, spriteBatch, ref drawColor);
 			}
 		}
 		//in Terraria.Main.Draw after if statement checking whether texture2D is null call

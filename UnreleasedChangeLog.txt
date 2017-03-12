@@ -23,14 +23,14 @@ tModLoader
 		ModProjectile/GlobalProjectile GrapplePullSpeed -- Grapple miss retreat speed
 		UIElement now has right click functionality
 	
-	Changed Hooks: (You'll need to rebuild mods that use these, see documentation for new method signature)
+	Changed Hooks: (Next time you update, be sure to use the new method signature)
 		ModTile/GlobalTile.DrawEffects
 		ModProjectile/GlobalProjectile.TileCollideStyle
 		ModItem/GlobalItem.VerticalWingSpeeds
 		ModItem/GlobalItem.WingUpdate
 		ModItem/GlobalItem.HorizontalWingSpeeds
 	
-	Removed Hooks:
+	Removed Hooks: (You'll need to rebuild mods that use these)
 		Mod.ChatInput -- functionality replaced by ModCommand
 	
 	Bug Fixes:

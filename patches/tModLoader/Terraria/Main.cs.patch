@@ -3885,7 +3885,7 @@
  					Main.curMusic = this.newMusic;
  					float num8 = 1f;
  					if (NPC.MoonLordCountdown > 0)
-@@ -9074,12 +_,14 @@
+@@ -9074,13 +_,19 @@
  							num8 = 0f;
  							Main.curMusic = 0;
  						}
@@ -3897,11 +3897,17 @@
  						}
  					}
 -					for (int m = 1; m < 42; m++)
+-					{
 +
 +					for (int m = 1; m < Main.music.Length; m++)
- 					{
++					{
++						if (Main.music[m] == null)
++						{
++							continue; // Race condition, Music is resized during load.
++						}
  						if (m == 28)
  						{
+ 							if (Main.cloudAlpha > 0f && (double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0 + (double)(Main.screenHeight / 2) && !Main.player[Main.myPlayer].ZoneSnow)
 @@ -9094,7 +_,7 @@
  								}
  								else if (!Main.music[m].IsPlaying)

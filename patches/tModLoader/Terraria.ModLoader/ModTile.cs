@@ -380,6 +380,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Obsolete: Use the overloaded method with the ref int parameter.
+		/// </summary>
+		[method: Obsolete("Use the overloaded method with the ref int parameter.")]
+		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
@@ -387,6 +395,7 @@ namespace Terraria.ModLoader
 		/// <param name="nextSpecialDrawIndex">The special draw count. Use with Main.specX and Main.specY and then increment to draw special things after the main tile drawing loop is complete via DrawSpecial.</param>
 		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
+			DrawEffects(i, j, spriteBatch, ref drawColor);
 		}
 
 		/// <summary>
