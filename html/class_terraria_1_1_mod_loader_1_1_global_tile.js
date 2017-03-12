@@ -14,6 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_global_tile =
     [ "ChangeWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a64bfa928daa2b265e3fbd586f3352301", null ],
     [ "CreateDust", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a859cee4c0040c19c9c1ba9d2f4407b20", null ],
     [ "Dangersense", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a19db5c50626b6ecafb866674bee6e029", null ],
+    [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_global_tile.html#ad3e3d5559ca3d94cb1a7f6bae5229e32", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_global_tile.html#aa4e74f8f2d6ddbf7eb4e0c00d7adc6c2", null ],
     [ "Drop", "class_terraria_1_1_mod_loader_1_1_global_tile.html#ae0704b7c0026c5192737cfa1961aedf4", null ],
     [ "DropCritterChance", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a20513e5708b6792f9c37d010d0698f4d", null ],

@@ -179,6 +179,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac155350ec502aa873ef9748636accc88"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac155350ec502aa873ef9748636accc88">ModifyHitPvp</a> (Projectile projectile, Player target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:ac155350ec502aa873ef9748636accc88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that a projectile does to an opponent player.  <a href="#ac155350ec502aa873ef9748636accc88">More...</a><br /></td></tr>
 <tr class="separator:ac155350ec502aa873ef9748636accc88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84175fd599c12c1c8d97a74ea7eecf0d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a84175fd599c12c1c8d97a74ea7eecf0d">NewTileCollideStyle</a> (Projectile projectile, ref int width, ref int height, ref bool fallThrough)</td></tr>
+<tr class="memdesc:a84175fd599c12c1c8d97a74ea7eecf0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.  <a href="#a84175fd599c12c1c8d97a74ea7eecf0d">More...</a><br /></td></tr>
+<tr class="separator:a84175fd599c12c1c8d97a74ea7eecf0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab01ffa6483a27d73051ca9b30f249184"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab01ffa6483a27d73051ca9b30f249184">NumGrappleHooks</a> (Projectile projectile, Player player, ref int numHooks)</td></tr>
 <tr class="memdesc:ab01ffa6483a27d73051ca9b30f249184"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.  <a href="#ab01ffa6483a27d73051ca9b30f249184">More...</a><br /></td></tr>
 <tr class="separator:ab01ffa6483a27d73051ca9b30f249184"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -221,9 +224,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4f87420f4b7e3d839654e3098a60b2ba"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a4f87420f4b7e3d839654e3098a60b2ba">SingleGrappleHook</a> (int type, Player player)</td></tr>
 <tr class="memdesc:a4f87420f4b7e3d839654e3098a60b2ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.  <a href="#a4f87420f4b7e3d839654e3098a60b2ba">More...</a><br /></td></tr>
 <tr class="separator:a4f87420f4b7e3d839654e3098a60b2ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb112ef058769cf219ea82ef62e49a73"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#aeb112ef058769cf219ea82ef62e49a73">TileCollideStyle</a> (Projectile projectile, ref int width, ref int height, ref bool fallThrough)</td></tr>
-<tr class="memdesc:aeb112ef058769cf219ea82ef62e49a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.  <a href="#aeb112ef058769cf219ea82ef62e49a73">More...</a><br /></td></tr>
-<tr class="separator:aeb112ef058769cf219ea82ef62e49a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a958305ebdf1152302595a33489616f7d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a958305ebdf1152302595a33489616f7d">TileCollideStyle</a> (Projectile projectile, ref int width, ref int height, ref bool fallThrough)</td></tr>
+<tr class="memdesc:a958305ebdf1152302595a33489616f7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obsolete: TileCollideStyle will return a bool value later. (Use NewTileCollideStyle in the meantime.)  <a href="#a958305ebdf1152302595a33489616f7d">More...</a><br /></td></tr>
+<tr class="separator:a958305ebdf1152302595a33489616f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2c88a7d4194399f4ed0e15b5c4e6e7f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#aa2c88a7d4194399f4ed0e15b5c4e6e7f">UseGrapple</a> (Player player, ref int type)</td></tr>
 <tr class="memdesc:aa2c88a7d4194399f4ed0e15b5c4e6e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.  <a href="#aa2c88a7d4194399f4ed0e15b5c4e6e7f">More...</a><br /></td></tr>
 <tr class="separator:aa2c88a7d4194399f4ed0e15b5c4e6e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -309,7 +312,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00037">37</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01193">Terraria.ModLoader.Mod.AutoloadGlobalProjectile()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01179">Terraria.ModLoader.Mod.AutoloadGlobalProjectile()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a6bcef45bd1de82982ccf99d34db4d8e7">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00045">Mod.cs:45</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_global_projectile_html_a6bcef45bd1de82982ccf99d34db4d8e7"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a6bcef45bd1de82982ccf99d34db4d8e7">Terraria.ModLoader.GlobalProjectile.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod to which this GlobalProjectile belongs. </div><div class="ttdef"><b>Definition:</b> <a href="_global_projectile_8cs_source.html#l00018">GlobalProjectile.cs:18</a></div></div>
@@ -359,8 +362,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00135">135</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        {</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00142">142</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        {</div><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa5648ce59629055d6eb161b7ddc3e7f1"></a>
@@ -394,8 +397,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00153">153</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        {</div><div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00160">160</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        {</div><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7e1778050471b65cd0b4cf3345d09c77"></a>
@@ -440,8 +443,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00174">174</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        {</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00181">181</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        {</div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4f51dbe916fc4bf552bfb340b96d130c"></a>
@@ -486,8 +489,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00243">243</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        {</div><div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00250">250</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        {</div><div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a96b688c76e4ce10649982a3ab222eff5"></a>
@@ -532,8 +535,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00210">210</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        {</div><div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00217">217</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        {</div><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac3d0248bba5076d735f27d1114d5b6b1"></a>
@@ -570,8 +573,8 @@ Properties</h2></td></tr>
 
 <p>Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00342">342</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        {</div><div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00349">349</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        {</div><div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4c7c6c662699eafe4d58015891f2fbbb"></a>
@@ -623,8 +626,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00277">277</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        {</div><div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00284">284</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        {</div><div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a71b11f64254f701d32aee669c732d3ae"></a>
@@ -657,8 +660,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00144">144</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        {</div><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00151">151</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        {</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad6854d6aeb986550382b01a4592dc4dc"></a>
@@ -730,8 +733,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00335">335</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        {</div><div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00342">342</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        {</div><div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7b67b1fc3ff53a59a66cb0fe82410778"></a>
@@ -776,8 +779,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00288">288</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        {</div><div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00295">295</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        {</div><div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a13d107cf7fb3ee9bc26eb2b2750994ea"></a>
@@ -820,8 +823,8 @@ Properties</h2></td></tr>
 
 <p>The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00379">379</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        {</div><div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00386">386</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        {</div><div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af3cebf7f17f07bd9f39e2a75fd6af915"></a>
@@ -864,8 +867,8 @@ Properties</h2></td></tr>
 
 <p>The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00372">372</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        {</div><div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00379">379</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        {</div><div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1d449abeb4ee387b6b2ebe33da5693aa"></a>
@@ -909,8 +912,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00126">126</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        {</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00133">133</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        {</div><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab216a84d7301f86afada25f4b9f17156"></a>
@@ -944,8 +947,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00163">163</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        {</div><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00170">170</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        {</div><div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a78a58a0e560bf775d3ad11951906f73c"></a>
@@ -1017,8 +1020,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00188">188</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        {</div><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00195">195</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        {</div><div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a294bc7ef4586362ed1ef19df56d88e09"></a>
@@ -1076,8 +1079,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00255">255</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        {</div><div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00262">262</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        {</div><div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac155350ec502aa873ef9748636accc88"></a>
@@ -1135,8 +1138,68 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00222">222</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        {</div><div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00229">229</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        {</div><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a84175fd599c12c1c8d97a74ea7eecf0d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalProjectile.NewTileCollideStyle </td>
+          <td>(</td>
+          <td class="paramtype">Projectile&#160;</td>
+          <td class="paramname"><em>projectile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>fallThrough</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">projectile</td><td></td></tr>
+    <tr><td class="paramname">width</td><td></td></tr>
+    <tr><td class="paramname">height</td><td></td></tr>
+    <tr><td class="paramname">fallThrough</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00101">101</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        {</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab01ffa6483a27d73051ca9b30f249184"></a>
@@ -1179,8 +1242,8 @@ Properties</h2></td></tr>
 
 <p>How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00365">365</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        {</div><div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00372">372</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        {</div><div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6c4760647ac0f9a454989e2b333c7b0c"></a>
@@ -1245,8 +1308,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00200">200</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        {</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00207">207</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        {</div><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2dac12ff40a1dabbf0d4fb1442f6f832"></a>
@@ -1304,8 +1367,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00266">266</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        {</div><div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00273">273</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        {</div><div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a004341b430cdd90fb406238d872219e1"></a>
@@ -1363,8 +1426,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00233">233</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        {</div><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00240">240</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        {</div><div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a54e53d2666fd2746541428bee75542a9"></a>
@@ -1409,8 +1472,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00105">105</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        {</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00112">112</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        {</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a610a8a7456d42c49b38bb89f0b7523a5"></a>
@@ -1495,8 +1558,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00322">322</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        {</div><div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00329">329</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        {</div><div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2d36a798579d23fc47f763bc506a7a4c"></a>
@@ -1583,8 +1646,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00311">311</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        {</div><div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00318">318</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        {</div><div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af9d2b93baaa0fb81a19e50d03725d670"></a>
@@ -1629,8 +1692,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00299">299</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        {</div><div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00306">306</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        {</div><div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="acc6152f84f090351814920cfc40c19f7"></a>
@@ -1675,8 +1738,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00116">116</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        {</div><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00123">123</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        {</div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af9ddfcab5291b6791cd2b97af0ba9540"></a>
@@ -1782,11 +1845,11 @@ Properties</h2></td></tr>
 
 <p>Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00350">350</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        {</div><div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00357">357</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        {</div><div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aeb112ef058769cf219ea82ef62e49a73"></a>
+<a class="anchor" id="a958305ebdf1152302595a33489616f7d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1794,7 +1857,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.GlobalProjectile.TileCollideStyle </td>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalProjectile.TileCollideStyle </td>
           <td>(</td>
           <td class="paramtype">Projectile&#160;</td>
           <td class="paramname"><em>projectile</em>, </td>
@@ -1830,20 +1893,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">projectile</td><td></td></tr>
-    <tr><td class="paramname">width</td><td></td></tr>
-    <tr><td class="paramname">height</td><td></td></tr>
-    <tr><td class="paramname">fallThrough</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Obsolete: TileCollideStyle will return a bool value later. (Use NewTileCollideStyle in the meantime.) </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00094">94</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        {</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00089">89</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        {</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa2c88a7d4194399f4ed0e15b5c4e6e7f"></a>
@@ -1880,8 +1933,8 @@ Properties</h2></td></tr>
 
 <p>This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00358">358</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        {</div><div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00365">365</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        {</div><div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
@@ -1907,7 +1960,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00018">18</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01135">Terraria.ModLoader.Mod.AddGlobalProjectile()</a>, and <a class="el" href="_mod_8cs_source.html#l01193">Terraria.ModLoader.Mod.AutoloadGlobalProjectile()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01128">Terraria.ModLoader.Mod.AddGlobalProjectile()</a>, and <a class="el" href="_mod_8cs_source.html#l01179">Terraria.ModLoader.Mod.AutoloadGlobalProjectile()</a>.</p>
 
 </div>
 </div>
@@ -1933,7 +1986,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00027">27</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01135">Terraria.ModLoader.Mod.AddGlobalProjectile()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01128">Terraria.ModLoader.Mod.AddGlobalProjectile()</a>.</p>
 
 </div>
 </div>
