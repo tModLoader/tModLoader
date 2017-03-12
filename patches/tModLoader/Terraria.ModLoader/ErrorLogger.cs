@@ -38,12 +38,13 @@ namespace Terraria.ModLoader
 		internal static void LogCompileErrors(CompilerErrorCollection errors, bool forWindows)
 		{
 			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
-			string badInstallHint = "";
-			if(!forWindows && ModLoader.windows)
-			{
-				badInstallHint = "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well." + Environment.NewLine + Environment.NewLine;
-			}
-			Console.WriteLine(errorHeader + badInstallHint);
+			// TODO: This doesn't work yet because if both windows and mono fail, it still shows.
+			//string badInstallHint = "";
+			//if(!forWindows && ModLoader.windows)
+			//{
+			//	badInstallHint = "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well." + Environment.NewLine + Environment.NewLine;
+			//}
+			Console.WriteLine(errorHeader/* + badInstallHint*/);
 			Directory.CreateDirectory(LogPath);
 			CompilerError displayError = null;
 			using (var writer = File.CreateText(CompileErrorPath))
@@ -56,7 +57,7 @@ namespace Terraria.ModLoader
 						displayError = error;
 				}
 			}
-			Interface.errorMessage.SetMessage(errorHeader + badInstallHint + displayError);
+			Interface.errorMessage.SetMessage(errorHeader /*+ badInstallHint*/ + displayError);
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 			Interface.errorMessage.SetFile(CompileErrorPath);
 		}
