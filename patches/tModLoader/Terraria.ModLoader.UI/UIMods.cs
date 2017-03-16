@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
@@ -191,14 +194,20 @@ namespace Terraria.ModLoader.UI
 			Main.clrInput();
 			modListAll.Clear();
 			items.Clear();
-			TmodFile[] mods = ModLoader.FindMods();
-			foreach (TmodFile mod in mods)
-			{
-				UIModItem modItem = new UIModItem(mod);
-				modListAll.Add(modItem);
-				items.Add(modItem);
-			}
-			FilterList();
+
+			Task.Factory
+				.StartNew(ModLoader.FindMods)
+				.ContinueWith(task =>
+				{
+					var mods = task.Result;
+					foreach (TmodFile mod in mods)
+					{
+						UIModItem modItem = new UIModItem(mod);
+						modListAll.Add(modItem);
+						items.Add(modItem);
+					}
+					FilterList();
+				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
 }

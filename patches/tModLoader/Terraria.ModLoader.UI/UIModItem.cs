@@ -12,14 +12,14 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIModItem : UIPanel
 	{
-		private TmodFile mod;
-		private Texture2D dividerTexture;
-		private Texture2D innerPanelTexture;
-		private UIText modName;
+		private readonly TmodFile mod;
+		private readonly Texture2D dividerTexture;
+		private readonly Texture2D innerPanelTexture;
+		private readonly UIText modName;
 		internal bool enabled;
-		BuildProperties properties;
-		UITextPanel<string> button2;
-		UIHoverImage keyImage;
+		private readonly BuildProperties properties;
+		private readonly UITextPanel<string> button2;
+		readonly UIHoverImage keyImage;
 
 		public UIModItem(TmodFile mod)
 		{

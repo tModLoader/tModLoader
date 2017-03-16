@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
@@ -129,23 +130,32 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate()
 		{
 			modList.Clear();
-			string[] mods = ModLoader.FindModSources();
-			TmodFile[] modFiles = ModLoader.FindMods();
-			foreach (string mod in mods)
-			{
-				bool publishable = false;
-				DateTime lastBuildTime = new DateTime();
-				foreach (TmodFile file in modFiles)
+
+			Task.Factory
+				.StartNew(ModLoader.FindMods)
+				.ContinueWith(task =>
 				{
-					if (Path.GetFileNameWithoutExtension(file.path).Equals(Path.GetFileName(mod)))
+					string[] mods = ModLoader.FindModSources();
+					TmodFile[] modFiles = task.Result;
+					foreach (string mod in mods)
 					{
-						lastBuildTime = File.GetLastWriteTime(file.path);
-						publishable = true;
-						break;
+						bool publishable = false;
+						DateTime lastBuildTime = new DateTime();
+						foreach (TmodFile file in modFiles)
+						{
+							var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.path);
+							if (fileNameWithoutExtension != null && fileNameWithoutExtension.Equals(Path.GetFileName(mod)))
+							{
+								lastBuildTime = File.GetLastWriteTime(file.path);
+								publishable = true;
+								break;
+							}
+						}
+						modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
 					}
-				}
-				modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
-			}
+				}, TaskScheduler.FromCurrentSynchronizationContext());
+
+			
 		}
 	}
 }
