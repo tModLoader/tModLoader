@@ -35,6 +35,7 @@ namespace Terraria.ModLoader
 		}
 	}
 
+	//todo: further documentation
 	public class SpawnCondition
 	{
 		private Func<NPCSpawnInfo, bool> condition;
