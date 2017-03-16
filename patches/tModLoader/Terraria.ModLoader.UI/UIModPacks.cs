@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
@@ -79,12 +80,12 @@ namespace Terraria.ModLoader.UI
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(11, -1, -1, 1);
-			Main.MenuUI.SetState(new UIVirtualKeyboard("Enter Mod Pack name", "", new UIVirtualKeyboard.KeyboardSubmitEvent(SaveModList), ()=>Main.menuMode = Interface.modPacksMenuID, 0));
+			Main.MenuUI.SetState(new UIVirtualKeyboard("Enter Mod Pack name", "", new UIVirtualKeyboard.KeyboardSubmitEvent(SaveModList), () => Main.menuMode = Interface.modPacksMenuID, 0));
 			Main.menuMode = 888;
 		}
 
 		public static void SaveModList(string filename)
-		{ 
+		{
 			// TODO
 			//Main.menuMode = Interface.modsMenuID;
 
@@ -119,27 +120,35 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			mods = ModLoader.FindMods();
-
 			modListList.Clear();
-			string[] modListsFullPath = FindModLists();
-			foreach (string modListFilePath in modListsFullPath)
-			{
-				string[] mods = { };
-				//string path = ModListSaveDirectory + Path.DirectorySeparatorChar + modListFilePath + ".json";
 
-				if (File.Exists(modListFilePath))
+			Task.Factory
+				.StartNew(delegate
 				{
-					using (StreamReader r = new StreamReader(modListFilePath))
+					mods = ModLoader.FindMods();
+					return FindModLists();
+				})
+				.ContinueWith(task =>
+				{
+					string[] modListsFullPath = task.Result;
+					foreach (string modListFilePath in modListsFullPath)
 					{
-						string json = r.ReadToEnd();
-						mods = JsonConvert.DeserializeObject<string[]>(json);
-					}
-				}
+						string[] mods = {};
+						//string path = ModListSaveDirectory + Path.DirectorySeparatorChar + modListFilePath + ".json";
 
-				UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
-				modListList.Add(modItem);
-			}
+						if (File.Exists(modListFilePath))
+						{
+							using (StreamReader r = new StreamReader(modListFilePath))
+							{
+								string json = r.ReadToEnd();
+								mods = JsonConvert.DeserializeObject<string[]>(json);
+							}
+						}
+
+						UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
+						modListList.Add(modItem);
+					}
+				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		private string[] FindModLists()
