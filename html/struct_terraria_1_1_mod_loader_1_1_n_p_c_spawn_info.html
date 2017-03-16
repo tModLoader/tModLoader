@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('struct_terraria_1_1_mod_loader_1_1_n_p
 </div><!--header-->
 <div class="contents">
 
-<p>A struct which can hold various spawn information of an npc  
+<p>A struct that stores information regarding where an NPC is naturally spawning and the player it is spawning around. This serves to reduce the parameter count for <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6835a75fd5412e9abb6682448fc721d5" title="Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chanc...">ModNPC.CanSpawn</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af1732616b382d9e346a26763475188b0" title="Allows you to control which NPCs can spawn and how likely each one is to spawn. The pool parameter ma...">GlobalNPC.EditSpawnPool</a>.  
  <a href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.NPCSpawnInfo:</div>
@@ -131,46 +131,111 @@ $(document).ready(function(){initNavTree('struct_terraria_1_1_mod_loader_1_1_n_p
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a2d05ed125dcfd4ddb200fcfee3b810c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a2d05ed125dcfd4ddb200fcfee3b810c4">desertCave</a></td></tr>
+<tr class="memdesc:a2d05ed125dcfd4ddb200fcfee3b810c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the player is in front of a desert wall or the NPC will spawn near one.  <a href="#a2d05ed125dcfd4ddb200fcfee3b810c4">More...</a><br /></td></tr>
 <tr class="separator:a2d05ed125dcfd4ddb200fcfee3b810c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a675f1ac3b085bb8785c7519121ab2c21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a675f1ac3b085bb8785c7519121ab2c21">granite</a></td></tr>
+<tr class="memdesc:a675f1ac3b085bb8785c7519121ab2c21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the NPC will spawn on a granite block or the player is near a granite biome.  <a href="#a675f1ac3b085bb8785c7519121ab2c21">More...</a><br /></td></tr>
 <tr class="separator:a675f1ac3b085bb8785c7519121ab2c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb193778914243d9a2a00f08b1bcf67"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eb193778914243d9a2a00f08b1bcf67">invasion</a></td></tr>
+<tr class="memdesc:a8eb193778914243d9a2a00f08b1bcf67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not there is an invasion going on and the player is near it.  <a href="#a8eb193778914243d9a2a00f08b1bcf67">More...</a><br /></td></tr>
 <tr class="separator:a8eb193778914243d9a2a00f08b1bcf67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00b4eea484a4f5a84bb8ba3dfea86cb0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a00b4eea484a4f5a84bb8ba3dfea86cb0">lihzahrd</a></td></tr>
+<tr class="memdesc:a00b4eea484a4f5a84bb8ba3dfea86cb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the player is inside the jungle temple, where Lihzahrds spawn.  <a href="#a00b4eea484a4f5a84bb8ba3dfea86cb0">More...</a><br /></td></tr>
 <tr class="separator:a00b4eea484a4f5a84bb8ba3dfea86cb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeebca0ff9127c8bf8cc866d3ad6b27dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aeebca0ff9127c8bf8cc866d3ad6b27dc">marble</a></td></tr>
+<tr class="memdesc:aeebca0ff9127c8bf8cc866d3ad6b27dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the NPC will spawn on a marble block or the player is near a marble biome.  <a href="#aeebca0ff9127c8bf8cc866d3ad6b27dc">More...</a><br /></td></tr>
 <tr class="separator:aeebca0ff9127c8bf8cc866d3ad6b27dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b19eb26b1ac89612fa9c7a9be9649da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a9b19eb26b1ac89612fa9c7a9be9649da">planteraDefeated</a></td></tr>
+<tr class="memdesc:a9b19eb26b1ac89612fa9c7a9be9649da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether Plantera is defeated and the world is in hardmode. This isn't needed (it's easy to find by yourself), but it's a local flag in NPC.SpawnNPC, so it is included for completeness.  <a href="#a9b19eb26b1ac89612fa9c7a9be9649da">More...</a><br /></td></tr>
 <tr class="separator:a9b19eb26b1ac89612fa9c7a9be9649da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a894868167c60f17bea09fba0aea811a8"><td class="memItemLeft" align="right" valign="top">Player&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a894868167c60f17bea09fba0aea811a8">player</a></td></tr>
+<tr class="memdesc:a894868167c60f17bea09fba0aea811a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player that this NPC is spawning around. For convenience, here are the player zones, which are also useful for determining NPC spawn: </p><ul>
+<li>
+ZoneDungeon </li>
+<li>
+ZoneCorrupt </li>
+<li>
+ZoneHoly </li>
+<li>
+ZoneMeteor ZoneJungle </li>
+<li>
+ZoneSnow </li>
+<li>
+ZoneCrimson </li>
+<li>
+ZoneWaterCandle </li>
+<li>
+ZonePeaceCandle </li>
+<li>
+ZoneTowerSolar </li>
+<li>
+ZoneTowerVortex </li>
+<li>
+ZoneTowerNebula </li>
+<li>
+ZoneTowerStardust </li>
+<li>
+ZoneDesert </li>
+<li>
+ZoneGlowshroom </li>
+<li>
+ZoneUndergroundDesert </li>
+<li>
+ZoneSkyHeight </li>
+<li>
+ZoneOverworldHeight </li>
+<li>
+ZoneDirtLayerHeight </li>
+<li>
+ZoneRockLayerHeight </li>
+<li>
+ZoneUnderworldHeight </li>
+<li>
+ZoneBeach </li>
+<li>
+ZoneRain </li>
+<li>
+ZoneSandstorm </li>
+</ul>
+ <a href="#a894868167c60f17bea09fba0aea811a8">More...</a><br /></td></tr>
 <tr class="separator:a894868167c60f17bea09fba0aea811a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eec678c546a950cc906e36ec64f362c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eec678c546a950cc906e36ec64f362c">playerFloorX</a></td></tr>
+<tr class="memdesc:a8eec678c546a950cc906e36ec64f362c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The x-coordinate of the tile the player is standing on.  <a href="#a8eec678c546a950cc906e36ec64f362c">More...</a><br /></td></tr>
 <tr class="separator:a8eec678c546a950cc906e36ec64f362c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb34f12bdfa209993adda54c3b1d09d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#afb34f12bdfa209993adda54c3b1d09d4">playerFloorY</a></td></tr>
+<tr class="memdesc:afb34f12bdfa209993adda54c3b1d09d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The y-coordinate of the tile the player is standing on.  <a href="#afb34f12bdfa209993adda54c3b1d09d4">More...</a><br /></td></tr>
 <tr class="separator:afb34f12bdfa209993adda54c3b1d09d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a104a11199f860cb5e5ed8272b1e11a02"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a104a11199f860cb5e5ed8272b1e11a02">playerInTown</a></td></tr>
+<tr class="memdesc:a104a11199f860cb5e5ed8272b1e11a02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the player is in a town. This is used for spawning critters instead of monsters.  <a href="#a104a11199f860cb5e5ed8272b1e11a02">More...</a><br /></td></tr>
 <tr class="separator:a104a11199f860cb5e5ed8272b1e11a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedf609963b14f1e49cbd78745b9b09d1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aedf609963b14f1e49cbd78745b9b09d1">playerSafe</a></td></tr>
+<tr class="memdesc:aedf609963b14f1e49cbd78745b9b09d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the player is in front of a player-placed wall or in a large town. If this is true, enemies that can attack through walls should not spawn (unless an invasion is in progress).  <a href="#aedf609963b14f1e49cbd78745b9b09d1">More...</a><br /></td></tr>
 <tr class="separator:aedf609963b14f1e49cbd78745b9b09d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a019c1f1fb493b8ceb88fb399d88011a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a019c1f1fb493b8ceb88fb399d88011a1">safeRangeX</a></td></tr>
+<tr class="memdesc:a019c1f1fb493b8ceb88fb399d88011a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the NPC is horizontally within the range near the player in which NPCs cannot spawn. If this is true, it also means that it is vertically outside of the range near the player in which NPCs cannot spawn.  <a href="#a019c1f1fb493b8ceb88fb399d88011a1">More...</a><br /></td></tr>
 <tr class="separator:a019c1f1fb493b8ceb88fb399d88011a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf1db6c1c5c57bc85b858ce0505c164e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aaf1db6c1c5c57bc85b858ce0505c164e">sky</a></td></tr>
+<tr class="memdesc:aaf1db6c1c5c57bc85b858ce0505c164e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the player is in the sky biome, where harpies and wyverns spawn.  <a href="#aaf1db6c1c5c57bc85b858ce0505c164e">More...</a><br /></td></tr>
 <tr class="separator:aaf1db6c1c5c57bc85b858ce0505c164e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ca2535d11081e71301b32f291329055"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a3ca2535d11081e71301b32f291329055">spawnTileType</a></td></tr>
 <tr class="separator:a3ca2535d11081e71301b32f291329055"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed52fe7f29e8f48655d7b7865b17efb7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aed52fe7f29e8f48655d7b7865b17efb7">spawnTileX</a></td></tr>
+<tr class="memdesc:aed52fe7f29e8f48655d7b7865b17efb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The x-coordinate of the tile the NPC will spawn above.  <a href="#aed52fe7f29e8f48655d7b7865b17efb7">More...</a><br /></td></tr>
 <tr class="separator:aed52fe7f29e8f48655d7b7865b17efb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f106aed6cd8ea4fb3efa22960fa5500"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a6f106aed6cd8ea4fb3efa22960fa5500">spawnTileY</a></td></tr>
+<tr class="memdesc:a6f106aed6cd8ea4fb3efa22960fa5500"><td class="mdescLeft">&#160;</td><td class="mdescRight">The y-coordinate of the tile the NPC will spawn above.  <a href="#a6f106aed6cd8ea4fb3efa22960fa5500">More...</a><br /></td></tr>
 <tr class="separator:a6f106aed6cd8ea4fb3efa22960fa5500"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10c3b0e027716d413775e959b981ea10"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a10c3b0e027716d413775e959b981ea10">spiderCave</a></td></tr>
+<tr class="memdesc:a10c3b0e027716d413775e959b981ea10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the player is in a spider cave or the NPC will spawn near one.  <a href="#a10c3b0e027716d413775e959b981ea10">More...</a><br /></td></tr>
 <tr class="separator:a10c3b0e027716d413775e959b981ea10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a875d4463252e0a7c96d77123ebcbad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a0a875d4463252e0a7c96d77123ebcbad">water</a></td></tr>
+<tr class="memdesc:a0a875d4463252e0a7c96d77123ebcbad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the tile the NPC will spawn in contains water.  <a href="#a0a875d4463252e0a7c96d77123ebcbad">More...</a><br /></td></tr>
 <tr class="separator:a0a875d4463252e0a7c96d77123ebcbad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A struct which can hold various spawn information of an npc </p>
+<div class="textblock"><p>A struct that stores information regarding where an NPC is naturally spawning and the player it is spawning around. This serves to reduce the parameter count for <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6835a75fd5412e9abb6682448fc721d5" title="Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chanc...">ModNPC.CanSpawn</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af1732616b382d9e346a26763475188b0" title="Allows you to control which NPCs can spawn and how likely each one is to spawn. The pool parameter ma...">GlobalNPC.EditSpawnPool</a>. </p>
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00010">10</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00009">9</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a2d05ed125dcfd4ddb200fcfee3b810c4"></a>
 <div class="memitem">
@@ -182,7 +247,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00042">42</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the player is in front of a desert wall or the NPC will spawn near one. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00112">112</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
@@ -198,7 +265,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00034">34</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the NPC will spawn on a granite block or the player is near a granite biome. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00092">92</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -212,7 +281,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00030">30</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not there is an invasion going on and the player is near it. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00082">82</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
@@ -228,7 +299,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00026">26</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the player is inside the jungle temple, where Lihzahrds spawn. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00072">72</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
@@ -244,7 +317,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00036">36</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the NPC will spawn on a marble block or the player is near a marble biome. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00097">97</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -258,7 +333,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00044">44</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether Plantera is defeated and the world is in hardmode. This isn't needed (it's easy to find by yourself), but it's a local flag in NPC.SpawnNPC, so it is included for completeness. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00117">117</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -272,7 +349,57 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00018">18</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>The player that this NPC is spawning around. For convenience, here are the player zones, which are also useful for determining NPC spawn: </p><ul>
+<li>
+ZoneDungeon </li>
+<li>
+ZoneCorrupt </li>
+<li>
+ZoneHoly </li>
+<li>
+ZoneMeteor ZoneJungle </li>
+<li>
+ZoneSnow </li>
+<li>
+ZoneCrimson </li>
+<li>
+ZoneWaterCandle </li>
+<li>
+ZonePeaceCandle </li>
+<li>
+ZoneTowerSolar </li>
+<li>
+ZoneTowerVortex </li>
+<li>
+ZoneTowerNebula </li>
+<li>
+ZoneTowerStardust </li>
+<li>
+ZoneDesert </li>
+<li>
+ZoneGlowshroom </li>
+<li>
+ZoneUndergroundDesert </li>
+<li>
+ZoneSkyHeight </li>
+<li>
+ZoneOverworldHeight </li>
+<li>
+ZoneDirtLayerHeight </li>
+<li>
+ZoneRockLayerHeight </li>
+<li>
+ZoneUnderworldHeight </li>
+<li>
+ZoneBeach </li>
+<li>
+ZoneRain </li>
+<li>
+ZoneSandstorm </li>
+</ul>
+</p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00052">52</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
@@ -288,7 +415,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00020">20</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>The x-coordinate of the tile the player is standing on. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00057">57</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -302,7 +431,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00022">22</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>The y-coordinate of the tile the player is standing on. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00062">62</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -316,7 +447,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00040">40</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the player is in a town. This is used for spawning critters instead of monsters. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00107">107</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
@@ -332,7 +465,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00028">28</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the player is in front of a player-placed wall or in a large town. If this is true, enemies that can attack through walls should not spawn (unless an invasion is in progress). </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00077">77</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
@@ -348,7 +483,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00046">46</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the NPC is horizontally within the range near the player in which NPCs cannot spawn. If this is true, it also means that it is vertically outside of the range near the player in which NPCs cannot spawn. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00122">122</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00381">Terraria.ModLoader.SpawnCondition.WaterSurface()</a>.</p>
 
@@ -364,7 +501,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00024">24</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the player is in the sky biome, where harpies and wyverns spawn. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00067">67</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
@@ -380,7 +519,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00016">16</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00021">21</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
@@ -396,7 +535,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00012">12</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>The x-coordinate of the tile the NPC will spawn above. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00014">14</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00376">Terraria.ModLoader.SpawnCondition.GetTile()</a>, <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00404">Terraria.ModLoader.SpawnCondition.InnerThird()</a>, <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00398">Terraria.ModLoader.SpawnCondition.MartianProbeHelper()</a>, <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00409">Terraria.ModLoader.SpawnCondition.OuterThird()</a>, <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>, and <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00381">Terraria.ModLoader.SpawnCondition.WaterSurface()</a>.</p>
 
@@ -412,7 +553,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00014">14</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>The y-coordinate of the tile the NPC will spawn above. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00019">19</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00376">Terraria.ModLoader.SpawnCondition.GetTile()</a>, <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>, and <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00381">Terraria.ModLoader.SpawnCondition.WaterSurface()</a>.</p>
 
@@ -428,7 +571,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00038">38</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the player is in a spider cave or the NPC will spawn near one. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00102">102</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
@@ -444,7 +589,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00032">32</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
+<p>Whether or not the tile the NPC will spawn in contains water. </p>
+
+<p>Definition at line <a class="el" href="_n_p_c_spawn_info_8cs_source.html#l00087">87</a> of file <a class="el" href="_n_p_c_spawn_info_8cs_source.html">NPCSpawnInfo.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_spawn_helper_8cs_source.html#l00199">Terraria.ModLoader.SpawnCondition.SpawnCondition()</a>.</p>
 
