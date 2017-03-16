@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.UI
 		private Texture2D dividerTexture;
 		private Texture2D innerPanelTexture;
 		private UIText modName;
-		UITextPanel<string> button2;
+		UITextPanel<string> updateButton;
 		public bool update = false;
 		public bool updateIsDowngrade = false;
 		public bool exists = false;
@@ -58,7 +58,7 @@ namespace Terraria.ModLoader.UI
 			this.Height.Set(90f, 0f);
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
-			string text = displayname + " " + version + " - by " + author;
+			string text = displayname + " " + version;
 			this.modName = new UIText(text, 1f, false);
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
@@ -66,7 +66,7 @@ namespace Terraria.ModLoader.UI
 			UITextPanel<string> button = new UITextPanel<string>("More info", 1f, false);
 			button.Width.Set(100f, 0f);
 			button.Height.Set(30f, 0f);
-			button.Left.Set(10f, 0f);
+			button.Left.Set(5f, 0f);
 			button.Top.Set(40f, 0f);
 			button.PaddingTop -= 2f;
 			button.PaddingBottom -= 2f;
@@ -76,19 +76,19 @@ namespace Terraria.ModLoader.UI
 			base.Append(button);
 			if (update || !exists)
 			{
-				button2 = new UITextPanel<string>(this.update ? (updateIsDowngrade ? "Downgrade" : "Update") : "Download", 1f, false);
-				button2.CopyStyle(button);
-				button2.Width.Set(200f, 0f);
-				button2.Left.Set(150f, 0f);
-				button2.OnMouseOver += UICommon.FadedMouseOver;
-				button2.OnMouseOut += UICommon.FadedMouseOut;
-				button2.OnClick += this.DownloadMod;
-				base.Append(button2);
+				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? "Downgrade" : "Update") : "Download", 1f, false);
+				updateButton.CopyStyle(button);
+				updateButton.Width.Set(200f, 0f);
+				updateButton.Left.Set(button.Width.Pixels + button.Left.Pixels * 2f + 5f, 0f);
+				updateButton.OnMouseOver += UICommon.FadedMouseOver;
+				updateButton.OnMouseOut += UICommon.FadedMouseOut;
+				updateButton.OnClick += this.DownloadMod;
+				base.Append(updateButton);
 			}
 			if (modreferences.Length > 0)
 			{
 				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + modreferences);
-				modReferenceIcon.Left.Set(115, 0f);
+				modReferenceIcon.Left.Set(updateButton.Left.Pixels + updateButton.Width.Pixels + 5f, 0f);
 				modReferenceIcon.Top.Set(50f, 0f);
 				modReferenceIcon.OnClick += (s, e) =>
 				{
@@ -162,12 +162,39 @@ namespace Terraria.ModLoader.UI
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
 			base.DrawSelf(spriteBatch);
+
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
+			//draw divider
 			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
-			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 180, innerDimensions.Y + 45);
-			this.DrawPanel(spriteBatch, drawPos, 180f);
-			this.DrawTimeText(spriteBatch, drawPos + new Vector2(5f, 5f));
+			// change pos for button
+			const int baseWidth = 125; // something like 1 days ago is ~110px, XX minutes ago is ~120 px (longest)
+			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - baseWidth, innerDimensions.Y + 45);
+			this.DrawPanel(spriteBatch, drawPos, (float)baseWidth);
+			this.DrawTimeText(spriteBatch, drawPos + new Vector2(0f, 5f), baseWidth); // x offset (padding) to do in method
+		}
+
+		protected override void DrawChildren(SpriteBatch spriteBatch)
+		{
+			base.DrawChildren(spriteBatch);
+
+			// show authors on mod title hover, after everything else
+			// main.hoverItemName isn't drawn in UI
+			if (this.modName.IsMouseHovering)
+			{
+				string text = "By: " + author;
+				float x = Main.fontMouseText.MeasureString(text).X;
+				Vector2 vector = Main.MouseScreen + new Vector2(16f);
+				if (vector.Y > (float)(Main.screenHeight - 30))
+				{
+					vector.Y = (float)(Main.screenHeight - 30);
+				}
+				if (vector.X > (float)Main.screenWidth - x)
+				{
+					vector.X = (float)(Main.screenWidth - x - 30);
+				}
+				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			}
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
@@ -177,7 +204,7 @@ namespace Terraria.ModLoader.UI
 			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle?(new Rectangle(16, 0, 8, this.innerPanelTexture.Height)), Color.White);
 		}
 
-		private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos)
+		private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos, int baseWidth)
 		{
 			if (timeStamp == "0000-00-00 00:00:00")
 			{
@@ -185,9 +212,12 @@ namespace Terraria.ModLoader.UI
 			}
 			try
 			{
-				DateTime MyDateTime = DateTime.Parse(timeStamp);
-				string text = TimeHelper.HumanTimeSpanString(MyDateTime);
-				Utils.DrawBorderString(spriteBatch, "Updated: " + text, drawPos, Color.White, 1f, 0f, 0f, -1);
+				DateTime MyDateTime = DateTime.Parse(timeStamp); // parse date
+				string text = TimeHelper.HumanTimeSpanString(MyDateTime); // get time text
+				int textWidth = (int)Main.fontMouseText.MeasureString(text).X; // measure text width
+				int diffWidth = baseWidth - textWidth; // get difference
+				drawPos.X += diffWidth * 0.5f; // add difference as padding
+				Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
 			}
 			catch
 			{
@@ -270,7 +300,7 @@ namespace Terraria.ModLoader.UI
 							{
 								Interface.modBrowser.aModUpdated = true;
 							}
-							RemoveChild(button2);
+							RemoveChild(updateButton);
 						}
 						// Clean up: Delete temp
 						File.Delete(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");

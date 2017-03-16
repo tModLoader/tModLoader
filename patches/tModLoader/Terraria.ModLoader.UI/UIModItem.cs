@@ -34,10 +34,6 @@ namespace Terraria.ModLoader.UI
 			properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : mod.name;
 			text += " v" + mod.version;
-			if (properties.author.Length > 0)
-			{
-				text += " - by " + properties.author;
-			}
 			this.modName = new UIText(text, 1f, false);
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
@@ -131,6 +127,31 @@ namespace Terraria.ModLoader.UI
 			//drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 150f, innerDimensions.Y + 50f);
 			//Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
 		}
+
+		protected override void DrawChildren(SpriteBatch spriteBatch)
+		{
+			base.DrawChildren(spriteBatch);
+
+			// show authors on mod title hover, after everything else
+			// main.hoverItemName isn't drawn in UI
+			if (this.modName.IsMouseHovering && properties.author.Length > 0)
+			{
+				string text = "By: " + properties.author;
+				float x = Main.fontMouseText.MeasureString(text).X;
+				Vector2 vector = Main.MouseScreen + new Vector2(16f);
+				if (vector.Y > (float)(Main.screenHeight - 30))
+				{
+					vector.Y = (float)(Main.screenHeight - 30);
+				}
+				if (vector.X > (float)Main.screenWidth - x)
+				{
+					vector.X = (float)(Main.screenWidth - x - 30);
+				}
+				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			}
+		}
+
+
 
 		public override void MouseOver(UIMouseEvent evt)
 		{

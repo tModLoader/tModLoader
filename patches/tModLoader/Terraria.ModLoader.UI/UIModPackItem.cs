@@ -23,20 +23,20 @@ namespace Terraria.ModLoader.UI
 
 		// TODO update this list button.
 
-		private Texture2D dividerTexture;
-		private Texture2D innerPanelTexture;
-		private UIText modName;
-		private string[] mods;
-		private bool[] modMissing;
-		private int numMods;
-		private int numModsEnabled;
-		private int numModsDisabled;
-		private int numModsMissing;
-		UITextPanel<string> enableListButton;
-		UITextPanel<string> enableListOnlyButton;
-		UITextPanel<string> viewInModBrowserButton;
-		private UIImageButton deleteButton;
-		private string filename;
+		private readonly Texture2D dividerTexture;
+		private readonly Texture2D innerPanelTexture;
+		private readonly UIText modName;
+		private readonly string[] mods;
+		private readonly bool[] modMissing;
+		private readonly int numMods;
+		private readonly int numModsEnabled;
+		private readonly int numModsDisabled;
+		private readonly int numModsMissing;
+		readonly UITextPanel<string> enableListButton;
+		readonly UITextPanel<string> enableListOnlyButton;
+		readonly UITextPanel<string> viewInModBrowserButton;
+		private readonly UIImageButton deleteButton;
+		private readonly string filename;
 
 		public UIModPackItem(string name, string[] mods)
 		{
@@ -238,6 +238,8 @@ namespace Terraria.ModLoader.UI
 			Interface.modBrowser.filterTextBox.currentString = "";
 			Interface.modBrowser.SpecialModPackFilter = modListItem.mods.ToList();
 			Interface.modBrowser.SpecialModPackFilterTitle = "Modlist";// Too long: " + modListItem.modName.Text;
+			Interface.modBrowser.updateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
+			Interface.modBrowser.uIToggleImage.setCurrentState((int)Interface.modBrowser.updateFilterMode);
 			Interface.modBrowser.SortList();
 			Main.PlaySound(SoundID.MenuOpen);
 			Main.menuMode = Interface.modBrowserID;
