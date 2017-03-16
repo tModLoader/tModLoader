@@ -382,7 +382,7 @@ namespace Terraria.ModLoader.UI
 			if (delta < 12 * MONTH)
 			{
 				int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
-				return months <= 1 ? "1 month ago" : months + " mnths ago";
+				return months <= 1 ? "1 month ago" : months + " months ago";
 			}
 			else
 			{
