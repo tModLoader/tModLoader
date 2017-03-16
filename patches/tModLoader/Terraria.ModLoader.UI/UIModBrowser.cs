@@ -13,6 +13,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Security;
 using System.Text;
+using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.UI.Gamepad;
 using Newtonsoft.Json.Linq;
@@ -373,19 +374,23 @@ namespace Terraria.ModLoader.UI
 			else if (!e.Cancelled)
 			{
 				byte[] result = e.Result;
-				string response = System.Text.Encoding.UTF8.GetString(result);
+				string response = Encoding.UTF8.GetString(result);
 
-				// TODO: UI will still be unresponsive here
-				TmodFile[] modFiles = ModLoader.FindMods();
-				List<BuildProperties> modBuildProperties = new List<BuildProperties>();
-				foreach (TmodFile tmodfile in modFiles)
-				{
-					modBuildProperties.Add(BuildProperties.ReadModFile(tmodfile));
-				}
-				PopulateFromJSON(modBuildProperties, response);
+				Task.Factory
+					.StartNew(ModLoader.FindMods)
+					.ContinueWith(task =>
+					{
+						TmodFile[] modFiles = task.Result;
+						List<BuildProperties> modBuildProperties = new List<BuildProperties>();
+						foreach (TmodFile tmodfile in modFiles)
+						{
+							modBuildProperties.Add(BuildProperties.ReadModFile(tmodfile));
+						}
+						PopulateFromJSON(modBuildProperties, response);
+						loading = false;
+						reloadButton.SetText("Reload Mods");
+					}, TaskScheduler.FromCurrentSynchronizationContext());
 			}
-			loading = false;
-			reloadButton.SetText("Reload Mods");
 		}
 
 		private void PopulateFromJSON(List<BuildProperties> modBuildProperties, string json)
