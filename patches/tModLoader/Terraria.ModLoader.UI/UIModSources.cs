@@ -132,11 +132,16 @@ namespace Terraria.ModLoader.UI
 			modList.Clear();
 
 			Task.Factory
-				.StartNew(ModLoader.FindMods)
+				.StartNew(delegate
+				{
+					var mods = ModLoader.FindModSources();
+					var modFiles = ModLoader.FindMods();
+					return new Tuple<string[], TmodFile[]>(mods, modFiles);
+				})
 				.ContinueWith(task =>
 				{
-					string[] mods = ModLoader.FindModSources();
-					TmodFile[] modFiles = task.Result;
+					string[] mods = task.Result.Item1;
+					TmodFile[] modFiles = task.Result.Item2;
 					foreach (string mod in mods)
 					{
 						bool publishable = false;
