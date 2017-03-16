@@ -387,10 +387,11 @@ namespace Terraria.ModLoader.UI
 							modBuildProperties.Add(BuildProperties.ReadModFile(tmodfile));
 						}
 						PopulateFromJSON(modBuildProperties, response);
-						loading = false;
-						reloadButton.SetText("Reload Mods");
+						
 					}, TaskScheduler.FromCurrentSynchronizationContext());
 			}
+			loading = false;
+			reloadButton.SetText("Reload Mods");
 		}
 
 		private void PopulateFromJSON(List<BuildProperties> modBuildProperties, string json)
