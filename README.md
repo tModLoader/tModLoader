@@ -1,5 +1,5 @@
 # tModLoader
-
+[![Discord](https://discordapp.com/api/guilds/103110554649894912/widget.png?style=shield)](https://discord.me/tmodloader)
 ## About
 
 tModLoader is essentially a mod for Terraria that provides a way to load your own mods without having to work directly with Terraria's source code itself. This means you can easily make mods that are compatible with other people's mods and save yourself the trouble of having to decompile then recompile Terraria.exe. It is made to work for Terraria 1.3.
