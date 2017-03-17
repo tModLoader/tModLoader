@@ -425,6 +425,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void UseStyle(Item item, Player player)
 		{
+			if (item.IsAir) return;
 			item.modItem?.UseStyle(player);
 
 			foreach (var hook in HookUseStyle)
@@ -439,6 +440,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void HoldStyle(Item item, Player player)
 		{
+			if (item.IsAir) return;
 			if (!player.pulley && player.itemAnimation <= 0)
 			{
 				item.modItem?.HoldStyle(player);
@@ -456,6 +458,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void HoldItem(Item item, Player player)
 		{
+			if (item.IsAir) return;
 			item.modItem?.HoldItem(player);
 
 			foreach (var hook in HookHoldItem)
@@ -466,6 +469,7 @@ namespace Terraria.ModLoader
 
 		public static float UseTimeMultiplier(Item item, Player player)
 		{
+			if (item.IsAir) return 1f;
 			float multiplier = item.modItem?.UseTimeMultiplier(player) ?? 1f;
 			foreach (var hook in HookUseTimeMultiplier)
 			{
@@ -476,6 +480,7 @@ namespace Terraria.ModLoader
 
 		public static float MeleeSpeedMultiplier(Item item, Player player)
 		{
+			if (item.IsAir) return 1f;
 			float multiplier = item.modItem?.MeleeSpeedMultiplier(player) ?? 1f;
 			foreach (var hook in HookMeleeSpeedMultiplier)
 			{
@@ -489,6 +494,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void GetWeaponDamage(Item item, Player player, ref int damage)
 		{
+			if (item.IsAir) return;
 			item.modItem?.GetWeaponDamage(player, ref damage);
 
 			foreach (var hook in HookGetWeaponDamage)
@@ -730,6 +736,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool UseItem(Item item, Player player)
 		{
+			if (item.IsAir) return false;
 			bool flag = false;
 			if (item.modItem != null)
 			{
@@ -749,6 +756,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool ConsumeItem(Item item, Player player)
 		{
+			//if (item.IsAir) return true;
 			if (item.modItem != null && !item.modItem.ConsumeItem(player))
 			{
 				return false;
@@ -791,6 +799,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool HoldItemFrame(Item item, Player player)
 		{
+			if (item.IsAir) return false;
 			if (item.modItem != null && item.modItem.HoldItemFrame(player))
 			{
 				return true;
@@ -810,6 +819,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool AltFunctionUse(Item item, Player player)
 		{
+			if (item.IsAir) return false;
 			if (item.modItem != null && item.modItem.AltFunctionUse(player))
 			{
 				return true;
@@ -831,6 +841,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void UpdateInventory(Item item, Player player)
 		{
+			if (item.IsAir) return;
 			item.modItem?.UpdateInventory(player);
 
 			foreach (var hook in HookUpdateInventory)
@@ -846,6 +857,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void UpdateEquip(Item item, Player player)
 		{
+			if (item.IsAir) return;
 			item.modItem?.UpdateEquip(player);
 
 			foreach (var hook in HookUpdateEquip)
@@ -861,6 +873,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void UpdateAccessory(Item item, Player player, bool hideVisual)
 		{
+			if (item.IsAir) return;
 			item.modItem?.UpdateAccessory(player, hideVisual);
 
 			foreach (var hook in HookUpdateAccessory)
@@ -1033,6 +1046,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool CanRightClick(Item item)
 		{
+			if (item.IsAir) return false;
 			if (!Main.mouseRight)
 			{
 				return false;
@@ -1530,6 +1544,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static Color? GetAlpha(Item item, Color lightColor)
 		{
+			if (item.IsAir) return null;
 			foreach (var hook in HookGetAlpha)
 			{
 				Color? color = hook(item, lightColor);
