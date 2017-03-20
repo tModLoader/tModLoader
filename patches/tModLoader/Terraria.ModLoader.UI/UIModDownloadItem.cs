@@ -89,11 +89,11 @@ namespace Terraria.ModLoader.UI
 			if (modreferences.Length > 0)
 			{
 				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + modreferences);
-				modReferenceIcon.Left.Set(button.Width.Pixels + button.Left.Pixels * 2f + 210f, 0f);
+				modReferenceIcon.Left.Set(-135f, 1f);
 				modReferenceIcon.Top.Set(50f, 0f);
 				modReferenceIcon.OnClick += (s, e) =>
 				{
-					UIModDownloadItem modListItem = ((UIModDownloadItem) e.Parent);
+					UIModDownloadItem modListItem = (UIModDownloadItem) e.Parent;
 					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').ToList();
 					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies"; // Toolong of \n" + modListItem.modName.Text;
 					Interface.modBrowser.filterTextBox.currentString = "";
