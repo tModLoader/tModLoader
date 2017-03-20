@@ -42,7 +42,8 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Append(modInfo);
 			UIScrollbar uIScrollbar = new UIScrollbar();
 			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(0f, 1f);
+			uIScrollbar.Height.Set(-20, 1f);
+			uIScrollbar.VAlign = 0.5f;
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			modInfo.SetScrollbar(uIScrollbar);
