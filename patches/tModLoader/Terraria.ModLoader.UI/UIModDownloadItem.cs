@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.UI
 		private readonly Texture2D dividerTexture;
 		private readonly Texture2D innerPanelTexture;
 		private readonly UIText modName;
-		readonly UITextPanel<string> updateButton;
+		private readonly UITextPanel<string> updateButton;
 		public bool update = false;
 		public bool updateIsDowngrade = false;
 		public bool exists = false;
@@ -93,7 +93,7 @@ namespace Terraria.ModLoader.UI
 				modReferenceIcon.Top.Set(50f, 0f);
 				modReferenceIcon.OnClick += (s, e) =>
 				{
-					UIModDownloadItem modListItem = (UIModDownloadItem) e.Parent;
+					UIModDownloadItem modListItem = (UIModDownloadItem)e.Parent;
 					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').ToList();
 					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies"; // Toolong of \n" + modListItem.modName.Text;
 					Interface.modBrowser.filterTextBox.currentString = "";
@@ -107,22 +107,24 @@ namespace Terraria.ModLoader.UI
 
 		public override int CompareTo(object obj)
 		{
+			var item = obj as UIModDownloadItem;
 			switch (Interface.modBrowser.sortMode)
 			{
+				default:
+					return base.CompareTo(obj);
 				case SortModes.DisplayNameAtoZ:
-					return this.displayname.CompareTo((obj as UIModDownloadItem).displayname);
+					return string.Compare(this.displayname, item?.displayname, StringComparison.Ordinal);
 				case SortModes.DisplayNameZtoA:
-					return -1 * this.displayname.CompareTo((obj as UIModDownloadItem).displayname);
+					return -1 * string.Compare(this.displayname, item?.displayname, StringComparison.Ordinal);
 				case SortModes.DownloadsAscending:
-					return this.downloads.CompareTo((obj as UIModDownloadItem).downloads);
+					return this.downloads.CompareTo(item?.downloads);
 				case SortModes.DownloadsDescending:
-					return -1 * this.downloads.CompareTo((obj as UIModDownloadItem).downloads);
+					return -1 * this.downloads.CompareTo(item?.downloads);
 				case SortModes.RecentlyUpdated:
-					return -1 * this.timeStamp.CompareTo((obj as UIModDownloadItem).timeStamp);
+					return -1 * string.Compare(this.timeStamp, item?.timeStamp, StringComparison.Ordinal);
 				case SortModes.Hot:
-					return -1 * this.hot.CompareTo((obj as UIModDownloadItem).hot);
+					return -1 * this.hot.CompareTo(item?.hot);
 			}
-			return base.CompareTo(obj);
 		}
 
 		public override bool PassFilters()
@@ -150,6 +152,7 @@ namespace Terraria.ModLoader.UI
 			}
 			switch (Interface.modBrowser.updateFilterMode)
 			{
+				default:
 				case UpdateFilter.All:
 					return true;
 				case UpdateFilter.Available:
@@ -157,7 +160,6 @@ namespace Terraria.ModLoader.UI
 				case UpdateFilter.UpdateOnly:
 					return update;
 			}
-			return true;
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -342,7 +344,7 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		internal void Moreinfo(Object sender, UploadValuesCompletedEventArgs e)
+		internal void Moreinfo(object sender, UploadValuesCompletedEventArgs e)
 		{
 			string description = "There was a problem, try again";
 			string homepage = "";
@@ -361,7 +363,7 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.modInfoID;
 		}
 
-		HttpStatusCode GetHttpStatusCode(System.Exception err)
+		private HttpStatusCode GetHttpStatusCode(System.Exception err)
 		{
 			if (err is WebException)
 			{
@@ -376,13 +378,13 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
-	class TimeHelper
+	internal class TimeHelper
 	{
-		const int SECOND = 1;
-		const int MINUTE = 60 * SECOND;
-		const int HOUR = 60 * MINUTE;
-		const int DAY = 24 * HOUR;
-		const int MONTH = 30 * DAY;
+		private const int SECOND = 1;
+		private const int MINUTE = 60 * SECOND;
+		private const int HOUR = 60 * MINUTE;
+		private const int DAY = 24 * HOUR;
+		private const int MONTH = 30 * DAY;
 
 		public static string HumanTimeSpanString(DateTime yourDate)
 		{
