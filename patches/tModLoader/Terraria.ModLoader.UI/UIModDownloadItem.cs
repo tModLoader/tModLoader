@@ -29,10 +29,10 @@ namespace Terraria.ModLoader.UI
 		public ModSide modside;
 		public int downloads;
 		public int hot;
-		private Texture2D dividerTexture;
-		private Texture2D innerPanelTexture;
-		private UIText modName;
-		UITextPanel<string> updateButton;
+		private readonly Texture2D dividerTexture;
+		private readonly Texture2D innerPanelTexture;
+		private readonly UIText modName;
+		readonly UITextPanel<string> updateButton;
 		public bool update = false;
 		public bool updateIsDowngrade = false;
 		public bool exists = false;
@@ -76,7 +76,8 @@ namespace Terraria.ModLoader.UI
 			base.Append(button);
 			if (update || !exists)
 			{
-				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? "Downgrade" : "Update") : "Download", 1f, false);
+				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? "Downgrade" : "Update") : "Download", 1f,
+					false);
 				updateButton.CopyStyle(button);
 				updateButton.Width.Set(200f, 0f);
 				updateButton.Left.Set(button.Width.Pixels + button.Left.Pixels * 2f + 5f, 0f);
@@ -88,13 +89,13 @@ namespace Terraria.ModLoader.UI
 			if (modreferences.Length > 0)
 			{
 				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + modreferences);
-				modReferenceIcon.Left.Set(updateButton.Left.Pixels + updateButton.Width.Pixels + 5f, 0f);
+				modReferenceIcon.Left.Set(button.Width.Pixels + button.Left.Pixels * 2f + 210f, 0f);
 				modReferenceIcon.Top.Set(50f, 0f);
 				modReferenceIcon.OnClick += (s, e) =>
 				{
-					UIModDownloadItem modListItem = ((UIModDownloadItem)e.Parent);
+					UIModDownloadItem modListItem = ((UIModDownloadItem) e.Parent);
 					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').ToList();
-					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies";// Toolong of \n" + modListItem.modName.Text;
+					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies"; // Toolong of \n" + modListItem.modName.Text;
 					Interface.modBrowser.filterTextBox.currentString = "";
 					Interface.modBrowser.SortList();
 					Main.PlaySound(SoundID.MenuOpen);
