@@ -1,4 +1,5 @@
 # tModLoader
+[![Build Status](https://travis-ci.org/bluemagic123/tModLoader.svg?branch=master)](https://travis-ci.org/bluemagic123/tModLoader)
 [![Discord](https://discordapp.com/api/guilds/103110554649894912/widget.png?style=shield)](https://discord.me/tmodloader)
 ## About
 
