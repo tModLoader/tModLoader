@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.UI
 		public UICycleImage uIToggleImage;
 		public UICycleImage SearchFilterToggle;
 		public bool loading;
-		public SortFilter sortFilterMode = SortFilter.RecentlyUpdated;
+		public SortMode sortMode = SortMode.RecentlyUpdated;
 		public UpdateFilter updateFilterMode = UpdateFilter.Available;
 		public SearchFilter searchFilterMode = SearchFilter.Name;
 		internal string filter;
@@ -157,15 +157,15 @@ namespace Terraria.ModLoader.UI
 				if (j == 0)
 				{
 					uIToggleImage = new UICycleImage(texture, 6, 32, 32, 0, 0);
-					uIToggleImage.setCurrentState((int)sortFilterMode);
+					uIToggleImage.setCurrentState((int)sortMode);
 					uIToggleImage.OnClick += (a, b) =>
 					{
-						sortFilterMode = sortFilterMode.NextEnum();
+						sortMode = sortMode.NextEnum();
 						SortList();
 					};
 					uIToggleImage.OnRightClick += (a, b) =>
 					{
-						sortFilterMode = sortFilterMode.PreviousEnum();
+						sortMode = sortMode.PreviousEnum();
 						SortList();
 					};
 				}
@@ -230,7 +230,7 @@ namespace Terraria.ModLoader.UI
 					switch (i)
 					{
 						case 0:
-							text = Interface.modBrowser.sortFilterMode.ToFriendlyString();
+							text = Interface.modBrowser.sortMode.ToFriendlyString();
 							break;
 						case 1:
 							text = Interface.modBrowser.updateFilterMode.ToFriendlyString();
@@ -496,21 +496,21 @@ namespace Terraria.ModLoader.UI
 
 	public static class SortModesExtensions
 	{
-		public static string ToFriendlyString(this SortFilter sortmode)
+		public static string ToFriendlyString(this SortMode sortmode)
 		{
 			switch (sortmode)
 			{
-				case SortFilter.DisplayNameAtoZ:
+				case SortMode.DisplayNameAtoZ:
 					return "Sort mod names alphabetically";
-				case SortFilter.DisplayNameZtoA:
+				case SortMode.DisplayNameZtoA:
 					return "Sort mod names reverse-alphabetically";
-				case SortFilter.DownloadsDescending:
+				case SortMode.DownloadsDescending:
 					return "Sort by downloads descending";
-				case SortFilter.DownloadsAscending:
+				case SortMode.DownloadsAscending:
 					return "Sort by downloads ascending";
-				case SortFilter.RecentlyUpdated:
+				case SortMode.RecentlyUpdated:
 					return "Sort by recently updated";
-				case SortFilter.Hot:
+				case SortMode.Hot:
 					return "Sort by popularity";
 			}
 			return "Unknown Sort";
@@ -549,7 +549,7 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
-	public enum SortFilter
+	public enum SortMode
 	{
 		DisplayNameAtoZ,
 		DisplayNameZtoA,

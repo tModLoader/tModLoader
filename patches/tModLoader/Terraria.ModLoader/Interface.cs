@@ -82,7 +82,7 @@ namespace Terraria.ModLoader
 		{
 			modBrowser.modList.Clear();
 			modBrowser.modListAll.Clear();
-			modBrowser.sortFilterMode = SortFilter.RecentlyUpdated;
+			modBrowser.sortMode = SortMode.RecentlyUpdated;
 			modBrowser.updateFilterMode = UpdateFilter.Available;
 			modBrowser.searchFilterMode = SearchFilter.Name;
 			modBrowser.SearchFilterToggle.setCurrentState(0);

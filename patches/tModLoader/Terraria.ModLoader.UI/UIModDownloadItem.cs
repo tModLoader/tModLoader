@@ -108,21 +108,21 @@ namespace Terraria.ModLoader.UI
 		public override int CompareTo(object obj)
 		{
 			var item = obj as UIModDownloadItem;
-			switch (Interface.modBrowser.sortFilterMode)
+			switch (Interface.modBrowser.sortMode)
 			{
 				default:
 					return base.CompareTo(obj);
-				case SortFilter.DisplayNameAtoZ:
+				case SortMode.DisplayNameAtoZ:
 					return string.Compare(this.displayname, item?.displayname, StringComparison.Ordinal);
-				case SortFilter.DisplayNameZtoA:
+				case SortMode.DisplayNameZtoA:
 					return -1 * string.Compare(this.displayname, item?.displayname, StringComparison.Ordinal);
-				case SortFilter.DownloadsAscending:
+				case SortMode.DownloadsAscending:
 					return this.downloads.CompareTo(item?.downloads);
-				case SortFilter.DownloadsDescending:
+				case SortMode.DownloadsDescending:
 					return -1 * this.downloads.CompareTo(item?.downloads);
-				case SortFilter.RecentlyUpdated:
+				case SortMode.RecentlyUpdated:
 					return -1 * string.Compare(this.timeStamp, item?.timeStamp, StringComparison.Ordinal);
-				case SortFilter.Hot:
+				case SortMode.Hot:
 					return -1 * this.hot.CompareTo(item?.hot);
 			}
 		}
