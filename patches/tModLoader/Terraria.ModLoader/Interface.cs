@@ -78,6 +78,20 @@ namespace Terraria.ModLoader
 			spacing = 45;
 		}
 
+		internal static void ResetData()
+		{
+			modBrowser.modList.Clear();
+			modBrowser.modListAll.Clear();
+			modBrowser.sortFilterMode = SortFilter.RecentlyUpdated;
+			modBrowser.updateFilterMode = UpdateFilter.Available;
+			modBrowser.searchFilterMode = SearchFilter.Name;
+			modBrowser.SearchFilterToggle.setCurrentState(0);
+			modBrowser._categoryButtons[0].setCurrentState(4);
+			modBrowser._categoryButtons[1].setCurrentState(1);
+			modBrowser.loading = false;
+			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+		}
+
 		//internal static void AddSettingsMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] virticalSpacing, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 		//{
 		//	buttonIndex++;

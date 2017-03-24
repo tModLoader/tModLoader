@@ -10,7 +10,7 @@
  
  namespace Terraria
  {
-@@ -39,11 +_,13 @@
+@@ -39,19 +_,23 @@
  			public static void PlayerConnect(int playerIndex)
  			{
  				PressurePlateHelper.ResetPlayer(playerIndex);
@@ -24,7 +24,9 @@
  			}
  
  			public static void EnterWorld(int playerIndex)
-@@ -52,6 +_,7 @@
+ 			{
++				Interface.ResetData();
+ 				if (Player.Hooks.OnEnterWorld != null)
  				{
  					Player.Hooks.OnEnterWorld(Main.player[playerIndex]);
  				}

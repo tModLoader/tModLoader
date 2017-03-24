@@ -18,11 +18,18 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIMods : UIState
 	{
+		public bool loading;
 		private UIList modList;
 		private UIList modListAll;
-		private List<UIModItem> items = new List<UIModItem>();
+		private readonly List<UIModItem> items = new List<UIModItem>();
 		private UIInputTextField filterTextBox;
 		internal string filter;
+		private UIColorTextPanel buttonEA;
+		private UIColorTextPanel buttonDA;
+		private UITextPanel<string> buttonRM;
+		private UITextPanel<string> buttonB;
+		private UITextPanel<string> buttonOMF;
+		private UITextPanel<string> buttonMP;
 
 		public override void OnInitialize()
 		{
@@ -49,49 +56,49 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			modList.SetScrollbar(uIScrollbar);
-			UITextPanel<string> uITextPanel = new UITextPanel<string>("Mods List", 0.8f, true);
-			uITextPanel.HAlign = 0.5f;
-			uITextPanel.Top.Set(-35f, 0f);
-			uITextPanel.SetPadding(15f);
-			uITextPanel.BackgroundColor = new Color(73, 94, 171);
-			uIElement.Append(uITextPanel);
-			UIColorTextPanel button = new UIColorTextPanel("Enable All", Color.Green, 1f, false);
-			button.Width.Set(-10f, 1f / 3f);
-			button.Height.Set(25f, 0f);
-			button.VAlign = 1f;
-			button.Top.Set(-65f, 0f);
-			button.OnMouseOver += UICommon.FadedMouseOver;
-			button.OnMouseOut += UICommon.FadedMouseOut;
-			button.OnClick += this.EnableAll;
-			uIElement.Append(button);
-			UIColorTextPanel button2 = new UIColorTextPanel("Disable All", Color.Red, 1f, false);
-			button2.CopyStyle(button);
-			button2.HAlign = 0.5f;
-			button2.OnMouseOver += UICommon.FadedMouseOver;
-			button2.OnMouseOut += UICommon.FadedMouseOut;
-			button2.OnClick += this.DisableAll;
-			uIElement.Append(button2);
-			UITextPanel<string> button3 = new UITextPanel<string>("Reload Mods", 1f, false);
-			button3.CopyStyle(button);
-			button3.HAlign = 1f;
-			button3.OnMouseOver += UICommon.FadedMouseOver;
-			button3.OnMouseOut += UICommon.FadedMouseOut;
-			button3.OnClick += ReloadMods;
-			uIElement.Append(button3);
-			UITextPanel<string> button4 = new UITextPanel<string>("Back", 1f, false);
-			button4.CopyStyle(button);
-			button4.Top.Set(-20f, 0f);
-			button4.OnMouseOver += UICommon.FadedMouseOver;
-			button4.OnMouseOut += UICommon.FadedMouseOut;
-			button4.OnClick += BackClick;
-			uIElement.Append(button4);
-			UITextPanel<string> button5 = new UITextPanel<string>("Open Mods Folder", 1f, false);
-			button5.CopyStyle(button4);
-			button5.HAlign = 0.5f;
-			button5.OnMouseOver += UICommon.FadedMouseOver;
-			button5.OnMouseOut += UICommon.FadedMouseOut;
-			button5.OnClick += OpenModsFolder;
-			uIElement.Append(button5);
+			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>("Mods List", 0.8f, true);
+			uIHeaderTexTPanel.HAlign = 0.5f;
+			uIHeaderTexTPanel.Top.Set(-35f, 0f);
+			uIHeaderTexTPanel.SetPadding(15f);
+			uIHeaderTexTPanel.BackgroundColor = new Color(73, 94, 171);
+			uIElement.Append(uIHeaderTexTPanel);
+			buttonEA = new UIColorTextPanel("Enable All", Color.Green, 1f, false);
+			buttonEA.Width.Set(-10f, 1f / 3f);
+			buttonEA.Height.Set(25f, 0f);
+			buttonEA.VAlign = 1f;
+			buttonEA.Top.Set(-65f, 0f);
+			buttonEA.OnMouseOver += UICommon.FadedMouseOver;
+			buttonEA.OnMouseOut += UICommon.FadedMouseOut;
+			buttonEA.OnClick += this.EnableAll;
+			uIElement.Append(buttonEA);
+			buttonDA = new UIColorTextPanel("Disable All", Color.Red, 1f, false);
+			buttonDA.CopyStyle(buttonEA);
+			buttonDA.HAlign = 0.5f;
+			buttonDA.OnMouseOver += UICommon.FadedMouseOver;
+			buttonDA.OnMouseOut += UICommon.FadedMouseOut;
+			buttonDA.OnClick += this.DisableAll;
+			uIElement.Append(buttonDA);
+			buttonRM = new UITextPanel<string>("Reload Mods", 1f, false);
+			buttonRM.CopyStyle(buttonEA);
+			buttonRM.HAlign = 1f;
+			buttonRM.OnMouseOver += UICommon.FadedMouseOver;
+			buttonRM.OnMouseOut += UICommon.FadedMouseOut;
+			buttonRM.OnClick += ReloadMods;
+			uIElement.Append(buttonRM);
+			buttonB = new UITextPanel<string>("Back", 1f, false);
+			buttonB.CopyStyle(buttonEA);
+			buttonB.Top.Set(-20f, 0f);
+			buttonB.OnMouseOver += UICommon.FadedMouseOver;
+			buttonB.OnMouseOut += UICommon.FadedMouseOut;
+			buttonB.OnClick += BackClick;
+			uIElement.Append(buttonB);
+			buttonOMF = new UITextPanel<string>("Open Mods Folder", 1f, false);
+			buttonOMF.CopyStyle(buttonB);
+			buttonOMF.HAlign = 0.5f;
+			buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
+			buttonOMF.OnMouseOut += UICommon.FadedMouseOut;
+			buttonOMF.OnClick += OpenModsFolder;
+			uIElement.Append(buttonOMF);
 			UIPanel panel = new UIPanel();
 			panel.Top.Set(-40f, 0f);
 			panel.Left.Set(-200f, 1f);
@@ -104,13 +111,13 @@ namespace Terraria.ModLoader.UI
 			filterTextBox.Left.Set(-180f, 1f);
 			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(FilterList);
 			uIElement.Append(filterTextBox);
-			UITextPanel<string> modListButton = new UITextPanel<string>("Mod Packs", 1f, false);
-			modListButton.CopyStyle(button5);
-			modListButton.HAlign = 1f;
-			modListButton.OnMouseOver += UICommon.FadedMouseOver;
-			modListButton.OnMouseOut += UICommon.FadedMouseOut;
-			modListButton.OnClick += GotoModPacksMenu;
-			uIElement.Append(modListButton);
+			buttonMP = new UITextPanel<string>("Mod Packs", 1f, false);
+			buttonMP.CopyStyle(buttonOMF);
+			buttonMP.HAlign = 1f;
+			buttonMP.OnMouseOver += UICommon.FadedMouseOver;
+			buttonMP.OnMouseOut += UICommon.FadedMouseOut;
+			buttonMP.OnClick += GotoModPacksMenu;
+			uIElement.Append(buttonMP);
 			base.Append(uIElement);
 		}
 
@@ -120,10 +127,11 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = 0;
 		}
 
-		private static void ReloadMods(UIMouseEvent evt, UIElement listeningElement)
+		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10, -1, -1, 1);
-			ModLoader.Reload();
+			if (items.Count > 0)
+				ModLoader.Reload();
 		}
 
 		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
@@ -194,7 +202,18 @@ namespace Terraria.ModLoader.UI
 			Main.clrInput();
 			modListAll.Clear();
 			items.Clear();
+			Populate();
+		}
 
+		public override void OnDeactivate()
+		{
+			modListAll.Clear();
+			items.Clear();
+		}
+
+		internal void Populate()
+		{
+			loading = true;
 			Task.Factory
 				.StartNew(ModLoader.FindMods)
 				.ContinueWith(task =>
@@ -207,6 +226,7 @@ namespace Terraria.ModLoader.UI
 						items.Add(modItem);
 					}
 					FilterList();
+					loading = false;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}

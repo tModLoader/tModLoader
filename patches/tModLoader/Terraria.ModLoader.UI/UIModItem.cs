@@ -50,10 +50,10 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += this.Moreinfo;
 			base.Append(button);
-			button2 = new UITextPanel<string>(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
+			button2 = new UITextPanel<string>(this.enabled ? "Disable" : "Enable", 1f, false);
 			button2.Width.Set(100f, 0f);
 			button2.Height.Set(30f, 0f);
-			button2.Left.Set(275f, 0f);
+			button2.Left.Set(button.Left.Pixels - button2.Width.Pixels - 5f, 0f);
 			button2.Top.Set(40f, 0f);
 			button2.PaddingTop -= 2f;
 			button2.PaddingBottom -= 2f;
@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.UI
 			{
 				string refs = String.Join(", ", properties.modReferences.Select(x => x.mod));
 				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs);
-				modReferenceIcon.Left.Set(265, 0f);
+				modReferenceIcon.Left.Set(button2.Left.Pixels - 10f, 0f);
 				modReferenceIcon.Top.Set(50f, 0f);
 				base.Append(modReferenceIcon);
 			}
@@ -151,8 +151,6 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-
-
 		public override void MouseOver(UIMouseEvent evt)
 		{
 			base.MouseOver(evt);
@@ -171,7 +169,7 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(12, -1, -1, 1);
 			this.enabled = !this.enabled;
-			button2.SetText(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
+			button2.SetText(this.enabled ? "Disable" : "Enable", 1f, false);
 			ModLoader.SetModActive(this.mod, this.enabled);
 		}
 
