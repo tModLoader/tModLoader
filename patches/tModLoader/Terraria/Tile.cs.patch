@@ -1,12 +1,109 @@
 --- src/Terraria\Terraria\Tile.cs
 +++ src/tModLoader\Terraria\Tile.cs
-@@ -19,7 +_,7 @@
+@@ -4,9 +_,9 @@
+ 
+ namespace Terraria
+ {
+-	#if !WINDOWS
++#if !WINDOWS
+ 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+-	#endif
++#endif
+ 	public class Tile
+ 	{
+ 		public const int Type_Solid = 0;
+@@ -19,9 +_,10 @@
  		public const int Liquid_Lava = 1;
  		public const int Liquid_Honey = 2;
  		public ushort type;
 -		public byte wall;
 +		public ushort wall;
  		public byte liquid;
- 		public short sTileHeader;
+-		public short sTileHeader;
++		// bitwise manipulations on signed values in C# apparently doesn't follow the C standards so the one unused bit in sTileHeader would have to have a unique way to access it. 
++		public ushort sTileHeader;
  		public byte bTileHeader;
+ 		public byte bTileHeader2;
+ 		public byte bTileHeader3;
+@@ -417,7 +_,7 @@
+ 			{
+ 				color = 30;
+ 			}
+-			this.sTileHeader = (short)(((int)this.sTileHeader & 65504) | (int)color);
++			this.sTileHeader = (ushort)(((int)this.sTileHeader & 65504) | (int)color);
+ 		}
+ 
+ 		public bool active()
+@@ -432,7 +_,7 @@
+ 				this.sTileHeader |= 32;
+ 				return;
+ 			}
+-			this.sTileHeader = (short)((int)this.sTileHeader & 65503);
++			this.sTileHeader = (ushort)((int)this.sTileHeader & 65503);
+ 		}
+ 
+ 		public bool inActive()
+@@ -447,7 +_,7 @@
+ 				this.sTileHeader |= 64;
+ 				return;
+ 			}
+-			this.sTileHeader = (short)((int)this.sTileHeader & 65471);
++			this.sTileHeader = (ushort)((int)this.sTileHeader & 65471);
+ 		}
+ 
+ 		public bool wire()
+@@ -462,7 +_,7 @@
+ 				this.sTileHeader |= 128;
+ 				return;
+ 			}
+-			this.sTileHeader = (short)((int)this.sTileHeader & 65407);
++			this.sTileHeader = (ushort)((int)this.sTileHeader & 65407);
+ 		}
+ 
+ 		public bool wire2()
+@@ -477,7 +_,7 @@
+ 				this.sTileHeader |= 256;
+ 				return;
+ 			}
+-			this.sTileHeader = (short)((int)this.sTileHeader & 65279);
++			this.sTileHeader = (ushort)((int)this.sTileHeader & 65279);
+ 		}
+ 
+ 		public bool wire3()
+@@ -492,7 +_,7 @@
+ 				this.sTileHeader |= 512;
+ 				return;
+ 			}
+-			this.sTileHeader = (short)((int)this.sTileHeader & 65023);
++			this.sTileHeader = (ushort)((int)this.sTileHeader & 65023);
+ 		}
+ 
+ 		public bool halfBrick()
+@@ -507,7 +_,7 @@
+ 				this.sTileHeader |= 1024;
+ 				return;
+ 			}
+-			this.sTileHeader = (short)((int)this.sTileHeader & 64511);
++			this.sTileHeader = (ushort)((int)this.sTileHeader & 64511);
+ 		}
+ 
+ 		public bool actuator()
+@@ -522,7 +_,7 @@
+ 				this.sTileHeader |= 2048;
+ 				return;
+ 			}
+-			this.sTileHeader = (short)((int)this.sTileHeader & 63487);
++			this.sTileHeader = (ushort)((int)this.sTileHeader & 63487);
+ 		}
+ 
+ 		public byte slope()
+@@ -532,7 +_,7 @@
+ 
+ 		public void slope(byte slope)
+ 		{
+-			this.sTileHeader = (short)(((int)this.sTileHeader & 36863) | (int)(slope & 7) << 12);
++			this.sTileHeader = (ushort)(((int)this.sTileHeader & 36863) | (int)(slope & 7) << 12);
+ 		}
+ 
+ 		public static void SmoothSlope(int x, int y, bool applyToNeighbors = true)
 
