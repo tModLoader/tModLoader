@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.OnRespawn" name="Terraria.ModLoader.PlayerHooks.OnRespawn">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ac77ddaf77206489d15d331bd4e88b536" title="Called when a player respawns in the world. " alt="" coords="231,5,433,51"/>
+</map>

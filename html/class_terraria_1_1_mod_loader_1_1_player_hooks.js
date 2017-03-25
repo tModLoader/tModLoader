@@ -43,6 +43,7 @@ var class_terraria_1_1_mod_loader_1_1_player_hooks =
     [ "OnHitNPCWithProj", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#af8f23e3c8a1c7700ffe84ea7de61b2b4", null ],
     [ "OnHitPvp", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a705dfd792589426be8428317651d498d", null ],
     [ "OnHitPvpWithProj", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ab2433b83e2cf8d5a6a003a2018bb5d0e", null ],
+    [ "OnRespawn", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ae1926e38ec144b09b0ab262e9ddc9367", null ],
     [ "PlayerConnect", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a694f1f76b9bd9402aeff50269d965615", null ],
     [ "PlayerDisconnect", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad59e363574ec537c1aedebd5c86bc2d8", null ],
     [ "PostHurt", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a178294aa247bd08b123c44d6a49fd40c", null ],
