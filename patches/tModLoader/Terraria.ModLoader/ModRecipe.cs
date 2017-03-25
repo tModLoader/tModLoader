@@ -174,7 +174,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds a required crafting station with the given tile type to this recipe. Ex: <c>recipe.AddIngredient(TileID.WorkBenches)</c>
+		/// Adds a required crafting station with the given tile type to this recipe. Ex: <c>recipe.AddTile(TileID.WorkBenches)</c>
 		/// </summary>
 		/// <param name="tileID">The tile identifier.</param>
 		/// <exception cref="RecipeException">No tile has ID " + tileID</exception>
