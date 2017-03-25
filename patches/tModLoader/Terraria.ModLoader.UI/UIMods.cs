@@ -205,12 +205,6 @@ namespace Terraria.ModLoader.UI
 			Populate();
 		}
 
-		public override void OnDeactivate()
-		{
-			modListAll.Clear();
-			items.Clear();
-		}
-
 		internal void Populate()
 		{
 			loading = true;
