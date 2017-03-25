@@ -197,9 +197,6 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "SoundLoader", "class_terraria_1_1_mod_loader_1_1_sound_loader.html", "class_terraria_1_1_mod_loader_1_1_sound_loader" ]
     ] ],
     [ "SoundType.cs", "_sound_type_8cs.html", "_sound_type_8cs" ],
-    [ "TileDrop.cs", "_tile_drop_8cs.html", [
-      [ "TileDrop", "struct_terraria_1_1_mod_loader_1_1_tile_drop.html", "struct_terraria_1_1_mod_loader_1_1_tile_drop" ]
-    ] ],
     [ "TileLoader.cs", "_tile_loader_8cs.html", [
       [ "TileLoader", "class_terraria_1_1_mod_loader_1_1_tile_loader.html", "class_terraria_1_1_mod_loader_1_1_tile_loader" ]
     ] ],

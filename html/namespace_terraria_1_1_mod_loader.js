@@ -69,7 +69,6 @@ var namespace_terraria_1_1_mod_loader =
     [ "SoundLoader", "class_terraria_1_1_mod_loader_1_1_sound_loader.html", "class_terraria_1_1_mod_loader_1_1_sound_loader" ],
     [ "SpawnCondition", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html", "class_terraria_1_1_mod_loader_1_1_spawn_condition" ],
     [ "SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader" ],
-    [ "TileDrop", "struct_terraria_1_1_mod_loader_1_1_tile_drop.html", "struct_terraria_1_1_mod_loader_1_1_tile_drop" ],
     [ "TileLoader", "class_terraria_1_1_mod_loader_1_1_tile_loader.html", "class_terraria_1_1_mod_loader_1_1_tile_loader" ],
     [ "TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_tooltip_line" ],
     [ "TopoSort", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", "class_terraria_1_1_mod_loader_1_1_topo_sort" ],

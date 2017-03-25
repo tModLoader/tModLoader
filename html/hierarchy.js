@@ -86,7 +86,6 @@ var hierarchy =
     [ "Terraria.ModLoader.SoundLoader", "class_terraria_1_1_mod_loader_1_1_sound_loader.html", null ],
     [ "Terraria.ModLoader.SpawnCondition", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html", null ],
     [ "Terraria.ModLoader.SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", null ],
-    [ "Terraria.ModLoader.TileDrop", "struct_terraria_1_1_mod_loader_1_1_tile_drop.html", null ],
     [ "TileEntity", "class_tile_entity.html", [
       [ "Terraria.ModLoader.ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", null ]
     ] ],
