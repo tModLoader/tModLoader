@@ -15,7 +15,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_tile =
     [ "Dangersense", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a2d7b38e3d7eb90b24f7c295fac0719e7", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a95b401edd65341f307197fe60c02fbbb", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6ed1dca241c3b0bf9c08c1d74a80540d", null ],
-    [ "Drop", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a4f20ca4fe1f750102f13679bf7349b81", null ],
+    [ "Drop", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a5d858391ff743c356c541900a0be6f24", null ],
     [ "DropCritterChance", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a9f714d7a715609fe99d54aacf6fdd77f", null ],
     [ "FloorVisuals", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#abf16e1a9ae58c5cb4d317761f25f4946", null ],
     [ "GetMapOption", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a5f9c26b8416bae73b86fabdd0171b3de", null ],
