@@ -294,6 +294,18 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 602, 1, false, 0, false, false);
+@@ -3344,6 +_,11 @@
+ 					}
+ 				}
+ 			}
++		}
++
++		public void QuickSpawnItem(Item item, int stack = 1)
++		{
++			QuickSpawnItem(item.type, stack);
+ 		}
+ 
+ 		public void QuickSpawnItem(int item, int stack = 1)
 @@ -3357,6 +_,11 @@
  
  		public void OpenBossBag(int type)
