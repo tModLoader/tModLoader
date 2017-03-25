@@ -80,14 +80,17 @@ namespace Terraria.ModLoader
 
 		internal static void ResetData()
 		{
-			modBrowser.modList.Clear();
-			modBrowser.modListAll.Clear();
+			modBrowser.modList?.Clear();
+			modBrowser.modListAll?.Clear();
 			modBrowser.sortMode = SortMode.RecentlyUpdated;
 			modBrowser.updateFilterMode = UpdateFilter.Available;
 			modBrowser.searchFilterMode = SearchFilter.Name;
-			modBrowser.SearchFilterToggle.setCurrentState(0);
-			modBrowser._categoryButtons[0].setCurrentState(4);
-			modBrowser._categoryButtons[1].setCurrentState(1);
+			modBrowser.SearchFilterToggle?.setCurrentState(0);
+			if (modBrowser._categoryButtons.Count == 2)
+			{
+				modBrowser._categoryButtons[0].setCurrentState(4);
+				modBrowser._categoryButtons[1].setCurrentState(1);
+			}
 			modBrowser.loading = false;
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 		}
