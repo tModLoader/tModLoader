@@ -250,7 +250,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool Drop(int i, int j)
+		/// <param name="tileDrop">The TileDrop of the tile</param>
+		public virtual bool Drop(int i, int j, TileDrop tileDrop)
 		{
 			return true;
 		}

@@ -93,7 +93,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -344,6 +_,141 @@
+@@ -344,6 +_,142 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -214,6 +214,7 @@
 +    <Compile Include="Terraria.ModLoader\RecipeFinder.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeGroupHelper.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeHooks.cs" />
++    <Compile Include="Terraria.ModLoader\TileDrop.cs" />
 +    <Compile Include="Terraria.ModLoader\TooltipLine.cs" />
 +    <Compile Include="Terraria.ModLoader\TopoSort.cs" />
 +    <Compile Include="Terraria.ModLoader\WaterStyleLoader.cs" />
@@ -270,6 +271,7 @@
 +    </None>
    </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -302,5 +304,4 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>

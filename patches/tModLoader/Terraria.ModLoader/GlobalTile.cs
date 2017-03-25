@@ -142,8 +142,9 @@ namespace Terraria.ModLoader
 		/// <param name="i"></param>
 		/// <param name="j"></param>
 		/// <param name="type"></param>
+		/// <param name="tileDrop"></param>
 		/// <returns></returns>
-		public virtual bool Drop(int i, int j, int type)
+		public virtual bool Drop(int i, int j, int type, TileDrop tileDrop)
 		{
 			return true;
 		}
