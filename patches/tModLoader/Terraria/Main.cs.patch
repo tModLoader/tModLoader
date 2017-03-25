@@ -64,6 +64,14 @@
  		public static int renderCount = 99;
  		public static GraphicsDeviceManager graphics;
  		public static SpriteBatch spriteBatch;
+@@ -583,6 +_,7 @@
+ 		public static bool maxQ = true;
+ 		public static float gfxQuality = 1f;
+ 		public static float gfxRate = 0.01f;
++		public static Microsoft.Xna.Framework.Color DiscoColo() => new Microsoft.Xna.Framework.Color(DiscoR, DiscoG, DiscoB);
+ 		public int DiscoStyle;
+ 		public static int DiscoR = 255;
+ 		public static int DiscoB = 0;
 @@ -893,18 +_,18 @@
  		public static Texture2D snowMoonTexture;
  		public static Texture2D oneDropLogo;
