@@ -811,5 +811,13 @@ namespace Terraria.ModLoader
 		public virtual void OnEnterWorld(Player player)
 		{
 		}
+
+		/// <summary>
+		/// Called when a player respawns in the world.
+		/// </summary>
+		/// <param name="player">The player that respawns</param>
+		public virtual void OnRespawn(Player player)
+		{
+		}
 	}
 }

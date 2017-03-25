@@ -3405,6 +3405,15 @@
  			return num;
  		}
  
+@@ -27970,6 +_,8 @@
+ 				}
+ 			}
+ 			this.immune = true;
++			if (this.dead)
++				PlayerHooks.OnRespawn(this);
+ 			this.dead = false;
+ 			this.immuneTime = 0;
+ 			this.active = true;
 @@ -28163,6 +_,14 @@
  				this.ShadowDodge();
  				return 0.0;

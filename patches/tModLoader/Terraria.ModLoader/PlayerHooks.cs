@@ -949,5 +949,13 @@ namespace Terraria.ModLoader
 				modPlayer.OnEnterWorld(player);
 			}
 		}
+
+		public static void OnRespawn(Player player)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				modPlayer.OnRespawn(player);
+			}
+		}
 	}
 }
