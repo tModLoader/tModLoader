@@ -840,6 +840,12 @@ namespace Terraria.ModLoader
 		/// <param name="globalTile">The global tile.</param>
 		public void AddGlobalTile(string name, GlobalTile globalTile)
 		{
+			if (globalTile.GetType().GetMethod("Drop", new Type[] {
+				typeof(int), typeof(int), typeof(int)
+				}) != null)
+			{
+				throw new OldHookException("GlobalTile.Drop");
+			}
 			globalTile.mod = this;
 			globalTile.Name = name;
 			this.globalTiles[name] = globalTile;
