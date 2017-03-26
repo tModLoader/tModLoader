@@ -93,7 +93,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -344,6 +_,142 @@
+@@ -344,6 +_,143 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -142,6 +142,7 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIHoverImage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIInfoMessage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIInputTextField.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UILoader.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadProgress.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIManagePublished.cs" />
@@ -244,7 +245,7 @@
      <Compile Include="Terraria\keyBoardInput.cs" Condition="$(DefineConstants.Contains('CLIENT'))" />
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
-@@ -511,11 +_,58 @@
+@@ -511,11 +_,59 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -259,6 +260,7 @@
 +  </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\Loader.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonError.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default\MysteryTile.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default\MysteryItem.png" />

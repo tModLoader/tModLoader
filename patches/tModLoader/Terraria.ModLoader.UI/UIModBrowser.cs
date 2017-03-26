@@ -310,7 +310,9 @@ namespace Terraria.ModLoader.UI
 			SpecialModPackFilterTitle = null;
 			reloadButton.SetText("Getting data...");
 			SetHeading("Mod Browser");
+			modList.Clear();
 			modListAll.Clear();
+			modList.Add(new UILoaderAnimatedImage(0.5f,0.5f, 1f));
 			try
 			{
 				ServicePointManager.Expect100Continue = false;
