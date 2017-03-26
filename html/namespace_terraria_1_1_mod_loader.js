@@ -70,6 +70,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "SpawnCondition", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html", "class_terraria_1_1_mod_loader_1_1_spawn_condition" ],
     [ "SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader" ],
     [ "TileLoader", "class_terraria_1_1_mod_loader_1_1_tile_loader.html", "class_terraria_1_1_mod_loader_1_1_tile_loader" ],
+    [ "TileStyle", "struct_terraria_1_1_mod_loader_1_1_tile_style.html", "struct_terraria_1_1_mod_loader_1_1_tile_style" ],
     [ "TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_tooltip_line" ],
     [ "TopoSort", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", "class_terraria_1_1_mod_loader_1_1_topo_sort" ],
     [ "UgBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader" ],

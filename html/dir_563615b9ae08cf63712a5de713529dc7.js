@@ -200,6 +200,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "TileLoader.cs", "_tile_loader_8cs.html", [
       [ "TileLoader", "class_terraria_1_1_mod_loader_1_1_tile_loader.html", "class_terraria_1_1_mod_loader_1_1_tile_loader" ]
     ] ],
+    [ "TileStyle.cs", "_tile_style_8cs.html", [
+      [ "TileStyle", "struct_terraria_1_1_mod_loader_1_1_tile_style.html", "struct_terraria_1_1_mod_loader_1_1_tile_style" ]
+    ] ],
     [ "TooltipLine.cs", "_tooltip_line_8cs.html", [
       [ "TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_tooltip_line" ]
     ] ],
