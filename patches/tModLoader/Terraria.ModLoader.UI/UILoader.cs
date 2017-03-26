@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.UI
 		public int frameTick = 0;
 		public int frame = 0;
 		private float scale;
-		public const int maxFrames = 15;
+		public const int maxFrames = 16;
 		public const int maxDelay = 5;
 		private readonly Texture2D loaderTexture;
 
@@ -24,18 +24,17 @@ namespace Terraria.ModLoader.UI
 		{
 			loaderTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.Loader.png"));
 			this.scale = scale;
-			base.Width.Set(200f * scale, 0f);
-			base.Height.Set(200f * scale, 0f);
-			base.Left.Set(0f, left);
-			base.Top.Set(0f, top);
+			Width.Set(200f * scale, 0f);
+			Height.Set(200f * scale, 0f);
+			HAlign = left;
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
-			if (frameTick++ >= maxDelay)
+			if (++frameTick >= maxDelay)
 			{
 				frameTick = 0;
-				if (frame++ > maxFrames)
+				if (++frame >= maxFrames)
 					frame = 0;
 			}
 
@@ -43,10 +42,10 @@ namespace Terraria.ModLoader.UI
 			spriteBatch.Draw(
 				loaderTexture,
 				new Vector2((int)dimensions.X, (int)dimensions.Y),
-				new Rectangle(frame/8, 200 * (frame%8), 200, 200),
+				new Rectangle(200 * (frame/8), 200 * (frame%8), 200, 200),
 				Color.White,
 				0f,
-				new Vector2(100f, 100f),
+				new Vector2(0, 0),
 				scale,
 				SpriteEffects.None,
 				0.0f);
