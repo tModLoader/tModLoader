@@ -84,6 +84,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "GetEffect", "class_terraria_1_1_mod_loader_1_1_mod.html#aea3bb6e15d7fa83ba413912859d5fb71", null ],
     [ "GetEquipSlot", "class_terraria_1_1_mod_loader_1_1_mod.html#ae377f0eb491cbb34aeac6b354fd4e5ec", null ],
     [ "GetEquipTexture", "class_terraria_1_1_mod_loader_1_1_mod.html#a74eab591b3a4bcfe2e24ee173e1e067b", null ],
+    [ "GetEquipTexture", "class_terraria_1_1_mod_loader_1_1_mod.html#a5c4e062079692bf2be5d8b85360e1ee8", null ],
     [ "GetFileBytes", "class_terraria_1_1_mod_loader_1_1_mod.html#a0f05c5b90a32de2166046f0bfb0a7a21", null ],
     [ "GetFont", "class_terraria_1_1_mod_loader_1_1_mod.html#a6d84680dd1cae7afa7332533ed238050", null ],
     [ "GetGlobalBgStyle", "class_terraria_1_1_mod_loader_1_1_mod.html#a47d743e5cda95c69fba3492897fbd48d", null ],
