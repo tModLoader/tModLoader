@@ -15,6 +15,7 @@ namespace Terraria.ModLoader.UI
 	{
 		public bool loading;
 		private UIList modList;
+		private UILoaderAnimatedImage uiLoader;
 
 		public override void OnInitialize()
 		{
@@ -29,6 +30,8 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
+			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
+			uIPanel.Append(uiLoader);
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
 			modList.Height.Set(0f, 1f);
@@ -136,6 +139,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
+			uiLoader.visible = true;
 			modList.Clear();
 			Populate();
 		}
@@ -156,8 +160,10 @@ namespace Terraria.ModLoader.UI
 					TmodFile[] modFiles = task.Result.Item2;
 					foreach (string mod in mods)
 					{
+
 						bool publishable = false;
 						DateTime lastBuildTime = new DateTime();
+
 						foreach (TmodFile file in modFiles)
 						{
 							var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.path);
@@ -170,6 +176,7 @@ namespace Terraria.ModLoader.UI
 						}
 						modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
 					}
+					uiLoader.visible = false;
 					loading = false;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}

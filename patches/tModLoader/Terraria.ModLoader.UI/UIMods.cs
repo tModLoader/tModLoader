@@ -19,6 +19,7 @@ namespace Terraria.ModLoader.UI
 	internal class UIMods : UIState
 	{
 		public bool loading;
+		private UILoaderAnimatedImage uiLoader;
 		private UIList modList;
 		private UIList modListAll;
 		private readonly List<UIModItem> items = new List<UIModItem>();
@@ -44,6 +45,8 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
+			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
+			uIPanel.Append(uiLoader);
 			modListAll = new UIList();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
@@ -183,6 +186,7 @@ namespace Terraria.ModLoader.UI
 
 		private void FilterList()
 		{
+			uiLoader.visible = false;
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			foreach (UIModItem item in modListAll._items.Where(item => item.PassFilters()))
@@ -200,8 +204,10 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate()
 		{
 			Main.clrInput();
+			modList.Clear();
 			modListAll.Clear();
 			items.Clear();
+			uiLoader.visible = true;
 			Populate();
 		}
 

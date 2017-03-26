@@ -28,6 +28,7 @@ namespace Terraria.ModLoader.UI
 		public UIModDownloadItem selectedItem;
 		private UIElement uIElement;
 		private UIPanel uIPanel;
+		private UILoaderAnimatedImage uILoader;
 		public UITextPanel<string> uIHeaderTextPanel;
 		internal UIInputTextField filterTextBox;
 		internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
@@ -90,6 +91,8 @@ namespace Terraria.ModLoader.UI
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
+			uILoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
+			uIPanel.Append(uILoader);
 			modListAll = new UIList();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
@@ -214,6 +217,7 @@ namespace Terraria.ModLoader.UI
 		internal void SortList()
 		{
 			filter = filterTextBox.currentString;
+			uILoader.visible = false;
 			modList.Clear();
 			modList.AddRange(modListAll._items.Where(item => item.PassFilters()));
 			modList.UpdateOrder();
@@ -312,7 +316,8 @@ namespace Terraria.ModLoader.UI
 			SetHeading("Mod Browser");
 			modList.Clear();
 			modListAll.Clear();
-			modList.Add(new UILoaderAnimatedImage(0.5f,0.5f, 1f));
+			uILoader.visible = true;
+			modList.Deactivate();
 			try
 			{
 				ServicePointManager.Expect100Continue = false;
@@ -416,6 +421,7 @@ namespace Terraria.ModLoader.UI
 				foreach (JObject mod in modlist.Children<JObject>())
 				{
 					string displayname = (string)mod["displayname"];
+					//reloadButton.SetText("Adding " + displayname + "...");
 					string name = (string)mod["name"];
 					string version = (string)mod["version"];
 					string author = (string)mod["author"];
