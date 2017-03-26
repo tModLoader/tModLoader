@@ -42,7 +42,7 @@ namespace ExampleMod.Items.Weapons
 		// What if I wanted this gun to have a 38% chance not to consume ammo?
 		/*public override bool ConsumeAmmo(Player player)
 		{
-			return Main.rand.NextFloat() > .38f;
+			return Main.rand.NextFloat() >= .38f;
 		}*/
 
 		// What if I wanted it to work like Uzi, replacing regular bullets with High Velocity Bullets?

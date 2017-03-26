@@ -61,7 +61,7 @@ namespace Terraria.ModLoader
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
-		internal readonly IDictionary<string, EquipTexture> equipTextures = new Dictionary<string, EquipTexture>();
+		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 		internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
 		internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
 		internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
@@ -576,7 +576,7 @@ namespace Terraria.ModLoader
 			equipTexture.Slot = slot;
 			equipTexture.item = item;
 			EquipLoader.equipTextures[type][slot] = equipTexture;
-			equipTextures[name] = equipTexture;
+			equipTextures[new Tuple<string, EquipType>(name, type)] = equipTexture;
 			ModLoader.GetTexture(texture);
 			if (type == EquipType.Body)
 			{
@@ -593,15 +593,26 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the EquipTexture instance corresponding to the name. Returns null if no EquipTexture with the given name is found.
+		/// Obsolete: This method doesn't work.
 		/// </summary>
 		/// <param name="name">The name.</param>
-		/// <returns></returns>
+		[method: Obsolete("This method doesn't have enough information to actually work. Use GetEquipTexture(string name, EquipType type) instead.")]
 		public EquipTexture GetEquipTexture(string name)
 		{
-			if (equipTextures.ContainsKey(name))
+			throw new OldHookException("GetEquipTexture");
+		}
+
+		/// <summary>
+		/// Gets the EquipTexture instance corresponding to the name and EquipType. Returns null if no EquipTexture with the given name and EquipType is found.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <param name="type">The type.</param>
+		/// <returns></returns>
+		public EquipTexture GetEquipTexture(string name, EquipType type)
+		{
+			if (equipTextures.ContainsKey(new Tuple<string, EquipType>(name, type)))
 			{
-				return equipTextures[name];
+				return equipTextures[new Tuple<string, EquipType>(name, type)];
 			}
 			else
 			{
