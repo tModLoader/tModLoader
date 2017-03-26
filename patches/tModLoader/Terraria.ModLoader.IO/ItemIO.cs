@@ -168,6 +168,7 @@ namespace Terraria.ModLoader.IO
 
 		public static void SendModData(Item item, BinaryWriter writer)
 		{
+			if (item.IsAir) return;
 			writer.SafeWrite(w => item.modItem?.NetSend(w));
 			foreach (var globalItem in ItemLoader.NetGlobals)
 				writer.SafeWrite(w => globalItem.NetSend(item, w));
@@ -175,6 +176,7 @@ namespace Terraria.ModLoader.IO
 
 		public static void ReceiveModData(Item item, BinaryReader reader)
 		{
+			if (item.IsAir) return;
 			try
 			{
 				reader.SafeRead(r => item.modItem?.NetRecieve(r));
