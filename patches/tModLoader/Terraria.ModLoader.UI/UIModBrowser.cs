@@ -37,6 +37,7 @@ namespace Terraria.ModLoader.UI
 		public UICycleImage uIToggleImage;
 		public UICycleImage SearchFilterToggle;
 		public bool loading;
+		private bool needToRemoveLoading;
 		public SortMode sortMode = SortMode.RecentlyUpdated;
 		public UpdateFilter updateFilterMode = UpdateFilter.Available;
 		public SearchFilter searchFilterMode = SearchFilter.Name;
@@ -85,14 +86,16 @@ namespace Terraria.ModLoader.UI
 			uIElement.Top.Set(220f, 0f);
 			uIElement.Height.Set(-220f, 1f);
 			uIElement.HAlign = 0.5f;
+
 			uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
-			uILoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
-			uIPanel.Append(uILoader);
+
+			uILoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
+
 			modListAll = new UIList();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
@@ -100,12 +103,14 @@ namespace Terraria.ModLoader.UI
 			modList.Top.Set(50f, 0f);
 			modList.ListPadding = 5f;
 			uIPanel.Append(modList);
+
 			UIScrollbar uIScrollbar = new UIScrollbar();
 			uIScrollbar.SetView(100f, 1000f);
 			uIScrollbar.Height.Set(-50f, 1f);
 			uIScrollbar.Top.Set(50f, 0f);
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
+
 			modList.SetScrollbar(uIScrollbar);
 			uIHeaderTextPanel = new UITextPanel<string>("Mod Browser", 0.8f, true);
 			uIHeaderTextPanel.HAlign = 0.5f;
@@ -113,6 +118,7 @@ namespace Terraria.ModLoader.UI
 			uIHeaderTextPanel.SetPadding(15f);
 			uIHeaderTextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uIHeaderTextPanel);
+
 			reloadButton = new UITextPanel<string>("Getting data...", 1f, false);
 			reloadButton.Width.Set(-10f, 0.5f);
 			reloadButton.Height.Set(25f, 0f);
@@ -122,6 +128,7 @@ namespace Terraria.ModLoader.UI
 			reloadButton.OnMouseOut += UICommon.FadedMouseOut;
 			reloadButton.OnClick += ReloadList;
 			uIElement.Append(reloadButton);
+
 			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
 			backButton.Width.Set(-10f, 0.5f);
 			backButton.Height.Set(25f, 0f);
@@ -148,7 +155,8 @@ namespace Terraria.ModLoader.UI
 				Interface.modBrowser.SortList();
 				Main.PlaySound(SoundID.MenuTick);
 			};
-			base.Append(uIElement);
+
+			Append(uIElement);
 
 			UIElement uIElement2 = new UIElement();
 			uIElement2.Width.Set(0f, 1f);
@@ -196,6 +204,7 @@ namespace Terraria.ModLoader.UI
 			filterTextBox.Left.Set(-150, 1f);
 			filterTextBox.OnTextChange += (sender, e) => SortList();
 			uIElement2.Append(filterTextBox);
+
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 68, 0);
 			SearchFilterToggle.setCurrentState((int)searchFilterMode);
 			SearchFilterToggle.OnClick += (a, b) =>
@@ -217,7 +226,7 @@ namespace Terraria.ModLoader.UI
 		internal void SortList()
 		{
 			filter = filterTextBox.currentString;
-			uILoader.visible = false;
+			needToRemoveLoading = true;
 			modList.Clear();
 			modList.AddRange(modListAll._items.Where(item => item.PassFilters()));
 			modList.UpdateOrder();
@@ -300,6 +309,16 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		public override void Update(GameTime gameTime)
+		{
+			// Due to collection modified exceptions, we need to do this here.
+			if (needToRemoveLoading)
+			{
+				if (uIPanel.HasChild(uILoader)) uIPanel.RemoveChild(uILoader);
+				needToRemoveLoading = false;
+			}
+		}
+
 		public override void OnActivate()
 		{
 			Main.clrInput();
@@ -314,9 +333,9 @@ namespace Terraria.ModLoader.UI
 			SpecialModPackFilterTitle = null;
 			reloadButton.SetText("Getting data...");
 			SetHeading("Mod Browser");
+			if (!uIPanel.HasChild(uILoader)) uIPanel.Append(uILoader);
 			modList.Clear();
 			modListAll.Clear();
-			uILoader.visible = true;
 			modList.Deactivate();
 			try
 			{

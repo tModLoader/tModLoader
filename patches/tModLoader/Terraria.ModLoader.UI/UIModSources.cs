@@ -15,23 +15,27 @@ namespace Terraria.ModLoader.UI
 	{
 		public bool loading;
 		private UIList modList;
+		private UIElement uIElement;
+		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
 
 		public override void OnInitialize()
 		{
-			UIElement uIElement = new UIElement();
+			uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
 			uIElement.MaxWidth.Set(600f, 0f);
 			uIElement.Top.Set(220f, 0f);
 			uIElement.Height.Set(-220f, 1f);
 			uIElement.HAlign = 0.5f;
-			UIPanel uIPanel = new UIPanel();
+
+			uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
+
 			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
-			uIPanel.Append(uiLoader);
+
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
 			modList.Height.Set(0f, 1f);
@@ -139,7 +143,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			uiLoader.visible = true;
+			if(!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
 			modList.Clear();
 			Populate();
 		}
@@ -176,7 +180,7 @@ namespace Terraria.ModLoader.UI
 						}
 						modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
 					}
-					uiLoader.visible = false;
+					if(uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
 					loading = false;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}

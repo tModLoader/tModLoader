@@ -18,6 +18,8 @@ namespace Terraria.ModLoader.UI
 	internal class UIModPacks : UIState
 	{
 		private UIList modListList;
+		private UILoaderAnimatedImage uiLoader;
+		private UIPanel scrollPanel;
 		internal static string ModListSaveDirectory = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModPacks";
 		internal static TmodFile[] mods;
 
@@ -30,7 +32,9 @@ namespace Terraria.ModLoader.UI
 			uIElement.Height.Set(-220f, 1f);
 			uIElement.HAlign = 0.5f;
 
-			UIPanel scrollPanel = new UIPanel();
+			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
+
+			scrollPanel = new UIPanel();
 			scrollPanel.Width.Set(0f, 1f);
 			scrollPanel.Height.Set(-65f, 1f);
 			scrollPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
@@ -120,6 +124,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
+			if(!scrollPanel.HasChild(uiLoader)) scrollPanel.Append(uiLoader);
 			modListList.Clear();
 
 			Task.Factory
@@ -148,6 +153,7 @@ namespace Terraria.ModLoader.UI
 						UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
 						modListList.Add(modItem);
 					}
+					if(scrollPanel.HasChild(uiLoader)) scrollPanel.RemoveChild(uiLoader);
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 

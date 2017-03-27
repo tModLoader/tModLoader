@@ -19,6 +19,8 @@ namespace Terraria.ModLoader.UI
 	internal class UIMods : UIState
 	{
 		public bool loading;
+		private UIElement uIElement;
+		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
 		private UIList modList;
 		private UIList modListAll;
@@ -34,31 +36,36 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnInitialize()
 		{
-			UIElement uIElement = new UIElement();
+			uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
 			uIElement.MaxWidth.Set(600f, 0f);
 			uIElement.Top.Set(220f, 0f);
 			uIElement.Height.Set(-220f, 1f);
 			uIElement.HAlign = 0.5f;
-			UIPanel uIPanel = new UIPanel();
+
+			uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
+
 			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
-			uIPanel.Append(uiLoader);
+
 			modListAll = new UIList();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
 			modList.Height.Set(0f, 1f);
 			modList.ListPadding = 5f;
 			uIPanel.Append(modList);
+
 			UIScrollbar uIScrollbar = new UIScrollbar();
 			uIScrollbar.SetView(100f, 1000f);
 			uIScrollbar.Height.Set(0f, 1f);
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
+
 			modList.SetScrollbar(uIScrollbar);
+
 			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>("Mods List", 0.8f, true);
 			uIHeaderTexTPanel.HAlign = 0.5f;
 			uIHeaderTexTPanel.Top.Set(-35f, 0f);
@@ -121,7 +128,7 @@ namespace Terraria.ModLoader.UI
 			buttonMP.OnMouseOut += UICommon.FadedMouseOut;
 			buttonMP.OnClick += GotoModPacksMenu;
 			uIElement.Append(buttonMP);
-			base.Append(uIElement);
+			Append(uIElement);
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -186,7 +193,7 @@ namespace Terraria.ModLoader.UI
 
 		private void FilterList()
 		{
-			uiLoader.visible = false;
+			if(uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			foreach (UIModItem item in modListAll._items.Where(item => item.PassFilters()))
@@ -207,7 +214,7 @@ namespace Terraria.ModLoader.UI
 			modList.Clear();
 			modListAll.Clear();
 			items.Clear();
-			uiLoader.visible = true;
+			if(!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
 			Populate();
 		}
 

@@ -13,7 +13,6 @@ namespace Terraria.ModLoader.UI
 {
 	internal sealed class UILoaderAnimatedImage : UIElement
 	{
-		public bool visible = true;
 		public bool withBackground = false;
 		public int frameTick = 0;
 		public int frame = 0;
@@ -36,51 +35,40 @@ namespace Terraria.ModLoader.UI
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
-			if (visible)
-			{ 
-				if (++frameTick >= maxDelay)
-				{
-					frameTick = 0;
-					if (++frame >= maxFrames)
-						frame = 0;
-				}
+			if (++frameTick >= maxDelay)
+			{
+				frameTick = 0;
+				if (++frame >= maxFrames)
+					frame = 0;
+			}
 
-				CalculatedStyle dimensions = base.GetDimensions();
-				// Draw BG
-				if (withBackground)
-				{
-					spriteBatch.Draw(
-						backgroundTexture,
-						new Vector2((int)dimensions.X, (int)dimensions.Y),
-						new Rectangle(0, 0, 200, 200),
-						Color.White,
-						0f,
-						new Vector2(0, 0),
-						scale,
-						SpriteEffects.None,
-						0.0f);
-				}
-
-				// Draw loader animation
+			CalculatedStyle dimensions = base.GetDimensions();
+			// Draw BG
+			if (withBackground)
+			{
 				spriteBatch.Draw(
-					loaderTexture,
+					backgroundTexture,
 					new Vector2((int)dimensions.X, (int)dimensions.Y),
-					new Rectangle(200 * (frame/8), 200 * (frame%8), 200, 200),
+					new Rectangle(0, 0, 200, 200),
 					Color.White,
 					0f,
 					new Vector2(0, 0),
 					scale,
 					SpriteEffects.None,
 					0.0f);
-
-					//CalculatedStyle dimensions = base.GetDimensions();
-					//Point point = new Point(0, 200 * frame);
-					//spriteBatch.Draw(
-					//	loaderTexture, 
-					//	new Rectangle((int)dimensions.X, (int)dimensions.Y, 200, 200), 
-					//	new Rectangle?(new Rectangle(point.X, point.Y, 200, 200)),
-					//	Color.White);
 			}
+
+			// Draw loader animation
+			spriteBatch.Draw(
+				loaderTexture,
+				new Vector2((int)dimensions.X, (int)dimensions.Y),
+				new Rectangle(200 * (frame / 8), 200 * (frame % 8), 200, 200),
+				Color.White,
+				0f,
+				new Vector2(0, 0),
+				scale,
+				SpriteEffects.None,
+				0.0f);
 		}
 	}
 }
