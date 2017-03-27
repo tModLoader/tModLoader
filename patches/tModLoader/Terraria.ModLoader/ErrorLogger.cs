@@ -224,24 +224,24 @@ namespace Terraria.ModLoader
 			using (StreamWriter writer = File.AppendText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
 			{
 				writer.WriteLine("Object type: " + param.GetType());
-				foreach (PropertyInfo property in param.GetType().GetProperties())
+				foreach (PropertyInfo property in param.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
 				{
 					writer.Write("PROPERTY " + property.Name + " = " + property.GetValue(param, null) + "\n");
 				}
 
-				foreach (FieldInfo field in param.GetType().GetFields())
+				foreach (FieldInfo field in param.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
 				{
 					writer.Write("FIELD " + field.Name + " = " + (field.GetValue(param).ToString() != "" ? field.GetValue(param) : "(Field value not found)") + "\n");
 				}
 
-				foreach (MethodInfo method in param.GetType().GetMethods())
+				foreach (MethodInfo method in param.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
 				{
 					writer.Write("METHOD " + method.Name + "\n");
 				}
 
 				int temp = 0;
 
-				foreach (ConstructorInfo constructor in param.GetType().GetConstructors())
+				foreach (ConstructorInfo constructor in param.GetType().GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
 				{
 					temp++;
 					writer.Write("CONSTRUCTOR " + temp + " : " + constructor.Name + "\n");
