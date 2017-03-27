@@ -449,6 +449,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModItem GetItem<T>() where T: ModItem
+		{
+			return GetItem(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Gets the internal ID / type of the ModItem corresponding to the name. Returns 0 if no ModItem with the given name is found.
 		/// </summary>
@@ -523,6 +528,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		public GlobalItem GetGlobalItem<T>() where T : GlobalItem
+		{
+			return GetGlobalItem(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -764,6 +774,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModDust GetDust<T>() where T : ModDust
+		{
+			return GetDust(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Gets the type of the ModDust of this mod with the given name. Returns 0 if no ModDust with the given name is found.
 		/// </summary>
@@ -839,6 +854,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModTile GetTile<T>() where T : ModTile
+		{
+			return GetTile(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Gets the type of the ModTile of this mod with the given name. Returns 0 if no ModTile with the given name is found.
 		/// </summary>
@@ -900,6 +920,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public GlobalTile GetGlobalTile<T>() where T : GlobalTile
+		{
+			return GetGlobalTile(typeof(T).Name);
+		}
+
 		private void AutoloadTile(Type type)
 		{
 			ModTile tile = (ModTile)Activator.CreateInstance(type);
@@ -952,6 +977,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		public ModTileEntity GetTileEntity<T>() where T : ModTileEntity
+		{
+			return GetTileEntity(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1014,6 +1044,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModWall GetWall<T>() where T : ModWall
+		{
+			return GetWall(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Gets the type of the ModWall of this mod with the given name. Returns 0 if no ModWall with the given name is found.
 		/// </summary>
@@ -1067,6 +1102,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		public GlobalWall GetGlobalWall<T>() where T : GlobalWall
+		{
+			return GetGlobalWall(typeof(T).Name);
 		}
 
 		private void AutoloadWall(Type type)
@@ -1132,6 +1172,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModProjectile GetProjectile<T>() where T : ModProjectile
+		{
+			return GetProjectile(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Gets the type of the ModProjectile of this mod with the given name. Returns 0 if no ModProjectile with the given name is found.
 		/// </summary>
@@ -1186,6 +1231,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		public GlobalProjectile GetGlobalProjectile<T>() where T : GlobalProjectile
+		{
+			return GetGlobalProjectile(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1275,6 +1325,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModNPC GetNPC<T>() where T : ModNPC
+		{
+			return GetNPC(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Gets the type of the ModNPC of this mod with the given name. Returns 0 if no ModNPC with the given name is found.
 		/// </summary>
@@ -1328,6 +1383,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		public GlobalNPC GetGlobalNPC<T>() where T : GlobalNPC
+		{
+			return GetGlobalNPC(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1495,6 +1555,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModBuff GetBuff<T>() where T : ModBuff
+		{
+			return GetBuff(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Gets the type of the ModBuff of this mod corresponding to the given name. Returns 0 if no ModBuff with the given name is found.
 		/// </summary>
@@ -1548,6 +1613,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		public GlobalBuff GetGlobalBuff<T>() where T : GlobalBuff
+		{
+			return GetGlobalBuff(typeof(T).Name);
 		}
 
 		private void AutoloadBuff(Type type)
@@ -1668,6 +1738,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModMountData GetMount<T>() where T: ModMountData
+		{
+			return GetMount(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Gets the ID of the ModMountData instance corresponding to the given name. Returns 0 if no ModMountData has the given name.
 		/// </summary>
@@ -1776,6 +1851,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModUgBgStyle GetUgBgStyle<T>() where T : ModUgBgStyle
+		{
+			return GetUgBgStyle(typeof(T).Name);
+		}
+
 		private void AutoloadUgBgStyle(Type type)
 		{
 			ModUgBgStyle ugBgStyle = (ModUgBgStyle)Activator.CreateInstance(type);
@@ -1819,6 +1899,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModSurfaceBgStyle GetSurfaceBgStyle<T>() where T : ModSurfaceBgStyle
+		{
+			return GetSurfaceBgStyle(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Returns the Slot of the surface background style corresponding to the given name.
 		/// </summary>
@@ -1828,6 +1913,11 @@ namespace Terraria.ModLoader
 		{
 			ModSurfaceBgStyle style = GetSurfaceBgStyle(name);
 			return style == null ? -1 : style.Slot;
+		}
+
+		public int GetSurfaceBgStyleSlot<T>() where T : ModSurfaceBgStyle
+		{
+			return GetSurfaceBgStyleSlot(typeof(T).Name);
 		}
 
 		private void AutoloadSurfaceBgStyle(Type type)
@@ -1870,6 +1960,12 @@ namespace Terraria.ModLoader
 				return null;
 			}
 		}
+
+		public GlobalBgStyle GetGlobalBgStyle<T>() where T : GlobalBgStyle
+		{
+			return GetGlobalBgStyle(typeof(T).Name);
+		}
+
 
 		private void AutoloadGlobalBgStyle(Type type)
 		{
@@ -1916,6 +2012,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		public ModWaterStyle GetWaterStyle<T>() where T : ModWaterStyle
+		{
+			return GetWaterStyle(typeof(T).Name);
 		}
 
 		private void AutoloadWaterStyle(Type type)
@@ -1965,6 +2066,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public ModWaterfallStyle GetWaterfallStyle<T>() where T : ModWaterfallStyle
+		{
+			return GetWaterfallStyle(typeof(T).Name);
+		}
+
 		/// <summary>
 		/// Returns the waterfall style corresponding to the given name.
 		/// </summary>
@@ -1974,6 +2080,11 @@ namespace Terraria.ModLoader
 		{
 			ModWaterfallStyle style = GetWaterfallStyle(name);
 			return style == null ? -1 : style.Type;
+		}
+
+		public int GetWaterfallStyleSlot<T>() where T : ModWaterfallStyle
+		{
+			return GetWaterfallStyleSlot(typeof(T).Name);
 		}
 
 		private void AutoloadWaterfallStyle(Type type)
@@ -2185,6 +2296,11 @@ namespace Terraria.ModLoader
 			{
 				return null;
 			}
+		}
+
+		public GlobalRecipe GetGlobalRecipe<T>() where T : GlobalRecipe
+		{
+			return GetGlobalRecipe(typeof(T).Name);
 		}
 
 		/// <summary>
