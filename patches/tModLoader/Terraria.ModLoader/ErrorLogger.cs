@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.ModLoader.IO;
+using System.Reflection;
 
 namespace Terraria.ModLoader
 {
@@ -211,6 +212,41 @@ namespace Terraria.ModLoader
 			{
 				writer.WriteLine(message);
 			}
+		}
+		
+		/// <summary>
+                /// Allows you to log an object, this get all the 
+                /// </summary>
+                /// <param name="param">The object to be logged.</param>
+		public static void Log(object param)
+		{
+			Directory.CreateDirectory(LogPath);
+			using (StreamWriter writer = File.AppendText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
+                        {
+                             writer.WriteLine("Object type: " + param.GetType());
+                             foreach (PropertyInfo property in param.GetType().GetProperties())
+                             {
+                                 writer.Write("PROPERTY " + property.Name + " = " + property.GetValue(param, null) + "\n");
+                             }
+
+          		     foreach (FieldInfo field in param.GetType().GetFields())
+          	             {
+                                 writer.Write("FIELD " + field.Name + " = " + (field.GetValue(param).ToString() != "" ? field.GetValue(param) : "(Field value not found)") + "\n");
+                             }
+
+                             foreach (MethodInfo method in param.GetType().GetMethods())
+                             {
+                                 writer.Write("METHOD " + method.Name + "\n");
+                             }
+
+                             int temp = 0;
+
+                             foreach(ConstructorInfo constructor in param.GetType().GetConstructors())
+                             {
+                                temp++;
+                                writer.Write("CONSTRUCTOR " + temp + " : " + constructor.Name + "\n");
+                             }
+                        }
 		}
 
 		/// <summary>
