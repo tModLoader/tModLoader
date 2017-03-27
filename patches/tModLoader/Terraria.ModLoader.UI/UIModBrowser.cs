@@ -286,15 +286,19 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = 0;
 			if (Interface.modBrowser.aModUpdated)
 			{
-				Interface.infoMessage.SetMessage("You have updated a mod. Remember to reload mods for it to take effect.");
-				Interface.infoMessage.SetGotoMenu(0);
-				Main.menuMode = Interface.infoMessageID;
+				Interface.advancedInfoMessage.SetMessage("You have updated a mod. Remember to reload mods for it to take effect.");
+				Interface.advancedInfoMessage.SetGotoMenu(0);
+				Interface.advancedInfoMessage.SetAltMessage("Don't show again");
+				Interface.advancedInfoMessage.SetAltAction(() => { ModLoader.dontRemindModBrowserUpdateReload = true; Main.SaveSettings(); });
+				Main.menuMode = Interface.advancedInfoMessageID;
 			}
 			else if (Interface.modBrowser.aNewModDownloaded)
 			{
-				Interface.infoMessage.SetMessage("Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.");
-				Interface.infoMessage.SetGotoMenu(0);
-				Main.menuMode = Interface.infoMessageID;
+				Interface.advancedInfoMessage.SetMessage("Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.");
+				Interface.advancedInfoMessage.SetGotoMenu(0);
+				Interface.advancedInfoMessage.SetAltMessage("Don't show again");
+				Interface.advancedInfoMessage.SetAltAction(() => { ModLoader.dontRemindModBrowserDownloadEnable = true; Main.SaveSettings(); });
+				Main.menuMode = Interface.advancedInfoMessageID;
 			}
 			Interface.modBrowser.aModUpdated = false;
 			Interface.modBrowser.aNewModDownloaded = false;
