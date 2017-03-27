@@ -232,22 +232,34 @@ namespace Terraria.ModLoader
 			WorldHooks.ResizeArrays();
 		}
 
+		// TODO, investigate if this causes memory errors.
+		private static Dictionary<string, Tuple<DateTime, TmodFile>> findModsCache = new Dictionary<string, Tuple<DateTime, TmodFile>>();
 		internal static TmodFile[] FindMods()
 		{
 			Directory.CreateDirectory(ModPath);
 			IList<TmodFile> files = new List<TmodFile>();
 
-
 			foreach (string fileName in Directory.GetFiles(ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
 			{
-				TmodFile file = new TmodFile(fileName);
-				file.Read();
-				if (file.ValidMod() == null)
+				var lastModified = File.GetLastWriteTime(fileName);
+				Tuple<DateTime, TmodFile> cacheMod;
+				TmodFile file = null;
+				if (findModsCache.TryGetValue(fileName, out cacheMod))
 				{
-					files.Add(file);
+					if (cacheMod.Item1 == lastModified)
+						file = cacheMod.Item2;
+					else
+						findModsCache.Remove(fileName);
 				}
+				if (file == null)
+				{
+					file = new TmodFile(fileName);
+					file.Read();
+					findModsCache.Add(fileName, new Tuple<DateTime, TmodFile>(lastModified, file));
+				}
+				if (file.ValidMod() == null)
+					files.Add(file);
 			}
-
 			return files.OrderBy(x => x.name).ToArray();
 		}
 
@@ -335,14 +347,16 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void EnsureDependenciesExist(ICollection<LoadingMod> mods, bool includeWeak) {
+		internal static void EnsureDependenciesExist(ICollection<LoadingMod> mods, bool includeWeak)
+		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
 			var errored = new HashSet<LoadingMod>();
 			var errorLog = new StringBuilder();
-			
+
 			foreach (var mod in mods)
 				foreach (var depName in mod.properties.RefNames(includeWeak))
-					if (!nameMap.ContainsKey(depName)) {
+					if (!nameMap.ContainsKey(depName))
+					{
 						errored.Add(mod);
 						errorLog.AppendLine("Missing mod: " + depName + " required by " + mod);
 					}
@@ -351,15 +365,18 @@ namespace Terraria.ModLoader
 				throw new ModSortingException(errored, errorLog.ToString());
 		}
 
-		internal static void EnsureTargetVersionsMet(ICollection<LoadingMod> mods) {
+		internal static void EnsureTargetVersionsMet(ICollection<LoadingMod> mods)
+		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
 			var errored = new HashSet<LoadingMod>();
 			var errorLog = new StringBuilder();
 
 			foreach (var mod in mods)
-				foreach (var dep in mod.properties.Refs(true)) {
+				foreach (var dep in mod.properties.Refs(true))
+				{
 					LoadingMod inst;
-					if (nameMap.TryGetValue(dep.mod, out inst) && inst.properties.version < dep.target) {
+					if (nameMap.TryGetValue(dep.mod, out inst) && inst.properties.version < dep.target)
+					{
 						errored.Add(mod);
 						errorLog.AppendLine(mod + " requires version " + dep.target + "+ of " + dep.mod +
 							" but version " + inst.properties.version + " is installed");
@@ -370,21 +387,27 @@ namespace Terraria.ModLoader
 				throw new ModSortingException(errored, errorLog.ToString());
 		}
 
-		internal static void EnsureSyncedDependencyStability(TopoSort<LoadingMod> synced, TopoSort<LoadingMod> full) {
+		internal static void EnsureSyncedDependencyStability(TopoSort<LoadingMod> synced, TopoSort<LoadingMod> full)
+		{
 			var errored = new HashSet<LoadingMod>();
 			var errorLog = new StringBuilder();
 
-			foreach (var mod in synced.list) {
+			foreach (var mod in synced.list)
+			{
 				var chains = new List<List<LoadingMod>>();
 				//define recursive chain finding method
 				Action<LoadingMod, Stack<LoadingMod>> FindChains = null;
-				FindChains = (search, stack) => {
+				FindChains = (search, stack) =>
+				{
 					stack.Push(search);
 
-					if (search.properties.side == ModSide.Both && stack.Count > 1) {
+					if (search.properties.side == ModSide.Both && stack.Count > 1)
+					{
 						if (stack.Count > 2)//direct Both -> Both references are ignored
 							chains.Add(stack.Reverse().ToList());
-					} else {//recursively build the chain, all entries in stack should be unsynced
+					}
+					else
+					{//recursively build the chain, all entries in stack should be unsynced
 						foreach (var dep in full.Dependencies(search))
 							FindChains(dep, stack);
 					}
@@ -398,19 +421,22 @@ namespace Terraria.ModLoader
 
 				var syncedDependencies = synced.AllDependencies(mod);
 				foreach (var chain in chains)
-					if (!syncedDependencies.Contains(chain.Last())) {
+					if (!syncedDependencies.Contains(chain.Last()))
+					{
 						errored.Add(mod);
 						errorLog.AppendLine(mod + " indirectly depends on " + chain.Last() + " via " + string.Join(" -> ", chain));
 					}
 			}
 
-			if (errored.Count > 0) {
+			if (errored.Count > 0)
+			{
 				errorLog.AppendLine("Some of these mods may not exist on both client and server. Add a direct sort entries or weak references.");
 				throw new ModSortingException(errored, errorLog.ToString());
 			}
 		}
 
-		private static TopoSort<LoadingMod> BuildSort(ICollection<LoadingMod> mods) {
+		private static TopoSort<LoadingMod> BuildSort(ICollection<LoadingMod> mods)
+		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
 			return new TopoSort<LoadingMod>(mods,
 				mod => mod.properties.sortAfter.Where(nameMap.ContainsKey).Select(name => nameMap[name]),
@@ -424,7 +450,8 @@ namespace Terraria.ModLoader
 			var fullSort = BuildSort(preSorted);
 			EnsureSyncedDependencyStability(syncedSort, fullSort);
 
-			try {
+			try
+			{
 				var syncedList = syncedSort.Sort();
 
 				//preserve synced order
@@ -433,7 +460,8 @@ namespace Terraria.ModLoader
 
 				return fullSort.Sort();
 			}
-			catch (TopoSort<LoadingMod>.SortingException e) {
+			catch (TopoSort<LoadingMod>.SortingException e)
+			{
 				throw new ModSortingException(e.set, e.Message);
 			}
 		}
