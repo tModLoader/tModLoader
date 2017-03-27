@@ -284,7 +284,7 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;
-			if (Interface.modBrowser.aModUpdated)
+			if (Interface.modBrowser.aModUpdated && !ModLoader.dontRemindModBrowserUpdateReload)
 			{
 				Interface.advancedInfoMessage.SetMessage("You have updated a mod. Remember to reload mods for it to take effect.");
 				Interface.advancedInfoMessage.SetGotoMenu(0);
@@ -292,7 +292,7 @@ namespace Terraria.ModLoader.UI
 				Interface.advancedInfoMessage.SetAltAction(() => { ModLoader.dontRemindModBrowserUpdateReload = true; Main.SaveSettings(); });
 				Main.menuMode = Interface.advancedInfoMessageID;
 			}
-			else if (Interface.modBrowser.aNewModDownloaded)
+			else if (Interface.modBrowser.aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable)
 			{
 				Interface.advancedInfoMessage.SetMessage("Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.");
 				Interface.advancedInfoMessage.SetGotoMenu(0);
