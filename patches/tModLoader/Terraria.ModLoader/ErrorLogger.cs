@@ -222,31 +222,31 @@ namespace Terraria.ModLoader
 		{
 			Directory.CreateDirectory(LogPath);
 			using (StreamWriter writer = File.AppendText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
-                        {
-                             writer.WriteLine("Object type: " + param.GetType());
-                             foreach (PropertyInfo property in param.GetType().GetProperties())
-                             {
-                                 writer.Write("PROPERTY " + property.Name + " = " + property.GetValue(param, null) + "\n");
-                             }
+			{
+				writer.WriteLine("Object type: " + param.GetType());
+				foreach (PropertyInfo property in param.GetType().GetProperties())
+				{
+					writer.Write("PROPERTY " + property.Name + " = " + property.GetValue(param, null) + "\n");
+				}
 
-          		     foreach (FieldInfo field in param.GetType().GetFields())
-          	             {
-                                 writer.Write("FIELD " + field.Name + " = " + (field.GetValue(param).ToString() != "" ? field.GetValue(param) : "(Field value not found)") + "\n");
-                             }
+				foreach (FieldInfo field in param.GetType().GetFields())
+				{
+					writer.Write("FIELD " + field.Name + " = " + (field.GetValue(param).ToString() != "" ? field.GetValue(param) : "(Field value not found)") + "\n");
+				}
 
-                             foreach (MethodInfo method in param.GetType().GetMethods())
-                             {
-                                 writer.Write("METHOD " + method.Name + "\n");
-                             }
+				foreach (MethodInfo method in param.GetType().GetMethods())
+				{
+					writer.Write("METHOD " + method.Name + "\n");
+				}
 
-                             int temp = 0;
+				int temp = 0;
 
-                             foreach(ConstructorInfo constructor in param.GetType().GetConstructors())
-                             {
-                                temp++;
-                                writer.Write("CONSTRUCTOR " + temp + " : " + constructor.Name + "\n");
-                             }
-                        }
+				foreach (ConstructorInfo constructor in param.GetType().GetConstructors())
+				{
+					temp++;
+					writer.Write("CONSTRUCTOR " + temp + " : " + constructor.Name + "\n");
+				}
+			}
 		}
 
 		/// <summary>
