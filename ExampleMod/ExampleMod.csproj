@@ -55,6 +55,9 @@
     <Compile Include="Angle.cs" />
     <Compile Include="Backgrounds\ExampleSurfaceBgStyle.cs" />
     <Compile Include="Backgrounds\ExampleUgBgStyle.cs" />
+    <Compile Include="Barrel\BarrelItem.cs" />
+    <Compile Include="Barrel\BarrelTE.cs" />
+    <Compile Include="Barrel\BarrelTile.cs" />
     <Compile Include="Buffs\CarMount.cs" />
     <Compile Include="Buffs\EtherealFlames.cs" />
     <Compile Include="Buffs\ExampleLightPet.cs" />

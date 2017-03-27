@@ -74,7 +74,8 @@ namespace Terraria.ModLoader.UI
 		private UIMessageBox message = new UIMessageBox("");
 		private int gotoMenu = 0;
 		private Action altAction;
-		private UITextPanel<string> button2 = new UITextPanel<string>("???", 0.7f, true);
+		private UITextPanel<string> button2;
+		private string button2Text = "???";
 
 		public override void OnInitialize()
 		{
@@ -114,6 +115,7 @@ namespace Terraria.ModLoader.UI
 			button1.OnClick += OKClick;
 			area.Append(button1);
 
+			button2 = new UITextPanel<string>("???", 0.7f, true);
 			button2.Width.Set(-10f, 0.5f);
 			button2.Height.Set(50f, 0f);
 			button2.Left.Set(0, .5f);
@@ -127,6 +129,11 @@ namespace Terraria.ModLoader.UI
 			Append(area);
 		}
 
+		public override void OnActivate()
+		{
+			button2.SetText(button2Text);
+		}
+
 		internal void SetMessage(string text)
 		{
 			message.SetText(text);
@@ -134,7 +141,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void SetAltMessage(string text)
 		{
-			button2.SetText(text);
+			button2Text = text;
 		}
 
 		internal void SetAltAction(Action action)
