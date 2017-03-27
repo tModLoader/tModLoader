@@ -621,13 +621,23 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Obsolete: This method doesn't work.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		[method: Obsolete("This method doesn't have enough information to actually work. Use GetEquipSlot(string name, EquipType type) instead.")]
+		public int GetEquipSlot(string name)
+		{
+			throw new OldHookException("GetEquipTexture");
+		}
+
+				/// <summary>
 		/// Gets the slot/ID of the equipment texture corresponding to the given name. Returns -1 if no EquipTexture with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public int GetEquipSlot(string name)
+		public int GetEquipSlot(string name, EquipType type)
 		{
-			EquipTexture texture = GetEquipTexture(name);
+			EquipTexture texture = GetEquipTexture(name, type);
 			if (texture == null)
 			{
 				return -1;
@@ -636,13 +646,23 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Obsolete: This method doesn't work.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		[method: Obsolete("This method doesn't have enough information to actually work. Use GetAccessorySlot(string name, EquipType type) instead.")]
+		public sbyte GetAccessorySlot(string name)
+		{
+			throw new OldHookException("GetEquipTexture");
+		}
+
+		/// <summary>
 		/// Same as GetEquipSlot, except returns the number as an sbyte (signed byte) for your convenience.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public sbyte GetAccessorySlot(string name)
+		public sbyte GetAccessorySlot(string name, EquipType type)
 		{
-			return (sbyte)GetEquipSlot(name);
+			return (sbyte)GetEquipSlot(name, type);
 		}
 
 		/// <summary>
