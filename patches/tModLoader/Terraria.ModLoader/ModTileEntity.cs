@@ -7,7 +7,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior.
+	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntitry.Update is called in SP and on Server, not on Clients.
 	/// </summary>
 	/// <seealso cref="Terraria.DataStructures.TileEntity" />
 	public abstract class ModTileEntity : TileEntity
@@ -280,7 +280,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Code that should be run when this tile entity is placed by means of server-syncing.
+		/// Code that should be run when this tile entity is placed by means of server-syncing. Called on Server only.
 		/// </summary>
 		public virtual void OnNetPlace()
 		{
