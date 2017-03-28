@@ -215,36 +215,44 @@ namespace Terraria.ModLoader
 		}
 		
 		/// <summary>
-                /// Allows you to log an object, this get all the 
+                /// Allows you to log an object for your own testing purposes. The message will be added to the Logs.txt file in the Logs folder. 
                 /// </summary>
                 /// <param name="param">The object to be logged.</param>
-		public static void Log(object param)
+		/// <param name="alternateOutput">If true, the object's data will be manually retrieved and logged. If false, the object's ToString method is logged.</param>
+		public static void Log(object param, bool alternateOutput = false)
 		{
 			Directory.CreateDirectory(LogPath);
 			using (StreamWriter writer = File.AppendText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
 			{
-				writer.WriteLine("Object type: " + param.GetType());
-				foreach (PropertyInfo property in param.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+				if (!alternateOutput)
 				{
-					writer.Write("PROPERTY " + property.Name + " = " + property.GetValue(param, null) + "\n");
+					writer.WriteLine(param.ToString());
 				}
-
-				foreach (FieldInfo field in param.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+				else
 				{
-					writer.Write("FIELD " + field.Name + " = " + (field.GetValue(param).ToString() != "" ? field.GetValue(param) : "(Field value not found)") + "\n");
-				}
+					writer.WriteLine("Object type: " + param.GetType());
+					foreach (PropertyInfo property in param.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+					{
+						writer.Write("PROPERTY " + property.Name + " = " + property.GetValue(param, null) + "\n");
+					}
 
-				foreach (MethodInfo method in param.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
-				{
-					writer.Write("METHOD " + method.Name + "\n");
-				}
+					foreach (FieldInfo field in param.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+					{
+						writer.Write("FIELD " + field.Name + " = " + (field.GetValue(param).ToString() != "" ? field.GetValue(param) : "(Field value not found)") + "\n");
+					}
 
-				int temp = 0;
+					foreach (MethodInfo method in param.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+					{
+						writer.Write("METHOD " + method.Name + "\n");
+					}
 
-				foreach (ConstructorInfo constructor in param.GetType().GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
-				{
-					temp++;
-					writer.Write("CONSTRUCTOR " + temp + " : " + constructor.Name + "\n");
+					int temp = 0;
+
+					foreach (ConstructorInfo constructor in param.GetType().GetConstructors(BindingFlags.Public | BindingFlags.NonPublic))
+					{
+						temp++;
+						writer.Write("CONSTRUCTOR " + temp + " : " + constructor.Name + "\n");
+					}
 				}
 			}
 		}
