@@ -209,7 +209,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Don't use this. It is included only for completion's sake.
 		/// </summary>
-		public override sealed void WriteExtraData(BinaryWriter writer, bool networkSend)
+		public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend)
 		{
 			if (networkSend)
 			{
@@ -220,7 +220,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Don't use this. It is included only for completion's sake.
 		/// </summary>
-		public override sealed void ReadExtraData(BinaryReader reader, bool networkSend)
+		public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
 		{
 			if (networkSend)
 			{
