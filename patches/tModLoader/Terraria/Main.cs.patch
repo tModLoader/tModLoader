@@ -1459,7 +1459,7 @@
  			catch
  			{
  			}
-+
++			Main.myPlayer = 255;
  			WorldGen.serverLoadWorld();
  			Console.WriteLine(Language.GetTextValue("CLI.Server", Main.versionNumber));
  			Console.WriteLine("");
