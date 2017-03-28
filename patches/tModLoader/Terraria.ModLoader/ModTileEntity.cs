@@ -211,7 +211,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend)
 		{
-			if (networkSend)
+			//if (networkSend)
 			{
 				NetSend(writer);
 			}
@@ -222,7 +222,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
 		{
-			if (networkSend)
+			//if (networkSend)
 			{
 				NetReceive(reader);
 			}

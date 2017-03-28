@@ -222,6 +222,24 @@
  							num5++;
  							if (tile2.wallColor() != 0)
  							{
+@@ -1799,6 +_,17 @@
+ 				writer.Write((short)sign.x);
+ 				writer.Write((short)sign.y);
+ 				writer.Write(sign.text);
++			}
++			foreach (var item in TileEntity.ByPosition)
++			{
++				Point16 pos = item.Key;
++				if(pos.X >= xStart && pos.X < xStart + width && pos.Y >= yStart && pos.Y < yStart + height)
++				{
++					if(item.Value.type > 2)
++					{
++						array3[num3++] = (short)item.Value.ID;
++					}
++				}
+ 			}
+ 			writer.Write(num3);
+ 			for (int m = 0; m < (int)num3; m++)
 @@ -1920,7 +_,7 @@
  						}
  						if ((b3 & 4) == 4)
