@@ -123,6 +123,7 @@
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleHook.cs" />
     <Compile Include="Items\ExampleItem.cs" />
+    <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
     <Compile Include="Items\ExampleLightPet.cs" />
     <Compile Include="Items\ExamplePet.cs" />
@@ -250,6 +251,7 @@
     <Compile Include="Tiles\ExampleWorkbench.cs" />
     <Compile Include="Tiles\MonsterBanner.cs" />
     <Compile Include="Tiles\TEElementalPurge.cs" />
+    <Compile Include="Tiles\TEScoreBoard.cs" />
     <Compile Include="Tiles\VoidMonolith.cs" />
     <Compile Include="Tiles\VoidSky.cs" />
     <Compile Include="UI\ExampleUI.cs" />
