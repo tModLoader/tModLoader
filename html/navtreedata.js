@@ -30,7 +30,7 @@ var NAVTREEINDEX =
 "_assembly_manager_8cs.html",
 "class_terraria_1_1_mod_loader_1_1_equip_texture.html#a8cc7b350ce57033afea295c5de854f98",
 "class_terraria_1_1_mod_loader_1_1_global_tile.html#a843da6ae8cdcf34e2475962050bd1a5e",
-"class_terraria_1_1_mod_loader_1_1_mod.html#a22f6cbdafb4196a2e6857b8f2896ad59",
+"class_terraria_1_1_mod_loader_1_1_mod.html#a25f3d2d6199bfebf7a2b80c44abad71f",
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#a6869b103de1055245cf851a26d9238b3",
 "class_terraria_1_1_mod_loader_1_1_mod_player.html#a8d53bb83d4c253ab8dc4f16df668eb46",
 "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a2e6b4aa1a37ada414c481f9356232ee5",
