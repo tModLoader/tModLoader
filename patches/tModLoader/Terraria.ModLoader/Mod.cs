@@ -449,7 +449,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public T GetItem<T>() where T: ModItem
+		public T GetItem<T>() where T : ModItem
 		{
 			return (T)GetItem(typeof(T).Name);
 		}
@@ -640,7 +640,7 @@ namespace Terraria.ModLoader
 			throw new OldHookException("GetEquipTexture");
 		}
 
-				/// <summary>
+		/// <summary>
 		/// Gets the slot/ID of the equipment texture corresponding to the given name. Returns -1 if no EquipTexture with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
@@ -1738,7 +1738,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public T GetMount<T>() where T: ModMountData
+		public T GetMount<T>() where T : ModMountData
 		{
 			return (T)GetMount(typeof(T).Name);
 		}
