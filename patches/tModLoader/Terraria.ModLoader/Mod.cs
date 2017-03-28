@@ -449,9 +449,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModItem GetItem<T>() where T: ModItem
+		public T GetItem<T>() where T: ModItem
 		{
-			return GetItem(typeof(T).Name);
+			return (T)GetItem(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -530,9 +530,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public GlobalItem GetGlobalItem<T>() where T : GlobalItem
+		public T GetGlobalItem<T>() where T : GlobalItem
 		{
-			return GetGlobalItem(typeof(T).Name);
+			return (T)GetGlobalItem(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -774,9 +774,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModDust GetDust<T>() where T : ModDust
+		public T GetDust<T>() where T : ModDust
 		{
-			return GetDust(typeof(T).Name);
+			return (T)GetDust(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -854,9 +854,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModTile GetTile<T>() where T : ModTile
+		public T GetTile<T>() where T : ModTile
 		{
-			return GetTile(typeof(T).Name);
+			return (T)GetTile(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -920,9 +920,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public GlobalTile GetGlobalTile<T>() where T : GlobalTile
+		public T GetGlobalTile<T>() where T : GlobalTile
 		{
-			return GetGlobalTile(typeof(T).Name);
+			return (T)GetGlobalTile(typeof(T).Name);
 		}
 
 		private void AutoloadTile(Type type)
@@ -979,9 +979,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModTileEntity GetTileEntity<T>() where T : ModTileEntity
+		public T GetTileEntity<T>() where T : ModTileEntity
 		{
-			return GetTileEntity(typeof(T).Name);
+			return (T)GetTileEntity(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1044,9 +1044,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModWall GetWall<T>() where T : ModWall
+		public T GetWall<T>() where T : ModWall
 		{
-			return GetWall(typeof(T).Name);
+			return (T)GetWall(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1104,9 +1104,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public GlobalWall GetGlobalWall<T>() where T : GlobalWall
+		public T GetGlobalWall<T>() where T : GlobalWall
 		{
-			return GetGlobalWall(typeof(T).Name);
+			return (T)GetGlobalWall(typeof(T).Name);
 		}
 
 		private void AutoloadWall(Type type)
@@ -1172,9 +1172,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModProjectile GetProjectile<T>() where T : ModProjectile
+		public T GetProjectile<T>() where T : ModProjectile
 		{
-			return GetProjectile(typeof(T).Name);
+			return (T)GetProjectile(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1233,9 +1233,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public GlobalProjectile GetGlobalProjectile<T>() where T : GlobalProjectile
+		public T GetGlobalProjectile<T>() where T : GlobalProjectile
 		{
-			return GetGlobalProjectile(typeof(T).Name);
+			return (T)GetGlobalProjectile(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1325,9 +1325,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModNPC GetNPC<T>() where T : ModNPC
+		public T GetNPC<T>() where T : ModNPC
 		{
-			return GetNPC(typeof(T).Name);
+			return (T)GetNPC(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1385,9 +1385,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public GlobalNPC GetGlobalNPC<T>() where T : GlobalNPC
+		public T GetGlobalNPC<T>() where T : GlobalNPC
 		{
-			return GetGlobalNPC(typeof(T).Name);
+			return (T)GetGlobalNPC(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1555,9 +1555,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModBuff GetBuff<T>() where T : ModBuff
+		public T GetBuff<T>() where T : ModBuff
 		{
-			return GetBuff(typeof(T).Name);
+			return (T)GetBuff(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1615,9 +1615,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public GlobalBuff GetGlobalBuff<T>() where T : GlobalBuff
+		public T GetGlobalBuff<T>() where T : GlobalBuff
 		{
-			return GetGlobalBuff(typeof(T).Name);
+			return (T)GetGlobalBuff(typeof(T).Name);
 		}
 
 		private void AutoloadBuff(Type type)
@@ -1738,9 +1738,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModMountData GetMount<T>() where T: ModMountData
+		public T GetMount<T>() where T: ModMountData
 		{
-			return GetMount(typeof(T).Name);
+			return (T)GetMount(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1851,9 +1851,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModUgBgStyle GetUgBgStyle<T>() where T : ModUgBgStyle
+		public T GetUgBgStyle<T>() where T : ModUgBgStyle
 		{
-			return GetUgBgStyle(typeof(T).Name);
+			return (T)GetUgBgStyle(typeof(T).Name);
 		}
 
 		private void AutoloadUgBgStyle(Type type)
@@ -1899,9 +1899,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModSurfaceBgStyle GetSurfaceBgStyle<T>() where T : ModSurfaceBgStyle
+		public T GetSurfaceBgStyle<T>() where T : ModSurfaceBgStyle
 		{
-			return GetSurfaceBgStyle(typeof(T).Name);
+			return (T)GetSurfaceBgStyle(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -1961,9 +1961,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public GlobalBgStyle GetGlobalBgStyle<T>() where T : GlobalBgStyle
+		public T GetGlobalBgStyle<T>() where T : GlobalBgStyle
 		{
-			return GetGlobalBgStyle(typeof(T).Name);
+			return (T)GetGlobalBgStyle(typeof(T).Name);
 		}
 
 
@@ -2014,9 +2014,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModWaterStyle GetWaterStyle<T>() where T : ModWaterStyle
+		public T GetWaterStyle<T>() where T : ModWaterStyle
 		{
-			return GetWaterStyle(typeof(T).Name);
+			return (T)GetWaterStyle(typeof(T).Name);
 		}
 
 		private void AutoloadWaterStyle(Type type)
@@ -2066,9 +2066,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public ModWaterfallStyle GetWaterfallStyle<T>() where T : ModWaterfallStyle
+		public T GetWaterfallStyle<T>() where T : ModWaterfallStyle
 		{
-			return GetWaterfallStyle(typeof(T).Name);
+			return (T)GetWaterfallStyle(typeof(T).Name);
 		}
 
 		/// <summary>
@@ -2298,9 +2298,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public GlobalRecipe GetGlobalRecipe<T>() where T : GlobalRecipe
+		public T GetGlobalRecipe<T>() where T : GlobalRecipe
 		{
-			return GetGlobalRecipe(typeof(T).Name);
+			return (T)GetGlobalRecipe(typeof(T).Name);
 		}
 
 		/// <summary>
