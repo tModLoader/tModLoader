@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 </div><!--header-->
 <div class="contents">
 
-<p>Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior.  
+<p>Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntitry.Update is called in SP and on Server, not on Clients.  
  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Terraria.ModLoader.ModTileEntity:</div>
@@ -171,7 +171,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a89c493aad8800f3588b859880f7d7c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method only gets called in the Kill method. If you plan to use that, you can put code here to make things happen when it is called.  <a href="#a89c493aad8800f3588b859880f7d7c40">More...</a><br /></td></tr>
 <tr class="separator:a89c493aad8800f3588b859880f7d7c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bf7f4a651e76e775887c79e3c1a1a90"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6bf7f4a651e76e775887c79e3c1a1a90">OnNetPlace</a> ()</td></tr>
-<tr class="memdesc:a6bf7f4a651e76e775887c79e3c1a1a90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code that should be run when this tile entity is placed by means of server-syncing.  <a href="#a6bf7f4a651e76e775887c79e3c1a1a90">More...</a><br /></td></tr>
+<tr class="memdesc:a6bf7f4a651e76e775887c79e3c1a1a90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code that should be run when this tile entity is placed by means of server-syncing. Called on Server only.  <a href="#a6bf7f4a651e76e775887c79e3c1a1a90">More...</a><br /></td></tr>
 <tr class="separator:a6bf7f4a651e76e775887c79e3c1a1a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd6ecccaa16bdc0a936430439a37c1f5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#afd6ecccaa16bdc0a936430439a37c1f5">Place</a> (int i, int j)</td></tr>
 <tr class="memdesc:afd6ecccaa16bdc0a936430439a37c1f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that places this kind of tile entity in the given coordinates for you.  <a href="#afd6ecccaa16bdc0a936430439a37c1f5">More...</a><br /></td></tr>
@@ -246,7 +246,7 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:a3a475a59350b2dc3a955adfb19cb020c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. </p>
+<div class="textblock"><p>Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntitry.Update is called in SP and on Server, not on Clients. </p>
 <dl class="section see"><dt>See also</dt><dd>Terraria.DataStructures.TileEntity</dd></dl>
 
 <p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00013">13</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
@@ -658,7 +658,7 @@ Static Private Attributes</h2></td></tr>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_ad27a28c41e66a411ea2c601b5c60ac33_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_entity_ad27a28c41e66a411ea2c601b5c60ac33_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_ad27a28c41e66a411ea2c601b5c60ac33_cgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_entity_ad27a28c41e66a411ea2c601b5c60ac33_cgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6bf7f4a651e76e775887c79e3c1a1a90" title="Code that should be run when this tile entity is placed by means of server&#45;syncing. " alt="" coords="237,5,421,51"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6bf7f4a651e76e775887c79e3c1a1a90" title="Code that should be run when this tile entity is placed by means of server&#45;syncing. Called on Server only. " alt="" coords="237,5,421,51"/>
 <area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#afd6ecccaa16bdc0a936430439a37c1f5" title="A helper method that places this kind of tile entity in the given coordinates for you..." alt="" coords="237,74,421,121"/>
 <area shape="rect" id="node7" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0" title="Whether or not this tile entity is allowed to survive at the given coordinates. You should check whet..." alt="" coords="237,143,421,190"/>
 </map>
@@ -785,7 +785,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Code that should be run when this tile entity is placed by means of server-syncing. </p>
+<p>Code that should be run when this tile entity is placed by means of server-syncing. Called on Server only. </p>
 
 <p>Definition at line <a class="el" href="_mod_tile_entity_8cs_source.html#l00285">285</a> of file <a class="el" href="_mod_tile_entity_8cs_source.html">ModTileEntity.cs</a>.</p>
 

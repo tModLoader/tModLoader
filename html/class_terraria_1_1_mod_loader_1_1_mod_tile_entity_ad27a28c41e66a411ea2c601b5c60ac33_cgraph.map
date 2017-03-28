@@ -1,5 +1,5 @@
 <map id="Terraria.ModLoader.ModTileEntity.NetPlaceEntity" name="Terraria.ModLoader.ModTileEntity.NetPlaceEntity">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6bf7f4a651e76e775887c79e3c1a1a90" title="Code that should be run when this tile entity is placed by means of server&#45;syncing. " alt="" coords="237,5,421,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6bf7f4a651e76e775887c79e3c1a1a90" title="Code that should be run when this tile entity is placed by means of server&#45;syncing. Called on Server only. " alt="" coords="237,5,421,51"/>
 <area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#afd6ecccaa16bdc0a936430439a37c1f5" title="A helper method that places this kind of tile entity in the given coordinates for you..." alt="" coords="237,74,421,121"/>
 <area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0" title="Whether or not this tile entity is allowed to survive at the given coordinates. You should check whet..." alt="" coords="237,143,421,190"/>
 </map>
