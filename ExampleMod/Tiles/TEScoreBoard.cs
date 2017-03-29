@@ -73,7 +73,7 @@ namespace ExampleMod.Tiles
 			}
 		}
 
-		public override void NetReceive(BinaryReader reader)
+		public override void NetReceive(BinaryReader reader, bool lightReceive)
 		{
 			scores.Clear();
 			int count = reader.ReadInt32();
@@ -85,7 +85,7 @@ namespace ExampleMod.Tiles
 			}
 		}
 
-		public override void NetSend(BinaryWriter writer)
+		public override void NetSend(BinaryWriter writer, bool lightSend)
 		{
 			writer.Write(scores.Keys.Count);
 			foreach (var item in scores)

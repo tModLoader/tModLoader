@@ -15,6 +15,7 @@ namespace Terraria.ModLoader
 		public const int numVanilla = 3;
 		private static int nextTileEntity = numVanilla;
 		internal static readonly List<ModTileEntity> tileEntities = new List<ModTileEntity>();
+		// TODO: public bool netUpdate;
 
 		/// <summary>
 		/// The mod that added this ModTileEntity.
@@ -211,10 +212,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend)
 		{
-			//if (networkSend)
-			{
-				NetSend(writer);
-			}
+			// TODO: Major release: Delete Obsolete
+			NetSend(writer);
+			NetSend(writer, networkSend);
 		}
 
 		/// <summary>
@@ -222,10 +222,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
 		{
-			//if (networkSend)
-			{
-				NetReceive(reader);
-			}
+			// TODO: Major release: Delete Obsolete
+			NetReceive(reader);
+			NetReceive(reader, networkSend);
 		}
 
 		/// <summary>
@@ -253,16 +252,36 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to send custom data for this tile entity between client and server.
+		/// Obsolete: Use the overloaded method with the lightSend bool.
 		/// </summary>
+		[method: Obsolete("Use the overloaded method with the lightSend bool.")]
 		public virtual void NetSend(BinaryWriter writer)
 		{
 		}
 
 		/// <summary>
-		/// Receives the data sent in the NetSend hook.
+		/// Obsolete: Use the overloaded method with the lightReceive bool.
 		/// </summary>
+		[method: Obsolete("Use the overloaded method with the lightReceive bool.")]
 		public virtual void NetReceive(BinaryReader reader)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to send custom data for this tile entity between client and server. This is called on the server while sending tile data (!lightSend) and when a MessageID.TileEntitySharing message is sent (lightSend)
+		/// </summary>
+		/// <param name="writer">The writer.</param>
+		/// <param name="lightSend">If true, send only data that can change. Otherwise, send the full information.</param>
+		public virtual void NetSend(BinaryWriter writer, bool lightSend)
+		{
+		}
+
+		/// <summary>
+		/// Receives the data sent in the NetSend hook. Called on MP Client when receiving tile data (!lightReceive) and when a MessageID.TileEntitySharing message is sent (lightReceive)
+		/// </summary>
+		/// <param name="reader">The reader.</param>
+		/// <param name="lightReceive">If true, read only data that can change. Otherwise, read the full information.</param>
+		public virtual void NetReceive(BinaryReader reader, bool lightReceive)
 		{
 		}
 
