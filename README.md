@@ -15,13 +15,13 @@ Download and installation instructions are on the [forums thread](http://forums.
 **Huge thanks to [ChickenBones](https://github.com/Chicken-Bones) for creating the code patcher!**
 
 ### Brief introduction
-
+___
 tModLoader uses its own code patcher. If you want to contribute to tModLoader, you will have to use this tool. We need to use a patches system, because we are not allowed to upload vanilla source code publicly. It also allows for relatively easy code maintenance. Here's what the tool looks like: [url](https://i.imgur.com/u9Yy1rl.png)
 
 Before you're about to make a contribution, please check [this article](https://github.com/bluemagic123/tModLoader/blob/master/CONTRIBUTING.md). Thanks in advance.
 
 ### Getting the tModLoader code for the first time
-
+___
 1. Clone this repository
 2. Open setup.bat in the root folder
     * If setup.bat won't open, you must unblock all the files in the cloned repository
@@ -38,7 +38,7 @@ Before you're about to make a contribution, please check [this article](https://
 8. Profit
 
 ### Keeping your code up-to-date
-
+___
 **Warning:** it is wise that you backup your edits before pulling latest patches, if you have any that you haven't committed yet. Applying the latest patches **will** delete any of your work not included in them.
 
 1. Pull all newer commits from this repository
@@ -50,7 +50,7 @@ Before you're about to make a contribution, please check [this article](https://
 5. Profit
 
 ### Committing your changes
-
+___
 1. Open setup.bat in the root folder
 2. Click on 'Diff x' where x is your workspace
     * Your workspace is tModLoader 99% of the time. If it isn't, we imply you know what you're doing.
