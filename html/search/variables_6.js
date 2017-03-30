@@ -4,7 +4,6 @@ var searchData=
   ['faceacc',['FaceAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a3b32234508897b5f267182bd5b2e8f2b',1,'Terraria.ModLoader.PlayerLayer.FaceAcc()'],['../class_terraria_1_1_mod_loader_1_1_player_head_layer.html#ad9bc1b2e4499a7498d1a0e49c3ca9a33',1,'Terraria.ModLoader.PlayerHeadLayer.FaceAcc()']]],
   ['facecolor',['faceColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a33a8e0380f2ed15277be1e2369325fc3',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['faceshader',['faceShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a0c3f1e77b79c1bac10a6150b646042f2',1,'Terraria::ModLoader::PlayerDrawInfo']]],
-  ['findmodscache',['findModsCache',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aea7032944e6e3c2eb0cd1a9a9adb8ad8',1,'Terraria::ModLoader::ModLoader']]],
   ['frogcritter',['FrogCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a0576ddf1b86463287a14626af1a375bf',1,'Terraria::ModLoader::SpawnCondition']]],
   ['frontacc',['FrontAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a17de29ed07facba1c0c480182a97970a',1,'Terraria::ModLoader::PlayerLayer']]],
   ['frontshader',['frontShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a98d4f8a7fd8d11e63cb66fc444b528eb',1,'Terraria::ModLoader::PlayerDrawInfo']]],
