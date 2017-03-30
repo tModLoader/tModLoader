@@ -49,6 +49,7 @@ namespace Terraria.ModLoader
 		private delegate void DelegateDropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance);
 		private static DelegateDropCritterChance[] HookDropCritterChance;
 		private static Func<int, int, int, TileStyle, bool>[] HookDrop;
+		private static Func<int, int, int, bool>[] HookDropLegacy;
 		private delegate bool DelegateCanKillTile(int i, int j, int type, ref bool blockDamaged);
 		private static DelegateCanKillTile[] HookCanKillTile;
 		private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
@@ -248,6 +249,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookCreateDust, globalTiles, g => g.CreateDust);
 			ModLoader.BuildGlobalHook(ref HookDropCritterChance, globalTiles, g => g.DropCritterChance);
 			ModLoader.BuildGlobalHook(ref HookDrop, globalTiles, g => g.Drop);
+			ModLoader.BuildGlobalHook(ref HookDropLegacy, globalTiles, g => g.Drop);
 			ModLoader.BuildGlobalHook(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
 			ModLoader.BuildGlobalHook(ref HookKillTile, globalTiles, g => g.KillTile);
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalTiles, g => g.CanExplode);
@@ -596,6 +598,13 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
+			foreach (var hook in HookDropLegacy)
+			{
+				if (!hook(i, j, type))
+				{
+					return false;
+				}
+			}
 			ModTile modTile = GetTile(type);
 			if (modTile != null)
 			{
@@ -865,7 +874,7 @@ namespace Terraria.ModLoader
 		{
 			Tile target = Main.tile[Player.tileTargetX, Player.tileTargetY];
 			ModTile modTile = GetTile(target.type);
-			damage += modTile != null ? (int) (minePower/modTile.mineResist) : minePower;
+			damage += modTile != null ? (int)(minePower / modTile.mineResist) : minePower;
 		}
 		//in Terraria.Player.ItemCheck at end of else if chain setting num to 0 add
 		//  else { TileLoader.PickPowerCheck(tile, pickPower, ref num); }
@@ -1187,7 +1196,7 @@ namespace Terraria.ModLoader
 		public static void PlaceInWorld(int i, int j, Item item)
 		{
 			int type = item.createTile;
-			if(type < 0)
+			if (type < 0)
 				return;
 
 			foreach (var hook in HookPlaceInWorld)

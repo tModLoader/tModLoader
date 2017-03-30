@@ -137,6 +137,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Obsolete Use the overloaded method with the TileStyle parameter
+		/// </summary>
+		[method: Obsolete("Use the overloaded method with the ref int parameter.")]
+		public virtual bool Drop(int i, int j, int type)
+		{
+			return true;
+		}
+
+		/// <summary>
 		/// Allows you to customize which items the tile at the given coordinates drops. Return false to stop the game from dropping the tile's default item. Returns true by default. Please note that this hook currently only works for 1x1 tiles.
 		/// </summary>
 		/// <param name="i"></param>
