@@ -68,7 +68,7 @@
  		public static bool maxQ = true;
  		public static float gfxQuality = 1f;
  		public static float gfxRate = 0.01f;
-+		public static Microsoft.Xna.Framework.Color DiscoColor() => new Microsoft.Xna.Framework.Color(DiscoR, DiscoG, DiscoB);
++		public static Microsoft.Xna.Framework.Color DiscoColor => new Microsoft.Xna.Framework.Color(DiscoR, DiscoG, DiscoB);
  		public int DiscoStyle;
  		public static int DiscoR = 255;
  		public static int DiscoB = 0;

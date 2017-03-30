@@ -26,7 +26,8 @@ namespace Terraria.ModLoader
 			"Mono.dll must reference a non-windows Terraria.exe and FNA.dll"
 		};
 
-		internal static void LogBuildError(string errorText) {
+		internal static void LogBuildError(string errorText)
+		{
 			Directory.CreateDirectory(LogPath);
 			File.WriteAllText(CompileErrorPath, errorText);
 			Console.WriteLine(errorText);
@@ -40,7 +41,7 @@ namespace Terraria.ModLoader
 		{
 			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
 			string badInstallHint = "";
-			if(!forWindows && ModLoader.windows)
+			if (!forWindows && ModLoader.windows)
 			{
 				badInstallHint = "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well." + Environment.NewLine + Environment.NewLine;
 			}
@@ -213,11 +214,11 @@ namespace Terraria.ModLoader
 				writer.WriteLine(message);
 			}
 		}
-		
+
 		/// <summary>
-                /// Allows you to log an object for your own testing purposes. The message will be added to the Logs.txt file in the Logs folder. 
-                /// </summary>
-                /// <param name="param">The object to be logged.</param>
+		/// Allows you to log an object for your own testing purposes. The message will be added to the Logs.txt file in the Logs folder. 
+		/// </summary>
+		/// <param name="param">The object to be logged.</param>
 		/// <param name="alternateOutput">If true, the object's data will be manually retrieved and logged. If false, the object's ToString method is logged.</param>
 		public static void Log(object param, bool alternateOutput = false)
 		{
