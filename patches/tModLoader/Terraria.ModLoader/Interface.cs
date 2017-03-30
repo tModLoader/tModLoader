@@ -94,6 +94,7 @@ namespace Terraria.ModLoader
 				modBrowser._categoryButtons[1].setCurrentState(1);
 			}
 			modBrowser.loading = false;
+			ModLoader.findModsCache.Clear();
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 		}
 

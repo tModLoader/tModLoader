@@ -175,6 +175,7 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 			{
 				ModNet.AssignNetIDs();
+				//Main.player[0] = new Player();
 				Main.player[255] = new Player();
 			}
 
@@ -235,7 +236,7 @@ namespace Terraria.ModLoader
 		}
 
 		// TODO, investigate if this causes memory errors.
-		private static Dictionary<string, Tuple<DateTime, TmodFile>> findModsCache = new Dictionary<string, Tuple<DateTime, TmodFile>>();
+		internal static Dictionary<string, Tuple<DateTime, TmodFile>> findModsCache = new Dictionary<string, Tuple<DateTime, TmodFile>>();
 		internal static TmodFile[] FindMods()
 		{
 			Directory.CreateDirectory(ModPath);
