@@ -4069,14 +4069,15 @@
  						}
  					}
  				}
-@@ -34539,6 +_,7 @@
+@@ -34539,7 +_,7 @@
  									flag19 = false;
  									if (item.hammer > 0)
  									{
+-										num241 += item.hammer;
 +										TileLoader.MineDamage(item.hammer, ref num241);
- 										num241 += item.hammer;
  										if (!WorldGen.CanKillTile(Player.tileTargetX, Player.tileTargetY))
  										{
+ 											num241 = 0;
 @@ -34571,7 +_,7 @@
  										{
  											this.hitTile.Prune();

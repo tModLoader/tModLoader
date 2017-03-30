@@ -20,7 +20,7 @@
 +		public ushort wall;
  		public byte liquid;
 -		public short sTileHeader;
-+		// bitwise manipulations on signed values in C# apparently doesn't follow the C standards so the one unused bit in sTileHeader would have to have a unique way to access it. 
++		// bitwise manipulations on signed values in C# apparently doesn't follow the C standards so the one unused bit in sTileHeader would have to have a unique way to access it.
 +		public ushort sTileHeader;
  		public byte bTileHeader;
  		public byte bTileHeader2;

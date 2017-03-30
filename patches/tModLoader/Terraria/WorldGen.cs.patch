@@ -781,6 +781,15 @@
  		}
  
  		public static void OreRunner(int i, int j, double strength, int steps, ushort type)
+@@ -26224,7 +_,7 @@
+ 				{
+ 					for (int l = num5; l < num6; l++)
+ 					{
+-						if ((double)(Math.Abs((float)k - value.X) + Math.Abs((float)l - value.Y)) < strength * 0.5 * (1.0 + (double)WorldGen.genRand.Next(-10, 11) * 0.015) && Main.tile[k, l].active() && (Main.tile[k, l].type == 0 || Main.tile[k, l].type == 1 || Main.tile[k, l].type == 23 || Main.tile[k, l].type == 25 || Main.tile[k, l].type == 40 || Main.tile[k, l].type == 53 || Main.tile[k, l].type == 57 || Main.tile[k, l].type == 59 || Main.tile[k, l].type == 60 || Main.tile[k, l].type == 70 || Main.tile[k, l].type == 109 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 117 || Main.tile[k, l].type == 147 || Main.tile[k, l].type == 161 || Main.tile[k, l].type == 163 || Main.tile[k, l].type == 164 || Main.tileMoss[(int)Main.tile[k, l].type] || Main.tile[k, l].type == 199 || Main.tile[k, l].type == 200 || Main.tile[k, l].type == 203 || Main.tile[k, l].type == 234))
++						if ((double)(Math.Abs((float)k - value.X) + Math.Abs((float)l - value.Y)) < strength * 0.5 * (1.0 + (double)WorldGen.genRand.Next(-10, 11) * 0.015) && Main.tile[k, l].active() && (TileID.Sets.CanBeClearedDuringOreRunner[(int)Main.tile[k, l].type] || Main.tileMoss[(int)Main.tile[k, l].type]))
+ 						{
+ 							Main.tile[k, l].type = type;
+ 							WorldGen.SquareTileFrame(k, l, true);
 @@ -26438,7 +_,7 @@
  				{
  					flag = true;

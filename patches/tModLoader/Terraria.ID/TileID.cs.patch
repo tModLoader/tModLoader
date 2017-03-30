@@ -21,4 +21,36 @@
  			public static bool[] Mud = TileID.Sets.Factory.CreateBoolSet(new int[]
  				{
  					59
+@@ -370,6 +_,31 @@
+ 					404,
+ 					368,
+ 					367
++				});
++			public static bool[] CanBeClearedDuringOreRunner = TileID.Sets.Factory.CreateBoolSet(new int[]
++				{
++					0,
++					1,
++					23,
++					25,
++					40,
++					53,
++					57,
++					59,
++					60,
++					70,
++					109,
++					112,
++					116,
++					117,
++					147,
++					161,
++					163,
++					164,
++					199,
++					200,
++					203,
++					234
+ 				});
+ 			public static bool[] Corrupt = TileID.Sets.Factory.CreateBoolSet(new int[]
+ 				{
 

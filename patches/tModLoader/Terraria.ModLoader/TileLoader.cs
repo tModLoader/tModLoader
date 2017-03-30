@@ -214,6 +214,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.Leaves, nextTile);
 			Array.Resize(ref TileID.Sets.GeneralPlacementTiles, nextTile);
 			Array.Resize(ref TileID.Sets.CanBeClearedDuringGeneration, nextTile);
+			Array.Resize(ref TileID.Sets.CanBeClearedDuringOreRunner, nextTile);
 			Array.Resize(ref TileID.Sets.Corrupt, nextTile);
 			Array.Resize(ref TileID.Sets.Hallow, nextTile);
 			Array.Resize(ref TileID.Sets.Crimson, nextTile);
