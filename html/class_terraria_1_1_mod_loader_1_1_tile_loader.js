@@ -93,6 +93,7 @@ var class_terraria_1_1_mod_loader_1_1_tile_loader =
     [ "HookDrawEffects", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a9fe2afc1129a983dcbb809835a67625f", null ],
     [ "HookDrop", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a9cbc70cee2b22b6187952e1400e2e76c", null ],
     [ "HookDropCritterChance", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a54b460def2aa9a7659cb50e52794d2f6", null ],
+    [ "HookDropLegacy", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ac3d1d802f429bf2aab74c51f28f374a1", null ],
     [ "HookFloorVisuals", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ae058d7f33fbe59c0808ddb38bfbbf72d", null ],
     [ "HookHitWire", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#acab36347e32d4869f4ce616eedc390c6", null ],
     [ "HookKillSound", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a5d94cdaf1d7306e00ebb9896fefa8e21", null ],

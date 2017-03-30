@@ -87,6 +87,7 @@ var searchData=
   ['hookdrawtownattackswing',['HookDrawTownAttackSwing',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a2541ff257e755bb68a8a363a86984d83',1,'Terraria::ModLoader::NPCLoader']]],
   ['hookdrop',['HookDrop',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a9cbc70cee2b22b6187952e1400e2e76c',1,'Terraria.ModLoader.TileLoader.HookDrop()'],['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a095fd17a9e93bf2e3b72225677e39337',1,'Terraria.ModLoader.WallLoader.HookDrop()']]],
   ['hookdropcritterchance',['HookDropCritterChance',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a54b460def2aa9a7659cb50e52794d2f6',1,'Terraria::ModLoader::TileLoader']]],
+  ['hookdroplegacy',['HookDropLegacy',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ac3d1d802f429bf2aab74c51f28f374a1',1,'Terraria::ModLoader::TileLoader']]],
   ['hookeditspawnpool',['HookEditSpawnPool',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aaade25ad71314db1dff522b9928c604e',1,'Terraria::ModLoader::NPCLoader']]],
   ['hookeditspawnrange',['HookEditSpawnRange',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a017f6c3567336818b1abad6fb6fe0352',1,'Terraria::ModLoader::NPCLoader']]],
   ['hookeditspawnrate',['HookEditSpawnRate',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a7574c4c4f078905a71c371253dad2b6c',1,'Terraria::ModLoader::NPCLoader']]],

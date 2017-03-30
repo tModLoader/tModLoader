@@ -418,7 +418,7 @@ Generating caller graph for function Terraria.ModLoader.GlobalItem.ArmorSetShado
 Generating caller graph for function Terraria.ModLoader.GlobalItem.Autoload
 Generating caller graph for function Terraria.ModLoader.GlobalItem.IsArmorSet
 Generating caller graph for function Terraria.ModLoader.GlobalItem.IsVanitySet
-Generating caller graph for function /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:295: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
+Generating caller graph for function /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:304: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
   parameter 'type'
   parameter 'spriteBatch'
 Terraria.ModLoader.GlobalItem.PreUpdateVanitySet
@@ -475,9 +475,9 @@ Generating call graph for function Terraria.ModLoader.Mod.AddFlameTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddItem
 Generating call graph for function Terraria.ModLoader.Mod.AddMount
 Generating call graph for function Terraria.ModLoader.Mod.AddMusicBox
-Generating call graph for function Terraria.ModLoad/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:683: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
+Generating call graph for function Terraria.ModLoad/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:697: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
   parameter 'type'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:658: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:672: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
   parameter 'type'
 er.Mod.AddNPCHeadTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddSound
@@ -1605,5 +1605,5 @@ Patching output file 82/85
 Patching output file 83/85
 Patching output file 84/85
 Patching output file 85/85
-lookup cache used 7494/131072 hits=77060 misses=7831
+lookup cache used 7498/131072 hits=77175 misses=7835
 finished...
