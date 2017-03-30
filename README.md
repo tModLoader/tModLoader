@@ -24,15 +24,15 @@ Before you're about to make a contribution, please check [this article](https://
 
 1. Clone this repository
 2. Open setup.bat in the root folder
-  * If setup.bat won't open, you must unblock all the files in the cloned repository
+    * If setup.bat won't open, you must unblock all the files in the cloned repository
 3. Select your vanilla terraria.exe (must be vanilla) ([img](https://i.imgur.com/MccGyvB.png))
 4. Click on 'Setup' (top left button)
-  * **Warning:** decompilation can take several hours to complete depending on your hardware. It's also likely that your computer **completely freezes** during the process, mainly once it hits NPC.cs It is recommended that you enable the 'Single Decompile Thread' option ([img](https://i.imgur.com/6mBbZnQ.png)) if you don't have very high end hardware. It's unwise to even attempt a decompile if you have less than 8 GB RAM. Having an SSD, powerful CPU and a high amount of RAM will significantly speed up the decompilation process.
+    * **Warning:** decompilation can take several hours to complete depending on your hardware. It's also likely that your computer **completely freezes** during the process, mainly once it hits NPC.cs It is recommended that you enable the 'Single Decompile Thread' option ([img](https://i.imgur.com/6mBbZnQ.png)) if you don't have very high end hardware. It's unwise to even attempt a decompile if you have less than 8 GB RAM. Having an SSD, powerful CPU and a high amount of RAM will significantly speed up the decompilation process.
 5. When decompilation is complete, verify that you have these folders:
-  * src/decompiled/
-  * src/merged/
-  * src/Terraria/
-  * src/tModLoader/
+    * src/decompiled/
+    * src/merged/
+    * src/Terraria/
+    * src/tModLoader/
 6. To open up the tModLoader workspace, navigate to solutions/ and open tModLoader.sln
 7. ???
 8. Profit
@@ -42,10 +42,10 @@ Before you're about to make a contribution, please check [this article](https://
 **Warning:** it is wise that you backup your edits before pulling latest patches, if you have any that you haven't committed yet. Applying the latest patches **will** delete any of your work not included in them.
 
 1. Pull all newer commits from this repository
-  * You should verify that you now have the latest patches, located in patches/
+   * You should verify that you now have the latest patches, located in patches/
 2. Open setup.bat in the root folder
 3. Click on 'Regenerate Source' (bottom right corner)
-  * After this process you can open solutions/tModLoader.sln as usual with the updated code
+   * After this process you can open solutions/tModLoader.sln as usual with the updated code
 4. ???
 5. Profit
 
@@ -53,8 +53,8 @@ Before you're about to make a contribution, please check [this article](https://
 
 1. Open setup.bat in the root folder
 2. Click on 'Diff x' where x is your workspace
-  * Your workspace is tModLoader 99% of the time. If it isn't, we imply you know what you're doing.
+    * Your workspace is tModLoader 99% of the time. If it isn't, we imply you know what you're doing.
 3. Create a new commit to commit the patches/ folder
-  * Before you push your commit, please check our [contribution article](https://github.com/bluemagic123/tModLoader/blob/master/CONTRIBUTING.md). Thanks.
+    * Before you push your commit, please check our [contribution article](https://github.com/bluemagic123/tModLoader/blob/master/CONTRIBUTING.md). Thanks.
 4. ???
 5. Profit
