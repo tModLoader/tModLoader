@@ -166,6 +166,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "SoundExists", "class_terraria_1_1_mod_loader_1_1_mod.html#a35563b1649ca9175be9b0c1a9d9b37aa", null ],
     [ "TextureExists", "class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6", null ],
     [ "TileEntityType", "class_terraria_1_1_mod_loader_1_1_mod.html#a55c58989f87f2fc827d050f24fb0db7b", null ],
+    [ "TileEntityType< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#a366c79a74760ef2f4a346b33fa38805d", null ],
     [ "TileType", "class_terraria_1_1_mod_loader_1_1_mod.html#a5d371832fbdd332b57deb42f062f7be0", null ],
     [ "TileType< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#a0c887a071d74dc17e2561c0992be07f8", null ],
     [ "Unload", "class_terraria_1_1_mod_loader_1_1_mod.html#af95f63f91b0a1d257d56ac059bbd7854", null ],
