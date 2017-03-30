@@ -449,6 +449,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Same as the other GetItem, but assumes that the class name and internal name are the same.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		public T GetItem<T>() where T : ModItem
 		{
 			return (T)GetItem(typeof(T).Name);
@@ -530,6 +535,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Same as the other GetGlobalItem, but assumes that the class name and internal name are the same.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		public T GetGlobalItem<T>() where T : GlobalItem
 		{
 			return (T)GetGlobalItem(typeof(T).Name);
@@ -774,6 +784,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
+
+		/// <summary>
+		/// Same as the other GetDust, but assumes that the class name and internal name are the same.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		public T GetDust<T>() where T : ModDust
 		{
 			return (T)GetDust(typeof(T).Name);
@@ -854,6 +870,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Same as the other GetTile, but assumes that the class name and internal name are the same.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		public T GetTile<T>() where T : ModTile
 		{
 			return (T)GetTile(typeof(T).Name);
@@ -920,6 +941,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Same as the other GetGlobalTile, but assumes that the class name and internal name are the same.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		public T GetGlobalTile<T>() where T : GlobalTile
 		{
 			return (T)GetGlobalTile(typeof(T).Name);
@@ -979,6 +1005,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Same as the other GetTileEntity, but assumes that the class name and internal name are the same.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		public T GetTileEntity<T>() where T : ModTileEntity
 		{
 			return (T)GetTileEntity(typeof(T).Name);
@@ -997,6 +1028,16 @@ namespace Terraria.ModLoader
 				return -1;
 			}
 			return tileEntity.Type;
+		}
+
+		/// <summary>
+		/// Same as the other TileEntityType, but assumes that the class name and internal name are the same.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		public int TileEntityType<T>() where T : ModTileEntity
+		{
+			return TileEntityType(typeof(T).Name);
 		}
 
 		private void AutoloadTileEntity(Type type)

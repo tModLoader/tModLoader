@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent.Generation;
 using System.Linq;
 using Terraria.ModLoader.IO;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ExampleMod
 {
@@ -74,7 +76,7 @@ namespace ExampleMod
 			flags[0] = downedAbomination;
 			flags[1] = downedPuritySpirit;
 			writer.Write(flags);
-			
+
 			//If you prefer, you can use the BitsByte constructor approach as well.
 			//writer.Write(saveVersion);
 			//BitsByte flags = new BitsByte(downedAbomination, downedPuritySpirit);
@@ -136,7 +138,7 @@ namespace ExampleMod
 						{
 							int x = WorldGen.genRand.Next(0, Main.maxTilesX);
 							int y = WorldGen.genRand.Next(0, Main.maxTilesY);
-							WorldGen.PlaceTile(x,y,	tileToPlace);
+							WorldGen.PlaceTile(x, y, tileToPlace);
 							tile = Main.tile[x, y];
 							placeSuccessful = tile.active() && tile.type == tileToPlace;
 						}
@@ -469,6 +471,40 @@ namespace ExampleMod
 					}
 				}
 			}
+		}
+
+		// In ExampleMod, we use PostDrawTiles to draw the TEScoreBoard area. PostDrawTiles draws before players, npc, and projectiles, so it works well.
+		public override void PostDrawTiles()
+		{
+			Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+			Rectangle screenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+			screenRect.Inflate(Tiles.TEScoreBoard.drawBorderWidth, Tiles.TEScoreBoard.drawBorderWidth);
+			int scoreBoardType = mod.TileEntityType<Tiles.TEScoreBoard>();
+			foreach (var item in TileEntity.ByID)
+			{
+				if (item.Value.type == scoreBoardType)
+				{
+					var scoreBoard = item.Value as Tiles.TEScoreBoard;
+					Rectangle scoreBoardArea = scoreBoard.GetPlayArea();
+					// We only want to draw while the area is visible. 
+					if (screenRect.Intersects(scoreBoardArea))
+					{
+						scoreBoardArea.Offset((int)-Main.screenPosition.X, (int)-Main.screenPosition.Y);
+						DrawBorderedRect(Main.spriteBatch, Color.LightBlue * 0.1f, Color.Blue * 0.3f, scoreBoardArea.TopLeft(), scoreBoardArea.Size(), Tiles.TEScoreBoard.drawBorderWidth);
+					}
+				}
+			}
+			Main.spriteBatch.End();
+		}
+
+		// A helper method that draws a bordered rectangle. 
+		public static void DrawBorderedRect(SpriteBatch spriteBatch, Color color, Color borderColor, Vector2 position, Vector2 size, int borderWidth)
+		{
+			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), color);
+			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X - borderWidth, (int)position.Y - borderWidth, (int)size.X + borderWidth * 2, borderWidth), borderColor);
+			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X - borderWidth, (int)position.Y + (int)size.Y, (int)size.X + borderWidth * 2, borderWidth), borderColor);
+			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X - borderWidth, (int)position.Y, (int)borderWidth, (int)size.Y), borderColor);
+			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X + (int)size.X, (int)position.Y, (int)borderWidth, (int)size.Y), borderColor);
 		}
 	}
 }

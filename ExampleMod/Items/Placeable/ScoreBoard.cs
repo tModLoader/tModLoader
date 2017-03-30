@@ -17,6 +17,7 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType<Tiles.ScoreBoard>();
 			item.width = 28;
 			item.height = 28;
+			item.toolTip = "Compete for kills with friends.";
 		}
 	}
 }

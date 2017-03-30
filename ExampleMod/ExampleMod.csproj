@@ -221,6 +221,7 @@
     <Compile Include="Projectiles\PuritySpirit\PuritySnake.cs" />
     <Compile Include="Projectiles\PuritySpirit\PuritySphere.cs" />
     <Compile Include="Projectiles\PuritySpirit\VoidWorld.cs" />
+    <Compile Include="Projectiles\ScorePoint.cs" />
     <Compile Include="Projectiles\ShadowArm.cs" />
     <Compile Include="Projectiles\SparklingBall.cs" />
     <Compile Include="Projectiles\Wisp.cs" />

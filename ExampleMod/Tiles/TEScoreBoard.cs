@@ -12,6 +12,7 @@ using Terraria.ObjectData;
 using System.IO;
 using Terraria.ModLoader.IO;
 using System.Linq;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 
 namespace ExampleMod.Tiles
 {
@@ -24,29 +25,30 @@ namespace ExampleMod.Tiles
 				//Main.NewText("Accidental Death, score unchanged");
 				return;
 			}
-			int ID = mod.GetTileEntity<TEScoreBoard>().type;
+			int TEScoreBoardType = mod.TileEntityType<TEScoreBoard>();
 			foreach (TileEntity current in TileEntity.ByID.Values)
 			{
-				if (current.type == ID)
+				if (current.type == TEScoreBoardType)
 				{
+					//QuickBox is a neat tool for visualizing things while modding.
+					//Dust.QuickBox(npc.position, npc.position + new Vector2(npc.width, npc.height), 1, Color.White, null);
 					var scoreboard = current as TEScoreBoard;
-					int x = (int)Math.Abs(npc.Center.X / 16 - current.Position.X);
-					int y = (int)Math.Abs(npc.Center.Y / 16 - current.Position.Y);
-					if (x < TEScoreBoard.range && y < TEScoreBoard.range)
+					if (scoreboard.GetPlayArea().Intersects(npc.getRect()))
 					{
-						//Main.NewText("In range, score + 1");
-
-						Player p = Main.player[npc.lastInteraction];
+						Player scoringPlayer = Main.player[npc.lastInteraction];
 						int score = 0;
-						scoreboard.scores.TryGetValue(p.name, out score);
-						scoreboard.scores[p.name] = score + 1;
+						// Using HalfVector2 and Utils.ReadUIntAsFloat is a way to pack a Vector2 into a single float variable.
+						HalfVector2 halfVector = new HalfVector2((current.Position.X + 1) * 16, (current.Position.Y + 1) * 16);
+						Projectile.NewProjectile(npc.Center, Vector2.Zero, mod.ProjectileType<Projectiles.ScorePoint>(), 0, 0, Main.myPlayer, Utils.ReadUIntAsFloat(halfVector.PackedValue), npc.lastInteraction);
+						scoreboard.scores.TryGetValue(scoringPlayer.name, out score);
+						scoreboard.scores[scoringPlayer.name] = score + 1;
 						if (Main.dedServ)
 						{
-							NetMessage.SendData(25, -1, -1, p.name + ": " + scoreboard.scores[p.name], 255, 255,255,255, 0);
+							NetMessage.SendData(25, -1, -1, scoringPlayer.name + ": " + scoreboard.scores[scoringPlayer.name], 255, 255, 255, 255, 0);
 						}
 						else
 						{
-							Main.NewText(p.name + ": " + scoreboard.scores[p.name]);
+							Main.NewText(scoringPlayer.name + ": " + scoreboard.scores[scoringPlayer.name]);
 						}
 						scoreboard.scoresChanged = true;
 					}
@@ -55,13 +57,23 @@ namespace ExampleMod.Tiles
 		}
 	}
 
-	// TODO, reset scores option, draw competition rectangle. 
-	// TODO: NetSend not sent along with CompressedTileBlock
+	// TODO, reset scores option
 	public class TEScoreBoard : ModTileEntity
 	{
-		internal const int range = 100;
+		// Half the width in Tile Coordinates.
+		internal const int range = 50;
 		internal Dictionary<string, int> scores = new Dictionary<string, int>();
 		internal bool scoresChanged = false;
+		internal const int drawBorderWidth = 5;
+
+
+		/// <summary>
+		/// Returns a rectangle representing the play area in World coordinates.
+		/// </summary>
+		public Rectangle GetPlayArea()
+		{
+			return new Rectangle((Position.X + 1) * 16 - range * 16, (Position.Y + 1) * 16 - range * 16, range * 16 * 2, range * 16 * 2);
+		}
 
 		public override void Update()
 		{
