@@ -202,8 +202,8 @@ namespace ExampleMod.Tiles
 				return;
 			}
 			Main.NewText("Scores:");
-			TEScoreBoard tEElementalPurge = (TEScoreBoard)TileEntity.ByID[index];
-			foreach (var item in tEElementalPurge.scores)
+			TEScoreBoard tEScoreBoard = (TEScoreBoard)TileEntity.ByID[index];
+			foreach (var item in tEScoreBoard.scores)
 			{
 				Main.NewText(item.Key + ": " + item.Value);
 			}
