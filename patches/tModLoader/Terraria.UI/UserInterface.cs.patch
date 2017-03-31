@@ -53,7 +53,7 @@
  				UIElement uIElement = Main.hasFocus ? this._currentState.GetElementAt(this.MousePosition) : null;
  				this._clickDisabledTimeRemaining = Math.Max(0.0, this._clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
  				bool flag2 = this._clickDisabledTimeRemaining > 0.0;
-@@ -115,6 +_,29 @@
+@@ -115,15 +_,39 @@
  					lastElementDown.MouseUp(new UIMouseEvent(lastElementDown, this.MousePosition));
  					this._lastElementDown = null;
  				}
@@ -83,8 +83,11 @@
  				if (PlayerInput.ScrollWheelDeltaForUI != 0)
  				{
  					if (uIElement != null)
-@@ -124,6 +_,7 @@
- 					PlayerInput.ScrollWheelDeltaForUI = 0;
+ 					{
+ 						uIElement.ScrollWheel(new UIScrollWheelEvent(uIElement, this.MousePosition, PlayerInput.ScrollWheelDeltaForUI));
+ 					}
+-					PlayerInput.ScrollWheelDeltaForUI = 0;
++					//PlayerInput.ScrollWheelDeltaForUI = 0;
  				}
  				this._wasMouseDown = flag;
 +				this._wasMouseRightDown = mouseRightDown;
