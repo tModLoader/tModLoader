@@ -133,7 +133,7 @@ namespace ExampleMod.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(i * 16, j * 16, 16, 32, mod.ItemType("ExampleAnimatedTileItem"));
+			Item.NewItem(i * 16, j * 16, 16, 32, mod.ItemType<ExampleAnimatedTileItem>());
 		}
 	}
 
@@ -143,7 +143,7 @@ namespace ExampleMod.Tiles
 		{
 			item.CloneDefaults(ItemID.FireflyinaBottle);
 			item.name = "Red Firefly in a Bottle";
-			item.createTile = mod.TileType("ExampleAnimatedTileTile");
+			item.createTile = mod.TileType<ExampleAnimatedTileTile>();
 		}
 	}
 }

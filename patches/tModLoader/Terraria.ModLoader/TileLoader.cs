@@ -48,8 +48,7 @@ namespace Terraria.ModLoader
 		private static DelegateCreateDust[] HookCreateDust;
 		private delegate void DelegateDropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance);
 		private static DelegateDropCritterChance[] HookDropCritterChance;
-		private static Func<int, int, int, TileStyle, bool>[] HookDrop;
-		private static Func<int, int, int, bool>[] HookDropLegacy;
+		private static Func<int, int, int, bool>[] HookDrop;
 		private delegate bool DelegateCanKillTile(int i, int j, int type, ref bool blockDamaged);
 		private static DelegateCanKillTile[] HookCanKillTile;
 		private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
@@ -250,7 +249,6 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookCreateDust, globalTiles, g => g.CreateDust);
 			ModLoader.BuildGlobalHook(ref HookDropCritterChance, globalTiles, g => g.DropCritterChance);
 			ModLoader.BuildGlobalHook(ref HookDrop, globalTiles, g => g.Drop);
-			ModLoader.BuildGlobalHook(ref HookDropLegacy, globalTiles, g => g.Drop);
 			ModLoader.BuildGlobalHook(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
 			ModLoader.BuildGlobalHook(ref HookKillTile, globalTiles, g => g.KillTile);
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalTiles, g => g.CanExplode);
@@ -590,16 +588,9 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.KillTile before if statements checking num49 and num50
 		//  add bool vanillaDrop = TileLoader.Drop(i, j, tile.type);
 		//  add "vanillaDrop && " to beginning of these if statements
-		public static bool Drop(int i, int j, int type, TileStyle tileStyle)
+		public static bool Drop(int i, int j, int type)
 		{
 			foreach (var hook in HookDrop)
-			{
-				if (!hook(i, j, type, tileStyle))
-				{
-					return false;
-				}
-			}
-			foreach (var hook in HookDropLegacy)
 			{
 				if (!hook(i, j, type))
 				{

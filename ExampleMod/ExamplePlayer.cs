@@ -111,18 +111,15 @@ namespace ExampleMod
 
 		public override void SendCustomBiomes(BinaryWriter writer)
 		{
-			byte flags = 0;
-			if (ZoneExample)
-			{
-				flags |= 1;
-			}
+			BitsByte flags = new BitsByte();
+			flags[0] = ZoneExample;
 			writer.Write(flags);
 		}
 
 		public override void ReceiveCustomBiomes(BinaryReader reader)
 		{
-			byte flags = reader.ReadByte();
-			ZoneExample = ((flags & 1) == 1);
+			BitsByte flags = reader.ReadByte();
+			ZoneExample = flags[0];
 		}
 
 		public override void UpdateBiomeVisuals()

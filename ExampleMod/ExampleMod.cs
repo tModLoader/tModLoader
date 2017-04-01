@@ -335,7 +335,7 @@ namespace ExampleMod
 		HeroLives
 	}
 
-	public static class ExampleModExtensions
+	/*public static class ExampleModExtensions
 	{
 		public static int CountItem(this Player player, int type)
 		{
@@ -349,6 +349,6 @@ namespace ExampleMod
 			}
 			return count;
 		}
-	}
+	}*/
 }
 
