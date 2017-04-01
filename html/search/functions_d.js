@@ -22,12 +22,5 @@ var searchData=
   ['openbossbag',['OpenBossBag',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a26a04e0f6b5c69e8e50f020b6b83b5b6',1,'Terraria.ModLoader.ItemLoader.OpenBossBag()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53a548e1400eada55a6526d2f320d6c',1,'Terraria.ModLoader.ModItem.OpenBossBag()']]],
   ['opendoorid',['OpenDoorID',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a9e16060039b7bb467e8e025ac42627d7',1,'Terraria::ModLoader::TileLoader']]],
   ['openvanillabag',['OpenVanillaBag',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f',1,'Terraria.ModLoader.GlobalItem.OpenVanillaBag()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ade1e4bae9c5338483c565e66b63ad332',1,'Terraria.ModLoader.ItemLoader.OpenVanillaBag()']]],
-  ['operator_21_3d',['operator!=',['../struct_terraria_1_1_mod_loader_1_1_tile_style.html#abea53e4fd6e7531b46cdac872d12788f',1,'Terraria::ModLoader::TileStyle']]],
-  ['operator_25',['operator%',['../struct_terraria_1_1_mod_loader_1_1_tile_style.html#ae1b16a84e738183b9b0c5783bbdea4b6',1,'Terraria::ModLoader::TileStyle']]],
-  ['operator_2a',['operator*',['../struct_terraria_1_1_mod_loader_1_1_tile_style.html#a5e3186f9f7306ad01c82ef026a320cbe',1,'Terraria::ModLoader::TileStyle']]],
-  ['operator_2b',['operator+',['../struct_terraria_1_1_mod_loader_1_1_tile_style.html#ae6ce208445abe9ed298c49651e9e8735',1,'Terraria::ModLoader::TileStyle']]],
-  ['operator_2d',['operator-',['../struct_terraria_1_1_mod_loader_1_1_tile_style.html#a1d9b09df4a5cf309bd70970441542e0c',1,'Terraria::ModLoader::TileStyle']]],
-  ['operator_2f',['operator/',['../struct_terraria_1_1_mod_loader_1_1_tile_style.html#a0c467f8f863ab75597370b23a33d063b',1,'Terraria::ModLoader::TileStyle']]],
-  ['operator_3d_3d',['operator==',['../struct_terraria_1_1_mod_loader_1_1_tile_style.html#adaf9ba7b6a2411bd47e3fb716f816137',1,'Terraria::ModLoader::TileStyle']]],
   ['outerthird',['OuterThird',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a8501b4122cdbb03edc3639f81be8bc22',1,'Terraria::ModLoader::SpawnCondition']]]
 ];
