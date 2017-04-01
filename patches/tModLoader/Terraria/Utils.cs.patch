@@ -43,4 +43,54 @@
  		}
  
  		public static float NextFloatDirection(this UnifiedRandom r)
+@@ -744,6 +_,49 @@
+ 		{
+ 			return new Vector2((float)p.X, (float)p.Y);
+ 		}
++
++		// Added these as it may prove useful to some modders, it does clutter this file a bit so I put them all in a region which is collapsible
++		#region tML Helpers
++		public static Vector2 ToWorldCoordinates(this Point p, Vector2 autoAddXY)
++		{
++			return ToWorldCoordinates(p, autoAddXY.X, autoAddXY.Y);
++		}
++
++		public static Vector2 ToWorldCoordinates(this Point16 p, Vector2 autoAddXY)
++		{
++			return ToWorldCoordinates(p.ToVector2(), autoAddXY);
++		}
++
++		public static Vector2 ToWorldCoordinates(this Point16 p, float autoAddX = 8f, float autoAddY = 8f)
++		{
++			return ToWorldCoordinates(p.ToVector2(), new Vector2(autoAddX, autoAddY));
++		}
++
++		public static Vector2 ToWorldCoordinates(this Vector2 v, float autoAddX = 8f, float autoAddY = 8f)
++		{
++			return ToWorldCoordinates(v, new Vector2(autoAddX, autoAddY));
++		}
++
++		public static Vector2 ToWorldCoordinates(this Vector2 v, Vector2 autoAddXY)
++		{
++			return v * 16f + autoAddXY;
++		}
++
++		public static Point ToPoint(this Point16 p)
++		{
++			return new Point((int)p.X, (int)p.Y);
++		}
++
++		public static Point16 ToPoint16(this Vector2 v)
++		{
++			return new Point16((short)v.X, (short)v.Y);
++		}
++
++		public static Vector2 ToVector2(this Point16 p)
++		{
++			return new Vector2((float)p.X, (float)p.Y);
++		}
++		#endregion
+ 
+ 		public static Vector2 ToWorldCoordinates(this Point p, float autoAddX = 8f, float autoAddY = 8f)
+ 		{
 
