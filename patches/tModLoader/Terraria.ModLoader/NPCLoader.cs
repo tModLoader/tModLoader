@@ -9,6 +9,10 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which NPC-related functions are carried out. It also stores a list of mod NPCs by ID.
+	/// </summary>
 	public static class NPCLoader
 	{
 		internal static bool loaded = false;
@@ -22,6 +26,9 @@ namespace Terraria.ModLoader
 		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		//in Terraria.Item.NewItem after setting Main.item[400] add
 		//  if(NPCLoader.blockLoot.Contains(Type)) { return num; }
+		/// <summary>
+		/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
+		/// </summary>
 		public static readonly IList<int> blockLoot = new List<int>();
 		
 		private static Action<NPC>[] HookSetDefaults = new Action<NPC>[0];
@@ -139,6 +146,11 @@ namespace Terraria.ModLoader
 
 		internal static int NPCCount => nextNPC;
 
+		/// <summary>
+		/// Gets the ModNPC instance corresponding to the specified type.
+		/// </summary>
+		/// <param name="type">The type of the npc</param>
+		/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>
 		public static ModNPC GetNPC(int type)
 		{
 			return type >= NPCID.Count && type < NPCCount ? npcs[type - NPCID.Count] : null;
@@ -925,6 +937,8 @@ namespace Terraria.ModLoader
 		//  int spawn = spawnChoice.Value; if(spawn != 0) { goto endVanillaSpawn; }
 		public static int? ChooseSpawn(NPCSpawnInfo spawnInfo)
 		{
+			NPCSpawnHelper.Reset();
+			NPCSpawnHelper.DoChecks(spawnInfo);
 			IDictionary<int, float> pool = new Dictionary<int, float>();
 			pool[0] = 1f;
 			foreach (ModNPC npc in npcs)

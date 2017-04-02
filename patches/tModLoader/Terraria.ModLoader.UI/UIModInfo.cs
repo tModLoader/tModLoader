@@ -4,8 +4,10 @@ using System.IO;
 using System.Xml;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI
@@ -29,20 +31,25 @@ namespace Terraria.ModLoader.UI
 			uIElement.Top.Set(220f, 0f);
 			uIElement.Height.Set(-220f, 1f);
 			uIElement.HAlign = 0.5f;
+
 			UIPanel uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
+
 			modInfo = new UIMessageBox("This is a test of mod info here.");
 			modInfo.Width.Set(-25f, 1f);
 			modInfo.Height.Set(0f, 1f);
 			uIPanel.Append(modInfo);
+
 			UIScrollbar uIScrollbar = new UIScrollbar();
 			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(0f, 1f);
+			uIScrollbar.Height.Set(-20, 1f);
+			uIScrollbar.VAlign = 0.5f;
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
+
 			modInfo.SetScrollbar(uIScrollbar);
 			uITextPanel = new UITextPanel<string>("Mod Info", 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
@@ -50,6 +57,7 @@ namespace Terraria.ModLoader.UI
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
+
 			modHomepageButton = new UITextPanel<string>("Visit the Mod's Homepage for even more info", 1f, false);
 			modHomepageButton.Width.Set(-10f, 1f);
 			modHomepageButton.Height.Set(25f, 0f);
@@ -59,6 +67,7 @@ namespace Terraria.ModLoader.UI
 			modHomepageButton.OnMouseOut += UICommon.FadedMouseOut;
 			modHomepageButton.OnClick += VisitModHomePage;
 			uIElement.Append(modHomepageButton);
+
 			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
 			backButton.Width.Set(-10f, 0.5f);
 			backButton.Height.Set(25f, 0f);
@@ -68,7 +77,8 @@ namespace Terraria.ModLoader.UI
 			backButton.OnMouseOut += UICommon.FadedMouseOut;
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
-			base.Append(uIElement);
+
+			Append(uIElement);
 		}
 
 		internal void SetModInfo(string text)
@@ -105,6 +115,13 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(10, -1, -1, 1);
 			Process.Start(url);
+		}
+
+		public override void Draw(SpriteBatch spriteBatch)
+		{
+			base.Draw(spriteBatch);
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
+			UILinkPointNavigator.Shortcuts.BackButtonGoto = this.gotoMenu;
 		}
 
 		public override void OnActivate()

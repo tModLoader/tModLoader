@@ -77,6 +77,7 @@
     <Compile Include="Dusts\Bubble.cs" />
     <Compile Include="Dusts\EtherealFlame.cs" />
     <Compile Include="Dusts\ExampleSolution.cs" />
+    <Compile Include="Dusts\ExampleWaterSplash.cs" />
     <Compile Include="Dusts\Flame.cs" />
     <Compile Include="Dusts\Negative.cs" />
     <Compile Include="Dusts\Pixel.cs" />
@@ -115,10 +116,12 @@
     <Compile Include="Items\CarKey.cs" />
     <Compile Include="Items\CopperShortsword.cs" />
     <Compile Include="Items\EquipMaterial.cs" />
+    <Compile Include="Items\ExampleDye.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleHook.cs" />
     <Compile Include="Items\ExampleItem.cs" />
+    <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
     <Compile Include="Items\ExampleLightPet.cs" />
     <Compile Include="Items\ExamplePet.cs" />
@@ -163,6 +166,7 @@
     <Compile Include="Items\Weapons\ExampleStaff.cs" />
     <Compile Include="Items\Weapons\ExampleDualUseWeapon.cs" />
     <Compile Include="Items\Weapons\ExampleSword.cs" />
+    <Compile Include="Items\Weapons\ExampleYoyo.cs" />
     <Compile Include="Items\Weapons\PurityTotem.cs" />
     <Compile Include="Items\Weapons\SpectreGun.cs" />
     <Compile Include="Items\Weapons\Wisp.cs" />
@@ -177,6 +181,7 @@
     <Compile Include="NPCs\ExampleNPCInfo.cs" />
     <Compile Include="NPCs\ExamplePerson.cs" />
     <Compile Include="NPCs\Fish.cs" />
+    <Compile Include="NPCs\FlutterSlime.cs" />
     <Compile Include="NPCs\Hover.cs" />
     <Compile Include="NPCs\Octopus.cs" />
     <Compile Include="NPCs\PartyZombie.cs" />
@@ -196,6 +201,7 @@
     <Compile Include="Projectiles\ExampleLaser.cs" />
     <Compile Include="Projectiles\ExampleSolution.cs" />
     <Compile Include="Projectiles\ExampleSpearProjectile.cs" />
+    <Compile Include="Projectiles\ExampleYoyo.cs" />
     <Compile Include="Projectiles\HealProj.cs" />
     <Compile Include="Projectiles\Minions\HoverShooter.cs" />
     <Compile Include="Projectiles\Minions\Minion.cs" />
@@ -213,6 +219,7 @@
     <Compile Include="Projectiles\PuritySpirit\PuritySnake.cs" />
     <Compile Include="Projectiles\PuritySpirit\PuritySphere.cs" />
     <Compile Include="Projectiles\PuritySpirit\VoidWorld.cs" />
+    <Compile Include="Projectiles\ScorePoint.cs" />
     <Compile Include="Projectiles\ShadowArm.cs" />
     <Compile Include="Projectiles\SparklingBall.cs" />
     <Compile Include="Projectiles\Wisp.cs" />
@@ -232,6 +239,7 @@
     <Compile Include="Tiles\ExampleDoorClosed.cs" />
     <Compile Include="Tiles\ExampleDoorOpen.cs" />
     <Compile Include="Tiles\ExampleDresser.cs" />
+    <Compile Include="Tiles\ExampleGlobalTile.cs" />
     <Compile Include="Tiles\ExampleMusicBox.cs" />
     <Compile Include="Tiles\ExamplePlant.cs" />
     <Compile Include="Tiles\ExamplePlatform.cs" />
@@ -242,6 +250,7 @@
     <Compile Include="Tiles\ExampleWorkbench.cs" />
     <Compile Include="Tiles\MonsterBanner.cs" />
     <Compile Include="Tiles\TEElementalPurge.cs" />
+    <Compile Include="Tiles\TEScoreBoard.cs" />
     <Compile Include="Tiles\VoidMonolith.cs" />
     <Compile Include="Tiles\VoidSky.cs" />
     <Compile Include="UI\ExampleUI.cs" />

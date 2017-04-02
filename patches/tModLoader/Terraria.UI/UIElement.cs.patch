@@ -1,5 +1,83 @@
 --- src/Terraria\Terraria.UI\UIElement.cs
 +++ src/tModLoader\Terraria.UI\UIElement.cs
+@@ -49,6 +_,10 @@
+ 		public event UIElement.MouseEvent OnMouseOver;
+ 		public event UIElement.MouseEvent OnMouseOut;
+ 		public event UIElement.MouseEvent OnDoubleClick;
++		public event UIElement.MouseEvent OnRightMouseDown;
++		public event UIElement.MouseEvent OnRightMouseUp;
++		public event UIElement.MouseEvent OnRightClick;
++		public event UIElement.MouseEvent OnRightDoubleClick;
+ 		public event UIElement.ScrollWheelEvent OnScrollWheel;
+ 
+ 		public bool IsMouseHovering
+@@ -135,6 +_,11 @@
+ 				current.Parent = null;
+ 			}
+ 			this.Elements.Clear();
++		}
++
++		public bool HasChild(UIElement child)
++		{
++			return Elements.Contains(child);
+ 		}
+ 
+ 		public virtual void Draw(SpriteBatch spriteBatch)
+@@ -399,6 +_,54 @@
+ 			}
+ 		}
+ 
++		public virtual void RightMouseDown(UIMouseEvent evt)
++		{
++			if (this.OnRightMouseDown != null)
++			{
++				this.OnRightMouseDown(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.RightMouseDown(evt);
++			}
++		}
++
++		public virtual void RightMouseUp(UIMouseEvent evt)
++		{
++			if (this.OnRightMouseUp != null)
++			{
++				this.OnRightMouseUp(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.RightMouseUp(evt);
++			}
++		}
++
++		public virtual void RightClick(UIMouseEvent evt)
++		{
++			if (this.OnRightClick != null)
++			{
++				this.OnRightClick(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.RightClick(evt);
++			}
++		}
++
++		public virtual void RightDoubleClick(UIMouseEvent evt)
++		{
++			if (this.OnRightDoubleClick != null)
++			{
++				this.OnRightDoubleClick(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.RightDoubleClick(evt);
++			}
++		}
++
+ 		public virtual void ScrollWheel(UIScrollWheelEvent evt)
+ 		{
+ 			if (this.OnScrollWheel != null)
 @@ -455,5 +_,10 @@
  		{
  			return 0;

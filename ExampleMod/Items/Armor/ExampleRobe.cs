@@ -28,7 +28,7 @@ namespace ExampleMod.Items.Armor
         {
             robes = true;
             // The equipSlot is added in ExampleMod.cs --> Load hook
-            equipSlot = mod.GetEquipSlot("ExampleRobe_Legs");
+            equipSlot = mod.GetEquipSlot("ExampleRobe_Legs", EquipType.Legs);
         }
 		
 		public override void DrawHands(ref bool drawHands, ref bool drawArms)

@@ -17,6 +17,8 @@ namespace ExampleMod.Tiles
 			Main.tileSolid[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
+			TileID.Sets.NotReallySolid[Type] = true;
+			TileID.Sets.DrawsWalls[Type] = true;
 			TileObjectData.newTile.Width = 1;
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(0, 0);

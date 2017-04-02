@@ -36,6 +36,7 @@ namespace ExampleMod
 		public bool purityMinion = false;
 		public bool examplePet = false;
 		public bool exampleLightPet = false;
+		public bool exampleShield = false;
 
 		public bool ZoneExample = false;
 
@@ -52,6 +53,7 @@ namespace ExampleMod
 			purityMinion = false;
 			examplePet = false;
 			exampleLightPet = false;
+			exampleShield = false;
 		}
 
 		public override void UpdateDead()
@@ -109,18 +111,15 @@ namespace ExampleMod
 
 		public override void SendCustomBiomes(BinaryWriter writer)
 		{
-			byte flags = 0;
-			if (ZoneExample)
-			{
-				flags |= 1;
-			}
+			BitsByte flags = new BitsByte();
+			flags[0] = ZoneExample;
 			writer.Write(flags);
 		}
 
 		public override void ReceiveCustomBiomes(BinaryReader reader)
 		{
-			byte flags = reader.ReadByte();
-			ZoneExample = ((flags & 1) == 1);
+			BitsByte flags = reader.ReadByte();
+			ZoneExample = flags[0];
 		}
 
 		public override void UpdateBiomeVisuals()
@@ -496,6 +495,11 @@ namespace ExampleMod
 				damageSource = PlayerDeathReason.ByCustomReason(" was dissolved by holy powers");
 			}
 			return true;
+		}
+
+		public override float UseTimeMultiplier(Item item)
+		{
+			return exampleShield ? 1.5f : 1f;
 		}
 
 		public override void AnglerQuestReward(float quality, List<Item> rewardItems)

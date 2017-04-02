@@ -6,6 +6,9 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This serves as the central class from which buff-related functions are supported and carried out.
+	/// </summary>
 	public static class BuffLoader
 	{
 		private static int nextBuff = BuffID.Count;
@@ -68,6 +71,9 @@ namespace Terraria.ModLoader
 
 		internal static int BuffCount => nextBuff;
 
+		/// <summary>
+		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
+		/// </summary>
 		public static ModBuff GetBuff(int type)
 		{
 			return type >= BuffID.Count && type < BuffCount ? buffs[type - BuffID.Count] : null;

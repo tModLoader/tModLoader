@@ -22,11 +22,13 @@ namespace ExampleMod.Projectiles
 			projectile.penetrate = 3;
 		}
 
-		public override void TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
+		// NewTileCollideStyle is the replacement for TileCollideStyle, but we will support the old TileCollideStyle until a new vanilla release, at which time NewTileCollideStyle will become TileCollideStyle
+		public override bool NewTileCollideStyle(ref int width, ref int height, ref bool fallThrough)
 		{
 			// For going through platforms and such, javelins use a tad smaller size
 			width = 10;
 			height = 10;
+			return true;
 		}
 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)

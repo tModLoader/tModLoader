@@ -7,6 +7,7 @@ using Terraria.Map;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	internal static class MapLoader
 	{
 		internal static bool initialized = false;

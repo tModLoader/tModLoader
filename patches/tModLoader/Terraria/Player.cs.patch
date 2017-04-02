@@ -10,7 +10,7 @@
  
  namespace Terraria
  {
-@@ -39,11 +_,13 @@
+@@ -39,19 +_,23 @@
  			public static void PlayerConnect(int playerIndex)
  			{
  				PressurePlateHelper.ResetPlayer(playerIndex);
@@ -24,7 +24,9 @@
  			}
  
  			public static void EnterWorld(int playerIndex)
-@@ -52,6 +_,7 @@
+ 			{
++				Interface.ResetData();
+ 				if (Player.Hooks.OnEnterWorld != null)
  				{
  					Player.Hooks.OnEnterWorld(Main.player[playerIndex]);
  				}
@@ -292,6 +294,39 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 602, 1, false, 0, false, false);
+@@ -3344,6 +_,32 @@
+ 					}
+ 				}
+ 			}
++		}
++
++		/// <summary>
++		/// Will spawn an item like QuickSpawnItem, but clones it (handy when you need to retain item infos)
++		/// </summary>
++		/// <param name="item">The item you want to be cloned</param>
++		/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
++		public void QuickSpawnClonedItem(Item item, int stack = 1)
++		{
++			int index = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, item.type, stack, false, -1, false, false);
++			Main.item[index] = item.Clone();
++			Main.item[index].whoAmI = index;
++			Main.item[index].position = this.position;
++			if (stack != Main.item[index].stack)
++				Main.item[index].stack = stack;
++
++			// Sync the item for mp
++			if (Main.netMode == NetmodeID.MultiplayerClient)
++			{
++				NetMessage.SendData(MessageID.SyncItem, -1, -1, "", index, 1f, 0f, 0f, 0, 0, 0);
++			}
++		}
++
++		public void QuickSpawnItem(Item item, int stack = 1)
++		{
++			QuickSpawnItem(item.type, stack);
+ 		}
+ 
+ 		public void QuickSpawnItem(int item, int stack = 1)
 @@ -3357,6 +_,11 @@
  
  		public void OpenBossBag(int type)
@@ -2921,6 +2956,31 @@
  			this.velocity.Y = this.velocity.Y - num * this.gravDir;
  			if (this.gravDir == 1f)
  			{
+@@ -17456,6 +_,7 @@
+ 				{
+ 					num9 = 13f;
+ 				}
++				ProjectileLoader.GrapplePullSpeed(Main.projectile[this.grappling[0]], this, ref num9);
+ 				float num10;
+ 				if (num8 > num9)
+ 				{
+@@ -18143,6 +_,7 @@
+ 			this.slippy = (num3 == 161 || num3 == 162 || num3 == 163 || num3 == 164 || num3 == 200 || num3 == 127);
+ 			this.slippy2 = (num3 == 197);
+ 			this.powerrun = (num3 == 198);
++			TileLoader.FloorVisuals(num3, this);
+ 			if (Main.tile[num - 1, num2].slope() != 0 || Main.tile[num, num2].slope() != 0 || Main.tile[num + 1, num2].slope() != 0)
+ 			{
+ 				num3 = -1;
+@@ -18156,7 +_,7 @@
+ 
+ 		private void MakeFloorDust(bool Falling, int type)
+ 		{
+-			if (type == 147 || type == 25 || type == 53 || type == 189 || type == 0 || type == 123 || type == 57 || type == 112 || type == 116 || type == 196 || type == 193 || type == 195 || type == 197 || type == 199 || type == 229 || type == 371)
++			if (type == 147 || type == 25 || type == 53 || type == 189 || type == 0 || type == 123 || type == 57 || type == 112 || type == 116 || type == 196 || type == 193 || type == 195 || type == 197 || type == 199 || type == 229 || type == 371 || TileLoader.HasWalkDust(type))
+ 			{
+ 				int num = 1;
+ 				if (Falling)
 @@ -18167,6 +_,7 @@
  				{
  					bool flag = true;
@@ -3345,6 +3405,15 @@
  			return num;
  		}
  
+@@ -27970,6 +_,8 @@
+ 				}
+ 			}
+ 			this.immune = true;
++			if (this.dead)
++				PlayerHooks.OnRespawn(this);
+ 			this.dead = false;
+ 			this.immuneTime = 0;
+ 			this.active = true;
 @@ -28163,6 +_,14 @@
  				this.ShadowDodge();
  				return 0.0;
@@ -3469,12 +3538,89 @@
  			this.immuneAlpha = 0;
  			this.palladiumRegen = false;
  			this.iceBarrier = false;
+@@ -29068,7 +_,7 @@
+ 							{
+ 								this.inventory[num5].SetDefaults(0, false);
+ 							}
+-							this.itemTime = this.inventory[this.selectedItem].useTime;
++							this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						}
+ 					}
+ 				}
+@@ -29101,7 +_,7 @@
+ 							{
+ 								this.inventory[num10].SetDefaults(0, false);
+ 							}
+-							this.itemTime = this.inventory[this.selectedItem].useTime;
++							this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						}
+ 					}
+ 				}
+@@ -29117,11 +_,11 @@
+ 					{
+ 						if (Main.tile[num11, num12].color() > 0 && Main.tile[num11, num12].active() && WorldGen.paintTile(num11, num12, 0, true))
+ 						{
+-							this.itemTime = this.inventory[this.selectedItem].useTime;
++							this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						}
+ 						else if (Main.tile[num11, num12].wallColor() > 0 && Main.tile[num11, num12].wall > 0 && WorldGen.paintWall(num11, num12, 0, true))
+ 						{
+-							this.itemTime = this.inventory[this.selectedItem].useTime;
++							this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						}
+ 					}
+ 				}
+@@ -29143,7 +_,7 @@
+ 					num15 -= 1873;
+ 					if (WorldGen.checkXmasTreeDrop(Player.tileTargetX, Player.tileTargetY, 0) != num15)
+ 					{
+-						this.itemTime = this.inventory[this.selectedItem].useTime;
++						this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						WorldGen.dropXmasTree(Player.tileTargetX, Player.tileTargetY, 0);
+ 						WorldGen.setXmasTree(Player.tileTargetX, Player.tileTargetY, 0, num15);
+ 						int num16 = Player.tileTargetX;
+@@ -29161,7 +_,7 @@
+ 					num15 -= 1877;
+ 					if (WorldGen.checkXmasTreeDrop(Player.tileTargetX, Player.tileTargetY, 1) != num15)
+ 					{
+-						this.itemTime = this.inventory[this.selectedItem].useTime;
++						this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						WorldGen.dropXmasTree(Player.tileTargetX, Player.tileTargetY, 1);
+ 						WorldGen.setXmasTree(Player.tileTargetX, Player.tileTargetY, 1, num15);
+ 						int num18 = Player.tileTargetX;
+@@ -29179,7 +_,7 @@
+ 					num15 -= 1883;
+ 					if (WorldGen.checkXmasTreeDrop(Player.tileTargetX, Player.tileTargetY, 2) != num15)
+ 					{
+-						this.itemTime = this.inventory[this.selectedItem].useTime;
++						this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						WorldGen.dropXmasTree(Player.tileTargetX, Player.tileTargetY, 2);
+ 						WorldGen.setXmasTree(Player.tileTargetX, Player.tileTargetY, 2, num15);
+ 						int num20 = Player.tileTargetX;
+@@ -29197,7 +_,7 @@
+ 					num15 -= 1894;
+ 					if (WorldGen.checkXmasTreeDrop(Player.tileTargetX, Player.tileTargetY, 3) != num15)
+ 					{
+-						this.itemTime = this.inventory[this.selectedItem].useTime;
++						this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						WorldGen.dropXmasTree(Player.tileTargetX, Player.tileTargetY, 3);
+ 						WorldGen.setXmasTree(Player.tileTargetX, Player.tileTargetY, 3, num15);
+ 						int num22 = Player.tileTargetX;
+@@ -29215,7 +_,7 @@
+ 			{
+ 				if (this.position.X / 16f - (float)Player.tileRangeX - (float)this.inventory[this.selectedItem].tileBoost - (float)this.blockRange <= (float)Player.tileTargetX && (this.position.X + (float)this.width) / 16f + (float)Player.tileRangeX + (float)this.inventory[this.selectedItem].tileBoost - 1f + (float)this.blockRange >= (float)Player.tileTargetX && this.position.Y / 16f - (float)Player.tileRangeY - (float)this.inventory[this.selectedItem].tileBoost - (float)this.blockRange <= (float)Player.tileTargetY && (this.position.Y + (float)this.height) / 16f + (float)Player.tileRangeY + (float)this.inventory[this.selectedItem].tileBoost - 2f + (float)this.blockRange >= (float)Player.tileTargetY && this.itemTime == 0 && this.itemAnimation > 0 && this.controlUseItem)
+ 				{
+-					this.itemTime = this.inventory[this.selectedItem].useTime;
++					this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 					Main.PlaySound(7, -1, -1, 1, 1f, 0f);
+ 					int extractType = ItemID.Sets.ExtractinatorMode[this.inventory[this.selectedItem].type];
+ 					Player.ExtractinatorUse(extractType);
 @@ -29278,10 +_,23 @@
  					bool flag3 = false;
  					bool flag4 = false;
  					TileObject tileObject = default(TileObject);
 -					if (TileObjectData.CustomPlace(this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle) && this.inventory[this.selectedItem].createTile != 82)
-+					if (!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY))
++					if (!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem].createTile))
 +					{
 +					}
 +					else if (TileObjectData.CustomPlace(this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle) && this.inventory[this.selectedItem].createTile != 82)
@@ -3504,6 +3650,88 @@
  						{
  							if (Main.tile[Player.tileTargetX, Player.tileTargetY].wall > 0)
  							{
+@@ -29741,7 +_,7 @@
+ 						}
+ 						if (flag6)
+ 						{
+-							this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.tileSpeed);
++							this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.tileSpeed / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 							if (flag4)
+ 							{
+ 								TileObjectData.CallPostPlacementPlayerHook(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem].createTile, num47, this.direction, tileObject);
+@@ -30086,7 +_,7 @@
+ 													{
+ 														this.inventory[num84].SetDefaults(0, false);
+ 													}
+-													this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.tileSpeed);
++													this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.tileSpeed / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 												}
+ 											}
+ 											if (this.autoActuator && this.builderAccStatus[2] == 0)
+@@ -30119,7 +_,7 @@
+ 													{
+ 														this.inventory[num85].SetDefaults(0, false);
+ 													}
+-													this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.tileSpeed);
++													this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.tileSpeed / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 													goto IL_4090;
+ 												}
+ 												goto IL_4090;
+@@ -30137,6 +_,8 @@
+ 							{
+ 								Main.blockMouse = true;
+ 							}
++
++							TileLoader.PlaceInWorld(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem]);
+ 						}
+ 					}
+ 				}
+@@ -30157,13 +_,16 @@
+ 						{
+ 							this.inventory[this.selectedItem].stack++;
+ 						}
+-						this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed);
++						this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						return;
+ 					}
++
+ 					WorldGen.PlaceWall(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem].createWall, false);
++
+ 					if ((int)Main.tile[Player.tileTargetX, Player.tileTargetY].wall == this.inventory[this.selectedItem].createWall)
+ 					{
+-						this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed);
++						WallLoader.PlaceInWorld(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem]);
++						this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 						if (Main.netMode == 1)
+ 						{
+ 							NetMessage.SendData(17, -1, -1, "", 3, (float)Player.tileTargetX, (float)Player.tileTargetY, (float)this.inventory[this.selectedItem].createWall, 0, 0, 0);
+@@ -30256,7 +_,7 @@
+ 													{
+ 														this.inventory[num98].SetDefaults(0, false);
+ 													}
+-													this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed);
++													this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 												}
+ 											}
+ 										}
+@@ -30287,7 +_,7 @@
+ 								{
+ 									this.inventory[num104].SetDefaults(0, false);
+ 								}
+-								this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed);
++								this.itemTime = (int)((float)this.inventory[this.selectedItem].useTime * this.wallSpeed / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 							}
+ 						}
+ 					}
+@@ -30336,7 +_,7 @@
+ 						num3++;
+ 					}
+ 					j = y - j;
+-					this.itemTime = this.inventory[this.selectedItem].useTime;
++					this.itemTime = (int)(this.inventory[this.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(this, this.inventory[this.selectedItem]));
+ 					WorldGen.ShootFromCannon(i, j, num3, num, this.inventory[this.selectedItem].damage, 8f, Main.myPlayer);
+ 				}
+ 			}
 @@ -30348,7 +_,7 @@
  			int num2 = 25;
  			int num3 = 50;
@@ -3610,6 +3838,20 @@
  				{
  					if (ProjectileID.Sets.MinionSacrificable[item.shoot])
  					{
+@@ -31808,11 +_,11 @@
+ 			{
+ 				if (item.melee)
+ 				{
+-					this.itemAnimationMax = (int)((float)item.useAnimation * this.meleeSpeed);
++					this.itemAnimationMax = (int)((float)item.useAnimation * this.meleeSpeed / PlayerHooks.TotalMeleeSpeedMultiplier(this, item));
+ 				}
+ 				else
+ 				{
+-					this.itemAnimationMax = item.useAnimation;
++					this.itemAnimationMax = (int)(item.useAnimation / PlayerHooks.TotalMeleeSpeedMultiplier(this, item));
+ 				}
+ 				if (item.mana > 0 && !flag && (item.type != 127 || !this.spaceGun))
+ 				{
 @@ -32072,6 +_,7 @@
  							this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  						}
@@ -3634,14 +3876,36 @@
  			if (this.controlUseItem)
  			{
  				this.releaseUseItem = false;
-@@ -32786,6 +_,7 @@
- 					this.itemTime = item.useTime;
+@@ -32771,7 +_,7 @@
+ 				}
+ 				if (item.shoot > 0 && ProjectileID.Sets.TurretFeature[item.shoot] && this.altFunctionUse == 2 && flag8 && this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					for (int num73 = 0; num73 < 1000; num73++)
+ 					{
+ 						Projectile projectile2 = Main.projectile[num73];
+@@ -32783,9 +_,10 @@
+ 				}
+ 				if (item.shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[item.shoot] && this.altFunctionUse == 2 && flag8 && this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
  					this.MinionNPCTargetAim();
  				}
 +				flag8 = flag8 && ItemLoader.CheckProjOnSwing(this, item);
  				if (item.shoot > 0 && this.itemAnimation > 0 && this.itemTime == 0 && flag8)
  				{
  					int num74 = item.shoot;
+@@ -32931,7 +_,7 @@
+ 						{
+ 							num74 = 357;
+ 						}
+-						this.itemTime = item.useTime;
++						this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 						Vector2 vector2 = this.RotatedRelativePoint(this.MountedCenter, true);
+ 						bool flag11 = true;
+ 						int type5 = item.type;
 @@ -34093,7 +_,8 @@
  							Projectile.NewProjectile((float)num216, (float)(num217 - num218), 0f, 0f, num74, num76, num77, i, 0f, 0f);
  							this.UpdateMaxTurrets();
@@ -3652,14 +3916,177 @@
  						{
  							int num219 = Projectile.NewProjectile(vector2.X, vector2.Y, num81, num82, num74, num76, num77, i, 0f, 0f);
  							if (item.type == 726)
-@@ -34539,6 +_,7 @@
+@@ -34159,7 +_,7 @@
+ 								{
+ 									this.inventory[num222].SetDefaults(0, false);
+ 								}
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								NetMessage.SendData(17, -1, -1, "", 5, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							}
+ 						}
+@@ -34181,7 +_,7 @@
+ 								{
+ 									this.inventory[num224].SetDefaults(0, false);
+ 								}
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								NetMessage.SendData(17, -1, -1, "", 10, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							}
+ 						}
+@@ -34203,7 +_,7 @@
+ 								{
+ 									this.inventory[num226].SetDefaults(0, false);
+ 								}
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								NetMessage.SendData(17, -1, -1, "", 12, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							}
+ 						}
+@@ -34225,7 +_,7 @@
+ 								{
+ 									this.inventory[num228].SetDefaults(0, false);
+ 								}
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								NetMessage.SendData(17, -1, -1, "", 16, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							}
+ 						}
+@@ -34233,33 +_,33 @@
+ 						{
+ 							if (WorldGen.KillActuator(num220, num221))
+ 							{
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								NetMessage.SendData(17, -1, -1, "", 9, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							}
+ 							else if (WorldGen.KillWire4(num220, num221))
+ 							{
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								NetMessage.SendData(17, -1, -1, "", 17, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							}
+ 							else if (WorldGen.KillWire3(num220, num221))
+ 							{
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								NetMessage.SendData(17, -1, -1, "", 13, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							}
+ 							else if (WorldGen.KillWire2(num220, num221))
+ 							{
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								NetMessage.SendData(17, -1, -1, "", 11, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							}
+ 							else if (WorldGen.KillWire(num220, num221))
+ 							{
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								NetMessage.SendData(17, -1, -1, "", 6, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							}
+ 						}
+ 						else if (item.type == 849 && item.stack > 0 && WorldGen.PlaceActuator(num220, num221))
+ 						{
+-							this.itemTime = item.useTime;
++							this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 							NetMessage.SendData(17, -1, -1, "", 8, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 							item.stack--;
+ 							if (item.stack <= 0)
+@@ -34277,7 +_,7 @@
+ 								{
+ 									this.ActuationRodLock = true;
+ 									this.ActuationRodLockSetting = !tile2.inActive();
+-									this.itemTime = item.useTime;
++									this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 									NetMessage.SendData(17, -1, -1, "", 19, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
+ 								}
+ 							}
+@@ -34285,7 +_,7 @@
+ 						if (item.type == 3625)
+ 						{
+ 							Point point = new Point(Player.tileTargetX, Player.tileTargetY);
+-							this.itemTime = item.useTime;
++							this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 							WiresUI.Settings.MultiToolMode toolMode = WiresUI.Settings.ToolMode;
+ 							WiresUI.Settings.ToolMode &= ~WiresUI.Settings.MultiToolMode.Actuator;
+ 							if (Main.netMode == 1)
+@@ -34302,7 +_,7 @@
+ 				}
+ 				if (this.itemAnimation > 0 && this.itemTime == 0 && (item.type == 507 || item.type == 508))
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					Vector2 vector23 = new Vector2(this.position.X + (float)this.width * 0.5f, this.position.Y + (float)this.height * 0.5f);
+ 					float num230 = (float)Main.mouseX + Main.screenPosition.X - vector23.X;
+ 					float num231 = (float)Main.mouseY + Main.screenPosition.Y - vector23.Y;
+@@ -34378,7 +_,7 @@
+ 									}
+ 								}
+ 								Main.PlaySound(19, (int)this.position.X, (int)this.position.Y, 1, 1f, 0f);
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								int num237 = (int)Main.tile[Player.tileTargetX, Player.tileTargetY].liquid;
+ 								Main.tile[Player.tileTargetX, Player.tileTargetY].liquid = 0;
+ 								Main.tile[Player.tileTargetX, Player.tileTargetY].lava(false);
+@@ -34438,7 +_,7 @@
+ 									WorldGen.SquareTileFrame(Player.tileTargetX, Player.tileTargetY, true);
+ 									item.stack--;
+ 									this.PutItemInInventory(205, this.selectedItem);
+-									this.itemTime = item.useTime;
++									this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 									if (Main.netMode == 1)
+ 									{
+ 										NetMessage.sendWater(Player.tileTargetX, Player.tileTargetY);
+@@ -34458,7 +_,7 @@
+ 										item.stack--;
+ 										this.PutItemInInventory(205, this.selectedItem);
+ 									}
+-									this.itemTime = item.useTime;
++									this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 									if (Main.netMode == 1)
+ 									{
+ 										NetMessage.sendWater(Player.tileTargetX, Player.tileTargetY);
+@@ -34473,7 +_,7 @@
+ 								WorldGen.SquareTileFrame(Player.tileTargetX, Player.tileTargetY, true);
+ 								item.stack--;
+ 								this.PutItemInInventory(205, this.selectedItem);
+-								this.itemTime = item.useTime;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								if (Main.netMode == 1)
+ 								{
+ 									NetMessage.sendWater(Player.tileTargetX, Player.tileTargetY);
+@@ -34493,11 +_,11 @@
+ 					{
+ 						if (item.pick > 0)
+ 						{
+-							this.toolTime = item.useTime;
++							this.toolTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 						}
+ 						else
+ 						{
+-							this.toolTime = (int)((float)item.useTime * this.pickSpeed);
++							this.toolTime = (int)((float)item.useTime * this.pickSpeed / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 						}
+ 					}
+ 				}
+@@ -34539,7 +_,7 @@
  									flag19 = false;
  									if (item.hammer > 0)
  									{
+-										num241 += item.hammer;
 +										TileLoader.MineDamage(item.hammer, ref num241);
- 										num241 += item.hammer;
  										if (!WorldGen.CanKillTile(Player.tileTargetX, Player.tileTargetY))
  										{
+ 											num241 = 0;
+@@ -34571,7 +_,7 @@
+ 										{
+ 											this.hitTile.Prune();
+ 										}
+-										this.itemTime = item.useTime;
++										this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 										AchievementsHelper.CurrentlyMining = false;
+ 									}
+ 								}
 @@ -34583,7 +_,7 @@
  									}
  									else
@@ -3669,6 +4096,34 @@
  									}
  									if (item.axe > 0)
  									{
+@@ -34613,23 +_,23 @@
+ 										{
+ 											this.hitTile.Prune();
+ 										}
+-										this.itemTime = item.useTime;
++										this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 										AchievementsHelper.CurrentlyMining = false;
+ 									}
+ 								}
+ 								else if (item.pick > 0)
+ 								{
+ 									this.PickTile(Player.tileTargetX, Player.tileTargetY, item.pick);
+-									this.itemTime = (int)((float)item.useTime * this.pickSpeed);
++									this.itemTime = (int)((float)item.useTime * this.pickSpeed / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								}
+ 								if (item.pick > 0)
+ 								{
+-									this.itemTime = (int)((float)item.useTime * this.pickSpeed);
++									this.itemTime = (int)((float)item.useTime * this.pickSpeed / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 								}
+ 								if (item.hammer > 0 && Main.tile[Player.tileTargetX, Player.tileTargetY].active() && ((Main.tileSolid[(int)Main.tile[Player.tileTargetX, Player.tileTargetY].type] && Main.tile[Player.tileTargetX, Player.tileTargetY].type != 10) || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 314 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 351 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 424 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 442) && this.poundRelease)
+ 								{
+ 									flag19 = false;
+-									this.itemTime = item.useTime;
++									this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 									num241 += (int)((double)item.hammer * 1.25);
+ 									num241 = 100;
+ 									if (Main.tile[Player.tileTargetX, Player.tileTargetY - 1].active() && Main.tile[Player.tileTargetX, Player.tileTargetY - 1].type == 10)
 @@ -34647,7 +_,10 @@
  										{
  											int num242 = Player.tileTargetX;
@@ -3681,6 +4136,59 @@
  											{
  												if (Main.tile[num242, num243].halfBrick())
  												{
+@@ -35144,14 +_,14 @@
+ 								{
+ 									this.hitTile.Prune();
+ 								}
+-								this.itemTime = item.useTime / 2;
++								this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item)) / 2;
+ 							}
+ 						}
+ 					}
+ 				}
+ 				if (Main.myPlayer == this.whoAmI && item.type == 1326 && this.itemAnimation > 0 && this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					Vector2 vector24;
+ 					vector24.X = (float)Main.mouseX + Main.screenPosition.X;
+ 					if (this.gravDir == 1f)
+@@ -35199,7 +_,7 @@
+ 				}
+ 				if (item.type == 29 && this.itemAnimation > 0 && this.statLifeMax < 400 && this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					this.statLifeMax += 20;
+ 					this.statLifeMax2 += 20;
+ 					this.statLife += 20;
+@@ -35211,7 +_,7 @@
+ 				}
+ 				if (item.type == 1291 && this.itemAnimation > 0 && this.statLifeMax >= 400 && this.statLifeMax < 500 && this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					this.statLifeMax += 5;
+ 					this.statLifeMax2 += 5;
+ 					this.statLife += 5;
+@@ -35223,7 +_,7 @@
+ 				}
+ 				if (item.type == 109 && this.itemAnimation > 0 && this.statManaMax < 200 && this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					this.statManaMax += 20;
+ 					this.statManaMax2 += 20;
+ 					this.statMana += 20;
+@@ -35235,7 +_,7 @@
+ 				}
+ 				if (item.type == 3335 && this.itemAnimation > 0 && !this.extraAccessory && Main.expertMode && this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					this.extraAccessory = true;
+ 					NetMessage.SendData(4, -1, -1, Main.player[this.whoAmI].name, this.whoAmI, 0f, 0f, 0f, 0, 0, 0);
+ 				}
 @@ -35316,6 +_,7 @@
  				}
  				else if (item.useStyle == 3)
@@ -3706,6 +4214,24 @@
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num312 = 0; num312 < 200; num312++)
+@@ -35752,6 +_,8 @@
+ 						{
+ 							num313 = (int)((float)item.damage * this.thrownDamage);
+ 						}
++						ItemLoader.GetWeaponDamage(item, this, ref num313);
++						PlayerHooks.GetWeaponDamage(this, item, ref num313);
+ 						float num314 = item.knockBack;
+ 						float num315 = 1f;
+ 						if (this.kbGlove)
+@@ -35767,6 +_,8 @@
+ 						{
+ 							num314 += num314 * (1f - this.stealth);
+ 						}
++						ItemLoader.GetWeaponKnockback(item, this, ref num314);
++						PlayerHooks.GetWeaponKnockback(this, item, ref num314);
+ 						List<ushort> list2 = null;
+ 						int type5 = item.type;
+ 						if (type5 == 213)
 @@ -35850,7 +_,23 @@
  								{
  									if (!Main.npc[num323].dontTakeDamage)
@@ -3785,17 +4311,274 @@
  											if (Main.netMode != 0)
  											{
  												NetMessage.SendPlayerHurt(num333, playerDeathReason, num334, this.direction, flag30, true, -1, -1, -1);
-@@ -36142,6 +_,10 @@
+@@ -36142,9 +_,13 @@
  			}
  			if (this.itemTime == 0 && this.itemAnimation > 0)
  			{
 +				if (ItemLoader.UseItem(item, this))
 +				{
-+					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
 +				}
  				if (item.hairDye >= 0)
  				{
- 					this.itemTime = item.useTime;
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					if (this.whoAmI == Main.myPlayer)
+ 					{
+ 						this.hairDye = (byte)item.hairDye;
+@@ -36154,7 +_,7 @@
+ 				if (item.healLife > 0)
+ 				{
+ 					this.statLife += item.healLife;
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					if (Main.myPlayer == this.whoAmI)
+ 					{
+ 						this.HealEffect(item.healLife, true);
+@@ -36163,7 +_,7 @@
+ 				if (item.healMana > 0)
+ 				{
+ 					this.statMana += item.healMana;
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					if (Main.myPlayer == this.whoAmI)
+ 					{
+ 						this.AddBuff(94, Player.manaSickTime, true);
+@@ -36176,11 +_,11 @@
+ 					{
+ 						this.AddBuff(item.buffType, item.buffTime, true);
+ 					}
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 				}
+ 				if (item.type == 678)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					if (this.whoAmI == Main.myPlayer)
+ 					{
+ 						this.AddBuff(20, 216000, true);
+@@ -36201,7 +_,7 @@
+ 			{
+ 				if (this.itemTime == 0 && this.itemAnimation > 0 && item.type == 361 && Main.CanStartInvasion(1, true))
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 					if (Main.netMode != 1)
+ 					{
+@@ -36218,7 +_,7 @@
+ 				}
+ 				if (this.itemTime == 0 && this.itemAnimation > 0 && item.type == 602 && Main.CanStartInvasion(2, true))
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 					if (Main.netMode != 1)
+ 					{
+@@ -36235,7 +_,7 @@
+ 				}
+ 				if (this.itemTime == 0 && this.itemAnimation > 0 && item.type == 1315 && Main.CanStartInvasion(3, true))
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 					if (Main.netMode != 1)
+ 					{
+@@ -36252,7 +_,7 @@
+ 				}
+ 				if (this.itemTime == 0 && this.itemAnimation > 0 && item.type == 1844 && !Main.dayTime && !Main.pumpkinMoon && !Main.snowMoon && !DD2Event.Ongoing)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 					if (Main.netMode != 1)
+ 					{
+@@ -36267,7 +_,7 @@
+ 				if (this.itemTime == 0 && this.itemAnimation > 0 && item.type == 2767 && Main.dayTime && !Main.eclipse)
+ 				{
+ 					Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					if (Main.netMode == 0)
+ 					{
+ 						Main.eclipse = true;
+@@ -36281,7 +_,7 @@
+ 				if (this.itemTime == 0 && this.itemAnimation > 0 && item.type == 3601 && NPC.downedGolemBoss && Main.hardMode && !NPC.AnyDanger() && !NPC.AnyoneNearCultists())
+ 				{
+ 					Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					if (Main.netMode == 0)
+ 					{
+ 						WorldGen.StartImpendingDoom();
+@@ -36293,7 +_,7 @@
+ 				}
+ 				if (this.itemTime == 0 && this.itemAnimation > 0 && item.type == 1958 && !Main.dayTime && !Main.pumpkinMoon && !Main.snowMoon && !DD2Event.Ongoing)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 					if (Main.netMode != 1)
+ 					{
+@@ -36309,7 +_,7 @@
+ 				{
+ 					int num344 = Main.mouseX + (int)Main.screenPosition.X;
+ 					int num345 = Main.mouseY + (int)Main.screenPosition.Y;
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 					int i2 = num344 / 16;
+ 					int j2 = num345 / 16;
+ 					if (!WorldGen.SolidTile(i2, j2))
+@@ -36321,7 +_,7 @@
+ 				{
+ 					if (item.type == 560)
+ 					{
+-						this.itemTime = item.useTime;
++						this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 						Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 						if (Main.netMode != 1)
+ 						{
+@@ -36336,7 +_,7 @@
+ 					{
+ 						if (!Main.dayTime)
+ 						{
+-							this.itemTime = item.useTime;
++							this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 							Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 							if (Main.netMode != 1)
+ 							{
+@@ -36352,7 +_,7 @@
+ 					{
+ 						if (this.ZoneCorrupt)
+ 						{
+-							this.itemTime = item.useTime;
++							this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 							Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 							if (Main.netMode != 1)
+ 							{
+@@ -36368,7 +_,7 @@
+ 					{
+ 						if (!Main.dayTime)
+ 						{
+-							this.itemTime = item.useTime;
++							this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 							Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 							if (Main.netMode != 1)
+ 							{
+@@ -36386,7 +_,7 @@
+ 					{
+ 						if (!Main.dayTime)
+ 						{
+-							this.itemTime = item.useTime;
++							this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 							Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 							if (Main.netMode != 1)
+ 							{
+@@ -36402,7 +_,7 @@
+ 					{
+ 						if (!Main.dayTime)
+ 						{
+-							this.itemTime = item.useTime;
++							this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 							Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 							if (Main.netMode != 1)
+ 							{
+@@ -36416,7 +_,7 @@
+ 					}
+ 					else if (item.type == 1133)
+ 					{
+-						this.itemTime = item.useTime;
++						this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 						Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 						if (Main.netMode != 1)
+ 						{
+@@ -36429,7 +_,7 @@
+ 					}
+ 					else if (item.type == 1331 && this.ZoneCrimson)
+ 					{
+-						this.itemTime = item.useTime;
++						this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 						Main.PlaySound(15, (int)this.position.X, (int)this.position.Y, 0, 1f, 0f);
+ 						if (Main.netMode != 1)
+ 						{
+@@ -36450,9 +_,9 @@
+ 				}
+ 				if (this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
+-				}
+-				else if (this.itemTime == item.useTime / 2)
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
++				}
++				else if (this.itemTime == (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item)) / 2)
+ 				{
+ 					for (int num346 = 0; num346 < 70; num346++)
+ 					{
+@@ -36478,7 +_,7 @@
+ 			{
+ 				if (this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 				}
+ 				else if (this.itemTime == 2)
+ 				{
+@@ -36514,7 +_,7 @@
+ 			{
+ 				if (this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 				}
+ 				else if (this.itemTime == 2)
+ 				{
+@@ -36536,7 +_,7 @@
+ 			{
+ 				if (this.itemTime == 0)
+ 				{
+-					this.itemTime = item.useTime;
++					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 				}
+ 				else if (this.itemTime == 2)
+ 				{
+@@ -36555,7 +_,7 @@
+ 				}
+ 				else
+ 				{
+-					float num353 = (float)item.useTime;
++					float num353 = (float)item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item);
+ 					num353 = (num353 - (float)this.itemTime) / num353;
+ 					float x6 = 15f;
+ 					float num354 = 44f;
+@@ -36583,7 +_,7 @@
+ 			}
+ 			if (i == Main.myPlayer)
+ 			{
+-				if (this.itemTime == (int)((float)item.useTime * this.tileSpeed) && item.tileWand > 0)
++				if (this.itemTime == (int)((float)item.useTime * this.tileSpeed / PlayerHooks.TotalUseTimeMultiplier(this, item)) && item.tileWand > 0)
+ 				{
+ 					int tileWand2 = item.tileWand;
+ 					int num358 = 0;
+@@ -36608,15 +_,15 @@
+ 				int num359;
+ 				if (item.createTile >= 0)
+ 				{
+-					num359 = (int)((float)item.useTime * this.tileSpeed);
++					num359 = (int)((float)item.useTime * this.tileSpeed / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 				}
+ 				else if (item.createWall > 0)
+ 				{
+-					num359 = (int)((float)item.useTime * this.wallSpeed);
++					num359 = (int)((float)item.useTime * this.wallSpeed / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 				}
+ 				else
+ 				{
+-					num359 = item.useTime;
++					num359 = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
+ 				}
+ 				if (this.itemTime == num359 && item.consumable)
+ 				{
 @@ -36655,7 +_,7 @@
  					{
  						flag32 = true;
@@ -3831,21 +4614,73 @@
  			return num;
  		}
  
-@@ -37331,6 +_,14 @@
+@@ -37105,25 +_,25 @@
+ 		{
+ 			if (sItem.melee)
+ 			{
+-				this.itemAnimation = (int)((float)sItem.useAnimation * this.meleeSpeed);
+-				this.itemAnimationMax = (int)((float)sItem.useAnimation * this.meleeSpeed);
++				this.itemAnimation = (int)((float)sItem.useAnimation * this.meleeSpeed / PlayerHooks.TotalMeleeSpeedMultiplier(this, sItem));
++				this.itemAnimationMax = this.itemAnimation;
+ 				return;
+ 			}
+ 			if (sItem.createTile >= 0)
+ 			{
+-				this.itemAnimation = (int)((float)sItem.useAnimation * this.tileSpeed);
+-				this.itemAnimationMax = (int)((float)sItem.useAnimation * this.tileSpeed);
++				this.itemAnimation = (int)((float)sItem.useAnimation * this.tileSpeed / PlayerHooks.TotalMeleeSpeedMultiplier(this, sItem));
++				this.itemAnimationMax = this.itemAnimation;
+ 				return;
+ 			}
+ 			if (sItem.createWall >= 0)
+ 			{
+-				this.itemAnimation = (int)((float)sItem.useAnimation * this.wallSpeed);
+-				this.itemAnimationMax = (int)((float)sItem.useAnimation * this.wallSpeed);
++				this.itemAnimation = (int)((float)sItem.useAnimation * this.wallSpeed / PlayerHooks.TotalMeleeSpeedMultiplier(this, sItem));
++				this.itemAnimationMax = this.itemAnimation;
+ 				return;
+ 			}
+-			this.itemAnimation = sItem.useAnimation;
+-			this.itemAnimationMax = sItem.useAnimation;
+-			this.reuseDelay = sItem.reuseDelay;
++			this.itemAnimation = (int)(sItem.useAnimation / PlayerHooks.TotalMeleeSpeedMultiplier(this, sItem));
++			this.itemAnimationMax = this.itemAnimation;
++			this.reuseDelay = (int)(sItem.reuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
+ 		}
+ 
+ 		public bool HasAmmo(Item sItem, bool canUse)
+@@ -37251,6 +_,7 @@
+ 					Damage = (int)((double)((float)Damage) * 1.2);
+ 				}
+ 				KnockBack += item.knockBack;
++				ItemLoader.PickAmmo(item, this, ref shoot, ref speed, ref Damage, ref KnockBack);
+ 				bool flag2 = dontConsume;
+ 				if (sItem.type == 3245)
+ 				{
+@@ -37311,7 +_,7 @@
  				{
  					flag2 = true;
  				}
+-				if (sItem.type == 434 && this.itemAnimation < sItem.useAnimation - 2)
++				if (sItem.type == 434 && this.itemAnimation < (int)(sItem.useAnimation / PlayerHooks.TotalMeleeSpeedMultiplier(this, sItem)) - 2)
+ 				{
+ 					flag2 = true;
+ 				}
+@@ -37328,6 +_,14 @@
+ 					flag2 = true;
+ 				}
+ 				if ((shoot == 145 || shoot == 146 || shoot == 147 || shoot == 148 || shoot == 149) && this.itemAnimation < this.itemAnimationMax - 5)
++				{
++					flag2 = true;
++				}
 +				if (!PlayerHooks.ConsumeAmmo(this, sItem, item))
 +				{
 +					flag2 = true;
 +				}
 +				if (!ItemLoader.ConsumeAmmo(sItem, item, this))
-+				{
-+					flag2 = true;
-+				}
- 				if (!flag2 && item.consumable)
  				{
- 					item.stack--;
+ 					flag2 = true;
+ 				}
 @@ -37382,7 +_,7 @@
  			}
  			else

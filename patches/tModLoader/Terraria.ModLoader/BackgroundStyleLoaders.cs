@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which ModUgBgStyle functions are supported and carried out.
+	/// </summary>
 	public static class UgBgStyleLoader
 	{
 		public const int vanillaUgBgStyleCount = 18;
@@ -20,6 +24,9 @@ namespace Terraria.ModLoader
 			return reserve;
 		}
 
+		/// <summary>
+		/// Returns the ModUgBgStyle object with the given ID.
+		/// </summary>
 		public static ModUgBgStyle GetUgBgStyle(int style)
 		{
 			return style >= vanillaUgBgStyleCount && style < nextUgBgStyle
@@ -88,6 +95,9 @@ namespace Terraria.ModLoader
 			return reserve;
 		}
 
+		/// <summary>
+		/// Returns the ModSurfaceBgStyle object with the given ID.
+		/// </summary>
 		public static ModSurfaceBgStyle GetSurfaceBgStyle(int style)
 		{
 			return style >= vanillaSurfaceBgStyleCount && style < nextSurfaceBgStyle

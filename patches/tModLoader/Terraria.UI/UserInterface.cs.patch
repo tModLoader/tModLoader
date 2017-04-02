@@ -1,0 +1,97 @@
+--- src/Terraria\Terraria.UI\UserInterface.cs
++++ src/tModLoader\Terraria.UI\UserInterface.cs
+@@ -16,10 +_,14 @@
+ 		private List<UIState> _history = new List<UIState>();
+ 		public Vector2 MousePosition;
+ 		private bool _wasMouseDown;
++		private bool _wasMouseRightDown;
+ 		private UIElement _lastElementHover;
+ 		private UIElement _lastElementDown;
++		private UIElement _lastElementRightDown;
+ 		private UIElement _lastElementClicked;
++		private UIElement _lastElementRightClicked;
+ 		private double _lastMouseDownTime;
++		private double _lastMouseRightDownTime;
+ 		private double _clickDisabledTimeRemaining;
+ 		public bool IsVisible;
+ 		private UIState _currentState;
+@@ -36,7 +_,9 @@
+ 		{
+ 			this._lastElementHover = null;
+ 			this._lastElementDown = null;
++			this._lastElementRightDown = null;
+ 			this._lastElementClicked = null;
++			this._lastElementRightClicked = null;
+ 		}
+ 
+ 		public UserInterface()
+@@ -60,6 +_,7 @@
+ #if CLIENT
+ 			this.MousePosition = new Vector2((float)Main.mouseX, (float)Main.mouseY);
+ 			this._wasMouseDown = Main.mouseLeft;
++			this._wasMouseRightDown = Main.mouseRight;
+ 			if (this._lastElementHover != null)
+ 			{
+ 				this._lastElementHover.MouseOut(new UIMouseEvent(this._lastElementHover, this.MousePosition));
+@@ -67,8 +_,11 @@
+ #endif
+ 			this._lastElementHover = null;
+ 			this._lastElementDown = null;
++			this._lastElementRightDown = null;
+ 			this._lastElementClicked = null;
++			this._lastElementRightClicked = null;
+ 			this._lastMouseDownTime = 0.0;
++			this._lastMouseRightDownTime = 0.0;
+ 			this._clickDisabledTimeRemaining = Math.Max(this._clickDisabledTimeRemaining, 200.0);
+ 		}
+ 
+@@ -78,6 +_,7 @@
+ 			{
+ 				this.MousePosition = new Vector2((float)Main.mouseX, (float)Main.mouseY);
+ 				bool flag = Main.mouseLeft && Main.hasFocus;
++				bool mouseRightDown = Main.mouseRight && Main.hasFocus;
+ 				UIElement uIElement = Main.hasFocus ? this._currentState.GetElementAt(this.MousePosition) : null;
+ 				this._clickDisabledTimeRemaining = Math.Max(0.0, this._clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
+ 				bool flag2 = this._clickDisabledTimeRemaining > 0.0;
+@@ -115,15 +_,39 @@
+ 					lastElementDown.MouseUp(new UIMouseEvent(lastElementDown, this.MousePosition));
+ 					this._lastElementDown = null;
+ 				}
++				// tModLoader added functionality, right click Events
++				if (mouseRightDown && !this._wasMouseRightDown && uIElement != null && !flag2)
++				{
++					this._lastElementRightDown = uIElement;
++					uIElement.RightMouseDown(new UIMouseEvent(uIElement, this.MousePosition));
++					if (this._lastElementRightClicked == uIElement && time.TotalGameTime.TotalMilliseconds - this._lastMouseRightDownTime < 500.0)
++					{
++						uIElement.RightDoubleClick(new UIMouseEvent(uIElement, this.MousePosition));
++						this._lastElementRightClicked = null;
++					}
++					this._lastMouseRightDownTime = time.TotalGameTime.TotalMilliseconds;
++				}
++				else if (!mouseRightDown && this._wasMouseRightDown && this._lastElementRightDown != null && !flag2)
++				{
++					UIElement lastElementRightDown = this._lastElementRightDown;
++					if (lastElementRightDown.ContainsPoint(this.MousePosition))
++					{
++						lastElementRightDown.RightClick(new UIMouseEvent(lastElementRightDown, this.MousePosition));
++						this._lastElementRightClicked = this._lastElementRightDown;
++					}
++					lastElementRightDown.RightMouseUp(new UIMouseEvent(lastElementRightDown, this.MousePosition));
++					this._lastElementRightDown = null;
++				}
+ 				if (PlayerInput.ScrollWheelDeltaForUI != 0)
+ 				{
+ 					if (uIElement != null)
+ 					{
+ 						uIElement.ScrollWheel(new UIScrollWheelEvent(uIElement, this.MousePosition, PlayerInput.ScrollWheelDeltaForUI));
+ 					}
+-					PlayerInput.ScrollWheelDeltaForUI = 0;
++					//PlayerInput.ScrollWheelDeltaForUI = 0;
+ 				}
+ 				this._wasMouseDown = flag;
++				this._wasMouseRightDown = mouseRightDown;
+ 				if (this._currentState != null)
+ 				{
+ 					this._currentState.Update(time);
+

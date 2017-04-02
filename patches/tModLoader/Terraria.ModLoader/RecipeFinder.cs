@@ -5,20 +5,37 @@ using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This class will search through all existing recipes for you based on criteria that you give it. It's useful for finding a particular vanilla recipe that you wish to remove or edit. Use this by creating new instances with the empty constructor for each search you perform.
+	/// </summary>
 	public class RecipeFinder
 	{
 		private List<Item> items = new List<Item>();
 		private List<int> groups = new List<int>();
 		private Item result = new Item();
 		private List<int> tiles = new List<int>();
+		/// <summary>
+		/// Adds the requirement of being nearby water to the search criteria. Defaults to false.
+		/// </summary>
 		public bool needWater;
+		/// <summary>
+		/// Adds the requirement of being nearby lava to the search criteria. Defaults to false.
+		/// </summary>
 		public bool needLava;
+		/// <summary>
+		/// Adds the requirement of being nearby honey to the search criteria. Defaults to false.
+		/// </summary>
 		public bool needHoney;
 
 		public RecipeFinder()
 		{
 		}
 
+		/// <summary>
+		/// Adds an ingredient with the given item type and stack size to the search criteria.
+		/// </summary>
+		/// <param name="itemID">The item ID of the ingredient to add.</param>
+		/// <param name="stack">The stack of the ingredient to add.</param>
 		public void AddIngredient(int itemID, int stack = 1)
 		{
 			if (itemID <= 0 || itemID >= ItemLoader.ItemCount)
@@ -31,6 +48,11 @@ namespace Terraria.ModLoader
 			items.Add(item);
 		}
 
+		/// <summary>
+		/// Adds an ingredient with the given vanilla item name and stack size to the search criteria.
+		/// </summary>
+		/// <param name="itemName">The item name of the ingredient to add.</param>
+		/// <param name="stack">The stack of the ingredient to add.</param>
 		public void AddIngredient(string itemName, int stack = 1)
 		{
 			Item item = new Item();
@@ -43,6 +65,11 @@ namespace Terraria.ModLoader
 			items.Add(item);
 		}
 
+		/// <summary>
+		/// Adds a recipe group ingredient with the given RecipeGroup name and stack size to the search criteria.
+		/// </summary>
+		/// <param name="name">The name of the recipegroup to accept.</param>
+		/// <param name="stack">The stack of the recipegroup to accept.</param>
 		public void AddRecipeGroup(string name, int stack = 1)
 		{
 			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
@@ -55,6 +82,11 @@ namespace Terraria.ModLoader
 			groups.Add(id);
 		}
 
+		/// <summary>
+		/// Sets the search criteria's result to the given item type and stack size.
+		/// </summary>
+		/// <param name="itemID">The item ID of the item to set as result.</param>
+		/// <param name="stack">The stack of the item to set as result.</param>
 		public void SetResult(int itemID, int stack = 1)
 		{
 			if (itemID <= 0 || itemID >= ItemLoader.ItemCount)
@@ -65,6 +97,11 @@ namespace Terraria.ModLoader
 			result.stack = stack;
 		}
 
+		/// <summary>
+		/// Sets the search criteria's result to the type corresponding to the given vanilla item name, with the given stack size.
+		/// </summary>
+		/// <param name="itemName">The item name of the item set as result.</param>
+		/// <param name="stack">The stack of the item to set as result.</param>
 		public void SetResult(string itemName, int stack = 1)
 		{
 			result.SetDefaults(itemName);
@@ -75,6 +112,10 @@ namespace Terraria.ModLoader
 			result.stack = 1;
 		}
 
+		/// <summary>
+		/// Adds a required crafting station with the given tile type to the search criteria.
+		/// </summary>
+		/// <param name="tileID">The tile ID of the tile to add.</param>
 		public void AddTile(int tileID)
 		{
 			if (tileID < 0 || tileID >= TileLoader.TileCount)
@@ -84,6 +125,10 @@ namespace Terraria.ModLoader
 			tiles.Add(tileID);
 		}
 
+		/// <summary>
+		/// Searches for a recipe that matches the search criteria exactly, then returns it. That means the recipe will have exactly the same ingredients, tiles, liquid requirements, recipe groups, and result; even the stack sizes will match. If no recipe with an exact match is found, this will return null.
+		/// </summary>
+		/// <returns>The recipe found matching the finder's criteria.</returns>
 		public Recipe FindExactRecipe()
 		{
 			for (int k = 0; k < Recipe.numRecipes; k++)
@@ -195,6 +240,10 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
+		/// <summary>
+		/// Searches for all recipes that include the search criteria, then returns them in a list. In terms of ingredients, it will search for recipes that include all the search criteria ingredients, with stack sizes greater than or equal to the search criteria. It will also make sure the recipes include all search criteria recipe groups and tiles. If the search criteria includes a result, the recipes will also have the same result with a stack size greater than or equal to the search criteria. Finally, if needWater, needLava, or needHoney are set to true, the found recipes will also have them set to true.
+		/// </summary>
+		/// <returns>A list containing found recipes matching the finder's criteria.</returns>
 		public List<Recipe> SearchRecipes()
 		{
 			List<Recipe> recipes = new List<Recipe>();

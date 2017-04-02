@@ -28,7 +28,7 @@ namespace ExampleMod.Items
 			player.wingTimeMax = 180;
 		}
 
-		public override void VerticalWingSpeeds(ref float ascentWhenFalling, ref float ascentWhenRising,
+		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
 			ascentWhenFalling = 0.85f;
@@ -38,7 +38,7 @@ namespace ExampleMod.Items
 			constantAscend = 0.135f;
 		}
 
-		public override void HorizontalWingSpeeds(ref float speed, ref float acceleration)
+		public override void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration)
 		{
 			speed = 9f;
 			acceleration *= 2.5f;

@@ -11,41 +11,96 @@ namespace Terraria.ModLoader
 {
 	public abstract partial class Mod
 	{
+		/// <summary>
+		/// Allows you to determine what music should currently play.
+		/// </summary>
+		/// <param name="music">The music.</param>
 		public virtual void UpdateMusic(ref int music)
 		{
 		}
 
+		/// <summary>
+		/// Called when a hotkey is pressed. Check against the name to verify particular hotkey that was pressed. (Using the ModHotKey is more recommended.)
+		/// </summary>
+		/// <param name="name">The display name of the hotkey.</param>
 		public virtual void HotKeyPressed(string name)
 		{
 		}
 
+		/// <summary>
+		/// Called whenever a net message / packet is received from a client (if this is a server) or the server (if this is a client). whoAmI is the ID of whomever sent the packet (equivalent to the Main.myPlayer of the sender), and reader is used to read the binary data of the packet.
+		/// </summary>
+		/// <param name="reader">The reader.</param>
+		/// <param name="whoAmI">The player the message is from.</param>
 		public virtual void HandlePacket(BinaryReader reader, int whoAmI)
 		{
 		}
 
+		/// <summary>
+		/// Allows you to modify net message / packet information that is received before the game can act on it.
+		/// </summary>
+		/// <param name="messageType">Type of the message.</param>
+		/// <param name="reader">The reader.</param>
+		/// <param name="playerNumber">The player number the message is from.</param>
+		/// <returns></returns>
 		public virtual bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
 		{
 			return false;
 		}
 
+		/// <summary>
+		/// Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent.
+		/// </summary>
+		public virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, string text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
+		{
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)
+		/// </summary>
 		public virtual Matrix ModifyTransformMatrix(Matrix Transform)
 		{
 			return Transform;
 		}
 
+		/// <summary>
+		/// Allows you to modify the elements of the in-game interface that get drawn. MethodSequenceListItem can be found in the Terraria.DataStructures namespace. Check https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Interface-layers-values for vanilla interface layer names
+		/// </summary>
+		/// <param name="layers">The layers.</param>
 		public virtual void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
 		{
 		}
 
+		/// <summary>
+		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
+		/// 
+		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.
+		/// </summary>
+		/// <param name="spriteBatch">The sprite batch.</param>
 		public virtual void PostDrawInterface(SpriteBatch spriteBatch)
 		{
 		}
 
+		/// <summary>
+		/// Called while the fullscreen map is active. Allows custom drawing to the map.
+		/// </summary>
+		/// <param name="mouseText">The mouse text.</param>
 		public virtual void PostDrawFullscreenMap(ref string mouseText)
 		{
 		}
 
+		/// <summary>
+		/// Called after the input keys are polled. Allows for modifying things like scroll wheel if your custom drawing should capture that.
+		/// </summary>
 		public virtual void PostUpdateInput()
+		{
+		}
+
+		/// <summary>
+		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.  
+		/// </summary>
+		public virtual void PreSaveAndQuit()
 		{
 		}
 	}
@@ -111,6 +166,14 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.PostUpdateInput();
+			}
+		}
+
+		internal static void PreSaveAndQuit()
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.PreSaveAndQuit();
 			}
 		}
 	}

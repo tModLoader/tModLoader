@@ -6,6 +6,9 @@ using Terraria.Audio;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This class is used to keep track of and support the existence of custom sounds that have been added to the game.
+	/// </summary>
 	public static class SoundLoader
 	{
 		private static readonly IDictionary<SoundType, int> nextSound = new Dictionary<SoundType, int>();
@@ -13,6 +16,9 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<SoundType, IDictionary<int, ModSound>> modSounds = new Dictionary<SoundType, IDictionary<int, ModSound>>();
 		internal static SoundEffect[] customSounds = new SoundEffect[0];
 		internal static SoundEffectInstance[] customSoundInstances = new SoundEffectInstance[0];
+		/// <summary>
+		/// This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.
+		/// </summary>
 		public const int customSoundType = 50;
 		internal static readonly IDictionary<int, int> musicToItem = new Dictionary<int, int>();
 		internal static readonly IDictionary<int, int> itemToMusic = new Dictionary<int, int>();
@@ -40,6 +46,9 @@ namespace Terraria.ModLoader
 			return nextSound[type];
 		}
 
+		/// <summary>
+		/// Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given SoundType and the given sound file path. Returns 0 if there is no corresponding style.
+		/// </summary>
 		public static int GetSoundSlot(SoundType type, string sound)
 		{
 			if (sounds[type].ContainsKey(sound))
@@ -53,6 +62,10 @@ namespace Terraria.ModLoader
 		}
 
 		// TODO: Should we just get rid of the soundType Enum?
+
+		/// <summary>
+		/// Returns a LegacySoundStyle object which encapsulates both a sound type and a sound style (This is the new way to do sounds in 1.3.4) Returns null if there is no corresponding style.
+		/// </summary>
 		internal static LegacySoundStyle GetLegacySoundSlot(SoundType type, string sound)
 		{
 			if (sounds[type].ContainsKey(sound))

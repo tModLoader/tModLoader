@@ -38,7 +38,7 @@ namespace ExampleMod.Commands
 			{
 				throw new UsageException("Could not find player: " + args[0]);
 			}
-			var modPlayer = Main.player[player].GetModPlayer<ExamplePlayer>(Mod);
+			var modPlayer = Main.player[player].GetModPlayer<ExamplePlayer>(mod);
 			if (args[1] == "get")
 			{
 				caller.Reply(args[0] + "'s score is " + modPlayer.score);

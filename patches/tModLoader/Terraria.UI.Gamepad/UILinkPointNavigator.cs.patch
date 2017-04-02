@@ -1,0 +1,11 @@
+--- src/Terraria\Terraria.UI.Gamepad\UILinkPointNavigator.cs
++++ src/tModLoader\Terraria.UI.Gamepad\UILinkPointNavigator.cs
+@@ -28,6 +_,7 @@
+ 			public static int BackButtonCommand = 0;
+ 			public static bool BackButtonInUse = false;
+ 			public static bool BackButtonLock = false;
++			public static int BackButtonGoto = 0;
+ 			public static int FANCYUI_HIGHEST_INDEX = 1;
+ 			public static int FANCYUI_SPECIAL_INSTRUCTIONS = 0;
+ 			public static int INFOACCCOUNT = 0;
+

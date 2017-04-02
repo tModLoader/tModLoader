@@ -11,6 +11,7 @@ using Terraria.ModLoader.IO;
 using static Terraria.ModLoader.ModLoader;
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
     internal class ModCompile
     {
         public interface IBuildStatus
@@ -67,7 +68,9 @@ namespace Terraria.ModLoader
 
             List<BuildingMod> modsToBuild;
             try {
-                var sortedModList = TopoSort(modList, true);
+                EnsureDependenciesExist(modList, true);
+                EnsureTargetVersionsMet(modList);
+                var sortedModList = Sort(modList);
                 modsToBuild = sortedModList.OfType<BuildingMod>().ToList();
             }
             catch (ModSortingException e) {
@@ -178,22 +181,24 @@ namespace Terraria.ModLoader
                     }
                 }
                 else {
-                    status.SetStatus("Compiling " + mod.Name + " for Windows...");
+                    status.SetStatus("Compiling " + mod + " for Windows...");
                     status.SetProgress(0, 2);
                     CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
                 }
+                if (winDLL == null)
+                    return false;
 
-                status.SetStatus("Compiling " + mod.Name + " for Mono...");
+                status.SetStatus("Compiling " + mod + " for Mono...");
                 status.SetProgress(1, 2);
                 CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
-                if (winDLL == null || monoDLL == null)
+                if (monoDLL == null)
                     return false;
             }
 
             if (!VerifyName(mod.Name, winDLL) || !VerifyName(mod.Name, monoDLL))
                 return false;
 
-            status.SetStatus("Building "+mod.Name+"...");
+            status.SetStatus("Building "+mod+"...");
             status.SetProgress(0, 1);
 
             mod.modFile.AddFile("Info", mod.properties.ToBytes());
@@ -325,7 +330,7 @@ namespace Terraria.ModLoader
             }
 
             foreach (var refMod in refMods) {
-                var path = Path.Combine(tempDir, refMod.Name + ".dll");
+                var path = Path.Combine(tempDir, refMod + ".dll");
                 File.WriteAllBytes(path, refMod.modFile.GetMainAssembly(forWindows));
                 refs.Add(path);
 
@@ -337,7 +342,7 @@ namespace Terraria.ModLoader
             }
 
             var compileOptions = new CompilerParameters {
-                OutputAssembly = Path.Combine(tempDir, mod.Name + ".dll"),
+                OutputAssembly = Path.Combine(tempDir, mod + ".dll"),
                 GenerateExecutable = false,
                 GenerateInMemory = false,
                 TempFiles = new TempFileCollection(tempDir, true),
@@ -345,7 +350,7 @@ namespace Terraria.ModLoader
             };
 
             compileOptions.ReferencedAssemblies.AddRange(refs.ToArray());
-            var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories).Where(file => !mod.properties.ignoreFile(file.Substring(mod.path.Length + 1))).ToArray();
 
             try {
                 CompilerResults results;
@@ -363,13 +368,13 @@ namespace Terraria.ModLoader
                 }
 
                 if (results.Errors.HasErrors) {
-                    ErrorLogger.LogCompileErrors(results.Errors);
+                    ErrorLogger.LogCompileErrors(results.Errors, forWindows);
                     return;
                 }
 
                 dll = File.ReadAllBytes(compileOptions.OutputAssembly);
                 if (generatePDB)
-                    pdb = File.ReadAllBytes(Path.Combine(tempDir, mod.Name + ".pdb"));
+                    pdb = File.ReadAllBytes(Path.Combine(tempDir, mod + ".pdb"));
             }
             finally {
                 int numTries = 10;

@@ -5,6 +5,10 @@ using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which ModCommand functions are supported and carried out.
+	/// </summary>
 	public static class CommandManager
 	{
 		internal static readonly IDictionary<string, List<ModCommand>> Commands = new Dictionary<string, List<ModCommand>>(StringComparer.OrdinalIgnoreCase);
@@ -66,7 +70,7 @@ namespace Terraria.ModLoader
 				}
 				else
 				{
-					mc = cmdList.SingleOrDefault(c => c.Mod == mod);
+					mc = cmdList.SingleOrDefault(c => c.mod == mod);
 					if (mc == null)
 						caller.Reply("Mod: " + modName + " does not have a " + name + " command.", Color.Red);
 				}
@@ -75,7 +79,7 @@ namespace Terraria.ModLoader
 			{
 				caller.Reply("Multiple definitions of command /" + name + ". Try:", Color.Red);
 				foreach (var c in cmdList)
-					caller.Reply(c.Mod.Name + ":" + c.Command, Color.LawnGreen);
+					caller.Reply(c.mod.Name + ":" + c.Command, Color.LawnGreen);
 			}
 			else
 			{
@@ -130,7 +134,7 @@ namespace Terraria.ModLoader
 				{
 					string cmd = mc.Command;
 					if (cmdList.Count > 1)
-						cmd = mc.Mod.Name + ":" + cmd;
+						cmd = mc.mod.Name + ":" + cmd;
 
 					list.Add(new Tuple<string, string>(cmd, mc.Description));
 				}

@@ -21,6 +21,7 @@ namespace ExampleMod
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
 		public static SpriteFont exampleFont;
+		public static Effect exampleEffect;
 		private UserInterface exampleUserInterface;
 		internal ExampleUI exampleUI;
 		public static ModHotKey RandomBuffHotKey;
@@ -64,6 +65,10 @@ namespace ExampleMod
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
 				exampleFont = GetFont("Fonts/ExampleFont");
+				exampleEffect = GetEffect("Effects/ExampleEffect");
+				Ref<Effect> exampleEffectRef = new Ref<Effect>();
+				exampleEffectRef.Value = exampleEffect;
+				GameShaders.Armor.BindShader<ArmorShaderData>(ItemType<Items.ExampleDye>(), new ArmorShaderData(exampleEffectRef, "ExampleDyePass"));
 				exampleUI = new ExampleUI();
 				exampleUI.Activate();
 				exampleUserInterface = new UserInterface();
@@ -330,7 +335,7 @@ namespace ExampleMod
 		HeroLives
 	}
 
-	public static class ExampleModExtensions
+	/*public static class ExampleModExtensions
 	{
 		public static int CountItem(this Player player, int type)
 		{
@@ -344,6 +349,6 @@ namespace ExampleMod
 			}
 			return count;
 		}
-	}
+	}*/
 }
 

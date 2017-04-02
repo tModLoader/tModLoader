@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	public class MapLegend
 	{
 		//change type of Lang.mapLegend to this class

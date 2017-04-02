@@ -125,9 +125,9 @@ namespace ExampleMod.UI
 			}
 		}
 
-		DateTime dpsEnd;
-		DateTime dpsStart;
-		int dpsDamage;
+		//DateTime dpsEnd;
+		//DateTime dpsStart;
+		//int dpsDamage;
 		public bool dpsStarted;
 		public DateTime dpsLastHit;
 

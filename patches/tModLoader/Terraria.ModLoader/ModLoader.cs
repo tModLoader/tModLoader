@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,24 +17,41 @@ using System.Security.Cryptography;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// This serves as the central class which loads mods. It contains many static fields and methods related to mods and their contents.
+	/// </summary>
 	public static class ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
-		public static readonly Version version = new Version(0, 9, 1, 1);
+		/// <summary>The name and version number of tModLoader.</summary>
+		public static readonly Version version = new Version(0, 9, 2, 2);
 		public static readonly string versionedName = "tModLoader v" + version;
 #if WINDOWS
-		public const bool windows = true;
+		public static readonly bool windows = true;
 #else
-		public const bool windows = false;
+		public static readonly bool windows = false;
+#endif
+#if LINUX
+		public static readonly bool linux = true;
+#else
+		public static readonly bool linux = false;
+#endif
+#if MAC
+		public static readonly bool mac = true;
+#else
+		public static readonly bool mac = false;
 #endif
 #if GOG
-		public const bool gog = true;
+		public static readonly bool gog = true;
 #else
-		public const bool gog = false;
+		public static readonly bool gog = false;
 #endif
+		public static readonly string compressedPlatformRepresentation = (windows ? "w" : (linux ? "l" : "m")) + (gog ? "g" : "s");
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
+		/// <summary>The file path in which mods are stored.</summary>
 		public static string ModPath => modPath;
 		internal static string modPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
+		/// <summary>The file path in which mod sources are stored. Mod sources are the code and images that developers work with.</summary>
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
 		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
 		internal const int earliestRelease = 149;
@@ -46,6 +64,8 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<string, ModHotKey> modHotKeys = new Dictionary<string, ModHotKey>();
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
+		internal static bool dontRemindModBrowserUpdateReload;
+		internal static bool dontRemindModBrowserDownloadEnable;
 		private static string steamID64 = "";
 		internal static string SteamID64
 		{
@@ -72,6 +92,9 @@ namespace Terraria.ModLoader
 
 		public static int ModCount => loadedMods.Length;
 
+		/// <summary>
+		/// Gets the instance of the Mod with the specified name.
+		/// </summary>
 		public static Mod GetMod(string name)
 		{
 			Mod m;
@@ -86,6 +109,9 @@ namespace Terraria.ModLoader
 
 		public static Mod[] LoadedMods => (Mod[])loadedMods.Clone();
 
+		/// <summary>
+		/// Returns an array containing the names of all loaded mods. The array entries will be in the reverse order in which the mods were loaded.
+		/// </summary>
 		public static string[] GetLoadedMods()
 		{
 			return loadOrder.ToArray();
@@ -148,7 +174,11 @@ namespace Terraria.ModLoader
 			}
 
 			if (Main.dedServ)
+			{
 				ModNet.AssignNetIDs();
+				//Main.player[0] = new Player();
+				Main.player[255] = new Player();
+			}
 
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
@@ -206,20 +236,35 @@ namespace Terraria.ModLoader
 			WorldHooks.ResizeArrays();
 		}
 
+		// TODO, investigate if this causes memory errors.
+		internal static Dictionary<string, Tuple<DateTime, TmodFile>> findModsCache = new Dictionary<string, Tuple<DateTime, TmodFile>>();
 		internal static TmodFile[] FindMods()
 		{
 			Directory.CreateDirectory(ModPath);
 			IList<TmodFile> files = new List<TmodFile>();
+
 			foreach (string fileName in Directory.GetFiles(ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
 			{
-				TmodFile file = new TmodFile(fileName);
-				file.Read();
-				if (file.ValidMod() == null)
+				var lastModified = File.GetLastWriteTime(fileName);
+				Tuple<DateTime, TmodFile> cacheMod;
+				TmodFile file = null;
+				if (findModsCache.TryGetValue(fileName, out cacheMod))
 				{
-					files.Add(file);
+					if (cacheMod.Item1 == lastModified)
+						file = cacheMod.Item2;
+					else
+						findModsCache.Remove(fileName);
 				}
+				if (file == null)
+				{
+					file = new TmodFile(fileName);
+					file.Read();
+					findModsCache.Add(fileName, new Tuple<DateTime, TmodFile>(lastModified, file));
+				}
+				if (file.ValidMod() == null)
+					files.Add(file);
 			}
-			return files.ToArray();
+			return files.OrderBy(x => x.name).ToArray();
 		}
 
 		private static bool LoadMods()
@@ -239,7 +284,9 @@ namespace Terraria.ModLoader
 
 			try
 			{
-				modsToLoad = TopoSort(modsToLoad, false);
+				EnsureDependenciesExist(modsToLoad, false);
+				EnsureTargetVersionsMet(modsToLoad);
+				modsToLoad = Sort(modsToLoad);
 			}
 			catch (ModSortingException e)
 			{
@@ -304,25 +351,30 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static List<LoadingMod> TopoSort(ICollection<LoadingMod> mods, bool building)
+		internal static void EnsureDependenciesExist(ICollection<LoadingMod> mods, bool includeWeak)
 		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
 			var errored = new HashSet<LoadingMod>();
 			var errorLog = new StringBuilder();
 
-			//ensure dependencies exist
 			foreach (var mod in mods)
-				foreach (var depName in mod.properties.RefNames(building))
+				foreach (var depName in mod.properties.RefNames(includeWeak))
 					if (!nameMap.ContainsKey(depName))
 					{
 						errored.Add(mod);
-						errorLog.AppendLine("Missing mod: " + depName + " required by " + mod.Name);
+						errorLog.AppendLine("Missing mod: " + depName + " required by " + mod);
 					}
 
 			if (errored.Count > 0)
 				throw new ModSortingException(errored, errorLog.ToString());
+		}
 
-			//ensure target versions are met
+		internal static void EnsureTargetVersionsMet(ICollection<LoadingMod> mods)
+		{
+			var nameMap = mods.ToDictionary(mod => mod.Name);
+			var errored = new HashSet<LoadingMod>();
+			var errorLog = new StringBuilder();
+
 			foreach (var mod in mods)
 				foreach (var dep in mod.properties.Refs(true))
 				{
@@ -330,60 +382,92 @@ namespace Terraria.ModLoader
 					if (nameMap.TryGetValue(dep.mod, out inst) && inst.properties.version < dep.target)
 					{
 						errored.Add(mod);
-						errorLog.AppendLine(mod.Name + " requires version " + dep.target + "+ of " + dep.mod +
+						errorLog.AppendLine(mod + " requires version " + dep.target + "+ of " + dep.mod +
 							" but version " + inst.properties.version + " is installed");
 					}
 				}
 
 			if (errored.Count > 0)
 				throw new ModSortingException(errored, errorLog.ToString());
+		}
 
-			//build graph
-			var modsBefore = mods.ToDictionary(mod => mod.Name, mod => mod.properties.sortAfter.ToList());
-			foreach (var mod in mods)
-				foreach (var before in mod.properties.sortBefore)
-					modsBefore[before].Add(mod.Name);
+		internal static void EnsureSyncedDependencyStability(TopoSort<LoadingMod> synced, TopoSort<LoadingMod> full)
+		{
+			var errored = new HashSet<LoadingMod>();
+			var errorLog = new StringBuilder();
 
-
-			var visiting = new Stack<LoadingMod>();
-			var sorted = new List<LoadingMod>();
-
-			Action<LoadingMod> Visit = null;
-			Visit = mod =>
+			foreach (var mod in synced.list)
 			{
-				if (sorted.Contains(mod) || errored.Contains(mod))
-					return;
-
-				visiting.Push(mod);
-				foreach (var depName in modsBefore[mod.Name].Where(nameMap.ContainsKey))
+				var chains = new List<List<LoadingMod>>();
+				//define recursive chain finding method
+				Action<LoadingMod, Stack<LoadingMod>> FindChains = null;
+				FindChains = (search, stack) =>
 				{
-					var dep = nameMap[depName];
-					if (visiting.Contains(dep))
+					stack.Push(search);
+
+					if (search.properties.side == ModSide.Both && stack.Count > 1)
 					{
-						var cycle = dep.Name;
-						foreach (var entry in visiting)
-						{
-							errored.Add(entry);
-							cycle = entry.Name + " -> " + cycle;
-							if (entry == dep) break;
-						}
-						errorLog.AppendLine("Dependency Cycle: " + cycle);
-						continue;
+						if (stack.Count > 2)//direct Both -> Both references are ignored
+							chains.Add(stack.Reverse().ToList());
+					}
+					else
+					{//recursively build the chain, all entries in stack should be unsynced
+						foreach (var dep in full.Dependencies(search))
+							FindChains(dep, stack);
 					}
 
-					Visit(dep);
-				}
-				visiting.Pop();
-				sorted.Add(mod);
-			};
+					stack.Pop();
+				};
+				FindChains(mod, new Stack<LoadingMod>());
 
-			foreach (var mod in mods)
-				Visit(mod);
+				if (chains.Count == 0)
+					continue;
+
+				var syncedDependencies = synced.AllDependencies(mod);
+				foreach (var chain in chains)
+					if (!syncedDependencies.Contains(chain.Last()))
+					{
+						errored.Add(mod);
+						errorLog.AppendLine(mod + " indirectly depends on " + chain.Last() + " via " + string.Join(" -> ", chain));
+					}
+			}
 
 			if (errored.Count > 0)
+			{
+				errorLog.AppendLine("Some of these mods may not exist on both client and server. Add a direct sort entries or weak references.");
 				throw new ModSortingException(errored, errorLog.ToString());
+			}
+		}
 
-			return sorted;
+		private static TopoSort<LoadingMod> BuildSort(ICollection<LoadingMod> mods)
+		{
+			var nameMap = mods.ToDictionary(mod => mod.Name);
+			return new TopoSort<LoadingMod>(mods,
+				mod => mod.properties.sortAfter.Where(nameMap.ContainsKey).Select(name => nameMap[name]),
+				mod => mod.properties.sortBefore.Where(nameMap.ContainsKey).Select(name => nameMap[name]));
+		}
+
+		internal static List<LoadingMod> Sort(ICollection<LoadingMod> mods)
+		{
+			var preSorted = mods.OrderBy(mod => mod.Name).ToList();
+			var syncedSort = BuildSort(preSorted.Where(mod => mod.properties.side == ModSide.Both).ToList());
+			var fullSort = BuildSort(preSorted);
+			EnsureSyncedDependencyStability(syncedSort, fullSort);
+
+			try
+			{
+				var syncedList = syncedSort.Sort();
+
+				//preserve synced order
+				for (int i = 1; i < syncedList.Count; i++)
+					fullSort.AddEntry(syncedList[i - 1], syncedList[i]);
+
+				return fullSort.Sort();
+			}
+			catch (TopoSort<LoadingMod>.SortingException e)
+			{
+				throw new ModSortingException(e.set, e.Message);
+			}
 		}
 
 		internal static void Unload()
@@ -422,6 +506,7 @@ namespace Terraria.ModLoader
 			WorldHooks.Unload();
 			RecipeHooks.Unload();
 			CommandManager.Unload();
+			TagSerializer.Reload();
 			GameContent.UI.CustomCurrencyManager.Initialize();
 
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
@@ -467,7 +552,7 @@ namespace Terraria.ModLoader
 		internal static string[] FindModSources()
 		{
 			Directory.CreateDirectory(ModSourcePath);
-			return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => dir != ".vs").ToArray();
+			return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => new DirectoryInfo(dir).Name != ".vs").ToArray();
 		}
 
 		internal static void BuildAllMods()
@@ -509,6 +594,10 @@ namespace Terraria.ModLoader
 			subName = name.Substring(slash + 1);
 		}
 
+		/// <summary>
+		/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static byte[] GetFileBytes(string name)
 		{
 			string modName, subName;
@@ -521,6 +610,9 @@ namespace Terraria.ModLoader
 			return mod.GetFileBytes(subName);
 		}
 
+		/// <summary>
+		/// Returns whether or not a file with the specified name exists.
+		/// </summary>
 		public static bool FileExists(string name)
 		{
 			if (!name.Contains('/'))
@@ -533,6 +625,10 @@ namespace Terraria.ModLoader
 			return mod != null && mod.FileExists(subName);
 		}
 
+		/// <summary>
+		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/FileNameWithoutExtension" will reference an image from the "terraria/Content/Images" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static Texture2D GetTexture(string name)
 		{
 			if (Main.dedServ)
@@ -550,6 +646,9 @@ namespace Terraria.ModLoader
 			return mod.GetTexture(subName);
 		}
 
+		/// <summary>
+		/// Returns whether or not a texture with the specified name exists.
+		/// </summary>
 		public static bool TextureExists(string name)
 		{
 			if (!name.Contains('/'))
@@ -565,6 +664,10 @@ namespace Terraria.ModLoader
 			return mod != null && mod.TextureExists(subName);
 		}
 
+		/// <summary>
+		/// Gets the sound with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the sound does not exist. Note: SoundEffect is in the Microsoft.Xna.Framework.Audio namespace.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static SoundEffect GetSound(string name)
 		{
 			if (Main.dedServ)
@@ -580,6 +683,9 @@ namespace Terraria.ModLoader
 			return mod.GetSound(subName);
 		}
 
+		/// <summary>
+		/// Returns whether or not a sound with the specified name exists.
+		/// </summary>
 		public static bool SoundExists(string name)
 		{
 			if (!name.Contains('/'))
@@ -604,6 +710,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("SteamID64", ModLoader.steamID64);
 			Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
 			Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
+			Main.Configuration.Put("DontRemindModBrowserUpdateReload", ModLoader.dontRemindModBrowserUpdateReload);
+			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", ModLoader.dontRemindModBrowserDownloadEnable);
 		}
 
 		internal static void LoadConfiguration()
@@ -612,6 +720,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get<string>("SteamID64", ref ModLoader.steamID64);
 			Main.Configuration.Get<bool>("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
 			Main.Configuration.Get<bool>("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
+			Main.Configuration.Get<bool>("DontRemindModBrowserUpdateReload", ref ModLoader.dontRemindModBrowserUpdateReload);
+			Main.Configuration.Get<bool>("DontRemindModBrowserDownloadEnable", ref ModLoader.dontRemindModBrowserDownloadEnable);
 		}
 
 		/// <summary>
@@ -649,6 +759,8 @@ namespace Terraria.ModLoader
 			public readonly BuildProperties properties;
 
 			public string Name => modFile.name;
+
+			public override string ToString() => Name;
 
 			public LoadingMod(TmodFile modFile, BuildProperties properties)
 			{

@@ -35,6 +35,7 @@ namespace ExampleMod.NPCs
 			npc.HitSound = SoundID.NPCHit1;
 			npc.DeathSound = SoundID.NPCDeath1;
 			npc.value = Item.buyPrice(0, 0, 15, 0);
+			npc.hide = true;
 			banner = npc.type;
 			bannerItem = mod.ItemType("OctopusBanner");
 		}
@@ -102,10 +103,7 @@ namespace ExampleMod.NPCs
 
 		public override float CanSpawn(NPCSpawnInfo spawnInfo)
 		{
-			int x = spawnInfo.spawnTileX;
-			int y = spawnInfo.spawnTileY;
-			int tile = (int)Main.tile[x, y].type;
-			return (ExampleMod.NormalSpawn(spawnInfo) && (tile == 53 || tile == 112 || tile == 116 || tile == 234) && ExampleMod.NoZoneAllowWater(spawnInfo) && spawnInfo.water) && y < Main.rockLayer && (x < 250 || x > Main.maxTilesX - 250) && !spawnInfo.playerSafe && ExampleWorld.downedAbomination ? 0.5f : 0f;
+			return !spawnInfo.playerSafe && ExampleWorld.downedAbomination ? SpawnCondition.OceanMonster.Chance * 0.5f : 0f;
 		}
 	}
 }

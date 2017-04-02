@@ -5,6 +5,10 @@ using Terraria;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures.
+	/// </summary>
 	public static class EquipLoader
 	{
 		//in Terraria.Main.DrawPlayer and Terraria.Main.DrawPlayerHead get rid of checks for slot too high (not necessary for loading)
@@ -39,6 +43,12 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
+		/// <summary>
+		/// Gets the equipment texture for the specified equipment type and ID.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="slot"></param>
+		/// <returns></returns>
 		public static EquipTexture GetEquipTexture(EquipType type, int slot)
 		{
 			if (equipTextures[type].ContainsKey(slot))

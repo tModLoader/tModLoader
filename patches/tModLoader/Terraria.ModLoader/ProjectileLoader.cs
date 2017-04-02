@@ -8,6 +8,10 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which projectile-related functions are carried out. It also stores a list of mod projectiles by ID.
+	/// </summary>
 	public static class ProjectileLoader
 	{
 		private static int nextProjectile = ProjectileID.Count;
@@ -21,8 +25,10 @@ namespace Terraria.ModLoader
 		private static Action<Projectile>[] HookAI;
 		private static Action<Projectile>[] HookPostAI;
 		private static Func<Projectile, bool>[] HookShouldUpdatePosition;
-		private delegate void DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
+		private delegate bool DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
 		private static DelegateTileCollideStyle[] HookTileCollideStyle;
+		private delegate void DelegateLegacyTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
+		private static DelegateLegacyTileCollideStyle[] LegacyHookTileCollideStyle;
 		private static Func<Projectile, Vector2, bool>[] HookOnTileCollide;
 		private static Func<Projectile, bool?>[] HookCanCutTiles;
 		private static Action<Projectile>[] HookCutTiles;
@@ -54,6 +60,8 @@ namespace Terraria.ModLoader
 		private static DelegateNumGrappleHooks[] HookNumGrappleHooks;
 		private delegate void DelegateGrappleRetreatSpeed(Projectile projectile, Player player, ref float speed);
 		private static DelegateGrappleRetreatSpeed[] HookGrappleRetreatSpeed;
+		private delegate void DelegateGrapplePullSpeed(Projectile projectile, Player player, ref float speed);
+		private static DelegateGrappleRetreatSpeed[] HookGrapplePullSpeed;
 		private static Action<Projectile, int, List<int>, List<int>, List<int>, List<int>>[] HookDrawBehind;
 
 		internal static int ReserveProjectileID()
@@ -67,6 +75,11 @@ namespace Terraria.ModLoader
 
 		internal static int ProjectileCount => nextProjectile;
 
+		/// <summary>
+		/// Gets the ModProjectile instance corresponding to the specified type.
+		/// </summary>
+		/// <param name="type">The type of the projectile</param>
+		/// <returns>The ModProjectile instance in the projectiles array, null if not found.</returns>
 		public static ModProjectile GetProjectile(int type)
 		{
 			return type >= ProjectileID.Count && type < ProjectileCount ? projectiles[type - ProjectileID.Count] : null;
@@ -80,6 +93,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.projHook, nextProjectile);
 			Array.Resize(ref Main.projFrames, nextProjectile);
 			Array.Resize(ref Main.projPet, nextProjectile);
+			Array.Resize(ref Main.projName, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosLifeTimeMultiplier, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosMaximumRange, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosTopSpeed, nextProjectile);
@@ -121,7 +135,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookAI, globalProjectiles, g => g.AI);
 			ModLoader.BuildGlobalHook(ref HookPostAI, globalProjectiles, g => g.PostAI);
 			ModLoader.BuildGlobalHook(ref HookShouldUpdatePosition, globalProjectiles, g => g.ShouldUpdatePosition);
-			ModLoader.BuildGlobalHook(ref HookTileCollideStyle, globalProjectiles, g => g.TileCollideStyle);
+			ModLoader.BuildGlobalHook(ref HookTileCollideStyle, globalProjectiles, g => g.NewTileCollideStyle);
+			ModLoader.BuildGlobalHook(ref LegacyHookTileCollideStyle, globalProjectiles, g => g.TileCollideStyle);
 			ModLoader.BuildGlobalHook(ref HookOnTileCollide, globalProjectiles, g => g.OnTileCollide);
 			ModLoader.BuildGlobalHook(ref HookCanCutTiles, globalProjectiles, g => g.CanCutTiles);
 			ModLoader.BuildGlobalHook(ref HookCutTiles, globalProjectiles, g => g.CutTiles);
@@ -148,6 +163,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookUseGrapple, globalProjectiles, g => g.UseGrapple);
 			ModLoader.BuildGlobalHook(ref HookNumGrappleHooks, globalProjectiles, g => g.NumGrappleHooks);
 			ModLoader.BuildGlobalHook(ref HookGrappleRetreatSpeed, globalProjectiles, g => g.GrappleRetreatSpeed);
+			ModLoader.BuildGlobalHook(ref HookGrapplePullSpeed, globalProjectiles, g => g.GrapplePullSpeed);
 			ModLoader.BuildGlobalHook(ref HookDrawBehind, globalProjectiles, g => g.DrawBehind);
 		}
 
@@ -312,14 +328,25 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Projectile.Update before adjusting velocity to tile collisions add
 		//  ProjectileLoader.TileCollideStyle(this, ref num25, ref num26, ref flag4);
-		public static void TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
+		public static bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
 		{
-			projectile.modProjectile?.TileCollideStyle(ref width, ref height, ref fallThrough);
+			if (IsModProjectile(projectile) && !projectile.modProjectile.NewTileCollideStyle(ref width, ref height, ref fallThrough))
+			{
+				return false;
+			}
 
 			foreach (var hook in HookTileCollideStyle)
 			{
+				if (!hook(projectile, ref width, ref height, ref fallThrough))
+				{
+					return false;
+				}
+			}
+			foreach (var hook in LegacyHookTileCollideStyle)
+			{
 				hook(projectile, ref width, ref height, ref fallThrough);
 			}
+			return true;
 		}
 		//in Terraria.Projectile.Update before if/else chain for tile collide behavior add
 		//  if(!ProjectileLoader.OnTileCollide(this, velocity)) { } else
@@ -708,6 +735,16 @@ namespace Terraria.ModLoader
 			projectile.modProjectile?.GrappleRetreatSpeed(player, ref speed);
 
 			foreach (var hook in HookGrappleRetreatSpeed)
+			{
+				hook(projectile, player, ref speed);
+			}
+		}
+
+		public static void GrapplePullSpeed(Projectile projectile, Player player, ref float speed)
+		{
+			projectile.modProjectile?.GrapplePullSpeed(player, ref speed);
+
+			foreach (var hook in HookGrapplePullSpeed)
 			{
 				hook(projectile, player, ref speed);
 			}

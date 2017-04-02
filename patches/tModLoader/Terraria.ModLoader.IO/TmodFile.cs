@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal byte[] signature { get; private set; } = new byte[256];
-		
+
 		private bool? validModBrowserSignature;
 		internal bool ValidModBrowserSignature
 		{
@@ -88,31 +88,35 @@ namespace Terraria.ModLoader.IO
 
 		internal void Save()
 		{
-			var dataStream = new MemoryStream();
-			using (var writer = new BinaryWriter(new DeflateStream(dataStream, CompressionMode.Compress)))
+			using (var dataStream = new MemoryStream())
 			{
-				writer.Write(name);
-				writer.Write(version.ToString());
-
-				writer.Write(files.Count);
-				foreach (var entry in files)
+				using (var writerStream = new DeflateStream(dataStream, CompressionMode.Compress))
+				using (var writer = new BinaryWriter(writerStream))
 				{
-					writer.Write(entry.Key);
-					writer.Write(entry.Value.Length);
-					writer.Write(entry.Value);
-				}
-			}
-			var data = dataStream.ToArray();
-			hash = SHA1.Create().ComputeHash(data);
+					writer.Write(name);
+					writer.Write(version.ToString());
 
-			using (var writer = new BinaryWriter(File.Create(path)))
-			{
-				writer.Write(Encoding.ASCII.GetBytes("TMOD"));
-				writer.Write(ModLoader.version.ToString());
-				writer.Write(hash);
-				writer.Write(signature);
-				writer.Write(data.Length);
-				writer.Write(data);
+					writer.Write(files.Count);
+					foreach (var entry in files)
+					{
+						writer.Write(entry.Key);
+						writer.Write(entry.Value.Length);
+						writer.Write(entry.Value);
+					}
+				}
+				var data = dataStream.ToArray();
+				hash = SHA1.Create().ComputeHash(data);
+
+				using (var fileStream = File.Create(path))
+				using (var fileWriter = new BinaryWriter(fileStream))
+				{
+					fileWriter.Write(Encoding.ASCII.GetBytes("TMOD"));
+					fileWriter.Write(ModLoader.version.ToString());
+					fileWriter.Write(hash);
+					fileWriter.Write(signature);
+					fileWriter.Write(data.Length);
+					fileWriter.Write(data);
+				}
 			}
 		}
 
@@ -121,7 +125,8 @@ namespace Terraria.ModLoader.IO
 			try
 			{
 				byte[] data;
-				using (var reader = new BinaryReader(File.OpenRead(path)))
+				using (var fileStream = File.OpenRead(path))
+				using (var reader = new BinaryReader(fileStream))
 				{
 					if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
 						throw new Exception("Magic Header != \"TMOD\"");
@@ -135,7 +140,9 @@ namespace Terraria.ModLoader.IO
 						throw new Exception("Hash mismatch, data blob has been modified or corrupted");
 				}
 
-				using (var reader = new BinaryReader(new DeflateStream(new MemoryStream(data), CompressionMode.Decompress)))
+				using (var memoryStream = new MemoryStream(data))
+				using (var deflateStream = new DeflateStream(memoryStream, CompressionMode.Decompress))
+				using (var reader = new BinaryReader(deflateStream))
 				{
 					name = reader.ReadString();
 					version = new Version(reader.ReadString());
@@ -165,14 +172,16 @@ namespace Terraria.ModLoader.IO
 			return null;
 		}
 
-		public byte[] GetMainAssembly(bool windows = ModLoader.windows)
+		public byte[] GetMainAssembly(bool? windows = null)
 		{
-			return HasFile("All.dll") ? GetFile("All.dll") : windows ? GetFile("Windows.dll") : GetFile("Mono.dll");
+			bool isWindows = windows.GetValueOrDefault(ModLoader.windows);
+			return HasFile("All.dll") ? GetFile("All.dll") : isWindows ? GetFile("Windows.dll") : GetFile("Mono.dll");
 		}
 
-		public byte[] GetMainPDB(bool windows = ModLoader.windows)
+		public byte[] GetMainPDB(bool? windows = null)
 		{
-			return HasFile("All.pdb") ? GetFile("All.pdb") : windows ? GetFile("Windows.pdb") : GetFile("Mono.pdb");
+			bool isWindows = windows.GetValueOrDefault(ModLoader.windows);
+			return HasFile("All.pdb") ? GetFile("All.pdb") : isWindows ? GetFile("Windows.pdb") : GetFile("Mono.pdb");
 		}
 	}
 }

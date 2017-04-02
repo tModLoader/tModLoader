@@ -6,12 +6,22 @@ using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This serves as the central class from which WaterStyle functions are supported and carried out.
+	/// </summary>
 	public static class WaterStyleLoader
 	{
+		/// <summary>
+		/// The maximum amount of liquids in vanilla.
+		/// </summary>
 		public const int vanillaWaterCount = Main.maxLiquidTypes;
 		private static int nextWaterStyle = vanillaWaterCount;
 		internal static readonly IList<ModWaterStyle> waterStyles = new List<ModWaterStyle>();
 
+		/// <summary>
+		/// The number of water styles that exist in the game, both vanilla and modded.
+		/// </summary>
 		public static int WaterStyleCount => nextWaterStyle;
 
 		internal static int ReserveStyle()
@@ -21,6 +31,9 @@ namespace Terraria.ModLoader
 			return reserve;
 		}
 
+		/// <summary>
+		/// Returns the ModWaterStyle with the given ID.
+		/// </summary>
 		public static ModWaterStyle GetWaterStyle(int style)
 		{
 			if (style < vanillaWaterCount || style >= nextWaterStyle)

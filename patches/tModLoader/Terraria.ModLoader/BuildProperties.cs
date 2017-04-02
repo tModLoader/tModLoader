@@ -7,6 +7,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	internal class BuildProperties
 	{
 		internal struct ModReference
@@ -65,10 +66,10 @@ namespace Terraria.ModLoader
 		internal string description = "";
 		internal ModSide side;
 
-		public IEnumerable<ModReference> Refs(bool build) =>
-			build ? modReferences.Concat(weakReferences) : modReferences;
+		public IEnumerable<ModReference> Refs(bool includeWeak) =>
+			includeWeak ? modReferences.Concat(weakReferences) : modReferences;
 
-		public IEnumerable<string> RefNames(bool build) => Refs(build).Select(dep => dep.mod);
+		public IEnumerable<string> RefNames(bool includeWeak) => Refs(includeWeak).Select(dep => dep.mod);
 
 		private static IEnumerable<string> ReadList(string value)
 			=> value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);

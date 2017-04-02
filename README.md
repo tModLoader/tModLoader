@@ -1,29 +1,60 @@
-# tModLoader
+# tModLoader, a Terraria modding API [![Build Status](https://travis-ci.org/bluemagic123/tModLoader.svg?branch=master)](https://travis-ci.org/bluemagic123/tModLoader) [![Discord](https://discordapp.com/api/guilds/103110554649894912/widget.png?style=shield)](https://discord.me/tmodloader)
 
 ## About
 
-tModLoader is essentially a mod for Terraria that provides a way to load your own mods without having to work directly with Terraria's source code itself. This means you can easily make mods that are compatible with other people's mods and save yourself the trouble of having to decompile then recompile Terraria.exe. It is made to work for Terraria 1.3.
+tModLoader is an API for Terraria that provides a way to load your own mods without having to work directly with Terraria's source code. This means you can easily make mods that are compatible with other people's mods and save yourself the trouble of having to decompile then recompile Terraria.exe. It is made to work for Terraria version 1.3 and above.
 
-My goal for tModLoader it to make it simple as possible while giving the modder powerful control over the game. It is designed in a way as to minimize the effort required for me to update to future Terraria versions. If you either don't want to commit to this project or are not able to decompile Terraria, I am open to suggestions for hooks.
+Our goal for tModLoader is to make it simple as possible to mod while giving the modder powerful control over the game. It is designed in a way as to minimize the effort required for us to update to future Terraria versions. If you either don't want to commit to this project or are not able to decompile Terraria, we are open to suggestions for hooks and/or modifications.
 
-Download and installation instructions are on the forums thread.
+Download and installation instructions are on the [forums thread](http://forums.terraria.org/index.php?threads/1-3-tmodloader-a-modding-api.23726/).
 
-[Forums Thread](http://forums.terraria.org/index.php?threads/1-3-tmodloader-a-modding-api.23726/)
-
-Note that this repository will usually be ahead of the current released version.
+**Note**: this repository will be ahead of the current released version.
 
 ## Contributing
 
 **Huge thanks to [ChickenBones](https://github.com/Chicken-Bones) for creating the code patcher!**
 
-### Getting the tModLoader code
+### Brief introduction
+___
+tModLoader uses its own code patcher. If you want to contribute to tModLoader, you will have to use this tool. We need to use a patches system, because we are not allowed to upload vanilla source code publicly. It also allows for relatively easy code maintenance. Here's what the tool looks like: [url](https://i.imgur.com/u9Yy1rl.png)
 
-If you want to contribute to this project, you'll have to download the code for tModLoader, including all the changes made to the Terraria source. This requires you to have purchased your own Terraria.exe first. Note that you *must* have the *Windows* version in order for this to work! (Creating patch files that operate on the Mac version would basically just be giving away the source code, due to how the decompiler works differently on it for some reason.)
+Before you're about to make a contribution, please check [this article](https://github.com/bluemagic123/tModLoader/blob/master/CONTRIBUTING.md). Thanks in advance.
 
-In order to do get the tModLoader code, first clone the repository, then run the setup.bat file. If setup.bat doesn't work, you may have to unblock the files in the repository. Once tModLoader Dev Setup is open, just click on the Setup button and select the location of your vanilla Terraria.exe. **Warning:** decompiling will probably freeze your computer for a couple of hours. So you'll need to find something to do in real life until that's done.
+### Getting the tModLoader code for the first time
+___
+1. Clone this repository
+2. Open setup.bat in the root folder
+    * If setup.bat won't open, you must unblock all the files in the cloned repository
+3. Select your vanilla terraria.exe (must be vanilla) ([img](https://i.imgur.com/MccGyvB.png))
+4. Click on 'Setup' (top left button)
+    * **Warning:** decompilation can take several hours to complete depending on your hardware. It's also likely that your computer **completely freezes** during the process, mainly once it hits NPC.cs It is recommended that you enable the 'Single Decompile Thread' option ([img](https://i.imgur.com/6mBbZnQ.png)) if you don't have very high end hardware. It's unwise to even attempt a decompile if you have less than 8 GB RAM. Having an SSD, powerful CPU and a high amount of RAM will significantly speed up the decompilation process.
+5. When decompilation is complete, verify that you have these folders:
+    * src/decompiled/
+    * src/merged/
+    * src/Terraria/
+    * src/tModLoader/
+6. To open up the tModLoader workspace, navigate to solutions/ and open tModLoader.sln
+7. ???
+8. Profit
 
-When that's all done, you should have the tModLoader source in the src folder. Open the solutions folder then open the tModLoader solution.
+### Keeping your code up-to-date
+___
+**Warning:** it is wise that you backup your edits before pulling latest patches, if you have any that you haven't committed yet. Applying the latest patches **will** delete any of your work not included in them.
 
-### Committing changes
+1. Pull all newer commits from this repository
+   * You should verify that you now have the latest patches, located in patches/
+2. Open setup.bat in the root folder
+3. Click on 'Regenerate Source' (bottom right corner)
+   * After this process you can open solutions/tModLoader.sln as usual with the updated code
+4. ???
+5. Profit
 
-So you've made some changes to Terraria and want to commit them. Run setup.bat again, then click on Diff tModLoader. This will create patch files with the changes you've made. Finally, all you'll need to do is commit the patches folder. Take a look at the changes indicated in the commit to ensure that only the changes you want are included, and not any other accidental modifications or reformattings. 
+### Committing your changes
+___
+1. Open setup.bat in the root folder
+2. Click on 'Diff x' where x is your workspace
+    * Your workspace is tModLoader 99% of the time. If it isn't, we imply you know what you're doing.
+3. Create a new commit to commit the patches/ folder
+    * Before you push your commit, please check our [contribution article](https://github.com/bluemagic123/tModLoader/blob/master/CONTRIBUTING.md). Thanks.
+4. ???
+5. Profit

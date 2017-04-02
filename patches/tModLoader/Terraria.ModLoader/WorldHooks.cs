@@ -5,6 +5,10 @@ using Terraria.World.Generation;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
+	/// <summary>
+	/// This is where all ModWorld hooks are gathered and called.
+	/// </summary>
 	public static class WorldHooks
 	{
 		internal static readonly IList<ModWorld> worlds = new List<ModWorld>();
@@ -112,6 +116,14 @@ namespace Terraria.ModLoader
 			foreach (ModWorld modWorld in worlds)
 			{
 				modWorld.ChooseWaterStyle(ref style);
+			}
+		}
+
+		public static void PostDrawTiles()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostDrawTiles();
 			}
 		}
 	}

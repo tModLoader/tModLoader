@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Projectiles.PuritySpirit;
+using Terraria.Utilities;
 
 namespace ExampleMod.NPCs.PuritySpirit
 {
@@ -163,7 +164,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		private int damageTotal = 0;
 		private bool saidRushMessage = false;
 		public readonly IList<int> targets = new List<int>();
-		public int[] attackWeights = new int[]{ 2000, 2000, 2000, 2000, 3000 };
+		public int[] attackWeights = new int[] { 2000, 2000, 2000, 2000, 3000 };
 		public const int minAttackWeight = 1000;
 		public const int maxAttackWeight = 4000;
 
@@ -718,6 +719,40 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public override void NPCLoot()
 		{
+			/* // Consider using this alternate approach to choosing drops.
+			int trophyChoice = new WeightedRandom<int>(
+				Tuple.Create(mod.ItemType<Items.Placeable.PuritySpiritTrophy>(), 1.0),
+				Tuple.Create(mod.ItemType<Items.Placeable.BunnyTrophy>(), 1.0),
+				Tuple.Create(mod.ItemType<Items.Placeable.TreeTrophy>(), 1.0),
+				Tuple.Create(0, 7.0)
+			);
+			if (trophyChoice > 0)
+			{
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, trophyChoice);
+			}
+			if (Main.expertMode)
+			{
+				npc.DropBossBags();
+			}
+			else
+			{
+				//This is an alrenate syntax you can use
+				//var maskChooser = new WeightedRandom<int>();
+				//maskChooser.Add(mod.ItemType<Items.Armor.PuritySpiritMask>());
+				//maskChooser.Add(mod.ItemType<Items.Armor.BunnyMask>());
+				//maskChooser.Add(ItemID.Bunny, 5.0);
+				//int maskChoice = maskChooser;
+
+				int maskChoice = new WeightedRandom<int>(
+					Tuple.Create(mod.ItemType<Items.Armor.PuritySpiritMask>(), 1.0),
+					Tuple.Create(mod.ItemType<Items.Armor.BunnyMask>(), 1.0),
+					Tuple.Create((int)ItemID.Bunny, 5.0)
+				);
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, maskChoice);
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType<Items.PurityShield>());
+			}
+			ExampleWorld.downedPuritySpirit = true; */
+
 			int choice = Main.rand.Next(10);
 			int item = 0;
 			switch (choice)

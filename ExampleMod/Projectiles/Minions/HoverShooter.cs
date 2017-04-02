@@ -55,7 +55,17 @@ namespace ExampleMod.Projectiles.Minions
 			float targetDist = viewDist;
 			bool target = false;
 			projectile.tileCollide = true;
-			for (int k = 0; k < 200; k++)
+			if(player.HasMinionAttackTargetNPC)
+			{
+				NPC npc = Main.npc[player.MinionAttackTargetNPC];
+				if(Collision.CanHitLine(projectile.position, projectile.width, projectile.height, npc.position, npc.width, npc.height))
+				{
+					targetDist = Vector2.Distance(projectile.Center, targetPos);
+					targetPos = npc.Center;
+					target = true;
+				}
+			}
+			else for (int k = 0; k < 200; k++)
 			{
 				NPC npc = Main.npc[k];
 				if (npc.CanBeChasedBy(this, false))
@@ -201,9 +211,10 @@ namespace ExampleMod.Projectiles.Minions
 			}
 		}
 
-		public override void TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
+		public override bool NewTileCollideStyle(ref int width, ref int height, ref bool fallThrough)
 		{
 			fallThrough = true;
+			return true;
 		}
 	}
 }

@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.Default
 {
 	public class StartBag : ModItem
 	{
-		private IList<Item> items = new List<Item>();
+		private List<Item> items = new List<Item>();
 
 		public override void SetDefaults()
 		{
@@ -44,12 +44,12 @@ namespace Terraria.ModLoader.Default
 
 		public override TagCompound Save()
 		{
-			return new TagCompound {["items"] = items.Select(ItemIO.Save).ToList()};
+			return new TagCompound {["items"] = items};
 		}
 
 		public override void Load(TagCompound tag)
 		{
-			items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
+			items = tag.Get<List<Item>>("items");
 		}
 
 		public override void LoadLegacy(BinaryReader reader)

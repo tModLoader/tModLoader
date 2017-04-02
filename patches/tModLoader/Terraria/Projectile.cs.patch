@@ -346,12 +346,15 @@
  			if (myRect.Intersects(targetRect))
  			{
  				return true;
-@@ -11415,12 +_,14 @@
+@@ -11415,12 +_,16 @@
  					overrideWidth = (int)(20f * this.scale);
  					overrideHeight = (int)(20f * this.scale);
  				}
-+				ProjectileLoader.TileCollideStyle(this, ref overrideWidth, ref overrideHeight, ref flag6);
- 				if (((this.type != 440 && this.type != 449 && this.type != 606) || this.ai[1] != 1f) && (this.type != 466 || this.localAI[1] != 1f) && (this.type != 580 || this.localAI[1] <= 0f) && (this.type != 640 || this.localAI[1] <= 0f))
+-				if (((this.type != 440 && this.type != 449 && this.type != 606) || this.ai[1] != 1f) && (this.type != 466 || this.localAI[1] != 1f) && (this.type != 580 || this.localAI[1] <= 0f) && (this.type != 640 || this.localAI[1] <= 0f))
++				if (!ProjectileLoader.TileCollideStyle(this, ref overrideWidth, ref overrideHeight, ref flag6))
++				{
++				}
++				else if (((this.type != 440 && this.type != 449 && this.type != 606) || this.ai[1] != 1f) && (this.type != 466 || this.localAI[1] != 1f) && (this.type != 580 || this.localAI[1] <= 0f) && (this.type != 640 || this.localAI[1] <= 0f))
  				{
  					if (this.aiStyle == 10)
  					{

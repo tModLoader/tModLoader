@@ -42,7 +42,7 @@ namespace ExampleMod.Items.Weapons
 		// What if I wanted this gun to have a 38% chance not to consume ammo?
 		/*public override bool ConsumeAmmo(Player player)
 		{
-			return Main.rand.NextFloat() > .38f;
+			return Main.rand.NextFloat() >= .38f;
 		}*/
 
 		// What if I wanted it to work like Uzi, replacing regular bullets with High Velocity Bullets?
@@ -64,6 +64,9 @@ namespace ExampleMod.Items.Weapons
 			for (int i = 0; i < numberProjectiles; i++)
 			{
 				Vector2 perturbedSpeed = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(30)); // 30 degree spread.
+				// If you want to randomize the speed to stagger the projectiles
+				// float scale = 1f - (Main.rand.NextFloat() * .3f);
+				// perturbedSpeed = perturbedSpeed * scale; 
 				Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockBack, player.whoAmI);
 			}
 			return false; // return false because we don't want tmodloader to shoot projectile

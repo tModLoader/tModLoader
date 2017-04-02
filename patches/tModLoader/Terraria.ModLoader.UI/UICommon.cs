@@ -20,5 +20,16 @@ namespace Terraria.ModLoader.UI
 		{
 			((UIPanel)evt.Target).BackgroundColor = defaultUIBlueMouseOver;
 		}
+
+		internal static void CustomFadedMouseOver(Color customColor, UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(SoundID.MenuTick);
+			((UIPanel)evt.Target).BackgroundColor = customColor;
+		}
+
+		internal static void CustomFadedMouseOut(Color customColor, UIMouseEvent evt, UIElement listeningElement)
+		{
+			((UIPanel)evt.Target).BackgroundColor = customColor;
+		}
 	}
 }

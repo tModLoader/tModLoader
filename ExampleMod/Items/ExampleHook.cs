@@ -118,6 +118,11 @@ namespace ExampleMod.Items
 			speed = 14f;
 		}
 
+		public override void GrapplePullSpeed(Player player, ref float speed)
+		{
+			speed = 4;
+		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
 			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;

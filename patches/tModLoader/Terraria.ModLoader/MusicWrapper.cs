@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
 	public class MusicWrapper
 	{
 		internal Cue cue;

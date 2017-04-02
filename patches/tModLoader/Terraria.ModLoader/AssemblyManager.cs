@@ -9,6 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
+	//todo: further documentation
     internal class AssemblyManager
     {
         private class LoadedMod

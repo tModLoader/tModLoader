@@ -10,6 +10,8 @@ namespace ExampleMod.Dusts
 		{
 			dust.noGravity = true;
 			dust.frame = new Rectangle(0, 0, 30, 30);
+			//If our texture had 2 different dust on top of each other (a 30x60 pixel image), we might do this:
+			//dust.frame = new Rectangle(0, Main.rand.Next(2) * 30, 30, 30);
 		}
 
 		public override bool Update(Dust dust)

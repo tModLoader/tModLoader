@@ -29,7 +29,7 @@ namespace Terraria.ModLoader.Default
 			bool canRestoreFlag = false;
 			foreach (var infoTag in tag.GetList<TagCompound>("list"))
 			{
-				if (!infoTag.HasTag("mod"))
+				if (!infoTag.ContainsKey("mod"))
 				{
 					infos.Add(null);
 					canRestore.Add(0);
@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.Default
 
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
-				bool frameImportant = infoTag.HasTag("frameX");
+				bool frameImportant = infoTag.ContainsKey("frameX");
 				var info = frameImportant ? 
 					new MysteryTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY")) : 
 					new MysteryTileInfo(modName, name);
@@ -85,8 +85,8 @@ namespace Terraria.ModLoader.Default
 					};
 					if (reader.ReadBoolean())
 					{
-						tag.SetTag("frameX", reader.ReadInt16());
-						tag.SetTag("frameY", reader.ReadInt16());
+						tag.Set("frameX", reader.ReadInt16());
+						tag.Set("frameY", reader.ReadInt16());
 					}
 					list.Add(tag);
 				}
@@ -216,8 +216,8 @@ namespace Terraria.ModLoader.Default
 			};
 			if (frameImportant)
 			{
-				tag.SetTag("frameX", frameX);
-				tag.SetTag("frameY", frameY);
+				tag.Set("frameX", frameX);
+				tag.Set("frameY", frameY);
 			}
 			return tag;
 		}

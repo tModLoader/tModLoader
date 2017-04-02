@@ -67,7 +67,7 @@ namespace Terraria.ModLoader.IO
 			LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
 		}
 
-		internal static List<TagCompound> SaveInventory(Item[] inv)
+		public static List<TagCompound> SaveInventory(Item[] inv)
 		{
 			var list = new List<TagCompound>();
 			for (int k = 0; k < inv.Length; k++)
@@ -75,14 +75,14 @@ namespace Terraria.ModLoader.IO
 				if (ItemLoader.NeedsModSaving(inv[k]))
 				{
 					var tag = ItemIO.Save(inv[k]);
-					tag.SetTag("slot", (short) k);
+					tag.Set("slot", (short) k);
 					list.Add(tag);
 				}
 			}
 			return list.Count > 0 ? list : null;
 		}
 
-		internal static void LoadInventory(Item[] inv, IList<TagCompound> list)
+		public static void LoadInventory(Item[] inv, IList<TagCompound> list)
 		{
 			foreach (var tag in list)
 				inv[tag.GetShort("slot")] = ItemIO.Load(tag);
@@ -116,7 +116,7 @@ namespace Terraria.ModLoader.IO
 				{
 					try
 					{
-						if (tag.HasTag("legacyData"))
+						if (tag.ContainsKey("legacyData"))
 							modPlayer.LoadLegacy(new BinaryReader(new MemoryStream(tag.GetByteArray("legacyData"))));
 						else
 							modPlayer.Load(tag.GetCompound("data"));
