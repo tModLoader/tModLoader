@@ -7,6 +7,7 @@ using Terraria.Graphics;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Linq;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.UI
 {
@@ -19,6 +20,8 @@ namespace Terraria.ModLoader.UI
 		internal bool enabled;
 		private readonly BuildProperties properties;
 		private readonly UITextPanel<string> button2;
+		private readonly UITextPanel<string> configButton;
+		ModConfig modConfig;
 		readonly UIHoverImage keyImage;
 
 		public UIModItem(TmodFile mod)
@@ -61,6 +64,21 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.ToggleEnabled;
 			base.Append(button2);
+			if (ModLoader.ModLoaded(mod.name) && ConfigManager.Configs.ContainsKey(ModLoader.GetMod(mod.name))) // and has config
+			{
+				modConfig = ConfigManager.Configs[ModLoader.GetMod(mod.name)][0];
+				configButton = new UITextPanel<string>("Config", 1f, false);
+				configButton.Width.Set(100f, 0f);
+				configButton.Height.Set(30f, 0f);
+				configButton.Left.Set(170f, 0f);
+				configButton.Top.Set(40f, 0f);
+				configButton.PaddingTop -= 2f;
+				configButton.PaddingBottom -= 2f;
+				configButton.OnMouseOver += UICommon.FadedMouseOver;
+				configButton.OnMouseOut += UICommon.FadedMouseOut;
+				configButton.OnClick += this.OpenConfig;
+				base.Append(configButton);
+			}
 			if (properties.modReferences.Length > 0 && !enabled)
 			{
 				string refs = String.Join(", ", properties.modReferences.Select(x => x.mod));
@@ -181,6 +199,13 @@ namespace Terraria.ModLoader.UI
 			Interface.modInfo.SetGotoMenu(Interface.modsMenuID);
 			Interface.modInfo.SetURL(properties.homepage);
 			Main.menuMode = Interface.modInfoID;
+		}
+
+		internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(SoundID.MenuOpen);
+			Interface.modConfig.SetMod(ModLoader.GetMod(mod.name), modConfig);
+			Main.menuMode = Interface.modConfigID;
 		}
 
 		public override bool PassFilters()

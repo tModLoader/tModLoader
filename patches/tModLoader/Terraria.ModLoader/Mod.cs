@@ -375,6 +375,36 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal void AutoloadConfig()
+		{
+			if (Code == null)
+				return;
+
+			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
+			{
+				if (type.IsAbstract)
+				{
+					continue;
+				}
+				if (type.IsSubclassOf(typeof(ModConfig)))
+				{
+					var mc = (ModConfig)Activator.CreateInstance(type);
+					mc.mod = this;
+					var name = type.Name;
+					if (mc.Autoload(ref name))
+						AddConfig(name, mc);
+				}
+			}
+		}
+
+		public void AddConfig(string name, ModConfig mc)
+		{
+			mc.Name = name;
+			mc.mod = this;
+
+			ConfigManager.Add(mc);
+		}
+
 		/// <summary>
 		/// Manually add a Command during Load
 		/// </summary>

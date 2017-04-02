@@ -29,6 +29,7 @@ namespace Terraria.ModLoader
 		internal const int modPacksMenuID = 10016;
 		internal const int tModLoaderSettingsID = 10017;
 		internal const int enterSteamIDMenuID = 10018;
+		internal const int modConfigID = 10019;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -44,6 +45,7 @@ namespace Terraria.ModLoader
 		internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
 		internal static UIModPacks modPacksMenu = new UIModPacks();
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
+		internal static UIModConfig modConfig = new UIModConfig();
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
@@ -262,6 +264,11 @@ namespace Terraria.ModLoader
 					Main.menuMode = 11;
 					Main.PlaySound(11, -1, -1, 1);
 				}
+			}
+			else if (Main.menuMode == modConfigID)
+			{
+				Main.MenuUI.SetState(modConfig);
+				Main.menuMode = 888;
 			}
 		}
 
