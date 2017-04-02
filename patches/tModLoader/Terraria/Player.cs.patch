@@ -3620,7 +3620,7 @@
  					bool flag4 = false;
  					TileObject tileObject = default(TileObject);
 -					if (TileObjectData.CustomPlace(this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle) && this.inventory[this.selectedItem].createTile != 82)
-+					if (!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY))
++					if (!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem].createTile))
 +					{
 +					}
 +					else if (TileObjectData.CustomPlace(this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle) && this.inventory[this.selectedItem].createTile != 82)

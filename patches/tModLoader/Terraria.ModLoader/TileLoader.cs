@@ -880,9 +880,8 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.PlaceThing after tileObject is initalized add else to if statement and before add
 		//  if(!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY)) { }
-		public static bool CanPlace(int i, int j)
+		public static bool CanPlace(int i, int j, int type)
 		{
-			int type = Main.tile[i, j].type;
 			foreach (var hook in HookCanPlace)
 			{
 				if (!hook(i, j, type))
