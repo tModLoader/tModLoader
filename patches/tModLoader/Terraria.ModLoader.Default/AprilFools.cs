@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Default
 		public static bool CheckAprilFools()
 		{
 			DateTime now = DateTime.Now;
-			return now.Month == 4 && now.Day <= 3;
+			return now.Month == 4 && now.Day <= 2;
 		}
 
 		public override void SetDefaults()
@@ -36,6 +36,17 @@ namespace Terraria.ModLoader.Default
 			player.AddBuff(BuffID.Stinky, time);
 			player.AddBuff(BuffID.Slimed, time);
 			return true;
+		}
+
+		public override void AddRecipes()
+		{
+			if (CheckAprilFools())
+			{
+				ModRecipe recipe = new ModRecipe(mod);
+				recipe.AddIngredient(ItemID.DirtBlock);
+				recipe.SetResult(this);
+				recipe.AddRecipe();
+			}
 		}
 	}
 }
