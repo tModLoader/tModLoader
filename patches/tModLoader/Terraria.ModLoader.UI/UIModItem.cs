@@ -6,22 +6,20 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
-using Terraria.ID;
+using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIModItem : UIPanel
 	{
-		private TmodFile mod;
-		private Texture2D dividerTexture;
-		private Texture2D innerPanelTexture;
-		private UIText modName;
+		private readonly TmodFile mod;
+		private readonly Texture2D dividerTexture;
+		private readonly Texture2D innerPanelTexture;
+		private readonly UIText modName;
 		internal bool enabled;
-		BuildProperties properties;
-		UITextPanel<string> button2;
-		UITextPanel<string> configButton;
-		UIHoverImage keyImage;
-		ModConfig modConfig;
+		private readonly BuildProperties properties;
+		private readonly UITextPanel<string> button2;
+		readonly UIHoverImage keyImage;
 
 		public UIModItem(TmodFile mod)
 		{
@@ -36,10 +34,6 @@ namespace Terraria.ModLoader.UI
 			properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : mod.name;
 			text += " v" + mod.version;
-			if (properties.author.Length > 0)
-			{
-				text += " - by " + properties.author;
-			}
 			this.modName = new UIText(text, 1f, false);
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
@@ -56,10 +50,10 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += this.Moreinfo;
 			base.Append(button);
-			button2 = new UITextPanel<string>(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
+			button2 = new UITextPanel<string>(this.enabled ? "Disable" : "Enable", 1f, false);
 			button2.Width.Set(100f, 0f);
 			button2.Height.Set(30f, 0f);
-			button2.Left.Set(275f, 0f);
+			button2.Left.Set(button.Left.Pixels - button2.Width.Pixels - 5f, 0f);
 			button2.Top.Set(40f, 0f);
 			button2.PaddingTop -= 2f;
 			button2.PaddingBottom -= 2f;
@@ -67,23 +61,14 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.ToggleEnabled;
 			base.Append(button2);
-
-			if (ModLoader.ModLoaded(mod.name) && ConfigManager.Configs.ContainsKey(ModLoader.GetMod(mod.name))) // and has config
+			if (properties.modReferences.Length > 0 && !enabled)
 			{
-				modConfig = ConfigManager.Configs[ModLoader.GetMod(mod.name)][0];
-				configButton = new UITextPanel<string>("Config", 1f, false);
-				configButton.Width.Set(100f, 0f);
-				configButton.Height.Set(30f, 0f);
-				configButton.Left.Set(170f, 0f);
-				configButton.Top.Set(40f, 0f);
-				configButton.PaddingTop -= 2f;
-				configButton.PaddingBottom -= 2f;
-				configButton.OnMouseOver += UICommon.FadedMouseOver;
-				configButton.OnMouseOut += UICommon.FadedMouseOut;
-				configButton.OnClick += this.OpenConfig;
-				base.Append(configButton);
+				string refs = String.Join(", ", properties.modReferences.Select(x => x.mod));
+				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs);
+				modReferenceIcon.Left.Set(button2.Left.Pixels - 10f, 0f);
+				modReferenceIcon.Top.Set(50f, 0f);
+				base.Append(modReferenceIcon);
 			}
-
 			if (mod.ValidModBrowserSignature)
 			{
 				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], "This mod originated from the Mod Browser");
@@ -100,7 +85,7 @@ namespace Terraria.ModLoader.UI
 				{
 					if (values[i] > 0)
 					{
-						Texture2D iconTexture = ModLoader.GetTexture("Terraria/UI" + Path.DirectorySeparatorChar + "InfoIcon_" + i);
+						Texture2D iconTexture = Main.instance.infoIconTexture[i];
 						keyImage = new UIHoverImage(iconTexture, values[i] + strings[i]);
 						keyImage.Left.Set(xOffset, 1f);
 						base.Append(keyImage);
@@ -143,6 +128,29 @@ namespace Terraria.ModLoader.UI
 			//Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
 		}
 
+		protected override void DrawChildren(SpriteBatch spriteBatch)
+		{
+			base.DrawChildren(spriteBatch);
+
+			// show authors on mod title hover, after everything else
+			// main.hoverItemName isn't drawn in UI
+			if (this.modName.IsMouseHovering && properties.author.Length > 0)
+			{
+				string text = "By: " + properties.author;
+				float x = Main.fontMouseText.MeasureString(text).X;
+				Vector2 vector = Main.MouseScreen + new Vector2(16f);
+				if (vector.Y > (float)(Main.screenHeight - 30))
+				{
+					vector.Y = (float)(Main.screenHeight - 30);
+				}
+				if (vector.X > (float)Main.screenWidth - x)
+				{
+					vector.X = (float)(Main.screenWidth - x - 30);
+				}
+				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			}
+		}
+
 		public override void MouseOver(UIMouseEvent evt)
 		{
 			base.MouseOver(evt);
@@ -161,7 +169,7 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(12, -1, -1, 1);
 			this.enabled = !this.enabled;
-			button2.SetText(this.enabled ? "Click to Disable" : "Click to Enable", 1f, false);
+			button2.SetText(this.enabled ? "Disable" : "Enable", 1f, false);
 			ModLoader.SetModActive(this.mod, this.enabled);
 		}
 
@@ -173,13 +181,6 @@ namespace Terraria.ModLoader.UI
 			Interface.modInfo.SetGotoMenu(Interface.modsMenuID);
 			Interface.modInfo.SetURL(properties.homepage);
 			Main.menuMode = Interface.modInfoID;
-		}
-
-		internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(SoundID.MenuOpen);
-			Interface.modConfig.SetMod(ModLoader.GetMod(mod.name), modConfig);
-			Main.menuMode = Interface.modConfigID;
 		}
 
 		public override bool PassFilters()

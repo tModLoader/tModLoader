@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Terraria;
+using System.Net;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
@@ -24,11 +24,11 @@ namespace Terraria.ModLoader
 		internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
 		internal const int infoMessageID = 10013;
-		internal const int enterPassphraseMenuID = 10014;
-		internal const int modPacksMenuID = 10015;
-		internal const int tModLoaderSettingsID = 10016;
-		internal const int enterSteamIDMenuID = 10017;
-		internal const int modConfigID = 10018;
+		internal const int advancedInfoMessageID = 10014;
+		internal const int enterPassphraseMenuID = 10015;
+		internal const int modPacksMenuID = 10016;
+		internal const int tModLoaderSettingsID = 10017;
+		internal const int enterSteamIDMenuID = 10018;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -40,10 +40,10 @@ namespace Terraria.ModLoader
 		internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
+		internal static UIAdvancedInfoMessage advancedInfoMessage = new UIAdvancedInfoMessage();
 		internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
 		internal static UIModPacks modPacksMenu = new UIModPacks();
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
-		internal static UIModConfig modConfig = new UIModConfig();
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
@@ -78,6 +78,24 @@ namespace Terraria.ModLoader
 				buttonScales[k] = 0.82f;
 			}
 			spacing = 45;
+		}
+
+		internal static void ResetData()
+		{
+			modBrowser.modList?.Clear();
+			modBrowser.modListAll?.Clear();
+			modBrowser.sortMode = SortMode.RecentlyUpdated;
+			modBrowser.updateFilterMode = UpdateFilter.Available;
+			modBrowser.searchFilterMode = SearchFilter.Name;
+			modBrowser.SearchFilterToggle?.setCurrentState(0);
+			if (modBrowser._categoryButtons.Count == 2)
+			{
+				modBrowser._categoryButtons[0].setCurrentState(4);
+				modBrowser._categoryButtons[1].setCurrentState(1);
+			}
+			modBrowser.loading = false;
+			ModLoader.findModsCache.Clear();
+			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 		}
 
 		//internal static void AddSettingsMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] virticalSpacing, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
@@ -173,6 +191,11 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(infoMessage);
 				Main.menuMode = 888;
 			}
+			else if (Main.menuMode == advancedInfoMessageID)
+			{
+				Main.MenuUI.SetState(advancedInfoMessage);
+				Main.menuMode = 888;
+			}
 			else if (Main.menuMode == enterPassphraseMenuID)
 			{
 				Main.MenuUI.SetState(enterPassphraseMenu);
@@ -240,11 +263,6 @@ namespace Terraria.ModLoader
 					Main.PlaySound(11, -1, -1, 1);
 				}
 			}
-			else if (Main.menuMode == modConfigID)
-			{
-				Main.MenuUI.SetState(modConfig);
-				Main.menuMode = 888;
-			}
 		}
 
 		internal static void ServerModMenu()
@@ -311,6 +329,58 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+		}
+
+		internal static void ServerModBrowserMenu()
+		{
+			bool exit = false;
+			Console.Clear();
+			while (!exit)
+			{
+				Console.WriteLine();
+				Console.WriteLine("b\t\tReturn to world menu");
+				Console.WriteLine();
+				Console.WriteLine("Type an exact ModName to download: ");
+				string command = Console.ReadLine();
+				if (command == null)
+				{
+					command = "";
+				}
+				if (command == "b" || command == "B")
+				{
+					exit = true;
+				}
+				else
+				{
+					string modname = command;
+					try
+					{
+						System.Net.ServicePointManager.ServerCertificateValidationCallback = (o, certificate, chain, errors) => true;
+						using (WebClient client = new WebClient())
+						{
+							string downloadURL = client.DownloadString($"http://javid.ddns.net/tModLoader/tools/querymoddownloadurl.php?modname={modname}");
+							if (downloadURL.StartsWith("Failed"))
+							{
+								Console.WriteLine(downloadURL);
+							}
+							else
+							{
+								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod";
+								client.DownloadFile(downloadURL, tempFile);
+								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
+								File.Delete(tempFile);
+							}
+							while (Console.KeyAvailable)
+								Console.ReadKey(true);
+						}
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine("Error: Could not download " + modname + " -- " + e.ToString());
+					}
+				}
+			}
+			Console.Clear();
 		}
 	}
 }

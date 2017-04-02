@@ -81,15 +81,19 @@
        <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
      </Reference>
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-@@ -308,6 +_,7 @@
+@@ -306,8 +_,11 @@
+     <Compile Include="Terraria.ID\InvasionID.cs" />
+     <Compile Include="Terraria.ID\ItemAlternativeFunctionID.cs" />
      <Compile Include="Terraria.ID\ItemID.cs" />
++    <Compile Include="Terraria.ID\LangID.cs" />
      <Compile Include="Terraria.ID\MessageID.cs" />
      <Compile Include="Terraria.ID\MountID.cs" />
 +    <Compile Include="Terraria.ID\MusicID.cs" />
++    <Compile Include="Terraria.ID\NetmodeID.cs" />
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -344,6 +_,141 @@
+@@ -344,6 +_,142 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -117,6 +121,9 @@
 +    <Compile Include="Terraria.ModLoader.IO\FontCacheIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\ItemIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\MapIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TagSerializer.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TagPrinter.cs" />
++    <Compile Include="Terraria.ModLoader.IO\TagSerializable.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TileIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TmodFile.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\UploadFile.cs" />
@@ -135,14 +142,12 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIHoverImage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIInfoMessage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIInputTextField.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UILoader.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadProgress.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIManagePublished.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIMessageBox.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModBrowser.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIModConfig.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIModConfigBooleanItem.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIModConfigFloatItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModControls.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModDownloadItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModInfo.cs" />
@@ -160,7 +165,6 @@
 +    <Compile Include="Terraria.ModLoader\BuffLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\BuildProperties.cs" />
 +    <Compile Include="Terraria.ModLoader\CommandManager.cs" />
-+    <Compile Include="Terraria.ModLoader\ConfigManager.cs" />
 +    <Compile Include="Terraria.ModLoader\DrawInfo.cs" />
 +    <Compile Include="Terraria.ModLoader\EntityInfo.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipLoader.cs" />
@@ -185,7 +189,6 @@
 +    <Compile Include="Terraria.ModLoader\ModCommand.cs" />
 +    <Compile Include="Terraria.ModLoader\ModCompile.cs" />
 +    <Compile Include="Terraria.ModLoader\ConvertiblePlants.cs" />
-+    <Compile Include="Terraria.ModLoader\ModConfig.cs" />
 +    <Compile Include="Terraria.ModLoader\ModDust.cs" />
 +    <Compile Include="Terraria.ModLoader\ModGore.cs" />
 +    <Compile Include="Terraria.ModLoader\ModHooks.cs" />
@@ -207,11 +210,13 @@
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWaterStyle.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWorld.cs" />
++    <Compile Include="Terraria.ModLoader\NPCSpawnHelper.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeEditor.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeFinder.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeGroupHelper.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\TooltipLine.cs" />
++    <Compile Include="Terraria.ModLoader\TopoSort.cs" />
 +    <Compile Include="Terraria.ModLoader\WaterStyleLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\WorldHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
@@ -231,7 +236,15 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -511,11 +_,58 @@
+@@ -468,6 +_,7 @@
+     <Compile Include="Terraria\IngameOptions.cs" />
+     <Compile Include="Terraria\Item.cs" />
+     <Compile Include="Terraria\ItemText.cs" />
++    <Compile Include="Terraria\Item_tML.cs" />
+     <Compile Include="Terraria\keyBoardInput.cs" Condition="$(DefineConstants.Contains('CLIENT'))" />
+     <Compile Include="Terraria\Lang.cs" />
+     <Compile Include="Terraria\Lighting.cs" />
+@@ -511,11 +_,60 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -246,6 +259,8 @@
 +  </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\LoaderBG.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\Loader.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonError.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default\MysteryTile.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default\MysteryItem.png" />
