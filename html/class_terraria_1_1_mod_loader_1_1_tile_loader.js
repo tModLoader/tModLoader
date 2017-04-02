@@ -9,7 +9,7 @@ var class_terraria_1_1_mod_loader_1_1_tile_loader =
     [ "CanGrowModPalmTree", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#af9b386c61c625631bd22b4d6989770e0", null ],
     [ "CanGrowModTree", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a91fef60c6b72e54a82eda966be86ba5f", null ],
     [ "CanKillTile", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad82d5f63a65adac03a3cf493e4a0d57b", null ],
-    [ "CanPlace", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0fde03a8880eb95647258e47615774c2", null ],
+    [ "CanPlace", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a1def136261178cf59ab2ddfedbe8dfa6", null ],
     [ "ChangeWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#af44266b613bbf42cae1a3f89267813cc", null ],
     [ "CheckModTile", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#aba3e39a0342331efae7da0eb8d0d2cbb", null ],
     [ "CloseDoorID", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ab73794a7ec58f6836ed9e52f714dfc5c", null ],
