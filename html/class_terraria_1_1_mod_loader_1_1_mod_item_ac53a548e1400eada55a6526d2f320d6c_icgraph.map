@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.ModItem.OpenBossBag" name="Terraria.ModLoader.ModItem.OpenBossBag">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a26a04e0f6b5c69e8e50f020b6b83b5b6" title="If the item is a modded item and ModItem.bossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.bossBagNPC. " alt="" coords="249,5,455,51"/>
-</map>

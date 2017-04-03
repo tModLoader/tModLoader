@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.GetWeaponDamage" name="Terraria.ModLoader.PlayerHooks.GetWeaponDamage">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a00b3ebcecd9ac3927c98d7267e3c0cca" title="Allows you to temporarily modify a weapon&#39;s damage based on player buffs, etc. This is useful for cre..." alt="" coords="239,5,441,51"/>
-</map>

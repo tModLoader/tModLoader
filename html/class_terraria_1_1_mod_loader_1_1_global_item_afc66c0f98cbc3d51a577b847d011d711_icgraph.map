@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.GlobalItem.IsVanitySet" name="Terraria.ModLoader.GlobalItem.IsVanitySet">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#afa662b41f42817230101c10acad7ae47" title="If the player&#39;s head texture&#39;s IsVanitySet returns true, calls the equipment texture&#39;s ArmorSetShadow..." alt="" coords="231,5,436,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a040ee98f9ddb5a1c555b0a08e7ea31de" title="If the player&#39;s head texture&#39;s IsVanitySet returns true, calls the equipment texture&#39;s PreUpdateVanit..." alt="" coords="231,74,436,121"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a5866cf3c0858190e8cc63460329bd5a4" title="If the player&#39;s head texture&#39;s IsVanitySet returns true, calls the equipment texture&#39;s UpdateVanitySe..." alt="" coords="231,143,436,190"/>
-</map>

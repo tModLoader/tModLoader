@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.WorldHooks.PostWorldGen" name="Terraria.ModLoader.WorldHooks.PostWorldGen">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_world.html#a822fd4813716b16996815d746e6f1b42" title="Use this method to place tiles in the world after world generation is complete. " alt="" coords="228,5,428,51"/>
-</map>

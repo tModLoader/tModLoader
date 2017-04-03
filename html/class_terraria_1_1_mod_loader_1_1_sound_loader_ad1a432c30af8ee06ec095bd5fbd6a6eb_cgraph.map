@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.SoundLoader.GetSoundSlot" name="Terraria.ModLoader.SoundLoader.GetSoundSlot">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a4588521ddbb8aa3a82e1d19f57399c20" title="Gets the sound with the specified name. The name is in the same format as for texture names..." alt="" coords="231,5,436,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a3d385fffbf96e8f4e5f8b677be2652b1" title="Shorthand for calling ModLoader.GetSound(this.FileName(name)). " alt="" coords="487,5,673,51"/>
-</map>

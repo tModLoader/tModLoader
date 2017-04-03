@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.SetupStartInventory" name="Terraria.ModLoader.PlayerHooks.SetupStartInventory">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ad9466b9a46dd19aa9edbc3656ea09691" title="Allows you to modify the inventory newly created players or killed mediumcore players will start with..." alt="" coords="236,5,439,51"/>
-</map>

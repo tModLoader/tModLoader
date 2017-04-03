@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.Mod.AutoloadGlobalItem" name="Terraria.ModLoader.Mod.AutoloadGlobalItem">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#a593628480d957d47d4dc793cb390c0e8" title="Allows you to automatically load a GlobalItem instead of using Mod.AddGlobalItem. Return true to allo..." alt="" coords="273,5,447,51"/>
-</map>

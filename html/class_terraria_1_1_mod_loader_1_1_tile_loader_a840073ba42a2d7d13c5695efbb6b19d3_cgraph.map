@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.TileLoader.Drop" name="Terraria.ModLoader.TileLoader.Drop">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#a4f20ca4fe1f750102f13679bf7349b81" title="Allows you to customize which items the tile at the given coordinates drops. Remember that the x..." alt="" coords="285,5,501,35"/>
-</map>

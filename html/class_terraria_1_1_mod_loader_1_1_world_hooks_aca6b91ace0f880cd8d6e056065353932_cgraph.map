@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.WorldHooks.PreWorldGen" name="Terraria.ModLoader.WorldHooks.PreWorldGen">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_world.html#a8cd6d1e08c6aadfc53a037d6aee2f7d7" title="Allows a mod to run code before a world is generated. " alt="" coords="228,5,428,51"/>
-</map>

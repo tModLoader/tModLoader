@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.Mod.AutoloadGlobalBgStyle" name="Terraria.ModLoader.Mod.AutoloadGlobalBgStyle">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_bg_style.html#a11e5b77aeedc07da50bee3fb98c121d3" title="Allows you to automatically add a GlobalBgStyle instead of using Mod.AddGlobalBgStyle. Return true to allow autoloading; by default returns the mod&#39;s autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of GlobalBgStyle. " alt="" coords="273,5,447,51"/>
-</map>

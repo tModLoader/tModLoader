@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.ItemLoader.UpdateVanity" name="Terraria.ModLoader.ItemLoader.UpdateVanity">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID. " alt="" coords="261,5,432,51"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#af595082a071555ad470549dbdbfb3a4b" title="Allows you to create special effects (such as dust) when this equipment texture is displayed on the p..." alt="" coords="261,74,432,121"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="481,5,687,51"/>
-</map>

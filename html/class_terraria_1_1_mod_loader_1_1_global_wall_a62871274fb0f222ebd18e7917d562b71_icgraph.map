@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.GlobalWall.SetDefaults" name="Terraria.ModLoader.GlobalWall.SetDefaults">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are ..." alt="" coords="229,5,445,51"/>
-</map>

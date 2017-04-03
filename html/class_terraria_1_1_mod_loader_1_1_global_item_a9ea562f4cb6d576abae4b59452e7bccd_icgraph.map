@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.GlobalItem.IsArmorSet" name="Terraria.ModLoader.GlobalItem.IsArmorSet">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a1dfd88cf7a9a2a68a501db9414fa4f3e" title="If the head&#39;s ModItem.IsArmorSet returns true, calls the head&#39;s ModItem.UpdateArmorSet. This is then repeated for the body, then the legs. Then for each GlobalItem, if GlobalItem.IsArmorSet returns a non&#45;empty string, calls GlobalItem.UpdateArmorSet with that string. " alt="" coords="231,5,436,51"/>
-</map>
