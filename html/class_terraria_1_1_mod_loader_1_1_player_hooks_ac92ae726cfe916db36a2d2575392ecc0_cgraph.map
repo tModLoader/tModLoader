@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.ResetEffects" name="Terraria.ModLoader.PlayerHooks.ResetEffects">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a13394bb2282be6fa3926a18906be68b9" title="This is where you reset any fields you add to your ModPlayer subclass to their default states..." alt="" coords="231,5,433,51"/>
+</map>

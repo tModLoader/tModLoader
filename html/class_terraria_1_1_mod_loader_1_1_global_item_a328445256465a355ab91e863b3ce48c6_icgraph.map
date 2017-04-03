@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.GlobalItem.PreUpdateVanitySet" name="Terraria.ModLoader.GlobalItem.PreUpdateVanitySet">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a040ee98f9ddb5a1c555b0a08e7ea31de" title="If the player&#39;s head texture&#39;s IsVanitySet returns true, calls the equipment texture&#39;s PreUpdateVanit..." alt="" coords="231,5,436,51"/>
+</map>

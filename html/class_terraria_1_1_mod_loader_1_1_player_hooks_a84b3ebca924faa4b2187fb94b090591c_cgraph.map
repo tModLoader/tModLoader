@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.GetFishingLevel" name="Terraria.ModLoader.PlayerHooks.GetFishingLevel">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a299177fe4b54040faa2e8c535a44c5fa" title="Allows you to modify the player&#39;s fishing power. As an example of the type of stuff that should go he..." alt="" coords="231,5,433,51"/>
+</map>

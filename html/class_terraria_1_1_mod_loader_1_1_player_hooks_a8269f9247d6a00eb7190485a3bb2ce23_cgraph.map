@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.ModifyZoom" name="Terraria.ModLoader.PlayerHooks.ModifyZoom">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ac6927f61bbe5edbb9437117a94fc2c64" title="Use this to modify the zoom factor for the player. The zoom correlates to the percentage of half the ..." alt="" coords="231,5,433,51"/>
+</map>

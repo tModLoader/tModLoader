@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.EquipTexture.DrawHead" name="Terraria.ModLoader.EquipTexture.DrawHead">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a7b9463e05c08aab7f506e5e6796a8d97" title="Calls the item&#39;s head equipment texture&#39;s DrawHead hook, then all GlobalItem.DrawHead hooks..." alt="" coords="225,5,431,51"/>
+</map>

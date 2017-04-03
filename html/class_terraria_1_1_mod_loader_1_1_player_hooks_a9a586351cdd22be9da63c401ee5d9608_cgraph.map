@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.GetMapBackgroundImage" name="Terraria.ModLoader.PlayerHooks.GetMapBackgroundImage">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a2be6b87cc1d8482986853f65bb7d6250" title="Allows you to change the background that displays when viewing the map. Return null if you do not wan..." alt="" coords="271,5,473,51"/>
+</map>

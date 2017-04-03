@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.GetWeaponKnockback" name="Terraria.ModLoader.PlayerHooks.GetWeaponKnockback">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a5e7c22c4c605693f4f726b902074a3bf" title="Allows you to temporarily modify a weapon&#39;s knockback based on player buffs, etc. This allows you to ..." alt="" coords="255,5,457,51"/>
+</map>

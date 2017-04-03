@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.PlayerHooks.ReceiveCustomBiomes" name="Terraria.ModLoader.PlayerHooks.ReceiveCustomBiomes">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="257,5,463,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ac9479ae814101a001a9a8b8486a34f09" title="Allows you to do things with the custom biome information you send between client and server..." alt="" coords="259,74,461,121"/>
+</map>

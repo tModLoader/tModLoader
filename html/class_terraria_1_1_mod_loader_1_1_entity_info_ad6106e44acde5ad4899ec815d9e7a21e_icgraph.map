@@ -1,0 +1,5 @@
+<map id="Terraria.ModLoader.EntityInfo.Autoload" name="Terraria.ModLoader.EntityInfo.Autoload">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a987bcbedd97962443b6d5236740fbcf1" title="Terraria.ModLoader.Mod.Autoload\lItemInfo" alt="" coords="227,5,445,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a43054e82707b534a7ba9949c40defd70" title="Terraria.ModLoader.Mod.Autoload\lNPCInfo" alt="" coords="227,74,445,121"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html#aa3a45ec929bfce36d1c5a2d6ec2ee4e8" title="Terraria.ModLoader.Mod.Autoload\lProjectileInfo" alt="" coords="227,143,445,190"/>
+</map>
