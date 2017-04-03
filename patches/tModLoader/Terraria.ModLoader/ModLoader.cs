@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		/// <summary>The name and version number of tModLoader.</summary>
-		public static readonly Version version = new Version(0, 9, 2, 2);
+		public static readonly Version version = new Version(0, 9, 2, 3);
 		public static readonly string versionedName = "tModLoader v" + version;
 #if WINDOWS
 		public static readonly bool windows = true;
@@ -263,7 +263,7 @@ namespace Terraria.ModLoader
 				if (file.ValidMod() == null)
 					files.Add(file);
 			}
-			return files.OrderBy(x => x.name).ToArray();
+			return files.OrderBy(x => x.name, StringComparer.InvariantCulture).ToArray();
 		}
 
 		private static bool LoadMods()

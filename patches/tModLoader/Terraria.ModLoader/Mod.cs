@@ -238,7 +238,7 @@ namespace Terraria.ModLoader
 
 			IList<Type> modGores = new List<Type>();
 			IList<Type> modSounds = new List<Type>();
-			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
+			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture))
 			{
 				if (type.IsAbstract)
 				{
