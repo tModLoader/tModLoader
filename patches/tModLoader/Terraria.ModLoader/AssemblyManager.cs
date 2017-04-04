@@ -214,7 +214,15 @@ namespace Terraria.ModLoader
                     mod.LoadAssemblies();
 
                     Interface.loadMods.SetProgressReading(mod.Name, 1, 2);
-                    var modType = mod.assembly.GetTypes().Single(t => t.IsSubclassOf(typeof(Mod)));
+					Type modType;
+					try
+					{
+						modType = mod.assembly.GetTypes().Single(t => t.IsSubclassOf(typeof(Mod)));
+					}
+					catch (Exception e)
+					{
+						throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.", e);
+					}
                     var m = (Mod)Activator.CreateInstance(modType);
                     m.File = mod.modFile;
                     m.Code = mod.assembly;
