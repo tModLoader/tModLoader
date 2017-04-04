@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
@@ -49,7 +50,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
 
-			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
+			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
 			modListAll = new UIList();
 			modList = new UIList();
@@ -193,7 +194,7 @@ namespace Terraria.ModLoader.UI
 
 		private void FilterList()
 		{
-			if(uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
+			if (uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			foreach (UIModItem item in modListAll._items.Where(item => item.PassFilters()))
@@ -214,13 +215,15 @@ namespace Terraria.ModLoader.UI
 			modList.Clear();
 			modListAll.Clear();
 			items.Clear();
-			if(!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
+			if (!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
 			Populate();
 		}
 
 		internal void Populate()
 		{
 			loading = true;
+			if (SynchronizationContext.Current == null)
+				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory
 				.StartNew(ModLoader.FindMods)
 				.ContinueWith(task =>

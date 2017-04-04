@@ -410,7 +410,8 @@ namespace Terraria.ModLoader.UI
 				reloadButton.SetText("Populating browser...");
 				byte[] result = e.Result;
 				string response = Encoding.UTF8.GetString(result);
-
+				if (SynchronizationContext.Current == null)
+					SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 				Task.Factory
 					.StartNew(ModLoader.FindMods)
 					.ContinueWith(task =>

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -34,7 +35,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
 
-			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
+			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
@@ -143,7 +144,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			if(!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
+			if (!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
 			modList.Clear();
 			Populate();
 		}
@@ -151,6 +152,8 @@ namespace Terraria.ModLoader.UI
 		internal void Populate()
 		{
 			loading = true;
+			if (SynchronizationContext.Current == null)
+				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory
 				.StartNew(delegate
 				{
@@ -180,7 +183,7 @@ namespace Terraria.ModLoader.UI
 						}
 						modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
 					}
-					if(uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
+					if (uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
 					loading = false;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
