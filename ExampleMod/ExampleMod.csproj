@@ -146,7 +146,7 @@
     <Compile Include="Items\Placeable\ExampleDresser.cs" />
     <Compile Include="Items\Placeable\ExampleMusicBox.cs" />
     <Compile Include="Items\Placeable\ExamplePlatform.cs" />
-    <Compile Include="Items\Placeable\ExampleSeeds.cs" />
+    <Compile Include="Items\Placeable\ExampleHerbSeeds.cs" />
     <Compile Include="Items\Placeable\ExampleTorch.cs" />
     <Compile Include="Items\Placeable\ExampleWall.cs" />
     <Compile Include="Items\Placeable\ExampleWorkbench.cs" />
@@ -242,7 +242,7 @@
     <Compile Include="Tiles\ExampleDresser.cs" />
     <Compile Include="Tiles\ExampleGlobalTile.cs" />
     <Compile Include="Tiles\ExampleMusicBox.cs" />
-    <Compile Include="Tiles\ExamplePlant.cs" />
+    <Compile Include="Tiles\ExampleHerb.cs" />
     <Compile Include="Tiles\ExamplePlatform.cs" />
     <Compile Include="Tiles\ExampleSapling.cs" />
     <Compile Include="Tiles\ExampleStatue.cs" />

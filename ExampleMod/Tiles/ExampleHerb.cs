@@ -9,7 +9,7 @@ using Terraria.Enums;
 
 namespace ExampleMod.Tiles
 {
-	public class ExamplePlant : ModTile
+	public class ExampleHerb : ModTile
 	{
 		public override void SetDefaults()
 		{
@@ -43,7 +43,7 @@ namespace ExampleMod.Tiles
 			{
 				2, //TileID.Grass
 				109, // TileId.HallowedGrass
-				mod.TileType("ExampleBlock")
+				mod.TileType<ExampleBlock>()
 			};
 			TileObjectData.newTile.AnchorAlternateTiles = new int[]
 			{
@@ -70,8 +70,7 @@ namespace ExampleMod.Tiles
 			int stage = Main.tile[i, j].frameX / 18;
 			if (stage == 2)
 			{
-				//	ErrorLogger.Log(mod.ItemType("ExampleSeeds")+ "TxampleSedsdrop");
-				Item.NewItem(i * 16, j * 16, 0, 0, mod.ItemType("ExampleSeeds"));
+				Item.NewItem(i * 16, j * 16, 0, 0, mod.ItemType<Items.Placeable.ExampleHerbSeeds>());
 			}
 			return false;
 		}
