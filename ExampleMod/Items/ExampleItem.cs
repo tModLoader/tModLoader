@@ -50,7 +50,7 @@ namespace ExampleMod.Items
 			recipe.AddTile(TileID.WorkBenches);
 			// A mod Tile example. To specify more than one crafting station, use multiple recipe.AddTile() calls.
 			recipe.AddTile(mod, "ExampleWorkbench");
-			// There is a limit of 15 ingredients and 15 tiles to a recipe.
+			// There is a limit of 14 ingredients and 14 tiles to a recipe.
 			// Special
 			// Water, Honey, and Lava are not tiles, there are special bools for those. Also needSnowBiome. Water also specifies that it works with Sinks.
 			recipe.needHoney = true;

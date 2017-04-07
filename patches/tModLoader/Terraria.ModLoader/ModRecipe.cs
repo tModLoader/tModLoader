@@ -260,6 +260,10 @@ namespace Terraria.ModLoader
 			{
 				throw new RecipeException("A recipe without any result has been added.");
 			}
+			if(this.numIngredients > 14 || this.numTiles > 14)
+			{
+				throw new RecipeException("A recipe with either too many tiles or too many ingredients has been added. 14 is the max.");
+			}
 			for (int k = 0; k < Recipe.maxRequirements; k++)
 			{
 				if (this.requiredTile[k] == TileID.Bottles)
