@@ -2490,11 +2490,11 @@
  					if (Main.myPlayer == this.whoAmI)
  					{
 -						if (this.armor[l].type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0 && Main.curMusic <= 41)
-+						if (item.type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0 && Main.curMusic <= 41)
++						if (item.type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0)
  						{
  							int num7 = 0;
  							if (Main.curMusic == 1)
-@@ -9651,154 +_,160 @@
+@@ -9651,154 +_,164 @@
  							}
  							if (Main.curMusic == 28)
  							{
@@ -2564,15 +2564,13 @@
  							else if (Main.curMusic == 41)
  							{
 -								this.armor[l].SetDefaults(3869, false);
-+								item.SetDefaults(3869, false);
- 							}
- 							else if (Main.curMusic > 13)
- 							{
+-							}
+-							else if (Main.curMusic > 13)
+-							{
 -								this.armor[l].SetDefaults(1596 + Main.curMusic - 14, false);
-+								item.SetDefaults(1596 + Main.curMusic - 14, false);
- 							}
- 							else
- 							{
+-							}
+-							else
+-							{
 -								this.armor[l].SetDefaults(num7 + 562, false);
 -							}
 -						}
@@ -2585,7 +2583,19 @@
 -							Main.musicBox2 = this.armor[l].type - 1596 + 13;
 -						}
 -						if (this.armor[l].type == 1610)
++								item.SetDefaults(3869, false);
++							}
++							else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
++							{
++								item.SetDefaults(1596 + Main.curMusic - 14, false);
++							}
++							else if(Main.curMusic < Main.maxMusic)
++							{
 +								item.SetDefaults(num7 + 562, false);
++							}
++							else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
++							{
++								item.SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
 +							}
 +						}
 +						if (item.type >= 562 && item.type <= 574)
