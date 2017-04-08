@@ -25,6 +25,7 @@ mkdir "%destinationFolder%\tModLoader Mac %version%"
 mkdir "%destinationFolder%\tModLoader Linux %version%"
 mkdir "%destinationFolder%\tModLoader Windows %version%\ModCompile"
 mkdir "%destinationFolder%\tModLoader Mac %version%\ModCompile"
+mkdir "%destinationFolder%\tModLoader Mac %version%\mono"
 mkdir "%destinationFolder%\tModLoader Linux %version%\ModCompile"
 
 :: Windows release
@@ -66,6 +67,8 @@ copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Mac %version%\
 copy ..\installer2\MacInstaller.jar "%destinationFolder%\tModLoader Mac %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Mac.txt "%destinationFolder%\tModLoader Mac %version%\README.txt" /y
 copy ReleaseExtras\Terraria.exe.config "%destinationFolder%\tModLoader Mac %version%\Terraria.exe.config" /y
+
+copy ReleaseExtras\macconfig "%destinationFolder%\tModLoader Mac %version%\mono\config" /y
 
 call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Mac %version%" -destination "%destinationFolder%\tModLoader Mac %version%.zip" -keep yes -force yes
 
