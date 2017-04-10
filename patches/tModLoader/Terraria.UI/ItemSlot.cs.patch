@@ -37,7 +37,7 @@
  				{
  					if (Main.mouseItem.stack == 1 && Main.mouseItem.dye > 0 && inv[slot].type > 0 && inv[slot].type != Main.mouseItem.type)
  					{
-@@ -557,9 +_,10 @@
+@@ -557,9 +_,11 @@
  						}
  					}
  				}
@@ -48,6 +48,7 @@
 +				else if (clickAction == 3)
 +				{
 +					Main.mouseItem = inv[slot].Clone();
++					Main.mouseItem.stack = 1;
  					if (inv[slot].buyOnce)
  					{
  						Main.mouseItem.Prefix((int)inv[slot].prefix);
