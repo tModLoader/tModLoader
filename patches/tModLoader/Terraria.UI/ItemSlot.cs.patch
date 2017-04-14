@@ -37,7 +37,7 @@
  				{
  					if (Main.mouseItem.stack == 1 && Main.mouseItem.dye > 0 && inv[slot].type > 0 && inv[slot].type != Main.mouseItem.type)
  					{
-@@ -557,9 +_,11 @@
+@@ -557,12 +_,14 @@
  						}
  					}
  				}
@@ -51,7 +51,11 @@
 +					Main.mouseItem.stack = 1;
  					if (inv[slot].buyOnce)
  					{
- 						Main.mouseItem.Prefix((int)inv[slot].prefix);
+-						Main.mouseItem.Prefix((int)inv[slot].prefix);
++						//Main.mouseItem.Prefix((int)inv[slot].prefix);
+ 					}
+ 					else
+ 					{
 @@ -583,7 +_,8 @@
  						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  					}
