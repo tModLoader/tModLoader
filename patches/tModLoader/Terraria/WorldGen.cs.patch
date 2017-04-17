@@ -1914,6 +1914,24 @@
  								{
  									num63 = 59;
  								}
+@@ -50845,7 +_,7 @@
+ 								}
+ 								else
+ 								{
+-									if (num != 2 && num != 23 && num != 60 && num != 70 && num != 109 && num != 199)
++									if (!TileID.Sets.Grass[num] && !TileID.Sets.GrassSpecial[num])
+ 									{
+ 										if (num53 == -1 && num58 == -2 && num55 == num && num56 == num)
+ 										{
+@@ -51440,7 +_,7 @@
+ 								{
+ 									WorldGen.TileMergeAttemptWeird(num, -1, Main.tileSolid, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 								}
+-								if (num == 2 || num == 23 || num == 60 || num == 70 || num == 109 || num == 199 || Main.tileMoss[num])
++								if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num])
+ 								{
+ 									WorldGen.TileMergeAttempt(num, -2, ref num53, ref num58, ref num55, ref num56, ref num52, ref num54, ref num57, ref num59);
+ 								}
 @@ -51904,7 +_,7 @@
  									if (tile3 != null && !tile3.active())
  									{
