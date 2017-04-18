@@ -74,6 +74,38 @@
  		public static int defaultItemGrabRange = 38;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
+@@ -1633,6 +_,7 @@
+ 				if (item.stack > 0)
+ 				{
+ 					int num = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, item.type, item.stack, false, (int)Main.guideItem.prefix, true, false);
++					Main.item[num] = item.Clone();
+ 					Main.item[num].newAndShiny = false;
+ 					if (Main.netMode == 1)
+ 					{
+@@ -1648,6 +_,7 @@
+ 				if (item2.stack > 0)
+ 				{
+ 					int num2 = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, item2.type, item2.stack, false, (int)Main.reforgeItem.prefix, true, false);
++					Main.item[num2] = item2.Clone();
+ 					Main.item[num2].newAndShiny = false;
+ 					if (Main.netMode == 1)
+ 					{
+@@ -1698,6 +_,7 @@
+ 				if (item3.stack > 0)
+ 				{
+ 					int num3 = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, item3.type, item3.stack, false, 0, true, false);
++					Main.item[num3] = item3.Clone();
+ 					Main.item[num3].newAndShiny = false;
+ 					if (Main.netMode == 1)
+ 					{
+@@ -1745,6 +_,7 @@
+ 				int num = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, this.inventory[this.selectedItem].type, 1, false, 0, false, false);
+ 				if (!flag2 && this.inventory[this.selectedItem].type == 8 && this.inventory[this.selectedItem].stack > 1)
+ 				{
++					Main.item[num] = this.inventory[this.selectedItem].Clone();
+ 					this.inventory[this.selectedItem].stack--;
+ 				}
+ 				else
 @@ -1806,7 +_,7 @@
  				return;
  			}
