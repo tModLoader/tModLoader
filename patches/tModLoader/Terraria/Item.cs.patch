@@ -95,7 +95,7 @@
 +			}
 +			foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values)
 +			{
-+				if (recipeGroup.ValidItems.Contains(this.type))
++				if (recipeGroup.ContainsItem(this.type))
 +				{
 +					this.material = true;
 +					return true;

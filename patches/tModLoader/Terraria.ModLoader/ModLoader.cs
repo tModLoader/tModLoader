@@ -199,6 +199,7 @@ namespace Terraria.ModLoader
 				Main.menuMode = Interface.errorMessageID;
 				return;
 			}
+
 			if (PostLoad != null)
 			{
 				PostLoad();
@@ -233,6 +234,7 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.ResizeArrays();
 			WaterfallStyleLoader.ResizeArrays();
 			WorldHooks.ResizeArrays();
+			RecipeGroupHelper.FixRecipeGroupLookups();
 		}
 
 		// TODO, investigate if this causes memory errors.

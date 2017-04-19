@@ -78,6 +78,20 @@ namespace Terraria.ModLoader
 					throw new AddRecipesException(mod, "An error occured in adding recipe groups for " + mod.Name, e);
 				}
 			}
+			FixRecipeGroupLookups();
+		}
+
+		internal static void FixRecipeGroupLookups()
+		{
+			for (int k = 0; k < RecipeGroup.nextRecipeGroupIndex; k++)
+			{
+				RecipeGroup rec = RecipeGroup.recipeGroups[k];
+				rec.ValidItemsLookup = new bool[ItemLoader.ItemCount];
+				foreach (int type in rec.ValidItems)
+				{
+					rec.ValidItemsLookup[type] = true;
+				}
+			}
 		}
 	}
 }
