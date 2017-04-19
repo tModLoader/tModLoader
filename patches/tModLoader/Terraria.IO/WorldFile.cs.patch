@@ -96,6 +96,24 @@
  						{
  							writer.Write((short)0);
  						}
+@@ -1452,7 +_,7 @@
+ 			for (int i = 0; i < Main.npc.Length; i++)
+ 			{
+ 				NPC nPC = Main.npc[i];
+-				if (nPC.active && nPC.townNPC && nPC.type != 368)
++				if (nPC.active && nPC.townNPC && nPC.type != 368 && !NPCLoader.IsModNPC(nPC))
+ 				{
+ 					writer.Write(nPC.active);
+ 					writer.Write(nPC.name);
+@@ -1468,7 +_,7 @@
+ 			for (int j = 0; j < Main.npc.Length; j++)
+ 			{
+ 				NPC nPC2 = Main.npc[j];
+-				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type])
++				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type] && !NPCLoader.IsModNPC(nPC2))
+ 				{
+ 					writer.Write(nPC2.active);
+ 					writer.Write(nPC2.name);
 @@ -2834,10 +_,13 @@
  
  		private static int SaveTileEntities(BinaryWriter writer)

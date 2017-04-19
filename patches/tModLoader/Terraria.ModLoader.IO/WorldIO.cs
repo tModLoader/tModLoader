@@ -23,8 +23,9 @@ namespace Terraria.ModLoader.IO
 
 			var tag = new TagCompound {
 				["chests"] = SaveChests(),
-				["tiles"] =  TileIO.SaveTiles(),
+				["tiles"] = TileIO.SaveTiles(),
 				["containers"] = TileIO.SaveContainers(),
+				["npcs"] = SaveNPCs(),
 				["tileEntities"] = TileIO.SaveTileEntities(),
 				["killCounts"] = SaveNPCKillCounts(),
 				["anglerQuest"] = SaveAnglerQuest(),
@@ -55,6 +56,7 @@ namespace Terraria.ModLoader.IO
 			LoadChests(tag.GetList<TagCompound>("chests"));
 			TileIO.LoadTiles(tag.GetCompound("tiles"));
 			TileIO.LoadContainers(tag.GetCompound("containers"));
+			LoadNPCs(tag.GetList<TagCompound>("npcs"));
 			try
 			{
 				TileIO.LoadTileEntities(tag.GetList<TagCompound>("tileEntities"));
@@ -110,6 +112,83 @@ namespace Terraria.ModLoader.IO
 					chest = Chest.CreateChest(x, y);
 				if (chest >= 0)
 					PlayerIO.LoadInventory(Main.chest[chest].item, tag.GetList<TagCompound>("items"));
+			}
+		}
+
+		internal static List<TagCompound> SaveNPCs()
+		{
+			var list = new List<TagCompound>();
+			for (int k = 0; k < Main.npc.Length; k++)
+			{
+				NPC npc = Main.npc[k];
+				if (npc.active && NPCLoader.IsModNPC(npc))
+				{
+					if (npc.townNPC)
+					{
+						TagCompound tag = new TagCompound {
+							["mod"] = npc.modNPC.mod.Name,
+							["name"] = Main.npcName[npc.type],
+							["displayName"] = npc.displayName,
+							["x"] = npc.position.X,
+							["y"] = npc.position.Y,
+							["homeless"] = npc.homeless,
+							["homeTileX"] = npc.homeTileX,
+							["homeTileY"] = npc.homeTileY
+						};
+						list.Add(tag);
+					}
+					else if (NPCID.Sets.SavesAndLoads[npc.type])
+					{
+						TagCompound tag = new TagCompound {
+							["mod"] = npc.modNPC.mod.Name,
+							["name"] = Main.npcName[npc.type],
+							["x"] = npc.position.X,
+							["y"] = npc.position.Y
+						};
+						list.Add(tag);
+					}
+				}
+			}
+			return list;
+		}
+
+		internal static void LoadNPCs(IList<TagCompound> list)
+		{
+			if (list == null)
+			{
+				return;
+			}
+			int nextFreeNPC = 0;
+			foreach (TagCompound tag in list)
+			{
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
+				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
+				if (type > 0)
+				{
+					while (nextFreeNPC < 200 && Main.npc[nextFreeNPC].active)
+					{
+						nextFreeNPC++;
+					}
+					if (nextFreeNPC >= 200)
+					{
+						break;
+					}
+					NPC npc = Main.npc[nextFreeNPC];
+					npc.SetDefaults(type);
+					npc.position.X = tag.GetFloat("x");
+					npc.position.Y = tag.GetFloat("y");
+					if (npc.townNPC)
+					{
+						npc.displayName = tag.GetString("displayName");
+						npc.homeless = tag.GetBool("homeless");
+						npc.homeTileX = tag.GetInt("homeTileX");
+						npc.homeTileY = tag.GetInt("homeTileY");
+					}
+				}
+				else
+				{
+					//TODO - save unloaded NPC data
+				}
 			}
 		}
 
