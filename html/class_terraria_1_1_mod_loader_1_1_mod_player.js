@@ -71,6 +71,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "SendCustomBiomes", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ad4d50f250fda2b3df2e45ef78c85013d", null ],
     [ "SetControls", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a55006662c2517897f94909aeba3ec0f6", null ],
     [ "SetupStartInventory", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ad9466b9a46dd19aa9edbc3656ea09691", null ],
+    [ "ShiftClickSlot", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a26549f10f21d323affac563dda8cfe11", null ],
     [ "Shoot", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a3f06ebdab0af3b5f825c6a706599a38b", null ],
     [ "SyncPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a3905e96a9c70d498528df9121380fb1c", null ],
     [ "TypeEquals", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aa828f70b3df43d4c6def055d2455238e", null ],

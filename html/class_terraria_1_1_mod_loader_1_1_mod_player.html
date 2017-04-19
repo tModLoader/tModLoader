@@ -345,6 +345,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad9466b9a46dd19aa9edbc3656ea09691"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ad9466b9a46dd19aa9edbc3656ea09691">SetupStartInventory</a> (IList&lt; <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> &gt; items)</td></tr>
 <tr class="memdesc:ad9466b9a46dd19aa9edbc3656ea09691"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the inventory newly created players or killed mediumcore players will start with. To add items to the player's inventory, create a new Item, call its SetDefaults method for whatever ID you want, call its Prefix method with a parameter of -1 if you want to give it a random prefix, then add it to the items list parameter.  <a href="#ad9466b9a46dd19aa9edbc3656ea09691">More...</a><br /></td></tr>
 <tr class="separator:ad9466b9a46dd19aa9edbc3656ea09691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26549f10f21d323affac563dda8cfe11"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a26549f10f21d323affac563dda8cfe11">ShiftClickSlot</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[] inventory, int context, int slot)</td></tr>
+<tr class="memdesc:a26549f10f21d323affac563dda8cfe11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling or trashing items).  <a href="#a26549f10f21d323affac563dda8cfe11">More...</a><br /></td></tr>
+<tr class="separator:a26549f10f21d323affac563dda8cfe11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f06ebdab0af3b5f825c6a706599a38b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a3f06ebdab0af3b5f825c6a706599a38b">Shoot</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)</td></tr>
 <tr class="memdesc:a3f06ebdab0af3b5f825c6a706599a38b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called before this player's weapon creates a projectile. You can use it to create special effects, such as changing the speed, changing the initial position, and/or firing multiple projectiles. Return false to stop the game from shooting the default projectile (do this if you manually spawn your own projectile). Returns true by default.  <a href="#a3f06ebdab0af3b5f825c6a706599a38b">More...</a><br /></td></tr>
 <tr class="separator:a3f06ebdab0af3b5f825c6a706599a38b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4378,6 +4381,73 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a26549f10f21d323affac563dda8cfe11"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModPlayer.ShiftClickSlot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[]&#160;</td>
+          <td class="paramname"><em>inventory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling or trashing items). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inventory</td><td>The array of items the slot is part of.</td></tr>
+    <tr><td class="paramname">context</td><td>The Terraria.UI.ItemSlot.Context of the inventory.</td></tr>
+    <tr><td class="paramname">slot</td><td>The index in the inventory of the clicked slot.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not to block the default code (sell and trash) from running. Returns false by default.</dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00830">830</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00961">Terraria.ModLoader.PlayerHooks.ShiftClickSlot()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;        {</div><div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-67" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-67-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-67-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-67-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a26549f10f21d323affac563dda8cfe11_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a26549f10f21d323affac563dda8cfe11_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_player_a26549f10f21d323affac563dda8cfe11_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a26549f10f21d323affac563dda8cfe11_icgraph">
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a151a4f667ba2f54414017b92c0de74a5" title="Terraria.ModLoader.Player\lHooks.ShiftClickSlot" alt="" coords="260,5,433,51"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="a3f06ebdab0af3b5f825c6a706599a38b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -4459,11 +4529,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00550">Terraria.ModLoader.PlayerHooks.Shoot()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;        {</div><div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-67" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-67-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-67-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-68" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-68-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-68-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-67-content" class="dyncontent" style="display:none;">
+<div id="dynsection-68-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a3f06ebdab0af3b5f825c6a706599a38b_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a3f06ebdab0af3b5f825c6a706599a38b_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_a3f06ebdab0af3b5f825c6a706599a38b_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a3f06ebdab0af3b5f825c6a706599a38b_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad70a5b0269638efade6ed3f34f26aa27" title="Terraria.ModLoader.Player\lHooks.Shoot" alt="" coords="260,5,433,51"/>
@@ -4525,11 +4595,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00268">Terraria.ModLoader.PlayerHooks.SyncPlayer()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        {</div><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-68" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-68-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-68-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-69" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-69-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-69-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-68-content" class="dyncontent" style="display:none;">
+<div id="dynsection-69-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a3905e96a9c70d498528df9121380fb1c_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a3905e96a9c70d498528df9121380fb1c_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_a3905e96a9c70d498528df9121380fb1c_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a3905e96a9c70d498528df9121380fb1c_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a3c4bfe3ab9439bc79fccd1c43cbbb233" title="Terraria.ModLoader.Player\lHooks.SyncPlayer" alt="" coords="260,5,433,51"/>
@@ -4588,11 +4658,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00298">Terraria.ModLoader.PlayerHooks.UpdateBadLifeRegen()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        {</div><div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-69" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-69-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-69-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-70" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-70-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-70-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-69-content" class="dyncontent" style="display:none;">
+<div id="dynsection-70-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_ad4ada9b7e09919a8dbfea901c8e509c0_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_ad4ada9b7e09919a8dbfea901c8e509c0_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_ad4ada9b7e09919a8dbfea901c8e509c0_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_ad4ada9b7e09919a8dbfea901c8e509c0_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a238af84ac9fab141122a5d747bfb8de3" title="Terraria.ModLoader.Player\lHooks.UpdateBadLifeRegen" alt="" coords="260,5,447,51"/>
@@ -4629,11 +4699,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00149">Terraria.ModLoader.PlayerHooks.UpdateBiomes()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        {</div><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-70" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-70-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-70-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-71" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-71-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-71-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-70-content" class="dyncontent" style="display:none;">
+<div id="dynsection-71-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a612c77b1a0b516f5579b4305dc95084a_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a612c77b1a0b516f5579b4305dc95084a_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_a612c77b1a0b516f5579b4305dc95084a_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a612c77b1a0b516f5579b4305dc95084a_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a412ff584fb885277dbfab8bb4622bfcd" title="Terraria.ModLoader.Player\lHooks.UpdateBiomes" alt="" coords="260,5,433,51"/>
@@ -4670,11 +4740,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00252">Terraria.ModLoader.PlayerHooks.UpdateBiomeVisuals()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        {</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-71" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-71-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-71-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-72" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-72-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-72-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-71-content" class="dyncontent" style="display:none;">
+<div id="dynsection-72-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a0866e599583b3d4e57c0b74457911d63_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a0866e599583b3d4e57c0b74457911d63_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_a0866e599583b3d4e57c0b74457911d63_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a0866e599583b3d4e57c0b74457911d63_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#ac2daf29f66dbb091940286f01fccc4f7" title="Terraria.ModLoader.Player\lHooks.UpdateBiomeVisuals" alt="" coords="259,5,445,51"/>
@@ -4711,11 +4781,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00053">Terraria.ModLoader.PlayerHooks.UpdateDead()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-72" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-72-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-72-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-73" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-73-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-73-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-72-content" class="dyncontent" style="display:none;">
+<div id="dynsection-73-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a0b6b68a8bcbc2d8e88d0839a43608668_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a0b6b68a8bcbc2d8e88d0839a43608668_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_a0b6b68a8bcbc2d8e88d0839a43608668_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a0b6b68a8bcbc2d8e88d0839a43608668_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#adcda86f9ea811c4516a655f5d5c1e987" title="Terraria.ModLoader.Player\lHooks.UpdateDead" alt="" coords="260,5,433,51"/>
@@ -4777,11 +4847,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00354">Terraria.ModLoader.PlayerHooks.UpdateEquips()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        {</div><div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-73" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-73-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-73-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-74" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-74-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-74-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-73-content" class="dyncontent" style="display:none;">
+<div id="dynsection-74-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_af8d581d8637b86b39efc82a0aa8c451e_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_af8d581d8637b86b39efc82a0aa8c451e_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_af8d581d8637b86b39efc82a0aa8c451e_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_af8d581d8637b86b39efc82a0aa8c451e_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#af1cf653d653237307f2703a90ff2ccef" title="Terraria.ModLoader.Player\lHooks.UpdateEquips" alt="" coords="260,5,433,51"/>
@@ -4818,11 +4888,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00306">Terraria.ModLoader.PlayerHooks.UpdateLifeRegen()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        {</div><div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-74" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-74-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-74-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-75" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-75-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-75-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-74-content" class="dyncontent" style="display:none;">
+<div id="dynsection-75-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a24e9cd74df89ef1a39093b457f9af952_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a24e9cd74df89ef1a39093b457f9af952_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_a24e9cd74df89ef1a39093b457f9af952_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a24e9cd74df89ef1a39093b457f9af952_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#ac64c95052dba1f86bc4bdb4c61f203e1" title="Terraria.ModLoader.Player\lHooks.UpdateLifeRegen" alt="" coords="260,5,433,51"/>
@@ -4859,11 +4929,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00362">Terraria.ModLoader.PlayerHooks.UpdateVanityAccessories()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        {</div><div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-75" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-75-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-75-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-76" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-76-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-76-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-75-content" class="dyncontent" style="display:none;">
+<div id="dynsection-76-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_aca9c4f67053ee8f250d4aa502d9a40d0_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_aca9c4f67053ee8f250d4aa502d9a40d0_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_aca9c4f67053ee8f250d4aa502d9a40d0_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_aca9c4f67053ee8f250d4aa502d9a40d0_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#acc3858020c00b97f7e9f26f0bdc3d04d" title="Terraria.ModLoader.Player\lHooks.UpdateVanityAccessories" alt="" coords="260,5,473,51"/>
@@ -4908,11 +4978,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00483">Terraria.ModLoader.PlayerHooks.UseTimeMultiplier()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        {</div><div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;            <span class="keywordflow">return</span> 1f;</div><div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-76" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-76-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-76-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-77" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-77-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-77-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-76-content" class="dyncontent" style="display:none;">
+<div id="dynsection-77-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_abb5e4c7ee1acbfc31227fed71446a0a7_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_abb5e4c7ee1acbfc31227fed71446a0a7_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_abb5e4c7ee1acbfc31227fed71446a0a7_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_abb5e4c7ee1acbfc31227fed71446a0a7_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a9592d69cbbbb3fdf6b3407298af537a6" title="Terraria.ModLoader.Player\lHooks.UseTimeMultiplier" alt="" coords="260,5,433,51"/>

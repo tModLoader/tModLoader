@@ -53,6 +53,7 @@ var searchData=
   ['shield',['Shield',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a970da5f1f2e32aeb9e488dd017160ab4',1,'Terraria::ModLoader']]],
   ['shieldacc',['ShieldAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#aa30b56c1ab7f1e63b5bde83f9dc8fd10',1,'Terraria::ModLoader::PlayerLayer']]],
   ['shieldshader',['shieldShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad8b79526ecbbf1bcfe73b9acac2c0926',1,'Terraria::ModLoader::PlayerDrawInfo']]],
+  ['shiftclickslot',['ShiftClickSlot',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a26549f10f21d323affac563dda8cfe11',1,'Terraria.ModLoader.ModPlayer.ShiftClickSlot()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a151a4f667ba2f54414017b92c0de74a5',1,'Terraria.ModLoader.PlayerHooks.ShiftClickSlot()']]],
   ['shirtcolor',['shirtColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a326cfd8c0be8c194fa60ab50b507c2ee',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['shoeacc',['ShoeAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#ae5430712b70811a96278f6eee282503a',1,'Terraria::ModLoader::PlayerLayer']]],
   ['shoecolor',['shoeColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a3126fafdffd84c815c6426a89b9fa87f',1,'Terraria::ModLoader::PlayerDrawInfo']]],
