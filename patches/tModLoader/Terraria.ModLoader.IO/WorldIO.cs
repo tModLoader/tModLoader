@@ -187,7 +187,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					//TODO - save unloaded NPC data
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryNPCs.Add(tag);
 				}
 			}
 		}
@@ -216,7 +216,13 @@ namespace Terraria.ModLoader.IO
 				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
 				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
 				if (type > 0)
+				{
 					NPC.killCount[type] = tag.GetInt("count");
+				}
+				else
+				{
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryKillCounts.Add(tag);
+				}
 			}
 		}
 
