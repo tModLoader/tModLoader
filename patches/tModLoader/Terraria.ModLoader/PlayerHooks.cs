@@ -957,5 +957,17 @@ namespace Terraria.ModLoader
 				modPlayer.OnRespawn(player);
 			}
 		}
+
+		public static bool ShiftClickSlot(Player player, Item[] inventory, int context, int slot)
+		{
+			foreach (ModPlayer modPlayer in player.modPlayers)
+			{
+				if (modPlayer.ShiftClickSlot(inventory, context, slot))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 }

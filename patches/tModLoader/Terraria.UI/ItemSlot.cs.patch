@@ -66,6 +66,18 @@
  				{
  					Chest chest = Main.instance.shop[Main.npcShop];
  					if (player.SellItem(Main.mouseItem.value, Main.mouseItem.stack))
+@@ -621,7 +_,10 @@
+ 			Player player = Main.player[Main.myPlayer];
+ 			if (inv[slot].type > 0)
+ 			{
+-				if (Main.npcShop > 0 && !inv[slot].favorited)
++				if (PlayerHooks.ShiftClickSlot(player, inv, context, slot))
++				{
++				}
++				else if (Main.npcShop > 0 && !inv[slot].favorited)
+ 				{
+ 					Chest chest = Main.instance.shop[Main.npcShop];
+ 					if (inv[slot].type >= 71 && inv[slot].type <= 74)
 @@ -888,7 +_,7 @@
  			if (context == 0)
  			{
