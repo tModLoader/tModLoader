@@ -153,6 +153,7 @@ namespace Terraria.ModLoader
 			}
 			Interface.loadMods.SetProgressSetup(0f);
 			ResizeArrays();
+			RecipeGroupHelper.FixRecipeGroupLookups();
 			num = 0;
 			foreach (Mod mod in mods.Values)
 			{
@@ -234,7 +235,6 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.ResizeArrays();
 			WaterfallStyleLoader.ResizeArrays();
 			WorldHooks.ResizeArrays();
-			RecipeGroupHelper.FixRecipeGroupLookups();
 		}
 
 		// TODO, investigate if this causes memory errors.
@@ -501,6 +501,13 @@ namespace Terraria.ModLoader
 			WaterfallStyleLoader.Unload();
 			mods.Clear();
 			ResizeArrays(true);
+			for (int k = 0; k < Recipe.maxRecipes; k++)
+			{
+				Main.recipe[k] = new Recipe();
+			}
+			Recipe.numRecipes = 0;
+			RecipeGroupHelper.ResetRecipeGroups();
+			Recipe.SetupRecipes();
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
 			modHotKeys.Clear();
