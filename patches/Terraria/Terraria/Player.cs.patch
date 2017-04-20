@@ -1,6 +1,6 @@
 --- src/merged\Terraria\Player.cs
 +++ src/Terraria\Terraria\Player.cs
-@@ -12654,7 +_,7 @@
+@@ -12704,7 +_,7 @@
  						{
  							list10.Add(tuple9);
  						}
@@ -9,18 +9,18 @@
  						if (Collision.HitWallSubstep(tuple9.Item1, tuple9.Item2))
  						{
  							list10.Add(tuple9);
-@@ -24766,8 +_,8 @@
+@@ -24981,8 +_,8 @@
  						flag2 = true;
  						int num22 = (int)(Main.tile[myX, myY].frameX / 54);
  						int num23 = (int)(Main.tile[myX, myY].frameY / 54);
--						short arg_BE9_0 = Main.tile[myX, myY].frameX % 54 / 18;
--						short arg_C03_0 = Main.tile[myX, myY].frameY % 54 / 18;
-+						short arg_BE9_0 = (short) (Main.tile[myX, myY].frameX % 54 / 18);
-+						short arg_C03_0 = (short) (Main.tile[myX, myY].frameY % 54 / 18);
+-						short arg_BFD_0 = Main.tile[myX, myY].frameX % 54 / 18;
+-						short arg_C17_0 = Main.tile[myX, myY].frameY % 54 / 18;
++						short arg_BFD_0 = (short)(Main.tile[myX, myY].frameX % 54 / 18);
++						short arg_C17_0 = (short)(Main.tile[myX, myY].frameY % 54 / 18);
  						int num24 = -1;
  						switch (num22)
  						{
-@@ -35693,7 +_,7 @@
+@@ -36019,7 +_,7 @@
  													{
  														num258 = 0;
  													}
@@ -29,7 +29,7 @@
  													if (Main.netMode == 1)
  													{
  														NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1, TileChangeType.None);
-@@ -38974,7 +_,7 @@
+@@ -39297,7 +_,7 @@
  				FileUtilities.Copy(path, path + ".bak", isCloudSave, true);
  			}
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
@@ -38,7 +38,7 @@
  			{
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(Player.ENCRYPTION_KEY, Player.ENCRYPTION_KEY), CryptoStreamMode.Write))
  				{
-@@ -39907,7 +_,6 @@
+@@ -40211,7 +_,6 @@
  			this._shaderObstructionInternalValue = 1f;
  			int[] array2 = new int[2];
  			this.hurtCooldowns = array2;

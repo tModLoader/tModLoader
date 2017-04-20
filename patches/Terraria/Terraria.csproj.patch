@@ -1,25 +1,108 @@
 --- src/merged\Terraria.csproj
 +++ src/Terraria\Terraria.csproj
-@@ -78,11 +_,18 @@
-     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="System" />
+@@ -76,14 +_,23 @@
+     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
 -    <Reference Include="Newtonsoft.Json" />
--    <Reference Include="Ionic.Zip.CF" />
 +    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
 +      <SpecificVersion>False</SpecificVersion>
 +      <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
 +    </Reference>
+     <Reference Include="System" />
+-    <Reference Include="Steamworks.NET" />
+-    <Reference Include="ReLogic" />
++    <Reference Include="Steamworks.NET">
++      <HintPath>Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic">
++      <HintPath>Terraria.Libraries\ReLogic\ReLogic.dll</HintPath>
++    </Reference>
+     <Reference Include="System.Core" />
+     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="System.Drawing" />
+-    <Reference Include="Ionic.Zip.CF" />
 +    <Reference Include="Ionic.Zip.CF">
 +      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
 +    </Reference>
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
--    <Reference Include="Steamworks.NET" />
-+    <Reference Include="Steamworks.NET">
-+      <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
-+    </Reference>
-     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="System.Windows.Forms" />
      <Reference Include="WindowsBase" />
    </ItemGroup>
-
+@@ -535,67 +_,67 @@
+     <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" />
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
+-    <EmbeddedResource Include="Terraria.Localization.Content.de-DE.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Legacy.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.NPCs.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Town.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.en-US.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.en-US.Items.json" />
+-    <EmbeddedResource Include="Terraria.Localization.Content.en-US.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.en-US.Main.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.en-US.Legacy.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.en-US.NPCs.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.en-US.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.en-US.Town.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.es-ES.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.es-ES.Items.json" />
+-    <EmbeddedResource Include="Terraria.Localization.Content.es-ES.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.es-ES.Main.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.es-ES.Legacy.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.es-ES.NPCs.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.es-ES.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.es-ES.Town.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.fr-FR.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.fr-FR.Items.json" />
+-    <EmbeddedResource Include="Terraria.Localization.Content.fr-FR.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.fr-FR.Main.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.fr-FR.Legacy.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.fr-FR.NPCs.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.fr-FR.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.fr-FR.Town.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.it-IT.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.it-IT.Items.json" />
+-    <EmbeddedResource Include="Terraria.Localization.Content.it-IT.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.it-IT.Main.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.it-IT.Legacy.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.it-IT.NPCs.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.it-IT.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.it-IT.Town.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pl-PL.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pl-PL.Items.json" />
+-    <EmbeddedResource Include="Terraria.Localization.Content.pl-PL.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.pl-PL.Main.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pl-PL.Legacy.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pl-PL.NPCs.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pl-PL.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pl-PL.Town.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pt-BR.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pt-BR.Items.json" />
+-    <EmbeddedResource Include="Terraria.Localization.Content.pt-BR.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.pt-BR.Main.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pt-BR.Legacy.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pt-BR.NPCs.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pt-BR.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.pt-BR.Town.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.ru-RU.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.ru-RU.Items.json" />
+-    <EmbeddedResource Include="Terraria.Localization.Content.ru-RU.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.ru-RU.Main.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.ru-RU.Legacy.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.ru-RU.NPCs.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.ru-RU.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.ru-RU.Town.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Items.json" />
+-    <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Main.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Legacy.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.NPCs.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
+   </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
++</Project>
