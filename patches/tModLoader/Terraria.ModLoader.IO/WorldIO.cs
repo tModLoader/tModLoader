@@ -128,7 +128,7 @@ namespace Terraria.ModLoader.IO
 						TagCompound tag = new TagCompound {
 							["mod"] = npc.modNPC.mod.Name,
 							["name"] = Main.npcName[npc.type],
-							["displayName"] = npc.displayName,
+							["displayName"] = npc.GivenName,
 							["x"] = npc.position.X,
 							["y"] = npc.position.Y,
 							["homeless"] = npc.homeless,

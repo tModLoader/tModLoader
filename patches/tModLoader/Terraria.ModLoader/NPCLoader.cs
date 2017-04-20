@@ -163,7 +163,7 @@ namespace Terraria.ModLoader
 		internal static void ResizeArrays(bool unloading)
 		{
 			Array.Resize(ref Main.NPCLoaded, nextNPC);
-			Array.Resize(ref Main.nextNPC, nextNPC);
+			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
 			Array.Resize(ref Main.slimeRainNPC, nextNPC);
 			Array.Resize(ref Main.npcTexture, nextNPC);
 			Array.Resize(ref Main.npcAltTextures, nextNPC);
@@ -993,10 +993,10 @@ namespace Terraria.ModLoader
 				if (npc.npc.townNPC && NPC.TypeToHeadIndex(npc.npc.type) >= 0 && !NPC.AnyNPCs(npc.npc.type) &&
 					npc.CanTownNPCSpawn(numTownNPCs, money))
 				{
-					Main.nextNPC[npc.npc.type] = true;
-					if (WorldGen.spawnNPC == 0)
+					Main.townNPCCanSpawn[npc.npc.type] = true;
+					if (WorldGen.prioritizedTownNPC == 0)
 					{
-						WorldGen.spawnNPC = npc.npc.type;
+						WorldGen.prioritizedTownNPC = npc.npc.type;
 					}
 				}
 			}

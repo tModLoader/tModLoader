@@ -415,7 +415,7 @@ namespace Terraria.ModLoader
 			{
 				return modTile.openDoorID;
 			}
-			if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646))
+			if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646 || tile.frameX >= 54))
 			{
 				return TileID.OpenDoor;
 			}
@@ -437,15 +437,6 @@ namespace Terraria.ModLoader
 				return TileID.ClosedDoor;
 			}
 			return -1;
-		}
-		//replace chest checks (type == 21) with this
-		public static bool IsChest(int type)
-		{
-			if (type == TileID.Containers)
-			{
-				return true;
-			}
-			return ModChestName(type).Length > 0;
 		}
 		//in Terraria.UI.ChestUI add this to Lang lookups
 		public static string ModChestName(int type)
