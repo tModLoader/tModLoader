@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Map;
 
 namespace Terraria.ModLoader
@@ -66,11 +67,11 @@ namespace Terraria.ModLoader
 				}
 			}
 			Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition + colors.Count);
-			Lang.mapLegend.Resize(MapHelper.modPosition + names.Count);
+			Lang._mapLegendCache.Resize(MapHelper.modPosition + names.Count);
 			for (int k = 0; k < colors.Count; k++)
 			{
 				MapHelper.colorLookup[MapHelper.modPosition + k] = colors[k];
-				Lang.mapLegend[MapHelper.modPosition + k] = names[k];
+				Lang._mapLegendCache[MapHelper.modPosition + k] = new LocalizedText("ModLoader", names[k]);
 			}
 			initialized = true;
 		}
@@ -89,7 +90,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref MapHelper.tileLookup, TileID.Count);
 			Array.Resize(ref MapHelper.wallLookup, WallID.Count);
 			Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition);
-			Lang.mapLegend.Resize(MapHelper.modPosition);
+			Lang._mapLegendCache.Resize(MapHelper.modPosition);
 			initialized = false;
 		}
 		//at end of Terraria.Map.MapHelper.CreateMapTile before returning call

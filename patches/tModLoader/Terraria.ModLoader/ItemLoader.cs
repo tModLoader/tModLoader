@@ -115,7 +115,7 @@ namespace Terraria.ModLoader
 		private delegate void DelegateCaughtFishStack(int type, ref int stack);
 		private static DelegateCaughtFishStack[] HookCaughtFishStack;
 		private static Func<int, bool>[] HookIsAnglerQuestAvailable;
-		private delegate void DelegateAnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation);
+		private delegate void DelegateAnglerChat(int type, ref string chat, ref string catchLocation);
 		private static DelegateAnglerChat[] HookAnglerChat;
 		private static Action<Item, Recipe>[] HookOnCraft;
 		private static Action<Item, List<TooltipLine>>[] HookModifyTooltips;
@@ -1752,17 +1752,24 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void AnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation)
+		public static string AnglerChat(int type)
 		{
+			string chat = "";
+			string catchLocation = "";
 			ModItem modItem = GetItem(type);
-			if (modItem != null && !Main.anglerQuestFinished && !turningInFish)
+			if (modItem != null)
 			{
 				modItem.AnglerQuestChat(ref chat, ref catchLocation);
 			}
 			foreach (var hook in HookAnglerChat)
 			{
-				hook(turningInFish, anglerQuestFinished, type, ref chat, ref catchLocation);
+				hook(type, ref chat, ref catchLocation);
 			}
+			if (string.IsNullOrEmpty(chat) || string.IsNullOrEmpty(chat))
+			{
+				return null;
+			}
+			return chat + "\n\n(" + catchLocation + ")";
 		}
 
 		public static void OnCraft(Item item, Recipe recipe)

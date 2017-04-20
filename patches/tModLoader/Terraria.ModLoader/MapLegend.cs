@@ -1,5 +1,6 @@
 using System;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
 
@@ -9,11 +10,11 @@ namespace Terraria.ModLoader
 	public class MapLegend
 	{
 		//change type of Lang.mapLegend to this class
-		private string[] legend;
+		private LocalizedText[] legend;
 
 		public MapLegend(int size)
 		{
-			legend = new string[size];
+			legend = new LocalizedText[size];
 		}
 
 		public int Length
@@ -29,7 +30,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref legend, newSize);
 		}
 
-		public string this[int i]
+		public LocalizedText this[int i]
 		{
 			get
 			{
@@ -45,15 +46,15 @@ namespace Terraria.ModLoader
 		//  with Lang.mapLegend.FromType(Main.recipe[Main.availableRecipe[num60]].requiredTile[num62])
 		//in Terraria.Main.DrawInfoAccs replace Lang.mapLegend[MapHelper.TileToLookup(Main.player[Main.myPlayer].bestOre, 0)]
 		//  with Lang.mapLegend.FromType(Main.player[Main.myPlayer].bestOre)
-		public string FromType(int type)
+		public LocalizedText FromType(int type)
 		{
 			return this[MapHelper.TileToLookup(type, 0)];
 		}
 		//in Terraria.Main.DrawMap replace text = Lang.mapLegend[type]; with
 		//  text = Lang.mapLegend.FromTile(Main.Map[num91, num92], num91, num92);
-		public string FromTile(MapTile mapTile, int x, int y)
+		public LocalizedText FromTile(MapTile mapTile, int x, int y)
 		{
-			string name = legend[mapTile.Type];
+			LocalizedText name = legend[mapTile.Type];
 			if (MapLoader.nameFuncs.ContainsKey(mapTile.Type))
 			{
 				name = MapLoader.nameFuncs[mapTile.Type](name, x, y);

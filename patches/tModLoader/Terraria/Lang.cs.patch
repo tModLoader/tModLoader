@@ -1,78 +1,32 @@
 --- src/Terraria\Terraria\Lang.cs
 +++ src/tModLoader\Terraria\Lang.cs
-@@ -2,6 +_,7 @@
- using Terraria.GameContent.Events;
+@@ -6,6 +_,7 @@
+ using Terraria.GameInput;
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  
  #if CLIENT
  using Terraria.Map;
-@@ -20,7 +_,7 @@
- 		public static string[] dt = new string[4];
- 		public static string[] chestType = new string[52];
- 		public static string[] dresserType = new string[28];
--		public static string[] mapLegend;
-+		public static MapLegend mapLegend;
- 		public static string[] prefix = new string[84];
- 
- 		public static string GetBirthdayDialog(NPC n, bool english = false)
-@@ -3689,6 +_,10 @@
- 
- 		public static string npcName(int l, bool english = false)
- 		{
-+			if (l >= Main.maxNPCTypes)
+@@ -35,7 +_,7 @@
+ 		[Obsolete("Lang arrays have been replaced with the new Language.GetText system.")]
+ 		public static LocalizedText[] chestType2 = new LocalizedText[2];
+ 		public static LocalizedText[] prefix = new LocalizedText[84];
+-		public static LocalizedText[] _mapLegendCache;
++		public static MapLegend _mapLegendCache;
+ 		private static LocalizedText[] _itemNameCache = new LocalizedText[3930];
+ 		private static LocalizedText[] _projectileNameCache = new LocalizedText[714];
+ 		private static LocalizedText[] _npcNameCache = new LocalizedText[580];
+@@ -304,6 +_,11 @@
+ 			}
+ 			int num = Main.anglerQuestItemNetIDs[Main.anglerQuest];
+ 			Main.npcChatCornerItem = num;
++			string modText = ItemLoader.AnglerChat(num);
++			if (modText != null)
 +			{
-+				return NPCLoader.DisplayName(l);
++				return modText;
 +			}
- 			if (Lang.lang <= 1 || english)
- 			{
- 				switch (l)
-@@ -33254,10 +_,21 @@
- 							array = array2;
- 						}
- 						else
-+						//patch file: array, array2, flag, text
- 						{
- 							array[num2++] = "Piranhas and sharks are ugly! Soooo ugly! Did you know there's a fish that looks very pretty and still can eat your face off? I would pay 2 platinum to see that happen, by the way... To the point, though, you catchy for me. Just make sure I have it before you lose your face!";
- 							flag = true;
- 							text = "\n(Caught Jungle Surface)";
-+						}
-+						break;
-+					default:
-+						if (gotFish)
-+						{
-+							array = array2;
-+						}
-+						else
-+						{
-+							flag = true;
- 						}
- 						break;
- 				}
-@@ -33270,6 +_,7 @@
- 					text2 = text2 + " " + array[i];
- 				}
- 			}
-+			ItemLoader.AnglerChat(gotFish, Main.anglerQuestFinished, Main.anglerQuestItemNetIDs[Main.anglerQuest], ref text2, ref text);
- 			if (text.Length > 0)
- 			{
- 				text2 = text2 + "\n" + text;
-@@ -35603,7 +_,7 @@
- #if CLIENT
- 				if (Lang.mapLegend == null)
- 				{
--					Lang.mapLegend = new string[MapHelper.LookupCount()];
-+					Lang.mapLegend = new MapLegend(MapHelper.LookupCount());
- 				}
- 				Lang.mapLegend[MapHelper.TileToLookup(4, 0)] = "Torch";
- 				Lang.mapLegend[MapHelper.TileToLookup(4, 1)] = "Torch";
-@@ -38568,6 +_,7 @@
- 			}
+ 			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(num), obj);
  		}
  
-+		// TODO Hook into deathMsg?
- 		public static string deathMsg(int plr = -1, int npc = -1, int proj = -1, int other = -1, int projType = 0, int plrItemType = 0)
- 		{
- 			string text = "";
 

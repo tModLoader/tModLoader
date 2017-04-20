@@ -33,7 +33,7 @@
  		public const int flaskTime = 72000;
  		public const int copper = 1;
  		public const int silver = 100;
-@@ -220,7 +_,7 @@
+@@ -247,7 +_,7 @@
  				}
  				if (num == -1 || num == -2 || num == -3)
  				{
@@ -42,7 +42,7 @@
  					{
  						int num9 = unifiedRandom.Next(40);
  						if (num9 == 0)
-@@ -384,7 +_,7 @@
+@@ -411,7 +_,7 @@
  							num = 81;
  						}
  					}
@@ -51,7 +51,7 @@
  					{
  						int num10 = unifiedRandom.Next(14);
  						if (num10 == 0)
-@@ -444,7 +_,7 @@
+@@ -471,7 +_,7 @@
  							num = 61;
  						}
  					}
@@ -60,7 +60,7 @@
  					{
  						int num11 = unifiedRandom.Next(36);
  						if (num11 == 0)
-@@ -592,7 +_,7 @@
+@@ -619,7 +_,7 @@
  							num = 82;
  						}
  					}
@@ -69,7 +69,7 @@
  					{
  						int num12 = unifiedRandom.Next(36);
  						if (num12 == 0)
-@@ -740,7 +_,7 @@
+@@ -767,7 +_,7 @@
  							num = 83;
  						}
  					}
@@ -78,31 +78,22 @@
  					{
  						int num13 = unifiedRandom.Next(14);
  						if (num13 == 0)
-@@ -1265,7 +_,7 @@
- 			bool flag = false;
- 			if (ItemName != "")
- 			{
--				for (int i = 0; i < 3884; i++)
-+				for (int i = 0; i < Main.itemName.Length; i++)
- 				{
- 					if (Main.itemName[i] == ItemName)
- 					{
-@@ -1317,6 +_,14 @@
- 						return true;
- 					}
+@@ -1308,6 +_,14 @@
  					num++;
-+				}
-+			}
+ 				}
+ 			}
 +			foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values)
 +			{
 +				if (recipeGroup.ContainsItem(this.type))
 +				{
 +					this.material = true;
 +					return true;
- 				}
- 			}
++				}
++			}
  			int num2 = this.type;
-@@ -1638,6 +_,10 @@
+ 			if (num2 <= 543)
+ 			{
+@@ -1627,6 +_,10 @@
  			else
  			{
  				result = 1615 + banner - 1;
@@ -113,7 +104,7 @@
  			}
  			return result;
  		}
-@@ -2307,6 +_,10 @@
+@@ -2296,6 +_,10 @@
  				case 578:
  					return 266;
  			}
@@ -124,7 +115,7 @@
  			return 0;
  		}
  
-@@ -2832,6 +_,10 @@
+@@ -2821,6 +_,10 @@
  					return 561;
  				case 266:
  					return 578;
@@ -135,7 +126,7 @@
  			}
  			return 0;
  		}
-@@ -45374,6 +_,17 @@
+@@ -42346,6 +_,17 @@
  			}
  		}
  
@@ -153,38 +144,33 @@
  		public void SetDefaults(int Type = 0, bool noMatCheck = false)
  		{
  			if (Main.netMode == 1 || Main.netMode == 2)
-@@ -45385,10 +_,6 @@
+@@ -42357,10 +_,6 @@
  				this.owner = Main.myPlayer;
  			}
  			this.ResetStats(Type);
--			if (this.type >= 3884)
+-			if (this.type >= 3930)
 -			{
 -				this.type = 0;
 -			}
  			if (this.type == 0)
  			{
  				this.netID = 0;
-@@ -45595,13 +_,14 @@
+@@ -42566,12 +_,13 @@
  				this.maxStack = 999;
  			}
  			this.netID = this.type;
--			if (!noMatCheck)
--			{
--				this.checkMat();
--			}
- 			this.name = Lang.itemName(this.netID, false);
- 			this.CheckTip();
--			if (this.type > 0 && this.type < 3884 && ItemID.Sets.Deprecated[this.type])
 +			ItemLoader.SetupItem(this);
-+			if (!noMatCheck)
-+			{
-+				this.checkMat();
-+			}
+ 			if (!noMatCheck)
+ 			{
+ 				this.checkMat();
+ 			}
+ 			this.RebuildTooltip();
+-			if (this.type > 0 && this.type < 3930 && ItemID.Sets.Deprecated[this.type])
 +			if (this.type > 0 && ItemID.Sets.Deprecated[this.type])
  			{
  				this.netID = 0;
  				this.type = 0;
-@@ -45612,6 +_,8 @@
+@@ -42581,6 +_,8 @@
  
  		public void ResetStats(int Type)
  		{
@@ -193,7 +179,7 @@
  			this.sentry = false;
  			this.DD2Summon = false;
  			this.shopSpecialCurrency = -1;
-@@ -45774,6 +_,11 @@
+@@ -42683,6 +_,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{
@@ -205,7 +191,7 @@
  			int num = this.type;
  			if (num > 1332)
  			{
-@@ -46363,6 +_,7 @@
+@@ -43272,6 +_,7 @@
  							}
  						}
  					}
@@ -213,7 +199,7 @@
  					if (ItemID.Sets.ItemNoGravity[this.type])
  					{
  						this.velocity.X = this.velocity.X * 0.95f;
-@@ -46378,6 +_,7 @@
+@@ -43287,6 +_,7 @@
  					}
  					else
  					{
@@ -221,7 +207,7 @@
  						this.velocity.Y = this.velocity.Y + num;
  						if (this.velocity.Y > num2)
  						{
-@@ -46898,6 +_,7 @@
+@@ -43805,6 +_,7 @@
  					}
  					this.spawnTime++;
  				}
@@ -229,7 +215,7 @@
  				if (Main.netMode == 2 && this.owner != Main.myPlayer)
  				{
  					this.release++;
-@@ -46944,6 +_,10 @@
+@@ -43851,6 +_,10 @@
  			}
  			int num = 400;
  			Main.item[400] = new Item();
@@ -240,7 +226,7 @@
  			if (Main.halloween)
  			{
  				if (Type == 58)
-@@ -47061,17 +_,20 @@
+@@ -43968,17 +_,20 @@
  			float num2 = 999999f;
  			for (int i = 0; i < 255; i++)
  			{
@@ -264,7 +250,7 @@
  					if (num3 < (float)NPC.sWidth && num3 < num2)
  					{
  						num2 = num3;
-@@ -47091,7 +_,14 @@
+@@ -43998,7 +_,14 @@
  
  		public Item Clone()
  		{
@@ -280,10 +266,10 @@
  		}
  
  		public Item DeepClone()
-@@ -47115,6 +_,8 @@
+@@ -44031,6 +_,8 @@
+ 			this.type = 0;
  			this.stack = 0;
  			this.netID = 0;
- 			this.name = "";
 +			this.modItem = null;
 +			this.itemInfo = new ItemInfo[0];
  		}

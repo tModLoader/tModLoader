@@ -649,9 +649,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set what the Angler says when the Quest button is clicked in his chat. The turningInFish parameter is whether the player is turning in the quest fish at that moment. The anglerQuestFinished parameter is whether the player has already turned in the quest fish earlier that day. The chat parameter is his dialogue, and catchLocation should be set to "\n(Caught at [location])" for the given type.
+		/// Allows you to set what the Angler says when the Quest button is clicked in his chat. The chat parameter is his dialogue, and catchLocation should be set to "Caught at [location]" for the given type.
 		/// </summary>
-		public virtual void AnglerChat(bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation)
+		public virtual void AnglerChat(int type, ref string chat, ref string catchLocation)
 		{
 		}
 
