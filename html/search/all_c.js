@@ -9,7 +9,7 @@ var searchData=
   ['legacywingupdate',['LegacyWingUpdate',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#acf4151da8e9f4fddd7c46e567307d12c',1,'Terraria::ModLoader::ItemLoader']]],
   ['legarmorshader',['legArmorShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a1d80d2ea2666e65cdf0f95e7626b6fee',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['legcolor',['legColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a24f060c7f3a5b3c1746666cdf365e1c1',1,'Terraria::ModLoader::PlayerDrawInfo']]],
-  ['legend',['legend',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#aa28a6ea0d12e7fb28a8cc5e90c6053ce',1,'Terraria::ModLoader::MapLegend']]],
+  ['legend',['legend',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#ac81f9a784172df571084e52e9dc41d78',1,'Terraria::ModLoader::MapLegend']]],
   ['legglowmask',['legGlowMask',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad7c16cdc9805e63617d219e5054c491b',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['legglowmaskcolor',['legGlowMaskColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a68ec5e96e1180303d3501eb69474d620',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['legorigin',['legOrigin',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a3bb072bb37cd4cdb515f5c2dd7a87939',1,'Terraria::ModLoader::PlayerDrawInfo']]],

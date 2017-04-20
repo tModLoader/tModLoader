@@ -131,9 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4fe938660707d4f0eed5068d4370078c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a4fe938660707d4f0eed5068d4370078c">AltFunctionUse</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, Player player)</td></tr>
 <tr class="memdesc:a4fe938660707d4f0eed5068d4370078c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make an item usable by right-clicking. Returns false by default. When the item is used by right-clicking, player.altFunctionUse will be set to 2.  <a href="#a4fe938660707d4f0eed5068d4370078c">More...</a><br /></td></tr>
 <tr class="separator:a4fe938660707d4f0eed5068d4370078c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a416ac74a438f5217de44bd5f4aff94d6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a416ac74a438f5217de44bd5f4aff94d6">AnglerChat</a> (bool turningInFish, bool anglerQuestFinished, int type, ref string chat, ref string catchLocation)</td></tr>
-<tr class="memdesc:a416ac74a438f5217de44bd5f4aff94d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set what the Angler says when the Quest button is clicked in his chat. The turningInFish parameter is whether the player is turning in the quest fish at that moment. The anglerQuestFinished parameter is whether the player has already turned in the quest fish earlier that day. The chat parameter is his dialogue, and catchLocation should be set to "\n(Caught at [location])" for the given type.  <a href="#a416ac74a438f5217de44bd5f4aff94d6">More...</a><br /></td></tr>
-<tr class="separator:a416ac74a438f5217de44bd5f4aff94d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdefaa97bddfa20a0fbdab7addd2e572"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#acdefaa97bddfa20a0fbdab7addd2e572">AnglerChat</a> (int type, ref string chat, ref string catchLocation)</td></tr>
+<tr class="memdesc:acdefaa97bddfa20a0fbdab7addd2e572"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set what the Angler says when the Quest button is clicked in his chat. The chat parameter is his dialogue, and catchLocation should be set to "Caught at [location]" for the given type.  <a href="#acdefaa97bddfa20a0fbdab7addd2e572">More...</a><br /></td></tr>
+<tr class="separator:acdefaa97bddfa20a0fbdab7addd2e572"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab238d32d92b35a9d9d05be16853f7460"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab238d32d92b35a9d9d05be16853f7460">ArmorArmGlowMask</a> (int slot, Player drawPlayer, float shadow, ref int glowMask, ref Color color)</td></tr>
 <tr class="memdesc:ab238d32d92b35a9d9d05be16853f7460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify which glow mask and in what color is drawn on the player's arms. Note that this is only called for body armor.  <a href="#ab238d32d92b35a9d9d05be16853f7460">More...</a><br /></td></tr>
 <tr class="separator:ab238d32d92b35a9d9d05be16853f7460"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -486,7 +486,7 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        {</div><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a416ac74a438f5217de44bd5f4aff94d6"></a>
+<a class="anchor" id="acdefaa97bddfa20a0fbdab7addd2e572"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -496,18 +496,6 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">virtual void Terraria.ModLoader.GlobalItem.AnglerChat </td>
           <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>turningInFish</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>anglerQuestFinished</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>type</em>, </td>
         </tr>
@@ -536,7 +524,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to set what the Angler says when the Quest button is clicked in his chat. The turningInFish parameter is whether the player is turning in the quest fish at that moment. The anglerQuestFinished parameter is whether the player has already turned in the quest fish earlier that day. The chat parameter is his dialogue, and catchLocation should be set to "\n(Caught at [location])" for the given type. </p>
+<p>Allows you to set what the Angler says when the Quest button is clicked in his chat. The chat parameter is his dialogue, and catchLocation should be set to "Caught at [location]" for the given type. </p>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00654">654</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        {</div><div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        }</div></div><!-- fragment -->

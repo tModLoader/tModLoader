@@ -1862,5 +1862,5 @@ Patching output file 108/111
 Patching output file 109/111
 Patching output file 110/111
 Patching output file 111/111
-lookup cache used 8728/131072 hits=85548 misses=9131
+lookup cache used 8724/131072 hits=85501 misses=9125
 finished...

@@ -2,7 +2,7 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
 [
     [ "ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a4198053c5e124a22ee5b90a68a4d5b76", null ],
     [ "AltFunctionUse", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a1fa0e678210af1832fb0d6b23571427f", null ],
-    [ "AnglerChat", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a0a03eaf7855989f2f2b7ffbb3682d6d5", null ],
+    [ "AnglerChat", "class_terraria_1_1_mod_loader_1_1_item_loader.html#aee7fad747d4c34ccbd17d3205944cb57", null ],
     [ "AnimatedItemFrame", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a0ab2225be8832afd4212a562a2ec5c81", null ],
     [ "ArmorArmGlowMask", "class_terraria_1_1_mod_loader_1_1_item_loader.html#afc7a52d4db0c80643c9537cf6d6cf653", null ],
     [ "ArmorSetShadows", "class_terraria_1_1_mod_loader_1_1_item_loader.html#afa662b41f42817230101c10acad7ae47", null ],
@@ -17,7 +17,7 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "CheckProjOnSwing", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a6043c8ae44a770f4eae732e53e3bf602", null ],
     [ "ConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ad2c508aaaa7313613c1331c942e5bd15", null ],
     [ "ConsumeItem", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ab06cbde37cb093933490be4ff9dfea25", null ],
-    [ "DelegateAnglerChat", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a1b9c223c262f04cf50acd6146bf8dd1e", null ],
+    [ "DelegateAnglerChat", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a8f2e98646d3c95bcf80119f212d8ed07", null ],
     [ "DelegateArmorArmGlowMask", "class_terraria_1_1_mod_loader_1_1_item_loader.html#abcdf5c5626c92e308712c8f8943c190c", null ],
     [ "DelegateCaughtFishStack", "class_terraria_1_1_mod_loader_1_1_item_loader.html#afe31de7213d1b60addedc9257f6027f0", null ],
     [ "DelegateDrawArmorColor", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a2182dff65f3a13d995973a7267895e69", null ],

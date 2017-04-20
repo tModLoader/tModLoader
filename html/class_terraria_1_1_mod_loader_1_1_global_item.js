@@ -3,7 +3,7 @@ var class_terraria_1_1_mod_loader_1_1_global_item =
     [ "AddTooltip", "class_terraria_1_1_mod_loader_1_1_global_item.html#a71e522ac000dc26471265d55b81eab3d", null ],
     [ "AddTooltip2", "class_terraria_1_1_mod_loader_1_1_global_item.html#ab1af75752984491d692f8b400a7e8000", null ],
     [ "AltFunctionUse", "class_terraria_1_1_mod_loader_1_1_global_item.html#a4fe938660707d4f0eed5068d4370078c", null ],
-    [ "AnglerChat", "class_terraria_1_1_mod_loader_1_1_global_item.html#a416ac74a438f5217de44bd5f4aff94d6", null ],
+    [ "AnglerChat", "class_terraria_1_1_mod_loader_1_1_global_item.html#acdefaa97bddfa20a0fbdab7addd2e572", null ],
     [ "ArmorArmGlowMask", "class_terraria_1_1_mod_loader_1_1_global_item.html#ab238d32d92b35a9d9d05be16853f7460", null ],
     [ "ArmorSetShadows", "class_terraria_1_1_mod_loader_1_1_global_item.html#aa0157164b6840e3d0fdcb1fc2e297c20", null ],
     [ "Autoload", "class_terraria_1_1_mod_loader_1_1_global_item.html#a593628480d957d47d4dc793cb390c0e8", null ],
