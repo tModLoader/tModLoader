@@ -43,7 +43,6 @@ var class_terraria_1_1_mod_loader_1_1_tile_loader =
     [ "GetTreeTopTextures", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a48fe19a6acc7c25dedd482eb6a743684", null ],
     [ "HasWalkDust", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a890469c4bfe8e079953ff37b06bc8106", null ],
     [ "HitWire", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0bc04b5b9b6f66eb9ba9936402dd2f98", null ],
-    [ "IsChest", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a384ced08408667764c62d480170b9721", null ],
     [ "IsDresser", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2c97c48cae115f24c84b9ecaf4d1f742", null ],
     [ "IsModBed", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#aab04869f2c558dee16068efb1e9b0a70", null ],
     [ "IsModMusicBox", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a62c88b8eb4a959b6120e0da5386ba6f0", null ],
