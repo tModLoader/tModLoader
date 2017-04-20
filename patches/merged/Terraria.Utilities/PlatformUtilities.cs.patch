@@ -1,15 +1,12 @@
 --- src/decompiled\Terraria.Utilities\PlatformUtilities.cs
 +++ src/merged\Terraria.Utilities\PlatformUtilities.cs
-@@ -1,24 +_,77 @@
+@@ -1,17 +_,93 @@
 +#if !WINDOWS
 +using SDL2;
 +#endif
  using System;
- using System.IO;
-+#if WINDOWS
- using System.Threading;
- using System.Windows.Forms;
-+#else
++#if !WINDOWS
++using System.IO;
 +using System.Runtime.InteropServices;
 +#endif
  
@@ -70,80 +67,6 @@
 +#else
  		public const bool IsLinux = false;
 +#endif
- 
--		public static string GetClipboard()
-+
-+        public static string GetClipboard()
- 		{
-+#if WINDOWS
- 			string clipboardText = "";
- 			Thread thread = new Thread(delegate
- 			{
-@@ -36,11 +_,24 @@
- 					array[length++] = clipboardText[i];
- 				}
- 			}
--			return new string(array, 0, length);
--		}
-+#else
-+			string empty = string.Empty;
-+			char[] array = new char[empty.Length];
-+			int length = 0;
-+			for (int i = 0; i < empty.Length; i++)
-+ 			{
-+				if (empty[i] >= ' ' && empty[i] != '\u007f')
-+				{
-+					array[length++] = empty[i];
-+ 				}
-+ 			}
-+#endif
-+ 			return new string(array, 0, length);
-+        }
- 
- 		public static void SetClipboard(string text)
- 		{
-+#if WINDOWS
- 			Thread thread = new Thread(delegate
- 			{
- 				if (text.Length > 0)
-@@ -51,12 +_,62 @@
- 			thread.SetApartmentState(ApartmentState.STA);
- 			thread.Start();
- 			thread.Join();
-+#endif
- 		}
- 
- 		public static string GetStoragePath()
- 		{
-+#if WINDOWS
- 			string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "My Games");
- 			return Path.Combine(path, "Terraria");
--		}
--	}
-+#endif
-+#if MAC
-+			string text = Environment.GetEnvironmentVariable("HOME");
-+			if (string.IsNullOrEmpty(text))
-+			{
-+				return ".";
-+			}
-+			text += "/Library/Application Support";
-+			return Path.Combine(text, "Terraria");
-+#endif
-+#if LINUX
-+			string text = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-+ 			if (string.IsNullOrEmpty(text))
-+ 			{
-+				text = Environment.GetEnvironmentVariable("HOME");
-+				if (string.IsNullOrEmpty(text))
-+				{
-+					return ".";
-+				}
-+				text += "/.local/share";
-+ 			}
-+ 			return Path.Combine(text, "Terraria");
-+#endif
-+        }
 +
 +#if !WINDOWS
 +		public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
@@ -162,13 +85,13 @@
 +				intPtr = intPtr2;
 +			}
 +			byte[] array = new byte[width * height * 4 + 41 + 57 + 256];
-+			IntPtr dst = SDL.SDL_RWFromMem(array, array.Length);
-+			SDL_image.IMG_SavePNG_RW(intPtr, dst, 1);
++			IntPtr intPtr3 = SDL.SDL_RWFromMem(array, array.Length);
++			SDL_image.IMG_SavePNG_RW(intPtr, intPtr3, 1);
 +			SDL.SDL_FreeSurface(intPtr);
 +			int count = ((int)array[33] << 24 | (int)array[34] << 16 | (int)array[35] << 8 | (int)array[36]) + 41 + 57;
 +			stream.Write(array, 0, count);
-+ 		}
++		}
 +#endif
-+    }
+ 	}
  }
 

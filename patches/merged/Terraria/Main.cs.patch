@@ -1,12 +1,16 @@
 --- src/decompiled\Terraria\Main.cs
 +++ src/merged\Terraria\Main.cs
-@@ -4,11 +_,19 @@
+@@ -4,6 +_,9 @@
  using Microsoft.Xna.Framework.Content;
  using Microsoft.Xna.Framework.Graphics;
  using Microsoft.Xna.Framework.Input;
 +#if MAC
 +using SDL2;
 +#endif
+ using ReLogic.Graphics;
+ using ReLogic.Localization.IME;
+ using ReLogic.OS;
+@@ -11,10 +_,15 @@
  using System;
  using System.Collections.Generic;
  using System.Diagnostics;
@@ -14,13 +18,15 @@
  using System.Drawing;
 +#endif
  using System.IO;
+ using System.Linq;
+ using System.Reflection;
 +#if !WINDOWS
 +using System.Runtime.CompilerServices;
 +#endif
  using System.Runtime.InteropServices;
  using System.Text;
- using System.Text.RegularExpressions;
-@@ -45,10 +_,17 @@
+ using System.Threading;
+@@ -51,10 +_,17 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.World.Generation;
@@ -38,7 +44,7 @@
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
  
-@@ -4121,6 +_,7 @@
+@@ -4398,6 +_,7 @@
  				LockOnHelper.UseMode = LockOnHelper.LockOnMode.ThreeDS;
  			}
  			Main.Configuration.Get<bool>("InvisibleCursorForGamepad", ref Main.InvisibleCursorForGamepad);
@@ -46,7 +52,7 @@
  			Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
  			if (Main.screenBorderless)
  			{
-@@ -4136,6 +_,7 @@
+@@ -4413,6 +_,7 @@
  			{
  				form.FormBorderStyle = FormBorderStyle.Sizable;
  			}
@@ -54,7 +60,7 @@
  			Main.SetDisplayMode(preferredBackBufferWidth, preferredBackBufferHeight, fullscreen);
  			Main.Configuration.Get<bool>("SettingsUnlock_WorldEvil", ref Main.SettingsUnlock_WorldEvil);
  			Main.Configuration.Get<bool>("SettingsEnabled_MinersWobble", ref Main.SettingsEnabled_MinersWobble);
-@@ -4337,8 +_,10 @@
+@@ -4617,8 +_,10 @@
  								}
  								if (num >= 91 && binaryReader.ReadBoolean())
  								{
@@ -65,7 +71,7 @@
  								}
  								if (num >= 4)
  								{
-@@ -4449,8 +_,13 @@
+@@ -4731,8 +_,13 @@
  			{
  				if (!Main.WorldList[i].IsCloudSave)
  				{
@@ -79,7 +85,7 @@
  				}
  				else if (SocialAPI.Cloud != null)
  				{
-@@ -4870,11 +_,13 @@
+@@ -5164,11 +_,13 @@
  			{
  				string text = "terraria" + Main.rand.Next(2147483647);
  				Console.Title = text;
@@ -93,7 +99,7 @@
  			}
  			else
  			{
-@@ -5793,14 +_,18 @@
+@@ -6068,14 +_,18 @@
  		public Main()
  		{
  			Main.instance = this;
@@ -106,13 +112,13 @@
  		protected void SetTitle()
  		{
 +#if CLIENT
- 			Main._cachedTitle = Lang.title();
- 			base.Window.Title = Main._cachedTitle;
+ 			Main._cachedTitle = Lang.GetRandomGameTitle();
+ 			Platform.Current.SetWindowUnicodeTitle(base.Window, Main._cachedTitle);
 +#endif
  		}
  
  		public static void InitLifeBytes()
-@@ -5857,6 +_,9 @@
+@@ -6139,6 +_,9 @@
  
  		protected override void Initialize()
  		{
@@ -122,7 +128,7 @@
  			Main.LocalFavoriteData.Load();
  			Main.CloudFavoritesData.Load();
  			Main.FindAnnouncementBoxStatus();
-@@ -5871,9 +_,14 @@
+@@ -6153,9 +_,14 @@
  			TileEntity.InitializeAll();
  			Projectile.InitializeStaticThings();
  			Main.InitializeItemAnimations();
@@ -137,7 +143,7 @@
  			WorldGen.RandomizeBackgrounds();
  			WorldGen.RandomizeCaveBackgrounds();
  			WorldGen.RandomizeMoonState();
-@@ -8354,18 +_,21 @@
+@@ -8654,13 +_,17 @@
  				Main.ActivePlayerFileData.StartPlayTimer();
  				Player.Hooks.EnterWorld(Main.myPlayer);
  			}
@@ -149,25 +155,13 @@
  				Main.RemoveMenu(systemMenu, menuItemCount - 1, 1024);
  			}
 +#endif
- 			if (Main.dedServ)
- 			{
- 				return;
- 			}
- 			MessageBuffer.OnTileChangeReceived += new TileChangeReceivedEvent(this.OnTileChangeEvent);
- 			Main.clientUUID = Guid.NewGuid().ToString();
 +#if CLIENT
- 			FilterManager arg_6400_0 = Filters.Scene;
- 			keyBoardInput.newKeyEvent += delegate(char keyStroke)
- 			{
-@@ -8376,6 +_,7 @@
- 					Main.keyCount++;
- 				}
- 			};
+ 			this.ClientInitialize();
 +#endif
- 			base.Initialize();
- 			base.Window.AllowUserResizing = true;
- 			this.OpenSettings();
-@@ -8404,6 +_,7 @@
+ 		}
+ 
+ 		private void ClientInitialize()
+@@ -8706,6 +_,7 @@
  			this.OpenRecent();
  			Star.SpawnStars();
  			WorldGen.RandomizeWeather();
@@ -175,7 +169,7 @@
  			this._achievements = new AchievementManager();
  			AchievementInitializer.Load();
  			DyeInitializer.Load();
-@@ -8412,6 +_,7 @@
+@@ -8713,6 +_,7 @@
  			AchievementCompleteUI.Initialize();
  			UILinksInitializer.Load();
  			ItemSorting.SetupWhiteLists();
@@ -183,7 +177,7 @@
  			foreach (DisplayMode current in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
  			{
  				if (current.Width >= Main.minScreenW && current.Height >= Main.minScreenH && current.Width <= Main.maxScreenW && current.Height <= Main.maxScreenH)
-@@ -9494,6 +_,30 @@
+@@ -9807,6 +_,30 @@
  
  		protected void UpdateAudio()
  		{
@@ -214,8 +208,8 @@
  			if (!Main.dedServ)
  			{
  				bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
-@@ -12936,10 +_,12 @@
- 			}
+@@ -13269,10 +_,12 @@
+ 			PlayerInput.SetZoom_Unscaled();
  			Main.MouseOversTryToClear();
  			PlayerInput.ResetInputsOnActiveStateChange();
 +#if CLIENT
@@ -227,35 +221,15 @@
  			if (Main._hasPendingNetmodeChange)
  			{
  				Main.netMode = Main._targetNetMode;
-@@ -13284,7 +_,9 @@
- 				}
- 				if (!base.IsActive && Main.netMode == 0)
- 				{
-+#if !MAC
- 					base.IsMouseVisible = true;
-+#endif
- 					if (Main.netMode != 2 && Main.myPlayer >= 0)
- 					{
- 						Main.player[Main.myPlayer].delayUseItem = true;
-@@ -13298,7 +_,9 @@
- 					Main.gamePaused = true;
- 					return;
- 				}
-+#if !MAC
- 				base.IsMouseVisible = false;
-+#endif
- 				EmoteBubble.UpdateAll();
- 				ScreenObstruction.Update();
- 				ScreenDarkness.Update();
-@@ -15156,6 +_,7 @@
+@@ -15586,6 +_,7 @@
  
  		public static string GetInputText(string oldString)
  		{
 +#if CLIENT
- 			Main.<>c__DisplayClass1e <>c__DisplayClass1e = new Main.<>c__DisplayClass1e();
- 			<>c__DisplayClass1e.oldString = oldString;
  			if (!Main.hasFocus)
-@@ -15296,6 +_,9 @@
+ 			{
+ 				return oldString;
+@@ -15703,6 +_,9 @@
  				}
  			}
  			return text;
@@ -264,8 +238,8 @@
 +#endif
  		}
  
- 		public string TooltipMousetextProcessor(string tooltip)
-@@ -43021,9 +_,14 @@
+ 		public void MouseTextHackZoom(string text)
+@@ -43858,9 +_,14 @@
  		protected void QuitGame()
  		{
  			Main.SaveSettings();
@@ -281,9 +255,9 @@
  
  		protected Microsoft.Xna.Framework.Color randColor()
  		{
-@@ -43801,6 +_,16 @@
+@@ -44613,6 +_,16 @@
  							"\" -lang ",
- 							Lang.lang
+ 							Language.ActiveCulture.LegacyId
  						});
 +#if LINUX
 +						if (IntPtr.Size == 8)
@@ -298,7 +272,7 @@
  						if (Main.ActiveWorldFileData.IsCloudSave)
  						{
  							text = text + " -cloudworld \"" + Main.worldPathName + "\"";
-@@ -43809,7 +_,11 @@
+@@ -44621,7 +_,11 @@
  						{
  							text = text + " -world \"" + Main.worldPathName + "\"";
  						}
@@ -310,15 +284,15 @@
  						this.tServer.StartInfo.Arguments = text;
  						if (Main.libPath != "")
  						{
-@@ -45236,6 +_,7 @@
+@@ -46048,6 +_,7 @@
  						{
- 							array7[num25] = 0.85f;
+ 							array7[num26] = 0.85f;
  						}
 +#if WINDOWS
  						bool flag7 = true;
  						Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
  						System.Drawing.Rectangle bounds = Screen.FromPoint(form.Location).Bounds;
-@@ -45243,6 +_,9 @@
+@@ -46055,6 +_,9 @@
  						{
  							flag7 = false;
  						}
@@ -327,20 +301,20 @@
 +#endif
  						num2 = 210;
  						num4 = 55;
- 						int num26 = 0;
-@@ -53109,7 +_,11 @@
- 			};
+ 						int num27 = 0;
+@@ -50272,7 +_,11 @@
+ 			base.GraphicsDevice.SetRenderTarget(this.backWaterTarget);
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
- 			Main.spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
+ 			Main.spriteBatch.Begin();
 +#if WINDOWS
  			Main.tileBatch.Begin();
 +#else
 +			Main.tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
 +#endif
- 			if (Main.ignoreErrors)
+ 			try
  			{
- 				try
-@@ -56470,6 +_,7 @@
+ 				this.drawWaters(true, -1, true);
+@@ -57339,6 +_,7 @@
  
  		private static void CheckMonoliths()
  		{
@@ -348,7 +322,7 @@
  			bool flag = Main.player[Main.myPlayer].ZoneTowerVortex || Main.player[Main.myPlayer].ZoneTowerNebula || Main.player[Main.myPlayer].ZoneTowerStardust || Main.player[Main.myPlayer].ZoneTowerSolar;
  			for (int i = 0; i < Main.MonolithFilterNames.Length; i++)
  			{
-@@ -56496,6 +_,7 @@
+@@ -57365,6 +_,7 @@
  					}
  				}
  			}
@@ -356,7 +330,7 @@
  		}
  
  		private void GraphicsDeviceLost(object sender, EventArgs evt)
-@@ -56561,7 +_,9 @@
+@@ -57432,7 +_,9 @@
  			{
  				Main.maxQ = true;
  			}
@@ -366,7 +340,7 @@
  			if (Main.OnPreDraw != null)
  			{
  				Main.OnPreDraw(gameTime);
-@@ -59612,6 +_,7 @@
+@@ -60491,6 +_,7 @@
  			BirthdayParty.UpdateTime();
  			Sandstorm.UpdateTime();
  			DD2Event.UpdateTime();
@@ -374,7 +348,7 @@
  			if (NPC.MoonLordCountdown > 0)
  			{
  				float num5 = MathHelper.Clamp((float)Math.Sin((double)((float)NPC.MoonLordCountdown / 60f * 0.5f)) * 2f, 0f, 1f);
-@@ -59626,6 +_,7 @@
+@@ -60505,6 +_,7 @@
  			{
  				Filters.Scene.Deactivate("MoonLordShake", new object[0]);
  			}
@@ -382,7 +356,7 @@
  			if (NPC.MoonLordCountdown > 0)
  			{
  				NPC.MoonLordCountdown--;
-@@ -60493,6 +_,9 @@
+@@ -61378,6 +_,9 @@
  		public static void PlaySoundInstance(SoundEffectInstance sound)
  		{
  			sound.Play();
@@ -392,7 +366,7 @@
  		}
  
  		public static ActiveSound GetActiveSound(SlotId id)
-@@ -60558,6 +_,11 @@
+@@ -61443,6 +_,11 @@
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f)
  		{
@@ -404,7 +378,7 @@
  			int num = Style;
  			try
  			{
-@@ -61275,6 +_,9 @@
+@@ -62160,6 +_,9 @@
  			{
  			}
  			return null;
@@ -414,7 +388,7 @@
  		}
  
  		public static void ClearPendingPlayerSelectCallbacks()
-@@ -61345,6 +_,7 @@
+@@ -62230,6 +_,7 @@
  			{
  				Main.graphics.ToggleFullScreen();
  			}
@@ -422,7 +396,7 @@
  			Main.screenMaximized = (((Form)Control.FromHandle(Main.instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (Main.screenBorderless && Main.screenMaximized && !Main.graphics.IsFullScreen)
  			{
-@@ -61353,6 +_,9 @@
+@@ -62238,6 +_,9 @@
  			}
  			Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
  			bool flag = form.FormBorderStyle == FormBorderStyle.None;
@@ -432,15 +406,15 @@
  			if (!Main.instance.IsActive && (Main.screenBorderless || Main.screenMaximized || Main.graphics.IsFullScreen))
  			{
  				return;
-@@ -61362,6 +_,7 @@
+@@ -62247,6 +_,7 @@
  			int num4;
  			if (Main.screenBorderless || Main.screenMaximized || Main.graphics.IsFullScreen)
  			{
 +#if WINDOWS
  				form.MinimumSize = new Size(0, 0);
- 				if (Main.screenBorderless && !Main.graphics.IsFullScreen)
+ 				if (Main.screenBorderless && !Main.graphics.IsFullScreen && Main.screenBorderlessPendingResizes > 0)
  				{
-@@ -61369,6 +_,7 @@
+@@ -62255,6 +_,7 @@
  					width = bounds.Width;
  					height = bounds.Height;
  				}
@@ -448,7 +422,7 @@
  				if (width > Main.maxScreenW)
  				{
  					float num = (float)height / (float)width;
-@@ -61398,18 +_,21 @@
+@@ -62284,18 +_,21 @@
  			}
  			else
  			{
@@ -470,7 +444,7 @@
  			if (!fullscreen && !flag2)
  			{
  				if (form.ClientSize.Width < Main.graphics.PreferredBackBufferWidth)
-@@ -61423,6 +_,7 @@
+@@ -62309,6 +_,7 @@
  					flag2 = true;
  				}
  			}
@@ -478,15 +452,15 @@
  			width &= 2147483646;
  			height &= 2147483646;
  			width = Math.Max(width, Main.minScreenW);
-@@ -61441,6 +_,7 @@
- 				Main.graphics.ApplyChanges();
+@@ -62334,6 +_,7 @@
  				Main.PendingResolutionWidth = Main.screenWidth;
  				Main.PendingResolutionHeight = Main.screenHeight;
+ 				PlayerInput.CacheOriginalScreenDimensions();
 +#if WINDOWS
  				if (!fullscreen)
  				{
  					form.SendToBack();
-@@ -61458,6 +_,7 @@
+@@ -62355,6 +_,7 @@
  						form.FormBorderStyle = FormBorderStyle.Sizable;
  					}
  				}

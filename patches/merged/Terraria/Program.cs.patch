@@ -1,8 +1,17 @@
 --- src/decompiled\Terraria\Program.cs
 +++ src/merged\Terraria\Program.cs
-@@ -4,7 +_,9 @@
+@@ -2,14 +_,18 @@
+ using ReLogic.OS;
+ using System;
+ using System.Collections.Generic;
++#if CLIENT
+ using System.Diagnostics;
++#endif
+ using System.IO;
  using System.Reflection;
  using System.Runtime.CompilerServices;
+ using System.Runtime.ExceptionServices;
+ using System.Text;
  using System.Threading;
 +#if CLIENT
  using System.Windows.Forms;
@@ -10,19 +19,19 @@
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.Social;
-@@ -13,7 +_,11 @@
+@@ -19,7 +_,11 @@
  {
  	public static class Program
  	{
 +#if CLIENT
  		public const bool IsServer = false;
 +#else
-+        public const bool IsServer = true;
++		public const bool IsServer = true;
 +#endif
  
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
-@@ -60,15 +_,23 @@
+@@ -66,15 +_,23 @@
  			for (int i = 0; i < array.Length; i++)
  			{
  				Type type = array[i];
@@ -42,16 +51,29 @@
  						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 -					}
 +#else
-+                        Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
++						Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 +#endif
 +                    }
  				}
  				Program.ThingsLoaded++;
  			}
-@@ -132,7 +_,11 @@
- 					{
- 						Program.StartForceLoad();
- 					};
+@@ -183,10 +_,12 @@
+ 
+ 		private static void InitializeConsoleOutput()
+ 		{
++#if CLIENT
+ 			if (Debugger.IsAttached)
+ 			{
+ 				return;
+ 			}
++#endif
+ 			try
+ 			{
+ 				Console.OutputEncoding = Encoding.UTF8;
+@@ -223,7 +_,11 @@
+ 					SocialAPI.Initialize(null);
+ 					LaunchInitializer.LoadParameters(main);
+ 					Main.OnEnginePreload += new Action(Program.StartForceLoad);
 +#if CLIENT
  					main.Run();
 +#else
@@ -60,17 +82,14 @@
  				}
  				catch (Exception e)
  				{
-@@ -151,7 +_,14 @@
+@@ -242,7 +_,11 @@
  					streamWriter.WriteLine(e);
  					streamWriter.WriteLine("");
  				}
 +#if CLIENT
  				MessageBox.Show(e.ToString(), "Terraria: Error");
 +#else
-+				Console.WriteLine("Server crash: " + DateTime.Now);
-+				Console.WriteLine(e);
-+				Console.WriteLine("");
-+				Console.WriteLine("Please send crashlog.txt to support@terraria.org");
++				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +#endif
  			}
  			catch

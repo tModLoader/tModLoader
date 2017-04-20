@@ -1,93 +1,29 @@
 --- src/decompiled\Terraria\Lang.cs
 +++ src/merged\Terraria\Lang.cs
-@@ -2,7 +_,9 @@
- using Terraria.GameContent.Events;
+@@ -6,7 +_,9 @@
+ using Terraria.GameInput;
  using Terraria.ID;
  using Terraria.Localization;
 +#if CLIENT
  using Terraria.Map;
 +#endif
+ using Terraria.UI;
  
  namespace Terraria
- {
-@@ -35609,6 +_,7 @@
- 				Main.buffTip[78] = "Melee attacks cause confetti to appear";
- 				Main.buffName[79] = "Weapon Imbue: Poison";
- 				Main.buffTip[79] = "Melee attacks poison enemies";
+@@ -457,6 +_,7 @@
+ 
+ 		public static void BuildMapAtlas()
+ 		{
 +#if CLIENT
- 				if (Lang.mapLegend == null)
- 				{
- 					Lang.mapLegend = new string[MapHelper.LookupCount()];
-@@ -35897,6 +_,7 @@
- 						Lang.mapLegend[j] = string.Empty;
- 					}
- 				}
+ 			Lang._mapLegendCache = new LocalizedText[MapHelper.LookupCount()];
+ 			for (int i = 0; i < Lang._mapLegendCache.Length; i++)
+ 			{
+@@ -742,6 +_,7 @@
+ 			Lang._mapLegendCache[MapHelper.TileToLookup(444, 0)] = Language.GetText("MapObject.BeeHive");
+ 			Lang._mapLegendCache[MapHelper.TileToLookup(466, 0)] = Lang._itemNameCache[3816];
+ 			Lang._mapLegendCache[MapHelper.TileToLookup(463, 0)] = Lang._itemNameCache[3813];
 +#endif
- 				Lang.chestType[0] = "Chest";
- 				Lang.chestType[1] = "Gold Chest";
- 				Lang.chestType[2] = "Locked Gold Chest";
-@@ -36582,6 +_,7 @@
- 				Main.buffTip[78] = "Nahkampfangriffe verursachen Konfetti zu erscheinen";
- 				Main.buffName[79] = "Waffe verleihen: Gift";
- 				Main.buffTip[79] = "Nahkampfangriffe Gift Feinde";
-+#if CLIENT
- 				Lang.mapLegend[MapHelper.TileToLookup(13, 0)] = "Flasche";
- 				Lang.mapLegend[MapHelper.TileToLookup(14, 0)] = "Tabelle";
- 				Lang.mapLegend[MapHelper.TileToLookup(15, 0)] = "Stuhl";
-@@ -36598,6 +_,7 @@
- 				Lang.mapLegend[MapHelper.TileToLookup(114, 0)] = "Tueftler-Werkstatt";
- 				Lang.mapLegend[MapHelper.TileToLookup(133, 0)] = "Adamantitschmiede";
- 				Lang.mapLegend[MapHelper.TileToLookup(134, 0)] = "Mithrilamboss";
-+#endif
- 				Lang.prefix[1] = "Gross";
- 				Lang.prefix[2] = "Massiv";
- 				Lang.prefix[3] = "Gefährlich";
-@@ -37203,6 +_,7 @@
- 				Main.buffTip[78] = "Attacchi corpo a corpo causano a comparire coriandoli";
- 				Main.buffName[79] = "Arma Imbue: Poison";
- 				Main.buffTip[79] = "Mischia attacca nemici veleno";
-+#if CLIENT
- 				Lang.mapLegend[MapHelper.TileToLookup(13, 0)] = "Bottiglia";
- 				Lang.mapLegend[MapHelper.TileToLookup(14, 0)] = "Tavolo";
- 				Lang.mapLegend[MapHelper.TileToLookup(15, 0)] = "Sedia";
-@@ -37219,6 +_,7 @@
- 				Lang.mapLegend[MapHelper.TileToLookup(114, 0)] = "Laboratorio dell'inventore";
- 				Lang.mapLegend[MapHelper.TileToLookup(133, 0)] = "Fornace di adamantio";
- 				Lang.mapLegend[MapHelper.TileToLookup(134, 0)] = "Incudine di mitrilio";
-+#endif
- 				Lang.prefix[1] = "Grande";
- 				Lang.prefix[2] = "Massiccio";
- 				Lang.prefix[3] = "Pericoloso";
-@@ -37824,6 +_,7 @@
- 				Main.buffTip[78] = "Les attaques de mêlée causent des confettis à comparaître";
- 				Main.buffName[79] = "Arme Imbue: Poison";
- 				Main.buffTip[79] = "Attaques de mêlée des ennemis de poison";
-+#if CLIENT
- 				Lang.mapLegend[MapHelper.TileToLookup(13, 0)] = "Bouteille";
- 				Lang.mapLegend[MapHelper.TileToLookup(14, 0)] = "Table";
- 				Lang.mapLegend[MapHelper.TileToLookup(15, 0)] = "Président";
-@@ -37840,6 +_,7 @@
- 				Lang.mapLegend[MapHelper.TileToLookup(114, 0)] = "Atelier du bricoleur";
- 				Lang.mapLegend[MapHelper.TileToLookup(133, 0)] = "Forge en adamantine";
- 				Lang.mapLegend[MapHelper.TileToLookup(134, 0)] = "Enclume en mythril";
-+#endif
- 				Lang.prefix[1] = "Grand";
- 				Lang.prefix[2] = "Massif";
- 				Lang.prefix[3] = "Dangereuses";
-@@ -38445,6 +_,7 @@
- 				Main.buffTip[78] = "Ataques cuerpo a cuerpo infligen confetti que aparezca";
- 				Main.buffName[79] = "imbuir armas: tóxico";
- 				Main.buffTip[79] = "Cuerpo a cuerpo ataca a los enemigos de veneno";
-+#if CLIENT
- 				Lang.mapLegend[MapHelper.TileToLookup(13, 0)] = "Botella";
- 				Lang.mapLegend[MapHelper.TileToLookup(14, 0)] = "Mesa";
- 				Lang.mapLegend[MapHelper.TileToLookup(15, 0)] = "Silla";
-@@ -38461,6 +_,7 @@
- 				Lang.mapLegend[MapHelper.TileToLookup(114, 0)] = "Taller del reparador";
- 				Lang.mapLegend[MapHelper.TileToLookup(133, 0)] = "Forja de adamantita";
- 				Lang.mapLegend[MapHelper.TileToLookup(134, 0)] = "Yunque de mithril";
-+#endif
- 				Lang.prefix[1] = "Grande";
- 				Lang.prefix[2] = "Masivo";
- 				Lang.prefix[3] = "Peligroso";
+ 		}
+ 
+ 		public static NetworkText CreateDeathMessage(string deadPlayerName, int plr = -1, int npc = -1, int proj = -1, int other = -1, int projType = 0, int plrItemType = 0)
 

@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.csproj
 +++ src/merged\Terraria.csproj
-@@ -2,45 +_,96 @@
+@@ -2,39 +_,86 @@
  <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
    <PropertyGroup>
      <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
@@ -89,22 +89,23 @@
 +    </Otherwise>
 +  </Choose>
    <ItemGroup>
-     <Reference Include="System.Windows.Forms" />
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
+-    <Reference Include="Microsoft.Xna.Framework.Graphics" />
 -    <Reference Include="Microsoft.Xna.Framework" />
 +    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-+    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="System" />
--    <Reference Include="Microsoft.Xna.Framework.Graphics" />
 +    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="Newtonsoft.Json" />
-     <Reference Include="Ionic.Zip.CF" />
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
+     <Reference Include="System" />
      <Reference Include="Steamworks.NET" />
+     <Reference Include="ReLogic" />
+     <Reference Include="System.Core" />
 -    <Reference Include="Microsoft.Xna.Framework.Xact" />
 +    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="WindowsBase" />
+     <Reference Include="System.Drawing" />
+     <Reference Include="Ionic.Zip.CF" />
+     <Reference Include="System.Windows.Forms" />
+@@ -42,6 +_,10 @@
    </ItemGroup>
    <ItemGroup>
      <Compile Include="Extensions\EnumerationExtensions.cs" />
@@ -115,21 +116,17 @@
      <Compile Include="Properties\AssemblyInfo.cs" />
      <Compile Include="Terraria.Achievements\Achievement.cs" />
      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
-@@ -360,7 +_,7 @@
+@@ -388,7 +_,7 @@
      <Compile Include="Terraria.UI\UIState.cs" />
      <Compile Include="Terraria.UI\UserInterface.cs" />
      <Compile Include="Terraria.Utilities\CrashDump.cs" />
 -    <Compile Include="Terraria.Utilities\FileOperationAPIWrapper.cs" />
 +    <Compile Include="Terraria.Utilities\FileOperationAPIWrapper.cs" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Compile Include="Terraria.Utilities\FileUtilities.cs" />
-     <Compile Include="Terraria.Utilities\MultiTimer.cs" />
      <Compile Include="Terraria.Utilities\NPCUtils.cs" />
-@@ -410,11 +_,13 @@
-     <Compile Include="Terraria\IngameOptions.cs" />
-     <Compile Include="Terraria\Item.cs" />
+     <Compile Include="Terraria.Utilities\PlatformUtilities.cs" />
+@@ -437,8 +_,10 @@
      <Compile Include="Terraria\ItemText.cs" />
--    <Compile Include="Terraria\keyBoardInput.cs" />
-+    <Compile Include="Terraria\keyBoardInput.cs" Condition="$(DefineConstants.Contains('CLIENT'))" />
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
 +    <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
@@ -139,7 +136,7 @@
      <Compile Include="Terraria\Main.cs" />
      <Compile Include="Terraria\MessageBuffer.cs" />
      <Compile Include="Terraria\Minecart.cs" />
-@@ -444,7 +_,7 @@
+@@ -468,7 +_,7 @@
      <Compile Include="Terraria\TimeLogger.cs" />
      <Compile Include="Terraria\Utils.cs" />
      <Compile Include="Terraria\WaterfallManager.cs" />
