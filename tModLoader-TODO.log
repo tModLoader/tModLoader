@@ -1,2 +1,3 @@
-Fix Item.Name and Item.RebuildTooltip
+Fix item name and tooltip system
+Fix NPC name system
 Fix Main.SavePath

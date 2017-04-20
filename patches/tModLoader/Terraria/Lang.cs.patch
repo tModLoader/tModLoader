@@ -29,4 +29,13 @@
  			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(num), obj);
  		}
  
+@@ -444,7 +_,7 @@
+ 		public static void BuildMapAtlas()
+ 		{
+ #if CLIENT
+-			Lang._mapLegendCache = new LocalizedText[MapHelper.LookupCount()];
++			Lang._mapLegendCache = new MapLegend(MapHelper.LookupCount());
+ 			for (int i = 0; i < Lang._mapLegendCache.Length; i++)
+ 			{
+ 				Lang._mapLegendCache[i] = LocalizedText.Empty;
 
