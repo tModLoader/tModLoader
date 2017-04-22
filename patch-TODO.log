@@ -1,74 +1,8 @@
 FAILURES - 311
 WARNINGS - 78
 
-FAILURES fixed - 68
-WARNINGS fixed - 20
-
-patching file 'src/tModLoader\Terraria\Lighting.cs'
-Hunk #4 succeeded at 610 with fuzz 1 (offset 1 line).
-Hunk #6 succeeded at 776 (offset 1 line).
-Hunk #8 succeeded at 921 (offset 1 line).
-Hunk #10 FAILED at 2462.
-Hunk #11 FAILED at 2609.
-Hunk #12 succeeded at 2661 (offset 44 lines).
-Hunk #13 succeeded at 2747 (offset -16 lines).
-2 out of 13 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria\Lighting.cs#'
-WARNINGS = 1
-
-patching file 'src/tModLoader\Terraria.GameContent.UI.States\UICharacterSelect.cs'
-Hunk #2 FAILED at 81.
-1 out of 2 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria.GameContent.UI.States\UICharacterSe#'
-
-patching file 'src/tModLoader\Terraria.GameContent.UI.States\UIManageControls.cs'
-Hunk #3 succeeded at 298 (offset 2 lines).
-Hunk #5 succeeded at 393 with fuzz 1 (offset 2 lines).
-Hunk #6 succeeded at 568 (offset 1 line).
-Hunk #7 succeeded at 695 (offset 2 lines).
-WARNINGS = 1
-
-patching file 'src/tModLoader\Terraria.GameInput\PlayerInput.cs'
-Hunk #2 succeeded at 333 (offset 25 lines).
-Hunk #3 succeeded at 747 (offset 28 lines).
-Hunk #4 succeeded at 1229 (offset 32 lines).
-Hunk #5 FAILED at 1533.
-1 out of 5 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria.GameInput\PlayerInput.c#'
-
-patching file 'src/tModLoader\Terraria.UI\ChestUI.cs'
-Hunk #2 FAILED at 120.
-1 out of 2 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria.UI\ChestUI.cs.rej'
-
-patching file 'src/tModLoader\Terraria.UI\IngameFancyUI.cs'
-Hunk #1 succeeded at 6 with fuzz 1 (offset 1 line).
-Hunk #2 succeeded at 88 with fuzz 2 (offset 4 lines).
-WARNINGS = 2
-
-patching file 'src/tModLoader\Terraria.UI\ItemSlot.cs'
-Hunk #1 succeeded at 7 (offset -1 lines).
-Hunk #2 succeeded at 300 with fuzz 2.
-Hunk #3 succeeded at 365 with fuzz 1 (offset -1 lines).
-Hunk #5 succeeded at 557 (offset -1 lines).
-Hunk #7 succeeded at 624 (offset -1 lines).
-Hunk #9 succeeded at 1011 (offset -1 lines).
-Hunk #11 succeeded at 1842 (offset -1 lines).
-Hunk #13 succeeded at 1951 (offset -1 lines).
-Hunk #15 FAILED at 2250.
-1 out of 15 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria.UI\ItemSlot.cs#'
-WARNINGS = 2
-
-patching file 'src/tModLoader\Terraria.GameContent.Liquid\LiquidRenderer.cs'
-Hunk #1 FAILED at 66.
-Hunk #2 succeeded at 110 (offset 11 lines).
-1 out of 2 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria.GameContent.Liquid\LiquidRendere#'
-
-patching file 'src/tModLoader\Terraria.UI\ItemSorting.cs'
-Hunk #2 FAILED at 921.
-1 out of 2 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria.UI\ItemSorting.c#'
-
-patching file 'src/tModLoader\Terraria.Utilities\PlatformUtilities.cs'
-Hunk #1 FAILED at 110.
-Hunk #2 FAILED at 120.
-Hunk #3 FAILED at 134.
-3 out of 3 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria.Utilities\PlatformUtili#'
+FAILURES fixed - 79
+WARNINGS fixed - 26
 
 patching file 'src/tModLoader\Terraria\Player.cs'
 Hunk #1 succeeded at 28 (offset 1 line).

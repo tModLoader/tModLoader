@@ -1,3 +1,5 @@
-Fix item name and tooltip system
-Fix NPC name system
+LocalizedText for modded items
+LocalizedText for modded NPCs
+LocalizedText for chest names
+Look for all occurrences of "Terraria" to replace with "ModLoader"
 Fix Main.SavePath
