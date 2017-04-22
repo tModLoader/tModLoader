@@ -2470,6 +2470,10 @@ namespace Terraria.ModLoader
 			{
 				Main.tileTexture[tile.Type] = ModLoader.GetTexture(tile.texture);
 				TileLoader.SetDefaults(tile);
+				if (!string.IsNullOrEmpty(tile.chest))
+				{
+					TileID.Sets.BasicChest[tile.Type] = true;
+				}
 			}
 			foreach (GlobalTile globalTile in globalTiles.Values)
 			{
