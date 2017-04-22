@@ -2511,7 +2511,7 @@ namespace Terraria.ModLoader
 				Main.npcNameEnglish[npc.npc.type] = npc.npc.name;
 				NPCLoader.SetupNPCInfo(npc.npc);
 				npc.SetDefaults();
-				if (npc.banner != 0)
+				if (npc.banner != 0 && npc.bannerItem != 0)
 				{
 					NPCLoader.bannerToItem[npc.banner] = npc.bannerItem;
 				}

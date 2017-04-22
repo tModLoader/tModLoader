@@ -127,7 +127,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Projectile.perIDStaticNPCImmunity, nextProjectile);
 			for (int i = 0; i < nextProjectile; i++)
 			{
-				Projectile.perIDStaticNPCImmunity[i] = new int[200];
+				Projectile.perIDStaticNPCImmunity[i] = new uint[200];
 			}
 
 			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalProjectiles, g => g.SetDefaults);

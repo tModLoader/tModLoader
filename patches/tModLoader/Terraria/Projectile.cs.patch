@@ -1,12 +1,14 @@
 --- src/Terraria\Terraria\Projectile.cs
 +++ src/tModLoader\Terraria\Projectile.cs
-@@ -15,11 +_,29 @@
+@@ -14,6 +_,7 @@
+ using Terraria.Graphics.Shaders;
+ using Terraria.ID;
  using Terraria.Localization;
++using Terraria.ModLoader;
  using Terraria.Utilities;
  using Terraria.World.Generation;
-+using Terraria.ModLoader;
  
- namespace Terraria
+@@ -21,6 +_,23 @@
  {
  	public class Projectile : Entity
  	{
@@ -27,10 +29,10 @@
 +			return (T)GetModInfo(mod, typeof(T).Name);
 +		}
 +
- 		public static int[][] perIDStaticNPCImmunity = new int[714][];
+ 		public static uint[][] perIDStaticNPCImmunity = new uint[714][];
  		public static int SentryLifeTime = 7200;
  		public float ownerHitCheckDistance = 1000f;
-@@ -50,9 +_,9 @@
+@@ -51,9 +_,9 @@
  		public float knockBack;
  		public bool friendly;
  		public int penetrate = 1;
@@ -43,15 +45,25 @@
  		public int maxPenetrate = 1;
  		public int identity;
  		public float light;
-@@ -134,6 +_,7 @@
+@@ -142,7 +_,7 @@
+ 				return Main.npc[Main.player[this.owner].MinionAttackTargetNPC];
  			}
  		}
- 
-+		// TODO resize this in load
+-
++		
  		public static void InitializeStaticThings()
  		{
- 			Projectile.perIDStaticNPCImmunity = new int[714][];
-@@ -204,8 +_,32 @@
+ 			Projectile.perIDStaticNPCImmunity = new uint[714][];
+@@ -155,7 +_,7 @@
+ 
+ 		public static void ResetImmunity()
+ 		{
+-			for (int i = 0; i < 714; i++)
++			for (int i = 0; i < Projectile.perIDStaticNPCImmunity.Length; i++)
+ 			{
+ 				for (int j = 0; j < 200; j++)
+ 				{
+@@ -211,8 +_,32 @@
  			return DD2Event.Ongoing;
  		}
  
@@ -84,19 +96,21 @@
  			this.ownerHitCheckDistance = 1000f;
  			this.counterweight = false;
  			this.sentry = false;
-@@ -7662,10 +_,7 @@
- 				this.hostile = true;
- 				this.penetrate = -1;
+@@ -7051,12 +_,9 @@
+ 					this.hostile = true;
+ 					this.penetrate = -1;
+ 				}
+-				else
+-				{
+-					this.active = false;
+-				}
  			}
--			else
--			{
--				this.active = false;
--			}
+ 			IL_C73D:
 +			ProjectileLoader.SetupProjectile(this);
  			this.width = (int)((float)this.width * this.scale);
  			this.height = (int)((float)this.height * this.scale);
  			this.maxPenetrate = this.penetrate;
-@@ -7764,7 +_,7 @@
+@@ -7155,7 +_,7 @@
  				projectile.ai[0] = projectile.position.X;
  				projectile.ai[1] = projectile.position.Y;
  			}
@@ -105,7 +119,7 @@
  			{
  				if (ProjectileID.Sets.NeedsUUID[Type])
  				{
-@@ -8765,7 +_,11 @@
+@@ -8156,7 +_,11 @@
  			{
  				return;
  			}
@@ -118,17 +132,17 @@
  			{
  				return;
  			}
-@@ -8834,8 +_,33 @@
+@@ -8225,8 +_,32 @@
  				{
  					for (int i = 0; i < 200; i++)
  					{
--						bool flag = (!this.usesLocalNPCImmunity && !this.usesIDStaticNPCImmunity) || (this.usesLocalNPCImmunity && this.localNPCImmunity[i] == 0) || (this.usesIDStaticNPCImmunity && Projectile.perIDStaticNPCImmunity[this.type][i] == 0);
+-						bool flag = (!this.usesLocalNPCImmunity && !this.usesIDStaticNPCImmunity) || (this.usesLocalNPCImmunity && this.localNPCImmunity[i] == 0) || (this.usesIDStaticNPCImmunity && Projectile.IsNPCImmune(this.type, i));
 -						if (Main.npc[i].active && !Main.npc[i].dontTakeDamage && flag && ((this.friendly && (!Main.npc[i].friendly || this.type == 318 || (Main.npc[i].type == 22 && this.owner < 255 && Main.player[this.owner].killGuide) || (Main.npc[i].type == 54 && this.owner < 255 && Main.player[this.owner].killClothier))) || (this.hostile && Main.npc[i].friendly && !Main.npc[i].dontTakeDamageFromHostiles)) && (this.owner < 0 || Main.npc[i].immune[this.owner] == 0 || this.maxPenetrate == 1))
 +						if (!Main.npc[i].active || Main.npc[i].dontTakeDamage)
 +						{
 +							continue;
 +						}
-+						bool immunityTimerInactive = (!this.usesLocalNPCImmunity && !this.usesIDStaticNPCImmunity) || (this.usesLocalNPCImmunity && this.localNPCImmunity[i] == 0) || (this.usesIDStaticNPCImmunity && Projectile.perIDStaticNPCImmunity[this.type][i] == 0);
++						bool immunityTimerInactive = (!this.usesLocalNPCImmunity && !this.usesIDStaticNPCImmunity) || (this.usesLocalNPCImmunity && this.localNPCImmunity[i] == 0) || (this.usesIDStaticNPCImmunity && Projectile.IsNPCImmune(this.type, i));
 +						if (!immunityTimerInactive)
 +						{
 +							continue;
@@ -149,12 +163,11 @@
 +							continue;
 +						}
 +						bool canHitFlag = (modCanHit.HasValue && modCanHit.Value) || (modCanBeHit.HasValue && modCanBeHit.Value) || (modCanHit2.HasValue && modCanHit2.Value);
-+						// TODO, did I do this right? why was Main.npc[i].dontTakeDamageFromHostiles missing from 1.3.3.3?
 +						if ((canHitFlag || (this.friendly && (!Main.npc[i].friendly || this.type == 318 || (Main.npc[i].type == 22 && this.owner < 255 && Main.player[this.owner].killGuide) || (Main.npc[i].type == 54 && this.owner < 255 && Main.player[this.owner].killClothier))) || (this.hostile && Main.npc[i].friendly && !Main.npc[i].dontTakeDamageFromHostiles)) && (this.owner < 0 || Main.npc[i].immune[this.owner] == 0 || this.maxPenetrate == 1))
  						{
  							bool flag2 = false;
  							if (this.type == 11 && (Main.npc[i].type == 47 || Main.npc[i].type == 57))
-@@ -8845,6 +_,10 @@
+@@ -8236,6 +_,10 @@
  							else if (this.type == 31 && Main.npc[i].type == 69)
  							{
  								flag2 = true;
@@ -165,7 +178,7 @@
  							}
  							else if (Main.npc[i].trapImmune && this.trap)
  							{
-@@ -8883,7 +_,7 @@
+@@ -8274,7 +_,7 @@
  										return;
  									}
  									int num6 = this.damage;
@@ -174,7 +187,7 @@
  									{
  										float num7 = (this.scale - 1f) * 100f;
  										num7 = Utils.Clamp<float>(num7, 0f, 50f);
-@@ -9178,7 +_,7 @@
+@@ -8569,7 +_,7 @@
  											num8 = (int)((double)num8 * 0.75);
  										}
  									}
@@ -183,7 +196,7 @@
  									{
  										num8 = (int)((float)num8 * 0.75f);
  									}
-@@ -9247,6 +_,15 @@
+@@ -8638,6 +_,15 @@
  										Main.player[this.owner].parryDamageBuff = false;
  										Main.player[this.owner].ClearBuff(198);
  									}
@@ -199,7 +212,7 @@
  									this.StatusNPC(i);
  									if (flag4 && this.type != 221 && this.type != 227 && this.type != 614)
  									{
-@@ -9257,11 +_,6 @@
+@@ -8648,11 +_,6 @@
  										this.ai[1] = -1f;
  										this.netUpdate = true;
  									}
@@ -211,7 +224,7 @@
  									if (flag4 && !this.hostile && Main.player[this.owner].armorPenetration > 0)
  									{
  										num8 += Main.npc[i].checkArmorPenetration(Main.player[this.owner].armorPenetration);
-@@ -9269,11 +_,11 @@
+@@ -8660,11 +_,11 @@
  									int num21;
  									if (flag4)
  									{
@@ -225,7 +238,7 @@
  									}
  									if (flag4 && Main.player[this.owner].accDreamCatcher)
  									{
-@@ -9544,6 +_,9 @@
+@@ -8935,6 +_,9 @@
  									{
  										this.BetsySharpnel(i);
  									}
@@ -235,7 +248,7 @@
  									if (this.penetrate > 0 && this.type != 317)
  									{
  										if (this.type == 357)
-@@ -9649,7 +_,7 @@
+@@ -9040,7 +_,7 @@
  						if (n != this.owner && Main.player[n].active && !Main.player[n].dead && !Main.player[n].immune && Main.player[n].hostile && this.playerImmune[n] <= 0 && (Main.player[Main.myPlayer].team == 0 || Main.player[Main.myPlayer].team != Main.player[n].team) && (!this.ownerHitCheck || this.CanHit(Main.player[n])))
  						{
  							bool flag6 = this.Colliding(myRect, Main.player[n].getRect());
@@ -244,7 +257,7 @@
  							{
  								if (this.aiStyle == 3)
  								{
-@@ -9702,6 +_,8 @@
+@@ -9093,6 +_,8 @@
  									flag7 = true;
  								}
  								int num30 = Main.DamageVar((float)this.damage);
@@ -253,7 +266,7 @@
  								if (!Main.player[n].immune)
  								{
  									this.StatusPvP(n);
-@@ -9710,6 +_,7 @@
+@@ -9101,6 +_,7 @@
  								{
  									Main.player[this.owner].OnHit(Main.player[n].Center.X, Main.player[n].Center.Y, Main.player[n]);
  								}
@@ -261,7 +274,7 @@
  								int num31 = (int)Main.player[n].Hurt(playerDeathReason, num30, this.direction, true, false, flag7, -1);
  								if (num31 > 0 && Main.player[this.owner].ghostHeal && this.friendly && !this.hostile)
  								{
-@@ -9723,6 +_,8 @@
+@@ -9114,6 +_,8 @@
  								{
  									Projectile.NewProjectile(Main.player[n].Center.X, Main.player[n].Center.Y, Main.player[n].velocity.X, Main.player[n].velocity.Y, 289, 0, 0f, this.owner, 0f, 0f);
  								}
@@ -270,7 +283,7 @@
  								if (Main.netMode != 0)
  								{
  									NetMessage.SendPlayerHurt(n, playerDeathReason, num30, this.direction, flag7, true, 0, -1, -1);
-@@ -9844,11 +_,15 @@
+@@ -9235,11 +_,15 @@
  				{
  					num35 = 1;
  				}
@@ -287,7 +300,7 @@
  					{
  						int hitDirection2 = this.direction;
  						if (Main.player[myPlayer2].position.X + (float)(Main.player[myPlayer2].width / 2) < this.position.X + (float)(this.width / 2))
-@@ -9862,6 +_,9 @@
+@@ -9253,6 +_,9 @@
  						if (!Main.player[myPlayer2].CanParryAgainst(Main.player[myPlayer2].Hitbox, base.Hitbox, this.velocity))
  						{
  							int num36 = Main.DamageVar((float)this.damage);
@@ -297,7 +310,7 @@
  							if (!Main.player[myPlayer2].immune)
  							{
  								this.StatusPlayer(myPlayer2);
-@@ -9874,7 +_,7 @@
+@@ -9265,7 +_,7 @@
  							{
  								num36 = (int)((float)num36 * Main.expertDamage);
  							}
@@ -306,7 +319,7 @@
  							if (this.trap)
  							{
  								Main.player[myPlayer2].trapDebuffSource = true;
-@@ -9883,6 +_,8 @@
+@@ -9274,6 +_,8 @@
  									AchievementsHelper.HandleSpecialEvent(Main.player[myPlayer2], 4);
  								}
  							}
@@ -315,7 +328,7 @@
  						}
  						bool flag9 = true;
  						if (flag9)
-@@ -10000,12 +_,18 @@
+@@ -9391,12 +_,18 @@
  					DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
  					Utils.PlotTileLine(base.Center + f.ToRotationVector2() * -num5, base.Center + f.ToRotationVector2() * num5, (float)this.width * this.scale, new Utils.PerLinePoint(DelegateMethods.CutTiles));
  				}
@@ -334,7 +347,7 @@
  			return this.aiStyle != 45 && this.aiStyle != 137 && this.aiStyle != 92 && this.aiStyle != 105 && this.aiStyle != 106 && this.type != 463 && this.type != 69 && this.type != 70 && this.type != 621 && this.type != 10 && this.type != 11 && this.type != 379 && this.type != 407 && this.type != 476 && this.type != 623 && (this.type < 625 || this.type > 628);
  		}
  
-@@ -10052,6 +_,11 @@
+@@ -9443,6 +_,11 @@
  				}
  				return false;
  			}
@@ -346,7 +359,7 @@
  			if (myRect.Intersects(targetRect))
  			{
  				return true;
-@@ -11415,12 +_,16 @@
+@@ -10806,12 +_,16 @@
  					overrideWidth = (int)(20f * this.scale);
  					overrideHeight = (int)(20f * this.scale);
  				}
@@ -364,7 +377,7 @@
  							this.velocity = Collision.TileCollision(this.position, this.velocity, this.width, this.height, flag6, flag6, 1);
  						}
  						else
-@@ -11431,6 +_,7 @@
+@@ -10822,6 +_,7 @@
  					else
  					{
  						Vector2 vector2 = this.position;
@@ -372,7 +385,7 @@
  						int num2 = (overrideWidth != -1) ? overrideWidth : this.width;
  						int num3 = (overrideHeight != -1) ? overrideHeight : this.height;
  						if (overrideHeight != -1 || overrideWidth != -1)
-@@ -11627,7 +_,10 @@
+@@ -11018,7 +_,10 @@
  				}
  				if (flag)
  				{
@@ -384,7 +397,7 @@
  					{
  						this.position += this.velocity;
  						this.velocity = Vector2.Zero;
-@@ -12560,6 +_,10 @@
+@@ -11955,6 +_,10 @@
  				{
  					return;
  				}
@@ -395,7 +408,7 @@
  				if (this.wet)
  				{
  					this.position += wetVelocity;
-@@ -12611,12 +_,14 @@
+@@ -12006,12 +_,14 @@
  				{
  					num5++;
  					num6++;
@@ -410,7 +423,7 @@
  						flag2 = true;
  					}
  				}
-@@ -12630,6 +_,7 @@
+@@ -12025,6 +_,7 @@
  				Main.player[this.owner].displayedFishingInfo = Language.GetTextValue("GameUI.NotEnoughWater");
  				return;
  			}
@@ -418,7 +431,7 @@
  			int num7 = Main.player[this.owner].FishingLevel();
  			if (num7 == 0)
  			{
-@@ -12690,6 +_,7 @@
+@@ -12085,6 +_,7 @@
  			}
  			else if ((double)num2 < Main.worldSurface)
  			{
@@ -426,7 +439,7 @@
  				num14 = 1;
  			}
  			else if ((double)num2 < Main.rockLayer)
-@@ -12761,6 +_,7 @@
+@@ -12156,6 +_,7 @@
  				num21 += 10;
  			}
  			int num22 = Main.anglerQuestItemNetIDs[Main.anglerQuest];
@@ -434,7 +447,7 @@
  			if (Main.player[this.owner].HasItem(num22))
  			{
  				num22 = -1;
-@@ -12769,6 +_,7 @@
+@@ -12164,6 +_,7 @@
  			{
  				num22 = -1;
  			}
@@ -442,7 +455,7 @@
  			if (flag)
  			{
  				if (!ItemID.Sets.CanFishInLava[Main.player[this.owner].HeldItem.type])
-@@ -12802,6 +_,7 @@
+@@ -12197,6 +_,7 @@
  			else if (Main.rand.Next(50) > num7 && Main.rand.Next(50) > num7 && num5 < num8)
  			{
  				num13 = Main.rand.Next(2337, 2340);
@@ -450,7 +463,7 @@
  			}
  			else if (Main.rand.Next(100) < num21)
  			{
-@@ -13216,6 +_,8 @@
+@@ -12611,6 +_,8 @@
  					}
  				}
  			}
@@ -459,7 +472,7 @@
  			if (num13 > 0)
  			{
  				if (Main.player[this.owner].sonarPotion)
-@@ -13270,6 +_,8 @@
+@@ -12665,6 +_,8 @@
  						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
  					case "Random":
  						return Main.rand.NextFloat();
@@ -468,7 +481,7 @@
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -13325,6 +_,11 @@
+@@ -12720,6 +_,11 @@
  		}
  
  		public void AI()
@@ -480,7 +493,7 @@
  		{
  			if (this.aiStyle == 1)
  			{
-@@ -14496,7 +_,12 @@
+@@ -13891,7 +_,12 @@
  						if (num71 > (float)num72)
  						{
  							this.ai[0] = 1f;
@@ -494,7 +507,7 @@
  					}
  					Vector2 value4 = base.Center - new Vector2(5f);
  					Vector2 value5 = base.Center + new Vector2(5f);
-@@ -14579,6 +_,7 @@
+@@ -13974,6 +_,7 @@
  										{
  											num83 = 4;
  										}
@@ -502,7 +515,7 @@
  										for (int num84 = 0; num84 < 1000; num84++)
  										{
  											if (Main.projectile[num84].active && Main.projectile[num84].owner == this.owner && Main.projectile[num84].aiStyle == 7)
-@@ -14668,6 +_,7 @@
+@@ -14063,6 +_,7 @@
  					{
  						num85 = 17f;
  					}
@@ -510,16 +523,16 @@
  					if (num71 < 24f)
  					{
  						this.Kill();
-@@ -28838,7 +_,7 @@
+@@ -28233,7 +_,7 @@
  					Rectangle value = new Rectangle((int)Main.player[this.owner].position.X, (int)Main.player[this.owner].position.Y, Main.player[this.owner].width, Main.player[this.owner].height);
  					if (rectangle.Intersects(value))
  					{
--						if (this.ai[1] > 0f && this.ai[1] < 3884f)
-+						if (this.ai[1] > 0f && this.ai[1] < (float)ItemLoader.ItemCount)
+-						if (this.ai[1] > 0f && this.ai[1] < 3930f)
++						if (this.ai[1] > 0f)
  						{
  							int num8 = (int)this.ai[1];
  							Item item = new Item();
-@@ -39199,7 +_,7 @@
+@@ -38602,7 +_,7 @@
  								Tile tileSafely2 = Framing.GetTileSafely(i, j - 1);
  								if (!tileSafely2.active() || !Main.tileSolid[(int)tileSafely2.type] || Main.tileSolidTop[(int)tileSafely2.type])
  								{
@@ -528,7 +541,7 @@
  									for (int k = 0; k < num4; k++)
  									{
  										Dust dust = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
-@@ -39767,7 +_,7 @@
+@@ -39170,7 +_,7 @@
  								Tile tileSafely2 = Framing.GetTileSafely(i, j - 1);
  								if (!tileSafely2.active() || !Main.tileSolid[(int)tileSafely2.type] || Main.tileSolidTop[(int)tileSafely2.type])
  								{
@@ -537,7 +550,7 @@
  									for (int k = 0; k < num2; k++)
  									{
  										Dust dust = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
-@@ -40432,6 +_,11 @@
+@@ -39835,6 +_,11 @@
  			Main.projectileIdentity[this.owner, this.identity] = -1;
  			int num = this.timeLeft;
  			this.timeLeft = 0;
@@ -549,7 +562,7 @@
  			if (this.type == 686)
  			{
  				Main.PlayTrackedSound(SoundID.DD2_BetsyFireballImpact, base.Center);
-@@ -45776,7 +_,13 @@
+@@ -45179,7 +_,13 @@
  									{
  										flag4 = false;
  									}
@@ -563,7 +576,7 @@
  									{
  										flag4 = false;
  									}
-@@ -45795,7 +_,7 @@
+@@ -45198,7 +_,7 @@
  									{
  										for (int num830 = num825 - 1; num830 <= num825 + 1; num830++)
  										{
@@ -572,7 +585,7 @@
  											{
  												WorldGen.KillWall(num829, num830, false);
  												if (Main.tile[num829, num830].wall == 0 && Main.netMode != 0)
-@@ -46142,11 +_,17 @@
+@@ -45545,11 +_,17 @@
  					}
  				}
  			}

@@ -213,12 +213,12 @@
  		}
  
  		public static void SetupRecipes()
-@@ -10724,6 +_,7 @@
+@@ -10918,6 +_,7 @@
  			Recipe.AddRecipe();
  			Recipe.WallReturn();
  			Recipe.PlatformReturn();
 +			RecipeHooks.AddRecipes();
- 			for (int num4 = 0; num4 < Recipe.numRecipes; num4++)
+ 			for (int num6 = 0; num6 < Recipe.numRecipes; num6++)
  			{
- 				int num5 = 0;
+ 				int num7 = 0;
 

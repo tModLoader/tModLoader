@@ -3,3 +3,4 @@ LocalizedText for modded NPCs
 LocalizedText for chest names
 Look for all occurrences of "Terraria" to replace with "ModLoader"
 Fix Main.SavePath
+Move and rename ExtraPickupSpace
