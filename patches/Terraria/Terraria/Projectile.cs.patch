@@ -19,9 +19,9 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
  			{
--				if (<PrivateImplementationDetails>{DF0400F4-EE47-4864-BE80-932EDB02D8A6}.$$method0x6000dca-1 == null)
+-				if (<PrivateImplementationDetails>{E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877}.$$method0x6000dca-1 == null)
 -				{
--					<PrivateImplementationDetails>{DF0400F4-EE47-4864-BE80-932EDB02D8A6}.$$method0x6000dca-1 = new Dictionary<string, int>(14)
+-					<PrivateImplementationDetails>{E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877}.$$method0x6000dca-1 = new Dictionary<string, int>(14)
 -					{
 -						{
 -							"Tsuki",
@@ -82,7 +82,7 @@
 -					};
 -				}
 -				int num;
--				if (<PrivateImplementationDetails>{DF0400F4-EE47-4864-BE80-932EDB02D8A6}.$$method0x6000dca-1.TryGetValue(name, out num))
+-				if (<PrivateImplementationDetails>{E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877}.$$method0x6000dca-1.TryGetValue(name, out num))
 -				{
 -					switch (num)
 -					{

@@ -28,7 +28,7 @@
      <Reference Include="System.Windows.Forms" />
      <Reference Include="WindowsBase" />
    </ItemGroup>
-@@ -535,67 +_,67 @@
+@@ -535,63 +_,63 @@
      <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
@@ -101,8 +101,4 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Legacy.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.NPCs.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
-     <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
-   </ItemGroup>
-   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
-+</Project>
+

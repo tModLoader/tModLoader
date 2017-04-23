@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.UI.Chat\ChatManager.cs
 +++ src/merged\Terraria.UI.Chat\ChatManager.cs
-@@ -48,7 +_,11 @@
+@@ -52,7 +_,11 @@
  
  		public static void Register<T>(params string[] names) where T : ITagHandler, new()
  		{

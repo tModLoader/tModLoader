@@ -23,7 +23,7 @@
  						}
  						tile.wire(bitsByte11[4]);
  						tile.halfBrick(bitsByte11[5]);
-@@ -3468,7 +_,7 @@
+@@ -3482,7 +_,7 @@
  				PlayerDeathReason playerDeathReason2 = PlayerDeathReason.FromReader(this.reader);
  				int num216 = (int)this.reader.ReadInt16();
  				int num217 = (int)(this.reader.ReadByte() - 1);

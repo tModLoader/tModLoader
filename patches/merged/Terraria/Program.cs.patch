@@ -69,7 +69,7 @@
 +#endif
  			try
  			{
- 				Console.OutputEncoding = Encoding.UTF8;
+ 				Console.OutputEncoding = Encoding.Unicode;
 @@ -223,7 +_,11 @@
  					SocialAPI.Initialize(null);
  					LaunchInitializer.LoadParameters(main);
