@@ -197,13 +197,14 @@
  		public static Preferences Configuration = new Preferences(Main.SavePath + Path.DirectorySeparatorChar + "config.json", false, false);
  		public static Preferences InputProfiles = new Preferences(Main.SavePath + Path.DirectorySeparatorChar + "input profiles.json", false, false);
  		public static string[] itemName = new string[3884];
-@@ -2036,14 +_,14 @@
+@@ -2036,16 +_,16 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
  		public static int selectedWorld = 0;
 -		public static int menuMode = 0;
 +		public static int menuMode = Interface.loadModsID;
  		public static int menuSkip = 0;
+ 		private static bool _needsLanguageSelect = true;
  		private static Item cpItem = new Item();
  		public int textBlinkerCount;
  		public int textBlinkerState;
@@ -212,6 +213,7 @@
 -		private static int[] specY = new int[1000];
 +		public static int[] specX = new int[1000];
 +		public static int[] specY = new int[1000];
+ 		private bool _imeToggle;
  		public static bool HoveringOverAnNPC = false;
  		public static string hoverItemName = "";
  		public static Microsoft.Xna.Framework.Color inventoryBack = new Microsoft.Xna.Framework.Color(220, 220, 220, 220);
@@ -227,7 +229,7 @@
 @@ -2064,7 +_,7 @@
  		public static Player dresserDummy;
  		private bool _needToSetupDrawInterfaceLayers = true;
- 		private List<MethodSequenceListItem> _drawInterfaceLayers;
+ 		private List<GameInterfaceLayer> _gameInterfaceLayers;
 -		private static GameTime _drawInterfaceGameTime;
 +		public static GameTime _drawInterfaceGameTime;
  		private static bool _MouseOversCanClear = false;
@@ -343,9 +345,9 @@
  			NetMessage.SendAnglerQuest(-1);
  		}
  
-@@ -2625,40 +_,48 @@
- 			Main.Configuration.Put("UseHeatDistortion", Main.UseHeatDistortion);
+@@ -2625,42 +_,50 @@
  			Main.Configuration.Put("WaveQuality", Main.WaveQuality);
+ 			Main.Configuration.Put("Support4K", Main.Support4K);
  			Main.Configuration.Put("MouseColor", new Dictionary<string, byte>
 -				{
 -					{
@@ -406,6 +408,8 @@
 +				}
 +			});
  			Main.Configuration.Put("QuickLaunch", Main.SkipAssemblyLoad);
+ 			Main.Configuration.Put("Zoom", Main.GameZoomTarget);
+ 			Main.Configuration.Put("UIScale", Main._uiScaleWanted);
 +			ModLoader.ModLoader.SaveConfiguration();
  			bool flag = Main.Configuration.Save(true);
  			return flag && PlayerInput.Save();

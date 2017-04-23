@@ -4,7 +4,7 @@ WARNINGS - 78
 FAILURES fixed - 133
 WARNINGS fixed - 50
 
-FAILURES Remain - 181
+FAILURES Remain - 178
 WARNINGS Remain - 29
 
 patching file 'src/tModLoader\Terraria\Main.cs'
@@ -23,396 +23,396 @@ Hunk #12 succeeded at 1147 with fuzz 1 (offset 7 lines).
 Hunk #13 succeeded at 1170 (offset 8 lines).
 Hunk #14 succeeded at 1178 (offset 7 lines).
 Hunk #15 FAILED at 1323.
-Hunk #16 FAILED at 2048.
-Hunk #17 succeeded at 2074 (offset 17 lines).
-Hunk #18 FAILED at 2086.
-Hunk #19 succeeded at 2114 with fuzz 2 (offset 7 lines).
-Hunk #20 succeeded at 2272 with fuzz 2.
-Hunk #21 succeeded at 2629 (offset 237 lines).
-Hunk #22 FAILED at 2886.
-Hunk #23 succeeded at 2863 (offset 20 lines).
-Hunk #24 succeeded at 3109 (offset 237 lines).
-Hunk #25 succeeded at 3024 (offset 20 lines).
-Hunk #26 FAILED at 3080.
-Hunk #27 succeeded at 3422 (offset 242 lines).
-Hunk #28 succeeded at 3227 (offset 20 lines).
-Hunk #29 FAILED at 3267.
-Hunk #30 FAILED at 3337.
-Hunk #31 FAILED at 3501.
-Hunk #32 succeeded at 3911 (offset 254 lines).
-Hunk #33 FAILED at 3932.
-Hunk #34 succeeded at 3722 (offset 15 lines).
-Hunk #35 FAILED at 3985.
-Hunk #36 succeeded at 4368 (offset 254 lines).
-Hunk #37 succeeded at 4139 (offset 15 lines).
-Hunk #38 succeeded at 4407 (offset 254 lines).
-Hunk #39 succeeded at 4265 (offset -2 lines).
-Hunk #40 succeeded at 4628 (offset 254 lines).
-Hunk #41 succeeded at 4402 (offset -2 lines).
-Hunk #42 succeeded at 4683 (offset 254 lines).
-Hunk #43 FAILED at 4862.
-Hunk #44 succeeded at 4691 (offset 8 lines).
-Hunk #45 succeeded at 4954 (offset 254 lines).
-Hunk #46 FAILED at 7281.
-Hunk #47 FAILED at 7343.
-Hunk #48 FAILED at 7444.
-Hunk #49 FAILED at 7472.
-Hunk #50 FAILED at 7493.
-Hunk #51 succeeded at 7285 (offset 27 lines).
-Hunk #52 succeeded at 7581 with fuzz 2 (offset 264 lines).
-Hunk #53 FAILED at 7630.
-Hunk #54 FAILED at 7808.
-Hunk #55 FAILED at 7848.
-Hunk #56 FAILED at 7893.
-Hunk #57 FAILED at 8020.
-Hunk #58 succeeded at 7905 (offset 31 lines).
-Hunk #59 succeeded at 8219 (offset 264 lines).
-Hunk #60 succeeded at 8021 (offset 31 lines).
-Hunk #61 succeeded at 8328 (offset 264 lines).
-Hunk #62 succeeded at 8154 (offset 31 lines).
-Hunk #63 succeeded at 8418 (offset 264 lines).
-Hunk #64 succeeded at 8209 (offset 31 lines).
-Hunk #65 succeeded at 8501 (offset 264 lines).
-Hunk #66 succeeded at 8349 (offset 31 lines).
-Hunk #67 FAILED at 8440.
-Hunk #68 FAILED at 8466.
-Hunk #69 succeeded at 8718 (offset 264 lines).
-Hunk #70 succeeded at 8509 (offset 31 lines).
-Hunk #71 succeeded at 8841 (offset 264 lines).
-Hunk #72 succeeded at 8632 (offset 31 lines).
-Hunk #73 succeeded at 8937 (offset 264 lines).
-Hunk #74 succeeded at 8727 (offset 31 lines).
-Hunk #75 succeeded at 8979 (offset 264 lines).
-Hunk #76 succeeded at 8754 (offset 31 lines).
-Hunk #77 succeeded at 9003 (offset 264 lines).
-Hunk #78 succeeded at 8801 (offset 31 lines).
-Hunk #79 succeeded at 9047 (offset 264 lines).
-Hunk #80 succeeded at 8962 (offset 31 lines).
-Hunk #81 succeeded at 9414 (offset 264 lines).
-Hunk #82 succeeded at 9428 (offset 31 lines).
-Hunk #83 succeeded at 9687 (offset 264 lines).
-Hunk #84 succeeded at 9501 (offset 31 lines).
-Hunk #85 succeeded at 11766 (offset 264 lines).
-Hunk #86 succeeded at 11982 (offset 31 lines).
-Hunk #87 FAILED at 12004.
-Hunk #88 FAILED at 12054.
-Hunk #89 FAILED at 12125.
-Hunk #90 FAILED at 12421.
-Hunk #91 FAILED at 12767.
-Hunk #92 FAILED at 13334.
-Hunk #93 FAILED at 13441.
-Hunk #94 FAILED at 13499.
-Hunk #95 FAILED at 13540.
-Hunk #96 FAILED at 13680.
-Hunk #97 FAILED at 13754.
-Hunk #98 succeeded at 14685 (offset 377 lines).
-Hunk #99 succeeded at 14457 with fuzz 1 (offset 12 lines).
-Hunk #100 FAILED at 14473.
-Hunk #101 FAILED at 14616.
-Hunk #102 FAILED at 14652.
-Hunk #103 FAILED at 14684.
-Hunk #104 FAILED at 14702.
-Hunk #105 FAILED at 14751.
-Hunk #106 FAILED at 14844.
-Hunk #107 FAILED at 14903.
-Hunk #108 FAILED at 14992.
-Hunk #109 FAILED at 15078.
-Hunk #110 FAILED at 15115.
-Hunk #111 FAILED at 15149.
-Hunk #112 FAILED at 15174.
-Hunk #113 FAILED at 15196.
-Hunk #114 FAILED at 15220.
-Hunk #115 FAILED at 15244.
-Hunk #116 succeeded at 15604 with fuzz 2 (offset 348 lines).
-Hunk #117 FAILED at 15628.
-Hunk #118 FAILED at 15816.
-Hunk #119 FAILED at 15835.
-Hunk #120 succeeded at 15591 with fuzz 2 (offset 12 lines).
-Hunk #121 FAILED at 15614.
-Hunk #122 FAILED at 15773.
-Hunk #123 FAILED at 15795.
-Hunk #124 FAILED at 15811.
-Hunk #125 FAILED at 15877.
-Hunk #126 FAILED at 15931.
-Hunk #127 succeeded at 16289 (offset 351 lines).
-Hunk #128 FAILED at 16524.
-Hunk #129 succeeded at 16236 (offset 13 lines).
-Hunk #130 succeeded at 16738 (offset 351 lines).
-Hunk #131 succeeded at 16462 (offset 13 lines).
-Hunk #132 succeeded at 17109 (offset 351 lines).
-Hunk #133 succeeded at 16794 (offset 13 lines).
-Hunk #134 succeeded at 17177 (offset 351 lines).
-Hunk #135 FAILED at 17375.
-Hunk #136 FAILED at 17414.
-Hunk #137 FAILED at 17554.
-Hunk #138 FAILED at 17681.
-Hunk #139 succeeded at 17461 (offset -13 lines).
-Hunk #140 FAILED at 17762.
-Hunk #141 succeeded at 18169 (offset 351 lines).
-Hunk #142 FAILED at 18183.
-Hunk #143 FAILED at 18303.
-Hunk #144 succeeded at 18178 (offset -13 lines).
-Hunk #145 FAILED at 18226.
-Hunk #146 FAILED at 18356.
-Hunk #147 succeeded at 18840 (offset 351 lines).
-Hunk #148 succeeded at 18535 (offset -13 lines).
-Hunk #149 succeeded at 18921 (offset 351 lines).
-Hunk #150 succeeded at 18579 (offset -13 lines).
-Hunk #151 succeeded at 19648 (offset 351 lines).
-Hunk #152 succeeded at 19307 (offset -13 lines).
-Hunk #153 succeeded at 19865 (offset 351 lines).
-Hunk #154 succeeded at 19574 (offset -13 lines).
-Hunk #155 succeeded at 20037 (offset 351 lines).
-Hunk #156 succeeded at 19730 (offset -13 lines).
-Hunk #157 succeeded at 20675 (offset 351 lines).
-Hunk #158 FAILED at 20706.
-Hunk #159 succeeded at 20561 (offset 7 lines).
-Hunk #160 succeeded at 20922 (offset 351 lines).
-Hunk #161 succeeded at 20698 (offset 7 lines).
-Hunk #162 succeeded at 21078 (offset 351 lines).
-Hunk #163 succeeded at 20813 (offset 7 lines).
-Hunk #164 succeeded at 21193 (offset 351 lines).
-Hunk #165 succeeded at 20928 (offset 7 lines).
-Hunk #166 succeeded at 21310 (offset 351 lines).
-Hunk #167 succeeded at 21031 (offset 7 lines).
-Hunk #168 succeeded at 21451 (offset 351 lines).
-Hunk #169 succeeded at 21135 (offset 7 lines).
-Hunk #170 succeeded at 21510 (offset 351 lines).
-Hunk #171 succeeded at 21187 (offset 7 lines).
-Hunk #172 succeeded at 21743 (offset 351 lines).
-Hunk #173 succeeded at 21651 with fuzz 1 (offset 14 lines).
-Hunk #174 succeeded at 22036 (offset 351 lines).
-Hunk #175 succeeded at 21954 (offset 14 lines).
-Hunk #176 succeeded at 22419 (offset 351 lines).
-Hunk #177 succeeded at 22747 (offset 14 lines).
-Hunk #178 succeeded at 23128 (offset 351 lines).
-Hunk #179 succeeded at 22813 (offset 14 lines).
-Hunk #180 succeeded at 23390 (offset 351 lines).
-Hunk #181 succeeded at 23124 (offset 14 lines).
-Hunk #182 succeeded at 23657 (offset 351 lines).
-Hunk #183 succeeded at 24978 (offset 14 lines).
-Hunk #184 succeeded at 25349 (offset 351 lines).
-Hunk #185 succeeded at 25061 (offset 14 lines).
-Hunk #186 succeeded at 25432 (offset 351 lines).
-Hunk #187 succeeded at 25281 (offset 14 lines).
-Hunk #188 succeeded at 25804 (offset 351 lines).
-Hunk #189 succeeded at 25481 (offset 14 lines).
-Hunk #190 succeeded at 25891 (offset 351 lines).
-Hunk #191 succeeded at 25604 (offset 14 lines).
-Hunk #192 succeeded at 25966 (offset 351 lines).
-Hunk #193 succeeded at 25718 (offset 14 lines).
-Hunk #194 succeeded at 26131 (offset 351 lines).
-Hunk #195 succeeded at 26006 (offset 14 lines).
-Hunk #196 succeeded at 27161 (offset 351 lines).
-Hunk #197 succeeded at 27419 (offset 14 lines).
-Hunk #198 succeeded at 28094 (offset 351 lines).
-Hunk #199 succeeded at 28798 (offset 14 lines).
-Hunk #200 succeeded at 29174 (offset 351 lines).
-Hunk #201 succeeded at 29741 (offset 14 lines).
-Hunk #202 succeeded at 30137 (offset 351 lines).
-Hunk #203 FAILED at 30586.
-Hunk #204 succeeded at 30446 (offset 14 lines).
-Hunk #205 succeeded at 30909 (offset 351 lines).
-Hunk #206 succeeded at 31214 (offset 14 lines).
-Hunk #207 succeeded at 31569 (offset 351 lines).
-Hunk #208 succeeded at 31245 (offset 14 lines).
-Hunk #209 succeeded at 31638 (offset 351 lines).
-Hunk #210 succeeded at 31386 (offset 14 lines).
-Hunk #211 succeeded at 31749 (offset 351 lines).
-Hunk #212 FAILED at 31817.
-Hunk #213 succeeded at 31502 (offset 14 lines).
-Hunk #214 succeeded at 31859 (offset 351 lines).
-Hunk #215 FAILED at 31886.
-Hunk #216 FAILED at 31913.
-Hunk #217 FAILED at 31930.
-Hunk #218 FAILED at 32009.
-Hunk #219 FAILED at 32091.
-Hunk #220 FAILED at 32257.
-Hunk #221 FAILED at 32286.
-Hunk #222 FAILED at 32331.
-Hunk #223 succeeded at 32063 (offset 47 lines).
-Hunk #224 succeeded at 32735 (offset 351 lines).
-Hunk #225 FAILED at 32748.
-Hunk #226 FAILED at 32779.
-Hunk #227 FAILED at 32844.
-Hunk #228 succeeded at 32729 with fuzz 2 (offset 47 lines).
-Hunk #229 succeeded at 33093 (offset 351 lines).
-Hunk #230 succeeded at 32826 (offset 47 lines).
-Hunk #231 succeeded at 33331 with fuzz 1 (offset 351 lines).
-Hunk #232 FAILED at 33354.
-Hunk #233 FAILED at 33374.
-Hunk #234 FAILED at 33414.
-Hunk #235 succeeded at 33204 with fuzz 2 (offset 79 lines).
-Hunk #236 FAILED at 33220.
-Hunk #237 succeeded at 33735 with fuzz 1 (offset 391 lines).
-Hunk #238 FAILED at 33748.
-Hunk #239 FAILED at 33804.
-Hunk #240 FAILED at 33826.
-Hunk #241 FAILED at 33878.
-Hunk #242 succeeded at 33636 (offset 95 lines).
-Hunk #243 succeeded at 33986 (offset 391 lines).
-Hunk #244 FAILED at 34001.
-Hunk #245 FAILED at 34042.
-Hunk #246 succeeded at 33852 (offset 115 lines).
-Hunk #247 succeeded at 34146 (offset 391 lines).
-Hunk #248 succeeded at 33898 with fuzz 1 (offset 115 lines).
-Hunk #249 FAILED at 33952.
-Hunk #250 FAILED at 33971.
-Hunk #251 FAILED at 34011.
-Hunk #252 FAILED at 34106.
-Hunk #253 FAILED at 34230.
-Hunk #254 FAILED at 34243.
-Hunk #255 succeeded at 34570 (offset 391 lines).
-Hunk #256 FAILED at 34594.
-Hunk #257 FAILED at 34666.
-Hunk #258 FAILED at 34746.
-Hunk #259 succeeded at 34576 (offset 116 lines).
-Hunk #260 succeeded at 34868 (offset 391 lines).
-Hunk #261 succeeded at 34622 (offset 116 lines).
-Hunk #262 succeeded at 34919 (offset 391 lines).
-Hunk #263 succeeded at 34666 (offset 116 lines).
-Hunk #264 succeeded at 34984 (offset 391 lines).
-Hunk #265 succeeded at 34897 (offset 116 lines).
-Hunk #266 succeeded at 35808 (offset 392 lines).
-Hunk #267 FAILED at 35895.
-Hunk #268 FAILED at 36016.
-Hunk #269 succeeded at 35849 with fuzz 1 (offset 116 lines).
-Hunk #270 FAILED at 36301.
-Hunk #271 succeeded at 36547 (offset 297 lines).
-Hunk #272 succeeded at 36414 with fuzz 2 (offset 116 lines).
-Hunk #273 FAILED at 37019.
-Hunk #274 succeeded at 37554 (offset 615 lines).
-Hunk #275 FAILED at 37683.
-Hunk #276 succeeded at 37600 (offset 116 lines).
-Hunk #277 succeeded at 38136 with fuzz 2 (offset 615 lines).
-Hunk #278 succeeded at 37653 with fuzz 2 (offset 116 lines).
-Hunk #279 succeeded at 38168 with fuzz 2 (offset 615 lines).
-Hunk #280 succeeded at 37685 with fuzz 2 (offset 116 lines).
-Hunk #281 succeeded at 38206 (offset 615 lines).
-Hunk #282 FAILED at 38282.
-Hunk #283 succeeded at 37946 (offset 116 lines).
-Hunk #284 succeeded at 38546 with fuzz 2 (offset 615 lines).
-Hunk #285 succeeded at 38206 (offset 116 lines).
-Hunk #286 succeeded at 38928 (offset 615 lines).
-Hunk #287 FAILED at 39121.
-Hunk #288 FAILED at 39160.
-Hunk #289 FAILED at 39263.
-Hunk #290 FAILED at 39424.
-Hunk #291 FAILED at 39570.
-Hunk #292 succeeded at 39381 (offset 170 lines).
-Hunk #293 FAILED at 39576.
-Hunk #294 FAILED at 40385.
-Hunk #295 FAILED at 40594.
-Hunk #296 succeeded at 41246 (offset 624 lines).
-Hunk #297 succeeded at 40808 (offset 170 lines).
-Hunk #298 succeeded at 41319 (offset 624 lines).
-Hunk #299 FAILED at 41539.
-Hunk #300 succeeded at 41468 (offset 178 lines).
-Hunk #301 FAILED at 42475.
-Hunk #302 FAILED at 42625.
-Hunk #303 FAILED at 43022.
-Hunk #304 succeeded at 43746 (offset 653 lines).
-Hunk #305 succeeded at 43288 (offset 178 lines).
-Hunk #306 succeeded at 43800 (offset 653 lines).
-Hunk #307 succeeded at 43358 (offset 178 lines).
-Hunk #308 succeeded at 43848 (offset 653 lines).
-Hunk #309 succeeded at 43416 (offset 178 lines).
-Hunk #310 succeeded at 44243 (offset 664 lines).
-Hunk #311 succeeded at 43949 (offset 178 lines).
-Hunk #312 FAILED at 44237.
-Hunk #313 FAILED at 44316.
-Hunk #314 succeeded at 44892 (offset 646 lines).
-Hunk #315 FAILED at 45001.
-Hunk #316 succeeded at 44556 (offset 179 lines).
-Hunk #317 succeeded at 45034 (offset 646 lines).
-Hunk #318 succeeded at 44645 (offset 179 lines).
-Hunk #319 FAILED at 44701.
-Hunk #320 succeeded at 45201 (offset 646 lines).
-Hunk #321 FAILED at 45222.
-Hunk #322 FAILED at 45234.
-Hunk #323 FAILED at 45288.
-Hunk #324 FAILED at 45376.
-Hunk #325 FAILED at 46068.
-Hunk #326 FAILED at 46124.
-Hunk #327 succeeded at 46021 with fuzz 1 (offset 179 lines).
-Hunk #328 FAILED at 46076.
-Hunk #329 FAILED at 46184.
-Hunk #330 FAILED at 46675.
-Hunk #331 FAILED at 46838.
-Hunk #332 FAILED at 47277.
-Hunk #333 FAILED at 47429.
-Hunk #334 FAILED at 47453.
-Hunk #335 FAILED at 47551.
-Hunk #336 FAILED at 47711.
-Hunk #337 FAILED at 47904.
-Hunk #338 succeeded at 48538 (offset 676 lines).
-Hunk #339 succeeded at 48245 (offset 179 lines).
-Hunk #340 FAILED at 48398.
-Hunk #341 FAILED at 48516.
-Hunk #342 FAILED at 48728.
-Hunk #343 FAILED at 48836.
-Hunk #344 FAILED at 49020.
-Hunk #345 FAILED at 49119.
-Hunk #346 succeeded at 50109 (offset 688 lines).
-Hunk #347 succeeded at 49718 (offset 179 lines).
-Hunk #348 succeeded at 50439 (offset 688 lines).
-Hunk #349 succeeded at 50038 (offset 179 lines).
-Hunk #350 succeeded at 50725 (offset 688 lines).
-Hunk #351 succeeded at 50315 (offset 179 lines).
-Hunk #352 succeeded at 51385 (offset 701 lines).
-Hunk #353 succeeded at 51023 (offset 179 lines).
-Hunk #354 FAILED at 51468.
-Hunk #355 FAILED at 51516.
-Hunk #356 FAILED at 51693.
-Hunk #357 succeeded at 53178 (offset 721 lines).
-Hunk #358 succeeded at 53132 (offset 179 lines).
-Hunk #359 succeeded at 53751 (offset 721 lines).
-Hunk #360 FAILED at 53937.
-Hunk #361 succeeded at 53989 (offset 176 lines).
-Hunk #362 FAILED at 53998.
-Hunk #363 succeeded at 54607 (offset 721 lines).
-Hunk #364 succeeded at 54399 (offset 172 lines).
-Hunk #365 succeeded at 54993 (offset 721 lines).
-Hunk #366 succeeded at 54518 (offset 172 lines).
-Hunk #367 succeeded at 55173 (offset 721 lines).
-Hunk #368 succeeded at 54730 (offset 172 lines).
-Hunk #369 succeeded at 55333 (offset 721 lines).
-Hunk #370 succeeded at 55717 (offset 172 lines).
-Hunk #371 succeeded at 56366 (offset 721 lines).
-Hunk #372 succeeded at 55838 (offset 172 lines).
-Hunk #373 succeeded at 56403 (offset 721 lines).
-Hunk #374 succeeded at 55878 (offset 172 lines).
-Hunk #375 succeeded at 56443 (offset 721 lines).
-Hunk #376 succeeded at 55926 (offset 172 lines).
-Hunk #377 succeeded at 56844 (offset 721 lines).
-Hunk #378 succeeded at 56490 (offset 172 lines).
-Hunk #379 succeeded at 57059 (offset 721 lines).
-Hunk #380 succeeded at 57195 (offset 172 lines).
-Hunk #381 succeeded at 57916 (offset 721 lines).
-Hunk #382 succeeded at 57557 (offset 178 lines).
-Hunk #383 succeeded at 58281 (offset 721 lines).
-Hunk #384 succeeded at 57760 (offset 178 lines).
-Hunk #385 succeeded at 58332 (offset 721 lines).
-Hunk #386 succeeded at 57818 (offset 178 lines).
-Hunk #387 succeeded at 58390 (offset 721 lines).
-Hunk #388 succeeded at 57944 with fuzz 1 (offset 178 lines).
-Hunk #389 FAILED at 58753.
-Hunk #390 FAILED at 59168.
-Hunk #391 FAILED at 59345.
-Hunk #392 FAILED at 59393.
-Hunk #393 succeeded at 60159 (offset 729 lines).
-Hunk #394 succeeded at 59854 (offset 178 lines).
-Hunk #395 succeeded at 60815 (offset 729 lines).
-Hunk #396 succeeded at 60379 (offset 178 lines).
-Hunk #397 FAILED at 61200.
-Hunk #398 FAILED at 61241.
-Hunk #399 FAILED at 61386.
-Hunk #400 FAILED at 61456.
-Hunk #401 succeeded at 62293 (offset 735 lines).
-Hunk #402 succeeded at 61904 (offset 178 lines).
-Hunk #403 succeeded at 63096 (offset 735 lines).
-Hunk #404 succeeded at 62842 (offset 195 lines).
-160 out of 404 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria\Main.cs.rej'
+Hunk #16 succeeded at 2056 with fuzz 1 (offset 15 lines).
+Hunk #17 succeeded at 2066 (offset 9 lines).
+Hunk #18 succeeded at 2084 (offset 15 lines).
+Hunk #19 succeeded at 2116 with fuzz 2 (offset 9 lines).
+Hunk #20 succeeded at 2270 with fuzz 2 (offset -2 lines).
+Hunk #21 succeeded at 2631 (offset 239 lines).
+Hunk #22 succeeded at 2652 (offset 3 lines).
+Hunk #23 succeeded at 3097 (offset 254 lines).
+Hunk #24 succeeded at 2875 (offset 3 lines).
+Hunk #25 succeeded at 3258 (offset 254 lines).
+Hunk #26 FAILED at 3314.
+Hunk #27 succeeded at 3188 (offset 8 lines).
+Hunk #28 succeeded at 3461 (offset 254 lines).
+Hunk #29 FAILED at 3501.
+Hunk #30 FAILED at 3571.
+Hunk #31 FAILED at 3735.
+Hunk #32 succeeded at 3677 (offset 20 lines).
+Hunk #33 FAILED at 3698.
+Hunk #34 succeeded at 3956 (offset 249 lines).
+Hunk #35 FAILED at 4219.
+Hunk #36 succeeded at 4134 (offset 20 lines).
+Hunk #37 succeeded at 4373 (offset 249 lines).
+Hunk #38 succeeded at 4173 (offset 20 lines).
+Hunk #39 succeeded at 4499 (offset 232 lines).
+Hunk #40 succeeded at 4394 (offset 20 lines).
+Hunk #41 succeeded at 4636 (offset 232 lines).
+Hunk #42 succeeded at 4449 (offset 20 lines).
+Hunk #43 FAILED at 4628.
+Hunk #44 succeeded at 4925 (offset 242 lines).
+Hunk #45 succeeded at 4720 (offset 20 lines).
+Hunk #46 FAILED at 7047.
+Hunk #47 FAILED at 7109.
+Hunk #48 FAILED at 7210.
+Hunk #49 FAILED at 7238.
+Hunk #50 FAILED at 7259.
+Hunk #51 succeeded at 7519 (offset 261 lines).
+Hunk #52 succeeded at 7347 with fuzz 2 (offset 30 lines).
+Hunk #53 FAILED at 7396.
+Hunk #54 FAILED at 7574.
+Hunk #55 FAILED at 7614.
+Hunk #56 FAILED at 7659.
+Hunk #57 FAILED at 7786.
+Hunk #58 succeeded at 8139 (offset 265 lines).
+Hunk #59 succeeded at 7985 (offset 30 lines).
+Hunk #60 succeeded at 8255 (offset 265 lines).
+Hunk #61 succeeded at 8094 (offset 30 lines).
+Hunk #62 succeeded at 8388 (offset 265 lines).
+Hunk #63 succeeded at 8184 (offset 30 lines).
+Hunk #64 succeeded at 8443 (offset 265 lines).
+Hunk #65 succeeded at 8267 (offset 30 lines).
+Hunk #66 succeeded at 8583 (offset 265 lines).
+Hunk #67 FAILED at 8674.
+Hunk #68 FAILED at 8700.
+Hunk #69 succeeded at 8484 (offset 30 lines).
+Hunk #70 succeeded at 8743 (offset 265 lines).
+Hunk #71 succeeded at 8607 (offset 30 lines).
+Hunk #72 succeeded at 8866 (offset 265 lines).
+Hunk #73 succeeded at 8703 (offset 30 lines).
+Hunk #74 succeeded at 8961 (offset 265 lines).
+Hunk #75 succeeded at 8745 (offset 30 lines).
+Hunk #76 succeeded at 8988 (offset 265 lines).
+Hunk #77 succeeded at 8769 (offset 30 lines).
+Hunk #78 succeeded at 9035 (offset 265 lines).
+Hunk #79 succeeded at 8813 (offset 30 lines).
+Hunk #80 succeeded at 9196 (offset 265 lines).
+Hunk #81 succeeded at 9180 (offset 30 lines).
+Hunk #82 succeeded at 9662 (offset 265 lines).
+Hunk #83 succeeded at 9453 (offset 30 lines).
+Hunk #84 succeeded at 9735 (offset 265 lines).
+Hunk #85 succeeded at 11532 (offset 30 lines).
+Hunk #86 succeeded at 12216 (offset 265 lines).
+Hunk #87 FAILED at 12238.
+Hunk #88 FAILED at 12288.
+Hunk #89 FAILED at 12359.
+Hunk #90 FAILED at 12655.
+Hunk #91 FAILED at 13001.
+Hunk #92 FAILED at 13568.
+Hunk #93 FAILED at 13675.
+Hunk #94 FAILED at 13733.
+Hunk #95 FAILED at 13774.
+Hunk #96 FAILED at 13914.
+Hunk #97 FAILED at 13988.
+Hunk #98 succeeded at 14451 (offset 143 lines).
+Hunk #99 succeeded at 14691 with fuzz 1 (offset 246 lines).
+Hunk #100 FAILED at 14707.
+Hunk #101 FAILED at 14850.
+Hunk #102 FAILED at 14886.
+Hunk #103 FAILED at 14918.
+Hunk #104 FAILED at 14936.
+Hunk #105 FAILED at 14985.
+Hunk #106 FAILED at 15078.
+Hunk #107 FAILED at 15137.
+Hunk #108 FAILED at 15226.
+Hunk #109 FAILED at 15312.
+Hunk #110 FAILED at 15349.
+Hunk #111 FAILED at 15383.
+Hunk #112 FAILED at 15408.
+Hunk #113 FAILED at 15430.
+Hunk #114 FAILED at 15454.
+Hunk #115 FAILED at 15478.
+Hunk #116 succeeded at 15370 with fuzz 2 (offset 114 lines).
+Hunk #117 FAILED at 15394.
+Hunk #118 FAILED at 15582.
+Hunk #119 FAILED at 15601.
+Hunk #120 succeeded at 15825 with fuzz 2 (offset 246 lines).
+Hunk #121 FAILED at 15848.
+Hunk #122 FAILED at 16007.
+Hunk #123 FAILED at 16029.
+Hunk #124 FAILED at 16045.
+Hunk #125 FAILED at 16111.
+Hunk #126 FAILED at 16165.
+Hunk #127 succeeded at 16055 (offset 117 lines).
+Hunk #128 FAILED at 16290.
+Hunk #129 succeeded at 16470 (offset 247 lines).
+Hunk #130 succeeded at 16504 (offset 117 lines).
+Hunk #131 succeeded at 16696 (offset 247 lines).
+Hunk #132 succeeded at 16875 (offset 117 lines).
+Hunk #133 succeeded at 17028 (offset 247 lines).
+Hunk #134 succeeded at 16943 (offset 117 lines).
+Hunk #135 FAILED at 17141.
+Hunk #136 FAILED at 17180.
+Hunk #137 FAILED at 17320.
+Hunk #138 FAILED at 17447.
+Hunk #139 succeeded at 17695 (offset 221 lines).
+Hunk #140 FAILED at 17996.
+Hunk #141 succeeded at 17935 (offset 117 lines).
+Hunk #142 FAILED at 17949.
+Hunk #143 FAILED at 18069.
+Hunk #144 succeeded at 18412 (offset 221 lines).
+Hunk #145 FAILED at 18460.
+Hunk #146 FAILED at 18590.
+Hunk #147 succeeded at 18606 (offset 117 lines).
+Hunk #148 succeeded at 18769 (offset 221 lines).
+Hunk #149 succeeded at 18687 (offset 117 lines).
+Hunk #150 succeeded at 18813 (offset 221 lines).
+Hunk #151 succeeded at 19414 (offset 117 lines).
+Hunk #152 succeeded at 19541 (offset 221 lines).
+Hunk #153 succeeded at 19631 (offset 117 lines).
+Hunk #154 succeeded at 19808 (offset 221 lines).
+Hunk #155 succeeded at 19803 (offset 117 lines).
+Hunk #156 succeeded at 19964 (offset 221 lines).
+Hunk #157 succeeded at 20441 (offset 117 lines).
+Hunk #158 FAILED at 20472.
+Hunk #159 succeeded at 20795 (offset 241 lines).
+Hunk #160 succeeded at 20688 (offset 117 lines).
+Hunk #161 succeeded at 20932 (offset 241 lines).
+Hunk #162 succeeded at 20844 (offset 117 lines).
+Hunk #163 succeeded at 21047 (offset 241 lines).
+Hunk #164 succeeded at 20959 (offset 117 lines).
+Hunk #165 succeeded at 21162 (offset 241 lines).
+Hunk #166 succeeded at 21076 (offset 117 lines).
+Hunk #167 succeeded at 21265 (offset 241 lines).
+Hunk #168 succeeded at 21217 (offset 117 lines).
+Hunk #169 succeeded at 21369 (offset 241 lines).
+Hunk #170 succeeded at 21276 (offset 117 lines).
+Hunk #171 succeeded at 21421 (offset 241 lines).
+Hunk #172 succeeded at 21509 (offset 117 lines).
+Hunk #173 succeeded at 21885 with fuzz 1 (offset 248 lines).
+Hunk #174 succeeded at 21802 (offset 117 lines).
+Hunk #175 succeeded at 22188 (offset 248 lines).
+Hunk #176 succeeded at 22185 (offset 117 lines).
+Hunk #177 succeeded at 22981 (offset 248 lines).
+Hunk #178 succeeded at 22894 (offset 117 lines).
+Hunk #179 succeeded at 23047 (offset 248 lines).
+Hunk #180 succeeded at 23156 (offset 117 lines).
+Hunk #181 succeeded at 23358 (offset 248 lines).
+Hunk #182 succeeded at 23423 (offset 117 lines).
+Hunk #183 succeeded at 25212 (offset 248 lines).
+Hunk #184 succeeded at 25115 (offset 117 lines).
+Hunk #185 succeeded at 25295 (offset 248 lines).
+Hunk #186 succeeded at 25198 (offset 117 lines).
+Hunk #187 succeeded at 25515 (offset 248 lines).
+Hunk #188 succeeded at 25570 (offset 117 lines).
+Hunk #189 succeeded at 25715 (offset 248 lines).
+Hunk #190 succeeded at 25657 (offset 117 lines).
+Hunk #191 succeeded at 25838 (offset 248 lines).
+Hunk #192 succeeded at 25732 (offset 117 lines).
+Hunk #193 succeeded at 25952 (offset 248 lines).
+Hunk #194 succeeded at 25897 (offset 117 lines).
+Hunk #195 succeeded at 26240 (offset 248 lines).
+Hunk #196 succeeded at 26927 (offset 117 lines).
+Hunk #197 succeeded at 27653 (offset 248 lines).
+Hunk #198 succeeded at 27860 (offset 117 lines).
+Hunk #199 succeeded at 29032 (offset 248 lines).
+Hunk #200 succeeded at 28940 (offset 117 lines).
+Hunk #201 succeeded at 29975 (offset 248 lines).
+Hunk #202 succeeded at 29903 (offset 117 lines).
+Hunk #203 FAILED at 30352.
+Hunk #204 succeeded at 30680 (offset 248 lines).
+Hunk #205 succeeded at 30675 (offset 117 lines).
+Hunk #206 succeeded at 31448 (offset 248 lines).
+Hunk #207 succeeded at 31335 (offset 117 lines).
+Hunk #208 succeeded at 31479 (offset 248 lines).
+Hunk #209 succeeded at 31404 (offset 117 lines).
+Hunk #210 succeeded at 31620 (offset 248 lines).
+Hunk #211 succeeded at 31515 (offset 117 lines).
+Hunk #212 FAILED at 31583.
+Hunk #213 succeeded at 31736 (offset 248 lines).
+Hunk #214 succeeded at 31625 (offset 117 lines).
+Hunk #215 FAILED at 31652.
+Hunk #216 FAILED at 31679.
+Hunk #217 FAILED at 31696.
+Hunk #218 FAILED at 31775.
+Hunk #219 FAILED at 31857.
+Hunk #220 FAILED at 32023.
+Hunk #221 FAILED at 32052.
+Hunk #222 FAILED at 32097.
+Hunk #223 succeeded at 32297 (offset 281 lines).
+Hunk #224 succeeded at 32501 (offset 117 lines).
+Hunk #225 FAILED at 32514.
+Hunk #226 FAILED at 32545.
+Hunk #227 FAILED at 32610.
+Hunk #228 succeeded at 32963 with fuzz 2 (offset 281 lines).
+Hunk #229 succeeded at 32859 (offset 117 lines).
+Hunk #230 succeeded at 33060 (offset 281 lines).
+Hunk #231 succeeded at 33097 with fuzz 1 (offset 117 lines).
+Hunk #232 FAILED at 33120.
+Hunk #233 FAILED at 33140.
+Hunk #234 FAILED at 33180.
+Hunk #235 succeeded at 33438 with fuzz 2 (offset 313 lines).
+Hunk #236 FAILED at 33454.
+Hunk #237 succeeded at 33501 with fuzz 1 (offset 157 lines).
+Hunk #238 FAILED at 33514.
+Hunk #239 FAILED at 33570.
+Hunk #240 FAILED at 33592.
+Hunk #241 FAILED at 33644.
+Hunk #242 succeeded at 33870 (offset 329 lines).
+Hunk #243 succeeded at 33752 (offset 157 lines).
+Hunk #244 FAILED at 33767.
+Hunk #245 FAILED at 33808.
+Hunk #246 succeeded at 34086 (offset 349 lines).
+Hunk #247 succeeded at 33912 (offset 157 lines).
+Hunk #248 succeeded at 34132 with fuzz 1 (offset 349 lines).
+Hunk #249 FAILED at 34186.
+Hunk #250 FAILED at 34205.
+Hunk #251 FAILED at 34245.
+Hunk #252 FAILED at 34340.
+Hunk #253 FAILED at 34464.
+Hunk #254 FAILED at 34477.
+Hunk #255 succeeded at 34336 (offset 157 lines).
+Hunk #256 FAILED at 34360.
+Hunk #257 FAILED at 34432.
+Hunk #258 FAILED at 34512.
+Hunk #259 succeeded at 34810 (offset 350 lines).
+Hunk #260 succeeded at 34634 (offset 157 lines).
+Hunk #261 succeeded at 34856 (offset 350 lines).
+Hunk #262 succeeded at 34685 (offset 157 lines).
+Hunk #263 succeeded at 34900 (offset 350 lines).
+Hunk #264 succeeded at 34750 (offset 157 lines).
+Hunk #265 succeeded at 35131 (offset 350 lines).
+Hunk #266 succeeded at 35574 (offset 158 lines).
+Hunk #267 FAILED at 35661.
+Hunk #268 FAILED at 35782.
+Hunk #269 succeeded at 36083 with fuzz 1 (offset 350 lines).
+Hunk #270 FAILED at 36535.
+Hunk #271 succeeded at 36313 (offset 63 lines).
+Hunk #272 succeeded at 36648 with fuzz 2 (offset 350 lines).
+Hunk #273 FAILED at 37253.
+Hunk #274 succeeded at 37320 (offset 381 lines).
+Hunk #275 FAILED at 37449.
+Hunk #276 succeeded at 37834 (offset 350 lines).
+Hunk #277 succeeded at 37902 with fuzz 2 (offset 381 lines).
+Hunk #278 succeeded at 37887 with fuzz 2 (offset 350 lines).
+Hunk #279 succeeded at 37934 with fuzz 2 (offset 381 lines).
+Hunk #280 succeeded at 37919 with fuzz 2 (offset 350 lines).
+Hunk #281 succeeded at 37972 (offset 381 lines).
+Hunk #282 FAILED at 38048.
+Hunk #283 succeeded at 38180 (offset 350 lines).
+Hunk #284 succeeded at 38312 with fuzz 2 (offset 381 lines).
+Hunk #285 succeeded at 38440 (offset 350 lines).
+Hunk #286 succeeded at 38694 (offset 381 lines).
+Hunk #287 FAILED at 38887.
+Hunk #288 FAILED at 38926.
+Hunk #289 FAILED at 39029.
+Hunk #290 FAILED at 39190.
+Hunk #291 FAILED at 39336.
+Hunk #292 succeeded at 39615 (offset 404 lines).
+Hunk #293 FAILED at 39810.
+Hunk #294 FAILED at 40619.
+Hunk #295 FAILED at 40828.
+Hunk #296 succeeded at 41012 (offset 390 lines).
+Hunk #297 succeeded at 41042 (offset 404 lines).
+Hunk #298 succeeded at 41085 (offset 390 lines).
+Hunk #299 FAILED at 41305.
+Hunk #300 succeeded at 41702 (offset 412 lines).
+Hunk #301 FAILED at 42709.
+Hunk #302 FAILED at 42859.
+Hunk #303 FAILED at 43256.
+Hunk #304 succeeded at 43512 (offset 419 lines).
+Hunk #305 succeeded at 43522 (offset 412 lines).
+Hunk #306 succeeded at 43566 (offset 419 lines).
+Hunk #307 succeeded at 43592 (offset 412 lines).
+Hunk #308 succeeded at 43614 (offset 419 lines).
+Hunk #309 succeeded at 43650 (offset 412 lines).
+Hunk #310 succeeded at 44009 (offset 430 lines).
+Hunk #311 succeeded at 44183 (offset 412 lines).
+Hunk #312 FAILED at 44471.
+Hunk #313 FAILED at 44550.
+Hunk #314 succeeded at 44658 (offset 412 lines).
+Hunk #315 FAILED at 44767.
+Hunk #316 succeeded at 44790 (offset 413 lines).
+Hunk #317 succeeded at 44800 (offset 412 lines).
+Hunk #318 succeeded at 44879 (offset 413 lines).
+Hunk #319 FAILED at 44935.
+Hunk #320 succeeded at 44967 (offset 412 lines).
+Hunk #321 FAILED at 44988.
+Hunk #322 FAILED at 45000.
+Hunk #323 FAILED at 45054.
+Hunk #324 FAILED at 45142.
+Hunk #325 FAILED at 45834.
+Hunk #326 FAILED at 45890.
+Hunk #327 succeeded at 46255 with fuzz 1 (offset 413 lines).
+Hunk #328 FAILED at 46310.
+Hunk #329 FAILED at 46418.
+Hunk #330 FAILED at 46909.
+Hunk #331 FAILED at 47072.
+Hunk #332 FAILED at 47511.
+Hunk #333 FAILED at 47663.
+Hunk #334 FAILED at 47687.
+Hunk #335 FAILED at 47785.
+Hunk #336 FAILED at 47945.
+Hunk #337 FAILED at 48138.
+Hunk #338 succeeded at 48304 (offset 442 lines).
+Hunk #339 succeeded at 48479 (offset 413 lines).
+Hunk #340 FAILED at 48632.
+Hunk #341 FAILED at 48750.
+Hunk #342 FAILED at 48962.
+Hunk #343 FAILED at 49070.
+Hunk #344 FAILED at 49254.
+Hunk #345 FAILED at 49353.
+Hunk #346 succeeded at 49875 (offset 454 lines).
+Hunk #347 succeeded at 49952 (offset 413 lines).
+Hunk #348 succeeded at 50205 (offset 454 lines).
+Hunk #349 succeeded at 50272 (offset 413 lines).
+Hunk #350 succeeded at 50491 (offset 454 lines).
+Hunk #351 succeeded at 50549 (offset 413 lines).
+Hunk #352 succeeded at 51151 (offset 467 lines).
+Hunk #353 succeeded at 51257 (offset 413 lines).
+Hunk #354 FAILED at 51702.
+Hunk #355 FAILED at 51750.
+Hunk #356 FAILED at 51927.
+Hunk #357 succeeded at 52944 (offset 487 lines).
+Hunk #358 succeeded at 53366 (offset 413 lines).
+Hunk #359 succeeded at 53517 (offset 487 lines).
+Hunk #360 FAILED at 53703.
+Hunk #361 succeeded at 54223 (offset 410 lines).
+Hunk #362 FAILED at 54232.
+Hunk #363 succeeded at 54373 (offset 487 lines).
+Hunk #364 succeeded at 54633 (offset 406 lines).
+Hunk #365 succeeded at 54759 (offset 487 lines).
+Hunk #366 succeeded at 54752 (offset 406 lines).
+Hunk #367 succeeded at 54939 (offset 487 lines).
+Hunk #368 succeeded at 54964 (offset 406 lines).
+Hunk #369 succeeded at 55099 (offset 487 lines).
+Hunk #370 succeeded at 55951 (offset 406 lines).
+Hunk #371 succeeded at 56132 (offset 487 lines).
+Hunk #372 succeeded at 56072 (offset 406 lines).
+Hunk #373 succeeded at 56169 (offset 487 lines).
+Hunk #374 succeeded at 56112 (offset 406 lines).
+Hunk #375 succeeded at 56209 (offset 487 lines).
+Hunk #376 succeeded at 56160 (offset 406 lines).
+Hunk #377 succeeded at 56610 (offset 487 lines).
+Hunk #378 succeeded at 56724 (offset 406 lines).
+Hunk #379 succeeded at 56825 (offset 487 lines).
+Hunk #380 succeeded at 57429 (offset 406 lines).
+Hunk #381 succeeded at 57682 (offset 487 lines).
+Hunk #382 succeeded at 57791 (offset 412 lines).
+Hunk #383 succeeded at 58047 (offset 487 lines).
+Hunk #384 succeeded at 57994 (offset 412 lines).
+Hunk #385 succeeded at 58098 (offset 487 lines).
+Hunk #386 succeeded at 58052 (offset 412 lines).
+Hunk #387 succeeded at 58156 (offset 487 lines).
+Hunk #388 succeeded at 58178 with fuzz 1 (offset 412 lines).
+Hunk #389 FAILED at 58987.
+Hunk #390 FAILED at 59402.
+Hunk #391 FAILED at 59579.
+Hunk #392 FAILED at 59627.
+Hunk #393 succeeded at 59925 (offset 495 lines).
+Hunk #394 succeeded at 60088 (offset 412 lines).
+Hunk #395 succeeded at 60581 (offset 495 lines).
+Hunk #396 succeeded at 60613 (offset 412 lines).
+Hunk #397 FAILED at 61434.
+Hunk #398 FAILED at 61475.
+Hunk #399 FAILED at 61620.
+Hunk #400 FAILED at 61690.
+Hunk #401 succeeded at 62059 (offset 501 lines).
+Hunk #402 succeeded at 62138 (offset 412 lines).
+Hunk #403 succeeded at 62862 (offset 501 lines).
+Hunk #404 succeeded at 63076 (offset 429 lines).
+157 out of 404 hunks FAILED -- saving rejects to file 'src/tModLoader\Terraria\Main.cs.rej'
 WARNINGS = 24
 
 patching file 'src/tModLoader\Terraria\MessageBuffer.cs'
