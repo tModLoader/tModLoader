@@ -8,7 +8,7 @@
  
  namespace Terraria.GameInput
  {
-@@ -282,6 +_,12 @@
+@@ -292,6 +_,12 @@
  			this.CopyKeysFrom(profile, mode, keysToCopy);
  		}
  

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Initializers\LaunchInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\LaunchInitializer.cs
-@@ -164,6 +_,14 @@
+@@ -172,6 +_,14 @@
  			{
  				game.NewMOTD(newMOTD);
  			}

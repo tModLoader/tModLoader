@@ -18,7 +18,7 @@
  			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen)
  			{
  				if (!flag)
-@@ -211,6 +_,8 @@
+@@ -222,6 +_,8 @@
  						}
  						binaryReader.Close();
  						memoryStream.Close();
@@ -27,7 +27,7 @@
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
-@@ -391,6 +_,7 @@
+@@ -402,6 +_,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
  				}
@@ -35,7 +35,7 @@
  				WorldGen.saveLock = false;
  			}
  			Main.serverGenLock = false;
-@@ -1090,7 +_,14 @@
+@@ -1109,7 +_,14 @@
  				writer.Write(Main.anglerWhoFinishedToday[i]);
  			}
  			writer.Write(NPC.savedAngler);
@@ -51,7 +51,7 @@
  			writer.Write(NPC.savedStylist);
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(Main.invasionSizeStart);
-@@ -1157,7 +_,7 @@
+@@ -1176,7 +_,7 @@
  					byte b2;
  					byte b = b2 = (b3 = 0);
  					bool flag = false;
@@ -60,7 +60,7 @@
  					{
  						flag = true;
  						if (tile.type == 127)
-@@ -1194,9 +_,11 @@
+@@ -1213,9 +_,11 @@
  						}
  						if (Main.tileFrameImportant[(int)tile.type])
  						{
@@ -74,7 +74,7 @@
  							num2++;
  							array[num2] = (byte)(tile.frameY & 255);
  							num2++;
-@@ -1210,10 +_,10 @@
+@@ -1229,10 +_,10 @@
  							num2++;
  						}
  					}
@@ -87,7 +87,7 @@
  						num2++;
  						if (tile.wallColor() != 0)
  						{
-@@ -1371,7 +_,7 @@
+@@ -1390,7 +_,7 @@
  					for (int l = 0; l < 40; l++)
  					{
  						Item item = chest.item[l];
@@ -96,7 +96,7 @@
  						{
  							writer.Write((short)0);
  						}
-@@ -1452,7 +_,7 @@
+@@ -1471,7 +_,7 @@
  			for (int i = 0; i < Main.npc.Length; i++)
  			{
  				NPC nPC = Main.npc[i];
@@ -104,8 +104,8 @@
 +				if (nPC.active && nPC.townNPC && nPC.type != 368 && !NPCLoader.IsModNPC(nPC))
  				{
  					writer.Write(nPC.active);
- 					writer.Write(nPC.name);
-@@ -1468,7 +_,7 @@
+ 					writer.Write(nPC.netID);
+@@ -1487,7 +_,7 @@
  			for (int j = 0; j < Main.npc.Length; j++)
  			{
  				NPC nPC2 = Main.npc[j];
@@ -113,8 +113,8 @@
 +				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type] && !NPCLoader.IsModNPC(nPC2))
  				{
  					writer.Write(nPC2.active);
- 					writer.Write(nPC2.name);
-@@ -2834,10 +_,13 @@
+ 					writer.Write(nPC2.netID);
+@@ -2880,10 +_,13 @@
  
  		private static int SaveTileEntities(BinaryWriter writer)
  		{

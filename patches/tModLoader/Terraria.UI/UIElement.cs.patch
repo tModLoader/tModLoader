@@ -23,7 +23,7 @@
  		}
  
  		public virtual void Draw(SpriteBatch spriteBatch)
-@@ -399,6 +_,54 @@
+@@ -404,6 +_,54 @@
  			}
  		}
  
@@ -78,7 +78,7 @@
  		public virtual void ScrollWheel(UIScrollWheelEvent evt)
  		{
  			if (this.OnScrollWheel != null)
-@@ -455,5 +_,10 @@
+@@ -460,5 +_,10 @@
  		{
  			return 0;
  		}

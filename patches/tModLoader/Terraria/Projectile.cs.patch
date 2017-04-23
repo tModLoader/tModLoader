@@ -45,15 +45,6 @@
  		public int maxPenetrate = 1;
  		public int identity;
  		public float light;
-@@ -142,7 +_,7 @@
- 				return Main.npc[Main.player[this.owner].MinionAttackTargetNPC];
- 			}
- 		}
--
-+		
- 		public static void InitializeStaticThings()
- 		{
- 			Projectile.perIDStaticNPCImmunity = new uint[714][];
 @@ -155,7 +_,7 @@
  
  		public static void ResetImmunity()

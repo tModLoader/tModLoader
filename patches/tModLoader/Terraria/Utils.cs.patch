@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Utils.cs
 +++ src/tModLoader\Terraria\Utils.cs
-@@ -516,9 +_,42 @@
+@@ -467,9 +_,42 @@
  			return array;
  		}
  
@@ -43,7 +43,7 @@
  		}
  
  		public static float NextFloatDirection(this UnifiedRandom r)
-@@ -744,6 +_,49 @@
+@@ -695,6 +_,49 @@
  		{
  			return new Vector2((float)p.X, (float)p.Y);
  		}

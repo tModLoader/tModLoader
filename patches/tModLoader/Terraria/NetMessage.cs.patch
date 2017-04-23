@@ -33,7 +33,7 @@
  				switch (msgType)
  				{
  					case 1:
--						writer.Write("Terraria" + 192);
+-						writer.Write("Terraria" + 193);
 +						writer.Write(ModLoader.ModLoader.versionedName);
  						break;
  					case 2:
@@ -182,7 +182,7 @@
  						writer.Write((int)number3);
  						break;
  					case 56:
-@@ -1528,7 +_,7 @@
+@@ -1537,7 +_,7 @@
  			int num5 = 0;
  			int num6 = 0;
  			byte b = 0;
@@ -191,7 +191,7 @@
  			Tile tile = null;
  			for (int i = yStart; i < yStart + height; i++)
  			{
-@@ -1585,7 +_,7 @@
+@@ -1594,7 +_,7 @@
  									num += 1;
  								}
  							}
@@ -200,7 +200,7 @@
  							{
  								short num8 = (short)Chest.FindChest(j, i);
  								if (num8 != -1)
-@@ -1670,7 +_,17 @@
+@@ -1679,7 +_,17 @@
  						if (tile2.wall != 0)
  						{
  							b |= 4;
@@ -219,7 +219,7 @@
  							num5++;
  							if (tile2.wallColor() != 0)
  							{
-@@ -1786,6 +_,17 @@
+@@ -1795,6 +_,17 @@
  				writer.Write((short)sign.y);
  				writer.Write(sign.text);
  			}
@@ -237,7 +237,7 @@
  			writer.Write(num3);
  			for (int m = 0; m < (int)num3; m++)
  			{
-@@ -1906,7 +_,7 @@
+@@ -1915,7 +_,7 @@
  						}
  						if ((b3 & 4) == 4)
  						{
@@ -246,7 +246,7 @@
  							if ((b & 16) == 16)
  							{
  								tile.wallColor(reader.ReadByte());
-@@ -2400,6 +_,7 @@
+@@ -2405,6 +_,7 @@
  				{
  					NetMessage.SendData(5, toWho, fromWho, null, plr, (float)(58 + Main.player[plr].armor.Length + Main.player[plr].dye.Length + Main.player[plr].miscEquips.Length + 1 + m), (float)Main.player[plr].miscDyes[m].prefix, 0f, 0, 0, 0);
  				}

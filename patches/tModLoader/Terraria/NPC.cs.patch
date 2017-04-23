@@ -735,7 +735,7 @@
  				this.UpdateNPC_BuffSetFlags();
  				this.UpdateNPC_SoulDrainDebuff();
  				this.UpdateNPC_BuffClearExpiredBuffs();
-@@ -77343,6 +_,7 @@
+@@ -77339,6 +_,7 @@
  						num = 5;
  					}
  				}
@@ -743,7 +743,7 @@
  				if (this.lifeRegen <= -240 && num < 2)
  				{
  					num = 2;
-@@ -77580,6 +_,7 @@
+@@ -77576,6 +_,7 @@
  					{
  						this.oiled = true;
  					}
@@ -751,7 +751,7 @@
  				}
  			}
  		}
-@@ -77810,22 +_,30 @@
+@@ -77806,22 +_,30 @@
  						Rectangle hitbox2 = nPC.Hitbox;
  						float num3 = 1f;
  						NPC.GetMeleeCollisionData(hitbox, i, ref num, ref num3, ref hitbox2);
@@ -785,7 +785,7 @@
  							if (this.dryadWard)
  							{
  								num4 = (int)num7 / 3;
-@@ -78589,6 +_,11 @@
+@@ -78585,6 +_,11 @@
  
  		public Color GetAlpha(Color newColor)
  		{
@@ -797,7 +797,7 @@
  			float num = (float)(255 - this.alpha) / 255f;
  			int num2 = (int)((float)newColor.R * num);
  			int num3 = (int)((float)newColor.G * num);
-@@ -80547,6 +_,7 @@
+@@ -80543,6 +_,7 @@
  			{
  				result = Lang.BartenderChat(this);
  			}

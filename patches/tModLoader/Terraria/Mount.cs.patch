@@ -111,7 +111,7 @@
  			switch (this._type)
  			{
  				case 8:
-@@ -3018,7 +_,7 @@
+@@ -3024,7 +_,7 @@
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
  		{
