@@ -19,43 +19,41 @@
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.Social;
-@@ -32,11 +_,9 @@
- 				Main.instance.IsMouseVisible = false;
+@@ -19,7 +_,11 @@
  			}
  		}
--#if CLIENT
-+
+ 
++#if CLIENT
  		public const bool IsServer = false;
--#else
--		public const bool IsServer = true;
--#endif
-+
++#else
++		public const bool IsServer = true;
++#endif
+ 
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
- 		private static int ThingsToLoad = 0;
-@@ -80,21 +_,13 @@
+@@ -66,13 +_,21 @@
  			Type[] types = assembly.GetTypes();
  			for (int i = 0; i < types.Length; i++)
  			{
--#if WINDOWS
++#if WINDOWS
  				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
--#else
--				MethodInfo[] methods = type.GetMethods();
--#endif
++#else
++				MethodInfo[] methods = types[i].GetMethods();
++#endif
  				for (int j = 0; j < methods.Length; j++)
  				{
  					MethodInfo methodInfo = methods[j];
  					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
  					{
--#if WINDOWS
++#if WINDOWS
  						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
--#else
--						Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
--#endif
++#else
++						Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
++#endif
  					}
  				}
  				Program.ThingsLoaded++;
-@@ -196,10 +_,12 @@
+@@ -183,10 +_,12 @@
  
  		private static void InitializeConsoleOutput()
  		{
@@ -67,8 +65,8 @@
 +#endif
  			try
  			{
- 				Console.OutputEncoding = Encoding.UTF8;
-@@ -245,7 +_,11 @@
+ 				Console.OutputEncoding = Encoding.Unicode;
+@@ -223,7 +_,11 @@
  					SocialAPI.Initialize(null);
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += new Action(Program.StartForceLoad);
@@ -78,9 +76,9 @@
 +					main.DedServ();
 +#endif
  				}
- 				catch (Exception arg_9A_0)
+ 				catch (Exception e)
  				{
-@@ -264,7 +_,11 @@
+@@ -242,7 +_,11 @@
  					streamWriter.WriteLine(e);
  					streamWriter.WriteLine("");
  				}
