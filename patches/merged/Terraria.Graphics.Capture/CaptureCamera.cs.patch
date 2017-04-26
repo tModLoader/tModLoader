@@ -35,15 +35,15 @@
  							ptr4 += 4;
  							ptr2 += 4;
  						}
-@@ -237,6 +_,7 @@
- 					"Captures",
- 					Path.DirectorySeparatorChar
- 				}));
+@@ -231,6 +_,7 @@
+ 			try
+ 			{
+ 				Directory.CreateDirectory(Main.SavePath + Path.DirectorySeparatorChar.ToString() + "Captures" + Path.DirectorySeparatorChar.ToString());
 +#if WINDOWS
  				using (Bitmap bitmap = new Bitmap(width, height))
  				{
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
-@@ -247,6 +_,12 @@
+@@ -241,6 +_,12 @@
  					bitmap.Save(filename, imageFormat);
  					bitmap.Dispose();
  				}
@@ -55,18 +55,18 @@
 +#endif
  				result = true;
  			}
- 			catch (Exception value)
-@@ -269,9 +_,6 @@
+ 			catch (Exception arg_92_0)
+@@ -263,9 +_,6 @@
  			});
- 			string filename2 = Path.Combine(text, filename);
- 			Directory.CreateDirectory(text);
+ 			string filename2 = Path.Combine(expr_40, filename);
+ 			Directory.CreateDirectory(expr_40);
 -			using (Bitmap bitmap = new Bitmap(width, height))
 -			{
 -				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  				int elementCount = texture.Width * texture.Height * 4;
  				texture.GetData<byte>(this._outputData, 0, elementCount);
  				int num = 0;
-@@ -280,22 +_,39 @@
+@@ -274,22 +_,39 @@
  				{
  					for (int j = 0; j < width; j++)
  					{
@@ -106,7 +106,7 @@
  		}
  
  		private void FinishCapture()
-@@ -338,6 +_,7 @@
+@@ -332,6 +_,7 @@
  
  		public void Dispose()
  		{
@@ -114,7 +114,7 @@
  			Monitor.Enter(this._captureLock);
  			if (this._isDisposed)
  			{
-@@ -352,6 +_,7 @@
+@@ -346,6 +_,7 @@
  			CaptureCamera.CameraExists = false;
  			this._isDisposed = true;
  			Monitor.Exit(this._captureLock);

@@ -97,7 +97,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.3.5.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.3.5.3")]
         public string ClientVersion {
             get {
                 return ((string)(this["ClientVersion"]));
@@ -106,7 +106,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.3.5.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.3.5.3")]
         public string ServerVersion {
             get {
                 return ((string)(this["ServerVersion"]));
