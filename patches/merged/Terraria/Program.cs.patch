@@ -19,45 +19,43 @@
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.Social;
-@@ -19,7 +_,11 @@
- {
- 	public static class Program
- 	{
-+#if CLIENT
+@@ -32,11 +_,9 @@
+ 				Main.instance.IsMouseVisible = false;
+ 			}
+ 		}
+-#if CLIENT
++
  		public const bool IsServer = false;
-+#else
-+		public const bool IsServer = true;
-+#endif
- 
+-#else
+-		public const bool IsServer = true;
+-#endif
++
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
-@@ -66,15 +_,23 @@
- 			for (int i = 0; i < array.Length; i++)
+ 		private static int ThingsToLoad = 0;
+@@ -80,21 +_,13 @@
+ 			Type[] types = assembly.GetTypes();
+ 			for (int i = 0; i < types.Length; i++)
  			{
- 				Type type = array[i];
-+#if WINDOWS
- 				MethodInfo[] methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
--				MethodInfo[] array2 = methods;
-+#else
-+                MethodInfo[] methods = type.GetMethods();
-+#endif
-+                MethodInfo[] array2 = methods;
- 				for (int j = 0; j < array2.Length; j++)
+-#if WINDOWS
+ 				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+-#else
+-				MethodInfo[] methods = type.GetMethods();
+-#endif
+ 				for (int j = 0; j < methods.Length; j++)
  				{
- 					MethodInfo methodInfo = array2[j];
+ 					MethodInfo methodInfo = methods[j];
  					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
  					{
-+#if WINDOWS
+-#if WINDOWS
  						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
--					}
-+#else
-+						Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
-+#endif
-+                    }
+-#else
+-						Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
+-#endif
+ 					}
  				}
  				Program.ThingsLoaded++;
- 			}
-@@ -183,10 +_,12 @@
+@@ -196,10 +_,12 @@
  
  		private static void InitializeConsoleOutput()
  		{
@@ -69,8 +67,8 @@
 +#endif
  			try
  			{
- 				Console.OutputEncoding = Encoding.Unicode;
-@@ -223,7 +_,11 @@
+ 				Console.OutputEncoding = Encoding.UTF8;
+@@ -245,7 +_,11 @@
  					SocialAPI.Initialize(null);
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += new Action(Program.StartForceLoad);
@@ -80,9 +78,9 @@
 +					main.DedServ();
 +#endif
  				}
- 				catch (Exception e)
+ 				catch (Exception arg_9A_0)
  				{
-@@ -242,7 +_,11 @@
+@@ -264,7 +_,11 @@
  					streamWriter.WriteLine(e);
  					streamWriter.WriteLine("");
  				}
