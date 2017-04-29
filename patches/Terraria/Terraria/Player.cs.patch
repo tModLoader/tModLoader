@@ -11,14 +11,14 @@
  							list10.Add(tuple9);
 @@ -24981,8 +_,8 @@
  						flag2 = true;
- 						int num20 = (int)(Main.tile[myX, myY].frameX / 54);
- 						int num21 = (int)(Main.tile[myX, myY].frameY / 54);
--						short arg_BE9_0 = Main.tile[myX, myY].frameX % 54 / 18;
--						short arg_C03_0 = Main.tile[myX, myY].frameY % 54 / 18;
-+						short arg_BE9_0 = (short)(Main.tile[myX, myY].frameX % 54 / 18);
-+						short arg_C03_0 = (short)(Main.tile[myX, myY].frameY % 54 / 18);
- 						int num22 = -1;
- 						switch (num20)
+ 						int num22 = (int)(Main.tile[myX, myY].frameX / 54);
+ 						int num23 = (int)(Main.tile[myX, myY].frameY / 54);
+-						short arg_BFD_0 = Main.tile[myX, myY].frameX % 54 / 18;
+-						short arg_C17_0 = Main.tile[myX, myY].frameY % 54 / 18;
++						short arg_BFD_0 = (short)(Main.tile[myX, myY].frameX % 54 / 18);
++						short arg_C17_0 = (short)(Main.tile[myX, myY].frameY % 54 / 18);
+ 						int num24 = -1;
+ 						switch (num22)
  						{
 @@ -36019,7 +_,7 @@
  													{
@@ -38,4 +38,12 @@
  			{
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(Player.ENCRYPTION_KEY, Player.ENCRYPTION_KEY), CryptoStreamMode.Write))
  				{
+@@ -40211,7 +_,6 @@
+ 			this._shaderObstructionInternalValue = 1f;
+ 			int[] array2 = new int[2];
+ 			this.hurtCooldowns = array2;
+-			base..ctor();
+ 			this.width = 20;
+ 			this.height = 42;
+ 			this.name = string.Empty;
 

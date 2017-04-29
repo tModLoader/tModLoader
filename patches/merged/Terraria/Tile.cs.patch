@@ -12,5 +12,5 @@
 +#endif
  	public class Tile
  	{
- 		public ushort type;
+ 		public const int Type_Solid = 0;
 

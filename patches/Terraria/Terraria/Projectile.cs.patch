@@ -9,7 +9,7 @@
  						this.width = 10;
  						this.height = 10;
  						this.aiStyle = 10;
- 						goto IL_C736;
+ 						goto IL_C73D;
  					}
 -					goto IL_7A81;
  				}

@@ -1,11 +1,11 @@
 --- src/decompiled\Terraria\Player.cs
 +++ src/merged\Terraria\Player.cs
-@@ -38476,10 +_,12 @@
+@@ -38632,10 +_,12 @@
  					int num4 = y;
- 					bool arg_647_0 = Main.tile[x, num4].active();
+ 					bool flag3 = Main.tile[x, num4].active();
  					WorldGen.KillTile(x, num4, false, false, false);
 +#if CLIENT
- 					if (arg_647_0 && !Main.tile[x, num4].active())
+ 					if (flag3 && !Main.tile[x, num4].active())
  					{
  						AchievementsHelper.HandleMining();
  					}

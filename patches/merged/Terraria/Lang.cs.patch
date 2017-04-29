@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\Lang.cs
 +++ src/merged\Terraria\Lang.cs
-@@ -7,7 +_,9 @@
+@@ -6,7 +_,9 @@
  using Terraria.GameInput;
  using Terraria.ID;
  using Terraria.Localization;
@@ -10,7 +10,7 @@
  using Terraria.UI;
  
  namespace Terraria
-@@ -513,6 +_,7 @@
+@@ -457,6 +_,7 @@
  
  		public static void BuildMapAtlas()
  		{
@@ -18,7 +18,7 @@
  			Lang._mapLegendCache = new LocalizedText[MapHelper.LookupCount()];
  			for (int i = 0; i < Lang._mapLegendCache.Length; i++)
  			{
-@@ -798,6 +_,7 @@
+@@ -742,6 +_,7 @@
  			Lang._mapLegendCache[MapHelper.TileToLookup(444, 0)] = Language.GetText("MapObject.BeeHive");
  			Lang._mapLegendCache[MapHelper.TileToLookup(466, 0)] = Lang._itemNameCache[3816];
  			Lang._mapLegendCache[MapHelper.TileToLookup(463, 0)] = Lang._itemNameCache[3813];
