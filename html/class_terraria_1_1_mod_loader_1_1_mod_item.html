@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">0.9.2.3</span>
+   &#160;<span id="projectnumber">0.10</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -256,9 +256,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab88d0592b9355ad0a194ec3f73792aed"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ab88d0592b9355ad0a194ec3f73792aed">HoldStyle</a> (Player player)</td></tr>
 <tr class="memdesc:ab88d0592b9355ad0a194ec3f73792aed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the location and rotation of this item when the player is holding it.  <a href="#ab88d0592b9355ad0a194ec3f73792aed">More...</a><br /></td></tr>
 <tr class="separator:ab88d0592b9355ad0a194ec3f73792aed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75b7afe68efa3d8fd9b512c97eec55e4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a75b7afe68efa3d8fd9b512c97eec55e4">HorizontalWingSpeeds</a> (ref float speed, ref float acceleration)</td></tr>
-<tr class="memdesc:a75b7afe68efa3d8fd9b512c97eec55e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obsolete: Use the overloaded method with the player parameter.  <a href="#a75b7afe68efa3d8fd9b512c97eec55e4">More...</a><br /></td></tr>
-<tr class="separator:a75b7afe68efa3d8fd9b512c97eec55e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a644651facbe4b01d789891c690da4c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1a644651facbe4b01d789891c690da4c">HorizontalWingSpeeds</a> (Player player, ref float speed, ref float acceleration)</td></tr>
 <tr class="memdesc:a1a644651facbe4b01d789891c690da4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify these wing's horizontal flight speed and acceleration.  <a href="#a1a644651facbe4b01d789891c690da4c">More...</a><br /></td></tr>
 <tr class="separator:a1a644651facbe4b01d789891c690da4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -301,9 +298,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5f7a03b9388a7610935e6f628b257dfe"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a5f7a03b9388a7610935e6f628b257dfe">NetSend</a> (<a class="el" href="class_binary_writer.html">BinaryWriter</a> writer)</td></tr>
 <tr class="memdesc:a5f7a03b9388a7610935e6f628b257dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data for this item between client and server.  <a href="#a5f7a03b9388a7610935e6f628b257dfe">More...</a><br /></td></tr>
 <tr class="separator:a5f7a03b9388a7610935e6f628b257dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad09c07b276f1d7b95eefd516b88c1392"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ad09c07b276f1d7b95eefd516b88c1392">NewWingUpdate</a> (Player player, bool inUse)</td></tr>
-<tr class="memdesc:ad09c07b276f1d7b95eefd516b88c1392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.  <a href="#ad09c07b276f1d7b95eefd516b88c1392">More...</a><br /></td></tr>
-<tr class="separator:ad09c07b276f1d7b95eefd516b88c1392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7531a27b227757d9bc54400dcd6e9877"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a7531a27b227757d9bc54400dcd6e9877">OnCraft</a> (Recipe recipe)</td></tr>
 <tr class="memdesc:a7531a27b227757d9bc54400dcd6e9877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make anything happen when the player crafts this item using the given recipe.  <a href="#a7531a27b227757d9bc54400dcd6e9877">More...</a><br /></td></tr>
 <tr class="separator:a7531a27b227757d9bc54400dcd6e9877"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -397,15 +391,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6ad17778289e20f8cb4bb37b77dc6f8"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aa6ad17778289e20f8cb4bb37b77dc6f8">UseTimeMultiplier</a> (Player player)</td></tr>
 <tr class="memdesc:aa6ad17778289e20f8cb4bb37b77dc6f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the effective useTime of this item.  <a href="#aa6ad17778289e20f8cb4bb37b77dc6f8">More...</a><br /></td></tr>
 <tr class="separator:aa6ad17778289e20f8cb4bb37b77dc6f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1aaf55308c208a13addc9163b9f48fae"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1aaf55308c208a13addc9163b9f48fae">VerticalWingSpeeds</a> (ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)</td></tr>
-<tr class="memdesc:a1aaf55308c208a13addc9163b9f48fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obsolete: Use the overloaded method with the player parameter.  <a href="#a1aaf55308c208a13addc9163b9f48fae">More...</a><br /></td></tr>
-<tr class="separator:a1aaf55308c208a13addc9163b9f48fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2aabeb881b1ae8564091ac382afefaca"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a2aabeb881b1ae8564091ac382afefaca">VerticalWingSpeeds</a> (Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)</td></tr>
 <tr class="memdesc:a2aabeb881b1ae8564091ac382afefaca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the speeds at which you rise and fall when these wings are equipped.  <a href="#a2aabeb881b1ae8564091ac382afefaca">More...</a><br /></td></tr>
 <tr class="separator:a2aabeb881b1ae8564091ac382afefaca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9274f96404fb0fded7de49d781a8589"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ac9274f96404fb0fded7de49d781a8589">WingUpdate</a> (Player player, bool inUse)</td></tr>
-<tr class="memdesc:ac9274f96404fb0fded7de49d781a8589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obsolete: WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)  <a href="#ac9274f96404fb0fded7de49d781a8589">More...</a><br /></td></tr>
-<tr class="separator:ac9274f96404fb0fded7de49d781a8589"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3849baf5c0607283abd3b59da1f631a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aa3849baf5c0607283abd3b59da1f631a">WingUpdate</a> (Player player, bool inUse)</td></tr>
+<tr class="memdesc:aa3849baf5c0607283abd3b59da1f631a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.  <a href="#aa3849baf5c0607283abd3b59da1f631a">More...</a><br /></td></tr>
+<tr class="separator:aa3849baf5c0607283abd3b59da1f631a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -478,8 +469,8 @@ Properties</h2></td></tr>
 
 <p>This is essentially the same as <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#adbfe825532c8fffbac263bf8732b93b6" title="Override this method to add recipes to the game. It is recommended that you do so through instances o...">Mod.AddRecipes</a>. Do note that this will be called for every instance of the overriding <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a> class that is added to the game. This allows you to avoid clutter in your overriding <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> class by adding recipes for which this item is the result. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00980">980</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;        {</div><div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00953">953</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;        {</div><div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a20a31aeaa138a1ee585bd7f5a3454403"></a>
@@ -612,12 +603,12 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00879">879</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00852">852</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
 <p>References <a class="el" href="_mod_item_8cs_source.html#l00051">Terraria.ModLoader.ModItem.bossBagNPC</a>, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.Item</a>, <a class="el" href="_mod_item_8cs_source.html#l00025">Terraria.ModLoader.ModItem.item</a>, <a class="el" href="_mod_item_8cs_source.html#l00037">Terraria.ModLoader.ModItem.mod</a>, and <a class="el" href="_mod_item_8cs_source.html#l00047">Terraria.ModLoader.ModItem.projOnSwing</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01755">Terraria.ModLoader.ItemLoader.AnglerChat()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;        {</div><div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01734">Terraria.ModLoader.ItemLoader.AnglerChat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;        {</div><div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -773,8 +764,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00846">846</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;        {</div><div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00819">819</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;        {</div><div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5138adcff2d5ff9e18b749548b7317dd"></a>
@@ -828,7 +819,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00097">97</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00713">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00669">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        {</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1ce00f06389a5baef958ccb7a6653cfb">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a1ce00f06389a5baef958ccb7a6653cfb"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1ce00f06389a5baef958ccb7a6653cfb">Terraria.ModLoader.ModItem.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">Gets the mod. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00037">ModItem.cs:37</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00045">Mod.cs:45</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
@@ -904,7 +895,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00109">109</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00713">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00669">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        {</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -952,7 +943,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00117">117</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00713">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00669">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        {</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -1009,8 +1000,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00826">826</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;        {</div><div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00799">799</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;        {</div><div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="afa5946db6c2cd1ea5165c59c90a7a77d"></a>
@@ -1135,8 +1126,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00708">708</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;        {</div><div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00681">681</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;        {</div><div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a45537fbcc95bff5e0855b183e178f524"></a>
@@ -1230,8 +1221,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00854">854</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;        {</div><div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00827">827</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;        {</div><div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a89f4a24f89ace0a92b2c50767d362bb2"></a>
@@ -1256,8 +1247,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00917">917</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;        {</div><div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9d7ae30bbe9ee7097f64efb36a5779a0">Clone</a>();</div><div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a9d7ae30bbe9ee7097f64efb36a5779a0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9d7ae30bbe9ee7097f64efb36a5779a0">Terraria.ModLoader.ModItem.Clone</a></div><div class="ttdeci">virtual ModItem Clone()</div><div class="ttdoc">Returns a clone of this ModItem. Allows you to decide which fields of your ModItem class are copied o...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00926">ModItem.cs:926</a></div></div>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00890">890</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;        {</div><div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9d7ae30bbe9ee7097f64efb36a5779a0">Clone</a>();</div><div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a9d7ae30bbe9ee7097f64efb36a5779a0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9d7ae30bbe9ee7097f64efb36a5779a0">Terraria.ModLoader.ModItem.Clone</a></div><div class="ttdeci">virtual ModItem Clone()</div><div class="ttdoc">Returns a clone of this ModItem. Allows you to decide which fields of your ModItem class are copied o...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00899">ModItem.cs:899</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1285,8 +1276,8 @@ Properties</h2></td></tr>
 <p>Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a>. Allows you to decide which fields of your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a> class are copied over when an item stack is split or something similar happens. By default all fields that you make will be automatically copied for you. Only called if CloneNewInstances is set to true. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00926">926</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;        {</div><div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;            <span class="keywordflow">return</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98">ModItem</a>)MemberwiseClone();</div><div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a2fcccf12f242f22d41393da61bcafe98"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98">Terraria.ModLoader.ModItem.ModItem</a></div><div class="ttdeci">ModItem()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00053">ModItem.cs:53</a></div></div>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00899">899</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;        {</div><div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;            <span class="keywordflow">return</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98">ModItem</a>)MemberwiseClone();</div><div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a2fcccf12f242f22d41393da61bcafe98"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98">Terraria.ModLoader.ModItem.ModItem</a></div><div class="ttdeci">ModItem()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00053">ModItem.cs:53</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1641,8 +1632,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00836">836</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;        {</div><div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00809">809</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        {</div><div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac5292a3a11ea0ae98c6100a7b303c467"></a>
@@ -1676,8 +1667,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00728">728</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;        {</div><div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00701">701</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;        {</div><div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="acfa5895f0e52f0df7c833558b0f23b86"></a>
@@ -1711,8 +1702,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00738">738</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        {</div><div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00711">711</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;        {</div><div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a16371460b0bd1d377b030eea499ada7b"></a>
@@ -1741,7 +1732,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00125">125</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02440">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02396">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        {</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -1888,8 +1879,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00690">690</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;        {</div><div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00663">663</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;        {</div><div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1ae4da771af03f10ebecb0b2b43b2b75"></a>
@@ -1923,8 +1914,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00699">699</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        {</div><div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00672">672</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;        {</div><div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4742648a8debe52f7be61425dfda41fb"></a>
@@ -2020,10 +2011,10 @@ Properties</h2></td></tr>
 <p>Allows you to determine the offset of this item's sprite when used by the player. This is only used for items with a useStyle of 5 that aren't staves. Return null to use the vanilla holdout offset; returns null by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00807">807</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00780">780</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01638">Terraria.ModLoader.ItemLoader.HoldoutOffset()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;        {</div><div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01617">Terraria.ModLoader.ItemLoader.HoldoutOffset()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;        {</div><div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -2062,8 +2053,8 @@ Properties</h2></td></tr>
 <p>Allows you to determine the point on this item's sprite that the player holds onto when using this item. The origin is from the bottom left corner of the sprite. This is only used for staves with a useStyle of 5. Return null to use the vanilla holdout origin (zero); returns null by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00816">816</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;        {</div><div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00789">789</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;        {</div><div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab88d0592b9355ad0a194ec3f73792aed"></a>
@@ -2098,44 +2089,6 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00158">158</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        {</div><div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        }</div></div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a75b7afe68efa3d8fd9b512c97eec55e4"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void Terraria.ModLoader.ModItem.HorizontalWingSpeeds </td>
-          <td>(</td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>speed</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>acceleration</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Obsolete: Use the overloaded method with the player parameter. </p>
-
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00635">635</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;        {</div><div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1a644651facbe4b01d789891c690da4c"></a>
@@ -2186,9 +2139,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00645">645</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;        {</div><div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a75b7afe68efa3d8fd9b512c97eec55e4">HorizontalWingSpeeds</a>(ref speed, ref acceleration);</div><div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a75b7afe68efa3d8fd9b512c97eec55e4"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a75b7afe68efa3d8fd9b512c97eec55e4">Terraria.ModLoader.ModItem.HorizontalWingSpeeds</a></div><div class="ttdeci">virtual void HorizontalWingSpeeds(ref float speed, ref float acceleration)</div><div class="ttdoc">Obsolete: Use the overloaded method with the player parameter. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00635">ModItem.cs:635</a></div></div>
-</div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00627">627</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;        {</div><div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a96dd26858841172db14aa3798635c2ba"></a>
@@ -2214,10 +2166,10 @@ Properties</h2></td></tr>
 
 <p>Whether or not specific conditions have been satisfied for the Angler to be able to request this item. (For example, Hardmode.) Returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00869">869</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00842">842</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01742">Terraria.ModLoader.ItemLoader.IsAnglerQuestAvailable()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;        {</div><div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01721">Terraria.ModLoader.ItemLoader.IsAnglerQuestAvailable()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;        {</div><div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
@@ -2307,10 +2259,10 @@ Properties</h2></td></tr>
 
 <p>Whether or not the Angler can ever randomly request this type of item for his daily quest. Returns false by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00861">861</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00834">834</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00401">Terraria.ModLoader.Mod.AddItem()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;        {</div><div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00400">Terraria.ModLoader.Mod.AddItem()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;        {</div><div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
@@ -2411,8 +2363,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00949">949</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;        {</div><div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00922">922</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;        {</div><div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a40be9291015b233a975e12ee6862da0f"></a>
@@ -2445,8 +2397,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00957">957</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;        {</div><div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00930">930</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;        {</div><div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a06d18d25a2aa2ec8f908cbb3f41cb645"></a>
@@ -2684,8 +2636,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00996">996</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160;        {</div><div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00969">969</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;        {</div><div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4e4112cadf7f23f51b913cda238c8708"></a>
@@ -2718,8 +2670,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00973">973</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;        {</div><div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00946">946</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;        {</div><div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5f7a03b9388a7610935e6f628b257dfe"></a>
@@ -2752,54 +2704,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00965">965</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;        {</div><div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;        }</div></div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="ad09c07b276f1d7b95eefd516b88c1392"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.ModItem.NewWingUpdate </td>
-          <td>(</td>
-          <td class="paramtype">Player&#160;</td>
-          <td class="paramname"><em>player</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>inUse</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">player</td><td>The player.</td></tr>
-    <tr><td class="paramname">inUse</td><td>if set to <code>true</code> [in use].</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00664">664</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        {</div><div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00938">938</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;        {</div><div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7531a27b227757d9bc54400dcd6e9877"></a>
@@ -2832,8 +2738,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00988">988</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;        {</div><div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00961">961</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;        {</div><div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a63c7985c667874242863473945097423"></a>
@@ -2992,8 +2898,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00718">718</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;        {</div><div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00691">691</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;        {</div><div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac53a548e1400eada55a6526d2f320d6c"></a>
@@ -3028,7 +2934,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00521">521</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01116">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01108">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        {</div><div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -3186,8 +3092,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00798">798</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;        {</div><div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00771">771</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        {</div><div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a54385d73d3d336122fc059417b549a1f"></a>
@@ -3259,8 +3165,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00767">767</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;        {</div><div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00740">740</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;        {</div><div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abff6902616c430c246022e7962f8a68d"></a>
@@ -3313,8 +3219,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00681">681</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;        {</div><div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00654">654</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        {</div><div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0ea62be5bfe41cc6aa2ef5aa5b0a042d"></a>
@@ -3394,8 +3300,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00782">782</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;        {</div><div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00755">755</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;        {</div><div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a313ae3ea4a3871b608a7b069640728ca"></a>
@@ -3468,8 +3374,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00753">753</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        {</div><div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00726">726</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;        {</div><div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aff4f5fa502e17122315ddf771c6eb8ec"></a>
@@ -3591,8 +3497,8 @@ Properties</h2></td></tr>
 <p>Allows you to save custom data for this item. Returns null by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00940">940</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;        {</div><div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00913">913</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;        {</div><div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6d9fbbb1dec7e25959a345a9e4f78428"></a>
@@ -3620,7 +3526,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00133">133</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02440">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02396">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        {</div><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -3810,8 +3716,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00674">674</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;        {</div><div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00647">647</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;        {</div><div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a27451213353309352f573c65bd04bb92"></a>
@@ -4231,62 +4137,6 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        {</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordflow">return</span> 1f;</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a1aaf55308c208a13addc9163b9f48fae"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void Terraria.ModLoader.ModItem.VerticalWingSpeeds </td>
-          <td>(</td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>ascentWhenFalling</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>ascentWhenRising</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>maxCanAscendMultiplier</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>maxAscentMultiplier</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>constantAscend</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Obsolete: Use the overloaded method with the player parameter. </p>
-
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00611">611</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        {</div><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        }</div></div><!-- fragment -->
-</div>
-</div>
 <a class="anchor" id="a2aabeb881b1ae8564091ac382afefaca"></a>
 <div class="memitem">
 <div class="memproto">
@@ -4356,12 +4206,11 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00625">625</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        {</div><div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1aaf55308c208a13addc9163b9f48fae">VerticalWingSpeeds</a>(ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);</div><div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a1aaf55308c208a13addc9163b9f48fae"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1aaf55308c208a13addc9163b9f48fae">Terraria.ModLoader.ModItem.VerticalWingSpeeds</a></div><div class="ttdeci">virtual void VerticalWingSpeeds(ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)</div><div class="ttdoc">Obsolete: Use the overloaded method with the player parameter. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00611">ModItem.cs:611</a></div></div>
-</div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00616">616</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        {</div><div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ac9274f96404fb0fded7de49d781a8589"></a>
+<a class="anchor" id="aa3849baf5c0607283abd3b59da1f631a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -4369,7 +4218,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void Terraria.ModLoader.ModItem.WingUpdate </td>
+          <td class="memname">virtual bool Terraria.ModLoader.ModItem.WingUpdate </td>
           <td>(</td>
           <td class="paramtype">Player&#160;</td>
           <td class="paramname"><em>player</em>, </td>
@@ -4393,10 +4242,18 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Obsolete: WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.) </p>
+<p>Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td>The player.</td></tr>
+    <tr><td class="paramname">inUse</td><td>if set to <code>true</code> [in use].</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00654">654</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        {</div><div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00637">637</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;        {</div><div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -4414,7 +4271,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00051">51</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_item_8cs_source.html#l00879">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, and <a class="el" href="_item_loader_8cs_source.html#l01116">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_item_8cs_source.html#l00852">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, and <a class="el" href="_item_loader_8cs_source.html#l01108">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
 
 </div>
 </div>
@@ -4430,7 +4287,7 @@ Properties</h2></td></tr>
 
 <p>Whether instances of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a> are created through its Clone hook or its constructor. Defaults to false. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00934">934</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00907">907</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
 </div>
 </div>
@@ -4448,7 +4305,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00047">47</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_item_8cs_source.html#l00879">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_item_8cs_source.html#l00852">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>.</p>
 
 </div>
 </div>
@@ -4476,7 +4333,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00025">25</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00589">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00153">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00401">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_item_8cs_source.html#l00879">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, <a class="el" href="_mod_8cs_source.html#l00713">Terraria.ModLoader.Mod.AutoloadItem()</a>, <a class="el" href="_item_loader_8cs_source.html#l01318">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_8cs_source.html#l00468">Terraria.ModLoader.Mod.ItemType()</a>, <a class="el" href="_mod_8cs_source.html#l02440">Terraria.ModLoader.Mod.RegisterHotKey()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00091">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00588">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00153">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00400">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_item_8cs_source.html#l00852">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, <a class="el" href="_mod_8cs_source.html#l00669">Terraria.ModLoader.Mod.AutoloadItem()</a>, <a class="el" href="_item_loader_8cs_source.html#l01310">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_8cs_source.html#l00467">Terraria.ModLoader.Mod.ItemType()</a>, <a class="el" href="_mod_8cs_source.html#l02396">Terraria.ModLoader.Mod.RegisterHotKey()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00091">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
 
 </div>
 </div>
@@ -4503,7 +4360,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00037">37</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00401">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_item_8cs_source.html#l00879">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, and <a class="el" href="_mod_8cs_source.html#l00713">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00400">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_item_8cs_source.html#l00852">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, and <a class="el" href="_mod_8cs_source.html#l00669">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 
 </div>
 </div>

@@ -28,8 +28,6 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "DelegateGetWeaponKnockback", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ac5b1c5c5d3e683365dee0c5bb89704a9", null ],
     [ "DelegateGrabRange", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a8ad81af84490d6804d6e746ee8b6b37e", null ],
     [ "DelegateHorizontalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a6fb98e97ea8f4ce1077437e6d6c6f812", null ],
-    [ "DelegateLegacyHorizontalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a6f95d17bae0e5c511ba6ee74cb4ac54a", null ],
-    [ "DelegateLegacyVerticalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_item_loader.html#aae8bc89bde29af5fd8fb60f397eb56b9", null ],
     [ "DelegateModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ab30c624ea94517f8444de5b42973d592", null ],
     [ "DelegateModifyHitPvp", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a8babd2ea382834178191b161de87a71e", null ],
     [ "DelegatePickAmmo", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ad01202b55dbc3a2be8f23d090821d473", null ],
@@ -174,8 +172,5 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "HookUseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a1fb8578a9f05e848eb19d9a693ec37a7", null ],
     [ "HookVerticalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a7a98c097d9e091936b6d17e59abc88e3", null ],
     [ "HookWingUpdate", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a22af1474582c20139a8773ace147365e", null ],
-    [ "LegacyHorizontalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_item_loader.html#adc4dc51f33d8305df12d07d19661b3f6", null ],
-    [ "LegacyVerticalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ab155ab3de2dfb81c1564d93d6d2b934f", null ],
-    [ "LegacyWingUpdate", "class_terraria_1_1_mod_loader_1_1_item_loader.html#acf4151da8e9f4fddd7c46e567307d12c", null ],
     [ "nextItem", "class_terraria_1_1_mod_loader_1_1_item_loader.html#add09eb72f1381a392b453fbe34e56924", null ]
 ];

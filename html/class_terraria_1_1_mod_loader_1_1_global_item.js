@@ -34,7 +34,6 @@ var class_terraria_1_1_mod_loader_1_1_global_item =
     [ "HoldoutOffset", "class_terraria_1_1_mod_loader_1_1_global_item.html#aa31b7ee9486380df0c8e632eabc080af", null ],
     [ "HoldoutOrigin", "class_terraria_1_1_mod_loader_1_1_global_item.html#ac5ecb5db7ece40e2fb1851e9b40c8f67", null ],
     [ "HoldStyle", "class_terraria_1_1_mod_loader_1_1_global_item.html#a130204455ccbff761076bbc60eface4c", null ],
-    [ "HorizontalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_global_item.html#a0c9d039f49340b4cc7135996a12d43dd", null ],
     [ "HorizontalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_global_item.html#ac878a77025c88d1b9fa425a78d53c54e", null ],
     [ "IsAnglerQuestAvailable", "class_terraria_1_1_mod_loader_1_1_global_item.html#a5a61ec22b6991616cad881bfc21c0696", null ],
     [ "IsArmorSet", "class_terraria_1_1_mod_loader_1_1_global_item.html#a9ea562f4cb6d576abae4b59452e7bccd", null ],
@@ -49,7 +48,6 @@ var class_terraria_1_1_mod_loader_1_1_global_item =
     [ "NeedsSaving", "class_terraria_1_1_mod_loader_1_1_global_item.html#aa0cb13211b3a88c4b992bd00d06858eb", null ],
     [ "NetReceive", "class_terraria_1_1_mod_loader_1_1_global_item.html#a49149a9cd376fb371263a76482549daa", null ],
     [ "NetSend", "class_terraria_1_1_mod_loader_1_1_global_item.html#a01815bc3155c57b3c770ef6af76f6694", null ],
-    [ "NewWingUpdate", "class_terraria_1_1_mod_loader_1_1_global_item.html#adb5855a9bf53bb1a6231c716815c481a", null ],
     [ "OnCraft", "class_terraria_1_1_mod_loader_1_1_global_item.html#a249ba5f11f5876c86ae83412cd1e6598", null ],
     [ "OnHitNPC", "class_terraria_1_1_mod_loader_1_1_global_item.html#ab13a7e5991436dcd79fd394ca9be3e45", null ],
     [ "OnHitPvp", "class_terraria_1_1_mod_loader_1_1_global_item.html#a1012ef03107ee55049b7ffb4713e1979", null ],
@@ -81,9 +79,8 @@ var class_terraria_1_1_mod_loader_1_1_global_item =
     [ "UseItemHitbox", "class_terraria_1_1_mod_loader_1_1_global_item.html#ab9b83e46b236c8f1683ef146d0648f61", null ],
     [ "UseStyle", "class_terraria_1_1_mod_loader_1_1_global_item.html#ac2469f65e63a60ddd1e119def479c196", null ],
     [ "UseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_global_item.html#a34f057e99842e04ec26cf303b6645197", null ],
-    [ "VerticalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_global_item.html#a716c570b7228911dc14f64461bcfc467", null ],
     [ "VerticalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_global_item.html#ad87945dcae95e961425c381e61fad5b7", null ],
-    [ "WingUpdate", "class_terraria_1_1_mod_loader_1_1_global_item.html#a435d774db489af4721ca933a87a643aa", null ],
+    [ "WingUpdate", "class_terraria_1_1_mod_loader_1_1_global_item.html#a2c68eea8c1c266b9e88b15fbbc8f9102", null ],
     [ "mod", "class_terraria_1_1_mod_loader_1_1_global_item.html#afae1df553ed043e0e44e072ca814f659", null ],
     [ "Name", "class_terraria_1_1_mod_loader_1_1_global_item.html#a55911c13aac0ffda5c691f929293a0e3", null ]
 ];

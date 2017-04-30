@@ -497,12 +497,12 @@ Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawHead
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawLegs
 Generating caller graph for function Terraria.ModLoader.EquipTexture.HorizontalWingSpeeds
 Generating caller graph for function Terraria.ModLoader.EquipTexture.IsVanitySet
-Generating caller graph for function Terraria.ModLoader.EquipTexture.NewWingUpdate
 Generating caller graph for function Terraria.ModLoader.EquipTexture.PreUpdateVanitySet
 Generating caller graph for function Terraria.ModLoader.EquipTexture.SetMatch
 Generating caller graph for function Terraria.ModLoader.EquipTexture.UpdateVanity
 Generating caller graph for function Terraria.ModLoader.EquipTexture.UpdateVanitySet
 Generating caller graph for function Terraria.ModLoader.EquipTexture.VerticalWingSpeeds
+Generating caller graph for function Terraria.ModLoader.EquipTexture.WingUpdate
 Generating docs for compound Terraria::ModLoader::ErrorLogger...
 Generating docs for compound Terraria::ModLoader::GlobalBgStyle...
 Generating caller graph for function Terraria.ModLoader.GlobalBgStyle.Autoload
@@ -522,10 +522,10 @@ Generating docs for compound Terraria::ModLoader::GlobalNPC...
 Generating caller graph for function Terraria.ModLoader.GlobalNPC.Autoload
 Generating docs for compound Terraria::ModLoader::GlobalProjectile...
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.Autoload
-Generating docs for compound Terraria::ModLoader::GlobalReci/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:290: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
+Generating docs for compound Terraria::ModLoader::GlobalRecipe./home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:282: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
   parameter 'type'
   parameter 'spriteBatch'
-pe...
+..
 Generating caller graph for function Terraria.ModLoader.GlobalRecipe.Autoload
 Generating caller graph for function Terraria.ModLoader.GlobalRecipe.OnCraft
 Generating caller graph for function Terraria.ModLoader.GlobalRecipe.RecipeAvailable
@@ -580,11 +580,11 @@ Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalBgStyle
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalBuff
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalItem
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalNPC
-Generating call grap/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:697: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
+Generating call graph f/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:653: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
   parameter 'type'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:672: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:638: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
   parameter 'type'
-h for function Terraria.ModLoader.Mod.AutoloadGlobalProjectile
+or function Terraria.ModLoader.Mod.AutoloadGlobalProjectile
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalRecipe
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalTile
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalWall
@@ -744,7 +744,7 @@ Generating caller graph for function Terraria.ModLoader.ModPlayer.PreKill
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PreUpdate
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PreUpdateBuffs
 Generating caller graph for function Terraria.ModLoader.ModPlayer.ProcessTriggers
-Generating caller graph for function Terraria.Mod/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:490: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
+Generating caller graph for function Terraria.ModLoa/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:481: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
   parameter 'item'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:263: warning: The following parameters of Terraria.ModLoader.ModTile.CanKillTile(int i, int j, ref bool blockDamaged) are not documented:
   parameter 'blockDamaged'
@@ -752,7 +752,7 @@ Generating caller graph for function Terraria.Mod/home/travis/build/bluemagic123
   parameter 'type'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:319: warning: The following parameters of Terraria.ModLoader.ModTile.Dangersense(int i, int j, Player player) are not documented:
   parameter 'player'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:396: warning: The following parameters of Terraria.ModLoader.ModTile.DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:388: warning: The following parameters of Terraria.ModLoader.ModTile.DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) are not documented:
   parameter 'spriteBatch'
   parameter 'drawColor'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:244: warning: The following parameters of Terraria.ModLoader.ModTile.DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) are not documented:
@@ -775,7 +775,7 @@ Generating caller graph for function Terraria.Mod/home/travis/build/bluemagic123
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:224: warning: The following parameters of Terraria.ModLoader.ModTile.NumDust(int i, int j, bool fail, ref int num) are not documented:
   parameter 'fail'
   parameter 'num'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:406: warning: The following parameters of Terraria.ModLoader.ModTile.PostDraw(int i, int j, SpriteBatch spriteBatch) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:397: warning: The following parameters of Terraria.ModLoader.ModTile.PostDraw(int i, int j, SpriteBatch spriteBatch) are not documented:
   parameter 'spriteBatch'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:377: warning: The following parameters of Terraria.ModLoader.ModTile.PreDraw(int i, int j, SpriteBatch spriteBatch) are not documented:
   parameter 'spriteBatch'
@@ -785,12 +785,12 @@ Generating caller graph for function Terraria.Mod/home/travis/build/bluemagic123
   parameter 'height'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:329: warning: The following parameters of Terraria.ModLoader.ModTile.SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) are not documented:
   parameter 'spriteEffects'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:415: warning: The following parameters of Terraria.ModLoader.ModTile.SpecialDraw(int i, int j, SpriteBatch spriteBatch) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:406: warning: The following parameters of Terraria.ModLoader.ModTile.SpecialDraw(int i, int j, SpriteBatch spriteBatch) are not documented:
   parameter 'spriteBatch'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:443: warning: The following parameters of Terraria.ModLoader.ModTile.TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:434: warning: The following parameters of Terraria.ModLoader.ModTile.TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) are not documented:
   parameter 'resetFrame'
   parameter 'noBreak'
-Loader.ModPlayer.ReceiveCustomBiomes
+der.ModPlayer.ReceiveCustomBiomes
 Generating caller graph for function Terraria.ModLoader.ModPlayer.ResetEffects
 Generating caller graph for function Terraria.ModLoader.ModPlayer.SendClientChanges
 Generating caller graph for function Terraria.ModLoader.ModPlayer.SendCustomBiomes
@@ -1862,5 +1862,5 @@ Patching output file 108/111
 Patching output file 109/111
 Patching output file 110/111
 Patching output file 111/111
-lookup cache used 8722/131072 hits=85483 misses=9123
+lookup cache used 8683/131072 hits=84701 misses=9084
 finished...

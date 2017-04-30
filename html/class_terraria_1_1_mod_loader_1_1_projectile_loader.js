@@ -11,7 +11,6 @@ var class_terraria_1_1_mod_loader_1_1_projectile_loader =
     [ "CutTiles", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a97da7c0169047e497c68220e183dd7d9", null ],
     [ "DelegateGrapplePullSpeed", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a2744e597c3133cba11b7a4b7592bc2d3", null ],
     [ "DelegateGrappleRetreatSpeed", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a952da66f954dc6993d3b9444c957470c", null ],
-    [ "DelegateLegacyTileCollideStyle", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#aef704da22b23f2183ef61afd19eb1e11", null ],
     [ "DelegateModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a66d49e84a9ab99987708c8de9e24798e", null ],
     [ "DelegateModifyHitPlayer", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a2369712ab1fff967c70ad89d788fc0bf", null ],
     [ "DelegateNumGrappleHooks", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#afeb8be48d8dadeb6f0bbc15e899e0c83", null ],
@@ -82,6 +81,5 @@ var class_terraria_1_1_mod_loader_1_1_projectile_loader =
     [ "HookSingleGrappleHook", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a8ea80f22dcfc68df758bb5e545cae4ca", null ],
     [ "HookTileCollideStyle", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9da30130ae47c527b9715de52d024bc9", null ],
     [ "HookUseGrapple", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#af39aacdb50bbd6e270a4e9b2a5385b23", null ],
-    [ "LegacyHookTileCollideStyle", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a2278a35662920c9810021ec998691372", null ],
     [ "nextProjectile", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae337d6707120b5430b55c3b537b968da", null ]
 ];
