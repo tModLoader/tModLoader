@@ -458,28 +458,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Obsolete: Use the overloaded method with the player parameter.
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the player parameter.")]
-		public virtual void VerticalWingSpeeds(Item item, ref float ascentWhenFalling, ref float ascentWhenRising,
-			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
-		{
-		}
-
-		/// <summary>
 		/// Allows you to modify the speeds at which you rise and fall when wings are equipped.
 		/// </summary>
 		public virtual void VerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 	ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
-		{
-			VerticalWingSpeeds(item, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
-		}
-
-		/// <summary>
-		/// Obsolete: Use the overloaded method with the player parameter.
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the player parameter.")]
-		public virtual void HorizontalWingSpeeds(Item item, ref float speed, ref float acceleration)
 		{
 		}
 
@@ -488,23 +470,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
 		{
-			HorizontalWingSpeeds(item, ref speed, ref acceleration);
-		}
-
-		/// <summary>
-		/// Obsolete: WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)
-		/// </summary>
-		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)")]
-		public virtual void WingUpdate(int wings, Player player, bool inUse)
-		{
 		}
 
 		/// <summary>
 		/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. False will keep everything the same. True, you need to handle all animations in your own code.
 		/// </summary>
-		public virtual bool NewWingUpdate(int wings, Player player, bool inUse)
+		public virtual bool WingUpdate(int wings, Player player, bool inUse)
 		{
-			WingUpdate(wings, player, inUse);
 			return false;
 		}
 

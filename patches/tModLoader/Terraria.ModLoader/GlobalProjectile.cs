@@ -82,13 +82,6 @@ namespace Terraria.ModLoader
 		{
 			return true;
 		}
-		/// <summary>
-		/// Obsolete: TileCollideStyle will return a bool value later. (Use NewTileCollideStyle in the meantime.)
-		/// </summary>
-		[method: Obsolete("TileCollideStyle will return a bool value later. (Use NewTileCollideStyle in the meantime.)")]
-		public virtual void TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
-		{
-		}
 
 		/// <summary>
 		/// Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.
@@ -98,7 +91,7 @@ namespace Terraria.ModLoader
 		/// <param name="height"></param>
 		/// <param name="fallThrough"></param>
 		/// <returns></returns>
-		public virtual bool NewTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
+		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
 		{
 			return true;
 		}

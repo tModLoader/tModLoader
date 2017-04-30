@@ -262,26 +262,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Obsolete: WingUpdate will return a bool value later.
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="inUse"></param>
-		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.) False will keep everything the same. True, you need to handle all animations in your own code.")]
-		public virtual void WingUpdate(Player player, bool inUse)
-		{
-			item?.WingUpdate(player, inUse);
-		}
-
-		/// <summary>
 		/// Allows for wing textures to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when this wing texture visually appears on the player. Use to animate wings, create dusts, invoke sounds, and create lights. By default this will call the associated ModItem's WingUpdate if there is an associated ModItem.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="inUse"></param>
 		/// <returns></returns>
-		public virtual bool NewWingUpdate(Player player, bool inUse)
+		public virtual bool WingUpdate(Player player, bool inUse)
 		{
-			WingUpdate(player, inUse);
-			return item?.NewWingUpdate(player, inUse) ?? false;
+			return item?.WingUpdate(player, inUse) ?? false;
 		}
 	}
 }

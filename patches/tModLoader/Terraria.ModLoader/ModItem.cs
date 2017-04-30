@@ -605,15 +605,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Obsolete: Use the overloaded method with the player parameter.
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the player parameter.")]
-		public virtual void VerticalWingSpeeds(ref float ascentWhenFalling, ref float ascentWhenRising,
-			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
-		{
-		}
-
-		/// <summary>
 		/// Allows you to modify the speeds at which you rise and fall when these wings are equipped.
 		/// </summary>
 		/// <param name="player">The player.</param>
@@ -625,15 +616,6 @@ namespace Terraria.ModLoader
 		public virtual void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 	ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
-			VerticalWingSpeeds(ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
-		}
-
-		/// <summary>
-		/// Obsolete: Use the overloaded method with the player parameter.
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the player parameter.")]
-		public virtual void HorizontalWingSpeeds(ref float speed, ref float acceleration)
-		{
 		}
 
 		/// <summary>
@@ -644,15 +626,6 @@ namespace Terraria.ModLoader
 		/// <param name="acceleration">The acceleration.</param>
 		public virtual void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration)
 		{
-			HorizontalWingSpeeds(ref speed, ref acceleration);
-		}
-
-		/// <summary>
-		/// Obsolete: WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)
-		/// </summary>
-		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)")]
-		public virtual void WingUpdate(Player player, bool inUse)
-		{
 		}
 
 		/// <summary>
@@ -661,7 +634,7 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player.</param>
 		/// <param name="inUse">if set to <c>true</c> [in use].</param>
 		/// <returns></returns>
-		public virtual bool NewWingUpdate(Player player, bool inUse)
+		public virtual bool WingUpdate(Player player, bool inUse)
 		{
 			return false;
 		}

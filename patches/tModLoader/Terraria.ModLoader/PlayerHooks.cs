@@ -62,15 +62,15 @@ namespace Terraria.ModLoader
 		{
 			IList<Item> items = new List<Item>();
 			Item item = new Item();
-			item.SetDefaults("Copper Shortsword");
+			item.SetDefaults(3507);
 			item.Prefix(-1);
 			items.Add(item);
 			item = new Item();
-			item.SetDefaults("Copper Pickaxe");
+			item.SetDefaults(3509);
 			item.Prefix(-1);
 			items.Add(item);
 			item = new Item();
-			item.SetDefaults("Copper Axe");
+			item.SetDefaults(3506);
 			item.Prefix(-1);
 			items.Add(item);
 			foreach (ModPlayer modPlayer in player.modPlayers)

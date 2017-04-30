@@ -84,14 +84,9 @@ namespace Terraria.ModLoader
 		private static DelegateArmorArmGlowMask[] HookArmorArmGlowMask;
 		private delegate void DelegateVerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
 		private static DelegateVerticalWingSpeeds[] HookVerticalWingSpeeds;
-		private delegate void DelegateLegacyVerticalWingSpeeds(Item item, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
-		private static DelegateLegacyVerticalWingSpeeds[] LegacyVerticalWingSpeeds;
 		private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);
 		private static DelegateHorizontalWingSpeeds[] HookHorizontalWingSpeeds;
-		private delegate void DelegateLegacyHorizontalWingSpeeds(Item item, ref float speed, ref float acceleration);
-		private static DelegateLegacyHorizontalWingSpeeds[] LegacyHorizontalWingSpeeds;
 		private static Func<int, Player, bool, bool>[] HookWingUpdate;
-		private static Action<int, Player, bool>[] LegacyWingUpdate;
 		private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
 		private static DelegateUpdate[] HookUpdate;
 		private static Action<Item>[] HookPostUpdate;
@@ -267,11 +262,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookDrawArmorColor, globalItems, g => g.DrawArmorColor);
 			ModLoader.BuildGlobalHook(ref HookArmorArmGlowMask, globalItems, g => g.ArmorArmGlowMask);
 			ModLoader.BuildGlobalHook(ref HookVerticalWingSpeeds, globalItems, g => g.VerticalWingSpeeds);
-			ModLoader.BuildGlobalHook(ref LegacyVerticalWingSpeeds, globalItems, g => g.VerticalWingSpeeds);
 			ModLoader.BuildGlobalHook(ref HookHorizontalWingSpeeds, globalItems, g => g.HorizontalWingSpeeds);
-			ModLoader.BuildGlobalHook(ref LegacyHorizontalWingSpeeds, globalItems, g => g.HorizontalWingSpeeds);
-			ModLoader.BuildGlobalHook(ref HookWingUpdate, globalItems, g => g.NewWingUpdate);
-			ModLoader.BuildGlobalHook(ref LegacyWingUpdate, globalItems, g => g.WingUpdate);
+			ModLoader.BuildGlobalHook(ref HookWingUpdate, globalItems, g => g.WingUpdate);
 			ModLoader.BuildGlobalHook(ref HookUpdate, globalItems, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookPostUpdate, globalItems, g => g.PostUpdate);
 			ModLoader.BuildGlobalHook(ref HookGrabRange, globalItems, g => g.GrabRange);
@@ -1370,11 +1362,6 @@ namespace Terraria.ModLoader
 				hook(item, player, ref ascentWhenFalling, ref ascentWhenRising,
 					ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
 			}
-			foreach (var hook in LegacyVerticalWingSpeeds)
-			{
-				hook(item, ref ascentWhenFalling, ref ascentWhenRising,
-					ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
-			}
 		}
 
 		//in Terraria.Player.Update after wingsLogic if statements modifying accRunSpeed and runAcceleration
@@ -1397,10 +1384,6 @@ namespace Terraria.ModLoader
 			{
 				hook(item, player, ref player.accRunSpeed, ref player.runAcceleration);
 			}
-			foreach (var hook in LegacyHorizontalWingSpeeds)
-			{
-				hook(item, ref player.accRunSpeed, ref player.runAcceleration);
-			}
 		}
 
 		/// <summary>
@@ -1413,15 +1396,11 @@ namespace Terraria.ModLoader
 				return false;
 			}
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wings);
-			bool? retVal = texture?.NewWingUpdate(player, inUse);
+			bool? retVal = texture?.WingUpdate(player, inUse);
 
 			foreach (var hook in HookWingUpdate)
 			{
 				retVal |= hook(player.wings, player, inUse);
-			}
-			foreach (var hook in LegacyWingUpdate)
-			{
-				hook(player.wings, player, inUse);
 			}
 			return retVal ?? false;
 		}

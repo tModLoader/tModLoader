@@ -62,7 +62,6 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
-		internal readonly IDictionary<string, EquipTexture> equipTexturesLegacy = new Dictionary<string, EquipTexture>();
 		internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
 		internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
 		internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
@@ -598,7 +597,6 @@ namespace Terraria.ModLoader
 			equipTexture.item = item;
 			EquipLoader.equipTextures[type][slot] = equipTexture;
 			equipTextures[new Tuple<string, EquipType>(name, type)] = equipTexture;
-			equipTexturesLegacy[name] = equipTexture;
 			ModLoader.GetTexture(texture);
 			if (type == EquipType.Body)
 			{
@@ -612,23 +610,6 @@ namespace Terraria.ModLoader
 				EquipLoader.slotToId[type][slot] = item.item.type;
 			}
 			return slot;
-		}
-
-		/// <summary>
-		/// Obsolete: This method doesn't work completely.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		[method: Obsolete("This method doesn't have enough information to actually work. Use GetEquipTexture(string name, EquipType type) instead.")]
-		public EquipTexture GetEquipTexture(string name)
-		{
-			if (equipTexturesLegacy.ContainsKey(name))
-			{
-				return equipTexturesLegacy[name];
-			}
-			else
-			{
-				return null;
-			}
 		}
 
 		/// <summary>
@@ -650,21 +631,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Obsolete: This method doesn't work completely.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		[method: Obsolete("This method doesn't have enough information to actually work. Use GetEquipSlot(string name, EquipType type) instead.")]
-		public int GetEquipSlot(string name)
-		{
-			EquipTexture texture = GetEquipTexture(name);
-			if (texture == null)
-			{
-				return -1;
-			}
-			return texture.Slot;
-		}
-
-		/// <summary>
 		/// Gets the slot/ID of the equipment texture corresponding to the given name. Returns -1 if no EquipTexture with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
@@ -677,16 +643,6 @@ namespace Terraria.ModLoader
 				return -1;
 			}
 			return texture.Slot;
-		}
-
-		/// <summary>
-		/// Obsolete: This method doesn't work completely.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		[method: Obsolete("This method doesn't have enough information to actually work. Use GetAccessorySlot(string name, EquipType type) instead.")]
-		public sbyte GetAccessorySlot(string name)
-		{
-			return (sbyte)GetEquipSlot(name);
 		}
 
 		/// <summary>
@@ -2570,7 +2526,6 @@ namespace Terraria.ModLoader
 			items.Clear();
 			globalItems.Clear();
 			equipTextures.Clear();
-			equipTexturesLegacy.Clear();
 			dusts.Clear();
 			tiles.Clear();
 			globalTiles.Clear();

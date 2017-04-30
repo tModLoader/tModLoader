@@ -130,7 +130,7 @@ namespace Terraria.ModLoader
 			int id = tileEntity.Place(i, j);
 			ModTileEntity newEntity = (ModTileEntity)ByID[id];
 			newEntity.OnNetPlace();
-			NetMessage.SendData(86, -1, -1, "", id, i, j, 0f, 0, 0, 0);
+			NetMessage.SendData(86, -1, -1, null, id, i, j, 0f, 0, 0, 0);
 		}
 
 		/// <summary>
@@ -212,8 +212,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend)
 		{
-			// TODO: Major release: Delete Obsolete
-			NetSend(writer);
 			NetSend(writer, networkSend);
 		}
 
@@ -222,8 +220,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
 		{
-			// TODO: Major release: Delete Obsolete
-			NetReceive(reader);
 			NetReceive(reader, networkSend);
 		}
 
@@ -248,22 +244,6 @@ namespace Terraria.ModLoader
 		/// Allows you to load the custom data you have saved for this tile entity.
 		/// </summary>
 		public virtual void Load(TagCompound tag)
-		{
-		}
-
-		/// <summary>
-		/// Obsolete: Use the overloaded method with the lightSend bool.
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the lightSend bool.")]
-		public virtual void NetSend(BinaryWriter writer)
-		{
-		}
-
-		/// <summary>
-		/// Obsolete: Use the overloaded method with the lightReceive bool.
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the lightReceive bool.")]
-		public virtual void NetReceive(BinaryReader reader)
 		{
 		}
 
