@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.GameInput;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
+using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
@@ -68,7 +69,7 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the elements of the in-game interface that get drawn. MethodSequenceListItem can be found in the Terraria.DataStructures namespace. Check https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Interface-layers-values for vanilla interface layer names
 		/// </summary>
 		/// <param name="layers">The layers.</param>
-		public virtual void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 		}
 
@@ -145,7 +146,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+		internal static void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			foreach (Mod mod in ModLoader.mods.Values)
 			{

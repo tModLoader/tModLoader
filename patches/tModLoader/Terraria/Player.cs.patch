@@ -349,7 +349,7 @@
 +			// Sync the item for mp
 +			if (Main.netMode == NetmodeID.MultiplayerClient)
 +			{
-+				NetMessage.SendData(MessageID.SyncItem, -1, -1, "", index, 1f, 0f, 0f, 0, 0, 0);
++				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f, 0f, 0f, 0, 0, 0);
 +			}
 +		}
 +
@@ -3335,7 +3335,7 @@
 +								Main.item[j] = new Item();
 +								if (Main.netMode == 1)
 +								{
-+									NetMessage.SendData(21, -1, -1, "", j, 0f, 0f, 0f, 0, 0, 0);
++									NetMessage.SendData(21, -1, -1, null, j, 0f, 0f, 0f, 0, 0, 0);
 +								}
 +								continue;
 +							}
