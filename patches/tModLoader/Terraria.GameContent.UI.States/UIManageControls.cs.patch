@@ -89,7 +89,7 @@
 +					}
 +				case "ResetModHotkeys":
 +					{
-+						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => Lang.menu[86], color);
++						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value, color);
 +						uIElement7.OnClick += delegate(UIMouseEvent evt, UIElement listeningElement)
 +						{
 +							string copyableProfileName = UIManageControls.GetCopyableProfileName();

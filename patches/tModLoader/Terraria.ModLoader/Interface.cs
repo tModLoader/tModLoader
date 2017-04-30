@@ -255,7 +255,7 @@ namespace Terraria.ModLoader
 				}
 
 				buttonIndex++;
-				buttonNames[buttonIndex] = Lang.menu[5];
+				buttonNames[buttonIndex] = Lang.menu[5].Value;
 				if (selectedMenu == buttonIndex || backButtonDown)
 				{
 					backButtonDown = false;

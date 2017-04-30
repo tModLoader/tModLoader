@@ -49,23 +49,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds an ingredient with the given vanilla item name and stack size to the search criteria.
-		/// </summary>
-		/// <param name="itemName">The item name of the ingredient to add.</param>
-		/// <param name="stack">The stack of the ingredient to add.</param>
-		public void AddIngredient(string itemName, int stack = 1)
-		{
-			Item item = new Item();
-			item.SetDefaults(itemName);
-			if (item.type == 0)
-			{
-				throw new RecipeException("No item is named " + itemName);
-			}
-			item.stack = stack;
-			items.Add(item);
-		}
-
-		/// <summary>
 		/// Adds a recipe group ingredient with the given RecipeGroup name and stack size to the search criteria.
 		/// </summary>
 		/// <param name="name">The name of the recipegroup to accept.</param>
@@ -95,21 +78,6 @@ namespace Terraria.ModLoader
 			}
 			result.SetDefaults(itemID, false);
 			result.stack = stack;
-		}
-
-		/// <summary>
-		/// Sets the search criteria's result to the type corresponding to the given vanilla item name, with the given stack size.
-		/// </summary>
-		/// <param name="itemName">The item name of the item set as result.</param>
-		/// <param name="stack">The stack of the item to set as result.</param>
-		public void SetResult(string itemName, int stack = 1)
-		{
-			result.SetDefaults(itemName);
-			if (result.type == 0)
-			{
-				throw new RecipeException("No item is named " + itemName);
-			}
-			result.stack = 1;
 		}
 
 		/// <summary>

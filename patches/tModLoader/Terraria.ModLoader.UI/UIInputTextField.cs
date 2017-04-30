@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ReLogic.OS;
 using System;
 using System.Threading;
 using System.Windows.Forms;
@@ -87,16 +88,16 @@ namespace Terraria.ModLoader.UI
 				}
 				else if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.X))
 				{
-					PlatformUtilities.SetClipboard(oldString);
+					Platform.Current.Clipboard = oldString;
 					text = "";
 				}
 				else if ((inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C)) || (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Insert)))
 				{
-					PlatformUtilities.SetClipboard(oldString);
+					Platform.Current.Clipboard = oldString;
 				}
 				else if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V))
 				{
-					newKeys += PlatformUtilities.GetClipboard();
+					newKeys += Platform.Current.Clipboard;
 				}
 			}
 			else
@@ -190,7 +191,7 @@ namespace Terraria.ModLoader.UI
 				string a = string.Concat(pressedKeys[j]);
 				if (a == "Back" && (flag2 || flag) && text.Length > 0)
 				{
-					TextSnippet[] array = ChatManager.ParseMessage(text, Microsoft.Xna.Framework.Color.White);
+					TextSnippet[] array = ChatManager.ParseMessage(text, Microsoft.Xna.Framework.Color.White).ToArray();
 					if (array[array.Length - 1].DeleteWhole)
 					{
 						text = text.Substring(0, text.Length - array[array.Length - 1].TextOriginal.Length);

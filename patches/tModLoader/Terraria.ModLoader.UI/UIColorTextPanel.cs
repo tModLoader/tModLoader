@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
+using ReLogic.Graphics;
 
 namespace Terraria.ModLoader.UI
 {
@@ -28,7 +29,7 @@ namespace Terraria.ModLoader.UI
 
 		public void SetText(string text, float textScale, bool large)
 		{
-			SpriteFont spriteFont = large ? Main.fontDeathText : Main.fontMouseText;
+			DynamicSpriteFont spriteFont = large ? Main.fontDeathText : Main.fontMouseText;
 			Vector2 textSize = new Vector2(spriteFont.MeasureString(text).X, large ? 32f : 16f) * textScale;
 			this._text = text;
 			this._textScale = textScale;

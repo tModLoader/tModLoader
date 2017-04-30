@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Default
 							item.type, item.stack, false, item.prefix, false, false);
 				if (Main.netMode == 1)
 				{
-					NetMessage.SendData(21, -1, -1, "", k, 1f);
+					NetMessage.SendData(ID.MessageID.SyncItem, -1, -1, null, k, 1f);
 				}
 			}
 		}
