@@ -8,6 +8,21 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
+@@ -205,8 +_,12 @@
+ #endif
+ 			try
+ 			{
+-				Console.OutputEncoding = Encoding.Unicode;
+-				Console.InputEncoding = Encoding.Unicode;
++				Console.OutputEncoding = Encoding.UTF8;
++
++				if (Platform.IsWindows)
++					Console.InputEncoding = Encoding.Unicode;
++				else
++					Console.InputEncoding = Encoding.UTF8;
+ 			}
+ 			catch
+ 			{
 @@ -227,6 +_,15 @@
  				};
  			}
