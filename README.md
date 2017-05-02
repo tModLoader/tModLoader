@@ -14,6 +14,8 @@ Download and installation instructions are on the [forums thread](http://forums.
 
 **Huge thanks to [ChickenBones](https://github.com/Chicken-Bones) for creating the code patcher!**
 
+**NOTE: The decompilation doesn't work on Mac. You need Windows.**
+
 ### Brief introduction
 ___
 tModLoader uses its own code patcher. If you want to contribute to tModLoader, you will have to use this tool. We need to use a patches system, because we are not allowed to upload vanilla source code publicly. It also allows for relatively easy code maintenance. Here's what the tool looks like: [url](https://i.imgur.com/u9Yy1rl.png)
