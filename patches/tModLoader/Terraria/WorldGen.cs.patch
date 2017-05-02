@@ -1187,6 +1187,17 @@
  				}
  				WorldGen.destroyObject = false;
  			}
+@@ -33239,6 +_,10 @@
+ 			if (num != -1 && Main.netMode == 1 && type == 467)
+ 			{
+ 				NetMessage.SendData(34, -1, -1, null, 4, (float)x, (float)y, (float)style, 0, 0, 0);
++			}
++			if (num != 1 && Main.netMode == 1 && type >= TileID.Count && TileID.Sets.BasicChest[type])
++			{
++				NetMessage.SendData(34, -1, -1, null, 100, (float)x, (float)y, (float)style, 0, type, 0);
+ 			}
+ 			return num;
+ 		}
 @@ -33384,7 +_,8 @@
  						}
  					}

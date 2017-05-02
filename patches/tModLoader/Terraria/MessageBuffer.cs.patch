@@ -186,15 +186,15 @@
  					{
  						byte b8 = this.reader.ReadByte();
  						int num100 = (int)this.reader.ReadInt16();
-@@ -1831,36 +_,57 @@
+@@ -1705,21 +_,35 @@
  						{
- 							num110 = 0;
+ 							num103 = 0;
  						}
 -						if (Main.netMode == 2)
 -						{
 -							if (b8 == 0)
 -							{
--								int num111 = WorldGen.PlaceChest(num107, num108, 21, false, num109);
+-								int num104 = WorldGen.PlaceChest(num100, num101, 21, false, num102);
 +						ushort modType = 0;
 +						if (b8 >= 100)
 +						{
@@ -208,106 +208,104 @@
 +								{
 +									modType = TileID.Containers;
 +								}
-+								int num111 = WorldGen.PlaceChest(num107, num108, modType, false, num109);
- 								if (num111 == -1)
++								int num104 = WorldGen.PlaceChest(num100, num101, modType, false, num102);
+ 								if (num104 == -1)
  								{
--									NetMessage.SendData(34, this.whoAmI, -1, "", (int)b8, (float)num107, (float)num108, (float)num109, num111, 0, 0);
--									Item.NewItem(num107 * 16, num108 * 16, 32, 32, Chest.chestItemSpawn[num109], 1, true, 0, false, false);
-+									NetMessage.SendData(34, this.whoAmI, -1, "", (int)b8, (float)num107, (float)num108, (float)num109, num111, modType, 0);
-+									int itemSpawn = b8 < 100 ? Chest.chestItemSpawn[num109] : TileLoader.GetTile(modType).chestDrop;
+-									NetMessage.SendData(34, this.whoAmI, -1, null, (int)b8, (float)num100, (float)num101, (float)num102, num104, 0, 0);
+-									Item.NewItem(num100 * 16, num101 * 16, 32, 32, Chest.chestItemSpawn[num102], 1, true, 0, false, false);
++									NetMessage.SendData(34, this.whoAmI, -1, null, (int)b8, (float)num100, (float)num101, (float)num102, num104, modType, 0);
++									int itemSpawn = b8 < 100 ? Chest.chestItemSpawn[num102] : TileLoader.GetTile(modType).chestDrop;
 +									if (itemSpawn > 0)
 +									{
-+										Item.NewItem(num107 * 16, num108 * 16, 32, 32, itemSpawn, 1, true, 0, false, false);
++										Item.NewItem(num100 * 16, num101 * 16, 32, 32, itemSpawn, 1, true, 0, false, false);
 +									}
  									return;
  								}
--								NetMessage.SendData(34, -1, -1, "", (int)b8, (float)num107, (float)num108, (float)num109, num111, 0, 0);
-+								NetMessage.SendData(34, -1, -1, "", (int)b8, (float)num107, (float)num108, (float)num109, num111, modType, 0);
+-								NetMessage.SendData(34, -1, -1, null, (int)b8, (float)num100, (float)num101, (float)num102, num104, 0, 0);
++								NetMessage.SendData(34, -1, -1, null, (int)b8, (float)num100, (float)num101, (float)num102, num104, modType, 0);
+ 								return;
+ 							}
+-							else if (b8 == 1 && Main.tile[num100, num101].type == 21)
++							else if ((b8 == 1 && Main.tile[num100, num101].type == 21)
++								|| (b8 == 101 && TileID.Sets.BasicChest[Main.tile[num100, num101].type]))
+ 							{
+ 								Tile tile2 = Main.tile[num100, num101];
+ 								if (tile2.frameX % 36 != 0)
+@@ -1739,19 +_,28 @@
+ 								}
  								return;
  							}
 -							else if (b8 == 2)
 -							{
--								int num112 = WorldGen.PlaceChest(num107, num108, 88, false, num109);
+-								int num105 = WorldGen.PlaceChest(num100, num101, 88, false, num102);
 +							else if (b8 % 100 == 2)
 +							{
 +								if (modType == 0)
 +								{
 +									modType = TileID.Dressers;
 +								}
-+								int num112 = WorldGen.PlaceChest(num107, num108, modType, false, num109);
- 								if (num112 == -1)
++								int num105 = WorldGen.PlaceChest(num100, num101, modType, false, num102);
+ 								if (num105 == -1)
  								{
--									NetMessage.SendData(34, this.whoAmI, -1, "", (int)b8, (float)num107, (float)num108, (float)num109, num112, 0, 0);
--									Item.NewItem(num107 * 16, num108 * 16, 32, 32, Chest.dresserItemSpawn[num109], 1, true, 0, false, false);
-+									NetMessage.SendData(34, this.whoAmI, -1, "", (int)b8, (float)num107, (float)num108, (float)num109, num112, modType, 0);
-+									int itemSpawn = b8 < 100 ? Chest.dresserItemSpawn[num109] : TileLoader.GetTile(modType).dresserDrop;
+-									NetMessage.SendData(34, this.whoAmI, -1, null, (int)b8, (float)num100, (float)num101, (float)num102, num105, 0, 0);
+-									Item.NewItem(num100 * 16, num101 * 16, 32, 32, Chest.dresserItemSpawn[num102], 1, true, 0, false, false);
++									NetMessage.SendData(34, this.whoAmI, -1, null, (int)b8, (float)num100, (float)num101, (float)num102, num105, modType, 0);
++									int itemSpawn = b8 < 100 ? Chest.dresserItemSpawn[num102] : TileLoader.GetTile(modType).dresserDrop;
 +									if (itemSpawn > 0)
 +									{
-+										Item.NewItem(num107 * 16, num108 * 16, 32, 32, itemSpawn, 1, true, 0, false, false);
++										Item.NewItem(num100 * 16, num101 * 16, 32, 32, itemSpawn, 1, true, 0, false, false);
 +									}
  									return;
  								}
--								NetMessage.SendData(34, -1, -1, "", (int)b8, (float)num107, (float)num108, (float)num109, num112, 0, 0);
-+								NetMessage.SendData(34, -1, -1, "", (int)b8, (float)num107, (float)num108, (float)num109, num112, modType, 0);
+-								NetMessage.SendData(34, -1, -1, null, (int)b8, (float)num100, (float)num101, (float)num102, num105, 0, 0);
++								NetMessage.SendData(34, -1, -1, null, (int)b8, (float)num100, (float)num101, (float)num102, num105, modType, 0);
  								return;
  							}
- 							else
+-							else if (b8 == 3 && Main.tile[num100, num101].type == 88)
++							else if ((b8 == 3 && Main.tile[num100, num101].type == 88)
++								|| (b8 == 103 && TileLoader.IsDresser(Main.tile[num100, num101].type)))
  							{
- 								Tile tile2 = Main.tile[num107, num108];
--								if (tile2.type == 21 && b8 == 1)
-+								if (TileLoader.IsChest(tile2.type) && b8 == 1)
- 								{
- 									if (tile2.frameX % 36 != 0)
- 									{
-@@ -1881,7 +_,7 @@
- 								}
- 								else
- 								{
--									if (tile2.type != 88 || b8 != 3)
-+									if (!TileLoader.IsDresser(tile2.type) || b8 != 3)
- 									{
- 										return;
- 									}
-@@ -1901,19 +_,23 @@
- 								}
+ 								Tile tile3 = Main.tile[num100, num101];
+ 								num100 -= (int)(tile3.frameX % 54 / 18);
+@@ -1805,24 +_,32 @@
+ 								return;
  							}
  						}
 -						else if (b8 == 0)
 +						else if (b8 % 100 == 0)
  						{
- 							if (num110 == -1)
+ 							if (num103 == -1)
  							{
- 								WorldGen.KillTile(num107, num108, false, false, false);
+ 								WorldGen.KillTile(num100, num101, false, false, false);
  								return;
  							}
--							WorldGen.PlaceChestDirect(num107, num108, 21, num109, num110);
+-							WorldGen.PlaceChestDirect(num100, num101, 21, num102, num103);
+-							return;
+-						}
+-						else if (b8 == 2)
 +							if (modType == 0)
 +							{
 +								modType = TileID.Containers;
 +							}
-+							WorldGen.PlaceChestDirect(num107, num108, modType, num109, num110);
- 							return;
- 						}
- 						else
++							WorldGen.PlaceChestDirect(num100, num101, modType, num102, num103);
++							return;
++						}
++						else if (b8 % 100 == 2)
  						{
--							if (b8 != 2)
-+							if (b8 % 100 != 2)
+ 							if (num103 == -1)
  							{
- 								Chest.DestroyChestDirect(num107, num108, num110);
- 								WorldGen.KillTile(num107, num108, false, false, false);
-@@ -1924,7 +_,11 @@
- 								WorldGen.KillTile(num107, num108, false, false, false);
+ 								WorldGen.KillTile(num100, num101, false, false, false);
  								return;
  							}
--							WorldGen.PlaceDresserDirect(num107, num108, 88, num109, num110);
+-							WorldGen.PlaceDresserDirect(num100, num101, 88, num102, num103);
 +							if (modType == 0)
 +							{
 +								modType = TileID.Dressers;
 +							}
-+							WorldGen.PlaceDresserDirect(num107, num108, modType, num109, num110);
++							WorldGen.PlaceDresserDirect(num100, num101, modType, num102, num103);
  							return;
  						}
- 						break;
+ 						else
 @@ -1874,6 +_,10 @@
  						player9.zone2 = this.reader.ReadByte();
  						player9.zone3 = this.reader.ReadByte();

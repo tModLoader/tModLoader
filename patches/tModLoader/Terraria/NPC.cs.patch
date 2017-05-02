@@ -426,6 +426,19 @@
  			int num2 = 0;
  			if (this.aiAction == 0)
  			{
+@@ -58063,7 +_,11 @@
+ 					{
+ 						number2 = 5;
+ 					}
+-					NetMessage.SendData(34, -1, -1, null, number2, (float)x, (float)y, 0f, number, 0, 0);
++					if (Main.tile[x, y].type >= TileID.Count)
++					{
++						number2 = 101;
++					}
++					NetMessage.SendData(34, -1, -1, null, number2, (float)x, (float)y, 0f, number, Main.tile[x, y].type, 0);
+ 					NetMessage.SendTileSquare(-1, x, y, 3, TileChangeType.None);
+ 				}
+ 				int num7 = 475;
 @@ -58522,6 +_,10 @@
  				}
  				return;

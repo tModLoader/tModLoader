@@ -4756,7 +4756,7 @@
  					{
  						NetMessage.SendData(34, -1, -1, null, 1, (float)x, (float)y, 0f, 0, 0, 0);
  					}
-@@ -37862,7 +_,7 @@
+@@ -37862,9 +_,17 @@
  					{
  						NetMessage.SendData(34, -1, -1, null, 5, (float)x, (float)y, 0f, 0, 0, 0);
  					}
@@ -4764,7 +4764,17 @@
 +					if (TileLoader.IsDresser(Main.tile[x, y].type))
  					{
  						NetMessage.SendData(34, -1, -1, null, 3, (float)x, (float)y, 0f, 0, 0, 0);
++					}
++					if (Main.tile[x, y].type >= TileID.Count && TileID.Sets.BasicChest[Main.tile[x, y].type])
++					{
++						NetMessage.SendData(34, -1, -1, null, 101, (float)x, (float)y, 0f, 0, Main.tile[x, y].type, 0);
++					}
++					if (Main.tile[x, y].type >= TileID.Count && TileLoader.IsDresser(Main.tile[x, y].type))
++					{
++						NetMessage.SendData(34, -1, -1, null, 103, (float)x, (float)y, 0f, 0, Main.tile[x, y].type, 0);
  					}
+ 				}
+ 				else
 @@ -38199,22 +_,45 @@
  
  		public void DropItems()
