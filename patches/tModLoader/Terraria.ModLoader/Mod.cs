@@ -121,11 +121,6 @@ namespace Terraria.ModLoader
 
 		internal void Autoload()
 		{
-			if (GetType().GetMethod("ChatInput", new Type[] { typeof(string) }) != null)
-			{
-				throw new OldHookException("Mod.ChatInput");
-			}
-
 			if (!Main.dedServ && File != null)
 			{
 				foreach (var file in File)
@@ -391,31 +386,11 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="item">The item.</param>
 		/// <param name="texture">The texture.</param>
-		/// <exception cref="Terraria.ModLoader.Exceptions.OldHookException">
-		/// ModItem.PreDrawInWorld
-		/// or
-		/// ModItem.PostDrawInWorld
-		/// </exception>
 		/// <exception cref="System.Exception">You tried to add 2 ModItems with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.</exception>
 		public void AddItem(string name, ModItem item, string texture)
 		{
-			Type colorClass = typeof(Microsoft.Xna.Framework.Color);
-			Type floatClass = typeof(float);
-			Type floatRefClass = floatClass.MakeByRefType();
-			if (item.GetType().GetMethod("PreDrawInWorld", new Type[] {
-				typeof(SpriteBatch), colorClass, colorClass, floatRefClass, floatRefClass,
-				}) != null)
-			{
-				throw new OldHookException("ModItem.PreDrawInWorld");
-			}
-			if (item.GetType().GetMethod("PostDrawInWorld", new Type[] {
-				typeof(SpriteBatch), colorClass, colorClass, floatClass, floatClass
-				}) != null)
-			{
-				throw new OldHookException("ModItem.PostDrawInWorld");
-			}
 			int id = ItemLoader.ReserveItemID();
-			item.item.name = name;
+			item.Name = name;
 			item.item.ResetStats(id);
 			item.item.modItem = item;
 			if (items.ContainsKey(name))
@@ -489,29 +464,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="globalItem">The global item.</param>
-		/// <exception cref="Terraria.ModLoader.Exceptions.OldHookException">
-		/// GlobalItem.PreDrawInWorld
-		/// or
-		/// GlobalItem.PostDrawInWorld
-		/// </exception>
 		public void AddGlobalItem(string name, GlobalItem globalItem)
 		{
-			Type colorClass = typeof(Microsoft.Xna.Framework.Color);
-			Type floatClass = typeof(float);
-			Type floatRefClass = floatClass.MakeByRefType();
-			if (globalItem.GetType().GetMethod("PreDrawInWorld", new Type[] {
-				typeof(Item), typeof(SpriteBatch), colorClass, colorClass, floatRefClass, floatRefClass
-				}) != null)
-			{
-				throw new OldHookException("GlobalItem.PreDrawInWorld");
-			}
-			if (globalItem.GetType().GetMethod("PostDrawInWorld", new Type[] {
-				typeof(Item), typeof(SpriteBatch), colorClass, colorClass, floatClass, floatClass
-				}) != null)
-			{
-				throw new OldHookException("GlobalItem.PostDrawInWorld");
-			}
-			Type type = globalItem.GetType();
 			globalItem.mod = this;
 			globalItem.Name = name;
 			this.globalItems[name] = globalItem;
@@ -1146,7 +1100,6 @@ namespace Terraria.ModLoader
 		{
 			Type intRefClass = typeof(int).MakeByRefType();
 			int id = ProjectileLoader.ReserveProjectileID();
-			projectile.projectile.name = name;
 			projectile.Name = name;
 			projectile.projectile.type = id;
 			if (projectiles.ContainsKey(name))
@@ -1299,7 +1252,7 @@ namespace Terraria.ModLoader
 		public void AddNPC(string name, ModNPC npc, string texture, string[] altTextures = null)
 		{
 			int id = NPCLoader.ReserveNPCID();
-			npc.npc.name = name;
+			npc.Name = name;
 			npc.npc.type = id;
 			if (npcs.ContainsKey(name))
 			{
@@ -1493,17 +1446,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="player">The player.</param>
-		/// <exception cref="Terraria.ModLoader.Exceptions.OldHookException">ModPlayer.CatchFish</exception>
 		public void AddPlayer(string name, ModPlayer player)
 		{
-			Type itemClass = typeof(Item);
-			Type intClass = typeof(int);
-			if (player.GetType().GetMethod("CatchFish", new Type[] {
-				itemClass, itemClass, intClass, intClass, intClass, intClass,
-				intClass.MakeByRefType(), typeof(bool).MakeByRefType() }) != null)
-			{
-				throw new OldHookException("ModPlayer.CatchFish");
-			}
 			player.Name = name;
 			players[name] = player;
 			player.mod = this;
@@ -2403,7 +2347,6 @@ namespace Terraria.ModLoader
 			foreach (ModItem item in items.Values)
 			{
 				Main.itemTexture[item.item.type] = ModLoader.GetTexture(item.texture);
-				Main.itemName[item.item.type] = item.item.name;
 				EquipLoader.SetSlot(item.item);
 				ItemLoader.SetupItemInfo(item.item);
 				item.SetDefaults();
@@ -2450,7 +2393,6 @@ namespace Terraria.ModLoader
 				Main.projFrames[projectile.projectile.type] = 1;
 				ProjectileLoader.SetupProjectileInfo(projectile.projectile);
 				projectile.SetDefaults();
-				Main.projName[projectile.projectile.type] = projectile.projectile.name;
 				if (projectile.projectile.hostile)
 				{
 					Main.projHostile[projectile.projectile.type] = true;
@@ -2463,8 +2405,6 @@ namespace Terraria.ModLoader
 			foreach (ModNPC npc in npcs.Values)
 			{
 				Main.npcTexture[npc.npc.type] = ModLoader.GetTexture(npc.texture);
-				Main.npcName[npc.npc.type] = npc.npc.name;
-				Main.npcNameEnglish[npc.npc.type] = npc.npc.name;
 				NPCLoader.SetupNPCInfo(npc.npc);
 				npc.SetDefaults();
 				if (npc.banner != 0 && npc.bannerItem != 0)
@@ -2504,7 +2444,6 @@ namespace Terraria.ModLoader
 			foreach (ModBuff buff in buffs.Values)
 			{
 				Main.buffTexture[buff.Type] = ModLoader.GetTexture(buff.texture);
-				Main.buffName[buff.Type] = buff.Name;
 				buff.SetDefaults();
 			}
 			foreach (ModWaterStyle waterStyle in waterStyles.Values)

@@ -87,8 +87,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.lightPet, nextBuff);
 			Array.Resize(ref Main.meleeBuff, nextBuff);
 			Array.Resize(ref Main.debuff, nextBuff);
-			Array.Resize(ref Main.buffName, nextBuff);
-			Array.Resize(ref Main.buffTip, nextBuff);
 			Array.Resize(ref Main.buffNoSave, nextBuff);
 			Array.Resize(ref Main.buffNoTimeDisplay, nextBuff);
 			Array.Resize(ref Main.buffDoubleApply, nextBuff);

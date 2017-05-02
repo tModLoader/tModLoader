@@ -152,7 +152,6 @@ namespace Terraria.ModLoader
 		internal static void ResizeArrays()
 		{
 			Array.Resize(ref Main.itemTexture, nextItem);
-			Array.Resize(ref Main.itemName, nextItem);
 			Array.Resize(ref Main.itemFlameLoaded, nextItem);
 			Array.Resize(ref Main.itemFlameTexture, nextItem);
 			Array.Resize(ref Main.itemAnimations, nextItem);

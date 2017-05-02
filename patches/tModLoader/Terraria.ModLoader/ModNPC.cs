@@ -31,6 +31,15 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		/// <summary>
+		/// The internal name of this NPC.
+		/// </summary>
+		public string Name
+		{
+			get;
+			internal set;
+		}
+
 		internal string texture;
 		internal string[] altTextures;
 		/// <summary>

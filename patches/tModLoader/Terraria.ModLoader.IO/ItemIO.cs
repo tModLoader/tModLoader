@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.IO
 			else
 			{
 				tag.Set("mod", item.modItem.mod.Name);
-				tag.Set("name", Main.itemName[item.type]);
+				tag.Set("name", item.modItem.Name);
 				tag.Set("data", item.modItem.Save());
 			}
 

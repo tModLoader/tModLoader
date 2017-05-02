@@ -168,8 +168,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.npcTexture, nextNPC);
 			Array.Resize(ref Main.npcAltTextures, nextNPC);
 			Array.Resize(ref Main.npcCatchable, nextNPC);
-			Array.Resize(ref Main.npcName, nextNPC);
-			Array.Resize(ref Main.npcNameEnglish, nextNPC);
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
 			Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
@@ -321,29 +319,6 @@ namespace Terraria.ModLoader
 		{
 			int index;
 			return infoIndexes.TryGetValue(mod.Name + ':' + name, out index) ? npc.npcInfo[index] : null;
-		}
-		//at beginning of Terraria.Lang.npcName add
-		//  if (l >= Main.maxNPCTypes) { return NPCLoader.DisplayName(l); }
-		public static string DisplayName(int type)
-		{
-			ModNPC npc = GetNPC(type);
-			string name = "";
-			if (npc != null)
-			{
-				if (npc.npc.displayName != null)
-				{
-					name = npc.npc.displayName;
-				}
-				if (name == "" && npc.npc.name != null)
-				{
-					name = npc.npc.name;
-				}
-			}
-			if (name == "" && Main.npcName[type] != null)
-			{
-				name = Main.npcName[type];
-			}
-			return name;
 		}
 		//in Terraria.NPC.scaleStats before setting def fields call
 		//  NPCLoader.ScaleExpertStats(this, num4, num5);

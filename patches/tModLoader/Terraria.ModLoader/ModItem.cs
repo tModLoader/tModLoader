@@ -39,6 +39,15 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		/// <summary>
+		/// The internal name of this ModItem.
+		/// </summary>
+		public string Name
+		{
+			get;
+			internal set;
+		}
+
 		internal string texture;
 		internal string flameTexture = "";
 		/// <summary>

@@ -127,7 +127,7 @@ namespace Terraria.ModLoader.IO
 					{
 						TagCompound tag = new TagCompound {
 							["mod"] = npc.modNPC.mod.Name,
-							["name"] = Main.npcName[npc.type],
+							["name"] = npc.modNPC.Name,
 							["displayName"] = npc.GivenName,
 							["x"] = npc.position.X,
 							["y"] = npc.position.Y,
@@ -141,7 +141,7 @@ namespace Terraria.ModLoader.IO
 					{
 						TagCompound tag = new TagCompound {
 							["mod"] = npc.modNPC.mod.Name,
-							["name"] = Main.npcName[npc.type],
+							["name"] = npc.modNPC.Name,
 							["x"] = npc.position.X,
 							["y"] = npc.position.Y
 						};
@@ -179,7 +179,7 @@ namespace Terraria.ModLoader.IO
 					npc.position.Y = tag.GetFloat("y");
 					if (npc.townNPC)
 					{
-						npc.displayName = tag.GetString("displayName");
+						npc.GivenName = tag.GetString("displayName");
 						npc.homeless = tag.GetBool("homeless");
 						npc.homeTileX = tag.GetInt("homeTileX");
 						npc.homeTileY = tag.GetInt("homeTileY");
@@ -202,7 +202,7 @@ namespace Terraria.ModLoader.IO
 
 				list.Add(new TagCompound {
 					["mod"] = NPCLoader.GetNPC(type).mod.Name,
-					["name"] = Main.npcName[type],
+					["name"] = NPCLoader.GetNPC(type).Name,
 					["count"] = NPC.killCount[type]
 				});
 			}
@@ -236,7 +236,7 @@ namespace Terraria.ModLoader.IO
 
 			return new TagCompound {
 				["mod"] = modItem.mod.Name,
-				["itemName"] = Main.itemName[type]
+				["itemName"] = modItem.Name
 			};
 		}
 
