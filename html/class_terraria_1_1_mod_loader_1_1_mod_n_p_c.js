@@ -68,5 +68,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "drawOffsetY", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7bc8cbe91923866dd137b7cdfb17caa6", null ],
     [ "music", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aab0a42de5692b33351e9e2bbac6cb6d1", null ],
     [ "mod", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9ce9cc54ec7752b36975c391eb1ce0d2", null ],
+    [ "Name", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a808de3a772ed9803abb9de74bc2ac112", null ],
     [ "npc", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0", null ]
 ];

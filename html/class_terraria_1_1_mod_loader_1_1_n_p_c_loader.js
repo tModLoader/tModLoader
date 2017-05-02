@@ -44,7 +44,6 @@ var class_terraria_1_1_mod_loader_1_1_n_p_c_loader =
     [ "DelegateTownNPCAttackStrength", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a7ce8a322a4b3532b47e452c760ded5d5", null ],
     [ "DelegateTownNPCAttackSwing", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a12b22a1869cc6298b30340621147fa83", null ],
     [ "DelegateUpdateLifeRegen", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a98dda7530949696e835b823e0d546a9b", null ],
-    [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a725012941d57c1294527158c8d631169", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a77de68f9e0a9fad85ae584dea1dea0db", null ],
     [ "DrawHealthBar", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa4afa26b4eff5da6e0bfa5ba3498c46a", null ],
     [ "DrawHealthBar", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a01c50764c4fa018c26aa42cefa52fdf7", null ],
