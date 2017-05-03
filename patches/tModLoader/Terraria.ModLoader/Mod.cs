@@ -1487,6 +1487,8 @@ namespace Terraria.ModLoader
 			BuffLoader.buffs.Add(buff);
 			buff.texture = texture;
 			buff.mod = this;
+			buff.DisplayName = new ModTranslation(string.Format("BuffName.{0}.{1}", Name, name));
+			buff.Description = new ModTranslation(string.Format("BuffDescription.{0}.{1}", Name, name));
 		}
 
 		/// <summary>

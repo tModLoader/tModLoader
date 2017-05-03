@@ -266,6 +266,15 @@ namespace Terraria.ModLoader
 				dict[text.Key] = text;
 				Lang._projectileNameCache[npc.npc.type] = text;
 			}
+			foreach (ModBuff buff in BuffLoader.buffs)
+			{
+				LocalizedText text = new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));
+				dict[text.Key] = text;
+				Lang._buffNameCache[buff.Type] = text;
+				text = new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
+				dict[text.Key] = text;
+				Lang._buffDescriptionCache[buff.Type] = text;
+			}
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
 

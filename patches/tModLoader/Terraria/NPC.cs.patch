@@ -514,7 +514,7 @@
  				{
  					num74 = 499;
  				}
-+				NPCLoader.BossLoot(this, ref name, ref num74);
++				NPCLoader.BossLoot(this, ref typeName, ref num74);
  				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, num74, stack5, false, 0, false, false);
  				int num75 = Main.rand.Next(5) + 5;
  				for (int num76 = 0; num76 < num75; num76++)

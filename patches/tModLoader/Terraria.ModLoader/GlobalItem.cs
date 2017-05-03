@@ -31,36 +31,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds a line of text to an item's first group of tooltips.
-		/// </summary>
-		public void AddTooltip(Item item, string tooltip)
-		{
-			if (string.IsNullOrEmpty(item.toolTip))
-			{
-				item.toolTip = tooltip;
-			}
-			else
-			{
-				item.toolTip += Environment.NewLine + tooltip;
-			}
-		}
-
-		/// <summary>
-		/// Adds a line of text to an item's second group of tooltips.
-		/// </summary>
-		public void AddTooltip2(Item item, string tooltip)
-		{
-			if (string.IsNullOrEmpty(item.toolTip2))
-			{
-				item.toolTip2 = tooltip;
-			}
-			else
-			{
-				item.toolTip2 += Environment.NewLine + tooltip;
-			}
-		}
-
-		/// <summary>
 		/// Allows you to automatically load a GlobalItem instead of using Mod.AddGlobalItem. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
 		/// </summary>
 		public virtual bool Autoload(ref string name)

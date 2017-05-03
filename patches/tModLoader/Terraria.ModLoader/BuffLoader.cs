@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -92,6 +93,13 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.buffDoubleApply, nextBuff);
 			Array.Resize(ref Main.buffAlpha, nextBuff);
 			Array.Resize(ref Main.buffTexture, nextBuff);
+			Array.Resize(ref Lang._buffNameCache, nextBuff);
+			Array.Resize(ref Lang._buffDescriptionCache, nextBuff);
+			for (int k = BuffID.Count; k < nextBuff; k++)
+			{
+				Lang._buffNameCache[k] = LocalizedText.Empty;
+				Lang._buffDescriptionCache[k] = LocalizedText.Empty;
+			}
 			
 			ModLoader.BuildGlobalHook(ref HookUpdatePlayer, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);

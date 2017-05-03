@@ -21,13 +21,33 @@
 +		internal static LocalizedText[] _projectileNameCache = new LocalizedText[714];
 +		internal static LocalizedText[] _npcNameCache = new LocalizedText[580];
  		private static LocalizedText[] _negativeNpcNameCache = new LocalizedText[65];
- 		private static LocalizedText[] _buffNameCache = new LocalizedText[206];
- 		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[206];
+-		private static LocalizedText[] _buffNameCache = new LocalizedText[206];
+-		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[206];
 -		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[3930];
++		internal static LocalizedText[] _buffNameCache = new LocalizedText[206];
++		internal static LocalizedText[] _buffDescriptionCache = new LocalizedText[206];
 +		internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[3930];
  
  		public static string GetMapObjectName(int id)
  		{
+@@ -103,7 +_,7 @@
+ 
+ 		public static LocalizedText GetNPCName(int netID)
+ 		{
+-			if (netID > 0 && netID < 580)
++			if (netID > 0 && netID < Lang._npcNameCache.Length)
+ 			{
+ 				return Lang._npcNameCache[netID];
+ 			}
+@@ -122,7 +_,7 @@
+ 		public static LocalizedText GetItemName(int id)
+ 		{
+ 			id = (int)ItemID.FromNetId((short)id);
+-			if (id > 0 && id < 3930 && Lang._itemNameCache[id] != null)
++			if (id > 0 && id < Lang._itemNameCache.Length && Lang._itemNameCache[id] != null)
+ 			{
+ 				return Lang._itemNameCache[id];
+ 			}
 @@ -304,6 +_,11 @@
  			}
  			int num = Main.anglerQuestItemNetIDs[Main.anglerQuest];
