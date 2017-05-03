@@ -27,6 +27,7 @@ var searchData=
   ['modsurfacebgstyle',['ModSurfaceBgStyle',['../class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html',1,'Terraria::ModLoader']]],
   ['modtile',['ModTile',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html',1,'Terraria::ModLoader']]],
   ['modtileentity',['ModTileEntity',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html',1,'Terraria::ModLoader']]],
+  ['modtranslation',['ModTranslation',['../class_terraria_1_1_mod_loader_1_1_mod_translation.html',1,'Terraria::ModLoader']]],
   ['modtree',['ModTree',['../class_terraria_1_1_mod_loader_1_1_mod_tree.html',1,'Terraria::ModLoader']]],
   ['modugbgstyle',['ModUgBgStyle',['../class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html',1,'Terraria::ModLoader']]],
   ['modwall',['ModWall',['../class_terraria_1_1_mod_loader_1_1_mod_wall.html',1,'Terraria::ModLoader']]],

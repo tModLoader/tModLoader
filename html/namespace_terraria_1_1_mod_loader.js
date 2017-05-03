@@ -45,6 +45,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "ModSurfaceBgStyle", "class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html", "class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style" ],
     [ "ModTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html", "class_terraria_1_1_mod_loader_1_1_mod_tile" ],
     [ "ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity" ],
+    [ "ModTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html", "class_terraria_1_1_mod_loader_1_1_mod_translation" ],
     [ "ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", "class_terraria_1_1_mod_loader_1_1_mod_tree" ],
     [ "ModUgBgStyle", "class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html", "class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style" ],
     [ "ModWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html", "class_terraria_1_1_mod_loader_1_1_mod_wall" ],

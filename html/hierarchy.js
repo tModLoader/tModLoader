@@ -78,6 +78,7 @@ var hierarchy =
     [ "Terraria.ModLoader.ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", null ],
     [ "Terraria.ModLoader.ModSurfaceBgStyle", "class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html", null ],
     [ "Terraria.ModLoader.ModTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html", null ],
+    [ "Terraria.ModLoader.ModTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html", null ],
     [ "Terraria.ModLoader.ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", null ],
     [ "Terraria.ModLoader.ModUgBgStyle", "class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html", null ],
     [ "Terraria.ModLoader.ModWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html", null ],

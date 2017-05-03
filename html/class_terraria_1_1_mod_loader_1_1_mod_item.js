@@ -91,7 +91,9 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "bossBagNPC", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a7a8d81109a06450e23a08537b7febdcb", null ],
     [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a4034c592b448f335b82414fb2dead1b1", null ],
     [ "projOnSwing", "class_terraria_1_1_mod_loader_1_1_mod_item.html#abe9fcfbfbdb4b5dedd9859aa8f1f5b36", null ],
+    [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355", null ],
     [ "item", "class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356", null ],
     [ "mod", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a1ce00f06389a5baef958ccb7a6653cfb", null ],
-    [ "Name", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a92544625403e1dc870f35a339de80738", null ]
+    [ "Name", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a92544625403e1dc870f35a339de80738", null ],
+    [ "Tooltip", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a0fa62e240cf6cb00feb461f9f8dd9eb7", null ]
 ];

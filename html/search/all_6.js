@@ -4,6 +4,7 @@ var searchData=
   ['faceacc',['FaceAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a3b32234508897b5f267182bd5b2e8f2b',1,'Terraria.ModLoader.PlayerLayer.FaceAcc()'],['../class_terraria_1_1_mod_loader_1_1_player_head_layer.html#ad9bc1b2e4499a7498d1a0e49c3ca9a33',1,'Terraria.ModLoader.PlayerHeadLayer.FaceAcc()']]],
   ['facecolor',['faceColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a33a8e0380f2ed15277be1e2369325fc3',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['faceshader',['faceShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a0c3f1e77b79c1bac10a6150b646042f2',1,'Terraria::ModLoader::PlayerDrawInfo']]],
+  ['fallback',['fallback',['../class_terraria_1_1_mod_loader_1_1_mod_translation.html#a64afcfcd8b9bcbaa786351f8267accf0',1,'Terraria::ModLoader::ModTranslation']]],
   ['file',['File',['../class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a',1,'Terraria::ModLoader::Mod']]],
   ['fileexists',['FileExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#ac6060b44af6ea4bf0db551886ea796d9',1,'Terraria.ModLoader.Mod.FileExists()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aeb0d9d1bfee842c0e232de398756f869',1,'Terraria.ModLoader.ModLoader.FileExists()']]],
   ['filename',['Filename',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html#a818ed0aa74b0c4ae80a5efc25d3f4b31',1,'Terraria::ModLoader::IO::UploadFile']]],

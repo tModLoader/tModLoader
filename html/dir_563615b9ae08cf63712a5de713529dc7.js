@@ -147,6 +147,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "ModTileEntity.cs", "_mod_tile_entity_8cs.html", [
       [ "ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity" ]
     ] ],
+    [ "ModTranslation.cs", "_mod_translation_8cs.html", [
+      [ "ModTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html", "class_terraria_1_1_mod_loader_1_1_mod_translation" ]
+    ] ],
     [ "ModWall.cs", "_mod_wall_8cs.html", [
       [ "ModWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html", "class_terraria_1_1_mod_loader_1_1_mod_wall" ]
     ] ],
