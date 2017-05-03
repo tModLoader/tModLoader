@@ -8,15 +8,26 @@
  
  #if CLIENT
  using Terraria.Map;
-@@ -35,7 +_,7 @@
+@@ -35,14 +_,14 @@
  		[Obsolete("Lang arrays have been replaced with the new Language.GetText system.")]
  		public static LocalizedText[] chestType2 = new LocalizedText[2];
  		public static LocalizedText[] prefix = new LocalizedText[84];
 -		public static LocalizedText[] _mapLegendCache;
+-		private static LocalizedText[] _itemNameCache = new LocalizedText[3930];
+-		private static LocalizedText[] _projectileNameCache = new LocalizedText[714];
+-		private static LocalizedText[] _npcNameCache = new LocalizedText[580];
 +		public static MapLegend _mapLegendCache;
- 		private static LocalizedText[] _itemNameCache = new LocalizedText[3930];
- 		private static LocalizedText[] _projectileNameCache = new LocalizedText[714];
- 		private static LocalizedText[] _npcNameCache = new LocalizedText[580];
++		internal static LocalizedText[] _itemNameCache = new LocalizedText[3930];
++		internal static LocalizedText[] _projectileNameCache = new LocalizedText[714];
++		internal static LocalizedText[] _npcNameCache = new LocalizedText[580];
+ 		private static LocalizedText[] _negativeNpcNameCache = new LocalizedText[65];
+ 		private static LocalizedText[] _buffNameCache = new LocalizedText[206];
+ 		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[206];
+-		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[3930];
++		internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[3930];
+ 
+ 		public static string GetMapObjectName(int id)
+ 		{
 @@ -304,6 +_,11 @@
  			}
  			int num = Main.anglerQuestItemNetIDs[Main.anglerQuest];

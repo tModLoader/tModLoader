@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -91,6 +92,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.projHook, nextProjectile);
 			Array.Resize(ref Main.projFrames, nextProjectile);
 			Array.Resize(ref Main.projPet, nextProjectile);
+			Array.Resize(ref Lang._projectileNameCache, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosLifeTimeMultiplier, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosMaximumRange, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosTopSpeed, nextProjectile);
@@ -112,6 +114,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ProjectileID.Sets.NoLiquidDistortion, nextProjectile);
 			for (int k = ProjectileID.Count; k < nextProjectile; k++)
 			{
+				Lang._projectileNameCache[k] = LocalizedText.Empty;
 				ProjectileID.Sets.YoyosLifeTimeMultiplier[k] = -1;
 				ProjectileID.Sets.YoyosMaximumRange[k] = 200f;
 				ProjectileID.Sets.YoyosTopSpeed[k] = 10f;

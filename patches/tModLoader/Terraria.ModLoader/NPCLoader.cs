@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -171,6 +172,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
 			Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
+			Array.Resize(ref Lang._npcNameCache, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
 			Array.Resize(ref NPCID.Sets.TrailingMode, nextNPC);
 			Array.Resize(ref NPCID.Sets.BelongsToInvasionOldOnesArmy, nextNPC);
@@ -206,6 +208,7 @@ namespace Terraria.ModLoader
 			{
 				Main.NPCLoaded[k] = true;
 				Main.npcFrameCount[k] = 1;
+				Lang._npcNameCache[k] = LocalizedText.Empty;
 				NPCID.Sets.TrailingMode[k] = -1;
 				NPCID.Sets.StatueSpawnedDropRarity[k] = -1f;
 				NPCID.Sets.TrailCacheLength[k] = 10;

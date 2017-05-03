@@ -12,9 +12,17 @@ namespace Terraria.ModLoader.Default
 			return now.Month == 4 && now.Day <= 2;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("April Fools Joke");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = CheckAprilFools() ? "Terrarian...?" : "April Fools Joke";
+			if (CheckAprilFools())
+			{
+				item.SetNameOverride("Terrarian...?");
+			}
 			item.useStyle = 4;
 			item.width = 24;
 			item.height = 24;

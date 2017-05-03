@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ID;
+using Terraria.Localization;
+using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
@@ -158,6 +160,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Item.itemCaches, nextItem);
 			Array.Resize(ref Item.staff, nextItem);
 			Array.Resize(ref Item.claw, nextItem);
+			Array.Resize(ref Lang._itemNameCache, nextItem);
+			Array.Resize(ref Lang._itemTooltipCache, nextItem);
 			Array.Resize(ref ItemID.Sets.BannerStrength, nextItem);
 			Array.Resize(ref ItemID.Sets.KillsToBanner, nextItem);
 			Array.Resize(ref ItemID.Sets.CanFishInLava, nextItem);
@@ -191,6 +195,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ItemID.Sets.SingleUseInGamepad, nextItem);
 			for (int k = ItemID.Count; k < nextItem; k++)
 			{
+				Lang._itemNameCache[k] = LocalizedText.Empty;
+				Lang._itemTooltipCache[k] = ItemTooltip.None;
 				ItemID.Sets.BannerStrength[k] = new ItemID.BannerEffect(1f);
 				ItemID.Sets.KillsToBanner[k] = 50;
 				Item.itemCaches[k] = -1;

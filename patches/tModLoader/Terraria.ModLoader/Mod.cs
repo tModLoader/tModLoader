@@ -401,6 +401,8 @@ namespace Terraria.ModLoader
 			ItemLoader.items.Add(item);
 			item.texture = texture;
 			item.mod = this;
+			item.DisplayName = new ModTranslation(string.Format("ItemName.{0}.{1}", Name, name));
+			item.Tooltip = new ModTranslation(string.Format("ItemTooltip.{0}.{1}", Name, name), true);
 			if (item.IsQuestFish())
 			{
 				ItemLoader.questFish.Add(id);
@@ -1098,7 +1100,6 @@ namespace Terraria.ModLoader
 		/// <param name="texture">The texture.</param>
 		public void AddProjectile(string name, ModProjectile projectile, string texture)
 		{
-			Type intRefClass = typeof(int).MakeByRefType();
 			int id = ProjectileLoader.ReserveProjectileID();
 			projectile.Name = name;
 			projectile.projectile.type = id;
@@ -1110,6 +1111,7 @@ namespace Terraria.ModLoader
 			ProjectileLoader.projectiles.Add(projectile);
 			projectile.texture = texture;
 			projectile.mod = this;
+			projectile.DisplayName = new ModTranslation(string.Format("ProjectileName.{0}.{1}", Name, name));
 		}
 
 		/// <summary>
@@ -1263,6 +1265,7 @@ namespace Terraria.ModLoader
 			npc.texture = texture;
 			npc.altTextures = altTextures;
 			npc.mod = this;
+			npc.DisplayName = new ModTranslation(string.Format("NPCName.{0}.{1}", Name, name));
 		}
 
 		/// <summary>

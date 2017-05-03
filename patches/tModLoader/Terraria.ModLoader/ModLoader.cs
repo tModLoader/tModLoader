@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
@@ -153,6 +154,7 @@ namespace Terraria.ModLoader
 			}
 			Interface.loadMods.SetProgressSetup(0f);
 			ResizeArrays();
+			RefreshModLanguage(Language.ActiveCulture);
 			RecipeGroupHelper.FixRecipeGroupLookups();
 			num = 0;
 			foreach (Mod mod in mods.Values)
@@ -235,6 +237,36 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.ResizeArrays();
 			WaterfallStyleLoader.ResizeArrays();
 			WorldHooks.ResizeArrays();
+		}
+
+		public static void RefreshModLanguage(GameCulture culture)
+		{
+			Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
+			foreach (ModItem item in ItemLoader.items)
+			{
+				LocalizedText text = new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
+				dict[text.Key] = text;
+				Lang._itemNameCache[item.item.type] = text;
+				text = new LocalizedText(item.Tooltip.Key, item.Tooltip.GetTranslation(culture));
+				if (text.Value != null)
+				{
+					dict[text.Key] = text;
+					Lang._itemTooltipCache[item.item.type] = ItemTooltip.FromLanguageKey(text.Key);
+				}
+			}
+			foreach (ModProjectile proj in ProjectileLoader.projectiles)
+			{
+				LocalizedText text = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
+				dict[text.Key] = text;
+				Lang._projectileNameCache[proj.projectile.type] = text;
+			}
+			foreach (ModNPC npc in NPCLoader.npcs)
+			{
+				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
+				dict[text.Key] = text;
+				Lang._projectileNameCache[npc.npc.type] = text;
+			}
+			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
 
 		// TODO, investigate if this causes memory errors.
@@ -338,6 +370,9 @@ namespace Terraria.ModLoader
 
 					if (names.Contains(mod.Name))
 						throw new ModNameException("Two mods share the internal name " + mod.Name);
+
+					if (mod.Name.IndexOf('.') >= 0)
+						throw new ModNameException("A mod's internal name cannot contain a period");
 
 					names.Add(mod.Name);
 				}

@@ -48,6 +48,24 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		/// <summary>
+		/// The translations for the display name of this item.
+		/// </summary>
+		public ModTranslation DisplayName
+		{
+			get;
+			internal set;
+		}
+
+		/// <summary>
+		/// The translations for the display name of this tooltip.
+		/// </summary>
+		public ModTranslation Tooltip
+		{
+			get;
+			internal set;
+		}
+
 		internal string texture;
 		internal string flameTexture = "";
 		/// <summary>

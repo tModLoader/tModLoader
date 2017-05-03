@@ -888,13 +888,13 @@
  						if (j == 0 && Main.HoverItem.type >= 1533 && Main.HoverItem.type <= 1537 && !NPC.downedPlantBoss)
  						{
  							array[num4] = Lang.tip[59].Value;
-+							tooltipNames[num4] = "Tooltip"; // todo, separate name?
++							tooltipNames[num4] = "Tooltip" + j;
  							num4++;
  						}
  						else
  						{
  							array[num4] = Main.HoverItem.ToolTip.GetLine(j);
-+							tooltipNames[num4] = "Tooltip"; // TODO: Name these or not? Remove Tooltip2 from tooltipNames list
++							tooltipNames[num4] = "Tooltip" + j;
  							num4++;
  						}
  					}

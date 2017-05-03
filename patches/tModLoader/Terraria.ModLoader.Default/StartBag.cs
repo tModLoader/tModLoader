@@ -9,13 +9,16 @@ namespace Terraria.ModLoader.Default
 	{
 		private List<Item> items = new List<Item>();
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Starting Bag");
+			Tooltip.SetDefault("Some starting items couldn't fit in your inventory\n{$CommonItemTooltip.RightClickToOpen}");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Starting Bag";
 			item.width = 20;
 			item.height = 20;
-			item.toolTip = "Some starting items couldn't fit in your inventory";
-			item.toolTip2 = "Right-click to open";
 			item.rare = 1;
 		}
 

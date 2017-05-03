@@ -40,6 +40,15 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		/// <summary>
+		/// The translations for the display name of this NPC.
+		/// </summary>
+		public ModTranslation DisplayName
+		{
+			get;
+			internal set;
+		}
+
 		internal string texture;
 		internal string[] altTextures;
 		/// <summary>

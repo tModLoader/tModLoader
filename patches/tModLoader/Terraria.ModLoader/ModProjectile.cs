@@ -50,6 +50,15 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		/// <summary>
+		/// The translations for the display name of this projectile.
+		/// </summary>
+		public ModTranslation DisplayName
+		{
+			get;
+			internal set;
+		}
+
 		internal string texture;
 		/// <summary>
 		/// Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0.
