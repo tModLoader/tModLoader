@@ -29,9 +29,9 @@ var NAVTREEINDEX =
 [
 "_add_recipes_exception_8cs.html",
 "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a2480c76a6a1b157f3f8c0da67461071f",
-"class_terraria_1_1_mod_loader_1_1_global_projectile.html",
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#aad491bd094cf3b7a1d5dcb8724abd3fc",
-"class_terraria_1_1_mod_loader_1_1_mod.html#a38ac11ee561ed7c0b78c6618f886b9eb",
+"class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0471abad2053e2634e193c409ade60f5",
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#abe234af339da3cfecb1a8279c504a489",
+"class_terraria_1_1_mod_loader_1_1_mod.html#a3dc3da5f2b4d76789764639cf5e91c6d",
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#a97ecf45d8562925b848f2fbc0c5b36a5",
 "class_terraria_1_1_mod_loader_1_1_mod_player.html#aad518cd62e03e602fc231c3d7a4934e9",
 "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a35d294ae08919df4344c0433642868f4",
