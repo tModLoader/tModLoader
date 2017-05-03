@@ -2348,6 +2348,7 @@ namespace Terraria.ModLoader
 			{
 				Main.itemTexture[item.item.type] = ModLoader.GetTexture(item.texture);
 				EquipLoader.SetSlot(item.item);
+				item.SetStaticDefaults();
 				ItemLoader.SetupItemInfo(item.item);
 				item.SetDefaults();
 				DrawAnimation animation = item.GetAnimation();
@@ -2391,6 +2392,7 @@ namespace Terraria.ModLoader
 			{
 				Main.projectileTexture[projectile.projectile.type] = ModLoader.GetTexture(projectile.texture);
 				Main.projFrames[projectile.projectile.type] = 1;
+				projectile.SetStaticDefaults();
 				ProjectileLoader.SetupProjectileInfo(projectile.projectile);
 				projectile.SetDefaults();
 				if (projectile.projectile.hostile)
@@ -2405,6 +2407,7 @@ namespace Terraria.ModLoader
 			foreach (ModNPC npc in npcs.Values)
 			{
 				Main.npcTexture[npc.npc.type] = ModLoader.GetTexture(npc.texture);
+				npc.SetStaticDefaults();
 				NPCLoader.SetupNPCInfo(npc.npc);
 				npc.SetDefaults();
 				if (npc.banner != 0 && npc.bannerItem != 0)

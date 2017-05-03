@@ -65,38 +65,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds a line of text to this item's first group of tooltips.
-		/// </summary>
-		/// <param name="tooltip">The tooltip.</param>
-		public void AddTooltip(string tooltip)
-		{
-			if (string.IsNullOrEmpty(item.toolTip))
-			{
-				item.toolTip = tooltip;
-			}
-			else
-			{
-				item.toolTip += Environment.NewLine + tooltip;
-			}
-		}
-
-		/// <summary>
-		/// Adds a line of text to this item's second group of tooltips.
-		/// </summary>
-		/// <param name="tooltip">The tooltip.</param>
-		public void AddTooltip2(string tooltip)
-		{
-			if (string.IsNullOrEmpty(item.toolTip2))
-			{
-				item.toolTip2 = tooltip;
-			}
-			else
-			{
-				item.toolTip2 += Environment.NewLine + tooltip;
-			}
-		}
-
-		/// <summary>
 		/// Allows you to automatically load an item instead of using Mod.AddItem. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, texture is initialized to the namespace and overriding class name with periods replaced with slashes, and equip is initialized to an empty list. Use this method to either force or stop an autoload, change the default display name and texture path, and to allow for autoloading equipment textures.
 		/// </summary>
 		/// <param name="name">The name.</param>
@@ -134,6 +102,13 @@ namespace Terraria.ModLoader
 		public virtual DrawAnimation GetAnimation()
 		{
 			return null;
+		}
+
+		/// <summary>
+		/// This is where you set all your item's static properties, such as names/translations and the arrays in ItemID.Sets.
+		/// </summary>
+		public virtual void SetStaticDefaults()
+		{
 		}
 
 		/// <summary>

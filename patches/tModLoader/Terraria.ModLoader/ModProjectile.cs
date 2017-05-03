@@ -108,6 +108,13 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
+		/// Allows you to set all your projectile's static properties, such as names/translations and the arrays in ProjectileID.Sets.
+		/// </summary>
+		public virtual void SetStaticDefaults()
+		{
+		}
+
+		/// <summary>
 		/// Allows you to set all your projectile's properties, such as width, damage, aiStyle, penetrate, etc.
 		/// </summary>
 		public virtual void SetDefaults()

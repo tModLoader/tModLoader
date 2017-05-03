@@ -124,6 +124,13 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
+		/// Allows you to set all your NPC's static properties, such as names/translations and the arrays in NPCID.Sets.
+		/// </summary>
+		public virtual void SetStaticDefaults()
+		{
+		}
+
+		/// <summary>
 		/// Allows you to set all your NPC's properties, such as width, damage, aiStyle, lifeMax, etc.
 		/// </summary>
 		public virtual void SetDefaults()
