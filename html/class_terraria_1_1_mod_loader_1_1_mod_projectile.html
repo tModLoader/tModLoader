@@ -236,6 +236,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a332b03efe6a21a9ba3abd344d66c9c0d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a332b03efe6a21a9ba3abd344d66c9c0d">SetDefaults</a> ()</td></tr>
 <tr class="memdesc:a332b03efe6a21a9ba3abd344d66c9c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set all your projectile's properties, such as width, damage, aiStyle, penetrate, etc.  <a href="#a332b03efe6a21a9ba3abd344d66c9c0d">More...</a><br /></td></tr>
 <tr class="separator:a332b03efe6a21a9ba3abd344d66c9c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac774ca279b50afbdc57aa278321e22f4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ac774ca279b50afbdc57aa278321e22f4">SetStaticDefaults</a> ()</td></tr>
+<tr class="memdesc:ac774ca279b50afbdc57aa278321e22f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set all your projectile's static properties, such as names/translations and the arrays in ProjectileID.Sets.  <a href="#ac774ca279b50afbdc57aa278321e22f4">More...</a><br /></td></tr>
+<tr class="separator:ac774ca279b50afbdc57aa278321e22f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add7d7b5fb9fb30f3005e0cac1752c43c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#add7d7b5fb9fb30f3005e0cac1752c43c">ShouldUpdatePosition</a> ()</td></tr>
 <tr class="memdesc:add7d7b5fb9fb30f3005e0cac1752c43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this projectile should update its position based on factors such as its velocity, whether it is in liquid, etc. Return false to make its velocity have no effect on its position. Returns true by default.  <a href="#add7d7b5fb9fb30f3005e0cac1752c43c">More...</a><br /></td></tr>
 <tr class="separator:add7d7b5fb9fb30f3005e0cac1752c43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,8 +335,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to determine how this projectile behaves. This will only be called if PreAI returns true. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00129">129</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        {</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00136">136</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        {</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa4bd74eb4726fe09583d635f72a669b2"></a>
@@ -380,7 +383,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00090">90</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_projectile_8cs_source.html#l00036">Terraria.ModLoader.ModProjectile.mod</a>, <a class="el" href="_mod_projectile_8cs_source.html#l00024">Terraria.ModLoader.ModProjectile.projectile</a>, and <a class="el" href="_mod_projectile_8cs_source.html#l00113">Terraria.ModLoader.ModProjectile.SetDefaults()</a>.</p>
+<p>References <a class="el" href="_mod_projectile_8cs_source.html#l00036">Terraria.ModLoader.ModProjectile.mod</a>, <a class="el" href="_mod_projectile_8cs_source.html#l00024">Terraria.ModLoader.ModProjectile.projectile</a>, and <a class="el" href="_mod_projectile_8cs_source.html#l00120">Terraria.ModLoader.ModProjectile.SetDefaults()</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l01211">Terraria.ModLoader.Mod.AutoloadProjectile()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa9e61a235b78bcd2c72e6e78278cd70e">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_projectile_html_aa9e61a235b78bcd2c72e6e78278cd70e"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa9e61a235b78bcd2c72e6e78278cd70e">Terraria.ModLoader.ModProjectile.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod object that this ModProjectile originates from. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_projectile_8cs_source.html#l00036">ModProjectile.cs:36</a></div></div>
@@ -436,8 +439,8 @@ Properties</h2></td></tr>
 
 <p>Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla decision. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00185">185</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        {</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00192">192</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        {</div><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a55eb5b669632c188ce9c8332bf87e2c9"></a>
@@ -463,8 +466,8 @@ Properties</h2></td></tr>
 
 <p>Whether or not this projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00215">215</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        {</div><div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00222">222</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        {</div><div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a83cd23880db4a59322013fa8bcc49439"></a>
@@ -497,8 +500,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00232">232</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        {</div><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00239">239</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        {</div><div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aeb68fca5dd3414109803b6e920d9b610"></a>
@@ -531,8 +534,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00293">293</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        {</div><div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00300">300</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        {</div><div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4be1c96db232e9c9c6abb42baebf3818"></a>
@@ -565,8 +568,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00264">264</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        {</div><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00271">271</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        {</div><div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a8776b27b8e765b8cc223b0388bd8858a"></a>
@@ -593,8 +596,8 @@ Properties</h2></td></tr>
 
 <p>This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00363">363</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        {</div><div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00370">370</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        {</div><div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a54d91ea7a192ae4851b8229da979db08"></a>
@@ -639,8 +642,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether they collide or not.</dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00324">324</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        {</div><div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00331">331</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        {</div><div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4b548cb172688ca803e439ada0d966a8"></a>
@@ -666,8 +669,8 @@ Properties</h2></td></tr>
 
 <p>Code ran when the projectile cuts tiles. Only runs if <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ada4040094923e812e9d8ee918c9ec1f4" title="Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla ...">CanCutTiles()</a> returns true. Useful when programming lasers and such. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00193">193</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        {</div><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00200">200</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        {</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a8f3e860e67589f1ba01c03b6420f0042"></a>
@@ -722,8 +725,8 @@ Properties</h2></td></tr>
 
 <p>When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00415">415</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        {</div><div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00422">422</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        {</div><div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a48f04db7c4e6636b043bc62020ff1342"></a>
@@ -750,8 +753,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00332">332</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        {</div><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00339">339</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        {</div><div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac9e36df5bf854f5fa06da9932f6429ac"></a>
@@ -788,8 +791,8 @@ Properties</h2></td></tr>
 
 <p>The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00408">408</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        {</div><div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00415">415</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        {</div><div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a86f51aaaa2585bf0b04c3b5291ee8014"></a>
@@ -815,8 +818,8 @@ Properties</h2></td></tr>
 
 <p>How far away this grappling hook can travel away from its player before it retracts. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00386">386</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        {</div><div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            <span class="keywordflow">return</span> 300f;</div><div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00393">393</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        {</div><div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;            <span class="keywordflow">return</span> 300f;</div><div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="adf427ac7f49f9c3a28ed60fde7b39909"></a>
@@ -853,8 +856,8 @@ Properties</h2></td></tr>
 
 <p>The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00401">401</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        {</div><div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00408">408</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        {</div><div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab6ada2add80fed8a7a311044246cdefd"></a>
@@ -881,8 +884,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00208">208</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        {</div><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00215">215</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        {</div><div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3549ea7beb59643c9a516fb576823435"></a>
@@ -908,8 +911,8 @@ Properties</h2></td></tr>
 
 <p>Whether or not this minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if this projectile is considered a pet. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00223">223</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        {</div><div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00230">230</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        {</div><div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a31486b528f94f87a6c463f14cd254bbf"></a>
@@ -974,8 +977,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00245">245</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        {</div><div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00252">252</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        {</div><div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abde91131a773044c36557d0076c2e416"></a>
@@ -1026,8 +1029,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00304">304</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        {</div><div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00311">311</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        {</div><div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2c9264286d7fc68c332f18b1aad87147"></a>
@@ -1078,8 +1081,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00275">275</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        {</div><div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00282">282</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        {</div><div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a78e9b87a32d174483c26885e5c27586d"></a>
@@ -1116,8 +1119,8 @@ Properties</h2></td></tr>
 
 <p>How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00394">394</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        {</div><div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00401">401</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        {</div><div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4cf8b666827b9631d052f1c16d91d08b"></a>
@@ -1175,8 +1178,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00256">256</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        {</div><div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00263">263</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        {</div><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a998ac23ae4b65473ccd41313a53ba5fa"></a>
@@ -1227,8 +1230,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00314">314</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        {</div><div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00321">321</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        {</div><div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a15eadb7f81bb544051915f1aa24ddf2d"></a>
@@ -1279,8 +1282,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00285">285</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        {</div><div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00292">292</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        {</div><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a16aeaadbb50c97fc74aaed8bfee4a405"></a>
@@ -1313,8 +1316,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00177">177</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        {</div><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00184">184</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        {</div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a22c221bd2a7bf9213223cc65658d96f7"></a>
@@ -1340,8 +1343,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to determine how this projectile behaves. This will be called regardless of what PreAI returns. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00136">136</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        {</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00143">143</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        {</div><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a8f3bf78ccac4b342fddd8692a2666a9f"></a>
@@ -1378,8 +1381,8 @@ Properties</h2></td></tr>
 
 <p>Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00356">356</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        {</div><div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00363">363</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        {</div><div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a42b8575b9a273b69a724231b7d3eca98"></a>
@@ -1406,8 +1409,8 @@ Properties</h2></td></tr>
 <p>Allows you to determine how this projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default. </p>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not to stop other AI.</dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00121">121</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        {</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00128">128</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        {</div><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab8a2687c6e26d0a1fa702fb347c8827d"></a>
@@ -1444,8 +1447,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to draw things behind this projectile, or to modify the way this projectile is drawn. Return false to stop the game from drawing the projectile (useful if you're manually drawing the projectile). Returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00348">348</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        {</div><div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00355">355</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        {</div><div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad5261c022708b9358f835c449be11bd4"></a>
@@ -1472,8 +1475,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to draw things behind this projectile. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00340">340</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        {</div><div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00347">347</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        {</div><div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aec19872d1eedd53e9560c9ff488aa522"></a>
@@ -1500,8 +1503,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to determine whether the vanilla code for Kill and the Kill hook will be called. Return false to stop them from being called. Returns true by default. Note that this does not stop the projectile from dying. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00200">200</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        {</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00207">207</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        {</div><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae79c16b0c419da4ffa1e71c5fd4afe19"></a>
@@ -1528,8 +1531,8 @@ Properties</h2></td></tr>
 
 <p>Use this to receive information that was sent in SendExtraAI. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00150">150</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00157">157</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        {</div><div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af23880ffebcd72fc659f5edf165ff4ad"></a>
@@ -1556,8 +1559,8 @@ Properties</h2></td></tr>
 
 <p>If you are storing AI information outside of the projectile.ai array, use this to send that AI information between clients and servers. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00143">143</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        {</div><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00150">150</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a332b03efe6a21a9ba3abd344d66c9c0d"></a>
@@ -1583,10 +1586,10 @@ Properties</h2></td></tr>
 
 <p>Allows you to set all your projectile's properties, such as width, damage, aiStyle, penetrate, etc. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00113">113</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00120">120</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_projectile_8cs_source.html#l00090">Terraria.ModLoader.ModProjectile.Autoload()</a>, and <a class="el" href="_mod_8cs_source.html#l02340">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        {</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        {</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
@@ -1597,6 +1600,47 @@ Properties</h2></td></tr>
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa4bd74eb4726fe09583d635f72a669b2" title="Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allo..." alt="" coords="275,5,496,51"/>
 <area shape="rect" id="node7" href="class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are ..." alt="" coords="277,74,493,121"/>
 <area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_mod.html#a2cc06bb68e395f20ede259d09eb91b05" title="Terraria.ModLoader.Mod.Autoload\lProjectile" alt="" coords="544,5,763,51"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ac774ca279b50afbdc57aa278321e22f4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModProjectile.SetStaticDefaults </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to set all your projectile's static properties, such as names/translations and the arrays in ProjectileID.Sets. </p>
+
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00113">113</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02340">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        {</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_projectile_ac774ca279b50afbdc57aa278321e22f4_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_projectile_ac774ca279b50afbdc57aa278321e22f4_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_projectile_ac774ca279b50afbdc57aa278321e22f4_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_projectile_ac774ca279b50afbdc57aa278321e22f4_icgraph">
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are ..." alt="" coords="275,5,491,51"/>
 </map>
 </div>
 </p>
@@ -1626,8 +1670,8 @@ Properties</h2></td></tr>
 
 <p>Whether or not this projectile should update its position based on factors such as its velocity, whether it is in liquid, etc. Return false to make its velocity have no effect on its position. Returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00157">157</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        {</div><div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00164">164</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        {</div><div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab58e339bb1530a3c458169ca1df261ae"></a>
@@ -1654,8 +1698,8 @@ Properties</h2></td></tr>
 
 <p>Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00371">371</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        {</div><div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00378">378</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        {</div><div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5d00676978839be6a8b92f2d0b957b9a"></a>
@@ -1706,8 +1750,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00168">168</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        {</div><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00175">175</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        {</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4031a70a3e806b5f471b708fe0ff110e"></a>
@@ -1744,8 +1788,8 @@ Properties</h2></td></tr>
 
 <p>This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00379">379</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        {</div><div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00386">386</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        {</div><div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>

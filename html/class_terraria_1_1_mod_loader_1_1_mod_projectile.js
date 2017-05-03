@@ -35,6 +35,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_projectile =
     [ "ReceiveExtraAI", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae79c16b0c419da4ffa1e71c5fd4afe19", null ],
     [ "SendExtraAI", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af23880ffebcd72fc659f5edf165ff4ad", null ],
     [ "SetDefaults", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a332b03efe6a21a9ba3abd344d66c9c0d", null ],
+    [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ac774ca279b50afbdc57aa278321e22f4", null ],
     [ "ShouldUpdatePosition", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#add7d7b5fb9fb30f3005e0cac1752c43c", null ],
     [ "SingleGrappleHook", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab58e339bb1530a3c458169ca1df261ae", null ],
     [ "TileCollideStyle", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5d00676978839be6a8b92f2d0b957b9a", null ],

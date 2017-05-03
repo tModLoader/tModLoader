@@ -269,6 +269,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a90c57527bfca0ed7f14d88e09f3e498a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a">SetDefaults</a> ()</td></tr>
 <tr class="memdesc:a90c57527bfca0ed7f14d88e09f3e498a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set all your NPC's properties, such as width, damage, aiStyle, lifeMax, etc.  <a href="#a90c57527bfca0ed7f14d88e09f3e498a">More...</a><br /></td></tr>
 <tr class="separator:a90c57527bfca0ed7f14d88e09f3e498a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7933d98714543ab0f484b252b14c238"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af7933d98714543ab0f484b252b14c238">SetStaticDefaults</a> ()</td></tr>
+<tr class="memdesc:af7933d98714543ab0f484b252b14c238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set all your NPC's static properties, such as names/translations and the arrays in NPCID.Sets.  <a href="#af7933d98714543ab0f484b252b14c238">More...</a><br /></td></tr>
+<tr class="separator:af7933d98714543ab0f484b252b14c238"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78c975ddfdf04b1148729710da206573"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a78c975ddfdf04b1148729710da206573">SetupShop</a> (Chest shop, ref int nextSlot)</td></tr>
 <tr class="memdesc:a78c975ddfdf04b1148729710da206573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to this town NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.  <a href="#a78c975ddfdf04b1148729710da206573">More...</a><br /></td></tr>
 <tr class="separator:a78c975ddfdf04b1148729710da206573"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -397,8 +400,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to determine how this NPC behaves. This will only be called if PreAI returns true. </p>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00161">161</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        {</div><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00168">168</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        {</div><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abb047caa31b8ca34497ac4168356c711"></a>
@@ -514,7 +517,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00108">108</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_n_p_c_8cs_source.html#l00029">Terraria.ModLoader.ModNPC.mod</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00020">Terraria.ModLoader.ModNPC.npc</a>, and <a class="el" href="_mod_n_p_c_8cs_source.html#l00129">Terraria.ModLoader.ModNPC.SetDefaults()</a>.</p>
+<p>References <a class="el" href="_mod_n_p_c_8cs_source.html#l00029">Terraria.ModLoader.ModNPC.mod</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00020">Terraria.ModLoader.ModNPC.npc</a>, and <a class="el" href="_mod_n_p_c_8cs_source.html#l00136">Terraria.ModLoader.ModNPC.SetDefaults()</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l01396">Terraria.ModLoader.Mod.AutoloadNPC()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        {</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div></div><!-- fragment -->
@@ -574,8 +577,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00411">411</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        {</div><div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00418">418</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        {</div><div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a10497bbd98a664a7ab00f635d2a407fa"></a>
@@ -608,8 +611,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00403">403</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        {</div><div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00410">410</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        {</div><div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6f55ac7e04b567c8ed83a63c027d3056"></a>
@@ -642,8 +645,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00419">419</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        {</div><div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00426">426</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;        {</div><div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae83d78d0f7d05c322616d0d776f50bf6"></a>
@@ -687,8 +690,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00250">250</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        {</div><div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00257">257</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        {</div><div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9349cfc963db994ebafb27c6bda76601"></a>
@@ -733,8 +736,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00323">323</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        {</div><div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00330">330</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        {</div><div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa01845e782e137b6ce35498ba9fca200"></a>
@@ -768,8 +771,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00357">357</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        {</div><div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00364">364</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        {</div><div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1a95612d7298ad2fc45117b67a7769e8"></a>
@@ -803,8 +806,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00290">290</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        {</div><div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00297">297</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        {</div><div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2fe5d7593041428499b764a70d0b2489"></a>
@@ -849,8 +852,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00260">260</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        {</div><div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00267">267</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        {</div><div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6835a75fd5412e9abb6682448fc721d5"></a>
@@ -884,10 +887,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00478">478</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00485">485</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00913">Terraria.ModLoader.NPCLoader.ChooseSpawn()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        {</div><div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;            <span class="keywordflow">return</span> 0f;</div><div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        {</div><div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;            <span class="keywordflow">return</span> 0f;</div><div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
@@ -944,10 +947,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00500">500</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00507">507</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00964">Terraria.ModLoader.NPCLoader.CanTownNPCSpawn()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        {</div><div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        {</div><div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
@@ -986,8 +989,8 @@ Properties</h2></td></tr>
 <p>Whether or not to run the code for checking whether this NPC will remain active. Return false to stop this NPC from being despawned and to stop this NPC from counting towards the limit for how many NPCs can exist near a player. Returns true by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00215">215</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        {</div><div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00222">222</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        {</div><div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6916cc867d0e74e427037430a6bcdea4"></a>
@@ -1046,8 +1049,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00513">513</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        {</div><div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00520">520</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;        {</div><div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="adde60c9d375631c44ca3f59bfd385a5f"></a>
@@ -1074,8 +1077,8 @@ Properties</h2></td></tr>
 <p>Whether or not this NPC should be killed when it reaches 0 health. You may program extra effects in this hook (for example, how Golem's head lifts up for the second phase of its fight). Return false to stop this NPC from being killed. Returns true by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00224">224</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        {</div><div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00231">231</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        {</div><div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a48e74edfb4b8b0c3e106cc849b74db32"></a>
@@ -1108,8 +1111,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00437">437</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        {</div><div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00444">444</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        {</div><div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2b319eaf0f573421f231de3e29b71069"></a>
@@ -1161,8 +1164,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00468">468</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;        {</div><div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00475">475</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        {</div><div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a52d88cd974f5b3067d7c0a6ce3113c49"></a>
@@ -1213,8 +1216,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00640">640</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;        {</div><div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00647">647</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;        {</div><div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0be4253832f342ed238d29f2575f2166"></a>
@@ -1272,8 +1275,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00651">651</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;        {</div><div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00658">658</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        {</div><div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2d3686f29c6f2e2955ac19a462d702a6"></a>
@@ -1306,8 +1309,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00190">190</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        {</div><div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00197">197</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        {</div><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2a35ae24ca39e3ece8625e4048f37161"></a>
@@ -1341,8 +1344,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00428">428</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        {</div><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00435">435</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        {</div><div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa63ef2a98431cd3ffe9f74e198141a28"></a>
@@ -1369,8 +1372,8 @@ Properties</h2></td></tr>
 <p>Allows you to give this town NPC a chat message when a player talks to it. By default returns something embarrassing. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00540">540</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        {</div><div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;My modder forgot to give me a chat message.&quot;</span>;</div><div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00547">547</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;        {</div><div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;My modder forgot to give me a chat message.&quot;</span>;</div><div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a22d1c3de35a14161c20c5544a35b5420"></a>
@@ -1414,8 +1417,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00199">199</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        {</div><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00206">206</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        {</div><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aadf9eeffd3975257af64313a257b5295"></a>
@@ -1480,8 +1483,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00336">336</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        {</div><div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00343">343</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        {</div><div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a95122e1a8db39a14617a8d93c187efc8"></a>
@@ -1546,8 +1549,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00370">370</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        {</div><div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00377">377</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        {</div><div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a10bb42e54445d397e5a28277ed9c0d12"></a>
@@ -1605,8 +1608,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00302">302</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        {</div><div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00309">309</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        {</div><div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a72508ef67b142de2406b12d6b700973d"></a>
@@ -1657,8 +1660,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00271">271</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        {</div><div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00278">278</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        {</div><div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0bba358ea97af556da502009e6a8388c"></a>
@@ -1684,8 +1687,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to make things happen when this NPC dies (for example, dropping items). </p>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00241">241</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        {</div><div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00248">248</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        {</div><div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1ee36b9bb95769ce0c242ee45fdf73d2"></a>
@@ -1729,8 +1732,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00559">559</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;        {</div><div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00566">566</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;        {</div><div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af0133b98a2324f41df2a0e7766bb4c54"></a>
@@ -1795,8 +1798,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00348">348</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        {</div><div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00355">355</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        {</div><div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9cbc291c05d73364db26755d05493898"></a>
@@ -1854,8 +1857,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00381">381</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        {</div><div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00388">388</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        {</div><div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2af31bf4ebbeee0f367fd13018319eb1"></a>
@@ -1913,8 +1916,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00313">313</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        {</div><div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00320">320</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        {</div><div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a40c4f875892c429a941be694a285b963"></a>
@@ -1965,8 +1968,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00281">281</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        {</div><div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00288">288</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        {</div><div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="afc8005e8f47a4836daf386d234b5a960"></a>
@@ -1990,8 +1993,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00166">166</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        {</div><div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00173">173</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        {</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0535d6c3cc70c9b2df99b65b5daef650"></a>
@@ -2035,8 +2038,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00457">457</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        {</div><div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00464">464</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;        {</div><div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a50736271235b7ec25280c3d7a08a43fd"></a>
@@ -2063,8 +2066,8 @@ Properties</h2></td></tr>
 <p>Allows you to determine how this NPC behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00153">153</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        {</div><div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00160">160</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        {</div><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a95293dd7b86903bcf9db4c90991ab9f2"></a>
@@ -2109,8 +2112,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00447">447</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        {</div><div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00454">454</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        {</div><div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a992110bbbd504545042206eff1379c08"></a>
@@ -2137,8 +2140,8 @@ Properties</h2></td></tr>
 <p>Allows you to determine whether or not this NPC will drop anything at all. Return false to stop the NPC from dropping anything. Returns true by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00233">233</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        {</div><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00240">240</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        {</div><div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3ff34ad5598cdf5e664eaa32d687d1c0"></a>
@@ -2171,8 +2174,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00182">182</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        {</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00189">189</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        {</div><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a624976764e51f1707683f4b69b50e2ff"></a>
@@ -2198,8 +2201,8 @@ Properties</h2></td></tr>
 
 <p>This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied. (Note: This hook is only really useful for <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a>, but is included in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html" title="This class serves as a place for you to place all your properties and hooks for each NPC...">ModNPC</a> for completion.) </p>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00145">145</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        {</div><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00152">152</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        {</div><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="afd6ce9e29cd8c49d912d63a6774c662f"></a>
@@ -2243,8 +2246,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00138">138</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        {</div><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00145">145</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        {</div><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad091edf8203519c61a7f7c903880dd60"></a>
@@ -2277,8 +2280,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00174">174</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        {</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00181">181</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        {</div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa8668dfc55443c75e42eca56b9fd6fea"></a>
@@ -2322,8 +2325,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00550">550</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;        {</div><div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00557">557</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;        {</div><div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a90c57527bfca0ed7f14d88e09f3e498a"></a>
@@ -2349,10 +2352,10 @@ Properties</h2></td></tr>
 
 <p>Allows you to set all your NPC's properties, such as width, damage, aiStyle, lifeMax, etc. </p>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00129">129</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00136">136</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_n_p_c_8cs_source.html#l00108">Terraria.ModLoader.ModNPC.AutoloadHead()</a>, and <a class="el" href="_mod_8cs_source.html#l02340">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        {</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        {</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -2363,6 +2366,47 @@ Properties</h2></td></tr>
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aaf8303dd0a30d0ae359128e951374351" title="Allows you to control the path to this NPC&#39;s head texture when it is autoloaded. The headTexture defa..." alt="" coords="261,5,456,51"/>
 <area shape="rect" id="node7" href="class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are ..." alt="" coords="251,74,467,121"/>
 <area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_mod.html#ad77577c0eeaae460a0f0652b70897259" title="Terraria.ModLoader.Mod.AutoloadNPC" alt="" coords="516,13,761,43"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="af7933d98714543ab0f484b252b14c238"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModNPC.SetStaticDefaults </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to set all your NPC's static properties, such as names/translations and the arrays in NPCID.Sets. </p>
+
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00129">129</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02340">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        {</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_af7933d98714543ab0f484b252b14c238_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_n_p_c_af7933d98714543ab0f484b252b14c238_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_af7933d98714543ab0f484b252b14c238_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_af7933d98714543ab0f484b252b14c238_icgraph">
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are ..." alt="" coords="251,5,467,51"/>
 </map>
 </div>
 </p>
@@ -2410,8 +2454,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00568">568</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;        {</div><div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00575">575</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;        {</div><div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac460c107f521d532eb9b7612fc9afd20"></a>
@@ -2456,16 +2500,16 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00489">489</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00496">496</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00950">Terraria.ModLoader.NPCLoader.SpawnNPC()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;        {</div><div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;            <span class="keywordflow">return</span> NPC.NewNPC(tileX * 16 + 8, tileY * 16, <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0">npc</a>.type);</div><div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_html_a2b1a5b77ebd59ee8ca84f96505f6e2b0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0">Terraria.ModLoader.ModNPC.npc</a></div><div class="ttdeci">NPC npc</div><div class="ttdoc">The NPC object that this ModNPC controls. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_n_p_c_8cs_source.html#l00020">ModNPC.cs:20</a></div></div>
+<div class="fragment"><div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        {</div><div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;            <span class="keywordflow">return</span> NPC.NewNPC(tileX * 16 + 8, tileY * 16, <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0">npc</a>.type);</div><div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_html_a2b1a5b77ebd59ee8ca84f96505f6e2b0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0">Terraria.ModLoader.ModNPC.npc</a></div><div class="ttdeci">NPC npc</div><div class="ttdoc">The NPC object that this ModNPC controls. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_n_p_c_8cs_source.html#l00020">ModNPC.cs:20</a></div></div>
 </div><!-- fragment -->
-<p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_ac460c107f521d532eb9b7612fc9afd20_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_n_p_c_ac460c107f521d532eb9b7612fc9afd20_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_ac460c107f521d532eb9b7612fc9afd20_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_ac460c107f521d532eb9b7612fc9afd20_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a0ca2884d941cf304db0d6a9d27ca3328" title="Terraria.ModLoader.NPCLoader.\lSpawnNPC" alt="" coords="251,5,461,51"/>
@@ -2538,8 +2582,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00394">394</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        {</div><div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00401">401</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        {</div><div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2313d21c31e39598ea70a2549b88d4cd"></a>
@@ -2583,8 +2627,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00586">586</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;        {</div><div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00593">593</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        {</div><div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac4e3086dee973bf1a5ea266e2307f633"></a>
@@ -2617,8 +2661,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00621">621</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;        {</div><div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00628">628</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        {</div><div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac35dcebf6a982b6ea4fc98fae8387a84"></a>
@@ -2662,8 +2706,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00595">595</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;        {</div><div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00602">602</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;        {</div><div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3abff473a965503e4e34de6d4d864903"></a>
@@ -2714,8 +2758,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00605">605</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        {</div><div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00612">612</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        {</div><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6f5aeec1d141380d6135c775b466a774"></a>
@@ -2748,8 +2792,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00613">613</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        {</div><div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00620">620</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        {</div><div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a21859f42dc5177e7f92094fca7af2c57"></a>
@@ -2793,8 +2837,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00577">577</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        {</div><div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00584">584</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;        {</div><div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5ab2125c0d53ccf0c98a39e6c1ced2c0"></a>
@@ -2838,8 +2882,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00630">630</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;        {</div><div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00637">637</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;        {</div><div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a14ca9115ed296de1799aa67efd0df6c1"></a>
@@ -2866,8 +2910,8 @@ Properties</h2></td></tr>
 <p>Allows you to give this town NPC any name when it spawns. By default returns something embarrassing. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00522">522</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        {</div><div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;No-Name&quot;</span>;</div><div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00529">529</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;        {</div><div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;No-Name&quot;</span>;</div><div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a83e3f3b8c2643881a6f01981821353bb"></a>
@@ -2900,8 +2944,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00207">207</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        {</div><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00214">214</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        {</div><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a10fbce5c89e1895e4914cf6f01945684"></a>
@@ -2928,8 +2972,8 @@ Properties</h2></td></tr>
 <p>Allows you to determine whether this town NPC wears a party hat during a party. Returns true by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00531">531</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;        {</div><div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00538">538</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;        {</div><div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>

@@ -2,8 +2,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
 [
     [ "ModItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98", null ],
     [ "AddRecipes", "class_terraria_1_1_mod_loader_1_1_mod_item.html#add2f98fcaf12f32319273e4747590ef4", null ],
-    [ "AddTooltip", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a20a31aeaa138a1ee585bd7f5a3454403", null ],
-    [ "AddTooltip2", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a795b649be87fa3b8e2600a8c8e0dcb87", null ],
     [ "AltFunctionUse", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac90ec46c3c5018c66bb3be49426fe96f", null ],
     [ "AnglerQuestChat", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac7fedbda0e561959eefd688955c6e614", null ],
     [ "ArmorArmGlowMask", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a927b398aaf14af68887155d098291f0f", null ],
@@ -74,6 +72,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "Save", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aaaaa13c80516ca138787656a39221fd1", null ],
     [ "SetDefaults", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a6d9fbbb1dec7e25959a345a9e4f78428", null ],
     [ "SetMatch", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a05ebe3f228b20fd0e1fb0c0f019103e1", null ],
+    [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a9de5c2591b0443b342a81003bfc86540", null ],
     [ "Shoot", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a34b04be12bbb658ec0529ced19ce7c7d", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a74f7c560dc57b27176ff8e679293af9c", null ],
     [ "UpdateAccessory", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a27451213353309352f573c65bd04bb92", null ],

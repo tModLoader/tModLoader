@@ -46,6 +46,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "SendExtraAI", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ad091edf8203519c61a7f7c903880dd60", null ],
     [ "SetChatButtons", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa8668dfc55443c75e42eca56b9fd6fea", null ],
     [ "SetDefaults", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a", null ],
+    [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af7933d98714543ab0f484b252b14c238", null ],
     [ "SetupShop", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a78c975ddfdf04b1148729710da206573", null ],
     [ "SpawnNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac460c107f521d532eb9b7612fc9afd20", null ],
     [ "StrikeNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a5d95ff9391276b1c5f5860eaf2ff76a0", null ],
