@@ -14,8 +14,8 @@ namespace Terraria.ModLoader
 		internal static bool initialized = false;
 		internal static readonly IDictionary<ushort, IList<MapEntry>> tileEntries = new Dictionary<ushort, IList<MapEntry>>();
 		internal static readonly IDictionary<ushort, IList<MapEntry>> wallEntries = new Dictionary<ushort, IList<MapEntry>>();
-		internal static readonly IDictionary<ushort, Func<string, int, int, string>> nameFuncs =
-			new Dictionary<ushort, Func<string, int, int, string>>();
+		internal static readonly IDictionary<ushort, Func<LocalizedText, int, int, LocalizedText>> nameFuncs =
+			new Dictionary<ushort, Func<LocalizedText, int, int, LocalizedText>>();
 		internal static readonly IDictionary<ushort, ushort> entryToTile = new Dictionary<ushort, ushort>();
 		internal static readonly IDictionary<ushort, ushort> entryToWall = new Dictionary<ushort, ushort>();
 
@@ -41,7 +41,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref MapHelper.tileLookup, TileLoader.TileCount);
 			Array.Resize(ref MapHelper.wallLookup, WallLoader.WallCount);
 			IList<Color> colors = new List<Color>();
-			IList<string> names = new List<string>();
+			IList<LocalizedText> names = new List<LocalizedText>();
 			foreach (ushort type in tileEntries.Keys)
 			{
 				MapHelper.tileLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
@@ -51,7 +51,14 @@ namespace Terraria.ModLoader
 					entryToTile[mapType] = type;
 					nameFuncs[mapType] = entry.getName;
 					colors.Add(entry.color);
-					names.Add(entry.name);
+					if (entry.name != null)
+					{
+						names.Add(entry.name);
+					}
+					else
+					{
+						names.Add(Language.GetText(entry.translation.Key));
+					}
 				}
 			}
 			foreach (ushort type in wallEntries.Keys)
@@ -63,7 +70,14 @@ namespace Terraria.ModLoader
 					entryToWall[mapType] = type;
 					nameFuncs[mapType] = entry.getName;
 					colors.Add(entry.color);
-					names.Add(entry.name);
+					if (entry.name != null)
+					{
+						names.Add(entry.name);
+					}
+					else
+					{
+						names.Add(Language.GetText(entry.translation.Key));
+					}
 				}
 			}
 			Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition + colors.Count);
@@ -71,7 +85,7 @@ namespace Terraria.ModLoader
 			for (int k = 0; k < colors.Count; k++)
 			{
 				MapHelper.colorLookup[MapHelper.modPosition + k] = colors[k];
-				Lang._mapLegendCache[MapHelper.modPosition + k] = new LocalizedText("ModLoader", names[k]);
+				Lang._mapLegendCache[MapHelper.modPosition + k] = names[k];
 			}
 			initialized = true;
 		}

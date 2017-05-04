@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 		public readonly string Key;
 		private Dictionary<int, string> translations;
 
-		public ModTranslation(string key, bool defaultEmpty = false)
+		internal ModTranslation(string key, bool defaultEmpty = false)
 		{
 			this.Key = key;
 			this.translations = new Dictionary<int, string>();
