@@ -237,6 +237,10 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.ResizeArrays();
 			WaterfallStyleLoader.ResizeArrays();
 			WorldHooks.ResizeArrays();
+			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values)
+			{
+				text.Override = null;
+			}
 		}
 
 		public static void RefreshModLanguage(GameCulture culture)
@@ -291,6 +295,14 @@ namespace Terraria.ModLoader
 				Lang._buffNameCache[buff.Type] = SetLocalizedText(dict, text);
 				text = new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
 				Lang._buffDescriptionCache[buff.Type] = SetLocalizedText(dict, text);
+			}
+			foreach (Mod mod in loadedMods)
+			{
+				foreach (ModTranslation translation in mod.translations.Values)
+				{
+					LocalizedText text = new LocalizedText(translation.Key, translation.GetTranslation(culture));
+					SetLocalizedText(dict, text);
+				}
 			}
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
