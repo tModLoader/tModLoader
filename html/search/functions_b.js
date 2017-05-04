@@ -39,7 +39,6 @@ var searchData=
   ['modnpc',['ModNPC',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a8818a3d5be9a0b00ec2fdbaee4394431',1,'Terraria::ModLoader::ModNPC']]],
   ['modprojectile',['ModProjectile',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afbad8858ec6ca683ba683bd51a95309d',1,'Terraria::ModLoader::ModProjectile']]],
   ['modrecipe',['ModRecipe',['../class_terraria_1_1_mod_loader_1_1_mod_recipe.html#ad968acec2ec7b19df6937a5e3b3a2903',1,'Terraria::ModLoader::ModRecipe']]],
-  ['modtranslation',['ModTranslation',['../class_terraria_1_1_mod_loader_1_1_mod_translation.html#a24288ba21e1e8bd4a28f79e4623a16dc',1,'Terraria::ModLoader::ModTranslation']]],
   ['mounttype',['MountType',['../class_terraria_1_1_mod_loader_1_1_mod.html#a1ee69039213f922b9514d6f058de4832',1,'Terraria::ModLoader::Mod']]],
   ['mounttype_3c_20t_20_3e',['MountType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a20c740a43190b7f8862eb5635f45d56f',1,'Terraria::ModLoader::Mod']]],
   ['mouseover',['MouseOver',['../class_terraria_1_1_mod_loader_1_1_global_tile.html#a605a382f1f7eda9b23930d532c725f5b',1,'Terraria.ModLoader.GlobalTile.MouseOver()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a0109012239d16ca6ef024fd5889a864b',1,'Terraria.ModLoader.ModTile.MouseOver()'],['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a43eb43bc54c0bb461127544ff446dc32',1,'Terraria.ModLoader.TileLoader.MouseOver()']]],

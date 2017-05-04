@@ -1,11 +1,13 @@
 var class_terraria_1_1_mod_loader_1_1_mod_wall =
 [
-    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#af812dbaae129c1fc393a694b337669bf", null ],
-    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#ad214c23fe31cd509dd0c26bd85cbcf2e", null ],
+    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a97e76ecd00a24c452c905a3faa2f5b35", null ],
+    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#afddd9194f68f46329b6119e2ab95a512", null ],
+    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#aa743924c88936a63ddedb4dfd21fdc55", null ],
     [ "AnimateWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a5b9855075312c5bd2859e6a1e169789d", null ],
     [ "Autoload", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#ae666e7352ab01dfab8b25212bca0a895", null ],
     [ "CanExplode", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a35d294ae08919df4344c0433642868f4", null ],
     [ "CreateDust", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#acd08a8791f6e0357c0dec43e386ad509", null ],
+    [ "CreateMapEntryName", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a2500c934ef737346bca80cbff10c5509", null ],
     [ "Drop", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#af4060d05de1bdfb5549d20b2204f04dc", null ],
     [ "GetMapOption", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a70c29a33f0fba029b347b8dae73ae80e", null ],
     [ "KillSound", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#aa7c5b271b6f090c9810e1181d57b35ba", null ],

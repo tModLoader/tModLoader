@@ -1,6 +1,5 @@
 var class_terraria_1_1_mod_loader_1_1_mod_translation =
 [
-    [ "ModTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html#a24288ba21e1e8bd4a28f79e4623a16dc", null ],
     [ "AddTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html#a4fb09fe6ba0530e2d2ffd7513c98ca11", null ],
     [ "AddTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html#adcd52c49bf872babe881d662d1bacf35", null ],
     [ "AddTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac8d5a20f6a14be14c8275bbf387f6709", null ],

@@ -14,6 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "RefreshModLanguage", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#af165fa35a172012e3acda9deaf6934c2", null ],
     [ "RegisterHotKey", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a881f32079654472e92b5c7013e3f30c5", null ],
     [ "ResizeArrays", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ad507b80c28ebb6044cb9f876a38942e1", null ],
+    [ "SetLocalizedText", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#afb98921ac9f2093ab1fe384c64772868", null ],
     [ "SoundExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a166119387b99ba4ecb7ba613471fc625", null ],
     [ "SplitName", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0d5999b4852d8de45bbda475ddcee47d", null ],
     [ "TextureExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a", null ],
