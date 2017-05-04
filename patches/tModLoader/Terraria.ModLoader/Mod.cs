@@ -83,6 +83,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModWaterStyle> waterStyles = new Dictionary<string, ModWaterStyle>();
 		internal readonly IDictionary<string, ModWaterfallStyle> waterfallStyles = new Dictionary<string, ModWaterfallStyle>();
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
+		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 
 		/// <summary>
 		/// Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.
@@ -2347,6 +2348,24 @@ namespace Terraria.ModLoader
 			return ModLoader.RegisterHotKey(this, name, defaultKey);
 		}
 
+		/// <summary>
+		/// Creates a ModTranslation object that you can use in AddTranslation.
+		/// </summary>
+		/// <param name="key">The key for the ModTranslation. The full key will be Mods.ModName.key</param>
+		public ModTranslation CreateTranslation(string key)
+		{
+			key = string.Format("Mods.{0}.{1}", Name, key);
+			return new ModTranslation(key);
+		}
+
+		/// <summary>
+		/// Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText.
+		/// </summary>
+		public void AddTranslation(ModTranslation translation)
+		{
+			translations[translation.Key] = translation;
+		}
+
 		internal void SetupContent()
 		{
 			foreach (ModItem item in items.Values)
@@ -2492,6 +2511,7 @@ namespace Terraria.ModLoader
 			waterStyles.Clear();
 			waterfallStyles.Clear();
 			globalRecipes.Clear();
+			translations.Clear();
 		}
 
 		/// <summary>
