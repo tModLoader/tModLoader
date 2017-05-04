@@ -1,5 +1,5 @@
 <map id="Terraria.ModLoader.ModProjectile.SetDefaults" name="Terraria.ModLoader.ModProjectile.SetDefaults">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa4bd74eb4726fe09583d635f72a669b2" title="Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allo..." alt="" coords="275,5,496,51"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are ..." alt="" coords="277,74,493,121"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a2cc06bb68e395f20ede259d09eb91b05" title="Terraria.ModLoader.Mod.Autoload\lProjectile" alt="" coords="544,5,763,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a6ea0eaab8c94d722396a267e31871a7b" title="Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText. " alt="" coords="291,5,480,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa4bd74eb4726fe09583d635f72a669b2" title="Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allo..." alt="" coords="275,74,496,121"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a2cc06bb68e395f20ede259d09eb91b05" title="Terraria.ModLoader.Mod.Autoload\lProjectile" alt="" coords="544,74,763,121"/>
 </map>
