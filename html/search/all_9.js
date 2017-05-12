@@ -34,7 +34,6 @@ var searchData=
   ['iteminfo',['ItemInfo',['../class_terraria_1_1_mod_loader_1_1_item_info.html',1,'Terraria::ModLoader']]],
   ['itemio',['ItemIO',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html',1,'Terraria::ModLoader::IO']]],
   ['itemio_2ecs',['ItemIO.cs',['../_item_i_o_8cs.html',1,'']]],
-  ['itemloader',['ItemLoader',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a4198053c5e124a22ee5b90a68a4d5b76',1,'Terraria::ModLoader::ItemLoader']]],
   ['itemloader',['ItemLoader',['../class_terraria_1_1_mod_loader_1_1_item_loader.html',1,'Terraria::ModLoader']]],
   ['itemloader_2ecs',['ItemLoader.cs',['../_item_loader_8cs.html',1,'']]],
   ['itemlocation',['itemLocation',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad6908bcfde8e7f3ad472d42f840d9427',1,'Terraria::ModLoader::PlayerDrawInfo']]],

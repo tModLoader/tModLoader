@@ -1,6 +1,5 @@
 var class_terraria_1_1_mod_loader_1_1_item_loader =
 [
-    [ "ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a4198053c5e124a22ee5b90a68a4d5b76", null ],
     [ "AltFunctionUse", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a1fa0e678210af1832fb0d6b23571427f", null ],
     [ "AnglerChat", "class_terraria_1_1_mod_loader_1_1_item_loader.html#aee7fad747d4c34ccbd17d3205944cb57", null ],
     [ "AnimatedItemFrame", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a0ab2225be8832afd4212a562a2ec5c81", null ],
@@ -45,6 +44,7 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "DrawLegs", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ae9b78c43cf2796a560a267c89264d762", null ],
     [ "ExtractinatorUse", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a04bffce0cd26c5644210de489b393b41", null ],
     [ "ExtraPickupSpace", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ac82cd03bbb736df790f9da803cd70ee4", null ],
+    [ "FindVanillaWings", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a94d870cb0b655118a699a0d502106a3f", null ],
     [ "GeneralPrefix", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a8fd1fc3b981990ba559bf2fb4e914c3f", null ],
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a7d3215d357be6878095adbf09897a865", null ],
     [ "GetItem", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a1e8f5f5f4245b184038a9e6d1abbf4d3", null ],
