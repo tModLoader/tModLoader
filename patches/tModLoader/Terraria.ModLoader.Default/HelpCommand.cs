@@ -1,6 +1,5 @@
-﻿using System.Linq;
-using Microsoft.Xna.Framework;
-using Terraria.ID;
+﻿using Microsoft.Xna.Framework;
+using Terraria.Chat;
 
 namespace Terraria.ModLoader.Default
 {
@@ -36,7 +35,7 @@ namespace Terraria.ModLoader.Default
 			if (Main.netMode == 1)
 			{
 				//send the command to the server
-				NetMessage.SendData(MessageID.ChatText, -1, -1, input);
+				NetMessage.SendChatMessageFromClient(new ChatMessage(input));
 			}
 		}
 	}
