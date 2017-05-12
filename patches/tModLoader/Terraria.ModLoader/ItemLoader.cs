@@ -119,11 +119,14 @@ namespace Terraria.ModLoader
 		private static Func<Item, bool>[] HookNeedsSaving;
 		private static Action<Item>[] HookPreSaveCustomData;
 
-		static ItemLoader()
+		private static void FindVanillaWings()
 		{
+			if (vanillaWings[0] != 0)
+				return;
+
+			Item item = new Item();
 			for (int k = 0; k < ItemID.Count; k++)
 			{
-				Item item = new Item();
 				item.SetDefaults(k);
 				if (item.wingSlot > 0)
 				{
@@ -216,7 +219,8 @@ namespace Terraria.ModLoader
 			{
 				Main.anglerQuestItemNetIDs[vanillaQuestFishCount + k] = questFish[k];
 			}
-			
+			FindVanillaWings();
+
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
 
 			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalItems, g => g.SetDefaults);
