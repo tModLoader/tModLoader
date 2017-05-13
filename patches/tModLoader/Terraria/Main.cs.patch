@@ -9,7 +9,14 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
-@@ -172,7 +_,7 @@
+@@ -166,13 +_,13 @@
+ 		public static Main instance;
+ 		public static string versionNumber = "v1.3.5.2";
+ 		public static string versionNumber2 = "v1.3.5.2";
+-		public static string SavePath = Program.LaunchParameters.ContainsKey("-savedirectory") ? Program.LaunchParameters["-savedirectory"] : Platform.Current.GetStoragePath("Terraria");
++		public static string SavePath = Program.LaunchParameters.ContainsKey("-savedirectory") ? Program.LaunchParameters["-savedirectory"] : Platform.Current.GetStoragePath("Terraria/ModLoader");
+ 		public static bool AnnouncementBoxDisabled = false;
+ 		public static int AnnouncementBoxRange = -1;
  		public static string AutogenSeedName;
  		public static Vector2 destroyerHB = new Vector2(0f, 0f);
  		public static FavoritesFile LocalFavoriteData = new FavoritesFile(Main.SavePath + "/favorites.json", false);
@@ -569,12 +576,11 @@
  			{
  				if (Main.chatRelease && !Main.drawingPlayerChat && !Main.editSign && !Main.editChest && !Main.gameMenu && !Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
  				{
-@@ -13049,7 +_,9 @@
+@@ -13049,7 +_,8 @@
  			}
  			if (Main.inputTextEnter && Main.chatRelease)
  			{
 -				if (Main.chatText != "")
-+				// TODO, maybe use ChatManager.Commands.AddCommand to do ModCommands?
 +				var handled = chatText.Length > 0 && chatText[0] == '/' && CommandManager.HandleCommand(chatText, new ChatCommandCaller());
 +				if (Main.chatText != "" && !handled)
  				{

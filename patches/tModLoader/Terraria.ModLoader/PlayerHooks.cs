@@ -483,6 +483,7 @@ namespace Terraria.ModLoader
 		public static float UseTimeMultiplier(Player player, Item item)
 		{
 			float multiplier = 1f;
+			if (item.IsAir) return multiplier;
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				multiplier *= modPlayer.UseTimeMultiplier(item);
@@ -498,6 +499,7 @@ namespace Terraria.ModLoader
 		public static float MeleeSpeedMultiplier(Player player, Item item)
 		{
 			float multiplier = 1f;
+			if (item.IsAir) return multiplier;
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				multiplier *= modPlayer.MeleeSpeedMultiplier(item);
@@ -513,6 +515,7 @@ namespace Terraria.ModLoader
 
 		public static void GetWeaponDamage(Player player, Item item, ref int damage)
 		{
+			if (item.IsAir) return;
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				modPlayer.GetWeaponDamage(item, ref damage);
@@ -529,6 +532,7 @@ namespace Terraria.ModLoader
 
 		public static void GetWeaponKnockback(Player player, Item item, ref float knockback)
 		{
+			if (item.IsAir) return;
 			foreach (ModPlayer modPlayer in player.modPlayers)
 			{
 				modPlayer.GetWeaponKnockback(item, ref knockback);
