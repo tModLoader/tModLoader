@@ -13,3 +13,5 @@ installer2/*.jar
 solutions/documentation/html
 solutions/documentation/*.tmp
 solutions/*.zip
+references/ReLogicMac.dll
+references/ReLogicLinux.dll

@@ -53,18 +53,34 @@
        </PropertyGroup>
      </When>
      <Otherwise>
-@@ -81,7 +_,9 @@
+@@ -81,17 +_,43 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System" />
 -    <Reference Include="Steamworks.NET">
 +    <Reference Include="System.XML" />
-+    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86">
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('WINDOWS'))">
 +      <SpecificVersion>False</SpecificVersion>
        <HintPath>Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll</HintPath>
      </Reference>
-     <Reference Include="ReLogic">
-@@ -90,8 +_,18 @@
+-    <Reference Include="ReLogic">
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('MAC'))">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>..\..\references\Steamworks.NET.OSX.dll</HintPath>
++    </Reference>
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('LINUX'))">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>..\..\references\Steamworks.NET.Linux.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('WINDOWS'))">
+       <HintPath>Terraria.Libraries\ReLogic\ReLogic.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('MAC'))">
++      <HintPath>..\..\references\ReLogicMac.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('LINUX'))">
++      <HintPath>..\..\references\ReLogicLinux.dll</HintPath>
+     </Reference>
      <Reference Include="System.Core" />
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System.Drawing" />
@@ -283,7 +299,6 @@
 +    </None>
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -316,4 +331,5 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
+
