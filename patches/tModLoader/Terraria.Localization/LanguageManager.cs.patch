@@ -9,11 +9,14 @@
  		private Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  		private GameCulture _fallbackCulture = GameCulture.English;
  
-@@ -80,6 +_,7 @@
+@@ -80,6 +_,10 @@
  				this.LoadLanguage(this._fallbackCulture);
  			}
  			this.LoadLanguage(culture);
-+			ModLoader.ModLoader.RefreshModLanguage(culture);
++			if (this.ActiveCulture != null)
++			{
++				ModLoader.ModLoader.RefreshModLanguage(culture);
++			}
  			this.ActiveCulture = culture;
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
