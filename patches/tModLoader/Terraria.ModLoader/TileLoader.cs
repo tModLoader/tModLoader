@@ -94,7 +94,7 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int TileCount => nextTile;
+		public static int TileCount => nextTile;
 
 		/// <summary>
 		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.

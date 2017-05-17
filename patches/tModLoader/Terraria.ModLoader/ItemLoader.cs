@@ -152,7 +152,7 @@ namespace Terraria.ModLoader
 			return type >= ItemID.Count && type < ItemCount ? items[type - ItemID.Count] : null;
 		}
 
-		internal static int ItemCount => nextItem;
+		public static int ItemCount => nextItem;
 
 		internal static void ResizeArrays()
 		{

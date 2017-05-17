@@ -145,7 +145,7 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int NPCCount => nextNPC;
+		public static int NPCCount => nextNPC;
 
 		/// <summary>
 		/// Gets the ModNPC instance corresponding to the specified type.

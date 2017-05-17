@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int BuffCount => nextBuff;
+		public static int BuffCount => nextBuff;
 
 		/// <summary>
 		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
