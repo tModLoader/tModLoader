@@ -282,6 +282,12 @@ namespace Terraria.ModLoader
 					line += (ModLoader.IsEnabled(mods[k]) ? "enabled" : "disabled") + ")";
 					Console.WriteLine(line);
 				}
+				if(mods.Length == 0)
+				{
+					Console.ForegroundColor = ConsoleColor.Yellow;
+					Console.WriteLine($"No mods were found in: \"{ModLoader.ModPath}\"\nIf you are running a dedicated server, you may wish to use the 'modpath' command line switch or server config setting to specify a custom mods directory.\n");
+					Console.ResetColor();
+				}
 				Console.WriteLine("e\t\tEnable All");
 				Console.WriteLine("d\t\tDisable All");
 				Console.WriteLine("r\t\tReload and return to world menu");

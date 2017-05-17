@@ -1,5 +1,20 @@
 --- src/Terraria\Terraria.Initializers\LaunchInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\LaunchInitializer.cs
+@@ -37,6 +_,14 @@
+ 			{
+ 				Netplay.ListenPort = listenPort;
+ 			}
++			string modPack;
++			if ((modPack = LaunchInitializer.TryParameter(new string[]
++				{
++					"-modpack"
++				})) != null)
++			{
++				ModLoader.ModLoader.commandLineModPack = modPack;
++			}
+ 		}
+ 
+ 		private static void LoadClientParameters(Main game)
 @@ -172,6 +_,14 @@
  			{
  				game.NewMOTD(newMOTD);

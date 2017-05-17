@@ -15,6 +15,7 @@ using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 
 namespace Terraria.ModLoader
 {
@@ -67,6 +68,7 @@ namespace Terraria.ModLoader
 		internal static string modBrowserPassphrase = "";
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
+		internal static string commandLineModPack = "";
 		private static string steamID64 = "";
 		internal static string SteamID64
 		{
@@ -356,6 +358,9 @@ namespace Terraria.ModLoader
 			//load all referenced assemblies before mods for compiling
 			ModCompile.LoadReferences();
 
+			if (!CommandLineModPackOverride())
+				return false;
+
 			Interface.loadMods.SetProgressFinding();
 			var modsToLoad = FindMods()
 				.Where(IsEnabled)
@@ -400,6 +405,75 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		private static bool CommandLineModPackOverride()
+		{
+			if (commandLineModPack != "")
+			{
+				try
+				{
+					string fileName = UI.UIModPacks.ModListSaveDirectory + Path.DirectorySeparatorChar + commandLineModPack + ".json";
+					Directory.CreateDirectory(UI.UIModPacks.ModListSaveDirectory);
+					if (File.Exists(fileName))
+					{
+						using (StreamReader r = new StreamReader(fileName))
+						{
+							Console.WriteLine($"Loading specified modpack: {commandLineModPack}\n");
+							string json = r.ReadToEnd();
+							string[] modsToEnable = JsonConvert.DeserializeObject<string[]>(json);
+							var mods = ModLoader.FindMods();
+							foreach (var item in mods)
+							{
+								DisableMod(item);
+							}
+							foreach (string modname in modsToEnable)
+							{
+								foreach (var item in mods)
+								{
+									if (item.name == modname)
+									{
+										EnableMod(item);
+									}
+								}
+							}
+						}
+					}
+					else
+					{
+						if (Main.dedServ)
+						{
+							Console.ForegroundColor = ConsoleColor.Red;
+							Console.WriteLine($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.\n");
+							Console.ResetColor();
+						}
+						else
+						{
+							Interface.errorMessage.SetMessage($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.");
+						}
+						commandLineModPack = "";
+						return false;
+					}
+				}
+				catch
+				{
+					if (Main.dedServ)
+					{
+						Console.ForegroundColor = ConsoleColor.Red;
+						Console.WriteLine($"The {commandLineModPack} modpack failed to be read properly, it might be malformed.\n");
+						Console.ResetColor();
+					}
+					else
+					{
+						Interface.errorMessage.SetMessage($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.");
+					}
+					commandLineModPack = "";
+					return false;
+				}
+			}
+			commandLineModPack = "";
+			return true;
+		}
+
+		// TODO: This doesn't work on mono for some reason. Investigate.
 		public static bool IsSignedBy(TmodFile mod, string xmlPublicKey)
 		{
 			var f = new RSAPKCS1SignatureDeformatter();

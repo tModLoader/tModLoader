@@ -203,7 +203,7 @@
  				Main.LoadWorlds();
  			}
  			catch
-@@ -3708,6 +_,10 @@
+@@ -3708,6 +_,14 @@
  							{
  								string text3 = text.Substring(10);
  								Main.worldName = text3;
@@ -211,6 +211,10 @@
 +							if (text.Length >= 8 && text.Substring(0, 8).ToLower() == "modpath=")
 +							{
 +								ModLoader.ModLoader.modPath = text.Substring(8);
++							}
++							if (text.Length >= 8 && text.Substring(0, 8).ToLower() == "modpack=")
++							{
++								ModLoader.ModLoader.commandLineModPack = text.Substring(8);
  							}
  							if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							{
