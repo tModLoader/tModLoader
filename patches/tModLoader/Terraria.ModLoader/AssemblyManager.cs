@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -123,7 +124,7 @@ namespace Terraria.ModLoader
                         asmRef.Name = EncapsulateName(asmRef.Name);
 
                 var ret = new MemoryStream();
-                asm.Write(ret);
+                asm.Write(ret, new WriterParameters { SymbolWriterProvider = SymbolWriterProvider.instance });
                 return ret.ToArray();
             }
 
@@ -239,5 +240,37 @@ namespace Terraria.ModLoader
 
             return modInstances;
         }
+
+	    private class SymbolWriterProvider : ISymbolWriterProvider
+	    {
+		    public static readonly SymbolWriterProvider instance = new SymbolWriterProvider();
+
+		    private class HeaderCopyWriter : ISymbolWriter
+			{
+				private ModuleDefinition module;
+
+				public HeaderCopyWriter(ModuleDefinition module) {
+					this.module = module;
+				}
+
+				public bool GetDebugHeader(out ImageDebugDirectory directory, out byte[] header) {
+					if (!module.HasDebugHeader) {
+						directory = new ImageDebugDirectory();
+						header = null;
+						return false;
+					}
+
+					directory = module.GetDebugHeader(out header);
+					return true;
+				}
+
+				public void Write(Mono.Cecil.Cil.MethodBody body) { }
+				public void Write(MethodSymbols symbols) { }
+				public void Dispose() { }
+			}
+
+		    public ISymbolWriter GetSymbolWriter(ModuleDefinition module, string fileName) => new HeaderCopyWriter(module);
+		    public ISymbolWriter GetSymbolWriter(ModuleDefinition module, Stream symbolStream) => new HeaderCopyWriter(module);
+	    }
     }
 }
