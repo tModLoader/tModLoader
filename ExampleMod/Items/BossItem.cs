@@ -4,12 +4,10 @@ namespace ExampleMod.Items
 {
 	public class BossItem : ExampleItem
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
-			base.SetDefaults();
-			item.name = "Boss Item";
-			item.toolTip = "Used to craft boss items";
-			item.toolTip2 = "";
+			DisplayName.SetDefault("Boss Item");
+			Tooltip.SetDefault("Used to craft boss items");
 		}
 
 		public override void AddRecipes()

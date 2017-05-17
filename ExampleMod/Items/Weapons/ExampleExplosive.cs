@@ -7,10 +7,14 @@ namespace ExampleMod.Items.Weapons
 	{
 		// TODO, count as explosive for demolitionist spawn
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Explosive");
+		}
+
 		public override void SetDefaults()
 		{
 			item.useStyle = 1;
-			item.name = "Example Explosive";
 			item.shootSpeed = 12f;
 			item.shoot = mod.ProjectileType<Projectiles.ExampleExplosive>();
 			item.width = 8;

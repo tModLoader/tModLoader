@@ -11,16 +11,20 @@ namespace ExampleMod.Projectiles.PuritySpirit
 	{
 		internal const float charge = 60f;
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("PurifyingColumn");
+			Main.projFrames[projectile.type] = 3;
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Purifying Column";
 			projectile.width = 80;
 			projectile.height = 14;
 			projectile.penetrate = -1;
 			projectile.magic = true;
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
-			Main.projFrames[projectile.type] = 3;
 			cooldownSlot = 1;
 		}
 

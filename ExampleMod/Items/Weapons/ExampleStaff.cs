@@ -6,15 +6,19 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleStaff : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Staff");
+			Tooltip.SetDefault("This is a modded magic weapon.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Staff";
 			item.damage = 20;
 			item.magic = true;
 			item.mana = 12;
 			item.width = 40;
 			item.height = 40;
-			item.toolTip = "This is a modded magic weapon.";
 			item.useTime = 25;
 			item.useAnimation = 25;
 			item.useStyle = 5;

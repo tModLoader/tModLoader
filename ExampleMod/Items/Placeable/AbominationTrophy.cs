@@ -4,9 +4,13 @@ namespace ExampleMod.Items.Placeable
 {
 	public class AbominationTrophy : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Abomination Trophy");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Abomination Trophy";
 			item.width = 30;
 			item.height = 30;
 			item.maxStack = 99;

@@ -7,9 +7,13 @@ namespace ExampleMod.Projectiles
 {
 	public class ElementBall : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Elemental Ball");
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Elemental Ball";
 			projectile.width = 30;
 			projectile.height = 30;
 			projectile.alpha = 255;
@@ -38,7 +42,7 @@ namespace ExampleMod.Projectiles
 				{
 					cooldownSlot = 1;
 				}
-				projectile.name = GetName();
+				//projectile.name = GetName();
 				projectile.localAI[0] = 1f;
 			}
 			CreateDust();

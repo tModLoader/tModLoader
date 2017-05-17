@@ -6,11 +6,15 @@ namespace ExampleMod.Items
 {
 	public class ExamplePet : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Paper Airplane");
+			Tooltip.SetDefault("Summons a Paper Airplane to follow aimlessly behind you");
+		}
+
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.ZephyrFish);
-			item.name = "Paper Airplane";
-			item.toolTip = "Summons a Paper Airplane to follow aimlessly behind you";
 			item.shoot = mod.ProjectileType("ExamplePet");
 			item.buffType = mod.BuffType("ExamplePet");
 		}

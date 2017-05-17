@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.Enums;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Terraria.DataStructures;
@@ -30,7 +31,9 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
-			AddMapEntry(new Color(200, 200, 200), "Example Dresser");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Dresser");
+			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.Dressers };
@@ -64,7 +67,7 @@ namespace ExampleMod.Tiles
 				}
 				if (player.editedChestName)
 				{
-					NetMessage.SendData(33, -1, -1, Main.chest[player.chest].name, player.chest, 1f, 0f, 0f, 0, 0, 0);
+					NetMessage.SendData(33, -1, -1, NetworkText.FromLiteral(Main.chest[player.chest].name), player.chest, 1f, 0f, 0f, 0, 0, 0);
 					player.editedChestName = false;
 				}
 				if (Main.netMode == 1)
@@ -77,7 +80,7 @@ namespace ExampleMod.Tiles
 					}
 					else
 					{
-						NetMessage.SendData(31, -1, -1, "", left, (float)top, 0f, 0f, 0, 0, 0);
+						NetMessage.SendData(31, -1, -1, null, left, (float)top, 0f, 0f, 0, 0, 0);
 						Main.stackSplit = 600;
 					}
 				}
@@ -142,7 +145,7 @@ namespace ExampleMod.Tiles
 			player.showItemIcon2 = -1;
 			if (chestIndex < 0)
 			{
-				player.showItemIconText = Lang.dresserType[0];
+				player.showItemIconText = Lang.dresserType[0].Value;
 			}
 			else
 			{
@@ -184,7 +187,7 @@ namespace ExampleMod.Tiles
 			player.showItemIcon2 = -1;
 			if (num138 < 0)
 			{
-				player.showItemIconText = Lang.dresserType[0];
+				player.showItemIconText = Lang.dresserType[0].Value;
 			}
 			else
 			{

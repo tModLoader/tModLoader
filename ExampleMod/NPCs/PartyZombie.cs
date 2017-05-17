@@ -6,10 +6,14 @@ namespace ExampleMod.NPCs
 {
 	public class PartyZombie : ModNPC
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Zombie");
+			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.Zombie];
+		}
+
 		public override void SetDefaults()
 		{
-			npc.name = "Party Zombie";
-			npc.displayName = "Zombie";
 			npc.width = 18;
 			npc.height = 40;
 			npc.damage = 14;
@@ -20,7 +24,6 @@ namespace ExampleMod.NPCs
 			npc.value = 60f;
 			npc.knockBackResist = 0.5f;
 			npc.aiStyle = 3;
-			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.Zombie];
 			aiType = NPCID.Zombie;
 			animationType = NPCID.Zombie;
 		}

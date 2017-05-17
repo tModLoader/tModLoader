@@ -12,7 +12,6 @@ namespace ExampleMod.NPCs
 	{
 		public Octopus()
 		{
-			npc.name = "Octopus";
 			speed = 1f;
 			speedY = 1f;
 			acceleration = 0.05f;
@@ -21,9 +20,13 @@ namespace ExampleMod.NPCs
 			bounces = false;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Octopus");
+		}
+
 		public override void SetDefaults()
 		{
-			npc.name = "Octopus";
 			npc.lifeMax = 1100;
 			npc.damage = 160;
 			npc.defense = 90;

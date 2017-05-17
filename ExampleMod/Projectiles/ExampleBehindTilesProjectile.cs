@@ -16,10 +16,14 @@ namespace ExampleMod.Projectiles
 			return true;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Ghost Shuriken");
+		}
+
 		public override void SetDefaults()
 		{
 			projectile.CloneDefaults(ProjectileID.Shuriken);
-			projectile.name = "Ghost Shuriken";
 			aiType = ProjectileID.Shuriken;
 			projectile.hide = true; // Prevents projectile from being drawn normally. Use in conjunction with DrawBehind.
 			projectile.tileCollide = false;
@@ -44,11 +48,15 @@ namespace ExampleMod.Projectiles
 			return true;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Ghost Shuriken");
+		}
+
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.Shuriken);
 			item.shoot = mod.ProjectileType("ExampleBehindTilesProjectile");
-			item.name = "Ghost Shuriken";
 		}
 
 		public override void AddRecipes()

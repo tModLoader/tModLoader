@@ -11,9 +11,13 @@ namespace ExampleMod.Projectiles
 	public class ExampleJavelinProjectile : ModProjectile
 	{
 		// Brought to you with <3 by Gorateron
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Javelin");
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Javelin";
 			projectile.width = 16;
 			projectile.height = 16;
 			projectile.aiStyle = -1;
@@ -22,8 +26,7 @@ namespace ExampleMod.Projectiles
 			projectile.penetrate = 3;
 		}
 
-		// NewTileCollideStyle is the replacement for TileCollideStyle, but we will support the old TileCollideStyle until a new vanilla release, at which time NewTileCollideStyle will become TileCollideStyle
-		public override bool NewTileCollideStyle(ref int width, ref int height, ref bool fallThrough)
+		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
 		{
 			// For going through platforms and such, javelins use a tad smaller size
 			width = 10;
@@ -75,7 +78,7 @@ namespace ExampleMod.Projectiles
 			// Note the usage of Terraria.ID.MessageID, please use this!
 			if (Main.netMode == 1 && item >= 0)
 			{
-				NetMessage.SendData(Terraria.ID.MessageID.SyncItem, -1, -1, "", item, 1f, 0f, 0f, 0, 0, 0);
+				NetMessage.SendData(Terraria.ID.MessageID.SyncItem, -1, -1, null, item, 1f, 0f, 0f, 0, 0, 0);
 			}
 		}
 

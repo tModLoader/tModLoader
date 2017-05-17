@@ -2,6 +2,7 @@
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Commands
@@ -25,9 +26,9 @@ namespace ExampleMod.Commands
 
 		public override void Action(CommandCaller caller, string input, string[] args)
 		{
-			string message = "Did you hear something....A Volcano! Find Cover!";
+			string key = "Mods.ExampleMod.VolcanoWarning";
 			Color messageColor = Color.Orange;
-			NetMessage.SendData(25, -1, -1, message, 255, messageColor.R, messageColor.G, messageColor.B, 0);
+			NetMessage.BroadcastChatMessage(NetworkText.FromKey(key), messageColor);
 			ExampleWorld exampleWorld = mod.GetModWorld<ExampleWorld>();
 			exampleWorld.VolcanoCountdown = ExampleWorld.DefaultVolcanoCountdown;
 			exampleWorld.VolcanoCooldown = ExampleWorld.DefaultVolcanoCooldown;

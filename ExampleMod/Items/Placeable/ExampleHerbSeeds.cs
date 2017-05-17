@@ -7,10 +7,14 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleHerbSeeds : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Herb Seeds");
+		}
+
 		public override void SetDefaults()
 		{
 			item.autoReuse = true;
-			item.name = "Example Herb Seeds";
 			item.useTurn = true;
 			item.useStyle = 1;
 			item.useAnimation = 15;

@@ -9,9 +9,14 @@ namespace ExampleMod.NPCs
 	// This ModNPC serves as an example of a complete AI example.
 	public class FlutterSlime : ModNPC
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Flutter Slime");
+			Main.npcFrameCount[npc.type] = 6; // make sure to set this for your modnpcs.
+		}
+
 		public override void SetDefaults()
 		{
-			npc.name = "Flutter Slime";
 			npc.width = 32;
 			npc.height = 32;
 			npc.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1.
@@ -25,7 +30,6 @@ namespace ExampleMod.NPCs
 			npc.value = 25f;
 			npc.buffImmune[BuffID.Poisoned] = true;
 			npc.buffImmune[BuffID.Confused] = false; // npc default to being immune to the Confused debuff. Allowing confused could be a little more work depending on the AI. npc.confused is true while the npc is confused.
-			Main.npcFrameCount[npc.type] = 6; // make sure to set this for your modnpcs.
 		}
 
 		public override float CanSpawn(NPCSpawnInfo spawnInfo)

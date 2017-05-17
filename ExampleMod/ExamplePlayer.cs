@@ -248,7 +248,7 @@ namespace ExampleMod
 			if (newPosition != player.position)
 			{
 				player.Teleport(newPosition, 1, 0);
-				NetMessage.SendData(65, -1, -1, "", 0, player.whoAmI, newPosition.X, newPosition.Y, 1, 0, 0);
+				NetMessage.SendData(65, -1, -1, null, 0, player.whoAmI, newPosition.X, newPosition.Y, 1, 0, 0);
 				PuritySpiritDebuff();
 			}
 		}

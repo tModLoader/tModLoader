@@ -16,9 +16,13 @@ namespace ExampleMod.NPCs
 			accelerationY = 0.1f;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Sarcophagus");
+		}
+
 		public override void SetDefaults()
 		{
-			npc.name = "Sarcophagus";
 			npc.lifeMax = 1100;
 			npc.damage = 140;
 			npc.defense = 100;

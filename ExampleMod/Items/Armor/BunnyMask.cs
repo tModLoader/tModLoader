@@ -11,9 +11,13 @@ namespace ExampleMod.Items.Armor
 			return true;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Bunny Mask");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Bunny Mask";
 			item.width = 18;
 			item.height = 18;
 			item.rare = 1;

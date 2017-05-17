@@ -12,12 +12,16 @@ namespace ExampleMod.Items.Armor
 			return true;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Helmet");
+			Tooltip.SetDefault("This is a modded helmet.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Helmet";
 			item.width = 18;
 			item.height = 18;
-			item.toolTip = "This is a modded helmet.";
 			item.value = 10000;
 			item.rare = 2;
 			item.defense = 30;

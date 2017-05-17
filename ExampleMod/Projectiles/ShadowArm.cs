@@ -20,9 +20,14 @@ namespace ExampleMod.Projectiles
 			}
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Shadow Arm");
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 60;
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Shadow Arm";
 			projectile.width = 16;
 			projectile.height = 16;
 			projectile.magic = true;
@@ -30,7 +35,6 @@ namespace ExampleMod.Projectiles
 			projectile.hostile = true;
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
-			ProjectileID.Sets.TrailCacheLength[projectile.type] = 60;
 		}
 
 		public override void AI()

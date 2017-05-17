@@ -1,12 +1,13 @@
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.World.Generation;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Generation;
-using System.Linq;
 using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
@@ -403,15 +404,15 @@ namespace ExampleMod
 				}
 				if (VolcanoCooldown <= 0 && Main.rand.Next(VolcanoChance) == 0)
 				{
-					string message = "Did you hear something....A Volcano! Find Cover!";
+					string key = "Mods.ExampleMod.VolcanoWarning";
 					Color messageColor = Color.Orange;
 					if (Main.netMode == 2) // Server
 					{
-						NetMessage.SendData(25, -1, -1, message, 255, messageColor.R, messageColor.G, messageColor.B, 0);
+						NetMessage.BroadcastChatMessage(NetworkText.FromKey(key), messageColor);
 					}
 					else if (Main.netMode == 0) // Single Player
 					{
-						Main.NewText(message, messageColor.R, messageColor.G, messageColor.B);
+						Main.NewText(Language.GetTextValue(key), messageColor);
 					}
 					VolcanoCountdown = DefaultVolcanoCountdown;
 					VolcanoCooldown = DefaultVolcanoCooldown;
@@ -453,7 +454,7 @@ namespace ExampleMod
 								velocity.X = velocity.X + 3 * Main.rand.NextFloat() - 1.5f;
 								int projectile = Projectile.NewProjectile(spawn.X, spawn.Y, velocity.X, velocity.Y, Main.rand.Next(ProjectileID.MolotovFire, ProjectileID.MolotovFire3 + 1), 10, 10f, Main.myPlayer, 0f, 0f);
 								Main.projectile[projectile].hostile = true;
-								Main.projectile[projectile].name = "Volcanic Rubble";
+								//Main.projectile[projectile].name = "Volcanic Rubble";
 								identities.Add(Main.projectile[projectile].identity);
 							}
 							if (Main.netMode == 2)

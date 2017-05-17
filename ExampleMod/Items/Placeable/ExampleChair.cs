@@ -5,13 +5,17 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleChair : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Chair");
+			Tooltip.SetDefault("This is a modded chair.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Chair";
 			item.width = 12;
 			item.height = 30;
 			item.maxStack = 99;
-			AddTooltip("This is a modded chair.");
 			item.useTurn = true;
 			item.autoReuse = true;
 			item.useAnimation = 15;

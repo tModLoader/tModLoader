@@ -77,10 +77,14 @@ namespace ExampleMod.NPCs.Abomination
 		internal int laser2 = -1;
 		private bool dontDamage = false;
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("The Abomination");
+			Main.npcFrameCount[npc.type] = 2;
+		}
+
 		public override void SetDefaults()
 		{
-			npc.name = "Abomination";
-			npc.displayName = "The Abomination";
 			npc.aiStyle = -1;
 			npc.lifeMax = 40000;
 			npc.damage = 100;
@@ -88,7 +92,6 @@ namespace ExampleMod.NPCs.Abomination
 			npc.knockBackResist = 0f;
 			npc.width = 100;
 			npc.height = 100;
-			Main.npcFrameCount[npc.type] = 2;
 			npc.value = Item.buyPrice(0, 20, 0, 0);
 			npc.npcSlots = 15f;
 			npc.boss = true;

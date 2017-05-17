@@ -11,10 +11,14 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleSpear : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Spear");
+			Tooltip.SetDefault("An example spear");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Spear";
-			item.toolTip = "An example spear";
 			item.damage = 40;
 			item.useStyle = 5;
 			item.useAnimation = 18;

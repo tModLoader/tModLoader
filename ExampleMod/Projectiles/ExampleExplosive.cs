@@ -11,9 +11,13 @@ namespace ExampleMod.Projectiles
 	// to investigate: Projectile.Damage, (8843)
 	class ExampleExplosive : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Explosive");
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Example Explosive";
 			// while the sprite is actually bigger than 15x15, we use 15x15 since it lets the projectile clip into tiles as it bounces. It looks better.
 			projectile.width = 15;
 			projectile.height = 15;
@@ -255,7 +259,7 @@ namespace ExampleMod.Projectiles
 									WorldGen.KillTile(i, j, false, false, false);
 									if (!Main.tile[i, j].active() && Main.netMode != 0)
 									{
-										NetMessage.SendData(17, -1, -1, "", 0, (float)i, (float)j, 0f, 0, 0, 0);
+										NetMessage.SendData(17, -1, -1, null, 0, (float)i, (float)j, 0f, 0, 0, 0);
 									}
 								}
 							}
@@ -270,7 +274,7 @@ namespace ExampleMod.Projectiles
 											WorldGen.KillWall(x, y, false);
 											if (Main.tile[x, y].wall == 0 && Main.netMode != 0)
 											{
-												NetMessage.SendData(17, -1, -1, "", 2, (float)x, (float)y, 0f, 0, 0, 0);
+												NetMessage.SendData(17, -1, -1, null, 2, (float)x, (float)y, 0f, 0, 0, 0);
 											}
 										}
 									}

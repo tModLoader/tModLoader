@@ -12,12 +12,16 @@ namespace ExampleMod.Items
 			return true;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Wings");
+			Tooltip.SetDefault("This is a modded wing.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Wings";
 			item.width = 22;
 			item.height = 20;
-			item.toolTip = "This is a modded wing.";
 			item.value = 10000;
 			item.rare = 2;
 			item.accessory = true;

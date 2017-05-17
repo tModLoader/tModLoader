@@ -18,7 +18,9 @@ namespace ExampleMod.Tiles
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2Top);
 			TileObjectData.addTile(Type);
-			AddMapEntry(new Color(238, 145, 105), "Red Firefly in a Bottle");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Red Firefly in a Bottle");
+			AddMapEntry(new Color(238, 145, 105), name);
 
 			//Can't use this since texture is virtical.
 			//animationFrameHeight = 56;
@@ -139,10 +141,14 @@ namespace ExampleMod.Tiles
 
 	class ExampleAnimatedTileItem : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Red Firefly in a Bottle");
+		}
+
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.FireflyinaBottle);
-			item.name = "Red Firefly in a Bottle";
 			item.createTile = mod.TileType<ExampleAnimatedTileTile>();
 		}
 	}

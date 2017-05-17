@@ -6,12 +6,16 @@ namespace ExampleMod.Items
 {
 	public class ExplorerBag : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Explorer's Bag");
+			Tooltip.SetDefault("<right> for goodies!");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Explorer's Bag";
 			item.width = 20;
 			item.height = 20;
-			item.toolTip = "Right click for goodies!";
 			item.rare = 2;
 		}
 

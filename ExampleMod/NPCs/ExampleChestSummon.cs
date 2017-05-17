@@ -39,7 +39,7 @@ namespace ExampleMod.NPCs
 			int numberOtherItems = 0;
 			ushort tileType = Main.tile[Main.chest[num].x, Main.chest[num].y].type;
 			int tileStyle = (int)(Main.tile[Main.chest[num].x, Main.chest[num].y].frameX / 36);
-			if (tileType == TileID.Containers && (tileStyle < 5 || tileStyle > 6))
+			if (TileID.Sets.BasicChest[tileType] && (tileStyle < 5 || tileStyle > 6))
 			{
 				for (int i = 0; i < 40; i++)
 				{
@@ -58,7 +58,7 @@ namespace ExampleMod.NPCs
 			}
 			if (numberOtherItems == 0 && numberExampleBlocks == 100)
 			{
-				if (Main.tile[x, y].type == 21)
+				if (TileID.Sets.BasicChest[Main.tile[x, y].type])
 				{
 					if (Main.tile[x, y].frameX % 36 != 0)
 					{
@@ -84,13 +84,13 @@ namespace ExampleMod.NPCs
 						Main.chest[num].item[l] = new Item();
 					}
 					Chest.DestroyChest(x, y);
-					NetMessage.SendData(34, -1, -1, "", 1, (float)x, (float)y, 0f, number, 0, 0);
+					NetMessage.SendData(34, -1, -1, null, 1, (float)x, (float)y, 0f, number, 0, 0);
 					NetMessage.SendTileSquare(-1, x, y, 3);
 				}
 				int npcToSpawn = mod.NPCType("PartyZombie");
 				int npcIndex = NPC.NewNPC(x * 16 + 16, y * 16 + 32, npcToSpawn, 0, 0f, 0f, 0f, 0f, 255);
 				Main.npc[npcIndex].whoAmI = npcIndex;
-				NetMessage.SendData(23, -1, -1, "", npcIndex, 0f, 0f, 0f, 0, 0, 0);
+				NetMessage.SendData(23, -1, -1, null, npcIndex, 0f, 0f, 0f, 0, 0, 0);
 				Main.npc[npcIndex].BigMimicSpawnSmoke();
 			}
 			return false;

@@ -5,13 +5,17 @@ namespace ExampleMod.Items
 {
 	public class ExampleItem : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Item");
+			Tooltip.SetDefault("This is a modded item.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Item";
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 999;
-			AddTooltip("This is a modded item.");
 			item.value = 100;
 			item.rare = 1;
 		}
