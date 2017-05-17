@@ -13,6 +13,6 @@ var searchData=
   ['frameeffects',['FrameEffects',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a155cba1e22cce620d994dac9d88e993e',1,'Terraria.ModLoader.ModPlayer.FrameEffects()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a460c2b183e3a96ee8d626ecae17c8d67',1,'Terraria.ModLoader.PlayerHooks.FrameEffects()']]],
   ['fromfile',['FromFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#acce7382a98854f9ee3af15557fc23405',1,'Terraria::ModLoader::IO::TagIO']]],
   ['fromstream',['FromStream',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a5bb8177c2bd4cf1f285823c4a93a3c25',1,'Terraria::ModLoader::IO::TagIO']]],
-  ['fromtile',['FromTile',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#a1ca360d5b1a528d345c304795ac89c13',1,'Terraria::ModLoader::MapLegend']]],
+  ['fromtile',['FromTile',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#adac24a887bf8f87339a3b47521e379fa',1,'Terraria::ModLoader::MapLegend']]],
   ['fromtype',['FromType',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#a86f5d3202ae0e1b0c1e77ff1e6d7aad0',1,'Terraria::ModLoader::MapLegend']]]
 ];

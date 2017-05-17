@@ -131,8 +131,8 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_map_
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0377635147407906005aca3045c20109"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_map_legend.html#a0377635147407906005aca3045c20109">MapLegend</a> (int size)</td></tr>
 <tr class="separator:a0377635147407906005aca3045c20109"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ca360d5b1a528d345c304795ac89c13"><td class="memItemLeft" align="right" valign="top">LocalizedText&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_map_legend.html#a1ca360d5b1a528d345c304795ac89c13">FromTile</a> (MapTile mapTile, int x, int y)</td></tr>
-<tr class="separator:a1ca360d5b1a528d345c304795ac89c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adac24a887bf8f87339a3b47521e379fa"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_map_legend.html#adac24a887bf8f87339a3b47521e379fa">FromTile</a> (MapTile mapTile, int x, int y)</td></tr>
+<tr class="separator:adac24a887bf8f87339a3b47521e379fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86f5d3202ae0e1b0c1e77ff1e6d7aad0"><td class="memItemLeft" align="right" valign="top">LocalizedText&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_map_legend.html#a86f5d3202ae0e1b0c1e77ff1e6d7aad0">FromType</a> (int type)</td></tr>
 <tr class="separator:a86f5d3202ae0e1b0c1e77ff1e6d7aad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -172,12 +172,12 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a1ca360d5b1a528d345c304795ac89c13"></a>
+<a class="anchor" id="adac24a887bf8f87339a3b47521e379fa"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">LocalizedText Terraria.ModLoader.MapLegend.FromTile </td>
+          <td class="memname">string Terraria.ModLoader.MapLegend.FromTile </td>
           <td>(</td>
           <td class="paramtype">MapTile&#160;</td>
           <td class="paramname"><em>mapTile</em>, </td>
@@ -203,7 +203,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_map_legend_8cs_source.html#l00055">55</a> of file <a class="el" href="_map_legend_8cs_source.html">MapLegend.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        {</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            LocalizedText name = <a class="code" href="class_terraria_1_1_mod_loader_1_1_map_legend.html#ac81f9a784172df571084e52e9dc41d78">legend</a>[mapTile.Type];</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">if</span> (MapLoader.nameFuncs.ContainsKey(mapTile.Type))</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            {</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                name = MapLoader.nameFuncs[mapTile.Type](name, x, y);</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">return</span> name;</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_map_legend_html_ac81f9a784172df571084e52e9dc41d78"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_map_legend.html#ac81f9a784172df571084e52e9dc41d78">Terraria.ModLoader.MapLegend.legend</a></div><div class="ttdeci">LocalizedText[] legend</div><div class="ttdef"><b>Definition:</b> <a href="_map_legend_8cs_source.html#l00013">MapLegend.cs:13</a></div></div>
+<div class="fragment"><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        {</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordtype">string</span> name = <a class="code" href="class_terraria_1_1_mod_loader_1_1_map_legend.html#ac81f9a784172df571084e52e9dc41d78">legend</a>[mapTile.Type].Value;</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">if</span> (MapLoader.nameFuncs.ContainsKey(mapTile.Type))</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            {</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                name = MapLoader.nameFuncs[mapTile.Type](name, x, y);</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">return</span> name;</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_map_legend_html_ac81f9a784172df571084e52e9dc41d78"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_map_legend.html#ac81f9a784172df571084e52e9dc41d78">Terraria.ModLoader.MapLegend.legend</a></div><div class="ttdeci">LocalizedText[] legend</div><div class="ttdef"><b>Definition:</b> <a href="_map_legend_8cs_source.html#l00013">MapLegend.cs:13</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

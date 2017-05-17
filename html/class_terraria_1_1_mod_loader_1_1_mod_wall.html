@@ -138,9 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afddd9194f68f46329b6119e2ab95a512"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#afddd9194f68f46329b6119e2ab95a512">AddMapEntry</a> (Color color, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html">ModTranslation</a> name)</td></tr>
 <tr class="memdesc:afddd9194f68f46329b6119e2ab95a512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.  <a href="#afddd9194f68f46329b6119e2ab95a512">More...</a><br /></td></tr>
 <tr class="separator:afddd9194f68f46329b6119e2ab95a512"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa743924c88936a63ddedb4dfd21fdc55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#aa743924c88936a63ddedb4dfd21fdc55">AddMapEntry</a> (Color color, LocalizedText name, Func&lt; LocalizedText, int, int, LocalizedText &gt; nameFunc)</td></tr>
-<tr class="memdesc:aa743924c88936a63ddedb4dfd21fdc55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.  <a href="#aa743924c88936a63ddedb4dfd21fdc55">More...</a><br /></td></tr>
-<tr class="separator:aa743924c88936a63ddedb4dfd21fdc55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7b471cf1d37035d959a4fbb00818e5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#ae7b471cf1d37035d959a4fbb00818e5d">AddMapEntry</a> (Color color, LocalizedText name, Func&lt; string, int, int, string &gt; nameFunc)</td></tr>
+<tr class="memdesc:ae7b471cf1d37035d959a4fbb00818e5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.  <a href="#ae7b471cf1d37035d959a4fbb00818e5d">More...</a><br /></td></tr>
+<tr class="separator:ae7b471cf1d37035d959a4fbb00818e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b9855075312c5bd2859e6a1e169789d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html#a5b9855075312c5bd2859e6a1e169789d">AnimateWall</a> (ref byte frame, ref byte frameCounter)</td></tr>
 <tr class="memdesc:a5b9855075312c5bd2859e6a1e169789d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to animate your wall. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame.  <a href="#a5b9855075312c5bd2859e6a1e169789d">More...</a><br /></td></tr>
 <tr class="separator:a5b9855075312c5bd2859e6a1e169789d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,7 +284,7 @@ Properties</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aa743924c88936a63ddedb4dfd21fdc55"></a>
+<a class="anchor" id="ae7b471cf1d37035d959a4fbb00818e5d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -303,7 +303,7 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Func&lt; LocalizedText, int, int, LocalizedText &gt;&#160;</td>
+          <td class="paramtype">Func&lt; string, int, int, string &gt;&#160;</td>
           <td class="paramname"><em>nameFunc</em>&#160;</td>
         </tr>
         <tr>

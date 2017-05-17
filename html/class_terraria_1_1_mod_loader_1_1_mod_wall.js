@@ -2,7 +2,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_wall =
 [
     [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a97e76ecd00a24c452c905a3faa2f5b35", null ],
     [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#afddd9194f68f46329b6119e2ab95a512", null ],
-    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#aa743924c88936a63ddedb4dfd21fdc55", null ],
+    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#ae7b471cf1d37035d959a4fbb00818e5d", null ],
     [ "AnimateWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a5b9855075312c5bd2859e6a1e169789d", null ],
     [ "Autoload", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#ae666e7352ab01dfab8b25212bca0a895", null ],
     [ "CanExplode", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a35d294ae08919df4344c0433642868f4", null ],

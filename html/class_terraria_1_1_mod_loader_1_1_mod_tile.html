@@ -138,9 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab67f0c692a3946aaf4fc9801b4fe4ad7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#ab67f0c692a3946aaf4fc9801b4fe4ad7">AddMapEntry</a> (Color color, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html">ModTranslation</a> name)</td></tr>
 <tr class="memdesc:ab67f0c692a3946aaf4fc9801b4fe4ad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.  <a href="#ab67f0c692a3946aaf4fc9801b4fe4ad7">More...</a><br /></td></tr>
 <tr class="separator:ab67f0c692a3946aaf4fc9801b4fe4ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3fd1c0e6396afa6e5a1abc83e91ad17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#af3fd1c0e6396afa6e5a1abc83e91ad17">AddMapEntry</a> (Color color, LocalizedText name, Func&lt; LocalizedText, int, int, LocalizedText &gt; nameFunc)</td></tr>
-<tr class="memdesc:af3fd1c0e6396afa6e5a1abc83e91ad17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.  <a href="#af3fd1c0e6396afa6e5a1abc83e91ad17">More...</a><br /></td></tr>
-<tr class="separator:af3fd1c0e6396afa6e5a1abc83e91ad17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4d0c554a3e122124e5f6bdf8c1dccae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#af4d0c554a3e122124e5f6bdf8c1dccae">AddMapEntry</a> (Color color, LocalizedText name, Func&lt; string, int, int, string &gt; nameFunc)</td></tr>
+<tr class="memdesc:af4d0c554a3e122124e5f6bdf8c1dccae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.  <a href="#af4d0c554a3e122124e5f6bdf8c1dccae">More...</a><br /></td></tr>
+<tr class="separator:af4d0c554a3e122124e5f6bdf8c1dccae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca4b939ee9f5e667154e0728c5bfa3ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#aca4b939ee9f5e667154e0728c5bfa3ca">AddToArray</a> (ref int[] array)</td></tr>
 <tr class="memdesc:aca4b939ee9f5e667154e0728c5bfa3ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.  <a href="#aca4b939ee9f5e667154e0728c5bfa3ca">More...</a><br /></td></tr>
 <tr class="separator:aca4b939ee9f5e667154e0728c5bfa3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -410,7 +410,7 @@ Properties</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="af3fd1c0e6396afa6e5a1abc83e91ad17"></a>
+<a class="anchor" id="af4d0c554a3e122124e5f6bdf8c1dccae"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -429,7 +429,7 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Func&lt; LocalizedText, int, int, LocalizedText &gt;&#160;</td>
+          <td class="paramtype">Func&lt; string, int, int, string &gt;&#160;</td>
           <td class="paramname"><em>nameFunc</em>&#160;</td>
         </tr>
         <tr>
