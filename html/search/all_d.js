@@ -120,6 +120,7 @@ var searchData=
   ['modtranslation_2ecs',['ModTranslation.cs',['../_mod_translation_8cs.html',1,'']]],
   ['modtree',['ModTree',['../class_terraria_1_1_mod_loader_1_1_mod_tree.html',1,'Terraria::ModLoader']]],
   ['modugbgstyle',['ModUgBgStyle',['../class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html',1,'Terraria::ModLoader']]],
+  ['module',['module',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html#a74f54f42aed60cf34d520fcde90d059f',1,'Terraria::ModLoader::AssemblyManager::SymbolWriterProvider::HeaderCopyWriter']]],
   ['modwall',['ModWall',['../class_terraria_1_1_mod_loader_1_1_mod_wall.html',1,'Terraria::ModLoader']]],
   ['modwall_2ecs',['ModWall.cs',['../_mod_wall_8cs.html',1,'']]],
   ['modwaterfallstyle',['ModWaterfallStyle',['../class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html',1,'Terraria::ModLoader']]],

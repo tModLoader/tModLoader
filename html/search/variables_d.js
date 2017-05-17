@@ -19,6 +19,7 @@ var searchData=
   ['modname',['modName',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_add_recipes_exception.html#acc9ed8db6fa169191d751273f7e1a298',1,'Terraria.ModLoader.Exceptions.AddRecipesException.modName()'],['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html#af3694e36d87c388f5bf1532e420d0207',1,'Terraria.ModLoader.Exceptions.CustomModDataException.modName()']]],
   ['modpath',['ModPath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a18cb9779b2c2fe7709b67d08c5836c4f',1,'Terraria::ModLoader::ModLoader']]],
   ['modsourcepath',['ModSourcePath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65d6fb535bb0f112020ebe47261a31f0',1,'Terraria::ModLoader::ModLoader']]],
+  ['module',['module',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html#a74f54f42aed60cf34d520fcde90d059f',1,'Terraria::ModLoader::AssemblyManager::SymbolWriterProvider::HeaderCopyWriter']]],
   ['mountback',['MountBack',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a0ecdf0fac44aac1cd7a80eeea98dcf8f',1,'Terraria::ModLoader::PlayerLayer']]],
   ['mountcolor',['mountColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a4219f889804b62f6d4fac023e7f1f5bd',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['mountfront',['MountFront',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#af75c8f3741bb21d9d64a7e26fd7a784e',1,'Terraria::ModLoader::PlayerLayer']]],

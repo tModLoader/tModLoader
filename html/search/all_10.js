@@ -7,7 +7,7 @@ var searchData=
   ['path',['path',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#ab7f934126a02cd2f89cafd4647dd29b9',1,'Terraria.ModLoader.ModCompile.BuildingMod.path()'],['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#a5fd2a16466037e348b5593cf4d367ecc',1,'Terraria.ModLoader.ModNet.ModHeader.path()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#ac713f3a0fbd787097af3aa3ec0670483',1,'Terraria.ModLoader.IO.TmodFile.path()']]],
   ['pause',['Pause',['../class_terraria_1_1_mod_loader_1_1_music_wrapper.html#af14310764b7a26da3c858f084468a7ab',1,'Terraria::ModLoader::MusicWrapper']]],
   ['payloadhandler',['PayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#ac304850935865284a8840503287a4a58',1,'Terraria::ModLoader::IO::TagIO::PayloadHandler']]],
-  ['payloadhandler',['PayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler']]],
+  ['payloadhandler',['PayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;']]],
   ['payloadhandler_3c_20t_20_3e',['PayloadHandler&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria::ModLoader::IO::TagIO']]],
   ['payloadhandlers',['PayloadHandlers',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a1aeccffe5e6152cbc65b115d652491e0',1,'Terraria::ModLoader::IO::TagIO']]],
   ['payloadids',['PayloadIDs',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#ae68883dc80d655302b849f18016e00c4',1,'Terraria::ModLoader::IO::TagIO']]],
@@ -90,6 +90,6 @@ var searchData=
   ['projectiletype',['ProjectileType',['../class_terraria_1_1_mod_loader_1_1_mod.html#af4f124bac1905b018a8f24ab866c0d5f',1,'Terraria::ModLoader::Mod']]],
   ['projectiletype_3c_20t_20_3e',['ProjectileType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a57a3c83d55b8817f00f3dd26f4029a46',1,'Terraria::ModLoader::Mod']]],
   ['projonswing',['projOnSwing',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abe9fcfbfbdb4b5dedd9859aa8f1f5b36',1,'Terraria::ModLoader::ModItem']]],
-  ['properties',['properties',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad66ceae780a51e4824580d5424c11447',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.properties()'],['../class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea',1,'Terraria.ModLoader.Mod.Properties()']]],
+  ['properties',['Properties',['../class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea',1,'Terraria.ModLoader.Mod.Properties()'],['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad66ceae780a51e4824580d5424c11447',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.properties()']]],
   ['pumpkinmoon',['PumpkinMoon',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a614cb0d20f75c0396f5535e9a25f4fac',1,'Terraria::ModLoader::SpawnCondition']]]
 ];

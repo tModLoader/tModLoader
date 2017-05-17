@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html" title="Terraria.ModLoader.IO.Tag\lSerializable" alt="" coords="5,5,184,51"/>
+<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html" title="Terraria.ModLoader.IO.Tag\lIO.PayloadHandler\&lt; T \&gt;" alt="" coords="5,5,184,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html" title="Terraria.ModLoader.IO.Tag\lIO.ClassPayloadHandler\&lt; T \&gt;" alt="" coords="233,5,431,51"/>
 </map>
