@@ -392,6 +392,20 @@
  			{
  				if (i != 0)
  				{
+@@ -4834,6 +_,13 @@
+ 
+ 		protected override void Initialize()
+ 		{
++			DateTime date = DateTime.Now;
++			if ((date.Month == 5 && date.Day == 17) || (date.Month == 7 && date.Day == 8) || (date.Month == 10 && date.Day == 24)
++				|| (date.Month == 6 && date.Day == 1) || (date.Month == 4 || date.Day == 1) || new Random().Next(100) == 0)
++			{
++				OurFavoriteColor.R = OurFavoriteColor.B;
++				OurFavoriteColor.B = 255;
++			}
+ #if SERVER
+ 			Main.netMode = 2;
+ #endif
 @@ -7490,7 +_,11 @@
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
