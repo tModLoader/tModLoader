@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using ReLogic.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
@@ -56,7 +57,7 @@ namespace Terraria.ModLoader
 
 		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-		internal readonly IDictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
+		internal readonly IDictionary<string, DynamicSpriteFont> fonts = new Dictionary<string, DynamicSpriteFont>();
 		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
@@ -181,7 +182,7 @@ namespace Terraria.ModLoader
 								}
 								try
 								{
-									fonts[xnbPath] = Main.instance.Content.Load<SpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
+									fonts[xnbPath] = Main.instance.OurLoad<DynamicSpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
 								}
 								catch
 								{
@@ -2600,9 +2601,9 @@ namespace Terraria.ModLoader
 		/// Gets a SpriteFont loaded from the specified path.
 		/// </summary>
 		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
-		public SpriteFont GetFont(string name)
+		public DynamicSpriteFont GetFont(string name)
 		{
-			SpriteFont font;
+			DynamicSpriteFont font;
 			if (!fonts.TryGetValue(name, out font))
 				throw new MissingResourceException(name);
 
