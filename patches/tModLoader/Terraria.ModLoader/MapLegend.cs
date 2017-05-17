@@ -52,9 +52,9 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Main.DrawMap replace text = Lang.mapLegend[type]; with
 		//  text = Lang.mapLegend.FromTile(Main.Map[num91, num92], num91, num92);
-		public LocalizedText FromTile(MapTile mapTile, int x, int y)
+		public string FromTile(MapTile mapTile, int x, int y)
 		{
-			LocalizedText name = legend[mapTile.Type];
+			string name = legend[mapTile.Type].Value;
 			if (MapLoader.nameFuncs.ContainsKey(mapTile.Type))
 			{
 				name = MapLoader.nameFuncs[mapTile.Type](name, x, y);

@@ -3243,7 +3243,7 @@
  					else
  					{
  						text = Lang.GetMapObjectName(type);
-+						// TODO, adapt to new way: text = Lang.mapLegend.FromTile(Main.Map[num91, num92], num91, num92);
++						text = Lang._mapLegendCache.FromTile(Main.Map[num91, num92], num91, num92);
  					}
  				}
  				float num112 = (num16 * 0.25f * 2f + 1f) / 3f;

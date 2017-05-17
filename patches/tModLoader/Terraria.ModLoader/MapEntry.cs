@@ -9,7 +9,7 @@ namespace Terraria.ModLoader
 		internal Color color;
 		internal LocalizedText name;
 		internal ModTranslation translation;
-		internal Func<LocalizedText, int, int, LocalizedText> getName;
+		internal Func<string, int, int, string> getName;
 
 		internal MapEntry(Color color, LocalizedText name = null)
 		{
@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 			this.getName = sameName;
 		}
 
-		internal MapEntry(Color color, LocalizedText name, Func<LocalizedText, int, int, LocalizedText> getName)
+		internal MapEntry(Color color, LocalizedText name, Func<string, int, int, string> getName)
 		{
 			this.color = color;
 			this.name = name;
@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 			this.getName = getName;
 		}
 
-		private static LocalizedText sameName(LocalizedText name, int x, int y)
+		private static string sameName(string name, int x, int y)
 		{
 			return name;
 		}
