@@ -2967,14 +2967,17 @@
  				}
  			}
  		}
-@@ -39475,6 +_,7 @@
+@@ -39475,7 +_,9 @@
  				this.SetupDrawInterfaceLayers();
  			}
  			PlayerInput.SetZoom_UI();
-+			ModHooks.ModifyInterfaceLayers(_gameInterfaceLayers);
- 			foreach (GameInterfaceLayer current in this._gameInterfaceLayers)
+-			foreach (GameInterfaceLayer current in this._gameInterfaceLayers)
++			List<GameInterfaceLayer> interfaceLayers = new List<GameInterfaceLayer>(this._gameInterfaceLayers);
++			ModHooks.ModifyInterfaceLayers(interfaceLayers);
++			foreach (GameInterfaceLayer current in interfaceLayers)
  			{
  				if (!current.Draw())
+ 				{
 @@ -39753,6 +_,8 @@
  
  		private void DrawInterface_33_MouseText()
