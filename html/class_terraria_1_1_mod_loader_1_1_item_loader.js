@@ -172,5 +172,6 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "HookUseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a1fb8578a9f05e848eb19d9a693ec37a7", null ],
     [ "HookVerticalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a7a98c097d9e091936b6d17e59abc88e3", null ],
     [ "HookWingUpdate", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a22af1474582c20139a8773ace147365e", null ],
+    [ "ItemCount", "class_terraria_1_1_mod_loader_1_1_item_loader.html#adcc689c75a1f9a0b98ff4856710d8364", null ],
     [ "nextItem", "class_terraria_1_1_mod_loader_1_1_item_loader.html#add09eb72f1381a392b453fbe34e56924", null ]
 ];

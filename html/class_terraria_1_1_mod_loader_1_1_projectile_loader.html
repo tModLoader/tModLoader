@@ -110,6 +110,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_proj
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_projectile_loader-members.html">List of all members</a>  </div>
@@ -213,6 +214,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a1ab64a3527b2ffd6d8fb7e4c48b37001"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa73d4092eb24c3cdff33622fc547b5bb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#aa73d4092eb24c3cdff33622fc547b5bb">UseGrapple</a> (Player player, ref int type)</td></tr>
 <tr class="separator:aa73d4092eb24c3cdff33622fc547b5bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a283a070b3d26c90ab809ef4f87a50a8b"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a283a070b3d26c90ab809ef4f87a50a8b">ProjectileCount</a> =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae337d6707120b5430b55c3b537b968da">nextProjectile</a></td></tr>
+<tr class="separator:a283a070b3d26c90ab809ef4f87a50a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -1069,7 +1075,8 @@ Static Private Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="_projectile_loader_8cs_source.html#l00082">82</a> of file <a class="el" href="_projectile_loader_8cs_source.html">ProjectileLoader.cs</a>.</p>
 
 <p>References <a class="el" href="_mod_8cs_source.html#l00035">Terraria.ModLoader.Mod.Name</a>.</p>
-<div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> type &gt;= ProjectileID.Count &amp;&amp; type &lt; ProjectileCount ? projectiles[type - ProjectileID.Count] : null;</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> type &gt;= ProjectileID.Count &amp;&amp; type &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a283a070b3d26c90ab809ef4f87a50a8b">ProjectileCount</a> ? projectiles[type - ProjectileID.Count] : null;</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_projectile_loader_html_a283a070b3d26c90ab809ef4f87a50a8b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a283a070b3d26c90ab809ef4f87a50a8b">Terraria.ModLoader.ProjectileLoader.ProjectileCount</a></div><div class="ttdeci">static int ProjectileCount</div><div class="ttdef"><b>Definition:</b> <a href="_projectile_loader_8cs_source.html#l00075">ProjectileLoader.cs:75</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2bc692a4a80ef80b3d32841b00a092d1"></a>
@@ -2925,6 +2932,28 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_projectile_loader_8cs_source.html#l00018">18</a> of file <a class="el" href="_projectile_loader_8cs_source.html">ProjectileLoader.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a283a070b3d26c90ab809ef4f87a50a8b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.ModLoader.ProjectileLoader.ProjectileCount =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae337d6707120b5430b55c3b537b968da">nextProjectile</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_projectile_loader_8cs_source.html#l00075">75</a> of file <a class="el" href="_projectile_loader_8cs_source.html">ProjectileLoader.cs</a>.</p>
 
 </div>
 </div>

@@ -31,6 +31,7 @@ var searchData=
   ['istorch',['IsTorch',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a5a159cdf3419b43403a5f1aa4d6624b2',1,'Terraria::ModLoader::TileLoader']]],
   ['isvanityset',['IsVanitySet',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#acd4647b2d645c915743daa3b734919f7',1,'Terraria.ModLoader.EquipTexture.IsVanitySet()'],['../class_terraria_1_1_mod_loader_1_1_global_item.html#afc66c0f98cbc3d51a577b847d011d711',1,'Terraria.ModLoader.GlobalItem.IsVanitySet()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a7411ef16c0702304775364b6c177b690',1,'Terraria.ModLoader.ModItem.IsVanitySet()']]],
   ['item',['item',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#ac46c4efb754d326b7b4d6454ae103f1a',1,'Terraria.ModLoader.EquipTexture.item()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356',1,'Terraria.ModLoader.ModItem.item()'],['../namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679',1,'Terraria.ModLoader.Item()']]],
+  ['itemcount',['ItemCount',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#adcc689c75a1f9a0b98ff4856710d8364',1,'Terraria::ModLoader::ItemLoader']]],
   ['iteminfo',['ItemInfo',['../class_terraria_1_1_mod_loader_1_1_item_info.html',1,'Terraria::ModLoader']]],
   ['itemio',['ItemIO',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html',1,'Terraria::ModLoader::IO']]],
   ['itemio_2ecs',['ItemIO.cs',['../_item_i_o_8cs.html',1,'']]],

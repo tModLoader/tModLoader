@@ -27,6 +27,7 @@ var searchData=
   ['nextwall',['nextWall',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#ab7cc408e65dc7999f965375ab31d5ed5',1,'Terraria::ModLoader::WallLoader']]],
   ['nextwaterfallstyle',['nextWaterfallStyle',['../class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html#a8a2e4e46736ff0e0702a5edff0c2a56d',1,'Terraria::ModLoader::WaterfallStyleLoader']]],
   ['nextwaterstyle',['nextWaterStyle',['../class_terraria_1_1_mod_loader_1_1_water_style_loader.html#a9cc8a1e5ffdf29d8a14b82a080c573fe',1,'Terraria::ModLoader::WaterStyleLoader']]],
+  ['npccount',['NPCCount',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ab7794fd3e56d4e5be2a789542c0ed331',1,'Terraria::ModLoader::NPCLoader']]],
   ['numingredients',['numIngredients',['../class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a82a9249ca1a5913abc30ec379e6784e4',1,'Terraria::ModLoader::ModRecipe']]],
   ['numtiles',['numTiles',['../class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a9ab2b344e03d295f6bf41abf30a699dc',1,'Terraria::ModLoader::ModRecipe']]],
   ['numvanilla',['numVanilla',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a9b2c69c9930520fe7001701e62496b11',1,'Terraria::ModLoader::ModTileEntity']]]

@@ -110,6 +110,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_item
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
@@ -349,6 +350,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0d4fc974b572ac7e8ba55036e6b46584"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0d4fc974b572ac7e8ba55036e6b46584">WingUpdate</a> (Player player, bool inUse)</td></tr>
 <tr class="memdesc:a0d4fc974b572ac7e8ba55036e6b46584"><td class="mdescLeft">&#160;</td><td class="mdescRight">If wings can be seen on the player, calls the player's wing's equipment texture's WingUpdate and all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2c68eea8c1c266b9e88b15fbbc8f9102" title="Allows for Wings to do various things while in use. &quot;inUse&quot; is whether or not the jump button is curr...">GlobalItem.WingUpdate</a> hooks.  <a href="#a0d4fc974b572ac7e8ba55036e6b46584">More...</a><br /></td></tr>
 <tr class="separator:a0d4fc974b572ac7e8ba55036e6b46584"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:adcc689c75a1f9a0b98ff4856710d8364"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#adcc689c75a1f9a0b98ff4856710d8364">ItemCount</a> =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#add09eb72f1381a392b453fbe34e56924">nextItem</a></td></tr>
+<tr class="separator:adcc689c75a1f9a0b98ff4856710d8364"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -2752,10 +2758,9 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l00150">150</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
 
-<p>References <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.Item</a>.</p>
-
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l02288">Terraria.ModLoader.Mod.AddMusicBox()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordflow">return</span> type &gt;= ItemID.Count &amp;&amp; type &lt; ItemCount ? items[type - ItemID.Count] : null;</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordflow">return</span> type &gt;= ItemID.Count &amp;&amp; type &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#adcc689c75a1f9a0b98ff4856710d8364">ItemCount</a> ? items[type - ItemID.Count] : null;</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_item_loader_html_adcc689c75a1f9a0b98ff4856710d8364"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#adcc689c75a1f9a0b98ff4856710d8364">Terraria.ModLoader.ItemLoader.ItemCount</a></div><div class="ttdeci">static int ItemCount</div><div class="ttdef"><b>Definition:</b> <a href="_item_loader_8cs_source.html#l00155">ItemLoader.cs:155</a></div></div>
+</div><!-- fragment -->
 <p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
@@ -6975,6 +6980,30 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l00091">91</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adcc689c75a1f9a0b98ff4856710d8364"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.ModLoader.ItemLoader.ItemCount =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#add09eb72f1381a392b453fbe34e56924">nextItem</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l00155">155</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_recipe_editor_8cs_source.html#l00028">Terraria.ModLoader.RecipeEditor.AddIngredient()</a>, <a class="el" href="_recipe_finder_8cs_source.html#l00039">Terraria.ModLoader.RecipeFinder.AddIngredient()</a>, <a class="el" href="_recipe_editor_8cs_source.html#l00079">Terraria.ModLoader.RecipeEditor.DeleteIngredient()</a>, <a class="el" href="_recipe_editor_8cs_source.html#l00057">Terraria.ModLoader.RecipeEditor.SetIngredientStack()</a>, <a class="el" href="_recipe_finder_8cs_source.html#l00073">Terraria.ModLoader.RecipeFinder.SetResult()</a>, and <a class="el" href="_recipe_editor_8cs_source.html#l00140">Terraria.ModLoader.RecipeEditor.SetResult()</a>.</p>
 
 </div>
 </div>

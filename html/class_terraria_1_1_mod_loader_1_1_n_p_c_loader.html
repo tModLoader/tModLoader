@@ -265,6 +265,8 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a4d7e5eeea530b3e0ae7b47fb5e414bf8"><td class="memItemLeft" align="right" valign="top">static readonly IList&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d7e5eeea530b3e0ae7b47fb5e414bf8">blockLoot</a> = new List&lt;int&gt;()</td></tr>
 <tr class="memdesc:a4d7e5eeea530b3e0ae7b47fb5e414bf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.  <a href="#a4d7e5eeea530b3e0ae7b47fb5e414bf8">More...</a><br /></td></tr>
 <tr class="separator:a4d7e5eeea530b3e0ae7b47fb5e414bf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7794fd3e56d4e5be2a789542c0ed331"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ab7794fd3e56d4e5be2a789542c0ed331">NPCCount</a> =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#affee1a015d6e55f8dd983ab60cb360f5">nextNPC</a></td></tr>
+<tr class="separator:ab7794fd3e56d4e5be2a789542c0ed331"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -2660,7 +2662,8 @@ Static Private Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="_n_p_c_loader_8cs_source.html#l00155">155</a> of file <a class="el" href="_n_p_c_loader_8cs_source.html">NPCLoader.cs</a>.</p>
 
 <p>References <a class="el" href="_mod_8cs_source.html#l00035">Terraria.ModLoader.Mod.Name</a>.</p>
-<div class="fragment"><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        {</div><div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <span class="keywordflow">return</span> type &gt;= NPCID.Count &amp;&amp; type &lt; NPCCount ? npcs[type - NPCID.Count] : null;</div><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        {</div><div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <span class="keywordflow">return</span> type &gt;= NPCID.Count &amp;&amp; type &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ab7794fd3e56d4e5be2a789542c0ed331">NPCCount</a> ? npcs[type - NPCID.Count] : null;</div><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_n_p_c_loader_html_ab7794fd3e56d4e5be2a789542c0ed331"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ab7794fd3e56d4e5be2a789542c0ed331">Terraria.ModLoader.NPCLoader.NPCCount</a></div><div class="ttdeci">static int NPCCount</div><div class="ttdef"><b>Definition:</b> <a href="_n_p_c_loader_8cs_source.html#l00148">NPCLoader.cs:148</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1f87c81d569643d4b88d271ba22f3c5b"></a>
@@ -5342,6 +5345,28 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_n_p_c_loader_8cs_source.html#l00020">20</a> of file <a class="el" href="_n_p_c_loader_8cs_source.html">NPCLoader.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab7794fd3e56d4e5be2a789542c0ed331"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.ModLoader.NPCLoader.NPCCount =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#affee1a015d6e55f8dd983ab60cb360f5">nextNPC</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_n_p_c_loader_8cs_source.html#l00148">148</a> of file <a class="el" href="_n_p_c_loader_8cs_source.html">NPCLoader.cs</a>.</p>
 
 </div>
 </div>

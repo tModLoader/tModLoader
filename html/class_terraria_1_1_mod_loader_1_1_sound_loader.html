@@ -136,6 +136,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1a432c30af8ee06ec095bd5fbd6a6eb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad1a432c30af8ee06ec095bd5fbd6a6eb">GetSoundSlot</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type, string sound)</td></tr>
 <tr class="memdesc:ad1a432c30af8ee06ec095bd5fbd6a6eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given SoundType and the given sound file path. Returns 0 if there is no corresponding style.  <a href="#ad1a432c30af8ee06ec095bd5fbd6a6eb">More...</a><br /></td></tr>
 <tr class="separator:ad1a432c30af8ee06ec095bd5fbd6a6eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af58cb4ccfc19e4cb71a1b23b506aad81"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#af58cb4ccfc19e4cb71a1b23b506aad81">SoundCount</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type)</td></tr>
+<tr class="separator:af58cb4ccfc19e4cb71a1b23b506aad81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -247,6 +249,47 @@ Static Private Attributes</h2></td></tr>
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_sound_loader_ad1a432c30af8ee06ec095bd5fbd6a6eb_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_sound_loader_ad1a432c30af8ee06ec095bd5fbd6a6eb_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_sound_loader_ad1a432c30af8ee06ec095bd5fbd6a6eb_icgraph" id="class_terraria_1_1_mod_loader_1_1_sound_loader_ad1a432c30af8ee06ec095bd5fbd6a6eb_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac909b7b0f4a36c41219d18af58e4fbf7" title="Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name + &#39;/&#39; + name). " alt="" coords="231,5,417,51"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="af58cb4ccfc19e4cb71a1b23b506aad81"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.ModLoader.SoundLoader.SoundCount </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00044">44</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02288">Terraria.ModLoader.Mod.AddMusicBox()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">nextSound</a>[type];</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_sound_loader_html_ac213340da38a927039d5190eacb242d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">Terraria.ModLoader.SoundLoader.nextSound</a></div><div class="ttdeci">static readonly IDictionary&lt; SoundType, int &gt; nextSound</div><div class="ttdef"><b>Definition:</b> <a href="_sound_loader_8cs_source.html#l00014">SoundLoader.cs:14</a></div></div>
+</div><!-- fragment -->
+<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_sound_loader_af58cb4ccfc19e4cb71a1b23b506aad81_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_sound_loader_af58cb4ccfc19e4cb71a1b23b506aad81_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_sound_loader_af58cb4ccfc19e4cb71a1b23b506aad81_icgraph" id="class_terraria_1_1_mod_loader_1_1_sound_loader_af58cb4ccfc19e4cb71a1b23b506aad81_icgraph">
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#a2c1e83b143448233295027694ef6ef3a" title="Allows you to tie a music ID, and item ID, and a tile ID together to form a music box..." alt="" coords="231,5,420,51"/>
 </map>
 </div>
 </p>

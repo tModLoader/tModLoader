@@ -81,5 +81,6 @@ var class_terraria_1_1_mod_loader_1_1_projectile_loader =
     [ "HookSingleGrappleHook", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a8ea80f22dcfc68df758bb5e545cae4ca", null ],
     [ "HookTileCollideStyle", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9da30130ae47c527b9715de52d024bc9", null ],
     [ "HookUseGrapple", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#af39aacdb50bbd6e270a4e9b2a5385b23", null ],
-    [ "nextProjectile", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae337d6707120b5430b55c3b537b968da", null ]
+    [ "nextProjectile", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae337d6707120b5430b55c3b537b968da", null ],
+    [ "ProjectileCount", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a283a070b3d26c90ab809ef4f87a50a8b", null ]
 ];

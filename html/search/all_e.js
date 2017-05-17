@@ -41,6 +41,7 @@ var searchData=
   ['nosync',['NoSync',['../namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06ae4246767f134af73780a229d9e364a0b',1,'Terraria::ModLoader']]],
   ['npc',['npc',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0',1,'Terraria::ModLoader::ModNPC']]],
   ['npcai',['NPCAI',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a5075fa0ca2bdcf3208edfbcc6c567a74',1,'Terraria::ModLoader::NPCLoader']]],
+  ['npccount',['NPCCount',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ab7794fd3e56d4e5be2a789542c0ed331',1,'Terraria::ModLoader::NPCLoader']]],
   ['npcheadloader',['NPCHeadLoader',['../class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html',1,'Terraria::ModLoader']]],
   ['npcheadloader_2ecs',['NPCHeadLoader.cs',['../_n_p_c_head_loader_8cs.html',1,'']]],
   ['npchit',['NPCHit',['../namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794',1,'Terraria::ModLoader']]],

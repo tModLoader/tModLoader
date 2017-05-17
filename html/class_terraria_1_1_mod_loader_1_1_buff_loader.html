@@ -110,6 +110,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_buff
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
@@ -154,6 +155,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a9273dd93983098b09e74fe0d289ecda0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7626b3ca2e3263deafd992bc2fdf7b4"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_buff_loader.html#ac7626b3ca2e3263deafd992bc2fdf7b4">Update</a> (int buff, NPC npc, ref int buffIndex)</td></tr>
 <tr class="separator:ac7626b3ca2e3263deafd992bc2fdf7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a6abd801b6d315bf07c5a58018acc1019"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019">BuffCount</a> =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_buff_loader.html#a0d4fbc2ff3a87979075643af15c2632e">nextBuff</a></td></tr>
+<tr class="separator:a6abd801b6d315bf07c5a58018acc1019"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -487,7 +493,8 @@ Static Private Attributes</h2></td></tr>
 <p>Gets the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_buff.html" title="This class serves as a place for you to define a new buff and how that buff behaves. ">ModBuff</a> instance with the given type. If no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_buff.html" title="This class serves as a place for you to define a new buff and how that buff behaves. ">ModBuff</a> with the given type exists, returns null. </p>
 
 <p>Definition at line <a class="el" href="_buff_loader_8cs_source.html#l00078">78</a> of file <a class="el" href="_buff_loader_8cs_source.html">BuffLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        {</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">return</span> type &gt;= BuffID.Count &amp;&amp; type &lt; BuffCount ? buffs[type - BuffID.Count] : null;</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        {</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">return</span> type &gt;= BuffID.Count &amp;&amp; type &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019">BuffCount</a> ? buffs[type - BuffID.Count] : null;</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_buff_loader_html_a6abd801b6d315bf07c5a58018acc1019"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019">Terraria.ModLoader.BuffLoader.BuffCount</a></div><div class="ttdeci">static int BuffCount</div><div class="ttdef"><b>Definition:</b> <a href="_buff_loader_8cs_source.html#l00073">BuffLoader.cs:73</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af0b8606154d66c37a9ec015479eaca0c"></a>
@@ -757,6 +764,28 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a6abd801b6d315bf07c5a58018acc1019"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.ModLoader.BuffLoader.BuffCount =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_buff_loader.html#a0d4fbc2ff3a87979075643af15c2632e">nextBuff</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_buff_loader_8cs_source.html#l00073">73</a> of file <a class="el" href="_buff_loader_8cs_source.html">BuffLoader.cs</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a641f4dc836223d6e5153b5de8ae47e75"></a>
 <div class="memitem">
 <div class="memproto">

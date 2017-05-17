@@ -110,6 +110,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_wall
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
@@ -160,6 +161,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a12d788b1db996536fbcab46206dbb0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae763e90628d9dfed10b3fa6723285eab"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_wall_loader.html#ae763e90628d9dfed10b3fa6723285eab">RandomUpdate</a> (int i, int j, int type)</td></tr>
 <tr class="separator:ae763e90628d9dfed10b3fa6723285eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a54e97031b1ca6ebd5e426adfc5c20c23"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_wall_loader.html#a54e97031b1ca6ebd5e426adfc5c20c23">WallCount</a> =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_wall_loader.html#ab7cc408e65dc7999f965375ab31d5ed5">nextWall</a></td></tr>
+<tr class="separator:a54e97031b1ca6ebd5e426adfc5c20c23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -673,7 +679,8 @@ Static Private Attributes</h2></td></tr>
 <p>Gets the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html" title="This class represents a type of wall that can be added by a mod. Only one instance of this class will...">ModWall</a> instance with the given type. If no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html" title="This class represents a type of wall that can be added by a mod. Only one instance of this class will...">ModWall</a> with the given type exists, returns null. </p>
 
 <p>Definition at line <a class="el" href="_wall_loader_8cs_source.html#l00052">52</a> of file <a class="el" href="_wall_loader_8cs_source.html">WallLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        {</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">return</span> type &gt;= WallID.Count &amp;&amp; type &lt; WallCount ? walls[type - WallID.Count] : null;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        {</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">return</span> type &gt;= WallID.Count &amp;&amp; type &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_wall_loader.html#a54e97031b1ca6ebd5e426adfc5c20c23">WallCount</a> ? walls[type - WallID.Count] : null;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_wall_loader_html_a54e97031b1ca6ebd5e426adfc5c20c23"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_wall_loader.html#a54e97031b1ca6ebd5e426adfc5c20c23">Terraria.ModLoader.WallLoader.WallCount</a></div><div class="ttdeci">static int WallCount</div><div class="ttdef"><b>Definition:</b> <a href="_wall_loader_8cs_source.html#l00047">WallLoader.cs:47</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae0c6b450d6b529b15455156a8cbfc3f7"></a>
@@ -1417,6 +1424,28 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_wall_loader_8cs_source.html#l00016">16</a> of file <a class="el" href="_wall_loader_8cs_source.html">WallLoader.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a54e97031b1ca6ebd5e426adfc5c20c23"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.ModLoader.WallLoader.WallCount =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_wall_loader.html#ab7cc408e65dc7999f965375ab31d5ed5">nextWall</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_wall_loader_8cs_source.html#l00047">47</a> of file <a class="el" href="_wall_loader_8cs_source.html">WallLoader.cs</a>.</p>
 
 </div>
 </div>

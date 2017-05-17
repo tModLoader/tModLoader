@@ -4,6 +4,7 @@ var searchData=
   ['waistacc',['WaistAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a73ed9a501e2e6dc40308a814d3d8f012',1,'Terraria::ModLoader::PlayerLayer']]],
   ['waistshader',['waistShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a368ad72dd3ff9801fca1abb94534d926',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['walkdust',['WalkDust',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a34536351a09ae478bd2700a93cc9d0e2',1,'Terraria.ModLoader.ModTile.WalkDust()'],['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0ee8573b61cc8354d605a2855de5e765',1,'Terraria.ModLoader.TileLoader.WalkDust()']]],
+  ['wallcount',['WallCount',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a54e97031b1ca6ebd5e426adfc5c20c23',1,'Terraria::ModLoader::WallLoader']]],
   ['wallloader',['WallLoader',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html',1,'Terraria::ModLoader']]],
   ['wallloader_2ecs',['WallLoader.cs',['../_wall_loader_8cs.html',1,'']]],
   ['walltype',['WallType',['../class_terraria_1_1_mod_loader_1_1_mod.html#af340bf9dfb387a748ee760e9bccd48dc',1,'Terraria::ModLoader::Mod']]],

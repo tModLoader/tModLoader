@@ -21,5 +21,6 @@ var searchData=
   ['bossbagnpc',['bossBagNPC',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a7a8d81109a06450e23a08537b7febdcb',1,'Terraria::ModLoader::ModItem']]],
   ['boundcavenpc',['BoundCaveNPC',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aef2b5645c0220631057215a63bc220db',1,'Terraria::ModLoader::SpawnCondition']]],
   ['buf',['buf',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#afab9c69b776cce58ebabb87b2758c575',1,'Terraria::ModLoader::ModPacket']]],
+  ['buffcount',['BuffCount',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019',1,'Terraria::ModLoader::BuffLoader']]],
   ['builddlllines',['buildDllLines',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a93a6a7a56d6d0017141d1644e9b7c8f4',1,'Terraria::ModLoader::ErrorLogger']]]
 ];

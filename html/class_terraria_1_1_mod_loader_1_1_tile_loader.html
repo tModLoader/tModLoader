@@ -110,6 +110,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_tile
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
@@ -270,6 +271,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a0b6f41e241e1de3aeb410d858c7cba4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ee8573b61cc8354d605a2855de5e765"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0ee8573b61cc8354d605a2855de5e765">WalkDust</a> (int type, ref int dustType, ref bool makeDust, ref Color color)</td></tr>
 <tr class="separator:a0ee8573b61cc8354d605a2855de5e765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a95649a5da592f38e1d542acc3901dc03"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a95649a5da592f38e1d542acc3901dc03">TileCount</a> =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a626159920dd6f528d488bda3483b9d60">nextTile</a></td></tr>
+<tr class="separator:a95649a5da592f38e1d542acc3901dc03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -1992,7 +1998,8 @@ Static Private Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="_tile_loader_8cs_source.html#l00104">104</a> of file <a class="el" href="_tile_loader_8cs_source.html">TileLoader.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l02288">Terraria.ModLoader.Mod.AddMusicBox()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">return</span> type &gt;= TileID.Count &amp;&amp; type &lt; TileCount ? tiles[type - TileID.Count] : null;</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">return</span> type &gt;= TileID.Count &amp;&amp; type &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a95649a5da592f38e1d542acc3901dc03">TileCount</a> ? tiles[type - TileID.Count] : null;</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tile_loader_html_a95649a5da592f38e1d542acc3901dc03"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a95649a5da592f38e1d542acc3901dc03">Terraria.ModLoader.TileLoader.TileCount</a></div><div class="ttdeci">static int TileCount</div><div class="ttdef"><b>Definition:</b> <a href="_tile_loader_8cs_source.html#l00097">TileLoader.cs:97</a></div></div>
+</div><!-- fragment -->
 <p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -4663,6 +4670,30 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_tile_loader_8cs_source.html#l00032">32</a> of file <a class="el" href="_tile_loader_8cs_source.html">TileLoader.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a95649a5da592f38e1d542acc3901dc03"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.ModLoader.TileLoader.TileCount =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a626159920dd6f528d488bda3483b9d60">nextTile</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_tile_loader_8cs_source.html#l00097">97</a> of file <a class="el" href="_tile_loader_8cs_source.html">TileLoader.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_recipe_finder_8cs_source.html#l00087">Terraria.ModLoader.RecipeFinder.AddTile()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00148">Terraria.ModLoader.ModRecipe.AddTile()</a>, <a class="el" href="_recipe_editor_8cs_source.html#l00155">Terraria.ModLoader.RecipeEditor.AddTile()</a>, and <a class="el" href="_recipe_editor_8cs_source.html#l00181">Terraria.ModLoader.RecipeEditor.DeleteTile()</a>.</p>
 
 </div>
 </div>
