@@ -1900,5 +1900,5 @@ Patching output file 113/116
 Patching output file 114/116
 Patching output file 115/116
 Patching output file 116/116
-lookup cache used 8862/131072 hits=85801 misses=9271
+lookup cache used 8871/131072 hits=85936 misses=9280
 finished...
