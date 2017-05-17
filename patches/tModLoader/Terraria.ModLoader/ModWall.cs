@@ -120,6 +120,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
+		/// </summary>
+		public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
+		{
+			if (!MapLoader.initialized)
+			{
+				MapEntry entry = new MapEntry(color, name, nameFunc);
+				if (!MapLoader.wallEntries.Keys.Contains(Type))
+				{
+					MapLoader.wallEntries[Type] = new List<MapEntry>();
+				}
+				MapLoader.wallEntries[Type].Add(entry);
+			}
+		}
+
+		/// <summary>
 		/// Allows you to modify the name and texture path of this wall when it is autoloaded. Return true to autoload this wall. When a wall is autoloaded, that means you do not need to manually call Mod.AddWall. By default returns the mod's autoload property.
 		/// </summary>
 		public virtual bool Autoload(ref string name, ref string texture)

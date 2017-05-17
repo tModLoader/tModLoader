@@ -186,6 +186,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
+		/// </summary>
+		public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
+		{
+			if (!MapLoader.initialized)
+			{
+				MapEntry entry = new MapEntry(color, name, nameFunc);
+				if (!MapLoader.tileEntries.Keys.Contains(Type))
+				{
+					MapLoader.tileEntries[Type] = new List<MapEntry>();
+				}
+				MapLoader.tileEntries[Type].Add(entry);
+			}
+		}
+
+		/// <summary>
 		/// Allows this tile to grow the given modded tree.
 		/// </summary>
 		/// <param name="tree">The ModTree.</param>

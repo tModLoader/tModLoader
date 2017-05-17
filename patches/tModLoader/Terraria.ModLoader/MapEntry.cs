@@ -39,6 +39,14 @@ namespace Terraria.ModLoader
 			this.getName = getName;
 		}
 
+		internal MapEntry(Color color, ModTranslation name, Func<string, int, int, string> getName)
+		{
+			this.color = color;
+			this.name = null;
+			this.translation = name;
+			this.getName = getName;
+		}
+
 		private static string sameName(string name, int x, int y)
 		{
 			return name;
