@@ -882,6 +882,7 @@ namespace Terraria.ModLoader
 			ModItem newItem = CloneNewInstances ? Clone(clone) : (ModItem)Activator.CreateInstance(GetType());
 			newItem.item = clone;
 			newItem.mod = mod;
+			newItem.Name = Name;
 			newItem.texture = texture;
 			newItem.flameTexture = flameTexture;
 			newItem.projOnSwing = projOnSwing;
