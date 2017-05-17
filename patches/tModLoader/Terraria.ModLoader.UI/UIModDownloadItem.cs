@@ -357,7 +357,9 @@ namespace Terraria.ModLoader.UI
 			}
 
 			Interface.modInfo.SetModName(this.displayname);
+			Interface.modInfo.SetModFileName(this.mod);
 			Interface.modInfo.SetModInfo(description);
+			Interface.modInfo.SetDownloaded(exists);
 			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);
 			Interface.modInfo.SetURL(homepage);
 			Main.menuMode = Interface.modInfoID;

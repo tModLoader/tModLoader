@@ -363,6 +363,10 @@ namespace Terraria.ModLoader
 				.Where(mod => LoadSide(mod.properties.side))
 				.ToList();
 
+			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
+			if (Main.oldKeyState.PressingShift())
+				modsToLoad.Clear();
+
 			if (!VerifyNames(modsToLoad))
 				return false;
 
