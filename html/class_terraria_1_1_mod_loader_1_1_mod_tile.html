@@ -684,9 +684,9 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00237">237</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00874">Terraria.ModLoader.Mod.AutoloadTile()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00875">Terraria.ModLoader.Mod.AutoloadTile()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        {</div><div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a0f88487a904d403076656d16a73f9abe">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_html_a0f88487a904d403076656d16a73f9abe"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a0f88487a904d403076656d16a73f9abe">Terraria.ModLoader.ModTile.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod which has added this type of ModTile. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_8cs_source.html#l00020">ModTile.cs:20</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00045">Mod.cs:45</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00046">Mod.cs:46</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -1034,7 +1034,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00147">147</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        {</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(key))</div><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            {</div><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                key = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a98df7d1812c8406da0c1cbd21f12e2bb">Name</a>;</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            }</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> ModTranslation(<span class="keywordtype">string</span>.Format(<span class="stringliteral">&quot;MapObject.{0}.{1}&quot;</span>, <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a0f88487a904d403076656d16a73f9abe">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Name</a>, key), <span class="keyword">true</span>);</div><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_html_a0f88487a904d403076656d16a73f9abe"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a0f88487a904d403076656d16a73f9abe">Terraria.ModLoader.ModTile.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod which has added this type of ModTile. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_8cs_source.html#l00020">ModTile.cs:20</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a8206e4bf920a7562a972dcb7c9e2ef09"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Terraria.ModLoader.Mod.Name</a></div><div class="ttdeci">virtual string Name</div><div class="ttdoc">Stores the name of the mod. This name serves as the mod&amp;#39;s identification, and also helps with saving ...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00035">Mod.cs:35</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a8206e4bf920a7562a972dcb7c9e2ef09"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Terraria.ModLoader.Mod.Name</a></div><div class="ttdeci">virtual string Name</div><div class="ttdoc">Stores the name of the mod. This name serves as the mod&amp;#39;s identification, and also helps with saving ...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00036">Mod.cs:36</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_html_a98df7d1812c8406da0c1cbd21f12e2bb"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a98df7d1812c8406da0c1cbd21f12e2bb">Terraria.ModLoader.ModTile.Name</a></div><div class="ttdeci">string Name</div><div class="ttdoc">The name of this type of tile. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_8cs_source.html#l00029">ModTile.cs:29</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -2753,7 +2753,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00091">91</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02364">Terraria.ModLoader.Mod.AddTranslation()</a>, and <a class="el" href="_tile_loader_8cs_source.html#l00439">Terraria.ModLoader.TileLoader.ModChestName()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>, and <a class="el" href="_tile_loader_8cs_source.html#l00439">Terraria.ModLoader.TileLoader.ModChestName()</a>.</p>
 
 </div>
 </div>
@@ -3026,7 +3026,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00020">20</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00767">Terraria.ModLoader.Mod.AddTile()</a>, and <a class="el" href="_mod_8cs_source.html#l00874">Terraria.ModLoader.Mod.AutoloadTile()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00768">Terraria.ModLoader.Mod.AddTile()</a>, and <a class="el" href="_mod_8cs_source.html#l00875">Terraria.ModLoader.Mod.AutoloadTile()</a>.</p>
 
 </div>
 </div>
@@ -3052,7 +3052,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00029">29</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00767">Terraria.ModLoader.Mod.AddTile()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00768">Terraria.ModLoader.Mod.AddTile()</a>.</p>
 
 </div>
 </div>
@@ -3078,7 +3078,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00038">38</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_recipe_8cs_source.html#l00184">Terraria.ModLoader.ModRecipe.AddTile()</a>, <a class="el" href="_mod_8cs_source.html#l00767">Terraria.ModLoader.Mod.AddTile()</a>, <a class="el" href="_mod_8cs_source.html#l02364">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_tile_loader_8cs_source.html#l00729">Terraria.ModLoader.TileLoader.AnimateTiles()</a>, <a class="el" href="_tile_loader_8cs_source.html#l00498">Terraria.ModLoader.TileLoader.IsModMusicBox()</a>, and <a class="el" href="_mod_8cs_source.html#l00814">Terraria.ModLoader.Mod.TileType()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_recipe_8cs_source.html#l00184">Terraria.ModLoader.ModRecipe.AddTile()</a>, <a class="el" href="_mod_8cs_source.html#l00768">Terraria.ModLoader.Mod.AddTile()</a>, <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_tile_loader_8cs_source.html#l00729">Terraria.ModLoader.TileLoader.AnimateTiles()</a>, <a class="el" href="_tile_loader_8cs_source.html#l00498">Terraria.ModLoader.TileLoader.IsModMusicBox()</a>, and <a class="el" href="_mod_8cs_source.html#l00815">Terraria.ModLoader.Mod.TileType()</a>.</p>
 
 </div>
 </div>

@@ -89,7 +89,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "GetEquipSlot", "class_terraria_1_1_mod_loader_1_1_mod.html#aff742d70713325de16bd88004f876eb4", null ],
     [ "GetEquipTexture", "class_terraria_1_1_mod_loader_1_1_mod.html#a5c4e062079692bf2be5d8b85360e1ee8", null ],
     [ "GetFileBytes", "class_terraria_1_1_mod_loader_1_1_mod.html#a0f05c5b90a32de2166046f0bfb0a7a21", null ],
-    [ "GetFont", "class_terraria_1_1_mod_loader_1_1_mod.html#a6d84680dd1cae7afa7332533ed238050", null ],
+    [ "GetFont", "class_terraria_1_1_mod_loader_1_1_mod.html#a550a51fc686db808649a15cc61e5d7d8", null ],
     [ "GetGlobalBgStyle", "class_terraria_1_1_mod_loader_1_1_mod.html#a47d743e5cda95c69fba3492897fbd48d", null ],
     [ "GetGlobalBgStyle< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#a91412ee9e3927f94e75229d6a720e01b", null ],
     [ "GetGlobalBuff", "class_terraria_1_1_mod_loader_1_1_mod.html#abb2f7f8664893ae345826605b68990cc", null ],

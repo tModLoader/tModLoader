@@ -38,7 +38,7 @@ var searchData=
   ['getfilebytes',['GetFileBytes',['../class_terraria_1_1_mod_loader_1_1_mod.html#a0f05c5b90a32de2166046f0bfb0a7a21',1,'Terraria.ModLoader.Mod.GetFileBytes()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a942be3cd0174b0a4e1c918a5466b5f8f',1,'Terraria.ModLoader.ModLoader.GetFileBytes()']]],
   ['getfishinglevel',['GetFishingLevel',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a299177fe4b54040faa2e8c535a44c5fa',1,'Terraria.ModLoader.ModPlayer.GetFishingLevel()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a84b3ebca924faa4b2187fb94b090591c',1,'Terraria.ModLoader.PlayerHooks.GetFishingLevel()']]],
   ['getfloat',['GetFloat',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#af8152f14e6ec5f1ecdad782b92b130c8',1,'Terraria::ModLoader::IO::TagCompound']]],
-  ['getfont',['GetFont',['../class_terraria_1_1_mod_loader_1_1_mod.html#a6d84680dd1cae7afa7332533ed238050',1,'Terraria::ModLoader::Mod']]],
+  ['getfont',['GetFont',['../class_terraria_1_1_mod_loader_1_1_mod.html#a550a51fc686db808649a15cc61e5d7d8',1,'Terraria::ModLoader::Mod']]],
   ['getglobalbgstyle',['GetGlobalBgStyle',['../class_terraria_1_1_mod_loader_1_1_mod.html#a47d743e5cda95c69fba3492897fbd48d',1,'Terraria::ModLoader::Mod']]],
   ['getglobalbgstyle_3c_20t_20_3e',['GetGlobalBgStyle&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a91412ee9e3927f94e75229d6a720e01b',1,'Terraria::ModLoader::Mod']]],
   ['getglobalbuff',['GetGlobalBuff',['../class_terraria_1_1_mod_loader_1_1_mod.html#abb2f7f8664893ae345826605b68990cc',1,'Terraria::ModLoader::Mod']]],

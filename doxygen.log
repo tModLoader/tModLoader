@@ -577,9 +577,9 @@ Generating call graph for function Terraria.ModLoader.Mod.AddItem
 Generating call graph for function Terraria.ModLoader.Mod.AddMount
 Generating call graph for function Terraria.ModLoader.Mod.AddMusicBox
 Generating call graph for function Terraria.ModLoader.Mod.AddNPCHeadTexture
-Generating call graph for function Terraria.ModLoader.Mod/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:610: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
+Generating call graph for function Terraria.ModLoader.Mod/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:611: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
   parameter 'type'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:595: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:596: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
   parameter 'type'
 .AddSound
 Generating call graph for function Terraria.ModLoader.Mod.AddTranslation
