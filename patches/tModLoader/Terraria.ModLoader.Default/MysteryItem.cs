@@ -79,6 +79,8 @@ namespace Terraria.ModLoader.Default
 			});
 		}
 
+		public override bool CloneNewInstances => true;
+
 		public override ModItem Clone()
 		{
 			var clone = (MysteryItem)base.Clone();
