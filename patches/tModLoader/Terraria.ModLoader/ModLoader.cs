@@ -289,7 +289,7 @@ namespace Terraria.ModLoader
 			foreach (ModNPC npc in NPCLoader.npcs)
 			{
 				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
-				Lang._projectileNameCache[npc.npc.type] = SetLocalizedText(dict, text);
+				Lang._npcNameCache[npc.npc.type] = SetLocalizedText(dict, text);
 			}
 			foreach (ModBuff buff in BuffLoader.buffs)
 			{
