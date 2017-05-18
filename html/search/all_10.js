@@ -90,6 +90,6 @@ var searchData=
   ['projectiletype',['ProjectileType',['../class_terraria_1_1_mod_loader_1_1_mod.html#af4f124bac1905b018a8f24ab866c0d5f',1,'Terraria::ModLoader::Mod']]],
   ['projectiletype_3c_20t_20_3e',['ProjectileType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a57a3c83d55b8817f00f3dd26f4029a46',1,'Terraria::ModLoader::Mod']]],
   ['projonswing',['projOnSwing',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abe9fcfbfbdb4b5dedd9859aa8f1f5b36',1,'Terraria::ModLoader::ModItem']]],
-  ['properties',['Properties',['../class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea',1,'Terraria.ModLoader.Mod.Properties()'],['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad66ceae780a51e4824580d5424c11447',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.properties()']]],
+  ['properties',['properties',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad66ceae780a51e4824580d5424c11447',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.properties()'],['../class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea',1,'Terraria.ModLoader.Mod.Properties()']]],
   ['pumpkinmoon',['PumpkinMoon',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a614cb0d20f75c0396f5535e9a25f4fac',1,'Terraria::ModLoader::SpawnCondition']]]
 ];

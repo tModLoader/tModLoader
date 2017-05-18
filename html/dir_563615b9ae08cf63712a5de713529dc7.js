@@ -2,8 +2,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
 [
     [ "AssemblyManager.cs", "_assembly_manager_8cs.html", [
       [ "HeaderCopyWriter", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer" ],
-      [ "LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod" ],
-      [ "SymbolWriterProvider", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider" ]
+      [ "LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod" ]
     ] ],
     [ "BackgroundStyleLoaders.cs", "_background_style_loaders_8cs.html", [
       [ "SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader" ],

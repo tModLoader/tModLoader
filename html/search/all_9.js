@@ -10,7 +10,6 @@ var searchData=
   ['indexes',['indexes',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad668aa929984715c3d439cc1051bcabb',1,'Terraria::ModLoader::PlayerHooks']]],
   ['initialize',['Initialize',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a7b06737bb45ee8fae87eb4c989b40da6',1,'Terraria.ModLoader.ModPlayer.Initialize()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6f3043872c696c1531599e0273be6cab',1,'Terraria.ModLoader.ModTileEntity.Initialize()'],['../class_terraria_1_1_mod_loader_1_1_mod_world.html#adeaf03c2c6361b70d0c0eabca94641d7',1,'Terraria.ModLoader.ModWorld.Initialize()']]],
   ['innerthird',['InnerThird',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a349f9947f04186b4e43285c35f592b12',1,'Terraria::ModLoader::SpawnCondition']]],
-  ['instance',['instance',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider.html#ad0755f992e2ff447344e7aad4c1970a8',1,'Terraria::ModLoader::AssemblyManager::SymbolWriterProvider']]],
   ['interface_2ecs',['Interface.cs',['../_interface_8cs.html',1,'']]],
   ['invasion',['Invasion',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af5c63fa8152be1f8ab27336edea50760',1,'Terraria.ModLoader.SpawnCondition.Invasion()'],['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eb193778914243d9a2a00f08b1bcf67',1,'Terraria.ModLoader.NPCSpawnInfo.invasion()']]],
   ['ioexception',['IOException',['../class_i_o_exception.html',1,'']]],

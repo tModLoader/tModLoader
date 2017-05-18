@@ -6,6 +6,7 @@ var class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file =
     [ "GetMainAssembly", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#afc2aff08e2c79981564108f6343ceeac", null ],
     [ "GetMainPDB", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a3a0da89b5528ec6ff4d41ca1bf5e8b96", null ],
     [ "HasFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78", null ],
+    [ "FileCount", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a8be9f26033db1d7bb5940096da368de3", null ],
     [ "files", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a4641a87ffb93fcd4ad41ab9bd55d3c24", null ],
     [ "path", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#ac713f3a0fbd787097af3aa3ec0670483", null ],
     [ "readException", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a53260c2c3a94acf5fc0a0664cd2c4f2a", null ],

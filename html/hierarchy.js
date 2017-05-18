@@ -53,9 +53,7 @@ var hierarchy =
     [ "ISymbolWriter", "class_i_symbol_writer.html", [
       [ "Terraria.ModLoader.AssemblyManager.SymbolWriterProvider.HeaderCopyWriter", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html", null ]
     ] ],
-    [ "ISymbolWriterProvider", "class_i_symbol_writer_provider.html", [
-      [ "Terraria.ModLoader.AssemblyManager.SymbolWriterProvider", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider.html", null ]
-    ] ],
+    [ "ISymbolWriterProvider", "class_i_symbol_writer_provider.html", null ],
     [ "Terraria.ModLoader.IO.ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", null ],
     [ "Terraria.ModLoader.ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", null ],
     [ "Terraria.ModLoader.AssemblyManager.LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", null ],

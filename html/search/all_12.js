@@ -108,6 +108,5 @@ var searchData=
   ['stringhandler',['StringHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a88f67ce0a5f71c3e12f264a0f0877781',1,'Terraria::ModLoader::IO::TagIO']]],
   ['surfacebgstyleloader',['SurfaceBgStyleLoader',['../class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html',1,'Terraria::ModLoader']]],
   ['surfacejungle',['SurfaceJungle',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a4d880834b424c68fa9267c6449596bc3',1,'Terraria::ModLoader::SpawnCondition']]],
-  ['symbolwriterprovider',['SymbolWriterProvider',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider.html',1,'Terraria::ModLoader::AssemblyManager']]],
   ['syncplayer',['SyncPlayer',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a3905e96a9c70d498528df9121380fb1c',1,'Terraria.ModLoader.ModPlayer.SyncPlayer()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a3c4bfe3ab9439bc79fccd1c43cbbb233',1,'Terraria.ModLoader.PlayerHooks.SyncPlayer()']]]
 ];
