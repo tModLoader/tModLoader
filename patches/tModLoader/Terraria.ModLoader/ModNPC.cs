@@ -124,6 +124,7 @@ namespace Terraria.ModLoader
 			newNPC.npc = npc;
 			npc.modNPC = newNPC;
 			newNPC.mod = mod;
+			newNPC.Name = Name;
 			newNPC.SetDefaults();
 		}
 

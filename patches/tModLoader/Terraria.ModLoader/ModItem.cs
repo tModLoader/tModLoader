@@ -875,6 +875,7 @@ namespace Terraria.ModLoader
 			newItem.item = item;
 			item.modItem = newItem;
 			newItem.mod = mod;
+			newItem.Name = Name;
 		}
 
 		internal void SetupClone(Item clone)
