@@ -52,21 +52,36 @@ namespace Terraria.ModLoader
 
         internal static bool BuildAll(string[] modFolders, IBuildStatus status) {
             var modList = new List<LoadingMod>();
-            foreach (var modFolder in modFolders) {
-                var mod = ReadProperties(modFolder, status);
-                if (mod == null)
-                    return false;
+			//read mod sources folder
+			foreach (var modFolder in modFolders) {
+				var mod = ReadProperties(modFolder, status);
+				if (mod == null)
+					return false;
 
-                modList.Add(mod);
-            }
+				modList.Add(mod);
+			}
 
-            foreach (var modFile in FindMods()) {
-                if (modList.Exists(m => m.Name == modFile.name))
-                    continue;
+			//figure out which of the installed mods are required for building
+	        var installedMods = FindMods()
+		        .Where(mod => !modList.Exists(m => m.Name == mod.name))
+		        .Select(mod => new LoadingMod(mod, BuildProperties.ReadModFile(mod)))
+				.ToList();
+			
+			var requiredFromInstall = new HashSet<LoadingMod>();
+	        Action<LoadingMod> require = null;
+			require = (mod) => {
+		        foreach (var dep in mod.properties.RefNames(true)) {
+			        var depMod = installedMods.SingleOrDefault(m => m.Name == dep);
+			        if (depMod != null && requiredFromInstall.Add(depMod))
+				        require(depMod);
+		        }
+	        };
+	        foreach (var mod in modList)
+		        require(mod);
 
-                modList.Add(new LoadingMod(modFile, BuildProperties.ReadModFile(modFile)));
-            }
+			modList.AddRange(requiredFromInstall);
 
+			//sort and version check
             List<BuildingMod> modsToBuild;
             try {
                 EnsureDependenciesExist(modList, true);
@@ -79,6 +94,7 @@ namespace Terraria.ModLoader
                 return false;
             }
 
+			//build
             int num = 0;
             foreach (var mod in modsToBuild) {
                 status.SetProgress(num++, modsToBuild.Count);
@@ -216,7 +232,7 @@ namespace Terraria.ModLoader
 
             foreach (var resource in Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)) {
                 var relPath = resource.Substring(mod.path.Length + 1);
-                if (mod.properties.ignoreFile(relPath) ||
+                if (mod.properties.ignoreFile(relPath) || 
                         relPath == "build.txt" ||
                         !mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
                         Path.GetFileName(resource) == "Thumbs.db")
@@ -393,7 +409,7 @@ namespace Terraria.ModLoader
             }
         }
 
-        /// <summary>
+	    /// <summary>
         /// Invoke the Roslyn compiler via reflection to avoid a .NET 4.5 dependency
         /// </summary>
         private static CompilerResults RoslynCompile(CompilerParameters compileOptions, string[] files) {
