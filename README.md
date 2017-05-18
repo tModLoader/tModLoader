@@ -10,6 +10,25 @@ Download and installation instructions are on the [forums thread](http://forums.
 
 **Note**: this repository will be ahead of the current released version.
 
+## How-to install or uninstall
+
+### Installation
+
+Installing tModLoader is relatively easy. If you want to ensure you can easily revert back to vanilla, you should make a backup copy of your Terraria.exe and TerrariaServer.exe
+
+1. Goto the **[releases](https://github.com/bluemagic123/tModLoader/releases)** page and download the tML release you want. (usually the **[latest](https://github.com/bluemagic123/tModLoader/releases/latest)**)
+2. Unzip the contents somewhere (usually documents or downloads folder)
+3. Open the extracted folder, **copy** the contents to your Terraria folder and let it overwrite files when asked. (replace files)
+4. Done. You can launch Terraria as usual.
+
+### Uninstallation
+
+Uninstallation of tModLoader is even easier. This part covers how to do it when using Steam.
+
+1. Open Steam, go to your game library section and locate Terraria.
+2. Let Steam **[verify the integrity of game files](https://support.steampowered.com/kb_article.php?ref=2037-QEUH-3335)** for Terraria, this will redownload vanilla files.
+4. Done. You can launch Terraria as usual.
+
 ## Contributing
 
 **Huge thanks to [ChickenBones](https://github.com/Chicken-Bones) for creating the code patcher!**
