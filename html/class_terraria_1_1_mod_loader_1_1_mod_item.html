@@ -475,8 +475,8 @@ Properties</h2></td></tr>
 
 <p>This is essentially the same as <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#adbfe825532c8fffbac263bf8732b93b6" title="Override this method to add recipes to the game. It is recommended that you do so through instances o...">Mod.AddRecipes</a>. Do note that this will be called for every instance of the overriding <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a> class that is added to the game. This allows you to avoid clutter in your overriding <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> class by adding recipes for which this item is the result. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00956">956</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;        {</div><div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00957">957</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;        {</div><div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac90ec46c3c5018c66bb3be49426fe96f"></a>
@@ -1199,8 +1199,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00893">893</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;        {</div><div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9d7ae30bbe9ee7097f64efb36a5779a0">Clone</a>();</div><div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a9d7ae30bbe9ee7097f64efb36a5779a0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9d7ae30bbe9ee7097f64efb36a5779a0">Terraria.ModLoader.ModItem.Clone</a></div><div class="ttdeci">virtual ModItem Clone()</div><div class="ttdoc">Returns a clone of this ModItem. Allows you to decide which fields of your ModItem class are copied o...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00902">ModItem.cs:902</a></div></div>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00894">894</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;        {</div><div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9d7ae30bbe9ee7097f64efb36a5779a0">Clone</a>();</div><div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a9d7ae30bbe9ee7097f64efb36a5779a0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9d7ae30bbe9ee7097f64efb36a5779a0">Terraria.ModLoader.ModItem.Clone</a></div><div class="ttdeci">virtual ModItem Clone()</div><div class="ttdoc">Returns a clone of this ModItem. Allows you to decide which fields of your ModItem class are copied o...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00903">ModItem.cs:903</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1228,8 +1228,8 @@ Properties</h2></td></tr>
 <p>Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a>. Allows you to decide which fields of your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a> class are copied over when an item stack is split or something similar happens. By default all fields that you make will be automatically copied for you. Only called if CloneNewInstances is set to true. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00902">902</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;        {</div><div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;            <span class="keywordflow">return</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98">ModItem</a>)MemberwiseClone();</div><div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a2fcccf12f242f22d41393da61bcafe98"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98">Terraria.ModLoader.ModItem.ModItem</a></div><div class="ttdeci">ModItem()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00080">ModItem.cs:80</a></div></div>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00903">903</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;        {</div><div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;            <span class="keywordflow">return</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98">ModItem</a>)MemberwiseClone();</div><div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a2fcccf12f242f22d41393da61bcafe98"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98">Terraria.ModLoader.ModItem.ModItem</a></div><div class="ttdeci">ModItem()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00080">ModItem.cs:80</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2315,8 +2315,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00925">925</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;        {</div><div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00926">926</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;        {</div><div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a40be9291015b233a975e12ee6862da0f"></a>
@@ -2349,8 +2349,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00933">933</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;        {</div><div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00934">934</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;        {</div><div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a06d18d25a2aa2ec8f908cbb3f41cb645"></a>
@@ -2588,8 +2588,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00972">972</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;        {</div><div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00973">973</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;        {</div><div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4e4112cadf7f23f51b913cda238c8708"></a>
@@ -2622,8 +2622,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00949">949</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;        {</div><div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00950">950</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;        {</div><div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5f7a03b9388a7610935e6f628b257dfe"></a>
@@ -2656,8 +2656,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00941">941</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;        {</div><div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00942">942</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;        {</div><div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7531a27b227757d9bc54400dcd6e9877"></a>
@@ -2690,8 +2690,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00964">964</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;        {</div><div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00965">965</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;        {</div><div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a63c7985c667874242863473945097423"></a>
@@ -3449,8 +3449,8 @@ Properties</h2></td></tr>
 <p>Allows you to save custom data for this item. Returns null by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00916">916</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;        {</div><div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00917">917</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;        {</div><div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6d9fbbb1dec7e25959a345a9e4f78428"></a>
@@ -4280,7 +4280,7 @@ Properties</h2></td></tr>
 
 <p>Whether instances of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a> are created through its Clone hook or its constructor. Defaults to false. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00910">910</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00911">911</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
 </div>
 </div>
