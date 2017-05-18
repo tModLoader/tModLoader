@@ -241,7 +241,7 @@ namespace Terraria.ModLoader
             return modInstances;
         }
 
-	    private class SymbolWriterProvider : ISymbolWriterProvider
+	    internal class SymbolWriterProvider : ISymbolWriterProvider
 	    {
 		    public static readonly SymbolWriterProvider instance = new SymbolWriterProvider();
 

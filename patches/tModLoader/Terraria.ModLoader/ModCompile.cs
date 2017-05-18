@@ -39,7 +39,8 @@ namespace Terraria.ModLoader
         }
 
         private static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
-        private static IList<string> terrariaReferences;
+	    internal static IList<string> sourceExtensions = new List<string>{".csproj", ".cs", ".sln"};
+		private static IList<string> terrariaReferences;
 
         internal static void LoadReferences() {
             if (terrariaReferences != null)
@@ -217,7 +218,7 @@ namespace Terraria.ModLoader
                 var relPath = resource.Substring(mod.path.Length + 1);
                 if (mod.properties.ignoreFile(relPath) ||
                         relPath == "build.txt" ||
-                        !mod.properties.includeSource && Path.GetExtension(resource) == ".cs" ||
+                        !mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
                         Path.GetFileName(resource) == "Thumbs.db")
                     continue;
 
@@ -373,6 +374,7 @@ namespace Terraria.ModLoader
                 }
 
                 dll = File.ReadAllBytes(compileOptions.OutputAssembly);
+	            dll = PostProcess(dll, forWindows);
                 if (generatePDB)
                     pdb = File.ReadAllBytes(Path.Combine(tempDir, mod + ".pdb"));
             }
@@ -430,6 +432,23 @@ namespace Terraria.ModLoader
                     }
                 }
             }
-        }
-    }
+		}
+
+		private static byte[] PostProcess(byte[] dll, bool forWindows) {
+			if (forWindows)
+				return dll;
+
+			var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
+			foreach (var module in asm.Modules)
+				foreach (var type in module.Types)
+					foreach (var met in type.Methods)
+						foreach (var attr in met.CustomAttributes)
+							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
+								attr.AttributeType.Scope.Name = "System.Core";
+
+			var ret = new MemoryStream();
+			asm.Write(ret, new WriterParameters { SymbolWriterProvider = AssemblyManager.SymbolWriterProvider.instance });
+			return ret.ToArray();
+		}
+	}
 }
