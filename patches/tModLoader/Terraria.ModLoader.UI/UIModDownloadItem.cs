@@ -35,9 +35,9 @@ namespace Terraria.ModLoader.UI
 		private readonly UITextPanel<string> updateButton;
 		public bool update = false;
 		public bool updateIsDowngrade = false;
-		public bool exists = false;
+		public TmodFile installed;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, bool exists)
+		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, TmodFile installed)
 		{
 			this.displayname = displayname;
 			this.mod = name;
@@ -51,7 +51,7 @@ namespace Terraria.ModLoader.UI
 			this.timeStamp = timeStamp;
 			this.update = update;
 			this.updateIsDowngrade = updateIsDowngrade;
-			this.exists = exists;
+			this.installed = installed;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
@@ -74,7 +74,7 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += RequestMoreinfo;
 			base.Append(button);
-			if (update || !exists)
+			if (update || installed == null)
 			{
 				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? "Downgrade" : "Update") : "Download", 1f,
 					false);
@@ -156,7 +156,7 @@ namespace Terraria.ModLoader.UI
 				case UpdateFilter.All:
 					return true;
 				case UpdateFilter.Available:
-					return update || !exists;
+					return update || installed == null;
 				case UpdateFilter.UpdateOnly:
 					return update;
 			}
@@ -357,9 +357,8 @@ namespace Terraria.ModLoader.UI
 			}
 
 			Interface.modInfo.SetModName(this.displayname);
-			Interface.modInfo.SetModFileName(this.mod);
 			Interface.modInfo.SetModInfo(description);
-			Interface.modInfo.SetDownloaded(exists);
+			Interface.modInfo.SetMod(installed);
 			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);
 			Interface.modInfo.SetURL(homepage);
 			Main.menuMode = Interface.modInfoID;

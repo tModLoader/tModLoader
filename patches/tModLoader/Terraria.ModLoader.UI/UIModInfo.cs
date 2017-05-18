@@ -1,8 +1,5 @@
-using System;
 using System.Diagnostics;
 using System.IO;
-using System.Xml;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
@@ -18,13 +15,13 @@ namespace Terraria.ModLoader.UI
 		public UIMessageBox modInfo;
 		public UITextPanel<string> uITextPanel;
 		internal UITextPanel<string> modHomepageButton;
+		internal UITextPanel<string> extractButton;
 		internal UITextPanel<string> deleteButton;
 		private int gotoMenu = 0;
-		private bool downloaded;
+		private TmodFile mod;
 		private string url = "";
 		private string info = "";
 		private string modDisplayName = "";
-		private string modFileName = "";
 
 		public override void OnInitialize()
 		{
@@ -72,7 +69,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(modHomepageButton);
 
 			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
-			backButton.Width.Set(-10f, 0.5f);
+			backButton.Width.Set(-10f, 0.333f);
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;
 			backButton.Top.Set(-20f, 0f);
@@ -81,8 +78,19 @@ namespace Terraria.ModLoader.UI
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
+			extractButton = new UITextPanel<string>("Extract", 1f, false);
+			extractButton.Width.Set(-10f, 0.333f);
+			extractButton.Height.Set(25f, 0f);
+			extractButton.VAlign = 1f;
+			extractButton.HAlign = 0.5f;
+			extractButton.Top.Set(-20f, 0f);
+			extractButton.OnMouseOver += UICommon.FadedMouseOver;
+			extractButton.OnMouseOut += UICommon.FadedMouseOut;
+			extractButton.OnClick += ExtractClick;
+			uIElement.Append(extractButton);
+
 			deleteButton = new UITextPanel<string>("Delete", 1f, false);
-			deleteButton.Width.Set(-10f, 0.5f);
+			deleteButton.Width.Set(-10f, 0.333f);
 			deleteButton.Height.Set(25f, 0f);
 			deleteButton.VAlign = 1f;
 			deleteButton.HAlign = 1f;
@@ -109,11 +117,6 @@ namespace Terraria.ModLoader.UI
 			modDisplayName = text;
 		}
 
-		internal void SetModFileName(string text)
-		{
-			modFileName = text;
-		}
-
 		internal void SetGotoMenu(int gotoMenu)
 		{
 			this.gotoMenu = gotoMenu;
@@ -124,9 +127,9 @@ namespace Terraria.ModLoader.UI
 			this.url = url;
 		}
 
-		internal void SetDownloaded(bool downloaded)
+		internal void SetMod(TmodFile mod)
 		{
-			this.downloaded = downloaded;
+			this.mod = mod;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -135,15 +138,14 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = this.gotoMenu;
 		}
 
-		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement) {
+			Main.PlaySound(ID.SoundID.MenuOpen);
+			UIExtractMod.Extract(mod, gotoMenu);
+		}
+
+		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuClose);
-			Directory.CreateDirectory(ModLoader.ModPath);
-			string path = ModLoader.ModPath + Path.DirectorySeparatorChar + modFileName + ".tmod";
-			if (File.Exists(path))
-			{
-				File.Delete(path);
-			}
+			File.Delete(mod.path);
 			Main.menuMode = this.gotoMenu;
 		}
 
@@ -172,7 +174,7 @@ namespace Terraria.ModLoader.UI
 			{
 				uIElement.Append(modHomepageButton);
 			}
-			if (downloaded)
+			if (mod != null)
 			{
 				uIElement.Append(deleteButton);
 			}
