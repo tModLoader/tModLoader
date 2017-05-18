@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
@@ -29,6 +30,7 @@ namespace Terraria.ModLoader.IO
 				["tileEntities"] = TileIO.SaveTileEntities(),
 				["killCounts"] = SaveNPCKillCounts(),
 				["anglerQuest"] = SaveAnglerQuest(),
+				["townManager"] = SaveTownManager(),
 				["modData"] = SaveModData()
 			};
 
@@ -68,6 +70,7 @@ namespace Terraria.ModLoader.IO
 			}
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
+			LoadTownManager(tag.GetList<TagCompound>("townManager"));
 			try
 			{
 				LoadModData(tag.GetList<TagCompound>("modData"));
@@ -256,6 +259,46 @@ namespace Terraria.ModLoader.IO
 				}
 			}
 			Main.AnglerQuestSwap();
+		}
+
+		internal static List<TagCompound> SaveTownManager()
+		{
+			var list = new List<TagCompound>();
+			foreach (Tuple<int, Point> pair in WorldGen.TownManager._roomLocationPairs)
+			{
+				if (pair.Item1 >= NPCID.Count)
+				{
+					ModNPC npc = NPCLoader.GetNPC(pair.Item1);
+					TagCompound tag = new TagCompound
+					{
+						["mod"] = npc.mod.Name,
+						["name"] = npc.Name,
+						["x"] = pair.Item2.X,
+						["y"] = pair.Item2.Y
+					};
+					list.Add(tag);
+				}
+			}
+			return list;
+		}
+
+		internal static void LoadTownManager(IList<TagCompound> list)
+		{
+			if (list == null)
+			{
+				return;
+			}
+			foreach (TagCompound tag in list)
+			{
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
+				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
+				if (type > 0)
+				{
+					Point location = new Point(tag.GetInt("x"), tag.GetInt("y"));
+					WorldGen.TownManager._roomLocationPairs.Add(Tuple.Create(type, location));
+					WorldGen.TownManager._hasRoom[type] = true;
+				}
+			}
 		}
 
 		internal static List<TagCompound> SaveModData()

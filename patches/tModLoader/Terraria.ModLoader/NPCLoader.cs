@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
@@ -174,6 +175,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
 			Array.Resize(ref Lang._npcNameCache, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
+			Array.Resize(ref WorldGen.TownManager._hasRoom, nextNPC);
 			Array.Resize(ref NPCID.Sets.TrailingMode, nextNPC);
 			Array.Resize(ref NPCID.Sets.BelongsToInvasionOldOnesArmy, nextNPC);
 			Array.Resize(ref NPCID.Sets.TeleportationImmune, nextNPC);
