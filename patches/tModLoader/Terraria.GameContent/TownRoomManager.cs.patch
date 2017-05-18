@@ -17,10 +17,22 @@
  
  		public int FindOccupation(int x, int y)
  		{
-@@ -87,6 +_,10 @@
- 			writer.Write(this._roomLocationPairs.Count);
+@@ -84,9 +_,21 @@
+ 
+ 		public void Save(BinaryWriter writer)
+ 		{
+-			writer.Write(this._roomLocationPairs.Count);
++			int count = 0;
  			foreach (Tuple<int, Point> current in this._roomLocationPairs)
  			{
++				if (current.Item1 < Main.maxNPCTypes)
++				{
++					count++;
++				}
++			}
++			writer.Write(count);
++			foreach (Tuple<int, Point> current in this._roomLocationPairs)
++			{
 +				if (current.Item1 >= Main.maxNPCTypes)
 +				{
 +					continue;
