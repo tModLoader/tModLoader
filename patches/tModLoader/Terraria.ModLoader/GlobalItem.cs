@@ -498,7 +498,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it.
 		/// </summary>
-		public virtual bool ExtraPickupSpace(Item item, Player player)
+		public virtual bool ItemSpace(Item item, Player player)
 		{
 			return false;
 		}

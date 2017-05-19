@@ -700,7 +700,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
-		public virtual bool ExtraPickupSpace(Player player)
+		public virtual bool ItemSpace(Player player)
 		{
 			return false;
 		}

@@ -97,7 +97,7 @@ namespace Terraria.ModLoader
 		private static Func<Item, Player, bool>[] HookGrabStyle;
 		private static Func<Item, Player, bool>[] HookCanPickup;
 		private static Func<Item, Player, bool>[] HookOnPickup;
-		private static Func<Item, Player, bool>[] HookExtraPickupSpace;
+		private static Func<Item, Player, bool>[] HookItemSpace;
 		private static Func<Item, Color, Color?>[] HookGetAlpha;
 		private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 		private static DelegatePreDrawInWorld[] HookPreDrawInWorld;
@@ -279,7 +279,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookGrabStyle, globalItems, g => g.GrabStyle);
 			ModLoader.BuildGlobalHook(ref HookCanPickup, globalItems, g => g.CanPickup);
 			ModLoader.BuildGlobalHook(ref HookOnPickup, globalItems, g => g.OnPickup);
-			ModLoader.BuildGlobalHook(ref HookExtraPickupSpace, globalItems, g => g.ExtraPickupSpace);
+			ModLoader.BuildGlobalHook(ref HookItemSpace, globalItems, g => g.ItemSpace);
 			ModLoader.BuildGlobalHook(ref HookGetAlpha, globalItems, g => g.GetAlpha);
 			ModLoader.BuildGlobalHook(ref HookPreDrawInWorld, globalItems, g => g.PreDrawInWorld);
 			ModLoader.BuildGlobalHook(ref HookPostDrawInWorld, globalItems, g => g.PostDrawInWorld);
@@ -1511,16 +1511,16 @@ namespace Terraria.ModLoader
 
 		//in Terraria.Player.GrabItems before grab effect
 		//  (this.ItemSpace(Main.item[j]) || ItemLoader.ExtraPickupSpace(Main.item[j], this)
-		public static bool ExtraPickupSpace(Item item, Player player)
+		public static bool ItemSpace(Item item, Player player)
 		{
-			foreach (var hook in HookExtraPickupSpace)
+			foreach (var hook in HookItemSpace)
 			{
 				if (hook(item, player))
 				{
 					return true;
 				}
 			}
-			return item.modItem?.ExtraPickupSpace(player) ?? false;
+			return item.modItem?.ItemSpace(player) ?? false;
 		}
 
 		//in Terraria.UI.ItemSlot.GetItemLight remove type too high check
