@@ -154,6 +154,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "MountType< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#a20c740a43190b7f8862eb5635f45d56f", null ],
     [ "NPCType", "class_terraria_1_1_mod_loader_1_1_mod.html#af70124a3a68c60f4cd946a46d9a287bd", null ],
     [ "NPCType< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#a9a6f710da16dc7e75077965a3737122d", null ],
+    [ "PostAddRecipes", "class_terraria_1_1_mod_loader_1_1_mod.html#aa4117ae9725d19222ce13de255ca3034", null ],
     [ "PostDrawFullscreenMap", "class_terraria_1_1_mod_loader_1_1_mod.html#ac230f956119a8a6c36d28e763c912528", null ],
     [ "PostDrawInterface", "class_terraria_1_1_mod_loader_1_1_mod.html#a9cab728dabe85fe39eccff20b79d86e5", null ],
     [ "PostSetupContent", "class_terraria_1_1_mod_loader_1_1_mod.html#a026f70f45d29300a148e8257d324ba12", null ],

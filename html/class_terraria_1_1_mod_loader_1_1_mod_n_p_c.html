@@ -168,9 +168,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2fe5d7593041428499b764a70d0b2489"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2fe5d7593041428499b764a70d0b2489">CanHitPlayer</a> (Player target, ref int cooldownSlot)</td></tr>
 <tr class="memdesc:a2fe5d7593041428499b764a70d0b2489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this NPC can hit the given player. Return false to block this NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters to use (-1, 0, or 1), and defaults to -1.  <a href="#a2fe5d7593041428499b764a70d0b2489">More...</a><br /></td></tr>
 <tr class="separator:a2fe5d7593041428499b764a70d0b2489"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6835a75fd5412e9abb6682448fc721d5"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6835a75fd5412e9abb6682448fc721d5">CanSpawn</a> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html">NPCSpawnInfo</a> spawnInfo)</td></tr>
-<tr class="memdesc:a6835a75fd5412e9abb6682448fc721d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning.  <a href="#a6835a75fd5412e9abb6682448fc721d5">More...</a><br /></td></tr>
-<tr class="separator:a6835a75fd5412e9abb6682448fc721d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78b4fdd2fb59c1812e03568478be3757"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a78b4fdd2fb59c1812e03568478be3757">CanTownNPCSpawn</a> (int numTownNPCs, int money)</td></tr>
 <tr class="memdesc:a78b4fdd2fb59c1812e03568478be3757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the conditions have been met for this town NPC to be able to move into town. For example, the Demolitionist requires that any player has an explosive.  <a href="#a78b4fdd2fb59c1812e03568478be3757">More...</a><br /></td></tr>
 <tr class="separator:a78b4fdd2fb59c1812e03568478be3757"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -275,6 +272,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a78c975ddfdf04b1148729710da206573"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a78c975ddfdf04b1148729710da206573">SetupShop</a> (Chest shop, ref int nextSlot)</td></tr>
 <tr class="memdesc:a78c975ddfdf04b1148729710da206573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to this town NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.  <a href="#a78c975ddfdf04b1148729710da206573">More...</a><br /></td></tr>
 <tr class="separator:a78c975ddfdf04b1148729710da206573"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7713bbbd313012944b958e8eafc35e0"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae7713bbbd313012944b958e8eafc35e0">SpawnChance</a> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html">NPCSpawnInfo</a> spawnInfo)</td></tr>
+<tr class="memdesc:ae7713bbbd313012944b958e8eafc35e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning.  <a href="#ae7713bbbd313012944b958e8eafc35e0">More...</a><br /></td></tr>
+<tr class="separator:ae7713bbbd313012944b958e8eafc35e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac460c107f521d532eb9b7612fc9afd20"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac460c107f521d532eb9b7612fc9afd20">SpawnNPC</a> (int tileX, int tileY)</td></tr>
 <tr class="memdesc:ac460c107f521d532eb9b7612fc9afd20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize how this NPC is created when it naturally spawns (for example, its position or ai array). Return the return value of NPC.NewNPC. By default this method spawns this NPC on top of the tile at the given coordinates.  <a href="#ac460c107f521d532eb9b7612fc9afd20">More...</a><br /></td></tr>
 <tr class="separator:ac460c107f521d532eb9b7612fc9afd20"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -458,7 +458,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00107">107</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01401">Terraria.ModLoader.Mod.AutoloadNPC()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01408">Terraria.ModLoader.Mod.AutoloadNPC()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        {</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9ce9cc54ec7752b36975c391eb1ce0d2">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_html_a9ce9cc54ec7752b36975c391eb1ce0d2"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9ce9cc54ec7752b36975c391eb1ce0d2">Terraria.ModLoader.ModNPC.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod that added this ModNPC. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_n_p_c_8cs_source.html#l00029">ModNPC.cs:29</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00046">Mod.cs:46</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
@@ -522,7 +522,7 @@ Properties</h2></td></tr>
 
 <p>References <a class="el" href="_mod_n_p_c_8cs_source.html#l00029">Terraria.ModLoader.ModNPC.mod</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00038">Terraria.ModLoader.ModNPC.Name</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00020">Terraria.ModLoader.ModNPC.npc</a>, and <a class="el" href="_mod_n_p_c_8cs_source.html#l00146">Terraria.ModLoader.ModNPC.SetDefaults()</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01401">Terraria.ModLoader.Mod.AutoloadNPC()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01408">Terraria.ModLoader.Mod.AutoloadNPC()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        {</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
@@ -859,55 +859,6 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        {</div><div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a6835a75fd5412e9abb6682448fc721d5"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual float Terraria.ModLoader.ModNPC.CanSpawn </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html">NPCSpawnInfo</a>&#160;</td>
-          <td class="paramname"><em>spawnInfo</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">spawnInfo</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00495">495</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-
-<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00918">Terraria.ModLoader.NPCLoader.ChooseSpawn()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        {</div><div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;            <span class="keywordflow">return</span> 0f;</div><div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a6835a75fd5412e9abb6682448fc721d5_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a6835a75fd5412e9abb6682448fc721d5_icgraph" alt=""/></div>
-<map name="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a6835a75fd5412e9abb6682448fc721d5_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a6835a75fd5412e9abb6682448fc721d5_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aaa7043a82d3c1939e83ac03b1e0b9624" title="Terraria.ModLoader.NPCLoader.\lChooseSpawn" alt="" coords="251,5,461,51"/>
-</map>
-</div>
-</p>
-
-</div>
-</div>
 <a class="anchor" id="a78b4fdd2fb59c1812e03568478be3757"></a>
 <div class="memitem">
 <div class="memproto">
@@ -952,13 +903,13 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00517">517</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00969">Terraria.ModLoader.NPCLoader.CanTownNPCSpawn()</a>.</p>
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00973">Terraria.ModLoader.NPCLoader.CanTownNPCSpawn()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;        {</div><div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a78b4fdd2fb59c1812e03568478be3757_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a78b4fdd2fb59c1812e03568478be3757_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a78b4fdd2fb59c1812e03568478be3757_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a78b4fdd2fb59c1812e03568478be3757_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#afccd6571f8464fa3b710b16fa7302f24" title="Terraria.ModLoader.NPCLoader.\lCanTownNPCSpawn" alt="" coords="251,5,461,51"/>
@@ -2357,13 +2308,13 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00146">146</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>, and <a class="el" href="_mod_n_p_c_8cs_source.html#l00117">Terraria.ModLoader.ModNPC.AutoloadHead()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02372">Terraria.ModLoader.Mod.AddTranslation()</a>, and <a class="el" href="_mod_n_p_c_8cs_source.html#l00117">Terraria.ModLoader.ModNPC.AutoloadHead()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        {</div><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a90c57527bfca0ed7f14d88e09f3e498a_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a90c57527bfca0ed7f14d88e09f3e498a_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a90c57527bfca0ed7f14d88e09f3e498a_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_a90c57527bfca0ed7f14d88e09f3e498a_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#a6ea0eaab8c94d722396a267e31871a7b" title="Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText. " alt="" coords="255,5,444,51"/>
@@ -2400,13 +2351,13 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00139">139</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02372">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        {</div><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_af7933d98714543ab0f484b252b14c238_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_n_p_c_af7933d98714543ab0f484b252b14c238_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_af7933d98714543ab0f484b252b14c238_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_af7933d98714543ab0f484b252b14c238_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#a6ea0eaab8c94d722396a267e31871a7b" title="Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText. " alt="" coords="252,5,441,51"/>
@@ -2461,6 +2412,55 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        {</div><div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="ae7713bbbd313012944b958e8eafc35e0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual float Terraria.ModLoader.ModNPC.SpawnChance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html">NPCSpawnInfo</a>&#160;</td>
+          <td class="paramname"><em>spawnInfo</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spawnInfo</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00495">495</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00918">Terraria.ModLoader.NPCLoader.ChooseSpawn()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        {</div><div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;            <span class="keywordflow">return</span> 0f;</div><div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_ae7713bbbd313012944b958e8eafc35e0_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_n_p_c_ae7713bbbd313012944b958e8eafc35e0_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_ae7713bbbd313012944b958e8eafc35e0_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_ae7713bbbd313012944b958e8eafc35e0_icgraph">
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aaa7043a82d3c1939e83ac03b1e0b9624" title="Terraria.ModLoader.NPCLoader.\lChooseSpawn" alt="" coords="251,5,461,51"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="ac460c107f521d532eb9b7612fc9afd20"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2505,7 +2505,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00506">506</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00955">Terraria.ModLoader.NPCLoader.SpawnNPC()</a>.</p>
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00959">Terraria.ModLoader.NPCLoader.SpawnNPC()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        {</div><div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;            <span class="keywordflow">return</span> NPC.NewNPC(tileX * 16 + 8, tileY * 16, <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0">npc</a>.type);</div><div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_html_a2b1a5b77ebd59ee8ca84f96505f6e2b0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0">Terraria.ModLoader.ModNPC.npc</a></div><div class="ttdeci">NPC npc</div><div class="ttdoc">The NPC object that this ModNPC controls. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_n_p_c_8cs_source.html#l00020">ModNPC.cs:20</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -3026,7 +3026,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00084">84</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02372">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
 
 </div>
 </div>
@@ -3044,7 +3044,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00090">90</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02372">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
 
 </div>
 </div>
@@ -3135,7 +3135,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00047">47</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01256">Terraria.ModLoader.Mod.AddNPC()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01263">Terraria.ModLoader.Mod.AddNPC()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>
@@ -3161,7 +3161,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00029">29</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01256">Terraria.ModLoader.Mod.AddNPC()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00117">Terraria.ModLoader.ModNPC.AutoloadHead()</a>, and <a class="el" href="_mod_8cs_source.html#l01401">Terraria.ModLoader.Mod.AutoloadNPC()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01263">Terraria.ModLoader.Mod.AddNPC()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00117">Terraria.ModLoader.ModNPC.AutoloadHead()</a>, and <a class="el" href="_mod_8cs_source.html#l01408">Terraria.ModLoader.Mod.AutoloadNPC()</a>.</p>
 
 </div>
 </div>
@@ -3187,7 +3187,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00038">38</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01256">Terraria.ModLoader.Mod.AddNPC()</a>, and <a class="el" href="_mod_n_p_c_8cs_source.html#l00117">Terraria.ModLoader.ModNPC.AutoloadHead()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01263">Terraria.ModLoader.Mod.AddNPC()</a>, and <a class="el" href="_mod_n_p_c_8cs_source.html#l00117">Terraria.ModLoader.ModNPC.AutoloadHead()</a>.</p>
 
 </div>
 </div>
@@ -3213,7 +3213,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00020">20</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01256">Terraria.ModLoader.Mod.AddNPC()</a>, <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00117">Terraria.ModLoader.ModNPC.AutoloadHead()</a>, <a class="el" href="_mod_8cs_source.html#l01401">Terraria.ModLoader.Mod.AutoloadNPC()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00969">Terraria.ModLoader.NPCLoader.CanTownNPCSpawn()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00918">Terraria.ModLoader.NPCLoader.ChooseSpawn()</a>, <a class="el" href="_mod_8cs_source.html#l01300">Terraria.ModLoader.Mod.NPCType()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01026">Terraria.ModLoader.NPCLoader.OnChatButtonClicked()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>, and <a class="el" href="_n_p_c_loader_8cs_source.html#l01014">Terraria.ModLoader.NPCLoader.SetChatButtons()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01263">Terraria.ModLoader.Mod.AddNPC()</a>, <a class="el" href="_mod_8cs_source.html#l02372">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00117">Terraria.ModLoader.ModNPC.AutoloadHead()</a>, <a class="el" href="_mod_8cs_source.html#l01408">Terraria.ModLoader.Mod.AutoloadNPC()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00973">Terraria.ModLoader.NPCLoader.CanTownNPCSpawn()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00918">Terraria.ModLoader.NPCLoader.ChooseSpawn()</a>, <a class="el" href="_mod_8cs_source.html#l01307">Terraria.ModLoader.Mod.NPCType()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01030">Terraria.ModLoader.NPCLoader.OnChatButtonClicked()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>, and <a class="el" href="_n_p_c_loader_8cs_source.html#l01018">Terraria.ModLoader.NPCLoader.SetChatButtons()</a>.</p>
 
 </div>
 </div>

@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.NPCLoader.ChooseSpawn" name="Terraria.ModLoader.NPCLoader.ChooseSpawn">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6835a75fd5412e9abb6682448fc721d5" title="Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chanc..." alt="" coords="265,5,460,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae7713bbbd313012944b958e8eafc35e0" title="Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chanc..." alt="" coords="265,5,460,51"/>
 </map>

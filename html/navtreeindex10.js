@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_mod_loader_1_1_topo_sort.html#a8fceff4c28a1bc57e154c14aaf4604be":[1,0,0,0,74,5],
 "class_terraria_1_1_mod_loader_1_1_topo_sort.html#aa17b39e0f4dc6aedd1d4e5744696fe83":[1,0,0,0,74,3],
 "class_terraria_1_1_mod_loader_1_1_topo_sort.html#aa7e8ac5853d1618fe9992093b90b6b7c":[1,0,0,0,74,1],
 "class_terraria_1_1_mod_loader_1_1_topo_sort.html#ab1814a04c5538ae6d8f942914eb83290":[1,0,0,0,74,6],
@@ -86,16 +87,16 @@ var NAVTREEINDEX10 =
 "dir_abb04cf70b4f0d2da8c90c1faf70fdc9.html":[2,0,0,0,2],
 "dir_b2dee0249ca1c6e98736e679cc6a5269.html":[2,0,0],
 "files.html":[2,0],
-"functions.html":[1,3,0,0],
 "functions.html":[1,3,0],
+"functions.html":[1,3,0,0],
 "functions_a.html":[1,3,0,1],
 "functions_b.html":[1,3,0,2],
 "functions_c.html":[1,3,0,3],
 "functions_d.html":[1,3,0,4],
 "functions_e.html":[1,3,0,5],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
+"functions_func.html":[1,3,1,0],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -167,8 +168,8 @@ var NAVTREEINDEX10 =
 "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html#a6cd4f6978db224e5870b3c981fe8e379":[1,0,0,0,1,9,0],
 "namespace_terraria.html":[1,0,0],
 "namespace_terraria.html":[0,0,0],
-"namespace_terraria_1_1_mod_loader.html":[1,0,0,0],
 "namespace_terraria_1_1_mod_loader.html":[0,0,0,0],
+"namespace_terraria_1_1_mod_loader.html":[1,0,0,0],
 "namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[1,0,0,0,0],
 "namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[0,0,0,0,0],
 "namespace_terraria_1_1_mod_loader_1_1_i_o.html":[0,0,0,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad69d452b4ac0982ad06f0e365eea7d91":[1,0,0,0,59,45],
 "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad7c16cdc9805e63617d219e5054c491b":[1,0,0,0,59,32],
 "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad8b79526ecbbf1bcfe73b9acac2c0926":[1,0,0,0,59,42],
-"struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#adb0b0ed66c762ef51e15d4d55fad9d2c":[1,0,0,0,59,10],
-"struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ae8944b777e200554f4f00c176d8337d6":[1,0,0,0,59,36]
+"struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#adb0b0ed66c762ef51e15d4d55fad9d2c":[1,0,0,0,59,10]
 };

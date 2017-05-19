@@ -214,9 +214,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac53dd0f4d41cf3b0a6171416b8ef2d9c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53dd0f4d41cf3b0a6171416b8ef2d9c">ExtractinatorUse</a> (ref int resultType, ref int resultStack)</td></tr>
 <tr class="memdesc:ac53dd0f4d41cf3b0a6171416b8ef2d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify what item, and in what quantity, is obtained when this item is fed into the Extractinator. By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.  <a href="#ac53dd0f4d41cf3b0a6171416b8ef2d9c">More...</a><br /></td></tr>
 <tr class="separator:ac53dd0f4d41cf3b0a6171416b8ef2d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5292a3a11ea0ae98c6100a7b303c467"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ac5292a3a11ea0ae98c6100a7b303c467">ExtraPickupSpace</a> (Player player)</td></tr>
-<tr class="memdesc:ac5292a3a11ea0ae98c6100a7b303c467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it.  <a href="#ac5292a3a11ea0ae98c6100a7b303c467">More...</a><br /></td></tr>
-<tr class="separator:ac5292a3a11ea0ae98c6100a7b303c467"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfa5895f0e52f0df7c833558b0f23b86"><td class="memItemLeft" align="right" valign="top">virtual Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acfa5895f0e52f0df7c833558b0f23b86">GetAlpha</a> (Color lightColor)</td></tr>
 <tr class="memdesc:acfa5895f0e52f0df7c833558b0f23b86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default.  <a href="#acfa5895f0e52f0df7c833558b0f23b86">More...</a><br /></td></tr>
 <tr class="separator:acfa5895f0e52f0df7c833558b0f23b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,6 +262,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7411ef16c0702304775364b6c177b690"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a7411ef16c0702304775364b6c177b690">IsVanitySet</a> (int head, int body, int legs)</td></tr>
 <tr class="memdesc:a7411ef16c0702304775364b6c177b690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks. By default, this will return the same value as the IsArmorSet hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.  <a href="#a7411ef16c0702304775364b6c177b690">More...</a><br /></td></tr>
 <tr class="separator:a7411ef16c0702304775364b6c177b690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae360f7809f0151bf1bdbc78dc5dae8c1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ae360f7809f0151bf1bdbc78dc5dae8c1">ItemSpace</a> (Player player)</td></tr>
+<tr class="memdesc:ae360f7809f0151bf1bdbc78dc5dae8c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it.  <a href="#ae360f7809f0151bf1bdbc78dc5dae8c1">More...</a><br /></td></tr>
+<tr class="separator:ae360f7809f0151bf1bdbc78dc5dae8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabea527359d0dc86e0f339938fdec7a7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aabea527359d0dc86e0f339938fdec7a7">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:aabea527359d0dc86e0f339938fdec7a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this item.  <a href="#aabea527359d0dc86e0f339938fdec7a7">More...</a><br /></td></tr>
 <tr class="separator:aabea527359d0dc86e0f339938fdec7a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -771,7 +771,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00092">92</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00627">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00634">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        {</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1ce00f06389a5baef958ccb7a6653cfb">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a1ce00f06389a5baef958ccb7a6653cfb"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1ce00f06389a5baef958ccb7a6653cfb">Terraria.ModLoader.ModItem.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">Gets the mod. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00037">ModItem.cs:37</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00046">Mod.cs:46</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
@@ -847,7 +847,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00104">104</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00627">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00634">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -895,7 +895,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00112">112</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00627">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00634">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        {</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -1588,41 +1588,6 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;        {</div><div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ac5292a3a11ea0ae98c6100a7b303c467"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.ModItem.ExtraPickupSpace </td>
-          <td>(</td>
-          <td class="paramtype">Player&#160;</td>
-          <td class="paramname"><em>player</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">player</td><td>The player.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00703">703</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;        {</div><div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;        }</div></div><!-- fragment -->
-</div>
-</div>
 <a class="anchor" id="acfa5895f0e52f0df7c833558b0f23b86"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1684,7 +1649,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00120">120</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02372">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        {</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -2213,7 +2178,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00836">836</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00392">Terraria.ModLoader.Mod.AddItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00399">Terraria.ModLoader.Mod.AddItem()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;        {</div><div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -2283,6 +2248,41 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;        {</div><div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> headItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;            <span class="keywordflow">if</span> (head &gt;= 0)</div><div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;            {</div><div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;                headItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.headType[head], <span class="keyword">true</span>);</div><div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;            }</div><div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> bodyItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;            <span class="keywordflow">if</span> (body &gt;= 0)</div><div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;            {</div><div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;                bodyItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.bodyType[body], <span class="keyword">true</span>);</div><div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;            }</div><div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> legItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;            <span class="keywordflow">if</span> (legs &gt;= 0)</div><div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;            {</div><div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;                legItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.legType[legs], <span class="keyword">true</span>);</div><div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;            }</div><div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a324513758f139965b9c5d13c588c5517">IsArmorSet</a>(headItem, bodyItem, legItem);</div><div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.SoundType.Item</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a324513758f139965b9c5d13c588c5517"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a324513758f139965b9c5d13c588c5517">Terraria.ModLoader.ModItem.IsArmorSet</a></div><div class="ttdeci">virtual bool IsArmorSet(Item head, Item body, Item legs)</div><div class="ttdoc">Returns whether or not the head armor, body armor, and leg armor make up a set. If this returns true...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00427">ModItem.cs:427</a></div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ae360f7809f0151bf1bdbc78dc5dae8c1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModItem.ItemSpace </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td>The player.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00703">703</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;        {</div><div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aabea527359d0dc86e0f339938fdec7a7"></a>
@@ -3478,7 +3478,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00135">135</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02372">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        {</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -3571,7 +3571,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00128">128</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02372">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        {</div><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -4325,7 +4325,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00055">55</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00392">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00399">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>
@@ -4352,7 +4352,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00025">25</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00546">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00120">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00392">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_8cs_source.html#l02365">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_mod_item_8cs_source.html#l00854">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, <a class="el" href="_mod_8cs_source.html#l00627">Terraria.ModLoader.Mod.AutoloadItem()</a>, <a class="el" href="_item_loader_8cs_source.html#l01319">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_8cs_source.html#l00446">Terraria.ModLoader.Mod.ItemType()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00075">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00553">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00120">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00399">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_8cs_source.html#l02372">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_mod_item_8cs_source.html#l00854">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, <a class="el" href="_mod_8cs_source.html#l00634">Terraria.ModLoader.Mod.AutoloadItem()</a>, <a class="el" href="_item_loader_8cs_source.html#l01319">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_8cs_source.html#l00453">Terraria.ModLoader.Mod.ItemType()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00075">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
 
 </div>
 </div>
@@ -4379,7 +4379,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00037">37</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00392">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_item_8cs_source.html#l00854">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, and <a class="el" href="_mod_8cs_source.html#l00627">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00399">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_item_8cs_source.html#l00854">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>, and <a class="el" href="_mod_8cs_source.html#l00634">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 
 </div>
 </div>
@@ -4405,7 +4405,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00046">46</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00392">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_item_8cs_source.html#l00854">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00399">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_item_8cs_source.html#l00854">Terraria.ModLoader.ModItem.AnglerQuestChat()</a>.</p>
 
 </div>
 </div>
@@ -4431,7 +4431,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00064">64</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00392">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00399">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00248">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>

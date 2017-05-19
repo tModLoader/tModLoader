@@ -194,8 +194,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ae9b78c43cf2796a560a267c89264d762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04bffce0cd26c5644210de489b393b41"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a04bffce0cd26c5644210de489b393b41">ExtractinatorUse</a> (ref int resultType, ref int resultStack, int extractType)</td></tr>
 <tr class="separator:a04bffce0cd26c5644210de489b393b41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac82cd03bbb736df790f9da803cd70ee4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ac82cd03bbb736df790f9da803cd70ee4">ExtraPickupSpace</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, Player player)</td></tr>
-<tr class="separator:ac82cd03bbb736df790f9da803cd70ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d3215d357be6878095adbf09897a865"><td class="memItemLeft" align="right" valign="top">static Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a7d3215d357be6878095adbf09897a865">GetAlpha</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, Color lightColor)</td></tr>
 <tr class="memdesc:a7d3215d357be6878095adbf09897a865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a9e7f8130872df2d2b2f9c7f54ff8da23" title="Allows you to determine the color and transparency in which an item is drawn. Return null to use the ...">GlobalItem.GetAlpha</a> hooks then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acfa5895f0e52f0df7c833558b0f23b86" title="Allows you to determine the color and transparency in which this item is drawn. Return null to use th...">ModItem.GetAlpha</a>, until one of them returns a color, and returns that color. Returns null if all of the hooks return null.  <a href="#a7d3215d357be6878095adbf09897a865">More...</a><br /></td></tr>
 <tr class="separator:a7d3215d357be6878095adbf09897a865"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,6 +236,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a61113f728375a71ca5714b354fa3873e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a61113f728375a71ca5714b354fa3873e">IsModBossBag</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
 <tr class="memdesc:a61113f728375a71ca5714b354fa3873e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a7a8d81109a06450e23a08537b7febdcb" title="The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains...">ModItem.bossBagNPC</a> is greater than 0. Returns false if item is not a modded item.  <a href="#a61113f728375a71ca5714b354fa3873e">More...</a><br /></td></tr>
 <tr class="separator:a61113f728375a71ca5714b354fa3873e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8acd1451d900c723702a74e214cdfb73"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a8acd1451d900c723702a74e214cdfb73">ItemSpace</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, Player player)</td></tr>
+<tr class="separator:a8acd1451d900c723702a74e214cdfb73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a127d21073a54b5f59565f691aea4084b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a127d21073a54b5f59565f691aea4084b">MeleeEffects</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, Player player, Rectangle hitbox)</td></tr>
 <tr class="memdesc:a127d21073a54b5f59565f691aea4084b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a06d18d25a2aa2ec8f908cbb3f41cb645" title="Allows you to give this melee weapon special effects, such as creating light or dust. ">ModItem.MeleeEffects</a> and all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae996bff03df8b481b099b0632ce58435" title="Allows you to give melee weapons special effects, such as creating light or dust. ...">GlobalItem.MeleeEffects</a> hooks.  <a href="#a127d21073a54b5f59565f691aea4084b">More...</a><br /></td></tr>
 <tr class="separator:a127d21073a54b5f59565f691aea4084b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -450,8 +450,6 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:a5073b8d035ba5249ff577459012dd778"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28149cc20695f68229b47600d0b12a86"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a4a58bc33c9fa3d6b709e4b9123bc1347">DelegateExtractinatorUse</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a28149cc20695f68229b47600d0b12a86">HookExtractinatorUse</a></td></tr>
 <tr class="separator:a28149cc20695f68229b47600d0b12a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ec62604420c678c9e63bab8e8904b42"><td class="memItemLeft" align="right" valign="top">static Func&lt; <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>, Player, bool &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a7ec62604420c678c9e63bab8e8904b42">HookExtraPickupSpace</a></td></tr>
-<tr class="separator:a7ec62604420c678c9e63bab8e8904b42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afafb1074c43d10584cbbaf12c3b2209d"><td class="memItemLeft" align="right" valign="top">static Func&lt; <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>, Color, Color?&gt;[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#afafb1074c43d10584cbbaf12c3b2209d">HookGetAlpha</a></td></tr>
 <tr class="separator:afafb1074c43d10584cbbaf12c3b2209d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a709066a5c6f531b6d627d40e860bc81c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a554783d54dae10355a7188caac16bc73">DelegateGetWeaponDamage</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a709066a5c6f531b6d627d40e860bc81c">HookGetWeaponDamage</a></td></tr>
@@ -476,6 +474,8 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:a5b6ef72541a2c6493a17ad5c071e5c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad576f097fb2e3f2b4f5eeb567e0b66da"><td class="memItemLeft" align="right" valign="top">static Func&lt; int, bool &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ad576f097fb2e3f2b4f5eeb567e0b66da">HookIsAnglerQuestAvailable</a></td></tr>
 <tr class="separator:ad576f097fb2e3f2b4f5eeb567e0b66da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31e83a451c33343da832b73e15d5e762"><td class="memItemLeft" align="right" valign="top">static Func&lt; <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>, Player, bool &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a31e83a451c33343da832b73e15d5e762">HookItemSpace</a></td></tr>
+<tr class="separator:a31e83a451c33343da832b73e15d5e762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7460b6e44a9ddc642a5c998fffddcca3"><td class="memItemLeft" align="right" valign="top">static Action&lt; <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>, Player, Rectangle &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a7460b6e44a9ddc642a5c998fffddcca3">HookMeleeEffects</a></td></tr>
 <tr class="separator:a7460b6e44a9ddc642a5c998fffddcca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2eeb165ee637a4adcefbaa9d257401e1"><td class="memItemLeft" align="right" valign="top">static Func&lt; <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>, Player, float &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a2eeb165ee637a4adcefbaa9d257401e1">HookMeleeSpeedMultiplier</a></td></tr>
@@ -2600,43 +2600,6 @@ Static Private Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ac82cd03bbb736df790f9da803cd70ee4"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool Terraria.ModLoader.ItemLoader.ExtraPickupSpace </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
-          <td class="paramname"><em>item</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Player&#160;</td>
-          <td class="paramname"><em>player</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l01514">1514</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;        {</div><div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;            <span class="keywordflow">foreach</span> (var hook <span class="keywordflow">in</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a7ec62604420c678c9e63bab8e8904b42">HookExtraPickupSpace</a>)</div><div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;            {</div><div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;                <span class="keywordflow">if</span> (hook(item, player))</div><div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;                {</div><div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l01521"></a><span class="lineno"> 1521</span>&#160;                }</div><div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;            }</div><div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;            <span class="keywordflow">return</span> item.modItem?.ExtraPickupSpace(player) ?? <span class="keyword">false</span>;</div><div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_item_loader_html_a7ec62604420c678c9e63bab8e8904b42"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a7ec62604420c678c9e63bab8e8904b42">Terraria.ModLoader.ItemLoader.HookExtraPickupSpace</a></div><div class="ttdeci">static Func&lt; Item, Player, bool &gt;[] HookExtraPickupSpace</div><div class="ttdef"><b>Definition:</b> <a href="_item_loader_8cs_source.html#l00100">ItemLoader.cs:100</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
 <a class="anchor" id="a94d870cb0b655118a699a0d502106a3f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2758,7 +2721,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l00150">150</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02289">Terraria.ModLoader.Mod.AddMusicBox()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02296">Terraria.ModLoader.Mod.AddMusicBox()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordflow">return</span> type &gt;= ItemID.Count &amp;&amp; type &lt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#adcc689c75a1f9a0b98ff4856710d8364">ItemCount</a> ? items[type - ItemID.Count] : null;</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_item_loader_html_adcc689c75a1f9a0b98ff4856710d8364"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#adcc689c75a1f9a0b98ff4856710d8364">Terraria.ModLoader.ItemLoader.ItemCount</a></div><div class="ttdeci">static int ItemCount</div><div class="ttdef"><b>Definition:</b> <a href="_item_loader_8cs_source.html#l00155">ItemLoader.cs:155</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -3335,6 +3298,43 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l01107">1107</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;        {</div><div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;            <span class="keywordflow">return</span> item.modItem != null &amp;&amp; item.modItem.bossBagNPC &gt; 0;</div><div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a8acd1451d900c723702a74e214cdfb73"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.ModLoader.ItemLoader.ItemSpace </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l01514">1514</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;        {</div><div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;            <span class="keywordflow">foreach</span> (var hook <span class="keywordflow">in</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a31e83a451c33343da832b73e15d5e762">HookItemSpace</a>)</div><div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;            {</div><div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;                <span class="keywordflow">if</span> (hook(item, player))</div><div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;                {</div><div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l01521"></a><span class="lineno"> 1521</span>&#160;                }</div><div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;            }</div><div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;            <span class="keywordflow">return</span> item.modItem?.ItemSpace(player) ?? <span class="keyword">false</span>;</div><div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_item_loader_html_a31e83a451c33343da832b73e15d5e762"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a31e83a451c33343da832b73e15d5e762">Terraria.ModLoader.ItemLoader.HookItemSpace</a></div><div class="ttdeci">static Func&lt; Item, Player, bool &gt;[] HookItemSpace</div><div class="ttdef"><b>Definition:</b> <a href="_item_loader_8cs_source.html#l00100">ItemLoader.cs:100</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a127d21073a54b5f59565f691aea4084b"></a>
@@ -5839,28 +5839,6 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a7ec62604420c678c9e63bab8e8904b42"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Func&lt;<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>, Player, bool&gt; [] Terraria.ModLoader.ItemLoader.HookExtraPickupSpace</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l00100">100</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="afafb1074c43d10584cbbaf12c3b2209d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -6122,6 +6100,28 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l00114">114</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a31e83a451c33343da832b73e15d5e762"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Func&lt;<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>, Player, bool&gt; [] Terraria.ModLoader.ItemLoader.HookItemSpace</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_item_loader_8cs_source.html#l00100">100</a> of file <a class="el" href="_item_loader_8cs_source.html">ItemLoader.cs</a>.</p>
 
 </div>
 </div>

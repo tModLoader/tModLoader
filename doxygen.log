@@ -577,9 +577,9 @@ Generating call graph for function Terraria.ModLoader.Mod.AddDust
 Generating call graph for function Terraria.ModLoader.Mod.AddEquipTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddFlameTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddItem
-Generating call graph for function Terraria.ModLoader./home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:611: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
+Generating call graph for function Terraria.ModLoader./home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:618: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
   parameter 'type'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:596: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:603: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
   parameter 'type'
 Mod.AddMount
 Generating call graph for function Terraria.ModLoader.Mod.AddMusicBox
@@ -686,10 +686,10 @@ Generating docs for compound Terraria::ModLoader::ModNPC...
 Generating caller graph for function Terraria.ModLoader.ModNPC.Autoload
 Generating call graph for function Terraria.ModLoader.ModNPC.AutoloadHead
 Generating caller graph for function Terraria.ModLoader.ModNPC.AutoloadHead
-Generating caller graph for function Terraria.ModLoader.ModNPC.CanSpawn
 Generating caller graph for function Terraria.ModLoader.ModNPC.CanTownNPCSpawn
 Generating caller graph for function Terraria.ModLoader.ModNPC.SetDefaults
 Generating caller graph for function Terraria.ModLoader.ModNPC.SetStaticDefaults
+Generating caller graph for function Terraria.ModLoader.ModNPC.SpawnChance
 Generating caller graph for function Terraria.ModLoader.ModNPC.SpawnNPC
 Generating docs for compound Terraria::ModLoader::ModPacket...
 Generating caller graph for function Terraria.ModLoader.ModPacket.Send
@@ -742,7 +742,7 @@ Generating caller graph for function Terraria.ModLoader.ModPlayer.OnHitPvpWithPr
 Generating caller graph for function Terraria.ModLoader.ModPlayer.OnRespawn
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PlayerConnect
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PlayerDisconnect
-Generating caller graph for function Terraria.ModLoader.ModPlayer.Pos/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:528: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
+Generating caller graph for function Terraria.ModLoader.ModPlayer./home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:528: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
   parameter 'item'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:310: warning: The following parameters of Terraria.ModLoader.ModTile.CanKillTile(int i, int j, ref bool blockDamaged) are not documented:
   parameter 'blockDamaged'
@@ -753,7 +753,7 @@ Generating caller graph for function Terraria.ModLoader.ModPlayer.Pos/home/travi
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:435: warning: The following parameters of Terraria.ModLoader.ModTile.DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) are not documented:
   parameter 'spriteBatch'
   parameter 'drawColor'
-tHurt
+PostHurt
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PostItemCheck
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PostUpdate
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PostUpdateBuffs
@@ -806,7 +806,7 @@ Generating caller graph for function Terraria.ModLoader.ModTile.Autoload
 Generating caller graph for function Terraria.ModLoader.ModTile.AutoSelect
 Generating caller graph for function Terraria.ModLoader.ModTile.CanExplode
 Generating caller graph for function Terraria.ModLoader.ModTile.Dangersense
-Generating caller graph for f/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:291: warning: The following parameters of Terraria.ModLoader.ModTile.DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) are not documented:
+Generating caller graph fo/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:291: warning: The following parameters of Terraria.ModLoader.ModTile.DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) are not documented:
   parameter 'wormChance'
   parameter 'grassHopperChance'
   parameter 'jungleGrubChance'
@@ -841,7 +841,7 @@ Generating caller graph for f/home/travis/build/bluemagic123/tModLoader/patches/
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:481: warning: The following parameters of Terraria.ModLoader.ModTile.TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) are not documented:
   parameter 'resetFrame'
   parameter 'noBreak'
-unction Terraria.ModLoader.ModTile.Drop
+r function Terraria.ModLoader.ModTile.Drop
 Generating caller graph for function Terraria.ModLoader.ModTile.KillSound
 Generating caller graph for function Terraria.ModLoader.ModTile.PostSetDefaults
 Generating caller graph for function Terraria.ModLoader.ModTile.SaplingGrowthType
@@ -1896,5 +1896,5 @@ Patching output file 112/115
 Patching output file 113/115
 Patching output file 114/115
 Patching output file 115/115
-lookup cache used 8883/131072 hits=86127 misses=9294
+lookup cache used 8884/131072 hits=86138 misses=9295
 finished...
