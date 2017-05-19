@@ -177,10 +177,12 @@ namespace Terraria.ModLoader.UI
 			if (mod != null)
 			{
 				uIElement.Append(deleteButton);
+				uIElement.Append(extractButton);
 			}
 			else
 			{
 				deleteButton.Remove();
+				extractButton.Remove();
 			}
 		}
 	}
