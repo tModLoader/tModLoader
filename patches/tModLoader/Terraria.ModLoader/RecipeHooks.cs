@@ -41,6 +41,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void PostAddRecipes()
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				try
+				{
+					mod.PostAddRecipes();
+				}
+				catch (Exception e)
+				{
+					ModLoader.DisableMod(mod.File);
+					throw new AddRecipesException(mod, "An error occured after adding recipes for " + mod.Name, e);
+				}
+			}
+		}
+
 		/// <summary>
 		/// Returns whether or not the conditions are met for this recipe to be available for the player to use.
 		/// </summary>

@@ -121,6 +121,13 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		/// <summary>
+		/// This provides a hook into the mod-loading process immediately after recipes have been added. You can use this to edit recipes added by other mods.
+		/// </summary>
+		public virtual void PostAddRecipes()
+		{
+		}
+
 		internal void Autoload()
 		{
 			if (!Main.dedServ && File != null)
