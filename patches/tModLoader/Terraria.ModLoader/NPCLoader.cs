@@ -923,7 +923,7 @@ namespace Terraria.ModLoader
 			pool[0] = 1f;
 			foreach (ModNPC npc in npcs)
 			{
-				float weight = npc.CanSpawn(spawnInfo);
+				float weight = npc.SpawnChance(spawnInfo);
 				if (weight > 0f)
 				{
 					pool[npc.npc.type] = weight;
@@ -936,6 +936,10 @@ namespace Terraria.ModLoader
 			float totalWeight = 0f;
 			foreach (int type in pool.Keys)
 			{
+				if (pool[type] < 0f)
+				{
+					pool[type] = 0f;
+				}
 				totalWeight += pool[type];
 			}
 			float choice = (float)Main.rand.NextDouble() * totalWeight;

@@ -492,7 +492,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="spawnInfo"></param>
 		/// <returns></returns>
-		public virtual float CanSpawn(NPCSpawnInfo spawnInfo)
+		public virtual float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			return 0f;
 		}
