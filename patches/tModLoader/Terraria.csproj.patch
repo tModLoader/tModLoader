@@ -276,18 +276,18 @@
 -    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" />
 -    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" />
 +    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-+    <EmbeddedResource Include="..\..\references\ReLogicMac.dll" Condition="$(DefineConstants.Contains('MAC'))"> 
++    <EmbeddedResource Include="..\..\references\ReLogicMac.dll" Condition="$(DefineConstants.Contains('MAC'))">
 +	  <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 +	</EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\ReLogicLinux.dll" Condition="$(DefineConstants.Contains('LINUX'))"> 
++    <EmbeddedResource Include="..\..\references\ReLogicLinux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
 +	  <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 +	</EmbeddedResource>
 +    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-+    <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))"> 
-+	  <LogicalName>Terraria.Libraries\Steamworks.NET.OSX\Steamworks.NET.dll</LogicalName>
++    <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
++	  <LogicalName>Terraria.Libraries.Steamworks.NET.OSX.Steamworks.NET.dll</LogicalName>
 +	</EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))"> 
-+	  <LogicalName>Terraria.Libraries\Steamworks.NET.Linux\Steamworks.NET.dll</LogicalName>
++    <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
++	  <LogicalName>Terraria.Libraries.Steamworks.NET.Linux.Steamworks.NET.dll</LogicalName>
 +	</EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
