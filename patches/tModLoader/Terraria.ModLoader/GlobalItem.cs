@@ -30,12 +30,41 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal int index;
+
 		/// <summary>
 		/// Allows you to automatically load a GlobalItem instead of using Mod.AddGlobalItem. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
 		/// </summary>
 		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
+		}
+
+		/// <summary>
+		/// Whether to create a new GlobalItem instance for every Item that exists. Useful for storing information on an item. Defaults to true. Return false if you do not need to store information.
+		/// </summary>
+		public virtual bool InstancePerEntity => true;
+
+		/// <summary>
+		/// Whether instances of this GlobalItem are created through its Clone hook or its constructor. Defaults to false. You should return true if your GlobalItem contains object references.
+		/// </summary>
+		public virtual bool CloneNewInstances => false;
+
+		/// <summary>
+		/// Returns a clone of this GlobalItem. By default this will return a memberwise clone; you will want to override this if your GlobalItem contains object references. Only called if CloneNewInstances returns true.
+		/// </summary>
+		public virtual GlobalItem Clone()
+		{
+			return (GlobalItem)MemberwiseClone();
+		}
+
+		internal GlobalItem GetForInstance()
+		{
+			if (!InstancePerEntity)
+			{
+				return this;
+			}
+			return CloneNewInstances ? Clone() : (GlobalItem)Activator.CreateInstance(this.GetType());
 		}
 
 		/// <summary>

@@ -311,10 +311,6 @@ namespace Terraria.ModLoader
 				{
 					AutoloadMountData(type);
 				}
-				else if (type.IsSubclassOf(typeof(ItemInfo)))
-				{
-					AutoloadItemInfo(type);
-				}
 				else if (type.IsSubclassOf(typeof(ProjectileInfo)))
 				{
 					AutoloadProjectileInfo(type);
@@ -480,6 +476,8 @@ namespace Terraria.ModLoader
 			globalItem.mod = this;
 			globalItem.Name = name;
 			this.globalItems[name] = globalItem;
+			globalItem.index = ItemLoader.globalItems.Count;
+			ItemLoader.globalIndexes[Name + ':' + name] = ItemLoader.globalItems.Count;
 			ItemLoader.globalItems.Add(globalItem);
 		}
 
@@ -508,19 +506,6 @@ namespace Terraria.ModLoader
 		public T GetGlobalItem<T>() where T : GlobalItem
 		{
 			return (T)GetGlobalItem(typeof(T).Name);
-		}
-
-		/// <summary>
-		/// Adds the given type of item information storage to the game, using the provided name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="info">The information.</param>
-		public void AddItemInfo(string name, ItemInfo info)
-		{
-			info.mod = this;
-			info.Name = name;
-			ItemLoader.infoIndexes[Name + ':' + name] = ItemLoader.infoList.Count;
-			ItemLoader.infoList.Add(info);
 		}
 
 		/// <summary>
@@ -671,17 +656,6 @@ namespace Terraria.ModLoader
 			if (globalItem.Autoload(ref name))
 			{
 				AddGlobalItem(name, globalItem);
-			}
-		}
-
-		private void AutoloadItemInfo(Type type)
-		{
-			ItemInfo itemInfo = (ItemInfo)Activator.CreateInstance(type);
-			itemInfo.mod = this;
-			string name = type.Name;
-			if (itemInfo.Autoload(ref name))
-			{
-				AddItemInfo(name, itemInfo);
 			}
 		}
 
@@ -2381,7 +2355,7 @@ namespace Terraria.ModLoader
 				Main.itemTexture[item.item.type] = ModLoader.GetTexture(item.texture);
 				EquipLoader.SetSlot(item.item);
 				item.SetStaticDefaults();
-				ItemLoader.SetupItemInfo(item.item);
+				ItemLoader.SetupGlobalItems(item.item);
 				item.SetDefaults();
 				DrawAnimation animation = item.GetAnimation();
 				if (animation != null)
