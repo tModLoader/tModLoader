@@ -34,7 +34,6 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     ] ],
     [ "EntityInfo.cs", "_entity_info_8cs.html", [
       [ "EntityInfo", "class_terraria_1_1_mod_loader_1_1_entity_info.html", "class_terraria_1_1_mod_loader_1_1_entity_info" ],
-      [ "ItemInfo", "class_terraria_1_1_mod_loader_1_1_item_info.html", "class_terraria_1_1_mod_loader_1_1_item_info" ],
       [ "NPCInfo", "class_terraria_1_1_mod_loader_1_1_n_p_c_info.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_info" ],
       [ "ProjectileInfo", "class_terraria_1_1_mod_loader_1_1_projectile_info.html", "class_terraria_1_1_mod_loader_1_1_projectile_info" ]
     ] ],

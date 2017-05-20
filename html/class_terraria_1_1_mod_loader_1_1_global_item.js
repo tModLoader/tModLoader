@@ -12,6 +12,7 @@ var class_terraria_1_1_mod_loader_1_1_global_item =
     [ "CanRightClick", "class_terraria_1_1_mod_loader_1_1_global_item.html#a9d80b70c38916f2421d9467db61b5dd0", null ],
     [ "CanUseItem", "class_terraria_1_1_mod_loader_1_1_global_item.html#a42e845e6a67b6c2ae993157ad7bbce20", null ],
     [ "CaughtFishStack", "class_terraria_1_1_mod_loader_1_1_global_item.html#a5c7a6e95b4f9e162f0b18ff59d18ad1c", null ],
+    [ "Clone", "class_terraria_1_1_mod_loader_1_1_global_item.html#aa2a81cac7c1d573e93345ca95019ad9e", null ],
     [ "ConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_global_item.html#a53c2c8f4d4ea5d00509d76ee56c3094c", null ],
     [ "ConsumeItem", "class_terraria_1_1_mod_loader_1_1_global_item.html#ac0ea9cb6d1b7497dad277abbbfd51ff1", null ],
     [ "DrawArmorColor", "class_terraria_1_1_mod_loader_1_1_global_item.html#a05921a355011db47970d83b990ba221e", null ],
@@ -79,6 +80,8 @@ var class_terraria_1_1_mod_loader_1_1_global_item =
     [ "UseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_global_item.html#a34f057e99842e04ec26cf303b6645197", null ],
     [ "VerticalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_global_item.html#ad87945dcae95e961425c381e61fad5b7", null ],
     [ "WingUpdate", "class_terraria_1_1_mod_loader_1_1_global_item.html#a2c68eea8c1c266b9e88b15fbbc8f9102", null ],
+    [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_global_item.html#a7282668435b22acb79d992782dfe92eb", null ],
+    [ "InstancePerEntity", "class_terraria_1_1_mod_loader_1_1_global_item.html#a4a566fe8f37b3cf81e88ccf9e9eeae20", null ],
     [ "mod", "class_terraria_1_1_mod_loader_1_1_global_item.html#afae1df553ed043e0e44e072ca814f659", null ],
     [ "Name", "class_terraria_1_1_mod_loader_1_1_global_item.html#a55911c13aac0ffda5c691f929293a0e3", null ]
 ];

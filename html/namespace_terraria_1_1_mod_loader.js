@@ -19,7 +19,6 @@ var namespace_terraria_1_1_mod_loader =
     [ "GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", "class_terraria_1_1_mod_loader_1_1_global_recipe" ],
     [ "GlobalTile", "class_terraria_1_1_mod_loader_1_1_global_tile.html", "class_terraria_1_1_mod_loader_1_1_global_tile" ],
     [ "GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", "class_terraria_1_1_mod_loader_1_1_global_wall" ],
-    [ "ItemInfo", "class_terraria_1_1_mod_loader_1_1_item_info.html", "class_terraria_1_1_mod_loader_1_1_item_info" ],
     [ "ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", "class_terraria_1_1_mod_loader_1_1_item_loader" ],
     [ "MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", "class_terraria_1_1_mod_loader_1_1_map_legend" ],
     [ "Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", "class_terraria_1_1_mod_loader_1_1_mod" ],

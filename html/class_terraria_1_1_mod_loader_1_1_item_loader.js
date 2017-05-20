@@ -156,7 +156,7 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "HookPreSaveCustomData", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a50809103191533c728b3413675591764", null ],
     [ "HookPreUpdateVanitySet", "class_terraria_1_1_mod_loader_1_1_item_loader.html#afa87511662cc99b8d02e01d28af053b6", null ],
     [ "HookRightClick", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a19177143e19909644dc01dba8d29d69e", null ],
-    [ "HookSetDefaults", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ac1e19ebc6182f20ade2f7e4f02663de3", null ],
+    [ "HookSetDefaultsCache", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ae89de7a68aba00ffe604b7efadf721b6", null ],
     [ "HookSetMatch", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a512ad78f0a239971e8af43776aba5eb8", null ],
     [ "HookShoot", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a6dce790bb1099ab48b39fc24a003d3f8", null ],
     [ "HookUpdate", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a5d6bcdf6abf0851028cd13360f60263d", null ],

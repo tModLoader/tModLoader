@@ -20,7 +20,6 @@ var hierarchy =
       [ "Terraria.ModLoader.PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", null ]
     ] ],
     [ "Terraria.ModLoader.EntityInfo", "class_terraria_1_1_mod_loader_1_1_entity_info.html", [
-      [ "Terraria.ModLoader.ItemInfo", "class_terraria_1_1_mod_loader_1_1_item_info.html", null ],
       [ "Terraria.ModLoader.NPCInfo", "class_terraria_1_1_mod_loader_1_1_n_p_c_info.html", null ],
       [ "Terraria.ModLoader.ProjectileInfo", "class_terraria_1_1_mod_loader_1_1_projectile_info.html", null ]
     ] ],
