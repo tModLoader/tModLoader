@@ -841,10 +841,10 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_loader_8cs_source.html#l00873">873</a> of file <a class="el" href="_mod_loader_8cs_source.html">ModLoader.cs</a>.</p>
 
-<p>References <a class="el" href="_tmod_file_8cs_source.html#l00022">Terraria.ModLoader.IO.TmodFile.name</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00072">Terraria.ModLoader.ModLoader.steamID64</a>.</p>
+<p>References <a class="el" href="_tmod_file_8cs_source.html#l00022">Terraria.ModLoader.IO.TmodFile.name</a>, <a class="el" href="_mod_8cs_source.html#l00036">Terraria.ModLoader.Mod.Name</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00072">Terraria.ModLoader.ModLoader.steamID64</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l02354">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;        {</div><div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;            modHotKeys[name] = <span class="keyword">new</span> ModHotKey(mod, name, defaultKey);</div><div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;            <span class="keywordflow">return</span> modHotKeys[name];</div><div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;        {</div><div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;            <span class="keywordtype">string</span> key = mod.Name + <span class="stringliteral">&quot;: &quot;</span> + name;</div><div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;            modHotKeys[key] = <span class="keyword">new</span> ModHotKey(mod, name, defaultKey);</div><div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;            <span class="keywordflow">return</span> modHotKeys[key];</div><div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
