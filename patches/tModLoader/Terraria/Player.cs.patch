@@ -4819,7 +4819,7 @@
  					Main.item[num].noGrabDelay = 100;
  					Main.item[num].newAndShiny = false;
 +					Main.item[num].modItem = this.inventory[i].modItem;
-+					Main.item[num].itemInfo = this.inventory[i].itemInfo;
++					Main.item[num].globalItems = this.inventory[i].globalItems;
  					if (Main.netMode == 1)
  					{
  						NetMessage.SendData(21, -1, -1, null, num, 0f, 0f, 0f, 0, 0, 0);
@@ -4836,7 +4836,7 @@
  						Main.item[num2].noGrabDelay = 100;
  						Main.item[num2].newAndShiny = false;
 +						Main.item[num2].modItem = this.armor[i].modItem;
-+						Main.item[num2].itemInfo = this.armor[i].itemInfo;
++						Main.item[num2].globalItems = this.armor[i].globalItems;
  						if (Main.netMode == 1)
  						{
  							NetMessage.SendData(21, -1, -1, null, num2, 0f, 0f, 0f, 0, 0, 0);
@@ -4845,7 +4845,7 @@
  						Main.item[num3].noGrabDelay = 100;
  						Main.item[num3].newAndShiny = false;
 +						Main.item[num3].modItem = this.dye[i].modItem;
-+						Main.item[num3].itemInfo = this.dye[i].itemInfo;
++						Main.item[num3].globalItems = this.dye[i].globalItems;
  						if (Main.netMode == 1)
  						{
  							NetMessage.SendData(21, -1, -1, null, num3, 0f, 0f, 0f, 0, 0, 0);
@@ -4854,7 +4854,7 @@
  						Main.item[num4].noGrabDelay = 100;
  						Main.item[num4].newAndShiny = false;
 +						Main.item[num4].modItem = this.miscEquips[i].modItem;
-+						Main.item[num4].itemInfo = this.miscEquips[i].itemInfo;
++						Main.item[num4].globalItems = this.miscEquips[i].globalItems;
  						if (Main.netMode == 1)
  						{
  							NetMessage.SendData(21, -1, -1, null, num4, 0f, 0f, 0f, 0, 0, 0);
@@ -4863,7 +4863,7 @@
  						Main.item[num5].noGrabDelay = 100;
  						Main.item[num5].newAndShiny = false;
 +						Main.item[num5].modItem = this.miscDyes[i].modItem;
-+						Main.item[num5].itemInfo = this.miscDyes[i].itemInfo;
++						Main.item[num5].globalItems = this.miscDyes[i].globalItems;
  						if (Main.netMode == 1)
  						{
  							NetMessage.SendData(21, -1, -1, null, num5, 0f, 0f, 0f, 0, 0, 0);

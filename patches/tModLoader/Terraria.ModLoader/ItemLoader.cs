@@ -19,14 +19,13 @@ namespace Terraria.ModLoader
 		internal static readonly IList<ModItem> items = new List<ModItem>();
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
 		internal static GlobalItem[] NetGlobals;
-		internal static readonly IList<ItemInfo> infoList = new List<ItemInfo>();
-		internal static readonly IDictionary<string, int> infoIndexes = new Dictionary<string, int>();
+		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
 		internal static readonly IList<int> animations = new List<int>();
 		internal static readonly int vanillaQuestFishCount = Main.anglerQuestItemNetIDs.Length;
 		internal static readonly IList<int> questFish = new List<int>();
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
 
-		private static Action<Item>[] HookSetDefaults = new Action<Item>[0];
+		private static bool[] HookSetDefaultsCache = new bool[0];
 		private static Func<Item, Player, bool>[] HookCanUseItem;
 		private static Action<Item, Player>[] HookUseStyle;
 		private static Action<Item, Player>[] HookHoldStyle;
@@ -222,8 +221,8 @@ namespace Terraria.ModLoader
 			FindVanillaWings();
 
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
-
-			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalItems, g => g.SetDefaults);
+			
+			HookSetDefaultsCache = ModLoader.CacheGlobalHooks<GlobalItem, Action<Item>>(globalItems, g => g.SetDefaults);
 			ModLoader.BuildGlobalHook(ref HookCanUseItem, globalItems, g => g.CanUseItem);
 			ModLoader.BuildGlobalHook(ref HookCanUseItem, globalItems, g => g.CanUseItem);
 			ModLoader.BuildGlobalHook(ref HookUseStyle, globalItems, g => g.UseStyle);
@@ -302,8 +301,7 @@ namespace Terraria.ModLoader
 			items.Clear();
 			nextItem = ItemID.Count;
 			globalItems.Clear();
-			infoList.Clear();
-			infoIndexes.Clear();
+			globalIndexes.Clear();
 			animations.Clear();
 			questFish.Clear();
 		}
@@ -342,26 +340,27 @@ namespace Terraria.ModLoader
 		//in Terraria.Item.SetDefaults move Lang stuff before SetupItem
 		internal static void SetupItem(Item item)
 		{
-			SetupItemInfo(item);
+			SetupGlobalItems(item);
 			if (IsModItem(item))
 			{
 				GetItem(item.type).SetupItem(item);
 			}
-			foreach (var hook in HookSetDefaults)
+			foreach (var hook in item.HookSetDefaults)
 			{
 				hook(item);
 			}
 		}
 
-		internal static void SetupItemInfo(Item item)
+		internal static void SetupGlobalItems(Item item)
 		{
-			item.itemInfo = infoList.Select(info => info.Clone()).ToArray();
+			item.globalItems = globalItems.Select(globalItem => globalItem.GetForInstance()).ToArray();
+			ModLoader.BuildHookFromCache(ref item.HookSetDefaults, item.globalItems, g => g.SetDefaults, HookSetDefaultsCache);
 		}
 
-		internal static ItemInfo GetItemInfo(Item item, Mod mod, string name)
+		internal static GlobalItem GetGlobalItem(Item item, Mod mod, string name)
 		{
 			int index;
-			return infoIndexes.TryGetValue(mod.Name + ':' + name, out index) ? item.itemInfo[index] : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? item.globalItems[index] : null;
 		}
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))

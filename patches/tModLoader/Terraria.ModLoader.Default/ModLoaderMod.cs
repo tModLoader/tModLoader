@@ -29,7 +29,7 @@ namespace Terraria.ModLoader.Default
 			AddTexture("StartBag", startBagTexture);
 			AddTexture("MysteryTile", mysteryTileTexture);
 			AddItem("MysteryItem", new MysteryItem(), "ModLoader/MysteryItem");
-			AddItemInfo("MysteryGlobalItemInfo", new MysteryGlobalItemInfo());
+			AddGlobalItem("MysteryGlobalItem", new MysteryGlobalItem());
 			AddItem("StartBag", new StartBag(), "ModLoader/StartBag");
 			AddItem("AprilFools", new AprilFools(), "Terraria/Item_3389");
 			AddTile("MysteryTile", new MysteryTile(), "ModLoader/MysteryTile");

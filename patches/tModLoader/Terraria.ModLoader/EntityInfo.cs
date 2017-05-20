@@ -37,22 +37,6 @@ namespace Terraria.ModLoader
 	}
 
 	/// <summary>
-	/// This class serves as a way of adding custom info to Items. Every item will be instantiated with a list of instances of each ItemInfo loaded and can be accessed through Item.GetModInfo method calls
-	/// </summary>
-	/// <seealso cref="Terraria.ModLoader.EntityInfo" />
-	public class ItemInfo : EntityInfo
-	{
-		/// <summary>
-		/// Returns a clone of this ItemInfo. By default this will return a memberwise clone; you will want to override this if your ItemInfo contains object references.
-		/// </summary>
-		/// <returns></returns>
-		public virtual ItemInfo Clone()
-		{
-			return (ItemInfo)MemberwiseClone();
-		}
-	}
-
-	/// <summary>
 	/// This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiated with a list of instances of each ProjectileInfo loaded and can be accessed through Projectile.GetModInfo method calls
 	/// </summary>
 	/// <seealso cref="Terraria.ModLoader.EntityInfo" />
