@@ -149,7 +149,7 @@ namespace ExampleMod.NPCs
 			}
 		}
 
-		public override float CanSpawn(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (spawnInfo.playerSafe || !ExampleWorld.downedAbomination)
 			{

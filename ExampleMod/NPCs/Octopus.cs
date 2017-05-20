@@ -104,7 +104,7 @@ namespace ExampleMod.NPCs
 			}
 		}
 
-		public override float CanSpawn(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			return !spawnInfo.playerSafe && ExampleWorld.downedAbomination ? SpawnCondition.OceanMonster.Chance * 0.5f : 0f;
 		}

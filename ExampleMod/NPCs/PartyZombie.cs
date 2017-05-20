@@ -28,7 +28,7 @@ namespace ExampleMod.NPCs
 			animationType = NPCID.Zombie;
 		}
 
-		public override float CanSpawn(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
 		}

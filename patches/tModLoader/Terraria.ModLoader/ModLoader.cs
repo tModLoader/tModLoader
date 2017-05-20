@@ -872,8 +872,9 @@ namespace Terraria.ModLoader
 
 		public static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey)
 		{
-			modHotKeys[name] = new ModHotKey(mod, name, defaultKey);
-			return modHotKeys[name];
+			string key = mod.Name + ": " + name;
+			modHotKeys[key] = new ModHotKey(mod, name, defaultKey);
+			return modHotKeys[key];
 		}
 
 		internal static void SaveConfiguration()

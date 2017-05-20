@@ -32,7 +32,7 @@ namespace ExampleMod.NPCs
 			npc.buffImmune[BuffID.Confused] = false; // npc default to being immune to the Confused debuff. Allowing confused could be a little more work depending on the AI. npc.confused is true while the npc is confused.
 		}
 
-		public override float CanSpawn(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			// we would like this npc to spawn in the overworld.
 			return SpawnCondition.OverworldDaySlime.Chance * 0.1f;
