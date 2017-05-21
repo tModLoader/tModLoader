@@ -40,6 +40,37 @@
  		public static bool[] hairLoaded = new bool[134];
  		public static bool[] wingsLoaded = new bool[40];
  		public static bool[] goreLoaded = new bool[1087];
+@@ -462,13 +_,13 @@
+ 		public static int wofB;
+ 		public static int wofF = 0;
+ 		public static int offScreenRange = 200;
+-		private RenderTarget2D backWaterTarget;
++		public RenderTarget2D backWaterTarget;
+ 		public static RenderTarget2D waterTarget;
+-		private RenderTarget2D tileTarget;
+-		private RenderTarget2D blackTarget;
+-		private RenderTarget2D tile2Target;
+-		private RenderTarget2D wallTarget;
+-		private RenderTarget2D backgroundTarget;
++		public RenderTarget2D tileTarget;
++		public RenderTarget2D blackTarget;
++		public RenderTarget2D tile2Target;
++		public RenderTarget2D wallTarget;
++		public RenderTarget2D backgroundTarget;
+ 		public static RenderTarget2D screenTarget;
+ 		public static RenderTarget2D screenTargetSwap;
+ 		public static int maxMapUpdates = 250000;
+@@ -492,8 +_,8 @@
+ 		private static bool flameRingLoaded;
+ 		private Texture2D flameRingTexture;
+ 		private Texture2D mapDeathTexture;
+-		private RenderTarget2D[,] mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
+-		private RenderTarget2D mapSectionTexture;
++		public RenderTarget2D[,] mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
++		public RenderTarget2D mapSectionTexture;
+ 		public static bool[,] initMap = new bool[Main.mapTargetX, Main.mapTargetY];
+ 		public static bool[,] mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
+ 		public Texture2D[] infoIconTexture = new Texture2D[14];
 @@ -554,12 +_,12 @@
  		private int lastTileX;
  		private int firstTileY;
