@@ -3036,6 +3036,26 @@
  			if (Main.mouseItem.stack <= 0)
  			{
  				Main.mouseItem.type = 0;
+@@ -39889,6 +_,7 @@
+ 
+ 		private static void DrawInterface_26_InterfaceLogic3()
+ 		{
++			bool wasOpen = Main.playerInventory;
+ 			if (Main.player[Main.myPlayer].dead)
+ 			{
+ 				Main.playerInventory = false;
+@@ -39900,7 +_,10 @@
+ 				{
+ 					Main.InGuideCraftMenu = false;
+ 				}
+-				Recipe.FindRecipes();
++				if (wasOpen)
++				{
++					Recipe.FindRecipes();
++				}
+ 				Main.InReforgeMenu = false;
+ 			}
+ 			Main.hoverItemName = "";
 @@ -40424,6 +_,11 @@
  							if (type == 439 || type == 370)
  							{
