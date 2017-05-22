@@ -1755,7 +1755,7 @@
  			{
  				num147 = 8;
  			}
-+			ProjectileLoader.DrawOffset(projectile, ref num147, ref num148, ref num149);
++			ProjectileLoader.DrawOffset(projectile, ref num148, ref num147, ref num149);
  			SpriteEffects spriteEffects = SpriteEffects.None;
  			if (projectile.spriteDirection == -1)
  			{

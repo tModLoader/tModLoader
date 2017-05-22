@@ -214,7 +214,8 @@ namespace Terraria.ModLoader
 										UInt32 compressedDataSize = br.ReadUInt32();
 										if ((flags & 0x80) != 0)
 										{
-											UInt32 decompressedDataSize = br.ReadUInt32();
+											throw new Exception($"The effect {effectFilename} can not be loaded because it is compressed."); // TODO: figure out the compression used.
+											//UInt32 decompressedDataSize = br.ReadUInt32();
 										}
 										int typeReaderCount = br.ReadVarInt();
 										string typeReaderName = br.ReadString();
