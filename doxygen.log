@@ -577,9 +577,9 @@ Generating call graph for function Terraria.ModLoader.Mod.AddEquipTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddFlameTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddItem
 Generating call graph for function Terraria.ModLoader.Mod.AddMount
-Generating call graph for function Terraria.ModLo/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:603: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
+Generating call graph for function Terraria.ModLo/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:604: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
   parameter 'type'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:588: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:589: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
   parameter 'type'
 ader.Mod.AddMusicBox
 Generating call graph for function Terraria.ModLoader.Mod.AddNPCHeadTexture
@@ -1891,5 +1891,5 @@ Patching output file 111/114
 Patching output file 112/114
 Patching output file 113/114
 Patching output file 114/114
-lookup cache used 8903/131072 hits=86336 misses=9318
+lookup cache used 8903/131072 hits=86337 misses=9318
 finished...
