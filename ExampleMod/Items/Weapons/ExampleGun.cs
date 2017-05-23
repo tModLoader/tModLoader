@@ -8,14 +8,18 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleGun : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Gun");
+			Tooltip.SetDefault("This is a modded gun.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Gun";
 			item.damage = 20;
 			item.ranged = true;
 			item.width = 40;
 			item.height = 20;
-			item.toolTip = "This is a modded gun.";
 			item.useTime = 20;
 			item.useAnimation = 20;
 			item.useStyle = 5;

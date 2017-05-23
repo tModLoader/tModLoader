@@ -178,6 +178,7 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(10, -1, -1, 1);
 			Interface.modInfo.SetModName(properties.displayName);
 			Interface.modInfo.SetModInfo(properties.description);
+			Interface.modInfo.SetMod(mod);
 			Interface.modInfo.SetGotoMenu(Interface.modsMenuID);
 			Interface.modInfo.SetURL(properties.homepage);
 			Main.menuMode = Interface.modInfoID;

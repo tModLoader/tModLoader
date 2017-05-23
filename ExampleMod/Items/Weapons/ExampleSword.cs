@@ -7,14 +7,18 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleSword : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Sword");		//The English name of your weapon
+			Tooltip.SetDefault("This is a modded sword.");	//The (English) text shown below your weapon's name
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Sword";		//The name of your weapon
 			item.damage = 50;			//The damage of your weapon
 			item.melee = true;			//Is your weapon a melee weapon?
 			item.width = 40;			//Weapon's texture's width
 			item.height = 40;			//Weapon's texture's height
-			item.toolTip = "This is a modded sword.";	//The text showed below your weapon's name
 			item.useTime = 20;			//The time span of using the weapon. Remember in terraria, 60 frames is a second.
 			item.useAnimation = 20;			//The time span of the using animation of the weapon, suggest set it the same as useTime.
 			item.useStyle = 1;			//The use style of weapon, 1 for swinging, 2 for drinking, 3 act like shortsword, 4 for use like life crystal, 5 for use staffs or guns

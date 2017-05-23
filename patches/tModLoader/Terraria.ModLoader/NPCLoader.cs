@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
@@ -145,7 +146,7 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int NPCCount => nextNPC;
+		public static int NPCCount => nextNPC;
 
 		/// <summary>
 		/// Gets the ModNPC instance corresponding to the specified type.
@@ -174,6 +175,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
 			Array.Resize(ref Lang._npcNameCache, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
+			Array.Resize(ref WorldGen.TownManager._hasRoom, nextNPC);
 			Array.Resize(ref NPCID.Sets.TrailingMode, nextNPC);
 			Array.Resize(ref NPCID.Sets.BelongsToInvasionOldOnesArmy, nextNPC);
 			Array.Resize(ref NPCID.Sets.TeleportationImmune, nextNPC);
@@ -921,7 +923,7 @@ namespace Terraria.ModLoader
 			pool[0] = 1f;
 			foreach (ModNPC npc in npcs)
 			{
-				float weight = npc.CanSpawn(spawnInfo);
+				float weight = npc.SpawnChance(spawnInfo);
 				if (weight > 0f)
 				{
 					pool[npc.npc.type] = weight;
@@ -934,6 +936,10 @@ namespace Terraria.ModLoader
 			float totalWeight = 0f;
 			foreach (int type in pool.Keys)
 			{
+				if (pool[type] < 0f)
+				{
+					pool[type] = 0f;
+				}
 				totalWeight += pool[type];
 			}
 			float choice = (float)Main.rand.NextDouble() * totalWeight;

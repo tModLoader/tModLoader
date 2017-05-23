@@ -8,9 +8,13 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleSolution : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Spray");
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Example Spray";
 			projectile.width = 6;
 			projectile.height = 6;
 			projectile.friendly = true;

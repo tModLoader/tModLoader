@@ -7,8 +7,8 @@ namespace ExampleMod.Buffs
 	{
 		public override void SetDefaults()
 		{
-			Main.buffName[Type] = "Undead";
-			Main.buffTip[Type] = "Recovering harms you";
+			DisplayName.SetDefault("Undead");
+			Description.SetDefault("Recovering harms you");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoSave[Type] = true;
@@ -17,7 +17,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-            player.GetModPlayer<ExamplePlayer>(mod).badHeal = true;
+			player.GetModPlayer<ExamplePlayer>(mod).badHeal = true;
 		}
 	}
 }

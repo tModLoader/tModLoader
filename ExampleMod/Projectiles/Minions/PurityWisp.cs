@@ -7,24 +7,28 @@ namespace ExampleMod.Projectiles.Minions
 	//ported from my tAPI mod because I'm lazy
 	public class PurityWisp : HoverShooter
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Purity Wisp");
+			Main.projFrames[projectile.type] = 3;
+			Main.projPet[projectile.type] = true;
+			ProjectileID.Sets.MinionSacrificable[projectile.type] = true;
+			ProjectileID.Sets.Homing[projectile.type] = true;
+			ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true; //This is necessary for right-click targetting
+		}
+
 		public override void SetDefaults()
 		{
 			projectile.netImportant = true;
-			projectile.name = "Purity Wisp";
 			projectile.width = 24;
 			projectile.height = 32;
-			Main.projFrames[projectile.type] = 3;
 			projectile.friendly = true;
-			Main.projPet[projectile.type] = true;
 			projectile.minion = true;
 			projectile.minionSlots = 1;
 			projectile.penetrate = -1;
 			projectile.timeLeft = 18000;
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
-			ProjectileID.Sets.MinionSacrificable[projectile.type] = true;
-			ProjectileID.Sets.Homing[projectile.type] = true;
-			ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true; //This is necessary for right-click targetting
 			inertia = 20f;
 			shoot = mod.ProjectileType("PurityBolt");
 			shootSpeed = 12f;

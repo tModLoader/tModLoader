@@ -7,10 +7,14 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleCloneProjectile : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Starfury V2");
+		}
+
 		public override void SetDefaults()
 		{
 			projectile.CloneDefaults(ProjectileID.Starfury);
-			projectile.name = "Starfury V2";
 			aiType = ProjectileID.Starfury;
 		}
 

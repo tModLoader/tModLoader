@@ -12,10 +12,9 @@ namespace ExampleMod.Projectiles
 			return mod.Properties.Autoload;
 		}
 
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
-			base.SetDefaults();
-			projectile.name = "Pixel Ball";
+			DisplayName.SetDefault("Pixel Ball");
 		}
 
 		public override void CreateDust()

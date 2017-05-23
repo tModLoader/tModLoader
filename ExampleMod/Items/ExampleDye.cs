@@ -8,6 +8,11 @@ namespace ExampleMod.Items
 {
 	public class ExampleDye : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Dye");
+		}
+
 		//PlayerHooks.GetDyeTraderReward(this, list);
 		public override void SetDefaults()
 		{
@@ -21,7 +26,6 @@ namespace ExampleMod.Items
 			*/
 			byte dye = item.dye;
 			item.CloneDefaults(ItemID.GelDye);
-			item.name = "Example Dye";
 			item.dye = dye;
 		}
 	}

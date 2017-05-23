@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using ReLogic.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
@@ -56,7 +57,7 @@ namespace Terraria.ModLoader
 
 		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-		internal readonly IDictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
+		internal readonly IDictionary<string, DynamicSpriteFont> fonts = new Dictionary<string, DynamicSpriteFont>();
 		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
@@ -117,6 +118,13 @@ namespace Terraria.ModLoader
 		/// Override this method to add recipes to the game. It is recommended that you do so through instances of ModRecipe, since it provides methods that simplify recipe creation.
 		/// </summary>
 		public virtual void AddRecipes()
+		{
+		}
+
+		/// <summary>
+		/// This provides a hook into the mod-loading process immediately after recipes have been added. You can use this to edit recipes added by other mods.
+		/// </summary>
+		public virtual void PostAddRecipes()
 		{
 		}
 
@@ -181,7 +189,7 @@ namespace Terraria.ModLoader
 								}
 								try
 								{
-									fonts[xnbPath] = Main.instance.Content.Load<SpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
+									fonts[xnbPath] = Main.instance.OurLoad<DynamicSpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
 								}
 								catch
 								{
@@ -206,7 +214,8 @@ namespace Terraria.ModLoader
 										UInt32 compressedDataSize = br.ReadUInt32();
 										if ((flags & 0x80) != 0)
 										{
-											UInt32 decompressedDataSize = br.ReadUInt32();
+											throw new Exception($"The effect {effectFilename} can not be loaded because it is compressed."); // TODO: figure out the compression used.
+											//UInt32 decompressedDataSize = br.ReadUInt32();
 										}
 										int typeReaderCount = br.ReadVarInt();
 										string typeReaderName = br.ReadString();
@@ -302,10 +311,6 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(ModMountData)))
 				{
 					AutoloadMountData(type);
-				}
-				else if (type.IsSubclassOf(typeof(ItemInfo)))
-				{
-					AutoloadItemInfo(type);
 				}
 				else if (type.IsSubclassOf(typeof(ProjectileInfo)))
 				{
@@ -472,6 +477,8 @@ namespace Terraria.ModLoader
 			globalItem.mod = this;
 			globalItem.Name = name;
 			this.globalItems[name] = globalItem;
+			globalItem.index = ItemLoader.globalItems.Count;
+			ItemLoader.globalIndexes[Name + ':' + name] = ItemLoader.globalItems.Count;
 			ItemLoader.globalItems.Add(globalItem);
 		}
 
@@ -500,19 +507,6 @@ namespace Terraria.ModLoader
 		public T GetGlobalItem<T>() where T : GlobalItem
 		{
 			return (T)GetGlobalItem(typeof(T).Name);
-		}
-
-		/// <summary>
-		/// Adds the given type of item information storage to the game, using the provided name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="info">The information.</param>
-		public void AddItemInfo(string name, ItemInfo info)
-		{
-			info.mod = this;
-			info.Name = name;
-			ItemLoader.infoIndexes[Name + ':' + name] = ItemLoader.infoList.Count;
-			ItemLoader.infoList.Add(info);
 		}
 
 		/// <summary>
@@ -663,17 +657,6 @@ namespace Terraria.ModLoader
 			if (globalItem.Autoload(ref name))
 			{
 				AddGlobalItem(name, globalItem);
-			}
-		}
-
-		private void AutoloadItemInfo(Type type)
-		{
-			ItemInfo itemInfo = (ItemInfo)Activator.CreateInstance(type);
-			itemInfo.mod = this;
-			string name = type.Name;
-			if (itemInfo.Autoload(ref name))
-			{
-				AddItemInfo(name, itemInfo);
 			}
 		}
 
@@ -2373,7 +2356,7 @@ namespace Terraria.ModLoader
 				Main.itemTexture[item.item.type] = ModLoader.GetTexture(item.texture);
 				EquipLoader.SetSlot(item.item);
 				item.SetStaticDefaults();
-				ItemLoader.SetupItemInfo(item.item);
+				ItemLoader.SetupGlobalItems(item.item);
 				item.SetDefaults();
 				DrawAnimation animation = item.GetAnimation();
 				if (animation != null)
@@ -2600,9 +2583,9 @@ namespace Terraria.ModLoader
 		/// Gets a SpriteFont loaded from the specified path.
 		/// </summary>
 		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
-		public SpriteFont GetFont(string name)
+		public DynamicSpriteFont GetFont(string name)
 		{
-			SpriteFont font;
+			DynamicSpriteFont font;
 			if (!fonts.TryGetValue(name, out font))
 				throw new MissingResourceException(name);
 

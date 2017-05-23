@@ -6,13 +6,17 @@ namespace ExampleMod.Items
 {
 	public class SparklingSphere : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Sparkling Sphere");
+			Tooltip.SetDefault("Hold to watch magic happen!");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Sparkling Sphere";
 			item.holdStyle = 4;
 			item.width = 40;
 			item.height = 40;
-			item.toolTip = "Hold to watch magic happen!";
 			item.value = 10000;
 			item.rare = 2;
 		}

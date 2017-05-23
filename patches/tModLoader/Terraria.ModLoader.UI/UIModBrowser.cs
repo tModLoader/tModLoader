@@ -416,20 +416,14 @@ namespace Terraria.ModLoader.UI
 					.StartNew(ModLoader.FindMods)
 					.ContinueWith(task =>
 					{
-						TmodFile[] modFiles = task.Result;
-						List<BuildProperties> modBuildProperties = new List<BuildProperties>();
-						foreach (TmodFile tmodfile in modFiles)
-						{
-							modBuildProperties.Add(BuildProperties.ReadModFile(tmodfile));
-						}
-						PopulateFromJSON(modBuildProperties, response);
+						PopulateFromJSON(task.Result, response);
 						loading = false;
 						reloadButton.SetText("Reload browser");
 					}, TaskScheduler.FromCurrentSynchronizationContext());
 			}
 		}
 
-		private void PopulateFromJSON(List<BuildProperties> modBuildProperties, string json)
+		private void PopulateFromJSON(TmodFile[] installedMods, string json)
 		{
 			try
 			{
@@ -463,22 +457,17 @@ namespace Terraria.ModLoader.UI
 					bool exists = false;
 					bool update = false;
 					bool updateIsDowngrade = false;
-					foreach (BuildProperties bp in modBuildProperties)
+					var installed = installedMods.SingleOrDefault(m => m.name == name);
+					if (installed != null)
 					{
-						if (bp.displayName.Equals(displayname))
-						{
-							exists = true;
-							if (!bp.version.Equals(new Version(version.Substring(1))))
-							{
-								update = true;
-								if (bp.version > new Version(version.Substring(1)))
-								{
-									updateIsDowngrade = true;
-								}
-							}
-						}
+						exists = true;
+						var cVersion = new Version(version.Substring(1));
+						if (cVersion > installed.version)
+							update = true;
+						else if (cVersion < installed.version)
+							update = updateIsDowngrade = true;
 					}
-					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, modreferences, modside, download, downloads, hot, timeStamp, update, updateIsDowngrade, exists);
+					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, modreferences, modside, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed);
 					modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
 				}
 				SortList();

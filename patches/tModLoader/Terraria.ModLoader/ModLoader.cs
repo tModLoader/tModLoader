@@ -15,6 +15,7 @@ using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 
 namespace Terraria.ModLoader
 {
@@ -67,6 +68,7 @@ namespace Terraria.ModLoader
 		internal static string modBrowserPassphrase = "";
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
+		internal static string commandLineModPack = "";
 		private static string steamID64 = "";
 		internal static string SteamID64
 		{
@@ -287,7 +289,7 @@ namespace Terraria.ModLoader
 			foreach (ModNPC npc in NPCLoader.npcs)
 			{
 				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
-				Lang._projectileNameCache[npc.npc.type] = SetLocalizedText(dict, text);
+				Lang._npcNameCache[npc.npc.type] = SetLocalizedText(dict, text);
 			}
 			foreach (ModBuff buff in BuffLoader.buffs)
 			{
@@ -356,12 +358,19 @@ namespace Terraria.ModLoader
 			//load all referenced assemblies before mods for compiling
 			ModCompile.LoadReferences();
 
+			if (!CommandLineModPackOverride())
+				return false;
+
 			Interface.loadMods.SetProgressFinding();
 			var modsToLoad = FindMods()
 				.Where(IsEnabled)
 				.Select(mod => new LoadingMod(mod, BuildProperties.ReadModFile(mod)))
 				.Where(mod => LoadSide(mod.properties.side))
 				.ToList();
+
+			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
+			if (Main.oldKeyState.PressingShift())
+				modsToLoad.Clear();
 
 			if (!VerifyNames(modsToLoad))
 				return false;
@@ -396,6 +405,75 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		private static bool CommandLineModPackOverride()
+		{
+			if (commandLineModPack != "")
+			{
+				try
+				{
+					string fileName = UI.UIModPacks.ModListSaveDirectory + Path.DirectorySeparatorChar + commandLineModPack + ".json";
+					Directory.CreateDirectory(UI.UIModPacks.ModListSaveDirectory);
+					if (File.Exists(fileName))
+					{
+						using (StreamReader r = new StreamReader(fileName))
+						{
+							Console.WriteLine($"Loading specified modpack: {commandLineModPack}\n");
+							string json = r.ReadToEnd();
+							string[] modsToEnable = JsonConvert.DeserializeObject<string[]>(json);
+							var mods = ModLoader.FindMods();
+							foreach (var item in mods)
+							{
+								DisableMod(item);
+							}
+							foreach (string modname in modsToEnable)
+							{
+								foreach (var item in mods)
+								{
+									if (item.name == modname)
+									{
+										EnableMod(item);
+									}
+								}
+							}
+						}
+					}
+					else
+					{
+						if (Main.dedServ)
+						{
+							Console.ForegroundColor = ConsoleColor.Red;
+							Console.WriteLine($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.\n");
+							Console.ResetColor();
+						}
+						else
+						{
+							Interface.errorMessage.SetMessage($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.");
+						}
+						commandLineModPack = "";
+						return false;
+					}
+				}
+				catch
+				{
+					if (Main.dedServ)
+					{
+						Console.ForegroundColor = ConsoleColor.Red;
+						Console.WriteLine($"The {commandLineModPack} modpack failed to be read properly, it might be malformed.\n");
+						Console.ResetColor();
+					}
+					else
+					{
+						Interface.errorMessage.SetMessage($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.");
+					}
+					commandLineModPack = "";
+					return false;
+				}
+			}
+			commandLineModPack = "";
+			return true;
+		}
+
+		// TODO: This doesn't work on mono for some reason. Investigate.
 		public static bool IsSignedBy(TmodFile mod, string xmlPublicKey)
 		{
 			var f = new RSAPKCS1SignatureDeformatter();
@@ -794,8 +872,9 @@ namespace Terraria.ModLoader
 
 		public static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey)
 		{
-			modHotKeys[name] = new ModHotKey(mod, name, defaultKey);
-			return modHotKeys[name];
+			string key = mod.Name + ": " + name;
+			modHotKeys[key] = new ModHotKey(mod, name, defaultKey);
+			return modHotKeys[key];
 		}
 
 		internal static void SaveConfiguration()
@@ -823,10 +902,39 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr)
 		{
-			list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
+			list = GetGlobalHooks(providers, expr).Select(expr.Compile()).ToArray();
 		}
 
 		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
+		{
+			return GetGlobalHooks(providers, expr).ToArray();
+		}
+
+		private static IEnumerable<T> GetGlobalHooks<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
+		{
+			MethodInfo method = GetAndValidateMethodInfo(expr);
+			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T));
+		}
+
+		internal static bool[] CacheGlobalHooks<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
+		{
+			MethodInfo method = GetAndValidateMethodInfo(expr);
+			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+			return providers.Select(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
+		}
+
+		internal static void BuildHookFromCache<T, F>(ref F[] list, IList<T> providers, Func<T, F> func, bool[] cache)
+		{
+			list = providers.Where((p, index) => cache[index]).Select(func).ToArray();
+		}
+
+		internal static T[] BuildHookFromCache<T, F>(IList<T> providers, Func<T, F> expr, bool[] cache)
+		{
+			return providers.Where((p, index) => cache[index]).ToArray();
+		}
+
+		private static MethodInfo GetAndValidateMethodInfo<T, F>(Expression<Func<T, F>> expr)
 		{
 			MethodInfo method;
 			try
@@ -841,10 +949,8 @@ namespace Terraria.ModLoader
 			{
 				throw new ArgumentException("Invalid hook expression " + expr, e);
 			}
-
 			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
-			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
+			return method;
 		}
 
 		internal class LoadingMod

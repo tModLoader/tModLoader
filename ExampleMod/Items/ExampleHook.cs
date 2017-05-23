@@ -9,6 +9,11 @@ namespace ExampleMod.Items
 {
 	class ExampleHookItem : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Hook");
+		}
+
 		public override void SetDefaults()
 		{
 			/*
@@ -30,13 +35,17 @@ namespace ExampleMod.Items
 			*/
 			// Instead of copying these values, we can clone and modify the ones we want to copy
 			item.CloneDefaults(ItemID.AmethystHook);
-			item.name = "Example Hook";
 			item.shootSpeed = 18f; // how quickly the hook is shot.
 			item.shoot = mod.ProjectileType("ExampleHookProjectile");
 		}
 	}
 	class ExampleHookProjectile : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("${ProjectileName.GemHookAmethyst}");
+		}
+
 		public override void SetDefaults()
 		{
 			/*	this.netImportant = true;

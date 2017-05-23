@@ -5,9 +5,13 @@ namespace ExampleMod.Items.Banners
 {
 	public class OctopusBanner : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Octopus Banner");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Octopus Banner";
 			item.width = 10;
 			item.height = 24;
 			item.maxStack = 99;

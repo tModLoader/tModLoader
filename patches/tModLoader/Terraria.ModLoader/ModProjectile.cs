@@ -108,6 +108,7 @@ namespace Terraria.ModLoader
 			newProjectile.projectile = projectile;
 			projectile.modProjectile = newProjectile;
 			newProjectile.mod = mod;
+			newProjectile.Name = Name;
 			newProjectile.SetDefaults();
 		}
 

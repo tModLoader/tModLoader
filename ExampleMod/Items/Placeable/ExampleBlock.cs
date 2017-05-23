@@ -6,13 +6,18 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleBlock : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Block");
+			Tooltip.SetDefault("This is a modded block.");
+			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Block";
 			item.width = 12;
 			item.height = 12;
 			item.maxStack = 999;
-			AddTooltip("This is a modded block.");
 			item.useTurn = true;
 			item.autoReuse = true;
 			item.useAnimation = 15;
@@ -20,7 +25,6 @@ namespace ExampleMod.Items.Placeable
 			item.useStyle = 1;
 			item.consumable = true;
 			item.createTile = mod.TileType("ExampleBlock");
-			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
 		}
 
 		public override void AddRecipes()

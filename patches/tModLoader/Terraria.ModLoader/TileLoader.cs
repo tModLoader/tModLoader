@@ -94,7 +94,7 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int TileCount => nextTile;
+		public static int TileCount => nextTile;
 
 		/// <summary>
 		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
@@ -210,6 +210,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.HellSpecial, nextTile);
 			Array.Resize(ref TileID.Sets.Leaves, nextTile);
 			Array.Resize(ref TileID.Sets.GeneralPlacementTiles, nextTile);
+			Array.Resize(ref TileID.Sets.BasicChest, nextTile);
+			Array.Resize(ref TileID.Sets.BasicChestFake, nextTile);
 			Array.Resize(ref TileID.Sets.CanBeClearedDuringGeneration, nextTile);
 			Array.Resize(ref TileID.Sets.CanBeClearedDuringOreRunner, nextTile);
 			Array.Resize(ref TileID.Sets.Corrupt, nextTile);
@@ -218,6 +220,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.BlocksStairs, nextTile);
 			Array.Resize(ref TileID.Sets.BlocksStairsAbove, nextTile);
 			Array.Resize(ref TileID.Sets.NotReallySolid, nextTile);
+			Array.Resize(ref TileID.Sets.NeedsGrassFraming, nextTile);
+			Array.Resize(ref TileID.Sets.NeedsGrassFramingDirt, nextTile);
 			Array.Resize(ref TileID.Sets.ChecksForMerge, nextTile);
 			Array.Resize(ref TileID.Sets.FramesOnKillWall, nextTile);
 			Array.Resize(ref TileID.Sets.AvoidedByNPCs, nextTile);

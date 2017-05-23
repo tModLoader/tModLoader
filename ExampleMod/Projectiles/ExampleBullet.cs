@@ -8,9 +8,15 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleBullet : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Bullet");     //The English name of the projectile
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 5;    //The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Example Bullet";     //The name of the projectile
 			projectile.width = 8;               //The width of projectile hitbox
 			projectile.height = 8;              //The height of projectile hitbox
 			projectile.aiStyle = 1;             //The ai style of the projectile, please reference the source code of Terraria
@@ -23,9 +29,7 @@ namespace ExampleMod.Projectiles
 			projectile.light = 0.5f;            //How much light emit around the projectile
 			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
 			projectile.tileCollide = true;          //Can the projectile collide with tiles?
-			projectile.extraUpdates = 1;            //Set to above 0 if you want the projectile to update mutiple time in a frame	
-			ProjectileID.Sets.TrailCacheLength[projectile.type] = 5;    //The length of old position to be recorded
-			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
+			projectile.extraUpdates = 1;            //Set to above 0 if you want the projectile to update mutiple time in a frame
 			aiType = ProjectileID.Bullet;           //Act exactly like default Bullet
 		}
 

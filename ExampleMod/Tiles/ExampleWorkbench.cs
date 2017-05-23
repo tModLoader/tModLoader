@@ -19,7 +19,9 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new int[]{ 18 };
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
-			AddMapEntry(new Color(200, 200, 200), "Example Workbench");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Workbench");
+			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.WorkBenches };

@@ -13,14 +13,18 @@ namespace ExampleMod.Items.Armor
 			return true;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Breastplate");
+			Tooltip.SetDefault("This is a modded body armor."
+				+ "\nImmunity to 'On Fire!'"
+				+ "\n+20 max mana and +1 max minions");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Breastplate";
 			item.width = 18;
 			item.height = 18;
-			AddTooltip("This is a modded body armor.");
-			AddTooltip2("Immunity to 'On Fire!'");
-			AddTooltip2("+20 max mana and +1 max minions");
 			item.value = 10000;
 			item.rare = 2;
 			item.defense = 60;

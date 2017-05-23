@@ -34,7 +34,9 @@ namespace ExampleMod.Tiles
 			TileObjectData.addAlternate(0);
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
-			AddMapEntry(new Color(200, 200, 200), "Torch");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Torch");
+			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			drop = mod.ItemType("ExampleTorch");
 			disableSmartCursor = true;

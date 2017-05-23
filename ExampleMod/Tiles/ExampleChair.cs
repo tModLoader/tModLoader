@@ -25,7 +25,9 @@ namespace ExampleMod.Tiles
 			TileObjectData.addAlternate(1); //facing right will use the second texture style
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
-			AddMapEntry(new Color(200, 200, 200), "Example Chair");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Chair");
+			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.Chairs };

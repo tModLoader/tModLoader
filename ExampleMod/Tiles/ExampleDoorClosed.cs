@@ -37,7 +37,9 @@ namespace ExampleMod.Tiles
 			TileObjectData.addAlternate(0);
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
-			AddMapEntry(new Color(200, 200, 200), "Example Door");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Door");
+			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.ClosedDoor };

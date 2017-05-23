@@ -6,13 +6,17 @@ namespace ExampleMod.Projectiles.Pets
 {
 	public class ExamplePet : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Paper Airplane");
+			Main.projFrames[projectile.type] = 4;
+			Main.projPet[projectile.type] = true;
+		}
+
 		public override void SetDefaults()
 		{
 			projectile.CloneDefaults(ProjectileID.ZephyrFish);
-			projectile.name = "Paper Airplane";
 			aiType = ProjectileID.ZephyrFish;
-			Main.projFrames[projectile.type] = 4;
-			Main.projPet[projectile.type] = true;
 		}
 
 		public override bool PreAI()

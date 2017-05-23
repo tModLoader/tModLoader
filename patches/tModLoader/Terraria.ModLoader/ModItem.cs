@@ -700,7 +700,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
-		public virtual bool ExtraPickupSpace(Player player)
+		public virtual bool ItemSpace(Player player)
 		{
 			return false;
 		}
@@ -875,6 +875,7 @@ namespace Terraria.ModLoader
 			newItem.item = item;
 			item.modItem = newItem;
 			newItem.mod = mod;
+			newItem.Name = Name;
 		}
 
 		internal void SetupClone(Item clone)
@@ -882,6 +883,7 @@ namespace Terraria.ModLoader
 			ModItem newItem = CloneNewInstances ? Clone(clone) : (ModItem)Activator.CreateInstance(GetType());
 			newItem.item = clone;
 			newItem.mod = mod;
+			newItem.Name = Name;
 			newItem.texture = texture;
 			newItem.flameTexture = flameTexture;
 			newItem.projOnSwing = projOnSwing;

@@ -149,6 +149,10 @@ namespace Terraria.ModLoader
 
 		internal static void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
+			foreach (GameInterfaceLayer layer in layers)
+			{
+				layer.Active = true;
+			}
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.ModifyInterfaceLayers(layers);

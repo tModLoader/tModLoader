@@ -72,7 +72,7 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int ProjectileCount => nextProjectile;
+		public static int ProjectileCount => nextProjectile;
 
 		/// <summary>
 		/// Gets the ModProjectile instance corresponding to the specified type.

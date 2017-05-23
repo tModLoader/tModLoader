@@ -52,10 +52,7 @@ namespace Terraria.ModLoader.IO
 			this.path = path;
 		}
 
-		public bool HasFile(string fileName)
-		{
-			return files.ContainsKey(fileName.Replace('\\', '/'));
-		}
+		public bool HasFile(string fileName) => files.ContainsKey(fileName.Replace('\\', '/'));
 
 		public byte[] GetFile(string fileName)
 		{
@@ -76,15 +73,9 @@ namespace Terraria.ModLoader.IO
 			files.Remove(fileName.Replace('\\', '/'));
 		}
 
-		public IEnumerator<KeyValuePair<string, byte[]>> GetEnumerator()
-		{
-			return files.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		public IEnumerator<KeyValuePair<string, byte[]>> GetEnumerator() => files.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		public int FileCount => files.Count;
 
 		internal void Save()
 		{

@@ -11,9 +11,13 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleSpearProjectile : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Spear");
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Spear";
 			projectile.width = 18;
 			projectile.height = 18;
 			projectile.aiStyle = 19;

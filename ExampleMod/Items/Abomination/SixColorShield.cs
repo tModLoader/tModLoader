@@ -7,12 +7,16 @@ namespace ExampleMod.Items.Abomination
 {
 	public class SixColorShield : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Six-Color Shield");
+			Tooltip.SetDefault("Creates elemental energy to protect you when damaged.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Six-Color Shield";
 			item.width = 24;
 			item.height = 24;
-			item.toolTip = "Creates elemental energy to protect you when damaged.";
 			item.value = Item.buyPrice(0, 10, 0, 0);
 			item.rare = 9;
 			item.expert = true;
@@ -30,7 +34,7 @@ namespace ExampleMod.Items.Abomination
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-            player.GetModPlayer<ExamplePlayer>(mod).elementShield = true;
+			player.GetModPlayer<ExamplePlayer>(mod).elementShield = true;
 		}
 
 		public override Color? GetAlpha(Color lightColor)

@@ -68,9 +68,13 @@ namespace ExampleMod.Projectiles
 		private const float maxLength = 400f;
 		private const float maxLengthSpeed = 1f;
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Octopus Arm");
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Octopus Arm";
 			projectile.width = 1;
 			projectile.height = 1;
 			projectile.hostile = true;

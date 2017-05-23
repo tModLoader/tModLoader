@@ -10,11 +10,15 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleLaserWeapon : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Laser Weapon");
+			Tooltip.SetDefault("Shoot a laser beam that can eliminate everything...");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Laser Weapon";
 			item.damage = 40;
-			item.toolTip = "Shoot a laser beam that can eliminate everything...";
 			item.noMelee = true;
 			item.magic = true;
 			item.channel = true;                            //Channel so that you can held the weapon [Important]

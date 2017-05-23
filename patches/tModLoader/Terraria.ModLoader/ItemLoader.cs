@@ -19,14 +19,13 @@ namespace Terraria.ModLoader
 		internal static readonly IList<ModItem> items = new List<ModItem>();
 		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
 		internal static GlobalItem[] NetGlobals;
-		internal static readonly IList<ItemInfo> infoList = new List<ItemInfo>();
-		internal static readonly IDictionary<string, int> infoIndexes = new Dictionary<string, int>();
+		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
 		internal static readonly IList<int> animations = new List<int>();
 		internal static readonly int vanillaQuestFishCount = Main.anglerQuestItemNetIDs.Length;
 		internal static readonly IList<int> questFish = new List<int>();
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
 
-		private static Action<Item>[] HookSetDefaults = new Action<Item>[0];
+		private static bool[] HookSetDefaultsCache = new bool[0];
 		private static Func<Item, Player, bool>[] HookCanUseItem;
 		private static Action<Item, Player>[] HookUseStyle;
 		private static Action<Item, Player>[] HookHoldStyle;
@@ -97,7 +96,7 @@ namespace Terraria.ModLoader
 		private static Func<Item, Player, bool>[] HookGrabStyle;
 		private static Func<Item, Player, bool>[] HookCanPickup;
 		private static Func<Item, Player, bool>[] HookOnPickup;
-		private static Func<Item, Player, bool>[] HookExtraPickupSpace;
+		private static Func<Item, Player, bool>[] HookItemSpace;
 		private static Func<Item, Color, Color?>[] HookGetAlpha;
 		private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 		private static DelegatePreDrawInWorld[] HookPreDrawInWorld;
@@ -152,7 +151,7 @@ namespace Terraria.ModLoader
 			return type >= ItemID.Count && type < ItemCount ? items[type - ItemID.Count] : null;
 		}
 
-		internal static int ItemCount => nextItem;
+		public static int ItemCount => nextItem;
 
 		internal static void ResizeArrays()
 		{
@@ -222,8 +221,8 @@ namespace Terraria.ModLoader
 			FindVanillaWings();
 
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
-
-			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalItems, g => g.SetDefaults);
+			
+			HookSetDefaultsCache = ModLoader.CacheGlobalHooks<GlobalItem, Action<Item>>(globalItems, g => g.SetDefaults);
 			ModLoader.BuildGlobalHook(ref HookCanUseItem, globalItems, g => g.CanUseItem);
 			ModLoader.BuildGlobalHook(ref HookCanUseItem, globalItems, g => g.CanUseItem);
 			ModLoader.BuildGlobalHook(ref HookUseStyle, globalItems, g => g.UseStyle);
@@ -279,7 +278,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookGrabStyle, globalItems, g => g.GrabStyle);
 			ModLoader.BuildGlobalHook(ref HookCanPickup, globalItems, g => g.CanPickup);
 			ModLoader.BuildGlobalHook(ref HookOnPickup, globalItems, g => g.OnPickup);
-			ModLoader.BuildGlobalHook(ref HookExtraPickupSpace, globalItems, g => g.ExtraPickupSpace);
+			ModLoader.BuildGlobalHook(ref HookItemSpace, globalItems, g => g.ItemSpace);
 			ModLoader.BuildGlobalHook(ref HookGetAlpha, globalItems, g => g.GetAlpha);
 			ModLoader.BuildGlobalHook(ref HookPreDrawInWorld, globalItems, g => g.PreDrawInWorld);
 			ModLoader.BuildGlobalHook(ref HookPostDrawInWorld, globalItems, g => g.PostDrawInWorld);
@@ -302,8 +301,7 @@ namespace Terraria.ModLoader
 			items.Clear();
 			nextItem = ItemID.Count;
 			globalItems.Clear();
-			infoList.Clear();
-			infoIndexes.Clear();
+			globalIndexes.Clear();
 			animations.Clear();
 			questFish.Clear();
 		}
@@ -342,26 +340,27 @@ namespace Terraria.ModLoader
 		//in Terraria.Item.SetDefaults move Lang stuff before SetupItem
 		internal static void SetupItem(Item item)
 		{
-			SetupItemInfo(item);
+			SetupGlobalItems(item);
 			if (IsModItem(item))
 			{
 				GetItem(item.type).SetupItem(item);
 			}
-			foreach (var hook in HookSetDefaults)
+			foreach (var hook in item.HookSetDefaults)
 			{
 				hook(item);
 			}
 		}
 
-		internal static void SetupItemInfo(Item item)
+		internal static void SetupGlobalItems(Item item)
 		{
-			item.itemInfo = infoList.Select(info => info.Clone()).ToArray();
+			item.globalItems = globalItems.Select(globalItem => globalItem.GetForInstance()).ToArray();
+			ModLoader.BuildHookFromCache(ref item.HookSetDefaults, item.globalItems, g => g.SetDefaults, HookSetDefaultsCache);
 		}
 
-		internal static ItemInfo GetItemInfo(Item item, Mod mod, string name)
+		internal static GlobalItem GetGlobalItem(Item item, Mod mod, string name)
 		{
 			int index;
-			return infoIndexes.TryGetValue(mod.Name + ':' + name, out index) ? item.itemInfo[index] : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? item.globalItems[index] : null;
 		}
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))
@@ -1511,16 +1510,16 @@ namespace Terraria.ModLoader
 
 		//in Terraria.Player.GrabItems before grab effect
 		//  (this.ItemSpace(Main.item[j]) || ItemLoader.ExtraPickupSpace(Main.item[j], this)
-		public static bool ExtraPickupSpace(Item item, Player player)
+		public static bool ItemSpace(Item item, Player player)
 		{
-			foreach (var hook in HookExtraPickupSpace)
+			foreach (var hook in HookItemSpace)
 			{
 				if (hook(item, player))
 				{
 					return true;
 				}
 			}
-			return item.modItem?.ExtraPickupSpace(player) ?? false;
+			return item.modItem?.ItemSpace(player) ?? false;
 		}
 
 		//in Terraria.UI.ItemSlot.GetItemLight remove type too high check

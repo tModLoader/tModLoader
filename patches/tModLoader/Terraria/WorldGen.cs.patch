@@ -43,6 +43,15 @@
  			if (type != 160)
  			{
  				return true;
+@@ -1676,7 +_,7 @@
+ 			{
+ 				num6 = Main.maxTilesY - 1;
+ 			}
+-			int[] tileTypeCounts = new int[470];
++			int[] tileTypeCounts = new int[TileLoader.TileCount];
+ 			WorldGen.CountTileTypesInArea(tileTypeCounts, num3 + 1, num4 - 1, num5 + 2, num6 + 1);
+ 			int num7 = -WorldGen.GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
+ 			if (num7 < 50)
 @@ -1875,7 +_,7 @@
  			WorldGen.roomY2 = y;
  			WorldGen.numRoomTiles = 0;

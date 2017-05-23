@@ -12,13 +12,17 @@ namespace ExampleMod.Items
 			return true;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Shield");
+			Tooltip.SetDefault("This is a modded accessory."
+				+ "\nOnly equip if your character's name is bluemagic123");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Shield";
 			item.width = 24;
 			item.height = 28;
-			item.toolTip = "This is a modded accessory.";
-			item.toolTip2 = "Only equip if your character's name is bluemagic123";
 			item.value = 10000;
 			item.rare = 2;
 			item.accessory = true;

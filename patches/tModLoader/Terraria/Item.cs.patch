@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Item.cs
 +++ src/tModLoader\Terraria\Item.cs
-@@ -6,11 +_,31 @@
+@@ -6,11 +_,35 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -18,17 +18,21 @@
 +			internal set;
 +		}
 +
-+		internal ItemInfo[] itemInfo = new ItemInfo[0];
++		internal GlobalItem[] globalItems = new GlobalItem[0];
 +
-+		public ItemInfo GetModInfo(Mod mod, string name)
++		public GlobalItem GetGlobalItem(Mod mod, string name)
 +		{
-+			return ItemLoader.GetItemInfo(this, mod, name);
++			return ItemLoader.GetGlobalItem(this, mod, name);
 +		}
 +
-+		public T GetModInfo<T>(Mod mod) where T : ItemInfo
++		public T GetGlobalItem<T>(Mod mod) where T : GlobalItem
 +		{
-+			return (T)GetModInfo(mod, typeof(T).Name);
++			return (T)GetGlobalItem(mod, typeof(T).Name);
 +		}
++
++		#region hooks
++		internal Action<Item>[] HookSetDefaults;
++		#endregion
 +
  		public const int flaskTime = 72000;
  		public const int copper = 1;
@@ -175,7 +179,7 @@
  		public void ResetStats(int Type)
  		{
 +			this.modItem = null;
-+			this.itemInfo = new ItemInfo[0];
++			this.globalItems = new GlobalItem[0];
  			this.sentry = false;
  			this.DD2Summon = false;
  			this.shopSpecialCurrency = -1;
@@ -231,7 +235,7 @@
  			for (int i = 0; i < 255; i++)
  			{
 -				if (this.ownIgnore != i && Main.player[i].active && Main.player[i].ItemSpace(Main.item[whoAmI]))
-+				if (this.ownIgnore != i && Main.player[i].active && ItemLoader.CanPickup(Main.item[whoAmI], Main.player[i]) && (Main.player[i].ItemSpace(Main.item[whoAmI]) || ItemLoader.ExtraPickupSpace(Main.item[whoAmI], Main.player[i])))
++				if (this.ownIgnore != i && Main.player[i].active && ItemLoader.CanPickup(Main.item[whoAmI], Main.player[i]) && Main.player[i].ItemSpace(Main.item[whoAmI]))
  				{
  					float num3 = Math.Abs(Main.player[i].position.X + (float)(Main.player[i].width / 2) - this.position.X - (float)(this.width / 2)) + Math.Abs(Main.player[i].position.Y + (float)(Main.player[i].height / 2) - this.position.Y - (float)this.height);
 +					int grabRange = Player.defaultItemGrabRange;
@@ -257,9 +261,9 @@
 -			return (Item)base.MemberwiseClone();
 +			Item newItem = (Item)base.MemberwiseClone();
 +
-+			newItem.itemInfo = new ItemInfo[itemInfo.Length];
-+			for (int i = 0; i < itemInfo.Length; i++)
-+				newItem.itemInfo[i] = itemInfo[i].Clone();
++			newItem.globalItems = new GlobalItem[globalItems.Length];
++			for (int i = 0; i < globalItems.Length; i++)
++				newItem.globalItems[i] = globalItems[i].Clone();
 +
 +			modItem?.SetupClone(newItem);
 +			return newItem;
@@ -271,7 +275,7 @@
  			this.stack = 0;
  			this.netID = 0;
 +			this.modItem = null;
-+			this.itemInfo = new ItemInfo[0];
++			this.globalItems = new GlobalItem[0];
  		}
  
  		public void OnPurchase(Item item)

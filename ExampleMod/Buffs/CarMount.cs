@@ -7,8 +7,8 @@ namespace ExampleMod.Buffs
 	{
 		public override void SetDefaults()
 		{
-			Main.buffName[this.Type] = "Car";
-			Main.buffTip[this.Type] = "Leather seats, 4 cupholders";
+			DisplayName.SetDefault("Car");
+			Description.SetDefault("Leather seats, 4 cupholders");
 			Main.buffNoTimeDisplay[Type] = true;
 			Main.buffNoSave[Type] = true;
 		}

@@ -88,7 +88,7 @@ namespace ExampleMod.NPCs
 				}
 				if (!npc.active && Main.netMode == 2)
 				{
-					NetMessage.SendData(28, -1, -1, "", npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+					NetMessage.SendData(28, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
 				}
 			}
 			int num180 = (int)(npc.position.X / 16f) - 1;
@@ -305,13 +305,13 @@ namespace ExampleMod.NPCs
 									npc.life = 0;
 									if (Main.netMode == 2)
 									{
-										NetMessage.SendData(23, -1, -1, "", num200, 0f, 0f, 0f, 0, 0, 0);
+										NetMessage.SendData(23, -1, -1, null, num200, 0f, 0f, 0f, 0, 0, 0);
 									}
 									num200 = num201;
 								}
 								if (Main.netMode == 2)
 								{
-									NetMessage.SendData(23, -1, -1, "", npc.whoAmI, 0f, 0f, 0f, 0, 0, 0);
+									NetMessage.SendData(23, -1, -1, null, npc.whoAmI, 0f, 0f, 0f, 0, 0, 0);
 								}
 							}
 							num191 = 0f;

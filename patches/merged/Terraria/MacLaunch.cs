@@ -1,7 +1,7 @@
 ﻿#if MAC
 using System;
 using System.IO;
-using System.IO.Reflection;
+using System.Reflection;
 
 namespace Terraria
 {

@@ -53,18 +53,34 @@
        </PropertyGroup>
      </When>
      <Otherwise>
-@@ -81,7 +_,9 @@
+@@ -81,17 +_,43 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System" />
 -    <Reference Include="Steamworks.NET">
 +    <Reference Include="System.XML" />
-+    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86">
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('WINDOWS'))">
 +      <SpecificVersion>False</SpecificVersion>
        <HintPath>Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll</HintPath>
      </Reference>
-     <Reference Include="ReLogic">
-@@ -90,8 +_,18 @@
+-    <Reference Include="ReLogic">
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('MAC'))">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>..\..\references\Steamworks.NET.OSX.dll</HintPath>
++    </Reference>
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('LINUX'))">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>..\..\references\Steamworks.NET.Linux.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('WINDOWS'))">
+       <HintPath>Terraria.Libraries\ReLogic\ReLogic.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('MAC'))">
++      <HintPath>..\..\references\ReLogicMac.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('LINUX'))">
++      <HintPath>..\..\references\ReLogicLinux.dll</HintPath>
+     </Reference>
      <Reference Include="System.Core" />
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System.Drawing" />
@@ -97,7 +113,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,143 @@
+@@ -368,6 +_,144 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -147,6 +163,7 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIInfoMessage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIInputTextField.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoader.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIExtractMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadProgress.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIManagePublished.cs" />
@@ -249,15 +266,29 @@
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
      <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
-@@ -538,10 +_,12 @@
+@@ -538,10 +_,24 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
 -    <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
 +    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
-     <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" />
-     <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" />
+-    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" />
+-    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" />
++    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++    <EmbeddedResource Include="..\..\references\ReLogicMac.dll" Condition="$(DefineConstants.Contains('MAC'))">
++      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\ReLogicLinux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
++      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++    <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
++      <LogicalName>Terraria.Libraries.Steamworks.NET.OSX.Steamworks.NET.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
++      <LogicalName>Terraria.Libraries.Steamworks.NET.Linux.Steamworks.NET.dll</LogicalName>
++    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />

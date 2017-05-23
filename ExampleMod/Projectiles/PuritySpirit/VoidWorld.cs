@@ -12,9 +12,16 @@ namespace ExampleMod.Projectiles.PuritySpirit
 	{
 		private Random rand;
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Void World");
+			Main.projFrames[projectile.type] = 8;
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 200;
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Void World";
 			projectile.width = 80;
 			projectile.height = 80;
 			projectile.penetrate = -1;
@@ -22,9 +29,6 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.hostile = true;
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
-			Main.projFrames[projectile.type] = 8;
-			ProjectileID.Sets.TrailingMode[projectile.type] = 0;
-			ProjectileID.Sets.TrailCacheLength[projectile.type] = 200;
 			cooldownSlot = 1;
 		}
 

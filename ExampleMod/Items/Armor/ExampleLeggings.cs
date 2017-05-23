@@ -12,13 +12,17 @@ namespace ExampleMod.Items.Armor
 			return true;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Leggings");
+			Tooltip.SetDefault("This is a modded leg armor."
+				+ "\n5% increased movement speed");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Leggings";
 			item.width = 18;
 			item.height = 18;
-			AddTooltip("This is a modded leg armor.");
-			AddTooltip2("5% increased movement speed");
 			item.value = 10000;
 			item.rare = 2;
 			item.defense = 45;

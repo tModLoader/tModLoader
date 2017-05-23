@@ -11,9 +11,13 @@ namespace ExampleMod.Items.Armor
 			return true;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("AbominationMask");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Abomination Mask";
 			item.width = 28;
 			item.height = 20;
 			item.rare = 1;

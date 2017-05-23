@@ -7,14 +7,18 @@ namespace ExampleMod.Items.Abomination
 	//ported from my tAPI mod because I don't want to make more artwork
 	public class MoltenDrill : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Molten Drill");
+			Tooltip.SetDefault("Can mine Lihzahrd Bricks");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Molten Drill";
 			item.damage = 40;
 			item.melee = true;
 			item.width = 20;
 			item.height = 12;
-			item.toolTip = "Can mine Lihzahrd Bricks";
 			item.useTime = 7;
 			item.useAnimation = 25;
 			item.channel = true;

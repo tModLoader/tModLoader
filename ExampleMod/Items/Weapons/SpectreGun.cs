@@ -8,14 +8,18 @@ namespace ExampleMod.Items.Weapons
 	//ported from my tAPI mod because I'm lazy
 	public class SpectreGun : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Spectre Gun");
+			Tooltip.SetDefault("Uses wisps as ammo");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Spectre Gun";
 			item.damage = 53;
 			item.ranged = true;
 			item.width = 42;
 			item.height = 30;
-			item.toolTip = "Uses wisps as ammo";
 			item.useTime = 35;
 			item.useAnimation = 35;
 			item.useStyle = 5;

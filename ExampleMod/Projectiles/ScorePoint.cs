@@ -8,9 +8,13 @@ namespace ExampleMod.Projectiles
 	// This projectiles merely flys towards a position and then dies. We use it to signify kill points for TEScoreBoard.
 	class ScorePoint : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Score Point");
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Score Point";
 			projectile.width = 8;
 			projectile.height = 8;
 			projectile.hostile = true;
@@ -25,7 +29,7 @@ namespace ExampleMod.Projectiles
 		public override void AI()
 		{
 			// Since projectiles have 2 ai slots, and I don't want to do manual syncing of an extra variable, here I use the HalfVector2 and ReadFloatasUInt to get a Vector2 from 1 float varable instead of 2 like normal.
-			Vector2 target = new HalfVector2() { PackedValue = Utils.ReadFloatAsUInt(projectile.ai[0]) }.ToVector2();
+			Vector2 target = new HalfVector2() { PackedValue = (uint)projectile.ai[0] }.ToVector2();
 
 			Rectangle targetRectangle = new Rectangle((int)target.X - 4, (int)target.Y - 4, 8, 8);
 			if (projectile.Hitbox.Intersects(targetRectangle))

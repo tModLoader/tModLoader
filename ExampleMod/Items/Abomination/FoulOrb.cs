@@ -7,13 +7,17 @@ namespace ExampleMod.Items.Abomination
 	//imported from my tAPI mod because I'm lazy
 	public class FoulOrb : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Foul Orb");
+			Tooltip.SetDefault("The underworld would like this.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Foul Orb";
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 20;
-			item.toolTip = "The underworld would like this.";
 			item.rare = 9;
 			item.useAnimation = 45;
 			item.useTime = 45;

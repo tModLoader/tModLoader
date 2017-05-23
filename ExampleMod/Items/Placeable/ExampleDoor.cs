@@ -5,13 +5,17 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleDoor : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Door");
+			Tooltip.SetDefault("This is a modded door.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Door";
 			item.width = 14;
 			item.height = 28;
 			item.maxStack = 99;
-			AddTooltip("This is a modded door.");
 			item.useTurn = true;
 			item.autoReuse = true;
 			item.useAnimation = 15;

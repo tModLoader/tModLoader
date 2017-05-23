@@ -40,6 +40,37 @@
  		public static bool[] hairLoaded = new bool[134];
  		public static bool[] wingsLoaded = new bool[40];
  		public static bool[] goreLoaded = new bool[1087];
+@@ -462,13 +_,13 @@
+ 		public static int wofB;
+ 		public static int wofF = 0;
+ 		public static int offScreenRange = 200;
+-		private RenderTarget2D backWaterTarget;
++		public RenderTarget2D backWaterTarget;
+ 		public static RenderTarget2D waterTarget;
+-		private RenderTarget2D tileTarget;
+-		private RenderTarget2D blackTarget;
+-		private RenderTarget2D tile2Target;
+-		private RenderTarget2D wallTarget;
+-		private RenderTarget2D backgroundTarget;
++		public RenderTarget2D tileTarget;
++		public RenderTarget2D blackTarget;
++		public RenderTarget2D tile2Target;
++		public RenderTarget2D wallTarget;
++		public RenderTarget2D backgroundTarget;
+ 		public static RenderTarget2D screenTarget;
+ 		public static RenderTarget2D screenTargetSwap;
+ 		public static int maxMapUpdates = 250000;
+@@ -492,8 +_,8 @@
+ 		private static bool flameRingLoaded;
+ 		private Texture2D flameRingTexture;
+ 		private Texture2D mapDeathTexture;
+-		private RenderTarget2D[,] mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
+-		private RenderTarget2D mapSectionTexture;
++		public RenderTarget2D[,] mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
++		public RenderTarget2D mapSectionTexture;
+ 		public static bool[,] initMap = new bool[Main.mapTargetX, Main.mapTargetY];
+ 		public static bool[,] mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
+ 		public Texture2D[] infoIconTexture = new Texture2D[14];
 @@ -554,12 +_,12 @@
  		private int lastTileX;
  		private int firstTileY;
@@ -203,7 +234,7 @@
  				Main.LoadWorlds();
  			}
  			catch
-@@ -3708,6 +_,10 @@
+@@ -3708,6 +_,14 @@
  							{
  								string text3 = text.Substring(10);
  								Main.worldName = text3;
@@ -211,6 +242,10 @@
 +							if (text.Length >= 8 && text.Substring(0, 8).ToLower() == "modpath=")
 +							{
 +								ModLoader.ModLoader.modPath = text.Substring(8);
++							}
++							if (text.Length >= 8 && text.Substring(0, 8).ToLower() == "modpack=")
++							{
++								ModLoader.ModLoader.commandLineModPack = text.Substring(8);
  							}
  							if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							{
@@ -388,6 +423,20 @@
  			{
  				if (i != 0)
  				{
+@@ -4834,6 +_,13 @@
+ 
+ 		protected override void Initialize()
+ 		{
++			DateTime date = DateTime.Now;
++			if ((date.Month == 5 && date.Day == 17) || (date.Month == 7 && date.Day == 8) || (date.Month == 10 && date.Day == 24)
++				|| (date.Month == 6 && date.Day == 1) || (date.Month == 4 || date.Day == 1) || new Random().Next(100) == 0)
++			{
++				OurFavoriteColor.R = OurFavoriteColor.B;
++				OurFavoriteColor.B = 255;
++			}
+ #if SERVER
+ 			Main.netMode = 2;
+ #endif
 @@ -7490,7 +_,11 @@
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
@@ -1706,7 +1755,7 @@
  			{
  				num147 = 8;
  			}
-+			ProjectileLoader.DrawOffset(projectile, ref num147, ref num148, ref num149);
++			ProjectileLoader.DrawOffset(projectile, ref num148, ref num147, ref num149);
  			SpriteEffects spriteEffects = SpriteEffects.None;
  			if (projectile.spriteDirection == -1)
  			{
@@ -2967,14 +3016,17 @@
  				}
  			}
  		}
-@@ -39475,6 +_,7 @@
+@@ -39475,7 +_,9 @@
  				this.SetupDrawInterfaceLayers();
  			}
  			PlayerInput.SetZoom_UI();
-+			ModHooks.ModifyInterfaceLayers(_gameInterfaceLayers);
- 			foreach (GameInterfaceLayer current in this._gameInterfaceLayers)
+-			foreach (GameInterfaceLayer current in this._gameInterfaceLayers)
++			List<GameInterfaceLayer> interfaceLayers = new List<GameInterfaceLayer>(this._gameInterfaceLayers);
++			ModHooks.ModifyInterfaceLayers(interfaceLayers);
++			foreach (GameInterfaceLayer current in interfaceLayers)
  			{
  				if (!current.Draw())
+ 				{
 @@ -39753,6 +_,8 @@
  
  		private void DrawInterface_33_MouseText()
@@ -2984,6 +3036,26 @@
  			if (Main.mouseItem.stack <= 0)
  			{
  				Main.mouseItem.type = 0;
+@@ -39889,6 +_,7 @@
+ 
+ 		private static void DrawInterface_26_InterfaceLogic3()
+ 		{
++			bool wasOpen = Main.playerInventory;
+ 			if (Main.player[Main.myPlayer].dead)
+ 			{
+ 				Main.playerInventory = false;
+@@ -39900,7 +_,10 @@
+ 				{
+ 					Main.InGuideCraftMenu = false;
+ 				}
+-				Recipe.FindRecipes();
++				if (wasOpen)
++				{
++					Recipe.FindRecipes();
++				}
+ 				Main.InReforgeMenu = false;
+ 			}
+ 			Main.hoverItemName = "";
 @@ -40424,6 +_,11 @@
  							if (type == 439 || type == 370)
  							{
@@ -3243,7 +3315,7 @@
  					else
  					{
  						text = Lang.GetMapObjectName(type);
-+						// TODO, adapt to new way: text = Lang.mapLegend.FromTile(Main.Map[num91, num92], num91, num92);
++						text = Lang._mapLegendCache.FromTile(Main.Map[num91, num92], num91, num92);
  					}
  				}
  				float num112 = (num16 * 0.25f * 2f + 1f) / 3f;

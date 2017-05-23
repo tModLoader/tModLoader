@@ -8,21 +8,25 @@ namespace ExampleMod.Items
 {
 	public class ExampleSoul : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Soul of Exampleness");
+			Tooltip.SetDefault("'The essence of example creatures'");
+			ItemID.Sets.AnimatesAsSoul[item.type] = true;
+			ItemID.Sets.ItemIconPulse[item.type] = true;
+			ItemID.Sets.ItemNoGravity[item.type] = true;
+		}
+
 		// TODO -- Velocity Y smaller, post NewItem?
 		public override void SetDefaults()
 		{
-			item.name = "Soul of Exampleness";
 			Item refItem = new Item();
 			refItem.SetDefaults(ItemID.SoulofSight);
 			item.width = refItem.width;
 			item.height = refItem.height;
 			item.maxStack = 999;
-			item.toolTip = "'The essence of example creatures'";
 			item.value = 1000;
 			item.rare = 3;
-			ItemID.Sets.AnimatesAsSoul[item.type] = true;
-			ItemID.Sets.ItemIconPulse[item.type] = true;
-			ItemID.Sets.ItemNoGravity[item.type] = true;
 		}
 
 		public override DrawAnimation GetAnimation()

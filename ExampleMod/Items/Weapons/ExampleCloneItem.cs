@@ -7,10 +7,14 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleCloneItem : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Starfury V2");
+		}
+
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.Starfury);
-			item.name = "Starfury V2";
 			item.shootSpeed *= 0.75f;
 			item.damage = (int)(item.damage * 1.5);
 		}

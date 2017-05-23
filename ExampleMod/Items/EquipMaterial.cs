@@ -4,12 +4,10 @@ namespace ExampleMod.Items
 {
 	public class EquipMaterial : ExampleItem
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
-			base.SetDefaults();
-			item.name = "Equipment Item";
-			item.toolTip = "Used to craft equipment";
-			item.toolTip2 = "";
+			DisplayName.SetDefault("Equipment Item");
+			Tooltip.SetDefault("Used to craft equipment");
 		}
 
 		public override void AddRecipes()

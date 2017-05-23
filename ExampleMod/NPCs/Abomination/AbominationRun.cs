@@ -18,10 +18,14 @@ namespace ExampleMod.NPCs.Abomination
 			bossHeadTexture = "ExampleMod/NPCs/Abomination/Abomination_Head_Boss";
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("The Abomination");
+			Main.npcFrameCount[npc.type] = 2;
+		}
+
 		public override void SetDefaults()
 		{
-			npc.name = "Injured Abomination";
-			npc.displayName = "The Abomination";
 			npc.aiStyle = -1;
 			npc.lifeMax = 40000;
 			npc.damage = 100;
@@ -30,7 +34,6 @@ namespace ExampleMod.NPCs.Abomination
 			npc.dontTakeDamage = true;
 			npc.width = 100;
 			npc.height = 100;
-			Main.npcFrameCount[npc.type] = 2;
 			npc.value = Item.buyPrice(0, 20, 0, 0);
 			npc.npcSlots = 15f;
 			npc.boss = true;

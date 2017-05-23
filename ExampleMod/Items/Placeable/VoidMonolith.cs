@@ -6,9 +6,13 @@ namespace ExampleMod.Items.Placeable
 {
 	public class VoidMonolith : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Void Monolith");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Void Monolith";
 			item.width = 22;
 			item.height = 32;
 			item.maxStack = 999;

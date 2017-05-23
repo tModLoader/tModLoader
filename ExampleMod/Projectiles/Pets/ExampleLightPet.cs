@@ -8,9 +8,17 @@ namespace ExampleMod.Projectiles.Pets
 {
 	public class ExampleLightPet : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Annoying Light");
+			Main.projFrames[projectile.type] = 1;
+			Main.projPet[projectile.type] = true;
+			ProjectileID.Sets.TrailingMode[projectile.type] = 2;
+			ProjectileID.Sets.LightPet[projectile.type] = true;
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Annoying Light";
 			projectile.width = 30;
 			projectile.height = 30;
 			projectile.penetrate = -1;
@@ -20,10 +28,6 @@ namespace ExampleMod.Projectiles.Pets
 			projectile.ignoreWater = true;
 			projectile.scale = 0.8f;
 			projectile.tileCollide = false;
-			ProjectileID.Sets.TrailingMode[projectile.type] = 2;
-			Main.projFrames[projectile.type] = 1;
-			ProjectileID.Sets.LightPet[projectile.type] = true;
-			Main.projPet[projectile.type] = true;
 		}
 
 		const int fadeInTicks = 30;
