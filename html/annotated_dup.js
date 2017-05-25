@@ -1,6 +1,7 @@
 var annotated_dup =
 [
     [ "Terraria", "namespace_terraria.html", "namespace_terraria" ],
+    [ "Attribute", "class_attribute.html", null ],
     [ "BinaryReader", "class_binary_reader.html", null ],
     [ "BinaryWriter", "class_binary_writer.html", null ],
     [ "ICloneable", "class_i_cloneable.html", null ],

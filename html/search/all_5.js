@@ -18,7 +18,7 @@ var searchData=
   ['equiptexture_2ecs',['EquipTexture.cs',['../_equip_texture_8cs.html',1,'']]],
   ['equiptype',['EquipType',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282',1,'Terraria::ModLoader']]],
   ['equiptype_2ecs',['EquipType.cs',['../_equip_type_8cs.html',1,'']]],
-  ['equiptypes',['EquipTypes',['../class_terraria_1_1_mod_loader_1_1_equip_loader.html#a95d4c93ab5bc1685cfcf13f75e200ef5',1,'Terraria::ModLoader::EquipLoader']]],
+  ['equiptypes',['equipTypes',['../class_terraria_1_1_mod_loader_1_1_autoload_equip.html#a24ed7556842d70bf127e44497a945b1e',1,'Terraria.ModLoader.AutoloadEquip.equipTypes()'],['../class_terraria_1_1_mod_loader_1_1_equip_loader.html#a95d4c93ab5bc1685cfcf13f75e200ef5',1,'Terraria.ModLoader.EquipLoader.EquipTypes()']]],
   ['errorlogger',['ErrorLogger',['../class_terraria_1_1_mod_loader_1_1_error_logger.html',1,'Terraria::ModLoader']]],
   ['errorlogger_2ecs',['ErrorLogger.cs',['../_error_logger_8cs.html',1,'']]],
   ['extractinatoruse',['ExtractinatorUse',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a0edc645e49d4ae2ddb75f4fa1df28391',1,'Terraria.ModLoader.GlobalItem.ExtractinatorUse()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a04bffce0cd26c5644210de489b393b41',1,'Terraria.ModLoader.ItemLoader.ExtractinatorUse()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53dd0f4d41cf3b0a6171416b8ef2d9c',1,'Terraria.ModLoader.ModItem.ExtractinatorUse()']]],

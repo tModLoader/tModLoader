@@ -1,5 +1,8 @@
 var hierarchy =
 [
+    [ "Attribute", "class_attribute.html", [
+      [ "Terraria.ModLoader.AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", null ]
+    ] ],
     [ "Terraria.ModLoader.BackgroundTextureLoader", "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html", null ],
     [ "Terraria.ModLoader.IO.BinaryIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html", null ],
     [ "BinaryReader", "class_binary_reader.html", [
@@ -34,6 +37,7 @@ var hierarchy =
     [ "Terraria.ModLoader.GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", null ],
     [ "Terraria.ModLoader.GlobalTile", "class_terraria_1_1_mod_loader_1_1_global_tile.html", null ],
     [ "Terraria.ModLoader.GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", null ],
+    [ "Terraria.ModLoader.ItemLoader.HookList", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html", null ],
     [ "Terraria.ModLoader.ModCompile.IBuildStatus", "interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html", [
       [ "Terraria.ModLoader.ModCompile.ConsoleBuildStatus", "class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_console_build_status.html", null ]
     ] ],

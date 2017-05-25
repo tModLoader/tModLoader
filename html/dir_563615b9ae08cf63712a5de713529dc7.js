@@ -4,6 +4,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "HeaderCopyWriter", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer" ],
       [ "LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod" ]
     ] ],
+    [ "AutoloadEquip.cs", "_autoload_equip_8cs.html", [
+      [ "AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", "class_terraria_1_1_mod_loader_1_1_autoload_equip" ]
+    ] ],
     [ "BackgroundStyleLoaders.cs", "_background_style_loaders_8cs.html", [
       [ "SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader" ],
       [ "UgBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader" ]
@@ -70,6 +73,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     ] ],
     [ "Interface.cs", "_interface_8cs.html", null ],
     [ "ItemLoader.cs", "_item_loader_8cs.html", [
+      [ "HookList", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list" ],
       [ "ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", "class_terraria_1_1_mod_loader_1_1_item_loader" ]
     ] ],
     [ "MapEntry.cs", "_map_entry_8cs.html", null ],

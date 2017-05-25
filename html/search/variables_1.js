@@ -14,6 +14,7 @@ var searchData=
   ['armorcolor',['armorColor',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a7aca85c2a04da30c9b304eaa0dd2b388',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
   ['armorshader',['armorShader',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a68aaf59a24ffc56466449ad7bd91d842',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
   ['arms',['Arms',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a6acba4cddca857b38e687066d4d08f54',1,'Terraria::ModLoader::PlayerLayer']]],
+  ['arr',['arr',['../class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html#a12fd9a385c4d55711ef2327aa57933b1',1,'Terraria::ModLoader::ItemLoader::HookList']]],
   ['assembly',['assembly',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a9f3bd2fd1805a4dc012653846c800cf2',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['assemblyname',['AssemblyName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac302b5327050b9849dcf52e7b26e01cb',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['autoload',['Autoload',['../struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b',1,'Terraria::ModLoader::ModProperties']]],

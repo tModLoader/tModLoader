@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_i_symbol_writer.html" title="ISymbolWriter" alt="" coords="7,23,111,52"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html" title="Terraria.ModLoader.Assembly\lManager.SymbolWriterProvider.Header\lCopyWriter" alt="" coords="161,5,409,69"/>
+<area shape="rect" id="node1" href="$class_i_o_exception.html" title="IOException" alt="" coords="7,13,100,43"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html" title="Terraria.ModLoader.Exceptions.\lCustomModDataException" alt="" coords="151,5,356,51"/>
 </map>

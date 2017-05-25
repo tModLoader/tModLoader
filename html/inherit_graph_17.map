@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html" title="This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures. " alt="" coords="5,5,176,51"/>
+<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_entity_info.html" title="There are three classes called ItemInfo, ProjectileInfo, and NPCInfo. You can override any of these t..." alt="" coords="5,32,200,61"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o..." alt="" coords="261,5,451,35"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate..." alt="" coords="249,59,463,88"/>
 </map>

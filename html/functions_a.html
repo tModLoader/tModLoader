@@ -186,9 +186,6 @@ $(document).ready(function(){initNavTree('functions_a.html','');});
 <li>AddEquipTexture()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a62fce9d3fcd8d1283f01b556b9238326">Terraria.ModLoader.Mod</a>
 </li>
-<li>AddFlameTexture()
-: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a4d4f0790c6c09b485ae7478388b7399c">Terraria.ModLoader.Mod</a>
-</li>
 <li>AddGlobalBgStyle()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a160a9cbb35a195418791ecc652137534">Terraria.ModLoader.Mod</a>
 </li>
@@ -216,13 +213,16 @@ $(document).ready(function(){initNavTree('functions_a.html','');});
 <li>AddGore()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a0f77bc7cc6bb96b5c825c9b008b0ac70">Terraria.ModLoader.Mod</a>
 </li>
+<li>AddHook&lt; F &gt;()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a1726332ebc7c63ad72ef9bb14e1cf925">Terraria.ModLoader.ItemLoader</a>
+</li>
 <li>AddIngredient()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a103af1570ac56557e56cefb688ba637e">Terraria.ModLoader.ModRecipe</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_editor.html#ae627c3f5be0a1b7def18de20ab56d760">Terraria.ModLoader.RecipeEditor</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_finder.html#ad869ec676e5e1eded3932e8d276e8fb5">Terraria.ModLoader.RecipeFinder</a>
 </li>
 <li>AddItem()
-: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#acbb336d241351248fd2399ad9424d8b4">Terraria.ModLoader.Mod</a>
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#adab40a83505b67624f9789e85f6b4fde">Terraria.ModLoader.Mod</a>
 </li>
 <li>AddLight()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html#a337e909bb37ea25e60b1f1571d651a68">Terraria.ModLoader.ModWaterfallStyle</a>
@@ -439,6 +439,9 @@ $(document).ready(function(){initNavTree('functions_a.html','');});
 <li>Arms
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_layer.html#a6acba4cddca857b38e687066d4d08f54">Terraria.ModLoader.PlayerLayer</a>
 </li>
+<li>arr
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html#a12fd9a385c4d55711ef2327aa57933b1">Terraria.ModLoader.ItemLoader.HookList</a>
+</li>
 <li>assembly
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a9f3bd2fd1805a4dc012653846c800cf2">Terraria.ModLoader.AssemblyManager.LoadedMod</a>
 </li>
@@ -462,7 +465,7 @@ $(document).ready(function(){initNavTree('functions_a.html','');});
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_buff.html#a0020216bc22da53455ef36f778e50804">Terraria.ModLoader.ModBuff</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_command.html#a6644dee96b64cf7f85526ef8d53d307a">Terraria.ModLoader.ModCommand</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#ab3c7ebf96d19b4aa4deb475b7760fb1d">Terraria.ModLoader.ModDust</a>
-, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a5138adcff2d5ff9e18b749548b7317dd">Terraria.ModLoader.ModItem</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aba9ed6109a5d3b87eeae1da58970422b">Terraria.ModLoader.ModItem</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#afc57113aa508c6a5b37ca97b2dbca7a3">Terraria.ModLoader.ModMountData</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#abb047caa31b8ca34497ac4168356c711">Terraria.ModLoader.ModNPC</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af2a28d3c043a84ede9cfb4f5e10672c1">Terraria.ModLoader.ModPlayer</a>
@@ -494,10 +497,7 @@ $(document).ready(function(){initNavTree('functions_a.html','');});
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a39adda16701748f5da5f0c6fda3f1ff3">Terraria.ModLoader.Mod</a>
 </li>
 <li>AutoloadEquip()
-: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a3a5b981a600b8dc922f94c7cf1fc250d">Terraria.ModLoader.ModItem</a>
-</li>
-<li>AutoloadFlame()
-: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4688052985a7a3064d46eac49bb66a7d">Terraria.ModLoader.ModItem</a>
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_autoload_equip.html#afbd6012119cf05268e05944db05d6d88">Terraria.ModLoader.AutoloadEquip</a>
 </li>
 <li>AutoloadGlobalBgStyle()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ab4b80a990187bffdefb9339d54e7d3a7">Terraria.ModLoader.Mod</a>

@@ -1,5 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_i_cloneable.html" title="ICloneable" alt="" coords="57,5,140,35"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html" title="Terraria.ModLoader.IO.Tag\lCompound" alt="" coords="240,27,419,74"/>
-<area shape="rect" id="node4" href="$class_i_enumerable_3_01_key_value_pair_3_01string_00_01object_01_4_4.html" title="IEnumerable\&lt; KeyValuePair\l\&lt; string, object \&gt;\&gt;" alt="" coords="5,58,192,105"/>
+<area shape="rect" id="node1" href="$class_i_enumerable_3_01_key_value_pair_3_01string_00_01byte[]_4_4.html" title="IEnumerable\&lt; KeyValuePair\l\&lt; string, byte[]\&gt;\&gt;" alt="" coords="5,5,192,51"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html" title="Terraria.ModLoader.IO.TmodFile" alt="" coords="240,13,451,43"/>
 </map>
