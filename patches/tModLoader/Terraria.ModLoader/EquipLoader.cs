@@ -13,12 +13,20 @@ namespace Terraria.ModLoader
 	{
 		//in Terraria.Main.DrawPlayer and Terraria.Main.DrawPlayerHead get rid of checks for slot too high (not necessary for loading)
 		private static readonly IDictionary<EquipType, int> nextEquip = new Dictionary<EquipType, int>();
+
 		internal static readonly IDictionary<EquipType, IDictionary<int, EquipTexture>> equipTextures =
 			new Dictionary<EquipType, IDictionary<int, EquipTexture>>();
+
+		//list of equiptypes and slots registered for an item id. Used for SetDefaults
 		internal static readonly IDictionary<int, IDictionary<EquipType, int>> idToSlot =
 			new Dictionary<int, IDictionary<EquipType, int>>();
+
+		//holds mappings of slot id -> item id for head/body/legs
+		//used to populate Item.(head/body/leg)Type for Manequinns
 		internal static readonly IDictionary<EquipType, IDictionary<int, int>> slotToId =
 			new Dictionary<EquipType, IDictionary<int, int>>();
+
+		//slot id -> texture name for body slot female/arm textures
 		internal static readonly IDictionary<int, string> femaleTextures = new Dictionary<int, string>();
 		internal static readonly IDictionary<int, string> armTextures = new Dictionary<int, string>();
 
@@ -51,14 +59,8 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public static EquipTexture GetEquipTexture(EquipType type, int slot)
 		{
-			if (equipTextures[type].ContainsKey(slot))
-			{
-				return equipTextures[type][slot];
-			}
-			else
-			{
-				return null;
-			}
+			EquipTexture texture;
+			return equipTextures[type].TryGetValue(slot, out texture) ? texture : null;
 		}
 
 		internal static void ResizeAndFillArrays()
@@ -102,38 +104,31 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.accBalloonTexture, nextEquip[EquipType.Balloon]);
 			foreach (EquipType type in EquipTypes)
 			{
-				foreach (int slot in equipTextures[type].Keys)
+				foreach (var entry in equipTextures[type])
 				{
-					EquipTexture texture = GetEquipTexture(type, slot);
+					int slot = entry.Key;
+					EquipTexture texture = entry.Value;
 					GetTextureArray(type)[slot] = ModLoader.GetTexture(texture.Texture);
-					if (type == EquipType.Body)
-					{
-						if (femaleTextures.ContainsKey(slot))
-						{
-							Main.femaleBodyTexture[slot] = ModLoader.GetTexture(femaleTextures[slot]);
-						}
-						else
-						{
-							Main.femaleBodyTexture[slot] = Main.armorBodyTexture[slot];
-						}
+					if (type == EquipType.Body) {
+						Main.femaleBodyTexture[slot] = ModLoader.GetTexture(femaleTextures[slot]);
 						Main.armorArmTexture[slot] = ModLoader.GetTexture(armTextures[slot]);
 					}
 				}
 			}
 			Array.Resize(ref Item.headType, nextEquip[EquipType.Head]);
-			foreach (int slot in slotToId[EquipType.Head].Keys)
+			foreach (var entry in slotToId[EquipType.Head])
 			{
-				Item.headType[slot] = slotToId[EquipType.Head][slot];
+				Item.headType[entry.Key] = entry.Value;
 			}
 			Array.Resize(ref Item.bodyType, nextEquip[EquipType.Body]);
-			foreach (int slot in slotToId[EquipType.Body].Keys)
+			foreach (var entry in slotToId[EquipType.Body])
 			{
-				Item.bodyType[slot] = slotToId[EquipType.Body][slot];
+				Item.bodyType[entry.Key] = entry.Value;
 			}
 			Array.Resize(ref Item.legType, nextEquip[EquipType.Legs]);
-			foreach (int slot in slotToId[EquipType.Legs].Keys)
+			foreach (var entry in slotToId[EquipType.Legs])
 			{
-				Item.legType[slot] = slotToId[EquipType.Legs][slot];
+				Item.legType[entry.Key] = entry.Value;
 			}
 		}
 
@@ -262,57 +257,57 @@ namespace Terraria.ModLoader
 
 		internal static void SetSlot(Item item)
 		{
-			if (idToSlot.ContainsKey(item.type))
+			IDictionary<EquipType, int> slots;
+			if (!idToSlot.TryGetValue(item.type, out slots))
+				return;
+
+			foreach (var entry in slots)
 			{
-				IDictionary<EquipType, int> slots = idToSlot[item.type];
-				foreach (EquipType type in slots.Keys)
+				int slot = entry.Value;
+				switch (entry.Key)
 				{
-					int slot = slots[type];
-					switch (type)
-					{
-						case EquipType.Head:
-							item.headSlot = slot;
-							break;
-						case EquipType.Body:
-							item.bodySlot = slot;
-							break;
-						case EquipType.Legs:
-							item.legSlot = slot;
-							break;
-						case EquipType.HandsOn:
-							item.handOnSlot = (sbyte)slot;
-							break;
-						case EquipType.HandsOff:
-							item.handOffSlot = (sbyte)slot;
-							break;
-						case EquipType.Back:
-							item.backSlot = (sbyte)slot;
-							break;
-						case EquipType.Front:
-							item.frontSlot = (sbyte)slot;
-							break;
-						case EquipType.Shoes:
-							item.shoeSlot = (sbyte)slot;
-							break;
-						case EquipType.Waist:
-							item.waistSlot = (sbyte)slot;
-							break;
-						case EquipType.Wings:
-							item.wingSlot = (sbyte)slot;
-							break;
-						case EquipType.Shield:
-							item.shieldSlot = (sbyte)slot;
-							break;
-						case EquipType.Neck:
-							item.neckSlot = (sbyte)slot;
-							break;
-						case EquipType.Face:
-							item.faceSlot = (sbyte)slot;
-							break;
-						case EquipType.Balloon:
-							item.balloonSlot = (sbyte)slot;
-							break;
-					}
+					case EquipType.Head:
+						item.headSlot = slot;
+						break;
+					case EquipType.Body:
+						item.bodySlot = slot;
+						break;
+					case EquipType.Legs:
+						item.legSlot = slot;
+						break;
+					case EquipType.HandsOn:
+						item.handOnSlot = (sbyte)slot;
+						break;
+					case EquipType.HandsOff:
+						item.handOffSlot = (sbyte)slot;
+						break;
+					case EquipType.Back:
+						item.backSlot = (sbyte)slot;
+						break;
+					case EquipType.Front:
+						item.frontSlot = (sbyte)slot;
+						break;
+					case EquipType.Shoes:
+						item.shoeSlot = (sbyte)slot;
+						break;
+					case EquipType.Waist:
+						item.waistSlot = (sbyte)slot;
+						break;
+					case EquipType.Wings:
+						item.wingSlot = (sbyte)slot;
+						break;
+					case EquipType.Shield:
+						item.shieldSlot = (sbyte)slot;
+						break;
+					case EquipType.Neck:
+						item.neckSlot = (sbyte)slot;
+						break;
+					case EquipType.Face:
+						item.faceSlot = (sbyte)slot;
+						break;
+					case EquipType.Balloon:
+						item.balloonSlot = (sbyte)slot;
+						break;
 				}
 			}
 		}

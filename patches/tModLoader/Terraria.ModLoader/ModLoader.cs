@@ -142,8 +142,10 @@ namespace Terraria.ModLoader
 				Interface.loadMods.SetProgressInit(mod.Name, num, mods.Count);
 				try
 				{
+					mod.loading = true;
 					mod.Autoload();
 					mod.Load();
+					mod.loading = false;
 				}
 				catch (Exception e)
 				{
@@ -219,7 +221,7 @@ namespace Terraria.ModLoader
 
 		private static void ResizeArrays(bool unloading = false)
 		{
-			ItemLoader.ResizeArrays();
+			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			Main.InitializeItemAnimations();
 			ModDust.ResizeArrays();
@@ -345,7 +347,7 @@ namespace Terraria.ModLoader
 				{
 					file = new TmodFile(fileName);
 					file.Read();
-					findModsCache.Add(fileName, new Tuple<DateTime, TmodFile>(lastModified, file));
+					findModsCache.Add(fileName, Tuple.Create(lastModified, file));
 				}
 				if (file.ValidMod() == null)
 					files.Add(file);
@@ -902,54 +904,34 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr)
 		{
-			list = GetGlobalHooks(providers, expr).Select(expr.Compile()).ToArray();
+			list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
 		}
 
 		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
 		{
-			return GetGlobalHooks(providers, expr).ToArray();
+			return BuildGlobalHook(providers, Method(expr));
 		}
 
-		private static IEnumerable<T> GetGlobalHooks<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
+		internal static T[] BuildGlobalHook<T>(IList<T> providers, MethodInfo method)
 		{
-			MethodInfo method = GetAndValidateMethodInfo(expr);
+			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
 			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T));
+			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
 		}
 
-		internal static bool[] CacheGlobalHooks<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
-		{
-			MethodInfo method = GetAndValidateMethodInfo(expr);
-			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-			return providers.Select(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
-		}
-
-		internal static void BuildHookFromCache<T, F>(ref F[] list, IList<T> providers, Func<T, F> func, bool[] cache)
-		{
-			list = providers.Where((p, index) => cache[index]).Select(func).ToArray();
-		}
-
-		internal static T[] BuildHookFromCache<T, F>(IList<T> providers, Func<T, F> expr, bool[] cache)
-		{
-			return providers.Where((p, index) => cache[index]).ToArray();
-		}
-
-		private static MethodInfo GetAndValidateMethodInfo<T, F>(Expression<Func<T, F>> expr)
+		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr)
 		{
 			MethodInfo method;
-			try
-			{
+			try {
 				var convert = expr.Body as UnaryExpression;
 				var makeDelegate = convert.Operand as MethodCallExpression;
 				var methodArg = makeDelegate.Arguments[2] as ConstantExpression;
 				method = methodArg.Value as MethodInfo;
 				if (method == null) throw new NullReferenceException();
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				throw new ArgumentException("Invalid hook expression " + expr, e);
 			}
-			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
 			return method;
 		}
 

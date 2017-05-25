@@ -7,6 +7,7 @@ namespace ExampleMod.Items.Abomination
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Scythe Blade");
 		}
 

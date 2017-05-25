@@ -7,6 +7,7 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Car Key");
 			Tooltip.SetDefault("This is a modded mount.");
 		}

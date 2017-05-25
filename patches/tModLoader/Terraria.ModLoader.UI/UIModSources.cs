@@ -159,7 +159,7 @@ namespace Terraria.ModLoader.UI
 				{
 					var mods = ModLoader.FindModSources();
 					var modFiles = ModLoader.FindMods();
-					return new Tuple<string[], TmodFile[]>(mods, modFiles);
+					return Tuple.Create(mods, modFiles);
 				})
 				.ContinueWith(task =>
 				{

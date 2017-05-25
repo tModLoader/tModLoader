@@ -31,6 +31,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal int index;
+		internal int instanceIndex;
 
 		/// <summary>
 		/// Allows you to automatically load a GlobalItem instead of using Mod.AddGlobalItem. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
@@ -41,30 +42,51 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether to create a new GlobalItem instance for every Item that exists. Useful for storing information on an item. Defaults to true. Return false if you do not need to store information.
+		/// Whether to create a new GlobalItem instance for every Item that exists. 
+		/// Useful for storing information on an item. Defaults to false. 
+		/// Return true if you need to store information (have non-static fields).
 		/// </summary>
-		public virtual bool InstancePerEntity => true;
+		public virtual bool InstancePerEntity => false;
+
+		public GlobalItem Instance(Item item) => InstancePerEntity ? item.globalItems[instanceIndex] : this;
 
 		/// <summary>
-		/// Whether instances of this GlobalItem are created through its Clone hook or its constructor. Defaults to false. You should return true if your GlobalItem contains object references.
+		/// Whether instances of this GlobalItem are created through Clone or constructor (by default implementations of NewInstance and Clone(Item, Item)). 
+		/// Defaults to false (using default constructor).
 		/// </summary>
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
-		/// Returns a clone of this GlobalItem. By default this will return a memberwise clone; you will want to override this if your GlobalItem contains object references. Only called if CloneNewInstances returns true.
+		/// Returns a clone of this GlobalItem. 
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalItem contains object references. 
+		/// Only called if CloneNewInstances && InstancePerEntity
 		/// </summary>
-		public virtual GlobalItem Clone()
-		{
-			return (GlobalItem)MemberwiseClone();
-		}
+		public virtual GlobalItem Clone() => (GlobalItem)MemberwiseClone();
 
-		internal GlobalItem GetForInstance()
-		{
-			if (!InstancePerEntity)
-			{
-				return this;
-			}
-			return CloneNewInstances ? Clone() : (GlobalItem)Activator.CreateInstance(this.GetType());
+		/// <summary>
+		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.
+		/// Defaults to NewInstance(item)
+		/// </summary>
+		/// <param name="item">The item being cloned</param>
+		/// <param name="itemClone">The new item</param>
+		public virtual GlobalItem Clone(Item item, Item itemClone) => NewInstance(item);
+
+		/// <summary>
+		/// Create a new instance of this GlobalItem for an Item instance. 
+		/// Called at the end of Item.SetDefaults.
+		/// If CloneNewInstances is true, just calls Clone()
+		/// Otherwise calls the default constructor and copies fields
+		/// </summary>
+		public virtual GlobalItem NewInstance(Item item) {
+			if (CloneNewInstances)
+				return Clone();
+
+			var copy = (GlobalItem)Activator.CreateInstance(GetType());
+			copy.mod = mod;
+			copy.Name = Name;
+			copy.index = index; //not necessary, but consistency
+			copy.instanceIndex = instanceIndex;//shouldn't be used, but someone might
+			return copy;
 		}
 
 		/// <summary>
@@ -293,7 +315,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the player is wearing an armor set, and return a name for this set. If there is no armor set, return the empty string. Returns the empty string by default.
+		/// Allows you to determine whether the player is wearing an armor set, and return a name for this set. 
+		/// If there is no armor set, return the empty string.
+		/// Returns the empty string by default.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual string IsArmorSet(Item head, Item body, Item legs)
 		{
@@ -301,14 +327,21 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give set bonuses to your armor set with the given name. The set name will be the same as returned by IsArmorSet.
+		/// Allows you to give set bonuses to your armor set with the given name. 
+		/// The set name will be the same as returned by IsArmorSet.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void UpdateArmorSet(Player player, string set)
 		{
 		}
 
 		/// <summary>
-		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks, and will use items in the social slots if they exist. By default this will return the same value as the IsArmorSet hook, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
+		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set.
+		/// This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks, and will use items in the social slots if they exist.
+		/// By default this will return the same value as the IsArmorSet hook, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual string IsVanitySet(int head, int body, int legs)
 		{
@@ -331,7 +364,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects (such as the necro armor's hurt noise) when the player wears the vanity set with the given name returned by IsVanitySet. This hook is called regardless of whether the player is frozen in any way.
+		/// Allows you to create special effects (such as the necro armor's hurt noise) when the player wears the vanity set with the given name returned by IsVanitySet.
+		/// This hook is called regardless of whether the player is frozen in any way.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void PreUpdateVanitySet(Player player, string set)
 		{
@@ -339,6 +375,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to create special effects (such as dust) when the player wears the vanity set with the given name returned by IsVanitySet. This hook will only be called if the player is not frozen in any way.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void UpdateVanitySet(Player player, string set)
 		{
@@ -346,6 +384,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to determine special visual effects a vanity has on the player without having to code them yourself.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		/// <example><code>player.armorEffectDrawShadow = true;</code></example>
 		public virtual void ArmorSetShadows(Player player, string set)
@@ -353,8 +393,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the equipment that the player appears to be wearing. This hook will only be called for body armor (armorSlot == 1) and leg armor (armorSlot == 2). The type parameter is the equipment texture ID of the item that the player is wearing. Note that type and equipSlot are not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs. You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader. If this hook is called on body armor, equipSlot allows you to modify the leg armor the player appears to be wearing. If you modify it, make sure to set robes to true. If this hook is called on leg armor, equipSlot allows you to modify the leg armor the player appears to be wearing, and the robes parameter is useless.
+		/// Allows you to modify the equipment that the player appears to be wearing.
+		/// 
+		/// Note that type and equipSlot are not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs.
+		/// You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
+		/// <param name="armorSlot">head armor (0), body armor (1) or leg armor (2).</param>
+		/// <param name="type">The equipment texture ID of the item that the player is wearing.</param>
+		/// <param name="equipSlot">The altered equipment texture ID for the legs (armorSlot 1 and 2) or head (armorSlot 0)</param>
+		/// <param name="robes">Set to true if you modify equipSlot when armorSlot == 1 to set Player.wearsRobe, otherwise ignore it</param>
 		public virtual void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes)
 		{
 		}
@@ -375,7 +424,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make vanilla bags drop your own items and stop the default items from being dropped. Return false to stop the default items from being dropped; returns true by default. Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag". For boss bags and crates, arg will be set to the type of the item being opened.
+		/// Allows you to make vanilla bags drop your own items and stop the default items from being dropped. 
+		/// Return false to stop the default items from being dropped; returns true by default. 
+		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag". 
+		/// For boss bags and crates, arg will be set to the type of the item being opened.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual bool PreOpenVanillaBag(string context, Player player, int arg)
 		{
@@ -383,7 +437,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make vanilla bags drop your own items in addition to the default items. This method will not be called if any other GlobalItem returns false for PreOpenVanillaBag. Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag". For boss bags and crates, arg will be set to the type of the item being opened.
+		/// Allows you to make vanilla bags drop your own items in addition to the default items.
+		/// This method will not be called if any other GlobalItem returns false for PreOpenVanillaBag.
+		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag".
+		/// For boss bags and crates, arg will be set to the type of the item being opened.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void OpenVanillaBag(string context, Player player, int arg)
 		{
@@ -404,7 +463,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when a body armor is worn. Note that if drawHands is false, the arms will not be drawn either.
+		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when a body armor is worn.
+		/// Note that if drawHands is false, the arms will not be drawn either.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void DrawHands(int body, ref bool drawHands, ref bool drawArms)
 		{
@@ -412,6 +474,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to determine whether the player's hair or alt (hat) hair will be drawn when a head armor is worn.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void DrawHair(int head, ref bool drawHair, ref bool drawAltHair)
 		{
@@ -419,6 +483,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Return false to hide the player's head when a head armor is worn. Returns true by default.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual bool DrawHead(int head)
 		{
@@ -427,6 +493,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Return false to hide the player's body when a body armor is worn. Returns true by default.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual bool DrawBody(int body)
 		{
@@ -435,6 +503,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Return false to hide the player's legs when a leg armor or shoe accessory is worn. Returns true by default.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual bool DrawLegs(int legs, int shoes)
 		{
@@ -443,6 +513,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to modify the colors in which the player's armor and their surrounding accessories are drawn, in addition to which glow mask and in what color is drawn.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void DrawArmorColor(EquipType type, int slot, Player drawPlayer, float shadow, ref Color color,
 			ref int glowMask, ref Color glowMaskColor)
@@ -451,6 +523,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to modify which glow mask and in what color is drawn on the player's arms. Note that this is only called for body armor.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void ArmorArmGlowMask(int slot, Player drawPlayer, float shadow, ref int glowMask, ref Color color)
 		{
@@ -472,7 +546,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. False will keep everything the same. True, you need to handle all animations in your own code.
+		/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed.
+		/// Called when wings visually appear on the player.
+		/// Use to animate wings, create dusts, invoke sounds, and create lights. False will keep everything the same.
+		/// True, you need to handle all animations in your own code.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual bool WingUpdate(int wings, Player player, bool inUse)
 		{
@@ -573,7 +652,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine the offset of an item's sprite when used by the player. This is only used for items with a useStyle of 5 that aren't staves. Return null to use the item's default holdout offset; returns null by default.
+		/// Allows you to determine the offset of an item's sprite when used by the player.
+		/// This is only used for items with a useStyle of 5 that aren't staves.
+		/// Return null to use the item's default holdout offset; returns null by default.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		/// <example><code>return new Vector2(10, 0);</code></example>
 		public virtual Vector2? HoldoutOffset(int type)
@@ -582,7 +665,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine the point on an item's sprite that the player holds onto when using the item. The origin is from the bottom left corner of the sprite. This is only used for staves with a useStyle of 5. Return null to use the item's default holdout origin; returns null by default.
+		/// Allows you to determine the point on an item's sprite that the player holds onto when using the item.
+		/// The origin is from the bottom left corner of the sprite. This is only used for staves with a useStyle of 5.
+		/// Return null to use the item's default holdout origin; returns null by default.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual Vector2? HoldoutOrigin(int type)
 		{
@@ -598,7 +685,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. An extractType of 0 represents the default extraction (Silt and Slush). By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
+		/// Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. 
+		/// An extractType of 0 represents the default extraction (Silt and Slush). 
+		/// By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void ExtractinatorUse(int extractType, ref int resultType, ref int resultStack)
 		{
@@ -612,7 +703,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not specific conditions have been satisfied for the Angler to be able to request the given item. (For example, Hardmode.) Returns true by default.
+		/// Whether or not specific conditions have been satisfied for the Angler to be able to request the given item. (For example, Hardmode.) 
+		/// Returns true by default.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual bool IsAnglerQuestAvailable(int type)
 		{
@@ -620,7 +714,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set what the Angler says when the Quest button is clicked in his chat. The chat parameter is his dialogue, and catchLocation should be set to "Caught at [location]" for the given type.
+		/// Allows you to set what the Angler says when the Quest button is clicked in his chat. 
+		/// The chat parameter is his dialogue, and catchLocation should be set to "Caught at [location]" for the given type.
+		/// 
+		/// This method is not instanced.
 		/// </summary>
 		public virtual void AnglerChat(int type, ref string chat, ref string catchLocation)
 		{

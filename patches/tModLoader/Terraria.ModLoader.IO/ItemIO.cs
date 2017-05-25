@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.IO
 		//in Terraria.IO.WorldFile.SaveChests include IsModItem for no-item check
 		internal static void WriteVanillaID(Item item, BinaryWriter writer)
 		{
-			writer.Write(ItemLoader.IsModItem(item) ? 0 : item.netID);
+			writer.Write(item.modItem != null ? 0 : item.netID);
 		}
 
 		public static TagCompound Save(Item item)
@@ -171,7 +171,7 @@ namespace Terraria.ModLoader.IO
 			if (item.IsAir) return;
 			writer.SafeWrite(w => item.modItem?.NetSend(w));
 			foreach (var globalItem in ItemLoader.NetGlobals)
-				writer.SafeWrite(w => globalItem.NetSend(item, w));
+				writer.SafeWrite(w => globalItem.Instance(item).NetSend(item, w));
 		}
 
 		public static void ReceiveModData(Item item, BinaryReader reader)
@@ -190,7 +190,7 @@ namespace Terraria.ModLoader.IO
 			{
 				try
 				{
-					reader.SafeRead(r => globalItem.NetReceive(item, r));
+					reader.SafeRead(r => globalItem.Instance(item).NetReceive(item, r));
 				}
 				catch (IOException)
 				{
@@ -279,7 +279,7 @@ namespace Terraria.ModLoader.IO
 		{
 			using (BinaryReader reader = new BinaryReader(new MemoryStream(data)))
 			{
-				if (ItemLoader.IsModItem(item))
+				if (item.modItem != null)
 				{
 					byte[] modData = reader.ReadBytes(reader.ReadUInt16());
 					if (modData.Length > 0)

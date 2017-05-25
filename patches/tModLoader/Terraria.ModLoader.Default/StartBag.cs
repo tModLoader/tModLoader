@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -8,6 +7,8 @@ namespace Terraria.ModLoader.Default
 	public class StartBag : ModItem
 	{
 		private List<Item> items = new List<Item>();
+
+		public override string Texture => "ModLoader/StartBag";
 
 		public override void SetStaticDefaults()
 		{

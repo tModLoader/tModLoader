@@ -6,6 +6,7 @@ namespace ExampleMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Scoreboard");
 			Tooltip.SetDefault("Compete for kills with friends.");
 		}

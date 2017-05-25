@@ -10,6 +10,8 @@ namespace Terraria.ModLoader.Default
 		private string itemName;
 		private TagCompound data;
 
+		public override string Texture => "ModLoader/MysteryItem";
+
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Unloaded Item");
@@ -25,9 +27,9 @@ namespace Terraria.ModLoader.Default
 
 		internal void Setup(TagCompound tag)
 		{
-			this.modName = tag.GetString("mod");
-			this.itemName = tag.GetString("name");
-			this.data = tag;
+			modName = tag.GetString("mod");
+			itemName = tag.GetString("name");
+			data = tag;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)

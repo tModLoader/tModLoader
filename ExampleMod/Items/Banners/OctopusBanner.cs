@@ -7,6 +7,7 @@ namespace ExampleMod.Items.Banners
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Octopus Banner");
 		}
 

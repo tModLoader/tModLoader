@@ -1,10 +1,15 @@
 --- src/Terraria\Terraria\Item.cs
 +++ src/tModLoader\Terraria\Item.cs
-@@ -6,11 +_,35 @@
+@@ -1,16 +_,36 @@
+ using Microsoft.Xna.Framework;
+ using System;
++using System.Linq;
+ using Terraria.Audio;
+ using Terraria.GameContent.Events;
+ using Terraria.Graphics.Shaders;
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
-+using System.Collections.Generic;
 +using Terraria.ModLoader;
  
  namespace Terraria
@@ -22,17 +27,13 @@
 +
 +		public GlobalItem GetGlobalItem(Mod mod, string name)
 +		{
-+			return ItemLoader.GetGlobalItem(this, mod, name);
++			return ItemLoader.GetGlobalItem(this, mod, name).Instance(this);
 +		}
 +
 +		public T GetGlobalItem<T>(Mod mod) where T : GlobalItem
 +		{
 +			return (T)GetGlobalItem(mod, typeof(T).Name);
 +		}
-+
-+		#region hooks
-+		internal Action<Item>[] HookSetDefaults;
-+		#endregion
 +
  		public const int flaskTime = 72000;
  		public const int copper = 1;
@@ -163,7 +164,7 @@
  				this.maxStack = 999;
  			}
  			this.netID = this.type;
-+			ItemLoader.SetupItem(this);
++			ItemLoader.SetDefaults(this);
  			if (!noMatCheck)
  			{
  				this.checkMat();
@@ -254,18 +255,14 @@
  					if (num3 < (float)NPC.sWidth && num3 < num2)
  					{
  						num2 = num3;
-@@ -43998,7 +_,14 @@
+@@ -43998,7 +_,10 @@
  
  		public Item Clone()
  		{
 -			return (Item)base.MemberwiseClone();
 +			Item newItem = (Item)base.MemberwiseClone();
-+
-+			newItem.globalItems = new GlobalItem[globalItems.Length];
-+			for (int i = 0; i < globalItems.Length; i++)
-+				newItem.globalItems[i] = globalItems[i].Clone();
-+
-+			modItem?.SetupClone(newItem);
++			newItem.modItem = modItem?.Clone(newItem);
++			newItem.globalItems = globalItems.Select(g => g.Clone(this, newItem)).ToArray();
 +			return newItem;
  		}
  

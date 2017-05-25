@@ -9,6 +9,7 @@ namespace ExampleMod.Items.Weapons
 
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Example Explosive");
 		}
 
