@@ -8,6 +8,7 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Shield of Purity");
 			Tooltip.SetDefault("WIP until bluemagic123 learns how to make mounts");
 		}

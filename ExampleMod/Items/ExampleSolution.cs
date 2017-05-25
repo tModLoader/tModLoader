@@ -8,6 +8,7 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Monochromatic Solution");
 			Tooltip.SetDefault("Used by the Clentaminator"
 				+ "\nSpreads the example");

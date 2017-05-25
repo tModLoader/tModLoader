@@ -7,6 +7,7 @@ namespace ExampleMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Example Chest");
 			Tooltip.SetDefault("This is a modded chest.");
 		}

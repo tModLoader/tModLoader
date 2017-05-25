@@ -9,6 +9,7 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Example Sword");		//The English name of your weapon
 			Tooltip.SetDefault("This is a modded sword.");	//The (English) text shown below your weapon's name
 		}

@@ -9,8 +9,10 @@ namespace ExampleMod.Items.Abomination
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Six-Color Shield");
 			Tooltip.SetDefault("Creates elemental energy to protect you when damaged.");
+			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(10, 4));
 		}
 
 		public override void SetDefaults()
@@ -25,11 +27,6 @@ namespace ExampleMod.Items.Abomination
 			item.magic = true;
 			item.knockBack = 2f;
 			item.defense = 6;
-		}
-
-		public override DrawAnimation GetAnimation()
-		{
-			return new DrawAnimationVertical(10, 4);
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)

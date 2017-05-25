@@ -485,7 +485,7 @@ namespace Terraria.ModLoader
 					foreach (var met in type.Methods)
 						foreach (var attr in met.CustomAttributes)
 							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
-								attr.AttributeType.Scope.Name = "System.Core";
+								attr.AttributeType.Scope = module.AssemblyReferences.Single(r => r.Name == "System.Core");
 
 			var ret = new MemoryStream();
 			asm.Write(ret, new WriterParameters { SymbolWriterProvider = AssemblyManager.SymbolWriterProvider.instance });

@@ -10,8 +10,11 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Soul of Exampleness");
 			Tooltip.SetDefault("'The essence of example creatures'");
+			// ticksperframe, frameCount
+			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 4));
 			ItemID.Sets.AnimatesAsSoul[item.type] = true;
 			ItemID.Sets.ItemIconPulse[item.type] = true;
 			ItemID.Sets.ItemNoGravity[item.type] = true;
@@ -27,12 +30,6 @@ namespace ExampleMod.Items
 			item.maxStack = 999;
 			item.value = 1000;
 			item.rare = 3;
-		}
-
-		public override DrawAnimation GetAnimation()
-		{
-			// ticksperframe, frameCount
-			return new DrawAnimationVertical(5, 4);
 		}
 
 		// The following 2 methods are purely to show off these 2 hooks. Don't use them in your own code.

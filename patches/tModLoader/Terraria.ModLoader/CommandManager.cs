@@ -136,7 +136,7 @@ namespace Terraria.ModLoader
 					if (cmdList.Count > 1)
 						cmd = mc.mod.Name + ":" + cmd;
 
-					list.Add(new Tuple<string, string>(cmd, mc.Description));
+					list.Add(Tuple.Create(cmd, mc.Description));
 				}
 			}
 			return list;

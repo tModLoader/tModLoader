@@ -92,7 +92,7 @@
  					{
  						Item item = chest.item[l];
 -						if (item == null)
-+						if (item == null || ItemLoader.IsModItem(item))
++						if (item == null || item.modItem != null)
  						{
  							writer.Write((short)0);
  						}

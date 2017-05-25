@@ -10,6 +10,7 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Purity Totem");
 			Tooltip.SetDefault("Summons a purity wisp to fight for you.");
 		}

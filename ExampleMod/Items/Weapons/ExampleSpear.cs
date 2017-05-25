@@ -1,8 +1,4 @@
 ﻿using ExampleMod.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,6 +9,7 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Example Spear");
 			Tooltip.SetDefault("An example spear");
 		}

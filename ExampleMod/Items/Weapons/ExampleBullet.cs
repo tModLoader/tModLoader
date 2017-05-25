@@ -7,6 +7,7 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Example Bullet");
 			Tooltip.SetDefault("This is a modded bullet ammo.");
 		}
