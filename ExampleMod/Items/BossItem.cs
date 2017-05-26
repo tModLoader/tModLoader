@@ -6,7 +6,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Boss Item");
 			Tooltip.SetDefault("Used to craft boss items");
 		}
 

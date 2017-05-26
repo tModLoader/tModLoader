@@ -52,6 +52,8 @@ namespace Terraria.ModLoader.IO
 			this.path = path;
 		}
 
+		internal DateTime lastModifiedTime;
+
 		public bool HasFile(string fileName) => files.ContainsKey(fileName.Replace('\\', '/'));
 
 		public byte[] GetFile(string fileName)

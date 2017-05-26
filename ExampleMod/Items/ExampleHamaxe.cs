@@ -9,7 +9,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Hamaxe");
 			Tooltip.SetDefault("This is a modded hamaxe.");
 		}
 

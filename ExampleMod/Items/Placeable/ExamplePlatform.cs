@@ -6,7 +6,6 @@ namespace ExampleMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Platform");
 			Tooltip.SetDefault("This is a modded platform.");
 		}
 

@@ -1,21 +1,14 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Armor
 {
+	[AutoloadEquip(EquipType.Head)]
 	public class ExampleHood : ModItem
 	{
-		public override bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
-		{
-			equips.Add(EquipType.Head);
-			return true;
-		}
-
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Hood");
 			Tooltip.SetDefault("This is a modded helmet.");
 		}
 

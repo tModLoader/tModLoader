@@ -1,11 +1,12 @@
 ﻿using System;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace Terraria.ModLoader.Default
 {
 	public class AprilFools : ModItem
 	{
+		public override string Texture => "Terraria/Item_3389";
+
 		public static bool CheckAprilFools()
 		{
 			DateTime now = DateTime.Now;

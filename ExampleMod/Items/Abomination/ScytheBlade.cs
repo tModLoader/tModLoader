@@ -5,11 +5,6 @@ namespace ExampleMod.Items.Abomination
 {
 	public class ScytheBlade : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Scythe Blade");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 20;

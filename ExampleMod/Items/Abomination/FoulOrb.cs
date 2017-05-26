@@ -9,7 +9,6 @@ namespace ExampleMod.Items.Abomination
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Foul Orb");
 			Tooltip.SetDefault("The underworld would like this.");
 		}
 

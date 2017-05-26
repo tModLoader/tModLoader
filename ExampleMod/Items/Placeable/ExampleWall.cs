@@ -6,7 +6,6 @@ namespace ExampleMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Wall");
 			Tooltip.SetDefault("This is a mdoded wall.");
 		}
 

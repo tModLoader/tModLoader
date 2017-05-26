@@ -8,7 +8,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sparkling Sphere");
 			Tooltip.SetDefault("Hold to watch magic happen!");
 		}
 

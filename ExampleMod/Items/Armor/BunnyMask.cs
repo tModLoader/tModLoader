@@ -1,21 +1,10 @@
-using System.Collections.Generic;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Armor
 {
+	[AutoloadEquip(EquipType.Head)]
 	public class BunnyMask : ModItem
 	{
-		public override bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
-		{
-			equips.Add(EquipType.Head);
-			return true;
-		}
-
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Bunny Mask");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 18;

@@ -10,7 +10,6 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Spectre Gun");
 			Tooltip.SetDefault("Uses wisps as ammo");
 		}
 

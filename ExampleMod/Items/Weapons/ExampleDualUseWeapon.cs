@@ -9,7 +9,6 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Dual Use Weapon");
 			Tooltip.SetDefault("This weapon does something special with <right>.");
 		}
 

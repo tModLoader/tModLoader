@@ -184,17 +184,54 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.modInfoID;
 		}
 
+		public override int CompareTo(object obj)
+		{
+			var item = obj as UIModItem;
+			string name = properties.displayName.Length > 0 ? properties.displayName : mod.name;
+			string othername = item.properties.displayName.Length > 0 ? item.properties.displayName : item.mod.name;
+			switch (Interface.modsMenu.sortMode)
+			{
+				default:
+					return base.CompareTo(obj);
+				case ModsMenuSortMode.RecentlyUpdated:
+					return -1 * mod.lastModifiedTime.CompareTo(item?.mod.lastModifiedTime);
+				case ModsMenuSortMode.DisplayNameAtoZ:
+					return string.Compare(name, othername, StringComparison.Ordinal);
+				case ModsMenuSortMode.DisplayNameZtoA:
+					return -1 * string.Compare(name, othername, StringComparison.Ordinal);
+			}
+		}
+
 		public override bool PassFilters()
 		{
 			if (Interface.modsMenu.filter.Length > 0)
 			{
 				string name = properties.displayName.Length > 0 ? properties.displayName : mod.name;
-				if (name.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1)
+				if (Interface.modsMenu.searchFilterMode == SearchFilter.Author)
 				{
-					return false;
+					if (properties.author.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1)
+					{
+						return false;
+					}
+				}
+				else
+				{
+					if (name.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1)
+					{
+						return false;
+					}
 				}
 			}
-			return true;
+			switch (Interface.modsMenu.enabledFilterMode)
+			{
+				default:
+				case EnabledFilter.All:
+					return true;
+				case EnabledFilter.EnabledOnly:
+					return enabled;
+				case EnabledFilter.DisabledOnly:
+					return !enabled;
+			}
 		}
 	}
 }

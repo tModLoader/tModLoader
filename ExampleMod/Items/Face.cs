@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.UI.Chat;
 
 namespace ExampleMod.Items
 {
@@ -12,10 +11,11 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Face");
 			// See here for help on using Tags: http://terraria.gamepedia.com/Chat#Tags
 			Tooltip.SetDefault("How are you feeling today?"
 				+ string.Format("\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{0}][i:{1}][i/s123:{2}]", item.type, mod.ItemType<CarKey>(), ItemID.Ectoplasm));
+
+			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(30, 4));
 			ItemID.Sets.ItemNoGravity[item.type] = true;
 		}
 
@@ -25,11 +25,6 @@ namespace ExampleMod.Items
 			item.height = 20;
 			item.value = 100;
 			item.rare = 1;
-		}
-
-		public override DrawAnimation GetAnimation()
-		{
-			return new DrawAnimationVertical(30, 4);
 		}
 
 		public override Color? GetAlpha(Color lightColor)

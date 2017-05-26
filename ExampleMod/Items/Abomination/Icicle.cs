@@ -5,11 +5,6 @@ namespace ExampleMod.Items.Abomination
 {
 	public class Icicle : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Icicle");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 20;

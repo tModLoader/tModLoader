@@ -8,7 +8,6 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Wisp");
 			Tooltip.SetDefault("Chases enemies through walls");
 		}
 

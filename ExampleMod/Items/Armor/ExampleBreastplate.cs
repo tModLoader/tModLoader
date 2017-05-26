@@ -1,20 +1,15 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Armor
 {
+	[AutoloadEquip(EquipType.Body)]
 	public class ExampleBreastplate : ModItem
 	{
-		public override bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
-		{
-			equips.Add(EquipType.Body);
-			return true;
-		}
-
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("Example Breastplate");
 			Tooltip.SetDefault("This is a modded body armor."
 				+ "\nImmunity to 'On Fire!'"

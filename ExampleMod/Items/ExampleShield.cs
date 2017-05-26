@@ -1,20 +1,13 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items
 {
+	[AutoloadEquip(EquipType.Shield)]
 	public class ExampleShield : ModItem
 	{
-		public override bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
-		{
-			equips.Add(EquipType.Shield);
-			return true;
-		}
-
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Shield");
 			Tooltip.SetDefault("This is a modded accessory."
 				+ "\nOnly equip if your character's name is bluemagic123");
 		}

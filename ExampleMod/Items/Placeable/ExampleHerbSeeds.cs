@@ -1,17 +1,9 @@
-using System;
-using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Placeable
 {
 	public class ExampleHerbSeeds : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Example Herb Seeds");
-		}
-
 		public override void SetDefaults()
 		{
 			item.autoReuse = true;

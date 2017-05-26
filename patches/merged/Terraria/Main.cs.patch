@@ -239,7 +239,7 @@
  		}
  
  		public void MouseTextHackZoom(string text)
-@@ -43882,9 +_,14 @@
+@@ -43882,8 +_,13 @@
  		protected void QuitGame()
  		{
  			Main.SaveSettings();
@@ -247,14 +247,12 @@
  			SocialAPI.Shutdown();
 +#endif
  			base.Exit();
--		}
 +#if MAC
-+            SDL.SDL_DestroyWindow(base.Window.Handle);
++			SDL.SDL_DestroyWindow(base.Window.Handle);
 +#endif
-+        }
+ 		}
  
  		protected Microsoft.Xna.Framework.Color randColor()
- 		{
 @@ -44645,6 +_,16 @@
  							"\" -lang ",
  							Language.ActiveCulture.LegacyId

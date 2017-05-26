@@ -41,13 +41,13 @@ namespace ExampleMod.Projectiles
 	// This is an approach you can take to fit your organization style.
 	public class ExampleBehindTilesProjectileItem : ModItem
 	{
-		public override bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
-		{
-			// Use this to use Vanilla textures. The number corresponds to the ItemID of the vanilla item.
-			texture = "Terraria/Item_42";
-			return true;
+		// Use this to use Vanilla textures. The number corresponds to the ItemID of the vanilla item.
+		public override string Texture {
+			get {
+				return "Terraria/Item_42";
+			}
 		}
-
+		
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Ghost Shuriken");

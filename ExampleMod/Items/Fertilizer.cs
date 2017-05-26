@@ -8,7 +8,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Fertilizer");
 			Tooltip.SetDefault("Important for healthy saplings.");
 		}
 

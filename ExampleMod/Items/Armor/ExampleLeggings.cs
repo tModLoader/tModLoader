@@ -1,20 +1,13 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Armor
 {
+	[AutoloadEquip(EquipType.Legs)]
 	public class ExampleLeggings : ModItem
 	{
-		public override bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
-		{
-			equips.Add(EquipType.Legs);
-			return true;
-		}
-
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Leggings");
 			Tooltip.SetDefault("This is a modded leg armor."
 				+ "\n5% increased movement speed");
 		}

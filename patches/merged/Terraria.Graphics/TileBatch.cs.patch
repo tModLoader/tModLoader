@@ -13,7 +13,7 @@
 +#if WINDOWS
  	public class TileBatch
 +#else
-+    public class TileBatch : IDisposable
++	public class TileBatch : IDisposable
 +#endif
  	{
 +#if WINDOWS
@@ -24,9 +24,6 @@
  		private Texture2D[] _spriteTextures;
  
  		private int _queuedSpriteCount;
--
--		private SpriteBatch _spriteBatch;
--
 +#else
 +		private class TextureComparer : IComparer<TileBatch.BatchDrawInfo>
 +		{
@@ -126,38 +123,17 @@
 +
 +		private readonly GraphicsDevice _graphicsDevice;
 +#endif
-+
-+        private SpriteBatch _spriteBatch;
-+
+ 
+ 		private SpriteBatch _spriteBatch;
+ 
 +#if WINDOWS
  		private static Vector2 _vector2Zero;
  
  		private static Rectangle? _nullRectangle;
-@@ -54,7 +_,7 @@
- 			this._graphicsDevice = graphicsDevice;
- 			this._spriteBatch = new SpriteBatch(graphicsDevice);
- 			this.Allocate();
--		}
-+        }
- 
- 		private void Allocate()
- 		{
-@@ -91,7 +_,7 @@
- 			}
- 		}
- 
--		private void FlushRenderState()
-+        private void FlushRenderState()
- 		{
- 			this.Allocate();
- 			this._graphicsDevice.SetVertexBuffer(this._vertexBuffer);
-@@ -381,6 +_,321 @@
- 				1f,
+@@ -382,5 +_,320 @@
  				1f
  			};
--		}
--	}
-+        }
+ 		}
 +#else
 +		public void Begin()
 +		{
@@ -347,7 +323,7 @@
 +						{
 +						num2 += batchDrawGroup.BatchDraws[j + 1].Count;
 +						j++;
-+ 					}
++					}
 +					this._graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, num2 * 4, num, num2 * 2);
 +					num += num2 * 6;
 +				}
@@ -360,9 +336,9 @@
 +		private void DrawBatch()
 +		{
 +			if (this._lastBatchDrawGroupIndex == 0 && this._batchDrawGroups[this._lastBatchDrawGroupIndex].SpriteCount == 0)
-+ 			{
-+ 				return;
-+ 			}
++			{
++				return;
++			}
 +			this.FlushRemainingBatch();
 +			VertexBuffer vertexBuffer = this._graphicsDevice.GetVertexBuffers()[0].VertexBuffer;
 +			for (int i = 0; i <= this._lastBatchDrawGroupIndex; i++)
@@ -471,8 +447,8 @@
 +				this._currentBatchDrawInfo.Count = batchDrawGroup.SpriteCount - this._currentBatchDrawInfo.Index;
 +				batchDrawGroup.AddBatch(this._currentBatchDrawInfo);
 +			}
-+ 		}
++		}
 +#endif
-+    }
+ 	}
  }
 
