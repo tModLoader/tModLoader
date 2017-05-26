@@ -31,17 +31,16 @@
  
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
-@@ -66,15 +_,23 @@
+@@ -66,14 +_,22 @@
  			for (int i = 0; i < array.Length; i++)
  			{
  				Type type = array[i];
 +#if WINDOWS
  				MethodInfo[] methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
--				MethodInfo[] array2 = methods;
 +#else
-+                MethodInfo[] methods = type.GetMethods();
++				MethodInfo[] methods = type.GetMethods();
 +#endif
-+                MethodInfo[] array2 = methods;
+ 				MethodInfo[] array2 = methods;
  				for (int j = 0; j < array2.Length; j++)
  				{
  					MethodInfo methodInfo = array2[j];
@@ -49,14 +48,12 @@
  					{
 +#if WINDOWS
  						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
--					}
 +#else
 +						Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 +#endif
-+                    }
+ 					}
  				}
  				Program.ThingsLoaded++;
- 			}
 @@ -183,10 +_,12 @@
  
  		private static void InitializeConsoleOutput()

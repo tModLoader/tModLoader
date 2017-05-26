@@ -4,11 +4,10 @@
  
  		public static void Register<T>(params string[] names) where T : ITagHandler, new()
  		{
--			T t = (default(T) == null) ? Activator.CreateInstance<T>() : default(T);
 +#if MAC
 +			T t = Activator.CreateInstance<T>();
 +#else
-+            T t = (default(T) == null) ? Activator.CreateInstance<T>() : default(T);
+ 			T t = (default(T) == null) ? Activator.CreateInstance<T>() : default(T);
 +#endif
  			for (int i = 0; i < names.Length; i++)
  			{
