@@ -10,7 +10,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
 			DisplayName.SetDefault("Soul of Exampleness");
 			Tooltip.SetDefault("'The essence of example creatures'");
 			// ticksperframe, frameCount

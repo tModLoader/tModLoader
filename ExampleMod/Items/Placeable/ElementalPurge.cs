@@ -6,12 +6,6 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ElementalPurge : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Elemental Purge");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 22;

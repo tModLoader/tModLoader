@@ -7,8 +7,6 @@ namespace ExampleMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Workbench");
 			Tooltip.SetDefault("This is a modded workbench.");
 		}
 

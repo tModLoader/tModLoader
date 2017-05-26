@@ -8,8 +8,6 @@ namespace ExampleMod.Items.Armor
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Leggings");
 			Tooltip.SetDefault("This is a modded leg armor."
 				+ "\n5% increased movement speed");
 		}

@@ -6,7 +6,6 @@ namespace ExampleMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
 			DisplayName.SetDefault("Music Box (Example)");
 		}
 

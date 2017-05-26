@@ -4,12 +4,6 @@ namespace ExampleMod.Items.Placeable
 {
 	public class BunnyTrophy : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Bunny Trophy");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 30;

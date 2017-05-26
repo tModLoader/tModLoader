@@ -8,8 +8,6 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Laser Weapon");
 			Tooltip.SetDefault("Shoot a laser beam that can eliminate everything...");
 		}
 

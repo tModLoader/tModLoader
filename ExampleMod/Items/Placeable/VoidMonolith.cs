@@ -6,12 +6,6 @@ namespace ExampleMod.Items.Placeable
 {
 	public class VoidMonolith : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Void Monolith");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 22;

@@ -11,8 +11,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Face");
 			// See here for help on using Tags: http://terraria.gamepedia.com/Chat#Tags
 			Tooltip.SetDefault("How are you feeling today?"
 				+ string.Format("\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{0}][i:{1}][i/s123:{2}]", item.type, mod.ItemType<CarKey>(), ItemID.Ectoplasm));

@@ -8,8 +8,6 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Staff");
 			Tooltip.SetDefault("This is a modded magic weapon.");
 		}
 

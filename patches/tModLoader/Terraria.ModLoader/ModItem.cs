@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.IO;
@@ -137,26 +138,40 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. 
+		/// For those that are familiar with tAPI, this has the same function as .json files.
+		/// </summary>
+		public virtual void SetDefaults() 
+		{
+		}
+
+		/// <summary>
+		/// tModLoader's SetDefaults, because we don't want to break everything by making people call base.SetDefaults
+		/// </summary>
+		public virtual void SetDefaults0()
+		{
+			EquipLoader.SetSlot(item);
+		}
+
+		/// <summary>
 		/// This is where you set all your item's static properties, such as names/translations and the arrays in ItemID.Sets.
-		/// Remember to call base.SetStaticDefaults() for default texture loading
+		/// This is called after SetDefaults on the initial ModItem
 		/// </summary>
 		public virtual void SetStaticDefaults()
 		{
+		}
+
+		/// <summary>
+		/// tModLoader's SetStaticDefaults, because we don't want to break everything by making people call base.SetDefaults
+		/// </summary>
+		public virtual void SetStaticDefaults0() {
 			Main.itemTexture[item.type] = ModLoader.GetTexture(Texture);
 
 			var flameTexture = Texture + "_Flame";
 			if (ModLoader.TextureExists(flameTexture))
 				Main.itemFlameTexture[item.type] = ModLoader.GetTexture(flameTexture);
-		}
 
-		/// <summary>
-		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. 
-		/// For those that are familiar with tAPI, this has the same function as .json files.
-		/// Remember to call base.SetDefaults() for EquipLoader slot setting
-		/// </summary>
-		public virtual void SetDefaults()
-		{
-			EquipLoader.SetSlot(item);
+			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>

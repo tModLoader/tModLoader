@@ -7,7 +7,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
 			DisplayName.SetDefault("Upside-down Fish");
 		}
 

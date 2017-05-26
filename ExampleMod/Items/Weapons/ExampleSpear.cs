@@ -9,8 +9,6 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Spear");
 			Tooltip.SetDefault("An example spear");
 		}
 

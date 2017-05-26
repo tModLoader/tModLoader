@@ -5,12 +5,6 @@ namespace ExampleMod.Items.Armor
 	[AutoloadEquip(EquipType.Head)]
 	public class AbominationMask : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("AbominationMask");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 28;

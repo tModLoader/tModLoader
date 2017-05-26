@@ -8,7 +8,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
 			DisplayName.SetDefault("Explorer's Bag");
 			Tooltip.SetDefault("<right> for goodies!");
 		}

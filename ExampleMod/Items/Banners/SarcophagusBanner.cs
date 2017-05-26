@@ -5,12 +5,6 @@ namespace ExampleMod.Items.Banners
 {
 	public class SarcophagusBanner : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Sarcophagus Banner");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 10;

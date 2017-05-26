@@ -8,9 +8,6 @@ namespace ExampleMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Yoyo");
-
 			// These are all related to gamepad controls and don't seem to affect anything else
 			ItemID.Sets.Yoyo[item.type] = true;
 			ItemID.Sets.GamepadExtraRange[item.type] = 15;

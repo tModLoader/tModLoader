@@ -5,12 +5,6 @@ namespace ExampleMod.Items.Armor
 	[AutoloadEquip(EquipType.Body)]
 	class ExampleRobe : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Robe");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 18;

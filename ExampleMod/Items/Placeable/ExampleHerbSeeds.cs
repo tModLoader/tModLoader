@@ -4,12 +4,6 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleHerbSeeds : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Herb Seeds");
-		}
-
 		public override void SetDefaults()
 		{
 			item.autoReuse = true;

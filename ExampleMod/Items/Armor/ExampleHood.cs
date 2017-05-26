@@ -9,8 +9,6 @@ namespace ExampleMod.Items.Armor
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Hood");
 			Tooltip.SetDefault("This is a modded helmet.");
 		}
 

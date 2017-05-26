@@ -9,8 +9,6 @@ namespace ExampleMod.Items.Abomination
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Molten Drill");
 			Tooltip.SetDefault("Can mine Lihzahrd Bricks");
 		}
 

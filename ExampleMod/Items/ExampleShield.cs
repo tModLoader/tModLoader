@@ -8,8 +8,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Shield");
 			Tooltip.SetDefault("This is a modded accessory."
 				+ "\nOnly equip if your character's name is bluemagic123");
 		}

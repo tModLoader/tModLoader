@@ -1,19 +1,10 @@
-﻿using System.Collections.Generic;
-using Terraria;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items
 {
 	public class ExampleDye : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Dye");
-		}
-
 		//PlayerHooks.GetDyeTraderReward(this, list);
 		public override void SetDefaults()
 		{

@@ -8,8 +8,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Wings");
 			Tooltip.SetDefault("This is a modded wing.");
 		}
 

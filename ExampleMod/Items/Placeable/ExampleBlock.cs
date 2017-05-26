@@ -8,8 +8,6 @@ namespace ExampleMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Block");
 			Tooltip.SetDefault("This is a modded block.");
 			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
 		}

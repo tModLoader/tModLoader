@@ -9,7 +9,6 @@ namespace ExampleMod.Items.Abomination
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
 			DisplayName.SetDefault("Six-Color Shield");
 			Tooltip.SetDefault("Creates elemental energy to protect you when damaged.");
 			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(10, 4));

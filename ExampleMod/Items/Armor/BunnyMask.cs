@@ -5,12 +5,6 @@ namespace ExampleMod.Items.Armor
 	[AutoloadEquip(EquipType.Head)]
 	public class BunnyMask : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Bunny Mask");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 18;

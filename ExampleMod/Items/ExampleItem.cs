@@ -7,8 +7,6 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Item");
 			Tooltip.SetDefault("This is a modded item.");
 		}
 

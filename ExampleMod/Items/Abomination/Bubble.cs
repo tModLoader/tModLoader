@@ -5,12 +5,6 @@ namespace ExampleMod.Items.Abomination
 {
 	public class Bubble : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Bubble");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 20;
