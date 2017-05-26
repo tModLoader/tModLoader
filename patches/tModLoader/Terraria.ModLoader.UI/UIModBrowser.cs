@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.UI
 		public UICycleImage SearchFilterToggle;
 		public bool loading;
 		private bool needToRemoveLoading;
-		public SortMode sortMode = SortMode.RecentlyUpdated;
+		public ModBrowserSortMode sortMode = ModBrowserSortMode.RecentlyUpdated;
 		public UpdateFilter updateFilterMode = UpdateFilter.Available;
 		public SearchFilter searchFilterMode = SearchFilter.Name;
 		internal string filter;
@@ -158,10 +158,10 @@ namespace Terraria.ModLoader.UI
 
 			Append(uIElement);
 
-			UIElement uIElement2 = new UIElement();
-			uIElement2.Width.Set(0f, 1f);
-			uIElement2.Height.Set(32f, 0f);
-			uIElement2.Top.Set(10f, 0f);
+			UIElement upperMenuContainer = new UIElement();
+			upperMenuContainer.Width.Set(0f, 1f);
+			upperMenuContainer.Height.Set(32f, 0f);
+			upperMenuContainer.Top.Set(10f, 0f);
 			Texture2D texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
 			for (int j = 0; j < 2; j++)
 			{
@@ -197,13 +197,20 @@ namespace Terraria.ModLoader.UI
 				}
 				uIToggleImage.Left.Set((float)(j * 36 + 8), 0f);
 				_categoryButtons.Add(uIToggleImage);
-				uIElement2.Append(uIToggleImage);
+				upperMenuContainer.Append(uIToggleImage);
 			}
+			UIPanel filterTextBoxBackground = new UIPanel();
+			filterTextBoxBackground.Top.Set(0f, 0f);
+			filterTextBoxBackground.Left.Set(-170, 1f);
+			filterTextBoxBackground.Width.Set(135f, 0f);
+			filterTextBoxBackground.Height.Set(40f, 0f);
+			upperMenuContainer.Append(filterTextBoxBackground);
+
 			filterTextBox = new UIInputTextField("Type to search");
 			filterTextBox.Top.Set(5, 0f);
-			filterTextBox.Left.Set(-150, 1f);
+			filterTextBox.Left.Set(-160, 1f);
 			filterTextBox.OnTextChange += (sender, e) => SortList();
-			uIElement2.Append(filterTextBox);
+			upperMenuContainer.Append(filterTextBox);
 
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 68, 0);
 			SearchFilterToggle.setCurrentState((int)searchFilterMode);
@@ -219,8 +226,8 @@ namespace Terraria.ModLoader.UI
 			};
 			SearchFilterToggle.Left.Set(545f, 0f);
 			_categoryButtons.Add(SearchFilterToggle);
-			uIElement2.Append(SearchFilterToggle);
-			uIPanel.Append(uIElement2);
+			upperMenuContainer.Append(SearchFilterToggle);
+			uIPanel.Append(upperMenuContainer);
 		}
 
 		internal void SortList()
@@ -243,13 +250,13 @@ namespace Terraria.ModLoader.UI
 					switch (i)
 					{
 						case 0:
-							text = Interface.modBrowser.sortMode.ToFriendlyString();
+							text = sortMode.ToFriendlyString();
 							break;
 						case 1:
-							text = Interface.modBrowser.updateFilterMode.ToFriendlyString();
+							text = updateFilterMode.ToFriendlyString();
 							break;
 						case 2:
-							text = Interface.modBrowser.searchFilterMode.ToFriendlyString();
+							text = searchFilterMode.ToFriendlyString();
 							break;
 						default:
 							text = "None";
@@ -515,23 +522,23 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
-	public static class SortModesExtensions
+	public static class ModBrowserSortModesExtensions
 	{
-		public static string ToFriendlyString(this SortMode sortmode)
+		public static string ToFriendlyString(this ModBrowserSortMode sortmode)
 		{
 			switch (sortmode)
 			{
-				case SortMode.DisplayNameAtoZ:
+				case ModBrowserSortMode.DisplayNameAtoZ:
 					return "Sort mod names alphabetically";
-				case SortMode.DisplayNameZtoA:
+				case ModBrowserSortMode.DisplayNameZtoA:
 					return "Sort mod names reverse-alphabetically";
-				case SortMode.DownloadsDescending:
+				case ModBrowserSortMode.DownloadsDescending:
 					return "Sort by downloads descending";
-				case SortMode.DownloadsAscending:
+				case ModBrowserSortMode.DownloadsAscending:
 					return "Sort by downloads ascending";
-				case SortMode.RecentlyUpdated:
+				case ModBrowserSortMode.RecentlyUpdated:
 					return "Sort by recently updated";
-				case SortMode.Hot:
+				case ModBrowserSortMode.Hot:
 					return "Sort by popularity";
 			}
 			return "Unknown Sort";
@@ -570,7 +577,7 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
-	public enum SortMode
+	public enum ModBrowserSortMode
 	{
 		DisplayNameAtoZ,
 		DisplayNameZtoA,

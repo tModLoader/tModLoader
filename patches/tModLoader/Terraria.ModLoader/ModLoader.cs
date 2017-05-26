@@ -346,6 +346,7 @@ namespace Terraria.ModLoader
 				if (file == null)
 				{
 					file = new TmodFile(fileName);
+					file.lastModifiedTime = lastModified;
 					file.Read();
 					findModsCache.Add(fileName, Tuple.Create(lastModified, file));
 				}
