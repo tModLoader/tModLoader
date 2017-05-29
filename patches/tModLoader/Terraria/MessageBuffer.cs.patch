@@ -356,7 +356,17 @@
  						int num142 = this.reader.ReadInt32();
  						if (Main.netMode == 2 && num140 != this.whoAmI && !Main.pvpBuff[num141])
  						{
-@@ -2889,7 +_,7 @@
+@@ -2886,13 +_,27 @@
+ 							tileEntity.ID = num180;
+ 							TileEntity.ByID[tileEntity.ID] = tileEntity;
+ 							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
++
++							if(tileEntity is ModContainer)
++							{
++								ModContainer.ContainersByID[tileEntity.ID] = (ModContainer)tileEntity;
++								ModContainer.ContainersByPosition[tileEntity.Position] = (ModContainer)tileEntity;
++							}	
++							
  							return;
  						}
  						TileEntity tileEntity2;
@@ -365,6 +375,16 @@
  						{
  							TileEntity.ByID.Remove(num180);
  							TileEntity.ByPosition.Remove(tileEntity2.Position);
++
++							if (tileEntity2 is ModContainer)
++							{
++								ModContainer.ContainersByID.Remove(num180);
++								ModContainer.ContainersByPosition.Remove(tileEntity2.Position);
++							}
++
+ 							return;
+ 						}
+ 						return;
 @@ -3489,9 +_,34 @@
  						CombatText.NewText(new Rectangle(x13, y13, 0, 0), color4, networkText.ToString(), false, false);
  						return;
