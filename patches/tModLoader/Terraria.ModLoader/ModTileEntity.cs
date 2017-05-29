@@ -1,15 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.DataStructures;
-using Terraria.Localization;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
+	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntitry.Update is called in SP and on Server, not on Clients.
 	/// </summary>
 	/// <seealso cref="Terraria.DataStructures.TileEntity" />
 	public abstract class ModTileEntity : TileEntity
@@ -171,12 +169,6 @@ namespace Terraria.ModLoader
 			newEntity.type = (byte)Type;
 			ByID[newEntity.ID] = newEntity;
 			ByPosition[newEntity.Position] = newEntity;
-			if (newEntity is ModContainer)
-			{
-				ModContainer.ContainersByID[newEntity.ID] = (ModContainer)newEntity;
-				ModContainer.ContainersByPosition[newEntity.Position] = (ModContainer)newEntity;
-				((ModContainer)newEntity).Setup();
-			}
 			return newEntity.ID;
 		}
 
@@ -192,21 +184,6 @@ namespace Terraria.ModLoader
 				if (tileEntity.type == Type)
 				{
 					((ModTileEntity)tileEntity).OnKill();
-					if (tileEntity is ModContainer)
-					{
-						if (((ModContainer)tileEntity).dropItemsOnKill)
-						{
-							ModContainer c = (ModContainer)tileEntity;
-
-							for (int x = 0; x < c.inventory.Count; x++)
-							{
-								if (!c.inventory[x].IsAir) Item.NewItem(new Rectangle(pos.X * 16, pos.Y * 16, 32, 32), c.inventory[x].type, c.inventory[x].stack);
-							}
-						}
-
-						ModContainer.ContainersByID.Remove(tileEntity.ID);
-						ModContainer.ContainersByPosition.Remove(pos);
-					}
 					ByID.Remove(tileEntity.ID);
 					ByPosition.Remove(pos);
 				}
@@ -235,7 +212,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend)
 		{
-			if (this is ModContainer) ((ModContainer)this).SendStorage(writer);
 			NetSend(writer, networkSend);
 		}
 
@@ -244,7 +220,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
 		{
-			if (this is ModContainer) ((ModContainer)this).ReceiveStorage(reader);
 			NetReceive(reader, networkSend);
 		}
 

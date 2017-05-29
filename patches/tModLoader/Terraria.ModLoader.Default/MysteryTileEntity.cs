@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using Terraria.DataStructures;
 using Terraria.ModLoader.IO;
 
@@ -50,13 +49,6 @@ namespace Terraria.ModLoader.Default
 				newEntity.type = (byte)tileEntity.Type;
 				newEntity.Position = Position;
 				newEntity.Load(data);
-				if (newEntity is ModContainer)
-				{
-					ModContainer.ContainersByID[newEntity.ID] = (ModContainer)newEntity;
-					ModContainer.ContainersByPosition[newEntity.Position] = (ModContainer)newEntity;
-					((ModContainer)newEntity).Setup();
-					((ModContainer)newEntity).LoadStorage(data.GetList<TagCompound>("storage"));
-				}
 			}
 		}
 	}

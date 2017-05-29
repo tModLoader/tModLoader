@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.IO
 					var modTile = TileLoader.GetTile(type);
 					tileList.Add(new TagCompound
 					{
-						["value"] = (short)type,
+						["value"] = (short) type,
 						["mod"] = modTile.mod.Name,
 						["name"] = modTile.Name,
 						["framed"] = Main.tileFrameImportant[type],
@@ -67,7 +67,7 @@ namespace Terraria.ModLoader.IO
 					var modWall = WallLoader.GetWall(wall);
 					wallList.Add(new TagCompound
 					{
-						["value"] = (short)wall,
+						["value"] = (short) wall,
 						["mod"] = modWall.mod.Name,
 						["name"] = modWall.Name,
 					});
@@ -544,8 +544,7 @@ namespace Terraria.ModLoader.IO
 			if (itemFrames.Count > 0)
 			{
 				tag.Set("itemFrames", itemFrames.Select(entry =>
-					new TagCompound
-					{
+					new TagCompound {
 						["id"] = entry.Value,
 						["item"] = ItemIO.Save(((TEItemFrame)TileEntity.ByID[entry.Key]).item)
 					}
@@ -651,8 +650,8 @@ namespace Terraria.ModLoader.IO
 				Tile left = Main.tile[i, j];
 				Tile right = Main.tile[i + 1, j];
 				if (left.active() && right.active() && (left.type == TileID.Mannequin || left.type == TileID.Womannequin)
-					&& left.type == right.type && (left.frameX == 0 || left.frameX == 36) && right.frameX == left.frameX + 18
-					&& left.frameY / 18 == position && left.frameY == right.frameY)
+				    && left.type == right.type && (left.frameX == 0 || left.frameX == 36) && right.frameX == left.frameX + 18
+				    && left.frameY / 18 == position && left.frameY == right.frameY)
 				{
 					if (position == 0)
 					{
@@ -697,20 +696,13 @@ namespace Terraria.ModLoader.IO
 				if (pair.Value.type >= ModTileEntity.numVanilla)
 				{
 					ModTileEntity tileEntity = (ModTileEntity)pair.Value;
-					TagCompound data = null;
-					if (tileEntity.Save() != null) data = tileEntity.Save();
-					if (tileEntity is ModContainer)
-					{
-						if (data == null) data = new TagCompound();
-						data.Set("storage", ((ModContainer)tileEntity).SaveStorage());
-					}
 					list.Add(new TagCompound
 					{
 						["mod"] = tileEntity.mod.Name,
 						["name"] = tileEntity.Name,
 						["X"] = tileEntity.Position.X,
 						["Y"] = tileEntity.Position.Y,
-						["data"] = data
+						["data"] = tileEntity.Save()
 					});
 				}
 			}
@@ -719,9 +711,6 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadTileEntities(IList<TagCompound> list)
 		{
-			ModContainer.ContainersByID.Clear();
-			ModContainer.ContainersByPosition.Clear();
-
 			foreach (TagCompound tag in list)
 			{
 				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
@@ -737,7 +726,6 @@ namespace Terraria.ModLoader.IO
 						try
 						{
 							newEntity.Load(tag.GetCompound("data"));
-							if (newEntity is ModContainer) ((ModContainer)newEntity).LoadStorage(tag.GetCompound("data").GetList<TagCompound>("storage"));
 							if (newEntity is MysteryTileEntity)
 							{
 								((MysteryTileEntity)newEntity).TryRestore(ref newEntity);
@@ -762,19 +750,12 @@ namespace Terraria.ModLoader.IO
 				{
 					newEntity.ID = TileEntity.AssignNewID();
 					TileEntity.ByID[newEntity.ID] = newEntity;
-					if (newEntity is ModContainer) ModContainer.ContainersByID[newEntity.ID] = (ModContainer)newEntity;
 					TileEntity other;
 					if (TileEntity.ByPosition.TryGetValue(newEntity.Position, out other))
 					{
 						TileEntity.ByID.Remove(other.ID);
-						ModContainer.ContainersByID.Remove(other.ID);
 					}
 					TileEntity.ByPosition[newEntity.Position] = newEntity;
-					if (newEntity is ModContainer)
-					{
-						ModContainer.ContainersByPosition[newEntity.Position] = (ModContainer)newEntity;
-						((ModContainer)newEntity).Setup();
-					}
 				}
 			}
 		}
