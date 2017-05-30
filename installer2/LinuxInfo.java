@@ -4,20 +4,6 @@ public class LinuxInfo
 {
     public static void main(String[] args)
     {
-        String path = System.getenv("XDG_DATA_HOME");
-        File directory = null;
-        if (path != null)
-        {
-            directory = getInstallDir(path, false);
-        }
-        if (directory == null || !directory.exists())
-        {
-            path = System.getenv("HOME");
-            if (path != null)
-            {
-                directory = getInstallDir(path, true);
-            }
-        }
         String[] files = new String[]
         {
             "Terraria.exe",
@@ -35,21 +21,39 @@ public class LinuxInfo
             "ModCompile/Microsoft.Xna.Framework.Graphics.dll",
             "ModCompile/Microsoft.Xna.Framework.Xact.dll"
         };
-        Installer.tryInstall(files, directory);
+        Installer.tryInstall(files, getInstallDir());
     }
 
-    private static File getInstallDir(String homeDir, boolean normalHome)
+    private static File getInstallDir()
     {
-        File file = new File(homeDir);
-        if (normalHome)
+        File installDir;
+
+        String xdgHome = System.getenv("XDG_DATA_HOME");
+        if (xdgHome != null)
         {
-            file = new File(file, ".local");
-            file = new File(file, "share");
+            installDir = new File(xdgHome + "/Steam/steamapps/common/Terraria");
+            if (installDir.isDirectory())
+            {
+                return installDir;
+            }
         }
-        file = new File(file, "Steam");
-        file = new File(file, "steamapps");
-        file = new File(file, "common");
-        file = new File(file, "Terraria");
-        return file;
+
+        String home = System.getenv("HOME");
+        if (home != null)
+        {
+            installDir = new File(home + "/.local/share/Steam/steamapps/common/Terraria");
+            if (installDir.isDirectory())
+            {
+                return installDir;
+            }
+
+            installDir = new File(home + "/.steam/steam/steamapps/common/Terraria");
+            if (installDir.isDirectory())
+            {
+                return installDir;
+            }
+        }
+
+        return null;
     }
 }
