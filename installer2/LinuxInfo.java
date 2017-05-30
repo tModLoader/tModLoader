@@ -40,16 +40,30 @@ public class LinuxInfo
 
     private static File getInstallDir(String homeDir, boolean normalHome)
     {
-        File file = new File(homeDir);
+        File installDir = new File(homeDir);
+        File newSteamDir;
         if (normalHome)
         {
-            file = new File(file, ".local");
-            file = new File(file, "share");
+            newSteamDir = new File(installDir, ".steam");
+            if (newSteamDir.isDirectory())
+            {
+                installDir = newSteamDir;
+                installDir = new File(installDir, "steam");
+            }
+            else
+            {
+                installDir = new File(installDir, ".local");
+                installDir = new File(installDir, "share");
+                installDir = new File(installDir, "Steam");
+            }
         }
-        file = new File(file, "Steam");
-        file = new File(file, "steamapps");
-        file = new File(file, "common");
-        file = new File(file, "Terraria");
-        return file;
+        else
+        {
+            installDir = new File(installDir, "Steam");
+        }
+        installDir = new File(installDir, "steamapps");
+        installDir = new File(installDir, "common");
+        installDir = new File(installDir, "Terraria");
+        return installDir;
     }
 }
