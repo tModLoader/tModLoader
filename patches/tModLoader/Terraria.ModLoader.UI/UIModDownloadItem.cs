@@ -174,7 +174,7 @@ namespace Terraria.ModLoader.UI
 			const int baseWidth = 125; // something like 1 days ago is ~110px, XX minutes ago is ~120 px (longest)
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - baseWidth, innerDimensions.Y + 45);
 			this.DrawPanel(spriteBatch, drawPos, (float)baseWidth);
-			this.DrawTimeText(spriteBatch, drawPos + new Vector2(0f, 5f), baseWidth); // x offset (padding) to do in method
+			this.DrawTimeText(spriteBatch, drawPos + new Vector2(0f, 2f), baseWidth); // x offset (padding) to do in method
 		}
 
 		protected override void DrawChildren(SpriteBatch spriteBatch)
