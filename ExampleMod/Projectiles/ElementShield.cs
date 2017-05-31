@@ -38,7 +38,7 @@ namespace ExampleMod.Projectiles
 				{
 					projectile.damage = (int)(1.2f * projectile.damage);
 				}
-				//projectile.name = GetName();
+				projectile.Name = GetName();
 				projectile.localAI[0] = 1f;
 			}
 			Player player = Main.player[projectile.owner];
