@@ -10,6 +10,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "GetSound", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a4588521ddbb8aa3a82e1d19f57399c20", null ],
     [ "GetTexture", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18", null ],
     [ "IsSignedBy", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aee080d6434c9fe9dd3a280402b1b774f", null ],
+    [ "LoadEnabledModCache", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaebab15dd417b19f4adfcb84ca30eaf1", null ],
     [ "LoadMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a2eba7838b05c10a440b60c844a0f55f0", null ],
     [ "PostBuildMenu", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0c6a5060345e8ee56b6514c5eaa69e99", null ],
     [ "RefreshModLanguage", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#af165fa35a172012e3acda9deaf6934c2", null ],
