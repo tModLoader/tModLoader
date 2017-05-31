@@ -696,10 +696,24 @@ namespace Terraria.ModLoader
 
 		internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
+		/// <summary>A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file.</summary>
+		private static HashSet<string> enabledMods;
 		internal static bool IsEnabled(TmodFile mod)
 		{
-			string enablePath = Path.ChangeExtension(mod.path, "enabled");
-			return !File.Exists(enablePath) || File.ReadAllText(enablePath) != "false";
+			if (enabledMods == null)
+			{
+				enabledMods = new HashSet<string>();
+				string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
+				if (File.Exists(path))
+				{
+					using (StreamReader r = new StreamReader(path))
+					{
+						string json = r.ReadToEnd();
+						enabledMods = JsonConvert.DeserializeObject<HashSet<string>>(json);
+					}
+				}
+			}
+			return enabledMods.Contains(mod.name);
 		}
 
 		internal static void SetModActive(TmodFile mod, bool active)
@@ -707,11 +721,18 @@ namespace Terraria.ModLoader
 			if (mod == null)
 				return;
 
-			string path = Path.ChangeExtension(mod.path, "enabled");
-			using (StreamWriter writer = File.CreateText(path))
+			if (active)
 			{
-				writer.Write(active ? "true" : "false");
+				enabledMods.Add(mod.name);
 			}
+			else
+			{
+				enabledMods.Remove(mod.name);
+			}
+			Directory.CreateDirectory(ModPath);
+			string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
+			string json = JsonConvert.SerializeObject(enabledMods, Newtonsoft.Json.Formatting.Indented);
+			File.WriteAllText(path, json);
 		}
 
 		internal static void EnableMod(TmodFile mod)
@@ -923,14 +944,16 @@ namespace Terraria.ModLoader
 		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr)
 		{
 			MethodInfo method;
-			try {
+			try
+			{
 				var convert = expr.Body as UnaryExpression;
 				var makeDelegate = convert.Operand as MethodCallExpression;
 				var methodArg = makeDelegate.Arguments[2] as ConstantExpression;
 				method = methodArg.Value as MethodInfo;
 				if (method == null) throw new NullReferenceException();
 			}
-			catch (Exception e) {
+			catch (Exception e)
+			{
 				throw new ArgumentException("Invalid hook expression " + expr, e);
 			}
 			return method;
