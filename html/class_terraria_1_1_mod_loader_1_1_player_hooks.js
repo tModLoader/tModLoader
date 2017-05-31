@@ -82,5 +82,6 @@ var class_terraria_1_1_mod_loader_1_1_player_hooks =
     [ "UpdateVanityAccessories", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#acc3858020c00b97f7e9f26f0bdc3d04d", null ],
     [ "UseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a9592d69cbbbb3fdf6b3407298af537a6", null ],
     [ "indexes", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad668aa929984715c3d439cc1051bcabb", null ],
+    [ "indexesByType", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a85d8d4670ddeaa3464a56c5ed11b95e9", null ],
     [ "players", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a4fbd579f2b8c6294bbdbb01418d7a399", null ]
 ];

@@ -8,6 +8,7 @@ var searchData=
   ['imagepath',['ImagePath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65b7a720428c518f86def4274239282d',1,'Terraria::ModLoader::ModLoader']]],
   ['indent',['indent',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#aee0f3a1ba8fc9b8a5d59fdb38b03602c',1,'Terraria::ModLoader::IO::TagPrinter']]],
   ['indexes',['indexes',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad668aa929984715c3d439cc1051bcabb',1,'Terraria::ModLoader::PlayerHooks']]],
+  ['indexesbytype',['indexesByType',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a85d8d4670ddeaa3464a56c5ed11b95e9',1,'Terraria::ModLoader::PlayerHooks']]],
   ['initialize',['Initialize',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a7b06737bb45ee8fae87eb4c989b40da6',1,'Terraria.ModLoader.ModPlayer.Initialize()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a6f3043872c696c1531599e0273be6cab',1,'Terraria.ModLoader.ModTileEntity.Initialize()'],['../class_terraria_1_1_mod_loader_1_1_mod_world.html#adeaf03c2c6361b70d0c0eabca94641d7',1,'Terraria.ModLoader.ModWorld.Initialize()']]],
   ['innerthird',['InnerThird',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a349f9947f04186b4e43285c35f592b12',1,'Terraria::ModLoader::SpawnCondition']]],
   ['instance',['Instance',['../class_terraria_1_1_mod_loader_1_1_global_item.html#afabaa379c54d0a99f56b3ed197cbd6ed',1,'Terraria::ModLoader::GlobalItem']]],
