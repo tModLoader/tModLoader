@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace Terraria.ModLoader.Setup
 				var working = new List<string>();
 				Action updateStatus = () => taskInterface.SetStatus(string.Join("\r\n", working));
 
-				Parallel.ForEach(items,
+				Parallel.ForEach(Partitioner.Create(items, EnumerablePartitionerOptions.NoBuffering),
 					new ParallelOptions { MaxDegreeOfParallelism = maxDegree > 0 ? maxDegree : Environment.ProcessorCount },
 					item => {
 						taskInterface.CancellationToken().ThrowIfCancellationRequested();
