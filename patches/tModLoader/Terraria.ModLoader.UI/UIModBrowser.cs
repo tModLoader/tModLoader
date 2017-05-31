@@ -325,8 +325,12 @@ namespace Terraria.ModLoader.UI
 			// Due to collection modified exceptions, we need to do this here.
 			if (needToRemoveLoading)
 			{
-				if (uIPanel.HasChild(uILoader)) uIPanel.RemoveChild(uILoader);
+				uIPanel.RemoveChild(uILoader);
 				needToRemoveLoading = false;
+			}
+			foreach (UIElement current in this.Elements)
+			{
+				current.Update(gameTime);
 			}
 		}
 
@@ -344,7 +348,7 @@ namespace Terraria.ModLoader.UI
 			SpecialModPackFilterTitle = null;
 			reloadButton.SetText("Getting data...");
 			SetHeading("Mod Browser");
-			if (!uIPanel.HasChild(uILoader)) uIPanel.Append(uILoader);
+			uIPanel.Append(uILoader);
 			modList.Clear();
 			modListAll.Clear();
 			modList.Deactivate();
@@ -457,6 +461,7 @@ namespace Terraria.ModLoader.UI
 					//string[] modreferences = ((string)mod["modreferences"]).Split(',');
 					string modreferences = (string)mod["modreferences"];
 					ModSide modside = ModSide.Both; // TODO: add filter option for modside.
+					string modIconURL = (string)mod["iconurl"];
 					string modsideString = (string)mod["modside"];
 					if (modsideString == "Client") modside = ModSide.Client;
 					if (modsideString == "Server") modside = ModSide.Server;
@@ -474,7 +479,7 @@ namespace Terraria.ModLoader.UI
 						else if (cVersion < installed.version)
 							update = updateIsDowngrade = true;
 					}
-					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, modreferences, modside, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed);
+					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed);
 					modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
 				}
 				SortList();

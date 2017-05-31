@@ -125,7 +125,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			if (!scrollPanel.HasChild(uiLoader)) scrollPanel.Append(uiLoader);
+			scrollPanel.Append(uiLoader);
 			modListList.Clear();
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
@@ -155,7 +155,7 @@ namespace Terraria.ModLoader.UI
 						UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
 						modListList.Add(modItem);
 					}
-					if (scrollPanel.HasChild(uiLoader)) scrollPanel.RemoveChild(uiLoader);
+					scrollPanel.RemoveChild(uiLoader);
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 

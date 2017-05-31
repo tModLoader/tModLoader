@@ -267,7 +267,7 @@ namespace Terraria.ModLoader.UI
 
 		private void FilterList()
 		{
-			if (uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
+			uIPanel.RemoveChild(uiLoader);
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			foreach (UIModItem item in modListAll._items.Where(item => item.PassFilters()))
@@ -322,7 +322,7 @@ namespace Terraria.ModLoader.UI
 			modList.Clear();
 			modListAll.Clear();
 			items.Clear();
-			if (!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
+			uIPanel.Append(uiLoader);
 			Populate();
 		}
 
