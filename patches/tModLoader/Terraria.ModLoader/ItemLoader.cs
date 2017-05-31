@@ -24,6 +24,7 @@ namespace Terraria.ModLoader
 		internal static GlobalItem[] InstancedGlobals = new GlobalItem[0];
 		internal static GlobalItem[] NetGlobals;
 		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
+		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 		internal static readonly ISet<int> animations = new HashSet<int>();
 		internal static readonly int vanillaQuestFishCount = Main.anglerQuestItemNetIDs.Length;
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
@@ -164,6 +165,7 @@ namespace Terraria.ModLoader
 			nextItem = ItemID.Count;
 			globalItems.Clear();
 			globalIndexes.Clear();
+			globalIndexesByType.Clear();
 			animations.Clear();
 		}
 
@@ -220,6 +222,13 @@ namespace Terraria.ModLoader
 			int index;
 			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? item.globalItems[index] : null;
 		}
+
+		internal static GlobalItem GetGlobalItem(Item item, Type type)
+		{
+			int index;
+			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? item.globalItems[index] : null) : null;
+		}
+
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))
 		//  { ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale); return; }

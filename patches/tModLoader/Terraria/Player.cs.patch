@@ -5033,7 +5033,7 @@
  				}
  				return playerFileData;
  			}
-@@ -39313,13 +_,25 @@
+@@ -39313,13 +_,30 @@
  			return -1;
  		}
  
@@ -5048,6 +5048,11 @@
 +		public T GetModPlayer<T>(Mod mod) where T : ModPlayer
 +		{
 +			return (T)GetModPlayer(mod, typeof(T).Name);
++		}
++
++		public T GetModPlayer<T>() where T : ModPlayer
++		{
++			return (T)PlayerHooks.GetModPlayer(this, typeof(T));
 +		}
 +
 +		public Player(bool startupInventory = true)

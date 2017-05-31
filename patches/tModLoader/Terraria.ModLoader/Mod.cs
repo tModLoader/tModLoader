@@ -390,7 +390,7 @@ namespace Terraria.ModLoader
 
 			if (items.ContainsKey(name))
 				throw new Exception("You tried to add 2 ModItems with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.");
-			
+
 			item.mod = this;
 			item.Name = name;
 			item.DisplayName = new ModTranslation(string.Format("ItemName.{0}.{1}", Name, name));
@@ -453,6 +453,14 @@ namespace Terraria.ModLoader
 			globalItems[name] = globalItem;
 			globalItem.index = ItemLoader.globalItems.Count;
 			ItemLoader.globalIndexes[Name + ':' + name] = ItemLoader.globalItems.Count;
+			if (ItemLoader.globalIndexesByType.ContainsKey(globalItem.GetType()))
+			{
+				ItemLoader.globalIndexesByType[globalItem.GetType()] = -1;
+			}
+			else
+			{
+				ItemLoader.globalIndexesByType[globalItem.GetType()] = ItemLoader.globalItems.Count;
+			}
 			ItemLoader.globalItems.Add(globalItem);
 		}
 
@@ -507,14 +515,14 @@ namespace Terraria.ModLoader
 		/// <param name="armTexture">The arm texture (for body slots).</param>
 		/// <param name="femaleTexture">The female texture (for body slots), if missing the regular body texture is used.</param>
 		/// <returns></returns>
-		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string name, string texture, 
+		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string name, string texture,
 			string armTexture = "", string femaleTexture = "")
 		{
 			if (!loading)
 				throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
-			
+
 			ModLoader.GetTexture(texture); //ensure texture exists
-			
+
 			equipTexture.Texture = texture;
 			equipTexture.mod = this;
 			equipTexture.Name = name;
@@ -584,7 +592,7 @@ namespace Terraria.ModLoader
 				var autoloadEquip = type.GetAttribute<AutoloadEquip>();
 				if (autoloadEquip != null)
 					foreach (var equip in autoloadEquip.equipTypes)
-						AddEquipTexture(item, equip, item.Name, item.Texture + '_' + equip, 
+						AddEquipTexture(item, equip, item.Name, item.Texture + '_' + equip,
 							item.Texture + "_Arms", item.Texture + "_FemaleBody");
 			}
 		}
@@ -677,7 +685,7 @@ namespace Terraria.ModLoader
 
 			if (tiles.ContainsKey(name))
 				throw new Exception("You tried to add 2 ModTile with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddTile with 2 tiles of the same name.");
-			
+
 			tile.mod = this;
 			tile.Name = name;
 			tile.Type = (ushort)TileLoader.ReserveTileID();
@@ -951,7 +959,7 @@ namespace Terraria.ModLoader
 
 			if (projectiles.ContainsKey(name))
 				throw new Exception("You tried to add 2 ModProjectile with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddProjectile with 2 projectiles of the same name.");
-			
+
 			projectile.mod = this;
 			projectile.Name = name;
 			projectile.projectile.type = ProjectileLoader.ReserveProjectileID();
@@ -998,7 +1006,7 @@ namespace Terraria.ModLoader
 		{
 			if (!loading)
 				throw new Exception("AddGlobalProjectile can only be called from Mod.Load or Mod.Autoload");
-			
+
 			globalProjectile.mod = this;
 			globalProjectile.Name = name;
 
@@ -1121,7 +1129,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int NPCType<T>() where T : ModNPC =>  NPCType(typeof(T).Name);
+		public int NPCType<T>() where T : ModNPC => NPCType(typeof(T).Name);
 
 		/// <summary>
 		/// Adds the given GlobalNPC instance to this mod with the provided name.
@@ -1413,10 +1421,10 @@ namespace Terraria.ModLoader
 		{
 			if (!loading)
 				throw new Exception("AddMount can only be called from Mod.Load or Mod.Autoload");
-			
+
 			if (Mount.mounts == null || Mount.mounts.Length == MountID.Count)
 				Mount.Initialize();
-			
+
 			mount.mod = this;
 			mount.Name = name;
 			mount.Type = MountLoader.ReserveMountID();
@@ -1428,7 +1436,8 @@ namespace Terraria.ModLoader
 			if (extraTextures == null)
 				return;
 
-			foreach (var entry in extraTextures) {
+			foreach (var entry in extraTextures)
+			{
 				if (!ModLoader.TextureExists(entry.Value))
 					continue;
 
@@ -1545,7 +1554,7 @@ namespace Terraria.ModLoader
 		{
 			if (!loading)
 				throw new Exception("AddUgBgStyle can only be called from Mod.Load or Mod.Autoload");
-			
+
 			ugBgStyle.mod = this;
 			ugBgStyle.Name = name;
 			ugBgStyle.Slot = UgBgStyleLoader.ReserveBackgroundSlot();
@@ -1658,7 +1667,7 @@ namespace Terraria.ModLoader
 		}
 
 		public T GetGlobalBgStyle<T>() where T : GlobalBgStyle => (T)GetGlobalBgStyle(typeof(T).Name);
-		
+
 		private void AutoloadGlobalBgStyle(Type type)
 		{
 			GlobalBgStyle globalBgStyle = (GlobalBgStyle)Activator.CreateInstance(type);
@@ -1945,7 +1954,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Manually add a Command during Load
 		/// </summary>
-		public void AddCommand(string name, ModCommand mc) {
+		public void AddCommand(string name, ModCommand mc)
+		{
 			if (!loading)
 				throw new Exception("AddCommand can only be called from Mod.Load or Mod.Autoload");
 
