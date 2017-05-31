@@ -702,24 +702,37 @@ namespace Terraria.ModLoader
 		{
 			if (enabledMods == null)
 			{
-				enabledMods = new HashSet<string>();
-				string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
-				if (File.Exists(path))
-				{
-					using (StreamReader r = new StreamReader(path))
-					{
-						string json = r.ReadToEnd();
-						enabledMods = JsonConvert.DeserializeObject<HashSet<string>>(json);
-					}
-				}
+				LoadEnabledModCache();
 			}
 			return enabledMods.Contains(mod.name);
+		}
+
+		private static void LoadEnabledModCache()
+		{
+			enabledMods = new HashSet<string>();
+			string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
+			if (File.Exists(path))
+			{
+				using (StreamReader r = new StreamReader(path))
+				{
+					string json = r.ReadToEnd();
+					try
+					{
+						enabledMods = JsonConvert.DeserializeObject<HashSet<string>>(json);
+					}
+					catch { }
+				}
+			}
 		}
 
 		internal static void SetModActive(TmodFile mod, bool active)
 		{
 			if (mod == null)
 				return;
+			if (enabledMods == null)
+			{
+				LoadEnabledModCache();
+			}
 
 			if (active)
 			{

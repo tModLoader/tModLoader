@@ -4702,6 +4702,14 @@
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse)
+@@ -37491,6 +_,7 @@
+ 				if (sItem.type == 1946)
+ 				{
+ 					shoot = 338 + item.type - 771;
++					if (shoot > ProjectileID.RocketSnowmanIV) shoot = ProjectileID.RocketSnowmanIV;
+ 				}
+ 				else if (sItem.useAmmo == AmmoID.Rocket)
+ 				{
 @@ -37568,6 +_,7 @@
  					Damage = (int)((double)((float)Damage) * 1.2);
  				}
