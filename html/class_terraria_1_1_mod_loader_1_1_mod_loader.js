@@ -21,6 +21,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "TextureExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a", null ],
     [ "VerifyNames", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3ac07c60c56f6f1f8ddbf68b2e444463", null ],
     [ "compressedPlatformRepresentation", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac488859bd72975ab52aba41c3fd4f0d7", null ],
+    [ "enabledMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#adf40e1ebd80f54b349f7ad3f738a0285", null ],
     [ "gog", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a191014086a6e58e2099d1b1250f070a0", null ],
     [ "ImagePath", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65b7a720428c518f86def4274239282d", null ],
     [ "linux", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a46c9bf5139a301182b33928437641062", null ],
