@@ -637,7 +637,7 @@ Generating docs for compound Terraria::ModLoader::ModCommand...
 Generating caller graph for function Terraria.ModLoader.ModCommand.Action
 Generating docs for nested compound Terraria::ModLoader::ModCompile::BuildingMod...
 Generating call graph for function Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod
-Generating docs for nested compound Terraria::ModLoader::ModCompile::C/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:111: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
+Generating docs for nested compound Terraria::ModLoader::ModCompile::C/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:114: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
 onsoleBuildStatus...
 Generating docs for nested compound Terraria::ModLoader::ModCompile::IBuildStatus...
 Generating caller graph for function Terraria.ModLoader.ModCompile.IBuildStatus.SetProgress
@@ -653,12 +653,12 @@ Generating caller graph for function Terraria.ModLoader.ModGore.GetGoreSlot
 Generating docs for compound Terraria::ModLoader::ModHotKey...
 Generating docs for compound Terraria::ModLoader::ModItem...
 Generating caller graph for function Terraria.ModLoader.ModItem.Autoload
+Generating call graph for function Terraria.ModLoader.ModItem.AutoStaticDefaults
+Generating caller graph for function Terraria.ModLoader.ModItem.AutoStaticDefaults
 Generating caller graph for function Terraria.ModLoader.ModItem.HoldoutOffset
 Generating caller graph for function Terraria.ModLoader.ModItem.IsAnglerQuestAvailable
 Generating caller graph for function Terraria.ModLoader.ModItem.OpenBossBag
 Generating caller graph for function Terraria.ModLoader.ModItem.SetStaticDefaults
-Generating call graph for function Terraria.ModLoader.ModItem.SetStaticDefaults0
-Generating caller graph for function Terraria.ModLoader.ModItem.SetStaticDefaults0
 Generating docs for compound Terraria::ModLoader::ModLoader...
 Generating call graph for function Terraria.ModLoader.ModLoader.FileExists
 Generating caller graph for function Terraria.ModLoader.ModLoader.FileExists
