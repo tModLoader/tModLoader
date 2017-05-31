@@ -2200,10 +2200,10 @@
  				color19 = new Microsoft.Xna.Framework.Color((int)b13, (int)b13, (int)b13, 0);
  				color14 = drawPlayer.GetImmuneAlphaPure(new Microsoft.Xna.Framework.Color((int)b13, (int)b13, (int)b13, 255), shadow);
  			}
-+			ItemLoader.DrawArmorColor(EquipType.Head, drawPlayer.head, drawPlayer, shadow, ref color11, ref num12, ref color16);
-+			ItemLoader.DrawArmorColor(EquipType.Body, drawPlayer.body, drawPlayer, shadow, ref color12, ref num13, ref color17);
-+			ItemLoader.ArmorArmGlowMask(drawPlayer.body, drawPlayer, shadow, ref num14, ref color18);
-+			ItemLoader.DrawArmorColor(EquipType.Legs, drawPlayer.legs, drawPlayer, shadow, ref color14, ref num15, ref color19);
++			ItemLoader.DrawArmorColor(EquipType.Head, drawPlayer.head, drawPlayer, shadow, ref color11, ref num13, ref color16);
++			ItemLoader.DrawArmorColor(EquipType.Body, drawPlayer.body, drawPlayer, shadow, ref color12, ref num14, ref color17);
++			ItemLoader.ArmorArmGlowMask(drawPlayer.body, drawPlayer, shadow, ref num15, ref color18);
++			ItemLoader.DrawArmorColor(EquipType.Legs, drawPlayer.legs, drawPlayer, shadow, ref color14, ref num16, ref color19);
  			color16 = drawPlayer.GetImmuneAlphaPure(color16, shadow);
  			color17 = drawPlayer.GetImmuneAlphaPure(color17, shadow);
  			color18 = drawPlayer.GetImmuneAlphaPure(color18, shadow);
@@ -2237,10 +2237,10 @@
 +			drawInfo.upperArmorColor = color11;
 +			drawInfo.middleArmorColor = color12;
 +			drawInfo.lowerArmorColor = color14;
-+			drawInfo.headGlowMask = num12;
-+			drawInfo.bodyGlowMask = num13;
-+			drawInfo.armGlowMask = num14;
-+			drawInfo.legGlowMask = num15;
++			drawInfo.headGlowMask = num13;
++			drawInfo.bodyGlowMask = num14;
++			drawInfo.armGlowMask = num15;
++			drawInfo.legGlowMask = num16;
 +			drawInfo.headGlowMaskColor = color16;
 +			drawInfo.bodyGlowMaskColor = color17;
 +			drawInfo.armGlowMaskColor = color18;
@@ -2281,9 +2281,9 @@
 +			flag3 = drawInfo.drawHeldProjInFrontOfHeldItemAndBody;
 +			flag4 = drawInfo.drawHair;
 +			flag5 = drawInfo.drawAltHair;
-+			num3 = drawInfo.hairShader;
-+			num5 = drawInfo.headArmorShader;
-+			num6 = drawInfo.bodyArmorShader;
++			num4 = drawInfo.hairShader;
++			num6 = drawInfo.headArmorShader;
++			num7 = drawInfo.bodyArmorShader;
 +			shader = drawInfo.legArmorShader;
 +			shader2 = drawInfo.handOnShader;
 +			shader3 = drawInfo.handOffShader;
@@ -2311,10 +2311,10 @@
 +			color12 = drawInfo.middleArmorColor;
 +			color13 = drawInfo.mountColor;
 +			color14 = drawInfo.lowerArmorColor;
-+			num12 = drawInfo.headGlowMask;
-+			num13 = drawInfo.bodyGlowMask;
-+			num14 = drawInfo.armGlowMask;
-+			num15 = drawInfo.legGlowMask;
++			num13 = drawInfo.headGlowMask;
++			num14 = drawInfo.bodyGlowMask;
++			num15 = drawInfo.armGlowMask;
++			num16 = drawInfo.legGlowMask;
 +			color16 = drawInfo.headGlowMaskColor;
 +			color17 = drawInfo.bodyGlowMaskColor;
 +			color18 = drawInfo.armGlowMaskColor;
@@ -2510,10 +2510,10 @@
  					}
  				}
  			}
-+			Position.Y -= (float)((int)num4 / 2);
++			Position.Y -= (float)((int)num5 / 2);
 +			goto layerLoopContinue;
 +			balloonAccLayer:
-+			Position.Y += (float)((int)num4 / 2);
++			Position.Y += (float)((int)num5 / 2);
  			if (drawPlayer.balloon > 0)
  			{
  				int num70 = DateTime.Now.Millisecond % 800 / 200;
