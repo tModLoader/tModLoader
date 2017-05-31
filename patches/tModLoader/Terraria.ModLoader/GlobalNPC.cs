@@ -568,5 +568,13 @@ namespace Terraria.ModLoader
 		public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
 		{
 		}
+
+		public virtual void SetChatButtons(ref string button, ref string button2)
+		{
+		}
+
+		public virtual void OnChatButtonClicked(bool firstButton, ref bool shop)
+		{
+		}
 	}
 }
