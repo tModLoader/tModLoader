@@ -66,6 +66,9 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		/// <summary>
+		/// The file name of this mod's texture file in the mod loader's file space.
+		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
 		/// <summary>
@@ -146,9 +149,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// tModLoader's SetDefaults, because we don't want to break everything by making people call base.SetDefaults
+		/// Automatically sets certain defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
-		public virtual void SetDefaults0()
+		public virtual void AutoDefaults()
 		{
 			EquipLoader.SetSlot(item);
 		}
@@ -162,9 +165,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// tModLoader's SetStaticDefaults, because we don't want to break everything by making people call base.SetDefaults
+		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
-		public virtual void SetStaticDefaults0() {
+		public virtual void AutoStaticDefaults() {
 			Main.itemTexture[item.type] = ModLoader.GetTexture(Texture);
 
 			var flameTexture = Texture + "_Flame";

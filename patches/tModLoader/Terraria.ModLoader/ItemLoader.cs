@@ -210,7 +210,7 @@ namespace Terraria.ModLoader
 
 			item.globalItems = InstancedGlobals.Select(g => g.NewInstance(item)).ToArray();
 
-			item.modItem?.SetDefaults0();
+			item.modItem?.AutoDefaults();
 			item.modItem?.SetDefaults();
 
 			foreach (var g in HookSetDefaults.arr)

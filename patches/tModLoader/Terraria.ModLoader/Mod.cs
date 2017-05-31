@@ -2106,7 +2106,7 @@ namespace Terraria.ModLoader
 			foreach (ModItem item in items.Values)
 			{
 				ItemLoader.SetDefaults(item.item, false);
-				item.SetStaticDefaults0();
+				item.AutoStaticDefaults();
 				item.SetStaticDefaults();
 			}
 			foreach (ModDust dust in dusts.Values)
