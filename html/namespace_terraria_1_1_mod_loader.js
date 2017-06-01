@@ -64,7 +64,6 @@ var namespace_terraria_1_1_mod_loader =
     [ "PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", "class_terraria_1_1_mod_loader_1_1_player_head_layer" ],
     [ "PlayerHooks", "class_terraria_1_1_mod_loader_1_1_player_hooks.html", "class_terraria_1_1_mod_loader_1_1_player_hooks" ],
     [ "PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", "class_terraria_1_1_mod_loader_1_1_player_layer" ],
-    [ "ProjectileInfo", "class_terraria_1_1_mod_loader_1_1_projectile_info.html", "class_terraria_1_1_mod_loader_1_1_projectile_info" ],
     [ "ProjectileLoader", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html", "class_terraria_1_1_mod_loader_1_1_projectile_loader" ],
     [ "RecipeEditor", "class_terraria_1_1_mod_loader_1_1_recipe_editor.html", "class_terraria_1_1_mod_loader_1_1_recipe_editor" ],
     [ "RecipeFinder", "class_terraria_1_1_mod_loader_1_1_recipe_finder.html", "class_terraria_1_1_mod_loader_1_1_recipe_finder" ],

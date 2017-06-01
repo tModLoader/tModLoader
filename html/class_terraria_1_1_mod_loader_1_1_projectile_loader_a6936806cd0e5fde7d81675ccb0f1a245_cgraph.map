@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ProjectileLoader.PreDrawExtras" name="Terraria.ModLoader.ProjectileLoader.PreDrawExtras">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="247,5,420,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#af9d2b93baaa0fb81a19e50d03725d670" title="Allows you to draw things behind a projectile. Returns false to stop the game from drawing extras tex..." alt="" coords="247,74,420,121"/>
+</map>

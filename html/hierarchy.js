@@ -23,8 +23,7 @@ var hierarchy =
       [ "Terraria.ModLoader.PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", null ]
     ] ],
     [ "Terraria.ModLoader.EntityInfo", "class_terraria_1_1_mod_loader_1_1_entity_info.html", [
-      [ "Terraria.ModLoader.NPCInfo", "class_terraria_1_1_mod_loader_1_1_n_p_c_info.html", null ],
-      [ "Terraria.ModLoader.ProjectileInfo", "class_terraria_1_1_mod_loader_1_1_projectile_info.html", null ]
+      [ "Terraria.ModLoader.NPCInfo", "class_terraria_1_1_mod_loader_1_1_n_p_c_info.html", null ]
     ] ],
     [ "Terraria.ModLoader.EquipLoader", "class_terraria_1_1_mod_loader_1_1_equip_loader.html", null ],
     [ "Terraria.ModLoader.EquipTexture", "class_terraria_1_1_mod_loader_1_1_equip_texture.html", null ],
@@ -38,6 +37,7 @@ var hierarchy =
     [ "Terraria.ModLoader.GlobalTile", "class_terraria_1_1_mod_loader_1_1_global_tile.html", null ],
     [ "Terraria.ModLoader.GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", null ],
     [ "Terraria.ModLoader.ItemLoader.HookList", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html", null ],
+    [ "Terraria.ModLoader.ProjectileLoader.HookList", "class_terraria_1_1_mod_loader_1_1_projectile_loader_1_1_hook_list.html", null ],
     [ "Terraria.ModLoader.ModCompile.IBuildStatus", "interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html", [
       [ "Terraria.ModLoader.ModCompile.ConsoleBuildStatus", "class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_console_build_status.html", null ]
     ] ],

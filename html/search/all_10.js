@@ -85,7 +85,6 @@ var searchData=
   ['projectile',['projectile',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a54aa9dc3ed825c44b6397211e40d83a0',1,'Terraria::ModLoader::ModProjectile']]],
   ['projectileai',['ProjectileAI',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a30879d5b652425360fc4211d54831e66',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['projectilecount',['ProjectileCount',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a283a070b3d26c90ab809ef4f87a50a8b',1,'Terraria::ModLoader::ProjectileLoader']]],
-  ['projectileinfo',['ProjectileInfo',['../class_terraria_1_1_mod_loader_1_1_projectile_info.html',1,'Terraria::ModLoader']]],
   ['projectileloader',['ProjectileLoader',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html',1,'Terraria::ModLoader']]],
   ['projectileloader_2ecs',['ProjectileLoader.cs',['../_projectile_loader_8cs.html',1,'']]],
   ['projectiletype',['ProjectileType',['../class_terraria_1_1_mod_loader_1_1_mod.html#af4f124bac1905b018a8f24ab866c0d5f',1,'Terraria::ModLoader::Mod']]],

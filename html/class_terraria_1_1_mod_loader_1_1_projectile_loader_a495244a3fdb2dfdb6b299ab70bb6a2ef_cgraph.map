@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ProjectileLoader.ModifyHitNPC" name="Terraria.ModLoader.ProjectileLoader.ModifyHitNPC">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="247,5,420,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a78a58a0e560bf775d3ad11951906f73c" title="Allows you to modify the damage, knockback, etc., that a projectile does to an NPC. " alt="" coords="247,74,420,121"/>
+</map>

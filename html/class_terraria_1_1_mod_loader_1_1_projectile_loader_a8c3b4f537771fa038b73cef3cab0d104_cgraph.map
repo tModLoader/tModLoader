@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ProjectileLoader.OnTileCollide" name="Terraria.ModLoader.ProjectileLoader.OnTileCollide">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="247,5,420,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a54e53d2666fd2746541428bee75542a9" title="Allows you to determine what happens when a projectile collides with a tile. OldVelocity is the veloc..." alt="" coords="247,74,420,121"/>
+</map>

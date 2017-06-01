@@ -2,7 +2,7 @@ var searchData=
 [
   ['tagtype',['TagType',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#ac41c174425542e723d8159ed048a1255',1,'Terraria::ModLoader::IO::TagSerializer']]],
   ['text',['text',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c',1,'Terraria::ModLoader::TooltipLine']]],
-  ['texture',['Texture',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a9aba9b04ef606dfdfc575f299146ae85',1,'Terraria::ModLoader::ModItem']]],
+  ['texture',['Texture',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a9aba9b04ef606dfdfc575f299146ae85',1,'Terraria.ModLoader.ModItem.Texture()'],['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a70c635bc40995a07e6d09f099f8d655c',1,'Terraria.ModLoader.ModProjectile.Texture()']]],
   ['tilecount',['TileCount',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a95649a5da592f38e1d542acc3901dc03',1,'Terraria::ModLoader::TileLoader']]],
   ['tiles',['tiles',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a1bba3df7d170d51ccd7e331f5dad4bf4',1,'Terraria::ModLoader::RecipeFinder']]],
   ['tmodloaderversion',['tModLoaderVersion',['../class_terraria_1_1_mod_loader_1_1_mod.html#ad6eec5ecd13b9a42378033a8a2a6d608',1,'Terraria::ModLoader::Mod']]],

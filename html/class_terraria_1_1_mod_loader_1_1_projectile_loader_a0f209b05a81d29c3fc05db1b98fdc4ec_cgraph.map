@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ProjectileLoader.OnHitNPC" name="Terraria.ModLoader.ProjectileLoader.OnHitNPC">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="247,5,420,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a6c4760647ac0f9a454989e2b333c7b0c" title="Allows you to create special effects when a projectile hits an NPC (for example, inflicting debuffs)..." alt="" coords="247,74,420,121"/>
+</map>
