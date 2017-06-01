@@ -16,8 +16,8 @@ namespace ExampleMod.Items.Placeable
 			// This is an example of how translations are coded into the game. Making your mod Open Source is a good way to enlist help with translations and make your mod more popular worldwide. Be sure to have "using Terraria.Localization".
 			DisplayName.AddTranslation(GameCulture.German, "Beispielblock");
 			Tooltip.AddTranslation(GameCulture.German, "Dies ist ein modded Block");
-			DisplayName.AddTranslation(GameCulture.Italian, "Esempio blocco");
-			Tooltip.AddTranslation(GameCulture.Italian, "Questo è un blocco modded");
+			DisplayName.AddTranslation(GameCulture.Italian, "Blocco di esempio");
+			Tooltip.AddTranslation(GameCulture.Italian, "Questo è un blocco moddato");
 			DisplayName.AddTranslation(GameCulture.French, "Bloc d'exemple");
 			Tooltip.AddTranslation(GameCulture.French, "C'est un bloc modgé");
 			DisplayName.AddTranslation(GameCulture.Spanish, "Bloque de ejemplo");
