@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -59,7 +60,10 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		internal string texture;
+		/// <summary>
+		/// The file name of this projectile's texture file in the mod loader's file space.
+		/// </summary>
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 		/// <summary>
 		/// Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0.
 		/// </summary>
@@ -91,31 +95,69 @@ namespace Terraria.ModLoader
 			projectile.modProjectile = this;
 		}
 		/// <summary>
-		/// Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, and texture is initialized to the namespace and overriding class name with periods replaced with slashes. Use this method to either force or stop an autoload, or to change the default display name and texture path.
+		/// Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or to change the default internal name.
 		/// </summary>
 		/// <param name="name">The internal name.</param>
-		/// <param name="texture">The texture path.</param>
 		/// <returns>Whether or not to autoload.</returns>
-		public virtual bool Autoload(ref string name, ref string texture)
+		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
-		}
-
-		internal void SetupProjectile(Projectile projectile)
-		{
-			ModProjectile newProjectile = (ModProjectile)(CloneNewInstances ? MemberwiseClone()
-				: Activator.CreateInstance(GetType()));
-			newProjectile.projectile = projectile;
-			projectile.modProjectile = newProjectile;
-			newProjectile.mod = mod;
-			newProjectile.Name = Name;
-			newProjectile.SetDefaults();
 		}
 
 		/// <summary>
 		/// Whether instances of this ModProjectile are created through a memberwise clone or its constructor. Defaults to false.
 		/// </summary>
 		public virtual bool CloneNewInstances => false;
+
+		/// <summary>
+		/// Returns a clone of this ModProjectile. 
+		/// Allows you to decide which fields of your ModProjectile class are copied over when a new Projectile is created. 
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
+		/// Only called if CloneNewInstances is set to true.
+		/// </summary>
+		public virtual ModProjectile Clone() => (ModProjectile)MemberwiseClone();
+
+		/// <summary>
+		/// Create a new instance of this GlobalProjectile for a Projectile instance. 
+		/// Called at the end of Projectile.SetDefaults.
+		/// If CloneNewInstances is true, just calls Clone()
+		/// Otherwise calls the default constructor and copies fields
+		/// </summary>
+		public virtual ModProjectile NewInstance(Projectile projectileClone)
+		{
+			if (CloneNewInstances)
+			{
+				ModProjectile clone = Clone();
+				clone.projectile = projectileClone;
+				return clone;
+			}
+
+			ModProjectile copy = (ModProjectile)Activator.CreateInstance(GetType());
+			copy.projectile = projectileClone;
+			copy.mod = mod;
+			copy.Name = Name;
+			copy.aiType = aiType;
+			copy.cooldownSlot = cooldownSlot;
+			copy.drawOffsetX = drawOffsetX;
+			copy.drawOriginOffsetY = drawOriginOffsetY;
+			copy.drawOriginOffsetX = drawOriginOffsetX;
+			copy.drawHeldProjInFrontOfHeldItemAndArms = drawHeldProjInFrontOfHeldItemAndArms;
+			return copy;
+		}
+
+		/// <summary>
+		/// Allows you to set all your projectile's properties, such as width, damage, aiStyle, penetrate, etc.
+		/// </summary>
+		public virtual void SetDefaults()
+		{
+		}
+
+		/// <summary>
+		/// Automatically sets certain defaults. Override this if you do not want the properties to be set for you.
+		/// </summary>
+		public virtual void AutoDefaults()
+		{
+		}
 
 		/// <summary>
 		/// Allows you to set all your projectile's static properties, such as names/translations and the arrays in ProjectileID.Sets.
@@ -125,10 +167,21 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set all your projectile's properties, such as width, damage, aiStyle, penetrate, etc.
+		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
-		public virtual void SetDefaults()
+		public virtual void AutoStaticDefaults()
 		{
+			Main.projectileTexture[projectile.type] = ModLoader.GetTexture(Texture);
+			Main.projFrames[projectile.type] = 1;
+			if (projectile.hostile)
+			{
+				Main.projHostile[projectile.type] = true;
+			}
+			if (projectile.aiStyle == 7)
+			{
+				Main.projHook[projectile.type] = true;
+			}
+			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>

@@ -200,9 +200,7 @@ namespace Terraria.ModLoader
 		}
 		
 		private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
-		//in Terraria.Item.SetDefaults get rid of type-too-high check
-		//add near end of Terraria.Item.SetDefaults after setting netID
-		//in Terraria.Item.SetDefaults move Lang stuff before SetupItem
+		
 		internal static void SetDefaults(Item item, bool createModItem = true)
 		{
 			if (IsModItem(item.type) && createModItem)
@@ -1636,7 +1634,7 @@ namespace Terraria.ModLoader
 			if (netMethods == 1)
 				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
 
-			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.NonPublic)
+			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
 				.Any(f => f.DeclaringType != typeof(GlobalItem));
 
 			if (hasInstanceFields) {
@@ -1646,7 +1644,7 @@ namespace Terraria.ModLoader
 				if (!item.CloneNewInstances &&
 						!HasMethod(type, "NewInstance", typeof(Item)) &&
 						!HasMethod(type, "Clone", typeof(Item)))
-					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or orverride NewInstance(Item) or Clone(Item)");
+					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Item) or Clone(Item)");
 			}
 		}
 	}

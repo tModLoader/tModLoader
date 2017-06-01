@@ -7,11 +7,6 @@ namespace ExampleMod.Projectiles
 {
 	public class SparklingBall : ModProjectile
 	{
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Sparkling Ball");
-		}
-
 		public override void SetDefaults()
 		{
 			projectile.width = 16;

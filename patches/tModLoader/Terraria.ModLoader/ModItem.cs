@@ -67,7 +67,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// The file name of this mod's texture file in the mod loader's file space.
+		/// The file name of this item's texture file in the mod loader's file space.
 		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
