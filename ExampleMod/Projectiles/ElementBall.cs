@@ -42,7 +42,7 @@ namespace ExampleMod.Projectiles
 				{
 					cooldownSlot = 1;
 				}
-				//projectile.name = GetName();
+				projectile.Name = GetName();
 				projectile.localAI[0] = 1f;
 			}
 			CreateDust();

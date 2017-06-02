@@ -9,7 +9,6 @@ namespace ExampleMod.Projectiles.Minions
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Purity Wisp");
 			Main.projFrames[projectile.type] = 3;
 			Main.projPet[projectile.type] = true;
 			ProjectileID.Sets.MinionSacrificable[projectile.type] = true;

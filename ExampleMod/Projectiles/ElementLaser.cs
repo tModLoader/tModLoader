@@ -34,7 +34,7 @@ namespace ExampleMod.Projectiles
 				{
 					cooldownSlot = 1;
 				}
-				//projectile.name = GetName();
+				projectile.Name = GetName();
 			}
 			projectile.Center = npc.Center;
 			projectile.localAI[0] += 1f;

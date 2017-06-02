@@ -8,11 +8,6 @@ namespace ExampleMod.Projectiles
 	// This projectiles merely flys towards a position and then dies. We use it to signify kill points for TEScoreBoard.
 	class ScorePoint : ModProjectile
 	{
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Score Point");
-		}
-
 		public override void SetDefaults()
 		{
 			projectile.width = 8;

@@ -2040,7 +2040,7 @@
  			int shader2 = 0;
  			int shader3 = 0;
  			int shader4 = 0;
-@@ -30854,47 +_,47 @@
+@@ -30854,53 +_,65 @@
  				int num8 = i % 10;
  				if (drawPlayer.dye[num8] != null && drawPlayer.armor[i].type > 0 && drawPlayer.armor[i].stack > 0 && (i / 10 >= 1 || !drawPlayer.hideVisual[num8] || drawPlayer.armor[i].wingSlot > 0 || drawPlayer.armor[i].type == 934))
  				{
@@ -2048,57 +2048,85 @@
 +					if (drawPlayer.armor[i].handOnSlot > 0)
  					{
  						shader2 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].handOffSlot > 0 && drawPlayer.armor[i].handOffSlot < 12)
++						drawInfo.handOnShader = shader2;
++					}
 +					if (drawPlayer.armor[i].handOffSlot > 0)
  					{
  						shader3 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].backSlot > 0 && drawPlayer.armor[i].backSlot < 14)
++						drawInfo.handOffShader = shader3;
++					}
 +					if (drawPlayer.armor[i].backSlot > 0)
  					{
  						shader4 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].frontSlot > 0 && drawPlayer.armor[i].frontSlot < 5)
++						drawInfo.backShader = shader4;
++					}
 +					if (drawPlayer.armor[i].frontSlot > 0)
  					{
  						shader5 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].shoeSlot > 0 && drawPlayer.armor[i].shoeSlot < 18)
++						drawInfo.frontShader = shader5;
++					}
 +					if (drawPlayer.armor[i].shoeSlot > 0)
  					{
  						shader6 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].waistSlot > 0 && drawPlayer.armor[i].waistSlot < 13)
++						drawInfo.shoeShader = shader6;
++					}
 +					if (drawPlayer.armor[i].waistSlot > 0)
  					{
  						shader7 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].shieldSlot > 0 && drawPlayer.armor[i].shieldSlot < 7)
++						drawInfo.waistShader = shader7;
++					}
 +					if (drawPlayer.armor[i].shieldSlot > 0)
  					{
  						shader8 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].neckSlot > 0 && drawPlayer.armor[i].neckSlot < 10)
++						drawInfo.shieldShader = shader8;
++					}
 +					if (drawPlayer.armor[i].neckSlot > 0)
  					{
  						shader9 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].faceSlot > 0 && drawPlayer.armor[i].faceSlot < 9)
++						drawInfo.neckShader = shader9;
++					}
 +					if (drawPlayer.armor[i].faceSlot > 0)
  					{
  						shader10 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].balloonSlot > 0 && drawPlayer.armor[i].balloonSlot < 18)
++						drawInfo.faceShader = shader10;
++					}
 +					if (drawPlayer.armor[i].balloonSlot > 0)
  					{
  						shader11 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].wingSlot > 0 && drawPlayer.armor[i].wingSlot < 40)
++						drawInfo.balloonShader = shader11;
++					}
 +					if (drawPlayer.armor[i].wingSlot > 0)
  					{
  						shader12 = (int)drawPlayer.dye[num8].dye;
++						drawInfo.wingShader = shader12;
  					}
+ 					if (drawPlayer.armor[i].type == 934)
+ 					{
+ 						shader13 = (int)drawPlayer.dye[num8].dye;
++						drawInfo.carpetShader = shader13;
+ 					}
+ 				}
+ 			}
 @@ -30915,32 +_,54 @@
  			SpriteEffects spriteEffects = SpriteEffects.None;
  			SpriteEffects effect = SpriteEffects.FlipHorizontally;
@@ -2200,10 +2228,10 @@
  				color19 = new Microsoft.Xna.Framework.Color((int)b13, (int)b13, (int)b13, 0);
  				color14 = drawPlayer.GetImmuneAlphaPure(new Microsoft.Xna.Framework.Color((int)b13, (int)b13, (int)b13, 255), shadow);
  			}
-+			ItemLoader.DrawArmorColor(EquipType.Head, drawPlayer.head, drawPlayer, shadow, ref color11, ref num12, ref color16);
-+			ItemLoader.DrawArmorColor(EquipType.Body, drawPlayer.body, drawPlayer, shadow, ref color12, ref num13, ref color17);
-+			ItemLoader.ArmorArmGlowMask(drawPlayer.body, drawPlayer, shadow, ref num14, ref color18);
-+			ItemLoader.DrawArmorColor(EquipType.Legs, drawPlayer.legs, drawPlayer, shadow, ref color14, ref num15, ref color19);
++			ItemLoader.DrawArmorColor(EquipType.Head, drawPlayer.head, drawPlayer, shadow, ref color11, ref num13, ref color16);
++			ItemLoader.DrawArmorColor(EquipType.Body, drawPlayer.body, drawPlayer, shadow, ref color12, ref num14, ref color17);
++			ItemLoader.ArmorArmGlowMask(drawPlayer.body, drawPlayer, shadow, ref num15, ref color18);
++			ItemLoader.DrawArmorColor(EquipType.Legs, drawPlayer.legs, drawPlayer, shadow, ref color14, ref num16, ref color19);
  			color16 = drawPlayer.GetImmuneAlphaPure(color16, shadow);
  			color17 = drawPlayer.GetImmuneAlphaPure(color17, shadow);
  			color18 = drawPlayer.GetImmuneAlphaPure(color18, shadow);
@@ -2237,10 +2265,10 @@
 +			drawInfo.upperArmorColor = color11;
 +			drawInfo.middleArmorColor = color12;
 +			drawInfo.lowerArmorColor = color14;
-+			drawInfo.headGlowMask = num12;
-+			drawInfo.bodyGlowMask = num13;
-+			drawInfo.armGlowMask = num14;
-+			drawInfo.legGlowMask = num15;
++			drawInfo.headGlowMask = num13;
++			drawInfo.bodyGlowMask = num14;
++			drawInfo.armGlowMask = num15;
++			drawInfo.legGlowMask = num16;
 +			drawInfo.headGlowMaskColor = color16;
 +			drawInfo.bodyGlowMaskColor = color17;
 +			drawInfo.armGlowMaskColor = color18;
@@ -2281,9 +2309,9 @@
 +			flag3 = drawInfo.drawHeldProjInFrontOfHeldItemAndBody;
 +			flag4 = drawInfo.drawHair;
 +			flag5 = drawInfo.drawAltHair;
-+			num3 = drawInfo.hairShader;
-+			num5 = drawInfo.headArmorShader;
-+			num6 = drawInfo.bodyArmorShader;
++			num4 = drawInfo.hairShader;
++			num6 = drawInfo.headArmorShader;
++			num7 = drawInfo.bodyArmorShader;
 +			shader = drawInfo.legArmorShader;
 +			shader2 = drawInfo.handOnShader;
 +			shader3 = drawInfo.handOffShader;
@@ -2311,10 +2339,10 @@
 +			color12 = drawInfo.middleArmorColor;
 +			color13 = drawInfo.mountColor;
 +			color14 = drawInfo.lowerArmorColor;
-+			num12 = drawInfo.headGlowMask;
-+			num13 = drawInfo.bodyGlowMask;
-+			num14 = drawInfo.armGlowMask;
-+			num15 = drawInfo.legGlowMask;
++			num13 = drawInfo.headGlowMask;
++			num14 = drawInfo.bodyGlowMask;
++			num15 = drawInfo.armGlowMask;
++			num16 = drawInfo.legGlowMask;
 +			color16 = drawInfo.headGlowMaskColor;
 +			color17 = drawInfo.bodyGlowMaskColor;
 +			color18 = drawInfo.armGlowMaskColor;
@@ -2510,10 +2538,10 @@
  					}
  				}
  			}
-+			Position.Y -= (float)((int)num4 / 2);
++			Position.Y -= (float)((int)num5 / 2);
 +			goto layerLoopContinue;
 +			balloonAccLayer:
-+			Position.Y += (float)((int)num4 / 2);
++			Position.Y += (float)((int)num5 / 2);
  			if (drawPlayer.balloon > 0)
  			{
  				int num70 = DateTime.Now.Millisecond % 800 / 200;

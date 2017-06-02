@@ -144,7 +144,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			if (!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
+			uIPanel.Append(uiLoader);
 			modList.Clear();
 			Populate();
 		}
@@ -183,7 +183,7 @@ namespace Terraria.ModLoader.UI
 						}
 						modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
 					}
-					if (uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
+					uIPanel.RemoveChild(uiLoader);
 					loading = false;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}

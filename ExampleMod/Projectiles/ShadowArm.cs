@@ -22,7 +22,6 @@ namespace ExampleMod.Projectiles
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Shadow Arm");
 			ProjectileID.Sets.TrailCacheLength[projectile.type] = 60;
 		}
 

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ID;
@@ -18,50 +20,29 @@ namespace Terraria.ModLoader
 		private static int nextProjectile = ProjectileID.Count;
 		internal static readonly IList<ModProjectile> projectiles = new List<ModProjectile>();
 		internal static readonly IList<GlobalProjectile> globalProjectiles = new List<GlobalProjectile>();
-		internal static readonly IList<ProjectileInfo> infoList = new List<ProjectileInfo>();
-		internal static readonly IDictionary<string, int> infoIndexes = new Dictionary<string, int>();
+		internal static GlobalProjectile[] InstancedGlobals = new GlobalProjectile[0];
+		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
+		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 
-		private static Action<Projectile>[] HookSetDefaults = new Action<Projectile>[0];
-		private static Func<Projectile, bool>[] HookPreAI;
-		private static Action<Projectile>[] HookAI;
-		private static Action<Projectile>[] HookPostAI;
-		private static Func<Projectile, bool>[] HookShouldUpdatePosition;
-		private delegate bool DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
-		private static DelegateTileCollideStyle[] HookTileCollideStyle;
-		private static Func<Projectile, Vector2, bool>[] HookOnTileCollide;
-		private static Func<Projectile, bool?>[] HookCanCutTiles;
-		private static Action<Projectile>[] HookCutTiles;
-		private static Func<Projectile, int, bool>[] HookPreKill;
-		private static Action<Projectile, int>[] HookKill;
-		private static Func<Projectile, bool>[] HookCanDamage;
-		private static Func<Projectile, bool>[] HookMinionContactDamage;
-		private static Func<Projectile, NPC, bool?>[] HookCanHitNPC;
-		private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection);
-		private static DelegateModifyHitNPC[] HookModifyHitNPC;
-		private static Action<Projectile, NPC, int, float, bool>[] HookOnHitNPC;
-		private static Func<Projectile, Player, bool>[] HookCanHitPvp;
-		private delegate void DelegateModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit);
-		private static DelegateModifyHitPlayer[] HookModifyHitPvp;
-		private static Action<Projectile, Player, int, bool>[] HookOnHitPvp;
-		private static Func<Projectile, Player, bool>[] HookCanHitPlayer;
-		private static DelegateModifyHitPlayer[] HookModifyHitPlayer;
-		private static Action<Projectile, Player, int, bool>[] HookOnHitPlayer;
-		private static Func<Projectile, Rectangle, Rectangle, bool?>[] HookColliding;
-		private static Func<Projectile, Color, Color?>[] HookGetAlpha;
-		private static Func<Projectile, SpriteBatch, bool>[] HookPreDrawExtras;
-		private static Func<Projectile, SpriteBatch, Color, bool>[] HookPreDraw;
-		private static Action<Projectile, SpriteBatch, Color>[] HookPostDraw;
-		private static Func<int, Player, bool?>[] HookCanUseGrapple;
-		private static Func<int, Player, bool?>[] HookSingleGrappleHook;
-		private delegate void DelegateUseGrapple(Player player, ref int type);
-		private static DelegateUseGrapple[] HookUseGrapple;
-		private delegate void DelegateNumGrappleHooks(Projectile projectile, Player player, ref int numHooks);
-		private static DelegateNumGrappleHooks[] HookNumGrappleHooks;
-		private delegate void DelegateGrappleRetreatSpeed(Projectile projectile, Player player, ref float speed);
-		private static DelegateGrappleRetreatSpeed[] HookGrappleRetreatSpeed;
-		private delegate void DelegateGrapplePullSpeed(Projectile projectile, Player player, ref float speed);
-		private static DelegateGrappleRetreatSpeed[] HookGrapplePullSpeed;
-		private static Action<Projectile, int, List<int>, List<int>, List<int>, List<int>>[] HookDrawBehind;
+		private class HookList
+		{
+			public GlobalProjectile[] arr = new GlobalProjectile[0];
+			public readonly MethodInfo method;
+
+			public HookList(MethodInfo method)
+			{
+				this.method = method;
+			}
+		}
+
+		private static List<HookList> hooks = new List<HookList>();
+
+		private static HookList AddHook<F>(Expression<Func<GlobalProjectile, F>> func)
+		{
+			var hook = new HookList(ModLoader.Method(func));
+			hooks.Add(hook);
+			return hook;
+		}
 
 		internal static int ReserveProjectileID()
 		{
@@ -130,40 +111,11 @@ namespace Terraria.ModLoader
 				Projectile.perIDStaticNPCImmunity[i] = new uint[200];
 			}
 
-			ModLoader.BuildGlobalHook(ref HookSetDefaults, globalProjectiles, g => g.SetDefaults);
-			ModLoader.BuildGlobalHook(ref HookPreAI, globalProjectiles, g => g.PreAI);
-			ModLoader.BuildGlobalHook(ref HookAI, globalProjectiles, g => g.AI);
-			ModLoader.BuildGlobalHook(ref HookPostAI, globalProjectiles, g => g.PostAI);
-			ModLoader.BuildGlobalHook(ref HookShouldUpdatePosition, globalProjectiles, g => g.ShouldUpdatePosition);
-			ModLoader.BuildGlobalHook(ref HookTileCollideStyle, globalProjectiles, g => g.TileCollideStyle);
-			ModLoader.BuildGlobalHook(ref HookOnTileCollide, globalProjectiles, g => g.OnTileCollide);
-			ModLoader.BuildGlobalHook(ref HookCanCutTiles, globalProjectiles, g => g.CanCutTiles);
-			ModLoader.BuildGlobalHook(ref HookCutTiles, globalProjectiles, g => g.CutTiles);
-			ModLoader.BuildGlobalHook(ref HookPreKill, globalProjectiles, g => g.PreKill);
-			ModLoader.BuildGlobalHook(ref HookKill, globalProjectiles, g => g.Kill);
-			ModLoader.BuildGlobalHook(ref HookCanDamage, globalProjectiles, g => g.CanDamage);
-			ModLoader.BuildGlobalHook(ref HookMinionContactDamage, globalProjectiles, g => g.MinionContactDamage);
-			ModLoader.BuildGlobalHook(ref HookCanHitNPC, globalProjectiles, g => g.CanHitNPC);
-			ModLoader.BuildGlobalHook(ref HookModifyHitNPC, globalProjectiles, g => g.ModifyHitNPC);
-			ModLoader.BuildGlobalHook(ref HookOnHitNPC, globalProjectiles, g => g.OnHitNPC);
-			ModLoader.BuildGlobalHook(ref HookCanHitPvp, globalProjectiles, g => g.CanHitPvp);
-			ModLoader.BuildGlobalHook(ref HookModifyHitPvp, globalProjectiles, g => g.ModifyHitPvp);
-			ModLoader.BuildGlobalHook(ref HookOnHitPvp, globalProjectiles, g => g.OnHitPvp);
-			ModLoader.BuildGlobalHook(ref HookCanHitPlayer, globalProjectiles, g => g.CanHitPlayer);
-			ModLoader.BuildGlobalHook(ref HookModifyHitPlayer, globalProjectiles, g => g.ModifyHitPlayer);
-			ModLoader.BuildGlobalHook(ref HookOnHitPlayer, globalProjectiles, g => g.OnHitPlayer);
-			ModLoader.BuildGlobalHook(ref HookColliding, globalProjectiles, g => g.Colliding);
-			ModLoader.BuildGlobalHook(ref HookGetAlpha, globalProjectiles, g => g.GetAlpha);
-			ModLoader.BuildGlobalHook(ref HookPreDrawExtras, globalProjectiles, g => g.PreDrawExtras);
-			ModLoader.BuildGlobalHook(ref HookPreDraw, globalProjectiles, g => g.PreDraw);
-			ModLoader.BuildGlobalHook(ref HookPostDraw, globalProjectiles, g => g.PostDraw);
-			ModLoader.BuildGlobalHook(ref HookCanUseGrapple, globalProjectiles, g => g.CanUseGrapple);
-			ModLoader.BuildGlobalHook(ref HookSingleGrappleHook, globalProjectiles, g => g.SingleGrappleHook);
-			ModLoader.BuildGlobalHook(ref HookUseGrapple, globalProjectiles, g => g.UseGrapple);
-			ModLoader.BuildGlobalHook(ref HookNumGrappleHooks, globalProjectiles, g => g.NumGrappleHooks);
-			ModLoader.BuildGlobalHook(ref HookGrappleRetreatSpeed, globalProjectiles, g => g.GrappleRetreatSpeed);
-			ModLoader.BuildGlobalHook(ref HookGrapplePullSpeed, globalProjectiles, g => g.GrapplePullSpeed);
-			ModLoader.BuildGlobalHook(ref HookDrawBehind, globalProjectiles, g => g.DrawBehind);
+			InstancedGlobals = globalProjectiles.Where(g => g.InstancePerEntity).ToArray();
+			foreach (var hook in hooks)
+			{
+				hook.arr = ModLoader.BuildGlobalHook(globalProjectiles, hook.method);
+			}
 		}
 
 		internal static void Unload()
@@ -171,38 +123,41 @@ namespace Terraria.ModLoader
 			projectiles.Clear();
 			nextProjectile = ProjectileID.Count;
 			globalProjectiles.Clear();
-			infoList.Clear();
-			infoIndexes.Clear();
+			globalIndexes.Clear();
+			globalIndexesByType.Clear();
 		}
 
 		internal static bool IsModProjectile(Projectile projectile)
 		{
 			return projectile.type >= ProjectileID.Count;
 		}
-		//in Terraria.Projectile.SetDefaults get rid of bad type check
-		//in Terraria.Projectile.SetDefaults before scaling size call ProjectileLoader.SetupProjectile(this);
-		internal static void SetupProjectile(Projectile projectile)
+
+		private static HookList HookSetDefaults = AddHook<Action<Projectile>>(g => g.SetDefaults);
+
+		internal static void SetDefaults(Projectile projectile, bool createModProjectile = true)
 		{
-			SetupProjectileInfo(projectile);
-			if (IsModProjectile(projectile))
+			if (IsModProjectile(projectile) && createModProjectile)
 			{
-				GetProjectile(projectile.type).SetupProjectile(projectile);
+				projectile.modProjectile = GetProjectile(projectile.type).NewInstance(projectile);
 			}
-			foreach (var hook in HookSetDefaults)
+			projectile.globalProjectiles = InstancedGlobals.Select(g => g.NewInstance(projectile)).ToArray();
+			projectile.modProjectile?.SetDefaults();
+			foreach (GlobalProjectile g in HookSetDefaults.arr)
 			{
-				hook(projectile);
+				g.Instance(projectile).SetDefaults(projectile);
 			}
 		}
 
-		internal static void SetupProjectileInfo(Projectile projectile)
-		{
-			projectile.projectileInfo = infoList.Select(info => info.Clone()).ToArray();
-		}
-
-		internal static ProjectileInfo GetProjectileInfo(Projectile projectile, Mod mod, string name)
+		internal static GlobalProjectile GetGlobalProjectile(Projectile projectile, Mod mod, string name)
 		{
 			int index;
-			return infoIndexes.TryGetValue(mod.Name + ':' + name, out index) ? projectile.projectileInfo[index] : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? projectile.globalProjectiles[index] : null;
+		}
+
+		internal static GlobalProjectile GetGlobalProjectile(Projectile projectile, Type type)
+		{
+			int index;
+			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? projectile.globalProjectiles[index] : null) : null;
 		}
 		//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 		public static void ProjectileAI(Projectile projectile)
@@ -225,11 +180,13 @@ namespace Terraria.ModLoader
 			PostAI(projectile);
 		}
 
+		private static HookList HookPreAI = AddHook<Func<Projectile, bool>>(g => g.PreAI);
+
 		public static bool PreAI(Projectile projectile)
 		{
-			foreach (var hook in HookPreAI)
+			foreach (GlobalProjectile g in HookPreAI.arr)
 			{
-				if (!hook(projectile))
+				if (!g.Instance(projectile).PreAI(projectile))
 				{
 					return false;
 				}
@@ -241,23 +198,27 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		private static HookList HookAI = AddHook<Action<Projectile>>(g => g.AI);
+
 		public static void AI(Projectile projectile)
 		{
 			projectile.modProjectile?.AI();
 
-			foreach (var hook in HookAI)
+			foreach (GlobalProjectile g in HookAI.arr)
 			{
-				hook(projectile);
+				g.Instance(projectile).AI(projectile);
 			}
 		}
+
+		private static HookList HookPostAI = AddHook<Action<Projectile>>(g => g.PostAI);
 
 		public static void PostAI(Projectile projectile)
 		{
 			projectile.modProjectile?.PostAI();
 
-			foreach (var hook in HookPostAI)
+			foreach (GlobalProjectile g in HookPostAI.arr)
 			{
-				hook(projectile);
+				g.Instance(projectile).PostAI(projectile);
 			}
 		}
 		//in Terraria.NetMessage.SendData at end of case 27 call
@@ -310,23 +271,27 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookShouldUpdatePosition = AddHook<Func<Projectile, bool>>(g => g.ShouldUpdatePosition);
+
 		public static bool ShouldUpdatePosition(Projectile projectile)
 		{
 			if (IsModProjectile(projectile) && !projectile.modProjectile.ShouldUpdatePosition())
 			{
 				return false;
 			}
-			foreach (var hook in HookShouldUpdatePosition)
+			foreach (GlobalProjectile g in HookShouldUpdatePosition.arr)
 			{
-				if (!hook(projectile))
+				if (!g.Instance(projectile).ShouldUpdatePosition(projectile))
 				{
 					return false;
 				}
 			}
 			return true;
 		}
-		//in Terraria.Projectile.Update before adjusting velocity to tile collisions add
-		//  ProjectileLoader.TileCollideStyle(this, ref num25, ref num26, ref flag4);
+
+		private delegate bool DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
+		private static HookList HookTileCollideStyle = AddHook<DelegateTileCollideStyle>(g => g.TileCollideStyle);
+
 		public static bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
 		{
 			if (IsModProjectile(projectile) && !projectile.modProjectile.TileCollideStyle(ref width, ref height, ref fallThrough))
@@ -334,22 +299,23 @@ namespace Terraria.ModLoader
 				return false;
 			}
 
-			foreach (var hook in HookTileCollideStyle)
+			foreach (GlobalProjectile g in HookTileCollideStyle.arr)
 			{
-				if (!hook(projectile, ref width, ref height, ref fallThrough))
+				if (!g.Instance(projectile).TileCollideStyle(projectile, ref width, ref height, ref fallThrough))
 				{
 					return false;
 				}
 			}
 			return true;
 		}
-		//in Terraria.Projectile.Update before if/else chain for tile collide behavior add
-		//  if(!ProjectileLoader.OnTileCollide(this, velocity)) { } else
+
+		private static HookList HookOnTileCollide = AddHook<Func<Projectile, Vector2, bool>>(g => g.OnTileCollide);
+
 		public static bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
 		{
-			foreach (var hook in HookOnTileCollide)
+			foreach (GlobalProjectile g in HookOnTileCollide.arr)
 			{
-				if (!hook(projectile, oldVelocity))
+				if (!g.Instance(projectile).OnTileCollide(projectile, oldVelocity))
 				{
 					return false;
 				}
@@ -361,18 +327,13 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		//in Terraria.Projectile.CanCutTiles, change to
-		//    if (!ProjectileLoader.CanCutTiles(this).HasValue)
-		//    {
-		//        return (this.aiStyle != 45 && this.aiStyle != 92 && this.aiStyle != 105 && this.aiStyle != 106 && this.type != 463 && this.type != 69 && this.type != 70 && this.type != 621 && this.type != 10 && this.type != 11 && this.type != 379 && this.type != 407 && this.type != 476 && this.type != 623 && (this.type< 625 || this.type> 628));
-		//    }
-		//    else return (ProjectileLoader.CanCutTiles(this).Value);
-		//when it returns null, it does the vanilla check
+		private static HookList HookCanCutTiles = AddHook<Func<Projectile, bool?>>(g => g.CanCutTiles);
+
 		public static bool? CanCutTiles(Projectile projectile)
 		{
-			foreach (var hook in HookCanCutTiles)
+			foreach (GlobalProjectile g in HookCanCutTiles.arr)
 			{
-				bool? canCutTiles = hook(projectile);
+				bool? canCutTiles = g.Instance(projectile).CanCutTiles(projectile);
 				if (canCutTiles.HasValue)
 				{
 					return canCutTiles.Value;
@@ -381,25 +342,24 @@ namespace Terraria.ModLoader
 			return projectile.modProjectile?.CanCutTiles();
 		}
 
-		//in Terraria.Projectile.CutTiles
-		// before AchievementsHelper.CurrentlyMining = false;
-		// add: ProjectileLoader.CutTiles(this);
+		private static HookList HookCutTiles = AddHook<Action<Projectile>>(g => g.CutTiles);
+
 		public static void CutTiles(Projectile projectile)
 		{
-			foreach (var hook in HookCutTiles)
+			foreach (GlobalProjectile g in HookCutTiles.arr)
 			{
-				hook(projectile);
+				g.Instance(projectile).CutTiles(projectile);
 			}
 			projectile.modProjectile?.CutTiles();
 		}
 
-		//in Terraria.Projectile.Kill before if statements determining kill behavior add
-		//  if(!ProjectileLoader.PreKill(this, num)) { this.active = false; return; }
+		private static HookList HookPreKill = AddHook<Func<Projectile, int, bool>>(g => g.PreKill);
+
 		public static bool PreKill(Projectile projectile, int timeLeft)
 		{
-			foreach (var hook in HookPreKill)
+			foreach (GlobalProjectile g in HookPreKill.arr)
 			{
-				if (!hook(projectile, timeLeft))
+				if (!g.Instance(projectile).PreKill(projectile, timeLeft))
 				{
 					return false;
 				}
@@ -410,17 +370,20 @@ namespace Terraria.ModLoader
 			}
 			return true;
 		}
-		//at end of Terraria.Projectile.Kill before setting active to false add
-		//  ProjectileLoader.Kill(this, num);
+
+		private static HookList HookKill = AddHook<Action<Projectile, int>>(g => g.Kill);
+
 		public static void Kill(Projectile projectile, int timeLeft)
 		{
 			projectile.modProjectile?.Kill(timeLeft);
 
-			foreach (var hook in HookKill)
+			foreach (GlobalProjectile g in HookKill.arr)
 			{
-				hook(projectile, timeLeft);
+				g.Instance(projectile).Kill(projectile, timeLeft);
 			}
 		}
+
+		private static HookList HookCanDamage = AddHook<Func<Projectile, bool>>(g => g.CanDamage);
 
 		public static bool CanDamage(Projectile projectile)
 		{
@@ -428,9 +391,9 @@ namespace Terraria.ModLoader
 			{
 				return false;
 			}
-			foreach (var hook in HookCanDamage)
+			foreach (GlobalProjectile g in HookCanDamage.arr)
 			{
-				if (!hook(projectile))
+				if (!g.Instance(projectile).CanDamage(projectile))
 				{
 					return false;
 				}
@@ -438,28 +401,32 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		private static HookList HookMinionContactDamage = AddHook<Func<Projectile, bool>>(g => g.MinionContactDamage);
+
 		public static bool MinionContactDamage(Projectile projectile)
 		{
 			if (projectile.modProjectile != null && projectile.modProjectile.MinionContactDamage())
 			{
 				return true;
 			}
-			foreach (var hook in HookMinionContactDamage)
+			foreach (GlobalProjectile g in HookMinionContactDamage.arr)
 			{
-				if (hook(projectile))
+				if (g.Instance(projectile).MinionContactDamage(projectile))
 				{
 					return true;
 				}
 			}
 			return false;
 		}
-		//in Terraria.Projectile.Damage for damaging NPCs before flag2 is checked... just check the patch files
+
+		private static HookList HookCanHitNPC = AddHook<Func<Projectile, NPC, bool?>>(g => g.CanHitNPC);
+
 		public static bool? CanHitNPC(Projectile projectile, NPC target)
 		{
 			bool? flag = null;
-			foreach (var hook in HookCanHitNPC)
+			foreach (GlobalProjectile g in HookCanHitNPC.arr)
 			{
-				bool? canHit = hook(projectile, target);
+				bool? canHit = g.Instance(projectile).CanHitNPC(projectile, target);
 				if (canHit.HasValue && !canHit.Value)
 				{
 					return false;
@@ -483,32 +450,39 @@ namespace Terraria.ModLoader
 			}
 			return flag;
 		}
-		//in Terraria.Projectile.Damage before calling StatusNPC call this and add local knockback variable
+
+		private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection);
+		private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
+
 		public static void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
 			projectile.modProjectile?.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
 
-			foreach (var hook in HookModifyHitNPC)
+			foreach (GlobalProjectile g in HookModifyHitNPC.arr)
 			{
-				hook(projectile, target, ref damage, ref knockback, ref crit, ref hitDirection);
+				g.Instance(projectile).ModifyHitNPC(projectile, target, ref damage, ref knockback, ref crit, ref hitDirection);
 			}
 		}
-		//in Terraria.Projectile.Damage before penetration check for NPCs call this
+
+		private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, int, float, bool>>(g => g.OnHitNPC);
+
 		public static void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
 		{
 			projectile.modProjectile?.OnHitNPC(target, damage, knockback, crit);
 
-			foreach (var hook in HookOnHitNPC)
+			foreach (GlobalProjectile g in HookOnHitNPC.arr)
 			{
-				hook(projectile, target, damage, knockback, crit);
+				g.Instance(projectile).OnHitNPC(projectile, target, damage, knockback, crit);
 			}
 		}
-		//in Terraria.Projectile.Damage add this before collision check for pvp damage
+
+		private static HookList HookCanHitPvp = AddHook<Func<Projectile, Player, bool>>(g => g.CanHitPvp);
+
 		public static bool CanHitPvp(Projectile projectile, Player target)
 		{
-			foreach (var hook in HookCanHitPvp)
+			foreach (GlobalProjectile g in HookCanHitPvp.arr)
 			{
-				if (!hook(projectile, target))
+				if (!g.Instance(projectile).CanHitPvp(projectile, target))
 				{
 					return false;
 				}
@@ -519,32 +493,39 @@ namespace Terraria.ModLoader
 			}
 			return true;
 		}
-		//in Terraria.Projectile.Damage for pvp damage call this after damage var
+
+		private delegate void DelegateModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit);
+		private static HookList HookModifyHitPvp = AddHook<DelegateModifyHitPvp>(g => g.ModifyHitPvp);
+
 		public static void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
 		{
 			projectile.modProjectile?.ModifyHitPvp(target, ref damage, ref crit);
 
-			foreach (var hook in HookModifyHitPvp)
+			foreach (GlobalProjectile g in HookModifyHitPvp.arr)
 			{
-				hook(projectile, target, ref damage, ref crit);
+				g.Instance(projectile).ModifyHitPvp(projectile, target, ref damage, ref crit);
 			}
 		}
-		//in Terraria.Projectile.Damage for pvp damage call this before net message stuff
+
+		private static HookList HookOnHitPvp = AddHook<Action<Projectile, Player, int, bool>>(g => g.OnHitPvp);
+
 		public static void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
 		{
 			projectile.modProjectile?.OnHitPvp(target, damage, crit);
 
-			foreach (var hook in HookOnHitPvp)
+			foreach (GlobalProjectile g in HookOnHitPvp.arr)
 			{
-				hook(projectile, target, damage, crit);
+				g.Instance(projectile).OnHitPvp(projectile, target, damage, crit);
 			}
 		}
-		//in Terraria.Projectile.Damage for damaging my player, add this before collision check
+
+		private static HookList HookCanHitPlayer = AddHook<Func<Projectile, Player, bool>>(g => g.CanHitPlayer);
+
 		public static bool CanHitPlayer(Projectile projectile, Player target)
 		{
-			foreach (var hook in HookCanHitPlayer)
+			foreach (GlobalProjectile g in HookCanHitPlayer.arr)
 			{
-				if (!hook(projectile, target))
+				if (!g.Instance(projectile).CanHitPlayer(projectile, target))
 				{
 					return false;
 				}
@@ -555,35 +536,39 @@ namespace Terraria.ModLoader
 			}
 			return true;
 		}
-		//in Terraria.Projectile.Damage for damaging my player, call this after damage variation and add local crit variable
+
+		private delegate void DelegateModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit);
+		private static HookList HookModifyHitPlayer = AddHook<DelegateModifyHitPlayer>(g => g.ModifyHitPlayer);
+
 		public static void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
 		{
 			projectile.modProjectile?.ModifyHitPlayer(target, ref damage, ref crit);
 
-			foreach (var hook in HookModifyHitPlayer)
+			foreach (GlobalProjectile g in HookModifyHitPlayer.arr)
 			{
-				hook(projectile, target, ref damage, ref crit);
+				g.Instance(projectile).ModifyHitPlayer(projectile, target, ref damage, ref crit);
 			}
 		}
-		//in Terraria.Projectile.Damage for damaging my player before decreasing projectile penetration call this
-		//  and assign return value from Player.Hurt to local variable to pass as a parameter
+
+		private static HookList HookOnHitPlayer = AddHook<Action<Projectile, Player, int, bool>>(g => g.OnHitPlayer);
+
 		public static void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
 		{
 			projectile.modProjectile?.OnHitPlayer(target, damage, crit);
 
-			foreach (var hook in HookOnHitPlayer)
+			foreach (GlobalProjectile g in HookOnHitPlayer.arr)
 			{
-				hook(projectile, target, damage, crit);
+				g.Instance(projectile).OnHitPlayer(projectile, target, damage, crit);
 			}
 		}
-		//in Terraria.Projectile.Colliding after modifying myRect add
-		//  bool? modColliding = ProjectileLoader.Colliding(this, myRect, targetRect);
-		//  if(modColliding.HasValue) { return modColliding.Value; }
+
+		private static HookList HookColliding = AddHook<Func<Projectile, Rectangle, Rectangle, bool?>>(g => g.Colliding);
+
 		public static bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox)
 		{
-			foreach (var hook in HookColliding)
+			foreach (GlobalProjectile g in HookColliding.arr)
 			{
-				bool? colliding = hook(projectile, projHitbox, targetHitbox);
+				bool? colliding = g.Instance(projectile).Colliding(projectile, projHitbox, targetHitbox);
 				if (colliding.HasValue)
 				{
 					return colliding.Value;
@@ -599,14 +584,14 @@ namespace Terraria.ModLoader
 				flag = projectile.modProjectile.drawHeldProjInFrontOfHeldItemAndArms;
 			}
 		}
-		//at beginning of Terraria.Projectile.GetAlpha add
-		//  Color? modColor = ProjectileLoader.GetAlpha(this, newColor);
-		//  if(modColor.HasValue) { return modColor.Value; }
+
+		private static HookList HookGetAlpha = AddHook<Func<Projectile, Color, Color?>>(g => g.GetAlpha);
+
 		public static Color? GetAlpha(Projectile projectile, Color lightColor)
 		{
-			foreach (var hook in HookGetAlpha)
+			foreach (GlobalProjectile g in HookGetAlpha.arr)
 			{
-				Color? color = hook(projectile, lightColor);
+				Color? color = g.Instance(projectile).GetAlpha(projectile, lightColor);
 				if (color.HasValue)
 				{
 					return color;
@@ -614,8 +599,7 @@ namespace Terraria.ModLoader
 			}
 			return projectile.modProjectile?.GetAlpha(lightColor);
 		}
-		//in Terraria.Main.DrawProj after setting offsets call
-		//  ProjectileLoader.DrawOffset(projectile, ref num148, ref num149);
+
 		public static void DrawOffset(Projectile projectile, ref int offsetX, ref int offsetY, ref float originX)
 		{
 			if (projectile.modProjectile != null)
@@ -626,11 +610,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookPreDrawExtras = AddHook<Func<Projectile, SpriteBatch, bool>>(g => g.PreDrawExtras);
+
 		public static bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch)
 		{
-			foreach (var hook in HookPreDrawExtras)
+			foreach (GlobalProjectile g in HookPreDrawExtras.arr)
 			{
-				if (!hook(projectile, spriteBatch))
+				if (!g.Instance(projectile).PreDrawExtras(projectile, spriteBatch))
 				{
 					return false;
 				}
@@ -641,14 +627,14 @@ namespace Terraria.ModLoader
 			}
 			return true;
 		}
-		//in Terraria.Main.DrawProj after modifying light color add
-		//  if(!ProjectileLoader.PreDraw(projectile, Main.spriteBatch, color25))
-		//  { ProjectileLoader.PostDraw(projectile, Main.spriteBatch, color25); return; }
+
+		private static HookList HookPreDraw = AddHook<Func<Projectile, SpriteBatch, Color, bool>>(g => g.PreDraw);
+
 		public static bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor)
 		{
-			foreach (var hook in HookPreDraw)
+			foreach (GlobalProjectile g in HookPreDraw.arr)
 			{
-				if (!hook(projectile, spriteBatch, lightColor))
+				if (!g.Instance(projectile).PreDraw(projectile, spriteBatch, lightColor))
 				{
 					return false;
 				}
@@ -659,24 +645,28 @@ namespace Terraria.ModLoader
 			}
 			return true;
 		}
-		//at end of Terraria.Main.DrawProj call ProjectileLoader.PostDraw(projectile, Main.spriteBatch, color25);
+
+		private static HookList HookPostDraw = AddHook<Action<Projectile, SpriteBatch, Color>>(g => g.PostDraw);
+
 		public static void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor)
 		{
 			projectile.modProjectile?.PostDraw(spriteBatch, lightColor);
 
-			foreach (var hook in HookPostDraw)
+			foreach (GlobalProjectile g in HookPostDraw.arr)
 			{
-				hook(projectile, spriteBatch, lightColor);
+				g.Instance(projectile).PostDraw(projectile, spriteBatch, lightColor);
 			}
 		}
+
+		private static HookList HookCanUseGrapple = AddHook<Func<int, Player, bool?>>(g => g.CanUseGrapple);
 
 		public static bool? CanUseGrapple(int type, Player player)
 		{
 			var flag = GetProjectile(type)?.CanUseGrapple(player);
 
-			foreach (var hook in HookCanUseGrapple)
+			foreach (GlobalProjectile g in HookCanUseGrapple.arr)
 			{
-				bool? canGrapple = hook(type, player);
+				bool? canGrapple = g.CanUseGrapple(type, player);
 				if (canGrapple.HasValue)
 				{
 					flag = canGrapple;
@@ -685,13 +675,15 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
+		private static HookList HookSingleGrappleHook = AddHook<Func<int, Player, bool?>>(g => g.SingleGrappleHook);
+
 		public static bool? SingleGrappleHook(int type, Player player)
 		{
 			bool? flag = GetProjectile(type)?.SingleGrappleHook(player);
 
-			foreach (var hook in HookSingleGrappleHook)
+			foreach (GlobalProjectile g in HookSingleGrappleHook.arr)
 			{
-				bool? singleHook = hook(type, player);
+				bool? singleHook = g.SingleGrappleHook(type, player);
 				if (singleHook.HasValue)
 				{
 					flag = singleHook;
@@ -700,13 +692,16 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
+		private delegate void DelegateUseGrapple(Player player, ref int type);
+		private static HookList HookUseGrapple = AddHook<DelegateUseGrapple>(g => g.UseGrapple);
+
 		public static void UseGrapple(Player player, ref int type)
 		{
 			GetProjectile(type)?.UseGrapple(player, ref type);
 
-			foreach (var hook in HookUseGrapple)
+			foreach (GlobalProjectile g in HookUseGrapple.arr)
 			{
-				hook(player, ref type);
+				g.UseGrapple(player, ref type);
 			}
 		}
 
@@ -715,43 +710,80 @@ namespace Terraria.ModLoader
 			return distance > projectile.modProjectile?.GrappleRange();
 		}
 
+		private delegate void DelegateNumGrappleHooks(Projectile projectile, Player player, ref int numHooks);
+		private static HookList HookNumGrappleHooks = AddHook<DelegateNumGrappleHooks>(g => g.NumGrappleHooks);
+
 		public static void NumGrappleHooks(Projectile projectile, Player player, ref int numHooks)
 		{
 			projectile.modProjectile?.NumGrappleHooks(player, ref numHooks);
 
-			foreach (var hook in HookNumGrappleHooks)
+			foreach (GlobalProjectile g in HookNumGrappleHooks.arr)
 			{
-				hook(projectile, player, ref numHooks);
+				g.Instance(projectile).NumGrappleHooks(projectile, player, ref numHooks);
 			}
 		}
+
+		private delegate void DelegateGrappleRetreatSpeed(Projectile projectile, Player player, ref float speed);
+		private static HookList HookGrappleRetreatSpeed = AddHook<DelegateGrappleRetreatSpeed>(g => g.GrappleRetreatSpeed);
 
 		public static void GrappleRetreatSpeed(Projectile projectile, Player player, ref float speed)
 		{
 			projectile.modProjectile?.GrappleRetreatSpeed(player, ref speed);
 
-			foreach (var hook in HookGrappleRetreatSpeed)
+			foreach (GlobalProjectile g in HookGrappleRetreatSpeed.arr)
 			{
-				hook(projectile, player, ref speed);
+				g.Instance(projectile).GrappleRetreatSpeed(projectile, player, ref speed);
 			}
 		}
+
+		private delegate void DelegateGrapplePullSpeed(Projectile projectile, Player player, ref float speed);
+		private static HookList HookGrapplePullSpeed = AddHook<DelegateGrapplePullSpeed>(g => g.GrapplePullSpeed);
 
 		public static void GrapplePullSpeed(Projectile projectile, Player player, ref float speed)
 		{
 			projectile.modProjectile?.GrapplePullSpeed(player, ref speed);
 
-			foreach (var hook in HookGrapplePullSpeed)
+			foreach (GlobalProjectile g in HookGrapplePullSpeed.arr)
 			{
-				hook(projectile, player, ref speed);
+				g.Instance(projectile).GrapplePullSpeed(projectile, player, ref speed);
 			}
 		}
+
+		private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
 
 		internal static void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI)
 		{
 			projectile.modProjectile?.DrawBehind(index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
 
-			foreach (var hook in HookDrawBehind)
+			foreach (GlobalProjectile g in HookDrawBehind.arr)
 			{
-				hook(projectile, index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
+				g.Instance(projectile).DrawBehind(projectile, index, drawCacheProjsBehindNPCsAndTiles, drawCacheProjsBehindNPCs, drawCacheProjsBehindProjectiles, drawCacheProjsOverWiresUI);
+			}
+		}
+
+		private static bool HasMethod(Type t, string method, params Type[] args)
+		{
+			return t.GetMethod(method, args).DeclaringType != typeof(GlobalProjectile);
+		}
+
+		internal static void VerifyGlobalProjectile(GlobalProjectile projectile)
+		{
+			var type = projectile.GetType();
+
+			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+				.Any(f => f.DeclaringType != typeof(GlobalProjectile));
+			if (hasInstanceFields)
+			{
+				if (!projectile.InstancePerEntity)
+				{
+					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
+				}
+				if (!projectile.CloneNewInstances &&
+						!HasMethod(type, "NewInstance", typeof(Projectile)) &&
+						!HasMethod(type, "Clone", typeof(Projectile)))
+				{
+					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Projectile) or Clone()");
+				}
 			}
 		}
 	}

@@ -11,11 +11,6 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		private static readonly Color color1 = new Color(100, 0, 100);
 		private static readonly Color color2 = new Color(100, 0, 0);
 
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Negative Wall");
-		}
-
 		public override void SetDefaults()
 		{
 			projectile.width = 32;

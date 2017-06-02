@@ -26,11 +26,6 @@ namespace ExampleMod.Projectiles
 			set { projectile.localAI[0] = value; }
 		}
 
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Example Laser");
-		}
-
 		public override void SetDefaults()
 		{
 			projectile.width = 10;

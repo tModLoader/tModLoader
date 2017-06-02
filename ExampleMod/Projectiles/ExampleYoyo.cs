@@ -10,8 +10,6 @@ namespace ExampleMod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Yoyo");
-
 			// The following sets are only applicable to yoyo that use aiStyle 99.
 			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
 			// Vanilla values range from 3f(Wood) to 16f(Chik), and defaults to -1f. Leaving as -1 will make the time infinite.

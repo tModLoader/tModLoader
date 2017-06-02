@@ -8,7 +8,7 @@
  using Terraria.Utilities;
  using Terraria.World.Generation;
  
-@@ -21,6 +_,23 @@
+@@ -21,6 +_,31 @@
  {
  	public class Projectile : Entity
  	{
@@ -17,16 +17,24 @@
 +			get;
 +			internal set;
 +		}
-+		internal ProjectileInfo[] projectileInfo = new ProjectileInfo[0];
++		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
 +
-+		public ProjectileInfo GetModInfo(Mod mod, string name)
++		/// <summary>Gets the global projectile. Use this overload when you dynamically add GlobalProjectile manually.</summary>
++		public GlobalProjectile GetGlobalProjectile(Mod mod, string name)
 +		{
-+			return ProjectileLoader.GetProjectileInfo(this, mod, name);
++			return ProjectileLoader.GetGlobalProjectile(this, mod, name).Instance(this);
 +		}
 +
-+		public T GetModInfo<T>(Mod mod) where T : ProjectileInfo
++		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
++		public T GetGlobalProjectile<T>(Mod mod) where T : GlobalProjectile
 +		{
-+			return (T)GetModInfo(mod, typeof(T).Name);
++			return (T)GetGlobalProjectile(mod, typeof(T).Name);
++		}
++
++		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
++		public T GetGlobalProjectile<T>() where T : GlobalProjectile
++		{
++			return (T)ProjectileLoader.GetGlobalProjectile(this, typeof(T));
 +		}
 +
  		public static uint[][] perIDStaticNPCImmunity = new uint[714][];
@@ -45,6 +53,24 @@
  		public int maxPenetrate = 1;
  		public int identity;
  		public float light;
+@@ -91,11 +_,16 @@
+ 		public int idStaticNPCHitCooldown = -1;
+ 		private static float[] _CompanionCubeScreamCooldown = new float[255];
+ 
++		private string nameOverride = null;
+ 		public string Name
+ 		{
+ 			get
+ 			{
+-				return Lang.GetProjectileName(this.type).Value;
++				return nameOverride ?? Lang.GetProjectileName(this.type).Value;
++			}
++			set
++			{
++				nameOverride = value;
+ 			}
+ 		}
+ 
 @@ -155,7 +_,7 @@
  
  		public static void ResetImmunity()
@@ -54,7 +80,7 @@
  			{
  				for (int j = 0; j < 200; j++)
  				{
-@@ -211,8 +_,32 @@
+@@ -211,8 +_,34 @@
  			return DD2Event.Ongoing;
  		}
  
@@ -84,6 +110,8 @@
  		public void SetDefaults(int Type)
  		{
 +			this.modProjectile = null;
++			this.globalProjectiles = new GlobalProjectile[0];
++			this.nameOverride = null;
  			this.ownerHitCheckDistance = 1000f;
  			this.counterweight = false;
  			this.sentry = false;
@@ -97,7 +125,7 @@
 -				}
  			}
  			IL_C73D:
-+			ProjectileLoader.SetupProjectile(this);
++			ProjectileLoader.SetDefaults(this);
  			this.width = (int)((float)this.width * this.scale);
  			this.height = (int)((float)this.height * this.scale);
  			this.maxPenetrate = this.penetrate;

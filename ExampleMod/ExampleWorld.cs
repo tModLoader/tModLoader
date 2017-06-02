@@ -454,7 +454,7 @@ namespace ExampleMod
 								velocity.X = velocity.X + 3 * Main.rand.NextFloat() - 1.5f;
 								int projectile = Projectile.NewProjectile(spawn.X, spawn.Y, velocity.X, velocity.Y, Main.rand.Next(ProjectileID.MolotovFire, ProjectileID.MolotovFire3 + 1), 10, 10f, Main.myPlayer, 0f, 0f);
 								Main.projectile[projectile].hostile = true;
-								//Main.projectile[projectile].name = "Volcanic Rubble";
+								Main.projectile[projectile].Name = "Volcanic Rubble";
 								identities.Add(Main.projectile[projectile].identity);
 							}
 							if (Main.netMode == 2)

@@ -18,10 +18,19 @@ namespace Terraria.ModLoader
 	{
 		private static readonly IList<ModPlayer> players = new List<ModPlayer>();
 		private static readonly IDictionary<string, int> indexes = new Dictionary<string, int>();
+		private static readonly IDictionary<Type, int> indexesByType = new Dictionary<Type, int>();
 
 		internal static void Add(ModPlayer player)
 		{
 			indexes[player.mod.Name + ':' + player.Name] = players.Count;
+			if (indexesByType.ContainsKey(player.GetType()))
+			{
+				indexesByType[player.GetType()] = -1;
+			}
+			else
+			{
+				indexesByType[player.GetType()] = players.Count;
+			}
 			players.Add(player);
 		}
 
@@ -29,6 +38,7 @@ namespace Terraria.ModLoader
 		{
 			players.Clear();
 			indexes.Clear();
+			indexesByType.Clear();
 		}
 
 		internal static void SetupPlayer(Player player)
@@ -40,6 +50,12 @@ namespace Terraria.ModLoader
 		{
 			int index;
 			return indexes.TryGetValue(mod.Name + ':' + name, out index) ? player.modPlayers[index] : null;
+		}
+
+		internal static ModPlayer GetModPlayer(Player player, Type type)
+		{
+			int index;
+			return indexesByType.TryGetValue(type, out index) ? (index > -1 ? player.modPlayers[index] : null) : null;
 		}
 
 		public static void ResetEffects(Player player)
