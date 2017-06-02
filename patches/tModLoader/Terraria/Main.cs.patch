@@ -2040,7 +2040,7 @@
  			int shader2 = 0;
  			int shader3 = 0;
  			int shader4 = 0;
-@@ -30854,47 +_,47 @@
+@@ -30854,53 +_,65 @@
  				int num8 = i % 10;
  				if (drawPlayer.dye[num8] != null && drawPlayer.armor[i].type > 0 && drawPlayer.armor[i].stack > 0 && (i / 10 >= 1 || !drawPlayer.hideVisual[num8] || drawPlayer.armor[i].wingSlot > 0 || drawPlayer.armor[i].type == 934))
  				{
@@ -2048,57 +2048,85 @@
 +					if (drawPlayer.armor[i].handOnSlot > 0)
  					{
  						shader2 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].handOffSlot > 0 && drawPlayer.armor[i].handOffSlot < 12)
++						drawInfo.handOnShader = shader2;
++					}
 +					if (drawPlayer.armor[i].handOffSlot > 0)
  					{
  						shader3 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].backSlot > 0 && drawPlayer.armor[i].backSlot < 14)
++						drawInfo.handOffShader = shader3;
++					}
 +					if (drawPlayer.armor[i].backSlot > 0)
  					{
  						shader4 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].frontSlot > 0 && drawPlayer.armor[i].frontSlot < 5)
++						drawInfo.backShader = shader4;
++					}
 +					if (drawPlayer.armor[i].frontSlot > 0)
  					{
  						shader5 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].shoeSlot > 0 && drawPlayer.armor[i].shoeSlot < 18)
++						drawInfo.frontShader = shader5;
++					}
 +					if (drawPlayer.armor[i].shoeSlot > 0)
  					{
  						shader6 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].waistSlot > 0 && drawPlayer.armor[i].waistSlot < 13)
++						drawInfo.shoeShader = shader6;
++					}
 +					if (drawPlayer.armor[i].waistSlot > 0)
  					{
  						shader7 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].shieldSlot > 0 && drawPlayer.armor[i].shieldSlot < 7)
++						drawInfo.waistShader = shader7;
++					}
 +					if (drawPlayer.armor[i].shieldSlot > 0)
  					{
  						shader8 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].neckSlot > 0 && drawPlayer.armor[i].neckSlot < 10)
++						drawInfo.shieldShader = shader8;
++					}
 +					if (drawPlayer.armor[i].neckSlot > 0)
  					{
  						shader9 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].faceSlot > 0 && drawPlayer.armor[i].faceSlot < 9)
++						drawInfo.neckShader = shader9;
++					}
 +					if (drawPlayer.armor[i].faceSlot > 0)
  					{
  						shader10 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].balloonSlot > 0 && drawPlayer.armor[i].balloonSlot < 18)
++						drawInfo.faceShader = shader10;
++					}
 +					if (drawPlayer.armor[i].balloonSlot > 0)
  					{
  						shader11 = (int)drawPlayer.dye[num8].dye;
- 					}
+-					}
 -					if (drawPlayer.armor[i].wingSlot > 0 && drawPlayer.armor[i].wingSlot < 40)
++						drawInfo.balloonShader = shader11;
++					}
 +					if (drawPlayer.armor[i].wingSlot > 0)
  					{
  						shader12 = (int)drawPlayer.dye[num8].dye;
++						drawInfo.wingShader = shader12;
  					}
+ 					if (drawPlayer.armor[i].type == 934)
+ 					{
+ 						shader13 = (int)drawPlayer.dye[num8].dye;
++						drawInfo.carpetShader = shader13;
+ 					}
+ 				}
+ 			}
 @@ -30915,32 +_,54 @@
  			SpriteEffects spriteEffects = SpriteEffects.None;
  			SpriteEffects effect = SpriteEffects.FlipHorizontally;
