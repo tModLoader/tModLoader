@@ -22,7 +22,7 @@ namespace ExampleMod
 	{
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
-		public static DynamicSpriteFont exampleFont;
+		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static Effect exampleEffect;
 		private UserInterface exampleUserInterface;
 		internal ExampleUI exampleUI;
@@ -66,7 +66,7 @@ namespace ExampleMod
 				SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
-				exampleFont = GetFont("Fonts/ExampleFont");
+				// exampleFont = GetFont("Fonts/ExampleFont"); 
 				exampleEffect = GetEffect("Effects/ExampleEffect");
 				Ref<Effect> exampleEffectRef = new Ref<Effect>();
 				exampleEffectRef.Value = exampleEffect;
