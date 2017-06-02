@@ -20,22 +20,15 @@
  		public static int goreTime = 600;
  		public Vector2 position;
  		public Vector2 velocity;
-@@ -19,12 +_,14 @@
- 		public int type;
- 		public float light;
- 		public bool active;
--		public bool sticky = true;
-+		public bool sticky = true; 
- 		public int timeLeft = Gore.goreTime;
- 		public bool behindTiles;
- 		public byte frame;
+@@ -26,6 +_,8 @@
  		public byte frameCounter;
  		public byte numFrames = 1;
-+		
-+		public Vector2 drawOffset = Vector2.Zero; 
  
++		public Vector2 drawOffset = Vector2.Zero;
++
  		public void Update()
  		{
+ 			if (Main.netMode == 2)
 @@ -34,6 +_,11 @@
  			}
  			if (this.active)
