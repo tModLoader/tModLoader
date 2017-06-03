@@ -21,9 +21,11 @@ namespace ExampleMod.Items
 			}
 		}
 
-		public override GlobalItem NewInstance(Item item)
+		public override GlobalItem Clone(Item item, Item itemClone)
 		{
-			return base.NewInstance(item);
+			ExampleInstancedGlobalItem myClone = (ExampleInstancedGlobalItem)base.Clone(item, itemClone);
+			myClone.originalOwner = originalOwner;
+			return myClone;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

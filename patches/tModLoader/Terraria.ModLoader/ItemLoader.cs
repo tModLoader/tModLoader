@@ -1643,8 +1643,8 @@ namespace Terraria.ModLoader
 
 				if (!item.CloneNewInstances &&
 						!HasMethod(type, "NewInstance", typeof(Item)) &&
-						!HasMethod(type, "Clone", typeof(Item)))
-					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Item) or Clone(Item)");
+						!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
+					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Item) or Clone(Item, Item)");
 			}
 		}
 	}
