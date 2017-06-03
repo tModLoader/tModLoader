@@ -154,6 +154,10 @@ namespace Terraria.ModLoader
 			FindVanillaWings();
 
 			InstancedGlobals = globalItems.Where(g => g.InstancePerEntity).ToArray();
+			for (int i = 0; i < InstancedGlobals.Length; i++)
+			{
+				InstancedGlobals[i].instanceIndex = i;
+			}
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
 			foreach (var hook in hooks)
 				hook.arr = ModLoader.BuildGlobalHook(globalItems, hook.method);

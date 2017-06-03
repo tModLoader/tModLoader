@@ -13,6 +13,11 @@ namespace ExampleMod.Items
 
 		public string originalOwner;
 
+		public ExampleInstancedGlobalItem()
+		{
+			originalOwner = "";
+		}
+
 		public override bool InstancePerEntity
 		{
 			get
@@ -30,7 +35,7 @@ namespace ExampleMod.Items
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
-			if (originalOwner != null)
+			if (originalOwner.Length > 0)
 			{
 				TooltipLine line = new TooltipLine(mod, "ExampleTooltip", "Crafted by: " + originalOwner);
 				line.overrideColor = Color.LimeGreen;
