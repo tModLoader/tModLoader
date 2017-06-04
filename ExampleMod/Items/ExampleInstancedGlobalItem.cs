@@ -40,6 +40,14 @@ namespace ExampleMod.Items
 				TooltipLine line = new TooltipLine(mod, "ExampleTooltip", "Crafted by: " + originalOwner);
 				line.overrideColor = Color.LimeGreen;
 				tooltips.Add(line);
+
+				foreach (TooltipLine line2 in tooltips)
+				{
+					if (line2.mod == "Terraria" && line2.Name == "ItemName")
+					{
+						line2.text = originalOwner + "'s " + line2.text;
+					}
+				}
 			}
 		}
 
@@ -50,7 +58,7 @@ namespace ExampleMod.Items
 
 		public override bool NeedsSaving(Item item)
 		{
-			return true;
+			return originalOwner.Length > 0;
 		}
 
 		public override TagCompound Save(Item item)

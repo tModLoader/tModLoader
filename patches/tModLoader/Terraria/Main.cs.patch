@@ -668,7 +668,7 @@
  		}
  
  		private void DoUpdate_AnimateWaterfalls()
-@@ -14617,6 +_,7 @@
+@@ -14617,22 +_,28 @@
  			string[] array = new string[num3];
  			bool[] array2 = new bool[num3];
  			bool[] array3 = new bool[num3];
@@ -676,7 +676,10 @@
  			for (int i = 0; i < num3; i++)
  			{
  				array2[i] = false;
-@@ -14626,13 +_,17 @@
+ 				array3[i] = false;
+ 			}
+ 			array[0] = Main.HoverItem.HoverName;
++			tooltipNames[0] = "ItemName";
  			if (Main.HoverItem.favorited)
  			{
  				array[num4++] = Lang.tip[56].Value;
