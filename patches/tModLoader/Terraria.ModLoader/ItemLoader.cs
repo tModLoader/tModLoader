@@ -222,13 +222,13 @@ namespace Terraria.ModLoader
 		internal static GlobalItem GetGlobalItem(Item item, Mod mod, string name)
 		{
 			int index;
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? item.globalItems[index] : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? globalItems[index].Instance(item) : null;
 		}
 
 		internal static GlobalItem GetGlobalItem(Item item, Type type)
 		{
 			int index;
-			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? item.globalItems[index] : null) : null;
+			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? globalItems[index].Instance(item) : null) : null;
 		}
 
 		//near end of Terraria.Main.DrawItem before default drawing call

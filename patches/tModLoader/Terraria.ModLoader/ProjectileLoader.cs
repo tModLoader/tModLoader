@@ -155,13 +155,13 @@ namespace Terraria.ModLoader
 		internal static GlobalProjectile GetGlobalProjectile(Projectile projectile, Mod mod, string name)
 		{
 			int index;
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? projectile.globalProjectiles[index] : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? globalProjectiles[index].Instance(projectile) : null;
 		}
 
 		internal static GlobalProjectile GetGlobalProjectile(Projectile projectile, Type type)
 		{
 			int index;
-			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? projectile.globalProjectiles[index] : null) : null;
+			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? globalProjectiles[index].Instance(projectile) : null) : null;
 		}
 		//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 		public static void ProjectileAI(Projectile projectile)
