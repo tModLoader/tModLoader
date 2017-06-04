@@ -21,6 +21,8 @@ Preprocessing /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AssemblyManager.cs...
 Preprocessing /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadEquip.cs...
 Parsing file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadEquip.cs...
+Preprocessing /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadHead.cs...
+Parsing file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadHead.cs...
 Preprocessing /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundStyleLoaders.cs...
 Parsing file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundStyleLoaders.cs...
 Preprocessing /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundTextureLoader.cs...
@@ -290,6 +292,7 @@ Generating code for file /home/travis/build/bluemagic123/tModLoader/patches/tMod
 Generating code for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/WorldIO.cs...
 Generating code for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AssemblyManager.cs...
 Generating code for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadEquip.cs...
+Generating code for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadHead.cs...
 Generating code for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundStyleLoaders.cs...
 Generating code for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundTextureLoader.cs...
 Generating code for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/BuffLoader.cs...
@@ -389,6 +392,7 @@ Generating docs for file /home/travis/build/bluemagic123/tModLoader/patches/tMod
 Generating docs for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/WorldIO.cs...
 Generating docs for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AssemblyManager.cs...
 Generating docs for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadEquip.cs...
+Generating docs for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadHead.cs...
 Generating docs for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundStyleLoaders.cs...
 Generating docs for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundTextureLoader.cs...
 Generating docs for file /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/BuffLoader.cs...
@@ -484,7 +488,9 @@ Generating call graph for function Terraria.ModLoader.AssemblyManager.LoadedMod.
 Generating call graph for function Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies
 Generating caller graph for function Terraria.ModLoader.AssemblyManager.LoadedMod.SetMod
 Generating docs for nested compound Terraria::ModLoader::AssemblyManager::SymbolWriterProvider::HeaderCopyWriter...
+Generating docs for compound Terraria::ModLoader::AutoloadBossHead...
 Generating docs for compound Terraria::ModLoader::AutoloadEquip...
+Generating docs for compound Terraria::ModLoader::AutoloadHead...
 Generating docs for compound Terraria::ModLoader::BackgroundTextureLoader...
 Generating call graph for function Terraria.ModLoader.BackgroundTextureLoader.GetBackgroundSlot
 Generating caller graph for function Terraria.ModLoader.BackgroundTextureLoader.GetBackgroundSlot
@@ -495,7 +501,6 @@ Generating docs for compound Terraria::ModLoader::CommandManager...
 Generating call graph for function Terraria.ModLoader.CommandManager.Matches
 Generating docs for compound Terraria::ModLoader::DrawLayer...
 Generating docs for compound Terraria::ModLoader::EntityInfo...
-Generating caller graph for function Terraria.ModLoader.EntityInfo.Autoload
 Generating docs for compound Terraria::ModLoader::EquipLoader...
 Generating call graph for function Terraria.ModLoader.EquipLoader.GetEquipTexture
 Generating caller graph for function Terraria.ModLoader.EquipLoader.GetEquipTexture
@@ -511,16 +516,16 @@ Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawLegs
 Generating caller graph for function Terraria.ModLoader.EquipTexture.HorizontalWingSpeeds
 Generating caller graph for function Terraria.ModLoader.EquipTexture.IsVanitySet
 Generating caller graph for function Terraria.ModLoader.EquipTexture.PreUpdateVanitySet
-Generating caller graph for function Terraria.ModLoader.EquipTexture.SetMatch
+Generating caller graph for function Terraria.ModLoader.EquipTexture.S/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:407: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
+  parameter 'male'
+etMatch
 Generating caller graph for function Terraria.ModLoader.EquipTexture.UpdateVanity
 Generating caller graph for function Terraria.ModLoader.EquipTexture.UpdateVanitySet
 Generating caller graph for function Terraria.ModLoader.EquipTexture.VerticalWingSpeeds
 Generating caller graph for function Terraria.ModLoader.EquipTexture.WingUpdate
 Generating docs for compound Terraria::ModLoader::ErrorLogger...
 Generating docs for compound Terraria::ModLoader::GlobalBgStyle...
-Generating caller graph for function Terraria.ModLoader.Global/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:407: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
-  parameter 'male'
-BgStyle.Autoload
+Generating caller graph for function Terraria.ModLoader.GlobalBgStyle.Autoload
 Generating docs for compound Terraria::ModLoader::GlobalBuff...
 Generating caller graph for function Terraria.ModLoader.GlobalBuff.Autoload
 Generating docs for compound Terraria::ModLoader::GlobalItem...
@@ -535,7 +540,57 @@ Generating caller graph for function Terraria.ModLoader.GlobalItem.PreUpdateVani
 Generating caller graph for function Terraria.ModLoader.GlobalItem.UpdateArmorSet
 Generating caller graph for function Terraria.ModLoader.GlobalItem.UpdateVanitySet
 Generating docs for compound Terraria::ModLoader::GlobalNPC...
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.AI
 Generating caller graph for function Terraria.ModLoader.GlobalNPC.Autoload
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.BossHeadRotation
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.BossHeadSlot
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.BossHeadSpriteEffects
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.BuffTownNPC
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.CanBeHitByItem
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.CanBeHitByProjectile
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.CanHitNPC
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.CanHitPlayer
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.CheckActive
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.CheckDead
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.DrawEffects
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.DrawHealthBar
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.DrawTownAttackGun
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.DrawTownAttackSwing
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.EditSpawnPool
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.EditSpawnRange
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.EditSpawnRate
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.FindFrame
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.GetAlpha
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.GetChat
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.HitEffect
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.Instance
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.ModifyHitByItem
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.ModifyHitByProjectile
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.ModifyHitNPC
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.ModifyHitPlayer
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.NPCLoot
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.OnHitByItem
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.OnHitByProjectile
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.OnHitNPC
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.OnHitPlayer
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.PostAI
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.PreAI
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.PreDraw
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.PreNPCLoot
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.ResetEffects
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.ScaleExpertStats
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.SetupShop
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.SetupTravelShop
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.SpawnNPC
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.StrikeNPC
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackCooldown
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackMagic
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackProj
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackProjSpeed
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackShoot
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackStrength
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackSwing
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.UpdateLifeRegen
 Generating docs for compound Terraria::ModLoader::GlobalProjectile...
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.AI
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.Autoload
@@ -565,15 +620,19 @@ Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PostAI
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PostDraw
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PreAI
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PreDraw
-Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PreDrawExtras
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PreDrawExtra/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:282: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
+  parameter 'type'
+  parameter 'spriteBatch'
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1176: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
+  parameter 'npcType'
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1055: warning: argument 'texture' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1055: warning: argument 'altTextures' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
+s
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PreKill
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.ShouldUpdatePosition
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.SingleGrappleHook
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.TileCollideStyle
-Generating caller graph for function Terraria.ModLoader.GlobalProjectile.Us/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:282: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
-  parameter 'type'
-  parameter 'spriteBatch'
-eGrapple
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.UseGrapple
 Generating docs for compound Terraria::ModLoader::GlobalRecipe...
 Generating caller graph for function Terraria.ModLoader.GlobalRecipe.Autoload
 Generating caller graph for function Terraria.ModLoader.GlobalRecipe.OnCraft
@@ -622,25 +681,23 @@ Generating call graph for function Terraria.ModLoader.Mod.AddMusicBox
 Generating call graph for function Terraria.ModLoader.Mod.AddNPCHeadTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddSound
 Generating call graph for function Terraria.ModLoader.Mod.AddTranslation
-Generating call graph for function Terraria.ModLoader.Mod.AutoloadBuff
+Generating call graph for fu/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:573: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
+  parameter 'type'
+/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:566: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
+  parameter 'type'
+nction Terraria.ModLoader.Mod.AutoloadBuff
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadDust
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalBgStyle
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalBuff
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalItem
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalNPC
-Generatin/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:577: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
-  parameter 'type'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:570: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
-  parameter 'type'
-/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:114: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
-g call graph for function Terraria.ModLoader.Mod.AutoloadGlobalProjectile
+Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalProjectile
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalRecipe
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalTile
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalWall
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadItem
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadModWorld
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadNPC
-Generating call graph for function Terraria.ModLoader.Mod.AutoloadNPCInfo
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadPlayer
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadProjectile
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadSurfaceBgStyle
@@ -683,7 +740,8 @@ Generating docs for compound Terraria::ModLoader::ModGore...
 Generating call graph for function Terraria.ModLoader.ModGore.GetGoreSlot
 Generating caller graph for function Terraria.ModLoader.ModGore.GetGoreSlot
 Generating docs for compound Terraria::ModLoader::ModHotKey...
-Generating docs for compound Terraria::ModLoader::ModItem...
+Generating docs for compoun/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:114: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
+d Terraria::ModLoader::ModItem...
 Generating caller graph for function Terraria.ModLoader.ModItem.Autoload
 Generating call graph for function Terraria.ModLoader.ModItem.AutoStaticDefaults
 Generating caller graph for function Terraria.ModLoader.ModItem.AutoStaticDefaults
@@ -715,9 +773,10 @@ Generating call graph for function Terraria.ModLoader.ModNet.OnModsDownloaded
 Generating call graph for function Terraria.ModLoader.ModNet.ReadNetIDs
 Generating docs for nested compound Terraria::ModLoader::ModNet::ModHeader...
 Generating docs for compound Terraria::ModLoader::ModNPC...
+Generating call graph for function Terraria.ModLoader.ModNPC.Autoload
 Generating caller graph for function Terraria.ModLoader.ModNPC.Autoload
-Generating call graph for function Terraria.ModLoader.ModNPC.AutoloadHead
-Generating caller graph for function Terraria.ModLoader.ModNPC.AutoloadHead
+Generating call graph for function Terraria.ModLoader.ModNPC.AutoStaticDefaults
+Generating caller graph for function Terraria.ModLoader.ModNPC.AutoStaticDefaults
 Generating caller graph for function Terraria.ModLoader.ModNPC.CanTownNPCSpawn
 Generating caller graph for function Terraria.ModLoader.ModNPC.SetDefaults
 Generating caller graph for function Terraria.ModLoader.ModNPC.SetStaticDefaults
@@ -787,12 +846,7 @@ Generating caller graph for function Terraria.ModLoader.ModPlayer.PreKill
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PreUpdate
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PreUpdateBuffs
 Generating caller graph for function Terraria.ModLoader.ModPlayer.ProcessTriggers
-Generating caller graph for function Terraria.ModLoader.ModPlayer.ReceiveCustomBiomes
-Generating caller graph for function Terraria.ModLoader.ModPlayer.ResetEffects
-Generating caller graph for function Terraria.ModLoader.ModPlayer.SendClientChanges
-Generating caller graph for function Terraria.ModLoader.ModPlayer.SendCustomBiomes
-Generating caller graph for function Terraria.ModLoader.ModPlayer.SetControls
-Generating caller graph for function Terraria.ModLoad/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:528: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
+Generating caller grap/home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:528: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
   parameter 'item'
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:310: warning: The following parameters of Terraria.ModLoader.ModTile.CanKillTile(int i, int j, ref bool blockDamaged) are not documented:
   parameter 'blockDamaged'
@@ -838,7 +892,12 @@ Generating caller graph for function Terraria.ModLoad/home/travis/build/bluemagi
 /home/travis/build/bluemagic123/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:481: warning: The following parameters of Terraria.ModLoader.ModTile.TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) are not documented:
   parameter 'resetFrame'
   parameter 'noBreak'
-er.ModPlayer.SetupStartInventory
+h for function Terraria.ModLoader.ModPlayer.ReceiveCustomBiomes
+Generating caller graph for function Terraria.ModLoader.ModPlayer.ResetEffects
+Generating caller graph for function Terraria.ModLoader.ModPlayer.SendClientChanges
+Generating caller graph for function Terraria.ModLoader.ModPlayer.SendCustomBiomes
+Generating caller graph for function Terraria.ModLoader.ModPlayer.SetControls
+Generating caller graph for function Terraria.ModLoader.ModPlayer.SetupStartInventory
 Generating caller graph for function Terraria.ModLoader.ModPlayer.ShiftClickSlot
 Generating caller graph for function Terraria.ModLoader.ModPlayer.Shoot
 Generating caller graph for function Terraria.ModLoader.ModPlayer.SyncPlayer
@@ -926,9 +985,58 @@ Generating docs for compound Terraria::ModLoader::NPCHeadLoader...
 Generating call graph for function Terraria.ModLoader.NPCHeadLoader.GetBossHeadSlot
 Generating docs for compound Terraria::ModLoader::NPCInfo...
 Generating docs for compound Terraria::ModLoader::NPCLoader...
+Generating call graph for function Terraria.ModLoader.NPCLoader.AI
+Generating call graph for function Terraria.ModLoader.NPCLoader.BossHeadRotation
+Generating call graph for function Terraria.ModLoader.NPCLoader.BossHeadSlot
+Generating call graph for function Terraria.ModLoader.NPCLoader.BossHeadSpriteEffects
+Generating call graph for function Terraria.ModLoader.NPCLoader.BuffTownNPC
+Generating call graph for function Terraria.ModLoader.NPCLoader.CanBeHitByItem
+Generating call graph for function Terraria.ModLoader.NPCLoader.CanBeHitByProjectile
+Generating call graph for function Terraria.ModLoader.NPCLoader.CanHitNPC
+Generating call graph for function Terraria.ModLoader.NPCLoader.CanHitPlayer
 Generating call graph for function Terraria.ModLoader.NPCLoader.CanTownNPCSpawn
+Generating call graph for function Terraria.ModLoader.NPCLoader.CheckActive
+Generating call graph for function Terraria.ModLoader.NPCLoader.CheckDead
 Generating call graph for function Terraria.ModLoader.NPCLoader.ChooseSpawn
+Generating call graph for function Terraria.ModLoader.NPCLoader.DrawEffects
+Generating call graph for function Terraria.ModLoader.NPCLoader.DrawHealthBar
+Generating call graph for function Terraria.ModLoader.NPCLoader.DrawTownAttackGun
+Generating call graph for function Terraria.ModLoader.NPCLoader.DrawTownAttackSwing
+Generating call graph for function Terraria.ModLoader.NPCLoader.EditSpawnRange
+Generating call graph for function Terraria.ModLoader.NPCLoader.EditSpawnRate
+Generating call graph for function Terraria.ModLoader.NPCLoader.FindFrame
+Generating call graph for function Terraria.ModLoader.NPCLoader.GetAlpha
+Generating call graph for function Terraria.ModLoader.NPCLoader.GetChat
+Generating call graph for function Terraria.ModLoader.NPCLoader.HitEffect
+Generating call graph for function Terraria.ModLoader.NPCLoader.ModifyHitByItem
+Generating call graph for function Terraria.ModLoader.NPCLoader.ModifyHitByProjectile
+Generating call graph for function Terraria.ModLoader.NPCLoader.ModifyHitNPC
+Generating call graph for function Terraria.ModLoader.NPCLoader.ModifyHitPlayer
+Generating call graph for function Terraria.ModLoader.NPCLoader.NPCLoot
+Generating call graph for function Terraria.ModLoader.NPCLoader.OnHitByItem
+Generating call graph for function Terraria.ModLoader.NPCLoader.OnHitByProjectile
+Generating call graph for function Terraria.ModLoader.NPCLoader.OnHitNPC
+Generating call graph for function Terraria.ModLoader.NPCLoader.OnHitPlayer
+Generating call graph for function Terraria.ModLoader.NPCLoader.PostAI
+Generating call graph for function Terraria.ModLoader.NPCLoader.PostDraw
+Generating call graph for function Terraria.ModLoader.NPCLoader.PreAI
+Generating call graph for function Terraria.ModLoader.NPCLoader.PreDraw
+Generating call graph for function Terraria.ModLoader.NPCLoader.PreNPCLoot
+Generating call graph for function Terraria.ModLoader.NPCLoader.ResetEffects
+Generating call graph for function Terraria.ModLoader.NPCLoader.ScaleExpertStats
+Generating call graph for function Terraria.ModLoader.NPCLoader.SetupShop
+Generating call graph for function Terraria.ModLoader.NPCLoader.SetupTravelShop
 Generating call graph for function Terraria.ModLoader.NPCLoader.SpawnNPC
+Generating call graph for function Terraria.ModLoader.NPCLoader.StrikeNPC
+Generating call graph for function Terraria.ModLoader.NPCLoader.TownNPCAttackCooldown
+Generating call graph for function Terraria.ModLoader.NPCLoader.TownNPCAttackMagic
+Generating call graph for function Terraria.ModLoader.NPCLoader.TownNPCAttackProj
+Generating call graph for function Terraria.ModLoader.NPCLoader.TownNPCAttackProjSpeed
+Generating call graph for function Terraria.ModLoader.NPCLoader.TownNPCAttackShoot
+Generating call graph for function Terraria.ModLoader.NPCLoader.TownNPCAttackStrength
+Generating call graph for function Terraria.ModLoader.NPCLoader.TownNPCAttackSwing
+Generating call graph for function Terraria.ModLoader.NPCLoader.UpdateLifeRegen
+Generating docs for nested compound Terraria::ModLoader::NPCLoader::HookList...
 Generating docs for compound Terraria::ModLoader::NPCSpawnHelper...
 Generating docs for compound Terraria::ModLoader::NPCSpawnInfo...
 Generating docs for compound Terraria::ModLoader::PlayerDrawInfo...
@@ -1166,863 +1274,969 @@ finalizing index lists...
 writing tag file...
 Running dot...
 Generating dot graphs using 3 parallel threads...
-Running dot for graph 1/740
-Running dot for graph 2/740
-Running dot for graph 3/740
-Running dot for graph 4/740
-Running dot for graph 5/740
-Running dot for graph 6/740
-Running dot for graph 7/740
-Running dot for graph 8/740
-Running dot for graph 9/740
-Running dot for graph 10/740
-Running dot for graph 11/740
-Running dot for graph 12/740
-Running dot for graph 13/740
-Running dot for graph 14/740
-Running dot for graph 15/740
-Running dot for graph 16/740
-Running dot for graph 17/740
-Running dot for graph 18/740
-Running dot for graph 19/740
-Running dot for graph 20/740
-Running dot for graph 21/740
-Running dot for graph 22/740
-Running dot for graph 23/740
-Running dot for graph 24/740
-Running dot for graph 25/740
-Running dot for graph 26/740
-Running dot for graph 27/740
-Running dot for graph 28/740
-Running dot for graph 29/740
-Running dot for graph 30/740
-Running dot for graph 31/740
-Running dot for graph 32/740
-Running dot for graph 33/740
-Running dot for graph 34/740
-Running dot for graph 35/740
-Running dot for graph 36/740
-Running dot for graph 37/740
-Running dot for graph 38/740
-Running dot for graph 39/740
-Running dot for graph 40/740
-Running dot for graph 41/740
-Running dot for graph 42/740
-Running dot for graph 43/740
-Running dot for graph 44/740
-Running dot for graph 45/740
-Running dot for graph 46/740
-Running dot for graph 47/740
-Running dot for graph 48/740
-Running dot for graph 49/740
-Running dot for graph 50/740
-Running dot for graph 51/740
-Running dot for graph 52/740
-Running dot for graph 53/740
-Running dot for graph 54/740
-Running dot for graph 55/740
-Running dot for graph 56/740
-Running dot for graph 57/740
-Running dot for graph 58/740
-Running dot for graph 59/740
-Running dot for graph 60/740
-Running dot for graph 61/740
-Running dot for graph 62/740
-Running dot for graph 63/740
-Running dot for graph 64/740
-Running dot for graph 65/740
-Running dot for graph 66/740
-Running dot for graph 67/740
-Running dot for graph 68/740
-Running dot for graph 69/740
-Running dot for graph 70/740
-Running dot for graph 71/740
-Running dot for graph 72/740
-Running dot for graph 73/740
-Running dot for graph 74/740
-Running dot for graph 75/740
-Running dot for graph 76/740
-Running dot for graph 77/740
-Running dot for graph 78/740
-Running dot for graph 79/740
-Running dot for graph 80/740
-Running dot for graph 81/740
-Running dot for graph 82/740
-Running dot for graph 83/740
-Running dot for graph 84/740
-Running dot for graph 85/740
-Running dot for graph 86/740
-Running dot for graph 87/740
-Running dot for graph 88/740
-Running dot for graph 89/740
-Running dot for graph 90/740
-Running dot for graph 91/740
-Running dot for graph 92/740
-Running dot for graph 93/740
-Running dot for graph 94/740
-Running dot for graph 95/740
-Running dot for graph 96/740
-Running dot for graph 97/740
-Running dot for graph 98/740
-Running dot for graph 99/740
-Running dot for graph 100/740
-Running dot for graph 101/740
-Running dot for graph 102/740
-Running dot for graph 103/740
-Running dot for graph 104/740
-Running dot for graph 105/740
-Running dot for graph 106/740
-Running dot for graph 107/740
-Running dot for graph 108/740
-Running dot for graph 109/740
-Running dot for graph 110/740
-Running dot for graph 111/740
-Running dot for graph 112/740
-Running dot for graph 113/740
-Running dot for graph 114/740
-Running dot for graph 115/740
-Running dot for graph 116/740
-Running dot for graph 117/740
-Running dot for graph 118/740
-Running dot for graph 119/740
-Running dot for graph 120/740
-Running dot for graph 121/740
-Running dot for graph 122/740
-Running dot for graph 123/740
-Running dot for graph 124/740
-Running dot for graph 125/740
-Running dot for graph 126/740
-Running dot for graph 127/740
-Running dot for graph 128/740
-Running dot for graph 129/740
-Running dot for graph 130/740
-Running dot for graph 131/740
-Running dot for graph 132/740
-Running dot for graph 133/740
-Running dot for graph 134/740
-Running dot for graph 135/740
-Running dot for graph 136/740
-Running dot for graph 137/740
-Running dot for graph 138/740
-Running dot for graph 139/740
-Running dot for graph 140/740
-Running dot for graph 141/740
-Running dot for graph 142/740
-Running dot for graph 143/740
-Running dot for graph 144/740
-Running dot for graph 145/740
-Running dot for graph 146/740
-Running dot for graph 147/740
-Running dot for graph 148/740
-Running dot for graph 149/740
-Running dot for graph 150/740
-Running dot for graph 151/740
-Running dot for graph 152/740
-Running dot for graph 153/740
-Running dot for graph 154/740
-Running dot for graph 155/740
-Running dot for graph 156/740
-Running dot for graph 157/740
-Running dot for graph 158/740
-Running dot for graph 159/740
-Running dot for graph 160/740
-Running dot for graph 161/740
-Running dot for graph 162/740
-Running dot for graph 163/740
-Running dot for graph 164/740
-Running dot for graph 165/740
-Running dot for graph 166/740
-Running dot for graph 167/740
-Running dot for graph 168/740
-Running dot for graph 169/740
-Running dot for graph 170/740
-Running dot for graph 171/740
-Running dot for graph 172/740
-Running dot for graph 173/740
-Running dot for graph 174/740
-Running dot for graph 175/740
-Running dot for graph 176/740
-Running dot for graph 177/740
-Running dot for graph 178/740
-Running dot for graph 179/740
-Running dot for graph 180/740
-Running dot for graph 181/740
-Running dot for graph 182/740
-Running dot for graph 183/740
-Running dot for graph 184/740
-Running dot for graph 185/740
-Running dot for graph 186/740
-Running dot for graph 187/740
-Running dot for graph 188/740
-Running dot for graph 189/740
-Running dot for graph 190/740
-Running dot for graph 191/740
-Running dot for graph 192/740
-Running dot for graph 193/740
-Running dot for graph 194/740
-Running dot for graph 195/740
-Running dot for graph 196/740
-Running dot for graph 197/740
-Running dot for graph 198/740
-Running dot for graph 199/740
-Running dot for graph 200/740
-Running dot for graph 201/740
-Running dot for graph 202/740
-Running dot for graph 203/740
-Running dot for graph 204/740
-Running dot for graph 205/740
-Running dot for graph 206/740
-Running dot for graph 207/740
-Running dot for graph 208/740
-Running dot for graph 209/740
-Running dot for graph 210/740
-Running dot for graph 211/740
-Running dot for graph 212/740
-Running dot for graph 213/740
-Running dot for graph 214/740
-Running dot for graph 215/740
-Running dot for graph 216/740
-Running dot for graph 217/740
-Running dot for graph 218/740
-Running dot for graph 219/740
-Running dot for graph 220/740
-Running dot for graph 221/740
-Running dot for graph 222/740
-Running dot for graph 223/740
-Running dot for graph 224/740
-Running dot for graph 225/740
-Running dot for graph 226/740
-Running dot for graph 227/740
-Running dot for graph 228/740
-Running dot for graph 229/740
-Running dot for graph 230/740
-Running dot for graph 231/740
-Running dot for graph 232/740
-Running dot for graph 233/740
-Running dot for graph 234/740
-Running dot for graph 235/740
-Running dot for graph 236/740
-Running dot for graph 237/740
-Running dot for graph 238/740
-Running dot for graph 239/740
-Running dot for graph 240/740
-Running dot for graph 241/740
-Running dot for graph 242/740
-Running dot for graph 243/740
-Running dot for graph 244/740
-Running dot for graph 245/740
-Running dot for graph 246/740
-Running dot for graph 247/740
-Running dot for graph 248/740
-Running dot for graph 249/740
-Running dot for graph 250/740
-Running dot for graph 251/740
-Running dot for graph 252/740
-Running dot for graph 253/740
-Running dot for graph 254/740
-Running dot for graph 255/740
-Running dot for graph 256/740
-Running dot for graph 257/740
-Running dot for graph 258/740
-Running dot for graph 259/740
-Running dot for graph 260/740
-Running dot for graph 261/740
-Running dot for graph 262/740
-Running dot for graph 263/740
-Running dot for graph 264/740
-Running dot for graph 265/740
-Running dot for graph 266/740
-Running dot for graph 267/740
-Running dot for graph 268/740
-Running dot for graph 269/740
-Running dot for graph 270/740
-Running dot for graph 271/740
-Running dot for graph 272/740
-Running dot for graph 273/740
-Running dot for graph 274/740
-Running dot for graph 275/740
-Running dot for graph 276/740
-Running dot for graph 277/740
-Running dot for graph 278/740
-Running dot for graph 279/740
-Running dot for graph 280/740
-Running dot for graph 281/740
-Running dot for graph 282/740
-Running dot for graph 283/740
-Running dot for graph 284/740
-Running dot for graph 285/740
-Running dot for graph 286/740
-Running dot for graph 287/740
-Running dot for graph 288/740
-Running dot for graph 289/740
-Running dot for graph 290/740
-Running dot for graph 291/740
-Running dot for graph 292/740
-Running dot for graph 293/740
-Running dot for graph 294/740
-Running dot for graph 295/740
-Running dot for graph 296/740
-Running dot for graph 297/740
-Running dot for graph 298/740
-Running dot for graph 299/740
-Running dot for graph 300/740
-Running dot for graph 301/740
-Running dot for graph 302/740
-Running dot for graph 303/740
-Running dot for graph 304/740
-Running dot for graph 305/740
-Running dot for graph 306/740
-Running dot for graph 307/740
-Running dot for graph 308/740
-Running dot for graph 309/740
-Running dot for graph 310/740
-Running dot for graph 311/740
-Running dot for graph 312/740
-Running dot for graph 313/740
-Running dot for graph 314/740
-Running dot for graph 315/740
-Running dot for graph 316/740
-Running dot for graph 317/740
-Running dot for graph 318/740
-Running dot for graph 319/740
-Running dot for graph 320/740
-Running dot for graph 321/740
-Running dot for graph 322/740
-Running dot for graph 323/740
-Running dot for graph 324/740
-Running dot for graph 325/740
-Running dot for graph 326/740
-Running dot for graph 327/740
-Running dot for graph 328/740
-Running dot for graph 329/740
-Running dot for graph 330/740
-Running dot for graph 331/740
-Running dot for graph 332/740
-Running dot for graph 333/740
-Running dot for graph 334/740
-Running dot for graph 335/740
-Running dot for graph 336/740
-Running dot for graph 337/740
-Running dot for graph 338/740
-Running dot for graph 339/740
-Running dot for graph 340/740
-Running dot for graph 341/740
-Running dot for graph 342/740
-Running dot for graph 343/740
-Running dot for graph 344/740
-Running dot for graph 345/740
-Running dot for graph 346/740
-Running dot for graph 347/740
-Running dot for graph 348/740
-Running dot for graph 349/740
-Running dot for graph 350/740
-Running dot for graph 351/740
-Running dot for graph 352/740
-Running dot for graph 353/740
-Running dot for graph 354/740
-Running dot for graph 355/740
-Running dot for graph 356/740
-Running dot for graph 357/740
-Running dot for graph 358/740
-Running dot for graph 359/740
-Running dot for graph 360/740
-Running dot for graph 361/740
-Running dot for graph 362/740
-Running dot for graph 363/740
-Running dot for graph 364/740
-Running dot for graph 365/740
-Running dot for graph 366/740
-Running dot for graph 367/740
-Running dot for graph 368/740
-Running dot for graph 369/740
-Running dot for graph 370/740
-Running dot for graph 371/740
-Running dot for graph 372/740
-Running dot for graph 373/740
-Running dot for graph 374/740
-Running dot for graph 375/740
-Running dot for graph 376/740
-Running dot for graph 377/740
-Running dot for graph 378/740
-Running dot for graph 379/740
-Running dot for graph 380/740
-Running dot for graph 381/740
-Running dot for graph 382/740
-Running dot for graph 383/740
-Running dot for graph 384/740
-Running dot for graph 385/740
-Running dot for graph 386/740
-Running dot for graph 387/740
-Running dot for graph 388/740
-Running dot for graph 389/740
-Running dot for graph 390/740
-Running dot for graph 391/740
-Running dot for graph 392/740
-Running dot for graph 393/740
-Running dot for graph 394/740
-Running dot for graph 395/740
-Running dot for graph 396/740
-Running dot for graph 397/740
-Running dot for graph 398/740
-Running dot for graph 399/740
-Running dot for graph 400/740
-Running dot for graph 401/740
-Running dot for graph 402/740
-Running dot for graph 403/740
-Running dot for graph 404/740
-Running dot for graph 405/740
-Running dot for graph 406/740
-Running dot for graph 407/740
-Running dot for graph 408/740
-Running dot for graph 409/740
-Running dot for graph 410/740
-Running dot for graph 411/740
-Running dot for graph 412/740
-Running dot for graph 413/740
-Running dot for graph 414/740
-Running dot for graph 415/740
-Running dot for graph 416/740
-Running dot for graph 417/740
-Running dot for graph 418/740
-Running dot for graph 419/740
-Running dot for graph 420/740
-Running dot for graph 421/740
-Running dot for graph 422/740
-Running dot for graph 423/740
-Running dot for graph 424/740
-Running dot for graph 425/740
-Running dot for graph 426/740
-Running dot for graph 427/740
-Running dot for graph 428/740
-Running dot for graph 429/740
-Running dot for graph 430/740
-Running dot for graph 431/740
-Running dot for graph 432/740
-Running dot for graph 433/740
-Running dot for graph 434/740
-Running dot for graph 435/740
-Running dot for graph 436/740
-Running dot for graph 437/740
-Running dot for graph 438/740
-Running dot for graph 439/740
-Running dot for graph 440/740
-Running dot for graph 441/740
-Running dot for graph 442/740
-Running dot for graph 443/740
-Running dot for graph 444/740
-Running dot for graph 445/740
-Running dot for graph 446/740
-Running dot for graph 447/740
-Running dot for graph 448/740
-Running dot for graph 449/740
-Running dot for graph 450/740
-Running dot for graph 451/740
-Running dot for graph 452/740
-Running dot for graph 453/740
-Running dot for graph 454/740
-Running dot for graph 455/740
-Running dot for graph 456/740
-Running dot for graph 457/740
-Running dot for graph 458/740
-Running dot for graph 459/740
-Running dot for graph 460/740
-Running dot for graph 461/740
-Running dot for graph 462/740
-Running dot for graph 463/740
-Running dot for graph 464/740
-Running dot for graph 465/740
-Running dot for graph 466/740
-Running dot for graph 467/740
-Running dot for graph 468/740
-Running dot for graph 469/740
-Running dot for graph 470/740
-Running dot for graph 471/740
-Running dot for graph 472/740
-Running dot for graph 473/740
-Running dot for graph 474/740
-Running dot for graph 475/740
-Running dot for graph 476/740
-Running dot for graph 477/740
-Running dot for graph 478/740
-Running dot for graph 479/740
-Running dot for graph 480/740
-Running dot for graph 481/740
-Running dot for graph 482/740
-Running dot for graph 483/740
-Running dot for graph 484/740
-Running dot for graph 485/740
-Running dot for graph 486/740
-Running dot for graph 487/740
-Running dot for graph 488/740
-Running dot for graph 489/740
-Running dot for graph 490/740
-Running dot for graph 491/740
-Running dot for graph 492/740
-Running dot for graph 493/740
-Running dot for graph 494/740
-Running dot for graph 495/740
-Running dot for graph 496/740
-Running dot for graph 497/740
-Running dot for graph 498/740
-Running dot for graph 499/740
-Running dot for graph 500/740
-Running dot for graph 501/740
-Running dot for graph 502/740
-Running dot for graph 503/740
-Running dot for graph 504/740
-Running dot for graph 505/740
-Running dot for graph 506/740
-Running dot for graph 507/740
-Running dot for graph 508/740
-Running dot for graph 509/740
-Running dot for graph 510/740
-Running dot for graph 511/740
-Running dot for graph 512/740
-Running dot for graph 513/740
-Running dot for graph 514/740
-Running dot for graph 515/740
-Running dot for graph 516/740
-Running dot for graph 517/740
-Running dot for graph 518/740
-Running dot for graph 519/740
-Running dot for graph 520/740
-Running dot for graph 521/740
-Running dot for graph 522/740
-Running dot for graph 523/740
-Running dot for graph 524/740
-Running dot for graph 525/740
-Running dot for graph 526/740
-Running dot for graph 527/740
-Running dot for graph 528/740
-Running dot for graph 529/740
-Running dot for graph 530/740
-Running dot for graph 531/740
-Running dot for graph 532/740
-Running dot for graph 533/740
-Running dot for graph 534/740
-Running dot for graph 535/740
-Running dot for graph 536/740
-Running dot for graph 537/740
-Running dot for graph 538/740
-Running dot for graph 539/740
-Running dot for graph 540/740
-Running dot for graph 541/740
-Running dot for graph 542/740
-Running dot for graph 543/740
-Running dot for graph 544/740
-Running dot for graph 545/740
-Running dot for graph 546/740
-Runninerror: Could not read image `/home/travis/build/bluemagic123/tModLoader/code_docs/tModLoader/html/class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler__inherit__graph.png' generated by dot!
-g dot for graph 547/740
-Running dot for graph 548/740
-Running dot for graph 549/740
-Running dot for graph 550/740
-Running dot for graph 551/740
-Running dot for graph 552/740
-Running dot for graph 553/740
-Running dot for graph 554/740
-Running dot for graph 555/740
-Running dot for graph 556/740
-Running dot for graph 557/740
-Running dot for graph 558/740
-Running dot for graph 559/740
-Running dot for graph 560/740
-Running dot for graph 561/740
-Running dot for graph 562/740
-Running dot for graph 563/740
-Running dot for graph 564/740
-Running dot for graph 565/740
-Running dot for graph 566/740
-Running dot for graph 567/740
-Running dot for graph 568/740
-Running dot for graph 569/740
-Running dot for graph 570/740
-Running dot for graph 571/740
-Running dot for graph 572/740
-Running dot for graph 573/740
-Running dot for graph 574/740
-Running dot for graph 575/740
-Running dot for graph 576/740
-Running dot for graph 577/740
-Running dot for graph 578/740
-Running dot for graph 579/740
-Running dot for graph 580/740
-Running dot for graph 581/740
-Running dot for graph 582/740
-Running dot for graph 583/740
-Running dot for graph 584/740
-Running dot for graph 585/740
-Running dot for graph 586/740
-Running dot for graph 587/740
-Running dot for graph 588/740
-Running dot for graph 589/740
-Running dot for graph 590/740
-Running dot for graph 591/740
-Running dot for graph 592/740
-Running dot for graph 593/740
-Running dot for graph 594/740
-Running dot for graph 595/740
-Running dot for graph 596/740
-Running dot for graph 597/740
-Running dot for graph 598/740
-Running dot for graph 599/740
-Running dot for graph 600/740
-Running dot for graph 601/740
-Running dot for graph 602/740
-Running dot for graph 603/740
-Running dot for graph 604/740
-Running dot for graph 605/740
-Running dot for graph 606/740
-Running dot for graph 607/740
-Running dot for graph 608/740
-Running dot for graph 609/740
-Running dot for graph 610/740
-Running dot for graph 611/740
-Running dot for graph 612/740
-Running dot for graph 613/740
-Running dot for graph 614/740
-Running dot for graph 615/740
-Running dot for graph 616/740
-Running dot for graph 617/740
-Running dot for graph 618/740
-Running dot for graph 619/740
-Running dot for graph 620/740
-Running dot for graph 621/740
-Running dot for graph 622/740
-Running dot for graph 623/740
-Running dot for graph 624/740
-Running dot for graph 625/740
-Running dot for graph 626/740
-Running dot for graph 627/740
-Running dot for graph 628/740
-Running dot for graph 629/740
-Running dot for graph 630/740
-Running dot for graph 631/740
-Running dot for graph 632/740
-Running dot for graph 633/740
-Running dot for graph 634/740
-Running dot for graph 635/740
-Running dot for graph 636/740
-Running dot for graph 637/740
-Running dot for graph 638/740
-Running dot for graph 639/740
-Running dot for graph 640/740
-Running dot for graph 641/740
-Running dot for graph 642/740
-Running dot for graph 643/740
-Running dot for graph 644/740
-Running dot for graph 645/740
-Running dot for graph 646/740
-Running dot for graph 647/740
-Running dot for graph 648/740
-Running dot for graph 649/740
-Running dot for graph 650/740
-Running dot for graph 651/740
-Running dot for graph 652/740
-Running dot for graph 653/740
-Running dot for graph 654/740
-Running dot for graph 655/740
-Running dot for graph 656/740
-Running dot for graph 657/740
-Running dot for graph 658/740
-Running dot for graph 659/740
-Running dot for graph 660/740
-Running dot for graph 661/740
-Running dot for graph 662/740
-Running dot for graph 663/740
-Running dot for graph 664/740
-Running dot for graph 665/740
-Running dot for graph 666/740
-Running dot for graph 667/740
-Running dot for graph 668/740
-Running dot for graph 669/740
-Running dot for graph 670/740
-Running dot for graph 671/740
-Running dot for graph 672/740
-Running dot for graph 673/740
-Running dot for graph 674/740
-Running dot for graph 675/740
-Running dot for graph 676/740
-Running dot for graph 677/740
-Running dot for graph 678/740
-Running dot for graph 679/740
-Running dot for graph 680/740
-Running dot for graph 681/740
-Running dot for graph 682/740
-Running dot for graph 683/740
-Running dot for graph 684/740
-Running dot for graph 685/740
-Running dot for graph 686/740
-Running dot for graph 687/740
-Running dot for graph 688/740
-Running dot for graph 689/740
-Running dot for graph 690/740
-Running dot for graph 691/740
-Running dot for graph 692/740
-Running dot for graph 693/740
-Running dot for graph 694/740
-Running dot for graph 695/740
-Running dot for graph 696/740
-Running dot for graph 697/740
-Running dot for graph 698/740
-Running dot for graph 699/740
-Running dot for graph 700/740
-Running dot for graph 701/740
-Running dot for graph 702/740
-Running dot for graph 703/740
-Running dot for graph 704/740
-Running dot for graph 705/740
-Running dot for graph 706/740
-Running dot for graph 707/740
-Running dot for graph 708/740
-Running dot for graph 709/740
-Running dot for graph 710/740
-Running dot for graph 711/740
-Running dot for graph 712/740
-Running dot for graph 713/740
-Running dot for graph 714/740
-Running dot for graph 715/740
-Running dot for graph 716/740
-Running dot for graph 717/740
-Running dot for graph 718/740
-Running dot for graph 719/740
-Running dot for graph 720/740
-Running dot for graph 721/740
-Running dot for graph 722/740
-Running dot for graph 723/740
-Running dot for graph 724/740
-Running dot for graph 725/740
-Running dot for graph 726/740
-Running dot for graph 727/740
-Running dot for graph 728/740
-Running dot for graph 729/740
-Running dot for graph 730/740
-Running dot for graph 731/740
-Running dot for graph 732/740
-Running dot for graph 733/740
-Running dot for graph 734/740
-Running dot for graph 735/740
-Running dot for graph 736/740
-Running dot for graph 737/740
-Running dot for graph 738/740
-Running dot for graph 739/740
-Running dot for graph 740/740
-Patching output file 1/117
-Patching output file 2/117
-Patching output file 3/117
-Patching output file 4/117
-Patching output file 5/117
-Patching output file 6/117
-Patching output file 7/117
-Patching output file 8/117
-Patching output file 9/117
-Patching output file 10/117
-Patching output file 11/117
-Patching output file 12/117
-Patching output file 13/117
-Patching output file 14/117
-Patching output file 15/117
-Patching output file 16/117
-Patching output file 17/117
-Patching output file 18/117
-Patching output file 19/117
-Patching output file 20/117
-Patching output file 21/117
-Patching output file 22/117
-Patching output file 23/117
-Patching output file 24/117
-Patching output file 25/117
-Patching output file 26/117
-Patching output file 27/117
-Patching output file 28/117
-Patching output file 29/117
-Patching output file 30/117
-Patching output file 31/117
-Patching output file 32/117
-Patching output file 33/117
-Patching output file 34/117
-Patching output file 35/117
-Patching output file 36/117
-Patching output file 37/117
-Patching output file 38/117
-Patching output file 39/117
-Patching output file 40/117
-Patching output file 41/117
-Patching output file 42/117
-Patching output file 43/117
-Patching output file 44/117
-Patching output file 45/117
-Patching output file 46/117
-Patching output file 47/117
-Patching output file 48/117
-Patching output file 49/117
-Patching output file 50/117
-Patching output file 51/117
-Patching output file 52/117
-Patching output file 53/117
-Patching output file 54/117
-Patching output file 55/117
-Patching output file 56/117
-Patching output file 57/117
-Patching output file 58/117
-Patching output file 59/117
-Patching output file 60/117
-Patching output file 61/117
-Patching output file 62/117
-Patching output file 63/117
-Patching output file 64/117
-Patching output file 65/117
-Patching output file 66/117
-Patching output file 67/117
-Patching output file 68/117
-Patching output file 69/117
-Patching output file 70/117
-Patching output file 71/117
-Patching output file 72/117
-Patching output file 73/117
-Patching output file 74/117
-Patching output file 75/117
-Patching output file 76/117
-Patching output file 77/117
-Patching output file 78/117
-Patching output file 79/117
-Patching output file 80/117
-Patching output file 81/117
-Patching output file 82/117
-Patching output file 83/117
-Patching output file 84/117
-Patching output file 85/117
-Patching output file 86/117
-Patching output file 87/117
-Patching output file 88/117
-Patching output file 89/117
-Patching output file 90/117
-Patching output file 91/117
-Patching output file 92/117
-Patching output file 93/117
-Patching output file 94/117
-Patching output file 95/117
-Patching output file 96/117
-Patching output file 97/117
-Patching output file 98/117
-Patching output file 99/117
-Patching output file 100/117
-Patching output file 101/117
-Patching output file 102/117
-Patching output file 103/117
-Patching output file 104/117
-Patching output file 105/117
-Patching output file 106/117
-Patching output file 107/117
-Patching output file 108/117
-Patching output file 109/117
-Patching output file 110/117
-Patching output file 111/117
-Patching output file 112/117
-Patching output file 113/117
-Patching output file 114/117
-Patching output file 115/117
-Patching output file 116/117
-Patching output file 117/117
-lookup cache used 9253/131072 hits=87577 misses=9679
+Running dot for graph 1/844
+Running dot for graph 2/844
+Running dot for graph 3/844
+Running dot for graph 4/844
+Running dot for graph 5/844
+Running dot for graph 6/844
+Running dot for graph 7/844
+Running dot for graph 8/844
+Running dot for graph 9/844
+Running dot for graph 10/844
+Running dot for graph 11/844
+Running dot for graph 12/844
+Running dot for graph 13/844
+Running dot for graph 14/844
+Running dot for graph 15/844
+Running dot for graph 16/844
+Running dot for graph 17/844
+Running dot for graph 18/844
+Running dot for graph 19/844
+Running dot for graph 20/844
+Running dot for graph 21/844
+Running dot for graph 22/844
+Running dot for graph 23/844
+Running dot for graph 24/844
+Running dot for graph 25/844
+Running dot for graph 26/844
+Running dot for graph 27/844
+Running dot for graph 28/844
+Running dot for graph 29/844
+Running dot for graph 30/844
+Running dot for graph 31/844
+Running dot for graph 32/844
+Running dot for graph 33/844
+Running dot for graph 34/844
+Running dot for graph 35/844
+Running dot for graph 36/844
+Running dot for graph 37/844
+Running dot for graph 38/844
+Running dot for graph 39/844
+Running dot for graph 40/844
+Running dot for graph 41/844
+Running dot for graph 42/844
+Running dot for graph 43/844
+Running dot for graph 44/844
+Running dot for graph 45/844
+Running dot for graph 46/844
+Running dot for graph 47/844
+Running dot for graph 48/844
+Running dot for graph 49/844
+Running dot for graph 50/844
+Running dot for graph 51/844
+Running dot for graph 52/844
+Running dot for graph 53/844
+Running dot for graph 54/844
+Running dot for graph 55/844
+Running dot for graph 56/844
+Running dot for graph 57/844
+Running dot for graph 58/844
+Running dot for graph 59/844
+Running dot for graph 60/844
+Running dot for graph 61/844
+Running dot for graph 62/844
+Running dot for graph 63/844
+Running dot for graph 64/844
+Running dot for graph 65/844
+Running dot for graph 66/844
+Running dot for graph 67/844
+Running dot for graph 68/844
+Running dot for graph 69/844
+Running dot for graph 70/844
+Running dot for graph 71/844
+Running dot for graph 72/844
+Running dot for graph 73/844
+Running dot for graph 74/844
+Running dot for graph 75/844
+Running dot for graph 76/844
+Running dot for graph 77/844
+Running dot for graph 78/844
+Running dot for graph 79/844
+Running dot for graph 80/844
+Running dot for graph 81/844
+Running dot for graph 82/844
+Running dot for graph 83/844
+Running dot for graph 84/844
+Running dot for graph 85/844
+Running dot for graph 86/844
+Running dot for graph 87/844
+Running dot for graph 88/844
+Running dot for graph 89/844
+Running dot for graph 90/844
+Running dot for graph 91/844
+Running dot for graph 92/844
+Running dot for graph 93/844
+Running dot for graph 94/844
+Running dot for graph 95/844
+Running dot for graph 96/844
+Running dot for graph 97/844
+Running dot for graph 98/844
+Running dot for graph 99/844
+Running dot for graph 100/844
+Running dot for graph 101/844
+Running dot for graph 102/844
+Running dot for graph 103/844
+Running dot for graph 104/844
+Running dot for graph 105/844
+Running dot for graph 106/844
+Running dot for graph 107/844
+Running dot for graph 108/844
+Running dot for graph 109/844
+Running dot for graph 110/844
+Running dot for graph 111/844
+Running dot for graph 112/844
+Running dot for graph 113/844
+Running dot for graph 114/844
+Running dot for graph 115/844
+Running dot for graph 116/844
+Running dot for graph 117/844
+Running dot for graph 118/844
+Running dot for graph 119/844
+Running dot for graph 120/844
+Running dot for graph 121/844
+Running dot for graph 122/844
+Running dot for graph 123/844
+Running dot for graph 124/844
+Running dot for graph 125/844
+Running dot for graph 126/844
+Running dot for graph 127/844
+Running dot for graph 128/844
+Running dot for graph 129/844
+Running dot for graph 130/844
+Running dot for graph 131/844
+Running dot for graph 132/844
+Running dot for graph 133/844
+Running dot for graph 134/844
+Running dot for graph 135/844
+Running dot for graph 136/844
+Running dot for graph 137/844
+Running dot for graph 138/844
+Running dot for graph 139/844
+Running dot for graph 140/844
+Running dot for graph 141/844
+Running dot for graph 142/844
+Running dot for graph 143/844
+Running dot for graph 144/844
+Running dot for graph 145/844
+Running dot for graph 146/844
+Running dot for graph 147/844
+Running dot for graph 148/844
+Running dot for graph 149/844
+Running dot for graph 150/844
+Running dot for graph 151/844
+Running dot for graph 152/844
+Running dot for graph 153/844
+Running dot for graph 154/844
+Running dot for graph 155/844
+Running dot for graph 156/844
+Running dot for graph 157/844
+Running dot for graph 158/844
+Running dot for graph 159/844
+Running dot for graph 160/844
+Running dot for graph 161/844
+Running dot for graph 162/844
+Running dot for graph 163/844
+Running dot for graph 164/844
+Running dot for graph 165/844
+Running dot for graph 166/844
+Running dot for graph 167/844
+Running dot for graph 168/844
+Running dot for graph 169/844
+Running dot for graph 170/844
+Running dot for graph 171/844
+Running dot for graph 172/844
+Running dot for graph 173/844
+Running dot for graph 174/844
+Running dot for graph 175/844
+Running dot for graph 176/844
+Running dot for graph 177/844
+Running dot for graph 178/844
+Running dot for graph 179/844
+Running dot for graph 180/844
+Running dot for graph 181/844
+Running dot for graph 182/844
+Running dot for graph 183/844
+Running dot for graph 184/844
+Running dot for graph 185/844
+Running dot for graph 186/844
+Running dot for graph 187/844
+Running dot for graph 188/844
+Running dot for graph 189/844
+Running dot for graph 190/844
+Running dot for graph 191/844
+Running dot for graph 192/844
+Running dot for graph 193/844
+Running dot for graph 194/844
+Running dot for graph 195/844
+Running dot for graph 196/844
+Running dot for graph 197/844
+Running dot for graph 198/844
+Running dot for graph 199/844
+Running dot for graph 200/844
+Running dot for graph 201/844
+Running dot for graph 202/844
+Running dot for graph 203/844
+Running dot for graph 204/844
+Running dot for graph 205/844
+Running dot for graph 206/844
+Running dot for graph 207/844
+Running dot for graph 208/844
+Running dot for graph 209/844
+Running dot for graph 210/844
+Running dot for graph 211/844
+Running dot for graph 212/844
+Running dot for graph 213/844
+Running dot for graph 214/844
+Running dot for graph 215/844
+Running dot for graph 216/844
+Running dot for graph 217/844
+Running dot for graph 218/844
+Running dot for graph 219/844
+Running dot for graph 220/844
+Running dot for graph 221/844
+Running dot for graph 222/844
+Running dot for graph 223/844
+Running dot for graph 224/844
+Running dot for graph 225/844
+Running dot for graph 226/844
+Running dot for graph 227/844
+Running dot for graph 228/844
+Running dot for graph 229/844
+Running dot for graph 230/844
+Running dot for graph 231/844
+Running dot for graph 232/844
+Running dot for graph 233/844
+Running dot for graph 234/844
+Running dot for graph 235/844
+Running dot for graph 236/844
+Running dot for graph 237/844
+Running dot for graph 238/844
+Running dot for graph 239/844
+Running dot for graph 240/844
+Running dot for graph 241/844
+Running dot for graph 242/844
+Running dot for graph 243/844
+Running dot for graph 244/844
+Running dot for graph 245/844
+Running dot for graph 246/844
+Running dot for graph 247/844
+Running dot for graph 248/844
+Running dot for graph 249/844
+Running dot for graph 250/844
+Running dot for graph 251/844
+Running dot for graph 252/844
+Running dot for graph 253/844
+Running dot for graph 254/844
+Running dot for graph 255/844
+Running dot for graph 256/844
+Running dot for graph 257/844
+Running dot for graph 258/844
+Running dot for graph 259/844
+Running dot for graph 260/844
+Running dot for graph 261/844
+Running dot for graph 262/844
+Running dot for graph 263/844
+Running dot for graph 264/844
+Running dot for graph 265/844
+Running dot for graph 266/844
+Running dot for graph 267/844
+Running dot for graph 268/844
+Running dot for graph 269/844
+Running dot for graph 270/844
+Running dot for graph 271/844
+Running dot for graph 272/844
+Running dot for graph 273/844
+Running dot for graph 274/844
+Running dot for graph 275/844
+Running dot for graph 276/844
+Running dot for graph 277/844
+Running dot for graph 278/844
+Running dot for graph 279/844
+Running dot for graph 280/844
+Running dot for graph 281/844
+Running dot for graph 282/844
+Running dot for graph 283/844
+Running dot for graph 284/844
+Running dot for graph 285/844
+Running dot for graph 286/844
+Running dot for graph 287/844
+Running dot for graph 288/844
+Running dot for graph 289/844
+Running dot for graph 290/844
+Running dot for graph 291/844
+Running dot for graph 292/844
+Running dot for graph 293/844
+Running dot for graph 294/844
+Running dot for graph 295/844
+Running dot for graph 296/844
+Running dot for graph 297/844
+Running dot for graph 298/844
+Running dot for graph 299/844
+Running dot for graph 300/844
+Running dot for graph 301/844
+Running dot for graph 302/844
+Running dot for graph 303/844
+Running dot for graph 304/844
+Running dot for graph 305/844
+Running dot for graph 306/844
+Running dot for graph 307/844
+Running dot for graph 308/844
+Running dot for graph 309/844
+Running dot for graph 310/844
+Running dot for graph 311/844
+Running dot for graph 312/844
+Running dot for graph 313/844
+Running dot for graph 314/844
+Running dot for graph 315/844
+Running dot for graph 316/844
+Running dot for graph 317/844
+Running dot for graph 318/844
+Running dot for graph 319/844
+Running dot for graph 320/844
+Running dot for graph 321/844
+Running dot for graph 322/844
+Running dot for graph 323/844
+Running dot for graph 324/844
+Running dot for graph 325/844
+Running dot for graph 326/844
+Running dot for graph 327/844
+Running dot for graph 328/844
+Running dot for graph 329/844
+Running dot for graph 330/844
+Running dot for graph 331/844
+Running dot for graph 332/844
+Running dot for graph 333/844
+Running dot for graph 334/844
+Running dot for graph 335/844
+Running dot for graph 336/844
+Running dot for graph 337/844
+Running dot for graph 338/844
+Running dot for graph 339/844
+Running dot for graph 340/844
+Running dot for graph 341/844
+Running dot for graph 342/844
+Running dot for graph 343/844
+Running dot for graph 344/844
+Running dot for graph 345/844
+Running dot for graph 346/844
+Running dot for graph 347/844
+Running dot for graph 348/844
+Running dot for graph 349/844
+Running dot for graph 350/844
+Running dot for graph 351/844
+Running dot for graph 352/844
+Running dot for graph 353/844
+Running dot for graph 354/844
+Running dot for graph 355/844
+Running dot for graph 356/844
+Running dot for graph 357/844
+Running dot for graph 358/844
+Running dot for graph 359/844
+Running dot for graph 360/844
+Running dot for graph 361/844
+Running dot for graph 362/844
+Running dot for graph 363/844
+Running dot for graph 364/844
+Running dot for graph 365/844
+Running dot for graph 366/844
+Running dot for graph 367/844
+Running dot for graph 368/844
+Running dot for graph 369/844
+Running dot for graph 370/844
+Running dot for graph 371/844
+Running dot for graph 372/844
+Running dot for graph 373/844
+Running dot for graph 374/844
+Running dot for graph 375/844
+Running dot for graph 376/844
+Running dot for graph 377/844
+Running dot for graph 378/844
+Running dot for graph 379/844
+Running dot for graph 380/844
+Running dot for graph 381/844
+Running dot for graph 382/844
+Running dot for graph 383/844
+Running dot for graph 384/844
+Running dot for graph 385/844
+Running dot for graph 386/844
+Running dot for graph 387/844
+Running dot for graph 388/844
+Running dot for graph 389/844
+Running dot for graph 390/844
+Running dot for graph 391/844
+Running dot for graph 392/844
+Running dot for graph 393/844
+Running dot for graph 394/844
+Running dot for graph 395/844
+Running dot for graph 396/844
+Running dot for graph 397/844
+Running dot for graph 398/844
+Running dot for graph 399/844
+Running dot for graph 400/844
+Running dot for graph 401/844
+Running dot for graph 402/844
+Running dot for graph 403/844
+Running dot for graph 404/844
+Running dot for graph 405/844
+Running dot for graph 406/844
+Running dot for graph 407/844
+Running dot for graph 408/844
+Running dot for graph 409/844
+Running dot for graph 410/844
+Running dot for graph 411/844
+Running dot for graph 412/844
+Running dot for graph 413/844
+Running dot for graph 414/844
+Running dot for graph 415/844
+Running dot for graph 416/844
+Running dot for graph 417/844
+Running dot for graph 418/844
+Running dot for graph 419/844
+Running dot for graph 420/844
+Running dot for graph 421/844
+Running dot for graph 422/844
+Running dot for graph 423/844
+Running dot for graph 424/844
+Running dot for graph 425/844
+Running dot for graph 426/844
+Running dot for graph 427/844
+Running dot for graph 428/844
+Running dot for graph 429/844
+Running dot for graph 430/844
+Running dot for graph 431/844
+Running dot for graph 432/844
+Running dot for graph 433/844
+Running dot for graph 434/844
+Running dot for graph 435/844
+Running dot for graph 436/844
+Running dot for graph 437/844
+Running dot for graph 438/844
+Running dot for graph 439/844
+Running dot for graph 440/844
+Running dot for graph 441/844
+Running dot for graph 442/844
+Running dot for graph 443/844
+Running dot for graph 444/844
+Running dot for graph 445/844
+Running dot for graph 446/844
+Running dot for graph 447/844
+Running dot for graph 448/844
+Running dot for graph 449/844
+Running dot for graph 450/844
+Running dot for graph 451/844
+Running dot for graph 452/844
+Running dot for graph 453/844
+Running dot for graph 454/844
+Running dot for graph 455/844
+Running dot for graph 456/844
+Running dot for graph 457/844
+Running dot for graph 458/844
+Running dot for graph 459/844
+Running dot for graph 460/844
+Running dot for graph 461/844
+Running dot for graph 462/844
+Running dot for graph 463/844
+Running dot for graph 464/844
+Running dot for graph 465/844
+Running dot for graph 466/844
+Running dot for graph 467/844
+Running dot for graph 468/844
+Running dot for graph 469/844
+Running dot for graph 470/844
+Running dot for graph 471/844
+Running dot for graph 472/844
+Running dot for graph 473/844
+Running dot for graph 474/844
+Running dot for graph 475/844
+Running dot for graph 476/844
+Running dot for graph 477/844
+Running dot for graph 478/844
+Running dot for graph 479/844
+Running dot for graph 480/844
+Running dot for graph 481/844
+Running dot for graph 482/844
+Running dot for graph 483/844
+Running dot for graph 484/844
+Running dot for graph 485/844
+Running dot for graph 486/844
+Running dot for graph 487/844
+Running dot for graph 488/844
+Running dot for graph 489/844
+Running dot for graph 490/844
+Running dot for graph 491/844
+Running dot for graph 492/844
+Running dot for graph 493/844
+Running dot for graph 494/844
+Running dot for graph 495/844
+Running dot for graph 496/844
+Running dot for graph 497/844
+Running dot for graph 498/844
+Running dot for graph 499/844
+Running dot for graph 500/844
+Running dot for graph 501/844
+Running dot for graph 502/844
+Running dot for graph 503/844
+Running dot for graph 504/844
+Running dot for graph 505/844
+Running dot for graph 506/844
+Running dot for graph 507/844
+Running dot for graph 508/844
+Running dot for graph 509/844
+Running dot for graph 510/844
+Running dot for graph 511/844
+Running dot for graph 512/844
+Running dot for graph 513/844
+Running dot for graph 514/844
+Running dot for graph 515/844
+Running dot for graph 516/844
+Running dot for graph 517/844
+Running dot for graph 518/844
+Running dot for graph 519/844
+Running dot for graph 520/844
+Running dot for graph 521/844
+Running dot for graph 522/844
+Running dot for graph 523/844
+Running dot for graph 524/844
+Running dot for graph 525/844
+Running dot for graph 526/844
+Running dot for graph 527/844
+Running dot for graph 528/844
+Running dot for graph 529/844
+Running dot for graph 530/844
+Running dot for graph 531/844
+Running dot for graph 532/844
+Running dot for graph 533/844
+Running dot for graph 534/844
+Running dot for graph 535/844
+Running dot for graph 536/844
+Running dot for graph 537/844
+Running dot for graph 538/844
+Running dot for graph 539/844
+Running dot for graph 540/844
+Running dot for graph 541/844
+Running dot for graph 542/844
+Running dot for graph 543/844
+Running dot for graph 544/844
+Running dot for graph 545/844
+Running dot for graph 546/844
+Running dot for graph 547/844
+Running dot for graph 548/844
+Running dot for graph 549/844
+Running dot for graph 550/844
+Running dot for graph 551/844
+Running dot for graph 552/844
+Running dot for graph 553/844
+Running dot for graph 554/844
+Running dot for graph 555/844
+Running dot for graph 556/844
+Running dot for graph 557/844
+Running dot for graph 558/844
+Running dot for graph 559/844
+Running dot for graph 560/844
+Running dot for graph 561/844
+Running dot for graph 562/844
+Running dot for graph 563/844
+Running dot for graph 564/844
+Running dot for graph 565/844
+Running dot for graph 566/844
+Running dot for graph 567/844
+Running dot for graph 568/844
+Running dot for graph 569/844
+Running dot for graph 570/844
+Running dot for graph 571/844
+Running dot for graph 572/844
+Running dot for graph 573/844
+Running dot for graph 574/844
+Running dot for graph 575/844
+Running dot for graph 576/844
+Running dot for graph 577/844
+Running dot for graph 578/844
+Running dot for graph 579/844
+Running dot for graph 580/844
+Running dot for graph 581/844
+Running dot for graph 582/844
+Running dot for graph 583/844
+Running dot for graph 584/844
+Running dot for graph 585/844
+Running dot for graph 586/844
+Running dot for graph 587/844
+Running dot for graph 588/844
+Running dot for graph 589/844
+Running dot for graph 590/844
+Running dot for graph 591/844
+Running dot for graph 592/844
+Running dot for graph 593/844
+Running dot for graph 594/844
+Running dot for graph 595/844
+Running dot for graph 596/844
+Running dot for graph 597/844
+Running dot for graph 598/844
+Running dot for graph 599/844
+Running dot for graph 600/844
+Running dot for graph 601/844
+Running dot for graph 602/844
+Running dot for graph 603/844
+Running dot for graph 604/844
+Running dot for graph 605/844
+Running dot for graph 606/844
+Running dot for graph 607/844
+Running dot for graph 608/844
+Running dot for graph 609/844
+Running dot for graph 610/844
+Running dot for graph 611/844
+Running dot for graph 612/844
+Running dot for graph 613/844
+Running dot for graph 614/844
+Running dot for graph 615/844
+Running dot for graph 616/844
+Running dot for graph 617/844
+Running dot for graph 618/844
+Running dot for graph 619/844
+Running dot for graph 620/844
+Running dot for graph 621/844
+Running dot for graph 622/844
+Running dot for graph 623/844
+Running dot for graph 624/844
+Running dot for graph 625/844
+Running dot for graph 626/844
+Running dot for graph 627/844
+Running dot for graph 628/844
+Running dot for graph 629/844
+Running dot for graph 630/844
+Running dot for graph 631/844
+Running dot for graph 632/844
+Running dot for graph 633/844
+Running dot for graph 634/844
+Running dot for graph 635/844
+Running dot for graph 636/844
+Running dot for graph 637/844
+Running dot for graph 638/844
+Running dot for graph 639/844
+Running dot for graph 640/844
+Running dot for graph 641/844
+Running dot for graph 642/844
+Running dot for graph 643/844
+Running dot for graph 644/844
+Running dot for graph 645/844
+Running dot for graph 646/844
+Running dot for graph 647/844
+Running dot for graph 648/844
+Running dot for graph 649/844
+Running dot for graph 650/844
+Running dot for graph 651/844
+Running dot for graph 652/844
+Running dot for graph 653/844
+Running dot for graph 654/844
+Running dot for graph 655/844
+Running dot for graph 656/844
+Running dot for graph 657/844
+Running dot for graph 658/844
+Running dot for graph 659/844
+Running dot for graph 660/844
+Running dot for graph 661/844
+Running dot for graph 662/844
+Running dot for graph 663/844
+Running dot for graph 664/844
+Running dot for graph 665/844
+Running dot for graph 666/844
+Running dot for graph 667/844
+Running dot for graph 668/844
+Running dot for graph 669/844
+Running dot for graph 670/844
+Running dot for graph 671/844
+Running dot for graph 672/844
+Running dot for graph 673/844
+Running dot for graph 674/844
+Running dot for graph 675/844
+Running dot for graph 676/844
+Running dot for graph 677/844
+Running dot for graph 678/844
+Running dot for graph 679/844
+Running dot for graph 680/844
+Running dot for graph 681/844
+Running dot for graph 682/844
+Running dot for graph 683/844
+Running dot for graph 684/844
+Running dot for graph 685/844
+Running dot for graph 686/844
+Running dot for graph 687/844
+Running dot for graph 688/844
+Running dot for graph 689/844
+Running dot for graph 690/844
+Running dot for graph 691/844
+Running dot for graph 692/844
+Running dot for graph 693/844
+Running dot for graph 694/844
+Running dot for graph 695/844
+Running dot for graph 696/844
+Running dot for graph 697/844
+Running dot for graph 698/844
+Running dot for graph 699/844
+Running dot for graph 700/844
+Running dot for graph 701/844
+Running dot for graph 702/844
+Running dot for graph 703/844
+Running dot for graph 704/844
+Running dot for graph 705/844
+Running dot for graph 706/844
+Running dot for graph 707/844
+Running dot for graph 708/844
+Running dot for graph 709/844
+Running dot for graph 710/844
+Running dot for graph 711/844
+Running dot for graph 712/844
+Running dot for graph 713/844
+Running dot for graph 714/844
+Running dot for graph 715/844
+Running dot for graph 716/844
+Running dot for graph 717/844
+Running dot for graph 718/844
+Running dot for graph 719/844
+Running dot for graph 720/844
+Running dot for graph 721/844
+Running dot for graph 722/844
+Running dot for graph 723/844
+Running dot for graph 724/844
+Running dot for graph 725/844
+Running dot for graph 726/844
+Running dot for graph 727/844
+Running dot for graph 728/844
+Running dot for graph 729/844
+Running dot for graph 730/844
+Running dot for graph 731/844
+Running dot for graph 732/844
+Running dot for graph 733/844
+Running dot for graph 734/844
+Running dot for graph 735/844
+Running dot for graph 736/844
+Running dot for graph 737/844
+Running dot for graph 738/844
+Running dot for graph 739/844
+Running dot for graph 740/844
+Running dot for graph 741/844
+Running dot for graph 742/844
+Running dot for graph 743/844
+Running dot for graph 744/844
+Running dot for graph 745/844
+Running dot for graph 746/844
+Running dot for graph 747/844
+Running dot for graph 748/844
+Running dot for graph 749/844
+Running dot for graph 750/844
+Running dot for graph 751/844
+Running dot for graph 752/844
+Running dot for graph 753/844
+Running dot for graph 754/844
+Running dot for graph 755/844
+Running dot for graph 756/844
+Running dot for graph 757/844
+Running dot for graph 758/844
+Running dot for graph 759/844
+Running dot for graph 760/844
+Running dot for graph 761/844
+Running dot for graph 762/844
+Running dot for graph 763/844
+Running dot for graph 764/844
+Running dot for graph 765/844
+Running dot for graph 766/844
+Running dot for graph 767/844
+Running dot for graph 768/844
+Running dot for graph 769/844
+Running dot for graph 770/844
+Running dot for graph 771/844
+Running dot for graph 772/844
+Running dot for graph 773/844
+Running dot for graph 774/844
+Running dot for graph 775/844
+Running dot for graph 776/844
+Running dot for graph 777/844
+Running dot for graph 778/844
+Running dot for graph 779/844
+Running dot for graph 780/844
+Running dot for graph 781/844
+Running dot for graph 782/844
+Running dot for graph 783/844
+Running dot for graph 784/844
+Running dot for graph 785/844
+Running dot for graph 786/844
+Running dot for graph 787/844
+Running dot for graph 788/844
+Running dot for graph 789/844
+Running dot for graph 790/844
+Running dot for graph 791/844
+Running dot for graph 792/844
+Running dot for graph 793/844
+Running dot for graph 794/844
+Running dot for graph 795/844
+Running dot for graph 796/844
+Running dot for graph 797/844
+Running dot for graph 798/844
+Running dot for graph 799/844
+Running dot for graph 800/844
+Running dot for graph 801/844
+Running dot for graph 802/844
+Running dot for graph 803/844
+Running dot for graph 804/844
+Running dot for graph 805/844
+Running dot for graph 806/844
+Running dot for graph 807/844
+Running dot for graph 808/844
+Running dot for graph 809/844
+Running dot for graph 810/844
+Running dot for graph 811/844
+Running dot for graph 812/844
+Running dot for graph 813/844
+Running dot for graph 814/844
+Running dot for graph 815/844
+Running dot for graph 816/844
+Running dot for graph 817/844
+Running dot for graph 818/844
+Running dot for graph 819/844
+Running dot for graph 820/844
+Running dot for graph 821/844
+Running dot for graph 822/844
+Running dot for graph 823/844
+Running dot for graph 824/844
+Running dot for graph 825/844
+Running dot for graph 826/844
+Running dot for graph 827/844
+Running dot for graph 828/844
+Running dot for graph 829/844
+Running dot for graph 830/844
+Running dot for graph 831/844
+Running dot for graph 832/844
+Running dot for graph 833/844
+Running dot for graph 834/844
+Running dot for graph 835/844
+Running dot for graph 836/844
+Running dot for graph 837/844
+Running dot for graph 838/844
+Running dot for graph 839/844
+Running dot for graph 840/844
+Running dot for graph 841/844
+Running dot for graph 842/844
+Running dot for graph 843/844
+Running dot for graph 844/844
+Patching output file 1/120
+Patching output file 2/120
+Patching output file 3/120
+Patching output file 4/120
+Patching output file 5/120
+Patching output file 6/120
+Patching output file 7/120
+Patching output file 8/120
+Patching output file 9/120
+Patching output file 10/120
+Patching output file 11/120
+Patching output file 12/120
+Patching output file 13/120
+Patching output file 14/120
+Patching output file 15/120
+Patching output file 16/120
+Patching output file 17/120
+Patching output file 18/120
+Patching output file 19/120
+Patching output file 20/120
+Patching output file 21/120
+Patching output file 22/120
+Patching output file 23/120
+Patching output file 24/120
+Patching output file 25/120
+Patching output file 26/120
+Patching output file 27/120
+Patching output file 28/120
+Patching output file 29/120
+Patching output file 30/120
+Patching output file 31/120
+Patching output file 32/120
+Patching output file 33/120
+Patching output file 34/120
+Patching output file 35/120
+Patching output file 36/120
+Patching output file 37/120
+Patching output file 38/120
+Patching output file 39/120
+Patching output file 40/120
+Patching output file 41/120
+Patching output file 42/120
+Patching output file 43/120
+Patching output file 44/120
+Patching output file 45/120
+Patching output file 46/120
+Patching output file 47/120
+Patching output file 48/120
+Patching output file 49/120
+Patching output file 50/120
+Patching output file 51/120
+Patching output file 52/120
+Patching output file 53/120
+Patching output file 54/120
+Patching output file 55/120
+Patching output file 56/120
+Patching output file 57/120
+Patching output file 58/120
+Patching output file 59/120
+Patching output file 60/120
+Patching output file 61/120
+Patching output file 62/120
+Patching output file 63/120
+Patching output file 64/120
+Patching output file 65/120
+Patching output file 66/120
+Patching output file 67/120
+Patching output file 68/120
+Patching output file 69/120
+Patching output file 70/120
+Patching output file 71/120
+Patching output file 72/120
+Patching output file 73/120
+Patching output file 74/120
+Patching output file 75/120
+Patching output file 76/120
+Patching output file 77/120
+Patching output file 78/120
+Patching output file 79/120
+Patching output file 80/120
+Patching output file 81/120
+Patching output file 82/120
+Patching output file 83/120
+Patching output file 84/120
+Patching output file 85/120
+Patching output file 86/120
+Patching output file 87/120
+Patching output file 88/120
+Patching output file 89/120
+Patching output file 90/120
+Patching output file 91/120
+Patching output file 92/120
+Patching output file 93/120
+Patching output file 94/120
+Patching output file 95/120
+Patching output file 96/120
+Patching output file 97/120
+Patching output file 98/120
+Patching output file 99/120
+Patching output file 100/120
+Patching output file 101/120
+Patching output file 102/120
+Patching output file 103/120
+Patching output file 104/120
+Patching output file 105/120
+Patching output file 106/120
+Patching output file 107/120
+Patching output file 108/120
+Patching output file 109/120
+Patching output file 110/120
+Patching output file 111/120
+Patching output file 112/120
+Patching output file 113/120
+Patching output file 114/120
+Patching output file 115/120
+Patching output file 116/120
+Patching output file 117/120
+Patching output file 118/120
+Patching output file 119/120
+Patching output file 120/120
+lookup cache used 9444/131072 hits=88953 misses=9878
 finished...

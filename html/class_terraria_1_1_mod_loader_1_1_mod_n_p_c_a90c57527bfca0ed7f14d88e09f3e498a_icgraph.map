@@ -1,5 +1,4 @@
 <map id="Terraria.ModLoader.ModNPC.SetDefaults" name="Terraria.ModLoader.ModNPC.SetDefaults">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a6ea0eaab8c94d722396a267e31871a7b" title="Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText. " alt="" coords="255,5,444,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aaf8303dd0a30d0ae359128e951374351" title="Allows you to control the path to this NPC&#39;s head texture when it is autoloaded. The headTexture defa..." alt="" coords="252,74,447,121"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ad77577c0eeaae460a0f0652b70897259" title="Terraria.ModLoader.Mod.AutoloadNPC" alt="" coords="497,83,743,112"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa43d4aa4654be6dc8805520434a8a761" title="Allows you to automatically load an NPC instead of using Mod.AddNPC. Return true to allow autoloading..." alt="" coords="252,5,447,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ad77577c0eeaae460a0f0652b70897259" title="Terraria.ModLoader.Mod.AutoloadNPC" alt="" coords="497,13,743,43"/>
 </map>

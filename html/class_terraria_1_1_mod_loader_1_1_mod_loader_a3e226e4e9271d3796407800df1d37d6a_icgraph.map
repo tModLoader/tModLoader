@@ -1,7 +1,6 @@
 <map id="Terraria.ModLoader.ModLoader.TextureExists" name="Terraria.ModLoader.ModLoader.TextureExists">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a62fce9d3fcd8d1283f01b556b9238326" title="Adds an equipment texture of the specified type, internal name, and associated item to your mod..." alt="" coords="291,5,480,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should..." alt="" coords="291,74,480,121"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ad77577c0eeaae460a0f0652b70897259" title="Terraria.ModLoader.Mod.AutoloadNPC" alt="" coords="263,144,508,173"/>
-<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#aae528c9f401b23845f68032e0e5514af" title="Automatically sets certain static defaults. Override this if you do not want the properties to be set..." alt="" coords="289,197,481,243"/>
-<area shape="rect" id="node11" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a6ea0eaab8c94d722396a267e31871a7b" title="Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText. " alt="" coords="559,197,748,243"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a62fce9d3fcd8d1283f01b556b9238326" title="Adds an equipment texture of the specified type, internal name, and associated item to your mod..." alt="" coords="264,5,453,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should..." alt="" coords="264,74,453,121"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#aae528c9f401b23845f68032e0e5514af" title="Automatically sets certain static defaults. Override this if you do not want the properties to be set..." alt="" coords="263,143,455,190"/>
+<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a6ea0eaab8c94d722396a267e31871a7b" title="Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText. " alt="" coords="505,143,695,190"/>
 </map>

@@ -1,9 +1,4 @@
 <map id="Terraria.ModLoader.Mod.AutoloadNPC" name="Terraria.ModLoader.Mod.AutoloadNPC">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#abb047caa31b8ca34497ac4168356c711" title="Allows you to automatically load an NPC instead of using Mod.AddNPC. Return true to allow autoloading..." alt="" coords="308,5,503,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aaf8303dd0a30d0ae359128e951374351" title="Allows you to control the path to this NPC&#39;s head texture when it is autoloaded. The headTexture defa..." alt="" coords="308,74,503,121"/>
-<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aeb0d9d1bfee842c0e232de398756f869" title="Returns whether or not a file with the specified name exists. " alt="" coords="303,143,508,190"/>
-<area shape="rect" id="node13" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a" title="Returns whether or not a texture with the specified name exists. " alt="" coords="303,213,508,259"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a" title="Allows you to set all your NPC&#39;s properties, such as width, damage, aiStyle, lifeMax, etc. " alt="" coords="565,74,760,121"/>
-<area shape="rect" id="node11" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ac6060b44af6ea4bf0db551886ea796d9" title="Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are used h..." alt="" coords="569,143,756,190"/>
-<area shape="rect" id="node15" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6" title="Shorthand for calling ModLoader.TextureExists(this.FileName(name)). " alt="" coords="557,213,768,259"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa43d4aa4654be6dc8805520434a8a761" title="Allows you to automatically load an NPC instead of using Mod.AddNPC. Return true to allow autoloading..." alt="" coords="303,5,497,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a" title="Allows you to set all your NPC&#39;s properties, such as width, damage, aiStyle, lifeMax, etc. " alt="" coords="548,5,743,51"/>
 </map>

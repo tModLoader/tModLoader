@@ -1,3 +1,5 @@
 <map id="Attribute" name="Attribute">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_autoload_equip.html" title="Terraria.ModLoader.Autoload\lEquip" alt="" coords="5,83,195,130"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html" title="Terraria.ModLoader.Autoload\lBossHead" alt="" coords="141,5,331,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_autoload_equip.html" title="Terraria.ModLoader.Autoload\lEquip" alt="" coords="141,74,331,121"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_autoload_head.html" title="Terraria.ModLoader.AutoloadHead" alt="" coords="127,144,345,173"/>
 </map>

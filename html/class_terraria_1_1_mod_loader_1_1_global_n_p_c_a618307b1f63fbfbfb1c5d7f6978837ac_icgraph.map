@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.GlobalNPC.PreDraw" name="Terraria.ModLoader.GlobalNPC.PreDraw">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a67b6bc69eb9a057ee9d4bf910cd26aa1" title="Terraria.ModLoader.NPCLoader.\lPostDraw" alt="" coords="229,5,440,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ac23839bed570c9ef30bd52dccf97508a" title="Terraria.ModLoader.NPCLoader.\lPreDraw" alt="" coords="229,74,440,121"/>
+</map>

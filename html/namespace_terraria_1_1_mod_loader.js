@@ -2,7 +2,9 @@ var namespace_terraria_1_1_mod_loader =
 [
     [ "Exceptions", "namespace_terraria_1_1_mod_loader_1_1_exceptions.html", "namespace_terraria_1_1_mod_loader_1_1_exceptions" ],
     [ "IO", "namespace_terraria_1_1_mod_loader_1_1_i_o.html", "namespace_terraria_1_1_mod_loader_1_1_i_o" ],
+    [ "AutoloadBossHead", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head" ],
     [ "AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", "class_terraria_1_1_mod_loader_1_1_autoload_equip" ],
+    [ "AutoloadHead", "class_terraria_1_1_mod_loader_1_1_autoload_head.html", "class_terraria_1_1_mod_loader_1_1_autoload_head" ],
     [ "BackgroundTextureLoader", "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html", "class_terraria_1_1_mod_loader_1_1_background_texture_loader" ],
     [ "BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", "class_terraria_1_1_mod_loader_1_1_buff_loader" ],
     [ "CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", "interface_terraria_1_1_mod_loader_1_1_command_caller" ],

@@ -7,6 +7,10 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "AutoloadEquip.cs", "_autoload_equip_8cs.html", [
       [ "AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", "class_terraria_1_1_mod_loader_1_1_autoload_equip" ]
     ] ],
+    [ "AutoloadHead.cs", "_autoload_head_8cs.html", [
+      [ "AutoloadBossHead", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head" ],
+      [ "AutoloadHead", "class_terraria_1_1_mod_loader_1_1_autoload_head.html", "class_terraria_1_1_mod_loader_1_1_autoload_head" ]
+    ] ],
     [ "BackgroundStyleLoaders.cs", "_background_style_loaders_8cs.html", [
       [ "SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader" ],
       [ "UgBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader" ]
@@ -174,6 +178,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader" ]
     ] ],
     [ "NPCLoader.cs", "_n_p_c_loader_8cs.html", [
+      [ "HookList", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader_1_1_hook_list" ],
       [ "NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader" ]
     ] ],
     [ "NPCSpawnHelper.cs", "_n_p_c_spawn_helper_8cs.html", [

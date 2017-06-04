@@ -1,7 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_mod =
 [
     [ "AddBackgroundTexture", "class_terraria_1_1_mod_loader_1_1_mod.html#a6dec81443d46c9904a00522d66b9c025", null ],
-    [ "AddBossHeadTexture", "class_terraria_1_1_mod_loader_1_1_mod.html#aaaf8a0bbde18da64d25babc2bf40648a", null ],
+    [ "AddBossHeadTexture", "class_terraria_1_1_mod_loader_1_1_mod.html#a45e9a26a0b1883168c11b1199c6b542b", null ],
     [ "AddBuff", "class_terraria_1_1_mod_loader_1_1_mod.html#a55288ca705db7b2771c9d38b9a98594b", null ],
     [ "AddCommand", "class_terraria_1_1_mod_loader_1_1_mod.html#a5b184beb12e724540f0e0ca11fc2845f", null ],
     [ "AddDust", "class_terraria_1_1_mod_loader_1_1_mod.html#a35e24b2d8b9d749c129d8219023b0ec0", null ],
@@ -20,9 +20,8 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "AddModWorld", "class_terraria_1_1_mod_loader_1_1_mod.html#ab33e96bff6f25a168d2962f64718628f", null ],
     [ "AddMount", "class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821", null ],
     [ "AddMusicBox", "class_terraria_1_1_mod_loader_1_1_mod.html#a2c1e83b143448233295027694ef6ef3a", null ],
-    [ "AddNPC", "class_terraria_1_1_mod_loader_1_1_mod.html#a41adddb9981fd80f3098f579bc541d55", null ],
+    [ "AddNPC", "class_terraria_1_1_mod_loader_1_1_mod.html#a40156ebb40b43a863961582b89b4bab7", null ],
     [ "AddNPCHeadTexture", "class_terraria_1_1_mod_loader_1_1_mod.html#a1e739bc6de6fac144b8342cfc0370406", null ],
-    [ "AddNPCInfo", "class_terraria_1_1_mod_loader_1_1_mod.html#a8eaec1f2995ac9e2ff4029ce7e4feedc", null ],
     [ "AddPlayer", "class_terraria_1_1_mod_loader_1_1_mod.html#a213ac752d7c7e155c6c614ba9f6b3043", null ],
     [ "AddProjectile", "class_terraria_1_1_mod_loader_1_1_mod.html#aa2df60c138c72148d426806d077bca9c", null ],
     [ "AddRecipeGroups", "class_terraria_1_1_mod_loader_1_1_mod.html#a61276e741d6a939b25f065e1099ff70b", null ],
@@ -54,7 +53,6 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "AutoloadModWorld", "class_terraria_1_1_mod_loader_1_1_mod.html#add23821649453480685af3af217c19f0", null ],
     [ "AutoloadMountData", "class_terraria_1_1_mod_loader_1_1_mod.html#ae0d192b40a5334b56f19a64161ac3511", null ],
     [ "AutoloadNPC", "class_terraria_1_1_mod_loader_1_1_mod.html#ad77577c0eeaae460a0f0652b70897259", null ],
-    [ "AutoloadNPCInfo", "class_terraria_1_1_mod_loader_1_1_mod.html#a43054e82707b534a7ba9949c40defd70", null ],
     [ "AutoloadPlayer", "class_terraria_1_1_mod_loader_1_1_mod.html#a01aaa129cd2ff87b999e12a71e3e3d1b", null ],
     [ "AutoloadProjectile", "class_terraria_1_1_mod_loader_1_1_mod.html#a2cc06bb68e395f20ede259d09eb91b05", null ],
     [ "AutoloadSounds", "class_terraria_1_1_mod_loader_1_1_mod.html#adc8ad4c378bdaf1d766229828502598d", null ],

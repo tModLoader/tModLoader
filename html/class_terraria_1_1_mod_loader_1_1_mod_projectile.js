@@ -2,7 +2,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_projectile =
 [
     [ "ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afbad8858ec6ca683ba683bd51a95309d", null ],
     [ "AI", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a1538782f9048f5743001270d0f4a2692", null ],
-    [ "AutoDefaults", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a453a3334d49093150c8eca0bf0d423de", null ],
     [ "Autoload", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a05e6dad20e2fbd133a830013f14f1083", null ],
     [ "AutoStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae5eb3338bf93c693f7367a824e39d242", null ],
     [ "CanCutTiles", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ada4040094923e812e9d8ee918c9ec1f4", null ],

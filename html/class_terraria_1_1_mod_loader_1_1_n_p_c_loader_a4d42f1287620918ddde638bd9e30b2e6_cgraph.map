@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.NPCLoader.DrawTownAttackSwing" name="Terraria.ModLoader.NPCLoader.DrawTownAttackSwing">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ab83733793daf4ce80ae788b666008038" title="Allows you to customize how a town NPC&#39;s weapon is drawn when the NPC is swinging it (the NPC must ha..." alt="" coords="264,5,456,51"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="273,74,447,121"/>
+</map>

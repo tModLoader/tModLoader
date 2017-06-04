@@ -19,7 +19,7 @@ var searchData=
   ['delegatedraweffects',['DelegateDrawEffects',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a3999971a789f6c782b41b8730e2febf4',1,'Terraria.ModLoader.NPCLoader.DelegateDrawEffects()'],['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a7ef2538c23ee5fdca4cc219a79b48d2e',1,'Terraria.ModLoader.TileLoader.DelegateDrawEffects()']]],
   ['delegatedrawhair',['DelegateDrawHair',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a59971ce7d3c787c3b7116bcac8288b69',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegatedrawhands',['DelegateDrawHands',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a5b06c2a6214ea0b2f43656fa5e500281',1,'Terraria::ModLoader::ItemLoader']]],
-  ['delegatedrawhealthbar',['DelegateDrawHealthBar',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4cef8a5af5e8cbe187dc540d1e08cf48',1,'Terraria::ModLoader::NPCLoader']]],
+  ['delegatedrawhealthbar',['DelegateDrawHealthBar',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a2d90a341039c5d3d3951733254ae8ed8',1,'Terraria::ModLoader::NPCLoader']]],
   ['delegatedrawtownattackgun',['DelegateDrawTownAttackGun',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a51b189d5f51ff8060738c295767504bf',1,'Terraria::ModLoader::NPCLoader']]],
   ['delegatedrawtownattackswing',['DelegateDrawTownAttackSwing',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a642cd68973303e0281845eb028948d80',1,'Terraria::ModLoader::NPCLoader']]],
   ['delegatedrop',['DelegateDrop',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a1b2cb3f77a1eddb9bbc038a1fe6df496',1,'Terraria::ModLoader::WallLoader']]],
