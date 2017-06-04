@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -49,8 +51,14 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		internal string texture;
-		internal string[] altTextures;
+		/// <summary>
+		/// The file name of this NPC's texture file in the mod loader's file space.
+		/// </summary>
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
+		/// <summary>
+		/// The file names of this NPC's alternate texture files, if any. This will be used in the givene AutoStaticDefaults.
+		/// </summary>
+		public virtual string[] AltTextures => new string[0];
 		/// <summary>
 		/// Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0.
 		/// </summary>
@@ -95,27 +103,17 @@ namespace Terraria.ModLoader
 		public ModNPC()
 		{
 			npc = new NPC();
+			npc.modNPC = this;
 		}
 
 		/// <summary>
-		/// Allows you to automatically load an NPC instead of using Mod.AddNPC. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, texture is initialized to the namespace and overriding class name with periods replaced with slashes, and altTextures is initialized to null. Use this method to either force or stop an autoload, to change the default display name and texture path, or to give the NPC alternate textures.
+		/// Allows you to automatically load an NPC instead of using Mod.AddNPC. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, texture is initialized to the namespace and overriding class name with periods replaced with slashes, and altTextures is initialized to null. Use this method to either force or stop an autoload, or to change the default display name.
 		/// </summary>
 		/// <param name="name"></param>
-		/// <param name="texture"></param>
-		/// <param name="altTextures"></param>
 		/// <returns></returns>
-		public virtual bool Autoload(ref string name, ref string texture, ref string[] altTextures)
+		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
-		}
-
-		/// <summary>
-		/// Allows you to control the path to this NPC's head texture when it is autoloaded. The headTexture defaults to the default NPC texture plus "_Head", and the bossHeadTexture defaults to the default headTexture plus "_Head_Boss". If the textures don't exist, the NPC will not be given a head texture. The headTexture should be used for town NPCs, and the bossHeadTexture should be used for any non-town NPC that you want to display on the map.
-		/// </summary>
-		/// <param name="headTexture"></param>
-		/// <param name="bossHeadTexture"></param>
-		public virtual void AutoloadHead(ref string headTexture, ref string bossHeadTexture)
-		{
 		}
 
 		internal void SetupNPC(NPC npc)
@@ -134,10 +132,40 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
-		/// Allows you to set all your NPC's static properties, such as names/translations and the arrays in NPCID.Sets.
+		/// Returns a clone of this ModNPC. 
+		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
+		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
-		public virtual void SetStaticDefaults()
+		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
+
+		/// <summary>
+		/// Create a new instance of this GlobalNPC for an NPC instance. 
+		/// Called at the end of NPC.SetDefaults.
+		/// If CloneNewInstances is true, just calls Clone()
+		/// Otherwise calls the default constructor and copies fields
+		/// </summary>
+		public virtual ModNPC NewInstance(NPC npcClone)
 		{
+			if (CloneNewInstances)
+			{
+				ModNPC clone = Clone();
+				clone.npc = npcClone;
+				return clone;
+			}
+
+			ModNPC copy = (ModNPC)Activator.CreateInstance(GetType());
+			copy.npc = npcClone;
+			copy.mod = mod;
+			copy.Name = Name;
+			copy.aiType = aiType;
+			copy.animationType = animationType;
+			copy.bossBag = bossBag;
+			copy.music = music;
+			copy.drawOffsetY = drawOffsetY;
+			copy.banner = banner;
+			copy.bannerItem = bannerItem;
+			return copy;
 		}
 
 		/// <summary>
@@ -145,6 +173,52 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void SetDefaults()
 		{
+		}
+
+		/// <summary>
+		/// Allows you to set all your NPC's static properties, such as names/translations and the arrays in NPCID.Sets.
+		/// </summary>
+		public virtual void SetStaticDefaults()
+		{
+		}
+
+		/// <summary>
+		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
+		/// </summary>
+		public virtual void AutoStaticDefaults()
+		{
+			Main.npcTexture[npc.type] = ModLoader.GetTexture(Texture);
+			if (banner != 0 && bannerItem != 0)
+			{
+				NPCLoader.bannerToItem[banner] = bannerItem;
+			}
+			if (npc.lifeMax > 32767 || npc.boss)
+			{
+				Main.npcLifeBytes[npc.type] = 4;
+			}
+			else if (npc.lifeMax > 127)
+			{
+				Main.npcLifeBytes[npc.type] = 2;
+			}
+			else
+			{
+				Main.npcLifeBytes[npc.type] = 1;
+			}
+
+			string[] altTextures = AltTextures;
+			int altTextureCount = altTextures.Length;
+			NPCID.Sets.ExtraTextureCount[npc.type] = altTextureCount;
+			Main.npcAltTextures[npc.type] = new Texture2D[altTextureCount + 1];
+			if (altTextureCount > 0)
+			{
+				Main.npcAltTextures[npc.type][0] = Main.npcTexture[npc.type];
+			}
+			for (int k = 1; k <= altTextureCount; k++)
+			{
+				Main.npcAltTextures[npc.type][k] = ModLoader.GetTexture(altTextures[k - 1]);
+			}
+
+			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>

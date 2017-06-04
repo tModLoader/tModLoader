@@ -5,17 +5,15 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs.Abomination
 {
 	//ported from my tAPI mod because I'm lazy
+	[AutoloadBossHead("ExampleMod/NPCs/Abomination/Abomination_Head_Boss")]
 	public class AbominationRun : ModNPC
 	{
-		public override bool Autoload(ref string name, ref string texture, ref string[] altTextures)
+		public override string Texture
 		{
-			texture = "ExampleMod/NPCs/Abomination/Abomination";
-			return mod.Properties.Autoload;
-		}
-
-		public override void AutoloadHead(ref string headTexture, ref string bossHeadTexture)
-		{
-			bossHeadTexture = "ExampleMod/NPCs/Abomination/Abomination_Head_Boss";
+			get
+			{
+				return "ExampleMod/NPCs/Abomination/Abomination";
+			}
 		}
 
 		public override void SetStaticDefaults()

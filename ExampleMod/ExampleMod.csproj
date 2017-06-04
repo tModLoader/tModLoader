@@ -180,7 +180,6 @@
     <Compile Include="NPCs\Abomination\FreedElement.cs" />
     <Compile Include="NPCs\ExampleChestSummon.cs" />
     <Compile Include="NPCs\ExampleGlobalNPC.cs" />
-    <Compile Include="NPCs\ExampleNPCInfo.cs" />
     <Compile Include="NPCs\ExamplePerson.cs" />
     <Compile Include="NPCs\Fish.cs" />
     <Compile Include="NPCs\FlutterSlime.cs" />
