@@ -449,6 +449,26 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to set the text for the buttons that appear on any town NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="button"></param>
+		/// <param name="button2"></param>
+		public virtual void SetChatButtons(NPC npc, ref string button, ref string button2)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to make something happen whenever a button is clicked on this any town NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="firstButton"></param>
+		/// <param name="shop"></param>
+		public virtual void OnChatButtonClicked(NPC npc, bool firstButton, ref bool shop)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to add items to a town NPC's shop. The type parameter is the type of the NPC that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.
 		/// </summary>
 		/// <param name="type"></param>

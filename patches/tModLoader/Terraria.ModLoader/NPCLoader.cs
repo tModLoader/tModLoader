@@ -87,6 +87,10 @@ namespace Terraria.ModLoader
 		private static Action<int, int, int>[] HookSpawnNPC;
 		private delegate void DelegateGetChat(NPC npc, ref string chat);
 		private static DelegateGetChat[] HookGetChat;
+		private delegate void DelegateSetChatButtons(NPC npc, ref string button1, ref string button2);
+		private static DelegateSetChatButtons[] HookSetChatButtons;
+		private delegate void DelegateOnChatButtonClicked(NPC npc, bool firstButton, ref bool shop);
+		private static DelegateOnChatButtonClicked[] HookOnChatButtonClicked;
 		private delegate void DelegateSetupShop(int type, Chest shop, ref int nextSlot);
 		private static DelegateSetupShop[] HookSetupShop = new DelegateSetupShop[0];
 		private delegate void DelegateSetupTravelShop(int[] shop, ref int nextSlot);
@@ -262,6 +266,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookEditSpawnPool, globalNPCs, g => g.EditSpawnPool);
 			ModLoader.BuildGlobalHook(ref HookSpawnNPC, globalNPCs, g => g.SpawnNPC);
 			ModLoader.BuildGlobalHook(ref HookGetChat, globalNPCs, g => g.GetChat);
+			ModLoader.BuildGlobalHook(ref HookSetChatButtons, globalNPCs, g => g.SetChatButtons);
+			ModLoader.BuildGlobalHook(ref HookOnChatButtonClicked, globalNPCs, g => g.OnChatButtonClicked);
 			ModLoader.BuildGlobalHook(ref HookSetupShop, globalNPCs, g => g.SetupShop);
 			ModLoader.BuildGlobalHook(ref HookSetupTravelShop, globalNPCs, g => g.SetupTravelShop);
 			ModLoader.BuildGlobalHook(ref HookBuffTownNPC, globalNPCs, g => g.BuffTownNPC);
@@ -1004,24 +1010,19 @@ namespace Terraria.ModLoader
 		//in Terraria.NPC.GetChat before returning result add NPCLoader.GetChat(this, ref result);
 		public static void GetChat(NPC npc, ref string chat)
 		{
-			if (npc.modNPC != null)
-			{
-				chat = npc.modNPC.GetChat();
-			}
+			chat = npc.modNPC?.GetChat();
 			foreach (var hook in HookGetChat)
-			{
 				hook(npc, ref chat);
-			}
 		}
 		//in Terraria.Main.GUIChatDrawInner after if/else chain setting text and text2 call
 		//  NPCLoader.SetChatButtons(ref text, ref text2);
 		public static void SetChatButtons(ref string button, ref string button2)
 		{
-			if (Main.player[Main.myPlayer].talkNPC >= 0)
-			{
-				NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-				npc.modNPC?.SetChatButtons(ref button, ref button2);
-			}
+			if (Main.player[Main.myPlayer].talkNPC < 0) return;
+			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
+			npc.modNPC?.SetChatButtons(ref button, ref button2);
+			foreach (var hook in HookSetChatButtons)
+				hook(npc, ref button, ref button2);
 		}
 		//add 1 to Terraria.Main.numShops
 		//in Terraria.Main.GUIChatDrawInner after type checks for first button click call
@@ -1030,19 +1031,16 @@ namespace Terraria.ModLoader
 		public static void OnChatButtonClicked(bool firstButton)
 		{
 			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-			if (npc.modNPC != null)
-			{
-				bool shop = false;
-				npc.modNPC.OnChatButtonClicked(firstButton, ref shop);
-				Main.PlaySound(12, -1, -1, 1);
-				if (shop)
-				{
-					Main.playerInventory = true;
-					Main.npcChatText = "";
-					Main.npcShop = Main.MaxShopIDs - 1;
-					Main.instance.shop[Main.npcShop].SetupShop(npc.type);
-				}
-			}
+			bool shop = false;
+			npc.modNPC?.OnChatButtonClicked(firstButton, ref shop);
+			foreach (var hook in HookOnChatButtonClicked)
+				hook(npc, firstButton, ref shop);
+			Main.PlaySound(12, -1, -1, 1);
+			if (!shop) return;
+			Main.playerInventory = true;
+			Main.npcChatText = "";
+			Main.npcShop = Main.MaxShopIDs - 1;
+			Main.instance.shop[Main.npcShop].SetupShop(npc.type);
 		}
 		//in Terraria.Chest.SetupShop before discount call NPCLoader.SetupShop(type, this, ref num);
 		public static void SetupShop(int type, Chest shop, ref int nextSlot)
