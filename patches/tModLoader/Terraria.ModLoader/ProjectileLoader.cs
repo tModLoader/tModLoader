@@ -112,6 +112,10 @@ namespace Terraria.ModLoader
 			}
 
 			InstancedGlobals = globalProjectiles.Where(g => g.InstancePerEntity).ToArray();
+			for (int i = 0; i < InstancedGlobals.Length; i++)
+			{
+				InstancedGlobals[i].instanceIndex = i;
+			}
 			foreach (var hook in hooks)
 			{
 				hook.arr = ModLoader.BuildGlobalHook(globalProjectiles, hook.method);
@@ -777,12 +781,6 @@ namespace Terraria.ModLoader
 				if (!projectile.InstancePerEntity)
 				{
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
-				}
-				if (!projectile.CloneNewInstances &&
-						!HasMethod(type, "NewInstance", typeof(Projectile)) &&
-						!HasMethod(type, "Clone", typeof(Projectile)))
-				{
-					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Projectile) or Clone()");
 				}
 			}
 		}
