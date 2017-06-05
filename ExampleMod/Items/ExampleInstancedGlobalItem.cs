@@ -9,8 +9,6 @@ namespace ExampleMod.Items
 {
 	public class ExampleInstancedGlobalItem : GlobalItem
 	{
-		public static int itemsCrafted;
-
 		public string originalOwner;
 
 		public ExampleInstancedGlobalItem()
@@ -37,17 +35,17 @@ namespace ExampleMod.Items
 		{
 			if (originalOwner.Length > 0)
 			{
-				TooltipLine line = new TooltipLine(mod, "ExampleTooltip", "Crafted by: " + originalOwner);
+				TooltipLine line = new TooltipLine(mod, "CraftedBy", "Crafted by: " + originalOwner);
 				line.overrideColor = Color.LimeGreen;
 				tooltips.Add(line);
 
-				foreach (TooltipLine line2 in tooltips)
+				/*foreach (TooltipLine line2 in tooltips)
 				{
 					if (line2.mod == "Terraria" && line2.Name == "ItemName")
 					{
 						line2.text = originalOwner + "'s " + line2.text;
 					}
-				}
+				}*/
 			}
 		}
 
@@ -70,7 +68,8 @@ namespace ExampleMod.Items
 
 		public override void OnCraft(Item item, Recipe recipe)
 		{
-			originalOwner = Main.LocalPlayer.name;
+			if (item.maxStack == 1)
+				originalOwner = Main.LocalPlayer.name;
 		}
 
 		public override void NetSend(Item item, BinaryWriter writer)
