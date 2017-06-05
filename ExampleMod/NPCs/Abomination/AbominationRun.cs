@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs.Abomination
 {
 	//ported from my tAPI mod because I'm lazy
-	[AutoloadBossHead("ExampleMod/NPCs/Abomination/Abomination_Head_Boss")]
+	[AutoloadBossHead]
 	public class AbominationRun : ModNPC
 	{
 		public override string Texture
@@ -13,6 +13,14 @@ namespace ExampleMod.NPCs.Abomination
 			get
 			{
 				return "ExampleMod/NPCs/Abomination/Abomination";
+			}
+		}
+
+		public override string HeadTexture
+		{
+			get
+			{
+				return "ExampleMod/NPCs/Abomination/Abomination_Head_Boss";
 			}
 		}
 

@@ -6,7 +6,7 @@ using Terraria.Utilities;
 
 namespace ExampleMod.NPCs
 {
-	[AutoloadHead("ExampleMod/NPCs/ExamplePerson_Head")]
+	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
 		public override string Texture

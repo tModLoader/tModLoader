@@ -1199,13 +1199,13 @@ namespace Terraria.ModLoader
 				var autoloadHead = type.GetAttribute<AutoloadHead>();
 				if (autoloadHead != null)
 				{
-					string headTexture = autoloadHead.texture ?? texture + "_Head";
+					string headTexture = npc.HeadTexture;
 					AddNPCHeadTexture(npc.npc.type, headTexture);
 				}
 				var autoloadBossHead = type.GetAttribute<AutoloadBossHead>();
 				if (autoloadBossHead != null)
 				{
-					string headTexture = autoloadBossHead.texture ?? texture + "_Head_Boss";
+					string headTexture = npc.BossHeadTexture;
 					AddBossHeadTexture(headTexture, npc.npc.type);
 				}
 			}

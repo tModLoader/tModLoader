@@ -60,6 +60,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string[] AltTextures => new string[0];
 		/// <summary>
+		/// The file name of this NPC's head texture file, to be used in autoloading.
+		/// </summary>
+		public virtual string HeadTexture => Texture + "_Head";
+		/// <summary>
+		/// This file name of this NPC's boss head texture file, to be used in autoloading.
+		/// </summary>
+		public virtual string BossHeadTexture => Texture + "_Head_Boss";
+		/// <summary>
 		/// Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0.
 		/// </summary>
 		public int aiType = 0;
