@@ -8,8 +8,8 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", "class_terraria_1_1_mod_loader_1_1_autoload_equip" ]
     ] ],
     [ "AutoloadHead.cs", "_autoload_head_8cs.html", [
-      [ "AutoloadBossHead", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head" ],
-      [ "AutoloadHead", "class_terraria_1_1_mod_loader_1_1_autoload_head.html", "class_terraria_1_1_mod_loader_1_1_autoload_head" ]
+      [ "AutoloadBossHead", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html", null ],
+      [ "AutoloadHead", "class_terraria_1_1_mod_loader_1_1_autoload_head.html", null ]
     ] ],
     [ "BackgroundStyleLoaders.cs", "_background_style_loaders_8cs.html", [
       [ "SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader" ],

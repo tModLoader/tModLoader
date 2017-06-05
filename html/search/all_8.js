@@ -27,6 +27,7 @@ var searchData=
   ['headglowmask',['headGlowMask',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#af6c32b909665108335d79f0e2c33def8',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['headglowmaskcolor',['headGlowMaskColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad2d923f26a4d0c2945ae73b418c3f0cc',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['headorigin',['headOrigin',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ab6abc8c2a509c33c87de10bc9e2928f5',1,'Terraria::ModLoader::PlayerDrawInfo']]],
+  ['headtexture',['HeadTexture',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a4cf713cac49c0896a1ffc943fcdbcbab',1,'Terraria::ModLoader::ModNPC']]],
   ['helditem',['HeldItem',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#acb4b40493cdbdc293e2cc7d047078af8',1,'Terraria::ModLoader::PlayerLayer']]],
   ['heldprojback',['HeldProjBack',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#af352f07c95f634510bb0c451689c9a06',1,'Terraria::ModLoader::PlayerLayer']]],
   ['heldprojfront',['HeldProjFront',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a5f6fd2f3bb5407f9486b96781326c3eb',1,'Terraria::ModLoader::PlayerLayer']]],

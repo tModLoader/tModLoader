@@ -1,13 +1,9 @@
 var NAVTREEINDEX1 =
 {
-"class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html#a10dc5f812c851eb7594a7ba30886059e":[1,0,0,0,2,1],
-"class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html#ab35d39708d6304cb898206e78961da60":[1,0,0,0,2,0],
 "class_terraria_1_1_mod_loader_1_1_autoload_equip.html":[1,0,0,0,3],
 "class_terraria_1_1_mod_loader_1_1_autoload_equip.html#a24ed7556842d70bf127e44497a945b1e":[1,0,0,0,3,1],
 "class_terraria_1_1_mod_loader_1_1_autoload_equip.html#afbd6012119cf05268e05944db05d6d88":[1,0,0,0,3,0],
 "class_terraria_1_1_mod_loader_1_1_autoload_head.html":[1,0,0,0,4],
-"class_terraria_1_1_mod_loader_1_1_autoload_head.html#a6ee34cacabd860d787bd660371382841":[1,0,0,0,4,0],
-"class_terraria_1_1_mod_loader_1_1_autoload_head.html#ab5ffad4360875ec2dd74d4fa5a4dae8a":[1,0,0,0,4,1],
 "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html":[1,0,0,0,5],
 "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#a5b287f692744ea43ed3127d3a1e7f3b6":[1,0,0,0,5,2],
 "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#aa932d62f40d6b4d93edcb238abe4f3b5":[1,0,0,0,5,1],
@@ -249,5 +245,9 @@ var NAVTREEINDEX1 =
 "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a9483fdc82dc3294e8f50191b1f1f1121":[1,0,0,0,17,7],
 "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a9b9e96d5a81e26fd5a3ae304ae251d9d":[1,0,0,0,17,39],
 "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a9e6919d7ab9acba00012daa148953854":[1,0,0,0,17,36],
-"class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa0c7388db7dc4d7dd7d920e9cf55ce8a":[1,0,0,0,17,51]
+"class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa0c7388db7dc4d7dd7d920e9cf55ce8a":[1,0,0,0,17,51],
+"class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa1d334e4354e574e6660581805280b23":[1,0,0,0,17,18],
+"class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa78b6d2dc1f37317d4faefafaf4637d6":[1,0,0,0,17,4],
+"class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ab32180a12dc2d7e08ae41b30e640434e":[1,0,0,0,17,32],
+"class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ab5786ddd3abbbc08e6fe6987e06afd45":[1,0,0,0,17,41]
 };
