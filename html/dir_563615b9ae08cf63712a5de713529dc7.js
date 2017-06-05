@@ -189,6 +189,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "NPCSpawnInfo", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info" ]
     ] ],
     [ "PlayerHooks.cs", "_player_hooks_8cs.html", [
+      [ "HookList", "class_terraria_1_1_mod_loader_1_1_player_hooks_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_player_hooks_1_1_hook_list" ],
       [ "PlayerHooks", "class_terraria_1_1_mod_loader_1_1_player_hooks.html", "class_terraria_1_1_mod_loader_1_1_player_hooks" ]
     ] ],
     [ "ProjectileLoader.cs", "_projectile_loader_8cs.html", [

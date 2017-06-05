@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.clientClone" name="Terraria.ModLoader.PlayerHooks.clientClone">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a8df0879f930e49f6d4b81b4d8decd4be" title="Allows you to copy information about this player to the clientClone parameter. You should copy inform..." alt="" coords="229,5,464,51"/>
-</map>

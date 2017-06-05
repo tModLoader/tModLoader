@@ -40,6 +40,7 @@ var hierarchy =
     [ "Terraria.ModLoader.GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", null ],
     [ "Terraria.ModLoader.ItemLoader.HookList", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html", null ],
     [ "Terraria.ModLoader.NPCLoader.HookList", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader_1_1_hook_list.html", null ],
+    [ "Terraria.ModLoader.PlayerHooks.HookList", "class_terraria_1_1_mod_loader_1_1_player_hooks_1_1_hook_list.html", null ],
     [ "Terraria.ModLoader.ProjectileLoader.HookList", "class_terraria_1_1_mod_loader_1_1_projectile_loader_1_1_hook_list.html", null ],
     [ "Terraria.ModLoader.ModCompile.IBuildStatus", "interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html", [
       [ "Terraria.ModLoader.ModCompile.ConsoleBuildStatus", "class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_console_build_status.html", null ]
