@@ -41,12 +41,15 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal int index;
+
 		internal ModPlayer CreateFor(Player newPlayer)
 		{
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Name = Name;
 			modPlayer.mod = mod;
 			modPlayer.player = newPlayer;
+			modPlayer.index = index;
 			modPlayer.Initialize();
 			return modPlayer;
 		}
