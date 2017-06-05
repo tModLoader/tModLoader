@@ -3286,6 +3286,15 @@
  					{
  						flag2 = true;
  						if (WorldGen.CloseDoor(myX, myY, false))
+@@ -24706,7 +_,7 @@
+ 							}
+ 						}
+ 					}
+-					else if ((TileID.Sets.BasicChest[(int)Main.tile[myX, myY].type] || Main.tile[myX, myY].type == 29 || Main.tile[myX, myY].type == 97 || Main.tile[myX, myY].type == 463) && this.talkNPC == -1)
++					else if ((TileID.Sets.BasicChest[(int)Main.tile[myX, myY].type] || Main.tile[myX, myY].type == 29 || Main.tile[myX, myY].type == 97 || Main.tile[myX, myY].type == 463) && this.talkNPC == -1 && Main.tile[myX, myY].type < TileID.Count)
+ 					{
+ 						flag2 = true;
+ 						Main.mouseRightRelease = false;
 @@ -24895,6 +_,8 @@
  							this.LaunchMinecartHook(myX, myY);
  						}

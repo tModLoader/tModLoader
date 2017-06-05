@@ -1638,6 +1638,15 @@
  							{
  								WorldGen.Check1x2(i, j, (ushort)num);
  							}
+@@ -48944,7 +_,7 @@
+ 							{
+ 								WorldGen.CheckOnTable1x1(i, j, (int)((byte)num));
+ 							}
+-							else if (TileID.Sets.BasicChest[num])
++							else if (TileID.Sets.BasicChest[num] && num < TileID.Count)
+ 							{
+ 								WorldGen.CheckChest(i, j, num);
+ 							}
 @@ -49110,6 +_,10 @@
  							else if (num == 323)
  							{
