@@ -1,5 +1,15 @@
 --- src/Terraria\Terraria\Main.cs
 +++ src/tModLoader\Terraria\Main.cs
+@@ -29,7 +_,9 @@
+ using System.Runtime.InteropServices;
+ using System.Text;
+ using System.Threading;
++#if WINDOWS
+ using System.Windows.Forms;
++#endif
+ using Terraria.Achievements;
+ using Terraria.Audio;
+ using Terraria.Chat;
 @@ -54,6 +_,8 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -9,6 +19,15 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
+@@ -77,7 +_,7 @@
+ 	{
+ 		public delegate void OnPlayerSelected(PlayerFileData player);
+ 
+-		public const int curRelease = 193;
++		public const int curRelease = 194;
+ 		public const ulong WorldGeneratorVersion = 828928688129uL;
+ 		private const string versionStringBecauseTheyreTheSame = "v1.3.5.2";
+ 		public const int offLimitBorderTiles = 40;
 @@ -166,13 +_,13 @@
  		public static Main instance;
  		public static string versionNumber = "v1.3.5.2";
@@ -207,6 +226,24 @@
  			}
  			NetMessage.SendAnglerQuest(-1);
  		}
+@@ -2804,7 +_,7 @@
+ 				{
+ 					using (BinaryWriter binaryWriter = new BinaryWriter(fileStream))
+ 					{
+-						binaryWriter.Write(193);
++						binaryWriter.Write(194);
+ 						for (int i = 0; i < 10; i++)
+ 						{
+ 							binaryWriter.Write(Main.recentWorld[i]);
+@@ -2846,7 +_,7 @@
+ 			Main.Configuration.Put("LightingThreads", Lighting.LightingThreads);
+ 			Main.Configuration.Put("Parallax", Main.caveParallax);
+ 			Main.Configuration.Put("ShowItemText", Main.showItemText);
+-			Main.Configuration.Put("LastLaunchedVersion", 193);
++			Main.Configuration.Put("LastLaunchedVersion", 194);
+ 			Main.Configuration.Put("ClientUUID", Main.clientUUID);
+ 			Main.Configuration.Put("UseSmartCursorForCommonBlocks", Player.SmartCursorSettings.SmartBlocksEnabled);
+ 			Main.Configuration.Put("UseSmartAxeAfterSmartPickaxe", Player.SmartCursorSettings.SmartAxeAfterPickaxe);
 @@ -2903,6 +_,7 @@
  			Main.Configuration.Put("QuickLaunch", Main.SkipAssemblyLoad);
  			Main.Configuration.Put("Zoom", Main.GameZoomTarget);
@@ -223,6 +260,15 @@
  			PlayerInput.Load();
  			if (num2 < 165)
  			{
+@@ -3239,7 +_,7 @@
+ 			Main.mouseColorSlider.SetHSL(Main.mouseColor);
+ 			Main.mouseBorderColorSlider.SetHSL(Main.MouseBorderColor);
+ 			Main.mouseBorderColorSlider.Alpha = (float)Main.MouseBorderColor.A / 255f;
+-			if (num2 != 193)
++			if (num2 != 194)
+ 			{
+ 				Main.SaveSettings();
+ 			}
 @@ -3392,9 +_,11 @@
  				FileUtilities.Delete(Main.PlayerList[i].Path, Main.PlayerList[i].IsCloudSave);
  				FileUtilities.Delete(Main.PlayerList[i].Path + ".bak", Main.PlayerList[i].IsCloudSave);
@@ -606,6 +652,16 @@
  			if (CaptureManager.Instance.IsCapturing)
  			{
  				return;
+@@ -12239,7 +_,9 @@
+ 					Liquid.cycles = 1;
+ 				}
+ 				Main.hasFocus = base.IsActive;
++#if WINDOWS
+ 				Main.hasFocus = (Form.ActiveForm == Control.FromHandle(base.Window.Handle) as Form);
++#endif
+ 				if (!Main.gameMenu || Main.netMode == 2)
+ 				{
+ 					WorldFile.tempRaining = Main.raining;
 @@ -12435,6 +_,10 @@
  				{
  					flag = true;

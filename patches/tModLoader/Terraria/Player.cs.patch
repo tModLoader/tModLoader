@@ -4929,6 +4929,15 @@
  			{
  				return false;
  			}
+@@ -38543,7 +_,7 @@
+ 				{
+ 					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream))
+ 					{
+-						binaryWriter.Write(193);
++						binaryWriter.Write(194);
+ 						playerFile.Metadata.Write(binaryWriter);
+ 						binaryWriter.Write(player.name);
+ 						binaryWriter.Write(player.difficulty);
 @@ -38594,49 +_,49 @@
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++)
@@ -4996,6 +5005,15 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
+@@ -38719,7 +_,7 @@
+ 							{
+ 								playerFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.Player);
+ 							}
+-							if (num > 193)
++							if (num > 194)
+ 							{
+ 								player.loadStatus = 1;
+ 								player.name = binaryReader.ReadString();
 @@ -39179,6 +_,7 @@
  								player.bartenderQuestLog = binaryReader.ReadInt32();
  							}

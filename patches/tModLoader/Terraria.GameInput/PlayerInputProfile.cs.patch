@@ -8,6 +8,15 @@
  
  namespace Terraria.GameInput
  {
+@@ -158,7 +_,7 @@
+ 		{
+ 			Dictionary<string, object> dictionary = new Dictionary<string, object>();
+ 			Dictionary<string, object> dictionary2 = new Dictionary<string, object>();
+-			dictionary.Add("Last Launched Version", 193);
++			dictionary.Add("Last Launched Version", 194);
+ 			dictionary2.Add("Edittable", this.AllowEditting);
+ 			dictionary2.Add("Gamepad - HotbarRadialHoldTime", this.HotbarRadialHoldTimeRequired);
+ 			dictionary2.Add("Gamepad - LeftThumbstickDeadzoneX", this.LeftThumbstickDeadzoneX);
 @@ -292,6 +_,18 @@
  			this.CopyKeysFrom(profile, mode, keysToCopy);
  		}

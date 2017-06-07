@@ -53,7 +53,7 @@
        </PropertyGroup>
      </When>
      <Otherwise>
-@@ -81,17 +_,43 @@
+@@ -81,19 +_,47 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System" />
@@ -86,6 +86,8 @@
      <Reference Include="System.Drawing" />
 -    <Reference Include="Ionic.Zip.CF">
 -      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
+-    </Reference>
+-    <Reference Include="System.Windows.Forms" />
 +    <Reference Include="Ionic.Zip.Reduced">
 +      <SpecificVersion>False</SpecificVersion>
 +      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
@@ -98,9 +100,13 @@
 +    </Reference>
 +    <Reference Include="MP3Sharp">
 +      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
-     </Reference>
-     <Reference Include="System.Windows.Forms" />
++    </Reference>
++    <Reference Include="System.Windows.Forms">
++       <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))" >..\..\references\System.Windows.Forms.Mono.dll</HintPath>
++    </Reference>
      <Reference Include="WindowsBase" />
+   </ItemGroup>
+   <ItemGroup>
 @@ -327,8 +_,11 @@
      <Compile Include="Terraria.ID\InvasionID.cs" />
      <Compile Include="Terraria.ID\ItemAlternativeFunctionID.cs" />
@@ -315,7 +321,6 @@
 +    </None>
 +  </ItemGroup>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -348,4 +353,5 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
+
