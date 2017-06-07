@@ -4929,11 +4929,12 @@
  			{
  				return false;
  			}
-@@ -38543,7 +_,7 @@
+@@ -38543,7 +_,8 @@
  				{
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream))
  					{
 -						binaryWriter.Write(193);
++						PlayerHooks.PreSavePlayer(player);
 +						binaryWriter.Write(194);
  						playerFile.Metadata.Write(binaryWriter);
  						binaryWriter.Write(player.name);
@@ -4997,10 +4998,17 @@
  							{
  								binaryWriter.Write(0);
  								binaryWriter.Write(0);
-@@ -38684,6 +_,7 @@
- 					}
- 				}
- 			}
+@@ -38681,9 +_,11 @@
+ 						{
+ 							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
+ 						}
+-					}
+-				}
+-			}
++						PlayerHooks.PostSavePlayer(player);
++					}
++				}
++			}
 +			PlayerIO.Save(player, path, isCloudSave);
  		}
  

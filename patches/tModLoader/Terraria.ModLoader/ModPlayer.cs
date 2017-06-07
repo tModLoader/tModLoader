@@ -136,6 +136,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// </summary>
+		public virtual void PreSavePlayer()
+		{
+		}
+
+		/// <summary>
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// </summary>
+		public virtual void PostSavePlayer()
+		{
+		}
+
+		/// <summary>
 		/// Allows you to set biome variables in your ModPlayer class based on tile counts.
 		/// </summary>
 		public virtual void UpdateBiomes()

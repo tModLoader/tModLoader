@@ -200,6 +200,26 @@ namespace Terraria.ModLoader
 			SetStartInventory(player, SetupStartInventory(player));
 		}
 
+		private static HookList HookPreSavePlayer = AddHook<Action>(p => p.PreSavePlayer);
+
+		public static void PreSavePlayer(Player player)
+		{
+			foreach (int index in HookPreSavePlayer.arr)
+			{
+				player.modPlayers[index].PreSavePlayer();
+			}
+		}
+
+		private static HookList HookPostSavePlayer = AddHook<Action>(p => p.PostSavePlayer);
+
+		public static void PostSavePlayer(Player player)
+		{
+			foreach (int index in HookPostSavePlayer.arr)
+			{
+				player.modPlayers[index].PostSavePlayer();
+			}
+		}
+
 		private static HookList HookUpdateBiomes = AddHook<Action>(p => p.UpdateBiomes);
 
 		public static void UpdateBiomes(Player player)
