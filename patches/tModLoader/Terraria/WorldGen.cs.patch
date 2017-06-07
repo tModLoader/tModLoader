@@ -196,6 +196,15 @@
  									{
  										flag3 = true;
  									}
+@@ -10250,7 +_,7 @@
+ 									Main.tile[num22, l + 2].halfBrick(false);
+ 								}
+ 							}
+-							if (TileID.Sets.BasicChest[(int)Main.tile[k, l].type])
++							if (TileID.Sets.BasicChest[(int)Main.tile[k, l].type] && Main.tile[k, l].type < TileID.Count)
+ 							{
+ 								int num26 = (int)(Main.tile[k, l].frameX / 18);
+ 								int num27 = 0;
 @@ -10448,7 +_,7 @@
  				});
  			WorldGen.AddGenerationPass("Micro Biomes", delegate(GenerationProgress progress)
