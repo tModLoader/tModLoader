@@ -34,6 +34,10 @@ namespace Terraria.ModLoader.UI
 			properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : mod.name;
 			text += " v" + mod.version;
+			if(mod.tModLoaderVersion < new Version(0, 10))
+			{
+				text += " [c/FF0000:(Old mod, enable at own risk)]";
+			}
 			this.modName = new UIText(text, 1f, false);
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);

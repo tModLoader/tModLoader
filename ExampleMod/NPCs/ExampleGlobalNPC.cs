@@ -8,14 +8,24 @@ namespace ExampleMod.NPCs
 {
 	public class ExampleGlobalNPC : GlobalNPC
 	{
+		public override bool InstancePerEntity
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		public bool eFlames = false;
+
 		public override void ResetEffects(NPC npc)
 		{
-			npc.GetModInfo<ExampleNPCInfo>(mod).eFlames = false;
+			eFlames = false;
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
-			if (npc.GetModInfo<ExampleNPCInfo>(mod).eFlames)
+			if (eFlames)
 			{
 				if (npc.lifeRegen > 0)
 				{
@@ -113,7 +123,7 @@ namespace ExampleMod.NPCs
 
 		public override void DrawEffects(NPC npc, ref Color drawColor)
 		{
-			if (npc.GetModInfo<ExampleNPCInfo>(mod).eFlames)
+			if (eFlames)
 			{
 				if (Main.rand.Next(4) < 3)
 				{

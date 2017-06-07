@@ -21,6 +21,12 @@ Installing tModLoader is relatively easy. If you want to ensure you can easily r
 3. Open the extracted folder, **copy** the contents to your Terraria folder and let it overwrite files when asked. (replace files)
 4. Done. You can launch Terraria as usual.
 
+Tip: Here is an easy way to find where your Terraria files are located:
+
+1. Locate Terraria in your Steam game library, right click it and click 'Properties'
+2. Browse to the 'Local Files' tab and click on the 'Browse local files...' button
+3. You are now in your Terraria folder (this is where you should install tModLoader)
+
 ### Uninstallation
 ___
 Uninstallation of tModLoader is even easier. This part covers how to do it when using Steam.

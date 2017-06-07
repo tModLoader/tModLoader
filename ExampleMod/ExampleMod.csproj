@@ -120,6 +120,7 @@
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleHook.cs" />
+    <Compile Include="Items\ExampleInstancedGlobalItem.cs" />
     <Compile Include="Items\ExampleItem.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
@@ -179,7 +180,6 @@
     <Compile Include="NPCs\Abomination\FreedElement.cs" />
     <Compile Include="NPCs\ExampleChestSummon.cs" />
     <Compile Include="NPCs\ExampleGlobalNPC.cs" />
-    <Compile Include="NPCs\ExampleNPCInfo.cs" />
     <Compile Include="NPCs\ExamplePerson.cs" />
     <Compile Include="NPCs\Fish.cs" />
     <Compile Include="NPCs\FlutterSlime.cs" />

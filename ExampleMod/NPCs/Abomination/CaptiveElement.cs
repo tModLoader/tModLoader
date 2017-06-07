@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs.Abomination
 {
 	//ported from my tAPI mod because I'm lazy
+	[AutoloadBossHead]
 	public class CaptiveElement : ModNPC
 	{
 		private int center

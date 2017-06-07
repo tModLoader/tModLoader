@@ -6,12 +6,28 @@ using Terraria.Utilities;
 
 namespace ExampleMod.NPCs
 {
+	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
-		public override bool Autoload(ref string name, ref string texture, ref string[] altTextures)
+		public override string Texture
+		{
+			get
+			{
+				return "ExampleMod/NPCs/ExamplePerson";
+			}
+		}
+
+		public override string[] AltTextures
+		{
+			get
+			{
+				return new string[] { "ExampleMod/NPCs/ExamplePerson_Alt_1" };
+			}
+		}
+
+		public override bool Autoload(ref string name)
 		{
 			name = "Example Person";
-			altTextures = new string[] { "ExampleMod/NPCs/ExamplePerson_Alt_1" };
 			return mod.Properties.Autoload;
 		}
 
@@ -26,7 +42,6 @@ namespace ExampleMod.NPCs
 			NPCID.Sets.AttackTime[npc.type] = 90;
 			NPCID.Sets.AttackAverageChance[npc.type] = 30;
 			NPCID.Sets.HatOffsetY[npc.type] = 4;
-			NPCID.Sets.ExtraTextureCount[npc.type] = 1;
 		}
 
 		public override void SetDefaults()

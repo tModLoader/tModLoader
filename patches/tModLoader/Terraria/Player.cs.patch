@@ -3286,6 +3286,15 @@
  					{
  						flag2 = true;
  						if (WorldGen.CloseDoor(myX, myY, false))
+@@ -24706,7 +_,7 @@
+ 							}
+ 						}
+ 					}
+-					else if ((TileID.Sets.BasicChest[(int)Main.tile[myX, myY].type] || Main.tile[myX, myY].type == 29 || Main.tile[myX, myY].type == 97 || Main.tile[myX, myY].type == 463) && this.talkNPC == -1)
++					else if ((TileID.Sets.BasicChest[(int)Main.tile[myX, myY].type] || Main.tile[myX, myY].type == 29 || Main.tile[myX, myY].type == 97 || Main.tile[myX, myY].type == 463) && this.talkNPC == -1 && Main.tile[myX, myY].type < TileID.Count)
+ 					{
+ 						flag2 = true;
+ 						Main.mouseRightRelease = false;
 @@ -24895,6 +_,8 @@
  							this.LaunchMinecartHook(myX, myY);
  						}
@@ -4920,6 +4929,16 @@
  			{
  				return false;
  			}
+@@ -38543,7 +_,8 @@
+ 				{
+ 					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream))
+ 					{
+-						binaryWriter.Write(193);
++						PlayerHooks.PreSavePlayer(player);
++						binaryWriter.Write(194);
+ 						playerFile.Metadata.Write(binaryWriter);
+ 						binaryWriter.Write(player.name);
+ 						binaryWriter.Write(player.difficulty);
 @@ -38594,49 +_,49 @@
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++)
@@ -4979,14 +4998,30 @@
  							{
  								binaryWriter.Write(0);
  								binaryWriter.Write(0);
-@@ -38684,6 +_,7 @@
- 					}
- 				}
- 			}
+@@ -38681,9 +_,11 @@
+ 						{
+ 							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
+ 						}
+-					}
+-				}
+-			}
++						PlayerHooks.PostSavePlayer(player);
++					}
++				}
++			}
 +			PlayerIO.Save(player, path, isCloudSave);
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
+@@ -38719,7 +_,7 @@
+ 							{
+ 								playerFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.Player);
+ 							}
+-							if (num > 193)
++							if (num > 194)
+ 							{
+ 								player.loadStatus = 1;
+ 								player.name = binaryReader.ReadString();
 @@ -39179,6 +_,7 @@
  								player.bartenderQuestLog = binaryReader.ReadInt32();
  							}

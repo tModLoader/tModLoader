@@ -41,12 +41,15 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal int index;
+
 		internal ModPlayer CreateFor(Player newPlayer)
 		{
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Name = Name;
 			modPlayer.mod = mod;
 			modPlayer.player = newPlayer;
+			modPlayer.index = index;
 			modPlayer.Initialize();
 			return modPlayer;
 		}
@@ -129,6 +132,20 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="items"></param>
 		public virtual void SetupStartInventory(IList<Item> items)
+		{
+		}
+
+		/// <summary>
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// </summary>
+		public virtual void PreSavePlayer()
+		{
+		}
+
+		/// <summary>
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// </summary>
+		public virtual void PostSavePlayer()
 		{
 		}
 

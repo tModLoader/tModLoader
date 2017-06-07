@@ -112,6 +112,10 @@ namespace Terraria.ModLoader
 			}
 
 			InstancedGlobals = globalProjectiles.Where(g => g.InstancePerEntity).ToArray();
+			for (int i = 0; i < InstancedGlobals.Length; i++)
+			{
+				InstancedGlobals[i].instanceIndex = i;
+			}
 			foreach (var hook in hooks)
 			{
 				hook.arr = ModLoader.BuildGlobalHook(globalProjectiles, hook.method);
@@ -151,13 +155,13 @@ namespace Terraria.ModLoader
 		internal static GlobalProjectile GetGlobalProjectile(Projectile projectile, Mod mod, string name)
 		{
 			int index;
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? projectile.globalProjectiles[index] : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? globalProjectiles[index].Instance(projectile) : null;
 		}
 
 		internal static GlobalProjectile GetGlobalProjectile(Projectile projectile, Type type)
 		{
 			int index;
-			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? projectile.globalProjectiles[index] : null) : null;
+			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? globalProjectiles[index].Instance(projectile) : null) : null;
 		}
 		//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 		public static void ProjectileAI(Projectile projectile)
@@ -777,12 +781,6 @@ namespace Terraria.ModLoader
 				if (!projectile.InstancePerEntity)
 				{
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
-				}
-				if (!projectile.CloneNewInstances &&
-						!HasMethod(type, "NewInstance", typeof(Projectile)) &&
-						!HasMethod(type, "Clone", typeof(Projectile)))
-				{
-					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Projectile) or Clone()");
 				}
 			}
 		}

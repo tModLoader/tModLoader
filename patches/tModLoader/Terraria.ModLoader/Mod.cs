@@ -313,10 +313,6 @@ namespace Terraria.ModLoader
 				{
 					AutoloadMountData(type);
 				}
-				else if (type.IsSubclassOf(typeof(NPCInfo)))
-				{
-					AutoloadNPCInfo(type);
-				}
 				else if (type.IsSubclassOf(typeof(ModGore)))
 				{
 					modGores.Add(type);
@@ -1062,7 +1058,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc">The NPC.</param>
 		/// <param name="texture">The texture.</param>
 		/// <param name="altTextures">The alt textures.</param>
-		public void AddNPC(string name, ModNPC npc, string texture, string[] altTextures = null)
+		public void AddNPC(string name, ModNPC npc)
 		{
 			if (!loading)
 				throw new Exception("AddNPC can only be called from Mod.Load or Mod.Autoload");
@@ -1073,8 +1069,6 @@ namespace Terraria.ModLoader
 			npc.mod = this;
 			npc.Name = name;
 			npc.npc.type = NPCLoader.ReserveNPCID();
-			npc.texture = texture;
-			npc.altTextures = altTextures;
 			npc.DisplayName = new ModTranslation(string.Format("NPCName.{0}.{1}", Name, name));
 
 			npcs[name] = npc;
@@ -1115,10 +1109,25 @@ namespace Terraria.ModLoader
 		/// <param name="globalNPC">The global NPC.</param>
 		public void AddGlobalNPC(string name, GlobalNPC globalNPC)
 		{
+			if (!loading)
+				throw new Exception("AddGlobalNPC can only be called from Mod.Load or Mod.Autoload");
+
+			NPCLoader.VerifyGlobalNPC(globalNPC);
+
 			globalNPC.mod = this;
 			globalNPC.Name = name;
 
 			this.globalNPCs[name] = globalNPC;
+			globalNPC.index = NPCLoader.globalNPCs.Count;
+			NPCLoader.globalIndexes[Name + ':' + name] = NPCLoader.globalNPCs.Count;
+			if (NPCLoader.globalIndexesByType.ContainsKey(globalNPC.GetType()))
+			{
+				NPCLoader.globalIndexesByType[globalNPC.GetType()] = -1;
+			}
+			else
+			{
+				NPCLoader.globalIndexesByType[globalNPC.GetType()] = NPCLoader.globalNPCs.Count;
+			}
 			NPCLoader.globalNPCs.Add(globalNPC);
 		}
 
@@ -1134,23 +1143,6 @@ namespace Terraria.ModLoader
 		}
 
 		public T GetGlobalNPC<T>() where T : GlobalNPC => (T)GetGlobalNPC(typeof(T).Name);
-
-		/// <summary>
-		/// Adds the given type of NPC information storage to the game, using the provided name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="info">The information.</param>
-		public void AddNPCInfo(string name, NPCInfo info)
-		{
-			if (!loading)
-				throw new Exception("AddNPCInfo can only be called from Mod.Load or Mod.Autoload");
-
-			info.mod = this;
-			info.Name = name;
-
-			NPCLoader.infoIndexes[Name + ':' + name] = NPCLoader.infoList.Count;
-			NPCLoader.infoList.Add(info);
-		}
 
 		/// <summary>
 		/// Assigns a head texture to the given town NPC type.
@@ -1181,7 +1173,7 @@ namespace Terraria.ModLoader
 		/// Assigns a head texture that can be used by NPCs on the map.
 		/// </summary>
 		/// <param name="texture">The texture.</param>
-		public void AddBossHeadTexture(string texture)
+		public void AddBossHeadTexture(string texture, int npcType = -1)
 		{
 			if (!loading)
 				throw new Exception("AddBossHeadTexture can only be called from Mod.Load or Mod.Autoload");
@@ -1189,6 +1181,10 @@ namespace Terraria.ModLoader
 			int slot = NPCHeadLoader.ReserveBossHeadSlot(texture);
 			NPCHeadLoader.bossHeads[texture] = slot;
 			ModLoader.GetTexture(texture);
+			if (npcType >= 0)
+			{
+				NPCHeadLoader.npcToBossHead[npcType] = slot;
+			}
 		}
 
 		private void AutoloadNPC(Type type)
@@ -1196,23 +1192,21 @@ namespace Terraria.ModLoader
 			ModNPC npc = (ModNPC)Activator.CreateInstance(type);
 			npc.mod = this;
 			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			string defaultTexture = texture;
-			string[] altTextures = new string[0];
-			if (npc.Autoload(ref name, ref texture, ref altTextures))
+			if (npc.Autoload(ref name))
 			{
-				AddNPC(name, npc, texture, altTextures);
-				string headTexture = defaultTexture + "_Head";
-				string bossHeadTexture = headTexture + "_Boss";
-				npc.AutoloadHead(ref headTexture, ref bossHeadTexture);
-				if (ModLoader.TextureExists(headTexture) || (Main.dedServ && ModLoader.FileExists(headTexture + ".png")))
+				AddNPC(name, npc);
+				string texture = npc.Texture;
+				var autoloadHead = type.GetAttribute<AutoloadHead>();
+				if (autoloadHead != null)
 				{
+					string headTexture = npc.HeadTexture;
 					AddNPCHeadTexture(npc.npc.type, headTexture);
 				}
-				if (ModLoader.TextureExists(bossHeadTexture))
+				var autoloadBossHead = type.GetAttribute<AutoloadBossHead>();
+				if (autoloadBossHead != null)
 				{
-					AddBossHeadTexture(bossHeadTexture);
-					NPCHeadLoader.npcToBossHead[npc.npc.type] = NPCHeadLoader.bossHeads[bossHeadTexture];
+					string headTexture = npc.BossHeadTexture;
+					AddBossHeadTexture(headTexture, npc.npc.type);
 				}
 			}
 		}
@@ -1225,17 +1219,6 @@ namespace Terraria.ModLoader
 			if (globalNPC.Autoload(ref name))
 			{
 				AddGlobalNPC(name, globalNPC);
-			}
-		}
-
-		private void AutoloadNPCInfo(Type type)
-		{
-			NPCInfo npcInfo = (NPCInfo)Activator.CreateInstance(type);
-			npcInfo.mod = this;
-			string name = type.Name;
-			if (npcInfo.Autoload(ref name))
-			{
-				AddNPCInfo(name, npcInfo);
 			}
 		}
 
@@ -2120,36 +2103,9 @@ namespace Terraria.ModLoader
 			}
 			foreach (ModNPC npc in npcs.Values)
 			{
-				Main.npcTexture[npc.npc.type] = ModLoader.GetTexture(npc.texture);
+				NPCLoader.SetDefaults(npc.npc, false);
+				npc.AutoStaticDefaults();
 				npc.SetStaticDefaults();
-				NPCLoader.SetupNPCInfo(npc.npc);
-				npc.SetDefaults();
-				if (npc.banner != 0 && npc.bannerItem != 0)
-				{
-					NPCLoader.bannerToItem[npc.banner] = npc.bannerItem;
-				}
-				if (npc.npc.lifeMax > 32767 || npc.npc.boss)
-				{
-					Main.npcLifeBytes[npc.npc.type] = 4;
-				}
-				else if (npc.npc.lifeMax > 127)
-				{
-					Main.npcLifeBytes[npc.npc.type] = 2;
-				}
-				else
-				{
-					Main.npcLifeBytes[npc.npc.type] = 1;
-				}
-				int altTextureCount = NPCID.Sets.ExtraTextureCount[npc.npc.type];
-				Main.npcAltTextures[npc.npc.type] = new Texture2D[altTextureCount + 1];
-				if (altTextureCount > 0)
-				{
-					Main.npcAltTextures[npc.npc.type][0] = Main.npcTexture[npc.npc.type];
-				}
-				for (int k = 1; k <= altTextureCount; k++)
-				{
-					Main.npcAltTextures[npc.npc.type][k] = ModLoader.GetTexture(npc.altTextures[k - 1]);
-				}
 			}
 			foreach (ModMountData modMountData in mountDatas.Values)
 			{

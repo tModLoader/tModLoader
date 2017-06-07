@@ -154,6 +154,10 @@ namespace Terraria.ModLoader
 			FindVanillaWings();
 
 			InstancedGlobals = globalItems.Where(g => g.InstancePerEntity).ToArray();
+			for (int i = 0; i < InstancedGlobals.Length; i++)
+			{
+				InstancedGlobals[i].instanceIndex = i;
+			}
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
 			foreach (var hook in hooks)
 				hook.arr = ModLoader.BuildGlobalHook(globalItems, hook.method);
@@ -218,13 +222,13 @@ namespace Terraria.ModLoader
 		internal static GlobalItem GetGlobalItem(Item item, Mod mod, string name)
 		{
 			int index;
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? item.globalItems[index] : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? globalItems[index].Instance(item) : null;
 		}
 
 		internal static GlobalItem GetGlobalItem(Item item, Type type)
 		{
 			int index;
-			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? item.globalItems[index] : null) : null;
+			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? globalItems[index].Instance(item) : null) : null;
 		}
 
 		//near end of Terraria.Main.DrawItem before default drawing call
@@ -1643,8 +1647,8 @@ namespace Terraria.ModLoader
 
 				if (!item.CloneNewInstances &&
 						!HasMethod(type, "NewInstance", typeof(Item)) &&
-						!HasMethod(type, "Clone", typeof(Item)))
-					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Item) or Clone(Item)");
+						!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
+					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Item) or Clone(Item, Item)");
 			}
 		}
 	}

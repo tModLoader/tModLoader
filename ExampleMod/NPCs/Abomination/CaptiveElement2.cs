@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs.Abomination
 {
 	//ported from my tAPI mod because I'm lazy
+	[AutoloadBossHead]
 	public class CaptiveElement2 : ModNPC
 	{
 		private static int hellLayer

@@ -283,6 +283,8 @@ namespace Terraria.ModLoader
 		internal static BuildProperties ReadModFile(TmodFile modFile)
 		{
 			BuildProperties properties = new BuildProperties();
+			properties.hideCode = true;
+			properties.hideResources = true;
 			byte[] data = modFile.GetFile("Info");
 
 			if (data.Length == 0)

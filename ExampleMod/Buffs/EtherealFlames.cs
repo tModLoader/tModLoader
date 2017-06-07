@@ -23,7 +23,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.GetModInfo<ExampleNPCInfo>(mod).eFlames = true;
+			npc.GetGlobalNPC<ExampleGlobalNPC>(mod).eFlames = true;
 		}
 	}
 }

@@ -196,6 +196,15 @@
  									{
  										flag3 = true;
  									}
+@@ -10250,7 +_,7 @@
+ 									Main.tile[num22, l + 2].halfBrick(false);
+ 								}
+ 							}
+-							if (TileID.Sets.BasicChest[(int)Main.tile[k, l].type])
++							if (TileID.Sets.BasicChest[(int)Main.tile[k, l].type] && Main.tile[k, l].type < TileID.Count)
+ 							{
+ 								int num26 = (int)(Main.tile[k, l].frameX / 18);
+ 								int num27 = 0;
 @@ -10448,7 +_,7 @@
  				});
  			WorldGen.AddGenerationPass("Micro Biomes", delegate(GenerationProgress progress)
@@ -1637,6 +1646,15 @@
 +							else if (num == 15 || TileLoader.IsSapling(num) || num == 216 || num == 338 || num == 390)
  							{
  								WorldGen.Check1x2(i, j, (ushort)num);
+ 							}
+@@ -48944,7 +_,7 @@
+ 							{
+ 								WorldGen.CheckOnTable1x1(i, j, (int)((byte)num));
+ 							}
+-							else if (TileID.Sets.BasicChest[num])
++							else if (TileID.Sets.BasicChest[num] && num < TileID.Count)
+ 							{
+ 								WorldGen.CheckChest(i, j, num);
  							}
 @@ -49110,6 +_,10 @@
  							else if (num == 323)

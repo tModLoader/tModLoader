@@ -12,6 +12,7 @@ using ExampleMod.Projectiles.PuritySpirit;
 
 namespace ExampleMod.NPCs.PuritySpirit
 {
+	[AutoloadBossHead]
 	public class PuritySpirit : ModNPC
 	{
 		private const int size = 120;

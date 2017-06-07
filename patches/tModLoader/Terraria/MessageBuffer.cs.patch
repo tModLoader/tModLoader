@@ -56,7 +56,7 @@
  						string a = this.reader.ReadString();
 -						if (!(a == "Terraria" + 193))
 +						ModNet.isModdedClient[whoAmI] = a == ModLoader.ModLoader.versionedName;
-+						if (!ModNet.isModdedClient[whoAmI] && !(a == "Terraria" + 193 && ModNet.AllowVanillaClients))
++						if (!ModNet.isModdedClient[whoAmI] && !(a == "Terraria" + 194 && ModNet.AllowVanillaClients))
  						{
  							NetMessage.SendData(2, this.whoAmI, -1, Lang.mp[4].ToNetworkText(), 0, 0f, 0f, 0f, 0, 0, 0);
  							return;

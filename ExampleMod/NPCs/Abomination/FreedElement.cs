@@ -56,10 +56,12 @@ namespace ExampleMod.NPCs.Abomination
 			}
 		}
 
-		public override bool Autoload(ref string name, ref string texture, ref string[] altTextures)
+		public override string Texture
 		{
-			texture = "ExampleMod/NPCs/Abomination/CaptiveElement2";
-			return mod.Properties.Autoload;
+			get
+			{
+				return "ExampleMod/NPCs/Abomination/CaptiveElement2";
+			}
 		}
 
 		public override void SetStaticDefaults()
