@@ -18,5 +18,8 @@ var dir_74fadca5af88c7a374b16ca7b71ad489 =
     ] ],
     [ "RecipeException.cs", "_recipe_exception_8cs.html", [
       [ "RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception" ]
+    ] ],
+    [ "ResourceLoadException.cs", "_resource_load_exception_8cs.html", [
+      [ "ResourceLoadException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception" ]
     ] ]
 ];

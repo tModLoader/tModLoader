@@ -164,6 +164,7 @@ var hierarchy =
       [ "Terraria.ModLoader.Exceptions.ModNameException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_mod_name_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", null ],
+      [ "Terraria.ModLoader.Exceptions.ResourceLoadException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html", null ],
       [ "Terraria.ModLoader.TopoSort< T >.SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html", null ],
       [ "Terraria.ModLoader.UsageException", "class_terraria_1_1_mod_loader_1_1_usage_exception.html", null ]
     ] ],

@@ -196,6 +196,8 @@ var NAVTREEINDEX0 =
 "_recipe_group_helper_8cs_source.html":[2,0,0,0,0,66],
 "_recipe_hooks_8cs.html":[2,0,0,0,0,67],
 "_recipe_hooks_8cs_source.html":[2,0,0,0,0,67],
+"_resource_load_exception_8cs.html":[2,0,0,0,1,7],
+"_resource_load_exception_8cs_source.html":[2,0,0,0,1,7],
 "_sound_loader_8cs.html":[2,0,0,0,0,68],
 "_sound_loader_8cs_source.html":[2,0,0,0,0,68],
 "_sound_type_8cs.html":[2,0,0,0,0,69],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "class_i_enumerable_3_01_key_value_pair_3_01string_00_01object_01_4_4.html":[1,0,6],
 "class_i_o_exception.html":[1,0,7],
 "class_i_symbol_writer.html":[1,0,8],
-"class_i_symbol_writer_provider.html":[1,0,9],
-"class_loading_mod.html":[1,0,10],
-"class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html":[1,0,0,0,2]
+"class_i_symbol_writer_provider.html":[1,0,9]
 };
