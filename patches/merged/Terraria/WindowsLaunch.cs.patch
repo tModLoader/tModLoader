@@ -5,10 +5,10 @@
  using System;
  using System.IO;
  using System.Reflection;
-@@ -70,7 +_,12 @@
- 				}
- 				return result;
- 			};
+@@ -89,7 +_,12 @@
+ 				arg_24_1 = (WindowsLaunch.<>c.<>9__5_0 = new ResolveEventHandler(WindowsLaunch.<>c.<>9.<Main>b__5_0));
+ 			}
+ 			arg_24_0.AssemblyResolve += arg_24_1;
 +#if SERVER
 +			WindowsLaunch._handleRoutine = new WindowsLaunch.HandlerRoutine(WindowsLaunch.ConsoleCtrlCheck);
 +			WindowsLaunch.SetConsoleCtrlHandler(WindowsLaunch._handleRoutine, true);

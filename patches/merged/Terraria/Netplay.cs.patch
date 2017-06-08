@@ -1,11 +1,11 @@
 --- src/decompiled\Terraria\Netplay.cs
 +++ src/merged\Terraria\Netplay.cs
-@@ -2,6 +_,9 @@
+@@ -2,7 +_,9 @@
  using System.IO;
  using System.Net;
  using System.Net.Sockets;
 +#if !WINDOWS
-+using System.Runtime.CompilerServices;
+ using System.Runtime.CompilerServices;
 +#endif
  using System.Threading;
  using Terraria.IO;

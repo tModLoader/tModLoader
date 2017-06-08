@@ -10,7 +10,7 @@
  using ReLogic.Graphics;
  using ReLogic.Localization.IME;
  using ReLogic.OS;
-@@ -11,10 +_,15 @@
+@@ -11,11 +_,15 @@
  using System;
  using System.Collections.Generic;
  using System.Diagnostics;
@@ -21,7 +21,7 @@
  using System.Linq;
  using System.Reflection;
 +#if !WINDOWS
-+using System.Runtime.CompilerServices;
+ using System.Runtime.CompilerServices;
 +#endif
  using System.Runtime.InteropServices;
  using System.Text;
@@ -60,13 +60,12 @@
  			Main.SetDisplayMode(preferredBackBufferWidth, preferredBackBufferHeight, fullscreen);
  			Main.Configuration.Get<bool>("SettingsUnlock_WorldEvil", ref Main.SettingsUnlock_WorldEvil);
  			Main.Configuration.Get<bool>("SettingsEnabled_MinersWobble", ref Main.SettingsEnabled_MinersWobble);
-@@ -4617,8 +_,10 @@
+@@ -4617,7 +_,9 @@
  								}
  								if (num >= 91 && binaryReader.ReadBoolean())
  								{
 +#if CLIENT && WINDOWS
- 									Form form = (Form)Control.FromHandle(base.Window.Handle);
- 									form.WindowState = FormWindowState.Maximized;
+ 									((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
 +#endif
  								}
  								if (num >= 4)
@@ -150,9 +149,9 @@
 +#if CLIENT && WINDOWS
  			else
  			{
- 				IntPtr systemMenu = Main.GetSystemMenu(base.Window.Handle, false);
- 				int menuItemCount = Main.GetMenuItemCount(systemMenu);
- 				Main.RemoveMenu(systemMenu, menuItemCount - 1, 1024);
+ 				IntPtr expr_641D = Main.GetSystemMenu(base.Window.Handle, false);
+ 				int menuItemCount = Main.GetMenuItemCount(expr_641D);
+ 				Main.RemoveMenu(expr_641D, menuItemCount - 1, 1024);
  			}
 +#endif
 +#if CLIENT
@@ -434,8 +433,8 @@
 +#endif
  				width = Math.Min(width, Main.maxScreenW);
  				height = Math.Min(height, Main.maxScreenH);
- 				num3 = Main.graphics.GraphicsDevice.Viewport.Width;
- 				num4 = Main.graphics.GraphicsDevice.Viewport.Height;
+ 				num = Main.graphics.GraphicsDevice.Viewport.Width;
+ 				num2 = Main.graphics.GraphicsDevice.Viewport.Height;
  				flag2 = (Main.graphics.PreferredBackBufferWidth != Main.graphics.GraphicsDevice.Viewport.Width || Main.graphics.PreferredBackBufferHeight != Main.graphics.GraphicsDevice.Viewport.Height);
  			}
 +#if WINDOWS

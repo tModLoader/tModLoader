@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.csproj
 +++ src/merged\Terraria.csproj
-@@ -2,39 +_,86 @@
+@@ -2,38 +_,86 @@
  <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
    <PropertyGroup>
      <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
@@ -104,7 +104,6 @@
      <Reference Include="System.Windows.Forms" />
      <Reference Include="System.Drawing" />
      <Reference Include="Steamworks.NET" />
-     <Reference Include="Newtonsoft.Json" />
 @@ -42,6 +_,10 @@
    </ItemGroup>
    <ItemGroup>
@@ -145,3 +144,4 @@
      <Compile Include="Terraria\Wiring.cs" />
      <Compile Include="Terraria\WorldGen.cs" />
      <Compile Include="Terraria\WorldSections.cs" />
+

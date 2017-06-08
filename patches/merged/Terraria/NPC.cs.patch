@@ -9,11 +9,11 @@
  																	{
  																		MoonlordDeathDrama.AddExplosion(vector144);
 @@ -28514,6 +_,7 @@
- 																			dust.scale = num1122;
+ 																			num244 = num1168;
  																		}
  																	}
 +#endif
- 																	for (float num1125 = 0f; num1125 < this.ai[1] / 60f; num1125 += 1f)
+ 																	for (float num1169 = 0f; num1169 < this.ai[1] / 60f; num1169 = num244 + 1f)
  																	{
- 																		Vector2 vector145 = Utils.RandomVector2(Main.rand, -1f, 1f);
+ 																		Vector2 vector160 = Utils.RandomVector2(Main.rand, -1f, 1f);
 
