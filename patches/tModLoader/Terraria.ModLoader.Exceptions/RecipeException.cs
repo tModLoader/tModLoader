@@ -4,6 +4,8 @@ namespace Terraria.ModLoader.Exceptions
 {
 	public class RecipeException : Exception
 	{
+		public override string HelpLink => "https://github.com/bluemagic123/tModLoader/wiki/Basic-Recipes";
+
 		public RecipeException()
 		{
 		}

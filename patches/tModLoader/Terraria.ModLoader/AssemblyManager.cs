@@ -222,7 +222,7 @@ namespace Terraria.ModLoader
 					}
 					catch (Exception e)
 					{
-						throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.", e);
+						throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.", e) { HelpLink = "https://github.com/bluemagic123/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error" };
 					}
 					var m = (Mod)Activator.CreateInstance(modType);
 					m.File = mod.modFile;
