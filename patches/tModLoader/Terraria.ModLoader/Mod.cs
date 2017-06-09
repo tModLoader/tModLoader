@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 
 		internal bool loading;
 		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
-		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+		internal readonly IDictionary<string, SoundWrapper> sounds = new Dictionary<string, SoundWrapper>();
 		internal readonly IDictionary<string, DynamicSpriteFont> fonts = new Dictionary<string, DynamicSpriteFont>();
 		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
@@ -171,16 +171,18 @@ namespace Terraria.ModLoader
 							break;
 						case ".mp3":
 							string mp3Path = Path.ChangeExtension(path, null);
-							string wavCacheFilename = this.Name + "_" + mp3Path.Replace('/', '_') + "_" + Version + ".wav";
-							WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
+							//string wavCacheFilename = this.Name + "_" + mp3Path.Replace('/', '_') + "_" + Version + ".wav";
+							//WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
 							try
 							{
-								sounds[mp3Path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename)
-									? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
-									: WAVCacheIO.CacheMP3(wavCacheFilename, data);
+								sounds[mp3Path]=SoundMP3.FromByteArray(data);
+								//sounds[mp3Path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename)
+								//	? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
+								//	: WAVCacheIO.CacheMP3(wavCacheFilename, data);
 							}
 							catch (Exception e)
 							{
+								sounds[mp3Path]=null;
 								throw new ResourceLoadException($"The sound file at {path} failed to load", e);
 							}
 							break;
@@ -2230,9 +2232,9 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
-		public SoundEffect GetSound(string name)
+		public SoundWrapper GetSound(string name)
 		{
-			SoundEffect sound;
+			SoundWrapper sound;
 			if (!sounds.TryGetValue(name, out sound))
 				throw new MissingResourceException(name);
 

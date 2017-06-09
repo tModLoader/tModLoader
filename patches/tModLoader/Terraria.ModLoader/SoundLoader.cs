@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 		private static readonly IDictionary<SoundType, int> nextSound = new Dictionary<SoundType, int>();
 		internal static readonly IDictionary<SoundType, IDictionary<string, int>> sounds = new Dictionary<SoundType, IDictionary<string, int>>();
 		internal static readonly IDictionary<SoundType, IDictionary<int, ModSound>> modSounds = new Dictionary<SoundType, IDictionary<int, ModSound>>();
-		internal static SoundEffect[] customSounds = new SoundEffect[0];
+		internal static SoundWrapper[] customSounds = new SoundWrapper[0];
 		internal static SoundEffectInstance[] customSoundInstances = new SoundEffectInstance[0];
 		/// <summary>
 		/// This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.
@@ -80,7 +80,7 @@ namespace Terraria.ModLoader
 
 		internal static void ResizeAndFillArrays()
 		{
-			customSounds = new SoundEffect[nextSound[SoundType.Custom]];
+			customSounds = new SoundWrapper[nextSound[SoundType.Custom]];
 			customSoundInstances = new SoundEffectInstance[nextSound[SoundType.Custom]];
 			Array.Resize(ref Main.soundItem, nextSound[SoundType.Item]);
 			Array.Resize(ref Main.soundInstanceItem, nextSound[SoundType.Item]);
@@ -102,11 +102,7 @@ namespace Terraria.ModLoader
 					}
 					else
 					{
-						if (Main.music[slot] == null)
-						{
-							Main.music[slot] = new MusicWrapper();
-						}
-						Main.music[slot].ModMusic = ModLoader.GetSound(sound)?.CreateInstance() ?? null;
+						Main.music[slot] = (MusicSound)ModLoader.GetSound(sound)?.CreateInstance() ?? null;
 					}
 				}
 			}
@@ -116,7 +112,7 @@ namespace Terraria.ModLoader
 		{
 			for (int i = Main.maxMusic; i < Main.music.Length; i++)
 			{
-				Main.music[i].Stop(true);
+				Main.music[i].Stop(AudioStopOptions.Immediate);
 			}
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType)))
 			{
@@ -176,7 +172,7 @@ namespace Terraria.ModLoader
 			return 0;
 		}
 
-		internal static SoundEffect[] GetSoundArray(SoundType type)
+		internal static SoundWrapper[] GetSoundArray(SoundType type)
 		{
 			switch (type)
 			{

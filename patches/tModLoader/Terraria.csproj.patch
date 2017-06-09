@@ -119,10 +119,12 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,148 @@
+@@ -368,6 +_,150 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
++    <Compile Include="Terraria.ModLoader.Audio\SoundMP3.cs" />
++    <Compile Include="Terraria.ModLoader.Audio\SoundWrapper.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\AprilFools.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\HelpCommand.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\ModlistCommand.cs" />
@@ -253,7 +255,7 @@
 +    <Compile Include="Terraria.ModLoader\WorldHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\MountLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\MountTextureType.cs" />
-+    <Compile Include="Terraria.ModLoader\MusicWrapper.cs" />
++    <Compile Include="Terraria.ModLoader.Audio\MusicWrappers.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCHeadLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCLoader.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\PlayerIO.cs" />

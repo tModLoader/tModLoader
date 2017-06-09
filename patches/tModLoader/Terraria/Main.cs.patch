@@ -115,12 +115,27 @@
  		public int DiscoStyle;
  		public static int DiscoR = 255;
  		public static int DiscoB = 0;
+@@ -1020,11 +_,11 @@
+ 		public static SoundEffectInstance soundInstanceGrab;
+ 		public static SoundEffect soundPixie;
+ 		public static SoundEffectInstance soundInstancePixie;
+-		public static SoundEffect[] soundItem = new SoundEffect[126];
++		public static SoundWrapper[] soundItem = new SoundWrapper[126];
+ 		public static SoundEffectInstance[] soundInstanceItem = new SoundEffectInstance[126];
+-		public static SoundEffect[] soundNPCHit = new SoundEffect[58];
++		public static SoundWrapper[] soundNPCHit = new SoundWrapper[58];
+ 		public static SoundEffectInstance[] soundInstanceNPCHit = new SoundEffectInstance[58];
+-		public static SoundEffect[] soundNPCKilled = new SoundEffect[63];
++		public static SoundWrapper[] soundNPCKilled = new SoundWrapper[63];
+ 		public static SoundEffectInstance[] soundInstanceNPCKilled = new SoundEffectInstance[63];
+ 		public static SoundEffectInstance soundInstanceMoonlordCry;
+ 		public static SoundEffect soundDoorOpen;
 @@ -1067,7 +_,7 @@
  		public static AudioEngine engine;
  		public static SoundBank soundBank;
  		public static WaveBank waveBank;
 -		public static Cue[] music = new Cue[42];
-+		public static MusicWrapper[] music = new MusicWrapper[42];
++		public static IMusic[] music = new IMusic[42];
  		public static float[] musicFade = new float[42];
  		public static float musicVolume = 0.75f;
  		public static float ambientVolume = 0.75f;
@@ -492,16 +507,12 @@
  #if SERVER
  			Main.netMode = 2;
  #endif
-@@ -7490,7 +_,11 @@
+@@ -7490,7 +_,7 @@
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
  			}
 -			TexturePackSupport.FindTexturePack();
 +			TexturePackSupport.FindTexturePacks();
-+			for (int i = 1; i < 42; i++)
-+			{
-+				Main.music[i] = new MusicWrapper();
-+			}
  			TextureManager.Initialize();
  			this.mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
  			Main.ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
@@ -510,7 +521,7 @@
  			for (int i = 1; i < 42; i++)
  			{
 -				Main.music[i] = Main.soundBank.GetCue("Music_" + i);
-+				Main.music[i] = new MusicWrapper(Main.soundBank.GetCue("Music_" + i));
++				Main.music[i] = (MusicCue)Main.soundBank.GetCue("Music_" + i);
  			}
  		}
  
@@ -607,7 +618,7 @@
  								else if (!Main.music[m].IsPlaying)
  								{
 -									Main.music[m] = Main.soundBank.GetCue("Music_" + m);
-+									Main.music[m].cue = Main.soundBank.GetCue("Music_" + m);
++									Main.music[m] = (MusicCue)Main.soundBank.GetCue("Music_" + m);
  									Main.music[m].Play();
  									Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.ambientVolume);
  								}
@@ -618,7 +629,7 @@
 -								Main.music[m] = Main.soundBank.GetCue("Music_" + m);
 +								if (m < Main.maxMusic)
 +								{
-+									Main.music[m].cue = Main.soundBank.GetCue("Music_" + m);
++									Main.music[m] = (MusicCue)Main.soundBank.GetCue("Music_" + m);
 +								}
  								Main.music[m].Play();
  								Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.musicVolume * num8);
