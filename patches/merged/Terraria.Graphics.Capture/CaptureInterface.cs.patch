@@ -2,7 +2,7 @@
 +++ src/merged\Terraria.Graphics.Capture\CaptureInterface.cs
 @@ -1129,7 +_,18 @@
  					}
- 					if (i == num2++ && flag2 && flag)
+ 					if (i == num2++ && (flag2 & flag))
  					{
 +#if LINUX
 +						string fileName = Path.Combine(Main.SavePath, "Captures");

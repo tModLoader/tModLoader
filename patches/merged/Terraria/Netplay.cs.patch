@@ -10,7 +10,7 @@
  using System.Threading;
  using Terraria.IO;
  using Terraria.Localization;
-@@ -9,6 +_,12 @@
+@@ -10,6 +_,12 @@
  using Terraria.Net.Sockets;
  using Terraria.Social;
  using Terraria.Utilities;
@@ -23,7 +23,7 @@
  
  namespace Terraria
  {
-@@ -47,7 +_,11 @@
+@@ -48,7 +_,11 @@
  		public static bool anyClients = false;
  
  		private static Thread ServerThread;
@@ -36,7 +36,7 @@
  		public static string portForwardIP;
  
  		public static int portForwardPort;
-@@ -60,10 +_,38 @@
+@@ -63,10 +_,38 @@
  		{
  			Netplay.portForwardIP = Netplay.GetLocalIPAddress();
  			Netplay.portForwardPort = Netplay.ListenPort;
@@ -75,7 +75,7 @@
  		}
  
  		public static string GetLocalIPAddress()
-@@ -202,6 +_,11 @@
+@@ -203,6 +_,11 @@
  				}
  				catch
  				{

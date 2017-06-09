@@ -19,7 +19,7 @@
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.Social;
-@@ -37,7 +_,11 @@
+@@ -33,7 +_,11 @@
  			}
  		}
  
@@ -53,7 +53,7 @@
  					}
  				}
  				Program.ThingsLoaded++;
-@@ -183,10 +_,12 @@
+@@ -186,10 +_,12 @@
  
  		private static void InitializeConsoleOutput()
  		{
@@ -65,8 +65,8 @@
 +#endif
  			try
  			{
- 				Console.OutputEncoding = Encoding.Unicode;
-@@ -223,7 +_,11 @@
+ 				Console.OutputEncoding = Encoding.UTF8;
+@@ -235,7 +_,11 @@
  					SocialAPI.Initialize(null);
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += new Action(Program.StartForceLoad);
@@ -76,9 +76,9 @@
 +					main.DedServ();
 +#endif
  				}
- 				catch (Exception e)
+ 				catch (Exception arg_9A_0)
  				{
-@@ -242,7 +_,11 @@
+@@ -254,7 +_,11 @@
  					streamWriter.WriteLine(e);
  					streamWriter.WriteLine("");
  				}

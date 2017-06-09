@@ -1,31 +1,31 @@
 --- src/merged\Terraria.csproj
 +++ src/Terraria\Terraria.csproj
 @@ -76,14 +_,23 @@
-     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="System.Core" />
      <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+-    <Reference Include="ReLogic" />
++    <Reference Include="ReLogic">
++      <HintPath>Terraria.Libraries\ReLogic\ReLogic.dll</HintPath>
++    </Reference>
+     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+-    <Reference Include="Ionic.Zip.CF" />
++    <Reference Include="Ionic.Zip.CF">
++      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
++    </Reference>
+     <Reference Include="System" />
+     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="System.Windows.Forms" />
+     <Reference Include="System.Drawing" />
+-    <Reference Include="Steamworks.NET" />
++    <Reference Include="Steamworks.NET">
++      <HintPath>Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll</HintPath>
++    </Reference>
 -    <Reference Include="Newtonsoft.Json" />
 +    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
 +      <SpecificVersion>False</SpecificVersion>
 +      <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
 +    </Reference>
-     <Reference Include="System" />
--    <Reference Include="Steamworks.NET" />
--    <Reference Include="ReLogic" />
-+    <Reference Include="Steamworks.NET">
-+      <HintPath>Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll</HintPath>
-+    </Reference>
-+    <Reference Include="ReLogic">
-+      <HintPath>Terraria.Libraries\ReLogic\ReLogic.dll</HintPath>
-+    </Reference>
-     <Reference Include="System.Core" />
-     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="System.Drawing" />
--    <Reference Include="Ionic.Zip.CF" />
-+    <Reference Include="Ionic.Zip.CF">
-+      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
-+    </Reference>
-     <Reference Include="System.Windows.Forms" />
      <Reference Include="WindowsBase" />
    </ItemGroup>
 @@ -535,63 +_,63 @@

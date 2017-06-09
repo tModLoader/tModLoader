@@ -130,7 +130,7 @@
  		private static Vector2 _vector2Zero;
  
  		private static Rectangle? _nullRectangle;
-@@ -382,5 +_,320 @@
+@@ -385,5 +_,320 @@
  				1f
  			};
  		}

@@ -26,7 +26,7 @@
  using System.Runtime.InteropServices;
  using System.Text;
  using System.Threading;
-@@ -51,10 +_,17 @@
+@@ -52,10 +_,17 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.World.Generation;
@@ -44,7 +44,7 @@
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
  
-@@ -4398,6 +_,7 @@
+@@ -4641,6 +_,7 @@
  				LockOnHelper.UseMode = LockOnHelper.LockOnMode.ThreeDS;
  			}
  			Main.Configuration.Get<bool>("InvisibleCursorForGamepad", ref Main.InvisibleCursorForGamepad);
@@ -52,7 +52,7 @@
  			Form form = (Form)Control.FromHandle(Main.instance.Window.Handle);
  			if (Main.screenBorderless)
  			{
-@@ -4413,6 +_,7 @@
+@@ -4656,6 +_,7 @@
  			{
  				form.FormBorderStyle = FormBorderStyle.Sizable;
  			}
@@ -60,7 +60,7 @@
  			Main.SetDisplayMode(preferredBackBufferWidth, preferredBackBufferHeight, fullscreen);
  			Main.Configuration.Get<bool>("SettingsUnlock_WorldEvil", ref Main.SettingsUnlock_WorldEvil);
  			Main.Configuration.Get<bool>("SettingsEnabled_MinersWobble", ref Main.SettingsEnabled_MinersWobble);
-@@ -4617,7 +_,9 @@
+@@ -4861,7 +_,9 @@
  								}
  								if (num >= 91 && binaryReader.ReadBoolean())
  								{
@@ -70,7 +70,7 @@
  								}
  								if (num >= 4)
  								{
-@@ -4731,8 +_,13 @@
+@@ -4974,8 +_,13 @@
  			{
  				if (!Main.WorldList[i].IsCloudSave)
  				{
@@ -84,7 +84,7 @@
  				}
  				else if (SocialAPI.Cloud != null)
  				{
-@@ -5164,11 +_,13 @@
+@@ -5349,11 +_,13 @@
  			{
  				string text = "terraria" + Main.rand.Next(2147483647);
  				Console.Title = text;
@@ -98,7 +98,7 @@
  			}
  			else
  			{
-@@ -6068,14 +_,18 @@
+@@ -6243,14 +_,18 @@
  		public Main()
  		{
  			Main.instance = this;
@@ -117,7 +117,7 @@
  		}
  
  		public static void InitLifeBytes()
-@@ -6139,6 +_,9 @@
+@@ -6489,6 +_,9 @@
  
  		protected override void Initialize()
  		{

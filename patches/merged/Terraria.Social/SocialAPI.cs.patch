@@ -15,7 +15,7 @@
  			}
  			SocialAPI._mode = mode.Value;
  			SocialAPI._modules = new List<ISocialModule>();
-@@ -91,7 +_,11 @@
+@@ -84,7 +_,11 @@
  			SocialAPI.Achievements = SocialAPI.LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
  			SocialAPI.Cloud = SocialAPI.LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			SocialAPI.Overlay = SocialAPI.LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
