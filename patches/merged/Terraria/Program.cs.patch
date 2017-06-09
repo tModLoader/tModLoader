@@ -19,10 +19,10 @@
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.Social;
-@@ -19,7 +_,11 @@
- {
- 	public static class Program
- 	{
+@@ -33,7 +_,11 @@
+ 			}
+ 		}
+ 
 +#if CLIENT
  		public const bool IsServer = false;
 +#else
@@ -31,19 +31,18 @@
  
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
-@@ -66,14 +_,22 @@
- 			for (int i = 0; i < array.Length; i++)
+@@ -78,13 +_,21 @@
+ 			Type[] types = assembly.GetTypes();
+ 			for (int i = 0; i < types.Length; i++)
  			{
- 				Type type = array[i];
 +#if WINDOWS
- 				MethodInfo[] methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+ 				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 +#else
-+				MethodInfo[] methods = type.GetMethods();
++				MethodInfo[] methods = types[i].GetMethods();
 +#endif
- 				MethodInfo[] array2 = methods;
- 				for (int j = 0; j < array2.Length; j++)
+ 				for (int j = 0; j < methods.Length; j++)
  				{
- 					MethodInfo methodInfo = array2[j];
+ 					MethodInfo methodInfo = methods[j];
  					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
  					{
 +#if WINDOWS
@@ -54,7 +53,7 @@
  					}
  				}
  				Program.ThingsLoaded++;
-@@ -183,10 +_,12 @@
+@@ -186,10 +_,12 @@
  
  		private static void InitializeConsoleOutput()
  		{
@@ -66,8 +65,8 @@
 +#endif
  			try
  			{
- 				Console.OutputEncoding = Encoding.Unicode;
-@@ -223,7 +_,11 @@
+ 				Console.OutputEncoding = Encoding.UTF8;
+@@ -235,7 +_,11 @@
  					SocialAPI.Initialize(null);
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += new Action(Program.StartForceLoad);
@@ -77,9 +76,9 @@
 +					main.DedServ();
 +#endif
  				}
- 				catch (Exception e)
+ 				catch (Exception arg_9A_0)
  				{
-@@ -242,7 +_,11 @@
+@@ -254,7 +_,11 @@
  					streamWriter.WriteLine(e);
  					streamWriter.WriteLine("");
  				}
