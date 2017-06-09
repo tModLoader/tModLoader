@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -23,8 +24,8 @@ namespace ExampleMod.Projectiles
 
 		public override void AI()
 		{
-			// Since projectiles have 2 ai slots, and I don't want to do manual syncing of an extra variable, here I use the HalfVector2 and ReadFloatasUInt to get a Vector2 from 1 float varable instead of 2 like normal.
-			Vector2 target = new HalfVector2() { PackedValue = (uint)projectile.ai[0] }.ToVector2();
+			// Since projectiles have 2 ai slots, and I don't want to do manual syncing of an extra variable, here I use the HalfVector2 and ReinterpretCast.FloatAsUInt to get a Vector2 from 1 float varable instead of 2 like normal.
+			Vector2 target = new HalfVector2() { PackedValue = ReLogic.Utilities.ReinterpretCast.FloatAsUInt(projectile.ai[0]) }.ToVector2();
 
 			Rectangle targetRectangle = new Rectangle((int)target.X - 4, (int)target.Y - 4, 8, 8);
 			if (projectile.Hitbox.Intersects(targetRectangle))
