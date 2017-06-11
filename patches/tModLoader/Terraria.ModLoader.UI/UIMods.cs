@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -15,12 +16,27 @@ using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIMods : UIState
 	{
 		public bool loading;
+		// we might need to pupulate modList
+		// at some point where we are certain
+		// that the UI isn't being drawn
+		// because some people are still getting
+		// 'collection was modified' upon loading 
+		// the ui.
+		public bool justLoaded;
+
+		// alternative solution I used here
+		// is with SpinWait and an isDrawing bool
+		// it's sort of the purpose of SpinWait
+		// the other way around, but it seems to work.
+		public bool isDrawing;
+
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
@@ -267,17 +283,23 @@ namespace Terraria.ModLoader.UI
 
 		private void FilterList()
 		{
-			uIPanel.RemoveChild(uiLoader);
-			filter = filterTextBox.currentString;
-			modList.Clear();
-			foreach (UIModItem item in modListAll._items.Where(item => item.PassFilters()))
+			// Do not filter while loading (causes collection was modified errors)
+			// Alternative solution is to disable searchbar while loading
+			if (!loading)
 			{
-				modList.Add(item);
+				uIPanel.RemoveChild(uiLoader);
+				filter = filterTextBox.currentString;
+				modList.Clear();
+				foreach (UIModItem item in modListAll._items.Where(item => item.PassFilters()))
+				{
+					modList.Add(item);
+				}
 			}
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
 		{
+			isDrawing = true;
 			base.Draw(spriteBatch);
 			for (int i = 0; i < this._categoryButtons.Count; i++)
 			{
@@ -316,6 +338,12 @@ namespace Terraria.ModLoader.UI
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
+		protected override void DrawChildren(SpriteBatch spriteBatch)
+		{
+			base.DrawChildren(spriteBatch);
+			isDrawing = false;
+		}
+
 		public override void OnActivate()
 		{
 			Main.clrInput();
@@ -326,16 +354,31 @@ namespace Terraria.ModLoader.UI
 			Populate();
 		}
 
+		// Helper action
+		internal Action SetLoading()
+		{
+			Action act = () =>
+			{
+				loading = !loading;
+				justLoaded = loading == false;
+			};
+			return act;
+		}
+
 		internal void Populate()
 		{
-			loading = true;
+			// We should set the current context in a singleton...
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+
 			Task.Factory
-				.StartNew(ModLoader.FindMods)
-				.ContinueWith(task =>
+				.StartNew(SetLoading)
+				.ContinueWith(antecedent => ModLoader.FindMods())
+				.ContinueWith(antecedent =>
 				{
-					var mods = task.Result;
+					var mods = antecedent.Result;
+					// SpinWait should fix collection being modified during draw
+					SpinWait.SpinUntil(() => !isDrawing);
 					foreach (TmodFile mod in mods)
 					{
 						UIModItem modItem = new UIModItem(mod);
@@ -343,8 +386,9 @@ namespace Terraria.ModLoader.UI
 						items.Add(modItem);
 					}
 					FilterList();
-					loading = false;
-				}, TaskScheduler.FromCurrentSynchronizationContext());
+					SetLoading();
+				}, TaskScheduler.FromCurrentSynchronizationContext()); // do not append .Wait(), this causes a deadlock!
+
 		}
 	}
 
