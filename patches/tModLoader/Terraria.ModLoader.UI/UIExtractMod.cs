@@ -10,6 +10,8 @@ namespace Terraria.ModLoader.UI
 	internal class UIExtractMod : UIState
 	{
 		private UILoadProgress loadProgress;
+		private int gotoMenu = 0;
+		private TmodFile mod;
 
 		private static IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) {".dll", ".pdb"};
 
@@ -24,7 +26,8 @@ namespace Terraria.ModLoader.UI
 			Append(loadProgress);
 		}
 
-		public static void Extract(TmodFile mod, int gotoMenu) {
+		public override void OnActivate()
+		{
 			Main.menuMode = Interface.extractModID;
 			Task.Factory
 				.StartNew(() => Interface.extractMod._Extract(mod))
@@ -35,6 +38,16 @@ namespace Terraria.ModLoader.UI
 					else
 						Main.menuMode = gotoMenu;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
+		}
+
+		internal void SetMod(TmodFile mod)
+		{
+			this.mod = mod;
+		}
+
+		internal void SetGotoMenu(int gotoMenu)
+		{
+			this.gotoMenu = gotoMenu;
 		}
 
 		private Exception _Extract(TmodFile mod) {
