@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -16,32 +15,17 @@ using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Newtonsoft.Json;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIMods : UIState
 	{
 		public bool loading;
-		// we might need to pupulate modList
-		// at some point where we are certain
-		// that the UI isn't being drawn
-		// because some people are still getting
-		// 'collection was modified' upon loading 
-		// the ui.
-		public bool justLoaded;
-
-		// alternative solution I used here
-		// is with SpinWait and an isDrawing bool
-		// it's sort of the purpose of SpinWait
-		// the other way around, but it seems to work.
-		public bool isDrawing;
-
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
 		private UIList modList;
-		private UIList modListAll;
+		private List<UIModItem> modListAll;
 		private readonly List<UIModItem> items = new List<UIModItem>();
 		private UIInputTextField filterTextBox;
 		public UICycleImage SearchFilterToggle;
@@ -56,6 +40,7 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> buttonB;
 		private UITextPanel<string> buttonOMF;
 		private UITextPanel<string> buttonMP;
+		bool updateNeeded;
 
 		public override void OnInitialize()
 		{
@@ -75,7 +60,7 @@ namespace Terraria.ModLoader.UI
 
 			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			modListAll = new UIList();
+			modListAll = new List<UIModItem>();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
 			modList.Height.Set(-50f, 1f);
@@ -152,12 +137,12 @@ namespace Terraria.ModLoader.UI
 					toggleImage.OnClick += (a, b) =>
 					{
 						sortMode = sortMode.NextEnum();
-						FilterList();
+						updateNeeded = true;
 					};
 					toggleImage.OnRightClick += (a, b) =>
 					{
 						sortMode = sortMode.PreviousEnum();
-						FilterList();
+						updateNeeded = true;
 					};
 				}
 				else
@@ -167,12 +152,12 @@ namespace Terraria.ModLoader.UI
 					toggleImage.OnClick += (a, b) =>
 					{
 						enabledFilterMode = enabledFilterMode.NextEnum();
-						FilterList();
+						updateNeeded = true;
 					};
 					toggleImage.OnRightClick += (a, b) =>
 					{
 						enabledFilterMode = enabledFilterMode.PreviousEnum();
-						FilterList();
+						updateNeeded = true;
 					};
 				}
 				toggleImage.Left.Set((float)(j * 36 + 8), 0f);
@@ -190,7 +175,7 @@ namespace Terraria.ModLoader.UI
 			filterTextBox = new UIInputTextField("Type to search");
 			filterTextBox.Top.Set(5f, 0f);
 			filterTextBox.Left.Set(-160f, 1f);
-			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(FilterList);
+			filterTextBox.OnTextChange += (a, b) => { updateNeeded = true; };
 			upperMenuContainer.Append(filterTextBox);
 
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0);
@@ -198,12 +183,12 @@ namespace Terraria.ModLoader.UI
 			SearchFilterToggle.OnClick += (a, b) =>
 			{
 				searchFilterMode = searchFilterMode.NextEnum();
-				FilterList();
+				updateNeeded = true;
 			};
 			SearchFilterToggle.OnRightClick += (a, b) =>
 			{
 				searchFilterMode = searchFilterMode.PreviousEnum();
-				FilterList();
+				updateNeeded = true;
 			};
 			SearchFilterToggle.Left.Set(545f, 0f);
 			_categoryButtons.Add(SearchFilterToggle);
@@ -271,35 +256,18 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private void FilterList(object sender, EventArgs e)
+		public override void Update(GameTime gameTime)
 		{
-			FilterList();
-		}
-
-		private void FilterList(UIMouseEvent evt, UIElement listeningElement)
-		{
-			FilterList();
-		}
-
-		private void FilterList()
-		{
-			// Do not filter while loading (causes collection was modified errors)
-			// Alternative solution is to disable searchbar while loading
-			if (!loading)
-			{
-				uIPanel.RemoveChild(uiLoader);
-				filter = filterTextBox.currentString;
-				modList.Clear();
-				foreach (UIModItem item in modListAll._items.Where(item => item.PassFilters()))
-				{
-					modList.Add(item);
-				}
-			}
+			if (!updateNeeded) return;
+			updateNeeded = false;
+			uIPanel.RemoveChild(uiLoader);
+			filter = filterTextBox.currentString;
+			modList.Clear();
+			modList.AddRange(modListAll.Where(item => item.PassFilters()));
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
 		{
-			isDrawing = true;
 			base.Draw(spriteBatch);
 			for (int i = 0; i < this._categoryButtons.Count; i++)
 			{
@@ -338,12 +306,6 @@ namespace Terraria.ModLoader.UI
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
-		protected override void DrawChildren(SpriteBatch spriteBatch)
-		{
-			base.DrawChildren(spriteBatch);
-			isDrawing = false;
-		}
-
 		public override void OnActivate()
 		{
 			Main.clrInput();
@@ -354,41 +316,25 @@ namespace Terraria.ModLoader.UI
 			Populate();
 		}
 
-		// Helper action
-		internal Action SetLoading()
-		{
-			Action act = () =>
-			{
-				loading = !loading;
-				justLoaded = loading == false;
-			};
-			return act;
-		}
-
 		internal void Populate()
 		{
-			// We should set the current context in a singleton...
+			loading = true;
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-
 			Task.Factory
-				.StartNew(SetLoading)
-				.ContinueWith(antecedent => ModLoader.FindMods())
-				.ContinueWith(antecedent =>
+				.StartNew(ModLoader.FindMods)
+				.ContinueWith(task =>
 				{
-					var mods = antecedent.Result;
-					// SpinWait should fix collection being modified during draw
-					SpinWait.SpinUntil(() => !isDrawing);
+					var mods = task.Result;
 					foreach (TmodFile mod in mods)
 					{
 						UIModItem modItem = new UIModItem(mod);
 						modListAll.Add(modItem);
 						items.Add(modItem);
 					}
-					FilterList();
-					SetLoading();
-				}, TaskScheduler.FromCurrentSynchronizationContext()); // do not append .Wait(), this causes a deadlock!
-
+					updateNeeded = true;
+					loading = false;
+				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
 
