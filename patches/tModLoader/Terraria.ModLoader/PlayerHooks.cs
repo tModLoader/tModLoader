@@ -509,6 +509,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookPreUpdateMovement = AddHook<Action>(p => p.PreUpdateMovement);
+
+		public static void PreUpdateMovement(Player player)
+		{
+			foreach (int index in HookPreUpdateMovement.arr)
+			{
+				player.modPlayers[index].PreUpdateMovement();
+			}
+		}
+
 		private static HookList HookPostUpdate = AddHook<Action>(p => p.PostUpdate);
 
 		public static void PostUpdate(Player player)
