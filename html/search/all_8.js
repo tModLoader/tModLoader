@@ -214,6 +214,7 @@ var searchData=
   ['hookpresaveplayer',['HookPreSavePlayer',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#afcec4185b258d680c37e3fad66df017f',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookpreupdate',['HookPreUpdate',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a15b73ea576e22daeef45759b6af18047',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookpreupdatebuffs',['HookPreUpdateBuffs',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#aec1f42c42b985484828b4ec0b64b15e7',1,'Terraria::ModLoader::PlayerHooks']]],
+  ['hookpreupdatemovement',['HookPreUpdateMovement',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a2457c13c5e5e5b4e57b8161d9d8ab77f',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookpreupdatevanityset',['HookPreUpdateVanitySet',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a80a144d75552019d809bc16e6ce19c12',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookprocesstriggers',['HookProcessTriggers',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad8b527032d3308d0a1e2eed3f68954cd',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookrandomupdate',['HookRandomUpdate',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ae26d6232b79ee04ac6ecc0073d2d004e',1,'Terraria.ModLoader.TileLoader.HookRandomUpdate()'],['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a986ab927e9ba60ae8b0013f72ccb08ee',1,'Terraria.ModLoader.WallLoader.HookRandomUpdate()']]],

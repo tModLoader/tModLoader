@@ -65,6 +65,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "PreSavePlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a04773b76357cfb056f6cb91ddaf8808c", null ],
     [ "PreUpdate", "class_terraria_1_1_mod_loader_1_1_mod_player.html#afe76af07e709041c38e1dd36e3fbb60b", null ],
     [ "PreUpdateBuffs", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aa26938f486aab4a4022503f24dda30c8", null ],
+    [ "PreUpdateMovement", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aa6846104ccfa767cae2605dad1e1e79e", null ],
     [ "ProcessTriggers", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a98f11468d4af2b252f2ec3745a798f1d", null ],
     [ "ReceiveCustomBiomes", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ac9479ae814101a001a9a8b8486a34f09", null ],
     [ "ResetEffects", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a13394bb2282be6fa3926a18906be68b9", null ],
