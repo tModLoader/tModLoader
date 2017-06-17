@@ -130,7 +130,7 @@
  			this.width = (int)((float)this.width * this.scale);
  			this.height = (int)((float)this.height * this.scale);
  			this.maxPenetrate = this.penetrate;
-@@ -7074,6 +_,20 @@
+@@ -7074,6 +_,11 @@
  				}
  			}
  			return result;
@@ -138,16 +138,7 @@
 +
 +		public static Projectile NewProjectileDirect(Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f)
 +		{
-+			return
-+				Main.projectile[
-+					Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1)];
-+		}
-+
-+		public static Projectile NewProjectilePerfect(Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack = 0f, int Owner = 255, float ai0 = 0f, float ai1 = 0f)
-+		{
-+			return
-+				Main.projectile[
-+					Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1)];
++			return Main.projectile[Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1)];
  		}
  
  		public static int NewProjectile(Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f)
