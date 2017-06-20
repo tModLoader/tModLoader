@@ -3009,7 +3009,7 @@
  						}
  						Microsoft.Xna.Framework.Color color5 = Lighting.GetColor((int)((double)dust.position.X + 4.0) / 16, (int)((double)dust.position.Y + 4.0) / 16);
 -						if (dust.type == 6 || dust.type == 15 || (dust.noLight && dust.type < 86 && dust.type > 91) || (dust.type >= 59 && dust.type <= 64))
-+						if (dust.type == 6 || dust.type == 15 || (dust.noLight && (dust.type < 86 || dust.type > 91)) || (dust.type >= 59 && dust.type <= 64))
++						if (dust.type == 6 || dust.type == 15 || (dust.type >= 59 && dust.type <= 64))
  						{
  							color5 = Microsoft.Xna.Framework.Color.White;
  						}
