@@ -393,6 +393,7 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+			TileObject.objectPreview.Active = false;
 		}
 
 		public static void DisableSmartCursor(Tile tile, ref bool disable)
