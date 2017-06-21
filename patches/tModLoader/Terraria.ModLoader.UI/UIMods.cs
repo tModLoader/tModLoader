@@ -20,13 +20,13 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIMods : UIState
 	{
-		public bool loading;
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
+		private bool needToRemoveLoading;
 		private UIList modList;
-		private List<UIModItem> modListAll;
 		private readonly List<UIModItem> items = new List<UIModItem>();
+		private bool updateNeeded;
 		private UIInputTextField filterTextBox;
 		public UICycleImage SearchFilterToggle;
 		public ModsMenuSortMode sortMode = ModsMenuSortMode.RecentlyUpdated;
@@ -40,7 +40,6 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> buttonB;
 		private UITextPanel<string> buttonOMF;
 		private UITextPanel<string> buttonMP;
-		bool updateNeeded;
 
 		public override void OnInitialize()
 		{
@@ -60,7 +59,6 @@ namespace Terraria.ModLoader.UI
 
 			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			modListAll = new List<UIModItem>();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
 			modList.Height.Set(-50f, 1f);
@@ -258,12 +256,17 @@ namespace Terraria.ModLoader.UI
 
 		public override void Update(GameTime gameTime)
 		{
+			base.Update(gameTime);
+			if (needToRemoveLoading)
+			{
+				needToRemoveLoading = false;
+				uIPanel.RemoveChild(uiLoader);
+			}
 			if (!updateNeeded) return;
 			updateNeeded = false;
-			uIPanel.RemoveChild(uiLoader);
 			filter = filterTextBox.currentString;
 			modList.Clear();
-			modList.AddRange(modListAll.Where(item => item.PassFilters()));
+			modList.AddRange(items.Where(item => item.PassFilters()));
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
@@ -310,7 +313,6 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.clrInput();
 			modList.Clear();
-			modListAll.Clear();
 			items.Clear();
 			uIPanel.Append(uiLoader);
 			Populate();
@@ -318,7 +320,6 @@ namespace Terraria.ModLoader.UI
 
 		internal void Populate()
 		{
-			loading = true;
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory
@@ -329,11 +330,10 @@ namespace Terraria.ModLoader.UI
 					foreach (TmodFile mod in mods)
 					{
 						UIModItem modItem = new UIModItem(mod);
-						modListAll.Add(modItem);
 						items.Add(modItem);
 					}
+					needToRemoveLoading = true;
 					updateNeeded = true;
-					loading = false;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
