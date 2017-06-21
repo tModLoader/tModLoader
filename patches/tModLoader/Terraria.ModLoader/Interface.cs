@@ -85,7 +85,6 @@ namespace Terraria.ModLoader
 		internal static void ResetData()
 		{
 			modBrowser.modList?.Clear();
-			modBrowser.modListAll?.Clear();
 			modBrowser.sortMode = ModBrowserSortMode.RecentlyUpdated;
 			modBrowser.updateFilterMode = UpdateFilter.Available;
 			modBrowser.searchFilterMode = SearchFilter.Name;

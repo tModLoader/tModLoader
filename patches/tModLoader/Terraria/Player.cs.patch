@@ -3171,6 +3171,14 @@
  								{
  									if (this.wings == 30)
  									{
+@@ -22983,6 +_,7 @@
+ 			{
+ 				this.velocity.Y = this.velocity.Y * 0.8f + (float)Math.Cos((double)(base.Center.X % 120f / 120f * 6.28318548f)) * 5f * 0.2f;
+ 			}
++			PlayerHooks.PreUpdateMovement(this);
+ 			if (this.tongued)
+ 			{
+ 				this.position += this.velocity;
 @@ -23078,6 +_,7 @@
  			this.grappling[0] = -1;
  			this.grapCount = 0;

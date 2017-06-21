@@ -24,7 +24,8 @@ namespace Terraria.ModLoader.UI
 	internal class UIModBrowser : UIState
 	{
 		public UIList modList;
-		public UIList modListAll;
+		private readonly List<UIModDownloadItem> items = new List<UIModDownloadItem>();
+		internal bool updateNeeded;
 		public UIModDownloadItem selectedItem;
 		private UIElement uIElement;
 		private UIPanel uIPanel;
@@ -37,7 +38,6 @@ namespace Terraria.ModLoader.UI
 		public UICycleImage uIToggleImage;
 		public UICycleImage SearchFilterToggle;
 		public bool loading;
-		private bool needToRemoveLoading;
 		public ModBrowserSortMode sortMode = ModBrowserSortMode.RecentlyUpdated;
 		public UpdateFilter updateFilterMode = UpdateFilter.Available;
 		public SearchFilter searchFilterMode = SearchFilter.Name;
@@ -96,7 +96,6 @@ namespace Terraria.ModLoader.UI
 
 			uILoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			modListAll = new UIList();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
 			modList.Height.Set(-50f, 1f);
@@ -152,7 +151,7 @@ namespace Terraria.ModLoader.UI
 			{
 				Interface.modBrowser.SpecialModPackFilter = null;
 				Interface.modBrowser.SpecialModPackFilterTitle = null;
-				Interface.modBrowser.SortList();
+				Interface.modBrowser.updateNeeded = true;
 				Main.PlaySound(SoundID.MenuTick);
 			};
 
@@ -172,12 +171,12 @@ namespace Terraria.ModLoader.UI
 					uIToggleImage.OnClick += (a, b) =>
 					{
 						sortMode = sortMode.NextEnum();
-						SortList();
+						updateNeeded = true;
 					};
 					uIToggleImage.OnRightClick += (a, b) =>
 					{
 						sortMode = sortMode.PreviousEnum();
-						SortList();
+						updateNeeded = true;
 					};
 				}
 				else
@@ -187,12 +186,12 @@ namespace Terraria.ModLoader.UI
 					uIToggleImage.OnClick += (a, b) =>
 					{
 						updateFilterMode = updateFilterMode.NextEnum();
-						SortList();
+						updateNeeded = true;
 					};
 					uIToggleImage.OnRightClick += (a, b) =>
 					{
 						updateFilterMode = updateFilterMode.PreviousEnum();
-						SortList();
+						updateNeeded = true;
 					};
 				}
 				uIToggleImage.Left.Set((float)(j * 36 + 8), 0f);
@@ -209,7 +208,7 @@ namespace Terraria.ModLoader.UI
 			filterTextBox = new UIInputTextField("Type to search");
 			filterTextBox.Top.Set(5, 0f);
 			filterTextBox.Left.Set(-160, 1f);
-			filterTextBox.OnTextChange += (sender, e) => SortList();
+			filterTextBox.OnTextChange += (sender, e) => updateNeeded = true;
 			upperMenuContainer.Append(filterTextBox);
 
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 68, 0);
@@ -217,26 +216,17 @@ namespace Terraria.ModLoader.UI
 			SearchFilterToggle.OnClick += (a, b) =>
 			{
 				searchFilterMode = searchFilterMode.NextEnum();
-				SortList();
+				updateNeeded = true;
 			};
 			SearchFilterToggle.OnRightClick += (a, b) =>
 			{
 				searchFilterMode = searchFilterMode.PreviousEnum();
-				SortList();
+				updateNeeded = true;
 			};
 			SearchFilterToggle.Left.Set(545f, 0f);
 			_categoryButtons.Add(SearchFilterToggle);
 			upperMenuContainer.Append(SearchFilterToggle);
 			uIPanel.Append(upperMenuContainer);
-		}
-
-		internal void SortList()
-		{
-			filter = filterTextBox.currentString;
-			needToRemoveLoading = true;
-			modList.Clear();
-			modList.AddRange(modListAll._items.Where(item => item.PassFilters()));
-			modList.UpdateOrder();
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
@@ -322,22 +312,19 @@ namespace Terraria.ModLoader.UI
 
 		public override void Update(GameTime gameTime)
 		{
-			// Due to collection modified exceptions, we need to do this here.
-			if (needToRemoveLoading)
-			{
-				uIPanel.RemoveChild(uILoader);
-				needToRemoveLoading = false;
-			}
-			foreach (UIElement current in this.Elements)
-			{
-				current.Update(gameTime);
-			}
+			base.Update(gameTime);
+			if (!updateNeeded) return;
+			updateNeeded = false;
+			if(!loading) uIPanel.RemoveChild(uILoader);
+			filter = filterTextBox.currentString;
+			modList.Clear();
+			modList.AddRange(items.Where(item => item.PassFilters()));
 		}
 
 		public override void OnActivate()
 		{
 			Main.clrInput();
-			if (!loading && modListAll.Count <= 0)
+			if (!loading && items.Count <= 0)
 				PopulateModBrowser();
 		}
 
@@ -350,7 +337,7 @@ namespace Terraria.ModLoader.UI
 			SetHeading("Mod Browser");
 			uIPanel.Append(uILoader);
 			modList.Clear();
-			modListAll.Clear();
+			items.Clear();
 			modList.Deactivate();
 			try
 			{
@@ -480,9 +467,9 @@ namespace Terraria.ModLoader.UI
 							update = updateIsDowngrade = true;
 					}
 					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed);
-					modListAll._items.Add(modItem); //add directly to the underlying, SortList will repopulate it anyway
+					items.Add(modItem);
 				}
-				SortList();
+				updateNeeded = true;
 			}
 			catch (Exception e)
 			{

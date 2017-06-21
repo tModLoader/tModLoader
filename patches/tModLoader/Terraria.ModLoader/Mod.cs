@@ -165,7 +165,7 @@ namespace Terraria.ModLoader
 								}
 								catch (Exception e)
 								{
-									throw new ResourceLoadException($"The sound file at {path} failed to load", e);
+									throw new ResourceLoadException($"The wav sound file at {path} failed to load", e);
 								}
 							}
 							break;
@@ -182,8 +182,7 @@ namespace Terraria.ModLoader
 							}
 							catch (Exception e)
 							{
-								sounds[mp3Path]=null;
-								throw new ResourceLoadException($"The sound file at {path} failed to load", e);
+								throw new ResourceLoadException($"The mp3 sound file at {path} failed to load", e);
 							}
 							break;
 						case ".xnb":

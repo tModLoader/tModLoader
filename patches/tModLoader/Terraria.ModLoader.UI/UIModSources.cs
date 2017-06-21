@@ -9,13 +9,16 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.ModLoader.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIModSources : UIState
 	{
-		public bool loading;
 		private UIList modList;
+		private readonly List<UIModSourceItem> items = new List<UIModSourceItem>();
+		private bool updateNeeded;
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
@@ -146,12 +149,12 @@ namespace Terraria.ModLoader.UI
 		{
 			uIPanel.Append(uiLoader);
 			modList.Clear();
+			items.Clear();
 			Populate();
 		}
 
 		internal void Populate()
 		{
-			loading = true;
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory
@@ -181,11 +184,20 @@ namespace Terraria.ModLoader.UI
 								break;
 							}
 						}
-						modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
+						items.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
 					}
-					uIPanel.RemoveChild(uiLoader);
-					loading = false;
+					updateNeeded = true;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			base.Update(gameTime);
+			if (!updateNeeded) return;
+			updateNeeded = false;
+			uIPanel.RemoveChild(uiLoader);
+			modList.Clear();
+			modList.AddRange(items);
 		}
 	}
 }

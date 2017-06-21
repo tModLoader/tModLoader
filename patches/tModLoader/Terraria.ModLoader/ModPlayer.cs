@@ -322,6 +322,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// This is called right before modifying the player's position based on velocity. Use this to make direct changes to the velocity.
+		/// </summary>
+		public virtual void PreUpdateMovement()
+		{
+		}
+
+		/// <summary>
 		/// This is called at the very end of the Player.Update method. Final general update tasks can be placed here.
 		/// </summary>
 		public virtual void PostUpdate()

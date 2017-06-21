@@ -809,7 +809,7 @@ namespace Terraria.ModLoader
 
 			foreach (GlobalNPC g in HookPostDraw.arr)
 			{
-				g.Instance(npc).PreDraw(npc, spriteBatch, drawColor);
+				g.Instance(npc).PostDraw(npc, spriteBatch, drawColor);
 			}
 		}
 

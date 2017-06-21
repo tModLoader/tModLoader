@@ -112,7 +112,7 @@ namespace Terraria.ModLoader.UI
 					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').ToList();
 					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies"; // Toolong of \n" + modListItem.modName.Text;
 					Interface.modBrowser.filterTextBox.currentString = "";
-					Interface.modBrowser.SortList();
+					Interface.modBrowser.updateNeeded = true;
 					Main.PlaySound(SoundID.MenuOpen);
 				};
 				Append(modReferenceIcon);
@@ -198,6 +198,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void Update(GameTime gameTime)
 		{
+			base.Update(gameTime);
 			if (modIconWanted && !modIconRequested)
 			{
 				modIconRequested = true;

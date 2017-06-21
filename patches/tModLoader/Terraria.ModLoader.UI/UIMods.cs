@@ -20,13 +20,13 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIMods : UIState
 	{
-		public bool loading;
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
+		private bool needToRemoveLoading;
 		private UIList modList;
-		private UIList modListAll;
 		private readonly List<UIModItem> items = new List<UIModItem>();
+		private bool updateNeeded;
 		private UIInputTextField filterTextBox;
 		public UICycleImage SearchFilterToggle;
 		public ModsMenuSortMode sortMode = ModsMenuSortMode.RecentlyUpdated;
@@ -59,7 +59,6 @@ namespace Terraria.ModLoader.UI
 
 			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			modListAll = new UIList();
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
 			modList.Height.Set(-50f, 1f);
@@ -136,12 +135,12 @@ namespace Terraria.ModLoader.UI
 					toggleImage.OnClick += (a, b) =>
 					{
 						sortMode = sortMode.NextEnum();
-						FilterList();
+						updateNeeded = true;
 					};
 					toggleImage.OnRightClick += (a, b) =>
 					{
 						sortMode = sortMode.PreviousEnum();
-						FilterList();
+						updateNeeded = true;
 					};
 				}
 				else
@@ -151,12 +150,12 @@ namespace Terraria.ModLoader.UI
 					toggleImage.OnClick += (a, b) =>
 					{
 						enabledFilterMode = enabledFilterMode.NextEnum();
-						FilterList();
+						updateNeeded = true;
 					};
 					toggleImage.OnRightClick += (a, b) =>
 					{
 						enabledFilterMode = enabledFilterMode.PreviousEnum();
-						FilterList();
+						updateNeeded = true;
 					};
 				}
 				toggleImage.Left.Set((float)(j * 36 + 8), 0f);
@@ -174,7 +173,7 @@ namespace Terraria.ModLoader.UI
 			filterTextBox = new UIInputTextField("Type to search");
 			filterTextBox.Top.Set(5f, 0f);
 			filterTextBox.Left.Set(-160f, 1f);
-			filterTextBox.OnTextChange += new UIInputTextField.EventHandler(FilterList);
+			filterTextBox.OnTextChange += (a, b) => { updateNeeded = true; };
 			upperMenuContainer.Append(filterTextBox);
 
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0);
@@ -182,12 +181,12 @@ namespace Terraria.ModLoader.UI
 			SearchFilterToggle.OnClick += (a, b) =>
 			{
 				searchFilterMode = searchFilterMode.NextEnum();
-				FilterList();
+				updateNeeded = true;
 			};
 			SearchFilterToggle.OnRightClick += (a, b) =>
 			{
 				searchFilterMode = searchFilterMode.PreviousEnum();
-				FilterList();
+				updateNeeded = true;
 			};
 			SearchFilterToggle.Left.Set(545f, 0f);
 			_categoryButtons.Add(SearchFilterToggle);
@@ -255,25 +254,19 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private void FilterList(object sender, EventArgs e)
+		public override void Update(GameTime gameTime)
 		{
-			FilterList();
-		}
-
-		private void FilterList(UIMouseEvent evt, UIElement listeningElement)
-		{
-			FilterList();
-		}
-
-		private void FilterList()
-		{
-			uIPanel.RemoveChild(uiLoader);
+			base.Update(gameTime);
+			if (needToRemoveLoading)
+			{
+				needToRemoveLoading = false;
+				uIPanel.RemoveChild(uiLoader);
+			}
+			if (!updateNeeded) return;
+			updateNeeded = false;
 			filter = filterTextBox.currentString;
 			modList.Clear();
-			foreach (UIModItem item in modListAll._items.Where(item => item.PassFilters()))
-			{
-				modList.Add(item);
-			}
+			modList.AddRange(items.Where(item => item.PassFilters()));
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
@@ -320,7 +313,6 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.clrInput();
 			modList.Clear();
-			modListAll.Clear();
 			items.Clear();
 			uIPanel.Append(uiLoader);
 			Populate();
@@ -328,7 +320,6 @@ namespace Terraria.ModLoader.UI
 
 		internal void Populate()
 		{
-			loading = true;
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory
@@ -339,11 +330,10 @@ namespace Terraria.ModLoader.UI
 					foreach (TmodFile mod in mods)
 					{
 						UIModItem modItem = new UIModItem(mod);
-						modListAll.Add(modItem);
 						items.Add(modItem);
 					}
-					FilterList();
-					loading = false;
+					needToRemoveLoading = true;
+					updateNeeded = true;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}

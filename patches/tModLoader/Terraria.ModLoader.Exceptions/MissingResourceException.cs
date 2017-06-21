@@ -4,7 +4,7 @@ namespace Terraria.ModLoader.Exceptions
 {
 	public class MissingResourceException : Exception
 	{
-		public override string HelpLink => "https://github.com/bluemagic123/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#terrariamodloadermodgettexturestring-name-error";
+		public override string HelpLink => "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#terrariamodloadermodgettexturestring-name-error";
 
 		public MissingResourceException()
 		{
