@@ -79,6 +79,7 @@ namespace Terraria.ModLoader
 				if(IsLooped)
 				{
 					stream.Position=0;
+					stream.IsEOF=false;
 					stream.Read(buffer,bytesReturned,buffer.Length-bytesReturned);
 				}
 				else if(bytesReturned==0)
