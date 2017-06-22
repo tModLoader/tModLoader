@@ -10,17 +10,18 @@ namespace Terraria.ModLoader
 		private MP3Stream stream;
 		private MemoryStream data;
 		private long bytesPerChunk;
+		private const int DEFAULT_BYTESPERCHUNK=8192;
 
 		private bool IsLooped;//loop=true allows for only one instance playing of that sound at a time, false buffers entire file
 
-		public SoundMP3(string path,bool loop,int bytesPerChunk=4096)
+		public SoundMP3(string path,bool loop,int bytesPerChunk=DEFAULT_BYTESPERCHUNK)
 		{
 			stream=new MP3Stream(path,bytesPerChunk);
 			IsLooped=loop;
 			this.bytesPerChunk=loop?bytesPerChunk:stream.Length;
 		}
 
-		public SoundMP3(byte[] byteArray,bool loop,int bytesPerChunk=4096)
+		public SoundMP3(byte[] byteArray,bool loop,int bytesPerChunk=DEFAULT_BYTESPERCHUNK)
 		{
 			data=new MemoryStream(byteArray);
 			stream=new MP3Stream(data);
@@ -56,6 +57,21 @@ namespace Terraria.ModLoader
 				((DynamicSoundEffectInstance)sender).Stop();
 				return;
 			}
+			for(int i=3;i>0;i--)
+			{
+				if(!AddToBuffer((DynamicSoundEffectInstance)sender))
+				{
+					if(i==3)
+					{
+						((DynamicSoundEffectInstance)sender).Stop();
+					}
+					break;
+				}
+			}
+		}
+
+		private bool AddToBuffer(DynamicSoundEffectInstance sound)
+		{
 			byte[] buffer=new byte[bytesPerChunk];
 			int bytesReturned=stream.Read(buffer,0,buffer.Length);
 			if(bytesReturned<bytesPerChunk)
@@ -67,11 +83,11 @@ namespace Terraria.ModLoader
 				}
 				else if(bytesReturned==0)
 				{
-					((DynamicSoundEffectInstance)sender).Stop();
-					return;
+					return false;
 				}
 			}
-			((DynamicSoundEffectInstance)sender).SubmitBuffer(buffer);
+			sound.SubmitBuffer(buffer);
+			return true;
 		}
 	}
 }
