@@ -16,7 +16,7 @@ If you are a modder, the following links might be useful for you:
 ___
 1. [tModLoader documentation](http://blushiemagic.github.io/tModLoader/html/annotated.html)
 2. [tModLoader WIKI](https://github.com/blushiemagic/tModLoader/wiki) (useful information and guides)
-3. [Join our Discord server](discord.me/tmodloader) (requires a DiscordApp account)
+3. [Join our Discord server](https://discord.me/tmodloader) (requires a DiscordApp account)
 4. [Mod skeleton generator](http://javid.ddns.net/tModLoader/generator/ModSkeletonGenerator.html)
  This tool, made by Jopojelly, can quickly setup a .csproj for you with the barebones of a mod.
 5. [tModLoader's official release thread on TCF](http://forums.terraria.org/index.php?threads/.23726/)
@@ -32,7 +32,7 @@ The money that we earn from our Patreon will be initially used to pay for server
 
 ## How to get in touch
 
-If you would like to contact us or tModLoader users, it's best to join our [Discord server](discord.me/tmodloader). Discord is a chat and voice application we've used for over 2 years to communicate with each other. It's similar to IRC chats. To use Discord you will need to register a new account on [their website](https://discordapp.com/).
+If you would like to contact us or tModLoader users, it's best to join our [Discord server](https://discord.me/tmodloader). Discord is a chat and voice application we've used for over 2 years to communicate with each other. It's similar to IRC chats. To use Discord you will need to register a new account on [their website](https://discordapp.com/).
 
 ## How-to install or uninstall
 
