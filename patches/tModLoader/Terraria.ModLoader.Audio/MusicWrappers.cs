@@ -1,12 +1,12 @@
+using System;
 using Microsoft.Xna.Framework.Audio;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Audio
 {
-	//todo: further documentation
 	public class MusicWrapper
 	{
 		internal Cue cue;
-		private SoundEffectInstance modMusic;
+		private StreamingMusic modMusic;
 
 		internal MusicWrapper(Cue cue)
 		{
@@ -66,7 +66,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public SoundEffectInstance ModMusic
+		public StreamingMusic ModMusic
 		{
 			get
 			{
@@ -80,7 +80,7 @@ namespace Terraria.ModLoader
 					modMusic = value;
 					if (modMusic != null)
 					{
-						modMusic.IsLooped = true;
+		//				modMusic.IsLooped = true;
 					}
 					this.Play();
 				}
@@ -89,7 +89,7 @@ namespace Terraria.ModLoader
 					modMusic = value;
 					if (modMusic != null)
 					{
-						modMusic.IsLooped = true;
+		//				modMusic.IsLooped = true;
 					}
 				}
 			}

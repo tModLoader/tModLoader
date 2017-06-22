@@ -16,6 +16,7 @@ using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader
 {
@@ -906,6 +907,40 @@ namespace Terraria.ModLoader
 
 			Mod mod = GetMod(modName);
 			return mod != null && mod.SoundExists(subName);
+		}
+
+		/// <summary>
+		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the sound does not exist. Note: StreamingMusic is in the Terraria.ModLoader.Audio namespace.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
+		public static StreamingMusic GetMusic(string name)
+		{
+			if (Main.dedServ)
+				return null;
+
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+
+			Mod mod = GetMod(modName);
+			if (mod == null)
+				throw new MissingResourceException("Missing mod: " + name);
+
+			return mod.GetMusic(subName);
+		}
+
+		/// <summary>
+		/// Returns whether or not a music with the specified name exists.
+		/// </summary>
+		public static bool MusicExists(string name)
+		{
+			if (!name.Contains('/'))
+				return false;
+
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+
+			Mod mod = GetMod(modName);
+			return mod != null && mod.MusicExists(subName);
 		}
 
 		public static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey)
