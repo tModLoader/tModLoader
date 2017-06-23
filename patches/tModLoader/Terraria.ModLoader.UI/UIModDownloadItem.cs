@@ -321,7 +321,7 @@ namespace Terraria.ModLoader.UI
 								HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
 								if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
 								{
-									Interface.errorMessage.SetMessage("The Mod Browser server is under heavy load. Try again later.");
+									Interface.errorMessage.SetMessage("The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.");
 									Interface.errorMessage.SetGotoMenu(0);
 									Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 									Main.gameMenu = true;
