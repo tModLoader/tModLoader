@@ -1,4 +1,5 @@
-﻿using System;
+//#define DEBUG_JUMP_TO_END
+using System;
 using System.IO;
 using Microsoft.Xna.Framework.Audio;
 using MP3Sharp;
@@ -7,26 +8,23 @@ namespace Terraria.ModLoader
 {
 	public class SoundMP3:IDisposable
 	{
+		//private static List<WeakReference> reference=new List<WeakReference>();
+		//private static List<long> position=new List<long>();
+
 		private MP3Stream stream;
 		private MemoryStream data;
 		private long bytesPerChunk;
-		private const int DEFAULT_BYTESPERCHUNK=8192;
+		private const int DEFAULT_BYTESPERCHUNK=4096;//8192;
 
-		private bool IsLooped;//loop=true allows for only one instance playing of that sound at a time, false buffers entire file
+		public bool IsMusic;//Loops is true but allows for only one instance playing of that sound at a time, false buffers entire file
 
-		public SoundMP3(string path,bool loop,int bytesPerChunk=DEFAULT_BYTESPERCHUNK)
+		public SoundMP3(byte[] byteArray,bool music,int bytesPerChunk=DEFAULT_BYTESPERCHUNK)
 		{
-			stream=new MP3Stream(path,bytesPerChunk);
-			IsLooped=loop;
-			this.bytesPerChunk=loop?bytesPerChunk:stream.Length;
-		}
-
-		public SoundMP3(byte[] byteArray,bool loop,int bytesPerChunk=DEFAULT_BYTESPERCHUNK)
-		{
+			if(byteArray==null){throw new ArgumentNullException("byteArray");}
 			data=new MemoryStream(byteArray);
-			stream=new MP3Stream(data);
-			IsLooped=loop;
-			this.bytesPerChunk=loop?bytesPerChunk:stream.Length;
+			stream=new MP3Stream(data,bytesPerChunk);
+			IsMusic=music;
+			this.bytesPerChunk=music?bytesPerChunk:stream.Length;
 		}
 
 		public void Dispose()
@@ -39,56 +37,93 @@ namespace Terraria.ModLoader
 		{
 			DynamicSoundEffectInstance effect;
 			effect=new DynamicSoundEffectInstance(stream.Frequency,(AudioChannels)stream.ChannelCount);
-			effect.BufferNeeded+=instance_BufferNeeded;
+			//int index=SetupReferenceIndex(effect);
+			if(!IsMusic)
+			{
+				SubmitBuffer(effect,1);
+				effect.BufferNeeded+=sound_BufferNeeded;
+			}
+			//else{effect.BufferNeeded+=music_BufferNeeded;}//{delegate(object sender,EventArgs e){SubmitBuffer((DynamicSoundEffectInstance)sender,index,3);};}
+			
+#if DEBUG_JUMP_TO_END
+			/*position[index]*/stream.Position=7*stream.Length/8;//Jumps to the end of most songs
+#endif
 			return effect;
 		}
 
-		public static SoundMP3 FromByteArray(byte[] data)
+		private void sound_BufferNeeded(object sender,EventArgs e)
 		{
-			if(data==null){throw new ArgumentNullException("stream");}
-			return new SoundMP3(data,true);
+			((DynamicSoundEffectInstance)sender).Stop();
 		}
 
-		//This method is loosely based on code from the XNAMP3 class by ZaneDubya from the MP3Sharp GitHub
-		private void instance_BufferNeeded(object sender,EventArgs e)
+		private void music_BufferNeeded(object sender,EventArgs e)
 		{
-			if(stream==null)
+			SubmitBuffer((DynamicSoundEffectInstance)sender,3);
+		}
+
+		internal void SubmitBuffer(DynamicSoundEffectInstance sound/*,int index*/,int count)
+		{
+			if(stream==null)//Probably don't need to check for this
 			{
-				((DynamicSoundEffectInstance)sender).Stop();
+				sound.Stop();
 				return;
 			}
-			for(int i=3;i>0;i--)
+			//stream.Position=position[index];
+			for(int i=0;i<count;i++)
 			{
-				if(!AddToBuffer((DynamicSoundEffectInstance)sender))
+				if(!SubmitSingle(sound))
 				{
-					if(i==3)
+					if(i==0)
 					{
-						((DynamicSoundEffectInstance)sender).Stop();
+						sound.Stop();
 					}
 					break;
 				}
 			}
+			//position[index]=stream.Position;
 		}
 
-		private bool AddToBuffer(DynamicSoundEffectInstance sound)
+		//Loosely based on code from the XNAMP3 class by ZaneDubya from the MP3Sharp GitHub
+		private bool SubmitSingle(DynamicSoundEffectInstance sound)
 		{
 			byte[] buffer=new byte[bytesPerChunk];
 			int bytesReturned=stream.Read(buffer,0,buffer.Length);
-			if(bytesReturned<bytesPerChunk)
+			if(!IsMusic)
 			{
-				if(IsLooped)
-				{
-					stream.Position=0;
-					stream.IsEOF=false;
-					stream.Read(buffer,bytesReturned,buffer.Length-bytesReturned);
-				}
-				else if(bytesReturned==0)
-				{
-					return false;
-				}
+				ResetStreamPosition();
+			}
+			else if(bytesReturned<bytesPerChunk)
+			{
+				stream.Read(buffer,bytesReturned,buffer.Length-bytesReturned);
+				ResetStreamPosition();
 			}
 			sound.SubmitBuffer(buffer);
 			return true;
 		}
+
+		public void ResetStreamPosition()
+		{
+			if(stream!=null)
+			{
+				stream.Position=0;
+				stream.IsEOF=false;
+			}
+		}
+
+		/*private int SetupReferenceIndex(DynamicSoundEffectInstance sound)
+		{
+			for(int index=0;index<reference.Count;index++)
+			{
+				if(!reference[index].IsAlive)
+				{
+					reference[index]=new WeakReference(sound);
+					position[index]=0;
+					return index;
+				}
+			}
+			reference.Add(new WeakReference(sound));
+			position.Add(0);
+			return reference.Count-1;
+		}*/
 	}
 }
