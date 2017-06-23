@@ -3,266 +3,105 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace Terraria.ModLoader
 {
-	//todo: further documentation
-	public interface IMusic
+	public abstract class Music
 	{
-		bool IsDisposed{get;}
-		bool IsPaused{get;}
-		bool IsPlaying{get;}
-		void Pause();
-		void Play();
-		void Resume();
-		void Stop(AudioStopOptions options);
-		void SetVariable(string name,float value);
+		public static implicit operator Music(Cue cue){return new MusicCue(){cue=cue};}
+		public static implicit operator Music(SoundWrapper sound)
+		{
+			if(sound.IsWAV){return new MusicWAV(sound.soundWAV);}
+			if(sound.IsMP3){return new MusicMP3(sound.soundMP3);}
+			return null;
+		}
+		public abstract bool IsDisposed{get;}
+		public abstract bool IsPaused{get;}
+		public abstract bool IsPlaying{get;}
+		public abstract void Pause();
+		public abstract void Play();
+		public abstract void Resume();
+		public abstract void Stop(AudioStopOptions options);
+		public abstract void SetVariable(string name,float value);
+		public virtual void CheckBuffer(){}
 	}
 
-	public class MusicCue:IMusic
+	public class MusicCue:Music
 	{
-		private Cue cue;
-		public static implicit operator MusicCue(Cue cue){return new MusicCue{cue=cue};}
-		public static implicit operator Cue(MusicCue musicCue){return musicCue.cue;}
-		public bool IsDisposed{get{return cue.IsDisposed;}}
-		public bool IsPaused{get{return cue.IsPaused;}}
-		public bool IsPlaying{get{return cue.IsPlaying;}}
-		public void Pause(){cue.Pause();}
-		public void Play(){cue.Play();}
-		public void Resume(){cue.Resume();}
-		public void Stop(AudioStopOptions options){cue.Stop(options);}
-		public void SetVariable(string name,float value){cue.SetVariable(name,value);}
+		internal Cue cue;
+		//public static implicit operator Cue(MusicCue musicCue){return musicCue.cue;}
+		public override bool IsDisposed{get{return cue.IsDisposed;}}
+		public override bool IsPaused{get{return cue.IsPaused;}}
+		public override bool IsPlaying{get{return cue.IsPlaying;}}
+		public override void Pause(){cue.Pause();}
+		public override void Play(){cue.Play();}
+		public override void Resume(){cue.Resume();}
+		public override void Stop(AudioStopOptions options){cue.Stop(options);}
+		public override void SetVariable(string name,float value){cue.SetVariable(name,value);}
 	}
 
-	public class MusicSound:IMusic
+	public class MusicWAV:Music
 	{
-		private SoundEffectInstance sound;
-		public static implicit operator MusicSound(SoundEffectInstance sound){return new MusicSound{sound=sound};}
-		public static implicit operator SoundEffectInstance(MusicSound musicSound){return musicSound.sound;}
-		public bool IsDisposed{get{return sound.IsDisposed;}}
-		public bool IsPaused{get{return sound.State==SoundState.Paused;}}
-		public bool IsPlaying{get{return sound.State!=SoundState.Stopped;}}
-		public void Pause(){sound.Pause();}
-		public void Play(){sound.Play();}
-		public void Resume(){sound.Resume();}
-		public void Stop(AudioStopOptions options){sound.Stop(options==AudioStopOptions.Immediate);}
-		public void SetVariable(string name,float value)
+		internal SoundEffectInstance instance;
+		public MusicWAV(SoundWrapper sound)
+		{
+			instance=sound.CreateInstance();
+		}
+		//public static implicit operator SoundEffectInstance(MusicSound musicSound){return musicSound.sound;}
+		public override bool IsDisposed{get{return instance.IsDisposed;}}
+		public override bool IsPaused{get{return instance.State==SoundState.Paused;}}
+		public override bool IsPlaying{get{return instance.State!=SoundState.Stopped;}}
+		public override void Pause(){instance.Pause();}
+		public override void Play(){instance.Play();}
+		public override void Resume(){instance.Resume();}
+		public override void Stop(AudioStopOptions options){instance.Stop(options==AudioStopOptions.Immediate);}
+		public override void SetVariable(string name,float value)
 		{
 			switch(name)
 			{
-				case "Volume":sound.Volume=value;return;
-				case "Pitch":sound.Pitch=value;return;
-				case "Pan":sound.Pan=value;return;
+				case "Volume":instance.Volume=value;return;
+				case "Pitch":instance.Pitch=value;return;
+				case "Pan":instance.Pan=value;return;
 				default:throw new Exception("Invalid field: '"+name+"'");
 			}
 		}
 	}
-
-	/*public class MusicWrapper
+	public class MusicMP3:Music
 	{
-		internal Cue cue;
-		private SoundEffectInstance modMusic;
-
-		internal MusicWrapper(Cue cue)
+		private const int bufferMin=3;
+		private const int bufferCountPerSubmit=3;
+		internal SoundMP3 sound;
+		internal DynamicSoundEffectInstance instance;
+		public MusicMP3(SoundMP3 sound)
 		{
-			this.cue = cue;
+			this.sound=sound;
+			instance=sound.CreateInstance();
 		}
-
-		internal MusicWrapper()
+		//public static implicit operator SoundEffectInstance(MusicSound musicSound){return musicSound.sound;}
+		public override bool IsDisposed{get{return instance.IsDisposed;}}
+		public override bool IsPaused{get{return instance.State==SoundState.Paused;}}
+		public override bool IsPlaying{get{return instance.State!=SoundState.Stopped;}}
+		public override void Pause(){instance.Pause();}
+		public override void Play(){instance.Play();}
+		public override void Resume(){instance.Resume();}
+		public override void Stop(AudioStopOptions options)
 		{
+			instance.Stop(options==AudioStopOptions.Immediate);
+			sound.ResetStreamPosition();
 		}
-
-		public bool IsDisposed
+		public override void SetVariable(string name,float value)
 		{
-			get
+			switch(name)
 			{
-				if (modMusic != null)
-				{
-					return modMusic.IsDisposed;
-				}
-				else
-				{
-					return cue?.IsDisposed ?? true;
-				}
-			}
-		}
-
-		public bool IsPaused
-		{
-			get
-			{
-				if (modMusic != null)
-				{
-					return modMusic.State == SoundState.Paused;
-				}
-				else
-				{
-					return cue?.IsPaused ?? true;
-				}
+				case "Volume":instance.Volume=value;return;
+				case "Pitch":instance.Pitch=value;return;
+				case "Pan":instance.Pan=value;return;
+				default:throw new Exception("Invalid field: '"+name+"'");
 			}
 		}
-
-		public bool IsPlaying
+		public override void CheckBuffer()
 		{
-			get
+			if(instance.PendingBufferCount<bufferMin&&IsPlaying)
 			{
-				if (modMusic != null)
-				{
-					return modMusic.State != SoundState.Stopped;
-				}
-				else if (cue != null)
-				{
-					return cue?.IsPlaying ?? false;
-				}
-				else
-				{
-					return false;
-				}
+				sound.SubmitBuffer(instance,bufferCountPerSubmit);
 			}
 		}
-
-		public SoundEffectInstance ModMusic
-		{
-			get
-			{
-				return modMusic;
-			}
-			set
-			{
-				if (this.IsPlaying)
-				{
-					this.Stop();
-					modMusic = value;
-					if (modMusic != null)
-					{
-						modMusic.IsLooped = true;
-					}
-					this.Play();
-				}
-				else
-				{
-					modMusic = value;
-					if (modMusic != null)
-					{
-						modMusic.IsLooped = true;
-					}
-				}
-			}
-		}
-
-		public void Pause()
-		{
-			if (modMusic != null)
-			{
-				modMusic.Pause();
-			}
-			else
-			{
-				cue?.Pause();
-			}
-		}
-
-		public void Play()
-		{
-			if (modMusic != null)
-			{
-				modMusic.Play();
-			}
-			else
-			{
-				cue = Main.soundBank?.GetCue(cue.Name) ?? null;
-				cue?.Play();
-			}
-		}
-
-		public void Resume()
-		{
-			if (modMusic != null)
-			{
-				modMusic.Resume();
-			}
-			else
-			{
-				cue?.Resume();
-			}
-		}
-
-		public void Stop()
-		{
-			if (modMusic != null)
-			{
-				modMusic.Stop();
-			}
-			else
-			{
-				cue?.Stop(AudioStopOptions.Immediate);
-			}
-		}
-
-		public void Stop(bool immediate)
-		{
-			if (modMusic != null)
-			{
-				modMusic.Stop(immediate);
-			}
-			else
-			{
-				if (immediate)
-				{
-					cue?.Stop(AudioStopOptions.Immediate);
-				}
-				else
-				{
-					cue?.Stop(AudioStopOptions.AsAuthored);
-				}
-			}
-		}
-
-		public void Stop(AudioStopOptions options)
-		{
-			if (modMusic != null)
-			{
-				modMusic.Stop(options.HasFlag(AudioStopOptions.Immediate));
-			}
-			else
-			{
-				cue?.Stop(options);
-			}
-		}
-
-		public void SetVariable(string name, float value)
-		{
-			if (modMusic != null)
-			{
-				if (name.Equals("Volume"))
-				{
-					modMusic.Volume = value;
-				}
-			}
-			else
-			{
-				cue?.SetVariable(name, value);
-			}
-		}
-		//~SoundEffectInstance();
-		//public virtual bool IsLooped { get; set; }
-		//public float Pan { get; set; }
-		//public float Pitch { get; set; }
-		//public SoundState State { get; }
-		//public float Volume { get; set; }
-		//public void Apply3D(AudioListener[] listeners, AudioEmitter emitter);
-		//public void Apply3D(AudioListener listener, AudioEmitter emitter);
-		//public void Dispose();
-		//protected virtual void Dispose(bool disposing);
-		//~Cue();
-		//public bool IsCreated { get; }
-		//
-		//public bool IsPlaying { get; }
-		//public bool IsPrepared { get; }
-		//public bool IsPreparing { get; }
-		//public bool IsStopped { get; }
-		//public bool IsStopping { get; }
-		//public string Name { get; }
-		//public event EventHandler<EventArgs> Disposing;
-		//public void Apply3D(AudioListener listener, AudioEmitter emitter);
-		//public void Dispose();
-		//public float GetVariable(string name);
-	}*/
+	}
 }
