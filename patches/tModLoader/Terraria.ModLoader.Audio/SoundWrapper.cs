@@ -1,20 +1,22 @@
-﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Terraria.ModLoader
 {
 	public class SoundWrapper
 	{
-		public SoundEffect soundEffect;
-		public SoundMP3 mp3Instance;
+		public SoundEffect soundWAV;
+		public SoundMP3 soundMP3;
 
-		public static implicit operator SoundWrapper(SoundEffect that){return new SoundWrapper{soundEffect=that};}
-		public static implicit operator SoundWrapper(SoundMP3 that){return new SoundWrapper{mp3Instance=that};}
-		//public static implicit operator SoundEffect(SoundEffectWrapper that){return that.soundEffect;}
+		public bool IsWAV{get{return soundWAV!=null;}}
+		public bool IsMP3{get{return soundMP3!=null;}}
+
+		public static implicit operator SoundWrapper(SoundEffect that){return new SoundWrapper{soundWAV=that};}
+		public static implicit operator SoundWrapper(SoundMP3 that){return new SoundWrapper{soundMP3=that};}
 
 		public SoundEffectInstance CreateInstance()
 		{
-			if(soundEffect!=null){return soundEffect.CreateInstance();}
-			if(mp3Instance!=null){return mp3Instance.CreateInstance();}
+			if(IsWAV){return soundWAV.CreateInstance();}
+			if(IsMP3){return soundMP3.CreateInstance();}
 			return null;
 		}
 	}
