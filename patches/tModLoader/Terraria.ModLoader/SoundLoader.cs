@@ -102,7 +102,7 @@ namespace Terraria.ModLoader
 					}
 					else
 					{
-						Main.music[slot] = (MusicSound)ModLoader.GetSound(sound)?.CreateInstance() ?? null;
+						Main.music[slot] = (SoundWrapper)ModLoader.GetMusic(sound) ?? null;
 					}
 				}
 			}
