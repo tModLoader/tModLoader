@@ -135,7 +135,7 @@
  		public static SoundBank soundBank;
  		public static WaveBank waveBank;
 -		public static Cue[] music = new Cue[42];
-+		public static IMusic[] music = new IMusic[42];
++		public static Music[] music = new Music[42];
  		public static float[] musicFade = new float[42];
  		public static float musicVolume = 0.75f;
  		public static float ambientVolume = 0.75f;
@@ -516,15 +516,6 @@
  			TextureManager.Initialize();
  			this.mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
  			Main.ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
-@@ -8262,7 +_,7 @@
- 			Main.waveBank = new WaveBank(Main.engine, "Content" + Path.DirectorySeparatorChar + "Wave Bank.xwb");
- 			for (int i = 1; i < 42; i++)
- 			{
--				Main.music[i] = Main.soundBank.GetCue("Music_" + i);
-+				Main.music[i] = (MusicCue)Main.soundBank.GetCue("Music_" + i);
- 			}
- 		}
- 
 @@ -8639,6 +_,7 @@
  					bool flag13 = false;
  					Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
@@ -613,15 +604,6 @@
  						if (m == 28)
  						{
  							if (Main.cloudAlpha > 0f && (double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0 + (double)(Main.screenHeight / 2) && !Main.player[Main.myPlayer].ZoneSnow)
-@@ -9389,7 +_,7 @@
- 								}
- 								else if (!Main.music[m].IsPlaying)
- 								{
--									Main.music[m] = Main.soundBank.GetCue("Music_" + m);
-+									Main.music[m] = (MusicCue)Main.soundBank.GetCue("Music_" + m);
- 									Main.music[m].Play();
- 									Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.ambientVolume);
- 								}
 @@ -9436,7 +_,10 @@
  						{
  							if (!Main.music[m].IsPlaying)
@@ -629,11 +611,23 @@
 -								Main.music[m] = Main.soundBank.GetCue("Music_" + m);
 +								if (m < Main.maxMusic)
 +								{
-+									Main.music[m] = (MusicCue)Main.soundBank.GetCue("Music_" + m);
++									Main.music[m] = Main.soundBank.GetCue("Music_" + m);
 +								}
  								Main.music[m].Play();
  								Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.musicVolume * num8);
  							}
+@@ -9449,9 +_,11 @@
+ 								}
+ 								Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.musicVolume * num8);
+ 							}
++							Main.music[m].CheckBuffer();
+ 						}
+ 						else if (Main.music[m].IsPlaying)
+ 						{
++							Main.music[m].CheckBuffer();
+ 							if (Main.musicFade[Main.curMusic] > 0.25f)
+ 							{
+ 								Main.musicFade[m] -= 0.005f;
 @@ -11935,6 +_,8 @@
  			if (!this._isDrawingOrUpdating)
  			{
@@ -3020,7 +3014,7 @@
  						}
  						Microsoft.Xna.Framework.Color color5 = Lighting.GetColor((int)((double)dust.position.X + 4.0) / 16, (int)((double)dust.position.Y + 4.0) / 16);
 -						if (dust.type == 6 || dust.type == 15 || (dust.noLight && dust.type < 86 && dust.type > 91) || (dust.type >= 59 && dust.type <= 64))
-+						if (dust.type == 6 || dust.type == 15 || (dust.type >= 59 && dust.type <= 64))
++						if (dust.type == 6 || dust.type == 15 || (dust.noLight && (dust.type < 86 || dust.type > 91)) || (dust.type >= 59 && dust.type <= 64))
  						{
  							color5 = Microsoft.Xna.Framework.Color.White;
  						}
