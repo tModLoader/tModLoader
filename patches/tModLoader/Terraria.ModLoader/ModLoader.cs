@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		/// <summary>The name and version number of tModLoader.</summary>
-		public static readonly Version version = new Version(0, 10, 0, 2);
+		public static readonly Version version = new Version(0, 10, 0, 1);
 		public static readonly string versionedName = "tModLoader v" + version;
 #if WINDOWS
 		public static readonly bool windows = true;
@@ -906,6 +906,32 @@ namespace Terraria.ModLoader
 
 			Mod mod = GetMod(modName);
 			return mod != null && mod.SoundExists(subName);
+		}
+
+		/// <summary>
+		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
+		public static SoundMP3 GetMusic(string name)
+		{
+			if(Main.dedServ){return null;}
+			string modName,subName;
+			SplitName(name,out modName,out subName);
+			Mod mod=GetMod(modName);
+			if(mod==null){throw new MissingResourceException("Missing mod: "+name);}
+			return mod.GetMusic(subName);
+		}
+
+		/// <summary>
+		/// Returns whether or not a sound with the specified name exists.
+		/// </summary>
+		public static bool MusicExists(string name)
+		{
+			if(!name.Contains('/')){return false;}
+			string modName,subName;
+			SplitName(name,out modName,out subName);
+			Mod mod=GetMod(modName);
+			return mod!=null&&mod.MusicExists(subName);
 		}
 
 		public static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey)
