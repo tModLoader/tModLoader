@@ -9,6 +9,8 @@ using Mono.Cecil;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using static Terraria.ModLoader.ModLoader;
+using System.Runtime.ExceptionServices;
+
 namespace Terraria.ModLoader
 {
 	//todo: further documentation
@@ -245,7 +247,19 @@ namespace Terraria.ModLoader
 
 			mod.modFile.Save();
 			EnableMod(mod.modFile);
+			ActivateExceptionReporting();
 			return true;
+		}
+
+		private static bool exceptionReportingActive;
+		private static void ActivateExceptionReporting()
+		{
+			if (exceptionReportingActive) return;
+			exceptionReportingActive = true;
+			AppDomain.CurrentDomain.FirstChanceException += delegate(object sender, FirstChanceExceptionEventArgs exceptionArgs)
+			{
+				Main.NewText(exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace, Microsoft.Xna.Framework.Color.OrangeRed);
+			};
 		}
 
 		private static bool VerifyName(string modName, byte[] dll) {
