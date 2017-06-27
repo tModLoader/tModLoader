@@ -38,6 +38,7 @@ var searchData=
   ['delegatekilltile',['DelegateKillTile',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#aa302db51e71127ad510c8d5a1575e806',1,'Terraria::ModLoader::TileLoader']]],
   ['delegatekillwall',['DelegateKillWall',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a950ad65f5cd49d327c13fbd1d0b2d80f',1,'Terraria::ModLoader::WallLoader']]],
   ['delegatemodifybufftip',['DelegateModifyBuffTip',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#ae5737d94a9724c5524d9f62521f6dcd9',1,'Terraria::ModLoader::BuffLoader']]],
+  ['delegatemodifydamagehitbox',['DelegateModifyDamageHitbox',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a662524155fa5b9122799223b148eae9f',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['delegatemodifydrawinfo',['DelegateModifyDrawInfo',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#afbf8c46a8132f331e3c33054c0e308ce',1,'Terraria::ModLoader::PlayerHooks']]],
   ['delegatemodifyhitbyitem',['DelegateModifyHitByItem',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a7f72a1a343b30dc7dac1db7b20196fb0',1,'Terraria::ModLoader::NPCLoader']]],
   ['delegatemodifyhitbynpc',['DelegateModifyHitByNPC',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a0c23baaa188dc3e4b9fd1cd110e58dc5',1,'Terraria::ModLoader::PlayerHooks']]],

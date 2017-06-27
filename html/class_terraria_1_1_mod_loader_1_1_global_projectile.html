@@ -185,6 +185,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab216a84d7301f86afada25f4b9f17156"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab216a84d7301f86afada25f4b9f17156">MinionContactDamage</a> (Projectile projectile)</td></tr>
 <tr class="memdesc:ab216a84d7301f86afada25f4b9f17156"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if the projectile is considered a pet.  <a href="#ab216a84d7301f86afada25f4b9f17156">More...</a><br /></td></tr>
 <tr class="separator:ab216a84d7301f86afada25f4b9f17156"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8863ddeef94b1e985c64dd86fad6ed5b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a8863ddeef94b1e985c64dd86fad6ed5b">ModifyDamageHitbox</a> (Projectile projectile, ref Rectangle hitbox)</td></tr>
+<tr class="memdesc:a8863ddeef94b1e985c64dd86fad6ed5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hitbox used by a projectile for damaging players and NPCs.  <a href="#a8863ddeef94b1e985c64dd86fad6ed5b">More...</a><br /></td></tr>
+<tr class="separator:a8863ddeef94b1e985c64dd86fad6ed5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78a58a0e560bf775d3ad11951906f73c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a78a58a0e560bf775d3ad11951906f73c">ModifyHitNPC</a> (Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)</td></tr>
 <tr class="memdesc:a78a58a0e560bf775d3ad11951906f73c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that a projectile does to an NPC.  <a href="#a78a58a0e560bf775d3ad11951906f73c">More...</a><br /></td></tr>
 <tr class="separator:a78a58a0e560bf775d3ad11951906f73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -509,10 +512,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00219">219</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00228">228</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00428">Terraria.ModLoader.ProjectileLoader.CanHitNPC()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        {</div><div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00440">Terraria.ModLoader.ProjectileLoader.CanHitNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        {</div><div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
@@ -569,10 +572,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00288">288</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00297">297</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00528">Terraria.ModLoader.ProjectileLoader.CanHitPlayer()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        {</div><div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00540">Terraria.ModLoader.ProjectileLoader.CanHitPlayer()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        {</div><div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -629,10 +632,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00255">255</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00264">264</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00485">Terraria.ModLoader.ProjectileLoader.CanHitPvp()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        {</div><div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00497">Terraria.ModLoader.ProjectileLoader.CanHitPvp()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        {</div><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
@@ -681,10 +684,10 @@ Properties</h2></td></tr>
 
 <p>Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00387">387</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00396">396</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00667">Terraria.ModLoader.ProjectileLoader.CanUseGrapple()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        {</div><div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00679">Terraria.ModLoader.ProjectileLoader.CanUseGrapple()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        {</div><div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
@@ -773,10 +776,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00322">322</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00331">331</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00571">Terraria.ModLoader.ProjectileLoader.Colliding()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        {</div><div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00583">Terraria.ModLoader.ProjectileLoader.Colliding()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        {</div><div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
@@ -908,8 +911,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00380">380</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        {</div><div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00389">389</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        {</div><div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7b67b1fc3ff53a59a66cb0fe82410778"></a>
@@ -954,10 +957,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00333">333</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00342">342</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00594">Terraria.ModLoader.ProjectileLoader.GetAlpha()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        {</div><div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00606">Terraria.ModLoader.ProjectileLoader.GetAlpha()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        {</div><div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
@@ -1012,10 +1015,10 @@ Properties</h2></td></tr>
 
 <p>The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00424">424</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00433">433</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00746">Terraria.ModLoader.ProjectileLoader.GrapplePullSpeed()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        {</div><div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00758">Terraria.ModLoader.ProjectileLoader.GrapplePullSpeed()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        {</div><div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-12-summary" class="dynsummary" style="display:block;">
@@ -1070,10 +1073,10 @@ Properties</h2></td></tr>
 
 <p>The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00417">417</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00426">426</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00733">Terraria.ModLoader.ProjectileLoader.GrappleRetreatSpeed()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        {</div><div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00745">Terraria.ModLoader.ProjectileLoader.GrappleRetreatSpeed()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;        {</div><div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-13-summary" class="dynsummary" style="display:block;">
@@ -1102,7 +1105,7 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00207">Terraria.ModLoader.ProjectileLoader.AI()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00336">Terraria.ModLoader.ProjectileLoader.CanCutTiles()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00392">Terraria.ModLoader.ProjectileLoader.CanDamage()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00428">Terraria.ModLoader.ProjectileLoader.CanHitNPC()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00528">Terraria.ModLoader.ProjectileLoader.CanHitPlayer()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00485">Terraria.ModLoader.ProjectileLoader.CanHitPvp()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00571">Terraria.ModLoader.ProjectileLoader.Colliding()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00351">Terraria.ModLoader.ProjectileLoader.CutTiles()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00594">Terraria.ModLoader.ProjectileLoader.GetAlpha()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00746">Terraria.ModLoader.ProjectileLoader.GrapplePullSpeed()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00733">Terraria.ModLoader.ProjectileLoader.GrappleRetreatSpeed()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00380">Terraria.ModLoader.ProjectileLoader.Kill()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00410">Terraria.ModLoader.ProjectileLoader.MinionContactDamage()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00461">Terraria.ModLoader.ProjectileLoader.ModifyHitNPC()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00547">Terraria.ModLoader.ProjectileLoader.ModifyHitPlayer()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00504">Terraria.ModLoader.ProjectileLoader.ModifyHitPvp()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00720">Terraria.ModLoader.ProjectileLoader.NumGrappleHooks()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00473">Terraria.ModLoader.ProjectileLoader.OnHitNPC()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00559">Terraria.ModLoader.ProjectileLoader.OnHitPlayer()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00516">Terraria.ModLoader.ProjectileLoader.OnHitPvp()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00318">Terraria.ModLoader.ProjectileLoader.OnTileCollide()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00219">Terraria.ModLoader.ProjectileLoader.PostAI()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00655">Terraria.ModLoader.ProjectileLoader.PostDraw()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00189">Terraria.ModLoader.ProjectileLoader.PreAI()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00637">Terraria.ModLoader.ProjectileLoader.PreDraw()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00619">Terraria.ModLoader.ProjectileLoader.PreDrawExtras()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00362">Terraria.ModLoader.ProjectileLoader.PreKill()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00280">Terraria.ModLoader.ProjectileLoader.ShouldUpdatePosition()</a>, and <a class="el" href="_projectile_loader_8cs_source.html#l00299">Terraria.ModLoader.ProjectileLoader.TileCollideStyle()</a>.</p>
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00207">Terraria.ModLoader.ProjectileLoader.AI()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00336">Terraria.ModLoader.ProjectileLoader.CanCutTiles()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00392">Terraria.ModLoader.ProjectileLoader.CanDamage()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00440">Terraria.ModLoader.ProjectileLoader.CanHitNPC()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00540">Terraria.ModLoader.ProjectileLoader.CanHitPlayer()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00497">Terraria.ModLoader.ProjectileLoader.CanHitPvp()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00583">Terraria.ModLoader.ProjectileLoader.Colliding()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00351">Terraria.ModLoader.ProjectileLoader.CutTiles()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00606">Terraria.ModLoader.ProjectileLoader.GetAlpha()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00758">Terraria.ModLoader.ProjectileLoader.GrapplePullSpeed()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00745">Terraria.ModLoader.ProjectileLoader.GrappleRetreatSpeed()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00380">Terraria.ModLoader.ProjectileLoader.Kill()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00410">Terraria.ModLoader.ProjectileLoader.MinionContactDamage()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00429">Terraria.ModLoader.ProjectileLoader.ModifyDamageHitbox()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00473">Terraria.ModLoader.ProjectileLoader.ModifyHitNPC()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00559">Terraria.ModLoader.ProjectileLoader.ModifyHitPlayer()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00516">Terraria.ModLoader.ProjectileLoader.ModifyHitPvp()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00732">Terraria.ModLoader.ProjectileLoader.NumGrappleHooks()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00485">Terraria.ModLoader.ProjectileLoader.OnHitNPC()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00571">Terraria.ModLoader.ProjectileLoader.OnHitPlayer()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00528">Terraria.ModLoader.ProjectileLoader.OnHitPvp()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00318">Terraria.ModLoader.ProjectileLoader.OnTileCollide()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00219">Terraria.ModLoader.ProjectileLoader.PostAI()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00667">Terraria.ModLoader.ProjectileLoader.PostDraw()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00189">Terraria.ModLoader.ProjectileLoader.PreAI()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00649">Terraria.ModLoader.ProjectileLoader.PreDraw()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00631">Terraria.ModLoader.ProjectileLoader.PreDrawExtras()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00362">Terraria.ModLoader.ProjectileLoader.PreKill()</a>, <a class="el" href="_projectile_loader_8cs_source.html#l00280">Terraria.ModLoader.ProjectileLoader.ShouldUpdatePosition()</a>, and <a class="el" href="_projectile_loader_8cs_source.html#l00299">Terraria.ModLoader.ProjectileLoader.TileCollideStyle()</a>.</p>
 
 <p><div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -1124,22 +1127,23 @@ Properties</h2></td></tr>
 <area shape="rect" id="node23" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a0a57e0cf99bfad6d7007c8d521fc1964" title="Terraria.ModLoader.Projectile\lLoader.GrappleRetreatSpeed" alt="" coords="233,698,425,745"/>
 <area shape="rect" id="node25" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a8c2c3c27c2a3a6bd2703da484c0d1ef8" title="Terraria.ModLoader.Projectile\lLoader.Kill" alt="" coords="233,767,425,814"/>
 <area shape="rect" id="node27" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9b08eb7e577332317a9f98bed7e1b82b" title="Terraria.ModLoader.Projectile\lLoader.MinionContactDamage" alt="" coords="231,837,428,883"/>
-<area shape="rect" id="node29" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a495244a3fdb2dfdb6b299ab70bb6a2ef" title="Terraria.ModLoader.Projectile\lLoader.ModifyHitNPC" alt="" coords="233,906,425,953"/>
-<area shape="rect" id="node31" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a811e9183bbc40e7fad6a84f220f617a8" title="Terraria.ModLoader.Projectile\lLoader.ModifyHitPlayer" alt="" coords="233,975,425,1022"/>
-<area shape="rect" id="node33" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a768b405c178ff4a2f26203852106ed01" title="Terraria.ModLoader.Projectile\lLoader.ModifyHitPvp" alt="" coords="233,1045,425,1091"/>
-<area shape="rect" id="node35" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#aed5f2b2fcaafd2a576996ad9140703bd" title="Terraria.ModLoader.Projectile\lLoader.NumGrappleHooks" alt="" coords="233,1114,425,1161"/>
-<area shape="rect" id="node37" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a0f209b05a81d29c3fc05db1b98fdc4ec" title="Terraria.ModLoader.Projectile\lLoader.OnHitNPC" alt="" coords="233,1183,425,1230"/>
-<area shape="rect" id="node39" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae44c933007b244434191480aae461a9d" title="Terraria.ModLoader.Projectile\lLoader.OnHitPlayer" alt="" coords="233,1253,425,1299"/>
-<area shape="rect" id="node41" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a166a1b70d4ec522e11e2a40d887ab150" title="Terraria.ModLoader.Projectile\lLoader.OnHitPvp" alt="" coords="233,1322,425,1369"/>
-<area shape="rect" id="node43" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a8c3b4f537771fa038b73cef3cab0d104" title="Terraria.ModLoader.Projectile\lLoader.OnTileCollide" alt="" coords="233,1391,425,1438"/>
-<area shape="rect" id="node45" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6079ba0bbe7de1bb624c757b955bfe51" title="Terraria.ModLoader.Projectile\lLoader.PostAI" alt="" coords="233,1461,425,1507"/>
-<area shape="rect" id="node47" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a060cf7255da0fdf43276f3cb860a2ed7" title="Terraria.ModLoader.Projectile\lLoader.PostDraw" alt="" coords="233,1530,425,1577"/>
-<area shape="rect" id="node49" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9d637a29c36a2bf7a4652fb6a0ddbfd1" title="Terraria.ModLoader.Projectile\lLoader.PreAI" alt="" coords="233,1599,425,1646"/>
-<area shape="rect" id="node51" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a7ba8c15540798577b214b9841725aadb" title="Terraria.ModLoader.Projectile\lLoader.PreDraw" alt="" coords="233,1669,425,1715"/>
-<area shape="rect" id="node53" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6936806cd0e5fde7d81675ccb0f1a245" title="Terraria.ModLoader.Projectile\lLoader.PreDrawExtras" alt="" coords="233,1738,425,1785"/>
-<area shape="rect" id="node55" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a0df5537a7f09251fd38f138d99cc73d4" title="Terraria.ModLoader.Projectile\lLoader.PreKill" alt="" coords="233,1807,425,1854"/>
-<area shape="rect" id="node57" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a089fe52161239bbbed157d654e7097f0" title="Terraria.ModLoader.Projectile\lLoader.ShouldUpdatePosition" alt="" coords="232,1877,427,1923"/>
-<area shape="rect" id="node59" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a1ab64a3527b2ffd6d8fb7e4c48b37001" title="Terraria.ModLoader.Projectile\lLoader.TileCollideStyle" alt="" coords="233,1946,425,1993"/>
+<area shape="rect" id="node29" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a97e93c7d38e82c47718f9e16140424eb" title="Terraria.ModLoader.Projectile\lLoader.ModifyDamageHitbox" alt="" coords="233,906,425,953"/>
+<area shape="rect" id="node31" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a495244a3fdb2dfdb6b299ab70bb6a2ef" title="Terraria.ModLoader.Projectile\lLoader.ModifyHitNPC" alt="" coords="233,975,425,1022"/>
+<area shape="rect" id="node33" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a811e9183bbc40e7fad6a84f220f617a8" title="Terraria.ModLoader.Projectile\lLoader.ModifyHitPlayer" alt="" coords="233,1045,425,1091"/>
+<area shape="rect" id="node35" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a768b405c178ff4a2f26203852106ed01" title="Terraria.ModLoader.Projectile\lLoader.ModifyHitPvp" alt="" coords="233,1114,425,1161"/>
+<area shape="rect" id="node37" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#aed5f2b2fcaafd2a576996ad9140703bd" title="Terraria.ModLoader.Projectile\lLoader.NumGrappleHooks" alt="" coords="233,1183,425,1230"/>
+<area shape="rect" id="node39" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a0f209b05a81d29c3fc05db1b98fdc4ec" title="Terraria.ModLoader.Projectile\lLoader.OnHitNPC" alt="" coords="233,1253,425,1299"/>
+<area shape="rect" id="node41" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae44c933007b244434191480aae461a9d" title="Terraria.ModLoader.Projectile\lLoader.OnHitPlayer" alt="" coords="233,1322,425,1369"/>
+<area shape="rect" id="node43" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a166a1b70d4ec522e11e2a40d887ab150" title="Terraria.ModLoader.Projectile\lLoader.OnHitPvp" alt="" coords="233,1391,425,1438"/>
+<area shape="rect" id="node45" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a8c3b4f537771fa038b73cef3cab0d104" title="Terraria.ModLoader.Projectile\lLoader.OnTileCollide" alt="" coords="233,1461,425,1507"/>
+<area shape="rect" id="node47" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6079ba0bbe7de1bb624c757b955bfe51" title="Terraria.ModLoader.Projectile\lLoader.PostAI" alt="" coords="233,1530,425,1577"/>
+<area shape="rect" id="node49" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a060cf7255da0fdf43276f3cb860a2ed7" title="Terraria.ModLoader.Projectile\lLoader.PostDraw" alt="" coords="233,1599,425,1646"/>
+<area shape="rect" id="node51" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9d637a29c36a2bf7a4652fb6a0ddbfd1" title="Terraria.ModLoader.Projectile\lLoader.PreAI" alt="" coords="233,1669,425,1715"/>
+<area shape="rect" id="node53" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a7ba8c15540798577b214b9841725aadb" title="Terraria.ModLoader.Projectile\lLoader.PreDraw" alt="" coords="233,1738,425,1785"/>
+<area shape="rect" id="node55" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6936806cd0e5fde7d81675ccb0f1a245" title="Terraria.ModLoader.Projectile\lLoader.PreDrawExtras" alt="" coords="233,1807,425,1854"/>
+<area shape="rect" id="node57" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a0df5537a7f09251fd38f138d99cc73d4" title="Terraria.ModLoader.Projectile\lLoader.PreKill" alt="" coords="233,1877,425,1923"/>
+<area shape="rect" id="node59" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a089fe52161239bbbed157d654e7097f0" title="Terraria.ModLoader.Projectile\lLoader.ShouldUpdatePosition" alt="" coords="232,1946,427,1993"/>
+<area shape="rect" id="node61" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a1ab64a3527b2ffd6d8fb7e4c48b37001" title="Terraria.ModLoader.Projectile\lLoader.TileCollideStyle" alt="" coords="233,2015,425,2062"/>
 </map>
 </div>
 </p>
@@ -1254,6 +1258,65 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a8863ddeef94b1e985c64dd86fad6ed5b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalProjectile.ModifyDamageHitbox </td>
+          <td>(</td>
+          <td class="paramtype">Projectile&#160;</td>
+          <td class="paramname"><em>projectile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Rectangle&#160;</td>
+          <td class="paramname"><em>hitbox</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to change the hitbox used by a projectile for damaging players and NPCs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">projectile</td><td></td></tr>
+    <tr><td class="paramname">hitbox</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00218">218</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00429">Terraria.ModLoader.ProjectileLoader.ModifyDamageHitbox()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        {</div><div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-17-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a8863ddeef94b1e985c64dd86fad6ed5b_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a8863ddeef94b1e985c64dd86fad6ed5b_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a8863ddeef94b1e985c64dd86fad6ed5b_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a8863ddeef94b1e985c64dd86fad6ed5b_icgraph">
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a97e93c7d38e82c47718f9e16140424eb" title="Terraria.ModLoader.Projectile\lLoader.ModifyDamageHitbox" alt="" coords="261,5,453,51"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="a78a58a0e560bf775d3ad11951906f73c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1323,15 +1386,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00233">233</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00242">242</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00461">Terraria.ModLoader.ProjectileLoader.ModifyHitNPC()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        {</div><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00473">Terraria.ModLoader.ProjectileLoader.ModifyHitNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        {</div><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-18" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-18-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-17-content" class="dyncontent" style="display:none;">
+<div id="dynsection-18-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a78a58a0e560bf775d3ad11951906f73c_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a78a58a0e560bf775d3ad11951906f73c_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a78a58a0e560bf775d3ad11951906f73c_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a78a58a0e560bf775d3ad11951906f73c_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a495244a3fdb2dfdb6b299ab70bb6a2ef" title="Terraria.ModLoader.Projectile\lLoader.ModifyHitNPC" alt="" coords="229,5,421,51"/>
@@ -1396,15 +1459,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00300">300</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00309">309</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00547">Terraria.ModLoader.ProjectileLoader.ModifyHitPlayer()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        {</div><div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-18" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-18-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00559">Terraria.ModLoader.ProjectileLoader.ModifyHitPlayer()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        {</div><div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-18-content" class="dyncontent" style="display:none;">
+<div id="dynsection-19-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a294bc7ef4586362ed1ef19df56d88e09_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a294bc7ef4586362ed1ef19df56d88e09_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a294bc7ef4586362ed1ef19df56d88e09_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a294bc7ef4586362ed1ef19df56d88e09_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a811e9183bbc40e7fad6a84f220f617a8" title="Terraria.ModLoader.Projectile\lLoader.ModifyHitPlayer" alt="" coords="229,5,421,51"/>
@@ -1469,15 +1532,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00267">267</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00276">276</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00504">Terraria.ModLoader.ProjectileLoader.ModifyHitPvp()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        {</div><div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00516">Terraria.ModLoader.ProjectileLoader.ModifyHitPvp()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        {</div><div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div id="dynsection-20-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_ac155350ec502aa873ef9748636accc88_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_ac155350ec502aa873ef9748636accc88_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_ac155350ec502aa873ef9748636accc88_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_ac155350ec502aa873ef9748636accc88_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a768b405c178ff4a2f26203852106ed01" title="Terraria.ModLoader.Projectile\lLoader.ModifyHitPvp" alt="" coords="229,5,421,51"/>
@@ -1562,15 +1625,15 @@ Properties</h2></td></tr>
 
 <p>How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00410">410</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00419">419</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00720">Terraria.ModLoader.ProjectileLoader.NumGrappleHooks()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        {</div><div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00732">Terraria.ModLoader.ProjectileLoader.NumGrappleHooks()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        {</div><div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-21" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-21-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-20-content" class="dyncontent" style="display:none;">
+<div id="dynsection-21-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_ab01ffa6483a27d73051ca9b30f249184_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_ab01ffa6483a27d73051ca9b30f249184_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_ab01ffa6483a27d73051ca9b30f249184_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_ab01ffa6483a27d73051ca9b30f249184_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#aed5f2b2fcaafd2a576996ad9140703bd" title="Terraria.ModLoader.Projectile\lLoader.NumGrappleHooks" alt="" coords="245,5,437,51"/>
@@ -1642,15 +1705,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00245">245</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00254">254</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00473">Terraria.ModLoader.ProjectileLoader.OnHitNPC()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        {</div><div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-21" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-21-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00485">Terraria.ModLoader.ProjectileLoader.OnHitNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        {</div><div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-22" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-22-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div id="dynsection-22-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a6c4760647ac0f9a454989e2b333c7b0c_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a6c4760647ac0f9a454989e2b333c7b0c_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a6c4760647ac0f9a454989e2b333c7b0c_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a6c4760647ac0f9a454989e2b333c7b0c_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a0f209b05a81d29c3fc05db1b98fdc4ec" title="Terraria.ModLoader.Projectile\lLoader.OnHitNPC" alt="" coords="229,5,421,51"/>
@@ -1715,15 +1778,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00311">311</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00320">320</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00559">Terraria.ModLoader.ProjectileLoader.OnHitPlayer()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        {</div><div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-22" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-22-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00571">Terraria.ModLoader.ProjectileLoader.OnHitPlayer()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        {</div><div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-23" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-23-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-22-content" class="dyncontent" style="display:none;">
+<div id="dynsection-23-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a2dac12ff40a1dabbf0d4fb1442f6f832_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a2dac12ff40a1dabbf0d4fb1442f6f832_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a2dac12ff40a1dabbf0d4fb1442f6f832_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a2dac12ff40a1dabbf0d4fb1442f6f832_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae44c933007b244434191480aae461a9d" title="Terraria.ModLoader.Projectile\lLoader.OnHitPlayer" alt="" coords="229,5,421,51"/>
@@ -1788,15 +1851,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00278">278</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00287">287</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00516">Terraria.ModLoader.ProjectileLoader.OnHitPvp()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        {</div><div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-23" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-23-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00528">Terraria.ModLoader.ProjectileLoader.OnHitPvp()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        {</div><div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-24" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-24-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-23-content" class="dyncontent" style="display:none;">
+<div id="dynsection-24-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a004341b430cdd90fb406238d872219e1_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a004341b430cdd90fb406238d872219e1_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a004341b430cdd90fb406238d872219e1_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a004341b430cdd90fb406238d872219e1_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a166a1b70d4ec522e11e2a40d887ab150" title="Terraria.ModLoader.Projectile\lLoader.OnHitPvp" alt="" coords="229,5,421,51"/>
@@ -1852,11 +1915,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00318">Terraria.ModLoader.ProjectileLoader.OnTileCollide()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-24" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-24-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-25" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-25-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-24-content" class="dyncontent" style="display:none;">
+<div id="dynsection-25-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a54e53d2666fd2746541428bee75542a9_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a54e53d2666fd2746541428bee75542a9_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a54e53d2666fd2746541428bee75542a9_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a54e53d2666fd2746541428bee75542a9_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a8c3b4f537771fa038b73cef3cab0d104" title="Terraria.ModLoader.Projectile\lLoader.OnTileCollide" alt="" coords="229,5,421,51"/>
@@ -1900,11 +1963,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00219">Terraria.ModLoader.ProjectileLoader.PostAI()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        {</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-25" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-25-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-26" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-26-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div id="dynsection-26-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a610a8a7456d42c49b38bb89f0b7523a5_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a610a8a7456d42c49b38bb89f0b7523a5_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a610a8a7456d42c49b38bb89f0b7523a5_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a610a8a7456d42c49b38bb89f0b7523a5_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6079ba0bbe7de1bb624c757b955bfe51" title="Terraria.ModLoader.Projectile\lLoader.PostAI" alt="" coords="229,5,421,51"/>
@@ -1962,15 +2025,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00367">367</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00376">376</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00655">Terraria.ModLoader.ProjectileLoader.PostDraw()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        {</div><div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-26" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-26-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00667">Terraria.ModLoader.ProjectileLoader.PostDraw()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        {</div><div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-27" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-27-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-26-content" class="dyncontent" style="display:none;">
+<div id="dynsection-27-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a3969ae6c19a6f2cad224d18f3e5683f5_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a3969ae6c19a6f2cad224d18f3e5683f5_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a3969ae6c19a6f2cad224d18f3e5683f5_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a3969ae6c19a6f2cad224d18f3e5683f5_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a060cf7255da0fdf43276f3cb860a2ed7" title="Terraria.ModLoader.Projectile\lLoader.PostDraw" alt="" coords="229,5,421,51"/>
@@ -2015,11 +2078,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00189">Terraria.ModLoader.ProjectileLoader.PreAI()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-27" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-27-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-28" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-28-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-28-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-27-content" class="dyncontent" style="display:none;">
+<div id="dynsection-28-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a2d36a798579d23fc47f763bc506a7a4c_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a2d36a798579d23fc47f763bc506a7a4c_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a2d36a798579d23fc47f763bc506a7a4c_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a2d36a798579d23fc47f763bc506a7a4c_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9d637a29c36a2bf7a4652fb6a0ddbfd1" title="Terraria.ModLoader.Projectile\lLoader.PreAI" alt="" coords="229,5,421,51"/>
@@ -2078,15 +2141,15 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00356">356</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00365">365</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00637">Terraria.ModLoader.ProjectileLoader.PreDraw()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        {</div><div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-28" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-28-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-28-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00649">Terraria.ModLoader.ProjectileLoader.PreDraw()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        {</div><div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-29" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-29-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-28-content" class="dyncontent" style="display:none;">
+<div id="dynsection-29-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a244c1bc16ccbc1a645b899166001de8f_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a244c1bc16ccbc1a645b899166001de8f_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a244c1bc16ccbc1a645b899166001de8f_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a244c1bc16ccbc1a645b899166001de8f_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a7ba8c15540798577b214b9841725aadb" title="Terraria.ModLoader.Projectile\lLoader.PreDraw" alt="" coords="229,5,421,51"/>
@@ -2138,15 +2201,15 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00344">344</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00353">353</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00619">Terraria.ModLoader.ProjectileLoader.PreDrawExtras()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        {</div><div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-29" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-29-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00631">Terraria.ModLoader.ProjectileLoader.PreDrawExtras()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        {</div><div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-30" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-30-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-29-content" class="dyncontent" style="display:none;">
+<div id="dynsection-30-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_af9d2b93baaa0fb81a19e50d03725d670_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_af9d2b93baaa0fb81a19e50d03725d670_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_af9d2b93baaa0fb81a19e50d03725d670_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_af9d2b93baaa0fb81a19e50d03725d670_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6936806cd0e5fde7d81675ccb0f1a245" title="Terraria.ModLoader.Projectile\lLoader.PreDrawExtras" alt="" coords="229,5,421,51"/>
@@ -2202,11 +2265,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00362">Terraria.ModLoader.ProjectileLoader.PreKill()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        {</div><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-30" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-30-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-31" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-31-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-30-content" class="dyncontent" style="display:none;">
+<div id="dynsection-31-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_acc6152f84f090351814920cfc40c19f7_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_acc6152f84f090351814920cfc40c19f7_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_acc6152f84f090351814920cfc40c19f7_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_acc6152f84f090351814920cfc40c19f7_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a0df5537a7f09251fd38f138d99cc73d4" title="Terraria.ModLoader.Projectile\lLoader.PreKill" alt="" coords="229,5,421,51"/>
@@ -2285,11 +2348,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00280">Terraria.ModLoader.ProjectileLoader.ShouldUpdatePosition()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        {</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-31" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-31-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-32" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-32-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-31-content" class="dyncontent" style="display:none;">
+<div id="dynsection-32-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a947e32131ebfbf214c8d9530acc3bc77_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a947e32131ebfbf214c8d9530acc3bc77_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a947e32131ebfbf214c8d9530acc3bc77_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a947e32131ebfbf214c8d9530acc3bc77_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a089fe52161239bbbed157d654e7097f0" title="Terraria.ModLoader.Projectile\lLoader.ShouldUpdatePosition" alt="" coords="264,5,459,51"/>
@@ -2333,15 +2396,15 @@ Properties</h2></td></tr>
 
 <p>Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00395">395</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00404">404</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00684">Terraria.ModLoader.ProjectileLoader.SingleGrappleHook()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        {</div><div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-32" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-32-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00696">Terraria.ModLoader.ProjectileLoader.SingleGrappleHook()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        {</div><div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-33" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-33-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-33-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-32-content" class="dyncontent" style="display:none;">
+<div id="dynsection-33-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_a4f87420f4b7e3d839654e3098a60b2ba_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_a4f87420f4b7e3d839654e3098a60b2ba_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_a4f87420f4b7e3d839654e3098a60b2ba_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_a4f87420f4b7e3d839654e3098a60b2ba_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6143fef2a5c0c830a955e9821929e887" title="Terraria.ModLoader.Projectile\lLoader.SingleGrappleHook" alt="" coords="245,5,437,51"/>
@@ -2411,11 +2474,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00299">Terraria.ModLoader.ProjectileLoader.TileCollideStyle()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        {</div><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-33" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-33-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-33-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-34" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-34-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-33-content" class="dyncontent" style="display:none;">
+<div id="dynsection-34-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_aeb112ef058769cf219ea82ef62e49a73_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_aeb112ef058769cf219ea82ef62e49a73_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_aeb112ef058769cf219ea82ef62e49a73_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_aeb112ef058769cf219ea82ef62e49a73_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a1ab64a3527b2ffd6d8fb7e4c48b37001" title="Terraria.ModLoader.Projectile\lLoader.TileCollideStyle" alt="" coords="229,5,421,51"/>
@@ -2459,15 +2522,15 @@ Properties</h2></td></tr>
 
 <p>This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc. </p>
 
-<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00403">403</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00412">412</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00702">Terraria.ModLoader.ProjectileLoader.UseGrapple()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        {</div><div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-34" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-34-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00714">Terraria.ModLoader.ProjectileLoader.UseGrapple()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        {</div><div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-35" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-35-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-35-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-34-content" class="dyncontent" style="display:none;">
+<div id="dynsection-35-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_projectile_aa2c88a7d4194399f4ed0e15b5c4e6e7f_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_projectile_aa2c88a7d4194399f4ed0e15b5c4e6e7f_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_projectile_aa2c88a7d4194399f4ed0e15b5c4e6e7f_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_projectile_aa2c88a7d4194399f4ed0e15b5c4e6e7f_icgraph">
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#aa73d4092eb24c3cdff33622fc547b5bb" title="Terraria.ModLoader.Projectile\lLoader.UseGrapple" alt="" coords="229,5,421,51"/>
@@ -2508,7 +2571,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_projectile_8cs_source.html#l00050">50</a> of file <a class="el" href="_global_projectile_8cs_source.html">GlobalProjectile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00768">Terraria.ModLoader.ProjectileLoader.HasMethod()</a>.</p>
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00780">Terraria.ModLoader.ProjectileLoader.HasMethod()</a>.</p>
 
 </div>
 </div>

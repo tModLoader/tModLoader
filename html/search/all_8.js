@@ -144,6 +144,7 @@ var searchData=
   ['hookmeleespeedmultiplier',['HookMeleeSpeedMultiplier',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a6caba49ed16aec17c13d2723101b2b22',1,'Terraria.ModLoader.ItemLoader.HookMeleeSpeedMultiplier()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a3d973b5c1d4f83680eb9b92d1efb6627',1,'Terraria.ModLoader.PlayerHooks.HookMeleeSpeedMultiplier()']]],
   ['hookminioncontactdamage',['HookMinionContactDamage',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ace8a86915b1d51b12800ae4d1b1fb1e0',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['hookmodifybufftip',['HookModifyBuffTip',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a1382f83d211a83b6983a5022e83ead34',1,'Terraria::ModLoader::BuffLoader']]],
+  ['hookmodifydamagehitbox',['HookModifyDamageHitbox',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#af5ed68e4fd62110a8d13c3b2cfe188d1',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['hookmodifydrawheadlayers',['HookModifyDrawHeadLayers',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ae653ef50b5aac936eb5c97ae045c6943',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookmodifydrawinfo',['HookModifyDrawInfo',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a9de954d2dcf41a03fee0278519f8948b',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookmodifydrawlayers',['HookModifyDrawLayers',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ac8cd97f1273bb99505acdd913eacb956',1,'Terraria::ModLoader::PlayerHooks']]],
