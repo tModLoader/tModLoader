@@ -289,6 +289,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to change the hitbox used by this projectile for damaging players and NPCs.
+		/// </summary>
+		/// <param name="hitbox"></param>
+		public virtual void ModifyDamageHitbox(ref Rectangle hitbox)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to determine whether this projectile can hit the given NPC. Return true to allow hitting the target, return false to block this projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 		/// </summary>
 		/// <param name="target">The target.</param>
