@@ -183,8 +183,8 @@ namespace Terraria.ModLoader
 			{
 				ModNet.AssignNetIDs();
 				//Main.player[0] = new Player();
-				Main.player[255] = new Player();
 			}
+			Main.player[255] = new Player();
 
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
