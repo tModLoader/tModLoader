@@ -344,11 +344,6 @@ namespace Terraria.ModLoader.UI
 							if (!update)
 							{
 								Interface.modBrowser.aNewModDownloaded = true;
-								string path = ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".enabled";
-								using (StreamWriter writer = File.CreateText(path))
-								{
-									writer.Write("false");
-								}
 							}
 							else
 							{
