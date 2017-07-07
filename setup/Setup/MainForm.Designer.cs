@@ -48,10 +48,14 @@ namespace Terraria.ModLoader.Setup
 			this.menuItemWarnings = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuItemSingleDecompileThread = new System.Windows.Forms.ToolStripMenuItem();
 			this.resetTimeStampOptimizationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.buttonSetupDebugging = new System.Windows.Forms.Button();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.decompileServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.formatCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.buttonSetupDebugging = new System.Windows.Forms.Button();
+			this.patchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.exactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.offsetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.fuzzyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -223,7 +227,8 @@ namespace Terraria.ModLoader.Setup
 			// 
 			this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemOptions,
-            this.toolsToolStripMenuItem});
+            this.toolsToolStripMenuItem,
+            this.patchToolStripMenuItem});
 			this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this.mainMenuStrip.Name = "mainMenuStrip";
 			this.mainMenuStrip.Size = new System.Drawing.Size(349, 24);
@@ -271,18 +276,6 @@ namespace Terraria.ModLoader.Setup
 			this.resetTimeStampOptimizationsToolStripMenuItem.Text = "Reset TimeStamp Optimizations";
 			this.resetTimeStampOptimizationsToolStripMenuItem.Click += new System.EventHandler(this.menuItemResetTimeStampOptmizations_Click);
 			// 
-			// buttonSetupDebugging
-			// 
-			this.buttonSetupDebugging.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.buttonSetupDebugging.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonSetupDebugging.Location = new System.Drawing.Point(45, 158);
-			this.buttonSetupDebugging.Name = "buttonSetupDebugging";
-			this.buttonSetupDebugging.Size = new System.Drawing.Size(129, 23);
-			this.buttonSetupDebugging.TabIndex = 3;
-			this.buttonSetupDebugging.Text = "Setup Debugging";
-			this.buttonSetupDebugging.UseVisualStyleBackColor = true;
-			this.buttonSetupDebugging.Click += new System.EventHandler(this.buttonTask_Click);
-			// 
 			// toolsToolStripMenuItem
 			// 
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -306,6 +299,49 @@ namespace Terraria.ModLoader.Setup
 			this.formatCodeToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
 			this.formatCodeToolStripMenuItem.Text = "Format Code";
 			this.formatCodeToolStripMenuItem.Click += new System.EventHandler(this.menuItemFormatCode_Click);
+			// 
+			// buttonSetupDebugging
+			// 
+			this.buttonSetupDebugging.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.buttonSetupDebugging.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.buttonSetupDebugging.Location = new System.Drawing.Point(45, 158);
+			this.buttonSetupDebugging.Name = "buttonSetupDebugging";
+			this.buttonSetupDebugging.Size = new System.Drawing.Size(129, 23);
+			this.buttonSetupDebugging.TabIndex = 3;
+			this.buttonSetupDebugging.Text = "Setup Debugging";
+			this.buttonSetupDebugging.UseVisualStyleBackColor = true;
+			this.buttonSetupDebugging.Click += new System.EventHandler(this.buttonTask_Click);
+			// 
+			// patchToolStripMenuItem
+			// 
+			this.patchToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exactToolStripMenuItem,
+            this.offsetToolStripMenuItem,
+            this.fuzzyToolStripMenuItem});
+			this.patchToolStripMenuItem.Name = "patchToolStripMenuItem";
+			this.patchToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+			this.patchToolStripMenuItem.Text = "Patch";
+			// 
+			// exactToolStripMenuItem
+			// 
+			this.exactToolStripMenuItem.Name = "exactToolStripMenuItem";
+			this.exactToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.exactToolStripMenuItem.Text = "Exact";
+			this.exactToolStripMenuItem.Click += new System.EventHandler(this.exactToolStripMenuItem_Click);
+			// 
+			// offsetToolStripMenuItem
+			// 
+			this.offsetToolStripMenuItem.Name = "offsetToolStripMenuItem";
+			this.offsetToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.offsetToolStripMenuItem.Text = "Offset";
+			this.offsetToolStripMenuItem.Click += new System.EventHandler(this.offsetToolStripMenuItem_Click);
+			// 
+			// fuzzyToolStripMenuItem
+			// 
+			this.fuzzyToolStripMenuItem.Name = "fuzzyToolStripMenuItem";
+			this.fuzzyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.fuzzyToolStripMenuItem.Text = "Fuzzy";
+			this.fuzzyToolStripMenuItem.Click += new System.EventHandler(this.fuzzyToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -361,6 +397,10 @@ namespace Terraria.ModLoader.Setup
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem decompileServerToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem formatCodeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem patchToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem exactToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem offsetToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem fuzzyToolStripMenuItem;
 	}
 }
 

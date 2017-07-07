@@ -28,7 +28,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -94,6 +94,12 @@
     <Compile Include="Setup\CompositeTask.cs" />
     <Compile Include="Setup\DecompileTask.cs" />
     <Compile Include="Setup\DiffTask.cs" />
+    <Compile Include="Setup\DualPaneHTMLDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Setup\DualPaneHTMLDisplay.Designer.cs">
+      <DependentUpon>DualPaneHTMLDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Setup\FormatTask.cs" />
     <Compile Include="Setup\ITaskInterface.cs" />
     <Compile Include="Setup\MainForm.cs">
@@ -101,6 +107,13 @@
     </Compile>
     <Compile Include="Setup\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\Patcher.cs" />
+    <Compile Include="Setup\PatchResultsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\PatchResultsForm.Designer.cs">
+      <DependentUpon>PatchResultsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Setup\PatchTask.cs" />
     <Compile Include="Setup\Program.cs" />
@@ -116,6 +129,15 @@
     <Compile Include="Setup\SetupDebugTask.cs" />
     <Compile Include="Setup\SetupTask.cs" />
     <Compile Include="Setup\Task.cs" />
+    <Compile Include="Setup\TitledHTMLDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Setup\TitledHTMLDisplay.Designer.cs">
+      <DependentUpon>TitledHTMLDisplay.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Setup\DualPaneHTMLDisplay.resx">
+      <DependentUpon>DualPaneHTMLDisplay.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Setup\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -124,8 +146,14 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Setup\PatchResultsForm.resx">
+      <DependentUpon>PatchResultsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Setup\SelectFilesForm.resx">
       <DependentUpon>SelectFilesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\TitledHTMLDisplay.resx">
+      <DependentUpon>TitledHTMLDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

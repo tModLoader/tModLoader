@@ -270,6 +270,11 @@ namespace Terraria.ModLoader.Setup
 			guidField.SetValue(claInst, guid);
 			claField.SetValue(null, claInst);
 
+			//sort the assembly references
+			var refs = module.AssemblyReferences.OrderBy(r => r.Name).ToArray();
+			module.AssemblyReferences.Clear();
+			module.AssemblyReferences.AddRange(refs);
+
 			var path = Path.Combine(options.SaveAsProjectDirectory,
 				Path.GetFileNameWithoutExtension(module.Name) + lang.ProjectFileExtension);
 			CreateParentDirectory(path);

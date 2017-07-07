@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.Setup
 		public static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json" };
 		public static string[] excluded = { "bin" + Path.DirectorySeparatorChar, "obj" + Path.DirectorySeparatorChar };
 		public static readonly string RemovedFileList = "removed_files.list";
-		public static readonly string HunkOffsetRegex = @"@@ -(\d+),(\d+) \+([_\d]+),(\d+) @@";
+		public static readonly Regex HunkOffsetRegex = new Regex(@"@@ -(\d+),(\d+) \+([_\d]+),(\d+) @@", RegexOptions.Compiled);
 
 
 		public readonly string baseDir;
@@ -111,11 +111,10 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		private static string StripDestHunkOffsets(string patchText) {
-			var r = new Regex(HunkOffsetRegex);
 			var lines = patchText.Split(new [] { Environment.NewLine }, StringSplitOptions.None);
 			for (int i = 0; i < lines.Length; i++)
 				if (lines[i].StartsWith("@@"))
-					lines[i] = r.Replace(lines[i], "@@ -$1,$2 +_,$4 @@");
+					lines[i] = HunkOffsetRegex.Replace(lines[i], "@@ -$1,$2 +_,$4 @@");
 
 			return string.Join(Environment.NewLine, lines);
 		}

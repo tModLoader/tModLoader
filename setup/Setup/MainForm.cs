@@ -34,11 +34,12 @@ namespace Terraria.ModLoader.Setup
 					.Select(b => taskButtons[b]()).ToArray());
 
 			taskButtons[buttonSetup] = () =>
-				new SetupTask(this, new[] { buttonDecompile, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new SetupTask(this, new[] { buttonDecompile, buttonRegenSource }
 					.Select(b => taskButtons[b]()).ToArray());
 
 			menuItemWarnings.Checked = Settings.Default.SuppressWarnings;
 			menuItemSingleDecompileThread.Checked = Settings.Default.SingleDecompileThread;
+			SetPatchMode(Settings.Default.PatchMode);
 
 			Closing += (sender, args) =>
 			{
@@ -194,6 +195,26 @@ namespace Terraria.ModLoader.Setup
 					if (closeOnCancel) Close();
 				}));
 			}
+		}
+
+		private void SetPatchMode(int mode) {
+			exactToolStripMenuItem.Checked = mode == 0;
+			offsetToolStripMenuItem.Checked = mode == 1;
+			fuzzyToolStripMenuItem.Checked = mode == 2;
+			Settings.Default.PatchMode = mode;
+			Settings.Default.Save();
+		}
+
+		private void exactToolStripMenuItem_Click(object sender, EventArgs e) {
+			SetPatchMode(0);
+		}
+
+		private void offsetToolStripMenuItem_Click(object sender, EventArgs e) {
+			SetPatchMode(1);
+		}
+
+		private void fuzzyToolStripMenuItem_Click(object sender, EventArgs e) {
+			SetPatchMode(2);
 		}
 	}
 }
