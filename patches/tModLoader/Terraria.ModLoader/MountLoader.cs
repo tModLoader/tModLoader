@@ -62,6 +62,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void JumpHeight(Mount.MountData mount, ref int jumpHeight, float xVelocity)
+		{
+			if (IsModMountData(mount))
+			{
+				mount.modMountData.JumpHeight(ref jumpHeight, xVelocity);
+			}
+		}
+
+		public static void JumpSpeed(Mount.MountData mount, ref float jumpSpeed, float xVelocity)
+		{
+			if (IsModMountData(mount))
+			{
+				mount.modMountData.JumpSpeed(ref jumpSpeed, xVelocity);
+			}
+		}
+
 		internal static void UpdateEffects(Player mountedPlayer)
 		{
 			if (IsModMountData(Mount.mounts[mountedPlayer.mount.Type]))

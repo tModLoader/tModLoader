@@ -1,7 +1,7 @@
 :: After Pulling, Patching, and making sure the version number is changed in src, this bat will compile and create zips for all release.
 :: It will also create a zip for ExampleMod
 
-set version=v0.10.0.1
+set version=v0.10.0.3
 set destinationFolder=.\tModLoader %version% Release
 
 :: Compile/Build exe 
@@ -51,7 +51,7 @@ call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Windows %vers
 :: Mac release
 copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\Terraria.exe" /y
 copy ..\src\tModLoader\bin\x86\MacServerRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer.exe" /y
-copy ReleaseExtras\tModLoaderServer "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer" /y
+copy ReleaseExtras\tModLoaderServer_Mac "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer" /y
 copy ReleaseExtras\tModLoaderServer.bin.osx "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer.bin.osx" /y
 :: ModCompile
 copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\ModCompile\tModLoaderWindows.exe" /y
@@ -75,7 +75,7 @@ call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Mac %version%
 :: Linux release
 copy ..\src\tModLoader\bin\x86\LinuxRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\Terraria.exe" /y
 copy ..\src\tModLoader\bin\x86\LinuxServerRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.exe" /y
-copy ReleaseExtras\tModLoaderServer "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer" /y
+copy ReleaseExtras\tModLoaderServer_Linux "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer" /y
 copy ReleaseExtras\tModLoaderServer.bin.x86 "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.bin.x86" /y
 copy ReleaseExtras\tModLoaderServer.bin.x86_64 "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.bin.x86_64" /y
 :: ModCompile

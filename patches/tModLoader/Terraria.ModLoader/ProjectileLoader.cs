@@ -423,6 +423,18 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
+		private delegate void DelegateModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox);
+		private static HookList HookModifyDamageHitbox = AddHook<DelegateModifyDamageHitbox>(g => g.ModifyDamageHitbox);
+
+		public static void ModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox)
+		{
+			projectile.modProjectile?.ModifyDamageHitbox(ref hitbox);
+			foreach (GlobalProjectile g in HookModifyDamageHitbox.arr)
+			{
+				g.Instance(projectile).ModifyDamageHitbox(projectile, ref hitbox);
+			}
+		}
+
 		private static HookList HookCanHitNPC = AddHook<Func<Projectile, NPC, bool?>>(g => g.CanHitNPC);
 
 		public static bool? CanHitNPC(Projectile projectile, NPC target)

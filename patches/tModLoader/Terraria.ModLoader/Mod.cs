@@ -144,8 +144,15 @@ namespace Terraria.ModLoader
 							string texturePath = Path.ChangeExtension(path, null);
 							using (MemoryStream buffer = new MemoryStream(data))
 							{
-								textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
-								textures[texturePath].Name = Name + "/" + texturePath;
+								try
+								{
+									textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+									textures[texturePath].Name = Name + "/" + texturePath;
+								}
+								catch (Exception e)
+								{
+									throw new ResourceLoadException($"The texture file at {path} failed to load", e);
+								}
 							}
 							break;
 						case ".wav":
@@ -156,9 +163,9 @@ namespace Terraria.ModLoader
 								{
 									sounds[soundPath] = SoundEffect.FromStream(buffer);
 								}
-								catch
+								catch (Exception e)
 								{
-									sounds[soundPath] = null;
+									throw new ResourceLoadException($"The wav sound file at {path} failed to load", e);
 								}
 							}
 							break;
@@ -172,9 +179,9 @@ namespace Terraria.ModLoader
 									? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
 									: WAVCacheIO.CacheMP3(wavCacheFilename, data);
 							}
-							catch
+							catch (Exception e)
 							{
-								sounds[mp3Path] = null;
+								throw new ResourceLoadException($"The mp3 sound file at {path} failed to load", e);
 							}
 							break;
 						case ".xnb":
@@ -192,9 +199,9 @@ namespace Terraria.ModLoader
 								{
 									fonts[xnbPath] = Main.instance.OurLoad<DynamicSpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
 								}
-								catch
+								catch (Exception e)
 								{
-									fonts[xnbPath] = null;
+									throw new ResourceLoadException($"The font file at {path} failed to load", e);
 								}
 							}
 							else if (xnbPath.StartsWith("Effects/"))
@@ -228,9 +235,9 @@ namespace Terraria.ModLoader
 										effects[xnbPath] = new Effect(Main.instance.GraphicsDevice, effectBytecode);
 									}
 								}
-								catch
+								catch (Exception e)
 								{
-									effects[xnbPath] = null;
+									throw new ResourceLoadException($"The effect file at {path} failed to load", e);
 								}
 							}
 							break;

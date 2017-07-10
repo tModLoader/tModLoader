@@ -112,7 +112,7 @@ namespace Terraria.ModLoader.UI
 					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').ToList();
 					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies"; // Toolong of \n" + modListItem.modName.Text;
 					Interface.modBrowser.filterTextBox.currentString = "";
-					Interface.modBrowser.SortList();
+					Interface.modBrowser.updateNeeded = true;
 					Main.PlaySound(SoundID.MenuOpen);
 				};
 				Append(modReferenceIcon);
@@ -198,6 +198,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void Update(GameTime gameTime)
 		{
+			base.Update(gameTime);
 			if (modIconWanted && !modIconRequested)
 			{
 				modIconRequested = true;
@@ -320,7 +321,7 @@ namespace Terraria.ModLoader.UI
 								HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
 								if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
 								{
-									Interface.errorMessage.SetMessage("The Mod Browser server is under heavy load. Try again later.");
+									Interface.errorMessage.SetMessage("The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.");
 									Interface.errorMessage.SetGotoMenu(0);
 									Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 									Main.gameMenu = true;
@@ -343,11 +344,6 @@ namespace Terraria.ModLoader.UI
 							if (!update)
 							{
 								Interface.modBrowser.aNewModDownloaded = true;
-								string path = ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".enabled";
-								using (StreamWriter writer = File.CreateText(path))
-								{
-									writer.Write("false");
-								}
 							}
 							else
 							{

@@ -393,6 +393,7 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+			TileObject.objectPreview.Active = false;
 		}
 
 		public static void DisableSmartCursor(Tile tile, ref bool disable)
@@ -509,6 +510,11 @@ namespace Terraria.ModLoader
 		internal static void SetDefaults(ModTile tile)
 		{
 			tile.SetDefaults();
+			if (TileObjectData.newTile.Width > 1 || TileObjectData.newTile.Height > 1)
+			{
+				TileObjectData.FixNewTile();
+				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + tile.GetType().FullName) { HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
+			}
 			if (Main.tileLavaDeath[tile.Type])
 			{
 				Main.tileObsidianKill[tile.Type] = true;
