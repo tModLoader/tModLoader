@@ -2165,6 +2165,19 @@ namespace Terraria.ModLoader
 			waterfallStyles.Clear();
 			globalRecipes.Clear();
 			translations.Clear();
+			// Manually Dispose IDisposables to free up unmanaged memory immediately
+			foreach (var sound in sounds)
+			{
+				sound.Value.Dispose();
+			}
+			foreach (var effect in effects)
+			{
+				effect.Value.Dispose();
+			}
+			foreach (var texture in textures)
+			{
+				texture.Value.Dispose();
+			}
 		}
 
 		/// <summary>
