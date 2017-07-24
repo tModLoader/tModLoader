@@ -172,7 +172,10 @@ namespace Terraria.ModLoader
 
 			var flameTexture = Texture + "_Flame";
 			if (ModLoader.TextureExists(flameTexture))
+			{
 				Main.itemFlameTexture[item.type] = ModLoader.GetTexture(flameTexture);
+				Main.itemFlameLoaded[item.type] = true;
+			}
 
 			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
 		}
