@@ -67,7 +67,7 @@ namespace ExampleMod
 			return new TagCompound {
 				{"score", score}
 			};
-			//note that C# 6.0 supports indexer initialisers
+			//note that C# 6.0 supports indexer initializers
 			//return new TagCompound {
 			//	["score"] = score
 			//};

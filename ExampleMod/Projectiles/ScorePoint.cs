@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles
 {
-	// This projectiles merely flys towards a position and then dies. We use it to signify kill points for TEScoreBoard.
+	// This projectiles merely flies towards a position and then dies. We use it to signify kill points for TEScoreBoard.
 	class ScorePoint : ModProjectile
 	{
 		public override void SetDefaults()
@@ -24,7 +24,7 @@ namespace ExampleMod.Projectiles
 
 		public override void AI()
 		{
-			// Since projectiles have 2 ai slots, and I don't want to do manual syncing of an extra variable, here I use the HalfVector2 and ReinterpretCast.FloatAsUInt to get a Vector2 from 1 float varable instead of 2 like normal.
+			// Since projectiles have 2 ai slots, and I don't want to do manual syncing of an extra variable, here I use the HalfVector2 and ReinterpretCast.FloatAsUInt to get a Vector2 from 1 float variable instead of 2 like normal.
 			Vector2 target = new HalfVector2() { PackedValue = ReLogic.Utilities.ReinterpretCast.FloatAsUInt(projectile.ai[0]) }.ToVector2();
 
 			Rectangle targetRectangle = new Rectangle((int)target.X - 4, (int)target.Y - 4, 8, 8);
@@ -35,7 +35,7 @@ namespace ExampleMod.Projectiles
 			}
 			Vector2 targetDirection = new Vector2(target.X, target.Y) - projectile.Center;
 			projectile.velocity = Vector2.Normalize(targetDirection) * 5f;
-			// Using the player's index, which we passed into ai[1], we can diffentiate kills by assigning a hue to the dust we spawn
+			// Using the player's index, which we passed into ai[1], we can differentiate kills by assigning a hue to the dust we spawn
 			float hue = ((int)(projectile.ai[1]) % 6) / 6f;
 			Dust.QuickDust(projectile.Center, Main.hslToRgb(hue, 1f, 0.5f));
 		}
