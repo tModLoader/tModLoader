@@ -138,6 +138,7 @@ namespace Terraria.ModLoader
 					var path = file.Key;
 					var data = file.Value;
 					string extension = Path.GetExtension(path);
+					Interface.loadMods.SetSubProgressInit(path);
 					switch (extension)
 					{
 						case ".png":

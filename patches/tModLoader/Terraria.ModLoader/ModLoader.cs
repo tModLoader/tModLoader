@@ -144,6 +144,7 @@ namespace Terraria.ModLoader
 				{
 					mod.loading = true;
 					mod.Autoload();
+					Interface.loadMods.SetSubProgressInit("");
 					mod.Load();
 					mod.loading = false;
 				}
