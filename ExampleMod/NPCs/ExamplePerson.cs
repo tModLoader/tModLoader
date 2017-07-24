@@ -244,6 +244,11 @@ namespace ExampleMod.NPCs
 			}
 		}
 
+		public override void NPCLoot()
+		{
+			Item.NewItem(npc.getRect(), mod.ItemType<Items.Armor.ExampleCostume>());
+		}
+
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback)
 		{
 			damage = 20;

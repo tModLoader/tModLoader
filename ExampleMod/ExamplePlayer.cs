@@ -37,6 +37,12 @@ namespace ExampleMod
 		public bool examplePet = false;
 		public bool exampleLightPet = false;
 		public bool exampleShield = false;
+		// These 5 relate to ExampleCostume.
+		public bool blockyAccessoryPrevious;
+		public bool blockyAccessory;
+		public bool blockyHideVanity;
+		public bool blockyForceVanity;
+		public bool blockyPower;
 
 		public bool ZoneExample = false;
 
@@ -54,6 +60,8 @@ namespace ExampleMod
 			examplePet = false;
 			exampleLightPet = false;
 			exampleShield = false;
+			blockyAccessoryPrevious = blockyAccessory;
+			blockyAccessory = blockyHideVanity = blockyForceVanity = blockyPower = false;
 		}
 
 		public override void UpdateDead()
@@ -311,6 +319,28 @@ namespace ExampleMod
 			}
 		}
 
+		public override void UpdateVanityAccessories()
+		{
+			for (int n = 13; n < 18 + player.extraAccessorySlots; n++)
+			{
+				Item item = player.armor[n];
+				if (item.type == mod.ItemType<Items.Armor.ExampleCostume>())
+				{
+					blockyHideVanity = false;
+					blockyForceVanity = true;
+				}
+			}
+		}
+
+		public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
+		{
+			// Make sure this condition is the same as the condition in the Buff to remove itself. We do this here instead of in ModItem.UpdateAccessory in case we want future upgraded items to set blockyAccessory
+			if (player.townNPCs >= 1 && blockyAccessory)
+			{
+				player.AddBuff(mod.BuffType<Buffs.Blocky>(), 60, true);
+			}
+		}
+
 		public override void PostUpdateEquips()
 		{
 			if (nullified)
@@ -352,6 +382,12 @@ namespace ExampleMod
 
 		public override void FrameEffects()
 		{
+			if ((blockyPower || blockyForceVanity) && !blockyHideVanity)
+			{
+				player.legs = mod.GetEquipSlot("BlockyLeg", EquipType.Legs);
+				player.body = mod.GetEquipSlot("BlockyBody", EquipType.Body);
+				player.head = mod.GetEquipSlot("BlockyHead", EquipType.Head);
+			}
 			if (nullified)
 			{
 				Nullify();
@@ -552,6 +588,19 @@ namespace ExampleMod
 			{
 				dyeItemIDsPool.Clear();
 				dyeItemIDsPool.Add(ItemID.MartianArmorDye);
+			}
+		}
+
+		public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo)
+		{
+			if ((blockyPower || blockyForceVanity) && !blockyHideVanity)
+			{
+				player.headRotation = player.velocity.Y * (float)player.direction * 0.1f;
+				player.headRotation = Utils.Clamp(player.headRotation, -0.3f, 0.3f);
+				if (ZoneExample)
+				{
+					player.headRotation = (float)Main.time * 0.1f * player.direction;
+				}
 			}
 		}
 
