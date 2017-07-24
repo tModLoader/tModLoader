@@ -186,7 +186,7 @@ namespace Terraria.ModLoader
 		/// <param name="position">The shoot spawn position.</param>
 		/// <param name="speedX">The speed x calculated from shootSpeed and mouse position.</param>
 		/// <param name="speedY">The speed y calculated from shootSpeed and mouse position.</param>
-		/// <param name="type">The projectile type choosen by ammo and weapon.</param>
+		/// <param name="type">The projectile type chosen by ammo and weapon.</param>
 		/// <param name="damage">The projectile damage.</param>
 		/// <param name="knockBack">The projectile knock back.</param>
 		/// <returns></returns>
@@ -218,7 +218,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the damage, knockbac, etc., that a melee weapon does to an NPC.
+		/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
 		/// </summary>
 		public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
 		{
