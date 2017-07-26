@@ -1,16 +1,31 @@
 --- src/Terraria\Terraria\Program.cs
 +++ src/tModLoader\Terraria\Program.cs
-@@ -11,6 +_,7 @@
+@@ -18,6 +_,7 @@
+ #endif
  using Terraria.Initializers;
  using Terraria.Localization;
- using Terraria.Social;
 +using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.Utilities;
  
- namespace Terraria
- {
-@@ -131,6 +_,15 @@
- 		public static void LaunchGame(string[] args)
- 		{
+@@ -205,8 +_,12 @@
+ #endif
+ 			try
+ 			{
+-				Console.OutputEncoding = Encoding.Unicode;
+-				Console.InputEncoding = Encoding.Unicode;
++				Console.OutputEncoding = Encoding.UTF8;
++
++				if (Platform.IsWindows)
++					Console.InputEncoding = Encoding.Unicode;
++				else
++					Console.InputEncoding = Encoding.UTF8;
+ 			}
+ 			catch
+ 			{
+@@ -227,6 +_,15 @@
+ 				};
+ 			}
  			Program.LaunchParameters = Utils.ParseArguements(args);
 +			if (Program.LaunchParameters.ContainsKey("-savedirectory"))
 +			{
@@ -22,6 +37,6 @@
 +				return;
 +			}
  			ThreadPool.SetMinThreads(8, 8);
- 			LanguageManager.Instance.SetLanguage("English");
- 			using (Main main = new Main())
+ 			LanguageManager.Instance.SetLanguage(GameCulture.English);
+ 			Program.SetupLogging();
 

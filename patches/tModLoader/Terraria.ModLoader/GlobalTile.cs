@@ -251,14 +251,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Obsolete Use the overloaded method with the ref int parameter
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the ref int parameter.")]
-		public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor)
-		{
-		}
-
-		/// <summary>
 		/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
 		/// </summary>
 		/// <param name="i"></param>

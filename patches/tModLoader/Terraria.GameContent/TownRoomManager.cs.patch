@@ -1,0 +1,43 @@
+--- src/Terraria\Terraria.GameContent\TownRoomManager.cs
++++ src/tModLoader\Terraria.GameContent\TownRoomManager.cs
+@@ -2,13 +_,14 @@
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent
+ {
+ 	public class TownRoomManager
+ 	{
+-		private List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
+-		private bool[] _hasRoom = new bool[580];
++		internal List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
++		internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
+ 
+ 		public int FindOccupation(int x, int y)
+ 		{
+@@ -84,9 +_,21 @@
+ 
+ 		public void Save(BinaryWriter writer)
+ 		{
+-			writer.Write(this._roomLocationPairs.Count);
++			int count = 0;
+ 			foreach (Tuple<int, Point> current in this._roomLocationPairs)
+ 			{
++				if (current.Item1 < Main.maxNPCTypes)
++				{
++					count++;
++				}
++			}
++			writer.Write(count);
++			foreach (Tuple<int, Point> current in this._roomLocationPairs)
++			{
++				if (current.Item1 >= Main.maxNPCTypes)
++				{
++					continue;
++				}
+ 				writer.Write(current.Item1);
+ 				writer.Write(current.Item2.X);
+ 				writer.Write(current.Item2.Y);
+

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -39,12 +39,42 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		internal string texture;
-		internal string flameTexture = "";
+		/// <summary>
+		/// The internal name of this ModItem.
+		/// </summary>
+		public string Name
+		{
+			get;
+			internal set;
+		}
+
+		/// <summary>
+		/// The translations for the display name of this item.
+		/// </summary>
+		public ModTranslation DisplayName
+		{
+			get;
+			internal set;
+		}
+
+		/// <summary>
+		/// The translations for the display name of this tooltip.
+		/// </summary>
+		public ModTranslation Tooltip
+		{
+			get;
+			internal set;
+		}
+
+		/// <summary>
+		/// The file name of this item's texture file in the mod loader's file space.
+		/// </summary>
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
+
 		/// <summary>
 		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
 		/// </summary>
-		public bool projOnSwing = false;
+		public bool projOnSwing;
 		/// <summary>
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
 		/// </summary>
@@ -56,82 +86,98 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds a line of text to this item's first group of tooltips.
+		/// Allows you to automatically load an item instead of using Mod.AddItem. 
+		/// Return true to allow autoloading; by default returns the mod's autoload property. 
+		/// Use this method to force or stop an autoload or change the internal name.
 		/// </summary>
-		/// <param name="tooltip">The tooltip.</param>
-		public void AddTooltip(string tooltip)
-		{
-			if (string.IsNullOrEmpty(item.toolTip))
-			{
-				item.toolTip = tooltip;
-			}
-			else
-			{
-				item.toolTip += Environment.NewLine + tooltip;
-			}
-		}
-
-		/// <summary>
-		/// Adds a line of text to this item's second group of tooltips.
-		/// </summary>
-		/// <param name="tooltip">The tooltip.</param>
-		public void AddTooltip2(string tooltip)
-		{
-			if (string.IsNullOrEmpty(item.toolTip2))
-			{
-				item.toolTip2 = tooltip;
-			}
-			else
-			{
-				item.toolTip2 += Environment.NewLine + tooltip;
-			}
-		}
-
-		/// <summary>
-		/// Allows you to automatically load an item instead of using Mod.AddItem. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, texture is initialized to the namespace and overriding class name with periods replaced with slashes, and equip is initialized to an empty list. Use this method to either force or stop an autoload, change the default display name and texture path, and to allow for autoloading equipment textures.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="texture">The texture.</param>
-		/// <param name="equips">The equips.</param>
-		/// <returns></returns>
-		public virtual bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
+		/// <param name="name">The name, initialized to the name of this type.</param>
+		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
 		}
 
 		/// <summary>
-		/// This method is called when Autoload adds an equipment type. This allows you to specify equipment texture paths that differ from the defaults. Texture will be initialized to the item texture followed by an underscore and equip.ToString(), armTexture will be initialized to the item texture followed by "_Arms", and femaleTexture will be initialized to the item texture followed by "_FemaleBody".
+		/// Whether instances of this GlobalItem are created through Clone or constructor (by default implementations of NewInstance and Clone(Item, Item)). 
+		/// Defaults to false (using default constructor).
 		/// </summary>
-		/// <param name="equip">The equip.</param>
-		/// <param name="texture">The texture.</param>
-		/// <param name="armTexture">The arm texture.</param>
-		/// <param name="femaleTexture">The female texture.</param>
-		public virtual void AutoloadEquip(EquipType equip, ref string texture, ref string armTexture, ref string femaleTexture)
+		public virtual bool CloneNewInstances => false;
+
+		/// <summary>
+		/// Returns a clone of this ModItem. 
+		/// Allows you to decide which fields of your ModItem class are copied over when an item stack is split or something similar happens. 
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalItem contains object references. 
+		/// Only called if CloneNewInstances is set to true.
+		/// </summary>
+		public virtual ModItem Clone() => (ModItem)MemberwiseClone();
+
+		/// <summary>
+		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.
+		/// Defaults to NewInstance(item)
+		/// </summary>
+		/// <param name="item">The item being cloned</param>
+		/// <param name="itemClone">The new item</param>
+		public virtual ModItem Clone(Item item) => NewInstance(item);
+
+		/// <summary>
+		/// Create a new instance of this GlobalItem for an Item instance. 
+		/// Called at the end of Item.SetDefaults.
+		/// If CloneNewInstances is true, just calls Clone()
+		/// Otherwise calls the default constructor and copies fields
+		/// </summary>
+		public virtual ModItem NewInstance(Item itemClone) {
+			if (CloneNewInstances) {
+				var clone = Clone();
+				clone.item = itemClone;
+				return clone;
+			}
+
+			var copy = (ModItem)Activator.CreateInstance(GetType());
+			copy.item = itemClone;
+			copy.mod = mod;
+			copy.Name = Name;
+			copy.projOnSwing = projOnSwing;
+			copy.bossBagNPC = bossBagNPC;
+			return copy;
+		}
+
+		/// <summary>
+		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. 
+		/// For those that are familiar with tAPI, this has the same function as .json files.
+		/// </summary>
+		public virtual void SetDefaults() 
 		{
 		}
 
 		/// <summary>
-		/// Allows you to specify a texture path to the flame texture for this item when it is autoloaded. The flame texture is used when the player is holding this item and its "flame" field is set to true. At the moment torches are the only use of flame textures. By default the parameter will be set to the item texture followed by "_Flame". If the texture does not exist, then this item will not be given a flame texture.
+		/// Automatically sets certain defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
-		/// <param name="texture">The texture.</param>
-		public virtual void AutoloadFlame(ref string texture)
+		public virtual void AutoDefaults()
+		{
+			EquipLoader.SetSlot(item);
+		}
+
+		/// <summary>
+		/// This is where you set all your item's static properties, such as names/translations and the arrays in ItemID.Sets.
+		/// This is called after SetDefaults on the initial ModItem
+		/// </summary>
+		public virtual void SetStaticDefaults()
 		{
 		}
 
 		/// <summary>
-		/// Override this method to create an animation for your item. In general you will return a new Terraria.DataStructures.DrawAnimationVertical(int frameDuration, int frameCount).
+		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
-		/// <returns></returns>
-		public virtual DrawAnimation GetAnimation()
-		{
-			return null;
-		}
+		public virtual void AutoStaticDefaults() {
+			Main.itemTexture[item.type] = ModLoader.GetTexture(Texture);
 
-		/// <summary>
-		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. For those that are familiar with tAPI, this has the same function as .json files.
-		/// </summary>
-		public virtual void SetDefaults()
-		{
+			var flameTexture = Texture + "_Flame";
+			if (ModLoader.TextureExists(flameTexture))
+			{
+				Main.itemFlameTexture[item.type] = ModLoader.GetTexture(flameTexture);
+				Main.itemFlameLoaded[item.type] = true;
+			}
+
+			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>
@@ -334,6 +380,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to make things happen when this item is used. Return true if using this item actually does stuff. Returns false by default.
+		/// Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
@@ -605,15 +652,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Obsolete: Use the overloaded method with the player parameter.
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the player parameter.")]
-		public virtual void VerticalWingSpeeds(ref float ascentWhenFalling, ref float ascentWhenRising,
-			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
-		{
-		}
-
-		/// <summary>
 		/// Allows you to modify the speeds at which you rise and fall when these wings are equipped.
 		/// </summary>
 		/// <param name="player">The player.</param>
@@ -625,15 +663,6 @@ namespace Terraria.ModLoader
 		public virtual void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 	ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
-			VerticalWingSpeeds(ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
-		}
-
-		/// <summary>
-		/// Obsolete: Use the overloaded method with the player parameter.
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the player parameter.")]
-		public virtual void HorizontalWingSpeeds(ref float speed, ref float acceleration)
-		{
 		}
 
 		/// <summary>
@@ -644,15 +673,6 @@ namespace Terraria.ModLoader
 		/// <param name="acceleration">The acceleration.</param>
 		public virtual void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration)
 		{
-			HorizontalWingSpeeds(ref speed, ref acceleration);
-		}
-
-		/// <summary>
-		/// Obsolete: WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)
-		/// </summary>
-		[method: Obsolete("WingUpdate will return a bool value later. (Use NewWingUpdate in the meantime.)")]
-		public virtual void WingUpdate(Player player, bool inUse)
-		{
 		}
 
 		/// <summary>
@@ -661,7 +681,7 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player.</param>
 		/// <param name="inUse">if set to <c>true</c> [in use].</param>
 		/// <returns></returns>
-		public virtual bool NewWingUpdate(Player player, bool inUse)
+		public virtual bool WingUpdate(Player player, bool inUse)
 		{
 			return false;
 		}
@@ -725,7 +745,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
-		public virtual bool ExtraPickupSpace(Player player)
+		public virtual bool ItemSpace(Player player)
 		{
 			return false;
 		}
@@ -879,59 +899,6 @@ namespace Terraria.ModLoader
 		public virtual void AnglerQuestChat(ref string description, ref string catchLocation)
 		{
 		}
-
-		internal void SetupItem(Item item)
-		{
-			SetupModItem(item);
-			EquipLoader.SetSlot(item);
-			item.modItem.SetDefaults();
-		}
-
-		//change Terraria.Item.Clone
-		//  Item newItem = (Item)base.MemberwiseClone();
-		//  if (newItem.type >= ItemID.Count)
-		//  {
-		//      ItemLoader.GetItem(newItem.type).SetupModItem(newItem);
-		//  }
-		//  return newItem;
-		internal void SetupModItem(Item item)
-		{
-			ModItem newItem = Clone(item);
-			newItem.item = item;
-			item.modItem = newItem;
-			newItem.mod = mod;
-		}
-
-		internal void SetupClone(Item clone)
-		{
-			ModItem newItem = CloneNewInstances ? Clone(clone) : (ModItem)Activator.CreateInstance(GetType());
-			newItem.item = clone;
-			newItem.mod = mod;
-			newItem.texture = texture;
-			newItem.flameTexture = flameTexture;
-			newItem.projOnSwing = projOnSwing;
-			newItem.bossBagNPC = bossBagNPC;
-			clone.modItem = newItem;
-		}
-
-		public virtual ModItem Clone(Item item)
-		{
-			return Clone();
-		}
-
-		/// <summary>
-		/// Returns a clone of this ModItem. Allows you to decide which fields of your ModItem class are copied over when an item stack is split or something similar happens. By default all fields that you make will be automatically copied for you. Only called if CloneNewInstances is set to true.
-		/// </summary>
-		/// <returns></returns>
-		public virtual ModItem Clone()
-		{
-			return (ModItem)MemberwiseClone();
-		}
-
-		/// <summary>
-		/// Whether instances of this ModItem are created through its Clone hook or its constructor. Defaults to false.
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
 		/// Allows you to save custom data for this item. Returns null by default.

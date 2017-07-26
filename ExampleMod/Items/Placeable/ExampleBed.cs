@@ -5,13 +5,16 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleBed : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("This is a modded bed.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Bed";
 			item.width = 28;
 			item.height = 20;
 			item.maxStack = 99;
-			AddTooltip("This is a modded bed.");
 			item.useTurn = true;
 			item.autoReuse = true;
 			item.useAnimation = 15;

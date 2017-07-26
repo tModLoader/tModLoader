@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.IO
 		//in Terraria.IO.WorldFile.SaveChests include IsModItem for no-item check
 		internal static void WriteVanillaID(Item item, BinaryWriter writer)
 		{
-			writer.Write(ItemLoader.IsModItem(item) ? 0 : item.netID);
+			writer.Write(item.modItem != null ? 0 : item.netID);
 		}
 
 		public static TagCompound Save(Item item)
@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.IO
 			else
 			{
 				tag.Set("mod", item.modItem.mod.Name);
-				tag.Set("name", Main.itemName[item.type]);
+				tag.Set("name", item.modItem.Name);
 				tag.Set("data", item.modItem.Save());
 			}
 
@@ -104,13 +104,14 @@ namespace Terraria.ModLoader.IO
 			var list = new List<TagCompound>();
 			foreach (var globalItem in ItemLoader.globalItems)
 			{
-				if (!globalItem.NeedsSaving(item))
+				var globalItemInstance = globalItem.Instance(item);
+				if (!globalItemInstance.NeedsSaving(item))
 					continue;
 
 				list.Add(new TagCompound {
-					["mod"] = globalItem.mod.Name,
-					["name"] = globalItem.Name,
-					["data"] = globalItem.Save(item)
+					["mod"] = globalItemInstance.mod.Name,
+					["name"] = globalItemInstance.Name,
+					["data"] = globalItemInstance.Save(item)
 				});
 			}
 			return list.Count > 0 ? list : null;
@@ -124,9 +125,10 @@ namespace Terraria.ModLoader.IO
 				var globalItem = mod?.GetGlobalItem(tag.GetString("name"));
 				if (globalItem != null)
 				{
+					var globalItemInstance = globalItem.Instance(item);
 					try
 					{
-						globalItem.Load(item, tag.GetCompound("data"));
+						globalItemInstance.Load(item, tag.GetCompound("data"));
 					}
 					catch (Exception e)
 					{
@@ -136,7 +138,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					item.GetModInfo<MysteryGlobalItemInfo>(ModLoader.GetMod("ModLoader")).data.Add(tag);
+					item.GetGlobalItem<MysteryGlobalItem>(ModLoader.GetMod("ModLoader")).data.Add(tag);
 				}
 			}
 		}
@@ -171,7 +173,7 @@ namespace Terraria.ModLoader.IO
 			if (item.IsAir) return;
 			writer.SafeWrite(w => item.modItem?.NetSend(w));
 			foreach (var globalItem in ItemLoader.NetGlobals)
-				writer.SafeWrite(w => globalItem.NetSend(item, w));
+				writer.SafeWrite(w => globalItem.Instance(item).NetSend(item, w));
 		}
 
 		public static void ReceiveModData(Item item, BinaryReader reader)
@@ -190,7 +192,7 @@ namespace Terraria.ModLoader.IO
 			{
 				try
 				{
-					reader.SafeRead(r => globalItem.NetReceive(item, r));
+					reader.SafeRead(r => globalItem.Instance(item).NetReceive(item, r));
 				}
 				catch (IOException)
 				{
@@ -279,7 +281,7 @@ namespace Terraria.ModLoader.IO
 		{
 			using (BinaryReader reader = new BinaryReader(new MemoryStream(data)))
 			{
-				if (ItemLoader.IsModItem(item))
+				if (item.modItem != null)
 				{
 					byte[] modData = reader.ReadBytes(reader.ReadUInt16());
 					if (modData.Length > 0)

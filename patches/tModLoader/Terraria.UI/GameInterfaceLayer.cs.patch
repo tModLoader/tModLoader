@@ -1,0 +1,25 @@
+--- src/Terraria\Terraria.UI\GameInterfaceLayer.cs
++++ src/tModLoader\Terraria.UI\GameInterfaceLayer.cs
+@@ -9,15 +_,21 @@
+ 	{
+ 		public readonly string Name;
+ 		public InterfaceScaleType ScaleType;
++		public bool Active;
+ 
+ 		public GameInterfaceLayer(string name, InterfaceScaleType scaleType)
+ 		{
+ 			this.Name = name;
+ 			this.ScaleType = scaleType;
++			this.Active = true;
+ 		}
+ 
+ 		public bool Draw()
+ 		{
++			if (!this.Active)
++			{
++				return true;
++			}
+ 			Matrix transformMatrix;
+ 			if (this.ScaleType == InterfaceScaleType.Game)
+ 			{
+

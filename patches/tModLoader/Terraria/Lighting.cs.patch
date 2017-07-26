@@ -26,15 +26,15 @@
  		private static int blueDir = 1;
  		private static int minX7;
  		private static int maxX7;
-@@ -608,6 +_,7 @@
+@@ -609,6 +_,7 @@
  				Main.player[Main.myPlayer].NPCBannerBuff[m] = false;
  			}
  			Main.player[Main.myPlayer].hasBanner = false;
 +			WorldHooks.ResetNearbyTileEffects();
  			int[] screenTileCounts = Main.screenTileCounts;
  			Array.Clear(screenTileCounts, 0, screenTileCounts.Length);
- 			num4 = Lighting.firstToLightX;
-@@ -621,6 +_,7 @@
+ 			num4 = Utils.Clamp<int>(Lighting.firstToLightX, 5, Main.maxTilesX - 1);
+@@ -622,6 +_,7 @@
  			for (int n = num4; n < num5; n++)
  			{
  				Lighting.LightingState[] array3 = Lighting.states[n - Lighting.firstToLightX];
@@ -42,7 +42,7 @@
  				for (int num17 = num6; num17 < num7; num17++)
  				{
  					Lighting.LightingState lightingState3 = array3[num17 - Lighting.firstToLightY];
-@@ -772,7 +_,7 @@
+@@ -773,7 +_,7 @@
  							lightingState3.b2 = num20;
  						}
  					}
@@ -51,7 +51,7 @@
  					if (wall <= 137)
  					{
  						if (wall != 33)
-@@ -879,8 +_,10 @@
+@@ -880,8 +_,10 @@
  								break;
  						}
  					}
@@ -62,7 +62,7 @@
  						if (n > num4 + num15 && n < num5 - num15 && num17 > num6 + num16 && num17 < num7 - num16)
  						{
  							screenTileCounts[(int)tile.type]++;
-@@ -915,6 +_,7 @@
+@@ -916,6 +_,7 @@
  									Main.player[Main.myPlayer].hasBanner = true;
  								}
  							}
@@ -70,7 +70,7 @@
  						}
  						ushort type = tile.type;
  						if (type != 139)
-@@ -968,6 +_,11 @@
+@@ -969,6 +_,11 @@
  						{
  							Main.musicBox = (int)(tile.frameY / 36);
  						}
@@ -82,10 +82,10 @@
  						if (Main.tileBlockLight[(int)tile.type] && (Lighting.lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
  						{
  							lightingState3.stopLight = true;
-@@ -2451,16 +_,19 @@
+@@ -2495,16 +_,19 @@
  						}
  					}
- 					IL_3257:
+ 					IL_347B:
 +					TileLoader.ModifyLight(n, num17, tile.type, ref num18, ref num19, ref num20);
  					if (Lighting.RGB)
  					{
@@ -102,16 +102,16 @@
  						if (lightingState3.b2 < num20)
  						{
  							lightingState3.b2 = num20;
-@@ -2595,7 +_,7 @@
+@@ -2639,7 +_,7 @@
  			if (Main.player[Main.myPlayer].accOreFinder)
  			{
  				Main.player[Main.myPlayer].bestOre = -1;
--				for (int num62 = 0; num62 < 467; num62++)
-+				for (int num62 = 0; num62 < Main.tileValue.Length; num62++)
+-				for (int num63 = 0; num63 < 470; num63++)
++				for (int num63 = 0; num63 < Main.tileValue.Length; num63++)
  				{
- 					if (screenTileCounts[num62] > 0 && Main.tileValue[num62] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num62] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
+ 					if (screenTileCounts[num63] > 0 && Main.tileValue[num63] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num63] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
  					{
-@@ -2603,6 +_,7 @@
+@@ -2647,6 +_,7 @@
  					}
  				}
  			}
@@ -119,7 +119,7 @@
  			if (Main.holyTiles < 0)
  			{
  				Main.holyTiles = 0;
-@@ -2748,6 +_,7 @@
+@@ -2776,6 +_,7 @@
  							Lighting.wetLightB = 0f;
  							break;
  					}

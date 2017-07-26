@@ -7,7 +7,6 @@ namespace ExampleMod.Items.Abomination
 	{
 		public override void SetDefaults()
 		{
-			item.name = "Scythe Blade";
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 99;

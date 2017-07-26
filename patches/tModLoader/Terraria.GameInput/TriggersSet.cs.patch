@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameInput\TriggersSet.cs
 +++ src/tModLoader\Terraria.GameInput\TriggersSet.cs
-@@ -636,6 +_,10 @@
+@@ -660,6 +_,10 @@
  			foreach (string current in PlayerInput.KnownTriggers)
  			{
  				this.KeyStatus.Add(current, false);
@@ -11,7 +11,7 @@
  			}
  		}
  
-@@ -713,6 +_,8 @@
+@@ -737,6 +_,8 @@
  			{
  				this.HotbarScrollCD--;
  			}

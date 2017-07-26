@@ -6,6 +6,8 @@ using Terraria.DataStructures;
 using Terraria.GameInput;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
+using Terraria.Localization;
+using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
@@ -51,7 +53,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent.
 		/// </summary>
-		public virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, string text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
+		public virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
 		{
 			return false;
 		}
@@ -65,10 +67,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the elements of the in-game interface that get drawn. MethodSequenceListItem can be found in the Terraria.DataStructures namespace. Check https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Interface-layers-values for vanilla interface layer names
+		/// Allows you to modify the elements of the in-game interface that get drawn. MethodSequenceListItem can be found in the Terraria.DataStructures namespace. Check https://github.com/blushiemagic/tModLoader/wiki/Vanilla-Interface-layers-values for vanilla interface layer names
 		/// </summary>
 		/// <param name="layers">The layers.</param>
-		public virtual void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 		}
 
@@ -145,8 +147,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+		internal static void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
+			foreach (GameInterfaceLayer layer in layers)
+			{
+				layer.Active = true;
+			}
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.ModifyInterfaceLayers(layers);

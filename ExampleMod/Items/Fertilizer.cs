@@ -6,13 +6,16 @@ namespace ExampleMod.Items
 {
 	public class Fertilizer : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("Important for healthy saplings.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Fertilizer";
 			item.width = 22;
 			item.height = 22;
 			item.maxStack = 99;
-			item.toolTip = "Important for healthy saplings.";
 			item.rare = 1;
 			item.useAnimation = 15;
 			item.useTime = 10;

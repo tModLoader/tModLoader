@@ -39,6 +39,24 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		/// <summary>
+		/// The translations of this buff's display name.
+		/// </summary>
+		public ModTranslation DisplayName
+		{
+			get;
+			internal set;
+		}
+
+		/// <summary>
+		/// The translations of this buff's description.
+		/// </summary>
+		public ModTranslation Description
+		{
+			get;
+			internal set;
+		}
+
 		internal string texture;
 		/// <summary>If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode. Defaults to false.</summary>
 		public bool longerExpertDebuff = false;

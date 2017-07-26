@@ -146,7 +146,7 @@ namespace Terraria.ModLoader
 
 		public void Stop(bool immediate)
 		{
-			if (modMusic != null)
+			if (modMusic != null && !modMusic.IsDisposed)
 			{
 				modMusic.Stop(immediate);
 			}

@@ -24,19 +24,17 @@
  		}
  
  		public void PulseSteamTick()
-@@ -94,8 +_,13 @@
+@@ -94,7 +_,12 @@
  
  		public void Shutdown()
  		{
 +#if WINDOWS
  			Application.ApplicationExit += delegate(object obj, EventArgs evt)
--			{
 +#else
-+            this.IsSteamValid = false;
-+            AppDomain.CurrentDomain.ProcessExit += delegate(object obj, EventArgs evt)
++			this.IsSteamValid = false;
++			AppDomain.CurrentDomain.ProcessExit += delegate(object obj, EventArgs evt)
 +#endif
-+            {
+ 			{
  				this.IsSteamValid = false;
  			};
- 		}
 

@@ -1,20 +1,29 @@
 ﻿using System;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace Terraria.ModLoader.Default
 {
 	public class AprilFools : ModItem
 	{
+		public override string Texture => "Terraria/Item_3389";
+
 		public static bool CheckAprilFools()
 		{
 			DateTime now = DateTime.Now;
 			return now.Month == 4 && now.Day <= 2;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("April Fools Joke");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = CheckAprilFools() ? "Terrarian...?" : "April Fools Joke";
+			if (CheckAprilFools())
+			{
+				item.SetNameOverride("Terrarian...?");
+			}
 			item.useStyle = 4;
 			item.width = 24;
 			item.height = 24;

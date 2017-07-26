@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Map;
 
 namespace Terraria.ModLoader
@@ -40,7 +41,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref MapHelper.tileLookup, TileLoader.TileCount);
 			Array.Resize(ref MapHelper.wallLookup, WallLoader.WallCount);
 			IList<Color> colors = new List<Color>();
-			IList<string> names = new List<string>();
+			IList<LocalizedText> names = new List<LocalizedText>();
 			foreach (ushort type in tileEntries.Keys)
 			{
 				MapHelper.tileLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
@@ -50,7 +51,14 @@ namespace Terraria.ModLoader
 					entryToTile[mapType] = type;
 					nameFuncs[mapType] = entry.getName;
 					colors.Add(entry.color);
-					names.Add(entry.name);
+					if (entry.name != null)
+					{
+						names.Add(entry.name);
+					}
+					else
+					{
+						names.Add(Language.GetText(entry.translation.Key));
+					}
 				}
 			}
 			foreach (ushort type in wallEntries.Keys)
@@ -62,15 +70,22 @@ namespace Terraria.ModLoader
 					entryToWall[mapType] = type;
 					nameFuncs[mapType] = entry.getName;
 					colors.Add(entry.color);
-					names.Add(entry.name);
+					if (entry.name != null)
+					{
+						names.Add(entry.name);
+					}
+					else
+					{
+						names.Add(Language.GetText(entry.translation.Key));
+					}
 				}
 			}
 			Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition + colors.Count);
-			Lang.mapLegend.Resize(MapHelper.modPosition + names.Count);
+			Lang._mapLegendCache.Resize(MapHelper.modPosition + names.Count);
 			for (int k = 0; k < colors.Count; k++)
 			{
 				MapHelper.colorLookup[MapHelper.modPosition + k] = colors[k];
-				Lang.mapLegend[MapHelper.modPosition + k] = names[k];
+				Lang._mapLegendCache[MapHelper.modPosition + k] = names[k];
 			}
 			initialized = true;
 		}
@@ -89,7 +104,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref MapHelper.tileLookup, TileID.Count);
 			Array.Resize(ref MapHelper.wallLookup, WallID.Count);
 			Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition);
-			Lang.mapLegend.Resize(MapHelper.modPosition);
+			Lang._mapLegendCache.Resize(MapHelper.modPosition);
 			initialized = false;
 		}
 		//at end of Terraria.Map.MapHelper.CreateMapTile before returning call

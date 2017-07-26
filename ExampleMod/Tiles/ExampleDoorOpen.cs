@@ -57,7 +57,9 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 			TileID.Sets.HousingWalls[Type] = true; //needed for non-solid blocks to count as walls
-			AddMapEntry(new Color(200, 200, 200), "Example Door");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Door");
+			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.OpenDoor };

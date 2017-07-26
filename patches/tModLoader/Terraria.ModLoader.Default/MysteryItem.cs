@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Terraria.ModLoader.IO;
 
@@ -9,9 +10,16 @@ namespace Terraria.ModLoader.Default
 		private string itemName;
 		private TagCompound data;
 
+		public override string Texture => "ModLoader/MysteryItem";
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Unloaded Item");
+			Tooltip.SetDefault("\n");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Unloaded Item";
 			item.width = 20;
 			item.height = 20;
 			item.rare = 1;
@@ -19,11 +27,24 @@ namespace Terraria.ModLoader.Default
 
 		internal void Setup(TagCompound tag)
 		{
-			this.modName = tag.GetString("mod");
-			this.itemName = tag.GetString("name");
-			this.data = tag;
-			item.toolTip = "Mod: " + modName;
-			item.toolTip2 = "Item: " + itemName;
+			modName = tag.GetString("mod");
+			itemName = tag.GetString("name");
+			data = tag;
+		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			for (int k = 0; k < tooltips.Count; k++)
+			{
+				if (tooltips[k].Name == "Tooltip0")
+				{
+					tooltips[k].text = "Mod: " + modName;
+				}
+				else if (tooltips[k].Name == "Tooltip1")
+				{
+					tooltips[k].text = "Item: " + itemName;
+				}
+			}
 		}
 
 		public override TagCompound Save()
@@ -59,6 +80,8 @@ namespace Terraria.ModLoader.Default
 				["legacyData"] = ItemIO.LegacyModData(int.MaxValue, reader, hasGlobal)
 			});
 		}
+
+		public override bool CloneNewInstances => true;
 
 		public override ModItem Clone()
 		{

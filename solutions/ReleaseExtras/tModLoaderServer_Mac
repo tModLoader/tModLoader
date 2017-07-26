@@ -1,0 +1,18 @@
+#!/bin/bash
+# MonoKickstart Shell Script
+# Written by Ethan "flibitijibibo" Lee
+
+cd "`dirname "$0"`"
+
+UNAME=`uname`
+ARCH=`uname -m`
+
+if [ "$UNAME" == "Darwin" ]; then
+	export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:./osx/
+
+	if [ "$STEAM_DYLD_INSERT_LIBRARIES" != "" ] && [ "$DYLD_INSERT_LIBRARIES" == "" ]; then
+		export DYLD_INSERT_LIBRARIES="$STEAM_DYLD_INSERT_LIBRARIES"
+	fi
+
+	./tModLoaderServer.bin.osx $@
+fi

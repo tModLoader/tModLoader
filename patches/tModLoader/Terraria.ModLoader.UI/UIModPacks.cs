@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,7 +33,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.Height.Set(-220f, 1f);
 			uIElement.HAlign = 0.5f;
 
-			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
+			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
 			scrollPanel = new UIPanel();
 			scrollPanel.Width.Set(0f, 1f);
@@ -124,9 +125,10 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			if(!scrollPanel.HasChild(uiLoader)) scrollPanel.Append(uiLoader);
+			scrollPanel.Append(uiLoader);
 			modListList.Clear();
-
+			if (SynchronizationContext.Current == null)
+				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory
 				.StartNew(delegate
 				{
@@ -138,7 +140,7 @@ namespace Terraria.ModLoader.UI
 					string[] modListsFullPath = task.Result;
 					foreach (string modListFilePath in modListsFullPath)
 					{
-						string[] mods = {};
+						string[] mods = { };
 						//string path = ModListSaveDirectory + Path.DirectorySeparatorChar + modListFilePath + ".json";
 
 						if (File.Exists(modListFilePath))
@@ -153,7 +155,7 @@ namespace Terraria.ModLoader.UI
 						UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
 						modListList.Add(modItem);
 					}
-					if(scrollPanel.HasChild(uiLoader)) scrollPanel.RemoveChild(uiLoader);
+					scrollPanel.RemoveChild(uiLoader);
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 

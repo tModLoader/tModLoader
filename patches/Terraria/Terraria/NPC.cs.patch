@@ -1,6 +1,6 @@
 --- src/merged\Terraria\NPC.cs
 +++ src/Terraria\Terraria\NPC.cs
-@@ -34811,7 +_,7 @@
+@@ -33766,7 +_,7 @@
  																				this.ai[0] = -300f;
  																				this.netUpdate = true;
  																			}
@@ -9,7 +9,7 @@
  																			Vector2 vector223 = base.Center + Vector2.UnitX * (float)this.direction * 50f - Vector2.UnitY * 6f;
  																			if (this.ai[0] == 54f && Main.netMode != 1)
  																			{
-@@ -51766,19 +_,16 @@
+@@ -50721,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -34,7 +34,7 @@
  						int num34;
  						if (this.frameCounter < 10.0)
  						{
-@@ -51910,19 +_,16 @@
+@@ -50865,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -59,7 +59,7 @@
  						int num38 = 0;
  						if (this.frameCounter < 16.0)
  						{
-@@ -51968,19 +_,16 @@
+@@ -50923,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -84,7 +84,7 @@
  						int num40;
  						if (this.frameCounter < 10.0)
  						{
-@@ -52014,19 +_,16 @@
+@@ -50969,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -109,7 +109,7 @@
  						int num42;
  						if (this.frameCounter >= 10.0)
  						{
-@@ -52194,19 +_,16 @@
+@@ -51149,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -134,7 +134,7 @@
  						bool flag2 = this.ai[0] == 3f;
  						int num56 = 0;
  						int num57 = 0;
-@@ -52319,19 +_,16 @@
+@@ -51274,19 +_,16 @@
  						case 2:
  						case 4:
  						case 5:
@@ -159,16 +159,16 @@
  						bool flag3 = this.ai[0] == 16f;
  						int num61 = 0;
  						int num62 = -1;
-@@ -63559,7 +_,7 @@
+@@ -62526,7 +_,7 @@
  						{
- 							if ((num55 == num52 - num54 || num55 == num52 + num54 || num56 == num53 - num54 || num56 == num53 + num54) && !Main.tile[num55, num56].active())
+ 							if ((n == num53 - num55 || n == num53 + num55 || num56 == num54 - num55 || num56 == num54 + num55) && !Main.tile[n, num56].active())
  							{
--								Main.tile[num55, num56].type = (WorldGen.crimson ? 347 : 140);
-+								Main.tile[num55, num56].type = (ushort)(WorldGen.crimson ? 347 : 140);
- 								Main.tile[num55, num56].active(true);
+-								Main.tile[n, num56].type = (WorldGen.crimson ? 347 : 140);
++								Main.tile[n, num56].type = (ushort)(WorldGen.crimson ? 347 : 140);
+ 								Main.tile[n, num56].active(true);
  							}
- 							Main.tile[num55, num56].lava(false);
-@@ -71222,7 +_,7 @@
+ 							Main.tile[n, num56].lava(false);
+@@ -70205,7 +_,7 @@
  					while ((double)num105 < 10.0 + dmg / 10.0)
  					{
  						int num106 = this.width / 4;
@@ -177,7 +177,7 @@
  						int num107 = Dust.NewDust(base.Center - Vector2.One * (float)num106, num106 * 2, num106 * 2, 229, 0f, 0f, 0, default(Color), 1f);
  						Dust dust31 = Main.dust[num107];
  						Vector2 vector3 = Vector2.Normalize(dust31.position - base.Center);
-@@ -71245,7 +_,7 @@
+@@ -70228,7 +_,7 @@
  					for (int num108 = 0; num108 < 60; num108++)
  					{
  						int num109 = this.width / 4;
@@ -186,7 +186,7 @@
  						int num110 = Dust.NewDust(base.Center - Vector2.One * (float)num109, num109 * 2, num109 * 2, 229, 0f, 0f, 0, default(Color), 1f);
  						Dust dust32 = Main.dust[num110];
  						Vector2 vector4 = Vector2.Normalize(dust32.position - base.Center);
-@@ -72123,7 +_,7 @@
+@@ -71106,7 +_,7 @@
  					for (int num207 = 0; num207 < 60; num207++)
  					{
  						int num208 = 25;
@@ -195,7 +195,7 @@
  						int num209 = Dust.NewDust(base.Center - Vector2.One * (float)num208, num208 * 2, num208 * 2, 212, 0f, 0f, 0, default(Color), 1f);
  						Dust dust47 = Main.dust[num209];
  						Vector2 vector7 = Vector2.Normalize(dust47.position - base.Center);
-@@ -78128,7 +_,7 @@
+@@ -77107,7 +_,7 @@
  					{
  						if (this.boss)
  						{

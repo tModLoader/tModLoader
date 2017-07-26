@@ -8,27 +8,27 @@ namespace ExampleMod.Items
 {
 	public class ExampleSoul : ModItem
 	{
-		// TODO -- Velocity Y smaller, post NewItem?
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
-			item.name = "Soul of Exampleness";
-			Item refItem = new Item();
-			refItem.SetDefaults(ItemID.SoulofSight);
-			item.width = refItem.width;
-			item.height = refItem.height;
-			item.maxStack = 999;
-			item.toolTip = "'The essence of example creatures'";
-			item.value = 1000;
-			item.rare = 3;
+			DisplayName.SetDefault("Soul of Exampleness");
+			Tooltip.SetDefault("'The essence of example creatures'");
+			// ticksperframe, frameCount
+			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 4));
 			ItemID.Sets.AnimatesAsSoul[item.type] = true;
 			ItemID.Sets.ItemIconPulse[item.type] = true;
 			ItemID.Sets.ItemNoGravity[item.type] = true;
 		}
 
-		public override DrawAnimation GetAnimation()
+		// TODO -- Velocity Y smaller, post NewItem?
+		public override void SetDefaults()
 		{
-			// ticksperframe, frameCount
-			return new DrawAnimationVertical(5, 4);
+			Item refItem = new Item();
+			refItem.SetDefaults(ItemID.SoulofSight);
+			item.width = refItem.width;
+			item.height = refItem.height;
+			item.maxStack = 999;
+			item.value = 1000;
+			item.rare = 3;
 		}
 
 		// The following 2 methods are purely to show off these 2 hooks. Don't use them in your own code.

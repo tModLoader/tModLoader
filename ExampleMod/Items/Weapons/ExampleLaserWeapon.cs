@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 
@@ -10,11 +6,14 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleLaserWeapon : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("Shoot a laser beam that can eliminate everything...");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Laser Weapon";
 			item.damage = 40;
-			item.toolTip = "Shoot a laser beam that can eliminate everything...";
 			item.noMelee = true;
 			item.magic = true;
 			item.channel = true;                            //Channel so that you can held the weapon [Important]

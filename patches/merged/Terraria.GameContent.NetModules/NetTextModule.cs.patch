@@ -1,0 +1,15 @@
+--- src/decompiled\Terraria.GameContent.NetModules\NetTextModule.cs
++++ src/merged\Terraria.GameContent.NetModules\NetTextModule.cs
+@@ -60,7 +_,11 @@
+ 
+ 		public override bool Deserialize(BinaryReader reader, int senderPlayerId)
+ 		{
++#if CLIENT
+ 			return this.DeserializeAsClient(reader, senderPlayerId);
++#else
++			return this.DeserializeAsServer(reader, senderPlayerId);
++#endif
+ 		}
+ 	}
+ }
+

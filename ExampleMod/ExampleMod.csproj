@@ -38,6 +38,10 @@
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="ReLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\ReLogic.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -45,16 +49,14 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Terraria">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
-    </Reference>
-    <Reference Include="tModLoaderDebug">
-      <HintPath>C:\Program Files (x86)\Steam\SteamApps\common\Terraria\tModLoaderDebug.exe</HintPath>
+      <HintPath>..\src\tModLoader\bin\x86\WindowsDebug\Terraria.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Angle.cs" />
     <Compile Include="Backgrounds\ExampleSurfaceBgStyle.cs" />
     <Compile Include="Backgrounds\ExampleUgBgStyle.cs" />
+    <Compile Include="Buffs\Blocky.cs" />
     <Compile Include="Buffs\CarMount.cs" />
     <Compile Include="Buffs\EtherealFlames.cs" />
     <Compile Include="Buffs\ExampleLightPet.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Items\Armor\AbominationMask.cs" />
     <Compile Include="Items\Armor\BunnyMask.cs" />
     <Compile Include="Items\Armor\ExampleBreastplate.cs" />
+    <Compile Include="Items\Armor\ExampleCostume.cs" />
     <Compile Include="Items\Armor\ExampleHelmet.cs" />
     <Compile Include="Items\Armor\ExampleHood.cs" />
     <Compile Include="Items\Armor\ExampleLeggings.cs" />
@@ -120,8 +123,10 @@
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleHook.cs" />
+    <Compile Include="Items\ExampleInstancedGlobalItem.cs" />
     <Compile Include="Items\ExampleItem.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
+    <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
     <Compile Include="Items\ExampleLightPet.cs" />
     <Compile Include="Items\ExamplePet.cs" />
@@ -146,7 +151,7 @@
     <Compile Include="Items\Placeable\ExampleDresser.cs" />
     <Compile Include="Items\Placeable\ExampleMusicBox.cs" />
     <Compile Include="Items\Placeable\ExamplePlatform.cs" />
-    <Compile Include="Items\Placeable\ExampleSeeds.cs" />
+    <Compile Include="Items\Placeable\ExampleHerbSeeds.cs" />
     <Compile Include="Items\Placeable\ExampleTorch.cs" />
     <Compile Include="Items\Placeable\ExampleWall.cs" />
     <Compile Include="Items\Placeable\ExampleWorkbench.cs" />
@@ -178,7 +183,6 @@
     <Compile Include="NPCs\Abomination\FreedElement.cs" />
     <Compile Include="NPCs\ExampleChestSummon.cs" />
     <Compile Include="NPCs\ExampleGlobalNPC.cs" />
-    <Compile Include="NPCs\ExampleNPCInfo.cs" />
     <Compile Include="NPCs\ExamplePerson.cs" />
     <Compile Include="NPCs\Fish.cs" />
     <Compile Include="NPCs\FlutterSlime.cs" />
@@ -197,6 +201,7 @@
     <Compile Include="Projectiles\ExampleBehindTilesProjectile.cs" />
     <Compile Include="Projectiles\ExampleBullet.cs" />
     <Compile Include="Projectiles\ExampleCloneProjectile.cs" />
+    <Compile Include="Projectiles\ExampleExplosive.cs" />
     <Compile Include="Projectiles\ExampleJavelinProjectile.cs" />
     <Compile Include="Projectiles\ExampleLaser.cs" />
     <Compile Include="Projectiles\ExampleSolution.cs" />
@@ -241,7 +246,7 @@
     <Compile Include="Tiles\ExampleDresser.cs" />
     <Compile Include="Tiles\ExampleGlobalTile.cs" />
     <Compile Include="Tiles\ExampleMusicBox.cs" />
-    <Compile Include="Tiles\ExamplePlant.cs" />
+    <Compile Include="Tiles\ExampleHerb.cs" />
     <Compile Include="Tiles\ExamplePlatform.cs" />
     <Compile Include="Tiles\ExampleSapling.cs" />
     <Compile Include="Tiles\ExampleStatue.cs" />
@@ -268,6 +273,7 @@
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\terraria\tModLoaderServerDebug.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>for /f "tokens=* delims=" %25%25i in ('"$(ProjectDir)..\setup\bin\setup" --steamdir') do set TERRARIASTEAMDIR=%25%25i
+"%25TERRARIASTEAMDIR%25\tModLoaderServerDebug.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

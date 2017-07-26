@@ -120,7 +120,7 @@ namespace Terraria.ModLoader
 				message += "\nIt has been detected that this mod was built for tModLoader v" + modBuildVersion;
 				message += "\nHowever, you are using " + ModLoader.versionedName;
 			}
-			message += "\nThis mod has automatically been disabled.";
+			message += "\nThis mod has automatically been disabled. See below for actual error:";
 			message += "\n\n" + e.Message + "\n" + e.StackTrace;
 			if (Main.dedServ)
 			{
@@ -129,6 +129,10 @@ namespace Terraria.ModLoader
 			Interface.errorMessage.SetMessage(message);
 			Interface.errorMessage.SetGotoMenu(Interface.reloadModsID);
 			Interface.errorMessage.SetFile(file);
+			if (!string.IsNullOrEmpty(e.HelpLink))
+			{
+				Interface.errorMessage.SetWebHelpURL(e.HelpLink);
+			}
 		}
 		//add try catch to Terraria.WorldGen.worldGenCallBack
 		//add try catch to Terraria.WorldGen.playWorldCallBack

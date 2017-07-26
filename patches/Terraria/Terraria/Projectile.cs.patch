@@ -1,12 +1,27 @@
 --- src/merged\Terraria\Projectile.cs
 +++ src/Terraria\Terraria\Projectile.cs
-@@ -13310,100 +_,34 @@
+@@ -4513,13 +_,12 @@
+ 					case 412:
+ 					case 413:
+ 					case 414:
+-						IL_7A81:
++					default:
+ 						this.width = 10;
+ 						this.height = 10;
+ 						this.aiStyle = 10;
+ 						goto IL_C73D;
+ 					}
+-					goto IL_7A81;
+ 				}
+ 				if (this.type == 415 || this.type == 416 || this.type == 417 || this.type == 418)
+ 				{
+@@ -12706,100 +_,34 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
  			{
--				if (<PrivateImplementationDetails>{DEE50102-BCC2-472F-987B-153E892583F1}.$$method0x6000b57-1 == null)
+-				if (<PrivateImplementationDetails>{E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877}.$$method0x6000dca-1 == null)
 -				{
--					<PrivateImplementationDetails>{DEE50102-BCC2-472F-987B-153E892583F1}.$$method0x6000b57-1 = new Dictionary<string, int>(14)
+-					<PrivateImplementationDetails>{E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877}.$$method0x6000dca-1 = new Dictionary<string, int>(14)
 -					{
 -						{
 -							"Tsuki",
@@ -67,7 +82,7 @@
 -					};
 -				}
 -				int num;
--				if (<PrivateImplementationDetails>{DEE50102-BCC2-472F-987B-153E892583F1}.$$method0x6000b57-1.TryGetValue(name, out num))
+-				if (<PrivateImplementationDetails>{E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877}.$$method0x6000dca-1.TryGetValue(name, out num))
 -				{
 -					switch (num)
 -					{
@@ -98,47 +113,47 @@
 -					case 13:
 -						return Main.rand.NextFloat();
 -					}
-+ 				switch (name)
-+ 				{
-+ 				case "Tsuki":
-+ 				case "Yoraiz0r":
-+ 					return 0.85f;
-+ 				case "Ghostar":
-+ 					return 0.33f;
-+ 				case "Devalaous":
-+ 					return 0.66f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
-+ 				case "Leinfors":
-+ 					return 0.77f;
-+ 				case "Aeroblop":
-+ 					return 0.25f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
-+ 				case "Doylee":
-+ 					return 0f;
-+ 				case "Darkhalis":
-+ 				case "Arkhalis":
-+ 					return 0.75f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
-+ 				case "Nike Leon":
-+ 					return 0.075f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
-+ 				case "Suweeka":
-+ 					return 0.5f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.18f;
-+ 				case "W1K":
-+ 					return 0.75f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.05f;
-+ 				case "Grox The Great":
-+ 					return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
-+ 				case "Random":
-+ 					return Main.rand.NextFloat();
++				switch (name)
++				{
++				case "Tsuki":
++				case "Yoraiz0r":
++					return 0.85f;
++				case "Ghostar":
++					return 0.33f;
++				case "Devalaous":
++					return 0.66f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
++				case "Leinfors":
++					return 0.77f;
++				case "Aeroblop":
++					return 0.25f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
++				case "Doylee":
++					return 0f;
++				case "Darkhalis":
++				case "Arkhalis":
++					return 0.75f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
++				case "Nike Leon":
++					return 0.075f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
++				case "Suweeka":
++					return 0.5f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.18f;
++				case "W1K":
++					return 0.75f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.05f;
++				case "Grox The Great":
++					return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
++				case "Random":
++					return Main.rand.NextFloat();
  				}
  			}
  			return (float)((int)indexing) / 6f;
-@@ -21988,7 +_,7 @@
+@@ -21384,7 +_,7 @@
  																int num677 = (int)(this.position.Y + (float)this.height) / 16;
  																if (WorldGen.SolidTile(num676, num677) || Main.tile[num676, num677].halfBrick() || Main.tile[num676, num677].slope() > 0)
  																{
--																	goto IL_1BA49;
+-																	goto IL_1BA21;
 +																	goto Block_1935;
  																}
  																if (TileID.Sets.Platforms[(int)Main.tile[num676, num677].type] && Main.tile[num676, num677].active() && !Main.tile[num676, num677].inActive())
  																{
-@@ -37267,7 +_,7 @@
+@@ -36671,7 +_,7 @@
  							for (int n = 0; n < 5; n++)
  							{
  								int num31 = this.width / 4;
@@ -147,7 +162,7 @@
  								int num32 = Dust.NewDust(base.Center - Vector2.One * (float)num31, num31 * 2, num31 * 2, 88, 0f, 0f, 0, default(Color), 1f);
  								Dust dust5 = Main.dust[num32];
  								Vector2 value3 = Vector2.Normalize(dust5.position - base.Center);
-@@ -39816,7 +_,6 @@
+@@ -39220,7 +_,6 @@
  				{
  					Vector2 mouseWorld3 = Main.MouseWorld;
  					Vector2 value3 = player.DirectionTo(mouseWorld3);

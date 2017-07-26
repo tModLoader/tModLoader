@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using ExampleMod.NPCs.PuritySpirit;
 using ExampleMod.Tiles;
@@ -9,10 +10,12 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 using ExampleMod.UI;
 using Terraria.UI;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
+using System;
 
 namespace ExampleMod
 {
@@ -20,7 +23,7 @@ namespace ExampleMod
 	{
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
-		public static SpriteFont exampleFont;
+		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static Effect exampleEffect;
 		private UserInterface exampleUserInterface;
 		internal ExampleUI exampleUI;
@@ -50,6 +53,9 @@ namespace ExampleMod
 			if (!Main.dedServ)
 			{
 				AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
+				AddEquipTexture(new Items.Armor.BlockyHead(), null, EquipType.Head, "BlockyHead", "ExampleMod/Items/Armor/ExampleCostume_Head");
+				AddEquipTexture(new Items.Armor.BlockyBody(), null, EquipType.Body, "BlockyBody", "ExampleMod/Items/Armor/ExampleCostume_Body", "ExampleMod/Items/Armor/ExampleCostume_Arms");
+				AddEquipTexture(new Items.Armor.BlockyLegs(), null, EquipType.Legs, "BlockyLeg", "ExampleMod/Items/Armor/ExampleCostume_Legs");
 				//Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 				Main.instance.LoadTiles(TileID.Loom);
@@ -64,7 +70,7 @@ namespace ExampleMod
 				SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
-				exampleFont = GetFont("Fonts/ExampleFont");
+				// exampleFont = GetFont("Fonts/ExampleFont"); 
 				exampleEffect = GetEffect("Effects/ExampleEffect");
 				Ref<Effect> exampleEffectRef = new Ref<Effect>();
 				exampleEffectRef.Value = exampleEffect;
@@ -74,6 +80,19 @@ namespace ExampleMod
 				exampleUserInterface = new UserInterface();
 				exampleUserInterface.SetState(exampleUI);
 			}
+
+			ModTranslation text = CreateTranslation("LivesLeft");
+			text.SetDefault("{0} has {1} lives left!");
+			AddTranslation(text);
+			text = CreateTranslation("LifeLeft");
+			text.SetDefault("{0} has 1 life left!");
+			AddTranslation(text);
+			text = CreateTranslation("NPCTalk");
+			text.SetDefault("<{0}> {1}");
+			AddTranslation(text);
+			text = CreateTranslation("VolcanoWarning");
+			text.SetDefault("Did you hear something....A Volcano! Find Cover!");
+			AddTranslation(text);
 		}
 
 		public override void Unload()
@@ -86,9 +105,19 @@ namespace ExampleMod
 			}
 		}
 
+		public override void PostSetupContent()
+		{
+			Mod bossChecklist = ModLoader.GetMod("BossChecklist");
+			if (bossChecklist != null)
+			{
+				bossChecklist.Call("AddBossWithInfo", "Abomination", 5.5f, (Func<bool>)(() => ExampleWorld.downedAbomination), "Use a [i:" + ItemType<Items.Abomination.FoulOrb>() + "] in the underworld after Pletera has been defeated");
+				bossChecklist.Call("AddBossWithInfo", "Purity Spirit", 15.5f, (Func<bool>)(() => ExampleWorld.downedPuritySpirit), "Kill a [i:" + ItemID.Bunny + "] in front of [i:" + ItemType<Items.Placeable.ElementalPurge>() + "]");
+			}
+		}
+
 		public override void AddRecipeGroups()
 		{
-			RecipeGroup group = new RecipeGroup(() => Lang.misc[37] + " " + GetItem("ExampleItem").item.name, new int[]
+			RecipeGroup group = new RecipeGroup(() => Lang.misc[37] + " " + Lang.GetItemNameValue(ItemType("ExampleItem")), new int[]
 			{
 				ItemType("ExampleItem"),
 				ItemType("EquipMaterial"),
@@ -198,12 +227,12 @@ namespace ExampleMod
 			return Transform;
 		}
 
-		public override void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (MouseTextIndex != -1)
 			{
-				layers.Insert(MouseTextIndex, new MethodSequenceListItem(
+				layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
 					"ExampleMod: Coins Per Minute",
 					delegate
 					{
@@ -214,7 +243,7 @@ namespace ExampleMod
 						}
 						return true;
 					},
-					null)
+					InterfaceScaleType.UI)
 				);
 			}
 		}
@@ -284,7 +313,7 @@ namespace ExampleMod
 							if (Main.projectile[j].owner == 255 && Main.projectile[j].identity == identity && Main.projectile[j].active)
 							{
 								Main.projectile[j].hostile = true;
-								Main.projectile[j].name = "Volcanic Rubble";
+								//Main.projectile[j].name = "Volcanic Rubble";
 								found = true;
 								break;
 							}
@@ -308,16 +337,16 @@ namespace ExampleMod
 					player.GetModPlayer<ExamplePlayer>(this).heroLives = lives;
 					if (lives > 0)
 					{
-						string text = player.name + " has " + lives;
+						NetworkText text;
 						if (lives == 1)
 						{
-							text += " life left!";
+							text = NetworkText.FromKey("Mods.ExampleMod.LifeLeft", player.name);
 						}
 						else
 						{
-							text += " lives left!";
+							text = NetworkText.FromKey("Mods.ExampleMod.LivesLeft", player.name, lives);
 						}
-						NetMessage.SendData(25, -1, -1, text, 255, 255, 25, 25);
+						NetMessage.BroadcastChatMessage(text, new Color(255, 25, 25));
 					}
 					break;
 				default:

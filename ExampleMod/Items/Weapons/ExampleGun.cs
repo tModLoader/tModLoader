@@ -1,6 +1,3 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -8,14 +5,17 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleGun : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("This is a modded gun.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Gun";
 			item.damage = 20;
 			item.ranged = true;
 			item.width = 40;
 			item.height = 20;
-			item.toolTip = "This is a modded gun.";
 			item.useTime = 20;
 			item.useAnimation = 20;
 			item.useStyle = 5;
@@ -115,7 +115,7 @@ namespace ExampleMod.Items.Weapons
 			return true;
 		}*/
 
-		// How can I get a "Clockwork Assult Riffle" effect?
+		// How can I get a "Clockwork Assault Riffle" effect?
 		// 3 round burst, only consume 1 ammo for burst. Delay between bursts, use reuseDelay
 		/*	The following changes to SetDefaults()
 		 	item.useAnimation = 12;
@@ -124,7 +124,7 @@ namespace ExampleMod.Items.Weapons
 		public override bool ConsumeAmmo(Player player)
 		{
 			// Because of how the game works, player.itemAnimation will be 11, 7, and finally 3. (UseAmination - 1, then - useTime until less than 0.) 
-			// We can get the Clockwork Assult Riffle Effect by not consuming ammo when itemAnimation is lower than the first shot.
+			// We can get the Clockwork Assault Riffle Effect by not consuming ammo when itemAnimation is lower than the first shot.
 			return !(player.itemAnimation < item.useAnimation - 2);
 		}*/
 	}

@@ -90,5 +90,5 @@
 +			Utils.DrawBorderString(spriteBatch, this._data.Player.statManaMax2 + " MP", vector2 + new Vector2(0f, 3f), Color.White, 1f, 0f, 0f, -1);
  			vector.X += num2 + 5f;
  			Vector2 vector3 = vector;
- 			float num3 = 110f;
+ 			float num3 = 140f;
 

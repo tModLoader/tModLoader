@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Terraria;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items
@@ -21,7 +18,6 @@ namespace ExampleMod.Items
 			*/
 			byte dye = item.dye;
 			item.CloneDefaults(ItemID.GelDye);
-			item.name = "Example Dye";
 			item.dye = dye;
 		}
 	}

@@ -13,7 +13,6 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public override void SetDefaults()
 		{
-			projectile.name = "Negative Wall";
 			projectile.width = 32;
 			projectile.height = 32;
 			projectile.alpha = 127;

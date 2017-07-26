@@ -518,7 +518,7 @@ namespace Terraria.ModLoader.IO
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Head][slot]);
 					writer.Write(item.mod.Name);
-					writer.Write(Main.itemName[item.item.type]);
+					writer.Write(item.Name);
 				}
 				writer.Write((ushort)bodySlots.Count);
 				foreach (int slot in bodySlots)
@@ -526,7 +526,7 @@ namespace Terraria.ModLoader.IO
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Body][slot]);
 					writer.Write(item.mod.Name);
-					writer.Write(Main.itemName[item.item.type]);
+					writer.Write(item.Name);
 				}
 				writer.Write((ushort)legSlots.Count);
 				foreach (int slot in legSlots)
@@ -534,7 +534,7 @@ namespace Terraria.ModLoader.IO
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Legs][slot]);
 					writer.Write(item.mod.Name);
-					writer.Write(Main.itemName[item.item.type]);
+					writer.Write(item.Name);
 				}
 				WriteContainerData(writer);
 			}

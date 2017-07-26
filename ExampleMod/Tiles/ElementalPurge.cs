@@ -19,7 +19,9 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new int[]{ 16, 16, 18 };
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(mod.GetTileEntity<TEElementalPurge>().Hook_AfterPlacement, -1, 0, false);
 			TileObjectData.addTile(Type);
-			AddMapEntry(new Color(190, 230, 190), "Elemental Purge");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Elemental Purge");
+			AddMapEntry(new Color(190, 230, 190), name);
 			dustType = 11;
 			disableSmartCursor = true;
 		}

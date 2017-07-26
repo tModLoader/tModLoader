@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -50,7 +51,19 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		internal string texture;
+		/// <summary>
+		/// The translations for the display name of this projectile.
+		/// </summary>
+		public ModTranslation DisplayName
+		{
+			get;
+			internal set;
+		}
+
+		/// <summary>
+		/// The file name of this projectile's texture file in the mod loader's file space.
+		/// </summary>
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 		/// <summary>
 		/// Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0.
 		/// </summary>
@@ -82,24 +95,13 @@ namespace Terraria.ModLoader
 			projectile.modProjectile = this;
 		}
 		/// <summary>
-		/// Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, and texture is initialized to the namespace and overriding class name with periods replaced with slashes. Use this method to either force or stop an autoload, or to change the default display name and texture path.
+		/// Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or to change the default internal name.
 		/// </summary>
 		/// <param name="name">The internal name.</param>
-		/// <param name="texture">The texture path.</param>
 		/// <returns>Whether or not to autoload.</returns>
-		public virtual bool Autoload(ref string name, ref string texture)
+		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
-		}
-
-		internal void SetupProjectile(Projectile projectile)
-		{
-			ModProjectile newProjectile = (ModProjectile)(CloneNewInstances ? MemberwiseClone()
-				: Activator.CreateInstance(GetType()));
-			newProjectile.projectile = projectile;
-			projectile.modProjectile = newProjectile;
-			newProjectile.mod = mod;
-			newProjectile.SetDefaults();
 		}
 
 		/// <summary>
@@ -108,10 +110,71 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
+		/// Returns a clone of this ModProjectile. 
+		/// Allows you to decide which fields of your ModProjectile class are copied over when a new Projectile is created. 
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
+		/// Only called if CloneNewInstances is set to true.
+		/// </summary>
+		public virtual ModProjectile Clone() => (ModProjectile)MemberwiseClone();
+
+		/// <summary>
+		/// Create a new instance of this GlobalProjectile for a Projectile instance. 
+		/// Called at the end of Projectile.SetDefaults.
+		/// If CloneNewInstances is true, just calls Clone()
+		/// Otherwise calls the default constructor and copies fields
+		/// </summary>
+		public virtual ModProjectile NewInstance(Projectile projectileClone)
+		{
+			if (CloneNewInstances)
+			{
+				ModProjectile clone = Clone();
+				clone.projectile = projectileClone;
+				return clone;
+			}
+
+			ModProjectile copy = (ModProjectile)Activator.CreateInstance(GetType());
+			copy.projectile = projectileClone;
+			copy.mod = mod;
+			copy.Name = Name;
+			copy.aiType = aiType;
+			copy.cooldownSlot = cooldownSlot;
+			copy.drawOffsetX = drawOffsetX;
+			copy.drawOriginOffsetY = drawOriginOffsetY;
+			copy.drawOriginOffsetX = drawOriginOffsetX;
+			copy.drawHeldProjInFrontOfHeldItemAndArms = drawHeldProjInFrontOfHeldItemAndArms;
+			return copy;
+		}
+
+		/// <summary>
 		/// Allows you to set all your projectile's properties, such as width, damage, aiStyle, penetrate, etc.
 		/// </summary>
 		public virtual void SetDefaults()
 		{
+		}
+
+		/// <summary>
+		/// Allows you to set all your projectile's static properties, such as names/translations and the arrays in ProjectileID.Sets.
+		/// </summary>
+		public virtual void SetStaticDefaults()
+		{
+		}
+
+		/// <summary>
+		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
+		/// </summary>
+		public virtual void AutoStaticDefaults()
+		{
+			Main.projectileTexture[projectile.type] = ModLoader.GetTexture(Texture);
+			Main.projFrames[projectile.type] = 1;
+			if (projectile.hostile)
+			{
+				Main.projHostile[projectile.type] = true;
+			}
+			if (projectile.aiStyle == 7)
+			{
+				Main.projHook[projectile.type] = true;
+			}
+			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>
@@ -160,22 +223,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Obsolete: TileCollideStyle will return a bool value later. (Use NewTileCollideStyle in the meantime.)
-		/// </summary>
-		[method: Obsolete("TileCollideStyle will return a bool value later. (Use NewTileCollideStyle in the meantime.)")]
-		public virtual void TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
-		{
-		}
-
-		/// <summary>
 		/// Allows you to determine how this projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.
 		/// </summary>
 		/// <param name="width">Width of the hitbox.</param>
 		/// <param name="height">Height of the hitbox.</param>
 		/// <param name="fallThrough">If the projectile can fall through platforms etc.</param>
-		public virtual bool NewTileCollideStyle(ref int width, ref int height, ref bool fallThrough)
+		public virtual bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
 		{
-			TileCollideStyle(ref width, ref height, ref fallThrough);
 			return true;
 		}
 
@@ -232,6 +286,14 @@ namespace Terraria.ModLoader
 		public virtual bool MinionContactDamage()
 		{
 			return false;
+		}
+
+		/// <summary>
+		/// Allows you to change the hitbox used by this projectile for damaging players and NPCs.
+		/// </summary>
+		/// <param name="hitbox"></param>
+		public virtual void ModifyDamageHitbox(ref Rectangle hitbox)
+		{
 		}
 
 		/// <summary>

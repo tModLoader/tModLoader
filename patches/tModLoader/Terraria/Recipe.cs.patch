@@ -8,6 +8,24 @@
  
  namespace Terraria
  {
+@@ -39,7 +_,7 @@
+ 		{
+ 			foreach (int current in this.acceptedGroups)
+ 			{
+-				if (RecipeGroup.recipeGroups[current].ValidItems.Contains(type))
++				if (RecipeGroup.recipeGroups[current].ContainsItem(type))
+ 				{
+ 					theText = RecipeGroup.recipeGroups[current].GetText();
+ 					return true;
+@@ -53,7 +_,7 @@
+ 		{
+ 			foreach (int current in this.acceptedGroups)
+ 			{
+-				if (RecipeGroup.recipeGroups[current].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[current].ValidItems.Contains(reqType))
++				if (RecipeGroup.recipeGroups[current].ContainsItem(invType) && RecipeGroup.recipeGroups[current].ContainsItem(reqType))
+ 				{
+ 					return true;
+ 				}
 @@ -80,6 +_,11 @@
  					break;
  				}
@@ -81,29 +99,29 @@
 -				}
 -			}
 -			return false;
-+			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.Wood].ValidItems;
-+			return valid.Contains(invType) && valid.Contains(reqType);
++			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Wood];
++			return rec.ContainsItem(invType) && rec.ContainsItem(reqType);
  		}
  
  		public bool useIronBar(int invType, int reqType)
  		{
 -			return this.anyIronBar && (reqType == 22 || reqType == 704) && (invType == 22 || invType == 704);
-+			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.IronBar].ValidItems;
-+			return this.anyIronBar && valid.Contains(invType) && valid.Contains(reqType);
++			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.IronBar];
++			return this.anyIronBar && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
  		}
  
  		public bool useSand(int invType, int reqType)
  		{
 -			return (reqType == 169 || reqType == 408 || reqType == 1246 || reqType == 370 || reqType == 3272) && (this.anySand && (invType == 169 || invType == 408 || invType == 1246 || invType == 370 || invType == 3272));
-+			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems;
-+			return this.anySand && valid.Contains(invType) && valid.Contains(reqType);
++			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Sand];
++			return this.anySand && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
  		}
  
  		public bool useFragment(int invType, int reqType)
  		{
 -			return (reqType == 3458 || reqType == 3456 || reqType == 3457 || reqType == 3459) && (this.anyFragment && (invType == 3458 || invType == 3456 || invType == 3457 || invType == 3459));
-+			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.Fragment].ValidItems;
-+			return this.anyFragment && valid.Contains(invType) && valid.Contains(reqType);
++			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Fragment];
++			return this.anyFragment && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
  		}
  
  		public bool usePressurePlate(int invType, int reqType)
@@ -172,8 +190,8 @@
 -				}
 -			}
 -			return false;
-+			List<int> valid = RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate].ValidItems;
-+			return valid.Contains(invType) && valid.Contains(reqType);
++			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate];
++			return rec.ContainsItem(invType) && rec.ContainsItem(reqType);
  		}
  
  		public static void FindRecipes()
@@ -195,12 +213,13 @@
  		}
  
  		public static void SetupRecipes()
-@@ -10724,6 +_,7 @@
+@@ -10918,6 +_,8 @@
  			Recipe.AddRecipe();
  			Recipe.WallReturn();
  			Recipe.PlatformReturn();
 +			RecipeHooks.AddRecipes();
- 			for (int num4 = 0; num4 < Recipe.numRecipes; num4++)
++			RecipeHooks.PostAddRecipes();
+ 			for (int num6 = 0; num6 < Recipe.numRecipes; num6++)
  			{
- 				int num5 = 0;
+ 				int num7 = 0;
 

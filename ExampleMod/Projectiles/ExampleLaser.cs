@@ -28,7 +28,6 @@ namespace ExampleMod.Projectiles
 
 		public override void SetDefaults()
 		{
-			projectile.name = "Example Laser";
 			projectile.width = 10;
 			projectile.height = 10;
 			projectile.friendly = true;

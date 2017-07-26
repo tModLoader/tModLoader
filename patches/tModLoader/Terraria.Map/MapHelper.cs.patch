@@ -19,7 +19,7 @@
  		private static ushort[] snowTypes;
  		private static ushort wallRangeStart;
  		private static ushort wallRangeEnd;
-@@ -1124,6 +_,7 @@
+@@ -1129,6 +_,7 @@
  			}
  			MapHelper.hellPosition = num11;
  			MapHelper.colorLookup[(int)num11] = color7;
@@ -27,7 +27,7 @@
  			MapHelper.snowTypes = new ushort[6];
  			MapHelper.snowTypes[0] = MapHelper.tileLookup[147];
  			MapHelper.snowTypes[1] = MapHelper.tileLookup[161];
-@@ -1980,6 +_,7 @@
+@@ -2006,6 +_,7 @@
  				}
  			}
  			int num16 = num3 + num4;
@@ -35,7 +35,16 @@
  			return MapTile.Create((ushort)num16, (byte)num2, (byte)num);
  		}
  
-@@ -2136,7 +_,7 @@
+@@ -2060,7 +_,7 @@
+ 							{
+ 								int num = 0;
+ 								byte[] array = new byte[16384];
+-								binaryWriter.Write(193);
++								binaryWriter.Write(194);
+ 								Main.MapFileMetadata.IncrementAndWrite(binaryWriter);
+ 								binaryWriter.Write(Main.worldName);
+ 								binaryWriter.Write(Main.worldID);
+@@ -2162,7 +_,7 @@
  										int num5;
  										ushort num6;
  										int num7;
@@ -44,7 +53,7 @@
  										{
  											flag4 = false;
  											flag3 = false;
-@@ -2318,9 +_,11 @@
+@@ -2344,9 +_,11 @@
  								}
  								deflateStream.Dispose();
  								FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);

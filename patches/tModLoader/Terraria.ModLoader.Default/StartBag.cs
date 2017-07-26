@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -9,13 +8,18 @@ namespace Terraria.ModLoader.Default
 	{
 		private List<Item> items = new List<Item>();
 
+		public override string Texture => "ModLoader/StartBag";
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Starting Bag");
+			Tooltip.SetDefault("Some starting items couldn't fit in your inventory\n{$CommonItemTooltip.RightClickToOpen}");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Starting Bag";
 			item.width = 20;
 			item.height = 20;
-			item.toolTip = "Some starting items couldn't fit in your inventory";
-			item.toolTip2 = "Right-click to open";
 			item.rare = 1;
 		}
 
@@ -37,7 +41,7 @@ namespace Terraria.ModLoader.Default
 							item.type, item.stack, false, item.prefix, false, false);
 				if (Main.netMode == 1)
 				{
-					NetMessage.SendData(21, -1, -1, "", k, 1f);
+					NetMessage.SendData(ID.MessageID.SyncItem, -1, -1, null, k, 1f);
 				}
 			}
 		}

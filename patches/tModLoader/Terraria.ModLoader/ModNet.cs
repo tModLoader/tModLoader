@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -344,7 +345,7 @@ namespace Terraria.ModLoader
 			return hijacked;
 		}
 
-		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, string text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
+		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
 		{
 			bool hijacked = false;
 			foreach (Mod mod in ModLoader.mods.Values)

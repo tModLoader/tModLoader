@@ -1,23 +1,20 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items
 {
+	[AutoloadEquip(EquipType.Wings)]
 	public class ExampleWings : ModItem
 	{
-		public override bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
+		public override void SetStaticDefaults()
 		{
-			equips.Add(EquipType.Wings);
-			return true;
+			Tooltip.SetDefault("This is a modded wing.");
 		}
 
 		public override void SetDefaults()
 		{
-			item.name = "Example Wings";
 			item.width = 22;
 			item.height = 20;
-			item.toolTip = "This is a modded wing.";
 			item.value = 10000;
 			item.rare = 2;
 			item.accessory = true;

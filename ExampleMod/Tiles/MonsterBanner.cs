@@ -21,7 +21,9 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 			dustType = -1;
 			disableSmartCursor = true;
-			AddMapEntry(new Color(13, 88, 130), "Banner");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Banner");
+			AddMapEntry(new Color(13, 88, 130), name);
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)

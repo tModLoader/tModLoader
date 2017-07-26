@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,13 +9,16 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.ModLoader.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIModSources : UIState
 	{
-		public bool loading;
 		private UIList modList;
+		private readonly List<UIModSourceItem> items = new List<UIModSourceItem>();
+		private bool updateNeeded;
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
@@ -34,7 +38,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
 
-			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
+			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
 			modList = new UIList();
 			modList.Width.Set(-25f, 1f);
@@ -143,20 +147,22 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			if(!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
+			uIPanel.Append(uiLoader);
 			modList.Clear();
+			items.Clear();
 			Populate();
 		}
 
 		internal void Populate()
 		{
-			loading = true;
+			if (SynchronizationContext.Current == null)
+				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory
 				.StartNew(delegate
 				{
 					var mods = ModLoader.FindModSources();
 					var modFiles = ModLoader.FindMods();
-					return new Tuple<string[], TmodFile[]>(mods, modFiles);
+					return Tuple.Create(mods, modFiles);
 				})
 				.ContinueWith(task =>
 				{
@@ -178,11 +184,20 @@ namespace Terraria.ModLoader.UI
 								break;
 							}
 						}
-						modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
+						items.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
 					}
-					if(uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
-					loading = false;
+					updateNeeded = true;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			base.Update(gameTime);
+			if (!updateNeeded) return;
+			updateNeeded = false;
+			uIPanel.RemoveChild(uiLoader);
+			modList.Clear();
+			modList.AddRange(items);
 		}
 	}
 }

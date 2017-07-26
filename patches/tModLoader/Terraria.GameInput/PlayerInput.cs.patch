@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
-@@ -307,6 +_,42 @@
+@@ -332,6 +_,42 @@
  			}
  		}
  
@@ -51,16 +51,16 @@
  		public static void Initialize()
  		{
  			Main.InputProfiles.OnProcessText += new Preferences.TextProcessAction(PlayerInput.PrettyPrintProfiles);
-@@ -682,6 +_,8 @@
+@@ -735,6 +_,8 @@
  				keyConfiguration.Processkey(PlayerInput.Triggers.Current, Buttons.RightTrigger.ToString());
  				flag = true;
  			}
-+			// We might just need a bool for while reloading. 
++			// We might just need a bool for while reloading.
 +			if (player.inventory[player.selectedItem].type >= ItemID.Sets.GamepadWholeScreenUseRange.Length) return;
  			bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
  			int num3 = player.inventory[player.selectedItem].tileBoost + ItemID.Sets.GamepadExtraRange[player.inventory[player.selectedItem].type];
  			if (player.yoyoString && ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type])
-@@ -1158,7 +_,7 @@
+@@ -1218,7 +_,7 @@
  						int num = 6;
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
  						{
@@ -69,10 +69,43 @@
  						}
  						PlayerInput.DpadSnapCooldown[i] = num;
  						value += value2;
-@@ -1462,6 +_,10 @@
- 							c.KeyStatus["Hotbar8"].Add("D8");
- 							c.KeyStatus["Hotbar9"].Add("D9");
+@@ -1524,6 +_,10 @@
  							c.KeyStatus["Hotbar10"].Add("D0");
+ 							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
+ 							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
++							foreach (var item in ModLoader.ModLoader.modHotKeys)
++							{
++								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
++							}
+ 							return;
+ 						case InputMode.KeyboardUI:
+ 							c.KeyStatus["MouseLeft"].Add("Mouse1");
+@@ -1634,6 +_,10 @@
+ 							c.KeyStatus["Hotbar10"].Add("D0");
+ 							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
+ 							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
++							foreach (var item in ModLoader.ModLoader.modHotKeys)
++							{
++								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
++							}
+ 							return;
+ 						case InputMode.KeyboardUI:
+ 							c.KeyStatus["MouseLeft"].Add("Mouse1");
+@@ -1743,6 +_,10 @@
+ 							c.KeyStatus["Hotbar10"].Add("D0");
+ 							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
+ 							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
++							foreach (var item in ModLoader.ModLoader.modHotKeys)
++							{
++								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
++							}
+ 							return;
+ 						case InputMode.KeyboardUI:
+ 							c.KeyStatus["MouseLeft"].Add("Mouse1");
+@@ -1852,6 +_,10 @@
+ 							c.KeyStatus["Hotbar10"].Add("D0");
+ 							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
+ 							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
 +							foreach (var item in ModLoader.ModLoader.modHotKeys)
 +							{
 +								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);

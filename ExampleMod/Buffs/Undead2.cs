@@ -7,8 +7,8 @@ namespace ExampleMod.Buffs
 	{
 		public override void SetDefaults()
 		{
-			Main.buffName[Type] = "Undead Sickness";
-			Main.buffTip[Type] = "You are being harmed by recovery";
+			DisplayName.SetDefault("Undead Sickness");
+			Description.SetDefault("You are being harmed by recovery");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoSave[Type] = true;

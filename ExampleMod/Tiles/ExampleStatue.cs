@@ -21,7 +21,9 @@ namespace ExampleMod.Tiles
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.addTile(Type);
-			AddMapEntry(new Color(144, 148, 144), "Statue");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Statue");
+			AddMapEntry(new Color(144, 148, 144), name);
 			dustType = 11;
 			disableSmartCursor = true;
 		}
@@ -88,10 +90,14 @@ namespace ExampleMod.Tiles
 
 	public class ExampleStatueItem : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Golden Fish Statue");
+		}
+
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.ArmorStatue);
-			item.name = "Golden Fish Statue";
 			item.createTile = mod.TileType<ExampleStatue>();
 			item.placeStyle = 0;
 		}

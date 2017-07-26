@@ -29,6 +29,9 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal int index;
+		internal int instanceIndex;
+
 		/// <summary>
 		/// Allows you to automatically load a GlobalNPC instead of using Mod.AddGlobalNPC. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
 		/// </summary>
@@ -37,6 +40,48 @@ namespace Terraria.ModLoader
 		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
+		}
+
+		/// <summary>
+		/// Whether to create a new GlobalNPC instance for every NPC that exists. 
+		/// Useful for storing information on a projectile. Defaults to false. 
+		/// Return true if you need to store information (have non-static fields).
+		/// </summary>
+		public virtual bool InstancePerEntity => false;
+
+		public GlobalNPC Instance(NPC npc) => InstancePerEntity ? npc.globalNPCs[instanceIndex] : this;
+
+		/// <summary>
+		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
+		/// Defaults to false (using default constructor).
+		/// </summary>
+		public virtual bool CloneNewInstances => false;
+
+		/// <summary>
+		/// Returns a clone of this GlobalNPC. 
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
+		/// Only called if CloneNewInstances && InstancePerEntity
+		/// </summary>
+		public virtual GlobalNPC Clone() => (GlobalNPC)MemberwiseClone();
+
+		/// <summary>
+		/// Create a new instance of this GlobalNPC for an NPC instance. 
+		/// Called at the end of NPC.SetDefaults.
+		/// If CloneNewInstances is true, just calls Clone()
+		/// Otherwise calls the default constructor and copies fields
+		/// </summary>
+		public virtual GlobalNPC NewInstance(NPC npc)
+		{
+			if (CloneNewInstances)
+			{
+				return Clone();
+			}
+			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
+			copy.mod = mod;
+			copy.Name = Name;
+			copy.index = index;
+			copy.instanceIndex = instanceIndex;
+			return copy;
 		}
 
 		/// <summary>
@@ -459,7 +504,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add items to the travelling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.
+		/// Allows you to add items to the traveling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.
 		/// </summary>
 		/// <param name="shop"></param>
 		/// <param name="nextSlot"></param>

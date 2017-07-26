@@ -6,7 +6,6 @@ namespace ExampleMod.Items.Placeable
 	{
 		public override void SetDefaults()
 		{
-			item.name = "Tree Trophy";
 			item.width = 30;
 			item.height = 30;
 			item.maxStack = 99;

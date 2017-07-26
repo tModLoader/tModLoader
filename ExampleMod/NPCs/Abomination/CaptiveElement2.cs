@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs.Abomination
 {
 	//ported from my tAPI mod because I'm lazy
+	[AutoloadBossHead]
 	public class CaptiveElement2 : ModNPC
 	{
 		private static int hellLayer
@@ -65,10 +66,14 @@ namespace ExampleMod.NPCs.Abomination
 			}
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Captive Element");
+			Main.npcFrameCount[npc.type] = 5;
+		}
+
 		public override void SetDefaults()
 		{
-			npc.name = "Captive Element 2";
-			npc.displayName = "Captive Element";
 			npc.aiStyle = -1;
 			npc.lifeMax = 15000;
 			npc.damage = 100;
@@ -76,7 +81,6 @@ namespace ExampleMod.NPCs.Abomination
 			npc.knockBackResist = 0f;
 			npc.width = 100;
 			npc.height = 100;
-			Main.npcFrameCount[npc.type] = 5;
 			npc.value = Item.buyPrice(0, 20, 0, 0);
 			npc.npcSlots = 10f;
 			npc.boss = true;

@@ -9,7 +9,6 @@ namespace ExampleMod.Projectiles
 	{
 		public override void SetDefaults()
 		{
-			projectile.name = "Sparkling Ball";
 			projectile.width = 16;
 			projectile.height = 16;
 			projectile.friendly = true;

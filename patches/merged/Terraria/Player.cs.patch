@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\Player.cs
 +++ src/merged\Terraria\Player.cs
-@@ -38309,10 +_,12 @@
+@@ -38632,10 +_,12 @@
  					int num4 = y;
  					bool flag3 = Main.tile[x, num4].active();
  					WorldGen.KillTile(x, num4, false, false, false);
@@ -12,5 +12,5 @@
 +#endif
  					if (Main.netMode == 1)
  					{
- 						NetMessage.SendData(17, -1, -1, "", 0, (float)x, (float)num4, 0f, 0, 0, 0);
+ 						NetMessage.SendData(17, -1, -1, null, 0, (float)x, (float)num4, 0f, 0, 0, 0);
 

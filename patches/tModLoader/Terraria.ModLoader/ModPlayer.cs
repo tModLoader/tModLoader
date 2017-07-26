@@ -41,12 +41,15 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal int index;
+
 		internal ModPlayer CreateFor(Player newPlayer)
 		{
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Name = Name;
 			modPlayer.mod = mod;
 			modPlayer.player = newPlayer;
+			modPlayer.index = index;
 			modPlayer.Initialize();
 			return modPlayer;
 		}
@@ -129,6 +132,20 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="items"></param>
 		public virtual void SetupStartInventory(IList<Item> items)
+		{
+		}
+
+		/// <summary>
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// </summary>
+		public virtual void PreSavePlayer()
+		{
+		}
+
+		/// <summary>
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// </summary>
+		public virtual void PostSavePlayer()
 		{
 		}
 
@@ -301,6 +318,13 @@ namespace Terraria.ModLoader
 		/// This is called after the player's horizontal speeds are modified, which is sometime after PostUpdateMiscEffects is called, and right before the player's horizontal position is updated. Use this to modify maxRunSpeed, accRunSpeed, runAcceleration, and similar variables before the player moves forwards/backwards.
 		/// </summary>
 		public virtual void PostUpdateRunSpeeds()
+		{
+		}
+
+		/// <summary>
+		/// This is called right before modifying the player's position based on velocity. Use this to make direct changes to the velocity.
+		/// </summary>
+		public virtual void PreUpdateMovement()
 		{
 		}
 
@@ -737,7 +761,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the idnexes of any gore you create to Main.playerDrawGore.
+		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the indexes of any gore you create to Main.playerDrawGore.
 		/// </summary>
 		/// <param name="drawInfo"></param>
 		/// <param name="r"></param>
@@ -818,6 +842,18 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player that respawns</param>
 		public virtual void OnRespawn(Player player)
 		{
+		}
+
+		/// <summary>
+		/// Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling or trashing items).
+		/// </summary>
+		/// <param name="inventory">The array of items the slot is part of.</param>
+		/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
+		/// <param name="slot">The index in the inventory of the clicked slot.</param>
+		/// <returns>Whether or not to block the default code (sell and trash) from running. Returns false by default.</returns>
+		public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot)
+		{
+			return false;
 		}
 	}
 }

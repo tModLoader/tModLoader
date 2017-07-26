@@ -8,31 +8,36 @@
  
  namespace Terraria
  {
-@@ -393,13 +_,21 @@
+@@ -418,17 +_,25 @@
  				}
  				Main.chest[num] = chest;
  			}
 -			else if (type == 21)
 +			else if (type == TileID.Containers)
  			{
- 				NetMessage.SendData(34, -1, -1, "", 0, (float)x, (float)y, (float)style, 0, 0, 0);
+ 				NetMessage.SendData(34, -1, -1, null, 0, (float)x, (float)y, (float)style, 0, 0, 0);
+ 			}
+-			else if (type == 467)
++			else if (type == TileID.Containers2)
+ 			{
+ 				NetMessage.SendData(34, -1, -1, null, 4, (float)x, (float)y, (float)style, 0, 0, 0);
  			}
 -			else
 +			else if (type == TileID.Dressers)
  			{
- 				NetMessage.SendData(34, -1, -1, "", 2, (float)x, (float)y, (float)style, 0, 0, 0);
+ 				NetMessage.SendData(34, -1, -1, null, 2, (float)x, (float)y, (float)style, 0, 0, 0);
 +			}
-+			else if (TileLoader.IsChest(type))
++			else if (TileID.Sets.BasicChest[type])
 +			{
-+				NetMessage.SendData(34, -1, -1, "", 100, (float)x, (float)y, (float)style, 0, type, 0);
++				NetMessage.SendData(34, -1, -1, null, 100, (float)x, (float)y, (float)style, 0, type, 0);
 +			}
 +			else if (TileLoader.IsDresser(type))
 +			{
-+				NetMessage.SendData(34, -1, -1, "", 102, (float)x, (float)y, (float)style, 0, type, 0);
++				NetMessage.SendData(34, -1, -1, null, 102, (float)x, (float)y, (float)style, 0, type, 0);
  			}
  			return num;
  		}
-@@ -853,9 +_,11 @@
+@@ -882,9 +_,11 @@
  								Main.travelShop[num2++] = 3641;
  								break;
  						}
@@ -47,7 +52,7 @@
  		}
  
  		public void SetupShop(int type)
-@@ -2200,6 +_,7 @@
+@@ -2229,6 +_,7 @@
  					num++;
  				}
  			}

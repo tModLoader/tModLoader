@@ -5,14 +5,18 @@ namespace ExampleMod.Items.Abomination
 {
 	public class AbominationBag : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Treasure Bag");
+			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Treasure Bag";
 			item.maxStack = 999;
 			item.consumable = true;
 			item.width = 24;
 			item.height = 24;
-			item.toolTip = "Right click to open";
 			item.rare = 9;
 			item.expert = true;
 			bossBagNPC = mod.NPCType("Abomination");

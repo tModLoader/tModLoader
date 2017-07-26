@@ -1,0 +1,44 @@
+#!/bin/bash
+# MonoKickstart Shell Script
+# Written by Ethan "flibitijibibo" Lee
+
+# Move to script's directory
+cd "`dirname "$0"`"
+
+# Get the system architecture
+UNAME=`uname`
+ARCH=`uname -m`
+BASENAME=`basename "$0"`
+
+# MonoKickstart picks the right libfolder, so just execute the right binary.
+if [ "$UNAME" == "Darwin" ]; then
+	ext=osx
+else
+	ext=x86
+	if [ "$ARCH" == "x86_64" ]; then
+		ext=x86_64
+	else
+		ext=x86
+	fi
+	for arg in "$@"
+	do
+		case "$arg" in
+		-x86)	ext=x86
+			;;
+		-x64)	ext=x86_64
+			;;
+		-autoarch)
+			if [ "$ARCH" == "x86_64" ]; then
+				ext=x86_64
+			else
+				ext=x86
+			fi
+			;;
+		esac
+	done
+fi
+
+
+export MONO_IOMAP=all
+./${BASENAME}.bin.${ext} $@
+

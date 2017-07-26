@@ -45,22 +45,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Sets the result of this recipe with the given vanilla item name and stack size.
-		/// </summary>
-		/// <param name="itemName">Name of the item.</param>
-		/// <param name="stack">The stack.</param>
-		/// <exception cref="RecipeException">A vanilla item with the name " + itemName + " does not exist.</exception>
-		public void SetResult(string itemName, int stack = 1)
-		{
-			this.createItem.SetDefaults(itemName);
-			if (this.createItem.type == 0)
-			{
-				throw new RecipeException("A vanilla item with the name " + itemName + " does not exist.");
-			}
-			this.createItem.stack = stack;
-		}
-
-		/// <summary>
 		/// Sets the result of this recipe with the given item name from the given mod, and with the given stack stack. If the mod parameter is null, then it will automatically use an item from the mod creating this recipe.
 		/// </summary>
 		/// <param name="mod">The mod the item originates from.</param>
@@ -101,23 +85,6 @@ namespace Terraria.ModLoader
 		public void AddIngredient(int itemID, int stack = 1)
 		{
 			this.requiredItem[numIngredients].SetDefaults(itemID, false);
-			this.requiredItem[numIngredients].stack = stack;
-			numIngredients++;
-		}
-
-		/// <summary>
-		/// Adds an ingredient to this recipe with the given vanilla item name and stack size.
-		/// </summary>
-		/// <param name="itemName">Name of the item.</param>
-		/// <param name="stack">The stack.</param>
-		/// <exception cref="RecipeException">A vanilla item with the name " + itemName + " does not exist.</exception>
-		public void AddIngredient(string itemName, int stack = 1)
-		{
-			this.requiredItem[numIngredients].SetDefaults(itemName);
-			if (this.requiredItem[numIngredients].type == 0)
-			{
-				throw new RecipeException("A vanilla item with the name " + itemName + " does not exist.");
-			}
 			this.requiredItem[numIngredients].stack = stack;
 			numIngredients++;
 		}
@@ -259,6 +226,10 @@ namespace Terraria.ModLoader
 			if (this.createItem == null || this.createItem.type == 0)
 			{
 				throw new RecipeException("A recipe without any result has been added.");
+			}
+			if(this.numIngredients > 14 || this.numTiles > 14)
+			{
+				throw new RecipeException("A recipe with either too many tiles or too many ingredients has been added. 14 is the max.");
 			}
 			for (int k = 0; k < Recipe.maxRequirements; k++)
 			{

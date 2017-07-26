@@ -24,7 +24,8 @@ public class MacInfo
             "ModCompile/Microsoft.Xna.Framework.dll",
             "ModCompile/Microsoft.Xna.Framework.Game.dll",
             "ModCompile/Microsoft.Xna.Framework.Graphics.dll",
-            "ModCompile/Microsoft.Xna.Framework.Xact.dll"
+            "ModCompile/Microsoft.Xna.Framework.Xact.dll",
+            "mono/config"
         };
         Installer.tryInstall(files, directory);
     }

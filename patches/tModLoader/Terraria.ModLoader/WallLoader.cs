@@ -44,7 +44,7 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int WallCount => nextWall;
+		public static int WallCount => nextWall;
 
 		/// <summary>
 		/// Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null.

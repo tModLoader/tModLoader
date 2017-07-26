@@ -16,9 +16,13 @@ namespace ExampleMod.NPCs
 			accelerationY = 0.1f;
 		}
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Sarcophagus");
+		}
+
 		public override void SetDefaults()
 		{
-			npc.name = "Sarcophagus";
 			npc.lifeMax = 1100;
 			npc.damage = 140;
 			npc.defense = 100;
@@ -145,7 +149,7 @@ namespace ExampleMod.NPCs
 			}
 		}
 
-		public override float CanSpawn(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (spawnInfo.playerSafe || !ExampleWorld.downedAbomination)
 			{

@@ -12,9 +12,14 @@ namespace ExampleMod.Projectiles.PuritySpirit
 	{
 		public float warningTime;
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Nullification Laser");
+			Main.projFrames[projectile.type] = 3;
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Nullification Laser";
 			projectile.width = 40;
 			projectile.height = 40;
 			projectile.hide = true;
@@ -22,7 +27,6 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.magic = true;
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
-			Main.projFrames[projectile.type] = 3;
 			cooldownSlot = 1;
 		}
 

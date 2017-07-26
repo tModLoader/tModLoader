@@ -5,13 +5,16 @@ namespace ExampleMod.Items
 {
 	public class ExampleItem : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("This is a modded item.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Item";
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 999;
-			AddTooltip("This is a modded item.");
 			item.value = 100;
 			item.rare = 1;
 		}
@@ -34,7 +37,7 @@ namespace ExampleMod.Items
 			// Look up ItemIDs: https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Item-IDs
 			// To specify more than one ingredient, use multiple recipe.AddIngredient() calls.
 			recipe.AddIngredient(ItemID.DirtBlock);
-			// An optional 2nd argument will specifie a stack of the item. 
+			// An optional 2nd argument will specify a stack of the item. 
 			recipe.AddIngredient(ItemID.Acorn, 10);
 			// We can also specify the current item as an ingredient
 			recipe.AddIngredient(this, 2);
@@ -50,7 +53,7 @@ namespace ExampleMod.Items
 			recipe.AddTile(TileID.WorkBenches);
 			// A mod Tile example. To specify more than one crafting station, use multiple recipe.AddTile() calls.
 			recipe.AddTile(mod, "ExampleWorkbench");
-			// There is a limit of 15 ingredients and 15 tiles to a recipe.
+			// There is a limit of 14 ingredients and 14 tiles to a recipe.
 			// Special
 			// Water, Honey, and Lava are not tiles, there are special bools for those. Also needSnowBiome. Water also specifies that it works with Sinks.
 			recipe.needHoney = true;

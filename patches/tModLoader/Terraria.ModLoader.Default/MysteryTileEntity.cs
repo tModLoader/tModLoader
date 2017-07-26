@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Terraria.DataStructures;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -19,7 +20,8 @@ namespace Terraria.ModLoader.Default
 
 		public override bool ValidTile(int i, int j)
 		{
-			return Main.tile[i, j].active() && Main.tile[i, j].type == mod.TileType("MysteryTile");
+			Tile tile = Main.tile[i, j];
+			return tile.active() && (tile.type == mod.TileType("MysteryTile") || tile.type == mod.TileType("PendingMysteryTile"));
 		}
 
 		public override TagCompound Save()

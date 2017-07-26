@@ -3,7 +3,7 @@
 @@ -3,6 +_,8 @@
  using System.Diagnostics;
  using System.IO;
- using System.Text.RegularExpressions;
+ using System.Linq;
 +using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
  using Terraria.Social;
@@ -25,16 +25,17 @@
  			}
  		}
  
-@@ -112,6 +_,8 @@
- 				char directorySeparatorChar = System.IO.Path.DirectorySeparatorChar;
- 				string matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.map";
- 				List<string> files = SocialAPI.Cloud.GetFiles(matchPattern);
-+				matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.tmap";
-+				files.AddRange(SocialAPI.Cloud.GetFiles(matchPattern));
- 				for (int i = 0; i < files.Count; i++)
+@@ -111,7 +_,8 @@
+ 				string fileName = base.GetFileName(false);
+ 				string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
+ 				IEnumerable<string> enumerable = from path in SocialAPI.Cloud.GetFiles()
+-				                                 where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase) && path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase)
++				                                 where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase)
++													&& (path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase) || path.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase))
+ 				                                 select path;
+ 				foreach (string current in enumerable)
  				{
- 					string localPath = string.Concat(new object[]
-@@ -128,6 +_,7 @@
+@@ -122,6 +_,7 @@
  				this._isCloudSave = false;
  				this._path = playerPathFromName;
  				Main.LocalFavoriteData.SaveFavorite(this);

@@ -1,4 +1,5 @@
 using System;
+using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -6,6 +7,7 @@ namespace Terraria.ModLoader.UI
 	internal class UILoadMods : UIState
 	{
 		private UILoadProgress loadProgress;
+		private UIText subProgress;
 
 		public override void OnInitialize()
 		{
@@ -17,6 +19,12 @@ namespace Terraria.ModLoader.UI
 			loadProgress.VAlign = 0.5f;
 			loadProgress.Top.Set(10f, 0f);
 			base.Append(loadProgress);
+
+			subProgress = new UIText("", 0.5f, true);
+			subProgress.Top.Set(65f, 0f);
+			subProgress.HAlign = 0.5f;
+			subProgress.VAlign = 0.5f;
+			Append(subProgress);
 		}
 
 		internal void SetProgressFinding()
@@ -60,6 +68,14 @@ namespace Terraria.ModLoader.UI
 			else
 			{
 				Console.WriteLine("Initializing: " + mod);
+			}
+		}
+
+		internal void SetSubProgressInit(string message)
+		{
+			if (!Main.dedServ)
+			{
+				subProgress.SetText(message);
 			}
 		}
 

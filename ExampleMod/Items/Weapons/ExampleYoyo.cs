@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -8,9 +6,16 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleYoyo : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			// These are all related to gamepad controls and don't seem to affect anything else
+			ItemID.Sets.Yoyo[item.type] = true;
+			ItemID.Sets.GamepadExtraRange[item.type] = 15;
+			ItemID.Sets.GamepadSmartQuickReach[item.type] = true;
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Yoyo";
 			item.useStyle = 5;
 			item.width = 24;
 			item.height = 24;
@@ -28,11 +33,6 @@ namespace ExampleMod.Items.Weapons
 			item.damage = 9;
 			item.value = Item.sellPrice(0, 0, 1, 0);
 			item.rare = 0;
-
-			// These are all related to gamepad controls and don't seem to affect anything else
-			ItemID.Sets.Yoyo[item.type] = true;
-			ItemID.Sets.GamepadExtraRange[item.type] = 15;
-			ItemID.Sets.GamepadSmartQuickReach[item.type] = true;
 		}
 
 		public override void AddRecipes()

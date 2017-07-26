@@ -24,7 +24,9 @@ namespace ExampleMod.Tiles
 				16
 			};
 			TileObjectData.addTile(Type);
-			AddMapEntry(new Color(200, 200, 200), "Example Clock");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Clock");
+			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Pixel");
 			adjTiles = new int[] { TileID.GrandfatherClocks };
 		}

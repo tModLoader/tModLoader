@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.UI\ItemSlot.cs
 +++ src/tModLoader\Terraria.UI\ItemSlot.cs
-@@ -8,6 +_,7 @@
+@@ -7,6 +_,7 @@
  using Terraria.GameContent.UI.Chat;
  using Terraria.GameInput;
  using Terraria.ID;
@@ -8,9 +8,9 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -299,8 +_,8 @@
+@@ -298,8 +_,8 @@
  			}
- 			if ((player.selectedItem != slot || player.itemAnimation <= 0) && player.itemTime == 0)
+ 			if (player.itemAnimation == 0 && player.itemTime == 0)
  			{
 -				int num = ItemSlot.PickItemMovementAction(inv, context, slot, Main.mouseItem);
 -				if (num == 0)
@@ -19,8 +19,8 @@
  				{
  					if (context == 6 && Main.mouseItem.type != 0)
  					{
-@@ -365,7 +_,7 @@
- 						NetMessage.SendData(32, -1, -1, "", player.chest, (float)slot, 0f, 0f, 0, 0, 0);
+@@ -364,7 +_,7 @@
+ 						NetMessage.SendData(32, -1, -1, null, player.chest, (float)slot, 0f, 0f, 0, 0, 0);
  					}
  				}
 -				else if (num == 1)
@@ -28,7 +28,7 @@
  				{
  					if (Main.mouseItem.stack == 1 && Main.mouseItem.type > 0 && inv[slot].type > 0 && inv[slot].IsNotTheSameAs(Main.mouseItem))
  					{
-@@ -461,7 +_,7 @@
+@@ -460,7 +_,7 @@
  						}
  					}
  				}
@@ -37,7 +37,7 @@
  				{
  					if (Main.mouseItem.stack == 1 && Main.mouseItem.dye > 0 && inv[slot].type > 0 && inv[slot].type != Main.mouseItem.type)
  					{
-@@ -557,9 +_,10 @@
+@@ -556,12 +_,14 @@
  						}
  					}
  				}
@@ -48,10 +48,15 @@
 +				else if (clickAction == 3)
 +				{
 +					Main.mouseItem = inv[slot].Clone();
++					Main.mouseItem.stack = 1;
  					if (inv[slot].buyOnce)
  					{
- 						Main.mouseItem.Prefix((int)inv[slot].prefix);
-@@ -583,7 +_,8 @@
+-						Main.mouseItem.Prefix((int)inv[slot].prefix);
++						//Main.mouseItem.Prefix((int)inv[slot].prefix);
+ 					}
+ 					else
+ 					{
+@@ -582,7 +_,8 @@
  						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  					}
  				}
@@ -61,7 +66,19 @@
  				{
  					Chest chest = Main.instance.shop[Main.npcShop];
  					if (player.SellItem(Main.mouseItem.value, Main.mouseItem.stack))
-@@ -888,7 +_,7 @@
+@@ -620,7 +_,10 @@
+ 			Player player = Main.player[Main.myPlayer];
+ 			if (inv[slot].type > 0)
+ 			{
+-				if (Main.npcShop > 0 && !inv[slot].favorited)
++				if (PlayerHooks.ShiftClickSlot(player, inv, context, slot))
++				{
++				}
++				else if (Main.npcShop > 0 && !inv[slot].favorited)
+ 				{
+ 					Chest chest = Main.instance.shop[Main.npcShop];
+ 					if (inv[slot].type >= 71 && inv[slot].type <= 74)
+@@ -887,7 +_,7 @@
  			if (context == 0)
  			{
  				flag = true;
@@ -70,7 +87,7 @@
  				{
  					if (Main.mouseRightRelease)
  					{
-@@ -1005,6 +_,10 @@
+@@ -1004,6 +_,10 @@
  						inv[slot].stack = Main.rand.Next(20, 50);
  					}
  					Recipe.FindRecipes();
@@ -81,7 +98,7 @@
  				}
  				else
  				{
-@@ -1580,11 +_,17 @@
+@@ -1579,11 +_,17 @@
  				num9 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num9 / 2f;
  				Vector2 origin = rectangle2.Size() * (num8 / 2f - 0.5f);
@@ -104,7 +121,7 @@
  				if (ItemID.Sets.TrapSigned[item.type])
  				{
  					spriteBatch.Draw(Main.wireTexture, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle?(new Rectangle(4, 58, 8, 8)), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
-@@ -1826,7 +_,7 @@
+@@ -1825,7 +_,7 @@
  				}
  				if (player.armor[slot].wingSlot > 0 && item.wingSlot > 0)
  				{
@@ -113,7 +130,7 @@
  				}
  			}
  			for (int i = 0; i < player.armor.Length; i++)
-@@ -1847,7 +_,7 @@
+@@ -1846,7 +_,7 @@
  					return true;
  				}
  			}
@@ -122,7 +139,7 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success)
-@@ -1935,6 +_,15 @@
+@@ -1934,6 +_,15 @@
  						ItemSlot.accSlotCount = j - 3;
  					}
  				}
@@ -138,7 +155,7 @@
  				if (ItemSlot.accSlotCount >= num2)
  				{
  					ItemSlot.accSlotCount = 0;
-@@ -1950,6 +_,10 @@
+@@ -1949,6 +_,10 @@
  					{
  						num3 = k;
  					}
@@ -149,11 +166,11 @@
  				}
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
-@@ -2220,7 +_,7 @@
+@@ -2219,7 +_,7 @@
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false)
  		{
--			if (type < 0 || type > 3884)
+-			if (type < 0 || type > 3930)
 +			if (type < 0)
  			{
  				return currentColor;

@@ -23,6 +23,10 @@ namespace Terraria.ModLoader.UI
 		public string displayname;
 		public string version;
 		public string author;
+		public string modIconURL;
+		private bool modIconWanted;
+		private bool modIconRequested;
+		private bool modIconReady;
 		public string download;
 		public string timeStamp;
 		public string modreferences;
@@ -33,11 +37,12 @@ namespace Terraria.ModLoader.UI
 		private readonly Texture2D innerPanelTexture;
 		private readonly UIText modName;
 		private readonly UITextPanel<string> updateButton;
+		private UIImage modIcon;
 		public bool update = false;
 		public bool updateIsDowngrade = false;
-		public bool exists = false;
+		public TmodFile installed;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, bool exists)
+		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string modIconURL, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, TmodFile installed)
 		{
 			this.displayname = displayname;
 			this.mod = name;
@@ -45,46 +50,56 @@ namespace Terraria.ModLoader.UI
 			this.author = author;
 			this.modreferences = modreferences;
 			this.modside = modside;
+			this.modIconURL = modIconURL;
 			this.download = download;
 			this.downloads = downloads;
 			this.hot = hot;
 			this.timeStamp = timeStamp;
 			this.update = update;
 			this.updateIsDowngrade = updateIsDowngrade;
-			this.exists = exists;
+			this.installed = installed;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
 			this.Height.Set(90f, 0f);
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
+
+			float left = 0f;
+			if (modIconURL != null)
+			{
+				left += 85;
+			}
+
 			string text = displayname + " " + version;
 			this.modName = new UIText(text, 1f, false);
-			this.modName.Left.Set(10f, 0f);
+			this.modName.Left.Set(left + 5, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel<string> button = new UITextPanel<string>("More info", 1f, false);
-			button.Width.Set(100f, 0f);
-			button.Height.Set(30f, 0f);
-			button.Left.Set(5f, 0f);
-			button.Top.Set(40f, 0f);
-			button.PaddingTop -= 2f;
-			button.PaddingBottom -= 2f;
-			button.OnMouseOver += UICommon.FadedMouseOver;
-			button.OnMouseOut += UICommon.FadedMouseOut;
-			button.OnClick += RequestMoreinfo;
-			base.Append(button);
-			if (update || !exists)
+
+			UITextPanel<string> moreInfoButton = new UITextPanel<string>("More info", 1f, false);
+			moreInfoButton.Width.Set(100f, 0f);
+			moreInfoButton.Height.Set(30f, 0f);
+			moreInfoButton.Left.Set(left, 0f);
+			moreInfoButton.Top.Set(40f, 0f);
+			moreInfoButton.PaddingTop -= 2f;
+			moreInfoButton.PaddingBottom -= 2f;
+			moreInfoButton.OnMouseOver += UICommon.FadedMouseOver;
+			moreInfoButton.OnMouseOut += UICommon.FadedMouseOut;
+			moreInfoButton.OnClick += RequestMoreinfo;
+			Append(moreInfoButton);
+
+			if (update || installed == null)
 			{
 				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? "Downgrade" : "Update") : "Download", 1f,
 					false);
-				updateButton.CopyStyle(button);
-				updateButton.Width.Set(200f, 0f);
-				updateButton.Left.Set(button.Width.Pixels + button.Left.Pixels * 2f + 5f, 0f);
+				updateButton.CopyStyle(moreInfoButton);
+				updateButton.Width.Set(modIconURL != null ? 120f : 200f, 0f);
+				updateButton.Left.Set(moreInfoButton.Width.Pixels + moreInfoButton.Left.Pixels + 5f, 0f);
 				updateButton.OnMouseOver += UICommon.FadedMouseOver;
 				updateButton.OnMouseOut += UICommon.FadedMouseOut;
 				updateButton.OnClick += this.DownloadMod;
-				base.Append(updateButton);
+				Append(updateButton);
 			}
 			if (modreferences.Length > 0)
 			{
@@ -97,12 +112,12 @@ namespace Terraria.ModLoader.UI
 					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').ToList();
 					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies"; // Toolong of \n" + modListItem.modName.Text;
 					Interface.modBrowser.filterTextBox.currentString = "";
-					Interface.modBrowser.SortList();
+					Interface.modBrowser.updateNeeded = true;
 					Main.PlaySound(SoundID.MenuOpen);
 				};
 				Append(modReferenceIcon);
 			}
-			base.OnDoubleClick += RequestMoreinfo;
+			OnDoubleClick += RequestMoreinfo;
 		}
 
 		public override int CompareTo(object obj)
@@ -112,17 +127,17 @@ namespace Terraria.ModLoader.UI
 			{
 				default:
 					return base.CompareTo(obj);
-				case SortMode.DisplayNameAtoZ:
+				case ModBrowserSortMode.DisplayNameAtoZ:
 					return string.Compare(this.displayname, item?.displayname, StringComparison.Ordinal);
-				case SortMode.DisplayNameZtoA:
+				case ModBrowserSortMode.DisplayNameZtoA:
 					return -1 * string.Compare(this.displayname, item?.displayname, StringComparison.Ordinal);
-				case SortMode.DownloadsAscending:
+				case ModBrowserSortMode.DownloadsAscending:
 					return this.downloads.CompareTo(item?.downloads);
-				case SortMode.DownloadsDescending:
+				case ModBrowserSortMode.DownloadsDescending:
 					return -1 * this.downloads.CompareTo(item?.downloads);
-				case SortMode.RecentlyUpdated:
+				case ModBrowserSortMode.RecentlyUpdated:
 					return -1 * string.Compare(this.timeStamp, item?.timeStamp, StringComparison.Ordinal);
-				case SortMode.Hot:
+				case ModBrowserSortMode.Hot:
 					return -1 * this.hot.CompareTo(item?.hot);
 			}
 		}
@@ -156,7 +171,7 @@ namespace Terraria.ModLoader.UI
 				case UpdateFilter.All:
 					return true;
 				case UpdateFilter.Available:
-					return update || !exists;
+					return update || installed == null;
 				case UpdateFilter.UpdateOnly:
 					return update;
 			}
@@ -166,6 +181,10 @@ namespace Terraria.ModLoader.UI
 		{
 			base.DrawSelf(spriteBatch);
 
+			if (modIconURL != null && !modIconWanted)
+			{
+				modIconWanted = true;
+			}
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 			//draw divider
@@ -174,7 +193,39 @@ namespace Terraria.ModLoader.UI
 			const int baseWidth = 125; // something like 1 days ago is ~110px, XX minutes ago is ~120 px (longest)
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - baseWidth, innerDimensions.Y + 45);
 			this.DrawPanel(spriteBatch, drawPos, (float)baseWidth);
-			this.DrawTimeText(spriteBatch, drawPos + new Vector2(0f, 5f), baseWidth); // x offset (padding) to do in method
+			this.DrawTimeText(spriteBatch, drawPos + new Vector2(0f, 2f), baseWidth); // x offset (padding) to do in method
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			base.Update(gameTime);
+			if (modIconWanted && !modIconRequested)
+			{
+				modIconRequested = true;
+				using (WebClient client = new WebClient())
+				{
+					client.DownloadDataCompleted += IconDownloadComplete;
+					client.DownloadDataAsync(new Uri(modIconURL));
+				}
+			}
+			if (modIconReady)
+			{
+				modIconReady = false;
+				Append(modIcon);
+			}
+		}
+
+		private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e)
+		{
+			byte[] data = e.Result;
+			using (MemoryStream buffer = new MemoryStream(data))
+			{
+				var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+				modIcon = new UIImage(iconTexture);
+				modIcon.Left.Set(0f, 0f);
+				modIcon.Top.Set(0f, 0f);
+				modIconReady = true; // We'd like to avoid collection modified exceptions
+			}
 		}
 
 		protected override void DrawChildren(SpriteBatch spriteBatch)
@@ -270,7 +321,7 @@ namespace Terraria.ModLoader.UI
 								HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
 								if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
 								{
-									Interface.errorMessage.SetMessage("The Mod Browser server is under heavy load. Try again later.");
+									Interface.errorMessage.SetMessage("The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.");
 									Interface.errorMessage.SetGotoMenu(0);
 									Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 									Main.gameMenu = true;
@@ -293,11 +344,6 @@ namespace Terraria.ModLoader.UI
 							if (!update)
 							{
 								Interface.modBrowser.aNewModDownloaded = true;
-								string path = ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".enabled";
-								using (StreamWriter writer = File.CreateText(path))
-								{
-									writer.Write("false");
-								}
 							}
 							else
 							{
@@ -358,6 +404,7 @@ namespace Terraria.ModLoader.UI
 
 			Interface.modInfo.SetModName(this.displayname);
 			Interface.modInfo.SetModInfo(description);
+			Interface.modInfo.SetMod(installed);
 			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);
 			Interface.modInfo.SetURL(homepage);
 			Main.menuMode = Interface.modInfoID;

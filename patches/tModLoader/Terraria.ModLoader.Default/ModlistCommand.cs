@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework;
+using Terraria.Chat;
+using Terraria.GameContent.NetModules;
 using Terraria.ID;
 
 namespace Terraria.ModLoader.Default
@@ -16,7 +18,7 @@ namespace Terraria.ModLoader.Default
 			if (Main.netMode == 1) //multiplayer client
 			{
 				//send the command to the server
-				NetMessage.SendData(MessageID.ChatText, -1, -1, input);
+				NetMessage.SendChatMessageFromClient(new ChatMessage(input));
 
 				var client = mods.Where(m => m.Side == ModSide.Client || m.Side == ModSide.NoSync).ToArray();
 				if (client.Length > 0)

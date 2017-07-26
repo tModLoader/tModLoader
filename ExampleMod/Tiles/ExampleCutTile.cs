@@ -51,10 +51,14 @@ namespace ExampleMod.Tiles
 
 	class ExampleCutTileItem : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Fragile Boulder Trap");
+		}
+
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.DartTrap);
-			item.name = "Fragile Boulder Trap";
 			item.createTile = mod.TileType("ExampleCutTileTile");
 			item.value = 1000;
 		}

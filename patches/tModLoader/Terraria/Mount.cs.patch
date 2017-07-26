@@ -84,6 +84,31 @@
  
  		public bool Active
  		{
+@@ -1323,7 +_,7 @@
+ 
+ 		public static int GetHeightBoost(int MountType)
+ 		{
+-			if (MountType <= -1 || MountType >= 15)
++			if (MountType <= -1 || MountType >= Mount.mounts.Length)
+ 			{
+ 				return 0;
+ 			}
+@@ -1348,6 +_,7 @@
+ 					}
+ 					break;
+ 			}
++			MountLoader.JumpHeight(this._data, ref num, xVelocity);
+ 			return num;
+ 		}
+ 
+@@ -1367,6 +_,7 @@
+ 					}
+ 					break;
+ 			}
++			MountLoader.JumpSpeed(this._data, ref num, xVelocity);
+ 			return num;
+ 		}
+ 
 @@ -1802,6 +_,10 @@
  
  		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
@@ -111,7 +136,7 @@
  			switch (this._type)
  			{
  				case 8:
-@@ -3018,7 +_,7 @@
+@@ -3024,7 +_,7 @@
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
  		{

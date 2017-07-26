@@ -8,9 +8,13 @@ namespace ExampleMod.Projectiles
 {
 	public class ElementLaser : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Elemental Laser");
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Elemental Laser";
 			projectile.width = 4;
 			projectile.height = 4;
 			projectile.timeLeft = 60;
@@ -30,7 +34,7 @@ namespace ExampleMod.Projectiles
 				{
 					cooldownSlot = 1;
 				}
-				projectile.name = GetName();
+				projectile.Name = GetName();
 			}
 			projectile.Center = npc.Center;
 			projectile.localAI[0] += 1f;

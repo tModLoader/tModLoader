@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
+using ReLogic.Graphics;
 
 namespace Terraria.ModLoader.UI
 {
@@ -37,7 +38,7 @@ namespace Terraria.ModLoader.UI
 		{
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle space = GetInnerDimensions();
-			SpriteFont font = Main.fontMouseText;
+			DynamicSpriteFont font = Main.fontMouseText;
 			float position = 0f;
 			if (this._scrollbar != null)
 			{
@@ -102,7 +103,7 @@ namespace Terraria.ModLoader.UI
 			{
 				return;
 			}
-			SpriteFont font = Main.fontMouseText;
+			DynamicSpriteFont font = Main.fontMouseText;
 			float position = 0f;
 			float textHeight = font.MeasureString("A").Y;
 			string[] lines = text.Split('\n');

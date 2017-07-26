@@ -1,15 +1,15 @@
 --- src/merged\Terraria.UI\ItemSlot.cs
 +++ src/Terraria\Terraria.UI\ItemSlot.cs
-@@ -644,11 +_,10 @@
+@@ -643,11 +_,10 @@
  					return;
  				case 3:
  				case 4:
--					IL_A01:
+-					IL_9F3:
 +				default:
  					inv[slot].favorited = false;
  					return;
  				}
--				goto IL_A01;
+-				goto IL_9F3;
  			}
  		}
  

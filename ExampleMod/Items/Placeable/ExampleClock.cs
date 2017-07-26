@@ -5,13 +5,16 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleClock: ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("This is a modded clock.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Clock";
 			item.width = 26;
 			item.height = 22;
 			item.maxStack = 99;
-			AddTooltip("This is a modded clock.");
 			item.useTurn = true;
 			item.autoReuse = true;
 			item.useAnimation = 15;
