@@ -53,12 +53,41 @@
        </PropertyGroup>
      </When>
      <Otherwise>
-@@ -82,12 +_,24 @@
-       <SpecificVersion>False</SpecificVersion>
+@@ -81,19 +_,47 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
+     <Reference Include="System" />
+-    <Reference Include="Steamworks.NET">
++    <Reference Include="System.XML" />
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <SpecificVersion>False</SpecificVersion>
+       <HintPath>Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll</HintPath>
+     </Reference>
+-    <Reference Include="ReLogic">
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('MAC'))">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>..\..\references\Steamworks.NET.OSX.dll</HintPath>
++    </Reference>
++    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('LINUX'))">
++      <SpecificVersion>False</SpecificVersion>
++      <HintPath>..\..\references\Steamworks.NET.Linux.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('WINDOWS'))">
+       <HintPath>Terraria.Libraries\ReLogic\ReLogic.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('MAC'))">
++      <HintPath>..\..\references\ReLogicMac.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('LINUX'))">
++      <HintPath>..\..\references\ReLogicLinux.dll</HintPath>
+     </Reference>
+     <Reference Include="System.Core" />
+     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="System.Drawing" />
 -    <Reference Include="Ionic.Zip.CF">
 -      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
+-    </Reference>
+-    <Reference Include="System.Windows.Forms" />
 +    <Reference Include="Ionic.Zip.Reduced">
 +      <SpecificVersion>False</SpecificVersion>
 +      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
@@ -71,17 +100,14 @@
 +    </Reference>
 +    <Reference Include="MP3Sharp">
 +      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
-     </Reference>
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
--    <Reference Include="Steamworks.NET">
-+    <Reference Include="System.XML" />
-+    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86">
-+      <SpecificVersion>False</SpecificVersion>
-       <HintPath>Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
-     </Reference>
-     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-@@ -306,8 +_,11 @@
++    </Reference>
++    <Reference Include="System.Windows.Forms">
++      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
++    </Reference>
+     <Reference Include="WindowsBase" />
+   </ItemGroup>
+   <ItemGroup>
+@@ -327,8 +_,11 @@
      <Compile Include="Terraria.ID\InvasionID.cs" />
      <Compile Include="Terraria.ID\ItemAlternativeFunctionID.cs" />
      <Compile Include="Terraria.ID\ItemID.cs" />
@@ -93,7 +119,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -344,6 +_,147 @@
+@@ -368,6 +_,153 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -116,6 +142,7 @@
 +    <Compile Include="Terraria.ModLoader.Exceptions\ModSortingException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\OldHookException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\RecipeException.cs" />
++    <Compile Include="Terraria.ModLoader.Exceptions\ResourceLoadException.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\BigEndian.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\BinaryIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\FontCacheIO.cs" />
@@ -131,6 +158,8 @@
 +    <Compile Include="Terraria.ModLoader.IO\WorldIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TagCompound.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TagIO.cs" />
++    <Compile Include="Terraria.ModLoader.UI.Elements\FixedUIScrollbar.cs" />
++    <Compile Include="Terraria.ModLoader.UI.Elements\UIGrid.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIColorTextPanel.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UICommon.cs" />
@@ -143,6 +172,7 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIInfoMessage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIInputTextField.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoader.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIExtractMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoadProgress.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIManagePublished.cs" />
@@ -163,6 +193,8 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIModSources.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIUpdateMessage.cs" />
 +    <Compile Include="Terraria.ModLoader\AssemblyManager.cs" />
++    <Compile Include="Terraria.ModLoader\AutoloadEquip.cs" />
++    <Compile Include="Terraria.ModLoader\AutoloadHead.cs" />
 +    <Compile Include="Terraria.ModLoader\BackgroundStyleLoaders.cs" />
 +    <Compile Include="Terraria.ModLoader\BackgroundTextureLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\BuffLoader.cs" />
@@ -170,7 +202,6 @@
 +    <Compile Include="Terraria.ModLoader\CommandManager.cs" />
 +    <Compile Include="Terraria.ModLoader\ConfigManager.cs" />
 +    <Compile Include="Terraria.ModLoader\DrawInfo.cs" />
-+    <Compile Include="Terraria.ModLoader\EntityInfo.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipTexture.cs" />
 +    <Compile Include="Terraria.ModLoader\EquipType.cs" />
@@ -212,6 +243,7 @@
 +    <Compile Include="Terraria.ModLoader\ModSide.cs" />
 +    <Compile Include="Terraria.ModLoader\ModTile.cs" />
 +    <Compile Include="Terraria.ModLoader\ModTileEntity.cs" />
++    <Compile Include="Terraria.ModLoader\ModTranslation.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWaterStyle.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWorld.cs" />
@@ -241,27 +273,46 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -468,6 +_,7 @@
+@@ -495,6 +_,7 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />
      <Compile Include="Terraria\ItemText.cs" />
 +    <Compile Include="Terraria\Item_tML.cs" />
-     <Compile Include="Terraria\keyBoardInput.cs" Condition="$(DefineConstants.Contains('CLIENT'))" />
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
-@@ -511,11 +_,60 @@
+     <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
+@@ -538,10 +_,24 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
 -    <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
 +    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
      <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
-     <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET\Steamworks.NET.dll" />
-     <EmbeddedResource Include="Terraria.Localization.Content.English.json" />
-     <EmbeddedResource Include="Terraria.Localization.Content.English.Town.json" />
+-    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" />
+-    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" />
++    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++    <EmbeddedResource Include="..\..\references\ReLogicMac.dll" Condition="$(DefineConstants.Contains('MAC'))">
++      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\ReLogicLinux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
++      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++    <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
++      <LogicalName>Terraria.Libraries.Steamworks.NET.OSX.Steamworks.NET.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
++      <LogicalName>Terraria.Libraries.Steamworks.NET.Linux.Steamworks.NET.dll</LogicalName>
++    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
-+  </ItemGroup>
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
+@@ -606,5 +_,53 @@
+     <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
+   </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\LoaderBG.png" />
@@ -276,7 +327,8 @@
 +    <None Include="App.config">
 +      <SubType>Designer</SubType>
 +    </None>
-   </ItemGroup>
++  </ItemGroup>
++  <ItemGroup />
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 -</Project>
 +  <PropertyGroup>
