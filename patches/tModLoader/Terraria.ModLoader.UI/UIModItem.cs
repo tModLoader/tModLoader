@@ -20,10 +20,10 @@ namespace Terraria.ModLoader.UI
 		internal bool enabled;
 		private readonly BuildProperties properties;
 		private readonly UITextPanel<string> button2;
-		private readonly UITextPanel<string> configButton;
-		readonly UIHoverImage keyImage;
-		ModConfig modConfig;
 		private UIImage modIcon;
+		readonly UIHoverImage keyImage;
+		private readonly UITextPanel<string> configButton;
+		private ModConfig modConfig;
 
 		public UIModItem(TmodFile mod)
 		{
