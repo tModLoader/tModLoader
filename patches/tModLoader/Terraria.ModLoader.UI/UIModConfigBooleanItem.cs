@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Reflection;
 using Terraria.Graphics;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -14,30 +15,35 @@ namespace Terraria.ModLoader.UI
 		private Func<bool> _IsOnFunction;
 		private Texture2D _toggleTexture;
 
+		// TODO. Display status string? (right now only on/off texture, but True/False, Yes/No, Enabled/Disabled options)
+		public UIModConfigBooleanItem(PropertyInfo property, ModConfig modConfig)
+		{
+			Width.Set(0f, 1f);
+			Height.Set(0f, 1f);
+
+			this._color = Color.White;
+			this._toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
+			this._TextDisplayFunction = () => property.Name;
+			this._IsOnFunction = () => (bool)property.GetValue(modConfig, null);
+			this.OnClick += (ev, v) =>
+			{
+				property.SetValue(modConfig, !(bool)property.GetValue(modConfig, null), null);
+				Interface.modConfig.SetPendingChanges();
+			};
+
+			LabelAttribute att = (LabelAttribute) Attribute.GetCustomAttribute(property, typeof (LabelAttribute));
+			if(att != null)
+			{
+				this._TextDisplayFunction = () => att.Label;
+			}
+		}
+
 		public UIModConfigBooleanItem(Func<string> getText, Func<bool> getStatus, Color color)
 		{
 			this._color = color;
 			this._toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
-			Func<string> arg_41_1;
-			if (getText == null)
-			{
-				arg_41_1 = (() => "???");
-			}
-			else
-			{
-				arg_41_1 = getText;
-			}
-			this._TextDisplayFunction = arg_41_1;
-			Func<bool> arg_6A_1;
-			if (getStatus == null)
-			{
-				arg_6A_1 = (() => false);
-			}
-			else
-			{
-				arg_6A_1 = getStatus;
-			}
-			this._IsOnFunction = arg_6A_1;
+			this._TextDisplayFunction = getText ?? (() => "???");
+			this._IsOnFunction = getStatus ?? (() => false);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)

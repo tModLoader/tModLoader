@@ -23,7 +23,6 @@ namespace Terraria.ModLoader.UI
 		private UIImage modIcon;
 		readonly UIHoverImage keyImage;
 		private readonly UITextPanel<string> configButton;
-		private ModConfig modConfig;
 
 		public UIModItem(TmodFile mod)
 		{
@@ -84,7 +83,6 @@ namespace Terraria.ModLoader.UI
 			base.Append(button2);
 			if (ModLoader.ModLoaded(mod.name) && ConfigManager.Configs.ContainsKey(ModLoader.GetMod(mod.name))) // and has config
 			{
-				modConfig = ConfigManager.Configs[ModLoader.GetMod(mod.name)][0];
 				configButton = new UITextPanel<string>("Config", 1f, false);
 				configButton.Width.Set(100f, 0f);
 				configButton.Height.Set(30f, 0f);
@@ -95,7 +93,7 @@ namespace Terraria.ModLoader.UI
 				configButton.OnMouseOver += UICommon.FadedMouseOver;
 				configButton.OnMouseOut += UICommon.FadedMouseOut;
 				configButton.OnClick += this.OpenConfig;
-				base.Append(configButton);
+				Append(configButton);
 			}
 			if (properties.modReferences.Length > 0 && !enabled)
 			{
@@ -224,7 +222,7 @@ namespace Terraria.ModLoader.UI
 		internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(SoundID.MenuOpen);
-			Interface.modConfig.SetMod(ModLoader.GetMod(mod.name), modConfig);
+			Interface.modConfig.SetMod(ModLoader.GetMod(mod.name));
 			Main.menuMode = Interface.modConfigID;
 		}
 		

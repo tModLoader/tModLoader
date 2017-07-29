@@ -20,6 +20,9 @@ namespace Terraria.ModLoader.UI
 
 		public UIModConfigFloatItem(Func<string> getText, Func<float> getStatus, Action<float> setStatusKeyboard, Action setStatusGamepad, int sliderIDInPage, Color color)
 		{
+			Width.Set(0f, 1f);
+			Height.Set(0f, 1f);
+
 			this._color = color;
 			this._toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
 			Func<string> arg_42_1;
@@ -45,7 +48,7 @@ namespace Terraria.ModLoader.UI
 			Action<float> arg_94_1;
 			if (setStatusKeyboard == null)
 			{
-				arg_94_1 = delegate(float s)
+				arg_94_1 = delegate (float s)
 				{
 				};
 			}
