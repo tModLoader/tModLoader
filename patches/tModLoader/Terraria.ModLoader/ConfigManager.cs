@@ -40,6 +40,8 @@ namespace Terraria.ModLoader
 				Configs.Add(config.mod, configList = new List<ModConfig>());
 			configList.Add(config);
 
+			config.PostAutoLoad();
+
 			// Maintain a backup of LoadTime Configs.
 			List<ModConfig> configList2;
 			if (!LoadTimeConfigs.TryGetValue(config.mod, out configList2))
@@ -69,6 +71,7 @@ namespace Terraria.ModLoader
 			string path = Path.Combine(ModConfigPath, filename);
 			string json = JsonConvert.SerializeObject(config, serializerSettings);
 			File.WriteAllText(path, json);
+			config.PostSave();
 		}
 
 		internal static void Unload()

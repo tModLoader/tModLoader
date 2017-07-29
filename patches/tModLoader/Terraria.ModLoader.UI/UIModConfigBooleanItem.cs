@@ -31,8 +31,30 @@ namespace Terraria.ModLoader.UI
 				Interface.modConfig.SetPendingChanges();
 			};
 
-			LabelAttribute att = (LabelAttribute) Attribute.GetCustomAttribute(property, typeof (LabelAttribute));
-			if(att != null)
+			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(property, typeof(LabelAttribute));
+			if (att != null)
+			{
+				this._TextDisplayFunction = () => att.Label;
+			}
+		}
+
+		public UIModConfigBooleanItem(FieldInfo field, ModConfig modConfig)
+		{
+			Width.Set(0f, 1f);
+			Height.Set(0f, 1f);
+
+			this._color = Color.White;
+			this._toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
+			this._TextDisplayFunction = () => field.Name;
+			this._IsOnFunction = () => (bool)field.GetValue(modConfig);
+			this.OnClick += (ev, v) =>
+			{
+				field.SetValue(modConfig, !(bool)field.GetValue(modConfig));
+				Interface.modConfig.SetPendingChanges();
+			};
+
+			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(field, typeof(LabelAttribute));
+			if (att != null)
 			{
 				this._TextDisplayFunction = () => att.Label;
 			}

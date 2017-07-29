@@ -255,6 +255,21 @@ namespace Terraria.ModLoader.UI
 
 			foreach (FieldInfo field in fields)
 			{
+				UISortableElement uISortableElement = new UISortableElement(i++);
+				uISortableElement.Width.Set(0f, 1f);
+				uISortableElement.Height.Set(30f, 0f);
+				uISortableElement.HAlign = 0.5f;
+				configList.Add(uISortableElement);
+
+				if (field.FieldType == typeof(bool)) // isassignedfrom?
+				{
+					UIElement e = new UIModConfigBooleanItem(field, modConfigClone);
+					uISortableElement.Append(e);
+				}
+				else
+				{
+					uISortableElement.Append(new UIText($"{field.Name} not handled yet ({field.FieldType.Name})"));
+				}
 			}
 
 			foreach (PropertyInfo property in props)

@@ -28,6 +28,17 @@ namespace Terraria.ModLoader
 		// TODO: Does non-autoloaded ModConfigs hava a usecase?
 		public virtual bool Autoload(ref string name) => mod.Properties.Autoload;
 
+		// PostAutoLoad is called right after
+		public virtual void PostAutoLoad()
+		{
+			// TODO: is this name misleading?
+		}
+
+		// Called after changes have been made. Useful for informing the mod of changes to config.
+		public virtual void PostSave()
+		{
+		}
+
 		// TODO: Can we get rid of Clone and just load from disk? Don't think so yet.
 		public virtual ModConfig Clone() => (ModConfig)MemberwiseClone();
 
@@ -74,6 +85,8 @@ namespace Terraria.ModLoader
 
 			return false;
 		}
+
+
 	}
 
 	public enum MultiplayerSyncMode
@@ -88,6 +101,7 @@ namespace Terraria.ModLoader
 	{
 	}
 
+	// TODO: Let this be a ModTranslation key?
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class LabelAttribute : Attribute
 	{

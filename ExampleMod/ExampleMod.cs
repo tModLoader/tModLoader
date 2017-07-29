@@ -29,6 +29,8 @@ namespace ExampleMod
 		internal ExampleUI exampleUI;
 		public static ModHotKey RandomBuffHotKey;
 		public static int FaceCustomCurrencyID;
+		internal static ExampleConfigClient exampleClientConfig;
+		internal static ExampleConfigServer exampleServerConfig;
 
 		public ExampleMod()
 		{

@@ -135,6 +135,7 @@ namespace Terraria.ModLoader
 			{
 				foreach (var file in File)
 				{
+					// TODO: Skip file hook to make way for DisableMusic configs. Or "Disable Magic Staffs"/"Disable set of items" ram saving/time saving ability
 					var path = file.Key;
 					var data = file.Value;
 					string extension = Path.GetExtension(path);
@@ -224,7 +225,7 @@ namespace Terraria.ModLoader
 										if ((flags & 0x80) != 0)
 										{
 											throw new Exception($"The effect {effectFilename} can not be loaded because it is compressed."); // TODO: figure out the compression used.
-											//UInt32 decompressedDataSize = br.ReadUInt32();
+																																			 //UInt32 decompressedDataSize = br.ReadUInt32();
 										}
 										int typeReaderCount = br.ReadVarInt();
 										string typeReaderName = br.ReadString();
@@ -2358,5 +2359,17 @@ namespace Terraria.ModLoader
 			p.Write(netID);
 			return p;
 		}
+
+		public ModConfig GetConfig(string name)
+		{
+			List<ModConfig> configs;
+			if (ConfigManager.Configs.TryGetValue(this, out configs))
+			{
+				return configs.Single(x => x.Name == name);
+			}
+			return null;
+		}
+
+		public T GetConfig<T>() where T : ModConfig => (T)GetConfig(typeof(T).Name);
 	}
 }
