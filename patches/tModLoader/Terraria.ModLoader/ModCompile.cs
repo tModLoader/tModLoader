@@ -259,6 +259,7 @@ namespace Terraria.ModLoader
 			AppDomain.CurrentDomain.FirstChanceException += delegate(object sender, FirstChanceExceptionEventArgs exceptionArgs)
 			{
 				Main.NewText(exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace, Microsoft.Xna.Framework.Color.OrangeRed);
+				ErrorLogger.Log("Silently Caught Exception: " + exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace);
 			};
 		}
 
