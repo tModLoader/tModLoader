@@ -6,9 +6,7 @@ namespace ExampleMod
 {
 	public static class RecipeHelper
 	{
-		private static readonly Mod mod = ExampleMod.instance;
-
-		public static void AddRecipes()
+		public static void AddRecipes(Mod mod)
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(null, "ExampleItem");
@@ -36,7 +34,7 @@ namespace ExampleMod
 			recipe.AddRecipe();
 		}
 
-		public static void AddBossRecipes()
+		public static void AddBossRecipes(Mod mod)
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(null, "BossItem", 10);
@@ -86,7 +84,7 @@ namespace ExampleMod
 			recipe.AddRecipe();
 		}
 
-		public static void TestRecipeEditor()
+		public static void TestRecipeEditor(Mod mod)
 		{
 			RecipeFinder finder = new RecipeFinder();
 			finder.AddIngredient(ItemID.Chain);

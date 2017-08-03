@@ -157,9 +157,9 @@ namespace ExampleMod
 
 		public override void AddRecipes()
 		{
-			RecipeHelper.AddRecipes();
-			RecipeHelper.AddBossRecipes();
-			RecipeHelper.TestRecipeEditor();
+			RecipeHelper.AddRecipes(this);
+			RecipeHelper.AddBossRecipes(this);
+			RecipeHelper.TestRecipeEditor(this);
 		}
 
 		public override void UpdateMusic(ref int music)
