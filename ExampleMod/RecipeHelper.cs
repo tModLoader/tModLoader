@@ -6,7 +6,37 @@ namespace ExampleMod
 {
 	public static class RecipeHelper
 	{
-		public static void AddBossRecipes(Mod mod)
+		private static readonly Mod mod = ExampleMod.instance;
+
+		public static void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(null, "ExampleItem");
+			recipe.SetResult(ItemID.Wood, 999);
+			recipe.AddRecipe();
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(null, "ExampleItem");
+			recipe.SetResult(ItemID.Silk, 999);
+			recipe.AddRecipe();
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(null, "ExampleItem");
+			recipe.SetResult(ItemID.IronOre, 999);
+			recipe.AddRecipe();
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(null, "ExampleItem");
+			recipe.SetResult(ItemID.GravitationPotion, 20);
+			recipe.AddRecipe();
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(null, "ExampleItem");
+			recipe.SetResult(ItemID.GoldChest);
+			recipe.AddRecipe();
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(null, "ExampleItem");
+			recipe.SetResult(ItemID.MusicBoxDungeon);
+			recipe.AddRecipe();
+		}
+
+		public static void AddBossRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(null, "BossItem", 10);
@@ -56,7 +86,7 @@ namespace ExampleMod
 			recipe.AddRecipe();
 		}
 
-		public static void TestRecipeEditor(Mod mod)
+		public static void TestRecipeEditor()
 		{
 			RecipeFinder finder = new RecipeFinder();
 			finder.AddIngredient(ItemID.Chain);
