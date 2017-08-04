@@ -1,0 +1,53 @@
+--- src/Terraria\Terraria.DataStructures\Point16.cs
++++ src/tModLoader\Terraria.DataStructures\Point16.cs
+@@ -28,6 +_,18 @@
+ 			this.Y = Y;
+ 		}
+ 
++		public Point16(int size)
++		{
++			this.X = (short)size;
++			this.Y = (short)size;
++		}
++
++		public Point16(short size)
++		{
++			this.X = size;
++			this.Y = size;
++		}
++
+ 		public static Point16 Max(int firstX, int firstY, int secondX, int secondY)
+ 		{
+ 			return new Point16((firstX > secondX) ? firstX : secondX, (firstY > secondY) ? firstY : secondY);
+@@ -41,6 +_,30 @@
+ 		public Point16 Max(Point16 compareTo)
+ 		{
+ 			return new Point16((this.X > compareTo.X) ? this.X : compareTo.X, (this.Y > compareTo.Y) ? this.Y : compareTo.Y);
++		}
++
++		public static Point16 operator +(Point16 first, Point16 second)
++		{
++			return new Point16(first.X + second.X, first.Y + second.Y);
++		}
++
++		public static Point16 operator -(Point16 first, Point16 second)
++		{
++			return new Point16(first.X - second.X, first.Y - second.Y);
++		}
++
++		public static Point16 operator *(Point16 first, Point16 second)
++		{
++			return new Point16(first.X * second.X, first.Y * second.Y);
++		}
++		public static Point16 operator /(Point16 first, Point16 second)
++		{
++			return new Point16(first.X / second.X, first.Y / second.Y);
++		}
++
++		public static Point16 operator %(Point16 first, int num)
++		{
++			return new Point16(first.X % num, first.Y % num);
+ 		}
+ 
+ 		public static bool operator ==(Point16 first, Point16 second)
+
