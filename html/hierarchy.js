@@ -130,6 +130,9 @@ var hierarchy =
     [ "Terraria.ModLoader.IO.TagSerializer< Color, int >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
       [ "Terraria.ModLoader.IO.ColorSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html", null ]
     ] ],
+    [ "Terraria.ModLoader.IO.TagSerializer< Point16, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+      [ "Terraria.ModLoader.IO.Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", null ]
+    ] ],
     [ "Terraria.ModLoader.IO.TagSerializer< T, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
     [ "Terraria.ModLoader.IO.TagSerializer< uint, int >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
       [ "Terraria.ModLoader.IO.UIntTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer.html", null ]
