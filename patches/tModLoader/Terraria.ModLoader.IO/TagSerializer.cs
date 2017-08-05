@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader.IO
 {
@@ -33,6 +34,7 @@ namespace Terraria.ModLoader.IO
 			AddSerializer(new Vector2TagSerializer());
 			AddSerializer(new Vector3TagSerializer());
 			AddSerializer(new ColorSerializer());
+			AddSerializer(new Point16Serializer());
 		}
 
 		public static bool TryGetSerializer(Type type, out TagSerializer serializer) {
@@ -150,5 +152,16 @@ namespace Terraria.ModLoader.IO
 		public override Color Deserialize(int tag) {
 			return new Color(tag & 0xFF, tag >> 8 & 0xFF, tag >> 16 & 0xFF, tag >> 24 & 0xFF);
 		}
+	}
+
+	public class Point16Serializer : TagSerializer<Point16, TagCompound>
+	{
+		public override TagCompound Serialize(Point16 value) => new TagCompound
+		{
+			["x"] = value.X,
+			["y"] = value.Y
+		};
+
+		public override Point16 Deserialize(TagCompound tag) => new Point16(tag.GetShort("x"), tag.GetShort("y"));
 	}
 }
