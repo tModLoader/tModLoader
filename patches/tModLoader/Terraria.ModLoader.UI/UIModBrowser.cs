@@ -425,7 +425,15 @@ namespace Terraria.ModLoader.UI
 		{
 			try
 			{
-				JObject jsonObject = JObject.Parse(json);
+				JObject jsonObject;
+				try
+				{
+					jsonObject = JObject.Parse(json);
+				}
+				catch (Exception e)
+				{
+					throw new Exception("Bad JSON: " + json, e);
+				}
 				JObject updateObject = (JObject)jsonObject["update"];
 				if (updateObject != null)
 				{
