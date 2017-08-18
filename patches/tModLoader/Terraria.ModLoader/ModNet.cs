@@ -56,6 +56,11 @@ namespace Terraria.ModLoader
 				netMods[i].netID = i;
 		}
 
+		internal static void Unload()
+		{
+			netMods = null;
+		}
+
 		internal static void SyncMods(int clientIndex)
 		{
 			var p = new ModPacket(MessageID.SyncMods);

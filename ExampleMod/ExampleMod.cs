@@ -103,6 +103,7 @@ namespace ExampleMod
 				Main.tileFrame[TileID.Loom] = 0;
 				Main.tileSetsLoaded[TileID.Loom] = false;
 			}
+			RandomBuffHotKey = null;
 		}
 
 		public override void PostSetupContent()

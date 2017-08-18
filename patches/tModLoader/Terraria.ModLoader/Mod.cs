@@ -2152,12 +2152,14 @@ namespace Terraria.ModLoader
 			tileEntities.Clear();
 			walls.Clear();
 			globalWalls.Clear();
+			players.Clear();
 			projectiles.Clear();
 			globalProjectiles.Clear();
 			npcs.Clear();
 			globalNPCs.Clear();
 			buffs.Clear();
 			globalBuffs.Clear();
+			mountDatas.Clear();
 			worlds.Clear();
 			ugBgStyles.Clear();
 			surfaceBgStyles.Clear();
@@ -2167,17 +2169,20 @@ namespace Terraria.ModLoader
 			globalRecipes.Clear();
 			translations.Clear();
 			// Manually Dispose IDisposables to free up unmanaged memory immediately
-			foreach (var sound in sounds)
+			if (!Main.dedServ)
 			{
-				sound.Value.Dispose();
-			}
-			foreach (var effect in effects)
-			{
-				effect.Value.Dispose();
-			}
-			foreach (var texture in textures)
-			{
-				texture.Value.Dispose();
+				foreach (var sound in sounds)
+				{
+					sound.Value.Dispose();
+				}
+				foreach (var effect in effects)
+				{
+					effect.Value.Dispose();
+				}
+				foreach (var texture in textures)
+				{
+					texture.Value.Dispose();
+				}
 			}
 		}
 

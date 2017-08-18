@@ -61,6 +61,7 @@ namespace Terraria.ModLoader
 		internal static bool reloadAfterBuild = false;
 		internal static bool buildAll = false;
 		private static readonly Stack<string> loadOrder = new Stack<string>();
+		private static WeakReference[] loadedModsWeakReferences = new WeakReference[0];
 		private static Mod[] loadedMods = new Mod[0];
 		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
 		internal static readonly IDictionary<string, ModHotKey> modHotKeys = new Dictionary<string, ModHotKey>();
@@ -401,6 +402,7 @@ namespace Terraria.ModLoader
 
 			modInstances.Insert(0, new ModLoaderMod());
 			loadedMods = modInstances.ToArray();
+			loadedModsWeakReferences = loadedMods.Skip(1).Select(x => new WeakReference(x)).ToArray();
 			foreach (var mod in modInstances)
 			{
 				loadOrder.Push(mod.Name);
@@ -669,6 +671,7 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.Unload();
 			WaterfallStyleLoader.Unload();
 			mods.Clear();
+			WorldHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++)
 			{
@@ -680,14 +683,57 @@ namespace Terraria.ModLoader
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
 			modHotKeys.Clear();
-			WorldHooks.Unload();
 			RecipeHooks.Unload();
 			CommandManager.Unload();
 			TagSerializer.Reload();
+			ModNet.Unload();
 			GameContent.UI.CustomCurrencyManager.Initialize();
+			CleanupModReferences();
 
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
 				ModNet.AllowVanillaClients = false;
+		}
+
+		/// <summary>
+		/// Several arrays and other fields hold references to various classes from mods, we need to clean them up to give properly coded mods a chance to be completely free of references
+		/// so that they can be collected by the garbage collection. For most things eventually they will be replaced during gameplay, but we want the old instance completely gone quickly.
+		/// </summary>
+		internal static void CleanupModReferences()
+		{
+			// Clear references to ModPlayer instances
+			for (int i = 0; i < 256; i++)
+			{
+				Main.player[i] = new Player();
+			}
+			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
+			Main._characterSelectMenu._playerList?.Clear();
+			Main.PlayerList.Clear();
+
+			foreach (var npc in Main.npc)
+			{
+				npc.SetDefaults(0);
+			}
+
+			foreach (var item in Main.item)
+			{
+				item.SetDefaults(0);
+			}
+			ItemSlot.singleSlotArray[0]?.SetDefaults(0);
+
+			for (int i = 0; i < Main.chest.Length; i++)
+			{
+				Main.chest[i] = new Chest();
+			}
+
+#if DEBUG
+			// TODO: Display this warning to modders
+			GC.Collect();
+			foreach (var weakReference in loadedModsWeakReferences)
+			{
+				if (weakReference.IsAlive)
+					ErrorLogger.Log((weakReference.Target as Mod).Name + " not fully unloaded during unload.");
+			}
+#endif
 		}
 
 		internal static void Reload()

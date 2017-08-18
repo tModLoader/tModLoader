@@ -115,6 +115,15 @@
  		public int DiscoStyle;
  		public static int DiscoR = 255;
  		public static int DiscoB = 0;
+@@ -632,7 +_,7 @@
+ 		public static int maxDustToDraw = 6000;
+ 		public static int ActivePlayersCount = 0;
+ 		public static int maxNetPlayers = 255;
+-		private static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
++		internal static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
+ 		private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
+ 		public static UIManageControls ManageControlsMenu = new UIManageControls();
+ 		public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
 @@ -1067,7 +_,7 @@
  		public static AudioEngine engine;
  		public static SoundBank soundBank;
