@@ -29,6 +29,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "DrawLegs", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a4c5bf5212c99fa20ba3ad5355b6b3ad1", null ],
     [ "ExtractinatorUse", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53dd0f4d41cf3b0a6171416b8ef2d9c", null ],
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_mod_item.html#acfa5895f0e52f0df7c833558b0f23b86", null ],
+    [ "GetWeaponCrit", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ad47d510bf84c19afbd9e9e99fd709d5f", null ],
     [ "GetWeaponDamage", "class_terraria_1_1_mod_loader_1_1_mod_item.html#af2170bc3ec0925114fa9488767bf2ceb", null ],
     [ "GetWeaponKnockback", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a0a164ee54c4cdc62cf52e5e20c43930c", null ],
     [ "GrabRange", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a1f5a9d2747d4a5412e98e88eb5065e5b", null ],

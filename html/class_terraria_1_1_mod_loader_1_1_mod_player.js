@@ -18,6 +18,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "GetDyeTraderReward", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ac412621fb39079d5db3fee8bf1bcc9bc", null ],
     [ "GetFishingLevel", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a299177fe4b54040faa2e8c535a44c5fa", null ],
     [ "GetMapBackgroundImage", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a2be6b87cc1d8482986853f65bb7d6250", null ],
+    [ "GetWeaponCrit", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aff71dc1d2b49d1efa3cae8f16e4fdf6a", null ],
     [ "GetWeaponDamage", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a00b3ebcecd9ac3927c98d7267e3c0cca", null ],
     [ "GetWeaponKnockback", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a5e7c22c4c605693f4f726b902074a3bf", null ],
     [ "Hurt", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ad786d90b187737eeba3b23020f2167a0", null ],

@@ -514,7 +514,7 @@ Generating caller graph for function Terraria.ModLoader.EquipTexture.ArmorSetSha
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawArmorColor
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawBody
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawHair
-Generat/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:407: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
+Generat/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:414: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
   parameter 'male'
 ing caller graph for function Terraria.ModLoader.EquipTexture.DrawHands
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawHead
@@ -1973,5 +1973,5 @@ Patching output file 120/123
 Patching output file 121/123
 Patching output file 122/123
 Patching output file 123/123
-lookup cache used 9895/131072 hits=94050 misses=10333
+lookup cache used 9912/131072 hits=94391 misses=10350
 finished...
