@@ -134,33 +134,38 @@ namespace Terraria.ModLoader
 				Interface.errorMessage.SetWebHelpURL(e.HelpLink);
 			}
 		}
+
+		private static Object logExceptionLock = new Object();
 		//add try catch to Terraria.WorldGen.worldGenCallBack
 		//add try catch to Terraria.WorldGen.playWorldCallBack
 		//add try catch to Terraria.Main.Update
 		//add try catch to Terraria.Main.Draw
 		internal static void LogException(Exception e, string msg = "The game has crashed!")
 		{
-			Directory.CreateDirectory(LogPath);
-			string file = LogPath + Path.DirectorySeparatorChar + "Runtime Error.txt";
-			using (StreamWriter writer = File.CreateText(file))
+			lock (logExceptionLock)
 			{
-				writer.WriteLine(e.Message);
-				writer.WriteLine(e.StackTrace);
-				Exception inner = e.InnerException;
-				while (inner != null)
+				Directory.CreateDirectory(LogPath);
+				string file = LogPath + Path.DirectorySeparatorChar + "Runtime Error.txt";
+				using (StreamWriter writer = File.CreateText(file))
 				{
-					writer.WriteLine();
-					writer.WriteLine("Inner Exception:");
-					writer.WriteLine(inner.Message);
-					writer.WriteLine(inner.StackTrace);
-					inner = inner.InnerException;
+					writer.WriteLine(e.Message);
+					writer.WriteLine(e.StackTrace);
+					Exception inner = e.InnerException;
+					while (inner != null)
+					{
+						writer.WriteLine();
+						writer.WriteLine("Inner Exception:");
+						writer.WriteLine(inner.Message);
+						writer.WriteLine(inner.StackTrace);
+						inner = inner.InnerException;
+					}
 				}
+				Interface.errorMessage.SetMessage(msg + "\n\n" + e.Message + "\n" + e.StackTrace);
+				Interface.errorMessage.SetGotoMenu(0);
+				Interface.errorMessage.SetFile(file);
+				Main.gameMenu = true;
+				Main.menuMode = Interface.errorMessageID;
 			}
-			Interface.errorMessage.SetMessage(msg + "\n\n" + e.Message + "\n" + e.StackTrace);
-			Interface.errorMessage.SetGotoMenu(0);
-			Interface.errorMessage.SetFile(file);
-			Main.gameMenu = true;
-			Main.menuMode = Interface.errorMessageID;
 		}
 
 		internal static void LogModBrowserException(Exception e) => LogException(e, "The game has crashed accessing Web Resources!");
