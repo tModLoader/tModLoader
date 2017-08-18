@@ -385,10 +385,30 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void GetWeaponKnockback(Item item, Player player, ref float knockback)
 		{
+			if (item.IsAir)
+				return;
+
 			item.modItem?.GetWeaponKnockback(player, ref knockback);
 
 			foreach (var g in HookGetWeaponKnockback.arr)
 				g.Instance(item).GetWeaponKnockback(item, player, ref knockback);
+		}
+
+
+		private delegate void DelegateGetWeaponCrit(Item item, Player player, ref int crit);
+		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(g => g.GetWeaponCrit);
+		/// <summary>
+		/// Calls ModItem.GetWeaponCrit, then all GlobalItem.GetWeaponCrit hooks.
+		/// </summary>
+		public static void GetWeaponCrit(Item item, Player player, ref int crit)
+		{
+			if (item.IsAir)
+				return;
+
+			item.modItem?.GetWeaponCrit(player, ref crit);
+
+			foreach (var g in HookGetWeaponCrit.arr)
+				g.Instance(item).GetWeaponCrit(item, player, ref crit);
 		}
 
 		/// <summary>

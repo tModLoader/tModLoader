@@ -831,7 +831,7 @@
  						}
  						string[] array8;
  						IntPtr intPtr5;
-@@ -14702,34 +_,42 @@
+@@ -14702,34 +_,50 @@
  					}
  					else
  					{
@@ -849,6 +849,8 @@
  					if (Main.HoverItem.melee)
  					{
  						int num7 = Main.player[Main.myPlayer].meleeCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.HoverItem.crit;
++						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref num7);
++						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref num7);
  						array[num4] = num7 + Lang.tip[5].Value;
 +						tooltipNames[num4] = "CritChance";
  						num4++;
@@ -856,6 +858,8 @@
  					else if (Main.HoverItem.ranged)
  					{
  						int num8 = Main.player[Main.myPlayer].rangedCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.HoverItem.crit;
++						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref num8);
++						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref num8);
  						array[num4] = num8 + Lang.tip[5].Value;
 +						tooltipNames[num4] = "CritChance";
  						num4++;
@@ -863,6 +867,8 @@
  					else if (Main.HoverItem.magic)
  					{
  						int num9 = Main.player[Main.myPlayer].magicCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.HoverItem.crit;
++						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref num9);
++						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref num9);
  						array[num4] = num9 + Lang.tip[5].Value;
 +						tooltipNames[num4] = "CritChance";
  						num4++;
@@ -870,6 +876,8 @@
  					else if (Main.HoverItem.thrown)
  					{
  						int num10 = Main.player[Main.myPlayer].thrownCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.HoverItem.crit;
++						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref num10);
++						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref num10);
  						array[num4] = num10 + Lang.tip[5].Value;
 +						tooltipNames[num4] = "CritChance";
  						num4++;
