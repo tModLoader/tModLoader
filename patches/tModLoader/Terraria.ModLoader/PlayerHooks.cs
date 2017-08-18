@@ -672,7 +672,9 @@ namespace Terraria.ModLoader
 
 		public static void GetWeaponDamage(Player player, Item item, ref int damage)
 		{
-			if (item.IsAir) return;
+			if (item.IsAir)
+				return;
+
 			foreach (int index in HookGetWeaponDamage.arr)
 			{
 				player.modPlayers[index].GetWeaponDamage(item, ref damage);
@@ -694,10 +696,24 @@ namespace Terraria.ModLoader
 
 		public static void GetWeaponKnockback(Player player, Item item, ref float knockback)
 		{
-			if (item.IsAir) return;
+			if (item.IsAir)
+				return;
+
 			foreach (int index in HookGetWeaponKnockback.arr)
 			{
 				player.modPlayers[index].GetWeaponKnockback(item, ref knockback);
+			}
+		}
+
+		private delegate void DelegateGetWeaponCrit(Item item, ref int crit);
+		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(p => p.GetWeaponCrit);
+
+		public static void GetWeaponCrit(Player player, Item item, ref int crit)
+		{
+			if (item.IsAir) return;
+			foreach (int index in HookGetWeaponCrit.arr)
+			{
+				player.modPlayers[index].GetWeaponCrit(item, ref crit);
 			}
 		}
 

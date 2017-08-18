@@ -158,6 +158,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// </summary>
+		public virtual void GetWeaponCrit(Item item, Player player, ref int crit)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to modify the projectile created by a weapon based on the ammo it is using.
 		/// </summary>
 		/// <param name="item">The ammo item</param>
