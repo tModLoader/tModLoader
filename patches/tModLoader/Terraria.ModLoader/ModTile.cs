@@ -150,7 +150,7 @@ namespace Terraria.ModLoader
 			{
 				key = Name;
 			}
-			return new ModTranslation(string.Format("MapObject.{0}.{1}", mod.Name, key), true);
+			return new ModTranslation($"MapObject.{mod.Name}.{key}", true);
 		}
 
 		/// <summary>
@@ -158,15 +158,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public void AddMapEntry(Color color, ModTranslation name)
 		{
-			if (!MapLoader.initialized)
+			if (MapLoader.initialized) return;
+			MapEntry entry = new MapEntry(color, name);
+			if (!MapLoader.tileEntries.Keys.Contains(Type))
 			{
-				MapEntry entry = new MapEntry(color, name);
-				if (!MapLoader.tileEntries.Keys.Contains(Type))
-				{
-					MapLoader.tileEntries[Type] = new List<MapEntry>();
-				}
-				MapLoader.tileEntries[Type].Add(entry);
+				MapLoader.tileEntries[Type] = new List<MapEntry>();
 			}
+			MapLoader.tileEntries[Type].Add(entry);
 		}
 
 		/// <summary>
