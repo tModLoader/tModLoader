@@ -464,7 +464,7 @@ namespace Terraria.ModLoader.UI
 					bool exists = false;
 					bool update = false;
 					bool updateIsDowngrade = false;
-					var installed = installedMods.SingleOrDefault(m => m.name == name);
+					var installed = installedMods.FirstOrDefault(m => m.name == name);
 					if (installed != null)
 					{
 						exists = true;
