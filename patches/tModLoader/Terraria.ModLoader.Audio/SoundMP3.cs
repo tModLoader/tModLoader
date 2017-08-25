@@ -4,7 +4,7 @@ using System.IO;
 using Microsoft.Xna.Framework.Audio;
 using MP3Sharp;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Audio
 {
 	public class SoundMP3 : IDisposable
 	{

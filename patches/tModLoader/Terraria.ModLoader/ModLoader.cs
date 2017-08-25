@@ -16,6 +16,7 @@ using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader
 {

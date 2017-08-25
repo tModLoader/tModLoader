@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader
 {

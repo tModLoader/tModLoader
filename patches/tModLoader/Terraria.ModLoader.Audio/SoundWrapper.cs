@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Audio;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Audio
 {
 	public class SoundWrapper
 	{
