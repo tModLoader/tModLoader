@@ -59,7 +59,7 @@ namespace Terraria.ModLoader
 		internal bool loading;
 		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-		internal readonly IDictionary<string, Music> music = new Dictionary<string, Music>();
+		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<string, DynamicSpriteFont> fonts = new Dictionary<string, DynamicSpriteFont>();
 		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
@@ -166,7 +166,7 @@ namespace Terraria.ModLoader
 								{
 									if(soundPath.StartsWith("Sounds/Music/"))
 									{
-										music[soundPath] = new MusicWAV(SoundEffect.FromStream(buffer));
+										musics[soundPath] = new MusicWAV(SoundEffect.FromStream(buffer));
 									}
 									else
 									{
@@ -185,7 +185,7 @@ namespace Terraria.ModLoader
 							{
 								if(mp3Path.StartsWith("Sounds/Music/")/*&&StreamOption*/)//Make an actualy variable for this later in the settings
 								{
-									music[mp3Path] = new MusicMP3(new SoundMP3(data));
+									musics[mp3Path] = new MusicMP3(new SoundMP3(data));
 								}
 								else
 								{
@@ -202,7 +202,7 @@ namespace Terraria.ModLoader
 									}
 									if(mp3Path.StartsWith("Sounds/Music/"))
 									{
-										music[mp3Path] = new MusicWAV(sound);
+										musics[mp3Path] = new MusicWAV(sound);
 									}
 									else
 									{
@@ -1838,11 +1838,7 @@ namespace Terraria.ModLoader
 				throw new Exception("AddSound can only be called from Mod.Load or Mod.Autoload");
 			int id = SoundLoader.ReserveSoundID(type);
 			SoundLoader.sounds[type][soundPath] = id;
-			if(type == SoundType.Music)
-			{
-				SoundLoader.music[soundPath] = music[soundPath];
-			}
-			else if (modSound != null)
+			if (modSound != null)
 			{
 				SoundLoader.modSounds[type][id] = modSound;
 				modSound.sound = ModLoader.GetSound(soundPath);
@@ -1884,16 +1880,20 @@ namespace Terraria.ModLoader
 				{
 					soundType = SoundType.NPCKilled;
 				}
-				else if (substring.StartsWith("Music/"))
-				{
-					soundType = SoundType.Music;
-				}
 				ModSound modSound = null;
 				Type t;
 				if (modSoundNames.TryGetValue((Name + '/' + sound).Replace('/', '.'), out t))
 					modSound = (ModSound)Activator.CreateInstance(t);
 
 				AddSound(soundType, Name + '/' + sound, modSound);
+			}
+			foreach (var music in musics.Keys.Where(t => t.StartsWith("Sounds/")))
+			{
+				string substring = music.Substring("Sounds/".Length);
+				if (substring.StartsWith("Music/"))
+				{
+					AddSound(SoundType.Music, Name + '/' + music);
+				}
 			}
 		}
 
@@ -2311,7 +2311,7 @@ namespace Terraria.ModLoader
 		public Music GetMusic(string name)
 		{
 			Music sound;
-			if (!music.TryGetValue(name, out sound))
+			if (!musics.TryGetValue(name, out sound))
 			{
 				throw new MissingResourceException(name);
 			}
@@ -2325,7 +2325,7 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public bool MusicExists(string name)
 		{
-			return music.ContainsKey(name);
+			return musics.ContainsKey(name);
 		}
 
 		/// <summary>

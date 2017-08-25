@@ -15,7 +15,6 @@ namespace Terraria.ModLoader
 		private static readonly IDictionary<SoundType, int> nextSound = new Dictionary<SoundType, int>();
 		internal static readonly IDictionary<SoundType, IDictionary<string, int>> sounds = new Dictionary<SoundType, IDictionary<string, int>>();
 		internal static readonly IDictionary<SoundType, IDictionary<int, ModSound>> modSounds = new Dictionary<SoundType, IDictionary<int, ModSound>>();
-		internal static readonly IDictionary<string, Music> music = new Dictionary<string, Music>();
 		internal static SoundEffect[] customSounds = new SoundEffect[0];
 		internal static SoundEffectInstance[] customSoundInstances = new SoundEffectInstance[0];
 		/// <summary>
