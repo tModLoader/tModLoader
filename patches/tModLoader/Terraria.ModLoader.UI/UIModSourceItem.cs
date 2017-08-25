@@ -147,18 +147,28 @@ namespace Terraria.ModLoader.UI
 				string filename = @ModLoader.ModPath + @Path.DirectorySeparatorChar + @Path.GetFileName(mod) + @".tmod";
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
 				byte[] result;
+				using (var iconStream = theTModFile.HasFile("icon.png") ? new MemoryStream(theTModFile.GetFile("icon.png")) : null)
 				using (var stream = File.Open(filename, FileMode.Open))
 				{
-					var files = new[]
-					{
-						new IO.UploadFile
+					var files = new List<UploadFile>();
+					files.Add(new IO.UploadFile
 						{
 							Name = "file",
 							Filename = Path.GetFileName(filename),
 							//    ContentType = "text/plain",
 							Stream = stream
 						}
-					};
+					);
+					if(iconStream != null)
+					{
+						files.Add(new IO.UploadFile
+							{
+								Name = "iconfile",
+								Filename = "icon.png",
+								Stream = iconStream
+							}
+						);
+					}
 					BuildProperties bp = BuildProperties.ReadModFile(theTModFile);
 					var values = new NameValueCollection
 					{

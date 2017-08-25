@@ -200,6 +200,10 @@ namespace Terraria.ModLoader
 			{
 				NPCLoader.bannerToItem[banner] = bannerItem;
 			}
+			else if (banner != 0 || bannerItem != 0)
+			{
+				throw new Exception($"You have set one of ModNPC.banner or ModNPC.bannerItem for {Name}, but not the other. Make sure you set both and check your spelling and that the item exists if you are using mod.ItemType()");
+			}
 			if (npc.lifeMax > 32767 || npc.boss)
 			{
 				Main.npcLifeBytes[npc.type] = 4;

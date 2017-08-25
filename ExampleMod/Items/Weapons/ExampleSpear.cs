@@ -27,10 +27,10 @@ namespace ExampleMod.Items.Weapons
 			item.UseSound = SoundID.Item1;
 			item.shoot = mod.ProjectileType<ExampleSpearProjectile>();
 			item.value = 1000;
-			item.noMelee = true; // Important because the spear is acutally a projectile instead of an item. This prevents the melee hitbox of this item.
+			item.noMelee = true; // Important because the spear is actually a projectile instead of an item. This prevents the melee hitbox of this item.
 			item.noUseGraphic = true; // Important, it's kind of wired if people see two spears at one time. This prevents the melee animation of this item.
 			item.melee = true;
-			item.autoReuse = true; // Most spears dont autoReuse, but it's possible
+			item.autoReuse = true; // Most spears don't autoReuse, but it's possible
 		}
 
 		public override bool CanUseItem(Player player)

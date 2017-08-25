@@ -504,7 +504,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add items to the travelling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.
+		/// Allows you to add items to the traveling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.
 		/// </summary>
 		/// <param name="shop"></param>
 		/// <param name="nextSlot"></param>

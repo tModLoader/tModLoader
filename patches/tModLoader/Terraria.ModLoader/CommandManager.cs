@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 		/// Finds a command by name. Handles mod prefixing. Replies with error messages.
 		/// </summary>
 		/// <param name="mc">The found command, or null if an error was encountered.</param>
-		/// <returns>True if a ModCommand was found, or an error message was replied. False if the command is unrecognised.</returns>
+		/// <returns>True if a ModCommand was found, or an error message was replied. False if the command is unrecognized.</returns>
 		internal static bool GetCommand(CommandCaller caller, string name, out ModCommand mc)
 		{
 			string modName = null;

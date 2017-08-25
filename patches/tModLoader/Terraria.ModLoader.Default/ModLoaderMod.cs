@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.Default
 
 		private static void LoadTextures()
 		{
-			if (Main.dedServ || texturesLoaded)
+			if (Main.dedServ)
 			{
 				return;
 			}

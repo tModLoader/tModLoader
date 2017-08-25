@@ -164,6 +164,14 @@
  			{
  				return;
  			}
+@@ -8185,6 +_,7 @@
+ 				myRect.Width += num3 * 2;
+ 				myRect.Height += num3 * 2;
+ 			}
++			ProjectileLoader.ModifyDamageHitbox(this, ref myRect);
+ 			if (this.friendly && this.owner == Main.myPlayer && !this.npcProj)
+ 			{
+ 				if ((this.aiStyle == 16 && this.type != 338 && this.type != 339 && this.type != 340 && this.type != 341 && (this.timeLeft <= 1 || this.type == 108 || this.type == 164)) || (this.type == 286 && this.localAI[1] == -1f))
 @@ -8225,8 +_,32 @@
  				{
  					for (int i = 0; i < 200; i++)

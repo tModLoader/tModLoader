@@ -741,7 +741,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 			else
 			{
-				//This is an alrenate syntax you can use
+				//This is an alternate syntax you can use
 				//var maskChooser = new WeightedRandom<int>();
 				//maskChooser.Add(mod.ItemType<Items.Armor.PuritySpiritMask>());
 				//maskChooser.Add(mod.ItemType<Items.Armor.BunnyMask>());

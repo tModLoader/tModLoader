@@ -81,6 +81,18 @@ namespace Terraria.ModLoader.Default
 			});
 		}
 
+		public override void NetSend(BinaryWriter writer)
+		{
+			TagIO.Write(data ?? new TagCompound(), writer);
+		}
+
+		public override void NetRecieve(BinaryReader reader)
+		{
+			data = TagIO.Read(reader);
+			modName = data.GetString("mod");
+			itemName = data.GetString("name");
+		}
+
 		public override bool CloneNewInstances => true;
 
 		public override ModItem Clone()

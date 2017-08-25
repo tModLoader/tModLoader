@@ -19,6 +19,7 @@ namespace Terraria.ModLoader.UI
 		internal bool enabled;
 		private readonly BuildProperties properties;
 		private readonly UITextPanel<string> button2;
+		private UIImage modIcon;
 		readonly UIHoverImage keyImage;
 
 		public UIModItem(TmodFile mod)
@@ -34,12 +35,25 @@ namespace Terraria.ModLoader.UI
 			properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : mod.name;
 			text += " v" + mod.version;
-			if(mod.tModLoaderVersion < new Version(0, 10))
+			if (mod.tModLoaderVersion < new Version(0, 10))
 			{
 				text += " [c/FF0000:(Old mod, enable at own risk)]";
 			}
+			int modIconAdjust = 0;
+			if (mod.HasFile("icon.png"))
+			{
+				var modIconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, new MemoryStream(mod.GetFile("icon.png")));
+				if (modIconTexture.Width == 80 && modIconTexture.Height == 80)
+				{
+					modIcon = new UIImage(modIconTexture);
+					modIcon.Left.Set(0f, 0f);
+					modIcon.Top.Set(0f, 0f);
+					Append(modIcon);
+					modIconAdjust += 85;
+				}
+			}
 			this.modName = new UIText(text, 1f, false);
-			this.modName.Left.Set(10f, 0f);
+			this.modName.Left.Set(modIconAdjust + 10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 			this.enabled = ModLoader.IsEnabled(mod);
@@ -68,9 +82,27 @@ namespace Terraria.ModLoader.UI
 			if (properties.modReferences.Length > 0 && !enabled)
 			{
 				string refs = String.Join(", ", properties.modReferences.Select(x => x.mod));
-				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs);
+				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs + "\n (click to enable)");
 				modReferenceIcon.Left.Set(button2.Left.Pixels - 10f, 0f);
 				modReferenceIcon.Top.Set(50f, 0f);
+				modReferenceIcon.OnClick += (a, b) =>
+				{
+					var referencedMods = properties.modReferences.Select(x => x.mod);
+					var foundMods = ModLoader.FindMods();
+					var referencedtModFiles = foundMods.Where(x => referencedMods.Contains(x.name));
+					foreach (var referencedMod in referencedtModFiles)
+					{
+						ModLoader.EnableMod(referencedMod);
+					}
+					Main.menuMode = Interface.modsMenuID;
+					var missingMods = referencedMods.Where(modstring => foundMods.All(modfile => modfile.name != modstring));
+					if (missingMods.Count() > 0)
+					{
+						Interface.infoMessage.SetMessage("The following mods were not found: " + String.Join(",", missingMods));
+						Interface.infoMessage.SetGotoMenu(Interface.modsMenuID);
+						Main.menuMode = Interface.infoMessageID;
+					}
+				};
 				base.Append(modReferenceIcon);
 			}
 			if (mod.ValidModBrowserSignature)
@@ -115,16 +147,17 @@ namespace Terraria.ModLoader.UI
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
+			int modIconAdjust = modIcon != null ? 85 : 0;
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
-			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
-			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
-			drawPos = new Vector2(innerDimensions.X + 10f, innerDimensions.Y + 45f);
-			this.DrawPanel(spriteBatch, drawPos, 100f);
-			this.DrawEnabledText(spriteBatch, drawPos + new Vector2(15f, 5f));
+			Vector2 drawPos = new Vector2(innerDimensions.X + 5f + modIconAdjust, innerDimensions.Y + 30f);
+			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
+			drawPos = new Vector2(innerDimensions.X + 10f + modIconAdjust, innerDimensions.Y + 45f);
+			this.DrawPanel(spriteBatch, drawPos, 85f);
+			this.DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
 			if (this.enabled != ModLoader.ModLoaded(mod.name))
 			{
-				drawPos += new Vector2(120f, 5f);
+				drawPos += new Vector2(90f, 5f);
 				Utils.DrawBorderString(spriteBatch, "Reload Required", drawPos, Color.White, 1f, 0f, 0f, -1);
 			}
 			//string text = this.enabled ? "Click to Disable" : "Click to Enable";

@@ -116,7 +116,7 @@ namespace Terraria.ModLoader
 				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code));
 				asm.Name.Name = EncapsulateName(asm.Name.Name);
 
-				//randomise the module version id so that the debugger can detect it as a different module (even if it has the same content)
+				//randomize the module version id so that the debugger can detect it as a different module (even if it has the same content)
 				asm.MainModule.Mvid = Guid.NewGuid();
 
 				foreach (var mod in asm.Modules)

@@ -29,7 +29,7 @@ namespace ExampleMod.Projectiles
 
 		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
-			// Vanilla explisions do less damage to Eater of Worlds in expert mode, so we will too.
+			// Vanilla explosions do less damage to Eater of Worlds in expert mode, so we will too.
 			if (Main.expertMode)
 			{
 				if (target.type >= NPCID.EaterofWorldsHead && target.type <= NPCID.EaterofWorldsTail)
@@ -71,7 +71,7 @@ namespace ExampleMod.Projectiles
 			if (projectile.owner == Main.myPlayer && projectile.timeLeft <= 3)
 			{
 				projectile.tileCollide = false;
-				// Set to transparant. This projectile technically lives as  transparant for about 3 frames
+				// Set to transparent. This projectile technically lives as  transparent for about 3 frames
 				projectile.alpha = 255;
 				// change the hitbox size, centered about the original projectile center. This makes the projectile damage enemies during the explosion.
 				projectile.position.X = projectile.position.X + (float)(projectile.width / 2);
