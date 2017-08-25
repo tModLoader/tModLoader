@@ -1,8 +1,86 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using ReLogic.Graphics;
 
 namespace Terraria.ModLoader
 {
+	// contains additional info for modders to use when using tooltip related draw hooks
+	/// <summary>
+	/// This class serves as a way to store information about a line that will be drawn of tooltip for an item. You will create and manipulate objects of this class if you use the draw hooks for tooltips in ModItem and GlobalItem. For examples, see ExampleSword
+	/// </summary>
+	public sealed class DrawableTooltipLine : TooltipLine
+	{
+		/// <summary>
+		/// The index of the tooltip in the array
+		/// </summary>
+		public readonly int Index;
+
+		private int _originalX;
+		/// <summary>
+		/// The X position where the tooltip would be drawn that is not adjusted by mods.
+		/// </summary>
+		public int OriginalX
+		{
+			get { return _originalX; }
+			internal set { X = _originalX = value; }
+		}
+
+		private int _originalY;
+		/// <summary>
+		/// The X position where the tooltip would be drawn that is not adjusted by mods.
+		/// </summary>
+		public int OriginalY
+		{
+			get { return _originalY; }
+			internal set { Y = _originalY = value; }
+		}
+		/// <summary>
+		/// The X position where the tooltip would be drawn.
+		/// </summary>
+		public int X;
+		/// <summary>
+		/// The Y position where the tooltip would be drawn.
+		/// </summary>
+		public int Y;
+		/// <summary>
+		/// The color the tooltip would be drawn in
+		/// </summary>
+		public Color Color;
+		/// <summary>
+		/// Whether the tooltip is a onedrop logo or not. If it is, the tooltip text will be empty.
+		/// </summary>
+		public bool OneDropLogo { get { return oneDropLogo; } }
+
+		public DynamicSpriteFont font = Main.fontMouseText;
+		public float rotation = 0f;
+		public Vector2 origin = Vector2.Zero;
+		public Vector2 baseScale = Vector2.One;
+		public float maxWidth = -1;
+		public float spread = 2;
+
+		/// <summary>
+		/// </summary>
+		/// <param name="parent"></param>
+		/// <param name="index"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="color"></param>
+		public DrawableTooltipLine(TooltipLine parent, int index, int x, int y, Color color) : base(parent.mod, parent.Name, parent.text)
+		{
+			isModifier = parent.isModifier;
+			isModifierBad = parent.isModifierBad;
+			overrideColor = parent.overrideColor;
+			oneDropLogo = parent.oneDropLogo;
+
+			Index = index;
+			X = x;
+			Y = y;
+			OriginalX = x;
+			OriginalY = y;
+			Color = color;
+		}
+	}
+
 	/// <summary>
 	/// This class serves as a way to store information about a line of tooltip for an item. You will create and manipulate objects of this class if you use the ModifyTooltips hook.
 	/// </summary>
@@ -97,6 +175,13 @@ namespace Terraria.ModLoader
 		public TooltipLine(Mod mod, string name, string text)
 		{
 			this.mod = mod.Name;
+			this.Name = name;
+			this.text = text;
+		}
+
+		internal TooltipLine(string mod, string name, string text)
+		{
+			this.mod = mod;
 			this.Name = name;
 			this.text = text;
 		}

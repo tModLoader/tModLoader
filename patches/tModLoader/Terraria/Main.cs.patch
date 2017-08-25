@@ -133,6 +133,15 @@
  		public static float[] musicFade = new float[42];
  		public static float musicVolume = 0.75f;
  		public static float ambientVolume = 0.75f;
+@@ -1221,6 +_,8 @@
+ 			0.75f
+ 		};
+ 		public static byte mouseTextColor = 0;
++		public static Microsoft.Xna.Framework.Color mouseTextColorReal
++			=> new Microsoft.Xna.Framework.Color(mouseTextColor /255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
+ 		public static int mouseTextColorChange = 1;
+ 		public static bool mouseLeftRelease = false;
+ 		public static bool mouseRightRelease = false;
 @@ -1334,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -1290,7 +1299,7 @@
  					num4++;
  					if (num21 > 0)
  					{
-@@ -15368,15 +_,21 @@
+@@ -15368,20 +_,27 @@
  				else if (Main.HoverItem.type != 3817)
  				{
  					array[num4] = Lang.tip[51].Value;
@@ -1300,9 +1309,11 @@
  				}
  			}
  			Vector2 zero = Vector2.Zero;
+-			int num26 = 0;
 +			Microsoft.Xna.Framework.Color?[] overrideColor;
-+			ItemLoader.ModifyTooltips(Main.HoverItem, ref num4, tooltipNames, ref array, ref array2, ref array3, ref num, out overrideColor);
- 			int num26 = 0;
++			List<TooltipLine> lines=ItemLoader.ModifyTooltips(Main.HoverItem, ref num4, tooltipNames, ref array, ref array2, ref array3, ref num, out overrideColor);
++			List<DrawableTooltipLine> drawableLines = lines.Select((x, i) => new DrawableTooltipLine(x, i, 0, 0, Microsoft.Xna.Framework.Color.White)).ToList();
++			int yOffset = 0; // num26
  			for (int k = 0; k < num4; k++)
  			{
 +				/* Below fixes the calculated width for lines containing Chat tags
@@ -1312,17 +1323,204 @@
  				if (vector.X > zero.X)
  				{
  					zero.X = vector.X;
-@@ -15514,6 +_,10 @@
+ 				}
+-				zero.Y += vector.Y + (float)num26;
++				zero.Y += vector.Y + (float)yOffset;
+ 			}
+ 			X += Main.toolTipDistance;
+ 			Y += Main.toolTipDistance;
+@@ -15393,19 +_,31 @@
+ 			{
+ 				Y = (int)((float)Main.screenHeight - zero.Y - 4f);
+ 			}
+-			int num27 = 0;
++			// remove num27, it's vertical offset per line
++			// int num27 = 0;
+ 			num19 = (float)Main.mouseTextColor / 255f;
++
++			bool globalCanDraw = ItemLoader.PreDrawTooltip(Main.HoverItem, lines.AsReadOnly(), ref X, ref Y);
++
+ 			for (int l = 0; l < num4; l++)
+ 			{
+-				if (l == num)
++				bool isOneDropLogo = l == num;
++				drawableLines[l].OriginalX = X;
++				drawableLines[l].OriginalY = Y;
++				bool canDraw = ItemLoader.PreDrawTooltipLine(Main.HoverItem, drawableLines[l], ref yOffset) && globalCanDraw;
++
++				if (isOneDropLogo)
+ 				{
+ 					float num28 = 1f;
+ 					int num29 = (int)((float)Main.mouseTextColor * num28);
+ 					Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
++					
++					drawableLines[l].Color = new Microsoft.Xna.Framework.Color(num29, num29, num29, num29);
++
+ 					for (int m = 0; m < 5; m++)
+ 					{
+-						int num30 = X;
+-						int num31 = Y + num27;
++						int num30 = drawableLines[l].X;
++						int num31 = drawableLines[l].Y;
+ 						if (m == 4)
+ 						{
+ 							black = new Microsoft.Xna.Framework.Color(num29, num29, num29, num29);
+@@ -15426,7 +_,12 @@
+ 						{
+ 							num31++;
+ 						}
+-						Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float)num30, (float)num31), null, black, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++
++						if (canDraw)
++							Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float)num30, (float)num31), null, m != 4 ? black : drawableLines[l].Color, drawableLines[l].rotation,
++								drawableLines[l].origin, 1f, SpriteEffects.None, 0f);
++
++						ItemLoader.PostDrawTooltipLine(Main.HoverItem, drawableLines[l]);
+ 					}
+ 				}
+ 				else
+@@ -15437,88 +_,119 @@
+ 					{
+ 						if (rare == -11)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(175f * num20)), (int)((byte)(0f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(175f * num20)),
++								(int)((byte)(0f * num20)), a);
+ 						}
+ 						if (rare == -1)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(130f * num20)), (int)((byte)(130f * num20)), (int)((byte)(130f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(130f * num20)), (int)((byte)(130f * num20)),
++								(int)((byte)(130f * num20)), a);
+ 						}
+ 						if (rare == 1)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(150f * num20)), (int)((byte)(255f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(150f * num20)),
++								(int)((byte)(255f * num20)), a);
+ 						}
+ 						if (rare == 2)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(255f * num20)), (int)((byte)(150f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(255f * num20)),
++								(int)((byte)(150f * num20)), a);
+ 						}
+ 						if (rare == 3)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(200f * num20)), (int)((byte)(150f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(200f * num20)),
++								(int)((byte)(150f * num20)), a);
+ 						}
+ 						if (rare == 4)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(150f * num20)), (int)((byte)(150f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(150f * num20)),
++								(int)((byte)(150f * num20)), a);
+ 						}
+ 						if (rare == 5)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(150f * num20)), (int)((byte)(255f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(150f * num20)),
++								(int)((byte)(255f * num20)), a);
+ 						}
+ 						if (rare == 6)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(210f * num20)), (int)((byte)(160f * num20)), (int)((byte)(255f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(210f * num20)), (int)((byte)(160f * num20)),
++								(int)((byte)(255f * num20)), a);
+ 						}
+ 						if (rare == 7)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(255f * num20)), (int)((byte)(10f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(255f * num20)),
++								(int)((byte)(10f * num20)), a);
+ 						}
+ 						if (rare == 8)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(255f * num20)), (int)((byte)(10f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(255f * num20)),
++								(int)((byte)(10f * num20)), a);
+ 						}
+ 						if (rare == 9)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(5f * num20)), (int)((byte)(200f * num20)), (int)((byte)(255f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(5f * num20)), (int)((byte)(200f * num20)),
++								(int)((byte)(255f * num20)), a);
+ 						}
+ 						if (rare == 10)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(40f * num20)), (int)((byte)(100f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(40f * num20)),
++								(int)((byte)(100f * num20)), a);
+ 						}
+ 						if (rare >= 11)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(180f * num20)), (int)((byte)(40f * num20)), (int)((byte)(255f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(180f * num20)), (int)((byte)(40f * num20)),
++								(int)((byte)(255f * num20)), a);
+ 						}
+ 						if (diff == 1)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.mcColor.R * num20)), (int)((byte)((float)Main.mcColor.G * num20)), (int)((byte)((float)Main.mcColor.B * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.mcColor.R * num20)),
++								(int)((byte)((float)Main.mcColor.G * num20)), (int)((byte)((float)Main.mcColor.B * num20)), a);
+ 						}
+ 						if (diff == 2)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.hcColor.R * num20)), (int)((byte)((float)Main.hcColor.G * num20)), (int)((byte)((float)Main.hcColor.B * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.hcColor.R * num20)),
++								(int)((byte)((float)Main.hcColor.G * num20)), (int)((byte)((float)Main.hcColor.B * num20)), a);
+ 						}
+ 						if (Main.HoverItem.expert || rare == -12)
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.DiscoR * num20)), (int)((byte)((float)Main.DiscoG * num20)), (int)((byte)((float)Main.DiscoB * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.DiscoR * num20)),
++								(int)((byte)((float)Main.DiscoG * num20)), (int)((byte)((float)Main.DiscoB * num20)), a);
+ 						}
+ 					}
+ 					else if (array2[l])
+ 					{
+ 						if (array3[l])
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(190f * num20)), (int)((byte)(120f * num20)), (int)((byte)(120f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(190f * num20)), (int)((byte)(120f * num20)),
++								(int)((byte)(120f * num20)), a);
+ 						}
+ 						else
+ 						{
+-							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(120f * num20)), (int)((byte)(190f * num20)), (int)((byte)(120f * num20)), a);
++							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(120f * num20)), (int)((byte)(190f * num20)),
++								(int)((byte)(120f * num20)), a);
+ 						}
+ 					}
  					else if (l == num4 - 1)
  					{
  						baseColor = color;
-+					}
+ 					}
+-					ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, array[l], new Vector2((float)X, (float)(Y + num27)), baseColor, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
+-				}
+-				num27 += (int)(Main.fontMouseText.MeasureString(array[l]).Y + (float)num26);
+-			}
 +					if (overrideColor[l].HasValue)
 +					{
 +						baseColor = overrideColor[l].Value * num20;
- 					}
- 					ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, array[l], new Vector2((float)X, (float)(Y + num27)), baseColor, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
- 				}
++					}
++
++					drawableLines[l].Color = baseColor;
++
++					if (canDraw)
++						ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, drawableLines[l].font, drawableLines[l].text,
++							new Vector2((float)drawableLines[l].X, (float)drawableLines[l].Y), drawableLines[l].Color, drawableLines[l].rotation, drawableLines[l].origin, drawableLines[l].baseScale, drawableLines[l].maxWidth, drawableLines[l].spread);
++
++					ItemLoader.PostDrawTooltipLine(Main.HoverItem, drawableLines[l]);
++				}
++				Y += (int)(Main.fontMouseText.MeasureString(array[l]).Y + (float)yOffset);
++			}
++
++			ItemLoader.PostDrawTooltip(Main.HoverItem, drawableLines.AsReadOnly());
+ 		}
+ 
+ 		private void MouseText_DrawBuffString(ref int X, ref int Y)
 @@ -15538,7 +_,7 @@
  			if (Main.bannerMouseOver)
  			{

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -1574,8 +1575,48 @@ namespace Terraria.ModLoader
 				g.Instance(item).OnCraft(item, recipe);
 		}
 
+		private delegate bool DelegatePreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y);
+		private static HookList HookPreDrawTooltip = AddHook<DelegatePreDrawTooltip>(g => g.PreDrawTooltip);
+		public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+		{
+			bool modItemPreDraw = item.modItem?.PreDrawTooltip(lines, ref x, ref y) ?? true;
+			List<bool> globalItemPreDraw = new List<bool>();
+			foreach (var g in HookPreDrawTooltip.arr)
+				globalItemPreDraw.Add(g.PreDrawTooltip(item, lines, ref x, ref y));
+			return modItemPreDraw && globalItemPreDraw.All(z => z);
+		}
+
+		private delegate void DelegatePostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines);
+		private static HookList HookPostDrawTooltip = AddHook<DelegatePostDrawTooltip>(g => g.PostDrawTooltip);
+		public static void PostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines)
+		{
+			item.modItem?.PostDrawTooltip(lines);
+			foreach (var g in HookPostDrawTooltip.arr)
+				g.PostDrawTooltip(item, lines); ;
+		}
+
+		private delegate bool DelegatePreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset);
+		private static HookList HookPreDrawTooltipLine = AddHook<DelegatePreDrawTooltipLine>(g => g.PreDrawTooltipLine);
+		public static bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
+		{
+			bool modItemPreDrawLine = item.modItem?.PreDrawTooltipLine(line, ref yOffset) ?? true;
+			List<bool> globalItemPreDrawLine = new List<bool>();
+			foreach (var g in HookPreDrawTooltipLine.arr)
+				globalItemPreDrawLine.Add(g.PreDrawTooltipLine(item, line, ref yOffset));
+			return modItemPreDrawLine && globalItemPreDrawLine.All(x => x);
+		}
+
+		private delegate void DelegatePostDrawTooltipLine(Item item, DrawableTooltipLine line);
+		private static HookList HookPostDrawTooltipLine = AddHook<DelegatePostDrawTooltipLine>(g => g.PostDrawTooltipLine);
+		public static void PostDrawTooltipLine(Item item, DrawableTooltipLine line)
+		{
+			item.modItem?.PostDrawTooltipLine(line);
+			foreach (var g in HookPostDrawTooltipLine.arr)
+				g.PostDrawTooltipLine(item, line);
+		}
+
 		private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
-		public static void ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text,
+		public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text,
 			ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor)
 		{
 			List<TooltipLine> tooltips = new List<TooltipLine>();
@@ -1592,7 +1633,7 @@ namespace Terraria.ModLoader
 			}
 			item.modItem?.ModifyTooltips(tooltips);
 			foreach (var g in HookModifyTooltips.arr)
-				g.Instance(item).ModifyTooltips(item, tooltips);
+				g.Instance(item).ModifyTooltips(item, tooltips);	
 
 			numTooltips = tooltips.Count;
 			text = new string[numTooltips];
@@ -1611,6 +1652,8 @@ namespace Terraria.ModLoader
 				}
 				overrideColor[k] = tooltips[k].overrideColor;
 			}
+
+			return tooltips;
 		}
 
 		private static HookList HookNeedsSaving = AddHook<Func<Item, bool>>(g => g.NeedsSaving);
