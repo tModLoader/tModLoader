@@ -6,12 +6,12 @@ namespace Terraria.ModLoader.Audio
 	public abstract class Music
 	{
 		public static implicit operator Music(Cue cue) { return new MusicCue() { cue = cue }; }
-		public static implicit operator Music(SoundWrapper sound)
+		/*public static implicit operator Music(SoundWrapper sound)
 		{
 			if (sound.IsWAV) { return new MusicWAV(sound.soundWAV); }
 			if (sound.IsMP3) { return new MusicMP3(sound.soundMP3); }
 			return null;
-		}
+		}*/
 		public abstract bool IsDisposed { get; }
 		public abstract bool IsPaused { get; }
 		public abstract bool IsPlaying { get; }
@@ -40,7 +40,7 @@ namespace Terraria.ModLoader.Audio
 	public class MusicWAV : Music
 	{
 		internal SoundEffectInstance instance;
-		public MusicWAV(SoundWrapper sound)
+		public MusicWAV(SoundEffect sound)
 		{
 			instance = sound.CreateInstance();
 		}

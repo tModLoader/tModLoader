@@ -15,7 +15,8 @@ namespace Terraria.ModLoader
 		private static readonly IDictionary<SoundType, int> nextSound = new Dictionary<SoundType, int>();
 		internal static readonly IDictionary<SoundType, IDictionary<string, int>> sounds = new Dictionary<SoundType, IDictionary<string, int>>();
 		internal static readonly IDictionary<SoundType, IDictionary<int, ModSound>> modSounds = new Dictionary<SoundType, IDictionary<int, ModSound>>();
-		internal static SoundWrapper[] customSounds = new SoundWrapper[0];
+		internal static readonly IDictionary<string, Music> music = new Dictionary<string, Music>();
+		internal static SoundEffect[] customSounds = new SoundEffect[0];
 		internal static SoundEffectInstance[] customSoundInstances = new SoundEffectInstance[0];
 		/// <summary>
 		/// This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.
@@ -81,7 +82,7 @@ namespace Terraria.ModLoader
 
 		internal static void ResizeAndFillArrays()
 		{
-			customSounds = new SoundWrapper[nextSound[SoundType.Custom]];
+			customSounds = new SoundEffect[nextSound[SoundType.Custom]];
 			customSoundInstances = new SoundEffectInstance[nextSound[SoundType.Custom]];
 			Array.Resize(ref Main.soundItem, nextSound[SoundType.Item]);
 			Array.Resize(ref Main.soundInstanceItem, nextSound[SoundType.Item]);
@@ -103,7 +104,7 @@ namespace Terraria.ModLoader
 					}
 					else
 					{
-						Main.music[slot] = (SoundWrapper)ModLoader.GetMusic(sound) ?? null;
+						Main.music[slot] = ModLoader.GetMusic(sound) ?? null;
 					}
 				}
 			}
@@ -173,7 +174,7 @@ namespace Terraria.ModLoader
 			return 0;
 		}
 
-		internal static SoundWrapper[] GetSoundArray(SoundType type)
+		internal static SoundEffect[] GetSoundArray(SoundType type)
 		{
 			switch (type)
 			{

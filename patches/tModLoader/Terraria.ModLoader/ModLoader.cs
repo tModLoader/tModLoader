@@ -926,7 +926,7 @@ namespace Terraria.ModLoader
 		/// Gets the sound with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the sound does not exist. Note: SoundEffect is in the Microsoft.Xna.Framework.Audio namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static SoundWrapper GetSound(string name)
+		public static SoundEffect GetSound(string name)
 		{
 			if (Main.dedServ)
 				return null;
@@ -960,7 +960,7 @@ namespace Terraria.ModLoader
 		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static SoundMP3 GetMusic(string name)
+		public static Music GetMusic(string name)
 		{
 			if (Main.dedServ) { return null; }
 			string modName, subName;

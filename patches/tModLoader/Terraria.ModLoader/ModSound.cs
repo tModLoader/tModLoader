@@ -13,7 +13,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The SoundEffect instance of the sound that this ModSound controls. This is here so you can call CreateInstance on it.
 		/// </summary>
-		public SoundWrapper sound
+		public SoundEffect sound
 		{
 			get;
 			internal set;

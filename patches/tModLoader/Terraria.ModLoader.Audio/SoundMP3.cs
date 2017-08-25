@@ -8,23 +8,18 @@ namespace Terraria.ModLoader.Audio
 {
 	public class SoundMP3 : IDisposable
 	{
-		//private static List<WeakReference> reference=new List<WeakReference>();
-		//private static List<long> position=new List<long>();
-
 		private MP3Stream stream;
 		private MemoryStream data;
 		private long bytesPerChunk;
 		private const int DEFAULT_BYTESPERCHUNK = 4096;//8192;
 
-		public bool IsMusic;//Loops is true but allows for only one instance playing of that sound at a time, false buffers entire file
-
-		public SoundMP3(byte[] byteArray, bool music, int bytesPerChunk = DEFAULT_BYTESPERCHUNK)
+		public SoundMP3(byte[] byteArray, /*bool music,*/ int bytesPerChunk = DEFAULT_BYTESPERCHUNK)
 		{
 			if (byteArray == null) { throw new ArgumentNullException("byteArray"); }
 			data = new MemoryStream(byteArray);
 			stream = new MP3Stream(data, bytesPerChunk);
-			IsMusic = music;
-			this.bytesPerChunk = music ? bytesPerChunk : stream.Length;
+			//IsMusic = music;
+			this.bytesPerChunk = /*IsMusic ?*/ bytesPerChunk /*: stream.Length*/;
 		}
 
 		public void Dispose()
@@ -38,11 +33,11 @@ namespace Terraria.ModLoader.Audio
 			DynamicSoundEffectInstance effect;
 			effect = new DynamicSoundEffectInstance(stream.Frequency, (AudioChannels)stream.ChannelCount);
 			//int index=SetupReferenceIndex(effect);
-			if (!IsMusic)
+			/*if (!IsMusic)
 			{
 				SubmitBuffer(effect, 1);
 				effect.BufferNeeded += sound_BufferNeeded;
-			}
+			}*/
 			//else{effect.BufferNeeded+=music_BufferNeeded;}//{delegate(object sender,EventArgs e){SubmitBuffer((DynamicSoundEffectInstance)sender,index,3);};}
 
 #if DEBUG_JUMP_TO_END
@@ -88,11 +83,11 @@ namespace Terraria.ModLoader.Audio
 		{
 			byte[] buffer = new byte[bytesPerChunk];
 			int bytesReturned = stream.Read(buffer, 0, buffer.Length);
-			if (!IsMusic)
+			/*if (!IsMusic)
 			{
 				ResetStreamPosition();
 			}
-			else if (bytesReturned < bytesPerChunk)
+			else */if (bytesReturned < bytesPerChunk)
 			{
 				stream.Read(buffer, bytesReturned, buffer.Length - bytesReturned);
 				ResetStreamPosition();
@@ -109,21 +104,5 @@ namespace Terraria.ModLoader.Audio
 				stream.IsEOF = false;
 			}
 		}
-
-		/*private int SetupReferenceIndex(DynamicSoundEffectInstance sound)
-		{
-			for(int index=0;index<reference.Count;index++)
-			{
-				if(!reference[index].IsAlive)
-				{
-					reference[index]=new WeakReference(sound);
-					position[index]=0;
-					return index;
-				}
-			}
-			reference.Add(new WeakReference(sound));
-			position.Add(0);
-			return reference.Count-1;
-		}*/
 	}
 }
