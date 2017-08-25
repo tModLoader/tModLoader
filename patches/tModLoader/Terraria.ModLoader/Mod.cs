@@ -187,11 +187,19 @@ namespace Terraria.ModLoader
 							{
 								if (mp3Path.StartsWith("Sounds/Music/"))
 								{
-									if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
+									bool useCache = false;
+									if (useCache)
 									{
-										WAVCacheIO.CacheMP3(wavCacheFilename, data);
+										if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
+										{
+											WAVCacheIO.CacheMP3(wavCacheFilename, data);
+										}
+										musics[mp3Path] = new StreamingMusic(WAVCacheIO.ModCachePath + Path.DirectorySeparatorChar + wavCacheFilename);
 									}
-									musics[mp3Path] = new StreamingMusic(WAVCacheIO.ModCachePath + Path.DirectorySeparatorChar + wavCacheFilename);
+									else
+									{
+										musics[mp3Path] = new StreamingMusicMP3(data);
+									}
 								}
 								else
 								{

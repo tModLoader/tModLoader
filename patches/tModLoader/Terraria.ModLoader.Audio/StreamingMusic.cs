@@ -5,6 +5,13 @@ using MP3Sharp;
 
 namespace Terraria.ModLoader.Audio
 {
+	public class StreamingMusicMP3 : StreamingMusic
+	{
+		public StreamingMusicMP3(byte[] data) : base(new MP3Stream(new MemoryStream(data)))
+		{
+		}
+	}
+
 	public class StreamingMusic : IDisposable
 	{
 		private Stream m_Stream;
@@ -19,7 +26,13 @@ namespace Terraria.ModLoader.Audio
 		public bool IsLooped => m_Instance.IsLooped;
 		public float Volume
 		{
-			set { m_Instance.Volume = value; }
+			set { m_Instance.Volume = Utils.Clamp(value, 0f, 1f); }
+		}
+
+		public StreamingMusic(MP3Stream stream)
+		{
+			m_Stream = stream;
+			m_Instance = new DynamicSoundEffectInstance(stream.Frequency, (AudioChannels)stream.ChannelCount);
 		}
 
 		public StreamingMusic(Stream stream)
@@ -88,7 +101,7 @@ namespace Terraria.ModLoader.Audio
 				Stop();
 			}
 
-			m_Instance.IsLooped = repeat;
+			//m_Instance.IsLooped = repeat;
 
 			SubmitBuffer(1);
 			m_Instance.BufferNeeded += instance_BufferNeeded;
@@ -135,18 +148,21 @@ namespace Terraria.ModLoader.Audio
 			int bytesReturned = m_Stream.Read(m_WaveBuffer, 0, m_WaveBuffer.Length);
 			if (bytesReturned != NUMBER_OF_PCM_BYTES_TO_READ_PER_CHUNK)
 			{
-				if (m_Instance.IsLooped)
+				if (true /*m_Instance.IsLooped*/)
 				{
+					MP3Stream mp3 = m_Stream as MP3Stream;
+					if (mp3 != null)
+						mp3.IsEOF = false;
 					m_Stream.Position = dataStart;
 					m_Stream.Read(m_WaveBuffer, bytesReturned, m_WaveBuffer.Length - bytesReturned);
 				}
-				else
-				{
-					if (bytesReturned == 0)
-					{
-						Stop();
-					}
-				}
+				//else
+				//{
+				//	if (bytesReturned == 0)
+				//	{
+				//		Stop();
+				//	}
+				//}
 			}
 		}
 	}
