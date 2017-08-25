@@ -176,15 +176,15 @@ namespace Terraria.ModLoader
 							//WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
 							try
 							{
-								sounds[mp3Path]=new SoundMP3(data,mp3Path.StartsWith("Sounds/Music/"));
-								
+								sounds[mp3Path] = new SoundMP3(data, mp3Path.StartsWith("Sounds/Music/"));
+
 								//sounds[mp3Path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename)
 								//	? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
 								//	: WAVCacheIO.CacheMP3(wavCacheFilename, data);
 							}
 							catch (Exception e)
 							{
-								sounds[mp3Path]=null;
+								sounds[mp3Path] = null;
 								throw new ResourceLoadException($"The sound file at {path} failed to load", e);
 							}
 							break;
@@ -227,7 +227,7 @@ namespace Terraria.ModLoader
 										if ((flags & 0x80) != 0)
 										{
 											throw new Exception($"The effect {effectFilename} can not be loaded because it is compressed."); // TODO: figure out the compression used.
-											//UInt32 decompressedDataSize = br.ReadUInt32();
+																																			 //UInt32 decompressedDataSize = br.ReadUInt32();
 										}
 										int typeReaderCount = br.ReadVarInt();
 										string typeReaderName = br.ReadString();
@@ -1814,7 +1814,7 @@ namespace Terraria.ModLoader
 			if (modSound != null)
 			{
 				SoundLoader.modSounds[type][id] = modSound;
-				modSound.sound=(type==SoundType.Music)?ModLoader.GetMusic(soundPath):ModLoader.GetSound(soundPath);
+				modSound.sound = (type == SoundType.Music) ? ModLoader.GetMusic(soundPath) : ModLoader.GetSound(soundPath);
 			}
 		}
 
@@ -2176,7 +2176,7 @@ namespace Terraria.ModLoader
 			{
 				foreach (var sound in sounds)
 				{
-					sound.Value.Dispose();
+					//sound.Value.Dispose();
 				}
 				foreach (var effect in effects)
 				{
@@ -2255,7 +2255,7 @@ namespace Terraria.ModLoader
 		public SoundEffect GetSound(string name)
 		{
 			SoundWrapper sound;
-			if (!sounds.TryGetValue(name, out sound)||!sound.IsWAV)
+			if (!sounds.TryGetValue(name, out sound) || !sound.IsWAV)
 				throw new MissingResourceException(name);
 
 			return sound.soundWAV;
@@ -2269,7 +2269,7 @@ namespace Terraria.ModLoader
 		public bool SoundExists(string name)
 		{
 			SoundWrapper sound;
-			return sounds.TryGetValue(name, out sound)&&sound.IsWAV;
+			return sounds.TryGetValue(name, out sound) && sound.IsWAV;
 		}
 
 		/// <summary>
@@ -2281,7 +2281,7 @@ namespace Terraria.ModLoader
 		public SoundMP3 GetMusic(string name)
 		{
 			SoundWrapper sound;
-			if (!sounds.TryGetValue(name,out sound)||!sound.IsMP3)
+			if (!sounds.TryGetValue(name, out sound) || !sound.IsMP3)
 			{
 				throw new MissingResourceException(name);
 			}
@@ -2296,7 +2296,7 @@ namespace Terraria.ModLoader
 		public bool MusicExists(string name)
 		{
 			SoundWrapper sound;
-			return sounds.TryGetValue(name,out sound)&&sound.IsMP3;
+			return sounds.TryGetValue(name, out sound) && sound.IsMP3;
 		}
 
 		/// <summary>

@@ -961,11 +961,11 @@ namespace Terraria.ModLoader
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static SoundMP3 GetMusic(string name)
 		{
-			if(Main.dedServ){return null;}
-			string modName,subName;
-			SplitName(name,out modName,out subName);
-			Mod mod=GetMod(modName);
-			if(mod==null){throw new MissingResourceException("Missing mod: "+name);}
+			if (Main.dedServ) { return null; }
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+			Mod mod = GetMod(modName);
+			if (mod == null) { throw new MissingResourceException("Missing mod: " + name); }
 			return mod.GetMusic(subName);
 		}
 
@@ -974,11 +974,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool MusicExists(string name)
 		{
-			if(!name.Contains('/')){return false;}
-			string modName,subName;
-			SplitName(name,out modName,out subName);
-			Mod mod=GetMod(modName);
-			return mod!=null&&mod.MusicExists(subName);
+			if (!name.Contains('/')) { return false; }
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+			Mod mod = GetMod(modName);
+			return mod != null && mod.MusicExists(subName);
 		}
 
 		public static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey)
