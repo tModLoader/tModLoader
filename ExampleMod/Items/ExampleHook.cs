@@ -60,7 +60,7 @@ namespace ExampleMod.Items
 			projectile.CloneDefaults(ProjectileID.GemHookAmethyst);
 		}
 
-		// Use this hook for hooks that can have multiple hooks midflight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook
+		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook
 		public override bool? CanUseGrapple(Player player)
 		{
 			int hooksOut = 0;
@@ -85,7 +85,7 @@ namespace ExampleMod.Items
 		//}
 
 		// Use this to kill oldest hook. For hooks that kill the oldest when shot, not when the newest latches on: Like SkeletronHand
-		// You can also change the projectile likr: Dual Hook, Lunar Hook
+		// You can also change the projectile like: Dual Hook, Lunar Hook
 		//public override void UseGrapple(Player player, ref int type)
 		//{
 		//	int hooksOut = 0;

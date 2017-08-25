@@ -39,7 +39,6 @@ namespace Terraria.ModLoader.UI.Elements
 		internal UIElement _innerList = new UIGrid.UIInnerList();
 		private float _innerListHeight;
 		public float ListPadding = 5f;
-		private int numberColumns = 1;
 
 		public int Count
 		{
@@ -49,9 +48,9 @@ namespace Terraria.ModLoader.UI.Elements
 			}
 		}
 
-		public UIGrid(int columns = 1)
+		// todo, vertical/horizontal orientation, left to right, etc?
+		public UIGrid()
 		{
-			numberColumns = columns;
 			this._innerList.OverflowHidden = false;
 			this._innerList.Width.Set(0f, 1f);
 			this._innerList.Height.Set(0f, 1f);
@@ -73,7 +72,7 @@ namespace Terraria.ModLoader.UI.Elements
 					this._scrollbar.ViewPosition = this._items[i].Top.Pixels;
 					if (center)
 					{
-						this._scrollbar.ViewPosition = this._items[i].Top.Pixels - GetInnerDimensions().Height/2 + _items[i].GetOuterDimensions().Height/2;
+						this._scrollbar.ViewPosition = this._items[i].Top.Pixels - GetInnerDimensions().Height / 2 + _items[i].GetOuterDimensions().Height / 2;
 					}
 					return;
 				}
@@ -125,32 +124,30 @@ namespace Terraria.ModLoader.UI.Elements
 			}
 		}
 
-		// Assumes equal height children.
 		public override void RecalculateChildren()
 		{
+			float availableWidth = GetInnerDimensions().Width;
 			base.RecalculateChildren();
 			float top = 0f;
-			float height = 0f;
 			float left = 0f;
+			float maxRowHeight = 0f;
 			for (int i = 0; i < this._items.Count; i++)
 			{
-				this._items[i].Top.Set(top, 0f);
-				this._items[i].Left.Set(left, 0f);
-				this._items[i].Recalculate();
-				if(i % numberColumns == 0)
+				var item = this._items[i];
+				var outerDimensions = item.GetOuterDimensions();
+				if (left + outerDimensions.Width > availableWidth && left > 0)
 				{
-					height += this._items[i].GetOuterDimensions().Height + this.ListPadding;
-				}
-				if (i % numberColumns == numberColumns - 1)
-				{
+					top += maxRowHeight + this.ListPadding;
 					left = 0;
+					maxRowHeight = 0;
 				}
-				else
-				{
-					left += this._items[i].GetOuterDimensions().Width + this.ListPadding;
-				}
+				maxRowHeight = Math.Max(maxRowHeight, outerDimensions.Height);
+				item.Left.Set(left, 0f);
+				left += outerDimensions.Width + this.ListPadding;
+				item.Top.Set(top, 0f);
+				item.Recalculate();
 			}
-			this._innerListHeight = height;
+			this._innerListHeight = top + maxRowHeight;
 		}
 
 		private void UpdateScrollbar()

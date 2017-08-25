@@ -474,6 +474,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
+		public virtual void GetWeaponCrit(Item item, ref int crit)
+		{
+		}
+
+		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
 		/// </summary>
 		/// <param name="weapon"></param>
@@ -761,7 +770,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the idnexes of any gore you create to Main.playerDrawGore.
+		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the indexes of any gore you create to Main.playerDrawGore.
 		/// </summary>
 		/// <param name="drawInfo"></param>
 		/// <param name="r"></param>

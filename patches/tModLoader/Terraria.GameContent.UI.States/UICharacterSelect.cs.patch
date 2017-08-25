@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.UI.States\UICharacterSelect.cs
 +++ src/tModLoader\Terraria.GameContent.UI.States\UICharacterSelect.cs
-@@ -9,6 +_,7 @@
+@@ -9,13 +_,14 @@
  using Terraria.Localization;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
@@ -8,6 +8,14 @@
  
  namespace Terraria.GameContent.UI.States
  {
+ 	public class UICharacterSelect : UIState
+ 	{
+ 		private static string noteToEveryone = "This code is terrible and you will risk cancer reading it --Yoraiz0r";
+-		private UIList _playerList;
++		internal UIList _playerList;
+ 		private UITextPanel<LocalizedText> _backPanel;
+ 		private UITextPanel<LocalizedText> _newPanel;
+ 		private UIPanel _containerPanel;
 @@ -80,12 +_,7 @@
  		{
  			Main.PlaySound(10, -1, -1, 1, 1f, 0f);

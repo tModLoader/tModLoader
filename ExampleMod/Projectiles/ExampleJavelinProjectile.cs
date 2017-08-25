@@ -59,7 +59,7 @@ namespace ExampleMod.Projectiles
 				// Create a new dust
 				int dustIndex = Dust.NewDust(usePos, projectile.width, projectile.height, 81, 0f, 0f, 0, default(Color), 1f);
 				Dust currentDust = Main.dust[dustIndex]; // If you plan to access the dust often, it's a smart idea to make this local variable to make your life a bit easier
-				// Modify some of the dust behaviour
+				// Modify some of the dust behavior
 				currentDust.position = (currentDust.position + projectile.Center) / 2f;
 				currentDust.velocity += rotVector * 2f;
 				currentDust.velocity *= 0.5f;

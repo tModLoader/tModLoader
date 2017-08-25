@@ -295,7 +295,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void DownloadMod(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(12, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuTick);
 			try
 			{
 				using (WebClient client = new WebClient())
@@ -321,7 +321,7 @@ namespace Terraria.ModLoader.UI
 								HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
 								if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
 								{
-									Interface.errorMessage.SetMessage("The Mod Browser server is under heavy load. Try again later.");
+									Interface.errorMessage.SetMessage("The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.");
 									Interface.errorMessage.SetGotoMenu(0);
 									Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 									Main.gameMenu = true;
@@ -344,11 +344,6 @@ namespace Terraria.ModLoader.UI
 							if (!update)
 							{
 								Interface.modBrowser.aNewModDownloaded = true;
-								string path = ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".enabled";
-								using (StreamWriter writer = File.CreateText(path))
-								{
-									writer.Write("false");
-								}
 							}
 							else
 							{

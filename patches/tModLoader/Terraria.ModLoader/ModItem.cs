@@ -172,7 +172,10 @@ namespace Terraria.ModLoader
 
 			var flameTexture = Texture + "_Flame";
 			if (ModLoader.TextureExists(flameTexture))
+			{
 				Main.itemFlameTexture[item.type] = ModLoader.GetTexture(flameTexture);
+				Main.itemFlameLoaded[item.type] = true;
+			}
 
 			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
 		}
@@ -245,6 +248,15 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player.</param>
 		/// <param name="knockback">The knockback.</param>
 		public virtual void GetWeaponKnockback(Player player, ref float knockback)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
+		/// </summary>
+		/// <param name="player">The player.</param>
+		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
+		public virtual void GetWeaponCrit(Player player, ref int crit)
 		{
 		}
 

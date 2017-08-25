@@ -37,7 +37,7 @@ namespace ExampleMod.Items
 			// Look up ItemIDs: https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Item-IDs
 			// To specify more than one ingredient, use multiple recipe.AddIngredient() calls.
 			recipe.AddIngredient(ItemID.DirtBlock);
-			// An optional 2nd argument will specifie a stack of the item. 
+			// An optional 2nd argument will specify a stack of the item. 
 			recipe.AddIngredient(ItemID.Acorn, 10);
 			// We can also specify the current item as an ingredient
 			recipe.AddIngredient(this, 2);

@@ -140,6 +140,7 @@ namespace Terraria.ModLoader
 					var path = file.Key;
 					var data = file.Value;
 					string extension = Path.GetExtension(path);
+					Interface.loadMods.SetSubProgressInit(path);
 					switch (extension)
 					{
 						case ".png":
@@ -2179,12 +2180,14 @@ namespace Terraria.ModLoader
 			tileEntities.Clear();
 			walls.Clear();
 			globalWalls.Clear();
+			players.Clear();
 			projectiles.Clear();
 			globalProjectiles.Clear();
 			npcs.Clear();
 			globalNPCs.Clear();
 			buffs.Clear();
 			globalBuffs.Clear();
+			mountDatas.Clear();
 			worlds.Clear();
 			ugBgStyles.Clear();
 			surfaceBgStyles.Clear();
@@ -2193,6 +2196,22 @@ namespace Terraria.ModLoader
 			waterfallStyles.Clear();
 			globalRecipes.Clear();
 			translations.Clear();
+			// Manually Dispose IDisposables to free up unmanaged memory immediately
+			if (!Main.dedServ)
+			{
+				foreach (var sound in sounds)
+				{
+					sound.Value.Dispose();
+				}
+				foreach (var effect in effects)
+				{
+					effect.Value.Dispose();
+				}
+				foreach (var texture in textures)
+				{
+					texture.Value.Dispose();
+				}
+			}
 		}
 
 		/// <summary>
