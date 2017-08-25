@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader
 {
@@ -106,7 +107,7 @@ namespace Terraria.ModLoader
 						{
 							Main.music[slot] = new MusicWrapper();
 						}
-						Main.music[slot].ModMusic = ModLoader.GetSound(sound)?.CreateInstance() ?? null;
+						Main.music[slot].ModMusic = ModLoader.GetMusic(sound) ?? null;
 					}
 				}
 			}

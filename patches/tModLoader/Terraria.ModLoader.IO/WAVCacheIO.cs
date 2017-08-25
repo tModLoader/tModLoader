@@ -34,6 +34,14 @@ namespace Terraria.ModLoader.IO
 
 		internal static void ClearCache(string modName)
 		{
+			var mod = ModLoader.GetMod(modName);
+			if (mod != null)
+			{
+				foreach (var item in mod.musics)
+				{
+					item.Value.Dispose();
+				}
+			}
 			var dir = Directory.CreateDirectory(ModCachePath);
 			foreach (var file in dir.EnumerateFiles(Path.GetFileNameWithoutExtension(modName) + "_*.wav"))
 			{

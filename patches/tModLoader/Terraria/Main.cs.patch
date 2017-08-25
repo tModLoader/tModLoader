@@ -10,11 +10,12 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -54,6 +_,8 @@
+@@ -54,6 +_,9 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Audio;
 +using Terraria.ModLoader.IO;
  using Terraria.Net;
  using Terraria.ObjectData;
