@@ -35,6 +35,7 @@ namespace Terraria.ModLoader.UI
 		internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		private UITextPanel<string> reloadButton;
 		private UITextPanel<string> clearButton;
+		private UITextPanel<string> downloadAllButton;
 		public UICycleImage uIToggleImage;
 		public UICycleImage SearchFilterToggle;
 		public bool loading;
@@ -67,11 +68,13 @@ namespace Terraria.ModLoader.UI
 				{
 					uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 					uIElement.RemoveChild(clearButton);
+					uIElement.RemoveChild(downloadAllButton);
 				}
 				else if (_specialModPackFilter == null && value != null)
 				{
 					uIPanel.BackgroundColor = Color.Purple * 0.7f;
 					uIElement.Append(clearButton);
+					uIElement.Append(downloadAllButton);
 				}
 				_specialModPackFilter = value;
 			}
@@ -154,6 +157,17 @@ namespace Terraria.ModLoader.UI
 				Interface.modBrowser.updateNeeded = true;
 				Main.PlaySound(SoundID.MenuTick);
 			};
+
+			downloadAllButton = new UITextPanel<string>("Download All", 1f, false);
+			downloadAllButton.Width.Set(-10f, 0.5f);
+			downloadAllButton.Height.Set(25f, 0f);
+			downloadAllButton.HAlign = 1f;
+			downloadAllButton.VAlign = 1f;
+			downloadAllButton.Top.Set(-20f, 0f);
+			downloadAllButton.BackgroundColor = Color.Azure * 0.7f;
+			downloadAllButton.OnMouseOver += (s, e) => UICommon.CustomFadedMouseOver(Color.Azure, s, e);
+			downloadAllButton.OnMouseOut += (s, e) => UICommon.CustomFadedMouseOut(Color.Azure * 0.7f, s, e);
+			downloadAllButton.OnClick += (s, e) => DownloadMods(SpecialModPackFilter, SpecialModPackFilterTitle);
 
 			Append(uIElement);
 
@@ -315,7 +329,7 @@ namespace Terraria.ModLoader.UI
 			base.Update(gameTime);
 			if (!updateNeeded) return;
 			updateNeeded = false;
-			if(!loading) uIPanel.RemoveChild(uILoader);
+			if (!loading) uIPanel.RemoveChild(uILoader);
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
@@ -326,6 +340,11 @@ namespace Terraria.ModLoader.UI
 			Main.clrInput();
 			if (!loading && items.Count <= 0)
 				PopulateModBrowser();
+		}
+
+		internal void ClearItems()
+		{
+			items.Clear();
 		}
 
 		private void PopulateModBrowser()
@@ -484,6 +503,15 @@ namespace Terraria.ModLoader.UI
 				ErrorLogger.LogModBrowserException(e);
 				return;
 			}
+		}
+
+		private void DownloadMods(List<string> specialModPackFilter, string SpecialModPackFilterTitle)
+		{
+			Main.PlaySound(SoundID.MenuTick);
+			Interface.downloadMods.SetDownloading(SpecialModPackFilterTitle);
+			Interface.downloadMods.SetModsToDownload(specialModPackFilter, items);
+			Interface.modBrowser.updateNeeded = true;
+			Main.menuMode = Interface.downloadModsID;
 		}
 
 		private void SetHeading(string heading)
