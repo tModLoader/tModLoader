@@ -1,5 +1,7 @@
 <map id="Terraria.ModLoader.Mod.AddSound" name="Terraria.ModLoader.Mod.AddSound">
 <area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a4588521ddbb8aa3a82e1d19f57399c20" title="Gets the sound with the specified name. The name is in the same format as for texture names..." alt="" coords="471,5,676,51"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad1a432c30af8ee06ec095bd5fbd6a6eb" title="Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given S..." alt="" coords="247,34,420,81"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad1a432c30af8ee06ec095bd5fbd6a6eb" title="Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given S..." alt="" coords="247,65,420,111"/>
 <area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a3d385fffbf96e8f4e5f8b677be2652b1" title="Shorthand for calling ModLoader.GetSound(this.FileName(name)). " alt="" coords="727,5,913,51"/>
+<area shape="rect" id="node10" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a2f5fcd072618777f1f9a5325b6fee282" title="Gets the music with the specified name. The name is in the same format as for texture names..." alt="" coords="471,74,676,121"/>
+<area shape="rect" id="node12" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a5456a56362277b999e3d5360616e7631" title="Shorthand for calling ModLoader.GetMusic(this.FileName(name)). " alt="" coords="727,74,913,121"/>
 </map>

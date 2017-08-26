@@ -97,7 +97,6 @@ var hierarchy =
     [ "Terraria.ModLoader.ModWaterStyle", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html", null ],
     [ "Terraria.ModLoader.ModWorld", "class_terraria_1_1_mod_loader_1_1_mod_world.html", null ],
     [ "Terraria.ModLoader.MountLoader", "class_terraria_1_1_mod_loader_1_1_mount_loader.html", null ],
-    [ "Terraria.ModLoader.MusicWrapper", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html", null ],
     [ "Terraria.ModLoader.NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", null ],
     [ "Terraria.ModLoader.NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", null ],
     [ "Terraria.ModLoader.NPCSpawnHelper", "class_terraria_1_1_mod_loader_1_1_n_p_c_spawn_helper.html", null ],

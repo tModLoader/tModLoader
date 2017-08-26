@@ -77,6 +77,7 @@ var searchData=
   ['getmodworld_3c_20t_20_3e',['GetModWorld&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a5e1fa66f29366a97547943374270955c',1,'Terraria::ModLoader::Mod']]],
   ['getmount',['GetMount',['../class_terraria_1_1_mod_loader_1_1_mod.html#a7fb1123895ccf16da71d298799d54824',1,'Terraria.ModLoader.Mod.GetMount()'],['../class_terraria_1_1_mod_loader_1_1_mount_loader.html#a09e19c4faa1e5f105a6f282abaf9da6f',1,'Terraria.ModLoader.MountLoader.GetMount()']]],
   ['getmount_3c_20t_20_3e',['GetMount&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a1e53ae26781d76a7d4c0d1ecc5a439f7',1,'Terraria::ModLoader::Mod']]],
+  ['getmusic',['GetMusic',['../class_terraria_1_1_mod_loader_1_1_mod.html#a5456a56362277b999e3d5360616e7631',1,'Terraria.ModLoader.Mod.GetMusic()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a2f5fcd072618777f1f9a5325b6fee282',1,'Terraria.ModLoader.ModLoader.GetMusic()']]],
   ['getnpc',['GetNPC',['../class_terraria_1_1_mod_loader_1_1_mod.html#aad8b21d8887352d4cbac92576cf4c155',1,'Terraria.ModLoader.Mod.GetNPC()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1e9eae6ec444b4a23e1a809cfea3be94',1,'Terraria.ModLoader.NPCLoader.GetNPC()']]],
   ['getnpc_3c_20t_20_3e',['GetNPC&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a6b937ac7d0fcf92655e26959bbd7460b',1,'Terraria::ModLoader::Mod']]],
   ['getpacket',['GetPacket',['../class_terraria_1_1_mod_loader_1_1_mod.html#afc69c5da3fbaac0d3268f4266889c535',1,'Terraria::ModLoader::Mod']]],

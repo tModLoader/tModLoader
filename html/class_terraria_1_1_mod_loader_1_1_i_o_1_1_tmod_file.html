@@ -276,7 +276,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00168">168</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_loader_8cs_source.html#l00034">Terraria.ModLoader.ModLoader.windows</a>.</p>
+<p>References <a class="el" href="_mod_loader_8cs_source.html#l00035">Terraria.ModLoader.ModLoader.windows</a>.</p>
 
 <p>Referenced by <a class="el" href="_assembly_manager_8cs_source.html#l00101">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        {</div><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            <span class="keywordtype">bool</span> isWindows = windows.GetValueOrDefault(ModLoader.windows);</div><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">HasFile</a>(<span class="stringliteral">&quot;All.dll&quot;</span>) ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;All.dll&quot;</span>) : isWindows ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Windows.dll&quot;</span>) : <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Mono.dll&quot;</span>);</div><div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a81dfdaacfd61f0cd14fe9de844d10b78"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">Terraria.ModLoader.IO.TmodFile.HasFile</a></div><div class="ttdeci">bool HasFile(string fileName)</div></div>
@@ -312,7 +312,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00174">174</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_loader_8cs_source.html#l00034">Terraria.ModLoader.ModLoader.windows</a>.</p>
+<p>References <a class="el" href="_mod_loader_8cs_source.html#l00035">Terraria.ModLoader.ModLoader.windows</a>.</p>
 
 <p>Referenced by <a class="el" href="_assembly_manager_8cs_source.html#l00101">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        {</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            <span class="keywordtype">bool</span> isWindows = windows.GetValueOrDefault(ModLoader.windows);</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">HasFile</a>(<span class="stringliteral">&quot;All.pdb&quot;</span>) ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;All.pdb&quot;</span>) : isWindows ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Windows.pdb&quot;</span>) : <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Mono.pdb&quot;</span>);</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a81dfdaacfd61f0cd14fe9de844d10b78"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">Terraria.ModLoader.IO.TmodFile.HasFile</a></div><div class="ttdeci">bool HasFile(string fileName)</div></div>
@@ -464,7 +464,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00030">30</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_loader_8cs_source.html#l00484">Terraria.ModLoader.ModLoader.IsSignedBy()</a>, <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>, and <a class="el" href="_assembly_manager_8cs_source.html#l00046">Terraria.ModLoader.AssemblyManager.LoadedMod.SetMod()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_loader_8cs_source.html#l00485">Terraria.ModLoader.ModLoader.IsSignedBy()</a>, <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>, and <a class="el" href="_assembly_manager_8cs_source.html#l00046">Terraria.ModLoader.AssemblyManager.LoadedMod.SetMod()</a>.</p>
 
 </div>
 </div>
@@ -488,7 +488,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00022">22</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_loader_8cs_source.html#l00758">Terraria.ModLoader.ModLoader.LoadEnabledModCache()</a>, <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00958">Terraria.ModLoader.ModLoader.RegisterHotKey()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_loader_8cs_source.html#l00759">Terraria.ModLoader.ModLoader.LoadEnabledModCache()</a>, <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00985">Terraria.ModLoader.ModLoader.RegisterHotKey()</a>.</p>
 
 </div>
 </div>

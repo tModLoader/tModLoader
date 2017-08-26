@@ -158,7 +158,7 @@ Static Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class is used to keep track of and support the existence of custom sounds that have been added to the game. </p>
 
-<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00012">12</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00013">13</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ad3e59f46ce2085f49c2f8943d4a53daa"></a>
 <div class="memitem">
@@ -181,9 +181,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00027">27</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type <span class="keywordflow">in</span> Enum.GetValues(typeof(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a>)))</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            {</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">nextSound</a>[type] = GetNumVanilla(type);</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                sounds[type] = <span class="keyword">new</span> Dictionary&lt;string, int&gt;();</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                modSounds[type] = <span class="keyword">new</span> Dictionary&lt;int, ModSound&gt;();</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            }</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">Terraria.ModLoader.SoundType</a></div><div class="ttdeci">SoundType</div><div class="ttdoc">This is an enum of the types of sound you can add to the game. This is used for determining whether a...</div><div class="ttdef"><b>Definition:</b> <a href="_sound_type_8cs_source.html#l00014">SoundType.cs:14</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_sound_loader_html_ac213340da38a927039d5190eacb242d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">Terraria.ModLoader.SoundLoader.nextSound</a></div><div class="ttdeci">static readonly IDictionary&lt; SoundType, int &gt; nextSound</div><div class="ttdef"><b>Definition:</b> <a href="_sound_loader_8cs_source.html#l00014">SoundLoader.cs:14</a></div></div>
+<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00028">28</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        {</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> type <span class="keywordflow">in</span> Enum.GetValues(typeof(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a>)))</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            {</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">nextSound</a>[type] = GetNumVanilla(type);</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                sounds[type] = <span class="keyword">new</span> Dictionary&lt;string, int&gt;();</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                modSounds[type] = <span class="keyword">new</span> Dictionary&lt;int, ModSound&gt;();</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            }</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">Terraria.ModLoader.SoundType</a></div><div class="ttdeci">SoundType</div><div class="ttdoc">This is an enum of the types of sound you can add to the game. This is used for determining whether a...</div><div class="ttdef"><b>Definition:</b> <a href="_sound_type_8cs_source.html#l00014">SoundType.cs:14</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_sound_loader_html_ac213340da38a927039d5190eacb242d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">Terraria.ModLoader.SoundLoader.nextSound</a></div><div class="ttdeci">static readonly IDictionary&lt; SoundType, int &gt; nextSound</div><div class="ttdef"><b>Definition:</b> <a href="_sound_loader_8cs_source.html#l00015">SoundLoader.cs:15</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -222,12 +222,12 @@ Static Private Attributes</h2></td></tr>
 
 <p>Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given SoundType and the given sound file path. Returns 0 if there is no corresponding style. </p>
 
-<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00052">52</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00053">53</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_loader_8cs_source.html#l00928">Terraria.ModLoader.ModLoader.GetSound()</a>.</p>
+<p>References <a class="el" href="_mod_loader_8cs_source.html#l00963">Terraria.ModLoader.ModLoader.GetMusic()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00929">Terraria.ModLoader.ModLoader.GetSound()</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01804">Terraria.ModLoader.Mod.AddSound()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        {</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">if</span> (sounds[type].ContainsKey(sound))</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            {</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordflow">return</span> sounds[type][sound];</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            }</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">else</span></div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            {</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keywordflow">return</span> 0;</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01832">Terraria.ModLoader.Mod.AddSound()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">if</span> (sounds[type].ContainsKey(sound))</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">return</span> sounds[type][sound];</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            }</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">else</span></div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            {</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">return</span> 0;</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -235,8 +235,10 @@ Static Private Attributes</h2></td></tr>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_sound_loader_ad1a432c30af8ee06ec095bd5fbd6a6eb_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_sound_loader_ad1a432c30af8ee06ec095bd5fbd6a6eb_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_sound_loader_ad1a432c30af8ee06ec095bd5fbd6a6eb_cgraph" id="class_terraria_1_1_mod_loader_1_1_sound_loader_ad1a432c30af8ee06ec095bd5fbd6a6eb_cgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a4588521ddbb8aa3a82e1d19f57399c20" title="Gets the sound with the specified name. The name is in the same format as for texture names..." alt="" coords="231,5,436,51"/>
-<area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_mod.html#a3d385fffbf96e8f4e5f8b677be2652b1" title="Shorthand for calling ModLoader.GetSound(this.FileName(name)). " alt="" coords="487,5,673,51"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a2f5fcd072618777f1f9a5325b6fee282" title="Gets the music with the specified name. The name is in the same format as for texture names..." alt="" coords="231,5,436,51"/>
+<area shape="rect" id="node7" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a4588521ddbb8aa3a82e1d19f57399c20" title="Gets the sound with the specified name. The name is in the same format as for texture names..." alt="" coords="231,74,436,121"/>
+<area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_mod.html#a5456a56362277b999e3d5360616e7631" title="Shorthand for calling ModLoader.GetMusic(this.FileName(name)). " alt="" coords="487,5,673,51"/>
+<area shape="rect" id="node9" href="class_terraria_1_1_mod_loader_1_1_mod.html#a3d385fffbf96e8f4e5f8b677be2652b1" title="Shorthand for calling ModLoader.GetSound(this.FileName(name)). " alt="" coords="487,74,673,121"/>
 </map>
 </div>
 </p>
@@ -277,10 +279,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00044">44</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00045">45</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01985">Terraria.ModLoader.Mod.AddMusicBox()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">nextSound</a>[type];</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_sound_loader_html_ac213340da38a927039d5190eacb242d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">Terraria.ModLoader.SoundLoader.nextSound</a></div><div class="ttdeci">static readonly IDictionary&lt; SoundType, int &gt; nextSound</div><div class="ttdef"><b>Definition:</b> <a href="_sound_loader_8cs_source.html#l00014">SoundLoader.cs:14</a></div></div>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02016">Terraria.ModLoader.Mod.AddMusicBox()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        {</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">nextSound</a>[type];</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_sound_loader_html_ac213340da38a927039d5190eacb242d1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1">Terraria.ModLoader.SoundLoader.nextSound</a></div><div class="ttdeci">static readonly IDictionary&lt; SoundType, int &gt; nextSound</div><div class="ttdef"><b>Definition:</b> <a href="_sound_loader_8cs_source.html#l00015">SoundLoader.cs:15</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -309,7 +311,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound. </p>
 
-<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00022">22</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00023">23</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
 
 </div>
 </div>
@@ -331,7 +333,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00014">14</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_sound_loader_8cs_source.html#l00015">15</a> of file <a class="el" href="_sound_loader_8cs_source.html">SoundLoader.cs</a>.</p>
 
 </div>
 </div>

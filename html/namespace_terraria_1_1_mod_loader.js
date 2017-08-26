@@ -55,7 +55,6 @@ var namespace_terraria_1_1_mod_loader =
     [ "ModWaterStyle", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html", "class_terraria_1_1_mod_loader_1_1_mod_water_style" ],
     [ "ModWorld", "class_terraria_1_1_mod_loader_1_1_mod_world.html", "class_terraria_1_1_mod_loader_1_1_mod_world" ],
     [ "MountLoader", "class_terraria_1_1_mod_loader_1_1_mount_loader.html", "class_terraria_1_1_mod_loader_1_1_mount_loader" ],
-    [ "MusicWrapper", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html", "class_terraria_1_1_mod_loader_1_1_music_wrapper" ],
     [ "NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader" ],
     [ "NPCInfo", "class_terraria_1_1_mod_loader_1_1_n_p_c_info.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_info" ],
     [ "NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader" ],
