@@ -1,10 +1,7 @@
-using System.Collections.ObjectModel;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI.Chat;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -13,83 +10,6 @@ namespace ExampleMod.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("This is a modded sword.");	//The (English) text shown below your weapon's name
-		}
-
-		private Vector2 boxSize;
-		const int paddingForBox = 10;
-
-		public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
-		{
-			string text = "This draws on the original position with PreDrawTooltip";
-			Vector2 drawPos = new Vector2(x, y - Main.fontMouseText.MeasureString(text).Y);
-			ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, text,
-				drawPos, Main.mouseTextColorReal, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
-			
-			// Offset the X and Y for fun
-			const int offset = 32;
-			x += offset;
-			y += offset;
-			
-			// Draw a background box
-			var texts = lines.Select(z => z.text);
-			string longestString = texts.ToList().OrderByDescending(z => z.Length).First();
-			int widthForBox = (int)Main.fontMouseText.MeasureString(longestString).X + paddingForBox * 2;
-			int heightForBox = (int)texts.ToList().Sum(z => Main.fontMouseText.MeasureString(z).Y) + paddingForBox;
-			boxSize = new Vector2(widthForBox, heightForBox);
-			Vector2 drawPosForBox = new Vector2(x - paddingForBox, y - paddingForBox);
-			Rectangle drawRectForBox = new Rectangle((int)drawPosForBox.X, (int)drawPosForBox.Y, widthForBox, heightForBox);
-			Main.spriteBatch.Draw(Main.magicPixel, drawRectForBox, Main.mouseTextColorReal);
-
-			return true;
-		}
-
-		public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
-		{
-			if (!line.OneDropLogo)
-			{
-				// Draw item name centered, and some separator
-				string sepText = "-----";
-				float off = line.font.MeasureString(sepText).Y;
-
-				if (line.text == item.HoverName)
-				{
-					line.Color = Main.DiscoColor;
-					
-					float boxOff = boxSize.X / 2 - paddingForBox;
-
-					ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, line.font, sepText,
-						new Vector2(line.X + boxOff - line.font.MeasureString(sepText).X/2 , line.Y + off/2), Color.Green, line.rotation, line.origin, line.baseScale);
-
-					line.X += (int) boxOff - (int)line.font.MeasureString(line.text).X/2;
-					yOffset = (int) off/3;
-				}
-				else
-				{
-					yOffset = 0;
-				}
-			}
-			return true;
-		}
-
-		public override void PostDrawTooltip(ReadOnlyCollection<DrawableTooltipLine> lines)
-		{
-			// Draw some text after the entire tooltip
-			string text = "This draws on PostDrawTooltip, affected by the offset in PreDrawTooltip";
-			Vector2 drawPos = new Vector2(lines.Last().X, lines.Last().Y) + new Vector2(0, Main.fontMouseText.MeasureString(text).Y);
-			ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, text,
-				drawPos, Main.mouseTextColorReal, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
-		}
-
-		public override void PostDrawTooltipLine(DrawableTooltipLine line)
-		{
-			// Duplicate every line to the right, consider using it for item comparison windows
-			if (!line.OneDropLogo)
-			{
-				Vector2 drawPos = new Vector2(line.X + boxSize.X, line.Y);
-				ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText,
-					line.text,
-					drawPos, line.Color, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
-			}
 		}
 
 		public override void SetDefaults()
@@ -121,14 +41,16 @@ namespace ExampleMod.Items.Weapons
 		{
 			if (Main.rand.Next(3) == 0)
 			{
-				int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, mod.DustType("Sparkle"));
 				//Emit dusts when swing the sword
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, mod.DustType("Sparkle"));
 			}
 		}
 
 		public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit)
 		{
-			target.AddBuff(BuffID.OnFire, 60);		//Add Onfire buff to the NPC for 1 second
+			// Add Onfire buff to the NPC for 1 second
+			// 60 frames = 1 second
+			target.AddBuff(BuffID.OnFire, 60);		
 		}
 	}
 }
