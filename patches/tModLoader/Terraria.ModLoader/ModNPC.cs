@@ -202,7 +202,7 @@ namespace Terraria.ModLoader
 			}
 			else if (banner != 0 || bannerItem != 0)
 			{
-				throw new Exception($"You have set one of ModNPC.banner or ModNPC.bannerItem for {Name}, but not the other. Make sure you set both and check your spelling and that the item exists if you are using mod.ItemType()");
+				ErrorLogger.Log($"{mod.DisplayName}: {Name}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {mod.DisplayName} developers.");
 			}
 			if (npc.lifeMax > 32767 || npc.boss)
 			{

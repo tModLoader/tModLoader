@@ -128,6 +128,7 @@ namespace Terraria.ModLoader.UI
 				{
 					currentDownload = modsToDownload.Dequeue();
 					loadProgress.SetText($"Downloading: {name}: {currentDownload.displayname}");
+					loadProgress.SetProgress(0f);
 					client.DownloadFileAsync(new Uri(currentDownload.download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
 				}
 				else
