@@ -20,6 +20,16 @@ namespace ExampleMod.Items.Weapons
 
 		public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
 		{
+			string text = "This draws on the original position with PreDrawTooltip";
+			Vector2 drawPos = new Vector2(x, y - Main.fontMouseText.MeasureString(text).Y);
+			ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, text,
+				drawPos, Main.mouseTextColorReal, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
+			
+			// Offset the X and Y for fun
+			const int offset = 32;
+			x += offset;
+			y += offset;
+			
 			// Draw a background box
 			var texts = lines.Select(z => z.text);
 			string longestString = texts.ToList().OrderByDescending(z => z.Length).First();
@@ -29,16 +39,6 @@ namespace ExampleMod.Items.Weapons
 			Vector2 drawPosForBox = new Vector2(x - paddingForBox, y - paddingForBox);
 			Rectangle drawRectForBox = new Rectangle((int)drawPosForBox.X, (int)drawPosForBox.Y, widthForBox, heightForBox);
 			Main.spriteBatch.Draw(Main.magicPixel, drawRectForBox, Main.mouseTextColorReal);
-
-			string text = "This drwas on the original position with PreDrawTooltip";
-			Vector2 drawPos = new Vector2(x, y - Main.fontMouseText.MeasureString(text).Y);
-			ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, text,
-				drawPos, Main.mouseTextColorReal, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
-
-			// Offset the X and Y for fun
-			const int offset = 32;
-			x += offset;
-			y += offset;
 
 			return true;
 		}
@@ -53,6 +53,8 @@ namespace ExampleMod.Items.Weapons
 
 				if (line.text == item.HoverName)
 				{
+					line.Color = Main.DiscoColor;
+					
 					float boxOff = boxSize.X / 2 - paddingForBox;
 
 					ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, line.font, sepText,
