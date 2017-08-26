@@ -35,7 +35,8 @@ namespace Terraria.ModLoader
 			public GlobalItem[] arr = new GlobalItem[0];
 			public readonly MethodInfo method;
 
-			public HookList(MethodInfo method) {
+			public HookList(MethodInfo method)
+			{
 				this.method = method;
 			}
 		}
@@ -203,9 +204,9 @@ namespace Terraria.ModLoader
 		{
 			return item.modItem != null && GeneralPrefix(item) && (item.magic || item.summon);
 		}
-		
+
 		private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
-		
+
 		internal static void SetDefaults(Item item, bool createModItem = true)
 		{
 			if (IsModItem(item.type) && createModItem)
@@ -276,14 +277,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="player">The player holding the item.</param>
-		public static bool CanUseItem(Item item, Player player) {
+		public static bool CanUseItem(Item item, Player player)
+		{
 			bool flag = true;
 			if (item.modItem != null)
 				flag &= item.modItem.CanUseItem(player);
-			
+
 			foreach (var g in HookCanUseItem.arr)
 				flag &= g.Instance(item).CanUseItem(item, player);
-			
+
 			return flag;
 		}
 
@@ -345,7 +347,7 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookUseTimeMultiplier.arr)
 				multiplier *= g.Instance(item).UseTimeMultiplier(item, player);
-			
+
 			return multiplier;
 		}
 
@@ -359,7 +361,7 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookMeleeSpeedMultiplier.arr)
 				multiplier *= g.Instance(item).MeleeSpeedMultiplier(item, player);
-			
+
 			return multiplier;
 		}
 
@@ -445,7 +447,8 @@ namespace Terraria.ModLoader
 					ammo.modItem != null && !ammo.modItem.ConsumeAmmo(player))
 				return false;
 
-			foreach (var g_ in HookConsumeAmmo.arr) {
+			foreach (var g_ in HookConsumeAmmo.arr)
+			{
 				var g = g_.Instance(item);
 				if (!g.ConsumeAmmo(item, player) || !g.ConsumeAmmo(ammo, player))
 					return false;
@@ -633,7 +636,7 @@ namespace Terraria.ModLoader
 			bool flag = false;
 			if (item.modItem != null)
 				flag |= item.modItem.UseItem(player);
-			
+
 			foreach (var g in HookUseItem.arr)
 				flag |= g.Instance(item).UseItem(item, player);
 
@@ -1244,7 +1247,7 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookWingUpdate.arr)
 				retVal |= g.WingUpdate(player.wings, player, inUse);
-			
+
 			return retVal ?? false;
 		}
 
@@ -1416,7 +1419,7 @@ namespace Terraria.ModLoader
 
 			if (item.modItem != null)
 				flag &= item.modItem.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-			
+
 			return flag;
 		}
 
@@ -1633,7 +1636,7 @@ namespace Terraria.ModLoader
 			}
 			item.modItem?.ModifyTooltips(tooltips);
 			foreach (var g in HookModifyTooltips.arr)
-				g.Instance(item).ModifyTooltips(item, tooltips);	
+				g.Instance(item).ModifyTooltips(item, tooltips);
 
 			numTooltips = tooltips.Count;
 			text = new string[numTooltips];
@@ -1704,7 +1707,8 @@ namespace Terraria.ModLoader
 			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
 				.Any(f => f.DeclaringType != typeof(GlobalItem));
 
-			if (hasInstanceFields) {
+			if (hasInstanceFields)
+			{
 				if (!item.InstancePerEntity)
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
 

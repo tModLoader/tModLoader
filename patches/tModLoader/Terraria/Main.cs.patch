@@ -1341,8 +1341,7 @@
 +				if (isOneDropLogo)
  				{
  					float num28 = 1f;
--					int num29 = (int)((float)Main.mouseTextColor * num28);
-+					int num29 = (int) ((float) Main.mouseTextColor * num28);
+ 					int num29 = (int)((float)Main.mouseTextColor * num28);
  					Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
 -					for (int m = 0; m < 5; m++)
 -					{
@@ -1404,103 +1403,7 @@
  				}
  				else
  				{
-@@ -15437,88 +_,100 @@
- 					{
- 						if (rare == -11)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(175f * num20)), (int)((byte)(0f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(175f * num20)),(int)((byte)(0f * num20)), a);
- 						}
- 						if (rare == -1)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(130f * num20)), (int)((byte)(130f * num20)), (int)((byte)(130f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(130f * num20)), (int)((byte)(130f * num20)),(int)((byte)(130f * num20)), a);
- 						}
- 						if (rare == 1)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(150f * num20)), (int)((byte)(255f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(150f * num20)),(int)((byte)(255f * num20)), a);
- 						}
- 						if (rare == 2)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(255f * num20)), (int)((byte)(150f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(255f * num20)),(int)((byte)(150f * num20)), a);
- 						}
- 						if (rare == 3)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(200f * num20)), (int)((byte)(150f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(200f * num20)),(int)((byte)(150f * num20)), a);
- 						}
- 						if (rare == 4)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(150f * num20)), (int)((byte)(150f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(150f * num20)),(int)((byte)(150f * num20)), a);
- 						}
- 						if (rare == 5)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(150f * num20)), (int)((byte)(255f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(150f * num20)),(int)((byte)(255f * num20)), a);
- 						}
- 						if (rare == 6)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(210f * num20)), (int)((byte)(160f * num20)), (int)((byte)(255f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(210f * num20)), (int)((byte)(160f * num20)),(int)((byte)(255f * num20)), a);
- 						}
- 						if (rare == 7)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(255f * num20)), (int)((byte)(10f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(150f * num20)), (int)((byte)(255f * num20)),(int)((byte)(10f * num20)), a);
- 						}
- 						if (rare == 8)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(255f * num20)), (int)((byte)(10f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(255f * num20)),(int)((byte)(10f * num20)), a);
- 						}
- 						if (rare == 9)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(5f * num20)), (int)((byte)(200f * num20)), (int)((byte)(255f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(5f * num20)), (int)((byte)(200f * num20)),(int)((byte)(255f * num20)), a);
- 						}
- 						if (rare == 10)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(40f * num20)), (int)((byte)(100f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(255f * num20)), (int)((byte)(40f * num20)),(int)((byte)(100f * num20)), a);
- 						}
- 						if (rare >= 11)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(180f * num20)), (int)((byte)(40f * num20)), (int)((byte)(255f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(180f * num20)), (int)((byte)(40f * num20)),(int)((byte)(255f * num20)), a);
- 						}
- 						if (diff == 1)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.mcColor.R * num20)), (int)((byte)((float)Main.mcColor.G * num20)), (int)((byte)((float)Main.mcColor.B * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.mcColor.R * num20)),(int)((byte)((float)Main.mcColor.G * num20)), (int)((byte)((float)Main.mcColor.B * num20)), a);
- 						}
- 						if (diff == 2)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.hcColor.R * num20)), (int)((byte)((float)Main.hcColor.G * num20)), (int)((byte)((float)Main.hcColor.B * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.hcColor.R * num20)),(int)((byte)((float)Main.hcColor.G * num20)), (int)((byte)((float)Main.hcColor.B * num20)), a);
- 						}
- 						if (Main.HoverItem.expert || rare == -12)
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.DiscoR * num20)), (int)((byte)((float)Main.DiscoG * num20)), (int)((byte)((float)Main.DiscoB * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)((float)Main.DiscoR * num20)),(int)((byte)((float)Main.DiscoG * num20)), (int)((byte)((float)Main.DiscoB * num20)), a);
- 						}
- 					}
- 					else if (array2[l])
- 					{
- 						if (array3[l])
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(190f * num20)), (int)((byte)(120f * num20)), (int)((byte)(120f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(190f * num20)), (int)((byte)(120f * num20)),(int)((byte)(120f * num20)), a);
- 						}
- 						else
- 						{
--							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(120f * num20)), (int)((byte)(190f * num20)), (int)((byte)(120f * num20)), a);
-+							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(120f * num20)), (int)((byte)(190f * num20)),(int)((byte)(120f * num20)), a);
- 						}
- 					}
- 					else if (l == num4 - 1)
+@@ -15515,10 +_,22 @@
  					{
  						baseColor = color;
  					}
