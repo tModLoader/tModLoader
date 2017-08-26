@@ -111,10 +111,10 @@ namespace Terraria.ModLoader
 
 		internal static void Unload()
 		{
-			for (int i = Main.maxMusic; i < Main.music.Length; i++)
-			{
-				Main.music[i].Stop(AudioStopOptions.Immediate);
-			}
+			//for (int i = Main.maxMusic; i < Main.music.Length; i++)
+			//{
+			//	Main.music[i].Stop(AudioStopOptions.Immediate);
+			//}
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType)))
 			{
 				nextSound[type] = GetNumVanilla(type);

@@ -164,9 +164,9 @@ namespace Terraria.ModLoader
 							{
 								try
 								{
-									if(soundPath.StartsWith("Sounds/Music/"))
+									if (soundPath.StartsWith("Sounds/Music/"))
 									{
-										musics[soundPath] = new MusicWAV(SoundEffect.FromStream(buffer));
+										musics[soundPath] = new MusicStreamingWAV(new MemoryStream(data));
 									}
 									else
 									{
@@ -175,45 +175,42 @@ namespace Terraria.ModLoader
 								}
 								catch (Exception e)
 								{
-									throw new ResourceLoadException($"The sound file at {path} failed to load", e);
+									throw new ResourceLoadException($"The wav sound file at {path} failed to load", e);
 								}
 							}
 							break;
 						case ".mp3":
 							string mp3Path = Path.ChangeExtension(path, null);
+							string wavCacheFilename = this.Name + "_" + mp3Path.Replace('/', '_') + "_" + Version + ".wav";
+							WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
 							try
 							{
-								if(mp3Path.StartsWith("Sounds/Music/")/*&&StreamOption*/)//Make an actualy variable for this later in the settings
+								if (mp3Path.StartsWith("Sounds/Music/"))
 								{
-									musics[mp3Path] = new MusicMP3(new SoundMP3(data));
+									bool useCache = true; // TODO: Make this a setting.
+									if (useCache)
+									{
+										if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
+										{
+											WAVCacheIO.CacheMP3(wavCacheFilename, data);
+										}
+										musics[mp3Path] = new MusicStreamingWAV(WAVCacheIO.ModCachePath + Path.DirectorySeparatorChar + wavCacheFilename);
+									}
+									else
+									{
+										musics[mp3Path] = new MusicStreamingMP3(data);
+									}
 								}
 								else
 								{
-									string wavCacheFilename = this.Name + "_" + mp3Path.Replace('/', '_') + "_" + Version + ".wav";
-									WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
-									SoundEffect sound;
-									if(WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
-									{
-										sound = SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename));
-									}
-									else
-									{
-										sound = WAVCacheIO.CacheMP3(wavCacheFilename, data);
-									}
-									if(mp3Path.StartsWith("Sounds/Music/"))
-									{
-										musics[mp3Path] = new MusicWAV(sound);
-									}
-									else
-									{
-										sounds[mp3Path] = sound;
-									}
+									sounds[mp3Path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename)
+									? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
+									: WAVCacheIO.CacheMP3(wavCacheFilename, data);
 								}
 							}
 							catch (Exception e)
 							{
-								sounds[mp3Path] = null;
-								throw new ResourceLoadException($"The sound file at {path} failed to load", e);
+								throw new ResourceLoadException($"The mp3 sound file at {path} failed to load", e);
 							}
 							break;
 						case ".xnb":
@@ -2207,7 +2204,14 @@ namespace Terraria.ModLoader
 			{
 				foreach (var sound in sounds)
 				{
-					//sound.Value.Dispose();
+					sound.Value.Dispose();
+				}
+				foreach (var music in musics)
+				{
+					music.Value.Stop(AudioStopOptions.Immediate);
+					MusicStreaming musicValue = music.Value as MusicStreaming;
+					if (musicValue != null)
+						musicValue.Dispose();
 				}
 				foreach (var effect in effects)
 				{
