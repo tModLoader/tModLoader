@@ -152,7 +152,9 @@ var hierarchy =
       [ "Terraria.ModLoader.ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", null ]
     ] ],
     [ "Terraria.ModLoader.TileLoader", "class_terraria_1_1_mod_loader_1_1_tile_loader.html", null ],
-    [ "Terraria.ModLoader.TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", null ],
+    [ "Terraria.ModLoader.TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", [
+      [ "Terraria.ModLoader.DrawableTooltipLine", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html", null ]
+    ] ],
     [ "Terraria.ModLoader.TopoSort< T >", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", null ],
     [ "Terraria.ModLoader.UgBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html", null ],
     [ "Terraria.ModLoader.IO.UploadFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html", null ],

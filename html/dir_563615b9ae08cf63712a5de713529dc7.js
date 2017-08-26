@@ -30,6 +30,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree" ],
       [ "ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", "class_terraria_1_1_mod_loader_1_1_mod_tree" ]
     ] ],
+    [ "DrawableTooltipLine.cs", "_drawable_tooltip_line_8cs.html", [
+      [ "DrawableTooltipLine", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line" ]
+    ] ],
     [ "DrawInfo.cs", "_draw_info_8cs.html", [
       [ "PlayerDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html", "struct_terraria_1_1_mod_loader_1_1_player_draw_info" ],
       [ "PlayerHeadDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info" ]

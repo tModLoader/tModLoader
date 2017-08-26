@@ -18,6 +18,7 @@ var searchData=
   ['findvanillawings',['FindVanillaWings',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a94d870cb0b655118a699a0d502106a3f',1,'Terraria::ModLoader::ItemLoader']]],
   ['finish',['Finish',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#a84bd87fba12532acbbc22aa4e7ebe996',1,'Terraria::ModLoader::ModPacket']]],
   ['floorvisuals',['FloorVisuals',['../class_terraria_1_1_mod_loader_1_1_global_tile.html#a3b6ea8306dfa056be4a1e51182aa8c8c',1,'Terraria.ModLoader.GlobalTile.FloorVisuals()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#abf16e1a9ae58c5cb4d317761f25f4946',1,'Terraria.ModLoader.ModTile.FloorVisuals()'],['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a5c90725d01e5b2030ae9ad98243c1018',1,'Terraria.ModLoader.TileLoader.FloorVisuals()']]],
+  ['font',['font',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#afa12e9d44d3270f8d219225ebf9acbbb',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['fontcacheio_2ecs',['FontCacheIO.cs',['../_font_cache_i_o_8cs.html',1,'']]],
   ['fontexists',['FontExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#ade5d55a43735a11dded9db34d5f73305',1,'Terraria::ModLoader::Mod']]],
   ['frameeffects',['FrameEffects',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a155cba1e22cce620d994dac9d88e993e',1,'Terraria.ModLoader.ModPlayer.FrameEffects()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a460c2b183e3a96ee8d626ecae17c8d67',1,'Terraria.ModLoader.PlayerHooks.FrameEffects()']]],

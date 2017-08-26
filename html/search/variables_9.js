@@ -3,6 +3,7 @@ var searchData=
   ['icegolem',['IceGolem',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a94bf56b7bcc8ff6b997a211672bdd896',1,'Terraria::ModLoader::SpawnCondition']]],
   ['imagepath',['ImagePath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65b7a720428c518f86def4274239282d',1,'Terraria::ModLoader::ModLoader']]],
   ['indent',['indent',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#aee0f3a1ba8fc9b8a5d59fdb38b03602c',1,'Terraria::ModLoader::IO::TagPrinter']]],
+  ['index',['Index',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a923e58f2252753ccfd35b0a608cf8a92',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['indexes',['indexes',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad668aa929984715c3d439cc1051bcabb',1,'Terraria::ModLoader::PlayerHooks']]],
   ['indexesbytype',['indexesByType',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a85d8d4670ddeaa3464a56c5ed11b95e9',1,'Terraria::ModLoader::PlayerHooks']]],
   ['instanceperentity',['InstancePerEntity',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a4a566fe8f37b3cf81e88ccf9e9eeae20',1,'Terraria.ModLoader.GlobalItem.InstancePerEntity()'],['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7c6ef4102eb089da4f7623a0ffce2647',1,'Terraria.ModLoader.GlobalNPC.InstancePerEntity()'],['../class_terraria_1_1_mod_loader_1_1_global_projectile.html#a03acd45fc9f9985526147e22e8d7e73c',1,'Terraria.ModLoader.GlobalProjectile.InstancePerEntity()']]],
