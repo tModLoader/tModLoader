@@ -1592,7 +1592,7 @@ namespace Terraria.ModLoader
 		{
 			item.modItem?.PostDrawTooltip(lines);
 			foreach (var g in HookPostDrawTooltip.arr)
-				g.PostDrawTooltip(item, lines); ;
+				g.PostDrawTooltip(item, lines);
 		}
 
 		private delegate bool DelegatePreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset);

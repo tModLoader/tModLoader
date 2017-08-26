@@ -1405,7 +1405,7 @@
 +								num31++;
 +							}
 +
-+							Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float) num30, (float) num31), null, m != 4 ? black : drawableLines[l].Color, drawableLines[l].rotation, drawableLines[l].origin, 1f, SpriteEffects.None, 0f);
++							Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float) num30, (float) num31), null, m != 4 ? black : drawableLines[l].Color, drawableLines[l].rotation, drawableLines[l].origin, (drawableLines[l].baseScale.X + drawableLines[l].baseScale.Y) / 2, SpriteEffects.None, 0f);
 +						}
 +					}
 +
