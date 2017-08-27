@@ -11,6 +11,7 @@ var class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line =
     [ "origin", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a9b063f4b6b6d05f64545a8f583987054", null ],
     [ "rotation", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ac0bc2d7ee58f4ff4683d1422bc12aafc", null ],
     [ "spread", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a51a296ccb01fd795b078c21af829a5d2", null ],
+    [ "text", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a78362ca6b9bc8bae8378b651a65322b8", null ],
     [ "X", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a2f43a8fc27f90a42ae12020a60c3428f", null ],
     [ "Y", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a045179b1f8c6df2291cba35f0e1e2484", null ],
     [ "OneDropLogo", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#af3250c61caa9d4b114c2d04ac90ac04d", null ],
