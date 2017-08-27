@@ -5,6 +5,7 @@ var searchData=
   ['oceanmonster',['OceanMonster',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aab7742d0a9a8c5db93d1f95b23be69e0',1,'Terraria::ModLoader::SpawnCondition']]],
   ['old',['Old',['../class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a80075f235592b2b6e8419f86db38a051',1,'Terraria::ModLoader::ModHotKey']]],
   ['oldonesarmy',['OldOnesArmy',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad8dce19d1c0a8fcd1331f984025e6300',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['onedroplogo',['oneDropLogo',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ad64664af7c0989aa05d0a67425744dd7',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['opendoorid',['openDoorID',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a5b97707910c9ef35487ada2139c679ae',1,'Terraria::ModLoader::ModTile']]],
   ['origin',['origin',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a9b063f4b6b6d05f64545a8f583987054',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['overridecolor',['overrideColor',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#af22965163fa53144bf2a087773b85ae4',1,'Terraria::ModLoader::TooltipLine']]],
