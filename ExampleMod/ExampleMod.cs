@@ -99,7 +99,7 @@ namespace ExampleMod
 		{
 			if (!Main.dedServ)
 			{
-				Main.music[MusicID.Dungeon].ModMusic = null;
+				//Main.music[MusicID.Dungeon].ModMusic = null;
 				Main.tileFrame[TileID.Loom] = 0;
 				Main.tileSetsLoaded[TileID.Loom] = false;
 			}
