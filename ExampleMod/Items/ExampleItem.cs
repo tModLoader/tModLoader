@@ -40,7 +40,7 @@ namespace ExampleMod.Items
 			// Calculate our widh for the box, which will be the width of the longest text, plus some padding
 			int widthForBox = (int)Main.fontMouseText.MeasureString(longestText).X + paddingForBox * 2;
 			// Calculate our height for the box, which will be the sum of the text heights, plus some padding
-			int heightForBox = (int)texts.ToList().Sum(z => Main.fontMouseText.MeasureString(z).Y) + paddingForBox;
+			int heightForBox = (int)texts.ToList().Sum(z => Main.fontMouseText.MeasureString(z).Y) + paddingForBox * 2;
 			// Set our boxSize to our calculated size, now we can use this elsewhere too
 			boxSize = new Vector2(widthForBox, heightForBox);
 
