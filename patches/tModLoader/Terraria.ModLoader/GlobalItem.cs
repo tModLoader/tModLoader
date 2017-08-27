@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -158,6 +159,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// </summary>
+		public virtual void GetWeaponCrit(Item item, Player player, ref int crit)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to modify the projectile created by a weapon based on the ammo it is using.
 		/// </summary>
 		/// <param name="item">The ammo item</param>
@@ -186,7 +194,7 @@ namespace Terraria.ModLoader
 		/// <param name="position">The shoot spawn position.</param>
 		/// <param name="speedX">The speed x calculated from shootSpeed and mouse position.</param>
 		/// <param name="speedY">The speed y calculated from shootSpeed and mouse position.</param>
-		/// <param name="type">The projectile type choosen by ammo and weapon.</param>
+		/// <param name="type">The projectile type chosen by ammo and weapon.</param>
 		/// <param name="damage">The projectile damage.</param>
 		/// <param name="knockBack">The projectile knock back.</param>
 		/// <returns></returns>
@@ -218,7 +226,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the damage, knockbac, etc., that a melee weapon does to an NPC.
+		/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
 		/// </summary>
 		public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
 		{
@@ -727,6 +735,49 @@ namespace Terraria.ModLoader
 		/// Allows you to make anything happen when the player crafts the given item using the given recipe.
 		/// </summary>
 		public virtual void OnCraft(Item item, Recipe recipe)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to do things before this item's tooltip is drawn.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="lines">The tooltip lines for this item</param>
+		/// <param name="x">The top X position for this tooltip. It is where the first line starts drawing</param>
+		/// <param name="y">The top Y position for this tooltip. It is where the first line starts drawing</param>
+		/// <returns>Whether or not to draw this tooltip</returns>
+		public virtual bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to do things after this item's tooltip is drawn. The lines contain draw information as this is ran after drawing the tooltip.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="lines">The tooltip lines for this item</param>
+		public virtual void PostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to do things before a tooltip line of this item is drawn. The line contains draw info.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="line">The line that would be drawn</param>
+		/// <param name="yOffset">The Y offset added for next tooltip lines</param>
+		/// <returns>Whether or not to draw this tooltip line</returns>
+		public virtual bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to do things after a tooltip line of this item is drawn. The line contains draw info.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="line">The line that was drawn</param>
+		public virtual void PostDrawTooltipLine(Item item, DrawableTooltipLine line)
 		{
 		}
 

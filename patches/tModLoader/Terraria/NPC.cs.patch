@@ -488,17 +488,6 @@
  			{
  				return;
  			}
-@@ -59600,6 +_,10 @@
- 							NetMessage.BroadcastChatMessage(networkText, new Color(250, 250, 0), -1);
- 						}
- 						int num7 = Item.BannerToItem(num3);
-+						if (num3 >= NPCID.Count)
-+						{
-+							num7 = NPCLoader.bannerToItem[NPCLoader.GetNPC(num3).banner];
-+						}
- 						Vector2 position = this.position;
- 						if (num6 >= 0 && num6 < 255)
- 						{
 @@ -59621,6 +_,10 @@
  			{
  				return;

@@ -158,6 +158,7 @@ namespace Terraria.ModLoader.UI
 		{
 			this._scrollbar = scrollbar;
 			this.UpdateScrollbar();
+			this.heightNeedsRecalculating = true;
 		}
 
 		private void UpdateScrollbar()

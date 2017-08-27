@@ -16,6 +16,7 @@ using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader
 {
@@ -61,6 +62,7 @@ namespace Terraria.ModLoader
 		internal static bool reloadAfterBuild = false;
 		internal static bool buildAll = false;
 		private static readonly Stack<string> loadOrder = new Stack<string>();
+		private static WeakReference[] loadedModsWeakReferences = new WeakReference[0];
 		private static Mod[] loadedMods = new Mod[0];
 		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
 		internal static readonly IDictionary<string, ModHotKey> modHotKeys = new Dictionary<string, ModHotKey>();
@@ -144,6 +146,7 @@ namespace Terraria.ModLoader
 				{
 					mod.loading = true;
 					mod.Autoload();
+					Interface.loadMods.SetSubProgressInit("");
 					mod.Load();
 					mod.loading = false;
 				}
@@ -400,6 +403,7 @@ namespace Terraria.ModLoader
 
 			modInstances.Insert(0, new ModLoaderMod());
 			loadedMods = modInstances.ToArray();
+			loadedModsWeakReferences = loadedMods.Skip(1).Select(x => new WeakReference(x)).ToArray();
 			foreach (var mod in modInstances)
 			{
 				loadOrder.Push(mod.Name);
@@ -668,6 +672,7 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.Unload();
 			WaterfallStyleLoader.Unload();
 			mods.Clear();
+			WorldHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++)
 			{
@@ -679,14 +684,57 @@ namespace Terraria.ModLoader
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
 			modHotKeys.Clear();
-			WorldHooks.Unload();
 			RecipeHooks.Unload();
 			CommandManager.Unload();
 			TagSerializer.Reload();
+			ModNet.Unload();
 			GameContent.UI.CustomCurrencyManager.Initialize();
+			CleanupModReferences();
 
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
 				ModNet.AllowVanillaClients = false;
+		}
+
+		/// <summary>
+		/// Several arrays and other fields hold references to various classes from mods, we need to clean them up to give properly coded mods a chance to be completely free of references
+		/// so that they can be collected by the garbage collection. For most things eventually they will be replaced during gameplay, but we want the old instance completely gone quickly.
+		/// </summary>
+		internal static void CleanupModReferences()
+		{
+			// Clear references to ModPlayer instances
+			for (int i = 0; i < 256; i++)
+			{
+				Main.player[i] = new Player();
+			}
+			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
+			Main._characterSelectMenu._playerList?.Clear();
+			Main.PlayerList.Clear();
+
+			foreach (var npc in Main.npc)
+			{
+				npc.SetDefaults(0);
+			}
+
+			foreach (var item in Main.item)
+			{
+				item.SetDefaults(0);
+			}
+			ItemSlot.singleSlotArray[0]?.SetDefaults(0);
+
+			for (int i = 0; i < Main.chest.Length; i++)
+			{
+				Main.chest[i] = new Chest();
+			}
+
+#if DEBUG
+			// TODO: Display this warning to modders
+			GC.Collect();
+			foreach (var weakReference in loadedModsWeakReferences)
+			{
+				if (weakReference.IsAlive)
+					ErrorLogger.Log((weakReference.Target as Mod).Name + " not fully unloaded during unload.");
+			}
+#endif
 		}
 
 		internal static void Reload()
@@ -906,6 +954,32 @@ namespace Terraria.ModLoader
 
 			Mod mod = GetMod(modName);
 			return mod != null && mod.SoundExists(subName);
+		}
+
+		/// <summary>
+		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
+		/// </summary>
+		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
+		public static Music GetMusic(string name)
+		{
+			if (Main.dedServ) { return null; }
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+			Mod mod = GetMod(modName);
+			if (mod == null) { throw new MissingResourceException("Missing mod: " + name); }
+			return mod.GetMusic(subName);
+		}
+
+		/// <summary>
+		/// Returns whether or not a sound with the specified name exists.
+		/// </summary>
+		public static bool MusicExists(string name)
+		{
+			if (!name.Contains('/')) { return false; }
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+			Mod mod = GetMod(modName);
+			return mod != null && mod.MusicExists(subName);
 		}
 
 		public static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey)

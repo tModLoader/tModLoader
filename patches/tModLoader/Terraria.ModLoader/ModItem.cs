@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
@@ -172,7 +173,10 @@ namespace Terraria.ModLoader
 
 			var flameTexture = Texture + "_Flame";
 			if (ModLoader.TextureExists(flameTexture))
+			{
 				Main.itemFlameTexture[item.type] = ModLoader.GetTexture(flameTexture);
+				Main.itemFlameLoaded[item.type] = true;
+			}
 
 			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
 		}
@@ -245,6 +249,15 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player.</param>
 		/// <param name="knockback">The knockback.</param>
 		public virtual void GetWeaponKnockback(Player player, ref float knockback)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
+		/// </summary>
+		/// <param name="player">The player.</param>
+		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
+		public virtual void GetWeaponCrit(Player player, ref int crit)
 		{
 		}
 
@@ -950,6 +963,45 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="recipe">The recipe that was used to craft this item.</param>
 		public virtual void OnCraft(Recipe recipe)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to do things before this item's tooltip is drawn.
+		/// </summary>
+		/// <param name="lines">The tooltip lines for this item</param>
+		/// <param name="x">The top X position for this tooltip. It is where the first line starts drawing</param>
+		/// <param name="y">The top Y position for this tooltip. It is where the first line starts drawing</param>
+		/// <returns>Whether or not to draw this tooltip</returns>
+		public virtual bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to do things after this item's tooltip is drawn. The lines contain draw information as this is ran after drawing the tooltip.
+		/// </summary>
+		/// <param name="lines">The tooltip lines for this item</param>
+		public virtual void PostDrawTooltip(ReadOnlyCollection<DrawableTooltipLine> lines)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to do things before a tooltip line of this item is drawn. The line contains draw info.
+		/// </summary>
+		/// <param name="line">The line that would be drawn</param>
+		/// <param name="yOffset">The Y offset added for next tooltip lines</param>
+		/// <returns>Whether or not to draw this tooltip line</returns>
+		public virtual bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to do things after a tooltip line of this item is drawn. The line contains draw info.
+		/// </summary>
+		/// <param name="line">The line that was drawn</param>
+		public virtual void PostDrawTooltipLine(DrawableTooltipLine line)
 		{
 		}
 

@@ -81,14 +81,14 @@ namespace Terraria.ModLoader.UI
 						: buildProperties.hideResources;
 
 					if (hidden)
-						log.Write("[hidden] ");
+						log.Write("[not really hidden] ");
 					log.WriteLine(name);
 
-					if (!hidden) {
+					//if (!hidden) {
 						var path = Path.Combine(dir, name);
 						Directory.CreateDirectory(Path.GetDirectoryName(path));
 						File.WriteAllBytes(path, entry.Value);
-					}
+					//}
 				}
 			}
 			catch (Exception e) {

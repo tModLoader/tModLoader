@@ -258,7 +258,12 @@ namespace Terraria.ModLoader
 			exceptionReportingActive = true;
 			AppDomain.CurrentDomain.FirstChanceException += delegate(object sender, FirstChanceExceptionEventArgs exceptionArgs)
 			{
+				if (exceptionArgs.Exception.Source == "MP3Sharp") return;
+				float soundVolume = Main.soundVolume;
+				Main.soundVolume = 0f;
 				Main.NewText(exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace, Microsoft.Xna.Framework.Color.OrangeRed);
+				ErrorLogger.Log("Silently Caught Exception: " + exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace);
+				Main.soundVolume = soundVolume;
 			};
 		}
 
