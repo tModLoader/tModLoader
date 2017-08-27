@@ -1370,7 +1370,7 @@
 -						Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float)num30, (float)num31), null, black, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 -					}
 +
-+					drawableLines[l].Color = new Microsoft.Xna.Framework.Color(num29, num29, num29, num29);
++					drawableLines[l].color = new Microsoft.Xna.Framework.Color(num29, num29, num29, num29);
 +
 +					if (ItemLoader.PreDrawTooltipLine(Main.HoverItem, drawableLines[l], ref yOffset) && globalCanDraw)
 +					{
@@ -1395,7 +1395,7 @@
 +								num31++;
 +							}
 +
-+							Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float) num30, (float) num31), null, m != 4 ? black : drawableLines[l].Color, drawableLines[l].rotation, drawableLines[l].origin, (drawableLines[l].baseScale.X + drawableLines[l].baseScale.Y) / 2, SpriteEffects.None, 0f);
++							Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float) num30, (float) num31), null, m != 4 ? black : drawableLines[l].color, drawableLines[l].rotation, drawableLines[l].origin, (drawableLines[l].baseScale.X + drawableLines[l].baseScale.Y) / 2, SpriteEffects.None, 0f);
 +						}
 +					}
 +
@@ -1403,7 +1403,7 @@
  				}
  				else
  				{
-@@ -15515,10 +_,22 @@
+@@ -15515,10 +_,27 @@
  					{
  						baseColor = color;
  					}
@@ -1413,13 +1413,18 @@
 -			}
 +					if (overrideColor[l].HasValue)
 +					{
-+						baseColor = overrideColor[l].Value * num20;
++						Microsoft.Xna.Framework.Color theColor = overrideColor[l].Value * num20;
++						drawableLines[l].overrideColor = theColor;
++						drawableLines[l].color = baseColor;
++						baseColor = theColor;
++					}
++					else
++					{
++						drawableLines[l].color = baseColor;
 +					}
 +
-+					drawableLines[l].Color = baseColor;
-+
 +					if (ItemLoader.PreDrawTooltipLine(Main.HoverItem, drawableLines[l], ref yOffset) && globalCanDraw)
-+						ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, drawableLines[l].font, drawableLines[l].text, new Vector2((float)drawableLines[l].X, (float)drawableLines[l].Y), drawableLines[l].Color, drawableLines[l].rotation, drawableLines[l].origin, drawableLines[l].baseScale, drawableLines[l].maxWidth, drawableLines[l].spread);
++						ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, drawableLines[l].font, drawableLines[l].text, new Vector2((float)drawableLines[l].X, (float)drawableLines[l].Y), drawableLines[l].color, drawableLines[l].rotation, drawableLines[l].origin, drawableLines[l].baseScale, drawableLines[l].maxWidth, drawableLines[l].spread);
 +
 +					ItemLoader.PostDrawTooltipLine(Main.HoverItem, drawableLines[l]);
 +				}
@@ -3577,12 +3582,7 @@
  				Vector2 bonus = Main.DrawThickCursor(false);
  				Main.DrawCursor(bonus, false);
  			}
-@@ -50938,10 +_,14 @@
- 					Main.bgColor.B = 15;
- 				}
- 			}
-+
- 			Main.tileColor.A = 255;
+@@ -50942,6 +_,9 @@
  			Main.tileColor.R = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.R * 7) / 10);
  			Main.tileColor.G = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.G * 7) / 10);
  			Main.tileColor.B = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.B * 7) / 10);
@@ -3881,24 +3881,16 @@
  			}
  			if (!Main.gameMenu && Main.netMode != 2)
  			{
-@@ -57260,6 +_,7 @@
- 					}
- 				}
- 			}
-+
- 			Main.tileColor.A = 255;
- 			Main.tileColor.R = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.R * 7) / 10);
+@@ -57265,6 +_,9 @@
  			Main.tileColor.G = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.G * 7) / 10);
-@@ -57290,6 +_,9 @@
- 				Main.bgColor.B = 0;
- 				Main.bgColor.A = 0;
- 			}
+ 			Main.tileColor.B = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.B * 7) / 10);
+ 			Main.tileColor = SkyManager.Instance.ProcessTileColor(Main.tileColor);
 +
 +			ModHooks.ModifySunLight(ref Main.tileColor,ref Main.bgColor);
 +
- 			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
- 			base.Draw(gameTime);
- 			float val = (float)Main.screenWidth / 1920f;
+ 			float num55 = (float)(Main.maxTilesX / 4200);
+ 			num55 *= num55;
+ 			Main.atmo = (float)((double)((Main.screenPosition.Y + (float)(Main.screenHeight / 2)) / 16f - (65f + 10f * num55)) / (Main.worldSurface / 5.0));
 @@ -57307,6 +_,7 @@
  			{
  				this.Rasterizer = RasterizerState.CullClockwise;
