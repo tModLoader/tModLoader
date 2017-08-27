@@ -306,7 +306,7 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,60 @@
+@@ -606,5 +_,53 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -354,14 +354,7 @@
 +	copy "$(TargetDir)$(TargetName).pdb" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25.pdb"
 +)
 +
-+)
-+
-+del "D:\Steam\steamapps\common\Terraria\Terraria.exe"
-+del "D:\Steam\steamapps\common\Terraria\Terraria.pdb"
-+copy /y "D:\Workspace\0-CSharp\tModLoader\tModLoader\src\tModLoader\bin\x86\WindowsDebug\Terraria.exe" "D:\Steam\steamapps\common\Terraria\Terraria.exe"
-+copy /y "D:\Workspace\0-CSharp\tModLoader\tModLoader\src\tModLoader\bin\x86\WindowsDebug\Terraria.pdb" "D:\Steam\steamapps\common\Terraria\Terraria.pdb"
-+copy /y "D:\Workspace\0-CSharp\tModLoader\tModLoader\src\tModLoader\bin\x86\MacRelease\Terraria.exe" "D:\Steam\steamapps\common\Terraria\ModCompile\tModLoaderMac.exe"
-+copy /y "D:\Workspace\0-CSharp\tModLoader\tModLoader\src\tModLoader\bin\x86\MacRelease\Terraria.pdb" "D:\Steam\steamapps\common\Terraria\ModCompile\tModLoaderMac.pdb"</PostBuildEvent>
++)</PostBuildEvent>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <PreBuildEvent>
