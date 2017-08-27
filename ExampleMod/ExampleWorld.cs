@@ -23,7 +23,7 @@ namespace ExampleMod
 		public const float VolcanoAngleSpread = 170;
 		public const int DefaultVolcanoTremorTime = 200; // ~ 3 seconds
 		public const int DefaultVolcanoCountdown = 300; // 5 seconds
-		public const int DefaultVolcanoCooldown = 10000; // At least 3 min of daytime between volcanos
+		public const int DefaultVolcanoCooldown = 10000; // At least 3 min of daytime between volcanoes
 		public const int VolcanoChance = 10000; // Chance each tick of Volcano if cooldown exhausted.
 		public int VolcanoCountdown;
 		public int VolcanoCooldown = DefaultVolcanoCooldown;
@@ -128,7 +128,7 @@ namespace ExampleMod
 				{
 					progress.Message = "Example Mod Traps";
 					// Computers are fast, so WorldGen code sometimes looks stupid.
-					// Here, we want to place a bunch of tiles in the world, so we just repeat until success. It might be useful to keep track of attempts and check for attemps > maxattempts so you don't have infinite loops. 
+					// Here, we want to place a bunch of tiles in the world, so we just repeat until success. It might be useful to keep track of attempts and check for attempts > maxattempts so you don't have infinite loops. 
 					// The WorldGen.PlaceTile method returns a bool, but it is useless. Instead, we check the tile after calling it and if it is the desired tile, we know we succeeded.
 					for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
 					{

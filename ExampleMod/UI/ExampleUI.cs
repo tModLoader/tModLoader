@@ -133,7 +133,7 @@ namespace ExampleMod.UI
 
 		// Array of ints 60 long.
 		// "length" = seconds since reset
-		// reset on button or 20 seconds of inactibvity?
+		// reset on button or 20 seconds of inactivity?
 		// pointer to index so on new you can clear previous
 		int[] coinBins = new int[60];
 		int coinBinsIndex;
