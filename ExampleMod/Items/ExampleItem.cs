@@ -55,8 +55,17 @@ namespace ExampleMod.Items
 
 		public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
 		{
-			if (!line.OneDropLogo)
+			if (!line.oneDropLogo)
 			{
+				// You are not allowed to change these, modders should use ModifyTooltips to modify them
+				//line.text = "you shall not pass...";
+				//line.oneDropLogo = false;
+				//line.color = Color.AliceBlue;
+				//line.overrideColor = Color.AliceBlue;
+				//line.isModifier = false;
+				//line.isModifierBad = false;
+				//line.index = 1;
+
 				// Let's draw the item name centered so it's in the middle, and let's add a form of separator
 				string sepText = "-----"; // This is our separator, which will go between the item name and the rest
 				float sepHeight = line.font.MeasureString(sepText).Y; // Height of our separator
@@ -79,7 +88,7 @@ namespace ExampleMod.Items
 					// Note how our line object has many properties we can use for drawing
 					// Here we draw the separator, note that it'd make more sense to use PostDraw for this, but either will work
 					ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, line.font, sepText,
-						new Vector2(drawX, drawY), line.Color, line.rotation, line.origin, line.baseScale, line.maxWidth, line.spread);
+						new Vector2(drawX, drawY), line.color, line.rotation, line.origin, line.baseScale, line.maxWidth, line.spread);
 
 					// Here we do the same thing as we did for drawX, which will center our ItemName tooltip
 					line.X += (int)boxOffset - (int)line.font.MeasureString(line.text).X / 2;

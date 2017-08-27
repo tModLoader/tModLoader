@@ -5,6 +5,9 @@ using ReLogic.Graphics;
 namespace Terraria.ModLoader
 {
 	// contains additional info for modders to use when using tooltip related draw hooks
+	// most stuff is readonly here or only has a public getter, because the related draw hooks are not meant for modifying most info (hence also new keywords to hide from TooltipLine)
+	// modders should use ModifyTooltips for modifying tooltips
+	// what is modifiable is certain draw related info such as the X and Y position
 	/// <summary>
 	/// This class serves as a way to store information about a line that will be drawn of tooltip for an item. You will create and manipulate objects of this class if you use the draw hooks for tooltips in ModItem and GlobalItem. For examples, see ExampleSword
 	/// </summary>
@@ -14,11 +17,18 @@ namespace Terraria.ModLoader
 		/// The text of this tooltip. 
 		/// </summary>
 		public new readonly string text = string.Empty;
-
 		/// <summary>
 		/// The index of the tooltip in the array
 		/// </summary>
-		public readonly int Index;
+		public readonly int index;
+		/// <summary>
+		/// Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red.
+		/// </summary>
+		public new readonly bool isModifier;
+		/// <summary>
+		/// If isModifier is true, this determines whether the tooltip is colored green or red.
+		/// </summary>
+		public new readonly bool isModifierBad;
 
 		private int _originalX;
 		/// <summary>
@@ -50,11 +60,15 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The color the tooltip would be drawn in
 		/// </summary>
-		public Color Color;
+		public Color color { get; internal set; }
+		/// <summary>
+		/// If the tooltip line's color was overridden this will hold that color, it will be null otherwise
+		/// </summary>
+		public new Color? overrideColor { get; internal set; }
 		/// <summary>
 		/// Whether the tooltip is a One Drop logo or not. If it is, the tooltip text will be empty.
 		/// </summary>
-		public bool OneDropLogo { get { return oneDropLogo; } }
+		public new readonly bool oneDropLogo;
 		/// <summary>
 		/// The font this tooltip would be drawn with
 		/// </summary>
@@ -68,7 +82,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public Vector2 origin = Vector2.Zero;
 		/// <summary>
-		/// The baseScale of this tooltip. When drawing the One  Drop logo the scale is calculated by (baseScale.X + baseScale.Y) / 2
+		/// The baseScale of this tooltip. When drawing the One Drop logo the scale is calculated by (baseScale.X + baseScale.Y) / 2
 		/// </summary>
 		public Vector2 baseScale = Vector2.One;
 
@@ -90,10 +104,10 @@ namespace Terraria.ModLoader
 			overrideColor = parent.overrideColor;
 			oneDropLogo = parent.oneDropLogo;
 
-			Index = index;
+			this.index = index;
 			OriginalX = x;
 			OriginalY = y;
-			Color = color;
+			this.color = color;
 		}
 	}
 }

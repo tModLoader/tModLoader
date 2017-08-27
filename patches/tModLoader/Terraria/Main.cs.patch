@@ -1370,7 +1370,7 @@
 -						Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float)num30, (float)num31), null, black, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 -					}
 +
-+					drawableLines[l].Color = new Microsoft.Xna.Framework.Color(num29, num29, num29, num29);
++					drawableLines[l].color = new Microsoft.Xna.Framework.Color(num29, num29, num29, num29);
 +
 +					if (ItemLoader.PreDrawTooltipLine(Main.HoverItem, drawableLines[l], ref yOffset) && globalCanDraw)
 +					{
@@ -1395,7 +1395,7 @@
 +								num31++;
 +							}
 +
-+							Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float) num30, (float) num31), null, m != 4 ? black : drawableLines[l].Color, drawableLines[l].rotation, drawableLines[l].origin, (drawableLines[l].baseScale.X + drawableLines[l].baseScale.Y) / 2, SpriteEffects.None, 0f);
++							Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float) num30, (float) num31), null, m != 4 ? black : drawableLines[l].color, drawableLines[l].rotation, drawableLines[l].origin, (drawableLines[l].baseScale.X + drawableLines[l].baseScale.Y) / 2, SpriteEffects.None, 0f);
 +						}
 +					}
 +
@@ -1403,7 +1403,7 @@
  				}
  				else
  				{
-@@ -15515,10 +_,22 @@
+@@ -15515,10 +_,27 @@
  					{
  						baseColor = color;
  					}
@@ -1413,13 +1413,18 @@
 -			}
 +					if (overrideColor[l].HasValue)
 +					{
-+						baseColor = overrideColor[l].Value * num20;
++						Microsoft.Xna.Framework.Color theColor = overrideColor[l].Value * num20;
++						drawableLines[l].overrideColor = theColor;
++						drawableLines[l].color = baseColor;
++						baseColor = theColor;
++					}
++					else
++					{
++						drawableLines[l].color = baseColor;
 +					}
 +
-+					drawableLines[l].Color = baseColor;
-+
 +					if (ItemLoader.PreDrawTooltipLine(Main.HoverItem, drawableLines[l], ref yOffset) && globalCanDraw)
-+						ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, drawableLines[l].font, drawableLines[l].text, new Vector2((float)drawableLines[l].X, (float)drawableLines[l].Y), drawableLines[l].Color, drawableLines[l].rotation, drawableLines[l].origin, drawableLines[l].baseScale, drawableLines[l].maxWidth, drawableLines[l].spread);
++						ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, drawableLines[l].font, drawableLines[l].text, new Vector2((float)drawableLines[l].X, (float)drawableLines[l].Y), drawableLines[l].color, drawableLines[l].rotation, drawableLines[l].origin, drawableLines[l].baseScale, drawableLines[l].maxWidth, drawableLines[l].spread);
 +
 +					ItemLoader.PostDrawTooltipLine(Main.HoverItem, drawableLines[l]);
 +				}
