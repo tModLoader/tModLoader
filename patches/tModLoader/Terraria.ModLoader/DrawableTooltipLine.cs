@@ -16,7 +16,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The text of this tooltip. 
 		/// </summary>
-		public new readonly string text = string.Empty;
+		public new readonly string text;
 		/// <summary>
 		/// The index of the tooltip in the array
 		/// </summary>
@@ -103,6 +103,7 @@ namespace Terraria.ModLoader
 			isModifierBad = parent.isModifierBad;
 			overrideColor = parent.overrideColor;
 			oneDropLogo = parent.oneDropLogo;
+			text = parent.text;
 
 			this.index = index;
 			OriginalX = x;
