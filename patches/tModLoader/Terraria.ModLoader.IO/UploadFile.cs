@@ -27,7 +27,6 @@ namespace Terraria.ModLoader.IO
 		public static byte[] UploadFiles(string address, IEnumerable<UploadFile> files, NameValueCollection values)
 		{
 			var request = WebRequest.Create(address);
-			request.Timeout=	System.Threading.Timeout.Infinite;
 			request.Method = "POST";
 			var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", NumberFormatInfo.InvariantInfo);
 			request.ContentType = "multipart/form-data; boundary=" + boundary;
