@@ -27,6 +27,7 @@ namespace Terraria.ModLoader.UI
 		private UIList modList;
 		private readonly List<UIModItem> items = new List<UIModItem>();
 		private bool updateNeeded;
+		public bool loading;
 		private UIInputTextField filterTextBox;
 		public UICycleImage SearchFilterToggle;
 		public ModsMenuSortMode sortMode = ModsMenuSortMode.RecentlyUpdated;
@@ -226,8 +227,11 @@ namespace Terraria.ModLoader.UI
 
 		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(12, -1, -1, 1);
-			Main.menuMode = Interface.modPacksMenuID;
+			if (!Interface.modsMenu.loading)
+			{
+				Main.PlaySound(12, -1, -1, 1);
+				Main.menuMode = Interface.modPacksMenuID;
+			}
 		}
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
@@ -314,6 +318,7 @@ namespace Terraria.ModLoader.UI
 			Main.clrInput();
 			modList.Clear();
 			items.Clear();
+			loading = true;
 			uIPanel.Append(uiLoader);
 			Populate();
 		}
@@ -334,6 +339,7 @@ namespace Terraria.ModLoader.UI
 					}
 					needToRemoveLoading = true;
 					updateNeeded = true;
+					loading = false;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
