@@ -1984,5 +1984,5 @@ Patching output file 120/123
 Patching output file 121/123
 Patching output file 122/123
 Patching output file 123/123
-lookup cache used 10041/131072 hits=95765 misses=10491
+lookup cache used 10049/131072 hits=95799 misses=10499
 finished...
