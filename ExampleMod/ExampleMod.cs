@@ -122,8 +122,6 @@ namespace ExampleMod
 
 		public override void Unload()
 		{
-			instance = null;
-
 			// All code below runs only if we're not loading on a server
 			if (!Main.dedServ)
 			{
@@ -132,7 +130,12 @@ namespace ExampleMod
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
 			}
+
+			// Unload static references
+			// You need to clear static references to assets, so basically Texture2d. In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
+			instance = null;
 			RandomBuffHotKey = null;
+			exampleEffect = null;
 		}
 
 		public override void PostSetupContent()
