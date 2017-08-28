@@ -187,7 +187,7 @@ namespace Terraria.ModLoader
 							{
 								if (mp3Path.StartsWith("Sounds/Music/"))
 								{
-									bool useCache = true; // TODO: Make this a setting.
+									bool useCache = ModLoader.musicStreamMode == 1;
 									if (useCache)
 									{
 										if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename))

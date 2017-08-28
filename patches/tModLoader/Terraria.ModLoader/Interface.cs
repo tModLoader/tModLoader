@@ -218,16 +218,17 @@ namespace Terraria.ModLoader
 			{
 				Main.MenuUI.SetState(modPacksMenu);
 				Main.menuMode = 888;
-			} 
-			else if (Main.menuMode == extractModID) {
+			}
+			else if (Main.menuMode == extractModID)
+			{
 				Main.MenuUI.SetState(extractMod);
 				Main.menuMode = 888;
-			} 
+			}
 			else if (Main.menuMode == tModLoaderSettingsID)
 			{
 				offY = 210;
 				spacing = 42;
-				numButtons = 5;
+				numButtons = 6;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++)
 				{
@@ -247,6 +248,14 @@ namespace Terraria.ModLoader
 				{
 					Main.PlaySound(SoundID.MenuTick);
 					ModNet.onlyDownloadSignedMods = !ModNet.onlyDownloadSignedMods;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = (ModLoader.musicStreamMode == 0 ? "Music Stream Mode: Convert On Demand" : "Music Stream Mode: Stream From Cache");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(SoundID.MenuTick);
+					ModLoader.musicStreamMode = (byte)((ModLoader.musicStreamMode + 1) % 2);
 				}
 
 				buttonIndex++;
@@ -294,7 +303,7 @@ namespace Terraria.ModLoader
 					line += (ModLoader.IsEnabled(mods[k]) ? "enabled" : "disabled") + ")";
 					Console.WriteLine(line);
 				}
-				if(mods.Length == 0)
+				if (mods.Length == 0)
 				{
 					Console.ForegroundColor = ConsoleColor.Yellow;
 					Console.WriteLine($"No mods were found in: \"{ModLoader.ModPath}\"\nIf you are running a dedicated server, you may wish to use the 'modpath' command line switch or server config setting to specify a custom mods directory.\n");

@@ -3587,7 +3587,7 @@
  			Main.tileColor.G = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.G * 7) / 10);
  			Main.tileColor.B = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.B * 7) / 10);
 +
-+			ModHooks.ModifySunLight(ref Main.tileColor,ref Main.bgColor);
++			ModHooks.ModifySunLight(ref Main.tileColor, ref Main.bgColor);
 +
  			Main.backColor = Main.bgColor;
  			Main.trueBackColor = Main.backColor;
@@ -3886,7 +3886,7 @@
  			Main.tileColor.B = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.B * 7) / 10);
  			Main.tileColor = SkyManager.Instance.ProcessTileColor(Main.tileColor);
 +
-+			ModHooks.ModifySunLight(ref Main.tileColor,ref Main.bgColor);
++			ModHooks.ModifySunLight(ref Main.tileColor, ref Main.bgColor);
 +
  			float num55 = (float)(Main.maxTilesX / 4200);
  			num55 *= num55;

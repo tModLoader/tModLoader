@@ -70,6 +70,7 @@ namespace Terraria.ModLoader
 		internal static string modBrowserPassphrase = "";
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
+		internal static byte musicStreamMode;
 		internal static string commandLineModPack = "";
 		private static string steamID64 = "";
 		internal static string SteamID64
@@ -997,6 +998,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", ModLoader.dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", ModLoader.dontRemindModBrowserDownloadEnable);
+			Main.Configuration.Put("MusicStreamMode", ModLoader.musicStreamMode);
 		}
 
 		internal static void LoadConfiguration()
@@ -1007,6 +1009,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get<bool>("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 			Main.Configuration.Get<bool>("DontRemindModBrowserUpdateReload", ref ModLoader.dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get<bool>("DontRemindModBrowserDownloadEnable", ref ModLoader.dontRemindModBrowserDownloadEnable);
+			Main.Configuration.Get<byte>("MusicStreamMode", ref ModLoader.musicStreamMode);
 		}
 
 		/// <summary>

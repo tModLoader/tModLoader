@@ -79,7 +79,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="tileColor">Tile lighting color</param>
 		/// <param name="backgroundColor">Background lighting color</param>
-		public virtual void ModifySunLightColor(ref Color tileColor,ref Color backgroundColor)
+		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
 		{
 		}
 
@@ -155,18 +155,18 @@ namespace Terraria.ModLoader
 			}
 			return Transform;
 		}
-		
-		internal static void ModifySunLight(ref Color tileColor,ref Color backgroundColor)
+
+		internal static void ModifySunLight(ref Color tileColor, ref Color backgroundColor)
 		{
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
-				mod.ModifySunLightColor(ref tileColor,ref backgroundColor);
+				mod.ModifySunLightColor(ref tileColor, ref backgroundColor);
 			}
 		}
 
-		internal static void ModifyLightingBrightness(ref float negLight,ref float negLight2)
+		internal static void ModifyLightingBrightness(ref float negLight, ref float negLight2)
 		{
-			float scale=	1f;
+			float scale = 1f;
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.ModifyLightingBrightness(ref scale);
@@ -178,7 +178,7 @@ namespace Terraria.ModLoader
 			}
 			else
 			{
-				negLight -= (scale - 1f) / 2.307692307692308f; 
+				negLight -= (scale - 1f) / 2.307692307692308f;
 				negLight2 -= (scale - 1f) / 0.75f;
 			}
 			negLight = Math.Max(negLight, 0.001f);
