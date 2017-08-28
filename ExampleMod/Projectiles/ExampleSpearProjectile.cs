@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles
@@ -21,14 +16,15 @@ namespace ExampleMod.Projectiles
 			projectile.width = 18;
 			projectile.height = 18;
 			projectile.aiStyle = 19;
-			projectile.friendly = true;
 			projectile.penetrate = -1;
-			projectile.tileCollide = false;
 			projectile.scale = 1.3f;
+			projectile.alpha = 0;
+
 			projectile.hide = true;
 			projectile.ownerHitCheck = true;
 			projectile.melee = true;
-			projectile.alpha = 0;
+			projectile.tileCollide = false;
+			projectile.friendly = true;
 		}
 
 		// In here the AI uses this example, to make the code more organized and readable
@@ -38,8 +34,8 @@ namespace ExampleMod.Projectiles
 			get { return projectile.ai[0]; }
 			set { projectile.ai[0] = value; }
 		}
-		// It appears that for this AI, only the ai0 field is used!
 
+		// It appears that for this AI, only the ai0 field is used!
 		public override void AI()
 		{
 			// Since we access the owner player instance so much, it's useful to create a helper local variable for this
@@ -78,7 +74,7 @@ namespace ExampleMod.Projectiles
 			}
 			// Apply proper rotation, with an offset of 135 degrees due to the sprite's rotation, notice the usage of MathHelper, use this class!
 			// MathHelper.ToRadians(xx degrees here)
-			projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + MathHelper.ToRadians(135f);
+			projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(135f);
 			// Offset by 90 degrees here
 			if (projectile.spriteDirection == -1)
 			{
@@ -88,16 +84,17 @@ namespace ExampleMod.Projectiles
 			// These dusts are added later, for the 'ExampleMod' effect
 			if (Main.rand.Next(3) == 0)
 			{
-				int dustIndex = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, mod.DustType<Dusts.Sparkle>(), projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 200, default(Color), 1.2f);
-				Main.dust[dustIndex].velocity += projectile.velocity * 0.3f;
-				Main.dust[dustIndex].velocity *= 0.2f;
+				Dust dust = Dust.NewDustDirect(projectile.position, projectile.height, projectile.width, mod.DustType<Dusts.Sparkle>(),
+					projectile.velocity.X * .2f, projectile.velocity.Y * .2f, 200, Scale: 1.2f);
+				dust.velocity += projectile.velocity * 0.3f;
+				dust.velocity *= 0.2f;
 			}
 			if (Main.rand.Next(4) == 0)
 			{
-				int dustIndex = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, mod.DustType<Dusts.Smoke>(), 0f, 0f, 254, default(Color), 0.3f);
-				Main.dust[dustIndex].velocity += projectile.velocity * 0.5f;
-				Main.dust[dustIndex].velocity *= 0.5f;
-				return;
+				Dust dust = Dust.NewDustDirect(projectile.position, projectile.height, projectile.width, mod.DustType<Dusts.Sparkle>(),
+					0, 0, 254, Scale: 0.3f);
+				dust.velocity += projectile.velocity * 0.5f;
+				dust.velocity *= 0.5f;
 			}
 		}
 	}
