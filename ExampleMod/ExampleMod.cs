@@ -132,10 +132,11 @@ namespace ExampleMod
 			}
 
 			// Unload static references
-			// You need to clear static references to assets, so basically Texture2d. In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
+			// You need to clear static references to assets (Texture2D, SoundEffects, Effects). 
+			exampleEffect = null;
+			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
 			instance = null;
 			RandomBuffHotKey = null;
-			exampleEffect = null;
 		}
 
 		public override void PostSetupContent()
@@ -162,8 +163,16 @@ namespace ExampleMod
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", group);
 		}
 
+		// Learn how to do Recipes: https://github.com/blushiemagic/tModLoader/wiki/Basic-Recipes 
 		public override void AddRecipes()
 		{
+			// Here is an example of a recipe.
+			ModRecipe recipe = new ModRecipe(this);
+			recipe.AddIngredient(null, "ExampleItem");
+			recipe.SetResult(ItemID.Wood, 999);
+			recipe.AddRecipe();
+
+			// To make ExampleMod more organized, the rest of the recipes are added elsewhere, see the method calls below.
 			// See RecipeHelper.cs
 			RecipeHelper.AddExampleRecipes(this);
 			RecipeHelper.ExampleRecipeEditing(this);

@@ -27,7 +27,6 @@ namespace ExampleMod
 			// Check the method signature of MakeSimpleRecipes for the arguments, this is a method signature:
 			// private static void MakeSimpleRecipe(Mod mod, string modIngredient, short resultType, int ingredientStack = 1, int resultStack = 1, string reqTile = null) 
 
-			MakeSimpleRecipe(mod, "ExampleItem", ItemID.Wood, 999);
 			MakeSimpleRecipe(mod, "ExampleItem", ItemID.Silk, 999);
 			MakeSimpleRecipe(mod, "ExampleItem", ItemID.IronOre, 999);
 			MakeSimpleRecipe(mod, "ExampleItem", ItemID.GravitationPotion, 20);

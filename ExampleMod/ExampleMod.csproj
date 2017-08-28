@@ -118,6 +118,7 @@
     <Compile Include="Items\CarKey.cs" />
     <Compile Include="Items\CopperShortsword.cs" />
     <Compile Include="Items\EquipMaterial.cs" />
+    <Compile Include="Items\ExampleDrawTooltips.cs" />
     <Compile Include="Items\ExampleDye.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
