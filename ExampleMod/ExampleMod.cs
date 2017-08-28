@@ -127,6 +127,7 @@ namespace ExampleMod
 			// All code below runs only if we're not loading on a server
 			if (!Main.dedServ)
 			{
+				// todo: fix this
 				//Main.music[MusicID.Dungeon].ModMusic = null;
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
@@ -146,12 +147,14 @@ namespace ExampleMod
 
 		public override void AddRecipeGroups()
 		{
+			// Creates a new recipe group
 			RecipeGroup group = new RecipeGroup(() => Lang.misc[37] + " " + Lang.GetItemNameValue(ItemType("ExampleItem")), new int[]
 			{
 				ItemType("ExampleItem"),
 				ItemType("EquipMaterial"),
 				ItemType("BossItem")
 			});
+			// Registers the new recipe group with the specified name
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", group);
 		}
 
