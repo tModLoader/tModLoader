@@ -132,6 +132,7 @@ namespace ExampleMod
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
 			}
+			RandomBuffHotKey = null;
 		}
 
 		public override void PostSetupContent()
