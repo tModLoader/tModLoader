@@ -3582,6 +3582,16 @@
  				Vector2 bonus = Main.DrawThickCursor(false);
  				Main.DrawCursor(bonus, false);
  			}
+@@ -50942,6 +_,9 @@
+ 			Main.tileColor.R = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.R * 7) / 10);
+ 			Main.tileColor.G = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.G * 7) / 10);
+ 			Main.tileColor.B = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.B * 7) / 10);
++
++			ModHooks.ModifySunLight(ref Main.tileColor,ref Main.bgColor);
++
+ 			Main.backColor = Main.bgColor;
+ 			Main.trueBackColor = Main.backColor;
+ 			Lighting.Initialize(true);
 @@ -51353,6 +_,7 @@
  				{
  					Main.waterStyle = 0;
@@ -3871,6 +3881,16 @@
  			}
  			if (!Main.gameMenu && Main.netMode != 2)
  			{
+@@ -57265,6 +_,9 @@
+ 			Main.tileColor.G = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.G * 7) / 10);
+ 			Main.tileColor.B = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.B * 7) / 10);
+ 			Main.tileColor = SkyManager.Instance.ProcessTileColor(Main.tileColor);
++
++			ModHooks.ModifySunLight(ref Main.tileColor,ref Main.bgColor);
++
+ 			float num55 = (float)(Main.maxTilesX / 4200);
+ 			num55 *= num55;
+ 			Main.atmo = (float)((double)((Main.screenPosition.Y + (float)(Main.screenHeight / 2)) / 16f - (65f + 10f * num55)) / (Main.worldSurface / 5.0));
 @@ -57307,6 +_,7 @@
  			{
  				this.Rasterizer = RasterizerState.CullClockwise;
