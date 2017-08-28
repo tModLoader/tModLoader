@@ -464,6 +464,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1a9eafff5f798dab56f8c2cc56baf78"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ad1a9eafff5f798dab56f8c2cc56baf78">ModifyInterfaceLayers</a> (List&lt; GameInterfaceLayer &gt; layers)</td></tr>
 <tr class="memdesc:ad1a9eafff5f798dab56f8c2cc56baf78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the elements of the in-game interface that get drawn. MethodSequenceListItem can be found in the Terraria.DataStructures namespace. Check <a href="https://github.com/blushiemagic/tModLoader/wiki/Vanilla-Interface-layers-values">https://github.com/blushiemagic/tModLoader/wiki/Vanilla-Interface-layers-values</a> for vanilla interface layer names  <a href="#ad1a9eafff5f798dab56f8c2cc56baf78">More...</a><br /></td></tr>
 <tr class="separator:ad1a9eafff5f798dab56f8c2cc56baf78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f5438f20657f9c6ef172523b7e33187"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a7f5438f20657f9c6ef172523b7e33187">ModifyLightingBrightness</a> (ref float scale)</td></tr>
+<tr class="memdesc:a7f5438f20657f9c6ef172523b7e33187"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03  <a href="#a7f5438f20657f9c6ef172523b7e33187">More...</a><br /></td></tr>
+<tr class="separator:a7f5438f20657f9c6ef172523b7e33187"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08474926973ce4a555c111fd762d772f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a08474926973ce4a555c111fd762d772f">ModifySunLightColor</a> (ref Color tileColor, ref Color backgroundColor)</td></tr>
+<tr class="memdesc:a08474926973ce4a555c111fd762d772f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify color of light the sun emits.  <a href="#a08474926973ce4a555c111fd762d772f">More...</a><br /></td></tr>
+<tr class="separator:a08474926973ce4a555c111fd762d772f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac12293f15f8a00257b20a5affc25fa2e"><td class="memItemLeft" align="right" valign="top">virtual Matrix&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac12293f15f8a00257b20a5affc25fa2e">ModifyTransformMatrix</a> (Matrix Transform)</td></tr>
 <tr class="memdesc:ac12293f15f8a00257b20a5affc25fa2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)  <a href="#ac12293f15f8a00257b20a5affc25fa2e">More...</a><br /></td></tr>
 <tr class="separator:ac12293f15f8a00257b20a5affc25fa2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5929,6 +5935,85 @@ Private Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="a7f5438f20657f9c6ef172523b7e33187"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.Mod.ModifyLightingBrightness </td>
+          <td>(</td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>scale</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scale</td><td>Brightness scale</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00090">90</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a08474926973ce4a555c111fd762d772f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.Mod.ModifySunLightColor </td>
+          <td>(</td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>tileColor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>backgroundColor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to modify color of light the sun emits. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tileColor</td><td>Tile lighting color</td></tr>
+    <tr><td class="paramname">backgroundColor</td><td>Background lighting color</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00082">82</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="ac12293f15f8a00257b20a5affc25fa2e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -6177,8 +6262,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00091">91</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00108">108</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        {</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9cab728dabe85fe39eccff20b79d86e5"></a>
@@ -6212,8 +6297,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00083">83</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        {</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00100">100</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a026f70f45d29300a148e8257d324ba12"></a>
@@ -6280,8 +6365,8 @@ Private Member Functions</h2></td></tr>
 
 <p>Called after the input keys are polled. Allows for modifying things like scroll wheel if your custom drawing should capture that. </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00098">98</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        {</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00115">115</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        {</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3dc3da5f2b4d76789764639cf5e91c6d"></a>
@@ -6307,8 +6392,8 @@ Private Member Functions</h2></td></tr>
 
 <p>Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player. </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00105">105</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        {</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00122">122</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        {</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af4f124bac1905b018a8f24ab866c0d5f"></a>
