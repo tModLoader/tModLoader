@@ -248,6 +248,7 @@ namespace Terraria.ModLoader
 			mod.modFile.Save();
 			EnableMod(mod.modFile);
 			ActivateExceptionReporting();
+			ModLoader.isModder = true;
 			return true;
 		}
 

@@ -206,7 +206,7 @@
     <Compile Include="Projectiles\ExampleLaser.cs" />
     <Compile Include="Projectiles\ExampleSolution.cs" />
     <Compile Include="Projectiles\ExampleSpearProjectile.cs" />
-    <Compile Include="Projectiles\ExampleYoyo.cs" />
+    <Compile Include="Projectiles\ExampleYoyoProjectile.cs" />
     <Compile Include="Projectiles\HealProj.cs" />
     <Compile Include="Projectiles\Minions\HoverShooter.cs" />
     <Compile Include="Projectiles\Minions\Minion.cs" />

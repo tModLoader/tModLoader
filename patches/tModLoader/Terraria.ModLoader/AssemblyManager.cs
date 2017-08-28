@@ -201,6 +201,7 @@ namespace Terraria.ModLoader
 			RecalculateReferences();
 
 			if (Debugger.IsAttached) {
+				ModLoader.isModder = true;
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
 			}

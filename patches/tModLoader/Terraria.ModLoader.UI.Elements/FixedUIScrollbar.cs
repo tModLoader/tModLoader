@@ -6,7 +6,7 @@ namespace Terraria.ModLoader.UI.Elements
 {
 	public class FixedUIScrollbar : UIScrollbar
 	{
-		UserInterface userInterface;
+		internal UserInterface userInterface;
 
 		public FixedUIScrollbar(UserInterface userInterface)
 		{
