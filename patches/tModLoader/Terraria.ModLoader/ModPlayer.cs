@@ -474,6 +474,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
+		public virtual void GetWeaponCrit(Item item, ref int crit)
+		{
+		}
+
+		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
 		/// </summary>
 		/// <param name="weapon"></param>

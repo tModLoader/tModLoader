@@ -35,7 +35,7 @@ namespace Terraria.ModLoader.UI
 			properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : mod.name;
 			text += " v" + mod.version;
-			if(mod.tModLoaderVersion < new Version(0, 10))
+			if (mod.tModLoaderVersion < new Version(0, 10))
 			{
 				text += " [c/FF0000:(Old mod, enable at own risk)]";
 			}
@@ -82,9 +82,27 @@ namespace Terraria.ModLoader.UI
 			if (properties.modReferences.Length > 0 && !enabled)
 			{
 				string refs = String.Join(", ", properties.modReferences.Select(x => x.mod));
-				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs);
+				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs + "\n (click to enable)");
 				modReferenceIcon.Left.Set(button2.Left.Pixels - 10f, 0f);
 				modReferenceIcon.Top.Set(50f, 0f);
+				modReferenceIcon.OnClick += (a, b) =>
+				{
+					var referencedMods = properties.modReferences.Select(x => x.mod);
+					var foundMods = ModLoader.FindMods();
+					var referencedtModFiles = foundMods.Where(x => referencedMods.Contains(x.name));
+					foreach (var referencedMod in referencedtModFiles)
+					{
+						ModLoader.EnableMod(referencedMod);
+					}
+					Main.menuMode = Interface.modsMenuID;
+					var missingMods = referencedMods.Where(modstring => foundMods.All(modfile => modfile.name != modstring));
+					if (missingMods.Count() > 0)
+					{
+						Interface.infoMessage.SetMessage("The following mods were not found: " + String.Join(",", missingMods));
+						Interface.infoMessage.SetGotoMenu(Interface.modsMenuID);
+						Main.menuMode = Interface.infoMessageID;
+					}
+				};
 				base.Append(modReferenceIcon);
 			}
 			if (mod.ValidModBrowserSignature)

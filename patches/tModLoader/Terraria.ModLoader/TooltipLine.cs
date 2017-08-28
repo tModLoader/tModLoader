@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using ReLogic.Graphics;
 
 namespace Terraria.ModLoader
 {
@@ -97,6 +98,13 @@ namespace Terraria.ModLoader
 		public TooltipLine(Mod mod, string name, string text)
 		{
 			this.mod = mod.Name;
+			this.Name = name;
+			this.text = text;
+		}
+
+		internal TooltipLine(string mod, string name, string text)
+		{
+			this.mod = mod;
 			this.Name = name;
 			this.text = text;
 		}

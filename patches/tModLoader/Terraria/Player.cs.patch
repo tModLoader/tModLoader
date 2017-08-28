@@ -4302,7 +4302,7 @@
  						List<ushort> list2 = null;
  						int type5 = item.type;
  						if (type5 == 213)
-@@ -36167,7 +_,23 @@
+@@ -36167,25 +_,53 @@
  								{
  									if (!Main.npc[num323].dontTakeDamage)
  									{
@@ -4327,6 +4327,40 @@
  										{
  											Rectangle value19 = new Rectangle((int)Main.npc[num323].position.X, (int)Main.npc[num323].position.Y, Main.npc[num323].width, Main.npc[num323].height);
  											if (r2.Intersects(value19) && (Main.npc[num323].noTileCollide || this.CanHit(Main.npc[num323])))
+ 											{
+ 												bool flag27 = false;
+-												if (item.melee && Main.rand.Next(1, 101) <= this.meleeCrit)
++												int critChance = this.meleeCrit;
++												ItemLoader.GetWeaponCrit(item, this, ref critChance);
++												PlayerHooks.GetWeaponCrit(this, item, ref critChance);
++												if (item.melee && Main.rand.Next(1, 101) <= critChance)
+ 												{
+ 													flag27 = true;
+ 												}
+-												if (item.ranged && Main.rand.Next(1, 101) <= this.rangedCrit)
++												critChance = this.rangedCrit;
++												ItemLoader.GetWeaponCrit(item, this, ref critChance);
++												PlayerHooks.GetWeaponCrit(this, item, ref critChance);
++												if (item.ranged && Main.rand.Next(1, 101) <= critChance)
+ 												{
+ 													flag27 = true;
+ 												}
+-												if (item.magic && Main.rand.Next(1, 101) <= this.magicCrit)
++												critChance = this.magicCrit;
++												ItemLoader.GetWeaponCrit(item, this, ref critChance);
++												PlayerHooks.GetWeaponCrit(this, item, ref critChance);
++												if (item.magic && Main.rand.Next(1, 101) <= critChance)
+ 												{
+ 													flag27 = true;
+ 												}
+-												if (item.thrown && Main.rand.Next(1, 101) <= this.thrownCrit)
++												critChance = this.thrownCrit;
++												ItemLoader.GetWeaponCrit(item, this, ref critChance);
++												PlayerHooks.GetWeaponCrit(this, item, ref critChance);
++												if (item.thrown && Main.rand.Next(1, 101) <= critChance)
+ 												{
+ 													flag27 = true;
+ 												}
 @@ -36208,12 +_,16 @@
  													this.ClearBuff(198);
  												}
@@ -4354,16 +4388,17 @@
  												int num332 = Item.NPCtoBanner(Main.npc[num323].BannerID());
  												if (num332 >= 0)
  												{
-@@ -36327,7 +_,7 @@
+@@ -36327,14 +_,17 @@
  									if (flag29 && (Main.player[i].team == 0 || Main.player[i].team != Main.player[num333].team))
  									{
  										Rectangle value23 = new Rectangle((int)Main.player[num333].position.X, (int)Main.player[num333].position.Y, Main.player[num333].width, Main.player[num333].height);
 -										if (r2.Intersects(value23) && this.CanHit(Main.player[num333]))
 +										if (ItemLoader.CanHitPvp(item, this, Main.player[num333]) && PlayerHooks.CanHitPvp(this, item, Main.player[num333]) && r2.Intersects(value23) && this.CanHit(Main.player[num333]))
  										{
++											// todo: pvp crit hook?
  											bool flag30 = false;
  											if (Main.rand.Next(1, 101) <= 10)
-@@ -36335,6 +_,8 @@
+ 											{
  												flag30 = true;
  											}
  											int num334 = Main.DamageVar((float)num313);

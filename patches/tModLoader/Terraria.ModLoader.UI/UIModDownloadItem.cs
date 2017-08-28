@@ -295,7 +295,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void DownloadMod(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(12, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuTick);
 			try
 			{
 				using (WebClient client = new WebClient())
