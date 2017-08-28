@@ -98,7 +98,7 @@ namespace Terraria.ModLoader
 			if (color == default(Color))
 				color = Color.White;
 			foreach (var line in text.Split('\n'))
-				NetMessage.SendChatMessageToClient(NetworkText.FromLiteral(line), color, 255);
+				NetMessage.SendChatMessageToClient(NetworkText.FromLiteral(line), color, Player.whoAmI);
 		}
 	}
 
