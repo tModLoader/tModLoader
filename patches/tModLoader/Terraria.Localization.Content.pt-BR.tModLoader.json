@@ -1,0 +1,53 @@
+{
+	"tModLoader": {
+		// Main Menu
+		"MenuModBrowser": "Navegador de Mods",
+		"MenuMods": "Mods",
+		"MenuModSources": "Fontes de Mods",
+
+		// Mods Menu
+		"ModsModsList": "Lista de Mods",
+		"ModsEnableAll": "Ativar Todos",
+		"ModsDisableAll": "Desativar Todos",
+		"ModsReloadMods": "Recarregar Mods",
+		"ModsOpenModsFolder": "Abrir Pasta de Mods",
+		"ModsModPacks": "Pacotes de Mods",
+		"ModsDisable": "Desativar",
+		"ModsEnable": "Ativar", 
+		"ModsMoreInfo": "Mais informações",
+		"ModsOriginatedFromModBrowser": "Esse mod se originou do Navegador de Mods",
+		"ModsTypeToSearch": "Digite p/ pesquisar",
+		"ModsSearchByModName": "Pesquisar por nome de Mods",
+		"ModsSearchByAuthor": "Pesquisar por nome de Autores",
+		"ModsSortRecently": "Ordenar por recentemente mudado",
+		"ModsSortNamesAlph": "Ordenar nomes de mods alfabeticamente",
+		"ModsSortNamesReverseAlph": "Ordenar nomes de mods reverso-alfabeticamente",
+		"ModsShowAllMods": "Mostrar todos os mods",
+		"ModsShowEnabledMods": "Mostrar apenas mods ativados",
+		"ModsShowDisabledMods": "Mostrar apenas mods desativados",	
+
+		// Mod Browser
+		"MBDownload": "Baixar",
+		"MBDowngrade": "Desatualizar",
+		"MBUpdate": "Atualizar",
+		"MBReloadBrowser": "Recarregar navegador",
+		"MBSortByRecentlyUpdated": "Ordenar por recentemente atualizados",
+		"MBSortByPopularity": "Ordenar por popularidade",
+		"MBSortDownloadDesc": "Ordenar por núm. de downloads (decrescente)",
+		"MBSortDownloadAsc": "Ordenar por núm. de downloads (crescente)",
+		"MBShowAllMods": "Mostrar todos os mods",
+		"MBShowNotInstalledUpdates": "Mostrar mods não instalados e atualizações",
+		"MBShowUpdates": "Mostrar apenas atualizações",
+
+		// TML Options
+		"DownloadFromServersYes": "Baixar Mods de Servidores: Ligado",
+		"DownloadFromServersNo": "Baixar Mods de Servidores: Desligado",
+		"DownloadSignedYes": "Baixar Somente Mods Assinados de Servidores: Ligado",
+		"DownloadSignedNo": "Baixar Somente Mods Assinados de Servidores: Desligado",
+		"MusicStreamModeConvert": "Modo de Transmissão de Música: Converter em Demanda",
+		"MusicStreamModeStream": "Modo de Transmissão de Música: Transmitir do Cache",
+		"ExperimentalFeaturesYes": "Funções Experimentais: Ligado",
+		"ExperimentalFeaturesNo": "Funções Experimentais: Desligado",
+		"ClearMBCredentials": "Limpar credenciais do Navegador de Mods"
+	}
+}
