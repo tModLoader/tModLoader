@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 
@@ -52,7 +53,7 @@ namespace Terraria.ModLoader
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 		{
-			buttonNames[buttonIndex] = "Mods";
+			buttonNames[buttonIndex] = Language.GetText("tModLoader.MenuMods").Value;
 			if (selectedMenu == buttonIndex)
 			{
 				Main.PlaySound(10, -1, -1, 1);
@@ -60,7 +61,7 @@ namespace Terraria.ModLoader
 			}
 			buttonIndex++;
 			numButtons++;
-			buttonNames[buttonIndex] = "Mod Sources";
+			buttonNames[buttonIndex] = Language.GetText("tModLoader.MenuModSources").Value;
 			if (selectedMenu == buttonIndex)
 			{
 				Main.PlaySound(10, -1, -1, 1);
@@ -68,7 +69,7 @@ namespace Terraria.ModLoader
 			}
 			buttonIndex++;
 			numButtons++;
-			buttonNames[buttonIndex] = "Mod Browser";
+			buttonNames[buttonIndex] = Language.GetText("tModLoader.MenuModBrowser").Value;
 			if (selectedMenu == buttonIndex)
 			{
 				Main.PlaySound(10, -1, -1, 1);
