@@ -1,7 +1,50 @@
 ﻿{
 	"tModLoader": {
-		"MenuModBrowser": "Mod Browser",
-		"MenuMods": "Mods",
-		"MenuModSources": "Mod Sources"
+		//Menu
+		"MenuModBrowser": "Браузер модов",
+		"MenuMods": "Моды",
+		"MenuModSources": "Исходники модов",
+		
+		//Mods
+		"ModsEnableAll": "Включить все",
+		"ModsDisableAll": "Отключить все",
+		"ModsReloadMods": "Перезагрузить моды",
+		"ModsBack": "Назад",
+		"ModsOpenModsFolder": "Открыть папку модов",
+		"ModsModPacks": "Сборки модов",
+                "ModsDisable": "Выключить",
+                "ModsEnable": "Включить", 
+		"ModsMoreInfo": "Подробнее", //Can be used for Mod Browser Translation
+		"ModsOriginatedFromModBrowser": "Этот мод установлен из Браузера модов",
+		"ModsTypeToSearch": "Поиск", //Can be used for Mod Browser Translation
+		"ModsSearchByModName": "Поиск по названию мода", //Can be used for Mod Browser Translation
+		"ModsSearchByAuthor": "Поиск по автору мода", //Can be used for Mod Browser Translation
+		"ModsSortRecently": "Упорядочить по последним обновлениям",
+		"ModsSortNamesAlph": "Упорядочить по алфавиту", //Can be used for Mod Browser Translation
+		"ModsSortNamesReverseAlph": "Упорядочить обратно алфавиту", //Can be used for Mod Browser Translation
+		"ModsShowAllMods": "Показать все моды",
+		"ModsShowEnabledMods": "Показать включённые моды",
+		"ModsShowDisabledMods": "Показать отключённые моды",
+		
+		//Mod Browser		
+		"MBDownload": "Скачать",
+		"MBReloadBrowser": "Перезагрузить список модов",
+		"MBBack": "Назад",
+		"MBSortByRecentlyUpdated": "Сортировка по недавно обновленным",
+		"MBSortByPopularity": "Упорядочить по популярности",
+		"MBSortDownloadDesc": "Упорядочить по убыванию скачиваний",
+		"MBSortDownloadAsc": "Упорядочить по возрастанию скачиваний",
+		"MBShowAllMods": "Показать все моды",
+		"MBShowNotInstalledUpdates": "Показать неустановленные или необновлённые моды",
+		"MBShowUpdates": "Показать необновлённые моды",
+		
+		//TML Options
+		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
+		"DownloadFromServersNo": "Скачивать моды с серверов: Нет",
+		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
+		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
+		"ClearMBCredentials": "Очистить данные Браузера модов",
+		"DownloadSignedYes": "Скачивать только проверенные моды с серверов: Да",
+		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет"
 	}
 }
