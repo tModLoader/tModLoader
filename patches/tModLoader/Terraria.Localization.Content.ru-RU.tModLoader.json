@@ -1,7 +1,49 @@
 ﻿{
 	"tModLoader": {
-		"MenuModBrowser": "Mod Browser in Russian",
-		"MenuMods": "Mods in Russian",
-		"MenuModSources": "Mod Sources in Russian"
+		// Main Menu
+		"MenuModBrowser": "Браузер модов",
+		"MenuMods": "Моды",
+		"MenuModSources": "Исходники модов",
+		
+		// Mods Menu
+		"ModsModsList": "Mods List",
+		"ModsEnableAll": "Включить все",
+		"ModsDisableAll": "Отключить все",
+		"ModsReloadMods": "Перезагрузить моды",
+		"ModsOpenModsFolder": "Открыть папку модов",
+		"ModsModPacks": "Сборки модов",
+        "ModsDisable": "Выключить",
+        "ModsEnable": "Включить", 
+		"ModsMoreInfo": "Подробнее",
+		"ModsOriginatedFromModBrowser": "Этот мод установлен из Браузера модов",
+		"ModsTypeToSearch": "Поиск",
+		"ModsSearchByModName": "Поиск по названию мода",
+		"ModsSearchByAuthor": "Поиск по автору мода",
+		"ModsSortRecently": "Упорядочить по последнему обновлению",
+		"ModsSortNamesAlph": "Упорядочить по алфавиту",
+		"ModsSortNamesReverseAlph": "Упорядочить обратно алфавиту",
+		"ModsShowAllMods": "Показать все моды",
+		"ModsShowEnabledMods": "Показать включённые моды",
+		"ModsShowDisabledMods": "Показать отключённые моды",
+		
+		//Mod Browser		
+		"MBDownload": "Скачать",
+		"MBReloadBrowser": "Перезагрузить список модов",
+		"MBSortByRecentlyUpdated": "Упорядочить по последнему обновлению",
+		"MBSortByPopularity": "Упорядочить по популярности",
+		"MBSortDownloadDesc": "Упорядочить по убыванию скачиваний",
+		"MBSortDownloadAsc": "Упорядочить по возрастанию скачиваний",
+		"MBShowAllMods": "Показать все моды",
+		"MBShowNotInstalledUpdates": "Показать неустановленные или необновлённые моды",
+		"MBShowUpdates": "Показать необновлённые моды",
+		
+		//TML Options
+		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
+		"DownloadFromServersNo": "Скачивать моды с серверов: Нет",
+		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
+		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
+		"ClearMBCredentials": "Очистить данные Браузера модов",
+		"DownloadSignedYes": "Скачивать только проверенные моды с серверов: Да",
+		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет"
 	}
 }

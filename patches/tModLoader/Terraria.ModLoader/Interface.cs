@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 		{
-			buttonNames[buttonIndex] = Language.GetText("tModLoader.MenuMods").Value;
+			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuMods");
 			if (selectedMenu == buttonIndex)
 			{
 				Main.PlaySound(10, -1, -1, 1);
@@ -61,7 +61,7 @@ namespace Terraria.ModLoader
 			}
 			buttonIndex++;
 			numButtons++;
-			buttonNames[buttonIndex] = Language.GetText("tModLoader.MenuModSources").Value;
+			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
 			if (selectedMenu == buttonIndex)
 			{
 				Main.PlaySound(10, -1, -1, 1);
@@ -69,7 +69,7 @@ namespace Terraria.ModLoader
 			}
 			buttonIndex++;
 			numButtons++;
-			buttonNames[buttonIndex] = Language.GetText("tModLoader.MenuModBrowser").Value;
+			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
 			if (selectedMenu == buttonIndex)
 			{
 				Main.PlaySound(10, -1, -1, 1);
@@ -236,7 +236,7 @@ namespace Terraria.ModLoader
 					buttonScales[i] = 0.75f;
 				}
 				int buttonIndex = 0;
-				buttonNames[buttonIndex] = (ModNet.downloadModsFromServers ? "Download Mods From Servers: On" : "Download Mods From Servers: Off");
+				buttonNames[buttonIndex] = (ModNet.downloadModsFromServers ? Language.GetTextValue("tModLoader.DownloadFromServersYes") : Language.GetTextValue("tModLoader.DownloadFromServersNo"));
 				if (selectedMenu == buttonIndex)
 				{
 					Main.PlaySound(SoundID.MenuTick);
@@ -244,7 +244,7 @@ namespace Terraria.ModLoader
 				}
 
 				buttonIndex++;
-				buttonNames[buttonIndex] = (ModNet.onlyDownloadSignedMods ? "Only Download Signed Mods From Servers: On" : "Only Download Signed Mods From Servers: Off");
+				buttonNames[buttonIndex] = (ModNet.onlyDownloadSignedMods ? Language.GetTextValue("tModLoader.DownloadSignedYes") : Language.GetTextValue("tModLoader.DownloadSignedNo"));
 				if (selectedMenu == buttonIndex)
 				{
 					Main.PlaySound(SoundID.MenuTick);
@@ -252,7 +252,7 @@ namespace Terraria.ModLoader
 				}
 
 				buttonIndex++;
-				buttonNames[buttonIndex] = (ModLoader.musicStreamMode == 0 ? "Music Stream Mode: Convert On Demand" : "Music Stream Mode: Stream From Cache");
+				buttonNames[buttonIndex] = (ModLoader.musicStreamMode == 0 ? Language.GetTextValue("tModLoader.MusicStreamModeConvert") : Language.GetTextValue("tModLoader.MusicStreamModeStream"));
 				if (selectedMenu == buttonIndex)
 				{
 					Main.PlaySound(SoundID.MenuTick);
@@ -260,7 +260,7 @@ namespace Terraria.ModLoader
 				}
 
 				buttonIndex++;
-				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? "Experimental Features: On" : "Experimental Features: Off");
+				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));
 				if (selectedMenu == buttonIndex)
 				{
 					Main.PlaySound(SoundID.MenuTick);
@@ -268,7 +268,7 @@ namespace Terraria.ModLoader
 				}
 
 				buttonIndex++;
-				buttonNames[buttonIndex] = "Clear Mod Browser Credentials";
+				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.ClearMBCredentials");
 				if (selectedMenu == buttonIndex)
 				{
 					Main.PlaySound(SoundID.MenuTick);

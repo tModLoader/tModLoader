@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.UI.Gamepad;
 using Newtonsoft.Json.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -114,7 +115,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Append(uIScrollbar);
 
 			modList.SetScrollbar(uIScrollbar);
-			uIHeaderTextPanel = new UITextPanel<string>("Mod Browser", 0.8f, true);
+			uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModBrowser"), 0.8f, true);
 			uIHeaderTextPanel.HAlign = 0.5f;
 			uIHeaderTextPanel.Top.Set(-35f, 0f);
 			uIHeaderTextPanel.SetPadding(15f);
@@ -131,7 +132,7 @@ namespace Terraria.ModLoader.UI
 			reloadButton.OnClick += ReloadList;
 			uIElement.Append(reloadButton);
 
-			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			backButton.Width.Set(-10f, 0.5f);
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;
@@ -219,7 +220,7 @@ namespace Terraria.ModLoader.UI
 			filterTextBoxBackground.Height.Set(40f, 0f);
 			upperMenuContainer.Append(filterTextBoxBackground);
 
-			filterTextBox = new UIInputTextField("Type to search");
+			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch"));
 			filterTextBox.Top.Set(5, 0f);
 			filterTextBox.Left.Set(-160, 1f);
 			filterTextBox.OnTextChange += (sender, e) => updateNeeded = true;
@@ -353,7 +354,7 @@ namespace Terraria.ModLoader.UI
 			SpecialModPackFilter = null;
 			SpecialModPackFilterTitle = null;
 			reloadButton.SetText("Getting data...");
-			SetHeading("Mod Browser");
+			SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
 			uIPanel.Append(uILoader);
 			modList.Clear();
 			items.Clear();
@@ -420,7 +421,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				loading = false;
-				reloadButton.SetText("Reload browser");
+				reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 			}
 			else if (!e.Cancelled)
 			{
@@ -435,7 +436,7 @@ namespace Terraria.ModLoader.UI
 					{
 						PopulateFromJSON(task.Result, response);
 						loading = false;
-						reloadButton.SetText("Reload browser");
+						reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 					}, TaskScheduler.FromCurrentSynchronizationContext());
 			}
 		}
@@ -557,17 +558,17 @@ namespace Terraria.ModLoader.UI
 			switch (sortmode)
 			{
 				case ModBrowserSortMode.DisplayNameAtoZ:
-					return "Sort mod names alphabetically";
+					return Language.GetTextValue("tModLoader.ModsSortNamesAlph");
 				case ModBrowserSortMode.DisplayNameZtoA:
-					return "Sort mod names reverse-alphabetically";
+					return Language.GetTextValue("tModLoader.ModsSortNamesReverseAlph");
 				case ModBrowserSortMode.DownloadsDescending:
-					return "Sort by downloads descending";
+					return Language.GetTextValue("tModLoader.MBSortDownloadDesc");
 				case ModBrowserSortMode.DownloadsAscending:
-					return "Sort by downloads ascending";
+					return Language.GetTextValue("tModLoader.MBSortDownloadAsc");
 				case ModBrowserSortMode.RecentlyUpdated:
-					return "Sort by recently updated";
+					return Language.GetTextValue("tModLoader.MBSortByRecentlyUpdated");
 				case ModBrowserSortMode.Hot:
-					return "Sort by popularity";
+					return Language.GetTextValue("tModLoader.MBSortByPopularity");
 			}
 			return "Unknown Sort";
 		}
@@ -580,11 +581,11 @@ namespace Terraria.ModLoader.UI
 			switch (updateFilterMode)
 			{
 				case UpdateFilter.All:
-					return "Show all mods";
+					return Language.GetTextValue("tModLoader.MBShowAllMods");
 				case UpdateFilter.Available:
-					return "Show mods not installed and updates";
+					return Language.GetTextValue("tModLoader.MBShowNotInstalledUpdates");
 				case UpdateFilter.UpdateOnly:
-					return "Show only updates";
+					return Language.GetTextValue("tModLoader.MBShowUpdates");
 			}
 			return "Unknown Sort";
 		}
@@ -597,9 +598,9 @@ namespace Terraria.ModLoader.UI
 			switch (searchFilterMode)
 			{
 				case SearchFilter.Name:
-					return "Search by Mod name";
+					return Language.GetTextValue("tModLoader.ModsSearchByModName");
 				case SearchFilter.Author:
-					return "Search by Author name";
+					return Language.GetTextValue("tModLoader.ModsSearchByAuthor");
 			}
 			return "Unknown Sort";
 		}

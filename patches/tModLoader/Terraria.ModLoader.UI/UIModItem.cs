@@ -7,6 +7,7 @@ using Terraria.Graphics;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -57,7 +58,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 			this.enabled = ModLoader.IsEnabled(mod);
-			UITextPanel<string> button = new UITextPanel<string>("More info", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
 			button.Width.Set(100f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(430f, 0f);
@@ -68,7 +69,7 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += this.Moreinfo;
 			base.Append(button);
-			button2 = new UITextPanel<string>(this.enabled ? "Disable" : "Enable", 1f, false);
+			button2 = new UITextPanel<string>(this.enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
 			button2.Width.Set(100f, 0f);
 			button2.Height.Set(30f, 0f);
 			button2.Left.Set(button.Left.Pixels - button2.Width.Pixels - 5f, 0f);
@@ -107,7 +108,7 @@ namespace Terraria.ModLoader.UI
 			}
 			if (mod.ValidModBrowserSignature)
 			{
-				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], "This mod originated from the Mod Browser");
+				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser"));
 				keyImage.Left.Set(-20, 1f);
 				base.Append(keyImage);
 			}
@@ -206,7 +207,7 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(12, -1, -1, 1);
 			this.enabled = !this.enabled;
-			button2.SetText(this.enabled ? "Disable" : "Enable", 1f, false);
+			button2.SetText(this.enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
 			ModLoader.SetModActive(this.mod, this.enabled);
 		}
 
