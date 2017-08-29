@@ -185,6 +185,7 @@ namespace Terraria.ModLoader.Audio
 		}
 	}
 
+	// byte array pointing to mp3 data or wav data
 	public class MusicData
 	{
 		string cachePath;
@@ -204,15 +205,21 @@ namespace Terraria.ModLoader.Audio
 
 		public Music GetInstance()
 		{
-			if (!mp3)
-			{
-				return new MusicStreamingWAV(new MemoryStream(data));
-			}
 			if (cachePath != null)
 			{
-				return new MusicStreamingWAV(cachePath);
+				if (mp3)
+					throw new Exception("Cache and MP3 not implemented");
+				else
+					return new MusicStreamingWAV(cachePath);
 			}
-			return new MusicStreamingMP3(data);
+			else if (data != null)
+			{
+				if (mp3)
+					return new MusicStreamingMP3(data);
+				else
+					return new MusicStreamingWAV(new MemoryStream(data));
+			}
+			throw new Exception("Error, MusicWrapper neither cache nor data supplied.");
 		}
 	}
 }
