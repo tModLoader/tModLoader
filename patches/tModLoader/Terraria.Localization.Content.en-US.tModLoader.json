@@ -19,7 +19,7 @@
 		"ModsTypeToSearch": "Поиск", //Can be used for Mod Browser Translation
 		"ModsSearchByModName": "Поиск по названию мода", //Can be used for Mod Browser Translation
 		"ModsSearchByAuthor": "Поиск по автору мода", //Can be used for Mod Browser Translation
-		"ModsSortRecently": "Упорядочить по последним обновлениям",
+		"ModsSortRecently": "Упорядочить по последнему обновлению",
 		"ModsSortNamesAlph": "Упорядочить по алфавиту", //Can be used for Mod Browser Translation
 		"ModsSortNamesReverseAlph": "Упорядочить обратно алфавиту", //Can be used for Mod Browser Translation
 		"ModsShowAllMods": "Показать все моды",
@@ -30,7 +30,7 @@
 		"MBDownload": "Скачать",
 		"MBReloadBrowser": "Перезагрузить список модов",
 		"MBBack": "Назад",
-		"MBSortByRecentlyUpdated": "Сортировка по недавно обновленным",
+		"MBSortByRecentlyUpdated": "Упорядочить по последнему обновлению",
 		"MBSortByPopularity": "Упорядочить по популярности",
 		"MBSortDownloadDesc": "Упорядочить по убыванию скачиваний",
 		"MBSortDownloadAsc": "Упорядочить по возрастанию скачиваний",
