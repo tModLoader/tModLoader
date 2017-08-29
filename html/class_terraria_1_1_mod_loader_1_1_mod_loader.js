@@ -2,6 +2,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
 [
     [ "BuildSort", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a8cf1a1359e60d686facab731299c6da4", null ],
     [ "CommandLineModPackOverride", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ab727698a3dc36909751fb47da17ac07b", null ],
+    [ "DisposeMusic", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae60ca1af95d709f45bbc3a849ff0da09", null ],
     [ "FileExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aeb0d9d1bfee842c0e232de398756f869", null ],
     [ "GetFileBytes", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a942be3cd0174b0a4e1c918a5466b5f8f", null ],
     [ "GetLoadedMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#af51b45cfb6b7e1c6025c733eca9ecbd9", null ],
