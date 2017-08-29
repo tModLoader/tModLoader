@@ -69,7 +69,7 @@ namespace ExampleMod
 				AddEquipTexture(new Items.Armor.BlockyLegs(), null, EquipType.Legs, "BlockyLeg", "ExampleMod/Items/Armor/ExampleCostume_Legs");
 
 				// Change the vanilla dungeon track
-				//Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
+				// Main.music[MusicID.Dungeon] = GetMusic("Sounds/Music/DriveMusic");
 
 				// Register a new music box
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
@@ -125,8 +125,7 @@ namespace ExampleMod
 			// All code below runs only if we're not loading on a server
 			if (!Main.dedServ)
 			{
-				// todo: fix this
-				//Main.music[MusicID.Dungeon].ModMusic = null;
+				// Main.music[MusicID.Dungeon] = Main.soundBank.GetCue("Music_" + MusicID.Dungeon);
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
 			}
@@ -134,6 +133,7 @@ namespace ExampleMod
 			// Unload static references
 			// You need to clear static references to assets (Texture2D, SoundEffects, Effects). 
 			exampleEffect = null;
+
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
 			instance = null;
 			RandomBuffHotKey = null;
@@ -182,7 +182,7 @@ namespace ExampleMod
 		{
 			if (Main.myPlayer != -1 && !Main.gameMenu)
 			{
-				if (Main.LocalPlayer.active 
+				if (Main.LocalPlayer.active
 					&& (Main.LocalPlayer.FindBuffIndex(BuffType("CarMount")) != -1 || Main.LocalPlayer.GetModPlayer<ExamplePlayer>(this).ZoneExample))
 				{
 					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");

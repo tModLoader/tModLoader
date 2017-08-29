@@ -667,6 +667,7 @@ namespace Terraria.ModLoader
 			MountLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
+			DisposeMusic();
 			BackgroundTextureLoader.Unload();
 			UgBgStyleLoader.Unload();
 			SurfaceBgStyleLoader.Unload();
@@ -728,15 +729,37 @@ namespace Terraria.ModLoader
 				Main.chest[i] = new Chest();
 			}
 
-#if DEBUG
 			// TODO: Display this warning to modders
 			GC.Collect();
-			foreach (var weakReference in loadedModsWeakReferences)
+			if (ModLoader.isModder)
 			{
-				if (weakReference.IsAlive)
-					ErrorLogger.Log((weakReference.Target as Mod).Name + " not fully unloaded during unload.");
+				foreach (var weakReference in loadedModsWeakReferences)
+				{
+					if (weakReference.IsAlive)
+						ErrorLogger.Log((weakReference.Target as Mod).Name + " not fully unloaded during unload.");
+				}
 			}
-#endif
+		}
+
+		private static void DisposeMusic()
+		{
+			for (int i = 0; i < Main.music.Length; i++)
+			{
+				MusicStreaming music = Main.music[i] as MusicStreaming;
+				if (music != null)
+				{
+					if (i < Main.maxMusic)
+					{
+						Main.music[i] = Main.soundBank.GetCue("Music_" + i);
+					}
+					else
+					{
+						Main.music[i] = null;
+					}
+					music.Stop(AudioStopOptions.Immediate);
+					music.Dispose();
+				}
+			}
 		}
 
 		internal static void Reload()

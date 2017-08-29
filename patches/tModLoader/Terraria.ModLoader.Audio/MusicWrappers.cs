@@ -184,4 +184,35 @@ namespace Terraria.ModLoader.Audio
 			this.stream = stream;
 		}
 	}
+
+	public class MusicData
+	{
+		string cachePath;
+		byte[] data;
+		bool mp3 = false;
+
+		public MusicData(string cachePath)
+		{
+			this.cachePath = cachePath;
+		}
+
+		public MusicData(byte[] data, bool mp3)
+		{
+			this.data = data;
+			this.mp3 = mp3;
+		}
+
+		public Music GetInstance()
+		{
+			if (!mp3)
+			{
+				return new MusicStreamingWAV(new MemoryStream(data));
+			}
+			if (cachePath != null)
+			{
+				return new MusicStreamingWAV(cachePath);
+			}
+			return new MusicStreamingMP3(data);
+		}
+	}
 }
