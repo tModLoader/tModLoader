@@ -12,8 +12,8 @@
 		"ModsReloadMods": "Перезагрузить моды",
 		"ModsOpenModsFolder": "Открыть папку модов",
 		"ModsModPacks": "Сборки модов",
-        "ModsDisable": "Выключить",
-        "ModsEnable": "Включить", 
+                "ModsDisable": "Выключить",
+                "ModsEnable": "Включить", 
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из Браузера модов",
 		"ModsTypeToSearch": "Поиск",
@@ -45,5 +45,14 @@
 		"ClearMBCredentials": "Очистить данные Браузера модов",
 		"DownloadSignedYes": "Скачивать только проверенные моды с серверов: Да",
 		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет"
+		
+		//Mod Sources
+                "MSBuild" = "Скомпилировать"
+		"MSBuildReload" = "Скомпилировать и перезагрузить",
+		"MSBuildAll" = "Скомпилировать всё",
+		"MSBuildReloadAll" = "Скомпилировать и перезагрузить всё",
+		"MSOpenSources" = "Открыть исходники",
+		"MSManagePublished" = "Опубликованное",
+		"MSBack" = "Назад"
 	}
 }
