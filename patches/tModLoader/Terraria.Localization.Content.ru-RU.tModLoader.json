@@ -6,7 +6,8 @@
 		"MenuModSources": "Исходники модов",
 		
 		// Mods Menu
-		"ModsModsList": "Mods List",
+		
+		"ModsModsList": "Список модов",
 		"ModsEnableAll": "Включить все",
 		"ModsDisableAll": "Отключить все",
 		"ModsReloadMods": "Перезагрузить моды",
