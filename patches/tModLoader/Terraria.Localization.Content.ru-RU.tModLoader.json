@@ -29,6 +29,8 @@
 		
 		//Mod Browser		
 		"MBDownload": "Скачать",
+		"MBUpdate": "Обновить",
+		"MBDowngrade": "Предыдущая версия",
 		"MBReloadBrowser": "Перезагрузить список модов",
 		"MBSortByRecentlyUpdated": "Упорядочить по последнему обновлению",
 		"MBSortByPopularity": "Упорядочить по популярности",
@@ -62,6 +64,9 @@
 		"MSBuilding": = "Сборка мода: ", //There should me ModName after ':'
                 "MSFinding": = "Поиск файлов",
                 "MSIntializing": "Инициализация мода: ",  //There should me ModName after ':'
-                "MSLoading": "Загрузка мода: " //There should me ModName after ':'  
+                "MSLoading": "Загрузка мода: " //There should me ModName after ':',
+		"MusicStreamModeConvert": "Режим музыки: Конвертировать по необходимости",
+		"MusicStreamModeStream": "Режим музыки: Проигрывать из кэша"
+		
 	}
 }
