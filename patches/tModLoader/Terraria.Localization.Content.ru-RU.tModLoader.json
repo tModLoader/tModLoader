@@ -4,17 +4,16 @@
 		"MenuModBrowser": "Браузер модов",
 		"MenuMods": "Моды",
 		"MenuModSources": "Исходники модов",
-		
+
 		// Mods Menu
-		
 		"ModsModsList": "Список модов",
 		"ModsEnableAll": "Включить все",
 		"ModsDisableAll": "Отключить все",
 		"ModsReloadMods": "Перезагрузить моды",
 		"ModsOpenModsFolder": "Открыть папку модов",
 		"ModsModPacks": "Сборки модов",
-                "ModsDisable": "Выключить",
-                "ModsEnable": "Включить", 
+		"ModsDisable": "Выключить",
+		"ModsEnable": "Включить", 
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из Браузера модов",
 		"ModsTypeToSearch": "Поиск",
@@ -26,11 +25,11 @@
 		"ModsShowAllMods": "Показать все моды",
 		"ModsShowEnabledMods": "Показать включённые моды",
 		"ModsShowDisabledMods": "Показать отключённые моды",
-		
-		//Mod Browser		
+
+		// Mod Browser
 		"MBDownload": "Скачать",
-		"MBUpdate": "Обновить",
 		"MBDowngrade": "Предыдущая версия",
+		"MBUpdate": "Обновить",
 		"MBReloadBrowser": "Перезагрузить список модов",
 		"MBSortByRecentlyUpdated": "Упорядочить по последнему обновлению",
 		"MBSortByPopularity": "Упорядочить по популярности",
@@ -39,34 +38,33 @@
 		"MBShowAllMods": "Показать все моды",
 		"MBShowNotInstalledUpdates": "Показать неустановленные или необновлённые моды",
 		"MBShowUpdates": "Показать необновлённые моды",
-		
-		//TML Options
+
+		// TML Options
 		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
 		"DownloadFromServersNo": "Скачивать моды с серверов: Нет",
+		"DownloadSignedYes": "Скачивать только проверенные моды с серверов: Да",
+		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет"
+		"MusicStreamModeConvert": "Режим музыки: Конвертировать по необходимости",
+		"MusicStreamModeStream": "Режим музыки: Проигрывать из кэша"
 		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
-		"DownloadSignedYes": "Скачивать только проверенные моды с серверов: Да",
-		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет"
-		
+
 		//Mod Sources
-                "MSBuild" = "Скомпилировать"
+		"MSBuild" = "Скомпилировать"
 		"MSBuildReload" = "Скомпилировать и перезагрузить",
 		"MSBuildAll" = "Скомпилировать всё",
 		"MSBuildReloadAll" = "Скомпилировать и перезагрузить всё",
 		"MSOpenSources" = "Открыть исходники",
 		"MSManagePublished" = "Опубликованное",
 		"MSBack" = "Назад"
-                "MSReadingProperties": = "Чтение настроек мода:", //There should me ModName after ':'
-                "MSCompiling": = "Компиляция мода " //Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
+		"MSReadingProperties": = "Чтение настроек мода:", //There should me ModName after ':'
+		"MSCompiling": = "Компиляция мода " //Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
 		"MSComplinigWindows": = " для Windows",
-                "MSCompilingMono": = " для Mono",
+		"MSCompilingMono": = " для Mono",
 		"MSBuilding": = "Сборка мода: ", //There should me ModName after ':'
-                "MSFinding": = "Поиск файлов",
-                "MSIntializing": "Инициализация мода: ",  //There should me ModName after ':'
-                "MSLoading": "Загрузка мода: " //There should me ModName after ':',
-		"MusicStreamModeConvert": "Режим музыки: Конвертировать по необходимости",
-		"MusicStreamModeStream": "Режим музыки: Проигрывать из кэша"
-		
+		"MSFinding": = "Поиск файлов",
+		"MSIntializing": "Инициализация мода: ",  //There should me ModName after ':'
+		"MSLoading": "Загрузка мода: " //There should me ModName after ':',
 	}
 }
