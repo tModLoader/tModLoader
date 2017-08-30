@@ -43,9 +43,9 @@
 		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
 		"DownloadFromServersNo": "Скачивать моды с серверов: Нет",
 		"DownloadSignedYes": "Скачивать только проверенные моды с серверов: Да",
-		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет"
+		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет",
 		"MusicStreamModeConvert": "Режим музыки: Конвертировать по необходимости",
-		"MusicStreamModeStream": "Режим музыки: Проигрывать из кэша"
+		"MusicStreamModeStream": "Режим музыки: Проигрывать из кэша",
 		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
@@ -58,13 +58,18 @@
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
 		"MSBack": "Назад",
-		"MSReadingProperties": "Чтение настроек мода:", //There should me ModName after ':'
-		"MSCompiling": "Компиляция мода ", //Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
+		 //There should me ModName after ':'
+		"MSReadingProperties": "Чтение настроек мода:",
+		 //Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
+		"MSCompiling": "Компиляция мода ",
 		"MSComplinigWindows": " для Windows",
 		"MSCompilingMono": " для Mono",
-		"MSBuilding": "Сборка мода: ", //There should me ModName after ':'
+		 //There should me ModName after ':'
+		"MSBuilding": "Сборка мода: ",
 		"MSFinding": "Поиск файлов",
-		"MSIntializing": "Инициализация мода: ",  //There should me ModName after ':'
-		"MSLoading": "Загрузка мода: " //There should me ModName after ':',
+		//There should me ModName after ':'
+		"MSIntializing": "Инициализация мода: ",
+		 //There should me ModName after ':',
+		"MSLoading": "Загрузка мода: ",
 	}
 }
