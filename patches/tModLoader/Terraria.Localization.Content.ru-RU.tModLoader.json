@@ -51,15 +51,15 @@
 		"ClearMBCredentials": "Очистить данные Браузера модов",
 
 		//Mod Sources
-		"MSBuild": "Скомпилировать"
+		"MSBuild": "Скомпилировать",
 		"MSBuildReload": "Скомпилировать и перезагрузить",
 		"MSBuildAll": "Скомпилировать всё",
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
-		"MSBack": "Назад"
+		"MSBack": "Назад",
 		"MSReadingProperties": "Чтение настроек мода:", //There should me ModName after ':'
-		"MSCompiling": "Компиляция мода " //Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
+		"MSCompiling": "Компиляция мода ", //Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
 		"MSComplinigWindows": " для Windows",
 		"MSCompilingMono": " для Mono",
 		"MSBuilding": "Сборка мода: ", //There should me ModName after ':'
