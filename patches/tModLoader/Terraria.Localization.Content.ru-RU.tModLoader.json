@@ -58,18 +58,18 @@
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
 		"MSBack": "Назад",
-		//There should me ModName after ':'
+		//There should be ModName after ':'
 		"MSReadingProperties": "Чтение настроек мода:",
 		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
 		"MSCompiling": "Компиляция мода ",
 		"MSComplinigWindows": " для Windows",
 		"MSCompilingMono": " для Mono",
-		//There should me ModName after ':'
+		//There should be ModName after ':'
 		"MSBuilding": "Сборка мода: ",
 		"MSFinding": "Поиск файлов",
-		//There should me ModName after ':'
+		//There should be ModName after ':'
 		"MSIntializing": "Инициализация мода: ",
-		//There should me ModName after ':'
+		//There should be ModName after ':'
 		"MSLoading": "Загрузка мода: ",
 	}
 }
