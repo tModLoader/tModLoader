@@ -572,6 +572,14 @@
  						{
  							int num8 = (int)this.ai[1];
  							Item item = new Item();
+@@ -28286,6 +_,7 @@
+ 								int stack2 = Main.rand.Next(minValue2, num12 + 1);
+ 								item.stack = stack2;
+ 							}
++							ItemLoader.CaughtFishStack(item);
+ 							item.newAndShiny = true;
+ 							Item item2 = Main.player[this.owner].GetItem(this.owner, item, false, false);
+ 							if (item2.stack > 0)
 @@ -38602,7 +_,7 @@
  								Tile tileSafely2 = Framing.GetTileSafely(i, j - 1);
  								if (!tileSafely2.active() || !Main.tileSolid[(int)tileSafely2.type] || Main.tileSolidTop[(int)tileSafely2.type])
