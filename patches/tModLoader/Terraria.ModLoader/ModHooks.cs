@@ -158,6 +158,7 @@ namespace Terraria.ModLoader
 
 		internal static void ModifySunLight(ref Color tileColor, ref Color backgroundColor)
 		{
+			if (Main.gameMenu) return;
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.ModifySunLightColor(ref tileColor, ref backgroundColor);
