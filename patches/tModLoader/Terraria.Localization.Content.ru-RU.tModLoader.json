@@ -50,7 +50,7 @@
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
 
-		//Mod Sources
+		// Mod Sources
 		"MSBuild": "Скомпилировать",
 		"MSBuildReload": "Скомпилировать и перезагрузить",
 		"MSBuildAll": "Скомпилировать всё",
@@ -62,7 +62,7 @@
 		"MSReadingProperties": "Чтение настроек мода:",
 		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
 		"MSCompiling": "Компиляция мода ",
-		"MSComplinigWindows": " для Windows",
+		"MSCompilingWindows": " для Windows",
 		"MSCompilingMono": " для Mono",
 		//There should be ModName after ':'
 		"MSBuilding": "Сборка мода: ",

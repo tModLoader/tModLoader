@@ -48,6 +48,29 @@
 		"MusicStreamModeStream": "Music Stream Mode: Stream From Cache",
 		"ExperimentalFeaturesYes": "Experimental Features: On",
 		"ExperimentalFeaturesNo": "Experimental Features: Off",
-		"ClearMBCredentials": "Clear Mod Browser Credentials"
+		"ClearMBCredentials": "Clear Mod Browser Credentials",
+
+		// Mod Sources
+		"MSBuild": "Build",
+		"MSBuildReload": "Build + Reload",
+		"MSBuildAll": "Build All",
+		"MSBuildReloadAll": "Build + Reload All",
+		"MSOpenSources": "Open Sources",
+		"MSManagePublished": "Manage Published",
+		"MSPublish": "Publish",
+
+		//There should be ModName after ':'
+		"MSReadingProperties": "Reading Properties: ",
+		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
+		"MSCompiling": "Compiling ",
+		"MSCompilingWindows": " for Windows...",
+		"MSCompilingMono": " for Mono...",
+		//There should be ModName after ':'
+		"MSBuilding": "Building ",
+		"MSFinding": "Finding Mods...",
+		//There should be ModName after ':'
+		"MSIntializing": "Initializing: ",
+		//There should be ModName after ':'
+		"MSLoading": "Loading Mod: ",
 	}
 }

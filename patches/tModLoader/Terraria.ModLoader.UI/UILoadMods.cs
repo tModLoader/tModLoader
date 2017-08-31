@@ -1,5 +1,6 @@
 using System;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -31,7 +32,7 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Finding Mods...");
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSFinding"));
 				loadProgress.SetProgress(0f);
 			}
 		}
@@ -62,12 +63,12 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Initializing: " + mod);
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSIntializing") + mod);
 				loadProgress.SetProgress((float)num / (float)max);
 			}
 			else
 			{
-				Console.WriteLine("Initializing: " + mod);
+				Console.WriteLine(Language.GetTextValue("tModLoader.MSIntializing") + mod);
 			}
 		}
 
@@ -92,12 +93,12 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Loading Mod: " + mod);
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSLoading") + mod);
 				loadProgress.SetProgress((float)num / (float)max);
 			}
 			else
 			{
-				Console.WriteLine("Loading Mod: " + mod);
+				Console.WriteLine(Language.GetTextValue("tModLoader.MSLoading") + mod);
 			}
 		}
 
