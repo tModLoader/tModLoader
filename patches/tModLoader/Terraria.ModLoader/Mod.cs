@@ -2199,9 +2199,10 @@ namespace Terraria.ModLoader
 			waterfallStyles.Clear();
 			globalRecipes.Clear();
 			translations.Clear();
-			// Manually Dispose IDisposables to free up unmanaged memory immediately
 			if (!Main.dedServ)
 			{
+				// Manually Dispose IDisposables to free up unmanaged memory immediately
+				/* Skip this for now, too many mods don't unload properly and run into exceptions.
 				foreach (var sound in sounds)
 				{
 					sound.Value.Dispose();
@@ -2214,7 +2215,13 @@ namespace Terraria.ModLoader
 				{
 					texture.Value.Dispose();
 				}
+				*/
 			}
+			sounds.Clear();
+			effects.Clear();
+			textures.Clear();
+			musics.Clear();
+			fonts.Clear();
 		}
 
 		/// <summary>
