@@ -27,7 +27,7 @@ addons:
       - graphviz
 
 before_install:
-    - sudo apt-add-repository -y ppa:vidavidorra/precise-backport
+    - sudo apt-add-repository -y ppa:mikepurvis/docs
     - sudo apt-get update
     - sudo apt-get install doxygen
       
