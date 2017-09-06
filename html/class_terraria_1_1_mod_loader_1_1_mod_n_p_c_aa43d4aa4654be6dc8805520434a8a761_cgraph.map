@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.ModNPC.Autoload" name="Terraria.ModLoader.ModNPC.Autoload">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a" title="Allows you to set all your NPC&#39;s properties, such as width, damage, aiStyle, lifeMax, etc. " alt="" coords="252,5,447,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a" title="Allows you to set all your NPC&#39;s properties, such as width, damage, aiStyle, lifeMax, etc. " alt="" coords="251,5,447,46"/>
 </map>

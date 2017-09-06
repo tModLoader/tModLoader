@@ -1,8 +1,4 @@
 warning: ignoring unsupported tag `TOC_INCLUDE_HEADINGS   =' at line 313, file /home/travis/build/blushiemagic/tModLoader/solutions/documentation/Doxyfile
-warning: Tag `CLANG_ASSISTED_PARSING' at line 1041 of file `/home/travis/build/blushiemagic/tModLoader/solutions/documentation/Doxyfile' belongs to an option that was not enabled at compile time.
-         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u", or recompile doxygen with this feature enabled.
-warning: Tag `CLANG_OPTIONS' at line 1049 of file `/home/travis/build/blushiemagic/tModLoader/solutions/documentation/Doxyfile' belongs to an option that was not enabled at compile time.
-         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u", or recompile doxygen with this feature enabled.
 warning: ignoring unsupported tag `PLANTUML_CFG_FILE      =' at line 2386, file /home/travis/build/blushiemagic/tModLoader/solutions/documentation/Doxyfile
 Searching for include files...
 Searching for example files...

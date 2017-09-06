@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.EquipTexture.ArmorArmGlowMask" name="Terraria.ModLoader.EquipTexture.ArmorArmGlowMask">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#afc7a52d4db0c80643c9537cf6d6cf653" title="Calls the item&#39;s body equipment texture&#39;s ArmorArmGlowMask hook, then all GlobalItem.ArmorArmGlowMask hooks. " alt="" coords="247,5,452,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#afc7a52d4db0c80643c9537cf6d6cf653" title="Calls the item&#39;s body equipment texture&#39;s ArmorArmGlowMask hook, then all GlobalItem.ArmorArmGlowMask hooks. " alt="" coords="246,5,453,46"/>
 </map>

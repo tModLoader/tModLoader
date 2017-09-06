@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.ProjectileLoader.ModifyDamageHitbox" name="Terraria.ModLoader.ProjectileLoader.ModifyDamageHitbox">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="263,5,436,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a8863ddeef94b1e985c64dd86fad6ed5b" title="Allows you to change the hitbox used by a projectile for damaging players and NPCs. " alt="" coords="247,74,452,121"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="262,5,437,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a8863ddeef94b1e985c64dd86fad6ed5b" title="Allows you to change the hitbox used by a projectile for damaging players and NPCs. " alt="" coords="246,70,453,111"/>
 </map>

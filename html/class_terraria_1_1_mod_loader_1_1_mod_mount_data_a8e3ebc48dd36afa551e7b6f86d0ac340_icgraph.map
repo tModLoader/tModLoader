@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.ModMountData.SetDefaults" name="Terraria.ModLoader.ModMountData.SetDefaults">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#afc57113aa508c6a5b37ca97b2dbca7a3" title="Allows you to automatically load a mount instead of using Mod.AddMount. Return true to allow autoload..." alt="" coords="255,5,452,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#afc57113aa508c6a5b37ca97b2dbca7a3" title="Allows you to automatically load a mount instead of using Mod.AddMount. Return true to allow autoload..." alt="" coords="254,5,453,46"/>
 </map>

@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.ProjectileLoader.PreAI" name="Terraria.ModLoader.ProjectileLoader.PreAI">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="247,5,420,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a2d36a798579d23fc47f763bc506a7a4c" title="Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI ho..." alt="" coords="247,74,420,121"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="246,5,421,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a2d36a798579d23fc47f763bc506a7a4c" title="Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI ho..." alt="" coords="246,70,421,111"/>
 </map>

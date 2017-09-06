@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.TileLoader.AutoSelect" name="Terraria.ModLoader.TileLoader.AutoSelect">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#a1f295d50d096827db82e0c0b812cbf29" title="Allows you to determine whether the given item can become selected when the cursor is hovering over t..." alt="" coords="257,5,444,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#a1f295d50d096827db82e0c0b812cbf29" title="Allows you to determine whether the given item can become selected when the cursor is hovering over t..." alt="" coords="257,5,445,46"/>
 </map>

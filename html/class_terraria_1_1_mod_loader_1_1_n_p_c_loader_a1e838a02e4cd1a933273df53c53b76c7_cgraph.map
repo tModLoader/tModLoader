@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.NPCLoader.TownNPCAttackStrength" name="Terraria.ModLoader.NPCLoader.TownNPCAttackStrength">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="279,5,452,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a4d7d2713a9fe21de8069182c7897fde6" title="Allows you to determine the damage and knockback of a town NPC&#39;s attack before the damage is scaled..." alt="" coords="264,74,467,121"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="278,5,453,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a4d7d2713a9fe21de8069182c7897fde6" title="Allows you to determine the damage and knockback of a town NPC&#39;s attack before the damage is scaled..." alt="" coords="264,70,467,111"/>
 </map>

@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.NPCLoader.CanHitPlayer" name="Terraria.ModLoader.NPCLoader.CanHitPlayer">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a12bf30524cc768e5152513a2af03f129" title="Allows you to determine whether an NPC can hit the given player. Return false to block the NPC from h..." alt="" coords="265,5,439,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="265,74,439,121"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a12bf30524cc768e5152513a2af03f129" title="Allows you to determine whether an NPC can hit the given player. Return false to block the NPC from h..." alt="" coords="265,5,439,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="265,70,439,111"/>
 </map>

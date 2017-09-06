@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.TooltipLine" name="Terraria.ModLoader.TooltipLine">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html" title="This class serves as a way to store information about a line that will be drawn of tooltip for an ite..." alt="" coords="9,83,201,130"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html" title="This class serves as a way to store information about a line that will be drawn of tooltip for an ite..." alt="" coords="9,81,201,122"/>
 </map>

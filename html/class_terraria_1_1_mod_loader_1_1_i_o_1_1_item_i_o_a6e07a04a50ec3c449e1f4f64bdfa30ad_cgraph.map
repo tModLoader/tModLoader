@@ -1,6 +1,6 @@
 <map id="Terraria.ModLoader.IO.ItemIO.Load" name="Terraria.ModLoader.IO.ItemIO.Load">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a59dd05f9c1bce1091d727a4e2157f2df" title="Gets the GlobalItem instance with the given name from this mod. " alt="" coords="248,5,435,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="239,74,444,121"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#afabaa379c54d0a99f56b3ed197cbd6ed" title="Terraria.ModLoader.Global\lItem.Instance" alt="" coords="255,143,428,190"/>
-<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#a28bc8cd5c11c8f01896e7f02f31654b4" title="Allows you to load custom data that you have saved for the given item. " alt="" coords="255,213,428,259"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a59dd05f9c1bce1091d727a4e2157f2df" title="Gets the GlobalItem instance with the given name from this mod. " alt="" coords="247,5,435,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="238,70,445,111"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#afabaa379c54d0a99f56b3ed197cbd6ed" title="Terraria.ModLoader.Global\lItem.Instance" alt="" coords="254,135,429,177"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#a28bc8cd5c11c8f01896e7f02f31654b4" title="Allows you to load custom data that you have saved for the given item. " alt="" coords="254,201,429,242"/>
 </map>

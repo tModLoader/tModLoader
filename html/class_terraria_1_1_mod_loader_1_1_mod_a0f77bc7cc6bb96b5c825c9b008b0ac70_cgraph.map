@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.Mod.AddGore" name="Terraria.ModLoader.Mod.AddGore">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_gore.html#a0389af470e7132ffbdf2bd67550157f0" title="Gets the type of the custom gore corresponding to the given texture. Returns 0 if the texture does no..." alt="" coords="272,5,467,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="516,5,721,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_gore.html#a0389af470e7132ffbdf2bd67550157f0" title="Gets the type of the custom gore corresponding to the given texture. Returns 0 if the texture does no..." alt="" coords="272,5,467,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="515,5,722,46"/>
 </map>
