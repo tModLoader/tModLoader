@@ -1,5 +1,5 @@
 author = bluemagic123
-version = 0.10.0.3
+version = 0.10.1
 displayName = Example Mod
 homepage = http://forums.terraria.org/index.php?threads/1-3-tmodloader-a-modding-api.23726/
 hideCode = false

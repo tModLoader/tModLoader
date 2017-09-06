@@ -1,7 +1,7 @@
 :: After Pulling, Patching, and making sure the version number is changed in src, this bat will compile and create zips for all release.
 :: It will also create a zip for ExampleMod
 
-set version=v0.10.0.3
+set version=v0.10.1
 set destinationFolder=.\tModLoader %version% Release
 
 :: Compile/Build exe 

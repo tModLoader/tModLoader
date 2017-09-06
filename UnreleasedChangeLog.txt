@@ -1,4 +1,4 @@
-Changelog for tModloader v0.10.0.3
+Changelog for tModloader v0.10.1
 	- Mods can now have an icon! Make sure your file is named 'icon.png' and it has a size of 80x80 pixels. The icon will display in the mods menu and in the mod browser when published.
 	- Unmanaged memory is now manually disposed for better memory performance
 	- Textures or sounds being loaded now show when a mod is being loaded
@@ -15,7 +15,15 @@ Changelog for tModloader v0.10.0.3
 	- Fixed a crash for the mod browser when the user had duplicate .tmod files in the mods folder
 	- Added better MP3 support, major memory performance boost!
 	- Added tooltip draw hooks for ModItem and GlobalItem: PreDrawTooltip(), PostDrawTooltip(), PreDrawTooltipLine() and PostDrawTooltipLine()
-	
+	- Added ModifySunLightColor and ModifyLightingBrightness hooks to Mod
+	- Fixed CaughtFishStack not working
+	- Fixed CommandType.World functionality
+	- skipselect launch flag for mod authors who wish to skip player and world select
+	- Translations
+	-- Russian (Thanks @zadum4ivii)
+	-- Polish (Thanks Shockah)
+	-- Portugese 
+	-- We are looking for interested people to contribute Spanish, German, Italian, French, or Chinese translations.
 ExampleMod:
 	- Fixed a silent exception for torches
 	- Improved spelling for certain code comments
@@ -26,7 +34,7 @@ ExampleMod:
 	- Added drawing a white background using a new tooltip draw hook for Example Item
 	
 Notes:
-	Modders, you need to clear static references to assets, so basically Texture2d. In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class.
+	Modders, please make an effort to clear static references to assets, such as Texture2d. In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class.
 	For banners, you need to set ModNPC.banner and ModNPC.bannerItem
 
 To Make Guide:
