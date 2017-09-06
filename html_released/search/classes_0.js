@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['backgroundtextureloader',['BackgroundTextureLoader',['../class_terraria_1_1_mod_loader_1_1_background_texture_loader.html',1,'Terraria::ModLoader']]],
-  ['binarywriter',['BinaryWriter',['../class_binary_writer.html',1,'']]],
-  ['buffloader',['BuffLoader',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html',1,'Terraria::ModLoader']]],
-  ['buildingmod',['BuildingMod',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html',1,'Terraria::ModLoader::ModCompile']]]
+  ['addrecipesexception',['AddRecipesException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_add_recipes_exception.html',1,'Terraria::ModLoader::Exceptions']]],
+  ['attribute',['Attribute',['../class_attribute.html',1,'']]],
+  ['autoloadbosshead',['AutoloadBossHead',['../class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html',1,'Terraria::ModLoader']]],
+  ['autoloadequip',['AutoloadEquip',['../class_terraria_1_1_mod_loader_1_1_autoload_equip.html',1,'Terraria::ModLoader']]],
+  ['autoloadhead',['AutoloadHead',['../class_terraria_1_1_mod_loader_1_1_autoload_head.html',1,'Terraria::ModLoader']]]
 ];

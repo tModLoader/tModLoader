@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.WorldHooks.ResetNearbyTileEffects" name="Terraria.ModLoader.WorldHooks.ResetNearbyTileEffects">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_world.html#a9c34c46918ff1d37ddd3d814cfae121f" title="Use this to reset any fields you set in any of your ModTile.NearbyEffects hooks back to their default..." alt="" coords="260,5,460,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_world.html#a9c34c46918ff1d37ddd3d814cfae121f" title="Use this to reset any fields you set in any of your ModTile.NearbyEffects hooks back to their default..." alt="" coords="259,5,461,46"/>
 </map>

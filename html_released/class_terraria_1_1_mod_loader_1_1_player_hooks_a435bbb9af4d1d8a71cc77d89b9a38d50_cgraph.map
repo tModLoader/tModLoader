@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.PostUpdateBuffs" name="Terraria.ModLoader.PlayerHooks.PostUpdateBuffs">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#acccccf78ee26f566d92836579809d663" title="This is called right after all of this player&#39;s buffs update on the player. This can be used to modif..." alt="" coords="231,5,433,51"/>
-</map>

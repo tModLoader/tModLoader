@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">0.9.1.1</span>
+   &#160;<span id="projectnumber">0.10.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('struct_terraria_1_1_mod_loader_1_1_pla
 <div class="title">Terraria.ModLoader.PlayerHeadDrawInfo Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A struct that contains information that may help with <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_head_layer.html" title="This class represents a DrawLayer for the player&#39;s map icon, and uses PlayerDrawHeadInfo as its InfoT...">PlayerHeadLayer</a> drawing.  
+ <a href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.PlayerHeadDrawInfo:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -128,39 +131,55 @@ $(document).ready(function(){initNavTree('struct_terraria_1_1_mod_loader_1_1_pla
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a02234b8518a76470e3300cef0ac49050"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a02234b8518a76470e3300cef0ac49050">alpha</a></td></tr>
+<tr class="memdesc:a02234b8518a76470e3300cef0ac49050"><td class="mdescLeft">&#160;</td><td class="mdescRight">The transparency in which the player should be drawn. 0 means fully transparent, while 1 means fully opaque.  <a href="#a02234b8518a76470e3300cef0ac49050">More...</a><br /></td></tr>
 <tr class="separator:a02234b8518a76470e3300cef0ac49050"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aca85c2a04da30c9b304eaa0dd2b388"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a7aca85c2a04da30c9b304eaa0dd2b388">armorColor</a></td></tr>
+<tr class="memdesc:a7aca85c2a04da30c9b304eaa0dd2b388"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color the player's armor should be shaded in. Alpha has already been taken into account.  <a href="#a7aca85c2a04da30c9b304eaa0dd2b388">More...</a><br /></td></tr>
 <tr class="separator:a7aca85c2a04da30c9b304eaa0dd2b388"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68aaf59a24ffc56466449ad7bd91d842"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a68aaf59a24ffc56466449ad7bd91d842">armorShader</a></td></tr>
+<tr class="memdesc:a68aaf59a24ffc56466449ad7bd91d842"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the shader (dye) on the player's head armor.  <a href="#a68aaf59a24ffc56466449ad7bd91d842">More...</a><br /></td></tr>
 <tr class="separator:a68aaf59a24ffc56466449ad7bd91d842"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa152111c97afbd571784296bd1823fca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#aa152111c97afbd571784296bd1823fca">drawAltHair</a></td></tr>
+<tr class="memdesc:aa152111c97afbd571784296bd1823fca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the player's alternate (hat) hair texture should be drawn.  <a href="#aa152111c97afbd571784296bd1823fca">More...</a><br /></td></tr>
 <tr class="separator:aa152111c97afbd571784296bd1823fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b6db474643af6955bf44db46967609e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a0b6db474643af6955bf44db46967609e">drawHair</a></td></tr>
+<tr class="memdesc:a0b6db474643af6955bf44db46967609e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the player's hair texture should be drawn.  <a href="#a0b6db474643af6955bf44db46967609e">More...</a><br /></td></tr>
 <tr class="separator:a0b6db474643af6955bf44db46967609e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9aa6295175f555d36abc24307d5854dd"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a9aa6295175f555d36abc24307d5854dd">drawOrigin</a></td></tr>
+<tr class="memdesc:a9aa6295175f555d36abc24307d5854dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The point on the player's texture around which everything should be rotated.  <a href="#a9aa6295175f555d36abc24307d5854dd">More...</a><br /></td></tr>
 <tr class="separator:a9aa6295175f555d36abc24307d5854dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0838d4908582eb0777d23e6ff977a1db"><td class="memItemLeft" align="right" valign="top">Player&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a0838d4908582eb0777d23e6ff977a1db">drawPlayer</a></td></tr>
+<tr class="memdesc:a0838d4908582eb0777d23e6ff977a1db"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player whose head is being drawn.  <a href="#a0838d4908582eb0777d23e6ff977a1db">More...</a><br /></td></tr>
 <tr class="separator:a0838d4908582eb0777d23e6ff977a1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fc513ac3ed50f889ead1f97188e47af"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a8fc513ac3ed50f889ead1f97188e47af">eyeColor</a></td></tr>
+<tr class="memdesc:a8fc513ac3ed50f889ead1f97188e47af"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color of the player's eyes. Alpha has already been taken into account.  <a href="#a8fc513ac3ed50f889ead1f97188e47af">More...</a><br /></td></tr>
 <tr class="separator:a8fc513ac3ed50f889ead1f97188e47af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ed7304fee5d009da6193bc234447003"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a0ed7304fee5d009da6193bc234447003">eyeWhiteColor</a></td></tr>
+<tr class="memdesc:a0ed7304fee5d009da6193bc234447003"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color of the whites of the player's eyes. Alpha has already been taken into account.  <a href="#a0ed7304fee5d009da6193bc234447003">More...</a><br /></td></tr>
 <tr class="separator:a0ed7304fee5d009da6193bc234447003"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94461af2d47f53106fab96d1efdb224c"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a94461af2d47f53106fab96d1efdb224c">hairColor</a></td></tr>
+<tr class="memdesc:a94461af2d47f53106fab96d1efdb224c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color of the player's hair. Alpha has already been taken into account.  <a href="#a94461af2d47f53106fab96d1efdb224c">More...</a><br /></td></tr>
 <tr class="separator:a94461af2d47f53106fab96d1efdb224c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f1b75ef1543e2c69bc8246ed598f6f5"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a4f1b75ef1543e2c69bc8246ed598f6f5">hairShader</a></td></tr>
+<tr class="memdesc:a4f1b75ef1543e2c69bc8246ed598f6f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the shader (dye) on the player's hair.  <a href="#a4f1b75ef1543e2c69bc8246ed598f6f5">More...</a><br /></td></tr>
 <tr class="separator:a4f1b75ef1543e2c69bc8246ed598f6f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d798e58bee16fffe307d17ebf89b7c4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a0d798e58bee16fffe307d17ebf89b7c4">scale</a></td></tr>
+<tr class="memdesc:a0d798e58bee16fffe307d17ebf89b7c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scale on the size in which the player should be drawn.  <a href="#a0d798e58bee16fffe307d17ebf89b7c4">More...</a><br /></td></tr>
 <tr class="separator:a0d798e58bee16fffe307d17ebf89b7c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a368921a5f009d74435c2553070f7ba7f"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a368921a5f009d74435c2553070f7ba7f">skinColor</a></td></tr>
+<tr class="memdesc:a368921a5f009d74435c2553070f7ba7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color of the player's skin. Alpha has already been taken into account.  <a href="#a368921a5f009d74435c2553070f7ba7f">More...</a><br /></td></tr>
 <tr class="separator:a368921a5f009d74435c2553070f7ba7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a157ca091fcdb30a0a6c83643e7907538"><td class="memItemLeft" align="right" valign="top">SpriteBatch&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a157ca091fcdb30a0a6c83643e7907538">spriteBatch</a></td></tr>
+<tr class="memdesc:a157ca091fcdb30a0a6c83643e7907538"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SpriteBatch object that should be used to do all the drawing. This is the same as Main.spriteBatch.  <a href="#a157ca091fcdb30a0a6c83643e7907538">More...</a><br /></td></tr>
 <tr class="separator:a157ca091fcdb30a0a6c83643e7907538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e3ec364079b4e7db1ec709bc19e82c4"><td class="memItemLeft" align="right" valign="top">SpriteEffects&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a3e3ec364079b4e7db1ec709bc19e82c4">spriteEffects</a></td></tr>
+<tr class="memdesc:a3e3ec364079b4e7db1ec709bc19e82c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SpriteEffects that should be used to draw the player. (SpriteEffects.None or SpriteEffects.FlipHorizontal)  <a href="#a3e3ec364079b4e7db1ec709bc19e82c4">More...</a><br /></td></tr>
 <tr class="separator:a3e3ec364079b4e7db1ec709bc19e82c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00064">64</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<div class="textblock"><p>A struct that contains information that may help with <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_head_layer.html" title="This class represents a DrawLayer for the player&#39;s map icon, and uses PlayerDrawHeadInfo as its InfoT...">PlayerHeadLayer</a> drawing. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00221">221</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a02234b8518a76470e3300cef0ac49050"></a>
 <div class="memitem">
@@ -172,7 +191,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00068">68</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The transparency in which the player should be drawn. 0 means fully transparent, while 1 means fully opaque. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00234">234</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -186,7 +207,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00076">76</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The color the player's armor should be shaded in. Alpha has already been taken into account. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00266">266</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -200,7 +223,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00071">71</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The ID of the shader (dye) on the player's head armor. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00246">246</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -214,7 +239,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00080">80</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>Whether the player's alternate (hat) hair texture should be drawn. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00282">282</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -228,7 +255,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00079">79</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>Whether the player's hair texture should be drawn. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00278">278</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -242,7 +271,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00078">78</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The point on the player's texture around which everything should be rotated. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00274">274</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -256,7 +287,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00067">67</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The player whose head is being drawn. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00230">230</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -270,7 +303,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00073">73</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The color of the player's eyes. Alpha has already been taken into account. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00254">254</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -284,7 +319,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00072">72</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The color of the whites of the player's eyes. Alpha has already been taken into account. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00250">250</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -298,7 +335,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00074">74</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The color of the player's hair. Alpha has already been taken into account. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00258">258</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -312,7 +351,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00070">70</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The ID of the shader (dye) on the player's hair. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00242">242</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -326,7 +367,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00069">69</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The scale on the size in which the player should be drawn. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00238">238</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -340,7 +383,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00075">75</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The color of the player's skin. Alpha has already been taken into account. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00262">262</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -354,7 +399,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00066">66</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The SpriteBatch object that should be used to do all the drawing. This is the same as Main.spriteBatch. </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00226">226</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>
@@ -368,7 +415,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00077">77</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
+<p>The SpriteEffects that should be used to draw the player. (SpriteEffects.None or SpriteEffects.FlipHorizontal) </p>
+
+<p>Definition at line <a class="el" href="_draw_info_8cs_source.html#l00270">270</a> of file <a class="el" href="_draw_info_8cs_source.html">DrawInfo.cs</a>.</p>
 
 </div>
 </div>

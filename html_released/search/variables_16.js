@@ -2,6 +2,7 @@ var searchData=
 [
   ['waistacc',['WaistAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a73ed9a501e2e6dc40308a814d3d8f012',1,'Terraria::ModLoader::PlayerLayer']]],
   ['waistshader',['waistShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a368ad72dd3ff9801fca1abb94534d926',1,'Terraria::ModLoader::PlayerDrawInfo']]],
+  ['wallcount',['WallCount',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a54e97031b1ca6ebd5e426adfc5c20c23',1,'Terraria::ModLoader::WallLoader']]],
   ['water',['water',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a0a875d4463252e0a7c96d77123ebcbad',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['watercritter',['WaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a8150149a776c7a8e458e8de2b415116e',1,'Terraria::ModLoader::SpawnCondition']]],
   ['waterstylecount',['WaterStyleCount',['../class_terraria_1_1_mod_loader_1_1_water_style_loader.html#a5041de98d67f19fc02f79faa66b56791',1,'Terraria::ModLoader::WaterStyleLoader']]],

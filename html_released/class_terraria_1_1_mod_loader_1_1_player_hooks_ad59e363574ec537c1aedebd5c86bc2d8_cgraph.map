@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.PlayerDisconnect" name="Terraria.ModLoader.PlayerHooks.PlayerDisconnect">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a6a03d8b7abc65d7eff11f47c2c7f60b1" title="Called when a player disconnects. " alt="" coords="231,5,433,51"/>
-</map>

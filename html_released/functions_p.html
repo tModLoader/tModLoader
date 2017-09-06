@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">0.9.1.1</span>
+   &#160;<span id="projectnumber">0.10.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -111,6 +111,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_u.html#index_u"><span>u</span></a></li>
       <li><a href="functions_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_w.html#index_w"><span>w</span></a></li>
+      <li><a href="functions_x.html#index_x"><span>x</span></a></li>
+      <li><a href="functions_y.html#index_y"><span>y</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -159,11 +161,21 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_draw_layer.html#ab655430c48d6ee75580d4b4d641c7de1">Terraria.ModLoader.DrawLayer&lt; InfoType &gt;</a>
 </li>
 <li>path
-: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#ab7f934126a02cd2f89cafd4647dd29b9">Terraria.ModLoader.ModCompile.BuildingMod</a>
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#ac713f3a0fbd787097af3aa3ec0670483">Terraria.ModLoader.IO.TmodFile</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#ab7f934126a02cd2f89cafd4647dd29b9">Terraria.ModLoader.ModCompile.BuildingMod</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#a5fd2a16466037e348b5593cf4d367ecc">Terraria.ModLoader.ModNet.ModHeader</a>
 </li>
-<li>Pause()
-: <a class="el" href="class_terraria_1_1_mod_loader_1_1_music_wrapper.html#af14310764b7a26da3c858f084468a7ab">Terraria.ModLoader.MusicWrapper</a>
+<li>PayloadHandler()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#ac304850935865284a8840503287a4a58">Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;</a>
+</li>
+<li>PayloadHandlers
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a1aeccffe5e6152cbc65b115d652491e0">Terraria.ModLoader.IO.TagIO</a>
+</li>
+<li>PayloadIDs
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#ae68883dc80d655302b849f18016e00c4">Terraria.ModLoader.IO.TagIO</a>
+</li>
+<li>PayloadType
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#ad5e031f90059699836617594dba4223f">Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;</a>
 </li>
 <li>PickAmmo()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a72388f01c5226d661f0f3334948e382e">Terraria.ModLoader.GlobalItem</a>
@@ -190,9 +202,6 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 <li>planteraDefeated
 : <a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a9b19eb26b1ac89612fa9c7a9be9649da">Terraria.ModLoader.NPCSpawnInfo</a>
 </li>
-<li>Play()
-: <a class="el" href="class_terraria_1_1_mod_loader_1_1_music_wrapper.html#a938c538405c45397ba9c8e02ab3a5cb4">Terraria.ModLoader.MusicWrapper</a>
-</li>
 <li>Player
 : <a class="el" href="interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897">Terraria.ModLoader.CommandCaller</a>
 </li>
@@ -215,7 +224,7 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 : <a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#afb34f12bdfa209993adda54c3b1d09d4">Terraria.ModLoader.NPCSpawnInfo</a>
 </li>
 <li>PlayerHeadLayer()
-: <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_head_layer.html#a7b6b6757c83db5951085ade5f22424fd">Terraria.ModLoader.PlayerHeadLayer</a>
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_head_layer.html#a5a2e95b42f2eaba44aeb39322a25b6d3">Terraria.ModLoader.PlayerHeadLayer</a>
 </li>
 <li>playerInTown
 : <a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a104a11199f860cb5e5ed8272b1e11a02">Terraria.ModLoader.NPCSpawnInfo</a>
@@ -234,6 +243,9 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 </li>
 <li>position
 : <a class="el" href="struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#aa4840c2eb76e8f0ef1a90bb60e21dde2">Terraria.ModLoader.PlayerDrawInfo</a>
+</li>
+<li>PostAddRecipes()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#aa4117ae9725d19222ce13de255ca3034">Terraria.ModLoader.Mod</a>
 </li>
 <li>PostAI()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a78cc6cfde1d3aae79d01ded8aff5fddd">Terraria.ModLoader.GlobalNPC</a>
@@ -280,6 +292,16 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ab3310e15636ae38f138979d54dbe4b35">Terraria.ModLoader.ModWorld</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#ad2a51d34d159dcab668a3a546648bd6b">Terraria.ModLoader.WorldHooks</a>
 </li>
+<li>PostDrawTooltip()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a618622ab3006899995f5e3a095b73379">Terraria.ModLoader.GlobalItem</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aef8c587b16ae22d0ce06aa75a40fe673">Terraria.ModLoader.ItemLoader</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a5348de1211c3411b9c35f4f89f657bf0">Terraria.ModLoader.ModItem</a>
+</li>
+<li>PostDrawTooltipLine()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a46c39509d48b017cb7ae4c9bf9435964">Terraria.ModLoader.GlobalItem</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a6340390161b06b7bee79fd7fe768c718">Terraria.ModLoader.ItemLoader</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a19fb2f197f4c742edbb6e041a3e61235">Terraria.ModLoader.ModItem</a>
+</li>
 <li>PostGlobalUpdate()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a392aebfb691d1f2ad9b794da63a48e27">Terraria.ModLoader.ModTileEntity</a>
 </li>
@@ -295,6 +317,10 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a6d47e96fc33d54d4ebc8938461c2d9bc">Terraria.ModLoader.GlobalItem</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a6419b147be3e3811c09d99fa9eeeaec8">Terraria.ModLoader.ItemLoader</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abff6902616c430c246022e7962f8a68d">Terraria.ModLoader.ModItem</a>
+</li>
+<li>PostSavePlayer()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a5ea772956ff46506cbb6aea303a7d041">Terraria.ModLoader.ModPlayer</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a2c36acdc0eebe23e1ff1ab9d0175933f">Terraria.ModLoader.PlayerHooks</a>
 </li>
 <li>PostSetDefaults()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#ab0fc8ff564415d20026a14b4975f3efc">Terraria.ModLoader.ModTile</a>
@@ -374,6 +400,16 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a08dd1f16fdf491db51695e803589e0df">Terraria.ModLoader.ItemLoader</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a313ae3ea4a3871b608a7b069640728ca">Terraria.ModLoader.ModItem</a>
 </li>
+<li>PreDrawTooltip()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae3801f74e43705337fa6be55a1c99bfa">Terraria.ModLoader.GlobalItem</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a33bec3880fb1c560143fce849b8684d3">Terraria.ModLoader.ItemLoader</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a043cfc5cc5b5b913820c0f5d4d09d01c">Terraria.ModLoader.ModItem</a>
+</li>
+<li>PreDrawTooltipLine()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa3aa4fe28c51e2a81a5f01e083099adb">Terraria.ModLoader.GlobalItem</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a5eb3f834250b17cb4932454281c0cdbe">Terraria.ModLoader.ItemLoader</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a6f551ec97a311981a8c8a499706d340d">Terraria.ModLoader.ModItem</a>
+</li>
 <li>PreGlobalUpdate()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0bba74f83ef3aa8dcf418b0182951544">Terraria.ModLoader.ModTileEntity</a>
 </li>
@@ -416,6 +452,10 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 <li>PreSaveCustomData()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ab38fbee5966d671f00ee1bf2b29e188f">Terraria.ModLoader.ModPlayer</a>
 </li>
+<li>PreSavePlayer()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a04773b76357cfb056f6cb91ddaf8808c">Terraria.ModLoader.ModPlayer</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a80856cad0bed8eb9dd883b5ac4d4959a">Terraria.ModLoader.PlayerHooks</a>
+</li>
 <li>PreUpdate()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#afe76af07e709041c38e1dd36e3fbb60b">Terraria.ModLoader.ModPlayer</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ad1e9ea8fc667b3e439e26edf7289cdaf">Terraria.ModLoader.ModWorld</a>
@@ -425,6 +465,10 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 <li>PreUpdateBuffs()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa26938f486aab4a4022503f24dda30c8">Terraria.ModLoader.ModPlayer</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a0e4f853cf1431895aea6c48a4b7bd972">Terraria.ModLoader.PlayerHooks</a>
+</li>
+<li>PreUpdateMovement()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa6846104ccfa767cae2605dad1e1e79e">Terraria.ModLoader.ModPlayer</a>
+, <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a400b6ed6d9478a16a1aea1fffae6adae">Terraria.ModLoader.PlayerHooks</a>
 </li>
 <li>PreUpdateVanitySet()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html#aa904bf2469387af9a116926e53f9dd86">Terraria.ModLoader.EquipTexture</a>
@@ -436,6 +480,9 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a8cd6d1e08c6aadfc53a037d6aee2f7d7">Terraria.ModLoader.ModWorld</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#aca6b91ace0f880cd8d6e056065353932">Terraria.ModLoader.WorldHooks</a>
 </li>
+<li>Print()
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#a4a791c916b376533c07640ea329fe869">Terraria.ModLoader.IO.TagPrinter</a>
+</li>
 <li>ProcessTriggers()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a98f11468d4af2b252f2ec3745a798f1d">Terraria.ModLoader.ModPlayer</a>
 , <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a9e119413e4676cd6e930884eda3c6252">Terraria.ModLoader.PlayerHooks</a>
@@ -445,6 +492,9 @@ $(document).ready(function(){initNavTree('functions_p.html','');});
 </li>
 <li>ProjectileAI()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a30879d5b652425360fc4211d54831e66">Terraria.ModLoader.ProjectileLoader</a>
+</li>
+<li>ProjectileCount
+: <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a283a070b3d26c90ab809ef4f87a50a8b">Terraria.ModLoader.ProjectileLoader</a>
 </li>
 <li>ProjectileType()
 : <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#af4f124bac1905b018a8f24ab866c0d5f">Terraria.ModLoader.Mod</a>

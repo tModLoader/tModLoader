@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.ModTileEntity.Kill" name="Terraria.ModLoader.ModTileEntity.Kill">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a89c493aad8800f3588b859880f7d7c40" title="This method only gets called in the Kill method. If you plan to use that, you can put code here to ma..." alt="" coords="237,5,421,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a89c493aad8800f3588b859880f7d7c40" title="This method only gets called in the Kill method. If you plan to use that, you can put code here to ma..." alt="" coords="237,5,421,46"/>
 </map>

@@ -1,0 +1,6 @@
+<map id="Terraria.ModLoader.ErrorLogger.Log" name="Terraria.ModLoader.ErrorLogger.Log">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7e88ceafdeafdc02677acbbe09176060" title="Automatically sets certain static defaults. Override this if you do not want the properties to be set..." alt="" coords="231,5,427,46"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#a50883060a4be6e39c451d379ae58c4b1" title="Terraria.ModLoader.ModCompile.\lBuildingMod.BuildingMod" alt="" coords="222,70,437,111"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a8cf1a1359e60d686facab731299c6da4" title="Terraria.ModLoader.ModLoader.\lBuildSort" alt="" coords="226,135,433,177"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a6ea0eaab8c94d722396a267e31871a7b" title="Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText. " alt="" coords="486,5,677,46"/>
+</map>

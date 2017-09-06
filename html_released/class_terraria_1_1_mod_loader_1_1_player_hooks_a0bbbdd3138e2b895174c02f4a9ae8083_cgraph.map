@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.PreHurt" name="Terraria.ModLoader.PlayerHooks.PreHurt">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a9899cb16acb61790649916155b253935" title="This hook is called before every time the player takes damage. The pvp parameter is whether the damag..." alt="" coords="231,5,433,51"/>
-</map>

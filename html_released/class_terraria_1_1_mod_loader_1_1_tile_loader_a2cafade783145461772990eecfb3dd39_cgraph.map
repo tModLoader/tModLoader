@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.TileLoader.SaplingGrowthType" name="Terraria.ModLoader.TileLoader.SaplingGrowthType">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#ae02d585c05a868c401fda0924c0e10aa" title="Allows this tile to support a sapling that can eventually grow into a tree. The type of the sapling s..." alt="" coords="257,5,444,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#ae02d585c05a868c401fda0924c0e10aa" title="Allows this tile to support a sapling that can eventually grow into a tree. The type of the sapling s..." alt="" coords="257,5,445,46"/>
 </map>

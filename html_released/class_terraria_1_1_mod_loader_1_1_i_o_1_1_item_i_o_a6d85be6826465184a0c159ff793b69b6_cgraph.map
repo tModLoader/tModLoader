@@ -1,0 +1,11 @@
+<map id="Terraria.ModLoader.IO.ItemIO.Load" name="Terraria.ModLoader.IO.ItemIO.Load">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#ad91adb77a4aee9dea9f7eaaedb0d4864" title="Terraria.ModLoader.IO.Tag\lCompound.ContainsKey" alt="" coords="260,5,439,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a1290e4b50bd24212af9de7fbb5b3827f" title="Terraria.ModLoader.IO.Tag\lCompound.GetBool" alt="" coords="260,70,439,111"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#ac14565446fdd2b4080a9eeaac2c5da3e" title="Terraria.ModLoader.IO.Tag\lCompound.GetByte" alt="" coords="260,135,439,177"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aada15ef3bf3bc4f1d2b8cb0a3963108f" title="Terraria.ModLoader.IO.Tag\lCompound.GetByteArray" alt="" coords="260,201,439,242"/>
+<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a753b1f987e208031a74ee33546612fb3" title="Terraria.ModLoader.IO.Tag\lCompound.GetCompound" alt="" coords="260,266,439,307"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a8c222cd0a447787c97371c5ad36cfb0b" title="Terraria.ModLoader.IO.Tag\lCompound.GetInt" alt="" coords="260,331,439,373"/>
+<area shape="rect" id="node8" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="246,397,453,438"/>
+<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#ac05f361e74b11d7fddaf60e4c3ab3fd7" title="Terraria.ModLoader.IO.Tag\lCompound.GetString" alt="" coords="260,462,439,503"/>
+<area shape="rect" id="node10" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2" title="Gets the internal ID / type of the ModItem corresponding to the name. Returns 0 if no ModItem with th..." alt="" coords="238,528,461,555"/>
+</map>

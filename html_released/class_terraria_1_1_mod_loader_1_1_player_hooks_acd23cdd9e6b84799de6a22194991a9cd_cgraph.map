@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.SendClientChanges" name="Terraria.ModLoader.PlayerHooks.SendClientChanges">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a114a497147154425130d27a65b7c916a" title="Allows you to sync any information that has changed between the server and client. Here, you should check the information you have copied in the clientClone parameter; if they differ between this player and the clientPlayer parameter, then you should send that information using NetMessage.SendData or ModPacket.Send. " alt="" coords="236,5,439,51"/>
-</map>

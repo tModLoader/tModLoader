@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.ModifyScreenPosition" name="Terraria.ModLoader.PlayerHooks.ModifyScreenPosition">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ab90eb3f01a1df40684e1afdc6e5b9cbc" title="Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place..." alt="" coords="247,5,449,51"/>
-</map>

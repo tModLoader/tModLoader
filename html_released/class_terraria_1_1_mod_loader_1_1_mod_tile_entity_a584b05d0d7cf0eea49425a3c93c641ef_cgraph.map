@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.ModTileEntity.UpdateStartInternal" name="Terraria.ModLoader.ModTileEntity.UpdateStartInternal">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0bba74f83ef3aa8dcf418b0182951544" title="Code that should be run before all tile entities in the world update. " alt="" coords="237,5,421,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0bba74f83ef3aa8dcf418b0182951544" title="Code that should be run before all tile entities in the world update. " alt="" coords="237,5,421,46"/>
 </map>

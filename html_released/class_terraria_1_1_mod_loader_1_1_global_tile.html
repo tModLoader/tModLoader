@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">0.9.1.1</span>
+   &#160;<span id="projectnumber">0.10.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -168,7 +168,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa4e74f8f2d6ddbf7eb4e0c00d7adc6c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.  <a href="#aa4e74f8f2d6ddbf7eb4e0c00d7adc6c2">More...</a><br /></td></tr>
 <tr class="separator:aa4e74f8f2d6ddbf7eb4e0c00d7adc6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0704b7c0026c5192737cfa1961aedf4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#ae0704b7c0026c5192737cfa1961aedf4">Drop</a> (int i, int j, int type)</td></tr>
-<tr class="memdesc:ae0704b7c0026c5192737cfa1961aedf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which items the tile at the given coordinates drops. Return false to stop the game from dropping the tile's default item. Returns true by default. Please note that this hook currently only works for 1x1 tiles.  <a href="#ae0704b7c0026c5192737cfa1961aedf4">More...</a><br /></td></tr>
+<tr class="memdesc:ae0704b7c0026c5192737cfa1961aedf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which items the tile at the given coordinates drops. Return false to stop the game from dropping the tile's default item. Returns true by default.  <a href="#ae0704b7c0026c5192737cfa1961aedf4">More...</a><br /></td></tr>
 <tr class="separator:ae0704b7c0026c5192737cfa1961aedf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20513e5708b6792f9c37d010d0698f4d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a20513e5708b6792f9c37d010d0698f4d">DropCritterChance</a> (int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)</td></tr>
 <tr class="memdesc:a20513e5708b6792f9c37d010d0698f4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.  <a href="#a20513e5708b6792f9c37d010d0698f4d">More...</a><br /></td></tr>
@@ -430,8 +430,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00331">331</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        {</div><div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> <span class="keywordtype">int</span>[0];</div><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00327">327</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        {</div><div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> <span class="keywordtype">int</span>[0];</div><div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7eccf0ca48646e841ead05b15f2dd28d"></a>
@@ -457,8 +457,8 @@ Properties</h2></td></tr>
 
 <p>Allows animating tiles that were previously static. Loading a new texture for the tile is required first. Use Main.tileFrameCounter to count game frames and Main.tileFrame to change animation frames. </p>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00240">240</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        {</div><div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00236">236</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        {</div><div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab74b2737dd0f3351a328dbfb363fd433"></a>
@@ -494,9 +494,9 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00077">77</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00878">Terraria.ModLoader.Mod.AutoloadGlobalTile()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00804">Terraria.ModLoader.Mod.AutoloadGlobalTile()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a90091764bc6be194c8f7bb55ff93f8ae">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_global_tile_html_a90091764bc6be194c8f7bb55ff93f8ae"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a90091764bc6be194c8f7bb55ff93f8ae">Terraria.ModLoader.GlobalTile.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod to which this GlobalTile belongs to. </div><div class="ttdef"><b>Definition:</b> <a href="_global_tile_8cs_source.html#l00017">GlobalTile.cs:17</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00045">Mod.cs:45</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00047">Mod.cs:47</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -506,7 +506,7 @@ Properties</h2></td></tr>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_tile_ab74b2737dd0f3351a328dbfb363fd433_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_tile_ab74b2737dd0f3351a328dbfb363fd433_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_tile_ab74b2737dd0f3351a328dbfb363fd433_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_tile_ab74b2737dd0f3351a328dbfb363fd433_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#a539677e838ba592861ed487958819314" title="Terraria.ModLoader.Mod.Autoload\lGlobalTile" alt="" coords="229,5,448,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod.html#a539677e838ba592861ed487958819314" title="Terraria.ModLoader.Mod.Autoload\lGlobalTile" alt="" coords="229,5,448,46"/>
 </map>
 </div>
 </p>
@@ -569,8 +569,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00374">374</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        {</div><div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00370">370</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        {</div><div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2cff827d700bfba74810dd0eea9aba59"></a>
@@ -622,8 +622,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00184">184</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        {</div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00180">180</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        {</div><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa7f321d426e22879208b26d391cc6286"></a>
@@ -682,8 +682,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00159">159</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        {</div><div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00155">155</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        {</div><div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="adf22ff3d8a42c9338dde6c2045bb98ed"></a>
@@ -735,8 +735,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00321">321</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        {</div><div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00317">317</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        {</div><div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a64bfa928daa2b265e3fbd586f3352301"></a>
@@ -780,8 +780,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00427">427</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        {</div><div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00423">423</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        {</div><div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a859cee4c0040c19c9c1ba9d2f4407b20"></a>
@@ -900,8 +900,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00221">221</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        {</div><div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00217">217</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        {</div><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa4e74f8f2d6ddbf7eb4e0c00d7adc6c2"></a>
@@ -973,8 +973,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00266">266</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        {</div><div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00262">262</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        {</div><div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae0704b7c0026c5192737cfa1961aedf4"></a>
@@ -1015,19 +1015,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to customize which items the tile at the given coordinates drops. Return false to stop the game from dropping the tile's default item. Returns true by default. Please note that this hook currently only works for 1x1 tiles. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">type</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Allows you to customize which items the tile at the given coordinates drops. Return false to stop the game from dropping the tile's default item. Returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00146">146</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        {</div><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00142">142</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        {</div><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a20513e5708b6792f9c37d010d0698f4d"></a>
@@ -1144,8 +1135,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00418">418</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        {</div><div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00414">414</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        {</div><div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1425f575127b73aafa5e251d970fc28f"></a>
@@ -1196,8 +1187,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00397">397</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        {</div><div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00393">393</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        {</div><div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0a620218d451131069b9a513523d8e5a"></a>
@@ -1322,8 +1313,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00173">173</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        {</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00169">169</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        {</div><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af272f63ca2948a9c73f7c48760837d3d"></a>
@@ -1395,8 +1386,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00209">209</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        {</div><div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00205">205</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        {</div><div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a605a382f1f7eda9b23930d532c725f5b"></a>
@@ -1447,8 +1438,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00352">352</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        {</div><div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00348">348</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        {</div><div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa3d172001b2cbfbaed0abbd1564b4c1d"></a>
@@ -1499,8 +1490,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00362">362</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        {</div><div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00358">358</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        {</div><div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a75d6d7dc00775570ea6a6d500c736c7b"></a>
@@ -1558,8 +1549,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00196">196</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        {</div><div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00192">192</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        {</div><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a843da6ae8cdcf34e2475962050bd1a5e"></a>
@@ -1676,8 +1667,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00448">448</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        {</div><div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00444">444</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        {</div><div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a521c8134e6299b3d418b53c671c6f0fa"></a>
@@ -1735,8 +1726,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00277">277</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        {</div><div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00273">273</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        {</div><div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4d68e956180722856b3e2883f8b6eb56"></a>
@@ -1795,8 +1786,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00252">252</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        {</div><div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00248">248</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        {</div><div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9afac373b80e99e6ffc23c9d192b042a"></a>
@@ -1848,8 +1839,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00386">386</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        {</div><div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00382">382</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        {</div><div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af49e0df0635198df1b23ff62fb83debe"></a>
@@ -1900,8 +1891,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00296">296</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        {</div><div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00292">292</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        {</div><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abf8afee6c3f52064dcb7454f79a3d9a9"></a>
@@ -1952,8 +1943,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00342">342</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        {</div><div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00338">338</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        {</div><div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab11111b678186be34cd6cea3ba860a25"></a>
@@ -1998,8 +1989,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00437">437</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        {</div><div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;            <span class="keywordflow">return</span> -1;</div><div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00433">433</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        {</div><div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;            <span class="keywordflow">return</span> -1;</div><div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab98f5b2949277faeb8ccf2e52ba1e304"></a>
@@ -2027,7 +2018,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00085">85</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02253">Terraria.ModLoader.Mod.RegisterHotKey()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02098">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        {</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -2036,7 +2027,7 @@ Properties</h2></td></tr>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_tile_ab98f5b2949277faeb8ccf2e52ba1e304_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_tile_ab98f5b2949277faeb8ccf2e52ba1e304_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_tile_ab98f5b2949277faeb8ccf2e52ba1e304_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_tile_ab98f5b2949277faeb8ccf2e52ba1e304_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03" title="Registers a hotkey with a name and defaultKey. Use the returned ModHotKey to detect when buttons are ..." alt="" coords="229,5,445,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod.html#a6ea0eaab8c94d722396a267e31871a7b" title="Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText. " alt="" coords="230,5,421,46"/>
 </map>
 </div>
 </p>
@@ -2098,8 +2089,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00233">233</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        {</div><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00229">229</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        {</div><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a01d357fc71a23b11a8ae248edef1a881"></a>
@@ -2151,8 +2142,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00408">408</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        {</div><div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00404">404</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        {</div><div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7c6048173df5a36c232231ef18f49e41"></a>
@@ -2208,8 +2199,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00286">286</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        {</div><div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00282">282</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        {</div><div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abd7e991de75582c8ac50b8f3a83c52e1"></a>
@@ -2275,8 +2266,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00309">309</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        {</div><div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00305">305</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        {</div><div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
@@ -2302,7 +2293,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00017">17</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00841">Terraria.ModLoader.Mod.AddGlobalTile()</a>, and <a class="el" href="_mod_8cs_source.html#l00878">Terraria.ModLoader.Mod.AutoloadGlobalTile()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00762">Terraria.ModLoader.Mod.AddGlobalTile()</a>, and <a class="el" href="_mod_8cs_source.html#l00804">Terraria.ModLoader.Mod.AutoloadGlobalTile()</a>.</p>
 
 </div>
 </div>
@@ -2328,7 +2319,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_tile_8cs_source.html#l00026">26</a> of file <a class="el" href="_global_tile_8cs_source.html">GlobalTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00841">Terraria.ModLoader.Mod.AddGlobalTile()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00762">Terraria.ModLoader.Mod.AddGlobalTile()</a>.</p>
 
 </div>
 </div>

@@ -1,4 +1,3 @@
 <map id="Terraria.ModLoader.Mod.AutoloadProjectile" name="Terraria.ModLoader.Mod.AutoloadProjectile">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa4bd74eb4726fe09583d635f72a669b2" title="Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allo..." alt="" coords="272,5,493,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a332b03efe6a21a9ba3abd344d66c9c0d" title="Allows you to set all your projectile&#39;s properties, such as width, damage, aiStyle, penetrate, etc. " alt="" coords="541,5,763,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a05e6dad20e2fbd133a830013f14f1083" title="Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allo..." alt="" coords="272,5,493,46"/>
 </map>

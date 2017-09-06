@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">0.9.1.1</span>
+   &#160;<span id="projectnumber">0.10.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -120,10 +120,20 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_tool
 <p>This class serves as a way to store information about a line of tooltip for an item. You will create and manipulate objects of this class if you use the ModifyTooltips hook.  
  <a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.TooltipLine:</div>
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Terraria.ModLoader.TooltipLine:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_tooltip_line__inherit__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_tooltip_line_inherit__map" alt="Inheritance graph"/></div>
+<map name="_terraria_8_mod_loader_8_tooltip_line_inherit__map" id="_terraria_8_mod_loader_8_tooltip_line_inherit__map">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html" title="This class serves as a way to store information about a line that will be drawn of tooltip for an ite..." alt="" coords="9,81,201,122"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.TooltipLine:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_tooltip_line__coll__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_tooltip_line_coll__map" alt="Collaboration graph"/></div>
 <map name="_terraria_8_mod_loader_8_tooltip_line_coll__map" id="_terraria_8_mod_loader_8_tooltip_line_coll__map">
 </map>
@@ -159,7 +169,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class serves as a way to store information about a line of tooltip for an item. You will create and manipulate objects of this class if you use the ModifyTooltips hook. </p>
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00009">9</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00010">10</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="adb1d300be37fc859dd86e9e8d044ed80"></a>
 <div class="memitem">
@@ -251,9 +261,7 @@ Public Attributes</h2></td></tr>
 <li>
 "Material" - Tells if the item can be used to craft something. </li>
 <li>
-"Tooltip" - The tooltip field of the item. </li>
-<li>
-"Tooltip2" - The tooltip2 field of the item. </li>
+"Tooltip#" - A tooltip line of the item. # will be 0 for the first line, 1 for the second, etc. </li>
 <li>
 "EtherianManaWarning" - Warning about how the item can't be used without Etherian Mana until the Eternia Crystal has been defeated. </li>
 <li>
@@ -308,10 +316,10 @@ Public Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00098">98</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_8cs_source.html#l00035">Terraria.ModLoader.Mod.Name</a>.</p>
-<div class="fragment"><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        {</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ae81fb147caadce49c7e4eca48e3be684">mod</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ae81fb147caadce49c7e4eca48e3be684">mod</a>.Name;</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#aa3cc4c9901181e7f30f9d44b33b16b3f">Name</a> = name;</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">text</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">text</a>;</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tooltip_line_html_ac0cc989c7b3960ac7af7dfa959e0d91c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">Terraria.ModLoader.TooltipLine.text</a></div><div class="ttdeci">string text</div><div class="ttdoc">The actual text that this tooltip displays. </div><div class="ttdef"><b>Definition:</b> <a href="_tooltip_line_8cs_source.html#l00022">TooltipLine.cs:22</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tooltip_line_html_aa3cc4c9901181e7f30f9d44b33b16b3f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#aa3cc4c9901181e7f30f9d44b33b16b3f">Terraria.ModLoader.TooltipLine.Name</a></div><div class="ttdeci">readonly string Name</div><div class="ttdoc">The name of the tooltip, used to help you identify its function. </div><div class="ttdef"><b>Definition:</b> <a href="_tooltip_line_8cs_source.html#l00018">TooltipLine.cs:18</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tooltip_line_html_ae81fb147caadce49c7e4eca48e3be684"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ae81fb147caadce49c7e4eca48e3be684">Terraria.ModLoader.TooltipLine.mod</a></div><div class="ttdeci">readonly string mod</div><div class="ttdoc">The name of the mod adding this tooltip line. This will be &quot;Terraria&quot; for all vanilla tooltip lines...</div><div class="ttdef"><b>Definition:</b> <a href="_tooltip_line_8cs_source.html#l00014">TooltipLine.cs:14</a></div></div>
+<p>References <a class="el" href="_mod_8cs_source.html#l00037">Terraria.ModLoader.Mod.Name</a>.</p>
+<div class="fragment"><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        {</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ae81fb147caadce49c7e4eca48e3be684">mod</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ae81fb147caadce49c7e4eca48e3be684">mod</a>.Name;</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#aa3cc4c9901181e7f30f9d44b33b16b3f">Name</a> = name;</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">text</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">text</a>;</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tooltip_line_html_ac0cc989c7b3960ac7af7dfa959e0d91c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ac0cc989c7b3960ac7af7dfa959e0d91c">Terraria.ModLoader.TooltipLine.text</a></div><div class="ttdeci">string text</div><div class="ttdoc">The actual text that this tooltip displays. </div><div class="ttdef"><b>Definition:</b> <a href="_tooltip_line_8cs_source.html#l00023">TooltipLine.cs:23</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tooltip_line_html_aa3cc4c9901181e7f30f9d44b33b16b3f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#aa3cc4c9901181e7f30f9d44b33b16b3f">Terraria.ModLoader.TooltipLine.Name</a></div><div class="ttdeci">readonly string Name</div><div class="ttdoc">The name of the tooltip, used to help you identify its function. </div><div class="ttdef"><b>Definition:</b> <a href="_tooltip_line_8cs_source.html#l00019">TooltipLine.cs:19</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tooltip_line_html_ae81fb147caadce49c7e4eca48e3be684"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html#ae81fb147caadce49c7e4eca48e3be684">Terraria.ModLoader.TooltipLine.mod</a></div><div class="ttdeci">readonly string mod</div><div class="ttdoc">The name of the mod adding this tooltip line. This will be &quot;Terraria&quot; for all vanilla tooltip lines...</div><div class="ttdef"><b>Definition:</b> <a href="_tooltip_line_8cs_source.html#l00015">TooltipLine.cs:15</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -328,9 +336,9 @@ Public Attributes</h2></td></tr>
 
 <p>Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red. </p>
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00026">26</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00027">27</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01765">Terraria.ModLoader.ItemLoader.ModifyTooltips()</a>.</p>
+<p>Referenced by <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00100">Terraria.ModLoader.DrawableTooltipLine.DrawableTooltipLine()</a>, and <a class="el" href="_item_loader_8cs_source.html#l01622">Terraria.ModLoader.ItemLoader.ModifyTooltips()</a>.</p>
 
 </div>
 </div>
@@ -346,9 +354,9 @@ Public Attributes</h2></td></tr>
 
 <p>If isModifier is true, this determines whether the tooltip is colored green or red. </p>
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00030">30</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00031">31</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01765">Terraria.ModLoader.ItemLoader.ModifyTooltips()</a>.</p>
+<p>Referenced by <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00100">Terraria.ModLoader.DrawableTooltipLine.DrawableTooltipLine()</a>, and <a class="el" href="_item_loader_8cs_source.html#l01622">Terraria.ModLoader.ItemLoader.ModifyTooltips()</a>.</p>
 
 </div>
 </div>
@@ -364,7 +372,7 @@ Public Attributes</h2></td></tr>
 
 <p>The name of the mod adding this tooltip line. This will be "Terraria" for all vanilla tooltip lines. </p>
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00014">14</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00015">15</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -380,7 +388,7 @@ Public Attributes</h2></td></tr>
 
 <p>The name of the tooltip, used to help you identify its function. </p>
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00018">18</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00019">19</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -396,7 +404,9 @@ Public Attributes</h2></td></tr>
 
 <p>This completely overrides the color the tooltip is drawn in. If it is set to null (the default value) then the tooltip's color will not be overridden. </p>
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00034">34</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00035">35</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00100">Terraria.ModLoader.DrawableTooltipLine.DrawableTooltipLine()</a>.</p>
 
 </div>
 </div>
@@ -412,7 +422,9 @@ Public Attributes</h2></td></tr>
 
 <p>The actual text that this tooltip displays. </p>
 
-<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00022">22</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tooltip_line_8cs_source.html#l00023">23</a> of file <a class="el" href="_tooltip_line_8cs_source.html">TooltipLine.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00100">Terraria.ModLoader.DrawableTooltipLine.DrawableTooltipLine()</a>.</p>
 
 </div>
 </div>

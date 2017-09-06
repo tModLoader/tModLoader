@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.ItemLoader.HookList" name="Terraria.ModLoader.ItemLoader.HookList">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this. " alt="" coords="5,109,205,136"/>
+</map>

@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['ugbgstyleloader',['UgBgStyleLoader',['../class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html',1,'Terraria::ModLoader']]],
-  ['usageexception',['UsageException',['../class_terraria_1_1_mod_loader_1_1_usage_exception.html',1,'Terraria::ModLoader']]]
+  ['recipeeditor',['RecipeEditor',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html',1,'Terraria::ModLoader']]],
+  ['recipeexception',['RecipeException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html',1,'Terraria::ModLoader::Exceptions']]],
+  ['recipefinder',['RecipeFinder',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html',1,'Terraria::ModLoader']]],
+  ['recipehooks',['RecipeHooks',['../class_terraria_1_1_mod_loader_1_1_recipe_hooks.html',1,'Terraria::ModLoader']]],
+  ['resourceloadexception',['ResourceLoadException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html',1,'Terraria::ModLoader::Exceptions']]]
 ];

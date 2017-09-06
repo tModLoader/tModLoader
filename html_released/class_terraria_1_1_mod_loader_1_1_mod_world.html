@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">0.9.1.1</span>
+   &#160;<span id="projectnumber">0.10.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -131,16 +131,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adeaf03c2c6361b70d0c0eabca94641d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#adeaf03c2c6361b70d0c0eabca94641d7">Initialize</a> ()</td></tr>
 <tr class="memdesc:adeaf03c2c6361b70d0c0eabca94641d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the world is loaded. This can be used to initialize data structures, etc.  <a href="#adeaf03c2c6361b70d0c0eabca94641d7">More...</a><br /></td></tr>
 <tr class="separator:adeaf03c2c6361b70d0c0eabca94641d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d5993331e9a2e313242e2f7ba19bedc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a2d5993331e9a2e313242e2f7ba19bedc">Load</a> (TagCompound tag)</td></tr>
+<tr class="memitem:a2d5993331e9a2e313242e2f7ba19bedc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a2d5993331e9a2e313242e2f7ba19bedc">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:a2d5993331e9a2e313242e2f7ba19bedc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data you have saved for this world.  <a href="#a2d5993331e9a2e313242e2f7ba19bedc">More...</a><br /></td></tr>
 <tr class="separator:a2d5993331e9a2e313242e2f7ba19bedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af48790520c83765471a8b7a16888d605"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#af48790520c83765471a8b7a16888d605">LoadLegacy</a> (BinaryReader reader)</td></tr>
+<tr class="memitem:af48790520c83765471a8b7a16888d605"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#af48790520c83765471a8b7a16888d605">LoadLegacy</a> (<a class="el" href="class_binary_reader.html">BinaryReader</a> reader)</td></tr>
 <tr class="memdesc:af48790520c83765471a8b7a16888d605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load pre-v0.9 custom data you have saved for this world.  <a href="#af48790520c83765471a8b7a16888d605">More...</a><br /></td></tr>
 <tr class="separator:af48790520c83765471a8b7a16888d605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80b0fd5f98d260664332ce94b185e1a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a80b0fd5f98d260664332ce94b185e1a4">ModifyWorldGenTasks</a> (List&lt; GenPass &gt; tasks, ref float totalWeight)</td></tr>
 <tr class="memdesc:a80b0fd5f98d260664332ce94b185e1a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon.  <a href="#a80b0fd5f98d260664332ce94b185e1a4">More...</a><br /></td></tr>
 <tr class="separator:a80b0fd5f98d260664332ce94b185e1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf20d147cc364d10b4b137999b5c26b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#aaf20d147cc364d10b4b137999b5c26b5">NetReceive</a> (BinaryReader reader)</td></tr>
+<tr class="memitem:aaf20d147cc364d10b4b137999b5c26b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#aaf20d147cc364d10b4b137999b5c26b5">NetReceive</a> (<a class="el" href="class_binary_reader.html">BinaryReader</a> reader)</td></tr>
 <tr class="memdesc:aaf20d147cc364d10b4b137999b5c26b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do things with custom data that is received between clients and server.  <a href="#aaf20d147cc364d10b4b137999b5c26b5">More...</a><br /></td></tr>
 <tr class="separator:aaf20d147cc364d10b4b137999b5c26b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58fe0616b0c4135ec038025e67268561"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a58fe0616b0c4135ec038025e67268561">NetSend</a> (<a class="el" href="class_binary_writer.html">BinaryWriter</a> writer)</td></tr>
@@ -164,7 +164,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9c34c46918ff1d37ddd3d814cfae121f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a9c34c46918ff1d37ddd3d814cfae121f">ResetNearbyTileEffects</a> ()</td></tr>
 <tr class="memdesc:a9c34c46918ff1d37ddd3d814cfae121f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to reset any fields you set in any of your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a10cca98611fc831d5d06c1f53644996a" title="Allows you to make things happen when this tile is within a certain range of the player (around the s...">ModTile.NearbyEffects</a> hooks back to their default values.  <a href="#a9c34c46918ff1d37ddd3d814cfae121f">More...</a><br /></td></tr>
 <tr class="separator:a9c34c46918ff1d37ddd3d814cfae121f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af88355a462a040293fa29556b8279aea"><td class="memItemLeft" align="right" valign="top">virtual TagCompound&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#af88355a462a040293fa29556b8279aea">Save</a> ()</td></tr>
+<tr class="memitem:af88355a462a040293fa29556b8279aea"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#af88355a462a040293fa29556b8279aea">Save</a> ()</td></tr>
 <tr class="memdesc:af88355a462a040293fa29556b8279aea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.  <a href="#af88355a462a040293fa29556b8279aea">More...</a><br /></td></tr>
 <tr class="separator:af88355a462a040293fa29556b8279aea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60089c548af2378c1baec051cb7a86bb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a60089c548af2378c1baec051cb7a86bb">TileCountsAvailable</a> (int[] tileCounts)</td></tr>
@@ -211,8 +211,8 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00035">35</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01686">Terraria.ModLoader.Mod.AutoloadModWorld()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a478f12391dc74bb1571c3c3f4a10f0d6">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00045">Mod.cs:45</a></div></div>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01515">Terraria.ModLoader.Mod.AutoloadModWorld()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a478f12391dc74bb1571c3c3f4a10f0d6">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00047">Mod.cs:47</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_world_html_a478f12391dc74bb1571c3c3f4a10f0d6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a478f12391dc74bb1571c3c3f4a10f0d6">Terraria.ModLoader.ModWorld.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod that added this type of ModWorld. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_world_8cs_source.html#l00018">ModWorld.cs:18</a></div></div>
 </div><!-- fragment -->
@@ -223,7 +223,7 @@ Properties</h2></td></tr>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_ada5461d774c15becc93f19ef5f66c1e1_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_ada5461d774c15becc93f19ef5f66c1e1_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_ada5461d774c15becc93f19ef5f66c1e1_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_ada5461d774c15becc93f19ef5f66c1e1_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#add23821649453480685af3af217c19f0" title="Terraria.ModLoader.Mod.Autoload\lModWorld" alt="" coords="256,5,475,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod.html#add23821649453480685af3af217c19f0" title="Terraria.ModLoader.Mod.Autoload\lModWorld" alt="" coords="256,5,475,46"/>
 </map>
 </div>
 </p>
@@ -265,8 +265,8 @@ Properties</h2></td></tr>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a19083066738a43f6c572b12874aaaf85_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a19083066738a43f6c572b12874aaaf85_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_a19083066738a43f6c572b12874aaaf85_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_a19083066738a43f6c572b12874aaaf85_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#aea14ab9f4f7eb78bc10e93acfe8e895b" title="Terraria.ModLoader.World\lHooks.ChooseWaterStyle" alt="" coords="257,5,431,51"/>
-<area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_water_style_loader.html#a306112e44bb7c3dd458ebf3e9b65e370" title="Terraria.ModLoader.Water\lStyleLoader.ChooseWaterStyle" alt="" coords="480,5,685,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#aea14ab9f4f7eb78bc10e93acfe8e895b" title="Terraria.ModLoader.World\lHooks.ChooseWaterStyle" alt="" coords="257,5,431,46"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_water_style_loader.html#a306112e44bb7c3dd458ebf3e9b65e370" title="Terraria.ModLoader.Water\lStyleLoader.ChooseWaterStyle" alt="" coords="480,5,685,46"/>
 </map>
 </div>
 </p>
@@ -310,7 +310,7 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">virtual void Terraria.ModLoader.ModWorld.Load </td>
           <td>(</td>
-          <td class="paramtype">TagCompound&#160;</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
           <td class="paramname"><em>tag</em></td><td>)</td>
           <td></td>
         </tr>
@@ -338,7 +338,7 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">virtual void Terraria.ModLoader.ModWorld.LoadLegacy </td>
           <td>(</td>
-          <td class="paramtype">BinaryReader&#160;</td>
+          <td class="paramtype"><a class="el" href="class_binary_reader.html">BinaryReader</a>&#160;</td>
           <td class="paramname"><em>reader</em></td><td>)</td>
           <td></td>
         </tr>
@@ -401,7 +401,7 @@ Properties</h2></td></tr>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a80b0fd5f98d260664332ce94b185e1a4_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a80b0fd5f98d260664332ce94b185e1a4_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_a80b0fd5f98d260664332ce94b185e1a4_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_a80b0fd5f98d260664332ce94b185e1a4_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#aeaa74cf9e43464087675aec49a714f33" title="Terraria.ModLoader.World\lHooks.ModifyWorldGenTasks" alt="" coords="256,5,453,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#aeaa74cf9e43464087675aec49a714f33" title="Terraria.ModLoader.World\lHooks.ModifyWorldGenTasks" alt="" coords="256,5,453,46"/>
 </map>
 </div>
 </p>
@@ -418,7 +418,7 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">virtual void Terraria.ModLoader.ModWorld.NetReceive </td>
           <td>(</td>
-          <td class="paramtype">BinaryReader&#160;</td>
+          <td class="paramtype"><a class="el" href="class_binary_reader.html">BinaryReader</a>&#160;</td>
           <td class="paramname"><em>reader</em></td><td>)</td>
           <td></td>
         </tr>
@@ -498,7 +498,7 @@ Properties</h2></td></tr>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_ab3310e15636ae38f138979d54dbe4b35_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_ab3310e15636ae38f138979d54dbe4b35_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_ab3310e15636ae38f138979d54dbe4b35_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_ab3310e15636ae38f138979d54dbe4b35_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#ad2a51d34d159dcab668a3a546648bd6b" title="Terraria.ModLoader.World\lHooks.PostDrawTiles" alt="" coords="257,5,428,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#ad2a51d34d159dcab668a3a546648bd6b" title="Terraria.ModLoader.World\lHooks.PostDrawTiles" alt="" coords="257,5,429,46"/>
 </map>
 </div>
 </p>
@@ -539,7 +539,7 @@ Properties</h2></td></tr>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a8aeb836a6fba220225717e124c2d6312_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a8aeb836a6fba220225717e124c2d6312_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_a8aeb836a6fba220225717e124c2d6312_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_a8aeb836a6fba220225717e124c2d6312_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#a9216806d65e8d1bf13e682f141efb28d" title="Terraria.ModLoader.World\lHooks.PostUpdate" alt="" coords="257,5,428,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#a9216806d65e8d1bf13e682f141efb28d" title="Terraria.ModLoader.World\lHooks.PostUpdate" alt="" coords="257,5,429,46"/>
 </map>
 </div>
 </p>
@@ -580,7 +580,7 @@ Properties</h2></td></tr>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a822fd4813716b16996815d746e6f1b42_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a822fd4813716b16996815d746e6f1b42_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_a822fd4813716b16996815d746e6f1b42_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_a822fd4813716b16996815d746e6f1b42_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#acb01c87e23c6d080a47af406bf4ea84c" title="Terraria.ModLoader.World\lHooks.PostWorldGen" alt="" coords="257,5,428,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#acb01c87e23c6d080a47af406bf4ea84c" title="Terraria.ModLoader.World\lHooks.PostWorldGen" alt="" coords="257,5,429,46"/>
 </map>
 </div>
 </p>
@@ -621,7 +621,7 @@ Properties</h2></td></tr>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_ad1e9ea8fc667b3e439e26edf7289cdaf_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_ad1e9ea8fc667b3e439e26edf7289cdaf_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_ad1e9ea8fc667b3e439e26edf7289cdaf_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_ad1e9ea8fc667b3e439e26edf7289cdaf_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#ac20f66cf108700570f22952f7407bb23" title="Terraria.ModLoader.World\lHooks.PreUpdate" alt="" coords="257,5,428,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#ac20f66cf108700570f22952f7407bb23" title="Terraria.ModLoader.World\lHooks.PreUpdate" alt="" coords="257,5,429,46"/>
 </map>
 </div>
 </p>
@@ -662,7 +662,7 @@ Properties</h2></td></tr>
 <div id="dynsection-7-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a8cd6d1e08c6aadfc53a037d6aee2f7d7_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a8cd6d1e08c6aadfc53a037d6aee2f7d7_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_a8cd6d1e08c6aadfc53a037d6aee2f7d7_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_a8cd6d1e08c6aadfc53a037d6aee2f7d7_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#aca6b91ace0f880cd8d6e056065353932" title="Terraria.ModLoader.World\lHooks.PreWorldGen" alt="" coords="257,5,428,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#aca6b91ace0f880cd8d6e056065353932" title="Terraria.ModLoader.World\lHooks.PreWorldGen" alt="" coords="257,5,429,46"/>
 </map>
 </div>
 </p>
@@ -703,7 +703,7 @@ Properties</h2></td></tr>
 <div id="dynsection-8-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a9c34c46918ff1d37ddd3d814cfae121f_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a9c34c46918ff1d37ddd3d814cfae121f_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_a9c34c46918ff1d37ddd3d814cfae121f_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_a9c34c46918ff1d37ddd3d814cfae121f_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#af325d22b83091f0f38f8661f5954d2fe" title="Terraria.ModLoader.World\lHooks.ResetNearbyTileEffects" alt="" coords="257,5,460,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#af325d22b83091f0f38f8661f5954d2fe" title="Terraria.ModLoader.World\lHooks.ResetNearbyTileEffects" alt="" coords="257,5,461,46"/>
 </map>
 </div>
 </p>
@@ -718,7 +718,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual TagCompound Terraria.ModLoader.ModWorld.Save </td>
+          <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> Terraria.ModLoader.ModWorld.Save </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -772,7 +772,7 @@ Properties</h2></td></tr>
 <div id="dynsection-9-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_world_a60089c548af2378c1baec051cb7a86bb_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_world_a60089c548af2378c1baec051cb7a86bb_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_world_a60089c548af2378c1baec051cb7a86bb_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_world_a60089c548af2378c1baec051cb7a86bb_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#afac834cbc27b096e172caec25c45fff0" title="Terraria.ModLoader.World\lHooks.TileCountsAvailable" alt="" coords="257,5,436,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#afac834cbc27b096e172caec25c45fff0" title="Terraria.ModLoader.World\lHooks.TileCountsAvailable" alt="" coords="257,5,437,46"/>
 </map>
 </div>
 </p>
@@ -802,7 +802,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01678">Terraria.ModLoader.Mod.AddModWorld()</a>, and <a class="el" href="_mod_8cs_source.html#l01686">Terraria.ModLoader.Mod.AutoloadModWorld()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01503">Terraria.ModLoader.Mod.AddModWorld()</a>, and <a class="el" href="_mod_8cs_source.html#l01515">Terraria.ModLoader.Mod.AutoloadModWorld()</a>.</p>
 
 </div>
 </div>
@@ -828,7 +828,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_world_8cs_source.html#l00027">27</a> of file <a class="el" href="_mod_world_8cs_source.html">ModWorld.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01678">Terraria.ModLoader.Mod.AddModWorld()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01503">Terraria.ModLoader.Mod.AddModWorld()</a>.</p>
 
 </div>
 </div>

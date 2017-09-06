@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">0.9.1.1</span>
+   &#160;<span id="projectnumber">0.10.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -110,6 +110,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_glob
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -119,6 +120,15 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_glob
 
 <p>This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a819d35ecbf232095887b7c7c5f548624" title="Adds the given GlobalNPC instance to this mod with the provided name. ">Mod.AddGlobalNPC</a> to use this.  
  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#details">More...</a></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.GlobalNPC:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c__coll__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_global_n_p_c_coll__map" alt="Collaboration graph"/></div>
+<map name="_terraria_8_mod_loader_8_global_n_p_c_coll__map" id="_terraria_8_mod_loader_8_global_n_p_c_coll__map">
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -158,6 +168,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afe194f5179f9af5463ef4bded6ae3a2f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afe194f5179f9af5463ef4bded6ae3a2f">CheckDead</a> (NPC npc)</td></tr>
 <tr class="memdesc:afe194f5179f9af5463ef4bded6ae3a2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not an NPC should be killed when it reaches 0 health. You may program extra effects in this hook (for example, how Golem's head lifts up for the second phase of its fight). Return false to stop the NPC from being killed. Returns true by default.  <a href="#afe194f5179f9af5463ef4bded6ae3a2f">More...</a><br /></td></tr>
 <tr class="separator:afe194f5179f9af5463ef4bded6ae3a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a032e3518c1fa6ba47fe8042abe16c76a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a">Clone</a> ()</td></tr>
+<tr class="memdesc:a032e3518c1fa6ba47fe8042abe16c76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a>. By default this will return a memberwise clone; you will want to override this if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a> contains object references. Only called if CloneNewInstances &amp;&amp; InstancePerEntity  <a href="#a032e3518c1fa6ba47fe8042abe16c76a">More...</a><br /></td></tr>
+<tr class="separator:a032e3518c1fa6ba47fe8042abe16c76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace0105b7dd87ff07bd2af18fe0e9ac18"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ace0105b7dd87ff07bd2af18fe0e9ac18">DrawEffects</a> (NPC npc, ref Color drawColor)</td></tr>
 <tr class="memdesc:ace0105b7dd87ff07bd2af18fe0e9ac18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add special visual effects to an NPC (such as creating dust), and modify the color in which the NPC is drawn.  <a href="#ace0105b7dd87ff07bd2af18fe0e9ac18">More...</a><br /></td></tr>
 <tr class="separator:ace0105b7dd87ff07bd2af18fe0e9ac18"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,6 +204,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afc85c885fbec3533348e87c8def9d886"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afc85c885fbec3533348e87c8def9d886">HitEffect</a> (NPC npc, int hitDirection, double damage)</td></tr>
 <tr class="memdesc:afc85c885fbec3533348e87c8def9d886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.  <a href="#afc85c885fbec3533348e87c8def9d886">More...</a><br /></td></tr>
 <tr class="separator:afc85c885fbec3533348e87c8def9d886"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a864f48a10f6273f77c6a089b9baa8e4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c">Instance</a> (NPC npc)</td></tr>
+<tr class="separator:a864f48a10f6273f77c6a089b9baa8e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9410b2762d11538846575e7074584a55"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a9410b2762d11538846575e7074584a55">ModifyHitByItem</a> (NPC npc, Player player, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, ref int damage, ref float knockback, ref bool crit)</td></tr>
 <tr class="memdesc:a9410b2762d11538846575e7074584a55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that an NPC takes from a melee weapon.  <a href="#a9410b2762d11538846575e7074584a55">More...</a><br /></td></tr>
 <tr class="separator:a9410b2762d11538846575e7074584a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,6 +218,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a92f1db23976a52d729126ade137063fc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a92f1db23976a52d729126ade137063fc">ModifyHitPlayer</a> (NPC npc, Player target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:a92f1db23976a52d729126ade137063fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that an NPC does to a player.  <a href="#a92f1db23976a52d729126ade137063fc">More...</a><br /></td></tr>
 <tr class="separator:a92f1db23976a52d729126ade137063fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae35c6fc2967d4631b20e4cd4d7a51bb6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ae35c6fc2967d4631b20e4cd4d7a51bb6">NewInstance</a> (NPC npc)</td></tr>
+<tr class="memdesc:ae35c6fc2967d4631b20e4cd4d7a51bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new instance of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a> for an NPC instance. Called at the end of NPC.SetDefaults. If CloneNewInstances is true, just calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a" title="Returns a clone of this GlobalNPC. By default this will return a memberwise clone; you will want to o...">Clone()</a> Otherwise calls the default constructor and copies fields  <a href="#ae35c6fc2967d4631b20e4cd4d7a51bb6">More...</a><br /></td></tr>
+<tr class="separator:ae35c6fc2967d4631b20e4cd4d7a51bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae624b063ab6ddbaefdae0d2db8ecc5fa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ae624b063ab6ddbaefdae0d2db8ecc5fa">NPCLoot</a> (NPC npc)</td></tr>
 <tr class="memdesc:ae624b063ab6ddbaefdae0d2db8ecc5fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add drops to an NPC when it dies.  <a href="#ae624b063ab6ddbaefdae0d2db8ecc5fa">More...</a><br /></td></tr>
 <tr class="separator:ae624b063ab6ddbaefdae0d2db8ecc5fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,7 +264,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a5fd0754440bfc039de5425b200c202a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to a town NPC's shop. The type parameter is the type of the NPC that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.  <a href="#a5fd0754440bfc039de5425b200c202a1">More...</a><br /></td></tr>
 <tr class="separator:a5fd0754440bfc039de5425b200c202a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5308b71c2f3c6a7bb89235399295ca24"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5308b71c2f3c6a7bb89235399295ca24">SetupTravelShop</a> (int[] shop, ref int nextSlot)</td></tr>
-<tr class="memdesc:a5308b71c2f3c6a7bb89235399295ca24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to the travelling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.  <a href="#a5308b71c2f3c6a7bb89235399295ca24">More...</a><br /></td></tr>
+<tr class="memdesc:a5308b71c2f3c6a7bb89235399295ca24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to the traveling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.  <a href="#a5308b71c2f3c6a7bb89235399295ca24">More...</a><br /></td></tr>
 <tr class="separator:a5308b71c2f3c6a7bb89235399295ca24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8688307b3c52dfbb5ffd3511502a4eba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a8688307b3c52dfbb5ffd3511502a4eba">SpawnNPC</a> (int npc, int tileX, int tileY)</td></tr>
 <tr class="memdesc:a8688307b3c52dfbb5ffd3511502a4eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize an NPC (for example, its position or ai array) after it naturally spawns and before it is synced between servers and clients. As of right now, this only works for modded NPCs.  <a href="#a8688307b3c52dfbb5ffd3511502a4eba">More...</a><br /></td></tr>
@@ -278,6 +296,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6e84a3d90afc82add5f85b9ebe6a7031"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6e84a3d90afc82add5f85b9ebe6a7031">UpdateLifeRegen</a> (NPC npc, ref int damage)</td></tr>
 <tr class="memdesc:a6e84a3d90afc82add5f85b9ebe6a7031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make the NPC either regenerate health or take damage over time by setting npc.lifeRegen. Regeneration or damage will occur at a rate of half of npc.lifeRegen per second. The damage parameter is the number that appears above the NPC's head if it takes damage over time.  <a href="#a6e84a3d90afc82add5f85b9ebe6a7031">More...</a><br /></td></tr>
 <tr class="separator:a6e84a3d90afc82add5f85b9ebe6a7031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:adda48aad4cbc0f80e96bd8fa2794cfa1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adda48aad4cbc0f80e96bd8fa2794cfa1">CloneNewInstances</a> =&gt; false</td></tr>
+<tr class="memdesc:adda48aad4cbc0f80e96bd8fa2794cfa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether instances of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a> are created through Clone or constructor (by default implementations of NewInstance and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a" title="Returns a clone of this GlobalNPC. By default this will return a memberwise clone; you will want to o...">Clone()</a>). Defaults to false (using default constructor).  <a href="#adda48aad4cbc0f80e96bd8fa2794cfa1">More...</a><br /></td></tr>
+<tr class="separator:adda48aad4cbc0f80e96bd8fa2794cfa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c6ef4102eb089da4f7623a0ffce2647"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7c6ef4102eb089da4f7623a0ffce2647">InstancePerEntity</a> =&gt; false</td></tr>
+<tr class="memdesc:a7c6ef4102eb089da4f7623a0ffce2647"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a> instance for every NPC that exists. Useful for storing information on a projectile. Defaults to false. Return true if you need to store information (have non-static fields).  <a href="#a7c6ef4102eb089da4f7623a0ffce2647">More...</a><br /></td></tr>
+<tr class="separator:a7c6ef4102eb089da4f7623a0ffce2647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -323,8 +350,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00082">82</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00127">127</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00296">Terraria.ModLoader.NPCLoader.AI()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        {</div><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ac1efc5e92490b33dfe9a87a80f9120e8_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_ac1efc5e92490b33dfe9a87a80f9120e8_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ac1efc5e92490b33dfe9a87a80f9120e8_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ac1efc5e92490b33dfe9a87a80f9120e8_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a2bb9e4d7da1b0a8fa9ba4b67333464b6" title="Terraria.ModLoader.NPCLoader.AI" alt="" coords="230,12,453,39"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a7152e134e1faf0fa685644c3e6f6b1f2"></a>
@@ -358,21 +399,21 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00037">37</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00040">40</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01382">Terraria.ModLoader.Mod.AutoloadGlobalNPC()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6eb09d9200be3aa4d6764ab99aadb692">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00045">Mod.cs:45</a></div></div>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01250">Terraria.ModLoader.Mod.AutoloadGlobalNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6eb09d9200be3aa4d6764ab99aadb692">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00047">Mod.cs:47</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_html_a6eb09d9200be3aa4d6764ab99aadb692"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6eb09d9200be3aa4d6764ab99aadb692">Terraria.ModLoader.GlobalNPC.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod to which this GlobalNPC belongs. </div><div class="ttdef"><b>Definition:</b> <a href="_global_n_p_c_8cs_source.html#l00018">GlobalNPC.cs:18</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 </div><!-- fragment -->
-<p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a7152e134e1faf0fa685644c3e6f6b1f2_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a7152e134e1faf0fa685644c3e6f6b1f2_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a7152e134e1faf0fa685644c3e6f6b1f2_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a7152e134e1faf0fa685644c3e6f6b1f2_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#a1c5b8c3e6d7c699874ee694eca37342b" title="Terraria.ModLoader.Mod.Autoload\lGlobalNPC" alt="" coords="229,5,448,51"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod.html#a1c5b8c3e6d7c699874ee694eca37342b" title="Terraria.ModLoader.Mod.Autoload\lGlobalNPC" alt="" coords="229,5,448,46"/>
 </map>
 </div>
 </p>
@@ -420,8 +461,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00332">332</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        {</div><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00377">377</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00735">Terraria.ModLoader.NPCLoader.BossHeadRotation()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        {</div><div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a32f03b80183f2f3ed91b04e7ef5d5b90_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a32f03b80183f2f3ed91b04e7ef5d5b90_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a32f03b80183f2f3ed91b04e7ef5d5b90_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a32f03b80183f2f3ed91b04e7ef5d5b90_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa1da2988491c15c050483597e984bd7a" title="Terraria.ModLoader.NPCLoader.\lBossHeadRotation" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a48c4ea8449da01368c7af1924252e5f6"></a>
@@ -465,8 +520,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00323">323</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        {</div><div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00368">368</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00722">Terraria.ModLoader.NPCLoader.BossHeadSlot()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        {</div><div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a48c4ea8449da01368c7af1924252e5f6_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a48c4ea8449da01368c7af1924252e5f6_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a48c4ea8449da01368c7af1924252e5f6_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a48c4ea8449da01368c7af1924252e5f6_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa16baedc558a8f7156d20f4cefaf283d" title="Terraria.ModLoader.NPCLoader.\lBossHeadSlot" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="aa78b6d2dc1f37317d4faefafaf4637d6"></a>
@@ -510,8 +579,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00341">341</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        {</div><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00386">386</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00748">Terraria.ModLoader.NPCLoader.BossHeadSpriteEffects()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        {</div><div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa78b6d2dc1f37317d4faefafaf4637d6_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa78b6d2dc1f37317d4faefafaf4637d6_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa78b6d2dc1f37317d4faefafaf4637d6_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa78b6d2dc1f37317d4faefafaf4637d6_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#af39b1056d061ac83ee853534333cd326" title="Terraria.ModLoader.NPCLoader.\lBossHeadSpriteEffects" alt="" coords="245,5,456,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ad6815d7134a83a69d25be338163ad6fb"></a>
@@ -555,8 +638,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00475">475</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        {</div><div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00520">520</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01051">Terraria.ModLoader.NPCLoader.BuffTownNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;        {</div><div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ad6815d7134a83a69d25be338163ad6fb_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_ad6815d7134a83a69d25be338163ad6fb_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ad6815d7134a83a69d25be338163ad6fb_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ad6815d7134a83a69d25be338163ad6fb_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae90339e990dbc9b5a350cc4c1550abe6" title="Terraria.ModLoader.NPCLoader.\lBuffTownNPC" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a8a8948f57d8156ed7b13d760ffda0154"></a>
@@ -608,8 +705,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00236">236</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        {</div><div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00281">281</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00587">Terraria.ModLoader.NPCLoader.CanBeHitByItem()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        {</div><div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a8a8948f57d8156ed7b13d760ffda0154_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a8a8948f57d8156ed7b13d760ffda0154_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a8a8948f57d8156ed7b13d760ffda0154_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a8a8948f57d8156ed7b13d760ffda0154_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a7ac970581b8d00d001db8bdd1cac4ec0" title="Terraria.ModLoader.NPCLoader.\lCanBeHitByItem" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a9483fdc82dc3294e8f50191b1f1f1121"></a>
@@ -654,8 +765,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00273">273</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        {</div><div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00318">318</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00644">Terraria.ModLoader.NPCLoader.CanBeHitByProjectile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        {</div><div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9483fdc82dc3294e8f50191b1f1f1121_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9483fdc82dc3294e8f50191b1f1f1121_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9483fdc82dc3294e8f50191b1f1f1121_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9483fdc82dc3294e8f50191b1f1f1121_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1c3d7a33153e964db6ca98da6d68e5b7" title="Terraria.ModLoader.NPCLoader.\lCanBeHitByProjectile" alt="" coords="237,5,448,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a0ebcb43077d038de14443397d26783bc"></a>
@@ -700,8 +825,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00200">200</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        {</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00245">245</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00531">Terraria.ModLoader.NPCLoader.CanHitNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        {</div><div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a0ebcb43077d038de14443397d26783bc_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a0ebcb43077d038de14443397d26783bc_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a0ebcb43077d038de14443397d26783bc_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a0ebcb43077d038de14443397d26783bc_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#acd53a343c7b7a511a8bef1713f85c252" title="Terraria.ModLoader.NPCLoader.\lCanHitNPC" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a12bf30524cc768e5152513a2af03f129"></a>
@@ -753,8 +892,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00167">167</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        {</div><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00212">212</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00488">Terraria.ModLoader.NPCLoader.CanHitPlayer()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        {</div><div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a12bf30524cc768e5152513a2af03f129_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a12bf30524cc768e5152513a2af03f129_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a12bf30524cc768e5152513a2af03f129_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a12bf30524cc768e5152513a2af03f129_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a63b2cd7eeb45cf94841081141a22290d" title="Terraria.ModLoader.NPCLoader.\lCanHitPlayer" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a6803569c436f2938d5ac711920e706ec"></a>
@@ -788,8 +941,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00127">127</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        {</div><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00172">172</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00405">Terraria.ModLoader.NPCLoader.CheckActive()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        {</div><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6803569c436f2938d5ac711920e706ec_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6803569c436f2938d5ac711920e706ec_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6803569c436f2938d5ac711920e706ec_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6803569c436f2938d5ac711920e706ec_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a526fc0a42931cb2713fab4d7bf9b11c2" title="Terraria.ModLoader.NPCLoader.\lCheckActive" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="afe194f5179f9af5463ef4bded6ae3a2f"></a>
@@ -823,8 +990,47 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00137">137</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        {</div><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00182">182</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00423">Terraria.ModLoader.NPCLoader.CheckDead()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        {</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-12-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afe194f5179f9af5463ef4bded6ae3a2f_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_afe194f5179f9af5463ef4bded6ae3a2f_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afe194f5179f9af5463ef4bded6ae3a2f_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afe194f5179f9af5463ef4bded6ae3a2f_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a48a2a6cd32cfb8e19522bad443d8f1b9" title="Terraria.ModLoader.NPCLoader.\lCheckDead" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a032e3518c1fa6ba47fe8042abe16c76a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a> Terraria.ModLoader.GlobalNPC.Clone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a>. By default this will return a memberwise clone; you will want to override this if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a> contains object references. Only called if CloneNewInstances &amp;&amp; InstancePerEntity </p>
+
 </div>
 </div>
 <a class="anchor" id="ace0105b7dd87ff07bd2af18fe0e9ac18"></a>
@@ -868,8 +1074,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00361">361</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        {</div><div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00406">406</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00776">Terraria.ModLoader.NPCLoader.DrawEffects()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        {</div><div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ace0105b7dd87ff07bd2af18fe0e9ac18_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_ace0105b7dd87ff07bd2af18fe0e9ac18_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ace0105b7dd87ff07bd2af18fe0e9ac18_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ace0105b7dd87ff07bd2af18fe0e9ac18_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a77de68f9e0a9fad85ae584dea1dea0db" title="Terraria.ModLoader.NPCLoader.\lDrawEffects" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="adc16e7b8d69586c145c4aedcb1fd4793"></a>
@@ -928,8 +1148,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00395">395</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        {</div><div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00440">440</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00819">Terraria.ModLoader.NPCLoader.DrawHealthBar()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;        {</div><div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_adc16e7b8d69586c145c4aedcb1fd4793_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_adc16e7b8d69586c145c4aedcb1fd4793_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_adc16e7b8d69586c145c4aedcb1fd4793_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_adc16e7b8d69586c145c4aedcb1fd4793_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa4afa26b4eff5da6e0bfa5ba3498c46a" title="Terraria.ModLoader.NPCLoader.\lDrawHealthBar" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="add58c2912ac317a9df0026b450795544"></a>
@@ -987,8 +1221,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00556">556</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;        {</div><div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00601">601</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01170">Terraria.ModLoader.NPCLoader.DrawTownAttackGun()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        {</div><div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_add58c2912ac317a9df0026b450795544_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_add58c2912ac317a9df0026b450795544_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_add58c2912ac317a9df0026b450795544_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_add58c2912ac317a9df0026b450795544_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a27c5e949870baf11ceee684e69e0a304" title="Terraria.ModLoader.NPCLoader.\lDrawTownAttackGun" alt="" coords="235,5,445,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ab83733793daf4ce80ae788b666008038"></a>
@@ -1053,8 +1301,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00568">568</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;        {</div><div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00613">613</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01183">Terraria.ModLoader.NPCLoader.DrawTownAttackSwing()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        {</div><div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-16" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-16-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-16-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab83733793daf4ce80ae788b666008038_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab83733793daf4ce80ae788b666008038_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab83733793daf4ce80ae788b666008038_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab83733793daf4ce80ae788b666008038_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d42f1287620918ddde638bd9e30b2e6" title="Terraria.ModLoader.NPCLoader.\lDrawTownAttackSwing" alt="" coords="245,5,456,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="af1732616b382d9e346a26763475188b0"></a>
@@ -1098,8 +1360,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00428">428</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        {</div><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00473">473</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00889">Terraria.ModLoader.NPCLoader.ChooseSpawn()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;        {</div><div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-17-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_af1732616b382d9e346a26763475188b0_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_af1732616b382d9e346a26763475188b0_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_af1732616b382d9e346a26763475188b0_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_af1732616b382d9e346a26763475188b0_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aaa7043a82d3c1939e83ac03b1e0b9624" title="Terraria.ModLoader.NPCLoader.\lChooseSpawn" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="aa1d334e4354e574e6660581805280b23"></a>
@@ -1164,8 +1440,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00418">418</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        {</div><div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00463">463</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00878">Terraria.ModLoader.NPCLoader.EditSpawnRange()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;        {</div><div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-18" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-18-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-18-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa1d334e4354e574e6660581805280b23_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa1d334e4354e574e6660581805280b23_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa1d334e4354e574e6660581805280b23_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa1d334e4354e574e6660581805280b23_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aecd6e6cc37c287e1d477db243364b0b9" title="Terraria.ModLoader.NPCLoader.\lEditSpawnRange" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a63bf497418d5bbb5592355a2f44f31a5"></a>
@@ -1216,8 +1506,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00406">406</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        {</div><div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00451">451</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00866">Terraria.ModLoader.NPCLoader.EditSpawnRate()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        {</div><div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a63bf497418d5bbb5592355a2f44f31a5_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a63bf497418d5bbb5592355a2f44f31a5_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a63bf497418d5bbb5592355a2f44f31a5_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a63bf497418d5bbb5592355a2f44f31a5_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa3c1075b462bc4c9bccb800492ad1c18" title="Terraria.ModLoader.NPCLoader.\lEditSpawnRate" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="afc7c47edce64235c1ba8d3b2a27aac4d"></a>
@@ -1261,8 +1565,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00099">99</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        {</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00144">144</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00360">Terraria.ModLoader.NPCLoader.FindFrame()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        {</div><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-20-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afc7c47edce64235c1ba8d3b2a27aac4d_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_afc7c47edce64235c1ba8d3b2a27aac4d_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afc7c47edce64235c1ba8d3b2a27aac4d_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afc7c47edce64235c1ba8d3b2a27aac4d_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a85e38f99d20e965819ec24fcfec3862f" title="Terraria.ModLoader.NPCLoader.\lFindFrame" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="aba82de7c491099bc5dfb1f2cc07d53f1"></a>
@@ -1307,8 +1625,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00351">351</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        {</div><div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00396">396</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00760">Terraria.ModLoader.NPCLoader.GetAlpha()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        {</div><div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-21" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-21-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aba82de7c491099bc5dfb1f2cc07d53f1_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_aba82de7c491099bc5dfb1f2cc07d53f1_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aba82de7c491099bc5dfb1f2cc07d53f1_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aba82de7c491099bc5dfb1f2cc07d53f1_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a8ebe0017ce5f3a56d716da86b0caa0d9" title="Terraria.ModLoader.NPCLoader.\lGetAlpha" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a6c91f67acd9fa2ca3438c641da5e0875"></a>
@@ -1352,8 +1684,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00447">447</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        {</div><div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00492">492</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00979">Terraria.ModLoader.NPCLoader.GetChat()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;        {</div><div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-22" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-22-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-22-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6c91f67acd9fa2ca3438c641da5e0875_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6c91f67acd9fa2ca3438c641da5e0875_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6c91f67acd9fa2ca3438c641da5e0875_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6c91f67acd9fa2ca3438c641da5e0875_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a17a1702387104df6ae41300e4b7bfb7c" title="Terraria.ModLoader.NPCLoader.\lGetChat" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="afc85c885fbec3533348e87c8def9d886"></a>
@@ -1404,8 +1750,95 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00109">109</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        {</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00154">154</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00379">Terraria.ModLoader.NPCLoader.HitEffect()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        {</div><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-23" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-23-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-23-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afc85c885fbec3533348e87c8def9d886_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_afc85c885fbec3533348e87c8def9d886_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afc85c885fbec3533348e87c8def9d886_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afc85c885fbec3533348e87c8def9d886_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1f87c81d569643d4b88d271ba22f3c5b" title="Terraria.ModLoader.NPCLoader.\lHitEffect" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a864f48a10f6273f77c6a089b9baa8e4c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a> Terraria.ModLoader.GlobalNPC.Instance </td>
+          <td>(</td>
+          <td class="paramtype">NPC&#160;</td>
+          <td class="paramname"><em>npc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00296">Terraria.ModLoader.NPCLoader.AI()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00735">Terraria.ModLoader.NPCLoader.BossHeadRotation()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00722">Terraria.ModLoader.NPCLoader.BossHeadSlot()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00748">Terraria.ModLoader.NPCLoader.BossHeadSpriteEffects()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00587">Terraria.ModLoader.NPCLoader.CanBeHitByItem()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00644">Terraria.ModLoader.NPCLoader.CanBeHitByProjectile()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00531">Terraria.ModLoader.NPCLoader.CanHitNPC()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00488">Terraria.ModLoader.NPCLoader.CanHitPlayer()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00405">Terraria.ModLoader.NPCLoader.CheckActive()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00423">Terraria.ModLoader.NPCLoader.CheckDead()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00776">Terraria.ModLoader.NPCLoader.DrawEffects()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00819">Terraria.ModLoader.NPCLoader.DrawHealthBar()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01170">Terraria.ModLoader.NPCLoader.DrawTownAttackGun()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01183">Terraria.ModLoader.NPCLoader.DrawTownAttackSwing()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00360">Terraria.ModLoader.NPCLoader.FindFrame()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00760">Terraria.ModLoader.NPCLoader.GetAlpha()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00979">Terraria.ModLoader.NPCLoader.GetChat()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00379">Terraria.ModLoader.NPCLoader.HitEffect()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00620">Terraria.ModLoader.NPCLoader.ModifyHitByItem()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00677">Terraria.ModLoader.NPCLoader.ModifyHitByProjectile()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00564">Terraria.ModLoader.NPCLoader.ModifyHitNPC()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00507">Terraria.ModLoader.NPCLoader.ModifyHitPlayer()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00461">Terraria.ModLoader.NPCLoader.NPCLoot()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00632">Terraria.ModLoader.NPCLoader.OnHitByItem()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00689">Terraria.ModLoader.NPCLoader.OnHitByProjectile()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00576">Terraria.ModLoader.NPCLoader.OnHitNPC()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00519">Terraria.ModLoader.NPCLoader.OnHitPlayer()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00308">Terraria.ModLoader.NPCLoader.PostAI()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00806">Terraria.ModLoader.NPCLoader.PostDraw()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00278">Terraria.ModLoader.NPCLoader.PreAI()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00788">Terraria.ModLoader.NPCLoader.PreDraw()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00441">Terraria.ModLoader.NPCLoader.PreNPCLoot()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00246">Terraria.ModLoader.NPCLoader.ResetEffects()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00234">Terraria.ModLoader.NPCLoader.ScaleExpertStats()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00931">Terraria.ModLoader.NPCLoader.SpawnNPC()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l00702">Terraria.ModLoader.NPCLoader.StrikeNPC()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01090">Terraria.ModLoader.NPCLoader.TownNPCAttackCooldown()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01144">Terraria.ModLoader.NPCLoader.TownNPCAttackMagic()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01103">Terraria.ModLoader.NPCLoader.TownNPCAttackProj()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01117">Terraria.ModLoader.NPCLoader.TownNPCAttackProjSpeed()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01131">Terraria.ModLoader.NPCLoader.TownNPCAttackShoot()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01077">Terraria.ModLoader.NPCLoader.TownNPCAttackStrength()</a>, <a class="el" href="_n_p_c_loader_8cs_source.html#l01157">Terraria.ModLoader.NPCLoader.TownNPCAttackSwing()</a>, and <a class="el" href="_n_p_c_loader_8cs_source.html#l00393">Terraria.ModLoader.NPCLoader.UpdateLifeRegen()</a>.</p>
+
+<p><div id="dynsection-24" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-24-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-24-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a864f48a10f6273f77c6a089b9baa8e4c_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a864f48a10f6273f77c6a089b9baa8e4c_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a864f48a10f6273f77c6a089b9baa8e4c_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a864f48a10f6273f77c6a089b9baa8e4c_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a2bb9e4d7da1b0a8fa9ba4b67333464b6" title="Terraria.ModLoader.NPCLoader.AI" alt="" coords="230,5,453,32"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa1da2988491c15c050483597e984bd7a" title="Terraria.ModLoader.NPCLoader.\lBossHeadRotation" alt="" coords="236,57,447,98"/>
+<area shape="rect" id="node4" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa16baedc558a8f7156d20f4cefaf283d" title="Terraria.ModLoader.NPCLoader.\lBossHeadSlot" alt="" coords="236,122,447,163"/>
+<area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#af39b1056d061ac83ee853534333cd326" title="Terraria.ModLoader.NPCLoader.\lBossHeadSpriteEffects" alt="" coords="236,187,447,229"/>
+<area shape="rect" id="node6" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a7ac970581b8d00d001db8bdd1cac4ec0" title="Terraria.ModLoader.NPCLoader.\lCanBeHitByItem" alt="" coords="236,253,447,294"/>
+<area shape="rect" id="node7" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1c3d7a33153e964db6ca98da6d68e5b7" title="Terraria.ModLoader.NPCLoader.\lCanBeHitByProjectile" alt="" coords="236,318,447,359"/>
+<area shape="rect" id="node8" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#acd53a343c7b7a511a8bef1713f85c252" title="Terraria.ModLoader.NPCLoader.\lCanHitNPC" alt="" coords="236,383,447,425"/>
+<area shape="rect" id="node9" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a63b2cd7eeb45cf94841081141a22290d" title="Terraria.ModLoader.NPCLoader.\lCanHitPlayer" alt="" coords="236,449,447,490"/>
+<area shape="rect" id="node10" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a526fc0a42931cb2713fab4d7bf9b11c2" title="Terraria.ModLoader.NPCLoader.\lCheckActive" alt="" coords="236,514,447,555"/>
+<area shape="rect" id="node11" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a48a2a6cd32cfb8e19522bad443d8f1b9" title="Terraria.ModLoader.NPCLoader.\lCheckDead" alt="" coords="236,579,447,621"/>
+<area shape="rect" id="node12" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a77de68f9e0a9fad85ae584dea1dea0db" title="Terraria.ModLoader.NPCLoader.\lDrawEffects" alt="" coords="236,645,447,686"/>
+<area shape="rect" id="node13" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa4afa26b4eff5da6e0bfa5ba3498c46a" title="Terraria.ModLoader.NPCLoader.\lDrawHealthBar" alt="" coords="236,710,447,751"/>
+<area shape="rect" id="node14" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a27c5e949870baf11ceee684e69e0a304" title="Terraria.ModLoader.NPCLoader.\lDrawTownAttackGun" alt="" coords="236,775,447,817"/>
+<area shape="rect" id="node15" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d42f1287620918ddde638bd9e30b2e6" title="Terraria.ModLoader.NPCLoader.\lDrawTownAttackSwing" alt="" coords="236,841,447,882"/>
+<area shape="rect" id="node16" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a85e38f99d20e965819ec24fcfec3862f" title="Terraria.ModLoader.NPCLoader.\lFindFrame" alt="" coords="236,906,447,947"/>
+<area shape="rect" id="node17" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a8ebe0017ce5f3a56d716da86b0caa0d9" title="Terraria.ModLoader.NPCLoader.\lGetAlpha" alt="" coords="236,971,447,1013"/>
+<area shape="rect" id="node18" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a17a1702387104df6ae41300e4b7bfb7c" title="Terraria.ModLoader.NPCLoader.\lGetChat" alt="" coords="236,1037,447,1078"/>
+<area shape="rect" id="node19" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1f87c81d569643d4b88d271ba22f3c5b" title="Terraria.ModLoader.NPCLoader.\lHitEffect" alt="" coords="236,1102,447,1143"/>
+<area shape="rect" id="node20" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa8defb6f044d35bbf75efa3f807d232c" title="Terraria.ModLoader.NPCLoader.\lModifyHitByItem" alt="" coords="236,1167,447,1209"/>
+<area shape="rect" id="node21" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a646cb039f16ae6e15092c696ad7b3578" title="Terraria.ModLoader.NPCLoader.\lModifyHitByProjectile" alt="" coords="236,1233,447,1274"/>
+<area shape="rect" id="node22" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aaeebe6e778031de5c1ecf897c494d078" title="Terraria.ModLoader.NPCLoader.\lModifyHitNPC" alt="" coords="236,1298,447,1339"/>
+<area shape="rect" id="node23" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#af66dfb83f743ca52c0f113b250235705" title="Terraria.ModLoader.NPCLoader.\lModifyHitPlayer" alt="" coords="236,1363,447,1405"/>
+<area shape="rect" id="node24" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae0666ddae1d36f57746ef9cbe8849944" title="Terraria.ModLoader.NPCLoader.\lNPCLoot" alt="" coords="236,1429,447,1470"/>
+<area shape="rect" id="node25" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a03c95ca55f3ef6203819693f208dc721" title="Terraria.ModLoader.NPCLoader.\lOnHitByItem" alt="" coords="236,1494,447,1535"/>
+<area shape="rect" id="node26" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a61c66fdcd67abe99b458d95c76996418" title="Terraria.ModLoader.NPCLoader.\lOnHitByProjectile" alt="" coords="236,1559,447,1601"/>
+<area shape="rect" id="node27" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a7d9aaa94708b419047921ac38d569b2b" title="Terraria.ModLoader.NPCLoader.\lOnHitNPC" alt="" coords="236,1625,447,1666"/>
+<area shape="rect" id="node28" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ab55085f950db102685cc71455da3de22" title="Terraria.ModLoader.NPCLoader.\lOnHitPlayer" alt="" coords="236,1690,447,1731"/>
+<area shape="rect" id="node29" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a6b7ae6d2797bd01ee39b10da5a92400b" title="Terraria.ModLoader.NPCLoader.\lPostAI" alt="" coords="236,1755,447,1797"/>
+<area shape="rect" id="node30" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a67b6bc69eb9a057ee9d4bf910cd26aa1" title="Terraria.ModLoader.NPCLoader.\lPostDraw" alt="" coords="236,1821,447,1862"/>
+<area shape="rect" id="node31" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ac590c152f83847b632be90a6e6a0cf80" title="Terraria.ModLoader.NPCLoader.\lPreAI" alt="" coords="236,1886,447,1927"/>
+<area shape="rect" id="node32" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ac23839bed570c9ef30bd52dccf97508a" title="Terraria.ModLoader.NPCLoader.\lPreDraw" alt="" coords="236,1951,447,1993"/>
+<area shape="rect" id="node33" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae99a0287c3cb6ed7a048b20ef170c48b" title="Terraria.ModLoader.NPCLoader.\lPreNPCLoot" alt="" coords="236,2017,447,2058"/>
+<area shape="rect" id="node34" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a34f627c957c08c92fd787ff56ba8a24c" title="Terraria.ModLoader.NPCLoader.\lResetEffects" alt="" coords="236,2082,447,2123"/>
+<area shape="rect" id="node35" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ad2ff73bdde7c90ef233017993c111805" title="Terraria.ModLoader.NPCLoader.\lScaleExpertStats" alt="" coords="236,2147,447,2189"/>
+<area shape="rect" id="node36" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a0ca2884d941cf304db0d6a9d27ca3328" title="Terraria.ModLoader.NPCLoader.\lSpawnNPC" alt="" coords="236,2213,447,2254"/>
+<area shape="rect" id="node37" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a99c71c7837f5040214e65c2b406fafb0" title="Terraria.ModLoader.NPCLoader.\lStrikeNPC" alt="" coords="236,2278,447,2319"/>
+<area shape="rect" id="node38" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa14b8d49a2b2ed8bab10728ff74b54bb" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackCooldown" alt="" coords="236,2343,447,2385"/>
+<area shape="rect" id="node39" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a6343dfd19abadb436854449c9a67931a" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackMagic" alt="" coords="236,2409,447,2450"/>
+<area shape="rect" id="node40" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a65476052968c8825d53190a18bfd138e" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackProj" alt="" coords="236,2474,447,2515"/>
+<area shape="rect" id="node41" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a8ae2a74040d28656ddbd8648d8c1a539" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackProjSpeed" alt="" coords="236,2539,447,2581"/>
+<area shape="rect" id="node42" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a7cb36363c8c5a7528c161f6a96770ae3" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackShoot" alt="" coords="236,2605,447,2646"/>
+<area shape="rect" id="node43" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1e838a02e4cd1a933273df53c53b76c7" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackStrength" alt="" coords="236,2670,447,2711"/>
+<area shape="rect" id="node44" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a8ac041e26a0d38713786f2efab9404f9" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackSwing" alt="" coords="236,2735,447,2777"/>
+<area shape="rect" id="node45" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a17d189c9559b3f526baae75042651113" title="Terraria.ModLoader.NPCLoader.\lUpdateLifeRegen" alt="" coords="236,2801,447,2842"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a9410b2762d11538846575e7074584a55"></a>
@@ -1477,8 +1910,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00250">250</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        {</div><div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00295">295</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00620">Terraria.ModLoader.NPCLoader.ModifyHitByItem()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        {</div><div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-25" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-25-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9410b2762d11538846575e7074584a55_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9410b2762d11538846575e7074584a55_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9410b2762d11538846575e7074584a55_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9410b2762d11538846575e7074584a55_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa8defb6f044d35bbf75efa3f807d232c" title="Terraria.ModLoader.NPCLoader.\lModifyHitByItem" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="acbca6d88046e8d7084ebd915eb711c4c"></a>
@@ -1550,8 +1997,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00287">287</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        {</div><div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00332">332</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00677">Terraria.ModLoader.NPCLoader.ModifyHitByProjectile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        {</div><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-26" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-26-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-26-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_acbca6d88046e8d7084ebd915eb711c4c_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_acbca6d88046e8d7084ebd915eb711c4c_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_acbca6d88046e8d7084ebd915eb711c4c_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_acbca6d88046e8d7084ebd915eb711c4c_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a646cb039f16ae6e15092c696ad7b3578" title="Terraria.ModLoader.NPCLoader.\lModifyHitByProjectile" alt="" coords="235,5,445,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ad461120184789c0980994c03a1b5b832"></a>
@@ -1616,8 +2077,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00213">213</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        {</div><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00258">258</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00564">Terraria.ModLoader.NPCLoader.ModifyHitNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        {</div><div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-27" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-27-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-27-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ad461120184789c0980994c03a1b5b832_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_ad461120184789c0980994c03a1b5b832_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ad461120184789c0980994c03a1b5b832_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ad461120184789c0980994c03a1b5b832_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aaeebe6e778031de5c1ecf897c494d078" title="Terraria.ModLoader.NPCLoader.\lModifyHitNPC" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a92f1db23976a52d729126ade137063fc"></a>
@@ -1675,8 +2150,57 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00179">179</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        {</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00224">224</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00507">Terraria.ModLoader.NPCLoader.ModifyHitPlayer()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        {</div><div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-28" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-28-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-28-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-28-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a92f1db23976a52d729126ade137063fc_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a92f1db23976a52d729126ade137063fc_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a92f1db23976a52d729126ade137063fc_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a92f1db23976a52d729126ade137063fc_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#af66dfb83f743ca52c0f113b250235705" title="Terraria.ModLoader.NPCLoader.\lModifyHitPlayer" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ae35c6fc2967d4631b20e4cd4d7a51bb6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a> Terraria.ModLoader.GlobalNPC.NewInstance </td>
+          <td>(</td>
+          <td class="paramtype">NPC&#160;</td>
+          <td class="paramname"><em>npc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a new instance of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a> for an NPC instance. Called at the end of NPC.SetDefaults. If CloneNewInstances is true, just calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a" title="Returns a clone of this GlobalNPC. By default this will return a memberwise clone; you will want to o...">Clone()</a> Otherwise calls the default constructor and copies fields </p>
+
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00073">73</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>References <a class="el" href="_global_n_p_c_8cs_source.html#l00018">Terraria.ModLoader.GlobalNPC.mod</a>, and <a class="el" href="_global_n_p_c_8cs_source.html#l00027">Terraria.ModLoader.GlobalNPC.Name</a>.</p>
+<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adda48aad4cbc0f80e96bd8fa2794cfa1">CloneNewInstances</a>)</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            {</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a">Clone</a>();</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            }</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            copy.mod = <a class="code" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6eb09d9200be3aa4d6764ab99aadb692">mod</a>;</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            copy.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Name</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#abc7754808d6efe846e83d0c0ae0e8b58">Name</a>;</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            copy.index = index;</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            copy.instanceIndex = instanceIndex;</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> copy;</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_html_a032e3518c1fa6ba47fe8042abe16c76a"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a">Terraria.ModLoader.GlobalNPC.Clone</a></div><div class="ttdeci">virtual GlobalNPC Clone()</div><div class="ttdoc">Returns a clone of this GlobalNPC. By default this will return a memberwise clone; you will want to o...</div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_html_a6eb09d9200be3aa4d6764ab99aadb692"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6eb09d9200be3aa4d6764ab99aadb692">Terraria.ModLoader.GlobalNPC.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod to which this GlobalNPC belongs. </div><div class="ttdef"><b>Definition:</b> <a href="_global_n_p_c_8cs_source.html#l00018">GlobalNPC.cs:18</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_html_adda48aad4cbc0f80e96bd8fa2794cfa1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adda48aad4cbc0f80e96bd8fa2794cfa1">Terraria.ModLoader.GlobalNPC.CloneNewInstances</a></div><div class="ttdeci">virtual bool CloneNewInstances</div><div class="ttdoc">Whether instances of this GlobalNPC are created through Clone or constructor (by default implementati...</div><div class="ttdef"><b>Definition:</b> <a href="_global_n_p_c_8cs_source.html#l00058">GlobalNPC.cs:58</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a8206e4bf920a7562a972dcb7c9e2ef09"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09">Terraria.ModLoader.Mod.Name</a></div><div class="ttdeci">virtual string Name</div><div class="ttdoc">Stores the name of the mod. This name serves as the mod&amp;#39;s identification, and also helps with saving ...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00037">Mod.cs:37</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_html_abc7754808d6efe846e83d0c0ae0e8b58"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#abc7754808d6efe846e83d0c0ae0e8b58">Terraria.ModLoader.GlobalNPC.Name</a></div><div class="ttdeci">string Name</div><div class="ttdoc">The name of this GlobalNPC instance. </div><div class="ttdef"><b>Definition:</b> <a href="_global_n_p_c_8cs_source.html#l00027">GlobalNPC.cs:27</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae624b063ab6ddbaefdae0d2db8ecc5fa"></a>
@@ -1709,8 +2233,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00156">156</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        {</div><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00201">201</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00461">Terraria.ModLoader.NPCLoader.NPCLoot()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        {</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-29" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-29-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-29-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ae624b063ab6ddbaefdae0d2db8ecc5fa_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_ae624b063ab6ddbaefdae0d2db8ecc5fa_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ae624b063ab6ddbaefdae0d2db8ecc5fa_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ae624b063ab6ddbaefdae0d2db8ecc5fa_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae0666ddae1d36f57746ef9cbe8849944" title="Terraria.ModLoader.NPCLoader.\lNPCLoot" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a38f9e9fbc4b52eb6328b37928feacda4"></a>
@@ -1782,8 +2320,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00263">263</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        {</div><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00308">308</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00632">Terraria.ModLoader.NPCLoader.OnHitByItem()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        {</div><div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-30" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-30-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-30-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a38f9e9fbc4b52eb6328b37928feacda4_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a38f9e9fbc4b52eb6328b37928feacda4_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a38f9e9fbc4b52eb6328b37928feacda4_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a38f9e9fbc4b52eb6328b37928feacda4_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a03c95ca55f3ef6203819693f208dc721" title="Terraria.ModLoader.NPCLoader.\lOnHitByItem" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ab32180a12dc2d7e08ae41b30e640434e"></a>
@@ -1848,8 +2400,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00299">299</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        {</div><div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00344">344</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00689">Terraria.ModLoader.NPCLoader.OnHitByProjectile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        {</div><div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-31" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-31-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-31-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab32180a12dc2d7e08ae41b30e640434e_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab32180a12dc2d7e08ae41b30e640434e_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab32180a12dc2d7e08ae41b30e640434e_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab32180a12dc2d7e08ae41b30e640434e_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a61c66fdcd67abe99b458d95c76996418" title="Terraria.ModLoader.NPCLoader.\lOnHitByProjectile" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="afeb07e4fd3c8b037c5526a6fb5c3e18b"></a>
@@ -1914,8 +2480,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00225">225</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        {</div><div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00270">270</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00576">Terraria.ModLoader.NPCLoader.OnHitNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        {</div><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-32" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-32-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-32-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afeb07e4fd3c8b037c5526a6fb5c3e18b_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_afeb07e4fd3c8b037c5526a6fb5c3e18b_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afeb07e4fd3c8b037c5526a6fb5c3e18b_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afeb07e4fd3c8b037c5526a6fb5c3e18b_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a7d9aaa94708b419047921ac38d569b2b" title="Terraria.ModLoader.NPCLoader.\lOnHitNPC" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a5e30e8f6af971e9821243a3af23c38ca"></a>
@@ -1973,8 +2553,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00190">190</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        {</div><div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00235">235</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00519">Terraria.ModLoader.NPCLoader.OnHitPlayer()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        {</div><div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-33" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-33-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-33-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-33-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5e30e8f6af971e9821243a3af23c38ca_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5e30e8f6af971e9821243a3af23c38ca_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5e30e8f6af971e9821243a3af23c38ca_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5e30e8f6af971e9821243a3af23c38ca_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ab55085f950db102685cc71455da3de22" title="Terraria.ModLoader.NPCLoader.\lOnHitPlayer" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a78cc6cfde1d3aae79d01ded8aff5fddd"></a>
@@ -2007,8 +2601,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00090">90</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00135">135</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00308">Terraria.ModLoader.NPCLoader.PostAI()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        {</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-34" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-34-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-34-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a78cc6cfde1d3aae79d01ded8aff5fddd_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a78cc6cfde1d3aae79d01ded8aff5fddd_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a78cc6cfde1d3aae79d01ded8aff5fddd_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a78cc6cfde1d3aae79d01ded8aff5fddd_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a6b7ae6d2797bd01ee39b10da5a92400b" title="Terraria.ModLoader.NPCLoader.\lPostAI" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a9e6919d7ab9acba00012daa148953854"></a>
@@ -2059,8 +2667,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00383">383</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        {</div><div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00428">428</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00806">Terraria.ModLoader.NPCLoader.PostDraw()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        {</div><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-35" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-35-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-35-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-35-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9e6919d7ab9acba00012daa148953854_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9e6919d7ab9acba00012daa148953854_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9e6919d7ab9acba00012daa148953854_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9e6919d7ab9acba00012daa148953854_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a67b6bc69eb9a057ee9d4bf910cd26aa1" title="Terraria.ModLoader.NPCLoader.\lPostDraw" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ae5493040c8b14b6fcaff767eca894b67"></a>
@@ -2094,8 +2716,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00073">73</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00118">118</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00278">Terraria.ModLoader.NPCLoader.PreAI()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        {</div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-36" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-36-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-36-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-36-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ae5493040c8b14b6fcaff767eca894b67_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_ae5493040c8b14b6fcaff767eca894b67_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ae5493040c8b14b6fcaff767eca894b67_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ae5493040c8b14b6fcaff767eca894b67_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ac590c152f83847b632be90a6e6a0cf80" title="Terraria.ModLoader.NPCLoader.\lPreAI" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a618307b1f63fbfbfb1c5d7f6978837ac"></a>
@@ -2147,8 +2783,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00372">372</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        {</div><div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00417">417</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00788">Terraria.ModLoader.NPCLoader.PreDraw()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        {</div><div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-37" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-37-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-37-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-37-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a618307b1f63fbfbfb1c5d7f6978837ac_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a618307b1f63fbfbfb1c5d7f6978837ac_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a618307b1f63fbfbfb1c5d7f6978837ac_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a618307b1f63fbfbfb1c5d7f6978837ac_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ac23839bed570c9ef30bd52dccf97508a" title="Terraria.ModLoader.NPCLoader.\lPreDraw" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a9b9e96d5a81e26fd5a3ae304ae251d9d"></a>
@@ -2182,8 +2832,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00147">147</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        {</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00192">192</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00441">Terraria.ModLoader.NPCLoader.PreNPCLoot()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        {</div><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-38" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-38-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-38-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-38-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9b9e96d5a81e26fd5a3ae304ae251d9d_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9b9e96d5a81e26fd5a3ae304ae251d9d_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9b9e96d5a81e26fd5a3ae304ae251d9d_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a9b9e96d5a81e26fd5a3ae304ae251d9d_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae99a0287c3cb6ed7a048b20ef170c48b" title="Terraria.ModLoader.NPCLoader.\lPreNPCLoot" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a7a39ccf9f8d102eee9f274dc291bfb24"></a>
@@ -2216,8 +2880,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00064">64</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        {</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00109">109</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00246">Terraria.ModLoader.NPCLoader.ResetEffects()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        {</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-39" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-39-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-39-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-39-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a7a39ccf9f8d102eee9f274dc291bfb24_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a7a39ccf9f8d102eee9f274dc291bfb24_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a7a39ccf9f8d102eee9f274dc291bfb24_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a7a39ccf9f8d102eee9f274dc291bfb24_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a34f627c957c08c92fd787ff56ba8a24c" title="Terraria.ModLoader.NPCLoader.\lResetEffects" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ab5786ddd3abbbc08e6fe6987e06afd45"></a>
@@ -2268,8 +2946,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00056">56</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00101">101</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00234">Terraria.ModLoader.NPCLoader.ScaleExpertStats()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        {</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-40" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-40-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-40-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-40-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab5786ddd3abbbc08e6fe6987e06afd45_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab5786ddd3abbbc08e6fe6987e06afd45_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab5786ddd3abbbc08e6fe6987e06afd45_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_ab5786ddd3abbbc08e6fe6987e06afd45_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ad2ff73bdde7c90ef233017993c111805" title="Terraria.ModLoader.NPCLoader.\lScaleExpertStats" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ad882275e53a018199f49a721a1f04a3d"></a>
@@ -2302,8 +2994,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00046">46</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00091">91</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        {</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5fd0754440bfc039de5425b200c202a1"></a>
@@ -2354,8 +3046,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00457">457</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        {</div><div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00502">502</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01021">Terraria.ModLoader.NPCLoader.SetupShop()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        {</div><div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-41" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-41-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-41-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-41-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5fd0754440bfc039de5425b200c202a1_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5fd0754440bfc039de5425b200c202a1_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5fd0754440bfc039de5425b200c202a1_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5fd0754440bfc039de5425b200c202a1_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ade37903ce666240ad83dbd7c8924abe2" title="Terraria.ModLoader.NPCLoader.\lSetupShop" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a5308b71c2f3c6a7bb89235399295ca24"></a>
@@ -2390,7 +3096,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to add items to the travelling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming. </p>
+<p>Allows you to add items to the traveling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">shop</td><td></td></tr>
@@ -2399,8 +3105,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00466">466</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;        {</div><div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00511">511</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01040">Terraria.ModLoader.NPCLoader.SetupTravelShop()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;        {</div><div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-42" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-42-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-42-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-42-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5308b71c2f3c6a7bb89235399295ca24_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5308b71c2f3c6a7bb89235399295ca24_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5308b71c2f3c6a7bb89235399295ca24_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5308b71c2f3c6a7bb89235399295ca24_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a565173225e95b50d3da24188af7fb453" title="Terraria.ModLoader.NPCLoader.\lSetupTravelShop" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a8688307b3c52dfbb5ffd3511502a4eba"></a>
@@ -2451,8 +3171,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00438">438</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        {</div><div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00483">483</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00931">Terraria.ModLoader.NPCLoader.SpawnNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;        {</div><div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-43" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-43-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-43-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-43-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a8688307b3c52dfbb5ffd3511502a4eba_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a8688307b3c52dfbb5ffd3511502a4eba_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a8688307b3c52dfbb5ffd3511502a4eba_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a8688307b3c52dfbb5ffd3511502a4eba_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a0ca2884d941cf304db0d6a9d27ca3328" title="Terraria.ModLoader.NPCLoader.\lSpawnNPC" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a5a527b7768ad2c08ebd32acfad192a5f"></a>
@@ -2525,8 +3259,22 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00313">313</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        {</div><div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00358">358</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00702">Terraria.ModLoader.NPCLoader.StrikeNPC()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        {</div><div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-44" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-44-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-44-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-44-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5a527b7768ad2c08ebd32acfad192a5f_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5a527b7768ad2c08ebd32acfad192a5f_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5a527b7768ad2c08ebd32acfad192a5f_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5a527b7768ad2c08ebd32acfad192a5f_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a99c71c7837f5040214e65c2b406fafb0" title="Terraria.ModLoader.NPCLoader.\lStrikeNPC" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="af76afb7606070f4db75a72fa6b2f4edd"></a>
@@ -2577,8 +3325,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00495">495</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        {</div><div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00540">540</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01090">Terraria.ModLoader.NPCLoader.TownNPCAttackCooldown()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        {</div><div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-45" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-45-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-45-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-45-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_af76afb7606070f4db75a72fa6b2f4edd_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_af76afb7606070f4db75a72fa6b2f4edd_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_af76afb7606070f4db75a72fa6b2f4edd_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_af76afb7606070f4db75a72fa6b2f4edd_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa14b8d49a2b2ed8bab10728ff74b54bb" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackCooldown" alt="" coords="267,5,477,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a068df531f0b46bcf56521532277bce2e"></a>
@@ -2622,8 +3384,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00535">535</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;        {</div><div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00580">580</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01144">Terraria.ModLoader.NPCLoader.TownNPCAttackMagic()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;        {</div><div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-46" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-46-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-46-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-46-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a068df531f0b46bcf56521532277bce2e_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a068df531f0b46bcf56521532277bce2e_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a068df531f0b46bcf56521532277bce2e_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a068df531f0b46bcf56521532277bce2e_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a6343dfd19abadb436854449c9a67931a" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackMagic" alt="" coords="243,5,453,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="afcee386f81c0bd5f45acb274ccb9f17d"></a>
@@ -2674,8 +3450,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00505">505</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        {</div><div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00550">550</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01103">Terraria.ModLoader.NPCLoader.TownNPCAttackProj()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;        {</div><div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-47" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-47-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-47-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-47-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afcee386f81c0bd5f45acb274ccb9f17d_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_afcee386f81c0bd5f45acb274ccb9f17d_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afcee386f81c0bd5f45acb274ccb9f17d_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_afcee386f81c0bd5f45acb274ccb9f17d_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a65476052968c8825d53190a18bfd138e" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackProj" alt="" coords="232,5,443,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a845c65ddf34cc2b4074cc91af4088182"></a>
@@ -2733,8 +3523,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00516">516</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;        {</div><div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00561">561</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01117">Terraria.ModLoader.NPCLoader.TownNPCAttackProjSpeed()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;        {</div><div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-48" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-48-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-48-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-48-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a845c65ddf34cc2b4074cc91af4088182_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a845c65ddf34cc2b4074cc91af4088182_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a845c65ddf34cc2b4074cc91af4088182_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a845c65ddf34cc2b4074cc91af4088182_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a8ae2a74040d28656ddbd8648d8c1a539" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackProjSpeed" alt="" coords="269,5,480,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="aa0c7388db7dc4d7dd7d920e9cf55ce8a"></a>
@@ -2778,8 +3582,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00526">526</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;        {</div><div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00571">571</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01131">Terraria.ModLoader.NPCLoader.TownNPCAttackShoot()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;        {</div><div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-49" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-49-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-49-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-49-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa0c7388db7dc4d7dd7d920e9cf55ce8a_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa0c7388db7dc4d7dd7d920e9cf55ce8a_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa0c7388db7dc4d7dd7d920e9cf55ce8a_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_aa0c7388db7dc4d7dd7d920e9cf55ce8a_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a7cb36363c8c5a7528c161f6a96770ae3" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackShoot" alt="" coords="243,5,453,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a4d7d2713a9fe21de8069182c7897fde6"></a>
@@ -2830,8 +3648,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00485">485</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        {</div><div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00530">530</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01077">Terraria.ModLoader.NPCLoader.TownNPCAttackStrength()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;        {</div><div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-50" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-50-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-50-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-50-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a4d7d2713a9fe21de8069182c7897fde6_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a4d7d2713a9fe21de8069182c7897fde6_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a4d7d2713a9fe21de8069182c7897fde6_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a4d7d2713a9fe21de8069182c7897fde6_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1e838a02e4cd1a933273df53c53b76c7" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackStrength" alt="" coords="256,5,467,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a5ef4cbdeffb9eed794a04b625d3099da"></a>
@@ -2882,8 +3714,22 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00545">545</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;        {</div><div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00590">590</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01157">Terraria.ModLoader.NPCLoader.TownNPCAttackSwing()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;        {</div><div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-51" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-51-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-51-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-51-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5ef4cbdeffb9eed794a04b625d3099da_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5ef4cbdeffb9eed794a04b625d3099da_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5ef4cbdeffb9eed794a04b625d3099da_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a5ef4cbdeffb9eed794a04b625d3099da_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a8ac041e26a0d38713786f2efab9404f9" title="Terraria.ModLoader.NPCLoader.\lTownNPCAttackSwing" alt="" coords="245,5,456,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a6e84a3d90afc82add5f85b9ebe6a7031"></a>
@@ -2927,8 +3773,57 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00118">118</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        {</div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00163">163</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l00393">Terraria.ModLoader.NPCLoader.UpdateLifeRegen()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        {</div><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-52" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-52-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-52-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-52-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6e84a3d90afc82add5f85b9ebe6a7031_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6e84a3d90afc82add5f85b9ebe6a7031_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6e84a3d90afc82add5f85b9ebe6a7031_icgraph" id="class_terraria_1_1_mod_loader_1_1_global_n_p_c_a6e84a3d90afc82add5f85b9ebe6a7031_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a17d189c9559b3f526baae75042651113" title="Terraria.ModLoader.NPCLoader.\lUpdateLifeRegen" alt="" coords="229,5,440,46"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="adda48aad4cbc0f80e96bd8fa2794cfa1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalNPC.CloneNewInstances =&gt; false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether instances of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a> are created through Clone or constructor (by default implementations of NewInstance and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a" title="Returns a clone of this GlobalNPC. By default this will return a memberwise clone; you will want to o...">Clone()</a>). Defaults to false (using default constructor). </p>
+
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00058">58</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7c6ef4102eb089da4f7623a0ffce2647"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalNPC.InstancePerEntity =&gt; false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether to create a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. ">GlobalNPC</a> instance for every NPC that exists. Useful for storing information on a projectile. Defaults to false. Return true if you need to store information (have non-static fields). </p>
+
+<p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00050">50</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_n_p_c_loader_8cs_source.html#l01193">Terraria.ModLoader.NPCLoader.HasMethod()</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
@@ -2954,7 +3849,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00018">18</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01285">Terraria.ModLoader.Mod.AddGlobalNPC()</a>, and <a class="el" href="_mod_8cs_source.html#l01382">Terraria.ModLoader.Mod.AutoloadGlobalNPC()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01146">Terraria.ModLoader.Mod.AddGlobalNPC()</a>, <a class="el" href="_mod_8cs_source.html#l01250">Terraria.ModLoader.Mod.AutoloadGlobalNPC()</a>, and <a class="el" href="_global_n_p_c_8cs_source.html#l00073">Terraria.ModLoader.GlobalNPC.NewInstance()</a>.</p>
 
 </div>
 </div>
@@ -2980,7 +3875,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_n_p_c_8cs_source.html#l00027">27</a> of file <a class="el" href="_global_n_p_c_8cs_source.html">GlobalNPC.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01285">Terraria.ModLoader.Mod.AddGlobalNPC()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01146">Terraria.ModLoader.Mod.AddGlobalNPC()</a>, and <a class="el" href="_global_n_p_c_8cs_source.html#l00073">Terraria.ModLoader.GlobalNPC.NewInstance()</a>.</p>
 
 </div>
 </div>

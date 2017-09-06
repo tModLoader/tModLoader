@@ -1,5 +1,5 @@
 <map id="Terraria.ModLoader.Mod.AddNPCHeadTexture" name="Terraria.ModLoader.Mod.AddNPCHeadTexture">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aeb0d9d1bfee842c0e232de398756f869" title="Returns whether or not a file with the specified name exists. " alt="" coords="247,5,452,51"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="247,74,452,121"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ac6060b44af6ea4bf0db551886ea796d9" title="Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are used h..." alt="" coords="503,5,689,51"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aeb0d9d1bfee842c0e232de398756f869" title="Returns whether or not a file with the specified name exists. " alt="" coords="246,5,453,46"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="246,70,453,111"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ac6060b44af6ea4bf0db551886ea796d9" title="Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are used h..." alt="" coords="502,5,690,46"/>
 </map>

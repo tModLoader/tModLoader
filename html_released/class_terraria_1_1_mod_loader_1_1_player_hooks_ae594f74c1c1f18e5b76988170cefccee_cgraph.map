@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.OnHitAnything" name="Terraria.ModLoader.PlayerHooks.OnHitAnything">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a84506b45ac50a3c509f28617f57aa6af" title="This hook is called when a player damages anything, whether it be an NPC or another player..." alt="" coords="231,5,433,51"/>
-</map>

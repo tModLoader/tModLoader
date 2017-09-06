@@ -1,7 +1,9 @@
 var class_terraria_1_1_mod_loader_1_1_mod_tile =
 [
-    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a99309aca68c28b20dc5b0077fd57e20c", null ],
-    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a95693c1c73aaa781e549e2fde5098102", null ],
+    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a95a82c278436ca2c53728dfb7b5c56c9", null ],
+    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#ab67f0c692a3946aaf4fc9801b4fe4ad7", null ],
+    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#af4d0c554a3e122124e5f6bdf8c1dccae", null ],
+    [ "AddMapEntry", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a3fb910ad31df722eeba94f1a25c169e6", null ],
     [ "AddToArray", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#aca4b939ee9f5e667154e0728c5bfa3ca", null ],
     [ "AnimateIndividualTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a46dd9ce911663e3e5075cfe6e5543735", null ],
     [ "AnimateTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6ec8460becadc0e768d0f58ba11d9a2e", null ],
@@ -12,6 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_tile =
     [ "CanPlace", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#abc83e0e1d482e5896ec62081265fe95e", null ],
     [ "ChangeWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#ae0b2d2466cda2371578631957ac615e1", null ],
     [ "CreateDust", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#aadcda46d984a7190a00cfa7e0d884286", null ],
+    [ "CreateMapEntryName", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a4272aede9f5987e38592bc141eeb4a1d", null ],
     [ "Dangersense", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a2d7b38e3d7eb90b24f7c295fac0719e7", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6ed1dca241c3b0bf9c08c1d74a80540d", null ],
     [ "Drop", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a4f20ca4fe1f750102f13679bf7349b81", null ],

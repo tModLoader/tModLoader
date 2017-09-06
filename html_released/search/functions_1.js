@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['bigendianreader',['BigEndianReader',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader.html#a6411ffd184f7ea633ab182f639fb8887',1,'Terraria::ModLoader::IO::BigEndianReader']]],
+  ['bigendianwriter',['BigEndianWriter',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a96c7e2a456848a92ed5980203558b85d',1,'Terraria::ModLoader::IO::BigEndianWriter']]],
   ['biomehaircolor',['BiomeHairColor',['../class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a39969f6b16e974379d8ff2d9d994d0b9',1,'Terraria::ModLoader::ModWaterStyle']]],
   ['bossbag',['BossBag',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a05417aa6dbb2d0e3a95c1eb7c540e976',1,'Terraria::ModLoader::NPCLoader']]],
   ['bossheadrotation',['BossHeadRotation',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a32f03b80183f2f3ed91b04e7ef5d5b90',1,'Terraria.ModLoader.GlobalNPC.BossHeadRotation()'],['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac104a730758e08856600cdb299c5c950',1,'Terraria.ModLoader.ModNPC.BossHeadRotation()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa1da2988491c15c050483597e984bd7a',1,'Terraria.ModLoader.NPCLoader.BossHeadRotation()']]],

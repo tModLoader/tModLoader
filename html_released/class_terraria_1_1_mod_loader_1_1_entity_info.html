@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Terraria ModLoader
-   &#160;<span id="projectnumber">0.9.1.1</span>
+   &#160;<span id="projectnumber">0.10.1</span>
    </div>
    <div id="projectbrief">A framework for Terraria mods</div>
   </td>
@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_enti
 </div><!--header-->
 <div class="contents">
 
-<p>There are three classes called <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_info.html" title="This class serves as a way of adding custom info to Items. Every item will be instantiated with a lis...">ItemInfo</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a>. You can override any of these three classes to add extra information to items, projectiles, or NPCs respectively, similar to how <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> can be used to add extra information to players.  
+<p>There are three classes called ItemInfo, ProjectileInfo, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a>. You can override any of these three classes to add extra information to items, projectiles, or NPCs respectively, similar to how <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> can be used to add extra information to players.  
  <a href="class_terraria_1_1_mod_loader_1_1_entity_info.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Terraria.ModLoader.EntityInfo:</div>
@@ -126,16 +126,14 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_enti
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_entity_info__inherit__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_entity_info_inherit__map" alt="Inheritance graph"/></div>
 <map name="_terraria_8_mod_loader_8_entity_info_inherit__map" id="_terraria_8_mod_loader_8_entity_info_inherit__map">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_item_info.html" title="This class serves as a way of adding custom info to Items. Every item will be instantiated with a lis..." alt="" coords="263,5,449,35"/>
-<area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o..." alt="" coords="261,59,451,88"/>
-<area shape="rect" id="node7" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate..." alt="" coords="249,112,463,141"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o..." alt="" coords="8,80,197,107"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad6106e44acde5ad4899ec815d9e7a21e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_entity_info.html#ad6106e44acde5ad4899ec815d9e7a21e">Autoload</a> (ref string name)</td></tr>
-<tr class="memdesc:ad6106e44acde5ad4899ec815d9e7a21e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically add an <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_info.html" title="This class serves as a way of adding custom info to Items. Every item will be instantiated with a lis...">ItemInfo</a>, a <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a>, or an <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a> instead of using the respective Add method in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of information storage.  <a href="#ad6106e44acde5ad4899ec815d9e7a21e">More...</a><br /></td></tr>
+<tr class="memdesc:ad6106e44acde5ad4899ec815d9e7a21e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically add an ItemInfo, a ProjectileInfo, or an <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a> instead of using the respective Add method in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of information storage.  <a href="#ad6106e44acde5ad4899ec815d9e7a21e">More...</a><br /></td></tr>
 <tr class="separator:ad6106e44acde5ad4899ec815d9e7a21e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
@@ -148,7 +146,7 @@ Properties</h2></td></tr>
 <tr class="separator:ad83d4d2b14f0f07b58fa8211106abab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>There are three classes called <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_info.html" title="This class serves as a way of adding custom info to Items. Every item will be instantiated with a lis...">ItemInfo</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a>. You can override any of these three classes to add extra information to items, projectiles, or NPCs respectively, similar to how <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> can be used to add extra information to players. </p>
+<div class="textblock"><p>There are three classes called ItemInfo, ProjectileInfo, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a>. You can override any of these three classes to add extra information to items, projectiles, or NPCs respectively, similar to how <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> can be used to add extra information to players. </p>
 
 <p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00008">8</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -174,7 +172,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to automatically add an <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_info.html" title="This class serves as a way of adding custom info to Items. Every item will be instantiated with a lis...">ItemInfo</a>, a <a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_info.html" title="This class serves as a way of adding custom info to Projectiles. Every projectile will be instantiate...">ProjectileInfo</a>, or an <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a> instead of using the respective Add method in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of information storage. </p>
+<p>Allows you to automatically add an ItemInfo, a ProjectileInfo, or an <a class="el" href="class_terraria_1_1_mod_loader_1_1_n_p_c_info.html" title="This class serves as a way of adding custom info to NPC. Every npc will be instantiated with a list o...">NPCInfo</a> instead of using the respective Add method in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of information storage. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td></td></tr>
@@ -184,26 +182,10 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 <p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00033">33</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
-
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00691">Terraria.ModLoader.Mod.AutoloadItemInfo()</a>, <a class="el" href="_mod_8cs_source.html#l01393">Terraria.ModLoader.Mod.AutoloadNPCInfo()</a>, and <a class="el" href="_mod_8cs_source.html#l01204">Terraria.ModLoader.Mod.AutoloadProjectileInfo()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        {</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_entity_info.html#a4eeedd3b6593fcd1adc3ea32116951b1">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_entity_info_html_a4eeedd3b6593fcd1adc3ea32116951b1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_entity_info.html#a4eeedd3b6593fcd1adc3ea32116951b1">Terraria.ModLoader.EntityInfo.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod that has added this type of information storage. </div><div class="ttdef"><b>Definition:</b> <a href="_entity_info_8cs_source.html#l00014">EntityInfo.cs:14</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00045">Mod.cs:45</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00047">Mod.cs:47</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 </div><!-- fragment -->
-<p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_entity_info_ad6106e44acde5ad4899ec815d9e7a21e_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_entity_info_ad6106e44acde5ad4899ec815d9e7a21e_icgraph" alt=""/></div>
-<map name="class_terraria_1_1_mod_loader_1_1_entity_info_ad6106e44acde5ad4899ec815d9e7a21e_icgraph" id="class_terraria_1_1_mod_loader_1_1_entity_info_ad6106e44acde5ad4899ec815d9e7a21e_icgraph">
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#a987bcbedd97962443b6d5236740fbcf1" title="Terraria.ModLoader.Mod.Autoload\lItemInfo" alt="" coords="227,5,445,51"/>
-<area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_mod.html#a43054e82707b534a7ba9949c40defd70" title="Terraria.ModLoader.Mod.Autoload\lNPCInfo" alt="" coords="227,74,445,121"/>
-<area shape="rect" id="node7" href="class_terraria_1_1_mod_loader_1_1_mod.html#aa3a45ec929bfce36d1c5a2d6ec2ee4e8" title="Terraria.ModLoader.Mod.Autoload\lProjectileInfo" alt="" coords="227,143,445,190"/>
-</map>
-</div>
-</p>
-
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
@@ -229,8 +211,6 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00014">14</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00533">Terraria.ModLoader.Mod.AddItemInfo()</a>, <a class="el" href="_mod_8cs_source.html#l01315">Terraria.ModLoader.Mod.AddNPCInfo()</a>, <a class="el" href="_mod_8cs_source.html#l01173">Terraria.ModLoader.Mod.AddProjectileInfo()</a>, <a class="el" href="_mod_8cs_source.html#l00691">Terraria.ModLoader.Mod.AutoloadItemInfo()</a>, <a class="el" href="_mod_8cs_source.html#l01393">Terraria.ModLoader.Mod.AutoloadNPCInfo()</a>, and <a class="el" href="_mod_8cs_source.html#l01204">Terraria.ModLoader.Mod.AutoloadProjectileInfo()</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="ad83d4d2b14f0f07b58fa8211106abab1"></a>
@@ -254,8 +234,6 @@ Properties</h2></td></tr>
 <p>The name of this type of information storage. </p>
 
 <p>Definition at line <a class="el" href="_entity_info_8cs_source.html#l00023">23</a> of file <a class="el" href="_entity_info_8cs_source.html">EntityInfo.cs</a>.</p>
-
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00533">Terraria.ModLoader.Mod.AddItemInfo()</a>, <a class="el" href="_mod_8cs_source.html#l01315">Terraria.ModLoader.Mod.AddNPCInfo()</a>, and <a class="el" href="_mod_8cs_source.html#l01173">Terraria.ModLoader.Mod.AddProjectileInfo()</a>.</p>
 
 </div>
 </div>

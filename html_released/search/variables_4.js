@@ -8,6 +8,7 @@ var searchData=
   ['dependents',['dependents',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a5c9de86a25361d7c4588740e88b2cf86',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['description',['Description',['../class_terraria_1_1_mod_loader_1_1_mod_command.html#ac807de4b57a97d5ee2c6105ceff5d4b9',1,'Terraria::ModLoader::ModCommand']]],
   ['desertcave',['DesertCave',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a475a145a78b7251a8444afbd9dfdc06b',1,'Terraria.ModLoader.SpawnCondition.DesertCave()'],['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a2d05ed125dcfd4ddb200fcfee3b810c4',1,'Terraria.ModLoader.NPCSpawnInfo.desertCave()']]],
+  ['dict',['dict',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c',1,'Terraria::ModLoader::IO::TagCompound']]],
   ['disablesmartcursor',['disableSmartCursor',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a08ffa633e41dff9e482d868dd4886c5d',1,'Terraria::ModLoader::ModTile']]],
   ['doctorbones',['DoctorBones',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a7019033032c2107b0d31d52268b988ce',1,'Terraria::ModLoader::SpawnCondition']]],
   ['downloadingfile',['downloadingFile',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6',1,'Terraria::ModLoader::ModNet']]],

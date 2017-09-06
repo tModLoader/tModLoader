@@ -7,6 +7,7 @@ var searchData=
   ['banner',['banner',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a47e6b54fb0926e906276e95c15cd0fd8',1,'Terraria::ModLoader::ModNPC']]],
   ['banneritem',['bannerItem',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6e6c5d4d8db4f78b7143df8dfd8b5f29',1,'Terraria::ModLoader::ModNPC']]],
   ['bartender',['Bartender',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a37b37d93f856ee1ecefe6a514c74f761',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['basescale',['baseScale',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#acbe56b8589c1a8356fdeefa690680bcd',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['beachangler',['BeachAngler',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae472cd43fc4d9848b595348be7b3804d',1,'Terraria::ModLoader::SpawnCondition']]],
   ['bed',['bed',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a20eb169106fcf5771e14c757c3de2185',1,'Terraria::ModLoader::ModTile']]],
   ['blockloot',['blockLoot',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d7e5eeea530b3e0ae7b47fb5e414bf8',1,'Terraria::ModLoader::NPCLoader']]],
@@ -19,7 +20,9 @@ var searchData=
   ['bodyorigin',['bodyOrigin',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a540c3839d5fa6954ae13a028d8e2a746',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['bossbag',['bossBag',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab618ea4188158ae253b8389d618bc22d',1,'Terraria::ModLoader::ModNPC']]],
   ['bossbagnpc',['bossBagNPC',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a7a8d81109a06450e23a08537b7febdcb',1,'Terraria::ModLoader::ModItem']]],
+  ['bossheadtexture',['BossHeadTexture',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#abb940e3a94773201ef20922939157528',1,'Terraria::ModLoader::ModNPC']]],
   ['boundcavenpc',['BoundCaveNPC',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aef2b5645c0220631057215a63bc220db',1,'Terraria::ModLoader::SpawnCondition']]],
   ['buf',['buf',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#afab9c69b776cce58ebabb87b2758c575',1,'Terraria::ModLoader::ModPacket']]],
+  ['buffcount',['BuffCount',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019',1,'Terraria::ModLoader::BuffLoader']]],
   ['builddlllines',['buildDllLines',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a93a6a7a56d6d0017141d1644e9b7c8f4',1,'Terraria::ModLoader::ErrorLogger']]]
 ];

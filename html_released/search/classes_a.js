@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['recipeeditor',['RecipeEditor',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html',1,'Terraria::ModLoader']]],
-  ['recipefinder',['RecipeFinder',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html',1,'Terraria::ModLoader']]],
-  ['recipehooks',['RecipeHooks',['../class_terraria_1_1_mod_loader_1_1_recipe_hooks.html',1,'Terraria::ModLoader']]]
+  ['npcheadloader',['NPCHeadLoader',['../class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html',1,'Terraria::ModLoader']]],
+  ['npcinfo',['NPCInfo',['../class_terraria_1_1_mod_loader_1_1_n_p_c_info.html',1,'Terraria::ModLoader']]],
+  ['npcloader',['NPCLoader',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html',1,'Terraria::ModLoader']]],
+  ['npcspawnhelper',['NPCSpawnHelper',['../class_terraria_1_1_mod_loader_1_1_n_p_c_spawn_helper.html',1,'Terraria::ModLoader']]],
+  ['npcspawninfo',['NPCSpawnInfo',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html',1,'Terraria::ModLoader']]]
 ];

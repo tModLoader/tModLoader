@@ -1,5 +1,5 @@
 <map id="Terraria.ModLoader.ItemLoader.DrawLegs" name="Terraria.ModLoader.ItemLoader.DrawLegs">
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#ab965e6403a150acbfe7d011ab880b44f" title="Return false to hide the player&#39;s legs when this leg or shoe equipment texture is worn..." alt="" coords="261,5,432,51"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID. " alt="" coords="261,74,432,121"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="481,74,687,121"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#ab965e6403a150acbfe7d011ab880b44f" title="Return false to hide the player&#39;s legs when this leg or shoe equipment texture is worn..." alt="" coords="261,5,432,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID. " alt="" coords="261,70,432,111"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="481,70,687,111"/>
 </map>
