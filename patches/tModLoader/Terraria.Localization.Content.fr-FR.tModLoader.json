@@ -1,0 +1,76 @@
+﻿{
+	"tModLoader": {
+		// Main Menu
+		"MenuModBrowser": "Navigateur",
+		"MenuMods": "Modules",
+		"MenuModSources": "Modules Source",
+
+		// Mods Menu
+		"ModsModsList": "Liste des Modules",
+		"ModsEnableAll": "Tout Activer",
+		"ModsDisableAll": "Tout Desactiver",
+		"ModsReloadMods": "Relancer les Modules",
+		"ModsOpenModsFolder": "Dossier des Modules",
+		"ModsModPacks": "Compile de Modules",
+		"ModsDisable": "Desactiver",
+		"ModsEnable": "Activer", 
+		"ModsMoreInfo": "Details",
+		"ModsOriginatedFromModBrowser": "Ce Module est Originaire du Navigateur",
+		"ModsTypeToSearch": "Recherche écrite",
+		"ModsSearchByModName": "Trier par Nom de Module",
+		"ModsSearchByAuthor": "Trier par Nom d'Auteur",
+		"ModsSortRecently": "Trier par Date de Modification",
+		"ModsSortNamesAlph": "Trier par Ordre Alphabétique",
+		"ModsSortNamesReverseAlph": "Trier par Ordre Alphabétique Inversé",
+		"ModsShowAllMods": "Tout Montrer",
+		"ModsShowEnabledMods": "Montrer Uniquement les Modules Actifs",
+		"ModsShowDisabledMods": "Montrer Uniquement les Modules Inactifs",	
+
+		// Mod Browser
+		"MBDownload": "Télécharger",
+		"MBDowngrade": "Régresser",
+		"MBUpdate": "Mettre à Jour",
+		"MBReloadBrowser": "Relancer le Navigateur",
+		"MBSortByRecentlyUpdated": "Trier par Date de Mise à Jour",
+		"MBSortByPopularity": "Trier par Popularité",
+		"MBSortDownloadDesc": "Trier par Ordre Décroissant de Téléchargements",
+		"MBSortDownloadAsc": "Trier par Ordre Croissant de Téléchargements",
+		"MBShowAllMods": "Tout Montrer",
+		"MBShowNotInstalledUpdates": "Montrer Uniquement les Modules Non-Installés ou à Mettre à Jour",
+		"MBShowUpdates": "Montrer Uniquement les Modules à Mettre à Jour",
+
+		// TML Options
+		"DownloadFromServersYes": "Télécharger les Modules du Serveur: Oui",
+		"DownloadFromServersNo": "Télécharger les Modules du Serveur: Non",
+		"DownloadSignedYes": "Uniquement Télécharger les Modules Signés du Serveur: Oui",
+		"DownloadSignedNo": "Uniquement Télécharger les Modules Signés du Serveur: Non",
+		"MusicStreamModeConvert": "Mode d'émission de la Musique: Changer par Demande",
+		"MusicStreamModeStream": "Mode d'émission de la Musique: Emettre du Cache",
+		"ExperimentalFeaturesYes": "Mode Expérimental: Oui",
+		"ExperimentalFeaturesNo": "Mode Expérimental: Non",
+		"ClearMBCredentials": "Réinitialiser les Références du Navigateur",
+
+		// Mod Sources
+		"MSBuild": "Compiler",
+		"MSBuildReload": "Compiler + Relancer",
+		"MSBuildAll": "Tout Compiler",
+		"MSBuildReloadAll": "Tout Compiler + Tout Relancer",
+		"MSOpenSources": "Dossier des Sources",
+		"MSManagePublished": "Gérer les Publications",
+		"MSPublish": "Publier",
+
+		//There should be ModName after ':'
+		"MSReadingProperties": "Analyse des Propriétés: ",
+		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
+		"MSCompiling": "Précompilation de ",
+		"MSCompilingWindows": " pour Windows...",
+		"MSCompilingMono": " pour Mono...",
+		//There should be ModName after ':'
+		"MSBuilding": "Compilation de ",
+		"MSFinding": "Listage des Modules...",
+		//There should be ModName after ':'
+		"MSIntializing": "Initialisation: ",
+		//There should be ModName after ':'
+		"MSLoading": "Lancement du Module: ",
+	}
+}
