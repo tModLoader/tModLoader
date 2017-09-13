@@ -4302,7 +4302,7 @@
  						List<ushort> list2 = null;
  						int type5 = item.type;
  						if (type5 == 213)
-@@ -36167,25 +_,55 @@
+@@ -36167,28 +_,53 @@
  								{
  									if (!Main.npc[num323].dontTakeDamage)
  									{
@@ -4352,21 +4352,20 @@
  												}
 -												if (item.thrown && Main.rand.Next(1, 101) <= this.thrownCrit)
 +												else if (item.thrown)
-+												{
+ 												{
+-													flag27 = true;
 +													critChance = this.thrownCrit;
-+												}
-+												else if (!item.summon)
+ 												}
++												else if (!item.summon) // custom damage class
 +												{
 +													critChance = item.crit;
-+													if (critChance <= 0)
-+														critChance = 4;
 +												}
 +												ItemLoader.GetWeaponCrit(item, this, ref critChance);
 +												PlayerHooks.GetWeaponCrit(this, item, ref critChance);
-+												if (Main.rand.Next(1, 101) <= critChance)
++												flag27 = critChance >= 100 || Main.rand.Next(1, 101) <= critChance;
+ 												int num324 = Item.NPCtoBanner(Main.npc[num323].BannerID());
+ 												if (num324 > 0 && this.NPCBannerBuff[num324])
  												{
- 													flag27 = true;
- 												}
 @@ -36208,12 +_,16 @@
  													this.ClearBuff(198);
  												}

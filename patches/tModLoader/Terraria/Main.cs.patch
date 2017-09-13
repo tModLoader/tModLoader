@@ -845,7 +845,7 @@
  						}
  						string[] array8;
  						IntPtr intPtr5;
-@@ -14702,36 +_,63 @@
+@@ -14702,36 +_,61 @@
  					}
  					else
  					{
@@ -896,11 +896,9 @@
 +						tooltipNames[num4] = "CritChance";
  						num4++;
  					}
-+					else if (!Main.HoverItem.summon) // crit tooltip for fully custom classes, but summon never has crit by vanilla standards
++					else if (!Main.HoverItem.summon) // crit tooltip for fully custom classes
 +					{
 +						int crit = Main.HoverItem.crit;
-+						if (crit <= 0) // crit baseline is 4%
-+							crit = 4;
 +						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref crit);
 +						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref crit);
 +						array[num4] = crit + Lang.tip[5].Value;
