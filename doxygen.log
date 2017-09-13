@@ -509,7 +509,7 @@ Generating docs for compound Terraria::ModLoader::EquipTexture...
 Generating caller graph for function Terraria.ModLoader.EquipTexture.ArmorArmGlowMask
 Generating caller graph for function Terraria.ModLoader.EquipTexture.ArmorSetShadows
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawArmorColor
-Generating caller graph for function Terraria.ModLoader.EquipT/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:415: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
+Generating caller graph for function Terraria.ModLoader.EquipT/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:437: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
   parameter 'male'
 exture.DrawBody
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawHair
