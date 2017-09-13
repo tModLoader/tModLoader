@@ -845,7 +845,7 @@
  						}
  						string[] array8;
  						IntPtr intPtr5;
-@@ -14702,34 +_,50 @@
+@@ -14702,36 +_,61 @@
  					}
  					else
  					{
@@ -896,7 +896,18 @@
 +						tooltipNames[num4] = "CritChance";
  						num4++;
  					}
++					else if (!Main.HoverItem.summon) // crit tooltip for fully custom classes
++					{
++						int crit = Main.HoverItem.crit;
++						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref crit);
++						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref crit);
++						array[num4] = crit + Lang.tip[5].Value;
++						tooltipNames[num4] = "CritChance";
++						num4++;
++					}
  					if (Main.HoverItem.useStyle > 0 && !Main.HoverItem.summon)
+ 					{
+ 						if (Main.HoverItem.useAnimation <= 8)
 @@ -14766,6 +_,7 @@
  						{
  							array[num4] = Lang.tip[13].Value;

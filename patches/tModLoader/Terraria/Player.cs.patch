@@ -4302,7 +4302,7 @@
  						List<ushort> list2 = null;
  						int type5 = item.type;
  						if (type5 == 213)
-@@ -36167,25 +_,53 @@
+@@ -36167,28 +_,53 @@
  								{
  									if (!Main.npc[num323].dontTakeDamage)
  									{
@@ -4328,39 +4328,44 @@
  											Rectangle value19 = new Rectangle((int)Main.npc[num323].position.X, (int)Main.npc[num323].position.Y, Main.npc[num323].width, Main.npc[num323].height);
  											if (r2.Intersects(value19) && (Main.npc[num323].noTileCollide || this.CanHit(Main.npc[num323])))
  											{
- 												bool flag27 = false;
+-												bool flag27 = false;
 -												if (item.melee && Main.rand.Next(1, 101) <= this.meleeCrit)
-+												int critChance = this.meleeCrit;
-+												ItemLoader.GetWeaponCrit(item, this, ref critChance);
-+												PlayerHooks.GetWeaponCrit(this, item, ref critChance);
-+												if (item.melee && Main.rand.Next(1, 101) <= critChance)
++												// patch note: 1.3.6 should include changes: GetWeaponCrit()
++												bool flag27 = false; // flag27, is this hit a crit?
++												int critChance = 0;
++												if (item.melee)
  												{
- 													flag27 = true;
+-													flag27 = true;
++													critChance = this.meleeCrit;
  												}
 -												if (item.ranged && Main.rand.Next(1, 101) <= this.rangedCrit)
-+												critChance = this.rangedCrit;
-+												ItemLoader.GetWeaponCrit(item, this, ref critChance);
-+												PlayerHooks.GetWeaponCrit(this, item, ref critChance);
-+												if (item.ranged && Main.rand.Next(1, 101) <= critChance)
++												else if (item.ranged)
  												{
- 													flag27 = true;
+-													flag27 = true;
++													critChance = this.rangedCrit;
  												}
 -												if (item.magic && Main.rand.Next(1, 101) <= this.magicCrit)
-+												critChance = this.magicCrit;
-+												ItemLoader.GetWeaponCrit(item, this, ref critChance);
-+												PlayerHooks.GetWeaponCrit(this, item, ref critChance);
-+												if (item.magic && Main.rand.Next(1, 101) <= critChance)
++												else if (item.magic)
  												{
- 													flag27 = true;
+-													flag27 = true;
++													critChance = this.magicCrit;
  												}
 -												if (item.thrown && Main.rand.Next(1, 101) <= this.thrownCrit)
-+												critChance = this.thrownCrit;
++												else if (item.thrown)
+ 												{
+-													flag27 = true;
++													critChance = this.thrownCrit;
+ 												}
++												else if (!item.summon) // custom damage class
++												{
++													critChance = item.crit;
++												}
 +												ItemLoader.GetWeaponCrit(item, this, ref critChance);
 +												PlayerHooks.GetWeaponCrit(this, item, ref critChance);
-+												if (item.thrown && Main.rand.Next(1, 101) <= critChance)
++												flag27 = critChance >= 100 || Main.rand.Next(1, 101) <= critChance;
+ 												int num324 = Item.NPCtoBanner(Main.npc[num323].BannerID());
+ 												if (num324 > 0 && this.NPCBannerBuff[num324])
  												{
- 													flag27 = true;
- 												}
 @@ -36208,12 +_,16 @@
  													this.ClearBuff(198);
  												}

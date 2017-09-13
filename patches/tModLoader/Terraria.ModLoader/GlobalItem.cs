@@ -145,22 +145,44 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
+		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
+		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
+		/// So if you set both melee class and another class to true, only the melee damage will actually be used.
 		/// </summary>
+		/// <param name="item">The item being used</param>
+		/// <param name="player">The player using the item</param>
+		/// <param name="damage">The damage</param>
 		public virtual void GetWeaponDamage(Item item, Player player, ref int damage)
 		{
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
+		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
+		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
+		/// So if you set both melee class and another class to true, only the melee knockback will actually be used.
 		/// </summary>
+		/// <param name="item">The item being used</param>
+		/// <param name="player">The player using the item</param>
+		/// <param name="knockback">The knockback</param>
 		public virtual void GetWeaponKnockback(Item item, Player player, ref float knockback)
 		{
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
+		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
+		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
+		/// If you use a custom damage class, the crit value will equal item.crit
+		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, and summon cannot crit.
+		/// So if you set both melee class and another class to true, only the melee crit will actually be used.
 		/// </summary>
+		/// <param name="item">The item being used</param>
+		/// <param name="player">The player using the item</param>
+		/// <param name="crit">The critical strike chance</param>
 		public virtual void GetWeaponCrit(Item item, Player player, ref int crit)
 		{
 		}
