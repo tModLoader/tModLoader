@@ -1,12 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles
 {
-	class ExampleYoyo : ModProjectile
+	public class ExampleYoyoProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -46,9 +44,9 @@ namespace ExampleMod.Projectiles
 		{
 			if (Main.rand.Next(2) == 0)
 			{
-				int dustIndex = Dust.NewDust(projectile.position, projectile.width, projectile.height, 16, 0f, 0f, 0, default(Color), 1f);
-				Main.dust[dustIndex].noGravity = true;
-				Main.dust[dustIndex].scale = 1.6f;
+				Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 16);
+				dust.noGravity = true;
+				dust.scale = 1.6f;
 			}
 		}
 	}

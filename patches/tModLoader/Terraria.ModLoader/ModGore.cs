@@ -65,6 +65,7 @@ namespace Terraria.ModLoader
 		internal static void Unload()
 		{
 			gores.Clear();
+			modGores.Clear();
 			nextGore = GoreID.Count;
 		}
 

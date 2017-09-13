@@ -13,6 +13,7 @@ using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.GameContent.UI.States;
 using Newtonsoft.Json;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -61,7 +62,7 @@ namespace Terraria.ModLoader.UI
 			titleTextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(titleTextPanel);
 
-			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			backButton.Width.Set(-10f, 1f / 2f);
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;

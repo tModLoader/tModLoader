@@ -8,6 +8,15 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
+@@ -49,7 +_,7 @@
+ 		}
+ 
+ 		public static bool ShiftForcedOn;
+-		private static Item[] singleSlotArray;
++		internal static Item[] singleSlotArray;
+ 		private static bool[] canFavoriteAt;
+ 		private static float[] inventoryGlowHue;
+ 		private static int[] inventoryGlowTime;
 @@ -298,8 +_,8 @@
  			}
  			if (player.itemAnimation == 0 && player.itemTime == 0)

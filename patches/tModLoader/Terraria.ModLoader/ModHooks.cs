@@ -75,6 +75,23 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify color of light the sun emits.
+		/// </summary>
+		/// <param name="tileColor">Tile lighting color</param>
+		/// <param name="backgroundColor">Background lighting color</param>
+		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
+		/// </summary>
+		/// <param name="scale">Brightness scale</param>
+		public virtual void ModifyLightingBrightness(ref float scale)
+		{
+		}
+
+		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
 		/// 
 		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.
@@ -137,6 +154,36 @@ namespace Terraria.ModLoader
 				Transform = mod.ModifyTransformMatrix(Transform);
 			}
 			return Transform;
+		}
+
+		internal static void ModifySunLight(ref Color tileColor, ref Color backgroundColor)
+		{
+			if (Main.gameMenu) return;
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.ModifySunLightColor(ref tileColor, ref backgroundColor);
+			}
+		}
+
+		internal static void ModifyLightingBrightness(ref float negLight, ref float negLight2)
+		{
+			float scale = 1f;
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.ModifyLightingBrightness(ref scale);
+			}
+			if (Lighting.NotRetro)
+			{
+				negLight *= scale;
+				negLight2 *= scale;
+			}
+			else
+			{
+				negLight -= (scale - 1f) / 2.307692307692308f;
+				negLight2 -= (scale - 1f) / 0.75f;
+			}
+			negLight = Math.Max(negLight, 0.001f);
+			negLight2 = Math.Max(negLight2, 0.001f);
 		}
 
 		internal static void PostDrawFullscreenMap(ref string mouseText)

@@ -10,6 +10,7 @@ using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using static Terraria.ModLoader.ModLoader;
 using System.Runtime.ExceptionServices;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -133,7 +134,7 @@ namespace Terraria.ModLoader
 		private static BuildingMod ReadProperties(string modFolder, IBuildStatus status) {
 			if (modFolder.EndsWith("\\") || modFolder.EndsWith("/")) modFolder = modFolder.Substring(0, modFolder.Length - 1);
 			var modName = Path.GetFileName(modFolder);
-			status.SetStatus("Reading Properties: " + modName);
+			status.SetStatus(Language.GetTextValue("tModLoader.MSReadingProperties") + modName);
 
 			BuildProperties properties;
 			try {
@@ -200,14 +201,14 @@ namespace Terraria.ModLoader
 					}
 				}
 				else {
-					status.SetStatus("Compiling " + mod + " for Windows...");
+					status.SetStatus(Language.GetTextValue("tModLoader.MSCompiling") + mod + Language.GetTextValue("tModLoader.MSCompilingWindows"));
 					status.SetProgress(0, 2);
 					CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
 				}
 				if (winDLL == null)
 					return false;
 
-				status.SetStatus("Compiling " + mod + " for Mono...");
+				status.SetStatus(Language.GetTextValue("tModLoader.MSCompiling") + mod + Language.GetTextValue("tModLoader.MSCompilingMono"));
 				status.SetProgress(1, 2);
 				CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
 				if (monoDLL == null)
@@ -217,7 +218,7 @@ namespace Terraria.ModLoader
 			if (!VerifyName(mod.Name, winDLL) || !VerifyName(mod.Name, monoDLL))
 				return false;
 
-			status.SetStatus("Building "+mod+"...");
+			status.SetStatus(Language.GetTextValue("tModLoader.MSBuilding") + mod + "...");
 			status.SetProgress(0, 1);
 
 			mod.modFile.AddFile("Info", mod.properties.ToBytes());
@@ -248,6 +249,7 @@ namespace Terraria.ModLoader
 			mod.modFile.Save();
 			EnableMod(mod.modFile);
 			ActivateExceptionReporting();
+			ModLoader.isModder = true;
 			return true;
 		}
 
@@ -258,7 +260,12 @@ namespace Terraria.ModLoader
 			exceptionReportingActive = true;
 			AppDomain.CurrentDomain.FirstChanceException += delegate(object sender, FirstChanceExceptionEventArgs exceptionArgs)
 			{
+				if (exceptionArgs.Exception.Source == "MP3Sharp") return;
+				float soundVolume = Main.soundVolume;
+				Main.soundVolume = 0f;
 				Main.NewText(exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace, Microsoft.Xna.Framework.Color.OrangeRed);
+				ErrorLogger.Log("Silently Caught Exception: " + exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace);
+				Main.soundVolume = soundVolume;
 			};
 		}
 

@@ -1,0 +1,76 @@
+{
+	"tModLoader": {
+		// Main Menu
+		"MenuModBrowser": "Navegador de Mods", 
+		"MenuMods": "Mods",
+		"MenuModSources": "Fuente de Mods",
+
+		// Mods Menu
+		"ModsModsList": "Lista de Mods",
+		"ModsEnableAll": "Activar todo",
+		"ModsDisableAll": "Desactivar todo",
+		"ModsReloadMods": "Re-actualizar mods",
+		"ModsOpenModsFolder": "Abrir la carpeta de Mods",
+		"ModsModPacks": "Paquete de Mods",
+		"ModsDisable": "Deshabilitar",
+		"ModsEnable": "Habilitar", 
+		"ModsMoreInfo": "Más Información",
+		"ModsOriginatedFromModBrowser": "Este Mod se origino del Navegador de Mods",
+		"ModsTypeToSearch": "Escribe para buscar",
+		"ModsSearchByModName": "Buscar por el nombre del mod",
+		"ModsSearchByAuthor": "Buscar por el nombre del Autor",
+		"ModsSortRecently": "Ordenar mods cambiados recientemente", 
+		"ModsSortNamesAlph": "Ordenar nombres de mods en orden alfabético",
+		"ModsSortNamesReverseAlph": "Ordenar nombres de mods en orden alfabético inverso",
+		"ModsShowAllMods": "Mostrar todos los mods",
+		"ModsShowEnabledMods": "Mostrar solo los mods habilitados",
+		"ModsShowDisabledMods": "Mostrar sólo mods deshabilitados",	
+
+		// Mod Browser
+		"MBDownload": "Descargar",
+		"MBDowngrade": "Degradar",
+		"MBUpdate": "Actualizar",
+		"MBReloadBrowser": "Re-actualizar Navegador",
+		"MBSortByRecentlyUpdated": "Ordenar por actualizado recientemente",
+		"MBSortByPopularity": "Ordenar por popularidad",
+		"MBSortDownloadDesc": "Ordenar por descargas descendiendo",
+		"MBSortDownloadAsc": "Ordenar por descargas ascendiendo",
+		"MBShowAllMods": "Mostrar todos los mods",
+		"MBShowNotInstalledUpdates": "Mostrar mods no instalados o actualizados",
+		"MBShowUpdates": "Mostrar solo actualizaciones",
+
+		// TML Options
+		"DownloadFromServersYes": "Descargar Mods de los servidores : Activado",
+		"DownloadFromServersNo": "Descargar Mods de los servidores : Desactivado",
+		"DownloadSignedYes": "Solo descargue los Mods asignado de los servidores: Activado",
+		"DownloadSignedNo": "Solo descargue los Mods asignado de los servidores: Desactivado",
+		"MusicStreamModeConvert": "Modo de flujo de música: Convertir en demanda",
+		"MusicStreamModeStream": "Modo Stream de música: Stream desde el caché",
+		"ExperimentalFeaturesYes": "Contenido experimental: Activado",
+		"ExperimentalFeaturesNo": "Contenido experimental: Desactivado",
+		"ClearMBCredentials": "Borrar las credenciales del navegador de Mods",
+
+		// Mod Sources
+		"MSBuild": "Construir",
+		"MSBuildReload": "Construir + Re-actualizar",
+		"MSBuildAll": "Construir todo",
+		"MSBuildReloadAll": "Construir + Re-actualizar todo",
+		"MSOpenSources": "Abrir fuente",
+		"MSManagePublished": "Gestionar lo publicado",
+		"MSPublish": "Publicar",
+
+		//There should be ModName after ':'
+		"MSReadingProperties": "Leyendo las propiedades: ",
+		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
+		"MSCompiling": "Compilando ",
+		"MSCompilingWindows": " por Windows...",
+		"MSCompilingMono": " por Mono...",
+		//There should be ModName after ':'
+		"MSBuilding": "Construyendo ",
+		"MSFinding": "Buscando Mods...",
+		//There should be ModName after ':'
+		"MSIntializing": "Inicializando: ",
+		//There should be ModName after ':'
+		"MSLoading": "Cargando Mod: ",
+	}
+}

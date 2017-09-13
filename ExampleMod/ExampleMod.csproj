@@ -119,6 +119,7 @@
     <Compile Include="Items\CarKey.cs" />
     <Compile Include="Items\CopperShortsword.cs" />
     <Compile Include="Items\EquipMaterial.cs" />
+    <Compile Include="Items\ExampleDrawTooltips.cs" />
     <Compile Include="Items\ExampleDye.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
@@ -206,7 +207,7 @@
     <Compile Include="Projectiles\ExampleLaser.cs" />
     <Compile Include="Projectiles\ExampleSolution.cs" />
     <Compile Include="Projectiles\ExampleSpearProjectile.cs" />
-    <Compile Include="Projectiles\ExampleYoyo.cs" />
+    <Compile Include="Projectiles\ExampleYoyoProjectile.cs" />
     <Compile Include="Projectiles\HealProj.cs" />
     <Compile Include="Projectiles\Minions\HoverShooter.cs" />
     <Compile Include="Projectiles\Minions\Minion.cs" />

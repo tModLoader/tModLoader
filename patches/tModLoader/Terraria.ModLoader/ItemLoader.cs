@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -34,7 +35,8 @@ namespace Terraria.ModLoader
 			public GlobalItem[] arr = new GlobalItem[0];
 			public readonly MethodInfo method;
 
-			public HookList(MethodInfo method) {
+			public HookList(MethodInfo method)
+			{
 				this.method = method;
 			}
 		}
@@ -202,9 +204,9 @@ namespace Terraria.ModLoader
 		{
 			return item.modItem != null && GeneralPrefix(item) && (item.magic || item.summon);
 		}
-		
+
 		private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
-		
+
 		internal static void SetDefaults(Item item, bool createModItem = true)
 		{
 			if (IsModItem(item.type) && createModItem)
@@ -275,14 +277,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="player">The player holding the item.</param>
-		public static bool CanUseItem(Item item, Player player) {
+		public static bool CanUseItem(Item item, Player player)
+		{
 			bool flag = true;
 			if (item.modItem != null)
 				flag &= item.modItem.CanUseItem(player);
-			
+
 			foreach (var g in HookCanUseItem.arr)
 				flag &= g.Instance(item).CanUseItem(item, player);
-			
+
 			return flag;
 		}
 
@@ -344,7 +347,7 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookUseTimeMultiplier.arr)
 				multiplier *= g.Instance(item).UseTimeMultiplier(item, player);
-			
+
 			return multiplier;
 		}
 
@@ -358,7 +361,7 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookMeleeSpeedMultiplier.arr)
 				multiplier *= g.Instance(item).MeleeSpeedMultiplier(item, player);
-			
+
 			return multiplier;
 		}
 
@@ -385,10 +388,30 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void GetWeaponKnockback(Item item, Player player, ref float knockback)
 		{
+			if (item.IsAir)
+				return;
+
 			item.modItem?.GetWeaponKnockback(player, ref knockback);
 
 			foreach (var g in HookGetWeaponKnockback.arr)
 				g.Instance(item).GetWeaponKnockback(item, player, ref knockback);
+		}
+
+
+		private delegate void DelegateGetWeaponCrit(Item item, Player player, ref int crit);
+		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(g => g.GetWeaponCrit);
+		/// <summary>
+		/// Calls ModItem.GetWeaponCrit, then all GlobalItem.GetWeaponCrit hooks.
+		/// </summary>
+		public static void GetWeaponCrit(Item item, Player player, ref int crit)
+		{
+			if (item.IsAir)
+				return;
+
+			item.modItem?.GetWeaponCrit(player, ref crit);
+
+			foreach (var g in HookGetWeaponCrit.arr)
+				g.Instance(item).GetWeaponCrit(item, player, ref crit);
 		}
 
 		/// <summary>
@@ -424,7 +447,8 @@ namespace Terraria.ModLoader
 					ammo.modItem != null && !ammo.modItem.ConsumeAmmo(player))
 				return false;
 
-			foreach (var g_ in HookConsumeAmmo.arr) {
+			foreach (var g_ in HookConsumeAmmo.arr)
+			{
 				var g = g_.Instance(item);
 				if (!g.ConsumeAmmo(item, player) || !g.ConsumeAmmo(ammo, player))
 					return false;
@@ -612,7 +636,7 @@ namespace Terraria.ModLoader
 			bool flag = false;
 			if (item.modItem != null)
 				flag |= item.modItem.UseItem(player);
-			
+
 			foreach (var g in HookUseItem.arr)
 				flag |= g.Instance(item).UseItem(item, player);
 
@@ -1223,7 +1247,7 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookWingUpdate.arr)
 				retVal |= g.WingUpdate(player.wings, player, inUse);
-			
+
 			return retVal ?? false;
 		}
 
@@ -1395,7 +1419,7 @@ namespace Terraria.ModLoader
 
 			if (item.modItem != null)
 				flag &= item.modItem.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-			
+
 			return flag;
 		}
 
@@ -1554,8 +1578,48 @@ namespace Terraria.ModLoader
 				g.Instance(item).OnCraft(item, recipe);
 		}
 
+		private delegate bool DelegatePreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y);
+		private static HookList HookPreDrawTooltip = AddHook<DelegatePreDrawTooltip>(g => g.PreDrawTooltip);
+		public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+		{
+			bool modItemPreDraw = item.modItem?.PreDrawTooltip(lines, ref x, ref y) ?? true;
+			List<bool> globalItemPreDraw = new List<bool>();
+			foreach (var g in HookPreDrawTooltip.arr)
+				globalItemPreDraw.Add(g.PreDrawTooltip(item, lines, ref x, ref y));
+			return modItemPreDraw && globalItemPreDraw.All(z => z);
+		}
+
+		private delegate void DelegatePostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines);
+		private static HookList HookPostDrawTooltip = AddHook<DelegatePostDrawTooltip>(g => g.PostDrawTooltip);
+		public static void PostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines)
+		{
+			item.modItem?.PostDrawTooltip(lines);
+			foreach (var g in HookPostDrawTooltip.arr)
+				g.PostDrawTooltip(item, lines);
+		}
+
+		private delegate bool DelegatePreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset);
+		private static HookList HookPreDrawTooltipLine = AddHook<DelegatePreDrawTooltipLine>(g => g.PreDrawTooltipLine);
+		public static bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
+		{
+			bool modItemPreDrawLine = item.modItem?.PreDrawTooltipLine(line, ref yOffset) ?? true;
+			List<bool> globalItemPreDrawLine = new List<bool>();
+			foreach (var g in HookPreDrawTooltipLine.arr)
+				globalItemPreDrawLine.Add(g.PreDrawTooltipLine(item, line, ref yOffset));
+			return modItemPreDrawLine && globalItemPreDrawLine.All(x => x);
+		}
+
+		private delegate void DelegatePostDrawTooltipLine(Item item, DrawableTooltipLine line);
+		private static HookList HookPostDrawTooltipLine = AddHook<DelegatePostDrawTooltipLine>(g => g.PostDrawTooltipLine);
+		public static void PostDrawTooltipLine(Item item, DrawableTooltipLine line)
+		{
+			item.modItem?.PostDrawTooltipLine(line);
+			foreach (var g in HookPostDrawTooltipLine.arr)
+				g.PostDrawTooltipLine(item, line);
+		}
+
 		private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
-		public static void ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text,
+		public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text,
 			ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor)
 		{
 			List<TooltipLine> tooltips = new List<TooltipLine>();
@@ -1591,6 +1655,8 @@ namespace Terraria.ModLoader
 				}
 				overrideColor[k] = tooltips[k].overrideColor;
 			}
+
+			return tooltips;
 		}
 
 		private static HookList HookNeedsSaving = AddHook<Func<Item, bool>>(g => g.NeedsSaving);
@@ -1641,7 +1707,8 @@ namespace Terraria.ModLoader
 			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
 				.Any(f => f.DeclaringType != typeof(GlobalItem));
 
-			if (hasInstanceFields) {
+			if (hasInstanceFields)
+			{
 				if (!item.InstancePerEntity)
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
 

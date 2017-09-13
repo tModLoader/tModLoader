@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.UI.Gamepad;
 using Newtonsoft.Json.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -35,6 +36,7 @@ namespace Terraria.ModLoader.UI
 		internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		private UITextPanel<string> reloadButton;
 		private UITextPanel<string> clearButton;
+		private UITextPanel<string> downloadAllButton;
 		public UICycleImage uIToggleImage;
 		public UICycleImage SearchFilterToggle;
 		public bool loading;
@@ -67,11 +69,13 @@ namespace Terraria.ModLoader.UI
 				{
 					uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 					uIElement.RemoveChild(clearButton);
+					uIElement.RemoveChild(downloadAllButton);
 				}
 				else if (_specialModPackFilter == null && value != null)
 				{
 					uIPanel.BackgroundColor = Color.Purple * 0.7f;
 					uIElement.Append(clearButton);
+					uIElement.Append(downloadAllButton);
 				}
 				_specialModPackFilter = value;
 			}
@@ -111,7 +115,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Append(uIScrollbar);
 
 			modList.SetScrollbar(uIScrollbar);
-			uIHeaderTextPanel = new UITextPanel<string>("Mod Browser", 0.8f, true);
+			uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModBrowser"), 0.8f, true);
 			uIHeaderTextPanel.HAlign = 0.5f;
 			uIHeaderTextPanel.Top.Set(-35f, 0f);
 			uIHeaderTextPanel.SetPadding(15f);
@@ -128,7 +132,7 @@ namespace Terraria.ModLoader.UI
 			reloadButton.OnClick += ReloadList;
 			uIElement.Append(reloadButton);
 
-			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			backButton.Width.Set(-10f, 0.5f);
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;
@@ -154,6 +158,17 @@ namespace Terraria.ModLoader.UI
 				Interface.modBrowser.updateNeeded = true;
 				Main.PlaySound(SoundID.MenuTick);
 			};
+
+			downloadAllButton = new UITextPanel<string>("Download All", 1f, false);
+			downloadAllButton.Width.Set(-10f, 0.5f);
+			downloadAllButton.Height.Set(25f, 0f);
+			downloadAllButton.HAlign = 1f;
+			downloadAllButton.VAlign = 1f;
+			downloadAllButton.Top.Set(-20f, 0f);
+			downloadAllButton.BackgroundColor = Color.Azure * 0.7f;
+			downloadAllButton.OnMouseOver += (s, e) => UICommon.CustomFadedMouseOver(Color.Azure, s, e);
+			downloadAllButton.OnMouseOut += (s, e) => UICommon.CustomFadedMouseOut(Color.Azure * 0.7f, s, e);
+			downloadAllButton.OnClick += (s, e) => DownloadMods(SpecialModPackFilter, SpecialModPackFilterTitle);
 
 			Append(uIElement);
 
@@ -205,7 +220,7 @@ namespace Terraria.ModLoader.UI
 			filterTextBoxBackground.Height.Set(40f, 0f);
 			upperMenuContainer.Append(filterTextBoxBackground);
 
-			filterTextBox = new UIInputTextField("Type to search");
+			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch"));
 			filterTextBox.Top.Set(5, 0f);
 			filterTextBox.Left.Set(-160, 1f);
 			filterTextBox.OnTextChange += (sender, e) => updateNeeded = true;
@@ -315,7 +330,7 @@ namespace Terraria.ModLoader.UI
 			base.Update(gameTime);
 			if (!updateNeeded) return;
 			updateNeeded = false;
-			if(!loading) uIPanel.RemoveChild(uILoader);
+			if (!loading) uIPanel.RemoveChild(uILoader);
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
@@ -328,13 +343,18 @@ namespace Terraria.ModLoader.UI
 				PopulateModBrowser();
 		}
 
+		internal void ClearItems()
+		{
+			items.Clear();
+		}
+
 		private void PopulateModBrowser()
 		{
 			loading = true;
 			SpecialModPackFilter = null;
 			SpecialModPackFilterTitle = null;
 			reloadButton.SetText("Getting data...");
-			SetHeading("Mod Browser");
+			SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
 			uIPanel.Append(uILoader);
 			modList.Clear();
 			items.Clear();
@@ -401,7 +421,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				loading = false;
-				reloadButton.SetText("Reload browser");
+				reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 			}
 			else if (!e.Cancelled)
 			{
@@ -416,7 +436,7 @@ namespace Terraria.ModLoader.UI
 					{
 						PopulateFromJSON(task.Result, response);
 						loading = false;
-						reloadButton.SetText("Reload browser");
+						reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 					}, TaskScheduler.FromCurrentSynchronizationContext());
 			}
 		}
@@ -425,7 +445,15 @@ namespace Terraria.ModLoader.UI
 		{
 			try
 			{
-				JObject jsonObject = JObject.Parse(json);
+				JObject jsonObject;
+				try
+				{
+					jsonObject = JObject.Parse(json);
+				}
+				catch (Exception e)
+				{
+					throw new Exception("Bad JSON: " + json, e);
+				}
 				JObject updateObject = (JObject)jsonObject["update"];
 				if (updateObject != null)
 				{
@@ -456,7 +484,7 @@ namespace Terraria.ModLoader.UI
 					bool exists = false;
 					bool update = false;
 					bool updateIsDowngrade = false;
-					var installed = installedMods.SingleOrDefault(m => m.name == name);
+					var installed = installedMods.FirstOrDefault(m => m.name == name);
 					if (installed != null)
 					{
 						exists = true;
@@ -476,6 +504,15 @@ namespace Terraria.ModLoader.UI
 				ErrorLogger.LogModBrowserException(e);
 				return;
 			}
+		}
+
+		private void DownloadMods(List<string> specialModPackFilter, string SpecialModPackFilterTitle)
+		{
+			Main.PlaySound(SoundID.MenuTick);
+			Interface.downloadMods.SetDownloading(SpecialModPackFilterTitle);
+			Interface.downloadMods.SetModsToDownload(specialModPackFilter, items);
+			Interface.modBrowser.updateNeeded = true;
+			Main.menuMode = Interface.downloadModsID;
 		}
 
 		private void SetHeading(string heading)
@@ -521,17 +558,17 @@ namespace Terraria.ModLoader.UI
 			switch (sortmode)
 			{
 				case ModBrowserSortMode.DisplayNameAtoZ:
-					return "Sort mod names alphabetically";
+					return Language.GetTextValue("tModLoader.ModsSortNamesAlph");
 				case ModBrowserSortMode.DisplayNameZtoA:
-					return "Sort mod names reverse-alphabetically";
+					return Language.GetTextValue("tModLoader.ModsSortNamesReverseAlph");
 				case ModBrowserSortMode.DownloadsDescending:
-					return "Sort by downloads descending";
+					return Language.GetTextValue("tModLoader.MBSortDownloadDesc");
 				case ModBrowserSortMode.DownloadsAscending:
-					return "Sort by downloads ascending";
+					return Language.GetTextValue("tModLoader.MBSortDownloadAsc");
 				case ModBrowserSortMode.RecentlyUpdated:
-					return "Sort by recently updated";
+					return Language.GetTextValue("tModLoader.MBSortByRecentlyUpdated");
 				case ModBrowserSortMode.Hot:
-					return "Sort by popularity";
+					return Language.GetTextValue("tModLoader.MBSortByPopularity");
 			}
 			return "Unknown Sort";
 		}
@@ -544,11 +581,11 @@ namespace Terraria.ModLoader.UI
 			switch (updateFilterMode)
 			{
 				case UpdateFilter.All:
-					return "Show all mods";
+					return Language.GetTextValue("tModLoader.MBShowAllMods");
 				case UpdateFilter.Available:
-					return "Show mods not installed and updates";
+					return Language.GetTextValue("tModLoader.MBShowNotInstalledUpdates");
 				case UpdateFilter.UpdateOnly:
-					return "Show only updates";
+					return Language.GetTextValue("tModLoader.MBShowUpdates");
 			}
 			return "Unknown Sort";
 		}
@@ -561,9 +598,9 @@ namespace Terraria.ModLoader.UI
 			switch (searchFilterMode)
 			{
 				case SearchFilter.Name:
-					return "Search by Mod name";
+					return Language.GetTextValue("tModLoader.ModsSearchByModName");
 				case SearchFilter.Author:
-					return "Search by Author name";
+					return Language.GetTextValue("tModLoader.ModsSearchByAuthor");
 			}
 			return "Unknown Sort";
 		}

@@ -15,6 +15,26 @@
  		}
  
  		private static void LoadClientParameters(Main game)
+@@ -66,6 +_,19 @@
+ 				}))
+ 			{
+ 				game.AutoHost();
++			}
++			if (LaunchInitializer.HasParameter("-skipselect"))
++			{
++				Main.showSplash = false;
++				ModLoader.ModLoader.PostLoad += () =>
++				{
++					WorldGen.clearWorld();
++					Main.LoadPlayers();
++					Main.PlayerList[0].SetAsActive();
++					Main.LoadWorlds();
++					Main.WorldList[0].SetAsActive();
++					WorldGen.playWorld();
++				};
+ 			}
+ 		}
+ 
 @@ -172,6 +_,14 @@
  			{
  				game.NewMOTD(newMOTD);

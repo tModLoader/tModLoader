@@ -127,4 +127,20 @@
  				}
  				else
  				{
+@@ -2803,6 +_,7 @@
+ 					Lighting.negLight *= 0.85f;
+ 					Lighting.negLight2 *= 0.85f;
+ 				}
++				ModHooks.ModifyLightingBrightness(ref negLight,ref negLight2);
+ 			}
+ 			else
+ 			{
+@@ -2828,6 +_,7 @@
+ 					Lighting.negLight += 0.09f;
+ 					Lighting.negLight2 += 0.18f;
+ 				}
++				ModHooks.ModifyLightingBrightness(ref negLight,ref negLight2);
+ 				Lighting.wetLightR = Lighting.negLight * 1.2f;
+ 				Lighting.wetLightG = Lighting.negLight * 1.1f;
+ 			}
 

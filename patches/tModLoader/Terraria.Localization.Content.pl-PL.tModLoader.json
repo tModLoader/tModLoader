@@ -1,0 +1,53 @@
+{
+	"tModLoader": {
+		// Main Menu
+		"MenuModBrowser": "Przeglądarka Modów",
+		"MenuMods": "Mody",
+		"MenuModSources": "Źródła",
+
+		// Mods Menu
+		"ModsModsList": "Lista modów",
+		"ModsEnableAll": "Włącz wszystkie",
+		"ModsDisableAll": "Wyłącz wszystkie",
+		"ModsReloadMods": "Przeładuj mody",
+		"ModsOpenModsFolder": "Otwórz folder z modami",
+		"ModsModPacks": "Paczki modów",
+		"ModsDisable": "Wyłącz",
+		"ModsEnable": "Włącz", 
+		"ModsMoreInfo": "Więcej informacji",
+		"ModsOriginatedFromModBrowser": "Ten mod został pobrany z Przeglądarki Modów",
+		"ModsTypeToSearch": "Zacznij pisać by wyszukać",
+		"ModsSearchByModName": "Szukaj po nazwie",
+		"ModsSearchByAuthor": "Szukaj po autorze",
+		"ModsSortRecently": "Sortuj po dacie aktualizacji",
+		"ModsSortNamesAlph": "Sortuj alfabetycznie",
+		"ModsSortNamesReverseAlph": "Sortuj odwrotnie alfabetycznie",
+		"ModsShowAllMods": "Pokaż wszystkie",
+		"ModsShowEnabledMods": "Pokaż tylko włączone",
+		"ModsShowDisabledMods": "Pokaż tylko wyłączone",	
+
+		// Mod Browser
+		"MBDownload": "Pobierz",
+		"MBDowngrade": "Zdezaktualizuj",
+		"MBUpdate": "Zaktualizuj",
+		"MBReloadBrowser": "Odśwież",
+		"MBSortByRecentlyUpdated": "Sortuj po dacie aktualizacji",
+		"MBSortByPopularity": "Sortuj po popularności",
+		"MBSortDownloadDesc": "Sortuj po pobraniach malejąco",
+		"MBSortDownloadAsc": "Sort po pobraniach rosnąco",
+		"MBShowAllMods": "Pokaż wszystkie",
+		"MBShowNotInstalledUpdates": "Pokaż niezainstalowane i aktualizacje",
+		"MBShowUpdates": "Pokaż tylko aktualizacje",
+
+		// TML Options
+		"DownloadFromServersYes": "Pobieraj mody z serwerów: Tak",
+		"DownloadFromServersNo": "Pobieraj mody z serwerów: Nie",
+		"DownloadSignedYes": "Pobieraj tylko zaufane mody z serwerów: Tak",
+		"DownloadSignedNo": "Pobieraj tylko zaufane mody z serwerów: Nie",
+		"MusicStreamModeConvert": "Ładowanie muzyki: Konwersja na życzenie",
+		"MusicStreamModeStream": "Ładowanie muzyki: Strumieniuj z pamięci podręcznej",
+		"ExperimentalFeaturesYes": "Eksperymentalne funkcje: Włączone",
+		"ExperimentalFeaturesNo": "Eksperymentalne funkcje: Wyłączone",
+		"ClearMBCredentials": "Wyczyść dane dostępowe Przeglądarki Modów"
+	}
+}

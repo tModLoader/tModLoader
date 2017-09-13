@@ -21,6 +21,7 @@ namespace ExampleMod
 {
 	public class ExampleMod : Mod
 	{
+		internal static ExampleMod instance;
 		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
 		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
 		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
@@ -45,29 +46,48 @@ namespace ExampleMod
 
 		public override void Load()
 		{
+			instance = this;
+
+			// Adds boss head textures for the Abomination boss
 			for (int k = 1; k <= 4; k++)
 			{
 				AddBossHeadTexture(captiveElementHead + k);
 				AddBossHeadTexture(captiveElement2Head + k);
 			}
+
+			// Registers a new hotkey
 			RandomBuffHotKey = RegisterHotKey("Random Buff", "P");
+
+			// Registers a new custom currency
 			FaceCustomCurrencyID = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ItemType<Items.Face>(), 999L));
+
+			// All code below runs only if we're not loading on a server
 			if (!Main.dedServ)
 			{
+				// Add certain equip textures
 				AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
 				AddEquipTexture(new Items.Armor.BlockyHead(), null, EquipType.Head, "BlockyHead", "ExampleMod/Items/Armor/ExampleCostume_Head");
 				AddEquipTexture(new Items.Armor.BlockyBody(), null, EquipType.Body, "BlockyBody", "ExampleMod/Items/Armor/ExampleCostume_Body", "ExampleMod/Items/Armor/ExampleCostume_Arms");
 				AddEquipTexture(new Items.Armor.BlockyLegs(), null, EquipType.Legs, "BlockyLeg", "ExampleMod/Items/Armor/ExampleCostume_Legs");
-				//Main.music[MusicID.Dungeon].ModMusic = GetSound("Sounds/Music/ExampleMusic").CreateInstance();
+
+				// Change the vanilla dungeon track
+				// Main.music[MusicID.Dungeon] = GetMusic("Sounds/Music/DriveMusic");
+
+				// Register a new music box
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
-				Main.instance.LoadTiles(TileID.Loom);
-				Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom");
-				// What if....Replace a vanilla item texture and equip texture.
+
+				// Change the vailla loom texture
+				Main.instance.LoadTiles(TileID.Loom); // First load the tile texture
+				Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom"); // Now we change it
+
+				//What if....Replace a vanilla item texture and equip texture.
 				//Main.itemTexture[ItemID.CopperHelmet] = GetTexture("Resprite/CopperHelmet_Item");
 				//Item copperHelmet = new Item();
 				//copperHelmet.SetDefaults(ItemID.CopperHelmet);
 				//Main.armorHeadLoaded[copperHelmet.headSlot] = true;
 				//Main.armorHeadTexture[copperHelmet.headSlot] = GetTexture("Resprite/CopperHelmet_Head");
+
+				// Create new skies and screen filters
 				Filters.Scene["ExampleMod:PuritySpirit"] = new Filter(new PuritySpiritScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.9f, 0.4f).UseOpacity(0.7f), EffectPriority.VeryHigh);
 				SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
@@ -77,12 +97,15 @@ namespace ExampleMod
 				Ref<Effect> exampleEffectRef = new Ref<Effect>();
 				exampleEffectRef.Value = exampleEffect;
 				GameShaders.Armor.BindShader<ArmorShaderData>(ItemType<Items.ExampleDye>(), new ArmorShaderData(exampleEffectRef, "ExampleDyePass"));
+
+				// Custom UI
 				exampleUI = new ExampleUI();
 				exampleUI.Activate();
 				exampleUserInterface = new UserInterface();
 				exampleUserInterface.SetState(exampleUI);
 			}
 
+			// Register custom mod translations, lives left is for Spirit of Purity
 			ModTranslation text = CreateTranslation("LivesLeft");
 			text.SetDefault("{0} has {1} lives left!");
 			AddTranslation(text);
@@ -92,6 +115,8 @@ namespace ExampleMod
 			text = CreateTranslation("NPCTalk");
 			text.SetDefault("<{0}> {1}");
 			AddTranslation(text);
+
+			// Volcano warning is for the random vulcano tremor
 			text = CreateTranslation("VolcanoWarning");
 			text.SetDefault("Did you hear something....A Volcano! Find Cover!");
 			AddTranslation(text);
@@ -99,16 +124,26 @@ namespace ExampleMod
 
 		public override void Unload()
 		{
+			// All code below runs only if we're not loading on a server
 			if (!Main.dedServ)
 			{
-				Main.music[MusicID.Dungeon].ModMusic = null;
-				Main.tileFrame[TileID.Loom] = 0;
-				Main.tileSetsLoaded[TileID.Loom] = false;
+				// Main.music[MusicID.Dungeon] = Main.soundBank.GetCue("Music_" + MusicID.Dungeon);
+				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
+				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
 			}
+
+			// Unload static references
+			// You need to clear static references to assets (Texture2D, SoundEffects, Effects). 
+			exampleEffect = null;
+
+			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
+			instance = null;
+			RandomBuffHotKey = null;
 		}
 
 		public override void PostSetupContent()
 		{
+			// Showcases mod support with Boss Checklist without referencing the mod
 			Mod bossChecklist = ModLoader.GetMod("BossChecklist");
 			if (bossChecklist != null)
 			{
@@ -119,56 +154,40 @@ namespace ExampleMod
 
 		public override void AddRecipeGroups()
 		{
+			// Creates a new recipe group
 			RecipeGroup group = new RecipeGroup(() => Lang.misc[37] + " " + Lang.GetItemNameValue(ItemType("ExampleItem")), new int[]
 			{
 				ItemType("ExampleItem"),
 				ItemType("EquipMaterial"),
 				ItemType("BossItem")
 			});
+			// Registers the new recipe group with the specified name
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", group);
 		}
 
+		// Learn how to do Recipes: https://github.com/blushiemagic/tModLoader/wiki/Basic-Recipes 
 		public override void AddRecipes()
 		{
+			// Here is an example of a recipe.
 			ModRecipe recipe = new ModRecipe(this);
 			recipe.AddIngredient(null, "ExampleItem");
 			recipe.SetResult(ItemID.Wood, 999);
 			recipe.AddRecipe();
-			recipe = new ModRecipe(this);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.Silk, 999);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(this);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.IronOre, 999);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(this);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.GravitationPotion, 20);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(this);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.GoldChest);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(this);
-			recipe.AddIngredient(null, "ExampleItem");
-			recipe.SetResult(ItemID.MusicBoxDungeon);
-			recipe.AddRecipe();
-			RecipeHelper.AddBossRecipes(this);
-			RecipeHelper.TestRecipeEditor(this);
+
+			// To make ExampleMod more organized, the rest of the recipes are added elsewhere, see the method calls below.
+			// See RecipeHelper.cs
+			RecipeHelper.AddExampleRecipes(this);
+			RecipeHelper.ExampleRecipeEditing(this);
 		}
 
 		public override void UpdateMusic(ref int music)
 		{
 			if (Main.myPlayer != -1 && !Main.gameMenu)
 			{
-				if (Main.LocalPlayer.active && Main.LocalPlayer.FindBuffIndex(this.BuffType("CarMount")) != -1)
+				if (Main.LocalPlayer.active
+					&& (Main.LocalPlayer.FindBuffIndex(BuffType("CarMount")) != -1 || Main.LocalPlayer.GetModPlayer<ExamplePlayer>(this).ZoneExample))
 				{
-					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
-				}
-				if (Main.LocalPlayer.active && Main.LocalPlayer.GetModPlayer<ExamplePlayer>(this).ZoneExample)
-				{
-					music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
 				}
 			}
 		}
@@ -182,6 +201,7 @@ namespace ExampleMod
 		float targetOffsetX = 0;
 		float targetOffsetY = 0;
 
+		// Volcano Tremor
 		public override Matrix ModifyTransformMatrix(Matrix Transform)
 		{
 			if (!Main.gameMenu)

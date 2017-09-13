@@ -1,0 +1,76 @@
+﻿{
+	"tModLoader": {
+		// Main Menu
+		"MenuModBrowser": "Mod Browser",
+		"MenuMods": "Mods",
+		"MenuModSources": "Mod Sources",
+
+		// Mods Menu
+		"ModsModsList": "Mods List",
+		"ModsEnableAll": "Enable All",
+		"ModsDisableAll": "Disable All",
+		"ModsReloadMods": "Reload Mods",
+		"ModsOpenModsFolder": "Open Mods Folder",
+		"ModsModPacks": "Mod Packs",
+		"ModsDisable": "Disable",
+		"ModsEnable": "Enable", 
+		"ModsMoreInfo": "More info",
+		"ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",
+		"ModsTypeToSearch": "Type to search",
+		"ModsSearchByModName": "Search by Mod name",
+		"ModsSearchByAuthor": "Search by Author name",
+		"ModsSortRecently": "Sort by recently changed",
+		"ModsSortNamesAlph": "Sort mod names alphabetically",
+		"ModsSortNamesReverseAlph": "Sort mod names reverse-alphabetically",
+		"ModsShowAllMods": "Show all mods",
+		"ModsShowEnabledMods": "Show only enabled mods",
+		"ModsShowDisabledMods": "Show only disabled mods",	
+
+		// Mod Browser
+		"MBDownload": "Download",
+		"MBDowngrade": "Downgrade",
+		"MBUpdate": "Update",
+		"MBReloadBrowser": "Reload browser",
+		"MBSortByRecentlyUpdated": "Sort by recently updated",
+		"MBSortByPopularity": "Sort by popularity",
+		"MBSortDownloadDesc": "Sort by downloads descending",
+		"MBSortDownloadAsc": "Sort by downloads ascending",
+		"MBShowAllMods": "Show all mods",
+		"MBShowNotInstalledUpdates": "Show mods not installed and updates",
+		"MBShowUpdates": "Show only updates",
+
+		// TML Options
+		"DownloadFromServersYes": "Download Mods From Servers: On",
+		"DownloadFromServersNo": "Download Mods From Servers: Off",
+		"DownloadSignedYes": "Only Download Signed Mods From Servers: On",
+		"DownloadSignedNo": "Only Download Signed Mods From Servers: Off",
+		"MusicStreamModeConvert": "Music Stream Mode: Convert On Demand",
+		"MusicStreamModeStream": "Music Stream Mode: Stream From Cache",
+		"ExperimentalFeaturesYes": "Experimental Features: On",
+		"ExperimentalFeaturesNo": "Experimental Features: Off",
+		"ClearMBCredentials": "Clear Mod Browser Credentials",
+
+		// Mod Sources
+		"MSBuild": "Build",
+		"MSBuildReload": "Build + Reload",
+		"MSBuildAll": "Build All",
+		"MSBuildReloadAll": "Build + Reload All",
+		"MSOpenSources": "Open Sources",
+		"MSManagePublished": "Manage Published",
+		"MSPublish": "Publish",
+
+		//There should be ModName after ':'
+		"MSReadingProperties": "Reading Properties: ",
+		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
+		"MSCompiling": "Compiling ",
+		"MSCompilingWindows": " for Windows...",
+		"MSCompilingMono": " for Mono...",
+		//There should be ModName after ':'
+		"MSBuilding": "Building ",
+		"MSFinding": "Finding Mods...",
+		//There should be ModName after ':'
+		"MSIntializing": "Initializing: ",
+		//There should be ModName after ':'
+		"MSLoading": "Loading Mod: ",
+	}
+}

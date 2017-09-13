@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Utils.cs
 +++ src/tModLoader\Terraria\Utils.cs
-@@ -467,9 +_,42 @@
+@@ -467,9 +_,52 @@
  			return array;
  		}
  
@@ -20,6 +20,16 @@
 +			T[] Arr = (T[])Enum.GetValues(src.GetType());
 +			int j = Array.IndexOf<T>(Arr, src) - 1;
 +			return (j < 0) ? Arr[Arr.Length - 1] : Arr[j];
++		}
++
++		public static T Next<T>(this UnifiedRandom r, T[] array)
++		{
++			return array[r.Next(array.Length)];
++		}
++
++		public static T Next<T>(this UnifiedRandom r, IList<T> list)
++		{
++			return list[r.Next(list.Count)];
 +		}
 +
 +		public static bool NextBool(this UnifiedRandom r)

@@ -14,6 +14,7 @@ using System.Text;
 using Terraria.ID;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -77,7 +78,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 
-			UITextPanel<string> moreInfoButton = new UITextPanel<string>("More info", 1f, false);
+			UITextPanel<string> moreInfoButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
 			moreInfoButton.Width.Set(100f, 0f);
 			moreInfoButton.Height.Set(30f, 0f);
 			moreInfoButton.Left.Set(left, 0f);
@@ -91,7 +92,7 @@ namespace Terraria.ModLoader.UI
 
 			if (update || installed == null)
 			{
-				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? "Downgrade" : "Update") : "Download", 1f,
+				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? Language.GetTextValue("tModLoader.MBDowngrade") : Language.GetTextValue("tModLoader.MBUpdate")) : Language.GetTextValue("tModLoader.MBDownload"), 1f,
 					false);
 				updateButton.CopyStyle(moreInfoButton);
 				updateButton.Width.Set(modIconURL != null ? 120f : 200f, 0f);
@@ -295,7 +296,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void DownloadMod(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(12, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuTick);
 			try
 			{
 				using (WebClient client = new WebClient())

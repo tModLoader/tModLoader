@@ -15,6 +15,7 @@ using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Newtonsoft.Json;
 using System.Reflection;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -27,6 +28,7 @@ namespace Terraria.ModLoader.UI
 		private UIList modList;
 		private readonly List<UIModItem> items = new List<UIModItem>();
 		private bool updateNeeded;
+		public bool loading;
 		private UIInputTextField filterTextBox;
 		public UICycleImage SearchFilterToggle;
 		public ModsMenuSortMode sortMode = ModsMenuSortMode.RecentlyUpdated;
@@ -75,13 +77,13 @@ namespace Terraria.ModLoader.UI
 
 			modList.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>("Mods List", 0.8f, true);
+			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true);
 			uIHeaderTexTPanel.HAlign = 0.5f;
 			uIHeaderTexTPanel.Top.Set(-35f, 0f);
 			uIHeaderTexTPanel.SetPadding(15f);
 			uIHeaderTexTPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uIHeaderTexTPanel);
-			buttonEA = new UIColorTextPanel("Enable All", Color.Green, 1f, false);
+			buttonEA = new UIColorTextPanel(Language.GetTextValue("tModLoader.ModsEnableAll"), Color.Green, 1f, false);
 			buttonEA.Width.Set(-10f, 1f / 3f);
 			buttonEA.Height.Set(25f, 0f);
 			buttonEA.VAlign = 1f;
@@ -90,28 +92,28 @@ namespace Terraria.ModLoader.UI
 			buttonEA.OnMouseOut += UICommon.FadedMouseOut;
 			buttonEA.OnClick += this.EnableAll;
 			uIElement.Append(buttonEA);
-			buttonDA = new UIColorTextPanel("Disable All", Color.Red, 1f, false);
+			buttonDA = new UIColorTextPanel(Language.GetTextValue("tModLoader.ModsDisableAll"), Color.Red, 1f, false);
 			buttonDA.CopyStyle(buttonEA);
 			buttonDA.HAlign = 0.5f;
 			buttonDA.OnMouseOver += UICommon.FadedMouseOver;
 			buttonDA.OnMouseOut += UICommon.FadedMouseOut;
 			buttonDA.OnClick += this.DisableAll;
 			uIElement.Append(buttonDA);
-			buttonRM = new UITextPanel<string>("Reload Mods", 1f, false);
+			buttonRM = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"), 1f, false);
 			buttonRM.CopyStyle(buttonEA);
 			buttonRM.HAlign = 1f;
 			buttonRM.OnMouseOver += UICommon.FadedMouseOver;
 			buttonRM.OnMouseOut += UICommon.FadedMouseOut;
 			buttonRM.OnClick += ReloadMods;
 			uIElement.Append(buttonRM);
-			buttonB = new UITextPanel<string>("Back", 1f, false);
+			buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			buttonB.CopyStyle(buttonEA);
 			buttonB.Top.Set(-20f, 0f);
 			buttonB.OnMouseOver += UICommon.FadedMouseOver;
 			buttonB.OnMouseOut += UICommon.FadedMouseOut;
 			buttonB.OnClick += BackClick;
 			uIElement.Append(buttonB);
-			buttonOMF = new UITextPanel<string>("Open Mods Folder", 1f, false);
+			buttonOMF = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"), 1f, false);
 			buttonOMF.CopyStyle(buttonB);
 			buttonOMF.HAlign = 0.5f;
 			buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
@@ -170,7 +172,7 @@ namespace Terraria.ModLoader.UI
 			filterTextBoxBackground.Height.Set(40f, 0f);
 			upperMenuContainer.Append(filterTextBoxBackground);
 
-			filterTextBox = new UIInputTextField("Type to search");
+			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch"));
 			filterTextBox.Top.Set(5f, 0f);
 			filterTextBox.Left.Set(-160f, 1f);
 			filterTextBox.OnTextChange += (a, b) => { updateNeeded = true; };
@@ -192,7 +194,7 @@ namespace Terraria.ModLoader.UI
 			_categoryButtons.Add(SearchFilterToggle);
 			upperMenuContainer.Append(SearchFilterToggle);
 
-			buttonMP = new UITextPanel<string>("Mod Packs", 1f, false);
+			buttonMP = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModPacks"), 1f, false);
 			buttonMP.CopyStyle(buttonOMF);
 			buttonMP.HAlign = 1f;
 			buttonMP.OnMouseOver += UICommon.FadedMouseOver;
@@ -226,8 +228,11 @@ namespace Terraria.ModLoader.UI
 
 		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(12, -1, -1, 1);
-			Main.menuMode = Interface.modPacksMenuID;
+			if (!Interface.modsMenu.loading)
+			{
+				Main.PlaySound(12, -1, -1, 1);
+				Main.menuMode = Interface.modPacksMenuID;
+			}
 		}
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
@@ -314,6 +319,7 @@ namespace Terraria.ModLoader.UI
 			Main.clrInput();
 			modList.Clear();
 			items.Clear();
+			loading = true;
 			uIPanel.Append(uiLoader);
 			Populate();
 		}
@@ -334,6 +340,7 @@ namespace Terraria.ModLoader.UI
 					}
 					needToRemoveLoading = true;
 					updateNeeded = true;
+					loading = false;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
@@ -345,11 +352,11 @@ namespace Terraria.ModLoader.UI
 			switch (sortmode)
 			{
 				case ModsMenuSortMode.RecentlyUpdated:
-					return "Sort by recently changed";
+					return Language.GetTextValue("tModLoader.ModsSortRecently");
 				case ModsMenuSortMode.DisplayNameAtoZ:
-					return "Sort mod names alphabetically";
+					return Language.GetTextValue("tModLoader.ModsSortNamesAlph");
 				case ModsMenuSortMode.DisplayNameZtoA:
-					return "Sort mod names reverse-alphabetically";
+					return Language.GetTextValue("tModLoader.ModsSortNamesReverseAlph");
 			}
 			return "Unknown Sort";
 		}
@@ -362,11 +369,11 @@ namespace Terraria.ModLoader.UI
 			switch (updateFilterMode)
 			{
 				case EnabledFilter.All:
-					return "Show all mods";
+					return Language.GetTextValue("tModLoader.ModsShowAllMods");
 				case EnabledFilter.EnabledOnly:
-					return "Show only enabled mods";
+					return Language.GetTextValue("tModLoader.ModsShowEnabledMods");
 				case EnabledFilter.DisabledOnly:
-					return "Show only disabled mods";
+					return Language.GetTextValue("tModLoader.ModsShowDisabledMods");
 			}
 			return "Unknown Sort";
 		}

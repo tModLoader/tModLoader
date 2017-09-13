@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader
 {
@@ -102,11 +103,7 @@ namespace Terraria.ModLoader
 					}
 					else
 					{
-						if (Main.music[slot] == null)
-						{
-							Main.music[slot] = new MusicWrapper();
-						}
-						Main.music[slot].ModMusic = ModLoader.GetSound(sound)?.CreateInstance() ?? null;
+						Main.music[slot] = ModLoader.GetMusic(sound) ?? null;
 					}
 				}
 			}
@@ -114,10 +111,10 @@ namespace Terraria.ModLoader
 
 		internal static void Unload()
 		{
-			for (int i = Main.maxMusic; i < Main.music.Length; i++)
-			{
-				Main.music[i].Stop(true);
-			}
+			//for (int i = Main.maxMusic; i < Main.music.Length; i++)
+			//{
+			//	Main.music[i].Stop(AudioStopOptions.Immediate);
+			//}
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType)))
 			{
 				nextSound[type] = GetNumVanilla(type);

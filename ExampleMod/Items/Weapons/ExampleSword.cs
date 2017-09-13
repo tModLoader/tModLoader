@@ -41,14 +41,16 @@ namespace ExampleMod.Items.Weapons
 		{
 			if (Main.rand.Next(3) == 0)
 			{
-				int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, mod.DustType("Sparkle"));
 				//Emit dusts when swing the sword
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, mod.DustType("Sparkle"));
 			}
 		}
 
 		public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit)
 		{
-			target.AddBuff(BuffID.OnFire, 60);		//Add Onfire buff to the NPC for 1 second
+			// Add Onfire buff to the NPC for 1 second
+			// 60 frames = 1 second
+			target.AddBuff(BuffID.OnFire, 60);		
 		}
 	}
 }

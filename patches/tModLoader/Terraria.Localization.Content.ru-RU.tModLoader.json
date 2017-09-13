@@ -1,0 +1,75 @@
+﻿{
+	"tModLoader": {
+		// Main Menu
+		"MenuModBrowser": "Браузер модов",
+		"MenuMods": "Моды",
+		"MenuModSources": "Исходники модов",
+
+		// Mods Menu
+		"ModsModsList": "Список модов",
+		"ModsEnableAll": "Включить все",
+		"ModsDisableAll": "Отключить все",
+		"ModsReloadMods": "Перезагрузить моды",
+		"ModsOpenModsFolder": "Открыть папку модов",
+		"ModsModPacks": "Сборки модов",
+		"ModsDisable": "Выключить",
+		"ModsEnable": "Включить", 
+		"ModsMoreInfo": "Подробнее",
+		"ModsOriginatedFromModBrowser": "Этот мод установлен из Браузера модов",
+		"ModsTypeToSearch": "Поиск",
+		"ModsSearchByModName": "Поиск по названию мода",
+		"ModsSearchByAuthor": "Поиск по автору мода",
+		"ModsSortRecently": "Упорядочить по последнему обновлению",
+		"ModsSortNamesAlph": "Упорядочить по алфавиту",
+		"ModsSortNamesReverseAlph": "Упорядочить обратно алфавиту",
+		"ModsShowAllMods": "Показать все моды",
+		"ModsShowEnabledMods": "Показать включённые моды",
+		"ModsShowDisabledMods": "Показать отключённые моды",
+
+		// Mod Browser
+		"MBDownload": "Скачать",
+		"MBDowngrade": "Предыдущая версия",
+		"MBUpdate": "Обновить",
+		"MBReloadBrowser": "Перезагрузить список модов",
+		"MBSortByRecentlyUpdated": "Упорядочить по последнему обновлению",
+		"MBSortByPopularity": "Упорядочить по популярности",
+		"MBSortDownloadDesc": "Упорядочить по убыванию скачиваний",
+		"MBSortDownloadAsc": "Упорядочить по возрастанию скачиваний",
+		"MBShowAllMods": "Показать все моды",
+		"MBShowNotInstalledUpdates": "Показать неустановленные или необновлённые моды",
+		"MBShowUpdates": "Показать необновлённые моды",
+
+		// TML Options
+		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
+		"DownloadFromServersNo": "Скачивать моды с серверов: Нет",
+		"DownloadSignedYes": "Скачивать только проверенные моды с серверов: Да",
+		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет",
+		"MusicStreamModeConvert": "Режим музыки: Конвертировать по необходимости",
+		"MusicStreamModeStream": "Режим музыки: Проигрывать из кэша",
+		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
+		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
+		"ClearMBCredentials": "Очистить данные Браузера модов",
+
+		// Mod Sources
+		"MSBuild": "Скомпилировать",
+		"MSBuildReload": "Скомпилировать и перезагрузить",
+		"MSBuildAll": "Скомпилировать всё",
+		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
+		"MSOpenSources": "Открыть исходники",
+		"MSManagePublished": "Опубликованное",
+		"MSBack": "Назад",
+		//There should be ModName after ':'
+		"MSReadingProperties": "Чтение настроек мода:",
+		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
+		"MSCompiling": "Компиляция мода ",
+		"MSCompilingWindows": " для Windows",
+		"MSCompilingMono": " для Mono",
+		//There should be ModName after ':'
+		"MSBuilding": "Сборка мода: ",
+		"MSFinding": "Поиск файлов",
+		//There should be ModName after ':'
+		"MSIntializing": "Инициализация мода: ",
+		//There should be ModName after ':'
+		"MSLoading": "Загрузка мода: ",
+	}
+}

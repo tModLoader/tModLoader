@@ -11,6 +11,7 @@ using Terraria.UI.Gamepad;
 using Terraria.ModLoader.IO;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -51,13 +52,13 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			modList.SetScrollbar(uIScrollbar);
-			UITextPanel<string> uIHeaderTextPanel = new UITextPanel<string>("Mod Sources", 0.8f, true);
+			UITextPanel<string> uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModSources"), 0.8f, true);
 			uIHeaderTextPanel.HAlign = 0.5f;
 			uIHeaderTextPanel.Top.Set(-35f, 0f);
 			uIHeaderTextPanel.SetPadding(15f);
 			uIHeaderTextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uIHeaderTextPanel);
-			UITextPanel<string> buttonBA = new UITextPanel<string>("Build All", 1f, false);
+			UITextPanel<string> buttonBA = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSBuildAll"), 1f, false);
 			buttonBA.Width.Set(-10f, 0.5f);
 			buttonBA.Height.Set(25f, 0f);
 			buttonBA.VAlign = 1f;
@@ -66,14 +67,14 @@ namespace Terraria.ModLoader.UI
 			buttonBA.OnMouseOut += UICommon.FadedMouseOut;
 			buttonBA.OnClick += BuildMods;
 			uIElement.Append(buttonBA);
-			UITextPanel<string> buttonBRA = new UITextPanel<string>("Build + Reload All", 1f, false);
+			UITextPanel<string> buttonBRA = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"), 1f, false);
 			buttonBRA.CopyStyle(buttonBA);
 			buttonBRA.HAlign = 1f;
 			buttonBRA.OnMouseOver += UICommon.FadedMouseOver;
 			buttonBRA.OnMouseOut += UICommon.FadedMouseOut;
 			buttonBRA.OnClick += BuildAndReload;
 			uIElement.Append(buttonBRA);
-			UITextPanel<string> buttonB = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			buttonB.CopyStyle(buttonBA);
 			buttonB.Width.Set(-10f, 1f / 3f);
 			buttonB.Top.Set(-20f, 0f);
@@ -81,14 +82,14 @@ namespace Terraria.ModLoader.UI
 			buttonB.OnMouseOut += UICommon.FadedMouseOut;
 			buttonB.OnClick += BackClick;
 			uIElement.Append(buttonB);
-			UITextPanel<string> buttonOS = new UITextPanel<string>("Open Sources", 1f, false);
+			UITextPanel<string> buttonOS = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSOpenSources"), 1f, false);
 			buttonOS.CopyStyle(buttonB);
 			buttonOS.HAlign = .5f;
 			buttonOS.OnMouseOver += UICommon.FadedMouseOver;
 			buttonOS.OnMouseOut += UICommon.FadedMouseOut;
 			buttonOS.OnClick += OpenSources;
 			uIElement.Append(buttonOS);
-			UITextPanel<string> buttonMP = new UITextPanel<string>("Manage Published", 1f, false);
+			UITextPanel<string> buttonMP = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSManagePublished"), 1f, false);
 			buttonMP.CopyStyle(buttonB);
 			buttonMP.HAlign = 1f;
 			buttonMP.OnMouseOver += UICommon.FadedMouseOver;

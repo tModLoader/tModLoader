@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Linq;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -37,7 +38,7 @@ namespace Terraria.ModLoader.UI
 			properties = BuildProperties.ReadModFile(mod);
 			string text = properties.displayName.Length > 0 ? properties.displayName : mod.name;
 			text += " v" + mod.version;
-			if(mod.tModLoaderVersion < new Version(0, 10))
+			if (mod.tModLoaderVersion < new Version(0, 10))
 			{
 				text += " [c/FF0000:(Old mod, enable at own risk)]";
 			}
@@ -59,7 +60,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 			this.enabled = ModLoader.IsEnabled(mod);
-			UITextPanel<string> button = new UITextPanel<string>("More info", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
 			button.Width.Set(100f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(430f, 0f);
@@ -70,7 +71,7 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += this.Moreinfo;
 			base.Append(button);
-			button2 = new UITextPanel<string>(this.enabled ? "Disable" : "Enable", 1f, false);
+			button2 = new UITextPanel<string>(this.enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
 			button2.Width.Set(100f, 0f);
 			button2.Height.Set(30f, 0f);
 			button2.Left.Set(button.Left.Pixels - button2.Width.Pixels - 5f, 0f);
@@ -98,14 +99,32 @@ namespace Terraria.ModLoader.UI
 			if (properties.modReferences.Length > 0 && !enabled)
 			{
 				string refs = String.Join(", ", properties.modReferences.Select(x => x.mod));
-				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs);
+				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs + "\n (click to enable)");
 				modReferenceIcon.Left.Set(button2.Left.Pixels - 10f, 0f);
 				modReferenceIcon.Top.Set(50f, 0f);
+				modReferenceIcon.OnClick += (a, b) =>
+				{
+					var referencedMods = properties.modReferences.Select(x => x.mod);
+					var foundMods = ModLoader.FindMods();
+					var referencedtModFiles = foundMods.Where(x => referencedMods.Contains(x.name));
+					foreach (var referencedMod in referencedtModFiles)
+					{
+						ModLoader.EnableMod(referencedMod);
+					}
+					Main.menuMode = Interface.modsMenuID;
+					var missingMods = referencedMods.Where(modstring => foundMods.All(modfile => modfile.name != modstring));
+					if (missingMods.Count() > 0)
+					{
+						Interface.infoMessage.SetMessage("The following mods were not found: " + String.Join(",", missingMods));
+						Interface.infoMessage.SetGotoMenu(Interface.modsMenuID);
+						Main.menuMode = Interface.infoMessageID;
+					}
+				};
 				base.Append(modReferenceIcon);
 			}
 			if (mod.ValidModBrowserSignature)
 			{
-				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], "This mod originated from the Mod Browser");
+				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser"));
 				keyImage.Left.Set(-20, 1f);
 				base.Append(keyImage);
 			}
@@ -204,7 +223,7 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(12, -1, -1, 1);
 			this.enabled = !this.enabled;
-			button2.SetText(this.enabled ? "Disable" : "Enable", 1f, false);
+			button2.SetText(this.enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
 			ModLoader.SetModActive(this.mod, this.enabled);
 		}
 

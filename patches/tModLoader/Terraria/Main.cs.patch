@@ -10,11 +10,12 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -54,6 +_,8 @@
+@@ -54,6 +_,9 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Audio;
 +using Terraria.ModLoader.IO;
  using Terraria.Net;
  using Terraria.ObjectData;
@@ -115,15 +116,33 @@
  		public int DiscoStyle;
  		public static int DiscoR = 255;
  		public static int DiscoB = 0;
+@@ -632,7 +_,7 @@
+ 		public static int maxDustToDraw = 6000;
+ 		public static int ActivePlayersCount = 0;
+ 		public static int maxNetPlayers = 255;
+-		private static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
++		internal static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
+ 		private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
+ 		public static UIManageControls ManageControlsMenu = new UIManageControls();
+ 		public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
 @@ -1067,7 +_,7 @@
  		public static AudioEngine engine;
  		public static SoundBank soundBank;
  		public static WaveBank waveBank;
 -		public static Cue[] music = new Cue[42];
-+		public static MusicWrapper[] music = new MusicWrapper[42];
++		public static Music[] music = new Music[42];
  		public static float[] musicFade = new float[42];
  		public static float musicVolume = 0.75f;
  		public static float ambientVolume = 0.75f;
+@@ -1221,6 +_,8 @@
+ 			0.75f
+ 		};
+ 		public static byte mouseTextColor = 0;
++		public static Microsoft.Xna.Framework.Color mouseTextColorReal
++			=> new Microsoft.Xna.Framework.Color(mouseTextColor /255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
+ 		public static int mouseTextColorChange = 1;
+ 		public static bool mouseLeftRelease = false;
+ 		public static bool mouseRightRelease = false;
 @@ -1334,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -492,28 +511,15 @@
  #if SERVER
  			Main.netMode = 2;
  #endif
-@@ -7490,7 +_,11 @@
+@@ -7490,7 +_,7 @@
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
  			}
 -			TexturePackSupport.FindTexturePack();
 +			TexturePackSupport.FindTexturePacks();
-+			for (int i = 1; i < 42; i++)
-+			{
-+				Main.music[i] = new MusicWrapper();
-+			}
  			TextureManager.Initialize();
  			this.mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
  			Main.ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
-@@ -8262,7 +_,7 @@
- 			Main.waveBank = new WaveBank(Main.engine, "Content" + Path.DirectorySeparatorChar + "Wave Bank.xwb");
- 			for (int i = 1; i < 42; i++)
- 			{
--				Main.music[i] = Main.soundBank.GetCue("Music_" + i);
-+				Main.music[i] = new MusicWrapper(Main.soundBank.GetCue("Music_" + i));
- 			}
- 		}
- 
 @@ -8639,6 +_,7 @@
  					bool flag13 = false;
  					Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
@@ -602,27 +608,44 @@
  						if (m == 28)
  						{
  							if (Main.cloudAlpha > 0f && (double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0 + (double)(Main.screenHeight / 2) && !Main.player[Main.myPlayer].ZoneSnow)
-@@ -9389,7 +_,7 @@
+@@ -9389,7 +_,11 @@
  								}
  								else if (!Main.music[m].IsPlaying)
  								{
 -									Main.music[m] = Main.soundBank.GetCue("Music_" + m);
-+									Main.music[m].cue = Main.soundBank.GetCue("Music_" + m);
++									MusicStreaming streaming = Main.music[m] as MusicStreaming;
++									if (Main.music[m] is MusicCue)
++										Main.music[m] = Main.soundBank.GetCue("Music_" + m);
++									if (streaming != null)
++										streaming.ResetStreamPosition();
  									Main.music[m].Play();
  									Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.ambientVolume);
  								}
-@@ -9436,7 +_,10 @@
+@@ -9436,7 +_,11 @@
  						{
  							if (!Main.music[m].IsPlaying)
  							{
 -								Main.music[m] = Main.soundBank.GetCue("Music_" + m);
-+								if (m < Main.maxMusic)
-+								{
-+									Main.music[m].cue = Main.soundBank.GetCue("Music_" + m);
-+								}
++								MusicStreaming streaming = Main.music[m] as MusicStreaming;
++								if (Main.music[m] is MusicCue)
++									Main.music[m] = Main.soundBank.GetCue("Music_" + m);
++								if (streaming != null)
++									streaming.ResetStreamPosition();
  								Main.music[m].Play();
  								Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.musicVolume * num8);
  							}
+@@ -9449,9 +_,11 @@
+ 								}
+ 								Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.musicVolume * num8);
+ 							}
++							Main.music[m].CheckBuffer();
+ 						}
+ 						else if (Main.music[m].IsPlaying)
+ 						{
++							Main.music[m].CheckBuffer();
+ 							if (Main.musicFade[Main.curMusic] > 0.25f)
+ 							{
+ 								Main.musicFade[m] -= 0.005f;
 @@ -11935,6 +_,8 @@
  			if (!this._isDrawingOrUpdating)
  			{
@@ -822,7 +845,7 @@
  						}
  						string[] array8;
  						IntPtr intPtr5;
-@@ -14702,34 +_,42 @@
+@@ -14702,34 +_,50 @@
  					}
  					else
  					{
@@ -840,6 +863,8 @@
  					if (Main.HoverItem.melee)
  					{
  						int num7 = Main.player[Main.myPlayer].meleeCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.HoverItem.crit;
++						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref num7);
++						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref num7);
  						array[num4] = num7 + Lang.tip[5].Value;
 +						tooltipNames[num4] = "CritChance";
  						num4++;
@@ -847,6 +872,8 @@
  					else if (Main.HoverItem.ranged)
  					{
  						int num8 = Main.player[Main.myPlayer].rangedCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.HoverItem.crit;
++						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref num8);
++						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref num8);
  						array[num4] = num8 + Lang.tip[5].Value;
 +						tooltipNames[num4] = "CritChance";
  						num4++;
@@ -854,6 +881,8 @@
  					else if (Main.HoverItem.magic)
  					{
  						int num9 = Main.player[Main.myPlayer].magicCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.HoverItem.crit;
++						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref num9);
++						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref num9);
  						array[num4] = num9 + Lang.tip[5].Value;
 +						tooltipNames[num4] = "CritChance";
  						num4++;
@@ -861,6 +890,8 @@
  					else if (Main.HoverItem.thrown)
  					{
  						int num10 = Main.player[Main.myPlayer].thrownCrit - Main.player[Main.myPlayer].inventory[Main.player[Main.myPlayer].selectedItem].crit + Main.HoverItem.crit;
++						ItemLoader.GetWeaponCrit(Main.HoverItem, player, ref num10);
++						PlayerHooks.GetWeaponCrit(player, Main.HoverItem, ref num10);
  						array[num4] = num10 + Lang.tip[5].Value;
 +						tooltipNames[num4] = "CritChance";
  						num4++;
@@ -1273,7 +1304,7 @@
  					num4++;
  					if (num21 > 0)
  					{
-@@ -15368,15 +_,21 @@
+@@ -15368,20 +_,27 @@
  				else if (Main.HoverItem.type != 3817)
  				{
  					array[num4] = Lang.tip[51].Value;
@@ -1283,9 +1314,11 @@
  				}
  			}
  			Vector2 zero = Vector2.Zero;
+-			int num26 = 0;
 +			Microsoft.Xna.Framework.Color?[] overrideColor;
-+			ItemLoader.ModifyTooltips(Main.HoverItem, ref num4, tooltipNames, ref array, ref array2, ref array3, ref num, out overrideColor);
- 			int num26 = 0;
++			List<TooltipLine> lines = ItemLoader.ModifyTooltips(Main.HoverItem, ref num4, tooltipNames, ref array, ref array2, ref array3, ref num, out overrideColor);
++			List<DrawableTooltipLine> drawableLines = lines.Select((x, i) => new DrawableTooltipLine(x, i, 0, 0, Microsoft.Xna.Framework.Color.White)).ToList();
++			int yOffset = 0; // num26
  			for (int k = 0; k < num4; k++)
  			{
 +				/* Below fixes the calculated width for lines containing Chat tags
@@ -1295,17 +1328,124 @@
  				if (vector.X > zero.X)
  				{
  					zero.X = vector.X;
-@@ -15514,6 +_,10 @@
- 					else if (l == num4 - 1)
+ 				}
+-				zero.Y += vector.Y + (float)num26;
++				zero.Y += vector.Y + (float)yOffset;
+ 			}
+ 			X += Main.toolTipDistance;
+ 			Y += Main.toolTipDistance;
+@@ -15393,41 +_,56 @@
+ 			{
+ 				Y = (int)((float)Main.screenHeight - zero.Y - 4f);
+ 			}
+-			int num27 = 0;
++			// remove num27, it's vertical offset per line
++			// int num27 = 0;
+ 			num19 = (float)Main.mouseTextColor / 255f;
++
++			bool globalCanDraw = ItemLoader.PreDrawTooltip(Main.HoverItem, lines.AsReadOnly(), ref X, ref Y);
++
+ 			for (int l = 0; l < num4; l++)
+ 			{
+-				if (l == num)
++				Microsoft.Xna.Framework.Color drawColor;
++				bool isOneDropLogo = l == num;
++				drawableLines[l].OriginalX = X; // it also sets X
++				drawableLines[l].OriginalY = Y; // it also sets Y
++
++				if (isOneDropLogo)
+ 				{
+ 					float num28 = 1f;
+ 					int num29 = (int)((float)Main.mouseTextColor * num28);
+ 					Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
+-					for (int m = 0; m < 5; m++)
+-					{
+-						int num30 = X;
+-						int num31 = Y + num27;
+-						if (m == 4)
+-						{
+-							black = new Microsoft.Xna.Framework.Color(num29, num29, num29, num29);
+-						}
+-						if (m == 0)
+-						{
+-							num30--;
+-						}
+-						else if (m == 1)
+-						{
+-							num30++;
+-						}
+-						else if (m == 2)
+-						{
+-							num31--;
+-						}
+-						else if (m == 3)
+-						{
+-							num31++;
+-						}
+-						Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float)num30, (float)num31), null, black, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-					}
++
++					drawableLines[l].color = new Microsoft.Xna.Framework.Color(num29, num29, num29, num29);
++
++					if (ItemLoader.PreDrawTooltipLine(Main.HoverItem, drawableLines[l], ref yOffset) && globalCanDraw)
++					{
++						for (int m = 0; m < 5; m++)
++						{
++							int num30 = drawableLines[l].X;
++							int num31 = drawableLines[l].Y;
++							if (m == 0)
++							{
++								num30--;
++							}
++							else if (m == 1)
++							{
++								num30++;
++							}
++							else if (m == 2)
++							{
++								num31--;
++							}
++							else if (m == 3)
++							{
++								num31++;
++							}
++
++							drawColor = drawableLines[l].overrideColor ?? drawableLines[l].color;
++							Main.spriteBatch.Draw(Main.oneDropLogo, new Vector2((float) num30, (float) num31), null, m != 4 ? black : drawColor, drawableLines[l].rotation, drawableLines[l].origin, (drawableLines[l].baseScale.X + drawableLines[l].baseScale.Y) / 2, SpriteEffects.None, 0f);
++						}
++					}
++
++					ItemLoader.PostDrawTooltipLine(Main.HoverItem, drawableLines[l]);
+ 				}
+ 				else
+ 				{
+@@ -15515,10 +_,22 @@
  					{
  						baseColor = color;
-+					}
+ 					}
+-					ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, array[l], new Vector2((float)X, (float)(Y + num27)), baseColor, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
+-				}
+-				num27 += (int)(Main.fontMouseText.MeasureString(array[l]).Y + (float)num26);
+-			}
++					drawableLines[l].color = baseColor;
++					drawColor = baseColor;
 +					if (overrideColor[l].HasValue)
 +					{
-+						baseColor = overrideColor[l].Value * num20;
- 					}
- 					ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, array[l], new Vector2((float)X, (float)(Y + num27)), baseColor, 0f, Vector2.Zero, Vector2.One, -1f, 2f);
- 				}
++						drawColor = overrideColor[l].Value * num20;
++					}
++
++					if (ItemLoader.PreDrawTooltipLine(Main.HoverItem, drawableLines[l], ref yOffset) && globalCanDraw)
++						ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, drawableLines[l].font, drawableLines[l].text, new Vector2((float)drawableLines[l].X, (float)drawableLines[l].Y), drawColor, drawableLines[l].rotation, drawableLines[l].origin, drawableLines[l].baseScale, drawableLines[l].maxWidth, drawableLines[l].spread);
++
++					ItemLoader.PostDrawTooltipLine(Main.HoverItem, drawableLines[l]);
++				}
++				Y += (int)(Main.fontMouseText.MeasureString(array[l]).Y + (float)yOffset);
++			}
++
++			ItemLoader.PostDrawTooltip(Main.HoverItem, drawableLines.AsReadOnly());
+ 		}
+ 
+ 		private void MouseText_DrawBuffString(ref int X, ref int Y)
 @@ -15538,7 +_,7 @@
  			if (Main.bannerMouseOver)
  			{
@@ -3453,6 +3593,16 @@
  				Vector2 bonus = Main.DrawThickCursor(false);
  				Main.DrawCursor(bonus, false);
  			}
+@@ -50942,6 +_,9 @@
+ 			Main.tileColor.R = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.R * 7) / 10);
+ 			Main.tileColor.G = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.G * 7) / 10);
+ 			Main.tileColor.B = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.B * 7) / 10);
++
++			ModHooks.ModifySunLight(ref Main.tileColor, ref Main.bgColor);
++
+ 			Main.backColor = Main.bgColor;
+ 			Main.trueBackColor = Main.backColor;
+ 			Lighting.Initialize(true);
 @@ -51353,6 +_,7 @@
  				{
  					Main.waterStyle = 0;
@@ -3742,6 +3892,16 @@
  			}
  			if (!Main.gameMenu && Main.netMode != 2)
  			{
+@@ -57265,6 +_,9 @@
+ 			Main.tileColor.G = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.G * 7) / 10);
+ 			Main.tileColor.B = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.B * 7) / 10);
+ 			Main.tileColor = SkyManager.Instance.ProcessTileColor(Main.tileColor);
++
++			ModHooks.ModifySunLight(ref Main.tileColor, ref Main.bgColor);
++
+ 			float num55 = (float)(Main.maxTilesX / 4200);
+ 			num55 *= num55;
+ 			Main.atmo = (float)((double)((Main.screenPosition.Y + (float)(Main.screenHeight / 2)) / 16f - (65f + 10f * num55)) / (Main.worldSurface / 5.0));
 @@ -57307,6 +_,7 @@
  			{
  				this.Rasterizer = RasterizerState.CullClockwise;
@@ -3794,7 +3954,7 @@
  			if (Main.ignoreErrors)
  			{
  				try
-@@ -58909,6 +_,11 @@
+@@ -58909,6 +_,16 @@
  					RemoteClient.CheckSection(k, Main.player[k].position, 1);
  				}
  			}
@@ -3803,6 +3963,11 @@
 +		public static void NewText(string newText, Microsoft.Xna.Framework.Color color, bool force = false)
 +		{
 +			NewText(newText, color.R, color.G, color.B, force);
++		}
++
++		public static void NewText(object o, Microsoft.Xna.Framework.Color color = default(Microsoft.Xna.Framework.Color), bool force = false)
++		{
++			NewText(o.ToString(), color.R, color.G, color.B, force);
  		}
  
  		public static void NewText(string newText, byte R = 255, byte G = 255, byte B = 255, bool force = false)
