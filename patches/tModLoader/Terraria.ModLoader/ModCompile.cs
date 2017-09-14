@@ -69,7 +69,7 @@ namespace Terraria.ModLoader
 				.Where(mod => !modList.Exists(m => m.Name == mod.name))
 				.Select(mod => new LoadingMod(mod, BuildProperties.ReadModFile(mod)))
 				.ToList();
-			
+
 			var requiredFromInstall = new HashSet<LoadingMod>();
 			Action<LoadingMod> require = null;
 			require = (mod) => {
@@ -144,7 +144,7 @@ namespace Terraria.ModLoader
 				ErrorLogger.LogBuildError("Failed to load " + Path.Combine(modFolder, "build.txt") + Environment.NewLine + e);
 				return null;
 			}
-			
+
 			var file = Path.Combine(ModPath, modName + ".tmod");
 			var modFile = new TmodFile(file) {
 				name = modName,
@@ -201,14 +201,14 @@ namespace Terraria.ModLoader
 					}
 				}
 				else {
-					status.SetStatus(Language.GetTextValue("tModLoader.MSCompiling") + mod + Language.GetTextValue("tModLoader.MSCompilingWindows"));
+					status.SetStatus(Language.GetTextValue("tModLoader.MSCompilingWindows") + mod);
 					status.SetProgress(0, 2);
 					CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
 				}
 				if (winDLL == null)
 					return false;
 
-				status.SetStatus(Language.GetTextValue("tModLoader.MSCompiling") + mod + Language.GetTextValue("tModLoader.MSCompilingMono"));
+				status.SetStatus(Language.GetTextValue("tModLoader.MSCompilingMono") + mod);
 				status.SetProgress(1, 2);
 				CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
 				if (monoDLL == null)
@@ -235,7 +235,7 @@ namespace Terraria.ModLoader
 
 			foreach (var resource in Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)) {
 				var relPath = resource.Substring(mod.path.Length + 1);
-				if (mod.properties.ignoreFile(relPath) || 
+				if (mod.properties.ignoreFile(relPath) ||
 						relPath == "build.txt" ||
 						!mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
 						Path.GetFileName(resource) == "Thumbs.db")
@@ -336,7 +336,7 @@ namespace Terraria.ModLoader
 
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences(tempDir, forWindows));
-			
+
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(refDll => Path.Combine(mod.path, "lib/" + refDll + ".dll")));
 
@@ -475,7 +475,7 @@ namespace Terraria.ModLoader
 			if (!res.Errors.HasErrors && compileOptions.IncludeDebugInformation)
 				asm.GetType("Terraria.ModLoader.RoslynPdbFixer").GetMethod("Fix")
 					.Invoke(null, new object[] { compileOptions.OutputAssembly });
-			
+
 			return res;
 		}
 

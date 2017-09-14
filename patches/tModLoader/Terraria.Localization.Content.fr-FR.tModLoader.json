@@ -13,7 +13,7 @@
 		"ModsOpenModsFolder": "Dossier des Modules",
 		"ModsModPacks": "Compile de Modules",
 		"ModsDisable": "Desactiver",
-		"ModsEnable": "Activer", 
+		"ModsEnable": "Activer",
 		"ModsMoreInfo": "Details",
 		"ModsOriginatedFromModBrowser": "Ce Module est Originaire du Navigateur",
 		"ModsTypeToSearch": "Recherche écrite",
@@ -24,7 +24,7 @@
 		"ModsSortNamesReverseAlph": "Trier par Ordre Alphabétique Inversé",
 		"ModsShowAllMods": "Tout Montrer",
 		"ModsShowEnabledMods": "Montrer Uniquement les Modules Actifs",
-		"ModsShowDisabledMods": "Montrer Uniquement les Modules Inactifs",	
+		"ModsShowDisabledMods": "Montrer Uniquement les Modules Inactifs",
 
 		// Mod Browser
 		"MBDownload": "Télécharger",
@@ -61,10 +61,10 @@
 
 		//There should be ModName after ':'
 		"MSReadingProperties": "Analyse des Propriétés: ",
-		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
-		"MSCompiling": "Précompilation de ",
-		"MSCompilingWindows": " pour Windows...",
-		"MSCompilingMono": " pour Mono...",
+		//There should be ModName after ':'
+		"MSCompilingWindows": "Précompilation de pour Windows: ",
+		//There should be ModName after ':'
+		"MSCompilingMono": "Précompilation de pour Mono: ",
 		//There should be ModName after ':'
 		"MSBuilding": "Compilation de ",
 		"MSFinding": "Listage des Modules...",

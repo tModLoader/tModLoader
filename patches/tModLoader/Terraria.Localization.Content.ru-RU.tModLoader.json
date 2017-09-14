@@ -13,7 +13,7 @@
 		"ModsOpenModsFolder": "Открыть папку модов",
 		"ModsModPacks": "Сборки модов",
 		"ModsDisable": "Выключить",
-		"ModsEnable": "Включить", 
+		"ModsEnable": "Включить",
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из Браузера модов",
 		"ModsTypeToSearch": "Поиск",
@@ -59,11 +59,11 @@
 		"MSManagePublished": "Опубликованное",
 		"MSBack": "Назад",
 		//There should be ModName after ':'
-		"MSReadingProperties": "Чтение настроек мода:",
-		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
-		"MSCompiling": "Компиляция мода ",
-		"MSCompilingWindows": " для Windows",
-		"MSCompilingMono": " для Mono",
+		"MSReadingProperties": "Чтение настроек мода: ",
+		//There should be ModName after ':'
+		"MSCompilingWindows": "Компиляция мода для Windows: ",
+		//There should be ModName after ':'
+		"MSCompilingMono": "Компиляция мода для Mono: ",
 		//There should be ModName after ':'
 		"MSBuilding": "Сборка мода: ",
 		"MSFinding": "Поиск файлов",
