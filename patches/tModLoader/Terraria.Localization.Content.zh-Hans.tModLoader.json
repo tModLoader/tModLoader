@@ -61,9 +61,9 @@
 
 		//There should be ModName after ':'
 		"MSReadingProperties": "正在读取相关属性：",
-		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
-		"MSCompiling": "正在编译",
+		//There should be ModName after ':'
 		"MSCompilingWindows": "正在编译Windows版：",
+		//There should be ModName after ':'
 		"MSCompilingMono": "正在编译Mono版：",
 		//There should be ModName after ':'
 		"MSBuilding": "正在构建：",
