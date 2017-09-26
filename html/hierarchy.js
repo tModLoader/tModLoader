@@ -24,9 +24,6 @@ var hierarchy =
     [ "Terraria.ModLoader.DrawLayer< PlayerHeadDrawInfo >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", [
       [ "Terraria.ModLoader.PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", null ]
     ] ],
-    [ "Terraria.ModLoader.EntityInfo", "class_terraria_1_1_mod_loader_1_1_entity_info.html", [
-      [ "Terraria.ModLoader.NPCInfo", "class_terraria_1_1_mod_loader_1_1_n_p_c_info.html", null ]
-    ] ],
     [ "Terraria.ModLoader.EquipLoader", "class_terraria_1_1_mod_loader_1_1_equip_loader.html", null ],
     [ "Terraria.ModLoader.EquipTexture", "class_terraria_1_1_mod_loader_1_1_equip_texture.html", null ],
     [ "Terraria.ModLoader.ErrorLogger", "class_terraria_1_1_mod_loader_1_1_error_logger.html", null ],

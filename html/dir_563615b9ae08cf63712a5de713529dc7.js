@@ -42,10 +42,6 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", "class_terraria_1_1_mod_loader_1_1_player_head_layer" ],
       [ "PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", "class_terraria_1_1_mod_loader_1_1_player_layer" ]
     ] ],
-    [ "EntityInfo.cs", "_entity_info_8cs.html", [
-      [ "EntityInfo", "class_terraria_1_1_mod_loader_1_1_entity_info.html", "class_terraria_1_1_mod_loader_1_1_entity_info" ],
-      [ "NPCInfo", "class_terraria_1_1_mod_loader_1_1_n_p_c_info.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_info" ]
-    ] ],
     [ "EquipLoader.cs", "_equip_loader_8cs.html", [
       [ "EquipLoader", "class_terraria_1_1_mod_loader_1_1_equip_loader.html", "class_terraria_1_1_mod_loader_1_1_equip_loader" ]
     ] ],

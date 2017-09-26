@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['entityinfo_2ecs',['EntityInfo.cs',['../_entity_info_8cs.html',1,'']]],
   ['equiploader_2ecs',['EquipLoader.cs',['../_equip_loader_8cs.html',1,'']]],
   ['equiptexture_2ecs',['EquipTexture.cs',['../_equip_texture_8cs.html',1,'']]],
   ['equiptype_2ecs',['EquipType.cs',['../_equip_type_8cs.html',1,'']]],
