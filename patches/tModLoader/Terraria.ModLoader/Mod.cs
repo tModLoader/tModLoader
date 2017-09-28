@@ -2252,7 +2252,7 @@ namespace Terraria.ModLoader
 		{
 			Texture2D t;
 			if (!textures.TryGetValue(name, out t))
-				throw new MissingResourceException(name);
+				throw new MissingResourceException(name, textures.Keys);
 
 			return t;
 		}
