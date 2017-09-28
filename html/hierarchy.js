@@ -60,6 +60,7 @@ var hierarchy =
     [ "ISymbolWriterProvider", "class_i_symbol_writer_provider.html", null ],
     [ "Terraria.ModLoader.IO.ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", null ],
     [ "Terraria.ModLoader.ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", null ],
+    [ "Terraria.ModLoader.Exceptions.LevenshteinDistance", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html", null ],
     [ "Terraria.ModLoader.AssemblyManager.LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", null ],
     [ "LoadingMod", "class_loading_mod.html", [
       [ "Terraria.ModLoader.ModCompile.BuildingMod", "class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html", null ]
