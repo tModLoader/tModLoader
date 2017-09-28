@@ -237,6 +237,12 @@ namespace Terraria.ModLoader
 				var relPath = resource.Substring(mod.path.Length + 1);
 				if (mod.properties.ignoreFile(relPath) || 
 						relPath == "build.txt" ||
+						relPath == ".gitattributes" ||
+						relPath == ".gitignore" ||
+						relPath.StartsWith(".git" + Path.DirectorySeparatorChar) ||
+						relPath.StartsWith(".vs" + Path.DirectorySeparatorChar) ||
+						relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
+						relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
 						!mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
 						Path.GetFileName(resource) == "Thumbs.db")
 					continue;
