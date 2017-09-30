@@ -156,7 +156,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a5e25d1603f6fc7b8b87d3d17ba790a50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for manual updating of mount frame. Return false to stop the default frame behavior. Returns true by default.  <a href="#a5e25d1603f6fc7b8b87d3d17ba790a50">More...</a><br /></td></tr>
 <tr class="separator:a5e25d1603f6fc7b8b87d3d17ba790a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7f32254bdec07ce2b92a8e2d1a43fae"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#af7f32254bdec07ce2b92a8e2d1a43fae">UseAbility</a> (Player player, Vector2 mousePosition, bool toggleOn)</td></tr>
-<tr class="memdesc:af7f32254bdec07ce2b92a8e2d1a43fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the mouse is clicked while the mount is active.  <a href="#af7f32254bdec07ce2b92a8e2d1a43fae">More...</a><br /></td></tr>
+<tr class="memdesc:af7f32254bdec07ce2b92a8e2d1a43fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen while the mouse is pressed while the mount is active. Called each tick the mouse is pressed.  <a href="#af7f32254bdec07ce2b92a8e2d1a43fae">More...</a><br /></td></tr>
 <tr class="separator:af7f32254bdec07ce2b92a8e2d1a43fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
@@ -571,12 +571,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make things happen when the mouse is clicked while the mount is active. </p>
+<p>Allows you to make things happen while the mouse is pressed while the mount is active. Called each tick the mouse is pressed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td></td></tr>
     <tr><td class="paramname">mousePosition</td><td></td></tr>
-    <tr><td class="paramname">toggleOn</td><td></td></tr>
+    <tr><td class="paramname">toggleOn</td><td>Does nothing yet</td></tr>
   </table>
   </dd>
 </dl>
