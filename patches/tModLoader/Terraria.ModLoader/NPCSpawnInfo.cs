@@ -27,7 +27,8 @@ namespace Terraria.ModLoader
 		/// <item><description>ZoneDungeon</description></item>
 		/// <item><description>ZoneCorrupt</description></item>
 		/// <item><description>ZoneHoly</description></item>
-		/// <item><description>ZoneMeteor ZoneJungle</description></item>
+		/// <item><description>ZoneMeteor</description></item>
+		/// <item><description>ZoneJungle</description></item>
 		/// <item><description>ZoneSnow</description></item>
 		/// <item><description>ZoneCrimson</description></item>
 		/// <item><description>ZoneWaterCandle</description></item>

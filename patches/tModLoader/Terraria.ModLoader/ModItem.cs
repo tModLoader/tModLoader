@@ -108,7 +108,11 @@ namespace Terraria.ModLoader
 		/// Allows you to decide which fields of your ModItem class are copied over when an item stack is split or something similar happens. 
 		/// By default this will return a memberwise clone; you will want to override this if your GlobalItem contains object references. 
 		/// Only called if CloneNewInstances is set to true.
+		/// Since several ModItem class fields are also set by the default implementation of this method, you'll most likely want to call base.Clone() as the first statement of your override.
 		/// </summary>
+		/// <example><code>var clone = (ExampleHookItem)base.Clone();
+		/// clone.targets = (int[])this.targets.Clone(); // Or whatever deep copy operations are relevant.
+		/// return clone;</code></example>
 		public virtual ModItem Clone() => (ModItem)MemberwiseClone();
 
 		/// <summary>
