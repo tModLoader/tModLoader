@@ -734,7 +734,7 @@ Generating caller graph for function Terraria.ModLoader.ModCompile.IBuildStatus.
 Generating caller graph for function Terraria.ModLoader.ModCompile.IBuildStatus.SetStatus
 Generating docs for compound Terraria::ModLoader::ModDust...
 Generating caller graph for function Terraria.ModLoader.ModDust.Autoload
-Generating cal/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:115: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
+Generating cal/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:119: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
 l graph for function Terraria.ModLoader.ModDust.GetDust
 Generating caller graph for function Terraria.ModLoader.ModDust.OnSpawn
 Generating caller graph for function Terraria.ModLoader.ModDust.SetDefaults
@@ -1970,5 +1970,5 @@ Patching output file 118/121
 Patching output file 119/121
 Patching output file 120/121
 Patching output file 121/121
-lookup cache used 10050/131072 hits=95879 misses=10499
+lookup cache used 10051/131072 hits=95894 misses=10500
 finished...
