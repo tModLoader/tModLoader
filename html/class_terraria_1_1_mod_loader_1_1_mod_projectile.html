@@ -225,7 +225,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a22c221bd2a7bf9213223cc65658d96f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this projectile behaves. This will be called regardless of what PreAI returns.  <a href="#a22c221bd2a7bf9213223cc65658d96f7">More...</a><br /></td></tr>
 <tr class="separator:a22c221bd2a7bf9213223cc65658d96f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f3bf78ccac4b342fddd8692a2666a9f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a8f3bf78ccac4b342fddd8692a2666a9f">PostDraw</a> (SpriteBatch spriteBatch, Color lightColor)</td></tr>
-<tr class="memdesc:a8f3bf78ccac4b342fddd8692a2666a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.  <a href="#a8f3bf78ccac4b342fddd8692a2666a9f">More...</a><br /></td></tr>
+<tr class="memdesc:a8f3bf78ccac4b342fddd8692a2666a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of a projectile. This method is called even if PreDraw returns false.  <a href="#a8f3bf78ccac4b342fddd8692a2666a9f">More...</a><br /></td></tr>
 <tr class="separator:a8f3bf78ccac4b342fddd8692a2666a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42b8575b9a273b69a724231b7d3eca98"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a42b8575b9a273b69a724231b7d3eca98">PreAI</a> ()</td></tr>
 <tr class="memdesc:a42b8575b9a273b69a724231b7d3eca98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.  <a href="#a42b8575b9a273b69a724231b7d3eca98">More...</a><br /></td></tr>
@@ -1533,7 +1533,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default. </p>
+<p>Allows you to draw things in front of a projectile. This method is called even if PreDraw returns false. </p>
 
 <p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00427">427</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        {</div><div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        }</div></div><!-- fragment -->
