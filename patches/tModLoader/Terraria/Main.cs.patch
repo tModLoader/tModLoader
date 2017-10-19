@@ -3239,7 +3239,7 @@
  					}
  				}
  			}
-@@ -36521,12 +_,29 @@
+@@ -36521,12 +_,25 @@
  					string text2 = Lang.inter[46].Value + ": ";
  					if (Main.reforgeItem.type > 0)
  					{
@@ -3251,14 +3251,10 @@
 -						}
 -						num62 /= 3;
 +						int modifiablePrice = Main.reforgeItem.value;
-+						bool canApplyVanillaPrice = ItemLoader.ReforgePrice(Main.reforgeItem, ref modifiablePrice, ref canApplyDiscount);
 +
-+						if (canApplyVanillaPrice)
++						if (ItemLoader.ReforgePrice(Main.reforgeItem, ref modifiablePrice, ref canApplyDiscount))
 +						{
-+							if (modifiablePrice != num62)
-+							{
-+								num62 = modifiablePrice;
-+							}
++							num62 = modifiablePrice;
 +
 +							if (canApplyDiscount && Main.player[Main.myPlayer].discount)
 +							{
@@ -3266,7 +3262,7 @@
 +							}
 +							num62 /= 3;
 +						}
-+						else if (modifiablePrice != num62)
++						else
 +						{
 +							num62 = modifiablePrice;
 +						}
@@ -3274,14 +3270,6 @@
  						string text3 = "";
  						int num63 = 0;
  						int num64 = 0;
-@@ -36556,6 +_,7 @@
- 						{
- 							num66 = num67;
- 						}
-+						// after this point we draw the gold values
- 						if (num63 > 0)
- 						{
- 							object obj = text3;
 @@ -36637,14 +_,17 @@
  							}
  							Main.mouseReforge = true;
