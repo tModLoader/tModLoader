@@ -1024,15 +1024,16 @@ namespace Terraria.ModLoader
 			return b;
 		}
 
-		private static HookList HookPreReforge = AddHook<Action<Item>>(g => g.PreReforge);
+		private static HookList HookPreReforge = AddHook<Func<Item, bool>>(g => g.PreReforge);
 		/// <summary>
 		/// Calls ModItem.PreReforge, then all GlobalItem.PreReforge hooks.
 		/// </summary>
-		public static void PreReforge(Item item)
+		public static bool PreReforge(Item item)
 		{
-			item.modItem?.PreReforge();
+			bool b = item.modItem?.PreReforge() ?? true;
 			foreach (var g in HookPreReforge.arr)
-				g.Instance(item).PreReforge(item);
+				b &= g.Instance(item).PreReforge(item);
+			return b;
 		}
 
 		private static HookList HookPostReforge = AddHook<Action<Item>>(g => g.PostReforge);

@@ -607,14 +607,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This hooks gets called immediately before an item gets reforged by the Goblin Tinkerer. Useful for storing custom data, since reforging erases custom data. Note that, because the ModItem instance will change, the data must be backed up elsewhere, such as in static fields.
-		/// </summary>
-		public virtual void PreReforge()
+		/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
+		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
+		/// Reforging preserves modded data on the item. 
+		/// </summary
+		public virtual bool PreReforge()
 		{
+			return true;
 		}
 
 		/// <summary>
-		/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer. Useful for restoring custom data that you saved in PreReforge.
+		/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer.
+		/// Useful for modifying modded data based on the reforge result.
 		/// </summary>
 		public virtual void PostReforge()
 		{

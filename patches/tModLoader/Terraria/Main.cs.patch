@@ -3282,21 +3282,20 @@
  						if (num63 > 0)
  						{
  							object obj = text3;
-@@ -36630,6 +_,7 @@
- 						UILinkPointNavigator.SetPosition(304, new Vector2((float)num68, (float)num69) + texture2D3.Size() / 4f);
- 						if (flag8)
- 						{
-+							// we are reforging! 
- 							Main.hoverItemName = Lang.inter[19].Value;
- 							if (!Main.mouseReforge)
- 							{
-@@ -36640,11 +_,13 @@
- 							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].BuyItem(num62, -1))
+@@ -36637,14 +_,17 @@
+ 							}
+ 							Main.mouseReforge = true;
+ 							Main.player[Main.myPlayer].mouseInterface = true;
+-							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].BuyItem(num62, -1))
++							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].BuyItem(num62, -1) && ItemLoader.PreReforge(Main.reforgeItem))
  							{
  								bool favorited = Main.reforgeItem.favorited;
-+								ItemLoader.PreReforge(Main.reforgeItem);
- 								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
- 								Main.reforgeItem.Prefix(-2);
+-								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
+-								Main.reforgeItem.Prefix(-2);
++								Item reforgeItem = new Item();
++								reforgeItem.netDefaults(Main.reforgeItem.netID);
++								reforgeItem.Prefix(-2);
++								Main.reforgeItem = reforgeItem.CloneWithModdedData(Main.reforgeItem);
  								Main.reforgeItem.position.X = Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Main.reforgeItem.width / 2);
  								Main.reforgeItem.position.Y = Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Main.reforgeItem.height / 2);
  								Main.reforgeItem.favorited = favorited;
