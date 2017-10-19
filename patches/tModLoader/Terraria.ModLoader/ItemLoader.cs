@@ -1009,6 +1009,21 @@ namespace Terraria.ModLoader
 				g.OpenVanillaBag(context, player, arg);
 		}
 
+		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
+		private static HookList HookReforgePrice = AddHook<DelegateReforgePrice>(g => g.ReforgePrice);
+		/// <summary>
+		/// Call all ModItem.ReforgePrice, then GlobalItem.ReforgePrice hooks.
+		/// </summary>
+		/// <param name="canApplyDiscount"></param>
+		/// <returns></returns>
+		public static bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount)
+		{
+			bool b = item.modItem?.ReforgePrice(ref reforgePrice, ref canApplyDiscount) ?? true;
+			foreach (var g in HookReforgePrice.arr)
+				b &= g.Instance(item).ReforgePrice(item, ref reforgePrice, ref canApplyDiscount);
+			return b;
+		}
+
 		private static HookList HookPreReforge = AddHook<Action<Item>>(g => g.PreReforge);
 		/// <summary>
 		/// Calls ModItem.PreReforge, then all GlobalItem.PreReforge hooks.

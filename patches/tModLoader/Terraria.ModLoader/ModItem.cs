@@ -597,6 +597,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Returns if the normal reforge pricing is applied. 
+		/// If true or false is returned and the price is altered, the price will equal the altered price.
+		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
+		/// </summary>
+		public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount)
+		{
+			return true;
+		}
+
+		/// <summary>
 		/// This hooks gets called immediately before an item gets reforged by the Goblin Tinkerer. Useful for storing custom data, since reforging erases custom data. Note that, because the ModItem instance will change, the data must be backed up elsewhere, such as in static fields.
 		/// </summary>
 		public virtual void PreReforge()
