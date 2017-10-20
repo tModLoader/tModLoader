@@ -3371,6 +3371,45 @@
  						{
  							float num3 = 12f;
  							Vector2 vector = new Vector2(Main.item[j].position.X + (float)(Main.item[j].width / 2), Main.item[j].position.Y + (float)(Main.item[j].height / 2));
+@@ -26430,6 +_,38 @@
+ 				{
+ 					this.inventory[num5] = array[num5].Clone();
+ 				}
++				return false;
++			}
++			return true;
++		}
++
++		public bool CanBuyItem(int price, int customCurrency = -1)
++		{
++			if (customCurrency != -1)
++			{
++				return CustomCurrencyManager.BuyItem(this, price, customCurrency);
++			}
++			bool flag;
++			long num = Utils.CoinsCount(out flag, this.inventory, new int[]
++			{
++				58,
++				57,
++				56,
++				55,
++				54
++			});
++			long num2 = Utils.CoinsCount(out flag, this.bank.item, new int[0]);
++			long num3 = Utils.CoinsCount(out flag, this.bank2.item, new int[0]);
++			long num4 = Utils.CoinsCount(out flag, this.bank3.item, new int[0]);
++			long num5 = Utils.CoinsCombineStacks(out flag, new long[]
++			{
++				num,
++				num2,
++				num3,
++				num4
++			});
++			if (num5 < (long)price)
++			{
+ 				return false;
+ 			}
+ 			return true;
 @@ -26899,7 +_,7 @@
  		{
  			int num = 4;

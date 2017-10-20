@@ -3263,13 +3263,15 @@
  						string text3 = "";
  						int num63 = 0;
  						int num64 = 0;
-@@ -36637,14 +_,17 @@
+@@ -36637,14 +_,18 @@
  							}
  							Main.mouseReforge = true;
  							Main.player[Main.myPlayer].mouseInterface = true;
 -							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].BuyItem(num62, -1))
-+							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].BuyItem(num62, -1) && ItemLoader.PreReforge(Main.reforgeItem))
- 							{
+-							{
++							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].CanBuyItem(num62, -1) && ItemLoader.PreReforge(Main.reforgeItem))
++							{
++								Main.player[Main.myPlayer].BuyItem(num62, -1);
  								bool favorited = Main.reforgeItem.favorited;
 -								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
 -								Main.reforgeItem.Prefix(-2);
