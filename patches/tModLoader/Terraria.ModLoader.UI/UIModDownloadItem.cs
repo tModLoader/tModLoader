@@ -15,6 +15,7 @@ using Terraria.ID;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using Terraria.Localization;
+using System.Reflection;
 
 namespace Terraria.ModLoader.UI
 {
@@ -104,13 +105,15 @@ namespace Terraria.ModLoader.UI
 			}
 			if (modreferences.Length > 0)
 			{
-				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + modreferences);
-				modReferenceIcon.Left.Set(-135f, 1f);
-				modReferenceIcon.Top.Set(50f, 0f);
+				Texture2D icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
+				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
+				UIHoverImage modReferenceIcon = new UIHoverImage(icon, "Click to view dependency mods:\n" + string.Join("\n", modreferences.Split(',').Select(x=>x.Trim())));
+				modReferenceIcon.Left.Set(-149f, 1f);
+				modReferenceIcon.Top.Set(48f, 0f);
 				modReferenceIcon.OnClick += (s, e) =>
 				{
 					UIModDownloadItem modListItem = (UIModDownloadItem)e.Parent;
-					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').ToList();
+					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').Select(x=>x.Trim()).ToList();
 					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies"; // Toolong of \n" + modListItem.modName.Text;
 					Interface.modBrowser.filterTextBox.currentString = "";
 					Interface.modBrowser.updateNeeded = true;

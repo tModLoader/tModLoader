@@ -311,12 +311,13 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,57 @@
+@@ -606,5 +_,58 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonExclamation.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\LoaderBG.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\Loader.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonError.png" />

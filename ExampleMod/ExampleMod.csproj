@@ -199,6 +199,7 @@
     <Compile Include="Projectiles\ElementBall.cs" />
     <Compile Include="Projectiles\ElementLaser.cs" />
     <Compile Include="Projectiles\ElementShield.cs" />
+    <Compile Include="Projectiles\ExampleAnimatedPierce.cs" />
     <Compile Include="Projectiles\ExampleBehindTilesProjectile.cs" />
     <Compile Include="Projectiles\ExampleBullet.cs" />
     <Compile Include="Projectiles\ExampleCloneProjectile.cs" />

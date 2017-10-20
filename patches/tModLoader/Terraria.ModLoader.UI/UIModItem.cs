@@ -9,6 +9,7 @@ using Terraria.UI;
 using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
+using System.Reflection;
 
 namespace Terraria.ModLoader.UI
 {
@@ -99,9 +100,11 @@ namespace Terraria.ModLoader.UI
 			if (properties.modReferences.Length > 0 && !enabled)
 			{
 				string refs = String.Join(", ", properties.modReferences.Select(x => x.mod));
-				UIHoverImage modReferenceIcon = new UIHoverImage(Main.quicksIconTexture, "This mod depends on: " + refs + "\n (click to enable)");
-				modReferenceIcon.Left.Set(button2.Left.Pixels - 10f, 0f);
-				modReferenceIcon.Top.Set(50f, 0f);
+				Texture2D icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
+				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
+				UIHoverImage modReferenceIcon = new UIHoverImage(icon, "This mod depends on: " + refs + "\n (click to enable)");
+				modReferenceIcon.Left.Set(button2.Left.Pixels - 24f, 0f);
+				modReferenceIcon.Top.Set(47f, 0f);
 				modReferenceIcon.OnClick += (a, b) =>
 				{
 					var referencedMods = properties.modReferences.Select(x => x.mod);
