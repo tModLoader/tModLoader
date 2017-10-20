@@ -3239,7 +3239,7 @@
  					}
  				}
  			}
-@@ -36521,12 +_,25 @@
+@@ -36521,12 +_,18 @@
  					string text2 = Lang.inter[46].Value + ": ";
  					if (Main.reforgeItem.type > 0)
  					{
@@ -3250,21 +3250,14 @@
 -							num62 = (int)((double)num62 * 0.8);
 -						}
 -						num62 /= 3;
-+						int modifiablePrice = Main.reforgeItem.value;
 +
-+						if (ItemLoader.ReforgePrice(Main.reforgeItem, ref modifiablePrice, ref canApplyDiscount))
++						if (ItemLoader.ReforgePrice(Main.reforgeItem, ref num62, ref canApplyDiscount))
 +						{
-+							num62 = modifiablePrice;
-+
 +							if (canApplyDiscount && Main.player[Main.myPlayer].discount)
 +							{
 +								num62 = (int)((double)num62 * 0.8);
 +							}
 +							num62 /= 3;
-+						}
-+						else
-+						{
-+							num62 = modifiablePrice;
 +						}
 +
  						string text3 = "";

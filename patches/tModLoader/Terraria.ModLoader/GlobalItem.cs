@@ -493,9 +493,16 @@ namespace Terraria.ModLoader
 		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
 		/// Reforging preserves modded data on the item. 
 		/// </summary>
-		public virtual bool PreReforge(Item item)
+		public virtual bool NewPreReforge(Item item)
 		{
 			return true;
+		}
+
+		// @todo: PreReforge marked obsolete until v0.11
+		[method: Obsolete("PreReforge now returns a bool to control whether the reforge takes place. For now, use NewPreReforge")]
+		public virtual void PreReforge(Item item)
+		{
+			NewPreReforge(item);
 		}
 
 		/// <summary>
