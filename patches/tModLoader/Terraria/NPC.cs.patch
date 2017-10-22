@@ -726,6 +726,18 @@
  		{
  			if (!this.active)
  			{
+@@ -76284,6 +_,11 @@
+ 			return false;
+ 		}
+ 
++		public bool HasBuff(int type)
++		{
++			return FindBuffIndex(type) != -1;
++		}
++
+ 		public int FindBuffIndex(int type)
+ 		{
+ 			if (this.buffImmune[type])
 @@ -76322,7 +_,10 @@
  			{
  				if (this.buffType[i] == type)
