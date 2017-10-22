@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.ComponentModel;
 using Terraria.ModLoader;
 
@@ -80,6 +82,34 @@ namespace ExampleMod
 
 		[Label("Show mod origin in tooltip")]
 		public bool ShowModOriginTooltip;
+		
+		[Label("This is a float")]
+		public float SomeFLoat;
+
+		[FloatValueRange(2f, 3f)]
+		[FloatValueIncrementes(.25f)]
+		public float IncrementalFloat;
+
+				[FloatValueRange(0f, 10f)]
+		[FloatValueIncrementes(.11f)]
+		public float IncrementalFloat2;
+
+		[FloatValueRange(2f, 5f)]
+		public float RangedFloat;
+
+		[JsonConverter(typeof(StringEnumConverter))]
+		public SampleEnum EnumExample1 { get; set; }
+
+		[DefaultValue(SampleEnum.Strange)] 
+		public SampleEnum EnumExample2;
+
+		[IntValueIncrementes(5)]
+		[ValueRange(60,250)]
+		public int IntegerExample;
+
+		[OptionStrings(new string[] {"Pikachu", "Charmander", "Bulbasor", "Squirtle" })]
+		[DefaultValue("Bulbasor")] 
+		public string FavoritePokemon;
 
 		public override void PostAutoLoad()
 		{
@@ -93,5 +123,13 @@ namespace ExampleMod
 			// I maintain both ExampleUI.visible and ShowCoinUI as separate values so ShowCoinUI can act as a default while ExampleUI.visible can change within a play session.
 			UI.ExampleUI.visible = ShowCoinUI;
 		}
+	}
+
+	public enum SampleEnum
+	{
+		Weird,
+		Odd,
+		Strange,
+		Peculiar
 	}
 }

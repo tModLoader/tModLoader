@@ -8,73 +8,80 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModConfigFloatItem : UIElement
+	class UIModConfigEnumItem : UIElement
 	{
 		private Color _color;
 		private Func<string> _TextDisplayFunction;
 		private Func<float> _GetProportion;
 		private Action<float> _SetProportion;
-		private Func<float> _GetValue;
-		private Action<float> _SetValue;
+		private Func<object> _GetValue;
+		private Func<object> _GetValueString;
+		private Func<int> _GetIndex;
+		private Action<int> _SetValue;
 		private int _sliderIDInPage;
-		float min = 0;
-		float max = 1;
-		float increment = 0.01f;
+		int max;
 		private PropertyFieldWrapper variable;
 		private ModConfig modConfig;
+		string[] valueStrings;
+		string[] valueEnums;
 
-		public UIModConfigFloatItem(PropertyFieldWrapper variable, ModConfig modConfig, int sliderIDInPage)
+		public UIModConfigEnumItem(PropertyFieldWrapper variable, ModConfig modConfig, int sliderIDInPage)
 		{
 			this.variable = variable;
 			this.modConfig = modConfig;
 			Width.Set(0f, 1f);
 			Height.Set(0f, 1f);
+
+			valueStrings = Enum.GetNames(variable.Type);
+			max = valueStrings.Length;
+
+			//valueEnums = Enum.GetValues(variable.Type);
+
 			this._color = Color.White;
-			this._TextDisplayFunction = () => variable.Name + ": " + _GetValue();
+			this._TextDisplayFunction = () => variable.Name + ": " + _GetValueString();
 			this._GetValue = () => DefaultGetValue();
-			this._SetValue = (float value) => DefaultSetValue(value);
+			_GetValueString = () => DefaultGetStringValue();
+			_GetIndex = () => DefaultGetIndex();
+			this._SetValue = (int value) => DefaultSetValue(value);
 			this._sliderIDInPage = sliderIDInPage;
 
 			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
 			if (att != null)
 			{
-				this._TextDisplayFunction = () => att.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => att.Label + ": " + _GetValueString();
 			}
 
-			FloatValueRangeAttribute floatValueRange = (FloatValueRangeAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(FloatValueRangeAttribute));
-			FloatValueIncrementesAttribute floatValueIncrements = (FloatValueIncrementesAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(FloatValueIncrementesAttribute));
-			if (floatValueRange != null)
-			{
-				max = floatValueRange.Max;
-				min = floatValueRange.Min;
-			}
-			if (floatValueIncrements != null)
-			{
-				increment = floatValueIncrements.increment;
-			}
 			this._GetProportion = () => DefaultGetProportion();
 			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
 
-		void DefaultSetValue(float value)
+		void DefaultSetValue(int index)
 		{
-			variable.SetValue(modConfig, Utils.Clamp(value, min, max));
+			variable.SetValue(modConfig, Enum.GetValues(variable.Type).GetValue(index));
 			Interface.modConfig.SetPendingChanges();
 		}
 
-		float DefaultGetValue()
+		object DefaultGetValue()
 		{
-			return (float)variable.GetValue(modConfig);
+			return variable.GetValue(modConfig);
+		}
+		int DefaultGetIndex()
+		{
+			return Array.IndexOf(Enum.GetValues(variable.Type), _GetValue());
+		}
+		string DefaultGetStringValue()
+		{
+			return valueStrings[_GetIndex()];
 		}
 
 		float DefaultGetProportion()
 		{
-			return (_GetValue() - min) / (max - min);
+			return _GetIndex() / (float)(max - 1);
 		}
 
 		void DefaultSetProportion(float proportion)
 		{
-			_SetValue((float)Math.Round((proportion*(max-min) + min) * (1 / increment)) * increment);
+			_SetValue((int)(Math.Round(proportion * (max - 1))));
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)

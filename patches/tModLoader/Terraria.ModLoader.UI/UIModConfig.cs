@@ -187,17 +187,19 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.modConfigID;
 		}
 
+		bool pendingChanges;
 		public void SetPendingChanges(bool changes = true)
 		{
-			if (changes)
+			pendingChanges |= changes;
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			if (pendingChanges)
 			{
 				uIElement.Append(saveConfigButton);
 				uIElement.Append(revertConfigButton);
-			}
-			else
-			{
-				uIElement.RemoveChild(saveConfigButton);
-				uIElement.RemoveChild(revertConfigButton);
+				pendingChanges = false;
 			}
 		}
 
@@ -239,7 +241,8 @@ namespace Terraria.ModLoader.UI
 			configList.Clear();
 			int i = 0;
 			// load all mod config options into UIList
-			PropertyInfo[] props = modConfigClone.GetType().GetProperties(
+			// TODO: Inheritance with ModConfig? DeclaredOnly?
+			PropertyInfo[] properties = modConfigClone.GetType().GetProperties(
 				BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
 				BindingFlags.Instance);
@@ -249,97 +252,108 @@ namespace Terraria.ModLoader.UI
 				BindingFlags.Public |
 				BindingFlags.Instance);
 
-			//const BindingFlags bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance;
-			//MemberInfo[] members = modConfig.GetType().GetFields(bindingFlags).Cast<MemberInfo>()
-			//	.Concat(modConfig.GetType().GetProperties(bindingFlags)).ToArray();
+			var fieldsAndProperties = fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
 
-			foreach (FieldInfo field in fields)
+			foreach (PropertyFieldWrapper variable in fieldsAndProperties)
 			{
-				UISortableElement uISortableElement = new UISortableElement(i++);
-				uISortableElement.Width.Set(0f, 1f);
-				uISortableElement.Height.Set(30f, 0f);
-				uISortableElement.HAlign = 0.5f;
-				configList.Add(uISortableElement);
-
-				if (field.FieldType == typeof(bool)) // isassignedfrom?
-				{
-					UIElement e = new UIModConfigBooleanItem(field, modConfigClone);
-					uISortableElement.Append(e);
-				}
-				else
-				{
-					uISortableElement.Append(new UIText($"{field.Name} not handled yet ({field.FieldType.Name})"));
-				}
-			}
-
-			foreach (PropertyInfo property in props)
-			{
-				if (property.Name == "Mode")
+				if (variable.isProperty && variable.Name == "Mode")
 					continue;
-				UISortableElement uISortableElement = new UISortableElement(i++);
-				uISortableElement.Width.Set(0f, 1f);
-				uISortableElement.Height.Set(30f, 0f);
-				uISortableElement.HAlign = 0.5f;
-				configList.Add(uISortableElement);
 
-				if (property.PropertyType == typeof(bool)) // isassignedfrom?
+				UISortableElement sortedContainer = new UISortableElement(i++);
+				sortedContainer.Width.Set(0f, 1f);
+				sortedContainer.Height.Set(30f, 0f);
+				sortedContainer.HAlign = 0.5f;
+				configList.Add(sortedContainer);
+
+				Type type = variable.Type;
+				if (type == typeof(bool)) // isassignedfrom?
 				{
+					UIElement e = new UIModConfigBooleanItem(variable, modConfigClone);
+					sortedContainer.Append(e);
+				}
+				else if (type == typeof(float))
+				{
+					UIElement e = new UIModConfigFloatItem(variable, modConfigClone, i);
 
-					LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(property, typeof(LabelAttribute));
+					//UIElement e = new UIModConfigFloatItem(
+					//	() => variable.Name + ": " + (float)variable.GetValue(modConfigClone),
+					//	() => (float)variable.GetValue(modConfigClone),
+					//	(f) => variable.SetValue(modConfigClone, f),
+					//	null,
+					//	0, Color.White);
 
+					sortedContainer.Append(e);
+				}
+				else if (type == typeof(int))
+				{
+					UIElement e = new UIModConfigIntItem(variable, modConfigClone, i);
+					sortedContainer.Append(e);
+				}
+				else if (type == typeof(string))
+				{
+					OptionStringsAttribute att = (OptionStringsAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(OptionStringsAttribute));
 					if (att != null)
 					{
-						Console.WriteLine(att);
+						UIElement e = new UIModConfigStringItem(variable, modConfigClone, i);
+						sortedContainer.Append(e);
 					}
-
-					UIElement e = new UIModConfigBooleanItem(property, modConfigClone);
-
-					//UIElement e = new UIModConfigBooleanItem(
-					//	() => property.Name,
-					//	() => (bool)property.GetValue(modConfig, null),
-					//	Color.White);
-					//e.OnClick += (ev, v) =>
-					//{
-					//	property.SetValue(modConfig, !(bool)property.GetValue(modConfig, null), null);
-					//};
-
-					//e.Width.Set(0f, 0.5f);
-					//e.HAlign = 0.5f;
-					//e.Height.Set(0f, 1f);
-					uISortableElement.Append(e);
-					//configList.Add(e);
-					//(() => Lang.menu[196], () => PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString()), color);
+					else
+					{
+						// TODO: Text input? Necessary?
+						sortedContainer.Append(new UIText($"{variable.Name} not handled yet ({type.Name}). Missing OptionStringsAttribute."));
+					}
 				}
-				else if (property.PropertyType == typeof(float))
+				else if (type.IsEnum)
 				{
-					UIElement e = new UIModConfigFloatItem(
-						() => property.Name + ": " + (float)property.GetValue(modConfigClone, null),
-						() => (float)property.GetValue(modConfigClone, null),
-						(f) => property.SetValue(modConfigClone, f, null),
-						null,
-						0, Color.White);
-
-					//e.Width.Set(0f, 0.5f);
-					//e.HAlign = 0.5f;
-					//e.Height.Set(0f, 1f);
-					uISortableElement.Append(e);
+					UIElement e = new UIModConfigEnumItem(variable, modConfigClone, i);
+					sortedContainer.Append(e);
 				}
 				else
 				{
-					uISortableElement.Append(new UIText($"{property.Name} not handled yet ({property.PropertyType.Name})"));
+					sortedContainer.Append(new UIText($"{variable.Name} not handled yet ({type.Name})"));
 				}
-
-
-				//object[] attrs = property.GetCustomAttributes(true);
-				//foreach (object attr in attrs)
-				//{
-				//	ValueRangeAttribute authAttr = attr as ValueRangeAttribute;
-				//	if (authAttr != null)
-				//	{
-				//		Console.WriteLine(authAttr.Min + " " + authAttr.Max);
-				//	}
-				//}
 			}
+		}
+	}
+
+	internal class PropertyFieldWrapper
+	{
+		private FieldInfo fieldInfo;
+		private PropertyInfo propertyInfo;
+
+		public PropertyFieldWrapper(FieldInfo fieldInfo)
+		{
+			this.fieldInfo = fieldInfo;
+		}
+
+		public PropertyFieldWrapper(PropertyInfo propertyInfo)
+		{
+			this.propertyInfo = propertyInfo;
+		}
+
+		public bool isField => fieldInfo != null;
+		public bool isProperty => propertyInfo != null;
+
+		public MemberInfo MemberInfo => fieldInfo != null ? fieldInfo : (MemberInfo)propertyInfo;
+
+		public string Name => fieldInfo?.Name ?? propertyInfo.Name;
+
+		public Type Type => fieldInfo?.FieldType ?? propertyInfo.PropertyType;
+
+		public object GetValue(Object obj)
+		{
+			if (fieldInfo != null)
+				return fieldInfo.GetValue(obj);
+			else
+				return propertyInfo.GetValue(obj, null);
+		}
+
+		public void SetValue(Object obj, object value)
+		{
+			if (fieldInfo != null)
+				fieldInfo.SetValue(obj, value);
+			else
+				propertyInfo.SetValue(obj, value, null);
 		}
 	}
 }

@@ -217,4 +217,24 @@ namespace Terraria.ModLoader
 			set { min = value; }
 		}
 	}
+
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class IntValueIncrementesAttribute : Attribute
+	{
+		public int increment;
+		public IntValueIncrementesAttribute(int increment)
+		{
+			this.increment = increment;
+		}
+	}
+
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class FloatValueIncrementesAttribute : Attribute
+	{
+		public float increment;
+		public FloatValueIncrementesAttribute(float increment)
+		{
+			this.increment = increment;
+		}
+	}
 }
