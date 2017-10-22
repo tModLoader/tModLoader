@@ -13,7 +13,7 @@
 		"ModsOpenModsFolder": "Open Mods Folder",
 		"ModsModPacks": "Mod Packs",
 		"ModsDisable": "Disable",
-		"ModsEnable": "Enable", 
+		"ModsEnable": "Enable",
 		"ModsMoreInfo": "More info",
 		"ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",
 		"ModsTypeToSearch": "Type to search",
@@ -24,7 +24,7 @@
 		"ModsSortNamesReverseAlph": "Sort mod names reverse-alphabetically",
 		"ModsShowAllMods": "Show all mods",
 		"ModsShowEnabledMods": "Show only enabled mods",
-		"ModsShowDisabledMods": "Show only disabled mods",	
+		"ModsShowDisabledMods": "Show only disabled mods",
 
 		// Mod Browser
 		"MBDownload": "Download",
@@ -61,12 +61,12 @@
 
 		//There should be ModName after ':'
 		"MSReadingProperties": "Reading Properties: ",
-		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
-		"MSCompiling": "Compiling ",
-		"MSCompilingWindows": " for Windows...",
-		"MSCompilingMono": " for Mono...",
 		//There should be ModName after ':'
-		"MSBuilding": "Building ",
+		"MSCompilingWindows": "Compiling for Windows: ",
+		//There should be ModName after ':'
+		"MSCompilingMono": "Compiling for Mono: ",
+		//There should be ModName after ':'
+		"MSBuilding": "Building: ",
 		"MSFinding": "Finding Mods...",
 		//There should be ModName after ':'
 		"MSIntializing": "Initializing: ",
