@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Runtime.Serialization;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -31,7 +34,7 @@ namespace ExampleMod
 		// First, we will learn about DefaultValue. You might assume "public bool BoolExample = true;" to work, 
 		// but because tModLoader is overwriting with JSON, that value will be overwritten when the mod loads.
 		// We must use the DefaultValue Attribute instead of setting the value normally:
-		[DefaultValue(true)]    
+		[DefaultValue(true)]
 		public bool BoolExample;
 
 		// This is private. You'll notice that it doesn't show up in the config menu. Don't set something private.
@@ -51,7 +54,7 @@ namespace ExampleMod
 		{
 			bool defaultDecision = base.NeedsReload(old);
 			bool otherLogic = IntExample > (old as ExampleConfigServer).IntExample; // This is just a random example. Your logic depends on your mod.
-			return defaultDecision || otherLogic;
+			return defaultDecision || otherLogic; // reload needed if either condition is met.
 		}*/
 
 		// Here I use PostAutoLoad to assign a static variable in ExampleMod to make it a little easier to access config values.
@@ -82,34 +85,61 @@ namespace ExampleMod
 
 		[Label("Show mod origin in tooltip")]
 		public bool ShowModOriginTooltip;
-		
+
 		[Label("This is a float")]
 		public float SomeFLoat;
 
 		[FloatValueRange(2f, 3f)]
 		[FloatValueIncrementes(.25f)]
+		[DrawTicks]
+		[DefaultValue(2f)]
 		public float IncrementalFloat;
 
-				[FloatValueRange(0f, 10f)]
+		[FloatValueRange(0f, 5f)]
 		[FloatValueIncrementes(.11f)]
 		public float IncrementalFloat2;
 
 		[FloatValueRange(2f, 5f)]
+		[DefaultValue(2f)]
 		public float RangedFloat;
 
 		[JsonConverter(typeof(StringEnumConverter))]
 		public SampleEnum EnumExample1 { get; set; }
 
-		[DefaultValue(SampleEnum.Strange)] 
+		[DefaultValue(SampleEnum.Strange)]
+		[DrawTicks]
 		public SampleEnum EnumExample2;
 
 		[IntValueIncrementes(5)]
-		[ValueRange(60,250)]
+		[ValueRange(60, 250)]
+		[DefaultValue(100)]
 		public int IntegerExample;
 
-		[OptionStrings(new string[] {"Pikachu", "Charmander", "Bulbasor", "Squirtle" })]
-		[DefaultValue("Bulbasor")] 
+		[DrawTicks]
+		[OptionStrings(new string[] { "Pikachu", "Charmander", "Bulbasor", "Squirtle" })]
+		[DefaultValue("Bulbasor")]
 		public string FavoritePokemon;
+
+		[ValueRange(10, 20)]
+		public List<int> ListOfInts;
+
+		public int[] ArrayOfInts;
+
+		[OnDeserialized]
+		internal void OnDeserializedMethod(StreamingContext context)
+		{
+			// We use a method marked OnDeserialized to initialize default values of reference types since we can't do that with the DefaultValue attribute.
+			if (ListOfInts == null)
+				ListOfInts = new List<int>() { };
+		}
+
+		public override ModConfig Clone()
+		{
+			// Since ListOfInts is a reference type, we need to clone it manually so our config works properly.
+			var clone = (ExampleConfigClient)base.Clone();
+			clone.ListOfInts = new List<int>(ListOfInts);
+			return clone;
+		}
 
 		public override void PostAutoLoad()
 		{

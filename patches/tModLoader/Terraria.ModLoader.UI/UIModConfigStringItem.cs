@@ -8,7 +8,7 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI
 {
-	class UIModConfigStringItem : UIElement
+	class UIModConfigStringItem : UIConfigItem
 	{
 		private Color _color;
 		private Func<string> _TextDisplayFunction;
@@ -22,8 +22,12 @@ namespace Terraria.ModLoader.UI
 		private ModConfig modConfig;
 		string[] options;
 
+		public override int NumberTicks => options.Length;
+		public override float TickIncrement => 1f/(options.Length-1);
+
 		public UIModConfigStringItem(PropertyFieldWrapper variable, ModConfig modConfig, int sliderIDInPage)
 		{
+			drawTicks = (DrawTicksAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(DrawTicksAttribute)) != null;
 			OptionStringsAttribute optionsAttribute = (OptionStringsAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(OptionStringsAttribute));
 			options = optionsAttribute.optionLabels;
 			this.variable = variable;
@@ -118,7 +122,7 @@ namespace Terraria.ModLoader.UI
 			Main.colorBarTexture.Frame(1, 1, 0, 0);
 			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
 			IngameOptions.valuePosition = vector2;
-			float obj = IngameOptions.DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
+			float obj = DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
 			if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
 			{
 				IngameOptions.rightHover = this._sliderIDInPage;

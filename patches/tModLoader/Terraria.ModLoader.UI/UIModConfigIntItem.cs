@@ -56,6 +56,19 @@ namespace Terraria.ModLoader.UI
 			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
 
+		public UIModConfigIntItem(Func<int> _GetValue, Action<int> _SetValue, Func<string> text, int sliderIDInPage)
+		{
+			Width.Set(0f, 1f);
+			Height.Set(0f, 1f);
+			this._color = Color.White;
+			this._GetValue = _GetValue;
+			this._SetValue = _SetValue;
+			this._TextDisplayFunction = text;
+			this._sliderIDInPage = sliderIDInPage;
+			this._GetProportion = () => DefaultGetProportion();
+			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
+		}
+
 		void DefaultSetValue(int value)
 		{
 			variable.SetValue(modConfig, Utils.Clamp(value, min, max));

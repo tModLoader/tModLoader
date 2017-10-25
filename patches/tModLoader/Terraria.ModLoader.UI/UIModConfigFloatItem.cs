@@ -20,6 +20,7 @@ namespace Terraria.ModLoader.UI
 		float min = 0;
 		float max = 1;
 		float increment = 0.01f;
+		bool drawTicks;
 		private PropertyFieldWrapper variable;
 		private ModConfig modConfig;
 
@@ -41,6 +42,7 @@ namespace Terraria.ModLoader.UI
 				this._TextDisplayFunction = () => att.Label + ": " + _GetValue();
 			}
 
+			drawTicks = (DrawTicksAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(DrawTicksAttribute)) != null;
 			FloatValueRangeAttribute floatValueRange = (FloatValueRangeAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(FloatValueRangeAttribute));
 			FloatValueIncrementesAttribute floatValueIncrements = (FloatValueIncrementesAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(FloatValueIncrementesAttribute));
 			if (floatValueRange != null)
@@ -74,7 +76,7 @@ namespace Terraria.ModLoader.UI
 
 		void DefaultSetProportion(float proportion)
 		{
-			_SetValue((float)Math.Round((proportion*(max-min) + min) * (1 / increment)) * increment);
+			_SetValue((float)Math.Round((proportion * (max - min) + min) * (1 / increment)) * increment);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -121,7 +123,7 @@ namespace Terraria.ModLoader.UI
 			Main.colorBarTexture.Frame(1, 1, 0, 0);
 			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
 			IngameOptions.valuePosition = vector2;
-			float obj = IngameOptions.DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
+			float obj = DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
 			if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
 			{
 				IngameOptions.rightHover = this._sliderIDInPage;
@@ -134,6 +136,61 @@ namespace Terraria.ModLoader.UI
 			{
 				IngameOptions.rightLock = IngameOptions.rightHover;
 			}
+		}
+
+		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
+		{
+			if (colorMethod == null)
+			{
+				colorMethod = new Utils.ColorLerpMethod(Utils.ColorLerp_BlackToWhite);
+			}
+			Texture2D colorBarTexture = Main.colorBarTexture;
+			Vector2 vector = new Vector2((float)colorBarTexture.Width, (float)colorBarTexture.Height) * scale;
+			IngameOptions.valuePosition.X = IngameOptions.valuePosition.X - (float)((int)vector.X);
+			Rectangle rectangle = new Rectangle((int)IngameOptions.valuePosition.X, (int)IngameOptions.valuePosition.Y - (int)vector.Y / 2, (int)vector.X, (int)vector.Y);
+			Rectangle destinationRectangle = rectangle;
+			int num = 167;
+			float num2 = (float)rectangle.X + 5f * scale;
+			float num3 = (float)rectangle.Y + 4f * scale;
+			if (drawTicks)
+			{
+				int numTicks = (int)((max - min) / increment) + 1;
+				for (int tick = 0; tick < numTicks; tick++)
+				{
+					float percent = tick * increment / (max - min);
+					sb.Draw(Main.magicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.Blue);
+				}
+			}
+			sb.Draw(colorBarTexture, rectangle, Color.White);
+			for (float num4 = 0f; num4 < (float)num; num4 += 1f)
+			{
+				float percent = num4 / (float)num;
+				sb.Draw(Main.colorBlipTexture, new Vector2(num2 + num4 * scale, num3), null, colorMethod(percent), 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			}
+			rectangle.Inflate((int)(-5f * scale), 2);
+			//rectangle.X = (int)num2;
+			//rectangle.Y = (int)num3;
+			bool flag = rectangle.Contains(new Point(Main.mouseX, Main.mouseY));
+			if (lockState == 2)
+			{
+				flag = false;
+			}
+			if (flag || lockState == 1)
+			{
+				sb.Draw(Main.colorHighlightTexture, destinationRectangle, Main.OurFavoriteColor);
+			}
+			sb.Draw(Main.colorSliderTexture, new Vector2(num2 + 167f * scale * perc, num3 + 4f * scale), null, Color.White, 0f, new Vector2(0.5f * (float)Main.colorSliderTexture.Width, 0.5f * (float)Main.colorSliderTexture.Height), scale, SpriteEffects.None, 0f);
+			if (Main.mouseX >= rectangle.X && Main.mouseX <= rectangle.X + rectangle.Width)
+			{
+				IngameOptions.inBar = flag;
+				return (float)(Main.mouseX - rectangle.X) / (float)rectangle.Width;
+			}
+			IngameOptions.inBar = false;
+			if (rectangle.X >= Main.mouseX)
+			{
+				return 0f;
+			}
+			return 1f;
 		}
 	}
 }

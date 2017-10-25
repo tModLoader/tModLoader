@@ -10,6 +10,8 @@ using Terraria.UI;
 using Newtonsoft.Json;
 using System.Reflection;
 using Terraria.GameContent.UI.States;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections;
 
 namespace Terraria.ModLoader.UI
 {
@@ -308,6 +310,16 @@ namespace Terraria.ModLoader.UI
 					UIElement e = new UIModConfigEnumItem(variable, modConfigClone, i);
 					sortedContainer.Append(e);
 				}
+				else if (type.IsArray)
+				{
+					sortedContainer.Append(new UIText($"{variable.Name} not handled yet ({type.Name})"));
+				}
+				else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+				{
+					UIElement e = new UIModConfigListItem(variable, modConfigClone, ref i);
+					sortedContainer.Height.Pixels = 225;
+					sortedContainer.Append(e);
+				}
 				else
 				{
 					sortedContainer.Append(new UIText($"{variable.Name} not handled yet ({type.Name})"));
@@ -354,6 +366,72 @@ namespace Terraria.ModLoader.UI
 				fieldInfo.SetValue(obj, value);
 			else
 				propertyInfo.SetValue(obj, value, null);
+		}
+	}
+
+	abstract class UIConfigItem : UIElement
+	{
+		internal bool drawTicks;
+		public abstract int NumberTicks { get; }
+		public abstract float TickIncrement { get; }
+
+
+		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
+		{
+			if (colorMethod == null)
+			{
+				colorMethod = new Utils.ColorLerpMethod(Utils.ColorLerp_BlackToWhite);
+			}
+			Texture2D colorBarTexture = Main.colorBarTexture;
+			Vector2 vector = new Vector2((float)colorBarTexture.Width, (float)colorBarTexture.Height) * scale;
+			IngameOptions.valuePosition.X = IngameOptions.valuePosition.X - (float)((int)vector.X);
+			Rectangle rectangle = new Rectangle((int)IngameOptions.valuePosition.X, (int)IngameOptions.valuePosition.Y - (int)vector.Y / 2, (int)vector.X, (int)vector.Y);
+			Rectangle destinationRectangle = rectangle;
+			int num = 167;
+			float num2 = (float)rectangle.X + 5f * scale;
+			float num3 = (float)rectangle.Y + 4f * scale;
+			if (drawTicks)
+			{
+				int numTicks = NumberTicks;
+				if (numTicks > 1)
+				{
+					for (int tick = 0; tick < numTicks; tick++)
+					{
+						float percent = tick * TickIncrement;
+						sb.Draw(Main.magicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.Blue);
+					}
+				}
+			}
+			sb.Draw(colorBarTexture, rectangle, Color.White);
+			for (float num4 = 0f; num4 < (float)num; num4 += 1f)
+			{
+				float percent = num4 / (float)num;
+				sb.Draw(Main.colorBlipTexture, new Vector2(num2 + num4 * scale, num3), null, colorMethod(percent), 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			}
+			rectangle.Inflate((int)(-5f * scale), 2);
+			//rectangle.X = (int)num2;
+			//rectangle.Y = (int)num3;
+			bool flag = rectangle.Contains(new Point(Main.mouseX, Main.mouseY));
+			if (lockState == 2)
+			{
+				flag = false;
+			}
+			if (flag || lockState == 1)
+			{
+				sb.Draw(Main.colorHighlightTexture, destinationRectangle, Main.OurFavoriteColor);
+			}
+			sb.Draw(Main.colorSliderTexture, new Vector2(num2 + 167f * scale * perc, num3 + 4f * scale), null, Color.White, 0f, new Vector2(0.5f * (float)Main.colorSliderTexture.Width, 0.5f * (float)Main.colorSliderTexture.Height), scale, SpriteEffects.None, 0f);
+			if (Main.mouseX >= rectangle.X && Main.mouseX <= rectangle.X + rectangle.Width)
+			{
+				IngameOptions.inBar = flag;
+				return (float)(Main.mouseX - rectangle.X) / (float)rectangle.Width;
+			}
+			IngameOptions.inBar = false;
+			if (rectangle.X >= Main.mouseX)
+			{
+				return 0f;
+			}
+			return 1f;
 		}
 	}
 }

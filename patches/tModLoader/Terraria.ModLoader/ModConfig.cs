@@ -237,4 +237,9 @@ namespace Terraria.ModLoader
 			this.increment = increment;
 		}
 	}
+
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class DrawTicksAttribute : Attribute
+	{
+	}
 }

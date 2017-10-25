@@ -23,6 +23,22 @@
  		}
  
  		public virtual void Draw(SpriteBatch spriteBatch)
+@@ -160,12 +_,14 @@
+ 			{
+ 				spriteBatch.End();
+ 				Rectangle clippingRectangle = this.GetClippingRectangle(spriteBatch);
+-				spriteBatch.GraphicsDevice.ScissorRectangle = clippingRectangle;
++				Rectangle adjustedClippingRectangle = Rectangle.Intersect(clippingRectangle, spriteBatch.GraphicsDevice.ScissorRectangle);
++				spriteBatch.GraphicsDevice.ScissorRectangle = adjustedClippingRectangle;
+ 				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, UIElement._overflowHiddenRasterizerState, null, Main.UIScaleMatrix);
+ 			}
+ 			this.DrawChildren(spriteBatch);
+ 			if (overflowHidden)
+ 			{
++				rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+ 				spriteBatch.End();
+ 				spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
+ 				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
 @@ -404,6 +_,54 @@
  			}
  		}
