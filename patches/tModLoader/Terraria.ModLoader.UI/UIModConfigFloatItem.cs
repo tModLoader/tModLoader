@@ -22,9 +22,9 @@ namespace Terraria.ModLoader.UI
 		float increment = 0.01f;
 		bool drawTicks;
 		private PropertyFieldWrapper variable;
-		private ModConfig modConfig;
+		private object modConfig;
 
-		public UIModConfigFloatItem(PropertyFieldWrapper variable, ModConfig modConfig, int sliderIDInPage)
+		public UIModConfigFloatItem(PropertyFieldWrapper variable, object modConfig, int sliderIDInPage)
 		{
 			this.variable = variable;
 			this.modConfig = modConfig;
@@ -43,16 +43,16 @@ namespace Terraria.ModLoader.UI
 			}
 
 			drawTicks = (DrawTicksAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(DrawTicksAttribute)) != null;
-			FloatValueRangeAttribute floatValueRange = (FloatValueRangeAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(FloatValueRangeAttribute));
-			FloatValueIncrementesAttribute floatValueIncrements = (FloatValueIncrementesAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(FloatValueIncrementesAttribute));
-			if (floatValueRange != null)
+			RangeAttribute rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(RangeAttribute));
+			IncrementAttribute incrementAttribute = (IncrementAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(IncrementAttribute));
+			if (rangeAttribute != null && rangeAttribute.min is float && rangeAttribute.max is float)
 			{
-				max = floatValueRange.Max;
-				min = floatValueRange.Min;
+				max = (float)rangeAttribute.max;
+				min = (float)rangeAttribute.min;
 			}
-			if (floatValueIncrements != null)
+			if (incrementAttribute != null && rangeAttribute.min is float)
 			{
-				increment = floatValueIncrements.increment;
+				increment = (float)incrementAttribute.increment;
 			}
 			this._GetProportion = () => DefaultGetProportion();
 			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);

@@ -85,8 +85,6 @@ namespace Terraria.ModLoader
 
 			return false;
 		}
-
-
 	}
 
 	public enum MultiplayerSyncMode
@@ -113,14 +111,15 @@ namespace Terraria.ModLoader
 		public string Label => label;
 	}
 
-	public class Test_Server : ModConfig
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+	public class BackgroundColorAttribute : Attribute
 	{
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.ServerDictates;
-
-		[MyCustomAttribute(SomeProperty = "hey is ")]
-		bool hey;
+		public Color color;
+		public BackgroundColorAttribute(int r, int g, int b, int a = 255)
+		{
+			this.color = new Color(r, g, b, a);
+		}
 	}
-
 
 	//[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
 	//public class StringRepresentationAttribute : Attribute
@@ -161,80 +160,42 @@ namespace Terraria.ModLoader
 		}
 	}
 
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class MultiplayerMode : Attribute
-	{
-		public MultiplayerSyncMode Mode { get; set; }
-	}
-
-
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class ValueRangeAttribute : Attribute
-	{
-		private int min;
-		private int max;
-
-		public ValueRangeAttribute(int min, int max)
-		{
-			this.min = min;
-			this.max = max;
-		}
-
-		public int Max
-		{
-			get { return max; }
-			set { max = value; }
-		}
-
-		public int Min
-		{
-			get { return min; }
-			set { min = value; }
-		}
-	}
+	//[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	//public class MultiplayerMode : Attribute
+	//{
+	//	public MultiplayerSyncMode Mode { get; set; }
+	//}
 
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class FloatValueRangeAttribute : Attribute
+	public class IncrementAttribute : Attribute
 	{
-		private float min;
-		private float max;
-
-		public FloatValueRangeAttribute(float min, float max)
+		public object increment;
+		public IncrementAttribute(int increment)
 		{
-			this.min = min;
-			this.max = max;
+			this.increment = increment;
 		}
-
-		public float Max
-		{
-			get { return max; }
-			set { max = value; }
-		}
-
-		public float Min
-		{
-			get { return min; }
-			set { min = value; }
-		}
-	}
-
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class IntValueIncrementesAttribute : Attribute
-	{
-		public int increment;
-		public IntValueIncrementesAttribute(int increment)
+		public IncrementAttribute(float increment)
 		{
 			this.increment = increment;
 		}
 	}
 
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class FloatValueIncrementesAttribute : Attribute
+	public class RangeAttribute : Attribute
 	{
-		public float increment;
-		public FloatValueIncrementesAttribute(float increment)
+		public object min;
+		public object max;
+
+		public RangeAttribute(int min, int max)
 		{
-			this.increment = increment;
+			this.min = min;
+			this.max = max;
+		}
+
+		public RangeAttribute(float min, float max)
+		{
+			this.min = min;
+			this.max = max;
 		}
 	}
 

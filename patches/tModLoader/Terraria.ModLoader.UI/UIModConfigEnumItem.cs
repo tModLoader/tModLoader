@@ -20,32 +20,31 @@ namespace Terraria.ModLoader.UI
 		private Action<int> _SetValue;
 		private int _sliderIDInPage;
 		int max;
-		private PropertyFieldWrapper variable;
-		private ModConfig modConfig;
+		private PropertyFieldWrapper memberInfo;
+		private object item;
 		string[] valueStrings;
-		string[] valueEnums;
 
-		public UIModConfigEnumItem(PropertyFieldWrapper variable, ModConfig modConfig, int sliderIDInPage)
+		public UIModConfigEnumItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage)
 		{
-			this.variable = variable;
-			this.modConfig = modConfig;
+			this.memberInfo = memberInfo;
+			this.item = item;
 			Width.Set(0f, 1f);
 			Height.Set(0f, 1f);
 
-			valueStrings = Enum.GetNames(variable.Type);
+			valueStrings = Enum.GetNames(memberInfo.Type);
 			max = valueStrings.Length;
 
 			//valueEnums = Enum.GetValues(variable.Type);
 
 			this._color = Color.White;
-			this._TextDisplayFunction = () => variable.Name + ": " + _GetValueString();
+			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValueString();
 			this._GetValue = () => DefaultGetValue();
 			_GetValueString = () => DefaultGetStringValue();
 			_GetIndex = () => DefaultGetIndex();
 			this._SetValue = (int value) => DefaultSetValue(value);
 			this._sliderIDInPage = sliderIDInPage;
 
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
+			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
 			if (att != null)
 			{
 				this._TextDisplayFunction = () => att.Label + ": " + _GetValueString();
@@ -57,17 +56,17 @@ namespace Terraria.ModLoader.UI
 
 		void DefaultSetValue(int index)
 		{
-			variable.SetValue(modConfig, Enum.GetValues(variable.Type).GetValue(index));
+			memberInfo.SetValue(item, Enum.GetValues(memberInfo.Type).GetValue(index));
 			Interface.modConfig.SetPendingChanges();
 		}
 
 		object DefaultGetValue()
 		{
-			return variable.GetValue(modConfig);
+			return memberInfo.GetValue(item);
 		}
 		int DefaultGetIndex()
 		{
-			return Array.IndexOf(Enum.GetValues(variable.Type), _GetValue());
+			return Array.IndexOf(Enum.GetValues(memberInfo.Type), _GetValue());
 		}
 		string DefaultGetStringValue()
 		{

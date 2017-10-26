@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.UI;
@@ -8,7 +9,7 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModConfigIntItem : UIElement
+	internal class UIModConfigIntItem : UIConfigItem
 	{
 		private Color _color;
 		private Func<string> _TextDisplayFunction;
@@ -20,64 +21,62 @@ namespace Terraria.ModLoader.UI
 		int min = 0;
 		int max = 100;
 		int increment = 1;
-		private PropertyFieldWrapper variable;
-		private ModConfig modConfig;
 
-		public UIModConfigIntItem(PropertyFieldWrapper variable, ModConfig modConfig, int sliderIDInPage)
+		public override int NumberTicks => ((max - min) / increment) + 1;
+		public override float TickIncrement => (float)(increment)/(max - min);
+
+		public UIModConfigIntItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<int> array = null, int index = -1) : base(memberInfo, item)
 		{
-			this.variable = variable;
-			this.modConfig = modConfig;
-			Width.Set(0f, 1f);
-			Height.Set(0f, 1f);
 			this._color = Color.White;
-			this._TextDisplayFunction = () => variable.Name + ": " + _GetValue();
+			this._sliderIDInPage = sliderIDInPage;
+			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();
 			this._SetValue = (int value) => DefaultSetValue(value);
-			this._sliderIDInPage = sliderIDInPage;
 
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
+			if(array != null)
+			{
+				_GetValue = () => array[index];
+				_SetValue = (int value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
+				_TextDisplayFunction = () => index + 1 + ": " + array[index];
+			}
+
+			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
 			if (att != null)
 			{
 				this._TextDisplayFunction = () => att.Label + ": " + _GetValue();
 			}
 
-			ValueRangeAttribute intValueRange = (ValueRangeAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(ValueRangeAttribute));
-			IntValueIncrementesAttribute intValueIncrements = (IntValueIncrementesAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(IntValueIncrementesAttribute));
-			if (intValueRange != null)
+			RangeAttribute rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(RangeAttribute));
+			IncrementAttribute incrementAttribute = (IncrementAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(IncrementAttribute));
+			if (rangeAttribute != null && rangeAttribute.min is int && rangeAttribute.max is int)
 			{
-				max = intValueRange.Max;
-				min = intValueRange.Min;
+				min = (int)rangeAttribute.min;
+				max = (int)rangeAttribute.max;
 			}
-			if (intValueIncrements != null)
+			if (incrementAttribute != null && incrementAttribute.increment is int)
 			{
-				increment = intValueIncrements.increment;
+				this.increment = (int)incrementAttribute.increment;
 			}
 			this._GetProportion = () => DefaultGetProportion();
 			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
 
-		public UIModConfigIntItem(Func<int> _GetValue, Action<int> _SetValue, Func<string> text, int sliderIDInPage)
-		{
-			Width.Set(0f, 1f);
-			Height.Set(0f, 1f);
-			this._color = Color.White;
-			this._GetValue = _GetValue;
-			this._SetValue = _SetValue;
-			this._TextDisplayFunction = text;
-			this._sliderIDInPage = sliderIDInPage;
-			this._GetProportion = () => DefaultGetProportion();
-			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
-		}
+		//public UIModConfigIntItem(Func<int> _GetValue, Action<int> _SetValue, Func<string> text, int sliderIDInPage)
+		//{
+		//	this._GetValue = _GetValue;
+		//	this._SetValue = _SetValue;
+		//	this._TextDisplayFunction = text;
+		//}
 
 		void DefaultSetValue(int value)
 		{
-			variable.SetValue(modConfig, Utils.Clamp(value, min, max));
+			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
 			Interface.modConfig.SetPendingChanges();
 		}
 
 		int DefaultGetValue()
 		{
-			return (int)variable.GetValue(modConfig);
+			return (int)memberInfo.GetValue(item);
 		}
 
 		float DefaultGetProportion()
@@ -134,7 +133,7 @@ namespace Terraria.ModLoader.UI
 			Main.colorBarTexture.Frame(1, 1, 0, 0);
 			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
 			IngameOptions.valuePosition = vector2;
-			float obj = IngameOptions.DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
+			float obj = DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
 			if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
 			{
 				IngameOptions.rightHover = this._sliderIDInPage;

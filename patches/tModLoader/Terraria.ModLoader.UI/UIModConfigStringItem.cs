@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.UI;
@@ -18,49 +19,49 @@ namespace Terraria.ModLoader.UI
 		private Func<int> _GetIndex;
 		private Action<int> _SetValue;
 		private int _sliderIDInPage;
-		private PropertyFieldWrapper variable;
-		private ModConfig modConfig;
 		string[] options;
 
 		public override int NumberTicks => options.Length;
-		public override float TickIncrement => 1f/(options.Length-1);
+		public override float TickIncrement => 1f / (options.Length - 1);
 
-		public UIModConfigStringItem(PropertyFieldWrapper variable, ModConfig modConfig, int sliderIDInPage)
+		public UIModConfigStringItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<string> array = null, int index = -1) : base(memberInfo, item)
 		{
-			drawTicks = (DrawTicksAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(DrawTicksAttribute)) != null;
-			OptionStringsAttribute optionsAttribute = (OptionStringsAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(OptionStringsAttribute));
-			options = optionsAttribute.optionLabels;
-			this.variable = variable;
-			this.modConfig = modConfig;
-			Width.Set(0f, 1f);
-			Height.Set(0f, 1f);
-
 			this._color = Color.White;
-			this._TextDisplayFunction = () => variable.Name + ": " + _GetValue();
-			this._GetValue = () => DefaultGetValue();
-			_GetIndex = () => DefaultGetIndex();
-			this._SetValue = (int value) => DefaultSetValue(value);
-			this._sliderIDInPage = sliderIDInPage;
+			OptionStringsAttribute optionsAttribute = (OptionStringsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(OptionStringsAttribute));
+			options = optionsAttribute.optionLabels;
+			_sliderIDInPage = sliderIDInPage;
 
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
+			_TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
+			_GetValue = () => DefaultGetValue();
+			_GetIndex = () => DefaultGetIndex();
+			_SetValue = (int value) => DefaultSetValue(value);
+
+			if(array != null)
+			{
+				_GetValue = () => array[index];
+				_SetValue = (int value) => { array[index] = options[value]; Interface.modConfig.SetPendingChanges(); };
+				_TextDisplayFunction = () => index + 1 + ": " + array[index];
+			}
+
+			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
 			if (att != null)
 			{
 				this._TextDisplayFunction = () => att.Label + ": " + _GetValue();
 			}
 
-			this._GetProportion = () => DefaultGetProportion();
-			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
+			_GetProportion = () => DefaultGetProportion();
+			_SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
 
 		void DefaultSetValue(int index)
 		{
-			variable.SetValue(modConfig, options[index]);
+			memberInfo.SetValue(item, options[index]);
 			Interface.modConfig.SetPendingChanges();
 		}
 
 		string DefaultGetValue()
 		{
-			return (string)variable.GetValue(modConfig);
+			return (string)memberInfo.GetValue(item);
 		}
 
 		int DefaultGetIndex()

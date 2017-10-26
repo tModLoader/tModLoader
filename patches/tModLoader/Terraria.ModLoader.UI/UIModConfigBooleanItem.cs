@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.UI
 		private Texture2D _toggleTexture;
 
 		// TODO. Display status string? (right now only on/off texture, but True/False, Yes/No, Enabled/Disabled options)
-		public UIModConfigBooleanItem(PropertyFieldWrapper variable, ModConfig modConfig)
+		public UIModConfigBooleanItem(PropertyFieldWrapper variable, object modConfig)
 		{
 			Width.Set(0f, 1f);
 			Height.Set(0f, 1f);

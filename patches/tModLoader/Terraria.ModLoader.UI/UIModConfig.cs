@@ -16,6 +16,11 @@ using System.Collections;
 namespace Terraria.ModLoader.UI
 {
 	// TODO: In-game version of this UI.
+	// TODO: Dictionary
+	// TODO: Item/NPC UIElements w/special ui.	
+	// TODO: Revert individual button.	
+	// TODO: Initialize List if null.
+	// TODO: DefaultValue for new elements in Lists
 	internal class UIModConfig : UIState
 	{
 		private UIElement uIElement;
@@ -24,6 +29,7 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> nextConfigButton;
 		private UITextPanel<string> saveConfigButton;
 		private UITextPanel<string> revertConfigButton;
+		private UITextPanel<string> restoreDefaultsConfigButton;
 		private UIList configList;
 		private Mod mod;
 		private List<ModConfig> modConfigs;
@@ -111,13 +117,14 @@ namespace Terraria.ModLoader.UI
 			revertConfigButton.OnClick += RevertConfig;
 			//uIElement.Append(revertConfigButton);
 
-			//UITextPanel<string> button5 = new UITextPanel<string>("Open Mods Folder", 1f, false);
-			//button5.CopyStyle(backButton);
-			//button5.HAlign = 0.5f;
-			//button5.OnMouseOver += UICommon.FadedMouseOver;
-			//button5.OnMouseOut += UICommon.FadedMouseOut;
-			//button5.OnClick += OpenModsFolder;
-			//uIElement.Append(button5);
+			restoreDefaultsConfigButton = new UITextPanel<string>("Restore All Defaults", 1f, false);
+			restoreDefaultsConfigButton.CopyStyle(previousConfigButton);
+			restoreDefaultsConfigButton.Top.Set(-20f, 0f);
+			restoreDefaultsConfigButton.OnMouseOver += UICommon.FadedMouseOver;
+			restoreDefaultsConfigButton.OnMouseOut += UICommon.FadedMouseOut;
+			restoreDefaultsConfigButton.HAlign = 1f;
+			restoreDefaultsConfigButton.OnClick += RestoreDefaults;
+			uIElement.Append(restoreDefaultsConfigButton);
 
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 
@@ -174,6 +181,15 @@ namespace Terraria.ModLoader.UI
 			//}
 
 			// RELOAD HERE!
+		}
+
+		private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(ID.SoundID.MenuOpen);
+			ConfigManager.Reset(modConfigClone);
+			ConfigManager.Save(modConfigClone);
+			ConfigManager.Load(modConfig);
+			Main.menuMode = Interface.modConfigID;
 		}
 
 		private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
@@ -255,76 +271,131 @@ namespace Terraria.ModLoader.UI
 				BindingFlags.Instance);
 
 			var fieldsAndProperties = fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
-
+			int top = 0;
 			foreach (PropertyFieldWrapper variable in fieldsAndProperties)
 			{
 				if (variable.isProperty && variable.Name == "Mode")
 					continue;
+				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)))
+					continue;
 
-				UISortableElement sortedContainer = new UISortableElement(i++);
-				sortedContainer.Width.Set(0f, 1f);
-				sortedContainer.Height.Set(30f, 0f);
-				sortedContainer.HAlign = 0.5f;
-				configList.Add(sortedContainer);
+				WrapIt(configList, ref top, variable, modConfigClone, ref i);
+			}
+		}
 
-				Type type = variable.Type;
-				if (type == typeof(bool)) // isassignedfrom?
+		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper variable, object item, ref int sliderIDInPage, object array = null, Type arrayType = null, int index = -1)
+		{
+			int elementHeight = 30;
+			Type type = variable.Type;
+			if (arrayType != null)
+			{
+				type = arrayType;
+			}
+			int original = sliderIDInPage;
+			UIElement e = null;
+			if (type == typeof(bool)) // isassignedfrom?
+			{
+				e = new UIModConfigBooleanItem(variable, item);
+			}
+			else if (type == typeof(float))
+			{
+				e = new UIModConfigFloatItem(variable, item, sliderIDInPage++);
+			}
+			else if (type == typeof(int))
+			{
+				e = new UIModConfigIntItem(variable, item, sliderIDInPage++, (IList<int>)array, index);
+			}
+			else if (type == typeof(string))
+			{
+				OptionStringsAttribute ost = (OptionStringsAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(OptionStringsAttribute));
+				if (ost != null)
 				{
-					UIElement e = new UIModConfigBooleanItem(variable, modConfigClone);
-					sortedContainer.Append(e);
-				}
-				else if (type == typeof(float))
-				{
-					UIElement e = new UIModConfigFloatItem(variable, modConfigClone, i);
-
-					//UIElement e = new UIModConfigFloatItem(
-					//	() => variable.Name + ": " + (float)variable.GetValue(modConfigClone),
-					//	() => (float)variable.GetValue(modConfigClone),
-					//	(f) => variable.SetValue(modConfigClone, f),
-					//	null,
-					//	0, Color.White);
-
-					sortedContainer.Append(e);
-				}
-				else if (type == typeof(int))
-				{
-					UIElement e = new UIModConfigIntItem(variable, modConfigClone, i);
-					sortedContainer.Append(e);
-				}
-				else if (type == typeof(string))
-				{
-					OptionStringsAttribute att = (OptionStringsAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(OptionStringsAttribute));
-					if (att != null)
-					{
-						UIElement e = new UIModConfigStringItem(variable, modConfigClone, i);
-						sortedContainer.Append(e);
-					}
-					else
-					{
-						// TODO: Text input? Necessary?
-						sortedContainer.Append(new UIText($"{variable.Name} not handled yet ({type.Name}). Missing OptionStringsAttribute."));
-					}
-				}
-				else if (type.IsEnum)
-				{
-					UIElement e = new UIModConfigEnumItem(variable, modConfigClone, i);
-					sortedContainer.Append(e);
-				}
-				else if (type.IsArray)
-				{
-					sortedContainer.Append(new UIText($"{variable.Name} not handled yet ({type.Name})"));
-				}
-				else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
-				{
-					UIElement e = new UIModConfigListItem(variable, modConfigClone, ref i);
-					sortedContainer.Height.Pixels = 225;
-					sortedContainer.Append(e);
+					e = new UIModConfigStringItem(variable, item, sliderIDInPage++, (IList<string>)array, index);
 				}
 				else
 				{
-					sortedContainer.Append(new UIText($"{variable.Name} not handled yet ({type.Name})"));
+					// TODO: Text input? Necessary?
+					e = new UIText($"{variable.Name} not handled yet ({type.Name}). Missing OptionStringsAttribute.");
 				}
 			}
+			else if (type.IsEnum)
+			{
+				e = new UIModConfigEnumItem(variable, item, sliderIDInPage++);
+			}
+			else if (type.IsArray)
+			{
+				e = new UIModConfigArrayItem(variable, item, ref sliderIDInPage);
+				elementHeight = 225;
+			}
+			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+			{
+				e = new UIModConfigListItem(variable, item, ref sliderIDInPage);
+				elementHeight = 225;
+			}
+			else if (type.IsClass)
+			{
+				if (array != null)
+				{
+					object listItem = ((IList)array)[index];
+					if (listItem == null)
+					{
+						listItem = Activator.CreateInstance(type);
+						JsonConvert.PopulateObject("{}", listItem, ConfigManager.serializerSettings);
+						((IList)array)[index] = listItem;
+					}
+					e = new UIModConfigObjectItem(variable, listItem, ref sliderIDInPage, (IList)array, index);
+					elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
+				}
+				else
+				{
+					object subitem = variable.GetValue(item);
+					if (subitem == null)
+					{
+						subitem = Activator.CreateInstance(type);
+						JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
+						variable.SetValue(item, subitem);
+					}
+					e = new UIModConfigObjectItem(variable, subitem, ref sliderIDInPage);
+					elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
+				}
+			}
+			else
+			{
+				e = new UIText($"{variable.Name} not handled yet ({type.Name})");
+				e.Top.Pixels += 6;
+				e.Left.Pixels += 4;
+			}
+			if (e != null)
+			{
+				var container = GetContainer(e, original);
+				container.Height.Pixels = elementHeight;
+				UIList list = parent as UIList;
+				if (list != null)
+				{
+					list.Add(container);
+				}
+				else
+				{
+					container.Top.Pixels = top;
+					container.Width.Pixels = -20;
+					container.Left.Pixels = 20;
+					top += elementHeight + 4; // or use list and padding?
+					parent.Append(container);
+				}
+
+				return new Tuple<UIElement, UIElement>(container, e);
+			}
+			return null;
+		}
+
+		internal static UIElement GetContainer(UIElement containee, int sortid)
+		{
+			UIElement container = new UISortableElement(sortid);
+			container.Width.Set(0f, 1f);
+			container.Height.Set(30f, 0f);
+			//container.HAlign = 1f;
+			container.Append(containee);
+			return container;
 		}
 	}
 
@@ -374,7 +445,17 @@ namespace Terraria.ModLoader.UI
 		internal bool drawTicks;
 		public abstract int NumberTicks { get; }
 		public abstract float TickIncrement { get; }
+		protected PropertyFieldWrapper memberInfo;
+		protected object item;
 
+		public UIConfigItem(PropertyFieldWrapper memberInfo, object item)
+		{
+			Width.Set(0f, 1f);
+			Height.Set(0f, 1f);
+			this.memberInfo = memberInfo;
+			this.item = item;
+			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
+		}
 
 		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
 		{
@@ -398,7 +479,8 @@ namespace Terraria.ModLoader.UI
 					for (int tick = 0; tick < numTicks; tick++)
 					{
 						float percent = tick * TickIncrement;
-						sb.Draw(Main.magicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.Blue);
+						if (percent <= 1f)
+							sb.Draw(Main.magicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.Blue);
 					}
 				}
 			}

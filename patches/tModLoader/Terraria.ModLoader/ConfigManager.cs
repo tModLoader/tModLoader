@@ -16,7 +16,13 @@ namespace Terraria.ModLoader
 		// This copy of Configs stores instances present during load. Its only use in detecting if a reload is needed.
 		private static readonly IDictionary<Mod, List<ModConfig>> LoadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
 
-		internal static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings { Formatting = Formatting.Indented, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, ObjectCreationHandling = ObjectCreationHandling.Replace };
+		internal static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+		{
+			Formatting = Formatting.Indented,
+			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+			ObjectCreationHandling = ObjectCreationHandling.Replace,
+			NullValueHandling = NullValueHandling.Ignore
+		};
 
 		public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "Mod Configs");
 
@@ -48,7 +54,7 @@ namespace Terraria.ModLoader
 				LoadTimeConfigs.Add(config.mod, configList2 = new List<ModConfig>());
 			configList2.Add(config.Clone());
 		}
-		
+
 		internal static void Load(ModConfig config)
 		{
 			string filename = config.mod.Name + "_" + config.Name + ".json";
@@ -61,6 +67,12 @@ namespace Terraria.ModLoader
 					json = r.ReadToEnd();
 				}
 			}
+			JsonConvert.PopulateObject(json, config, serializerSettings);
+		}
+
+		internal static void Reset(ModConfig config)
+		{
+			string json = "{}";
 			JsonConvert.PopulateObject(json, config, serializerSettings);
 		}
 

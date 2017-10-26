@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -39,6 +41,10 @@ namespace ExampleMod
 
 		// This is private. You'll notice that it doesn't show up in the config menu. Don't set something private.
 		private bool PrivateFieldBoolExample;
+
+		// This is ignored, it also shouldn't show up in the config menu
+		[JsonIgnore]
+		public bool IgnoreExample;
 
 		// You'll notice this next one is a Property instead of a field. That works too.
 		// Here we see an attribute added by tModLoader: LabelAttribute. This one allows us to add a label so the user knows more about the setting they are changing.
@@ -89,17 +95,17 @@ namespace ExampleMod
 		[Label("This is a float")]
 		public float SomeFLoat;
 
-		[FloatValueRange(2f, 3f)]
-		[FloatValueIncrementes(.25f)]
+		[Range(2f, 3f)]
+		[Increment(.25f)]
 		[DrawTicks]
 		[DefaultValue(2f)]
 		public float IncrementalFloat;
 
-		[FloatValueRange(0f, 5f)]
-		[FloatValueIncrementes(.11f)]
+		[Range(0f, 5f)]
+		[Increment(.11f)]
 		public float IncrementalFloat2;
 
-		[FloatValueRange(2f, 5f)]
+		[Range(2f, 5f)]
 		[DefaultValue(2f)]
 		public float RangedFloat;
 
@@ -110,8 +116,8 @@ namespace ExampleMod
 		[DrawTicks]
 		public SampleEnum EnumExample2;
 
-		[IntValueIncrementes(5)]
-		[ValueRange(60, 250)]
+		[Increment(5)]
+		[Range(60, 250)]
 		[DefaultValue(100)]
 		public int IntegerExample;
 
@@ -120,10 +126,28 @@ namespace ExampleMod
 		[DefaultValue("Bulbasor")]
 		public string FavoritePokemon;
 
-		[ValueRange(10, 20)]
+		[Range(10, 20)]
+		[Increment(2)]
+		[DrawTicks]
 		public List<int> ListOfInts;
 
+		public List<Pair> ListOfPair;
+
+		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
+		[DefaultValue(new string[] { "Give Up", "Give Up" })]
+		public string[] ArrayOfString;
+
+		[DefaultValue(new int[] { 4, 6, 12 })]
 		public int[] ArrayOfInts;
+
+		public SimpleData simpleDataExample;
+
+		[BackgroundColor(85, 107, 47)]
+		[Label("OverridenColor SimpleData")]
+		public SimpleData simpleDataExample2;
+
+		[Label("Really Complex Data")]
+		public ComplexData complexData;
 
 		[OnDeserialized]
 		internal void OnDeserializedMethod(StreamingContext context)
@@ -131,6 +155,26 @@ namespace ExampleMod
 			// We use a method marked OnDeserialized to initialize default values of reference types since we can't do that with the DefaultValue attribute.
 			if (ListOfInts == null)
 				ListOfInts = new List<int>() { };
+			if (ListOfPair == null)
+				ListOfPair = new List<Pair>() { };
+			//if (simpleDataExample == null)
+			//	simpleDataExample = new SimpleData();
+			if (simpleDataExample2 == null)
+			{
+				simpleDataExample2 = new SimpleData();
+				simpleDataExample2.boost = 32;
+				simpleDataExample2.percent = 2f;
+			}
+			if (complexData == null)
+			{
+				complexData = new ComplexData();
+				complexData.ListOfInts = new List<int>();
+			}
+			//ArrayOfInts = (int[])ArrayOfInts.Clone();
+			//ArrayOfString = (string[])ArrayOfString.Clone();
+
+			// RangeAttribute is just a suggestion to the UI. If we want to enforce constraints, we need to validate the data here.
+			RangedFloat = Utils.Clamp(RangedFloat, 2f, 5f);
 		}
 
 		public override ModConfig Clone()
@@ -138,6 +182,11 @@ namespace ExampleMod
 			// Since ListOfInts is a reference type, we need to clone it manually so our config works properly.
 			var clone = (ExampleConfigClient)base.Clone();
 			clone.ListOfInts = new List<int>(ListOfInts);
+			clone.simpleDataExample = simpleDataExample == null ? null : simpleDataExample.Clone();
+			clone.simpleDataExample2 = simpleDataExample2.Clone();
+			clone.ArrayOfInts = (int[])ArrayOfInts.Clone();
+			clone.ArrayOfString = (string[])ArrayOfString.Clone();
+			clone.ListOfPair = ListOfPair.ConvertAll(pair => pair.Clone());
 			return clone;
 		}
 
@@ -153,6 +202,11 @@ namespace ExampleMod
 			// I maintain both ExampleUI.visible and ShowCoinUI as separate values so ShowCoinUI can act as a default while ExampleUI.visible can change within a play session.
 			UI.ExampleUI.visible = ShowCoinUI;
 		}
+
+		public bool ShouldSerializeListOfInts()
+		{
+			return ListOfInts.Count > 0;
+		}
 	}
 
 	public enum SampleEnum
@@ -161,5 +215,61 @@ namespace ExampleMod
 		Odd,
 		Strange,
 		Peculiar
+	}
+
+	[BackgroundColor(0, 255, 255)]
+	public class Pair
+	{
+		public int boost;
+		public bool enabled;
+
+		public Pair Clone()
+		{
+			return (Pair)MemberwiseClone();
+		}
+	}
+
+	[BackgroundColor(255, 7, 7)]
+	public class SimpleData
+	{
+		public int boost;
+		public float percent;
+		public bool enabled;
+
+		[DrawTicks]
+		[OptionStrings(new string[] { "Pikachu", "Charmander", "Bulbasor", "Squirtle" })]
+		[DefaultValue("Bulbasor")]
+		public string FavoritePokemon;
+
+		public SimpleData()
+		{
+			//FavoritePokemon = "Bulbasor";
+		}
+
+		public SimpleData Clone()
+		{
+			return (SimpleData)MemberwiseClone();
+		}
+	}
+
+	public class ComplexData
+	{
+		public List<int> ListOfInts;
+
+		public SimpleData nestedSimple;
+
+		[Range(2f, 3f)]
+		[Increment(.25f)]
+		[DrawTicks]
+		[DefaultValue(2f)]
+		public float IncrementalFloat;
+
+		public ComplexData Clone()
+		{
+			var clone = (ComplexData)MemberwiseClone();
+			clone.ListOfInts = new List<int>(ListOfInts);
+			clone.nestedSimple = nestedSimple.Clone();
+			return clone;
+		}
 	}
 }
