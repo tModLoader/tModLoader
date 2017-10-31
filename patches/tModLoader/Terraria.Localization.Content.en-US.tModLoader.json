@@ -1,4 +1,4 @@
-﻿{
+{
 	"tModLoader": {
 		// Main Menu
 		"MenuModBrowser": "Mod Browser",
@@ -13,7 +13,7 @@
 		"ModsOpenModsFolder": "Open Mods Folder",
 		"ModsModPacks": "Mod Packs",
 		"ModsDisable": "Disable",
-		"ModsEnable": "Enable",
+		"ModsEnable": "Enable", 
 		"ModsMoreInfo": "More info",
 		"ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",
 		"ModsTypeToSearch": "Type to search",
@@ -24,7 +24,7 @@
 		"ModsSortNamesReverseAlph": "Sort mod names reverse-alphabetically",
 		"ModsShowAllMods": "Show all mods",
 		"ModsShowEnabledMods": "Show only enabled mods",
-		"ModsShowDisabledMods": "Show only disabled mods",
+		"ModsShowDisabledMods": "Show only disabled mods",	
 
 		// Mod Browser
 		"MBDownload": "Download",
@@ -46,6 +46,8 @@
 		"DownloadSignedNo": "Only Download Signed Mods From Servers: Off",
 		"MusicStreamModeConvert": "Music Stream Mode: Convert On Demand",
 		"MusicStreamModeStream": "Music Stream Mode: Stream From Cache",
+		"AlwaysLogExceptionsYes": "Always Log Exceptions: On",
+		"AlwaysLogExceptionsNo": "Always Log Exceptions: Off",
 		"ExperimentalFeaturesYes": "Experimental Features: On",
 		"ExperimentalFeaturesNo": "Experimental Features: Off",
 		"ClearMBCredentials": "Clear Mod Browser Credentials",
@@ -61,12 +63,10 @@
 
 		//There should be ModName after ':'
 		"MSReadingProperties": "Reading Properties: ",
+		"MSCompilingWindows": "Compiling {0} for Windows...",
+		"MSCompilingMono": "Compiling {0} for Mono...",
 		//There should be ModName after ':'
-		"MSCompilingWindows": "Compiling for Windows: ",
-		//There should be ModName after ':'
-		"MSCompilingMono": "Compiling for Mono: ",
-		//There should be ModName after ':'
-		"MSBuilding": "Building: ",
+		"MSBuilding": "Building ",
 		"MSFinding": "Finding Mods...",
 		//There should be ModName after ':'
 		"MSIntializing": "Initializing: ",
