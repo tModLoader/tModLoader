@@ -229,7 +229,7 @@ namespace Terraria.ModLoader
 			{
 				offY = 210;
 				spacing = 42;
-				numButtons = 6;
+				numButtons = 7;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++)
 				{
@@ -257,6 +257,14 @@ namespace Terraria.ModLoader
 				{
 					Main.PlaySound(SoundID.MenuTick);
 					ModLoader.musicStreamMode = (byte)((ModLoader.musicStreamMode + 1) % 2);
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = (ModLoader.alwaysLogExceptions ? Language.GetTextValue("tModLoader.AlwaysLogExceptionsYes") : Language.GetTextValue("tModLoader.AlwaysLogExceptionsNo"));
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(SoundID.MenuTick);
+					ModLoader.alwaysLogExceptions = !ModLoader.alwaysLogExceptions;
 				}
 
 				buttonIndex++;

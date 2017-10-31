@@ -260,7 +260,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static bool exceptionReportingActive;
-		private static void ActivateExceptionReporting()
+		internal static void ActivateExceptionReporting()
 		{
 			if (exceptionReportingActive) return;
 			exceptionReportingActive = true;

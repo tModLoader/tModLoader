@@ -69,6 +69,7 @@ namespace Terraria.ModLoader
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
 		internal static bool isModder;
+		internal static bool alwaysLogExceptions;
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static byte musicStreamMode;
@@ -1023,6 +1024,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", ModLoader.dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", ModLoader.dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("MusicStreamMode", ModLoader.musicStreamMode);
+			Main.Configuration.Put("AlwaysLogExceptions", ModLoader.alwaysLogExceptions);
 		}
 
 		internal static void LoadConfiguration()
@@ -1034,6 +1036,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get<bool>("DontRemindModBrowserUpdateReload", ref ModLoader.dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get<bool>("DontRemindModBrowserDownloadEnable", ref ModLoader.dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get<byte>("MusicStreamMode", ref ModLoader.musicStreamMode);
+			Main.Configuration.Get<bool>("AlwaysLogExceptions", ref ModLoader.alwaysLogExceptions);
 		}
 
 		/// <summary>
