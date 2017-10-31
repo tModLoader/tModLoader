@@ -306,7 +306,7 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,62 @@
+@@ -606,5 +_,63 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -333,6 +333,7 @@
 +    <EmbeddedResource Include="Terraria.Localization.Content.fr-FR.tModLoader.json" />
 +    <EmbeddedResource Include="Terraria.Localization.Content.de-DE.tModLoader.json" />
 +    <EmbeddedResource Include="Terraria.Localization.Content.it-IT.tModLoader.json" />
++    <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.tModLoader.json" />
 +  </ItemGroup>
 +  <ItemGroup />
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
