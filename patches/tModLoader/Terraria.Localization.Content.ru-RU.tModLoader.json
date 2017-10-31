@@ -46,6 +46,8 @@
 		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет",
 		"MusicStreamModeConvert": "Режим музыки: Конвертировать по необходимости",
 		"MusicStreamModeStream": "Режим музыки: Проигрывать из кэша",
+		// "AlwaysLogExceptionsYes": "Always Log Exceptions: On",
+		// "AlwaysLogExceptionsNo": "Always Log Exceptions: Off",
 		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
@@ -57,13 +59,12 @@
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
-		"MSBack": "Назад",
+		// "MSPublish": "Publish",
+
 		//There should be ModName after ':'
 		"MSReadingProperties": "Чтение настроек мода:",
-		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
-		"MSCompiling": "Компиляция мода ",
-		"MSCompilingWindows": " для Windows",
-		"MSCompilingMono": " для Mono",
+		"MSCompilingWindows": "Компиляция мода {0} для Windows",
+		"MSCompilingMono": "Компиляция мода {0} для Mono",
 		//There should be ModName after ':'
 		"MSBuilding": "Сборка мода: ",
 		"MSFinding": "Поиск файлов",

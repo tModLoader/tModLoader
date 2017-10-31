@@ -201,14 +201,14 @@ namespace Terraria.ModLoader
 					}
 				}
 				else {
-					status.SetStatus(Language.GetTextValue("tModLoader.MSCompiling") + mod + Language.GetTextValue("tModLoader.MSCompilingWindows"));
+					status.SetStatus(Language.GetTextValue("tModLoader.MSCompilingWindows", mod));
 					status.SetProgress(0, 2);
 					CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
 				}
 				if (winDLL == null)
 					return false;
 
-				status.SetStatus(Language.GetTextValue("tModLoader.MSCompiling") + mod + Language.GetTextValue("tModLoader.MSCompilingMono"));
+				status.SetStatus(Language.GetTextValue("tModLoader.MSCompilingMono", mod));
 				status.SetProgress(1, 2);
 				CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
 				if (monoDLL == null)

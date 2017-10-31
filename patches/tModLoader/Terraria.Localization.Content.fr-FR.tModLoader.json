@@ -46,6 +46,8 @@
 		"DownloadSignedNo": "Uniquement Télécharger les Modules Signés du Serveur: Non",
 		"MusicStreamModeConvert": "Mode d'émission de la Musique: Changer par Demande",
 		"MusicStreamModeStream": "Mode d'émission de la Musique: Emettre du Cache",
+		// "AlwaysLogExceptionsYes": "Always Log Exceptions: On",
+		// "AlwaysLogExceptionsNo": "Always Log Exceptions: Off",		
 		"ExperimentalFeaturesYes": "Mode Expérimental: Oui",
 		"ExperimentalFeaturesNo": "Mode Expérimental: Non",
 		"ClearMBCredentials": "Réinitialiser les Références du Navigateur",
@@ -61,10 +63,8 @@
 
 		//There should be ModName after ':'
 		"MSReadingProperties": "Analyse des Propriétés: ",
-		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
-		"MSCompiling": "Précompilation de ",
-		"MSCompilingWindows": " pour Windows...",
-		"MSCompilingMono": " pour Mono...",
+		"MSCompilingWindows": "Précompilation de {0} pour Windows...",
+		"MSCompilingMono": "Précompilation de {0} pour Mono...",
 		//There should be ModName after ':'
 		"MSBuilding": "Compilation de ",
 		"MSFinding": "Listage des Modules...",

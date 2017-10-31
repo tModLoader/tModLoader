@@ -46,8 +46,31 @@
 		"DownloadSignedNo": "Pobieraj tylko zaufane mody z serwerów: Nie",
 		"MusicStreamModeConvert": "Ładowanie muzyki: Konwersja na życzenie",
 		"MusicStreamModeStream": "Ładowanie muzyki: Strumieniuj z pamięci podręcznej",
+		// "AlwaysLogExceptionsYes": "Always Log Exceptions: On",
+		// "AlwaysLogExceptionsNo": "Always Log Exceptions: Off",		
 		"ExperimentalFeaturesYes": "Eksperymentalne funkcje: Włączone",
 		"ExperimentalFeaturesNo": "Eksperymentalne funkcje: Wyłączone",
-		"ClearMBCredentials": "Wyczyść dane dostępowe Przeglądarki Modów"
+		"ClearMBCredentials": "Wyczyść dane dostępowe Przeglądarki Modów",
+		
+		// Mod Sources
+		// "MSBuild": "Build",
+		// "MSBuildReload": "Build + Reload",
+		// "MSBuildAll": "Build All",
+		// "MSBuildReloadAll": "Build + Reload All",
+		// "MSOpenSources": "Open Sources",
+		// "MSManagePublished": "Manage Published",
+		// "MSPublish": "Publish",
+
+		//There should be ModName after ':'
+		// "MSReadingProperties": "Reading Properties: ",
+		// "MSCompilingWindows": "Compiling {0} for Windows...",
+		// "MSCompilingMono": "Compiling {0} for Mono...",
+		//There should be ModName after ':'
+		// "MSBuilding": "Building ",
+		// "MSFinding": "Finding Mods...",
+		//There should be ModName after ':'
+		// "MSIntializing": "Initializing: ",
+		//There should be ModName after ':'
+		// "MSLoading": "Loading Mod: ",
 	}
 }

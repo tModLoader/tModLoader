@@ -46,6 +46,8 @@
 		"DownloadSignedNo": "Solo descargue los Mods asignado de los servidores: Desactivado",
 		"MusicStreamModeConvert": "Modo de flujo de música: Convertir en demanda",
 		"MusicStreamModeStream": "Modo Stream de música: Stream desde el caché",
+		// "AlwaysLogExceptionsYes": "Always Log Exceptions: On",
+		// "AlwaysLogExceptionsNo": "Always Log Exceptions: Off",
 		"ExperimentalFeaturesYes": "Contenido experimental: Activado",
 		"ExperimentalFeaturesNo": "Contenido experimental: Desactivado",
 		"ClearMBCredentials": "Borrar las credenciales del navegador de Mods",
@@ -61,10 +63,8 @@
 
 		//There should be ModName after ':'
 		"MSReadingProperties": "Leyendo las propiedades: ",
-		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
-		"MSCompiling": "Compilando ",
-		"MSCompilingWindows": " por Windows...",
-		"MSCompilingMono": " por Mono...",
+		"MSCompilingWindows": "Compilando {0} por Windows...",
+		"MSCompilingMono": "Compilando {0} por Mono...",
 		//There should be ModName after ':'
 		"MSBuilding": "Construyendo ",
 		"MSFinding": "Buscando Mods...",
