@@ -1,4 +1,4 @@
-# tModLoader, a Terraria modding API [![Build Status](https://travis-ci.org/blushiemagic/tModLoader.svg?branch=master)](https://travis-ci.org/bluemagic123/tModLoader) [![Discord](https://discordapp.com/api/guilds/103110554649894912/widget.png?style=shield)](https://discord.me/tmodloader)
+# tModLoader, a Terraria modding API [![Build Status](https://travis-ci.org/blushiemagic/tModLoader.svg?branch=master)](https://travis-ci.org/blushiemagic/tModLoader) [![Discord](https://discordapp.com/api/guilds/103110554649894912/widget.png?style=shield)](https://discord.me/tmodloader)
 
 ## About
 
@@ -40,7 +40,7 @@ If you would like to contact us or tModLoader users, it's best to join our [Disc
 ___
 Installing tModLoader is relatively easy. If you want to ensure you can easily revert back to vanilla, you should make a backup copy of your Terraria.exe and TerrariaServer.exe
 
-1. Goto the **[releases](https://github.com/bluemagic123/tModLoader/releases)** page and download the tML release you want. (usually the **[latest](https://github.com/bluemagic123/tModLoader/releases/latest)**)
+1. Goto the **[releases](https://github.com/blushiemagic/tModLoader/releases)** page and download the tML release you want. (usually the **[latest](https://github.com/blushiemagic/tModLoader/releases/latest)**)
 2. Unzip the contents somewhere (usually documents or downloads folder)
 3. Open the extracted folder, **copy** the contents to your Terraria folder and let it overwrite files when asked. (replace files)
 4. Done. You can launch Terraria as usual.
@@ -74,7 +74,7 @@ Uninstallation of tModLoader is even easier than installation. This part covers 
 ___
 tModLoader uses its own code patcher. If you want to contribute to tModLoader, you will have to use this tool. We need to use a patches system, because we are not allowed to upload vanilla source code publicly. It also allows for relatively easy code maintenance. Here's what the tool looks like: [url](https://i.imgur.com/u9Yy1rl.png)
 
-Before you're about to make a contribution, please check [this article](https://github.com/bluemagic123/tModLoader/blob/master/CONTRIBUTING.md). Thanks in advance.
+Before you're about to make a contribution, please check [this article](https://github.com/blushiemagic/tModLoader/blob/master/CONTRIBUTING.md). Thanks in advance.
 
 ### Getting the tModLoader code for the first time
 ___
