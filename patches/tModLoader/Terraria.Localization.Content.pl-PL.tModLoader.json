@@ -46,31 +46,31 @@
 		"DownloadSignedNo": "Pobieraj tylko zaufane mody z serwerów: Nie",
 		"MusicStreamModeConvert": "Ładowanie muzyki: Konwersja na życzenie",
 		"MusicStreamModeStream": "Ładowanie muzyki: Strumieniuj z pamięci podręcznej",
-		// "AlwaysLogExceptionsYes": "Always Log Exceptions: On",
-		// "AlwaysLogExceptionsNo": "Always Log Exceptions: Off",		
+		"AlwaysLogExceptionsYes": "Zawsze loguj wyjątki: Włączone",
+		"AlwaysLogExceptionsNo": "Zawsze loguj wyjątki: Wyłączone",		
 		"ExperimentalFeaturesYes": "Eksperymentalne funkcje: Włączone",
 		"ExperimentalFeaturesNo": "Eksperymentalne funkcje: Wyłączone",
 		"ClearMBCredentials": "Wyczyść dane dostępowe Przeglądarki Modów",
 		
 		// Mod Sources
-		// "MSBuild": "Build",
-		// "MSBuildReload": "Build + Reload",
-		// "MSBuildAll": "Build All",
-		// "MSBuildReloadAll": "Build + Reload All",
-		// "MSOpenSources": "Open Sources",
-		// "MSManagePublished": "Manage Published",
-		// "MSPublish": "Publish",
+		"MSBuild": "Zbuduj",
+		"MSBuildReload": "Zbuduj + Przeładuj",
+		"MSBuildAll": "Zbuduj wszystkie",
+		"MSBuildReloadAll": "Zbuduj + Przeładuj wszystkie",
+		"MSOpenSources": "Open Sources",
+		"MSManagePublished": "Zarządzaj opublikowanymi",
+		"MSPublish": "Opublikuj",
 
 		//There should be ModName after ':'
-		// "MSReadingProperties": "Reading Properties: ",
-		// "MSCompilingWindows": "Compiling {0} for Windows...",
-		// "MSCompilingMono": "Compiling {0} for Mono...",
+		"MSReadingProperties": "Reading Properties: ",
+		"MSCompilingWindows": "Kompilowanie {0} dla Windows...",
+		"MSCompilingMono": "Kompilowanie {0} dla Mono...",
 		//There should be ModName after ':'
-		// "MSBuilding": "Building ",
-		// "MSFinding": "Finding Mods...",
+		"MSBuilding": "Budowanie ",
+		"MSFinding": "Szukanie Modów...",
 		//There should be ModName after ':'
-		// "MSIntializing": "Initializing: ",
+		"MSIntializing": "Inicjalizowanie: ",
 		//There should be ModName after ':'
-		// "MSLoading": "Loading Mod: ",
+		"MSLoading": "Ładowanie Moda: ",
 	}
 }
