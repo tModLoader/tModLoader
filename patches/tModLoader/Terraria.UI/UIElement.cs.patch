@@ -1,6 +1,14 @@
 --- src/Terraria\Terraria.UI\UIElement.cs
 +++ src/tModLoader\Terraria.UI\UIElement.cs
-@@ -49,6 +_,10 @@
+@@ -42,13 +_,29 @@
+ 		protected bool _useImmediateMode;
+ 		private SnapPoint _snapPoint;
+ 		private bool _isMouseHovering;
+-
++		
+ 		public event UIElement.MouseEvent OnMouseDown;
+ 		public event UIElement.MouseEvent OnMouseUp;
+ 		public event UIElement.MouseEvent OnClick;
  		public event UIElement.MouseEvent OnMouseOver;
  		public event UIElement.MouseEvent OnMouseOut;
  		public event UIElement.MouseEvent OnDoubleClick;
@@ -8,6 +16,18 @@
 +		public event UIElement.MouseEvent OnRightMouseUp;
 +		public event UIElement.MouseEvent OnRightClick;
 +		public event UIElement.MouseEvent OnRightDoubleClick;
++		public event UIElement.MouseEvent OnMiddleMouseDown;
++		public event UIElement.MouseEvent OnMiddleMouseUp;
++		public event UIElement.MouseEvent OnMiddleClick;
++		public event UIElement.MouseEvent OnMiddleDoubleClick;
++		public event UIElement.MouseEvent OnXButton1MouseDown;
++		public event UIElement.MouseEvent OnXButton1MouseUp;
++		public event UIElement.MouseEvent OnXButton1Click;
++		public event UIElement.MouseEvent OnXButton1DoubleClick;
++		public event UIElement.MouseEvent OnXButton2MouseDown;
++		public event UIElement.MouseEvent OnXButton2MouseUp;
++		public event UIElement.MouseEvent OnXButton2Click;
++		public event UIElement.MouseEvent OnXButton2DoubleClick;
  		public event UIElement.ScrollWheelEvent OnScrollWheel;
  
  		public bool IsMouseHovering
@@ -23,7 +43,7 @@
  		}
  
  		public virtual void Draw(SpriteBatch spriteBatch)
-@@ -404,6 +_,54 @@
+@@ -404,6 +_,198 @@
  			}
  		}
  
@@ -72,6 +92,150 @@
 +			if (this.Parent != null)
 +			{
 +				this.Parent.RightDoubleClick(evt);
++			}
++		}
++
++		public virtual void MiddleMouseDown(UIMouseEvent evt)
++		{
++			if (this.OnMiddleMouseDown != null)
++			{
++				this.OnMiddleMouseDown(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.MiddleMouseDown(evt);
++			}
++		}
++
++		public virtual void MiddleMouseUp(UIMouseEvent evt)
++		{
++			if (this.OnMiddleMouseUp != null)
++			{
++				this.OnMiddleMouseUp(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.MiddleMouseUp(evt);
++			}
++		}
++
++		public virtual void MiddleClick(UIMouseEvent evt)
++		{
++			if (this.OnMiddleClick != null)
++			{
++				this.OnMiddleClick(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.MiddleClick(evt);
++			}
++		}
++
++		public virtual void MiddleDoubleClick(UIMouseEvent evt)
++		{
++			if (this.OnMiddleDoubleClick != null)
++			{
++				this.OnMiddleDoubleClick(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.MiddleDoubleClick(evt);
++			}
++		}
++
++		public virtual void XButton1MouseDown(UIMouseEvent evt)
++		{
++			if (this.OnXButton1MouseDown != null)
++			{
++				this.OnXButton1MouseDown(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.XButton1MouseDown(evt);
++			}
++		}
++
++		public virtual void XButton1MouseUp(UIMouseEvent evt)
++		{
++			if (this.OnXButton1MouseUp != null)
++			{
++				this.OnXButton1MouseUp(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.XButton1MouseUp(evt);
++			}
++		}
++
++		public virtual void XButton1Click(UIMouseEvent evt)
++		{
++			if (this.OnXButton1Click != null)
++			{
++				this.OnXButton1Click(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.XButton1Click(evt);
++			}
++		}
++
++		public virtual void XButton1DoubleClick(UIMouseEvent evt)
++		{
++			if (this.OnXButton1DoubleClick != null)
++			{
++				this.OnXButton1DoubleClick(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.XButton1DoubleClick(evt);
++			}
++		}
++
++		public virtual void XButton2MouseDown(UIMouseEvent evt)
++		{
++			if (this.OnXButton2MouseDown != null)
++			{
++				this.OnXButton2MouseDown(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.XButton2MouseDown(evt);
++			}
++		}
++
++		public virtual void XButton2MouseUp(UIMouseEvent evt)
++		{
++			if (this.OnXButton2MouseUp != null)
++			{
++				this.OnXButton2MouseUp(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.XButton2MouseUp(evt);
++			}
++		}
++
++		public virtual void XButton2Click(UIMouseEvent evt)
++		{
++			if (this.OnXButton2Click != null)
++			{
++				this.OnXButton2Click(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.XButton2Click(evt);
++			}
++		}
++
++		public virtual void XButton2DoubleClick(UIMouseEvent evt)
++		{
++			if (this.OnXButton2DoubleClick != null)
++			{
++				this.OnXButton2DoubleClick(evt, this);
++			}
++			if (this.Parent != null)
++			{
++				this.Parent.XButton2DoubleClick(evt);
 +			}
 +		}
 +

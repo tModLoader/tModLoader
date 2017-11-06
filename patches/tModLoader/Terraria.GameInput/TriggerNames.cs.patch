@@ -1,0 +1,13 @@
+--- src/Terraria\Terraria.GameInput\TriggerNames.cs
++++ src/tModLoader\Terraria.GameInput\TriggerNames.cs
+@@ -6,6 +_,9 @@
+ 	{
+ 		public const string MouseLeft = "MouseLeft";
+ 		public const string MouseRight = "MouseRight";
++		public const string MouseMiddle = "MouseMiddle";
++		public const string MouseXButton1 = "MouseXButton1";
++		public const string MouseXButton2 = "MouseXButton2";
+ 		public const string Up = "Up";
+ 		public const string Down = "Down";
+ 		public const string Left = "Left";
+

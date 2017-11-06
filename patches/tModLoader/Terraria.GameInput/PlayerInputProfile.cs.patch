@@ -17,6 +17,16 @@
  			dictionary2.Add("Edittable", this.AllowEditting);
  			dictionary2.Add("Gamepad - HotbarRadialHoldTime", this.HotbarRadialHoldTimeRequired);
  			dictionary2.Add("Gamepad - LeftThumbstickDeadzoneX", this.LeftThumbstickDeadzoneX);
+@@ -238,6 +_,9 @@
+ 			{
+ 				"MouseLeft",
+ 				"MouseRight",
++				"MouseMiddle",
++				"MouseXButton1",
++				"MouseXButton2",
+ 				"Up",
+ 				"Down",
+ 				"Left",
 @@ -292,6 +_,18 @@
  			this.CopyKeysFrom(profile, mode, keysToCopy);
  		}
