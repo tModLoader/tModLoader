@@ -3558,7 +3558,7 @@
  					num111 = 2;
  				}
 -				Vector2 origin3 = Main.fontMouseText.MeasureString(Main.versionNumber);
-+				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName;
++				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + Environment.NewLine + "Please show your support: patreon.com/tModLoader";
 +				Vector2 origin3 = Main.fontMouseText.MeasureString(drawVersion);
  				origin3.X *= 0.5f;
  				origin3.Y *= 0.5f;
