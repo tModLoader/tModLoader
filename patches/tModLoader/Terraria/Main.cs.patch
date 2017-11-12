@@ -60,6 +60,16 @@
  		public static bool[] hairLoaded = new bool[134];
  		public static bool[] wingsLoaded = new bool[40];
  		public static bool[] goreLoaded = new bool[1087];
+@@ -358,6 +_,9 @@
+ 		public static int lastMouseY;
+ 		public static bool mouseLeft;
+ 		public static bool mouseRight;
++		public static bool mouseMiddle;
++		public static bool mouseXButton1;
++		public static bool mouseXButton2;
+ 		public static bool isMouseLeftConsumedByUI = false;
+ 		public static float essScale = 1f;
+ 		public static int essDir = -1;
 @@ -462,13 +_,13 @@
  		public static int wofB;
  		public static int wofF = 0;
@@ -134,7 +144,7 @@
  		public static float[] musicFade = new float[42];
  		public static float musicVolume = 0.75f;
  		public static float ambientVolume = 0.75f;
-@@ -1221,6 +_,8 @@
+@@ -1221,9 +_,14 @@
  			0.75f
  		};
  		public static byte mouseTextColor = 0;
@@ -143,6 +153,12 @@
  		public static int mouseTextColorChange = 1;
  		public static bool mouseLeftRelease = false;
  		public static bool mouseRightRelease = false;
++		public static bool mouseMiddleRelease = false;
++		public static bool mouseXButton1Release = false;
++		public static bool mouseXButton2Release = false;
+ 		public static bool playerInventory = false;
+ 		public static int stackSplit;
+ 		public static int stackCounter = 0;
 @@ -1334,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -685,6 +701,16 @@
  				if (!Main.gameMenu || Main.netMode == 2)
  				{
  					WorldFile.tempRaining = Main.raining;
+@@ -12258,6 +_,9 @@
+ 					}
+ 					Main.mouseLeftRelease = false;
+ 					Main.mouseRightRelease = false;
++					Main.mouseMiddleRelease = false;
++					Main.mouseXButton1Release = false;
++					Main.mouseXButton2Release = false;
+ 					if (Main.gameMenu)
+ 					{
+ 						Main.UpdateMenu();
 @@ -12435,6 +_,10 @@
  				{
  					flag = true;
@@ -3541,6 +3567,37 @@
  			}
  			Vector2 bonus = Main.DrawThickCursor(false);
  			Main.DrawCursor(bonus, false);
+@@ -46530,6 +_,30 @@
+ 			else
+ 			{
+ 				Main.mouseRightRelease = true;
++			}
++			if (Main.mouseMiddle)
++			{
++				Main.mouseMiddleRelease = false;
++			}
++			else
++			{
++				Main.mouseMiddleRelease = true;
++			}
++			if (Main.mouseXButton1)
++			{
++				Main.mouseXButton1Release = false;
++			}
++			else
++			{
++				Main.mouseXButton1Release = true;
++			}
++			if (Main.mouseXButton2)
++			{
++				Main.mouseXButton2Release = false;
++			}
++			else
++			{
++				Main.mouseXButton2Release = true;
+ 			}
+ 			if (Main.menuMode == num)
+ 			{
 @@ -46812,6 +_,7 @@
  			{
  				num9 = 2;
@@ -3929,6 +3986,37 @@
  				TimeLogger.DetailedDrawTime(35);
  				this.SortDrawCacheWorms();
  				this.DrawCachedProjs(this.DrawCacheProjsBehindProjectiles, true);
+@@ -58021,6 +_,30 @@
+ 				else
+ 				{
+ 					Main.mouseRightRelease = true;
++				}
++				if (Main.mouseMiddle)
++				{
++					Main.mouseMiddleRelease = false;
++				}
++				else
++				{
++					Main.mouseMiddleRelease = true;
++				}
++				if (Main.mouseXButton1)
++				{
++					Main.mouseXButton1Release = false;
++				}
++				else
++				{
++					Main.mouseXButton1Release = true;
++				}
++				if (Main.mouseXButton2)
++				{
++					Main.mouseXButton2Release = false;
++				}
++				else
++				{
++					Main.mouseXButton2Release = true;
+ 				}
+ 				if (!PlayerInput.Triggers.Current.MouseRight)
+ 				{
 @@ -58163,6 +_,7 @@
  			{
  				num3 = 0;

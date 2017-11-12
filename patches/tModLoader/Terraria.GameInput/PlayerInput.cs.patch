@@ -8,6 +8,16 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
+@@ -26,6 +_,9 @@
+ 		{
+ 			"MouseLeft",
+ 			"MouseRight",
++			"MouseMiddle",
++			"MouseXButton1",
++			"MouseXButton2",
+ 			"Up",
+ 			"Down",
+ 			"Left",
 @@ -332,6 +_,42 @@
  			}
  		}
@@ -51,6 +61,17 @@
  		public static void Initialize()
  		{
  			Main.InputProfiles.OnProcessText += new Preferences.TextProcessAction(PlayerInput.PrettyPrintProfiles);
+@@ -521,6 +_,10 @@
+ 			PlayerInput.UpdateMainMouse();
+ 			Main.mouseLeft = PlayerInput.Triggers.Current.MouseLeft;
+ 			Main.mouseRight = PlayerInput.Triggers.Current.MouseRight;
++			Main.mouseMiddle = PlayerInput.Triggers.Current.MouseMiddle;
++			Main.mouseXButton1 = PlayerInput.Triggers.Current.MouseXButton1;
++			Main.mouseXButton2 = PlayerInput.Triggers.Current.MouseXButton2;
++			
+ 			PlayerInput.CacheZoomableValues();
+ 		}
+ 
 @@ -735,6 +_,8 @@
  				keyConfiguration.Processkey(PlayerInput.Triggers.Current, Buttons.RightTrigger.ToString());
  				flag = true;
@@ -60,6 +81,16 @@
  			bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
  			int num3 = player.inventory[player.selectedItem].tileBoost + ItemID.Sets.GamepadExtraRange[player.inventory[player.selectedItem].type];
  			if (player.yoyoString && ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type])
+@@ -1041,6 +_,9 @@
+ 			{
+ 				"MouseLeft",
+ 				"MouseRight",
++				"MouseMiddle",
++				"MouseXButton1",
++				"MouseXButton2",
+ 				"Inventory"
+ 			};
+ 			foreach (InputMode inputMode in Enum.GetValues(typeof(InputMode)))
 @@ -1218,7 +_,7 @@
  						int num = 6;
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
@@ -69,7 +100,17 @@
  						}
  						PlayerInput.DpadSnapCooldown[i] = num;
  						value += value2;
-@@ -1524,6 +_,10 @@
+@@ -1493,6 +_,9 @@
+ 						case InputMode.Keyboard:
+ 							c.KeyStatus["MouseLeft"].Add("Mouse1");
+ 							c.KeyStatus["MouseRight"].Add("Mouse2");
++							c.KeyStatus["MouseMiddle"].Add("Mouse3");
++							c.KeyStatus["MouseXButton1"].Add("Mouse4");
++							c.KeyStatus["MouseXButton2"].Add("Mouse5");
+ 							c.KeyStatus["Up"].Add("W");
+ 							c.KeyStatus["Down"].Add("S");
+ 							c.KeyStatus["Left"].Add("A");
+@@ -1524,11 +_,18 @@
  							c.KeyStatus["Hotbar10"].Add("D0");
  							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
  							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
@@ -80,7 +121,25 @@
  							return;
  						case InputMode.KeyboardUI:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
-@@ -1634,6 +_,10 @@
+ 							c.KeyStatus["MouseLeft"].Add("Space");
+ 							c.KeyStatus["MouseRight"].Add("Mouse2");
++							c.KeyStatus["MouseMiddle"].Add("Mouse3");
++							c.KeyStatus["MouseXButton1"].Add("Mouse4");
++							c.KeyStatus["MouseXButton2"].Add("Mouse5");
+ 							c.KeyStatus["Up"].Add("W");
+ 							c.KeyStatus["Up"].Add("Up");
+ 							c.KeyStatus["Down"].Add("S");
+@@ -1603,6 +_,9 @@
+ 						case InputMode.Keyboard:
+ 							c.KeyStatus["MouseLeft"].Add("Mouse1");
+ 							c.KeyStatus["MouseRight"].Add("Mouse2");
++							c.KeyStatus["MouseMiddle"].Add("Mouse3");
++							c.KeyStatus["MouseXButton1"].Add("Mouse4");
++							c.KeyStatus["MouseXButton2"].Add("Mouse5");
+ 							c.KeyStatus["Up"].Add("W");
+ 							c.KeyStatus["Down"].Add("S");
+ 							c.KeyStatus["Left"].Add("A");
+@@ -1634,11 +_,18 @@
  							c.KeyStatus["Hotbar10"].Add("D0");
  							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
  							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
@@ -91,7 +150,25 @@
  							return;
  						case InputMode.KeyboardUI:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
-@@ -1743,6 +_,10 @@
+ 							c.KeyStatus["MouseLeft"].Add("Space");
+ 							c.KeyStatus["MouseRight"].Add("Mouse2");
++							c.KeyStatus["MouseMiddle"].Add("Mouse3");
++							c.KeyStatus["MouseXButton1"].Add("Mouse4");
++							c.KeyStatus["MouseXButton2"].Add("Mouse5");
+ 							c.KeyStatus["Up"].Add("W");
+ 							c.KeyStatus["Up"].Add("Up");
+ 							c.KeyStatus["Down"].Add("S");
+@@ -1712,6 +_,9 @@
+ 						case InputMode.Keyboard:
+ 							c.KeyStatus["MouseLeft"].Add("Mouse1");
+ 							c.KeyStatus["MouseRight"].Add("Mouse2");
++							c.KeyStatus["MouseMiddle"].Add("Mouse3");
++							c.KeyStatus["MouseXButton1"].Add("Mouse4");
++							c.KeyStatus["MouseXButton2"].Add("Mouse5");
+ 							c.KeyStatus["Up"].Add("W");
+ 							c.KeyStatus["Down"].Add("S");
+ 							c.KeyStatus["Left"].Add("A");
+@@ -1743,11 +_,18 @@
  							c.KeyStatus["Hotbar10"].Add("D0");
  							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
  							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
@@ -102,7 +179,25 @@
  							return;
  						case InputMode.KeyboardUI:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
-@@ -1852,6 +_,10 @@
+ 							c.KeyStatus["MouseLeft"].Add("Space");
+ 							c.KeyStatus["MouseRight"].Add("Mouse2");
++							c.KeyStatus["MouseMiddle"].Add("Mouse3");
++							c.KeyStatus["MouseXButton1"].Add("Mouse4");
++							c.KeyStatus["MouseXButton2"].Add("Mouse5");
+ 							c.KeyStatus["Up"].Add("W");
+ 							c.KeyStatus["Up"].Add("Up");
+ 							c.KeyStatus["Down"].Add("S");
+@@ -1821,6 +_,9 @@
+ 						case InputMode.Keyboard:
+ 							c.KeyStatus["MouseLeft"].Add("Mouse1");
+ 							c.KeyStatus["MouseRight"].Add("Mouse2");
++							c.KeyStatus["MouseMiddle"].Add("Mouse3");
++							c.KeyStatus["MouseXButton1"].Add("Mouse4");
++							c.KeyStatus["MouseXButton2"].Add("Mouse5");
+ 							c.KeyStatus["Up"].Add("W");
+ 							c.KeyStatus["Down"].Add("S");
+ 							c.KeyStatus["Left"].Add("A");
+@@ -1852,11 +_,18 @@
  							c.KeyStatus["Hotbar10"].Add("D0");
  							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
  							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
@@ -113,4 +208,12 @@
  							return;
  						case InputMode.KeyboardUI:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
+ 							c.KeyStatus["MouseLeft"].Add("Space");
+ 							c.KeyStatus["MouseRight"].Add("Mouse2");
++							c.KeyStatus["MouseMiddle"].Add("Mouse3");
++							c.KeyStatus["MouseXButton1"].Add("Mouse4");
++							c.KeyStatus["MouseXButton2"].Add("Mouse5");
+ 							c.KeyStatus["Up"].Add("W");
+ 							c.KeyStatus["Up"].Add("Up");
+ 							c.KeyStatus["Down"].Add("S");
 
