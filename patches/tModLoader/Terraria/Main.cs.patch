@@ -3553,17 +3553,31 @@
  							Main.spriteBatch.DrawString(Main.fontDeathText, array9[num94], new Vector2((float)(num3 + num101 + array5[num94]), (float)(num2 + num4 * num94 + num102) + origin.Y * array7[num94] + (float)array4[num94]), color10, 0f, origin, num103, SpriteEffects.None, 0f);
  						}
  						else
-@@ -46498,10 +_,11 @@
+@@ -46498,10 +_,25 @@
  				{
  					num111 = 2;
  				}
 -				Vector2 origin3 = Main.fontMouseText.MeasureString(Main.versionNumber);
-+				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + Environment.NewLine + "Please show your support: patreon.com/tModLoader";
++				string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
++				string patreonShortURL = @"patreon.com/tModLoader";
++				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + Environment.NewLine + supportMessage;
 +				Vector2 origin3 = Main.fontMouseText.MeasureString(drawVersion);
  				origin3.X *= 0.5f;
  				origin3.Y *= 0.5f;
 -				Main.spriteBatch.DrawString(Main.fontMouseText, Main.versionNumber, new Vector2(origin3.X + (float)num110 + 10f, (float)Main.screenHeight - origin3.Y + (float)num111 - 2f), color12, 0f, origin3, 1f, SpriteEffects.None, 0f);
 +				Main.spriteBatch.DrawString(Main.fontMouseText, drawVersion, new Vector2(origin3.X + (float)num110 + 10f, (float)Main.screenHeight - origin3.Y + (float)num111 - 2f), color12, 0f, origin3, 1f, SpriteEffects.None, 0f);
++				if (num109 == 4)
++				{
++					color12 = new Microsoft.Xna.Framework.Color(127, 191, 191, 76);
++				}
++				origin3 = Main.fontMouseText.MeasureString(supportMessage);
++				Vector2 urlSize = Main.fontMouseText.MeasureString(patreonShortURL);
++				Main.spriteBatch.DrawString(Main.fontMouseText, patreonShortURL, new Vector2(origin3.X + (float)num110 + 10f, (float)Main.screenHeight - origin3.Y + (float)num111 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++				if (num109 == 4 && Main.mouseLeftRelease && Main.mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin3.X + 10, Main.screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin3.Y).Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)))
++				{
++					Main.PlaySound(SoundID.MenuOpen);
++					Process.Start("https://www.patreon.com/tModLoader");
++				}
  			}
  			Vector2 bonus = Main.DrawThickCursor(false);
  			Main.DrawCursor(bonus, false);

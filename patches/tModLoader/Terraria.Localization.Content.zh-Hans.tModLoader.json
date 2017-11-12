@@ -1,6 +1,7 @@
 {
 	"tModLoader": {
 		// Main Menu
+		// "PatreonSupport": "Please show your support: ",
 		"MenuModBrowser": "模组浏览器",
 		"MenuMods": "模组管理",
 		"MenuModSources": "模组源代码",

@@ -1,6 +1,7 @@
 ﻿{
 	"tModLoader": {
 		// Main Menu
+		"PatreonSupport": "Please show your support: ",
 		"MenuModBrowser": "Mod Browser",
 		"MenuMods": "Mods",
 		"MenuModSources": "Mod Sources",
