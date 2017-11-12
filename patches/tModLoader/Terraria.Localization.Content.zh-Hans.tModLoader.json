@@ -72,5 +72,10 @@
 		"MSIntializing": "正在初始化：",
 		//There should be ModName after ':'
 		"MSLoading": "正在载入模组：",
+
+		// Extra mouse buttons
+		// "MouseMiddle": "Middle Mouse",
+		// "MouseXButton1": "Mouse 4",
+		// "MouseXButton2": "Mouse 5",
 	}
 }

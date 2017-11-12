@@ -72,5 +72,10 @@
 		"MSIntializing": "Инициализация мода: ",
 		//There should be ModName after ':'
 		"MSLoading": "Загрузка мода: ",
+
+		// Extra mouse buttons
+		// "MouseMiddle": "Middle Mouse",
+		// "MouseXButton1": "Mouse 4",
+		// "MouseXButton2": "Mouse 5",
 	}
 }

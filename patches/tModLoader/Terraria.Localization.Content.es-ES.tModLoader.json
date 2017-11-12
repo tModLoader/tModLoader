@@ -72,5 +72,10 @@
 		"MSIntializing": "Inicializando: ",
 		//There should be ModName after ':'
 		"MSLoading": "Cargando Mod: ",
+
+		// Extra mouse buttons
+		// "MouseMiddle": "Middle Mouse",
+		// "MouseXButton1": "Mouse 4",
+		// "MouseXButton2": "Mouse 5",
 	}
 }

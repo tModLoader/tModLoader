@@ -1,14 +1,6 @@
 --- src/Terraria\Terraria.UI\UIElement.cs
 +++ src/tModLoader\Terraria.UI\UIElement.cs
-@@ -42,13 +_,29 @@
- 		protected bool _useImmediateMode;
- 		private SnapPoint _snapPoint;
- 		private bool _isMouseHovering;
--
-+		
- 		public event UIElement.MouseEvent OnMouseDown;
- 		public event UIElement.MouseEvent OnMouseUp;
- 		public event UIElement.MouseEvent OnClick;
+@@ -49,6 +_,22 @@
  		public event UIElement.MouseEvent OnMouseOver;
  		public event UIElement.MouseEvent OnMouseOut;
  		public event UIElement.MouseEvent OnDoubleClick;
