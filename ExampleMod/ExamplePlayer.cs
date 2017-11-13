@@ -73,6 +73,7 @@ namespace ExampleMod
 		public override TagCompound Save()
 		{
 			return new TagCompound {
+				// {"somethingelse", somethingelse}, // To save more data, add additional lines
 				{"score", score}
 			};
 			//note that C# 6.0 supports indexer initializers

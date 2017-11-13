@@ -68,7 +68,7 @@
 +			Main.mouseMiddle = PlayerInput.Triggers.Current.MouseMiddle;
 +			Main.mouseXButton1 = PlayerInput.Triggers.Current.MouseXButton1;
 +			Main.mouseXButton2 = PlayerInput.Triggers.Current.MouseXButton2;
-+			
++
  			PlayerInput.CacheZoomableValues();
  		}
  

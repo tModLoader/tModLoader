@@ -8,6 +8,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Tiles
 {
+	// TODO: Smart Cursor Outlines and tModLoader support
 	public class ExampleDoorClosed : ModTile
 	{
 		public override void SetDefaults()
@@ -26,7 +27,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);
 			TileObjectData.newTile.UsesCustomCanPlace = true;
 			TileObjectData.newTile.LavaDeath = true;
-			TileObjectData.newTile.CoordinateHeights = new int[]{ 16, 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
@@ -42,7 +43,7 @@ namespace ExampleMod.Tiles
 			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
-			adjTiles = new int[]{ TileID.ClosedDoor };
+			adjTiles = new int[] { TileID.ClosedDoor };
 			openDoorID = mod.TileType("ExampleDoorOpen");
 		}
 
@@ -54,6 +55,14 @@ namespace ExampleMod.Tiles
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
 			Item.NewItem(i * 16, j * 16, 16, 48, mod.ItemType("ExampleDoor"));
+		}
+
+		public override void MouseOver(int i, int j)
+		{
+			Player player = Main.LocalPlayer;
+			player.noThrow = 2;
+			player.showItemIcon = true;
+			player.showItemIcon2 = mod.ItemType("ExampleDoor");
 		}
 	}
 }
