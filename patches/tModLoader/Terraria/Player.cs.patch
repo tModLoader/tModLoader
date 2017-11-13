@@ -4178,7 +4178,7 @@
  									}
  									if (item.axe > 0)
  									{
-@@ -34937,23 +_,23 @@
+@@ -34937,30 +_,30 @@
  										{
  											this.hitTile.Prune();
  										}
@@ -4196,16 +4196,27 @@
  								if (item.pick > 0)
  								{
 -									this.itemTime = (int)((float)item.useTime * this.pickSpeed);
+-								}
+-								if (item.hammer > 0 && Main.tile[Player.tileTargetX, Player.tileTargetY].active() && ((Main.tileSolid[(int)Main.tile[Player.tileTargetX, Player.tileTargetY].type] && Main.tile[Player.tileTargetX, Player.tileTargetY].type != 10) || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 314 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 351 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 424 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 442) && this.poundRelease)
 +									this.itemTime = (int)((float)item.useTime * this.pickSpeed / PlayerHooks.TotalUseTimeMultiplier(this, item));
- 								}
- 								if (item.hammer > 0 && Main.tile[Player.tileTargetX, Player.tileTargetY].active() && ((Main.tileSolid[(int)Main.tile[Player.tileTargetX, Player.tileTargetY].type] && Main.tile[Player.tileTargetX, Player.tileTargetY].type != 10) || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 314 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 351 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 424 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 442) && this.poundRelease)
++								}
++								if (item.hammer > 0 && Main.tile[Player.tileTargetX, Player.tileTargetY].active() && ((Main.tileSolid[(int)Main.tile[Player.tileTargetX, Player.tileTargetY].type] && !TileLoader.IsClosedDoor(Main.tile[Player.tileTargetX, Player.tileTargetY])) || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 314 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 351 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 424 || Main.tile[Player.tileTargetX, Player.tileTargetY].type == 442) && this.poundRelease)
  								{
  									flag19 = false;
 -									this.itemTime = item.useTime;
 +									this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
  									num241 += (int)((double)item.hammer * 1.25);
  									num241 = 100;
- 									if (Main.tile[Player.tileTargetX, Player.tileTargetY - 1].active() && Main.tile[Player.tileTargetX, Player.tileTargetY - 1].type == 10)
+-									if (Main.tile[Player.tileTargetX, Player.tileTargetY - 1].active() && Main.tile[Player.tileTargetX, Player.tileTargetY - 1].type == 10)
++									if (Main.tile[Player.tileTargetX, Player.tileTargetY - 1].active() && TileLoader.IsClosedDoor(Main.tile[Player.tileTargetX, Player.tileTargetY - 1]))
+ 									{
+ 										num241 = 0;
+ 									}
+-									if (Main.tile[Player.tileTargetX, Player.tileTargetY + 1].active() && Main.tile[Player.tileTargetX, Player.tileTargetY + 1].type == 10)
++									if (Main.tile[Player.tileTargetX, Player.tileTargetY + 1].active() && TileLoader.IsClosedDoor(Main.tile[Player.tileTargetX, Player.tileTargetY + 1]))
+ 									{
+ 										num241 = 0;
+ 									}
 @@ -34971,7 +_,10 @@
  										{
  											int num242 = Player.tileTargetX;

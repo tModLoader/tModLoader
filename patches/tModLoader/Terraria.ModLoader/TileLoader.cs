@@ -440,6 +440,15 @@ namespace Terraria.ModLoader
 			}
 			return -1;
 		}
+		public static bool IsClosedDoor(Tile tile)
+		{
+			ModTile modTile = GetTile(tile.type);
+			if (modTile != null)
+			{
+				return modTile.openDoorID > -1;
+			}
+			return tile.type == TileID.ClosedDoor;
+		}
 		//in Terraria.UI.ChestUI add this to Lang lookups
 		public static string ModChestName(int type)
 		{

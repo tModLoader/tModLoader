@@ -388,6 +388,15 @@
  				if (Main.expertMode)
  				{
  					num58 = (int)((float)num58 * Main.expertNPCDamage);
+@@ -43916,7 +_,7 @@
+ 					Main.tile[num177 - this.direction, num178 + 1] = new Tile();
+ 				}
+ 				Main.tile[num177, num178 + 1].halfBrick();
+-				if (Main.tile[num177, num178 - 1].nactive() && (Main.tile[num177, num178 - 1].type == 10 || Main.tile[num177, num178 - 1].type == 388) && flag6)
++				if (Main.tile[num177, num178 - 1].nactive() && (TileLoader.IsClosedDoor(Main.tile[num177, num178 - 1]) || Main.tile[num177, num178 - 1].type == 388) && flag6)
+ 				{
+ 					this.ai[2] += 1f;
+ 					this.ai[3] = 0f;
 @@ -43965,7 +_,7 @@
  							}
  							else
@@ -406,14 +415,24 @@
  									for (int k = 0; k < num38; k++)
  									{
  										Dust dust = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
-@@ -46830,6 +_,7 @@
+@@ -46790,7 +_,7 @@
+ 				Tile tileSafely4 = Framing.GetTileSafely(num54, num55 - 1);
+ 				Tile tileSafely5 = Framing.GetTileSafely(num54, num55 - 2);
+ 				Tile tileSafely6 = Framing.GetTileSafely(num54, num55 - 3);
+-				if (flag8 && tileSafely4.nactive() && (tileSafely4.type == 10 || tileSafely4.type == 388))
++				if (flag8 && tileSafely4.nactive() && (TileLoader.IsClosedDoor(tileSafely4) || tileSafely4.type == 388))
+ 				{
+ 					this.ai[0] += 1f;
+ 					this.ai[3] = 0f;
+@@ -46830,7 +_,7 @@
  							}
  							else
  							{
-+								// TODO something like: if (TileLoader.OpenDoorID(Main.tile[num210, num211 - 1]) >= 0)
- 								if (tileSafely4.type == 10)
+-								if (tileSafely4.type == 10)
++								if (TileLoader.IsClosedDoor(tileSafely4))
  								{
  									bool flag40 = WorldGen.OpenDoor(num54, num55 - 1, this.direction);
+ 									if (!flag40)
 @@ -49239,7 +_,7 @@
  
  		public bool UsesPartyHat()
