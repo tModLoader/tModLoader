@@ -277,14 +277,33 @@ namespace Terraria.ModLoader
 		}
 
 		private static bool VerifyName(string modName, byte[] dll) {
-			var asmName = AssemblyDefinition.ReadAssembly(new MemoryStream(dll)).Name.Name;
+			var asmDef = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
+			var asmName = asmDef.Name.Name;
 			if (asmName != modName) {
 				ErrorLogger.LogBuildError("Mod name \""+ modName+ "\" does not match assembly name \""+asmName+"\"");
 				return false;
 			}
 
-			if (modName.Equals("Terraria",  StringComparison.InvariantCultureIgnoreCase)) {
+			if (modName.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
+			{
 				ErrorLogger.LogBuildError("Mods cannot be named Terraria");
+				return false;
+			}
+
+			// Verify that folder and namespace match up
+			try
+			{
+				var modClassType = asmDef.MainModule.Types.Single(x => x.BaseType?.FullName == "Terraria.ModLoader.Mod");
+				string topNamespace = modClassType.Namespace.Split('.')[0];
+				if (topNamespace != modName)
+				{
+					ErrorLogger.LogBuildError("Namespace and Folder name do not match. The top level namespace must match the folder name.");
+					return false;
+				}
+			}
+			catch
+			{
+				ErrorLogger.LogBuildError("Make sure you have exactly one class extending Mod.");
 				return false;
 			}
 

@@ -31,7 +31,8 @@ namespace Terraria.ModLoader.UI
 			this.Height.Set(90f, 0f);
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
-			this.modName = new UIText(Path.GetFileName(mod), 1f, false);
+			string addendum = Path.GetFileName(mod).Contains(" ") ? "  [c/FF0000:(Mod Sources folders can't have spaces)]" : "";
+			this.modName = new UIText(Path.GetFileName(mod) + addendum, 1f, false);
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
