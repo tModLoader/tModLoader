@@ -3265,13 +3265,46 @@
  					}
  				}
  			}
-@@ -36640,11 +_,13 @@
- 							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].BuyItem(num62, -1))
- 							{
+@@ -36521,12 +_,18 @@
+ 					string text2 = Lang.inter[46].Value + ": ";
+ 					if (Main.reforgeItem.type > 0)
+ 					{
++						bool canApplyDiscount = true;
+ 						int num62 = Main.reforgeItem.value;
+-						if (Main.player[Main.myPlayer].discount)
+-						{
+-							num62 = (int)((double)num62 * 0.8);
+-						}
+-						num62 /= 3;
++
++						if (ItemLoader.ReforgePrice(Main.reforgeItem, ref num62, ref canApplyDiscount))
++						{
++							if (canApplyDiscount && Main.player[Main.myPlayer].discount)
++							{
++								num62 = (int)((double)num62 * 0.8);
++							}
++							num62 /= 3;
++						}
++
+ 						string text3 = "";
+ 						int num63 = 0;
+ 						int num64 = 0;
+@@ -36637,14 +_,18 @@
+ 							}
+ 							Main.mouseReforge = true;
+ 							Main.player[Main.myPlayer].mouseInterface = true;
+-							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].BuyItem(num62, -1))
+-							{
++							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].CanBuyItem(num62, -1) && ItemLoader.PreReforge(Main.reforgeItem))
++							{
++								Main.player[Main.myPlayer].BuyItem(num62, -1);
  								bool favorited = Main.reforgeItem.favorited;
-+								ItemLoader.PreReforge(Main.reforgeItem);
- 								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
- 								Main.reforgeItem.Prefix(-2);
+-								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
+-								Main.reforgeItem.Prefix(-2);
++								Item reforgeItem = new Item();
++								reforgeItem.netDefaults(Main.reforgeItem.netID);
++								reforgeItem.Prefix(-2);
++								Main.reforgeItem = reforgeItem.CloneWithModdedData(Main.reforgeItem);
  								Main.reforgeItem.position.X = Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Main.reforgeItem.width / 2);
  								Main.reforgeItem.position.Y = Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Main.reforgeItem.height / 2);
  								Main.reforgeItem.favorited = favorited;

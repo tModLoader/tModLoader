@@ -597,14 +597,35 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This hooks gets called immediately before an item gets reforged by the Goblin Tinkerer. Useful for storing custom data, since reforging erases custom data. Note that, because the ModItem instance will change, the data must be backed up elsewhere, such as in static fields.
+		/// Returns if the normal reforge pricing is applied. 
+		/// If true or false is returned and the price is altered, the price will equal the altered price.
+		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 		/// </summary>
-		public virtual void PreReforge()
+		public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount)
 		{
+			return true;
 		}
 
 		/// <summary>
-		/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer. Useful for restoring custom data that you saved in PreReforge.
+		/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
+		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
+		/// Reforging preserves modded data on the item. 
+		/// </summary
+		public virtual bool NewPreReforge()
+		{
+			return true;
+		}
+
+		// @todo: PreReforge marked obsolete until v0.11
+		[method: Obsolete("PreReforge now returns a bool to control whether the reforge takes place. For now, use NewPreReforge")]
+		public virtual void PreReforge()
+		{
+			item.modItem?.NewPreReforge();
+		}
+
+		/// <summary>
+		/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer.
+		/// Useful for modifying modded data based on the reforge result.
 		/// </summary>
 		public virtual void PostReforge()
 		{
