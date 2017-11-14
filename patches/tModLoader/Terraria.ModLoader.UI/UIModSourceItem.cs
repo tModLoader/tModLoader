@@ -148,7 +148,6 @@ namespace Terraria.ModLoader.UI
 				System.Net.ServicePointManager.Expect100Continue = false;
 				string filename = @ModLoader.ModPath + @Path.DirectorySeparatorChar + @Path.GetFileName(mod) + @".tmod";
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
-				byte[] result;
 				using (var iconStream = theTModFile.HasFile("icon.png") ? new MemoryStream(theTModFile.GetFile("icon.png")) : null)
 				using (var stream = File.Open(filename, FileMode.Open))
 				{
@@ -161,7 +160,7 @@ namespace Terraria.ModLoader.UI
 							Stream = stream
 						}
 					);
-					if(iconStream != null)
+					if (iconStream != null)
 					{
 						files.Add(new IO.UploadFile
 							{
@@ -186,21 +185,65 @@ namespace Terraria.ModLoader.UI
 						{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
 						{ "modside", bp.side.ToFriendlyString() },
 					};
-					result = IO.UploadFile.UploadFiles(url, files, values);
+					using (PatientWebClient client = new PatientWebClient())
+					{
+						ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
+						Interface.uploadMod.SetDownloading(Path.GetFileNameWithoutExtension(filename));
+						Interface.uploadMod.SetCancel(() =>
+						{
+							Main.menuMode = Interface.modSourcesID;
+							client.CancelAsync();
+						});
+						client.UploadProgressChanged += (s, e) => Interface.uploadMod.SetProgress(e);
+						client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, theTModFile);
+
+						var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
+						client.Headers["Content-Type"] = "multipart/form-data; boundary=" + boundary;
+						boundary = "--" + boundary;
+						byte[] data = IO.UploadFile.GetUploadFilesRequestData(files, values);
+						client.UploadDataAsync(new Uri(url), data);
+					}
+					Main.menuMode = Interface.uploadModID;
 				}
-				int responseLength = result.Length;
-				if (result.Length > 256 && result[result.Length - 256 - 1] == '~')
-				{
-					Array.Copy(result, result.Length - 256, theTModFile.signature, 0, 256);
-					theTModFile.Save();
-					responseLength -= 257;
-				}
-				string s = System.Text.Encoding.UTF8.GetString(result, 0, responseLength);
-				ErrorLogger.LogModPublish(s);
 			}
 			catch (WebException e)
 			{
 				ErrorLogger.LogModBrowserException(e);
+			}
+		}
+
+		private void PublishUploadDataComplete(object s, UploadDataCompletedEventArgs e, TmodFile theTModFile)
+		{
+			if (e.Error != null)
+			{
+				if (e.Cancelled)
+				{
+					Main.menuMode = Interface.modSourcesID;
+					return;
+				}
+				ErrorLogger.LogModBrowserException(e.Error);
+				return;
+			}
+			var result = e.Result;
+			int responseLength = result.Length;
+			if (result.Length > 256 && result[result.Length - 256 - 1] == '~')
+			{
+				Array.Copy(result, result.Length - 256, theTModFile.signature, 0, 256);
+				theTModFile.Save();
+				responseLength -= 257;
+			}
+			string response = Encoding.UTF8.GetString(result, 0, responseLength);
+			ErrorLogger.LogModPublish(response);
+		}
+
+		private class PatientWebClient : WebClient
+		{
+			protected override WebRequest GetWebRequest(Uri uri)
+			{
+				HttpWebRequest w = (HttpWebRequest)base.GetWebRequest(uri);
+				w.Timeout = System.Threading.Timeout.Infinite;
+				w.AllowWriteStreamBuffering = false; // Should use less ram.
+				return w;
 			}
 		}
 	}

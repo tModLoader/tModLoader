@@ -32,6 +32,7 @@ namespace Terraria.ModLoader
 		internal const int enterSteamIDMenuID = 10018;
 		internal const int extractModID = 10019;
 		internal const int downloadModsID = 10020;
+		internal const int uploadModID = 10021;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -49,6 +50,7 @@ namespace Terraria.ModLoader
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
 		internal static UIExtractMod extractMod = new UIExtractMod();
 		internal static UIDownloadMods downloadMods = new UIDownloadMods();
+		internal static UIUploadMod uploadMod = new UIUploadMod();
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
@@ -223,6 +225,11 @@ namespace Terraria.ModLoader
 			else if (Main.menuMode == extractModID)
 			{
 				Main.MenuUI.SetState(extractMod);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == uploadModID)
+			{
+				Main.MenuUI.SetState(uploadMod);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == tModLoaderSettingsID)

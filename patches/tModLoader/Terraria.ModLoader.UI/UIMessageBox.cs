@@ -26,6 +26,12 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		public override void OnActivate()
+		{
+			base.OnActivate();
+			heightNeedsRecalculating = true;
+		}
+
 		internal void SetText(string text)
 		{
 			this.text = text;
