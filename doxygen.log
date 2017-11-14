@@ -618,6 +618,9 @@ Generating caller graph for function Terraria.ModLoader.GlobalProjectile.OnTileC
 Generating caller graph for function Terrar/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:282: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
   parameter 'type'
   parameter 'spriteBatch'
+/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1019: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
+  parameter 'item'
+  parameter 'reforgePrice'
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1212: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
   parameter 'npcType'
 ia.ModLoader.GlobalProjectile.PostAI
@@ -1970,5 +1973,5 @@ Patching output file 118/121
 Patching output file 119/121
 Patching output file 120/121
 Patching output file 121/121
-lookup cache used 10057/131072 hits=96028 misses=10506
+lookup cache used 10072/131072 hits=96219 misses=10521
 finished...

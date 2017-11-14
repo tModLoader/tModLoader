@@ -62,6 +62,7 @@ var searchData=
   ['delegatepredrawtooltipline',['DelegatePreDrawTooltipLine',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#aaa4c9bdfbced1f0e1d6a770a9c3fa9c3',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegateprehurt',['DelegatePreHurt',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ac3d5b5c0bc9d32a05a2de3f056a4ebb3',1,'Terraria::ModLoader::PlayerHooks']]],
   ['delegateprekill',['DelegatePreKill',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a82fd4d6a74cd8716147110e9c10bf541',1,'Terraria::ModLoader::PlayerHooks']]],
+  ['delegatereforgeprice',['DelegateReforgePrice',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a0d29e075f667a0b2cb15905be3faf718',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegatesaplinggrowthtype',['DelegateSaplingGrowthType',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#aaeeb56f908eae267212978a8313303c4',1,'Terraria::ModLoader::TileLoader']]],
   ['delegatesetmatch',['DelegateSetMatch',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ae654ae0f33867c762a594ad4b1ac1cda',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegatesetspriteeffects',['DelegateSetSpriteEffects',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a391998c2b6d653f72944c86d4a17cfb4',1,'Terraria::ModLoader::TileLoader']]],
