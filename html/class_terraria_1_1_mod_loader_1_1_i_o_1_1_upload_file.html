@@ -125,6 +125,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a2a07ce5748dae6c46f2c3aae7e6a87ab"><td class="memItemLeft" align="right" valign="top">static byte[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html#a2a07ce5748dae6c46f2c3aae7e6a87ab">GetUploadFilesRequestData</a> (IEnumerable&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html">UploadFile</a> &gt; files, NameValueCollection values)</td></tr>
+<tr class="separator:a2a07ce5748dae6c46f2c3aae7e6a87ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc2f16c79cd72766ac4f1f5bf3db5065"><td class="memItemLeft" align="right" valign="top">static byte[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html#abc2f16c79cd72766ac4f1f5bf3db5065">UploadFiles</a> (string address, IEnumerable&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html">UploadFile</a> &gt; files, NameValueCollection values)</td></tr>
 <tr class="separator:abc2f16c79cd72766ac4f1f5bf3db5065"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -162,6 +164,42 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a2a07ce5748dae6c46f2c3aae7e6a87ab"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static byte [] Terraria.ModLoader.IO.UploadFile.GetUploadFilesRequestData </td>
+          <td>(</td>
+          <td class="paramtype">IEnumerable&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html">UploadFile</a> &gt;&#160;</td>
+          <td class="paramname"><em>files</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">NameValueCollection&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_upload_file_8cs_source.html#l00071">71</a> of file <a class="el" href="_upload_file_8cs_source.html">UploadFile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            var boundary = <span class="stringliteral">&quot;---------------------------&quot;</span> + DateTime.Now.Ticks.ToString(<span class="stringliteral">&quot;x&quot;</span>, NumberFormatInfo.InvariantInfo);</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            boundary = <span class="stringliteral">&quot;--&quot;</span> + boundary;</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">using</span> (var requestStream = <span class="keyword">new</span> MemoryStream())</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            {</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="comment">// Write the values</span></div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> name <span class="keywordflow">in</span> values.Keys)</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                {</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                    var buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    requestStream.Write(buffer, 0, buffer.Length);</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    buffer = Encoding.ASCII.GetBytes(<span class="keywordtype">string</span>.Format(<span class="stringliteral">&quot;Content-Disposition: form-data; name=\&quot;{0}\&quot;{1}{1}&quot;</span>, name, Environment.NewLine));</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                    requestStream.Write(buffer, 0, buffer.Length);</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                    buffer = Encoding.UTF8.GetBytes(values[name] + Environment.NewLine);</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    requestStream.Write(buffer, 0, buffer.Length);</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                }</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="comment">// Write the files</span></div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <span class="keywordflow">foreach</span> (var file <span class="keywordflow">in</span> files)</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                {</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    var buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    requestStream.Write(buffer, 0, buffer.Length);</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                    buffer = Encoding.UTF8.GetBytes(<span class="keywordtype">string</span>.Format(<span class="stringliteral">&quot;Content-Disposition: form-data; name=\&quot;{0}\&quot;; filename=\&quot;{1}\&quot;{2}&quot;</span>, file.Name, file.Filename, Environment.NewLine));</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                    requestStream.Write(buffer, 0, buffer.Length);</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    buffer = Encoding.ASCII.GetBytes(<span class="keywordtype">string</span>.Format(<span class="stringliteral">&quot;Content-Type: {0}{1}{1}&quot;</span>, file.ContentType, Environment.NewLine));</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                    requestStream.Write(buffer, 0, buffer.Length);</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    file.Stream.CopyTo(requestStream);</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    buffer = Encoding.ASCII.GetBytes(Environment.NewLine);</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    requestStream.Write(buffer, 0, buffer.Length);</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                }</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                var boundaryBuffer = Encoding.ASCII.GetBytes(boundary + <span class="stringliteral">&quot;--&quot;</span>);</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                requestStream.Write(boundaryBuffer, 0, boundaryBuffer.Length);</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <span class="keywordflow">return</span> requestStream.ToArray();</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            }</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="abc2f16c79cd72766ac4f1f5bf3db5065"></a>
 <div class="memitem">
 <div class="memproto">
