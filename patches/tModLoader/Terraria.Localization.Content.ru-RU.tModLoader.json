@@ -47,8 +47,8 @@
 		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет",
 		"MusicStreamModeConvert": "Режим музыки: Конвертировать по необходимости",
 		"MusicStreamModeStream": "Режим музыки: Проигрывать из кэша",
-		// "AlwaysLogExceptionsYes": "Always Log Exceptions: On",
-		// "AlwaysLogExceptionsNo": "Always Log Exceptions: Off",
+		"AlwaysLogExceptionsYes": "Всегда отображать исключения: Да",
+		"AlwaysLogExceptionsNo": "Всегда отображать исключения: Нет",
 		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
@@ -60,7 +60,7 @@
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
-		// "MSPublish": "Publish",
+		"MSPublish": "Опубликовать",
 
 		//There should be ModName after ':'
 		"MSReadingProperties": "Чтение настроек мода:",
