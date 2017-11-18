@@ -551,6 +551,15 @@
  			this.DropItemInstanced(this.position, base.Size, itemType, 1, true);
  		}
  
+@@ -63558,7 +_,7 @@
+ 				NetMessage.SendData(71, -1, -1, null, x, (float)y, (float)Type, (float)Style, 0, 0, 0);
+ 				return;
+ 			}
+-			if (Type >= 0 && Type < 580 && Main.npcCatchable[Type] && NPC.CanReleaseNPCs(who))
++			if (Type >= 0 && Type < NPCLoader.NPCCount && Main.npcCatchable[Type] && NPC.CanReleaseNPCs(who))
+ 			{
+ 				if (Type == 148)
+ 				{
 @@ -63731,12 +_,13 @@
  					bool flag9 = false;
  					bool flag10 = false;

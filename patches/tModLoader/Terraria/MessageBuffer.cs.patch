@@ -125,8 +125,12 @@
  								item3.owner = Main.myPlayer;
  								if (flag10)
  								{
-@@ -1382,8 +_,8 @@
- 						if (nPC.type >= 0 && nPC.type < 580 && Main.npcCatchable[nPC.type])
+@@ -1379,11 +_,11 @@
+ 						{
+ 							NPC.golemBoss = num67;
+ 						}
+-						if (nPC.type >= 0 && nPC.type < 580 && Main.npcCatchable[nPC.type])
++						if (nPC.type >= 0 && nPC.type < NPCLoader.NPCCount && Main.npcCatchable[nPC.type])
  						{
  							nPC.releaseOwner = (short)this.reader.ReadByte();
 -							return;
