@@ -132,6 +132,8 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_worl
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aea14ab9f4f7eb78bc10e93acfe8e895b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#aea14ab9f4f7eb78bc10e93acfe8e895b">ChooseWaterStyle</a> (ref int style)</td></tr>
 <tr class="separator:aea14ab9f4f7eb78bc10e93acfe8e895b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20ff815a2a8b095b807c3f51ce409588"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#a20ff815a2a8b095b807c3f51ce409588">ModifyHardmodeTasks</a> (List&lt; GenPass &gt; passes)</td></tr>
+<tr class="separator:a20ff815a2a8b095b807c3f51ce409588"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaa74cf9e43464087675aec49a714f33"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#aeaa74cf9e43464087675aec49a714f33">ModifyWorldGenTasks</a> (List&lt; GenPass &gt; passes, ref float totalWeight)</td></tr>
 <tr class="separator:aeaa74cf9e43464087675aec49a714f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2a51d34d159dcab668a3a546648bd6b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_world_hooks.html#ad2a51d34d159dcab668a3a546648bd6b">PostDrawTiles</a> ()</td></tr>
@@ -208,6 +210,46 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a20ff815a2a8b095b807c3f51ce409588"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.WorldHooks.ModifyHardmodeTasks </td>
+          <td>(</td>
+          <td class="paramtype">List&lt; GenPass &gt;&#160;</td>
+          <td class="paramname"><em>passes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_world_hooks_8cs_source.html#l00122">122</a> of file <a class="el" href="_world_hooks_8cs_source.html">WorldHooks.cs</a>.</p>
+
+<p>References <a class="el" href="_mod_world_8cs_source.html#l00142">Terraria.ModLoader.ModWorld.ModifyHardmodeTasks()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        {</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            {</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                modWorld.ModifyHardmodeTasks(passes);</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            }</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_world_hooks_a20ff815a2a8b095b807c3f51ce409588_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_world_hooks_a20ff815a2a8b095b807c3f51ce409588_cgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_world_hooks_a20ff815a2a8b095b807c3f51ce409588_cgraph" id="class_terraria_1_1_mod_loader_1_1_world_hooks_a20ff815a2a8b095b807c3f51ce409588_cgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ad81d5304809613f8b2aa6755268ee2c8" title="Similar to ModifyWorldGenTasks, but occurs in&#45;game when Hardmode starts. Can be used to modify which ..." alt="" coords="254,5,455,46"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="aeaa74cf9e43464087675aec49a714f33"></a>
 <div class="memitem">
 <div class="memproto">
@@ -244,11 +286,11 @@ Static Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="_mod_world_8cs_source.html#l00093">Terraria.ModLoader.ModWorld.ModifyWorldGenTasks()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            {</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                modWorld.ModifyWorldGenTasks(passes, ref totalWeight);</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            }</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_world_hooks_aeaa74cf9e43464087675aec49a714f33_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_world_hooks_aeaa74cf9e43464087675aec49a714f33_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_world_hooks_aeaa74cf9e43464087675aec49a714f33_cgraph" id="class_terraria_1_1_mod_loader_1_1_world_hooks_aeaa74cf9e43464087675aec49a714f33_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a80b0fd5f98d260664332ce94b185e1a4" title="A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes b..." alt="" coords="251,5,453,46"/>
@@ -279,15 +321,15 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_world_hooks_8cs_source.html#l00122">122</a> of file <a class="el" href="_world_hooks_8cs_source.html">WorldHooks.cs</a>.</p>
+<p>Definition at line <a class="el" href="_world_hooks_8cs_source.html#l00130">130</a> of file <a class="el" href="_world_hooks_8cs_source.html">WorldHooks.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_world_8cs_source.html#l00148">Terraria.ModLoader.ModWorld.PostDrawTiles()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        {</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            {</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                modWorld.PostDrawTiles();</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            }</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+<p>References <a class="el" href="_mod_world_8cs_source.html#l00149">Terraria.ModLoader.ModWorld.PostDrawTiles()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        {</div><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            {</div><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                modWorld.PostDrawTiles();</div><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            }</div><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_world_hooks_ad2a51d34d159dcab668a3a546648bd6b_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_world_hooks_ad2a51d34d159dcab668a3a546648bd6b_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_world_hooks_ad2a51d34d159dcab668a3a546648bd6b_cgraph" id="class_terraria_1_1_mod_loader_1_1_world_hooks_ad2a51d34d159dcab668a3a546648bd6b_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ab3310e15636ae38f138979d54dbe4b35" title="Called after drawing Tiles. Can be used for drawing a tile overlay akin to wires. Note that spritebat..." alt="" coords="227,5,429,46"/>
@@ -322,11 +364,11 @@ Static Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="_mod_world_8cs_source.html#l00121">Terraria.ModLoader.ModWorld.PostUpdate()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        {</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            {</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                modWorld.PostUpdate();</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            }</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_world_hooks_a9216806d65e8d1bf13e682f141efb28d_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_world_hooks_a9216806d65e8d1bf13e682f141efb28d_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_world_hooks_a9216806d65e8d1bf13e682f141efb28d_cgraph" id="class_terraria_1_1_mod_loader_1_1_world_hooks_a9216806d65e8d1bf13e682f141efb28d_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a8aeb836a6fba220225717e124c2d6312" title="Use this method to have things happen in the world. In vanilla Terraria, a good example of code suita..." alt="" coords="227,5,429,46"/>
@@ -361,11 +403,11 @@ Static Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="_mod_world_8cs_source.html#l00100">Terraria.ModLoader.ModWorld.PostWorldGen()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        {</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            {</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                modWorld.PostWorldGen();</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            }</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_world_hooks_acb01c87e23c6d080a47af406bf4ea84c_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_world_hooks_acb01c87e23c6d080a47af406bf4ea84c_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_world_hooks_acb01c87e23c6d080a47af406bf4ea84c_cgraph" id="class_terraria_1_1_mod_loader_1_1_world_hooks_acb01c87e23c6d080a47af406bf4ea84c_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a822fd4813716b16996815d746e6f1b42" title="Use this method to place tiles in the world after world generation is complete. " alt="" coords="227,5,429,46"/>
@@ -400,11 +442,11 @@ Static Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="_mod_world_8cs_source.html#l00114">Terraria.ModLoader.ModWorld.PreUpdate()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            {</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                modWorld.PreUpdate();</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            }</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_world_hooks_ac20f66cf108700570f22952f7407bb23_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_world_hooks_ac20f66cf108700570f22952f7407bb23_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_world_hooks_ac20f66cf108700570f22952f7407bb23_cgraph" id="class_terraria_1_1_mod_loader_1_1_world_hooks_ac20f66cf108700570f22952f7407bb23_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ad1e9ea8fc667b3e439e26edf7289cdaf" title="Use this method to have things happen in the world. In vanilla Terraria, a good example of code suita..." alt="" coords="227,5,429,46"/>
@@ -439,11 +481,11 @@ Static Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="_mod_world_8cs_source.html#l00086">Terraria.ModLoader.ModWorld.PreWorldGen()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        {</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            {</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                modWorld.PreWorldGen();</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            }</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_world_hooks_aca6b91ace0f880cd8d6e056065353932_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_world_hooks_aca6b91ace0f880cd8d6e056065353932_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_world_hooks_aca6b91ace0f880cd8d6e056065353932_cgraph" id="class_terraria_1_1_mod_loader_1_1_world_hooks_aca6b91ace0f880cd8d6e056065353932_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a8cd6d1e08c6aadfc53a037d6aee2f7d7" title="Allows a mod to run code before a world is generated. " alt="" coords="227,5,429,46"/>
@@ -478,11 +520,11 @@ Static Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="_mod_world_8cs_source.html#l00107">Terraria.ModLoader.ModWorld.ResetNearbyTileEffects()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            {</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                modWorld.ResetNearbyTileEffects();</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            }</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_world_hooks_af325d22b83091f0f38f8661f5954d2fe_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_world_hooks_af325d22b83091f0f38f8661f5954d2fe_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_world_hooks_af325d22b83091f0f38f8661f5954d2fe_cgraph" id="class_terraria_1_1_mod_loader_1_1_world_hooks_af325d22b83091f0f38f8661f5954d2fe_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a9c34c46918ff1d37ddd3d814cfae121f" title="Use this to reset any fields you set in any of your ModTile.NearbyEffects hooks back to their default..." alt="" coords="259,5,461,46"/>
@@ -518,11 +560,11 @@ Static Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="_mod_world_8cs_source.html#l00128">Terraria.ModLoader.ModWorld.TileCountsAvailable()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        {</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">foreach</span> (ModWorld modWorld <span class="keywordflow">in</span> worlds)</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            {</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                modWorld.TileCountsAvailable(tileCounts);</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            }</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_world_hooks_afac834cbc27b096e172caec25c45fff0_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_world_hooks_afac834cbc27b096e172caec25c45fff0_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_world_hooks_afac834cbc27b096e172caec25c45fff0_cgraph" id="class_terraria_1_1_mod_loader_1_1_world_hooks_afac834cbc27b096e172caec25c45fff0_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#a60089c548af2378c1baec051cb7a86bb" title="Allows you to store information about how many of each tile is nearby the player. This is useful for ..." alt="" coords="235,5,437,46"/>

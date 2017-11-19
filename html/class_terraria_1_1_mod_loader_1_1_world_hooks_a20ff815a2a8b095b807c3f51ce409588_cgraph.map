@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.WorldHooks.ModifyHardmodeTasks" name="Terraria.ModLoader.WorldHooks.ModifyHardmodeTasks">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_world.html#ad81d5304809613f8b2aa6755268ee2c8" title="Similar to ModifyWorldGenTasks, but occurs in&#45;game when Hardmode starts. Can be used to modify which ..." alt="" coords="254,5,455,46"/>
+</map>
