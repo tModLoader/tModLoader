@@ -200,20 +200,15 @@ namespace ExampleMod.Projectiles
 				// At this part, I was messing with the dusts going across the laser beam very fast, but only really works properly horizontally now
 				dust = Dust.NewDustDirect(Main.player[projectile.owner].Center, 0, 0, 31,
 					-unit.X * Distance, -unit.Y * Distance);
-				
 				dust.fadeIn = 0f;
 				dust.noGravity = true;
 				dust.scale = 0.88f;
 				dust.color = Color.Cyan;
-				lock (dust)
-				{
-
-				}
 			}
 			if (Main.rand.Next(5) == 0)
 			{
-				Vector2 offset = projectile.velocity.RotatedBy(1.57f, new Vector2()) * ((float) Main.rand.NextDouble() - 0.5f) *
-				                 projectile.width;
+				Vector2 offset = projectile.velocity.RotatedBy(1.57f, new Vector2()) * ((float)Main.rand.NextDouble() - 0.5f) *
+								 projectile.width;
 				Dust dust = Main.dust[
 					Dust.NewDust(dustPos + offset - Vector2.One * 4f, 8, 8, 31, 0.0f, 0.0f, 100, new Color(), 1.5f)];
 				dust.velocity = dust.velocity * 0.5f;
