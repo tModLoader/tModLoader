@@ -197,7 +197,6 @@ namespace ExampleMod.Projectiles
 				Dust dust = Main.dust[Dust.NewDust(dustPos, 0, 0, 226, dustVel.X, dustVel.Y, 0, new Color(), 1f)];
 				dust.noGravity = true;
 				dust.scale = 1.2f;
-				// At this part, I was messing with the dusts going across the laser beam very fast, but only really works properly horizontally now
 				dust = Dust.NewDustDirect(Main.player[projectile.owner].Center, 0, 0, 31,
 					-unit.X * Distance, -unit.Y * Distance);
 				dust.fadeIn = 0f;
