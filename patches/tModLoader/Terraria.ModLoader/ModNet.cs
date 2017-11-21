@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,6 +32,20 @@ namespace Terraria.ModLoader
 			public override string ToString() => name + " v" + version;
 		}
 
+		internal class NetConfig
+		{
+			public string modname;
+			public string configname;
+			public string json;
+
+			public NetConfig(string modname, string configname, string json)
+			{
+				this.modname = modname;
+				this.configname = configname;
+				this.json = json;
+			}
+		}
+
 		public static bool AllowVanillaClients { get; internal set; }
 		internal static bool downloadModsFromServers = true;
 		internal static bool onlyDownloadSignedMods = false;
@@ -45,6 +60,7 @@ namespace Terraria.ModLoader
 			netID >= 0 && netID < netMods.Length ? netMods[netID] : null;
 
 		private static Queue<ModHeader> downloadQueue = new Queue<ModHeader>();
+		internal static List<NetConfig> pendingConfigs = new List<NetConfig>();
 		private static ModHeader downloadingMod;
 		private static FileStream downloadingFile;
 		private static long downloadingLength;
@@ -68,12 +84,32 @@ namespace Terraria.ModLoader
 
 			var syncMods = ModLoader.LoadedMods.Where(mod => mod.Side == ModSide.Both).ToArray();
 			p.Write(syncMods.Length);
+			Console.WriteLine($"syncMods {syncMods.Length}");
+
 			foreach (var mod in syncMods)
 			{
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.hash);
 				p.Write(mod.File.ValidModBrowserSignature);
+				/*var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x=>x.Mode == MultiplayerSyncMode.ServerDictates);
+				if (modConfigs == null)
+				//if (modConfigs.Equals(default(List<ModConfig>)))
+				{
+					p.Write(0);
+					Console.WriteLine($"No configs for {mod.Name}");
+				}
+				else
+				{
+					p.Write(modConfigs.Count());
+					foreach (var config in modConfigs)
+					{
+						Console.WriteLine($"Sending Server Config {config.Name}: {JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact)}");
+
+						p.Write(config.Name);
+						p.Write(JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact));
+					}
+				}*/
 			}
 
 			p.Send(clientIndex);
@@ -88,6 +124,7 @@ namespace Terraria.ModLoader
 			var modFiles = ModLoader.FindMods();
 			var needsReload = false;
 			downloadQueue.Clear();
+			pendingConfigs.Clear();
 			var syncSet = new HashSet<string>();
 			var blockedList = new List<ModHeader>();
 
@@ -97,6 +134,12 @@ namespace Terraria.ModLoader
 				var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
 				syncSet.Add(header.name);
 
+	/*			int configCount = reader.ReadInt32();
+				for (int c = 0; c < configCount; c++)
+				{
+					pendingConfigs.Add(new NetConfig(header.name, reader.ReadString(), reader.ReadString()));
+				}
+*/
 				var clientMod = clientMods.SingleOrDefault(m => m.Name == header.name);
 				if (clientMod != null)
 				{
@@ -261,7 +304,23 @@ namespace Terraria.ModLoader
 				ModLoader.Reload();
 				return;
 			}
-
+/*
+			// 3 cases: Needs reload because different mod sets, needs reload because config, config matches up.
+			foreach (var config in pendingConfigs)
+			{
+				var configInstance = ConfigManager.GetConfig(ModLoader.GetMod(config.modname), config.configname);
+				JsonConvert.PopulateObject(config.json, configInstance, ConfigManager.serializerSettingsCompact);
+			}
+			foreach (var mod in ModLoader.LoadedMods)
+			{
+				if (ConfigManager.ModNeedsReload(mod))
+				{
+					ModLoader.PostLoad = NetReload;
+					ModLoader.Reload();
+					return;
+				}
+			}
+*/
 			downloadingMod = null;
 			netMods = null;
 			foreach (var mod in ModLoader.LoadedMods)
@@ -270,7 +329,7 @@ namespace Terraria.ModLoader
 			new ModPacket(MessageID.SyncMods).Send();
 		}
 
-		private static void NetReload()
+		internal static void NetReload()
 		{
 			Main.ActivePlayerFileData = Player.GetFileData(Main.ActivePlayerFileData.Path, Main.ActivePlayerFileData.IsCloudSave);
 			Main.ActivePlayerFileData.SetAsActive();

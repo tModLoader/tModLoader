@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using System.IO;
 using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
@@ -24,7 +25,16 @@ namespace Terraria.ModLoader
 			NullValueHandling = NullValueHandling.Ignore
 		};
 
+		internal static readonly JsonSerializerSettings serializerSettingsCompact = new JsonSerializerSettings
+		{
+			Formatting = Formatting.None,
+			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+			ObjectCreationHandling = ObjectCreationHandling.Replace,
+			NullValueHandling = NullValueHandling.Ignore
+		};
+
 		public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "Mod Configs");
+		public static readonly string ServerModConfigPath = Path.Combine(Main.SavePath, "Mod Configs", "Server");
 
 		internal static void Add(ModConfig config)
 		{
@@ -59,6 +69,17 @@ namespace Terraria.ModLoader
 		{
 			string filename = config.mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
+			if(config.Mode == MultiplayerSyncMode.ServerDictates && ModLoader.PostLoad == ModNet.NetReload)
+			{
+				//path = Path.Combine(ServerModConfigPath, filename);
+				//if (!File.Exists(path))
+				//{
+				//	throw new Exception("Somehow server config is missing.");
+				//}
+				string netJson = ModNet.pendingConfigs.Single(x => x.modname == config.mod.Name && x.configname == config.Name).json;
+				JsonConvert.PopulateObject(netJson, config, serializerSettingsCompact);
+				return;
+			}
 			string json = "{}";
 			if (File.Exists(path))
 			{
@@ -127,6 +148,16 @@ namespace Terraria.ModLoader
 		}
 
 		// GetConfig...returns the config instance
+
+		internal static ModConfig GetConfig(Mod mod, string config)
+		{
+			List<ModConfig> configs;
+			if (Configs.TryGetValue(mod, out configs))
+			{
+				return configs.Single(x => x.Name == config);
+			}
+			throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
+		}
 
 		// ReloadPrep?
 		// 
