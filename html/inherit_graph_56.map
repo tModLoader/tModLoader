@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve..." alt="" coords="6,5,197,32"/>
+<area shape="rect" id="node1" href="$interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html" title="Terraria.ModLoader.ModCompile.\lIBuildStatus" alt="" coords="6,5,221,46"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_console_build_status.html" title="Terraria.ModLoader.ModCompile.\lConsoleBuildStatus" alt="" coords="270,5,485,46"/>
 </map>

@@ -32,6 +32,7 @@ var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
       [ "BoolTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer" ],
       [ "ColorSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer" ],
       [ "Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer" ],
+      [ "RectangleSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer" ],
       [ "TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer" ],
       [ "TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
       [ "UIntTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer" ],

@@ -40,6 +40,7 @@ var searchData=
   ['recipehooks',['RecipeHooks',['../class_terraria_1_1_mod_loader_1_1_recipe_hooks.html',1,'Terraria::ModLoader']]],
   ['recipehooks_2ecs',['RecipeHooks.cs',['../_recipe_hooks_8cs.html',1,'']]],
   ['recipeindex',['RecipeIndex',['../class_terraria_1_1_mod_loader_1_1_mod_recipe.html#a08412b227392b32ca1f7bb23321e8d58',1,'Terraria::ModLoader::ModRecipe']]],
+  ['rectangleserializer',['RectangleSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer.html',1,'Terraria::ModLoader::IO']]],
   ['reforgeprice',['ReforgePrice',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a53884beb3ce5f4af12615b8feb578dd7',1,'Terraria.ModLoader.GlobalItem.ReforgePrice()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a32c7bdb4941cb57ac2c5ba5ed350f73a',1,'Terraria.ModLoader.ItemLoader.ReforgePrice()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ae747b9a32a40363605021ad509a18d8f',1,'Terraria.ModLoader.ModItem.ReforgePrice()']]],
   ['refreshmodlanguage',['RefreshModLanguage',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#af165fa35a172012e3acda9deaf6934c2',1,'Terraria::ModLoader::ModLoader']]],
   ['registerhotkey',['RegisterHotKey',['../class_terraria_1_1_mod_loader_1_1_mod.html#ae2cf71401aac20a22858cff2d70c8e03',1,'Terraria.ModLoader.Mod.RegisterHotKey()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a881f32079654472e92b5c7013e3f30c5',1,'Terraria.ModLoader.ModLoader.RegisterHotKey()']]],
