@@ -92,7 +92,7 @@ namespace Terraria.ModLoader
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.hash);
 				p.Write(mod.File.ValidModBrowserSignature);
-				/*var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x=>x.Mode == MultiplayerSyncMode.ServerDictates);
+				var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x=>x.Mode == MultiplayerSyncMode.ServerDictates);
 				if (modConfigs == null)
 				//if (modConfigs.Equals(default(List<ModConfig>)))
 				{
@@ -109,7 +109,7 @@ namespace Terraria.ModLoader
 						p.Write(config.Name);
 						p.Write(JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact));
 					}
-				}*/
+				}
 			}
 
 			p.Send(clientIndex);
@@ -134,12 +134,12 @@ namespace Terraria.ModLoader
 				var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
 				syncSet.Add(header.name);
 
-	/*			int configCount = reader.ReadInt32();
+				int configCount = reader.ReadInt32();
 				for (int c = 0; c < configCount; c++)
 				{
 					pendingConfigs.Add(new NetConfig(header.name, reader.ReadString(), reader.ReadString()));
 				}
-*/
+
 				var clientMod = clientMods.SingleOrDefault(m => m.Name == header.name);
 				if (clientMod != null)
 				{
@@ -304,7 +304,7 @@ namespace Terraria.ModLoader
 				ModLoader.Reload();
 				return;
 			}
-/*
+
 			// 3 cases: Needs reload because different mod sets, needs reload because config, config matches up.
 			foreach (var config in pendingConfigs)
 			{
@@ -320,7 +320,7 @@ namespace Terraria.ModLoader
 					return;
 				}
 			}
-*/
+
 			downloadingMod = null;
 			netMods = null;
 			foreach (var mod in ModLoader.LoadedMods)

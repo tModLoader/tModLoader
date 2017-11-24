@@ -38,18 +38,7 @@ namespace Terraria.ModLoader
 
 		internal static void Add(ModConfig config)
 		{
-			string filename = config.mod.Name + "_" + config.Name + ".json";
-			string path = Path.Combine(ModConfigPath, filename);
-			string json = "{}";
-			if (File.Exists(path))
-			{
-				using (StreamReader r = new StreamReader(path))
-				{
-					json = r.ReadToEnd();
-				}
-			}
-			// use PopulateObject instead of Deserialize throughout so reference stays same
-			JsonConvert.PopulateObject(json, config, serializerSettings);
+			ConfigManager.Load(config);
 
 			List<ModConfig> configList;
 			if (!Configs.TryGetValue(config.mod, out configList))

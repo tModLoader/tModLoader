@@ -692,6 +692,7 @@ namespace Terraria.ModLoader
 			CommandManager.Unload();
 			TagSerializer.Reload();
 			ModNet.Unload();
+			ConfigManager.Unload();
 			GameContent.UI.CustomCurrencyManager.Initialize();
 			CleanupModReferences();
 
@@ -710,7 +711,8 @@ namespace Terraria.ModLoader
 			{
 				Main.player[i] = new Player();
 			}
-			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
+			// TODO: Restore this cleanup step via saved variable?
+			//Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 
