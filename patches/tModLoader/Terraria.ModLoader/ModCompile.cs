@@ -201,14 +201,14 @@ namespace Terraria.ModLoader
 					}
 				}
 				else {
-					status.SetStatus(Language.GetTextValue("tModLoader.MSCompiling") + mod + Language.GetTextValue("tModLoader.MSCompilingWindows"));
+					status.SetStatus(Language.GetTextValue("tModLoader.MSCompilingWindows", mod));
 					status.SetProgress(0, 2);
 					CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
 				}
 				if (winDLL == null)
 					return false;
 
-				status.SetStatus(Language.GetTextValue("tModLoader.MSCompiling") + mod + Language.GetTextValue("tModLoader.MSCompilingMono"));
+				status.SetStatus(Language.GetTextValue("tModLoader.MSCompilingMono", mod));
 				status.SetProgress(1, 2);
 				CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
 				if (monoDLL == null)
@@ -260,30 +260,50 @@ namespace Terraria.ModLoader
 		}
 
 		private static bool exceptionReportingActive;
-		private static void ActivateExceptionReporting()
+		internal static void ActivateExceptionReporting()
 		{
 			if (exceptionReportingActive) return;
 			exceptionReportingActive = true;
 			AppDomain.CurrentDomain.FirstChanceException += delegate(object sender, FirstChanceExceptionEventArgs exceptionArgs)
 			{
 				if (exceptionArgs.Exception.Source == "MP3Sharp") return;
+				var stack = new System.Diagnostics.StackTrace(true);
 				float soundVolume = Main.soundVolume;
 				Main.soundVolume = 0f;
-				Main.NewText(exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace, Microsoft.Xna.Framework.Color.OrangeRed);
-				ErrorLogger.Log("Silently Caught Exception: " + exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace);
+				Main.NewText(exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace + " (see Logs.txt for full trace)", Microsoft.Xna.Framework.Color.OrangeRed);
+				ErrorLogger.Log("Silently Caught Exception: " + exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace + stack.ToString());
 				Main.soundVolume = soundVolume;
 			};
 		}
 
 		private static bool VerifyName(string modName, byte[] dll) {
-			var asmName = AssemblyDefinition.ReadAssembly(new MemoryStream(dll)).Name.Name;
+			var asmDef = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
+			var asmName = asmDef.Name.Name;
 			if (asmName != modName) {
 				ErrorLogger.LogBuildError("Mod name \""+ modName+ "\" does not match assembly name \""+asmName+"\"");
 				return false;
 			}
 
-			if (modName.Equals("Terraria",  StringComparison.InvariantCultureIgnoreCase)) {
+			if (modName.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
+			{
 				ErrorLogger.LogBuildError("Mods cannot be named Terraria");
+				return false;
+			}
+
+			// Verify that folder and namespace match up
+			try
+			{
+				var modClassType = asmDef.MainModule.Types.Single(x => x.BaseType?.FullName == "Terraria.ModLoader.Mod");
+				string topNamespace = modClassType.Namespace.Split('.')[0];
+				if (topNamespace != modName)
+				{
+					ErrorLogger.LogBuildError("Namespace and Folder name do not match. The top level namespace must match the folder name.");
+					return false;
+				}
+			}
+			catch
+			{
+				ErrorLogger.LogBuildError("Make sure you have exactly one class extending Mod.");
 				return false;
 			}
 

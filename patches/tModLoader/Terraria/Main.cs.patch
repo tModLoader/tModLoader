@@ -60,6 +60,16 @@
  		public static bool[] hairLoaded = new bool[134];
  		public static bool[] wingsLoaded = new bool[40];
  		public static bool[] goreLoaded = new bool[1087];
+@@ -358,6 +_,9 @@
+ 		public static int lastMouseY;
+ 		public static bool mouseLeft;
+ 		public static bool mouseRight;
++		public static bool mouseMiddle;
++		public static bool mouseXButton1;
++		public static bool mouseXButton2;
+ 		public static bool isMouseLeftConsumedByUI = false;
+ 		public static float essScale = 1f;
+ 		public static int essDir = -1;
 @@ -462,13 +_,13 @@
  		public static int wofB;
  		public static int wofF = 0;
@@ -134,7 +144,7 @@
  		public static float[] musicFade = new float[42];
  		public static float musicVolume = 0.75f;
  		public static float ambientVolume = 0.75f;
-@@ -1221,6 +_,8 @@
+@@ -1221,9 +_,14 @@
  			0.75f
  		};
  		public static byte mouseTextColor = 0;
@@ -143,6 +153,12 @@
  		public static int mouseTextColorChange = 1;
  		public static bool mouseLeftRelease = false;
  		public static bool mouseRightRelease = false;
++		public static bool mouseMiddleRelease = false;
++		public static bool mouseXButton1Release = false;
++		public static bool mouseXButton2Release = false;
+ 		public static bool playerInventory = false;
+ 		public static int stackSplit;
+ 		public static int stackCounter = 0;
 @@ -1334,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -685,6 +701,16 @@
  				if (!Main.gameMenu || Main.netMode == 2)
  				{
  					WorldFile.tempRaining = Main.raining;
+@@ -12258,6 +_,9 @@
+ 					}
+ 					Main.mouseLeftRelease = false;
+ 					Main.mouseRightRelease = false;
++					Main.mouseMiddleRelease = false;
++					Main.mouseXButton1Release = false;
++					Main.mouseXButton2Release = false;
+ 					if (Main.gameMenu)
+ 					{
+ 						Main.UpdateMenu();
 @@ -12435,6 +_,10 @@
  				{
  					flag = true;
@@ -3239,13 +3265,46 @@
  					}
  				}
  			}
-@@ -36640,11 +_,13 @@
- 							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].BuyItem(num62, -1))
- 							{
+@@ -36521,12 +_,18 @@
+ 					string text2 = Lang.inter[46].Value + ": ";
+ 					if (Main.reforgeItem.type > 0)
+ 					{
++						bool canApplyDiscount = true;
+ 						int num62 = Main.reforgeItem.value;
+-						if (Main.player[Main.myPlayer].discount)
+-						{
+-							num62 = (int)((double)num62 * 0.8);
+-						}
+-						num62 /= 3;
++
++						if (ItemLoader.ReforgePrice(Main.reforgeItem, ref num62, ref canApplyDiscount))
++						{
++							if (canApplyDiscount && Main.player[Main.myPlayer].discount)
++							{
++								num62 = (int)((double)num62 * 0.8);
++							}
++							num62 /= 3;
++						}
++
+ 						string text3 = "";
+ 						int num63 = 0;
+ 						int num64 = 0;
+@@ -36637,14 +_,18 @@
+ 							}
+ 							Main.mouseReforge = true;
+ 							Main.player[Main.myPlayer].mouseInterface = true;
+-							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].BuyItem(num62, -1))
+-							{
++							if (Main.mouseLeftRelease && Main.mouseLeft && Main.player[Main.myPlayer].CanBuyItem(num62, -1) && ItemLoader.PreReforge(Main.reforgeItem))
++							{
++								Main.player[Main.myPlayer].BuyItem(num62, -1);
  								bool favorited = Main.reforgeItem.favorited;
-+								ItemLoader.PreReforge(Main.reforgeItem);
- 								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
- 								Main.reforgeItem.Prefix(-2);
+-								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
+-								Main.reforgeItem.Prefix(-2);
++								Item reforgeItem = new Item();
++								reforgeItem.netDefaults(Main.reforgeItem.netID);
++								reforgeItem.Prefix(-2);
++								Main.reforgeItem = reforgeItem.CloneWithModdedData(Main.reforgeItem);
  								Main.reforgeItem.position.X = Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Main.reforgeItem.width / 2);
  								Main.reforgeItem.position.Y = Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Main.reforgeItem.height / 2);
  								Main.reforgeItem.favorited = favorited;
@@ -3527,20 +3586,65 @@
  							Main.spriteBatch.DrawString(Main.fontDeathText, array9[num94], new Vector2((float)(num3 + num101 + array5[num94]), (float)(num2 + num4 * num94 + num102) + origin.Y * array7[num94] + (float)array4[num94]), color10, 0f, origin, num103, SpriteEffects.None, 0f);
  						}
  						else
-@@ -46498,10 +_,11 @@
+@@ -46498,10 +_,25 @@
  				{
  					num111 = 2;
  				}
 -				Vector2 origin3 = Main.fontMouseText.MeasureString(Main.versionNumber);
-+				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName;
++				string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
++				string patreonShortURL = @"patreon.com/tModLoader";
++				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + Environment.NewLine + supportMessage;
 +				Vector2 origin3 = Main.fontMouseText.MeasureString(drawVersion);
  				origin3.X *= 0.5f;
  				origin3.Y *= 0.5f;
 -				Main.spriteBatch.DrawString(Main.fontMouseText, Main.versionNumber, new Vector2(origin3.X + (float)num110 + 10f, (float)Main.screenHeight - origin3.Y + (float)num111 - 2f), color12, 0f, origin3, 1f, SpriteEffects.None, 0f);
 +				Main.spriteBatch.DrawString(Main.fontMouseText, drawVersion, new Vector2(origin3.X + (float)num110 + 10f, (float)Main.screenHeight - origin3.Y + (float)num111 - 2f), color12, 0f, origin3, 1f, SpriteEffects.None, 0f);
++				if (num109 == 4)
++				{
++					color12 = new Microsoft.Xna.Framework.Color(127, 191, 191, 76);
++				}
++				origin3 = Main.fontMouseText.MeasureString(supportMessage);
++				Vector2 urlSize = Main.fontMouseText.MeasureString(patreonShortURL);
++				Main.spriteBatch.DrawString(Main.fontMouseText, patreonShortURL, new Vector2(origin3.X + (float)num110 + 10f, (float)Main.screenHeight - origin3.Y + (float)num111 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++				if (num109 == 4 && Main.mouseLeftRelease && Main.mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin3.X + 10, Main.screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin3.Y).Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)))
++				{
++					Main.PlaySound(SoundID.MenuOpen);
++					Process.Start("https://www.patreon.com/tModLoader");
++				}
  			}
  			Vector2 bonus = Main.DrawThickCursor(false);
  			Main.DrawCursor(bonus, false);
+@@ -46530,6 +_,30 @@
+ 			else
+ 			{
+ 				Main.mouseRightRelease = true;
++			}
++			if (Main.mouseMiddle)
++			{
++				Main.mouseMiddleRelease = false;
++			}
++			else
++			{
++				Main.mouseMiddleRelease = true;
++			}
++			if (Main.mouseXButton1)
++			{
++				Main.mouseXButton1Release = false;
++			}
++			else
++			{
++				Main.mouseXButton1Release = true;
++			}
++			if (Main.mouseXButton2)
++			{
++				Main.mouseXButton2Release = false;
++			}
++			else
++			{
++				Main.mouseXButton2Release = true;
+ 			}
+ 			if (Main.menuMode == num)
+ 			{
 @@ -46812,6 +_,7 @@
  			{
  				num9 = 2;
@@ -3787,6 +3891,15 @@
  					}
  				}
  			}
+@@ -56087,7 +_,7 @@
+ 							{
+ 								bool flag2 = false;
+ 								bool flag3 = false;
+-								if (Main.tile[x, y].type == 10)
++								if (TileLoader.IsClosedDoor(Main.tile[x, y]))
+ 								{
+ 									flag2 = false;
+ 								}
 @@ -56199,6 +_,19 @@
  
  		private void DoDraw(GameTime gameTime)
@@ -3929,6 +4042,37 @@
  				TimeLogger.DetailedDrawTime(35);
  				this.SortDrawCacheWorms();
  				this.DrawCachedProjs(this.DrawCacheProjsBehindProjectiles, true);
+@@ -58021,6 +_,30 @@
+ 				else
+ 				{
+ 					Main.mouseRightRelease = true;
++				}
++				if (Main.mouseMiddle)
++				{
++					Main.mouseMiddleRelease = false;
++				}
++				else
++				{
++					Main.mouseMiddleRelease = true;
++				}
++				if (Main.mouseXButton1)
++				{
++					Main.mouseXButton1Release = false;
++				}
++				else
++				{
++					Main.mouseXButton1Release = true;
++				}
++				if (Main.mouseXButton2)
++				{
++					Main.mouseXButton2Release = false;
++				}
++				else
++				{
++					Main.mouseXButton2Release = true;
+ 				}
+ 				if (!PlayerInput.Triggers.Current.MouseRight)
+ 				{
 @@ -58163,6 +_,7 @@
  			{
  				num3 = 0;

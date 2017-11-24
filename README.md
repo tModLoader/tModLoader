@@ -1,4 +1,4 @@
-# tModLoader, a Terraria modding API [![Build Status](https://travis-ci.org/blushiemagic/tModLoader.svg?branch=master)](https://travis-ci.org/bluemagic123/tModLoader) [![Discord](https://discordapp.com/api/guilds/103110554649894912/widget.png?style=shield)](https://discord.me/tmodloader)
+# tModLoader, a Terraria modding API [![Build Status](https://travis-ci.org/blushiemagic/tModLoader.svg?branch=master)](https://travis-ci.org/blushiemagic/tModLoader) [![Discord](https://discordapp.com/api/guilds/103110554649894912/widget.png?style=shield)](https://discord.me/tmodloader)
 
 ## About
 
@@ -40,7 +40,7 @@ If you would like to contact us or tModLoader users, it's best to join our [Disc
 ___
 Installing tModLoader is relatively easy. If you want to ensure you can easily revert back to vanilla, you should make a backup copy of your Terraria.exe and TerrariaServer.exe
 
-1. Goto the **[releases](https://github.com/bluemagic123/tModLoader/releases)** page and download the tML release you want. (usually the **[latest](https://github.com/bluemagic123/tModLoader/releases/latest)**)
+1. Goto the **[releases](https://github.com/blushiemagic/tModLoader/releases)** page and download the tML release you want. (usually the **[latest](https://github.com/blushiemagic/tModLoader/releases/latest)**)
 2. Unzip the contents somewhere (usually documents or downloads folder)
 3. Open the extracted folder, **copy** the contents to your Terraria folder and let it overwrite files when asked. (replace files)
 4. Done. You can launch Terraria as usual.
@@ -51,11 +51,6 @@ Tip: Here is an easy way to find where your Terraria files are located:
 2. Browse to the 'Local Files' tab and click on the 'Browse local files...' button
 3. You are now in your Terraria folder (this is where you should install tModLoader)
 
-### HELP! I've lost my Players / Worlds when I installed tModLoader, what do I do?
-___
-tModLoader uses separate folders to store player (.plr) and world (.wld) files, mainly because it will store additional data for them. Your vanilla players and worlds will be stored in: _%UserProfile%\Documents\My Games\Terraria_ (for Windows)
-in the _Players_ and _Worlds_ folders respectively. You can select, then copy and paste these folders into the ModLoader directory to migrate your players and worlds to tModLoader. The ModLoader directory is used my tModLoader to store all kinds of files, such as your installed mods. **Please note** that once you play tModLoader, it will create .tplr and .twld files as well as backup files (.bak) for your player and world files. To revert to a backup, simply remove the .plr or .wld file, then rename the .bak file to not include the .bak extension. (If your backup looks like this: playername.plr.bak, then it should be renamed to: playername.plr) If your explorer view is not showing file extensions, you can enable this by opening your 'View' menu and checking the 'File name extensions' checkbox. ([Example](https://i.imgur.com/CzP5yMA.png)) If you can not see this menu, you may need to unfold it by [clicking the down arrow](https://i.imgur.com/O8LqfGz.png) in the top right corner of your explorer view.
-
 ### Uninstallation
 ___
 Uninstallation of tModLoader is even easier than installation. This part covers how to do it when using Steam.
@@ -63,6 +58,11 @@ Uninstallation of tModLoader is even easier than installation. This part covers 
 1. Open Steam, go to your game library section and locate Terraria.
 2. Let Steam **[verify the integrity of game files](https://support.steampowered.com/kb_article.php?ref=2037-QEUH-3335)** for Terraria, this will reconfigure your game files to run vanilla.
 4. Done. You can launch Terraria as usual.
+
+### HELP! I've lost my Players / Worlds when I installed tModLoader, what do I do?
+___
+tModLoader uses separate folders to store player (.plr) and world (.wld) files, mainly because it will store additional data for them. Your vanilla players and worlds will be stored in: _%UserProfile%\Documents\My Games\Terraria_ (for Windows)
+in the _Players_ and _Worlds_ folders respectively. You can select, then copy and paste these folders into the ModLoader directory to migrate your players and worlds to tModLoader. The ModLoader directory is used my tModLoader to store all kinds of files, such as your installed mods. **Please note** that once you play tModLoader, it will create .tplr and .twld files as well as backup files (.bak) for your player and world files. To revert to a backup, simply remove the .plr or .wld file, then rename the .bak file to not include the .bak extension. (If your backup looks like this: playername.plr.bak, then it should be renamed to: playername.plr) If your explorer view is not showing file extensions, you can enable this by opening your 'View' menu and checking the 'File name extensions' checkbox. ([Example](https://i.imgur.com/CzP5yMA.png)) If you can not see this menu, you may need to unfold it by [clicking the down arrow](https://i.imgur.com/O8LqfGz.png) in the top right corner of your explorer view.
 
 ## Contributing
 
@@ -74,7 +74,7 @@ Uninstallation of tModLoader is even easier than installation. This part covers 
 ___
 tModLoader uses its own code patcher. If you want to contribute to tModLoader, you will have to use this tool. We need to use a patches system, because we are not allowed to upload vanilla source code publicly. It also allows for relatively easy code maintenance. Here's what the tool looks like: [url](https://i.imgur.com/u9Yy1rl.png)
 
-Before you're about to make a contribution, please check [this article](https://github.com/bluemagic123/tModLoader/blob/master/CONTRIBUTING.md). Thanks in advance.
+Before you're about to make a contribution, please check [this article](https://github.com/blushiemagic/tModLoader/blob/master/CONTRIBUTING.md). Thanks in advance.
 
 ### Getting the tModLoader code for the first time
 ___
@@ -90,8 +90,6 @@ ___
     * src/Terraria/
     * src/tModLoader/
 6. To open up the tModLoader workspace, navigate to solutions/ and open tModLoader.sln
-7. ???
-8. Profit
 
 ### Keeping your code up-to-date
 ___
@@ -102,8 +100,6 @@ ___
 2. Open setup.bat in the root folder
 3. Click on 'Regenerate Source' (bottom right corner)
    * After this process you can open solutions/tModLoader.sln as usual with the updated code
-4. ???
-5. Profit
 
 ### Committing your changes
 ___
@@ -112,5 +108,3 @@ ___
     * Your workspace is tModLoader 99% of the time. If it isn't, we imply you know what you're doing.
 3. Create a new commit to commit the patches/ folder
     * Before you push your commit, please check our [contribution article](https://github.com/bluemagic123/tModLoader/blob/master/CONTRIBUTING.md). Thanks.
-4. ???
-5. Profit

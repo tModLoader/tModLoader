@@ -1,6 +1,7 @@
 {
 	"tModLoader": {
 		// Main Menu
+		// "PatreonSupport": "Please show your support: ",
 		"MenuModBrowser": "Przeglądarka Modów",
 		"MenuMods": "Mody",
 		"MenuModSources": "Źródła",
@@ -46,8 +47,36 @@
 		"DownloadSignedNo": "Pobieraj tylko zaufane mody z serwerów: Nie",
 		"MusicStreamModeConvert": "Ładowanie muzyki: Konwersja na życzenie",
 		"MusicStreamModeStream": "Ładowanie muzyki: Strumieniuj z pamięci podręcznej",
+		"AlwaysLogExceptionsYes": "Zawsze loguj wyjątki: Włączone",
+		"AlwaysLogExceptionsNo": "Zawsze loguj wyjątki: Wyłączone",		
 		"ExperimentalFeaturesYes": "Eksperymentalne funkcje: Włączone",
 		"ExperimentalFeaturesNo": "Eksperymentalne funkcje: Wyłączone",
-		"ClearMBCredentials": "Wyczyść dane dostępowe Przeglądarki Modów"
+		"ClearMBCredentials": "Wyczyść dane dostępowe Przeglądarki Modów",
+		
+		// Mod Sources
+		"MSBuild": "Zbuduj",
+		"MSBuildReload": "Zbuduj + Przeładuj",
+		"MSBuildAll": "Zbuduj wszystkie",
+		"MSBuildReloadAll": "Zbuduj + Przeładuj wszystkie",
+		"MSOpenSources": "Open Sources",
+		"MSManagePublished": "Zarządzaj opublikowanymi",
+		"MSPublish": "Opublikuj",
+
+		//There should be ModName after ':'
+		"MSReadingProperties": "Reading Properties: ",
+		"MSCompilingWindows": "Kompilowanie {0} dla Windows...",
+		"MSCompilingMono": "Kompilowanie {0} dla Mono...",
+		//There should be ModName after ':'
+		"MSBuilding": "Budowanie ",
+		"MSFinding": "Szukanie Modów...",
+		//There should be ModName after ':'
+		"MSIntializing": "Inicjalizowanie: ",
+		//There should be ModName after ':'
+		"MSLoading": "Ładowanie Moda: ",
+
+		// Extra mouse buttons
+		// "MouseMiddle": "Middle Mouse",
+		// "MouseXButton1": "Mouse 4",
+		// "MouseXButton2": "Mouse 5",
 	}
 }

@@ -1,6 +1,7 @@
 ﻿{
 	"tModLoader": {
 		// Main Menu
+		"PatreonSupport": "Please show your support: ",
 		"MenuModBrowser": "Mod Browser",
 		"MenuMods": "Mods",
 		"MenuModSources": "Mod Sources",
@@ -46,6 +47,8 @@
 		"DownloadSignedNo": "Only Download Signed Mods From Servers: Off",
 		"MusicStreamModeConvert": "Music Stream Mode: Convert On Demand",
 		"MusicStreamModeStream": "Music Stream Mode: Stream From Cache",
+		"AlwaysLogExceptionsYes": "Always Log Exceptions: On",
+		"AlwaysLogExceptionsNo": "Always Log Exceptions: Off",
 		"ExperimentalFeaturesYes": "Experimental Features: On",
 		"ExperimentalFeaturesNo": "Experimental Features: Off",
 		"ClearMBCredentials": "Clear Mod Browser Credentials",
@@ -61,10 +64,8 @@
 
 		//There should be ModName after ':'
 		"MSReadingProperties": "Reading Properties: ",
-		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
-		"MSCompiling": "Compiling ",
-		"MSCompilingWindows": " for Windows...",
-		"MSCompilingMono": " for Mono...",
+		"MSCompilingWindows": "Compiling {0} for Windows...",
+		"MSCompilingMono": "Compiling {0} for Mono...",
 		//There should be ModName after ':'
 		"MSBuilding": "Building ",
 		"MSFinding": "Finding Mods...",
@@ -72,5 +73,10 @@
 		"MSIntializing": "Initializing: ",
 		//There should be ModName after ':'
 		"MSLoading": "Loading Mod: ",
+
+		// Extra mouse buttons
+		"MouseMiddle": "Middle Mouse",
+		"MouseXButton1": "Mouse 4",
+		"MouseXButton2": "Mouse 5",
 	}
 }

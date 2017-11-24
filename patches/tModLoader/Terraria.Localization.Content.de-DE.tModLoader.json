@@ -1,0 +1,82 @@
+﻿{
+	"tModLoader": {
+		// Main Menu
+		// "PatreonSupport": "Please show your support: ",
+		"MenuModBrowser": "Mod Suche",
+		// "MenuMods": "Mods",
+		"MenuModSources": "Mod Quelle",
+
+		// Mods Menu
+		"ModsModsList": "Mod Liste",
+		"ModsEnableAll": "Aktiviere alle",
+		"ModsDisableAll": "Deaktiviere alle",
+		"ModsReloadMods": "Mods neu laden",
+		"ModsOpenModsFolder": "Mod Ordner öffnen",
+		"ModsModPacks": "Mod Pakete",
+		"ModsDisable": "Deaktivieren",
+		"ModsEnable": "Aktivieren", 
+		"ModsMoreInfo": "Mehr info",
+		"ModsOriginatedFromModBrowser": "Dieser Mod ist aus der Mod Suche",
+		"ModsTypeToSearch": "Schreibe zum suchen",
+		"ModsSearchByModName": "Suche den Mod Namen",
+		"ModsSearchByAuthor": "Suche den Autor Namen",
+		"ModsSortRecently": "Sortieren nach kürzlich geändert",
+		"ModsSortNamesAlph": "Alphabetisch sortieren",
+		"ModsSortNamesReverseAlph": "Umgekehrt alphabetisch sortieren",
+		"ModsShowAllMods": "Zeige alle mods",
+		"ModsShowEnabledMods": "Zeige nur aktivierte mods",
+		"ModsShowDisabledMods": "Zeige nur deaktivierte mods",	
+
+		// Mod Browser
+		"MBDownload": "Herunterladen",
+		"MBDowngrade": "Zurücksetzen",
+		"MBUpdate": "Aktualisieren",
+		"MBReloadBrowser": "Mod suche neu laden",
+		"MBSortByRecentlyUpdated": "Sortieren nach kürzlich Aktualisiert",
+		"MBSortByPopularity": "Sortieren nach Beliebtheit",
+		"MBSortDownloadDesc": "Suche nach heruntergeladen absteigend",
+		"MBSortDownloadAsc": "Suche nach heruntergeladen aufsteigend",
+		"MBShowAllMods": "Zeige alle Mods",
+		"MBShowNotInstalledUpdates": "Zeige mods nicht installiert sind und aktualisierungen haben",
+		"MBShowUpdates": "Zeige nur aktualisierungen",
+
+		// TML Options
+		"DownloadFromServersYes": "Lade mods vom Server herunter: An",
+		"DownloadFromServersNo": "Lade mods vom Server herunter: Aus",
+		"DownloadSignedYes": "Lade nur signierte mods von den Servern: An",
+		"DownloadSignedNo": "Lade nur signierte mods von den Servern: Aus",
+		"MusicStreamModeConvert": "Musik übertragungs Modus: Umwandeln bei Nachfrage",
+		"MusicStreamModeStream": "Musik übertragungs Modus: Vom Zwischenspeicher übertragen",
+		"AlwaysLogExceptionsYes": "Ausnahme immer aufzeichnen: An",
+		"AlwaysLogExceptionsNo": "Ausnahme immer aufzeichnen: Aus",
+		"ExperimentalFeaturesYes": "Experimentelle Funktionen: An",
+		"ExperimentalFeaturesNo": "Experimentelle Funktionen: Aus",
+		"ClearMBCredentials": "Leere Mod Suche Anmeldedaten",
+
+		// Mod Sources
+		"MSBuild": "Erstellen",
+		"MSBuildReload": "Erstellen + Neu laden",
+		"MSBuildAll": "Alle Erstellen",
+		"MSBuildReloadAll": "Alle Erstellen + Neu laden",
+		"MSOpenSources": "Offene Quelle",
+		"MSManagePublished": "Verwalte veröffentlichung",
+		"MSPublish": "Veröffentlichen",
+
+		//There should be ModName after ':'
+		"MSReadingProperties": "Lese Eigenschaften: ",
+		"MSCompilingWindows": "Stelle zusammen {0} für Windows...",
+		"MSCompilingMono": "Stelle zusammen {0} für Mono...",
+		//There should be ModName after ':'
+		"MSBuilding": "Erstelle ",
+		"MSFinding": "Suche mods... ",
+		//There should be ModName after ':'
+		"MSIntializing": "Initialisiere: ",
+		//There should be ModName after ':'
+		"MSLoading": "Lade Mod: ",
+
+		// Extra mouse buttons
+		// "MouseMiddle": "Middle Mouse",
+		// "MouseXButton1": "Mouse 4",
+		// "MouseXButton2": "Mouse 5",
+	}
+}

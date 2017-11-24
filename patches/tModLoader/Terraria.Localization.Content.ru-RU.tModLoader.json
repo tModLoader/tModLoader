@@ -1,6 +1,7 @@
 ﻿{
 	"tModLoader": {
 		// Main Menu
+		// "PatreonSupport": "Please show your support: ",
 		"MenuModBrowser": "Браузер модов",
 		"MenuMods": "Моды",
 		"MenuModSources": "Исходники модов",
@@ -46,6 +47,8 @@
 		"DownloadSignedNo": "Скачивать только проверенные моды с серверов: Нет",
 		"MusicStreamModeConvert": "Режим музыки: Конвертировать по необходимости",
 		"MusicStreamModeStream": "Режим музыки: Проигрывать из кэша",
+		"AlwaysLogExceptionsYes": "Всегда отображать исключения: Да",
+		"AlwaysLogExceptionsNo": "Всегда отображать исключения: Нет",
 		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
@@ -57,13 +60,12 @@
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
-		"MSBack": "Назад",
+		"MSPublish": "Опубликовать",
+
 		//There should be ModName after ':'
 		"MSReadingProperties": "Чтение настроек мода:",
-		//Should be 'MSCompiling + ModName + MSComplingWindows/Mono'
-		"MSCompiling": "Компиляция мода ",
-		"MSCompilingWindows": " для Windows",
-		"MSCompilingMono": " для Mono",
+		"MSCompilingWindows": "Компиляция мода {0} для Windows",
+		"MSCompilingMono": "Компиляция мода {0} для Mono",
 		//There should be ModName after ':'
 		"MSBuilding": "Сборка мода: ",
 		"MSFinding": "Поиск файлов",
@@ -71,5 +73,10 @@
 		"MSIntializing": "Инициализация мода: ",
 		//There should be ModName after ':'
 		"MSLoading": "Загрузка мода: ",
+
+		// Extra mouse buttons
+		// "MouseMiddle": "Middle Mouse",
+		// "MouseXButton1": "Mouse 4",
+		// "MouseXButton2": "Mouse 5",
 	}
 }

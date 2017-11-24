@@ -263,7 +263,7 @@
  					if (num3 < (float)NPC.sWidth && num3 < num2)
  					{
  						num2 = num3;
-@@ -43998,7 +_,10 @@
+@@ -43998,7 +_,18 @@
  
  		public Item Clone()
  		{
@@ -271,6 +271,14 @@
 +			Item newItem = (Item)base.MemberwiseClone();
 +			newItem.modItem = modItem?.Clone(newItem);
 +			newItem.globalItems = globalItems.Select(g => g.Clone(this, newItem)).ToArray();
++			return newItem;
++		}
++
++		public Item CloneWithModdedData(Item dataSource)
++		{
++			Item newItem = (Item)base.MemberwiseClone();
++			newItem.modItem = modItem?.Clone(newItem);
++			newItem.globalItems = dataSource.globalItems.Select(g => g.Clone(dataSource, newItem)).ToArray();
 +			return newItem;
  		}
  

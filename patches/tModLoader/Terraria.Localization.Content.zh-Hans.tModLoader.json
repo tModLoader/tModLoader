@@ -1,0 +1,82 @@
+{
+	"tModLoader": {
+		// Main Menu
+		// "PatreonSupport": "Please show your support: ",
+		"MenuModBrowser": "模组浏览器",
+		"MenuMods": "模组管理",
+		"MenuModSources": "模组源代码",
+
+		// Mods Menu
+		"ModsModsList": "模组列表",
+		"ModsEnableAll": "启用所有模组",
+		"ModsDisableAll": "禁用所有模组",
+		"ModsReloadMods": "重新载入模组",
+		"ModsOpenModsFolder": "打开模组文件夹",
+		"ModsModPacks": "模组包",
+		"ModsDisable": "禁用",
+		"ModsEnable": "启用",
+		"ModsMoreInfo": "更多信息",
+		"ModsOriginatedFromModBrowser": "来自模组浏览器",
+		"ModsTypeToSearch": "搜索",
+		"ModsSearchByModName": "按模组名搜索",
+		"ModsSearchByAuthor": "按作者名搜索",
+		"ModsSortRecently": "按最近更新顺序排序",
+		"ModsSortNamesAlph": "按名称排序（A-Z）",
+		"ModsSortNamesReverseAlph": "按名称排序（Z-A）",
+		"ModsShowAllMods": "显示所有模组",
+		"ModsShowEnabledMods": "只显示已启用的模组",
+		"ModsShowDisabledMods": "只显示已禁用的模组",
+
+		// Mod Browser
+		"MBDownload": "下载",
+		"MBDowngrade": "降级",
+		"MBUpdate": "升级",
+		"MBReloadBrowser": "重新载入浏览器",
+		"MBSortByRecentlyUpdated": "按最近更新顺序排序",
+		"MBSortByPopularity": "按受欢迎程度排序",
+		"MBSortDownloadDesc": "按下载量排序（由高到低）",
+		"MBSortDownloadAsc": "按下载量排序（由低到高）",
+		"MBShowAllMods": "显示所有模组",
+		"MBShowNotInstalledUpdates": "显示未安装或有更新的模组",
+		"MBShowUpdates": "只显示有更新的模组",
+
+		// TML Options
+		"DownloadFromServersYes": "从服务器下载模组：开",
+		"DownloadFromServersNo": "从服务器下载模组：关",
+		"DownloadSignedYes": "只从服务器下载带签名认证的模组：开",
+		"DownloadSignedNo": "只从服务器下载带签名认证的模组：关",
+		"MusicStreamModeConvert": "音乐串流模式：实时转换",
+		"MusicStreamModeStream": "音乐串流模式：缓存优先",
+		"AlwaysLogExceptionsYes": "始终记录异常：开",
+		"AlwaysLogExceptionsNo": "始终记录异常：关",
+		"ExperimentalFeaturesYes": "实验性功能：开",
+		"ExperimentalFeaturesNo": "实验性功能：关",
+		"ClearMBCredentials": "清除浏览器身份信息",
+
+		// Mod Sources
+		"MSBuild": "构建项目",
+		"MSBuildReload": "构建并重新载入项目",
+		"MSBuildAll": "构建所有项目",
+		"MSBuildReloadAll": "构建并重新载入所有项目",
+		"MSOpenSources": "打开源代码",
+		"MSManagePublished": "管理已发布项目",
+		"MSPublish": "发布项目",
+
+		//There should be ModName after ':'
+		"MSReadingProperties": "正在读取相关属性：",
+		"MSCompilingWindows": "正在编译Windows版{0}...",
+		"MSCompilingMono": "正在编译Mono版{0}...",
+		//There should be ModName after ':'
+		"MSBuilding": "正在构建：",
+		"MSFinding": "正在寻找模组...",
+		//There should be ModName after ':'
+		"MSIntializing": "正在初始化：",
+		//There should be ModName after ':'
+		"MSLoading": "正在载入模组：",
+
+		// Extra mouse buttons
+		// "MouseMiddle": "Middle Mouse",
+		// "MouseXButton1": "Mouse 4",
+		// "MouseXButton2": "Mouse 5",
+	}
+}

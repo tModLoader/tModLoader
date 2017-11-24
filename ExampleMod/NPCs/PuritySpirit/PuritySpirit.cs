@@ -797,7 +797,12 @@ namespace ExampleMod.NPCs.PuritySpirit
 				}
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityShield"));
 			}
-			ExampleWorld.downedPuritySpirit = true;
+			if (!ExampleWorld.downedPuritySpirit)
+			{
+				ExampleWorld.downedPuritySpirit = true;
+				if (Main.netMode == NetmodeID.Server)
+					NetMessage.SendData(MessageID.WorldData); // Immediately inform clients of new world state.
+			}
 		}
 
 		public override void BossLoot(ref string name, ref int potionType)

@@ -32,7 +32,8 @@ namespace Terraria.ModLoader
 		internal const int enterSteamIDMenuID = 10018;
 		internal const int extractModID = 10019;
 		internal const int downloadModsID = 10020;
-		internal const int modConfigID = 10021;
+		internal const int uploadModID = 10021;
+		internal const int modConfigID = 10022;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -50,6 +51,7 @@ namespace Terraria.ModLoader
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
 		internal static UIExtractMod extractMod = new UIExtractMod();
 		internal static UIDownloadMods downloadMods = new UIDownloadMods();
+		internal static UIUploadMod uploadMod = new UIUploadMod();
 		internal static UIModConfig modConfig = new UIModConfig();
 
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
@@ -228,11 +230,16 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(extractMod);
 				Main.menuMode = 888;
 			}
+			else if (Main.menuMode == uploadModID)
+			{
+				Main.MenuUI.SetState(uploadMod);
+				Main.menuMode = 888;
+			}
 			else if (Main.menuMode == tModLoaderSettingsID)
 			{
 				offY = 210;
 				spacing = 42;
-				numButtons = 6;
+				numButtons = 7;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++)
 				{
@@ -260,6 +267,14 @@ namespace Terraria.ModLoader
 				{
 					Main.PlaySound(SoundID.MenuTick);
 					ModLoader.musicStreamMode = (byte)((ModLoader.musicStreamMode + 1) % 2);
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = (ModLoader.alwaysLogExceptions ? Language.GetTextValue("tModLoader.AlwaysLogExceptionsYes") : Language.GetTextValue("tModLoader.AlwaysLogExceptionsNo"));
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(SoundID.MenuTick);
+					ModLoader.alwaysLogExceptions = !ModLoader.alwaysLogExceptions;
 				}
 
 				buttonIndex++;

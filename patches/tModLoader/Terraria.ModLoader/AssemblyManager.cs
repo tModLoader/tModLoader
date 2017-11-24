@@ -205,6 +205,8 @@ namespace Terraria.ModLoader
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
 			}
+			if (ModLoader.alwaysLogExceptions)
+				ModCompile.ActivateExceptionReporting();
 
 			var modInstances = new List<Mod>();
 
