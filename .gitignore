@@ -13,5 +13,4 @@ installer2/*.jar
 solutions/documentation/html
 solutions/documentation/*.tmp
 solutions/*.zip
-solutions/.vs/tModLoader/v15/sqlite3/storage.ide
-solutions/.vs/tModLoader/v15/**/*
+solutions/.vs/**/*
