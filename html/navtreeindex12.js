@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a157ca091fcdb30a0a6c83643e7907538":[1,0,0,0,60,13],
 "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a368921a5f009d74435c2553070f7ba7f":[1,0,0,0,60,12],
 "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a3e3ec364079b4e7db1ec709bc19e82c4":[1,0,0,0,60,14],
 "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a4f1b75ef1543e2c69bc8246ed598f6f5":[1,0,0,0,60,10],

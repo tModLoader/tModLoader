@@ -1977,5 +1977,5 @@ Patching output file 118/121
 Patching output file 119/121
 Patching output file 120/121
 Patching output file 121/121
-lookup cache used 10075/131072 hits=96240 misses=10524
+lookup cache used 10080/131072 hits=96310 misses=10529
 finished...
