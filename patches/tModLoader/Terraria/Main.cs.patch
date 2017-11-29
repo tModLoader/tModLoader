@@ -4030,7 +4030,7 @@
  			{
  				this.Rasterizer = RasterizerState.CullClockwise;
  			}
-+			// TODO, figure out which Matrix to transform. Transform = ModHooks.ModifyTransformMatrix(Transform);
++			ModHooks.ModifyTransformMatrix(ref GameViewMatrix);
  			bool flag = !Main.drawToScreen && Main.netMode != 2 && !Main.gameMenu && !Main.mapFullscreen && Lighting.NotRetro && Filters.Scene.CanCapture();
  			if (flag)
  			{

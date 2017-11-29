@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.GameInput;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
+using Terraria.Graphics;
 using Terraria.Localization;
 using Terraria.UI;
 
@@ -61,9 +62,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)
 		/// </summary>
-		public virtual Matrix ModifyTransformMatrix(Matrix Transform)
+		public virtual void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
 		{
-			return Transform;
 		}
 
 		/// <summary>
@@ -147,13 +147,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static Matrix ModifyTransformMatrix(Matrix Transform)
+		internal static void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
 		{
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
-				Transform = mod.ModifyTransformMatrix(Transform);
+				mod.ModifyTransformMatrix(ref Transform);
 			}
-			return Transform;
 		}
 
 		internal static void ModifySunLight(ref Color tileColor, ref Color backgroundColor)
