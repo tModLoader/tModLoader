@@ -1664,7 +1664,7 @@
 +											Texture2D modTreeTexture = TileLoader.GetPalmTreeTexture(Main.tile[num181, num182]);
 +											if (modTreeTexture != null)
 +											{
-+												Main.spriteBatch.Draw(modTreeTexture, new Vector2(j * 16 - (int)Main.screenPosition.X - (num8 - 16f) / 2f + num181, i * 16 - (int)Main.screenPosition.Y + num11) + zero, new Microsoft.Xna.Framework.Rectangle(num9, y2, num8, num12), color, 0f, default(Vector2), 1f, effects, 0f);
++												Main.spriteBatch.Draw(modTreeTexture, new Vector2(j * 16 - (int)Main.screenPosition.X - (num8 - 16f) / 2f + num183, i * 16 - (int)Main.screenPosition.Y + num11) + zero, new Microsoft.Xna.Framework.Rectangle(num9, 0, num8, num12), color, 0f, default(Vector2), 1f, effects, 0f);
 +											}
 +											else if (Main.canDrawColorTile(j, i))
  											{
