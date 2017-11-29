@@ -145,7 +145,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "ModifyInterfaceLayers", "class_terraria_1_1_mod_loader_1_1_mod.html#ad1a9eafff5f798dab56f8c2cc56baf78", null ],
     [ "ModifyLightingBrightness", "class_terraria_1_1_mod_loader_1_1_mod.html#a7f5438f20657f9c6ef172523b7e33187", null ],
     [ "ModifySunLightColor", "class_terraria_1_1_mod_loader_1_1_mod.html#a08474926973ce4a555c111fd762d772f", null ],
-    [ "ModifyTransformMatrix", "class_terraria_1_1_mod_loader_1_1_mod.html#ac12293f15f8a00257b20a5affc25fa2e", null ],
+    [ "ModifyTransformMatrix", "class_terraria_1_1_mod_loader_1_1_mod.html#a8c23cd0bf5d82c15ed3e752e9fb9bf6a", null ],
     [ "MountType", "class_terraria_1_1_mod_loader_1_1_mod.html#a1ee69039213f922b9514d6f058de4832", null ],
     [ "MountType< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#a20c740a43190b7f8862eb5635f45d56f", null ],
     [ "MusicExists", "class_terraria_1_1_mod_loader_1_1_mod.html#af995bbfa93c0a1fe4c6252fb9fc179e7", null ],

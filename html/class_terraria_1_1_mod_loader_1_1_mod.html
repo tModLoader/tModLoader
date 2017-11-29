@@ -470,9 +470,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a08474926973ce4a555c111fd762d772f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a08474926973ce4a555c111fd762d772f">ModifySunLightColor</a> (ref Color tileColor, ref Color backgroundColor)</td></tr>
 <tr class="memdesc:a08474926973ce4a555c111fd762d772f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify color of light the sun emits.  <a href="#a08474926973ce4a555c111fd762d772f">More...</a><br /></td></tr>
 <tr class="separator:a08474926973ce4a555c111fd762d772f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac12293f15f8a00257b20a5affc25fa2e"><td class="memItemLeft" align="right" valign="top">virtual Matrix&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac12293f15f8a00257b20a5affc25fa2e">ModifyTransformMatrix</a> (Matrix Transform)</td></tr>
-<tr class="memdesc:ac12293f15f8a00257b20a5affc25fa2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)  <a href="#ac12293f15f8a00257b20a5affc25fa2e">More...</a><br /></td></tr>
-<tr class="separator:ac12293f15f8a00257b20a5affc25fa2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c23cd0bf5d82c15ed3e752e9fb9bf6a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a8c23cd0bf5d82c15ed3e752e9fb9bf6a">ModifyTransformMatrix</a> (ref SpriteViewMatrix Transform)</td></tr>
+<tr class="memdesc:a8c23cd0bf5d82c15ed3e752e9fb9bf6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)  <a href="#a8c23cd0bf5d82c15ed3e752e9fb9bf6a">More...</a><br /></td></tr>
+<tr class="separator:a8c23cd0bf5d82c15ed3e752e9fb9bf6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ee69039213f922b9514d6f058de4832"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a1ee69039213f922b9514d6f058de4832">MountType</a> (string name)</td></tr>
 <tr class="memdesc:a1ee69039213f922b9514d6f058de4832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the ID of the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> instance corresponding to the given name. Returns 0 if no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> has the given name.  <a href="#a1ee69039213f922b9514d6f058de4832">More...</a><br /></td></tr>
 <tr class="separator:a1ee69039213f922b9514d6f058de4832"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5577,8 +5577,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00037">37</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00038">38</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6ce58eb4ee02d58d03d5ad8f4b648d6c"></a>
@@ -5630,8 +5630,8 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00048">48</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00049">49</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9009e3f4273585a05b0cec84682bec5f"></a>
@@ -5728,10 +5728,10 @@ Private Member Functions</h2></td></tr>
 
 <p>Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent. </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00056">56</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_net_8cs_source.html#l00299">Terraria.ModLoader.ModNet.ReadNetIDs()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-38" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-38-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-38-summary" class="dynsummary" style="display:block;">
@@ -5776,8 +5776,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00028">28</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        {</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00029">29</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a709d36738b1e8639ea0d9917035cfca2"></a>
@@ -6013,7 +6013,7 @@ Private Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ac12293f15f8a00257b20a5affc25fa2e"></a>
+<a class="anchor" id="a8c23cd0bf5d82c15ed3e752e9fb9bf6a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -6021,9 +6021,9 @@ Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual Matrix Terraria.ModLoader.Mod.ModifyTransformMatrix </td>
+          <td class="memname">virtual void Terraria.ModLoader.Mod.ModifyTransformMatrix </td>
           <td>(</td>
-          <td class="paramtype">Matrix&#160;</td>
+          <td class="paramtype">ref SpriteViewMatrix&#160;</td>
           <td class="paramname"><em>Transform</em></td><td>)</td>
           <td></td>
         </tr>
@@ -6037,8 +6037,8 @@ Private Member Functions</h2></td></tr>
 
 <p>Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.) </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00064">64</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        {</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">return</span> Transform;</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00065">65</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1ee69039213f922b9514d6f058de4832"></a>
@@ -6787,8 +6787,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00020">20</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        {</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00021">21</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        {</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af340bf9dfb387a748ee760e9bccd48dc"></a>
