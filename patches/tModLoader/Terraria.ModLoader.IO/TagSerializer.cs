@@ -35,6 +35,7 @@ namespace Terraria.ModLoader.IO
 			AddSerializer(new Vector3TagSerializer());
 			AddSerializer(new ColorSerializer());
 			AddSerializer(new Point16Serializer());
+			AddSerializer(new RectangleSerializer());
 		}
 
 		public static bool TryGetSerializer(Type type, out TagSerializer serializer) {
@@ -163,5 +164,18 @@ namespace Terraria.ModLoader.IO
 		};
 
 		public override Point16 Deserialize(TagCompound tag) => new Point16(tag.GetShort("x"), tag.GetShort("y"));
+	}
+
+	public class RectangleSerializer : TagSerializer<Rectangle, TagCompound>
+	{
+		public override TagCompound Serialize(Rectangle value) => new TagCompound
+		{
+			["x"] = value.X,
+			["y"] = value.Y,
+			["width"] = value.Width,
+			["height"] = value.Height
+		};
+
+		public override Rectangle Deserialize(TagCompound tag) => new Rectangle(tag.GetInt("x"), tag.GetInt("y"), tag.GetInt("width"), tag.GetInt("height"));
 	}
 }

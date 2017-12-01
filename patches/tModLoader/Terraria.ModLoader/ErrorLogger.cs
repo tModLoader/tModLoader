@@ -287,5 +287,34 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		/// <summary>
+		/// Deletes all log files.
+		/// </summary>
+		public static void ClearLogs()
+		{
+			lock (logLock)
+			{
+				Directory.CreateDirectory(LogPath);
+				string[] files = new string[] {
+					LogPath + Path.DirectorySeparatorChar + "Logs.txt",
+					LogPath + Path.DirectorySeparatorChar + "Network Error.txt",
+					LogPath + Path.DirectorySeparatorChar + "Runtime Error.txt",
+					LogPath + Path.DirectorySeparatorChar + "Loading Errors.txt",
+					CompileErrorPath,
+				};
+				foreach (var file in files)
+				{
+					try
+					{
+						File.Delete(file);
+					}
+					catch (Exception)
+					{
+						// Don't worry about it, modder or player might have the file open in tail or notepad.
+					}
+				}
+			}
+		}
 	}
 }
