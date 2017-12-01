@@ -1,82 +1,82 @@
 {
-    "tModLoader": {
-        // Main Menu
-        "PatreonSupport": "Muéstranos tu apoyo: ",
-        "MenuModBrowser": "Navegador de Mods",
-        "MenuMods": "Mods",
-        "MenuModSources": "Fuentes de Mods",
+	"tModLoader": {
+		// Main Menu
+		"PatreonSupport": "Muéstranos tu apoyo: ",
+		"MenuModBrowser": "Navegador de Mods",
+		"MenuMods": "Mods",
+		"MenuModSources": "Fuentes de Mods",
 
-        // Mods Menu
-        "ModsModsList": "Lista de mods",
-        "ModsEnableAll": "Activar todo",
-        "ModsDisableAll": "Desactivar todo",
-        "ModsReloadMods": "Reiniciar mods",
-        "ModsOpenModsFolder": "Abrir carpeta de mods",
-        "ModsModPacks": "Grupos de mods",
-        "ModsDisable": "Desactivar",
-        "ModsEnable": "Activar",
-        "ModsMoreInfo": "Información",
-        "ModsOriginatedFromModBrowser": "Este mod proviene del Navegador de Mods",
-        "ModsTypeToSearch": "Buscador",
-        "ModsSearchByModName": "Buscar por nombre de mod",
-        "ModsSearchByAuthor": "Buscar por nombre de autor",
-        "ModsSortRecently": "Ordenar por actualizaciones recientes",
-        "ModsSortNamesAlph": "Ordenar por nombre (Orden alfabético),
-        "ModsSortNamesReverseAlph": "Ordenar por nombre (Orden alfabético inverso)",
-        "ModsShowAllMods": "Mostrar todos los mods",
-        "ModsShowEnabledMods": "Mostrar sólo mods activados",
-        "ModsShowDisabledMods": "Mostrar sólo mods desactivados",
+		// Mods Menu
+		"ModsModsList": "Lista de mods",
+		"ModsEnableAll": "Activar todo",
+		"ModsDisableAll": "Desactivar todo",
+		"ModsReloadMods": "Reiniciar mods",
+		"ModsOpenModsFolder": "Abrir carpeta de mods",
+		"ModsModPacks": "Grupos de mods",
+		"ModsDisable": "Desactivar",
+		"ModsEnable": "Activar",
+		"ModsMoreInfo": "Información",
+		"ModsOriginatedFromModBrowser": "Este mod proviene del Navegador de Mods",
+		"ModsTypeToSearch": "Buscador",
+		"ModsSearchByModName": "Buscar por nombre de mod",
+		"ModsSearchByAuthor": "Buscar por nombre de autor",
+		"ModsSortRecently": "Ordenar por actualizaciones recientes",
+		"ModsSortNamesAlph": "Ordenar por nombre (Orden alfabético),
+		"ModsSortNamesReverseAlph": "Ordenar por nombre (Orden alfabético inverso)",
+		"ModsShowAllMods": "Mostrar todos los mods",
+		"ModsShowEnabledMods": "Mostrar sólo mods activados",
+		"ModsShowDisabledMods": "Mostrar sólo mods desactivados",
 
-        // Mod Browser
-        "MBDownload": "Descargar",
-        "MBDowngrade": "Degradar",
-        "MBUpdate": "Actualizar",
-        "MBReloadBrowser": "Actualizar Navegador",
-        "MBSortByRecentlyUpdated": "Ordenar por actualizaciones recientes",
-        "MBSortByPopularity": "Ordenar por popularidad",
-        "MBSortDownloadDesc": "Ordenar por descargas (Ascendente)",
-        "MBSortDownloadAsc": "Ordenar por descargas (Descendiente)",
-        "MBShowAllMods": "Mostrar todos los mods",
-        "MBShowNotInstalledUpdates": "Mostrar mods sin instalar y actualizaciones",
-        "MBShowUpdates": "Mostrar sólo actualizaciones",
+		// Mod Browser
+		"MBDownload": "Descargar",
+		"MBDowngrade": "Degradar",
+		"MBUpdate": "Actualizar",
+		"MBReloadBrowser": "Actualizar Navegador",
+		"MBSortByRecentlyUpdated": "Ordenar por actualizaciones recientes",
+		"MBSortByPopularity": "Ordenar por popularidad",
+		"MBSortDownloadDesc": "Ordenar por descargas (Ascendente)",
+		"MBSortDownloadAsc": "Ordenar por descargas (Descendiente)",
+		"MBShowAllMods": "Mostrar todos los mods",
+		"MBShowNotInstalledUpdates": "Mostrar mods sin instalar y actualizaciones",
+		"MBShowUpdates": "Mostrar sólo actualizaciones",
 
-        // TML Options
-        "DownloadFromServersYes": "Descargar mods de los servidores: Activado",
-        "DownloadFromServersNo": "Descargar mods de los servidores: Desactivado",
-        "DownloadSignedYes": "Sólo descargas seguras: Activado",
-        "DownloadSignedNo": "Sólo descargas seguras: Desactivado",
-        "MusicStreamModeConvert": "Transmisión de música: Convertir a pedido",
-        "MusicStreamModeStream": "Transmisión de música: Transmitir del caché",
-        "AlwaysLogExceptionsYes": "Registro completo de excepciones: Activado",
-        "AlwaysLogExceptionsNo": "Registro completo de excepciones: Desactivado",
-        "ExperimentalFeaturesYes": "Contenido experimental: Activado",
-        "ExperimentalFeaturesNo": "Contenido experimental: Desactivado",
-        "ClearMBCredentials": "Borrar credenciales del navegador",
+		// TML Options
+		"DownloadFromServersYes": "Descargar mods de los servidores: Activado",
+		"DownloadFromServersNo": "Descargar mods de los servidores: Desactivado",
+		"DownloadSignedYes": "Sólo descargas seguras: Activado",
+		"DownloadSignedNo": "Sólo descargas seguras: Desactivado",
+		"MusicStreamModeConvert": "Transmisión de música: Convertir a pedido",
+		"MusicStreamModeStream": "Transmisión de música: Transmitir del caché",
+		"AlwaysLogExceptionsYes": "Registro completo de excepciones: Activado",
+		"AlwaysLogExceptionsNo": "Registro completo de excepciones: Desactivado",
+		"ExperimentalFeaturesYes": "Contenido experimental: Activado",
+		"ExperimentalFeaturesNo": "Contenido experimental: Desactivado",
+		"ClearMBCredentials": "Borrar credenciales del navegador",
 
-        // Mod Sources
-        "MSBuild": "Construir",
-        "MSBuildReload": "Construir y reiniciar mod",
-        "MSBuildAll": "Construir todo",
-        "MSBuildReloadAll": "Construir y reiniciar todo",
-        "MSOpenSources": "Abrir fuente",
-        "MSManagePublished": "Gestionar publicaciones",
-        "MSPublish": "Publicar",
+		// Mod Sources
+		"MSBuild": "Construir",
+		"MSBuildReload": "Construir y reiniciar mod",
+		"MSBuildAll": "Construir todo",
+		"MSBuildReloadAll": "Construir y reiniciar todo",
+		"MSOpenSources": "Abrir fuente",
+		"MSManagePublished": "Gestionar publicaciones",
+		"MSPublish": "Publicar",
 
-        //There should be ModName after ':'
-        "MSReadingProperties": "Leyendo las propiedades: ",
-        "MSCompilingWindows": "Compilando {0} por Windows...",
-        "MSCompilingMono": "Compilando {0} por Mono...",
-        //There should be ModName after ':'
-        "MSBuilding": "Construyendo: ",
-        "MSFinding": "Buscando Mods...",
-        //There should be ModName after ':'
-        "MSIntializing": "Inicializando: ",
-        //There should be ModName after ':'
-        "MSLoading": "Cargando Mod: ",
+		//There should be ModName after ':'
+		"MSReadingProperties": "Leyendo las propiedades: ",
+		"MSCompilingWindows": "Compilando {0} por Windows...",
+		"MSCompilingMono": "Compilando {0} por Mono...",
+		//There should be ModName after ':'
+		"MSBuilding": "Construyendo: ",
+		"MSFinding": "Buscando Mods...",
+		//There should be ModName after ':'
+		"MSIntializing": "Inicializando: ",
+		//There should be ModName after ':'
+		"MSLoading": "Cargando Mod: ",
 
-        // Extra mouse buttons
-        "MouseMiddle": "Click del medio",
-        "MouseXButton1": "Click 4",
-        "MouseXButton2": "Click 5",
-    }
+		// Extra mouse buttons
+		"MouseMiddle": "Click del medio",
+		"MouseXButton1": "Click 4",
+		"MouseXButton2": "Click 5",
+	}
 }
