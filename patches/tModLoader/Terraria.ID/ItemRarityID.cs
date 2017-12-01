@@ -1,42 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-
-namespace Terraria.ID
+﻿namespace Terraria.ID
 {
+	/// <summary>Enumerates the values used with Item.rare</summary>
 	public static class ItemRarityID
 	{
-		[Description("Minus twelve (-12)\nExpert: Rainbow\nFlag: item.expert")]
+		/// <summary>Minus twelve (-12)\nExpert: Rainbow\nFlag: item.expert</summary>
 		public const int Expert = -12;
-		[Description("Minus two (-2)\nQuest: Amber\nFlag: item.quest")]
+		/// <summary>Minus two (-2)\nQuest: Amber\nFlag: item.quest</summary>
 		public const int Quest = -2;
-		[Description("Minus one (-1)")]
+		/// <summary>Minus one (-1)</summary>
 		public const int Gray = -1;
-		[Description("Zero (0)")]
+		/// <summary>Zero (0)</summary>
 		public const int White = 0;
-		[Description("One (1)")]
+		/// <summary>One (1)</summary>
 		public const int Blue = 1;
-		[Description("Two (2)")]
+		/// <summary>Two (2)</summary>
 		public const int Green = 2;
-		[Description("Three (3)")]
+		/// <summary>Three (3)</summary>
 		public const int Orange = 3;
-		[Description("Four (4)")]
+		/// <summary>Four (4)</summary>
 		public const int LightRed = 4;
-		[Description("Five (5)")]
+		/// <summary>Five (5)</summary>
 		public const int Pink = 5;
-		[Description("Six (6)")]
+		/// <summary>Six (6)</summary>
 		public const int LightPurple = 6;
-		[Description("Seven (7)")]
+		/// <summary>Seven (7)</summary>
 		public const int Lime = 7;
-		[Description("Eight (8)")]
+		/// <summary>Eight (8)</summary>
 		public const int Yellow = 8;
-		[Description("Nine (9)")]
+		/// <summary>Nine (9)</summary>
 		public const int Cyan = 9;
-		[Description("Ten (10)")]
+		/// <summary>Ten (10)</summary>
 		public const int Red = 10;
-		[Description("Eleven (11)")]
+		/// <summary>Eleven (11)</summary>
 		public const int Purple = 11;
 	}
 }

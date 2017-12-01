@@ -107,10 +107,14 @@
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-@@ -327,8 +_,11 @@
+@@ -326,9 +_,15 @@
+     <Compile Include="Terraria.ID\GoreID.cs" />
      <Compile Include="Terraria.ID\InvasionID.cs" />
      <Compile Include="Terraria.ID\ItemAlternativeFunctionID.cs" />
++    <Compile Include="Terraria.ID\ItemHoldStyleID.cs" />
      <Compile Include="Terraria.ID\ItemID.cs" />
++    <Compile Include="Terraria.ID\ItemRarityID.cs" />
++    <Compile Include="Terraria.ID\ItemUseStyleID.cs" />
 +    <Compile Include="Terraria.ID\LangID.cs" />
      <Compile Include="Terraria.ID\MessageID.cs" />
      <Compile Include="Terraria.ID\MountID.cs" />
