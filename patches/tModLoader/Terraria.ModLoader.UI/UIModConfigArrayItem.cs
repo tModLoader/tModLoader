@@ -12,17 +12,18 @@ using System.Linq;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModConfigArrayItem : UIConfigItem
+	internal class UIModConfigArrayItem : UIModConfigItem
 	{
 		private object data;
 		private NestedUIList dataList;
 
 		// does not apply?
-		public override int NumberTicks => 0;
-		public override float TickIncrement => 0;
+		//public override int NumberTicks => 0;
+		//public override float TickIncrement => 0;
 
 		public UIModConfigArrayItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item)
 		{
+			drawLabel = false;
 			string name = memberInfo.Name;
 			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
 			if (att != null)
@@ -82,11 +83,11 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			Rectangle hitbox = GetInnerDimensions().ToRectangle();
-			Main.spriteBatch.Draw(Main.magicPixel, hitbox, Color.Purple * 0.6f);
-			base.DrawSelf(spriteBatch);
-		}
+		//protected override void DrawSelf(SpriteBatch spriteBatch)
+		//{
+		////	Rectangle hitbox = GetInnerDimensions().ToRectangle();
+		////	Main.spriteBatch.Draw(Main.magicPixel, hitbox, Color.Purple * 0.6f);
+		//	base.DrawSelf(spriteBatch);
+		//}
 	}
 }

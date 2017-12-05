@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.ComponentModel;
 
 namespace Terraria.ModLoader
 {
@@ -120,6 +121,60 @@ namespace Terraria.ModLoader
 			this.color = new Color(r, g, b, a);
 		}
 	}
+
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class DefaultListValueAttribute : Attribute
+	{
+		public object defaultValue;
+		public DefaultListValueAttribute(int defaultValue)
+		{
+			this.defaultValue = defaultValue;
+		}
+
+		public DefaultListValueAttribute(float defaultValue)
+		{
+			this.defaultValue = defaultValue;
+		}
+
+		public DefaultListValueAttribute(object defaultValue)
+		{
+			this.defaultValue = defaultValue;
+		}
+	}
+	//public class JsonDefaultValueAttribute: Attribute
+	//{
+	//	public string json;
+	//	public JsonDefaultValueAttribute(string json)
+	//	{
+	//		this.json = json;
+	//	}
+
+	//}
+
+	//public class JsonDefaultValueAttribute : DefaultValueAttribute
+	//{
+	//	public string json;
+	//	public JsonDefaultValueAttribute(string json, Type type) : base(ConvertFromJson(json, type))
+	//	{
+	//		this.json = json;
+	//	}
+
+	//	private static object ConvertFromJson(string json, Type type)
+	//	{
+	//		//var value = Activator.CreateInstance(type);
+	//		//JsonConvert.PopulateObject(json, value, ConfigManager.serializerSettings);
+	//		//return value;
+
+	//		var value = JsonConvert.DeserializeObject(json, type, new JsonSerializerSettings
+	//		{
+	//			MissingMemberHandling = MissingMemberHandling.Error,
+	//			NullValueHandling = NullValueHandling.Include,
+	//			DefaultValueHandling = DefaultValueHandling.Populate
+	//		});
+
+	//		return value;
+	//	}
+	//}
 
 	//[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
 	//public class StringRepresentationAttribute : Attribute

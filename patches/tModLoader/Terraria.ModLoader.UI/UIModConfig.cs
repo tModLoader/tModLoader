@@ -12,6 +12,7 @@ using System.Reflection;
 using Terraria.GameContent.UI.States;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections;
+using Terraria.GameInput;
 
 namespace Terraria.ModLoader.UI
 {
@@ -283,10 +284,10 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper variable, object item, ref int sliderIDInPage, object array = null, Type arrayType = null, int index = -1)
+		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage, object array = null, Type arrayType = null, int index = -1)
 		{
 			int elementHeight = 30;
-			Type type = variable.Type;
+			Type type = memberInfo.Type;
 			if (arrayType != null)
 			{
 				type = arrayType;
@@ -295,41 +296,48 @@ namespace Terraria.ModLoader.UI
 			UIElement e = null;
 			if (type == typeof(bool)) // isassignedfrom?
 			{
-				e = new UIModConfigBooleanItem(variable, item);
+				e = new UIModConfigBooleanItem(memberInfo, item, (IList<bool>)array, index);
 			}
 			else if (type == typeof(float))
 			{
-				e = new UIModConfigFloatItem(variable, item, sliderIDInPage++);
+				e = new UIModConfigFloatItem(memberInfo, item, sliderIDInPage++, (IList<float>)array, index);
 			}
 			else if (type == typeof(int))
 			{
-				e = new UIModConfigIntItem(variable, item, sliderIDInPage++, (IList<int>)array, index);
+				e = new UIModConfigIntItem(memberInfo, item, sliderIDInPage++, (IList<int>)array, index);
 			}
 			else if (type == typeof(string))
 			{
-				OptionStringsAttribute ost = (OptionStringsAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(OptionStringsAttribute));
+				OptionStringsAttribute ost = (OptionStringsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(OptionStringsAttribute));
 				if (ost != null)
 				{
-					e = new UIModConfigStringItem(variable, item, sliderIDInPage++, (IList<string>)array, index);
+					e = new UIModConfigStringItem(memberInfo, item, sliderIDInPage++, (IList<string>)array, index);
 				}
 				else
 				{
 					// TODO: Text input? Necessary?
-					e = new UIText($"{variable.Name} not handled yet ({type.Name}). Missing OptionStringsAttribute.");
+					e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}). Missing OptionStringsAttribute.");
 				}
 			}
 			else if (type.IsEnum)
 			{
-				e = new UIModConfigEnumItem(variable, item, sliderIDInPage++);
+				if (array != null)
+				{
+					e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
+				}
+				else
+				{
+					e = new UIModConfigEnumItem(memberInfo, item, sliderIDInPage++);
+				}
 			}
 			else if (type.IsArray)
 			{
-				e = new UIModConfigArrayItem(variable, item, ref sliderIDInPage);
+				e = new UIModConfigArrayItem(memberInfo, item, ref sliderIDInPage);
 				elementHeight = 225;
 			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
 			{
-				e = new UIModConfigListItem(variable, item, ref sliderIDInPage);
+				e = new UIModConfigListItem(memberInfo, item, ref sliderIDInPage);
 				elementHeight = 225;
 			}
 			else if (type.IsClass)
@@ -343,25 +351,32 @@ namespace Terraria.ModLoader.UI
 						JsonConvert.PopulateObject("{}", listItem, ConfigManager.serializerSettings);
 						((IList)array)[index] = listItem;
 					}
-					e = new UIModConfigObjectItem(variable, listItem, ref sliderIDInPage, (IList)array, index);
+					e = new UIModConfigObjectItem(memberInfo, listItem, ref sliderIDInPage, (IList)array, index);
 					elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 				}
 				else
 				{
-					object subitem = variable.GetValue(item);
+					object subitem = memberInfo.GetValue(item);
 					if (subitem == null)
 					{
 						subitem = Activator.CreateInstance(type);
 						JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
-						variable.SetValue(item, subitem);
+
+						JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
+						if (jsonDefaultValueAttribute != null)
+						{
+							JsonConvert.PopulateObject(jsonDefaultValueAttribute.json, subitem, ConfigManager.serializerSettings);
+						}
+
+						memberInfo.SetValue(item, subitem);
 					}
-					e = new UIModConfigObjectItem(variable, subitem, ref sliderIDInPage);
+					e = new UIModConfigObjectItem(memberInfo, subitem, ref sliderIDInPage);
 					elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 				}
 			}
 			else
 			{
-				e = new UIText($"{variable.Name} not handled yet ({type.Name})");
+				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name})");
 				e.Top.Pixels += 6;
 				e.Left.Pixels += 4;
 			}
@@ -440,25 +455,24 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
-	abstract class UIConfigItem : UIElement
+	abstract class UIConfigRangeItem : UIModConfigItem
 	{
 		internal bool drawTicks;
 		public abstract int NumberTicks { get; }
 		public abstract float TickIncrement { get; }
-		protected PropertyFieldWrapper memberInfo;
-		protected object item;
+		protected Func<float> _GetProportion;
+		protected Action<float> _SetProportion;
+		private int _sliderIDInPage;
 
-		public UIConfigItem(PropertyFieldWrapper memberInfo, object item)
+		public UIConfigRangeItem(int sliderIDInPage, PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item)
 		{
-			Width.Set(0f, 1f);
-			Height.Set(0f, 1f);
-			this.memberInfo = memberInfo;
-			this.item = item;
+			this._sliderIDInPage = sliderIDInPage;
 			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
 		}
 
 		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
 		{
+			perc = Utils.Clamp(perc, -.05f, 1.05f);
 			if (colorMethod == null)
 			{
 				colorMethod = new Utils.ColorLerpMethod(Utils.ColorLerp_BlackToWhite);
@@ -480,7 +494,7 @@ namespace Terraria.ModLoader.UI
 					{
 						float percent = tick * TickIncrement;
 						if (percent <= 1f)
-							sb.Draw(Main.magicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.Blue);
+							sb.Draw(Main.magicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.White);
 					}
 				}
 			}
@@ -514,6 +528,58 @@ namespace Terraria.ModLoader.UI
 				return 0f;
 			}
 			return 1f;
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch)
+		{
+			base.DrawSelf(spriteBatch);
+			float num = 6f;
+			int num2 = 0;
+			IngameOptions.rightHover = -1;
+			if (!Main.mouseLeft)
+			{
+				IngameOptions.rightLock = -1;
+			}
+			if (IngameOptions.rightLock == this._sliderIDInPage)
+			{
+				num2 = 1;
+			}
+			else if (IngameOptions.rightLock != -1)
+			{
+				num2 = 2;
+			}
+			CalculatedStyle dimensions = base.GetDimensions();
+			float num3 = dimensions.Width + 1f;
+			Vector2 vector = new Vector2(dimensions.X, dimensions.Y);
+			bool flag2 = base.IsMouseHovering;
+			if (num2 == 1)
+			{
+				flag2 = true;
+			}
+			if (num2 == 2)
+			{
+				flag2 = false;
+			}
+			Vector2 vector2 = vector;
+			vector2.X += 8f;
+			vector2.Y += 2f + num;
+			vector2.X -= 17f;
+			Main.colorBarTexture.Frame(1, 1, 0, 0);
+			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
+			IngameOptions.valuePosition = vector2;
+			float obj = DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
+			if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
+			{
+				IngameOptions.rightHover = this._sliderIDInPage;
+				if (PlayerInput.Triggers.Current.MouseLeft && IngameOptions.rightLock == this._sliderIDInPage)
+				{
+					this._SetProportion(obj);
+				}
+			}
+			if (IngameOptions.rightHover != -1 && IngameOptions.rightLock == -1)
+			{
+				IngameOptions.rightLock = IngameOptions.rightHover;
+			}
 		}
 	}
 }

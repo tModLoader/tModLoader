@@ -15,41 +15,38 @@ using System.Collections;
 
 namespace Terraria.ModLoader.UI
 {
-	class UIModConfigObjectItem : UIElement
+	class UIModConfigObjectItem : UIModConfigItem
 	{
-		Color backgroundColor = Color.AliceBlue;
 		int height;
 		// Label:
 		//  Members
 		//  Members
-		public UIModConfigObjectItem(PropertyFieldWrapper variableInfo, object item, ref int i, IList array = null, int index = -1)
+		public UIModConfigObjectItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList array = null, int index = -1) : base(memberInfo, item)
 		{
-			Width.Set(0f, 1f);
-			Height.Set(0f, 1f);
+			drawLabel = false;
+			//// Class
+			//BackgroundColorAttribute bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(variableInfo.Type, typeof(BackgroundColorAttribute), true);
+			//if (bca != null)
+			//{
+			//	backgroundColor = bca.color;
+			//}
+			//if (array != null)
+			//{
+			//	bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(item.GetType(), typeof(BackgroundColorAttribute), true);
+			//	if (bca != null)
+			//	{
+			//		backgroundColor = bca.color;
+			//	}
+			//}
+			//// Member
+			//bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(variableInfo.MemberInfo, typeof(BackgroundColorAttribute));
+			//if (bca != null)
+			//{
+			//	backgroundColor = bca.color;
+			//}
 
-			// Class
-			BackgroundColorAttribute bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(variableInfo.Type, typeof(BackgroundColorAttribute), true);
-			if (bca != null)
-			{
-				backgroundColor = bca.color;
-			}
-			if (array != null)
-			{
-				bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(item.GetType(), typeof(BackgroundColorAttribute), true);
-				if (bca != null)
-				{
-					backgroundColor = bca.color;
-				}
-			}
-			// Member
-			bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(variableInfo.MemberInfo, typeof(BackgroundColorAttribute));
-			if (bca != null)
-			{
-				backgroundColor = bca.color;
-			}
-
-			string name = variableInfo.Name;
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(variableInfo.MemberInfo, typeof(LabelAttribute));
+			string name = memberInfo.Name;
+			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
 			if (att != null)
 			{
 				name = att.Label;
@@ -93,12 +90,12 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			Rectangle hitbox = GetInnerDimensions().ToRectangle();
-			Main.spriteBatch.Draw(Main.magicPixel, hitbox, backgroundColor * 0.6f);
-			base.DrawSelf(spriteBatch);
-		}
+		//protected override void DrawSelf(SpriteBatch spriteBatch)
+		//{
+		//	Rectangle hitbox = GetInnerDimensions().ToRectangle();
+		//	Main.spriteBatch.Draw(Main.magicPixel, hitbox, backgroundColor * 0.6f);
+		//	base.DrawSelf(spriteBatch);
+		//}
 
 		internal float GetHeight()
 		{

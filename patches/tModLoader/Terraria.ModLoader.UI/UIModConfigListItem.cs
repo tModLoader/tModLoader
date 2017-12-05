@@ -12,11 +12,11 @@ using System.Collections;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModConfigListItem : UIConfigItem
+	internal class UIModConfigListItem : UIModConfigItem
 	{
 		// does not apply?
-		public override int NumberTicks => 0;
-		public override float TickIncrement => 0;
+		//public override int NumberTicks => 0;
+		//public override float TickIncrement => 0;
 
 		private object data;
 		private List<object> dataAsList;
@@ -26,6 +26,8 @@ namespace Terraria.ModLoader.UI
 
 		public UIModConfigListItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item)
 		{
+			drawLabel = false;
+
 			sliderIDStart = sliderIDInPage;
 			sliderIDInPage += 10000;
 
@@ -86,9 +88,18 @@ namespace Terraria.ModLoader.UI
 			text.OnClick += (a, b) =>
 			{
 				Main.PlaySound(21);
-				((IList)data).Add(Activator.CreateInstance(listType));
-				//dataAsList.Add(Activator.CreateInstance(listType));
-				//data.Add(0);
+
+				DefaultListValueAttribute defaultListValueAttribute = (DefaultListValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(DefaultListValueAttribute));
+				if (defaultListValueAttribute != null)
+				{
+					((IList)data).Add(defaultListValueAttribute.defaultValue);
+				}
+				else
+				{
+					((IList)data).Add(Activator.CreateInstance(listType));
+				}
+
+
 				SetupList();
 				Interface.modConfig.SetPendingChanges();
 			};
@@ -153,12 +164,12 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			Rectangle hitbox = GetInnerDimensions().ToRectangle();
-			Main.spriteBatch.Draw(Main.magicPixel, hitbox, Color.Orange * 0.6f);
-			base.DrawSelf(spriteBatch);
-		}
+		//protected override void DrawSelf(SpriteBatch spriteBatch)
+		//{
+		//	Rectangle hitbox = GetInnerDimensions().ToRectangle();
+		//	Main.spriteBatch.Draw(Main.magicPixel, hitbox, Color.Orange * 0.6f);
+		//	base.DrawSelf(spriteBatch);
+		//}
 	}
 
 	class NestedUIList : UIList
