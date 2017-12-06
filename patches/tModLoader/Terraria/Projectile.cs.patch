@@ -252,7 +252,7 @@
  									this.StatusNPC(i);
  									if (flag4 && this.type != 221 && this.type != 227 && this.type != 614)
  									{
-@@ -8648,11 +_,6 @@
+@@ -8648,23 +_,18 @@
  										this.ai[1] = -1f;
  										this.netUpdate = true;
  									}
@@ -264,20 +264,38 @@
  									if (flag4 && !this.hostile && Main.player[this.owner].armorPenetration > 0)
  									{
  										num8 += Main.npc[i].checkArmorPenetration(Main.player[this.owner].armorPenetration);
-@@ -8660,11 +_,11 @@
+ 									}
  									int num21;
- 									if (flag4)
+-									if (flag4)
++									if (flag4) // patch note: use local variable 'knockback', not knockBack
  									{
 -										num21 = (int)Main.npc[i].StrikeNPC(num8, this.knockBack, hitDirection, flag5, false, false);
-+										num21 = (int)Main.npc[i].StrikeNPC(num8, knockBack, hitDirection, flag5, false, false);
++										num21 = (int)Main.npc[i].StrikeNPC(num8, knockback, hitDirection, flag5, false, false);
  									}
  									else
  									{
 -										num21 = (int)Main.npc[i].StrikeNPCNoInteraction(num8, this.knockBack, hitDirection, flag5, false, false);
-+										num21 = (int)Main.npc[i].StrikeNPCNoInteraction(num8, knockBack, hitDirection, flag5, false, false);
++										num21 = (int)Main.npc[i].StrikeNPCNoInteraction(num8, knockback, hitDirection, flag5, false, false);
  									}
  									if (flag4 && Main.player[this.owner].accDreamCatcher)
  									{
+@@ -8759,13 +_,13 @@
+ 									}
+ 									if (Main.netMode != 0)
+ 									{
+-										if (flag5)
++										if (flag5) // patch note: use local variable 'knockback', not knockBack
+ 										{
+-											NetMessage.SendData(28, -1, -1, null, i, (float)num8, this.knockBack, (float)this.direction, 1, 0, 0);
++											NetMessage.SendData(28, -1, -1, null, i, (float)num8, knockback, (float)this.direction, 1, 0, 0);
+ 										}
+ 										else
+ 										{
+-											NetMessage.SendData(28, -1, -1, null, i, (float)num8, this.knockBack, (float)this.direction, 0, 0, 0);
++											NetMessage.SendData(28, -1, -1, null, i, (float)num8, knockback, (float)this.direction, 0, 0, 0);
+ 										}
+ 									}
+ 									if (this.type >= 390 && this.type <= 392)
 @@ -8935,6 +_,9 @@
  									{
  										this.BetsySharpnel(i);
