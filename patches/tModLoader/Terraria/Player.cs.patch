@@ -98,11 +98,23 @@
  					Main.item[num3].newAndShiny = false;
  					if (Main.netMode == 1)
  					{
-@@ -1760,6 +_,7 @@
+@@ -1758,8 +_,17 @@
+ 					flag2 = true;
+ 				}
  				int num = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, this.inventory[this.selectedItem].type, 1, false, 0, false, false);
- 				if (!flag2 && this.inventory[this.selectedItem].type == 8 && this.inventory[this.selectedItem].stack > 1)
- 				{
-+					Main.item[num] = this.inventory[this.selectedItem].Clone();
+-				if (!flag2 && this.inventory[this.selectedItem].type == 8 && this.inventory[this.selectedItem].stack > 1)
+-				{
++				bool dryTorch = false;
++				bool wetTorch = false;
++				bool glowstick = false;
++				this.inventory[this.selectedItem].modItem?.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
++				int type = this.inventory[this.selectedItem].type;
++				if (!flag2 && this.inventory[this.selectedItem].stack > 1 && (dryTorch || wetTorch || type == 8 || type == 427 || type == 428 || type == 429 || type == 430 || type == 431 || type == 432 || type == 433 || type == 523 || type == 974 || type == 1245 || type == 1333 || type == 2274 || type == 3004 || type == 3045 || type == 3114))
++				{
++					Item torch = this.inventory[this.selectedItem].Clone();
++					torch.stack = 1;
++					torch.position = Main.item[num].position;
++					Main.item[num] = torch;
  					this.inventory[this.selectedItem].stack--;
  				}
  				else
