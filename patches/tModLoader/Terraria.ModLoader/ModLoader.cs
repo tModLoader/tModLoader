@@ -27,8 +27,15 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		/// <summary>The name and version number of tModLoader.</summary>
-		public static readonly Version version = new Version(0, 10, 1, 1);
+		public static readonly Version version = new Version(0, 10, 2);
+		// Marks this release as a beta release, preventing publishing and marking all built mods as unpublishable.
+#if !BETA
 		public static readonly string versionedName = "tModLoader v" + version;
+		public static readonly bool beta = false;
+#else
+		public static readonly string versionedName = "tModLoader v" + version + " - ModConfig Beta 3";
+		public static readonly bool beta = true;
+#endif
 #if WINDOWS
 		public static readonly bool windows = true;
 #else

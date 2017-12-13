@@ -171,6 +171,8 @@ namespace Terraria.ModLoader.UI
 						);
 					}
 					BuildProperties bp = BuildProperties.ReadModFile(theTModFile);
+					if (bp.beta)
+						throw new WebException("You cannot publish a Mod built on a Beta version of tModLoader");
 					var values = new NameValueCollection
 					{
 						{ "displayname", bp.displayName },

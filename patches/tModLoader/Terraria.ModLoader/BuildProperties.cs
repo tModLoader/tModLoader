@@ -61,6 +61,8 @@ namespace Terraria.ModLoader
 		internal bool includeSource = false;
 		internal bool includePDB = false;
 		internal bool editAndContinue = false;
+		// This .tmod was built against a beta release, preventing publishing.
+		internal bool beta = false;
 		internal int languageVersion = 4;
 		internal string homepage = "";
 		internal string description = "";
@@ -273,6 +275,8 @@ namespace Terraria.ModLoader
 						writer.Write("side");
 						writer.Write((byte)side);
 					}
+					if(ModLoader.beta)
+						writer.Write("beta");
 					writer.Write("");
 				}
 				data = memoryStream.ToArray();
@@ -357,6 +361,10 @@ namespace Terraria.ModLoader
 					if (tag == "editAndContinue")
 					{
 						properties.editAndContinue = true;
+					}
+					if (tag == "beta")
+					{
+						properties.beta = true;
 					}
 					if (tag == "side")
 					{

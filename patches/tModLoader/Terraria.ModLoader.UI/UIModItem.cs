@@ -131,6 +131,12 @@ namespace Terraria.ModLoader.UI
 				keyImage.Left.Set(-20, 1f);
 				base.Append(keyImage);
 			}
+			if (properties.beta)
+			{
+				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.ShadowKey], "This mod was built on beta version and can't be published");
+				keyImage.Left.Set(-10, 1f);
+				Append(keyImage);
+			}
 			if (ModLoader.ModLoaded(mod.name))
 			{
 				Mod loadedMod = ModLoader.GetMod(mod.name);
