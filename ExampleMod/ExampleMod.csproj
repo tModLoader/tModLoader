@@ -59,6 +59,7 @@
     <Compile Include="Buffs\Blocky.cs" />
     <Compile Include="Buffs\CarMount.cs" />
     <Compile Include="Buffs\EtherealFlames.cs" />
+    <Compile Include="Buffs\ExampleJavelin.cs" />
     <Compile Include="Buffs\ExampleLightPet.cs" />
     <Compile Include="Buffs\ExamplePet.cs" />
     <Compile Include="Buffs\HeroOne.cs" />

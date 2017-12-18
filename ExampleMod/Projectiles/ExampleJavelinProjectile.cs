@@ -1,4 +1,5 @@
-﻿using ExampleMod.Items.Weapons;
+﻿using System.Collections.Generic;
+using ExampleMod.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -21,6 +22,27 @@ namespace ExampleMod.Projectiles
 			projectile.friendly = true;
 			projectile.melee = true;
 			projectile.penetrate = 3;
+			projectile.hide = true;
+		}
+
+		// See ExampleBehindTilesProjectile. 
+		public override void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI)
+		{
+			// If attached to an NPC, draw behind tiles (and the npc) if that NPC is behind tiles, otherwise just behind the NPC.
+			if (projectile.ai[0] == 1f) // or if(isStickingToTarget) since we made that helper method.
+			{
+				int npcIndex = (int)projectile.ai[1];
+				if (npcIndex >= 0 && npcIndex < 200 && Main.npc[npcIndex].active)
+				{
+					if (Main.npc[npcIndex].behindTiles)
+						drawCacheProjsBehindNPCsAndTiles.Add(index);
+					else
+						drawCacheProjsBehindNPCs.Add(index);
+					return;
+				}
+			}
+			// Since we aren't attached, add to this list
+			drawCacheProjsBehindProjectiles.Add(index);
 		}
 
 		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
@@ -62,7 +84,7 @@ namespace ExampleMod.Projectiles
 				usePos -= rotVector * 8f;
 			}
 
-			// Drop a javelin item, 18% chance
+			// Drop a javelin item, 1 in 18 chance (~5.5% chance)
 			int item =
 				Main.rand.Next(18) == 0
 					? Item.NewItem((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height, mod.ItemType<ExampleJavelin>())
@@ -104,7 +126,7 @@ namespace ExampleMod.Projectiles
 				(target.Center - projectile.Center) *
 				0.75f; // Change velocity based on delta center of targets (difference between entity centers)
 			projectile.netUpdate = true; // netUpdate this javelin
-			target.AddBuff(169, 900); // Adds the Penetrated debuff, a very small DoT
+			target.AddBuff(mod.BuffType<Buffs.ExampleJavelin>(), 900); // Adds the ExampleJavelin debuff for a very small DoT
 
 			projectile.damage = 0; // Makes sure the sticking javelins do not deal damage anymore
 
@@ -116,11 +138,11 @@ namespace ExampleMod.Projectiles
 			{
 				Projectile currentProjectile = Main.projectile[i];
 				if (i != projectile.whoAmI // Make sure the looped projectile is not the current javelin
-				    && currentProjectile.active // Make sure the projectile is active
-				    && currentProjectile.owner == Main.myPlayer // Make sure the projectile's owner is the client's player
-				    && currentProjectile.type == projectile.type // Make sure the projectile is of the same type as this javelin
-				    && currentProjectile.ai[0] == 1f // Make sure ai0 state is set to 1f (set earlier in ModifyHitNPC)
-				    && currentProjectile.ai[1] == (float)target.whoAmI
+					&& currentProjectile.active // Make sure the projectile is active
+					&& currentProjectile.owner == Main.myPlayer // Make sure the projectile's owner is the client's player
+					&& currentProjectile.type == projectile.type // Make sure the projectile is of the same type as this javelin
+					&& currentProjectile.ai[0] == 1f // Make sure ai0 state is set to 1f (set earlier in ModifyHitNPC)
+					&& currentProjectile.ai[1] == (float)target.whoAmI
 				) // Make sure ai1 is set to the target whoAmI (set earlier in ModifyHitNPC)
 				{
 					stickingJavelins[javelinIndex++] =
@@ -220,7 +242,7 @@ namespace ExampleMod.Projectiles
 				hitEffect = projectile.localAI[0] % 30f == 0f;
 				int projTargetIndex = (int)targetWhoAmI;
 				if (projectile.localAI[0] >= (float)(60 * aiFactor)// If it's time for this javelin to die, kill it
-				    || (projTargetIndex < 0 || projTargetIndex >= 200)) // If the index is past its limits, kill it
+					|| (projTargetIndex < 0 || projTargetIndex >= 200)) // If the index is past its limits, kill it
 				{
 					killProj = true;
 				}
