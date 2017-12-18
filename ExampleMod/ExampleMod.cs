@@ -200,6 +200,7 @@ namespace ExampleMod
 		float targetOffsetY = 0;
 
 		// Volcano Tremor
+		/* To be fixed later.
 		public override Matrix ModifyTransformMatrix(Matrix Transform)
 		{
 			if (!Main.gameMenu)
@@ -246,6 +247,7 @@ namespace ExampleMod
 			}
 			return Transform;
 		}
+		*/
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
