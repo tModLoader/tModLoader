@@ -44,6 +44,9 @@ namespace ExampleMod
 		public bool blockyForceVanity;
 		public bool blockyPower;
 
+		private const int maxExampleLifeFruits = 10;
+		public int exampleLifeFruits = 0;
+
 		public bool ZoneExample = false;
 
 		public override void ResetEffects()
@@ -62,6 +65,42 @@ namespace ExampleMod
 			exampleShield = false;
 			blockyAccessoryPrevious = blockyAccessory;
 			blockyAccessory = blockyHideVanity = blockyForceVanity = blockyPower = false;
+
+			player.statLifeMax2 += exampleLifeFruits * 2;
+		}
+
+		// In MP, other clients need accurate information about your player or else bugs happen.
+		// clientClone, SyncPlayer, and SendClientChanges, ensure that information is correct.
+		// We only need to do this for data that is changed by code not executed by all clients, 
+		// or data that needs to be shared while joining a world.
+		// For example, examplePet doesn't need to be synced because all clients know that the player is wearing the ExamplePet item in an equipment slot. 
+		// The examplePet bool is set for that player on every clients computer independently (via the Buff.Update), keeping that data in sync.
+		// ExampleLifeFruits, however might be out of sync. For example, when joining a server, we need to share the exampleLifeFruits variable with all other clients.
+		public override void clientClone(ModPlayer clientClone)
+		{
+			ExamplePlayer clone = clientClone as ExamplePlayer;
+			// Here we would make a backup clone of values that are only correct on the local players Player instance.
+			// Some examples would be RPG stats from a GUI, Hotkey states, and Extra Item Slots
+			// clone.someLocalVariable = someLocalVariable;
+		}
+
+		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+		{
+			ModPacket packet = mod.GetPacket();
+			packet.Write((byte)ExampleModMessageType.ExampleLifeFruits);
+			packet.Write((byte)player.whoAmI);
+			packet.Write(exampleLifeFruits);
+			packet.Send(toWho, fromWho);
+		}
+
+		public override void SendClientChanges(ModPlayer clientPlayer)
+		{
+			// Here we would sync something like an RPG stat whenever the player changes it.
+			// So far, ExampleMod has nothing that needs this.
+			// if (clientPlayer.someLocalVariable != someLocalVariable)
+			// {
+			//    Send a Mod Packet with the changes.
+			// }
 		}
 
 		public override void UpdateDead()
@@ -74,7 +113,8 @@ namespace ExampleMod
 		{
 			return new TagCompound {
 				// {"somethingelse", somethingelse}, // To save more data, add additional lines
-				{"score", score}
+				{"score", score},
+				{"exampleLifeFruits", exampleLifeFruits},
 			};
 			//note that C# 6.0 supports indexer initializers
 			//return new TagCompound {
@@ -85,6 +125,7 @@ namespace ExampleMod
 		public override void Load(TagCompound tag)
 		{
 			score = tag.GetInt("score");
+			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
 		}
 
 		public override void LoadLegacy(BinaryReader reader)

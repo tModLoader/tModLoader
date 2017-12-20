@@ -371,6 +371,13 @@ namespace ExampleMod
 						NetMessage.BroadcastChatMessage(text, new Color(255, 25, 25));
 					}
 					break;
+				// This message syncs ExamplePlayer.exampleLifeFruits
+				case ExampleModMessageType.ExampleLifeFruits:
+					byte playernumber = reader.ReadByte();
+					Player lifeFruitsPlayer = Main.player[playernumber];
+					int exampleLifeFruits = reader.ReadInt32();
+					lifeFruitsPlayer.GetModPlayer<ExamplePlayer>().exampleLifeFruits = exampleLifeFruits; 
+					break;
 				default:
 					ErrorLogger.Log("ExampleMod: Unknown Message type: " + msgType);
 					break;
@@ -383,7 +390,8 @@ namespace ExampleMod
 		SetTremorTime,
 		VolcanicRubbleMultiplayerFix,
 		PuritySpirit,
-		HeroLives
+		HeroLives,
+		ExampleLifeFruits
 	}
 
 	/*public static class ExampleModExtensions
