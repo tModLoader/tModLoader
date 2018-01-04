@@ -621,7 +621,7 @@ Generating caller graph for function Terrar/home/travis/build/blushiemagic/tModL
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1019: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
   parameter 'item'
   parameter 'reforgePrice'
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1212: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
+/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1213: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
   parameter 'npcType'
 ia.ModLoader.GlobalProjectile.PostAI
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PostDraw
@@ -676,11 +676,11 @@ Generating call graph for function Terraria.ModLoader.Mod.AddBossHeadTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddDust
 Generating call graph for function Terraria.ModLoader.Mod.AddEquipTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddGore
-Generating call g/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1091: warning: argument 'texture' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1091: warning: argument 'altTextures' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:609: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
+Generating call g/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1092: warning: argument 'texture' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
+/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1092: warning: argument 'altTextures' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
+/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:610: warning: The following parameters of Terraria.ModLoader.Mod.GetAccessorySlot(string name, EquipType type) are not documented:
   parameter 'type'
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:602: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
+/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:603: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
   parameter 'type'
 raph for function Terraria.ModLoader.Mod.AddMount
 Generating call graph for function Terraria.ModLoader.Mod.AddMusicBox
@@ -1982,5 +1982,5 @@ Patching output file 119/122
 Patching output file 120/122
 Patching output file 121/122
 Patching output file 122/122
-lookup cache used 10092/131072 hits=96392 misses=10542
+lookup cache used 10094/131072 hits=96433 misses=10544
 finished...

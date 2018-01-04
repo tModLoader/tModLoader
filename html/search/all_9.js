@@ -27,6 +27,7 @@ var searchData=
   ['ismodifier',['isModifier',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a744e18254de99adea41f1c75e6ae3bf6',1,'Terraria.ModLoader.DrawableTooltipLine.isModifier()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#a5a998c87573cd4944c0966e7b3409588',1,'Terraria.ModLoader.TooltipLine.isModifier()']]],
   ['ismodifierbad',['isModifierBad',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a7b144755d23bcddbfc52210385710f37',1,'Terraria.ModLoader.DrawableTooltipLine.isModifierBad()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#a7efdb3feea743c6755643e82c5e5ff3b',1,'Terraria.ModLoader.TooltipLine.isModifierBad()']]],
   ['ismodmusicbox',['IsModMusicBox',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a62c88b8eb4a959b6120e0da5386ba6f0',1,'Terraria::ModLoader::TileLoader']]],
+  ['isnetsynced',['IsNetSynced',['../class_terraria_1_1_mod_loader_1_1_mod.html#a85bbf627eb7bd116ac182667bc443770',1,'Terraria::ModLoader::Mod']]],
   ['isquestfish',['IsQuestFish',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a146b63f35e144131997ef0e081a9f500',1,'Terraria::ModLoader::ModItem']]],
   ['issapling',['IsSapling',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#afb3361330405a4a0b877f4649c8991fd',1,'Terraria::ModLoader::TileLoader']]],
   ['issignedby',['IsSignedBy',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aee080d6434c9fe9dd3a280402b1b774f',1,'Terraria::ModLoader::ModLoader']]],
