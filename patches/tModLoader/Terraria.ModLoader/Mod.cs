@@ -55,6 +55,7 @@ namespace Terraria.ModLoader
 		public string DisplayName { get; internal set; }
 
 		internal short netID = -1;
+		public bool IsNetSynced => netID >= 0;
 
 		internal bool loading;
 		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
