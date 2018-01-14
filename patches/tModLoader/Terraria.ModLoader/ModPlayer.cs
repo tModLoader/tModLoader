@@ -206,7 +206,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to sync information about this player between server and client. The toWho and fromWho parameters correspond to the remoteClient/toClient and ignoreClient arguments, respectively, of NetMessage.SendData/ModPacket.Send. The newPlayer parameter is whether or not the player is joining the server.
+		/// Allows you to sync information about this player between server and client. The toWho and fromWho parameters correspond to the remoteClient/toClient and ignoreClient arguments, respectively, of NetMessage.SendData/ModPacket.Send. The newPlayer parameter is whether or not the player is joining the server (it is true on the joining client).
 		/// </summary>
 		/// <param name="toWho"></param>
 		/// <param name="fromWho"></param>

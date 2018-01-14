@@ -4016,11 +4016,12 @@
  			}
  			if (!Main.gameMenu && Main.netMode != 2)
  			{
-@@ -57265,6 +_,9 @@
+@@ -57265,6 +_,10 @@
  			Main.tileColor.G = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.G * 7) / 10);
  			Main.tileColor.B = (byte)((Main.bgColor.R + Main.bgColor.G + Main.bgColor.B + Main.bgColor.B * 7) / 10);
  			Main.tileColor = SkyManager.Instance.ProcessTileColor(Main.tileColor);
 +
++			// TODO: Add in white and white2 as sunColor and moonColor
 +			ModHooks.ModifySunLight(ref Main.tileColor, ref Main.bgColor);
 +
  			float num55 = (float)(Main.maxTilesX / 4200);
