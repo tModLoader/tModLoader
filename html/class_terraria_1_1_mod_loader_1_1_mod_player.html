@@ -364,7 +364,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3f06ebdab0af3b5f825c6a706599a38b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called before this player's weapon creates a projectile. You can use it to create special effects, such as changing the speed, changing the initial position, and/or firing multiple projectiles. Return false to stop the game from shooting the default projectile (do this if you manually spawn your own projectile). Returns true by default.  <a href="#a3f06ebdab0af3b5f825c6a706599a38b">More...</a><br /></td></tr>
 <tr class="separator:a3f06ebdab0af3b5f825c6a706599a38b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3905e96a9c70d498528df9121380fb1c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a3905e96a9c70d498528df9121380fb1c">SyncPlayer</a> (int toWho, int fromWho, bool newPlayer)</td></tr>
-<tr class="memdesc:a3905e96a9c70d498528df9121380fb1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to sync information about this player between server and client. The toWho and fromWho parameters correspond to the remoteClient/toClient and ignoreClient arguments, respectively, of NetMessage.SendData/ModPacket.Send. The newPlayer parameter is whether or not the player is joining the server.  <a href="#a3905e96a9c70d498528df9121380fb1c">More...</a><br /></td></tr>
+<tr class="memdesc:a3905e96a9c70d498528df9121380fb1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to sync information about this player between server and client. The toWho and fromWho parameters correspond to the remoteClient/toClient and ignoreClient arguments, respectively, of NetMessage.SendData/ModPacket.Send. The newPlayer parameter is whether or not the player is joining the server (it is true on the joining client).  <a href="#a3905e96a9c70d498528df9121380fb1c">More...</a><br /></td></tr>
 <tr class="separator:a3905e96a9c70d498528df9121380fb1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa828f70b3df43d4c6def055d2455238e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa828f70b3df43d4c6def055d2455238e">TypeEquals</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html">ModPlayer</a> other)</td></tr>
 <tr class="separator:aa828f70b3df43d4c6def055d2455238e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3823,7 +3823,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to sync information about this player between server and client. The toWho and fromWho parameters correspond to the remoteClient/toClient and ignoreClient arguments, respectively, of NetMessage.SendData/ModPacket.Send. The newPlayer parameter is whether or not the player is joining the server. </p>
+<p>Allows you to sync information about this player between server and client. The toWho and fromWho parameters correspond to the remoteClient/toClient and ignoreClient arguments, respectively, of NetMessage.SendData/ModPacket.Send. The newPlayer parameter is whether or not the player is joining the server (it is true on the joining client). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">toWho</td><td></td></tr>
