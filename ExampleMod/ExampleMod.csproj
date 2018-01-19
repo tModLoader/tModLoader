@@ -62,6 +62,7 @@
     <Compile Include="Buffs\Blocky.cs" />
     <Compile Include="Buffs\CarMount.cs" />
     <Compile Include="Buffs\EtherealFlames.cs" />
+    <Compile Include="Buffs\ExampleJavelin.cs" />
     <Compile Include="Buffs\ExampleLightPet.cs" />
     <Compile Include="Buffs\ExamplePet.cs" />
     <Compile Include="Buffs\HeroOne.cs" />
@@ -129,6 +130,8 @@
     <Compile Include="Items\ExampleHook.cs" />
     <Compile Include="Items\ExampleInstancedGlobalItem.cs" />
     <Compile Include="Items\ExampleItem.cs" />
+    <Compile Include="Items\ExampleLifeFruit.cs" />
+    <Compile Include="Items\ExampleMagicMirror.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />

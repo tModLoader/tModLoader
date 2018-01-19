@@ -393,7 +393,7 @@ namespace Terraria.ModLoader
 			bool hijacked = false;
 			long readerPos = reader.BaseStream.Position;
 			long biggestReaderPos = readerPos;
-			foreach (var mod in netMods)
+			foreach (var mod in ModLoader.LoadedMods)
 			{
 				if (mod.HijackGetData(ref messageType, ref reader, playerNumber))
 				{
@@ -412,7 +412,7 @@ namespace Terraria.ModLoader
 		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
 		{
 			bool hijacked = false;
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModLoader.LoadedMods)
 			{
 				hijacked |= mod.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 			}

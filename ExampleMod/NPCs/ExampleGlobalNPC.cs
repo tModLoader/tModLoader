@@ -17,14 +17,43 @@ namespace ExampleMod.NPCs
 		}
 
 		public bool eFlames = false;
+		public bool exampleJavelin = false;
 
 		public override void ResetEffects(NPC npc)
 		{
 			eFlames = false;
+			exampleJavelin = false;
+		}
+
+		public override void SetDefaults(NPC npc)
+		{
+			// We want our ExampleJavelin buff to follow the same immunities as BoneJavelin
+			npc.buffImmune[mod.BuffType<Buffs.ExampleJavelin>()] = npc.buffImmune[BuffID.BoneJavelin];
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
+			if (exampleJavelin)
+			{
+				if (npc.lifeRegen > 0)
+				{
+					npc.lifeRegen = 0;
+				}
+				int exampleJavelinCount = 0;
+				for (int i = 0; i < 1000; i++)
+				{
+					Projectile p = Main.projectile[i];
+					if (p.active && p.type == mod.ProjectileType<Projectiles.ExampleJavelinProjectile>() && p.ai[0] == 1f && p.ai[1] == npc.whoAmI)
+					{
+						exampleJavelinCount++;
+					}
+				}
+				npc.lifeRegen -= exampleJavelinCount * 2 * 3;
+				if (damage < exampleJavelinCount * 3)
+				{
+					damage = exampleJavelinCount * 3;
+				}
+			}
 			if (eFlames)
 			{
 				if (npc.lifeRegen > 0)
