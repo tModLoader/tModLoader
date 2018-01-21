@@ -113,7 +113,7 @@ namespace Terraria.ModLoader
 				if (eacEnabled)
 					return code;
 
-				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code));
+				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code), new ReaderParameters { AssemblyResolver = TerrariaCecilAssemblyResolver.instance });
 				asm.Name.Name = EncapsulateName(asm.Name.Name);
 
 				//randomize the module version id so that the debugger can detect it as a different module (even if it has the same content)
@@ -242,6 +242,16 @@ namespace Terraria.ModLoader
 			}
 
 			return modInstances;
+		}
+
+		internal class TerrariaCecilAssemblyResolver : DefaultAssemblyResolver
+		{
+			public static readonly TerrariaCecilAssemblyResolver instance = new TerrariaCecilAssemblyResolver();
+
+			private TerrariaCecilAssemblyResolver()
+			{
+				RegisterAssembly(ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly);
+			}
 		}
 
 		internal class SymbolWriterProvider : ISymbolWriterProvider
