@@ -522,17 +522,39 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static AssemblyNameReference GetOrAddSystemCore(ModuleDefinition module)
+		{
+			var assemblyRef = module.AssemblyReferences.SingleOrDefault(r => r.Name == "System.Core");
+			if (assemblyRef == null)
+			{
+				//System.Linq.Enumerable is in System.Core
+				var name = Assembly.GetAssembly(typeof(Enumerable)).GetName();
+				assemblyRef = new AssemblyNameReference(name.Name, name.Version)
+				{
+					Culture = name.CultureInfo.Name,
+					PublicKeyToken = name.GetPublicKeyToken(),
+					HashAlgorithm = (AssemblyHashAlgorithm)name.HashAlgorithm
+				};
+				module.AssemblyReferences.Add(assemblyRef);
+			}
+			return assemblyRef;
+		}
+
 		private static byte[] PostProcess(byte[] dll, bool forWindows) {
 			if (forWindows)
 				return dll;
 
 			var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
+
+			// Extension methods are marked with an attribute which is located in mscorlib on .NET but in System.Core on Mono
+			// Find all extension attributes and change their assembly references
+			AssemblyNameReference SystemCoreRef = null;
 			foreach (var module in asm.Modules)
 				foreach (var type in module.Types)
 					foreach (var met in type.Methods)
 						foreach (var attr in met.CustomAttributes)
 							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
-								attr.AttributeType.Scope = module.AssemblyReferences.Single(r => r.Name == "System.Core");
+								attr.AttributeType.Scope = SystemCoreRef ?? (SystemCoreRef = GetOrAddSystemCore(module));
 
 			var ret = new MemoryStream();
 			asm.Write(ret, new WriterParameters { SymbolWriterProvider = AssemblyManager.SymbolWriterProvider.instance });
