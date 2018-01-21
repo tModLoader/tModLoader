@@ -247,7 +247,7 @@ namespace Terraria.ModLoader
 						Path.GetFileName(resource) == "Thumbs.db")
 					continue;
 
-				mod.modFile.AddFile(relPath, File.ReadAllBytes(resource));
+				AddResource(mod.modFile, relPath, resource);
 			}
 
 			WAVCacheIO.ClearCache(mod.Name);
@@ -257,6 +257,23 @@ namespace Terraria.ModLoader
 			ActivateExceptionReporting();
 			ModLoader.isModder = true;
 			return true;
+		}
+
+		private static void AddResource(TmodFile modFile, string relPath, string filePath)
+		{
+			if (relPath.EndsWith(".png") && relPath != "icon.png")
+			{
+				using (var fs = File.OpenRead(filePath))
+				{
+					var rawimg = ImageIO.ToRawBytes(fs);
+					if (rawimg != null) {//some pngs can't be converted to rawimg
+						modFile.AddFile(Path.ChangeExtension(relPath, "rawimg"), rawimg);
+						return;
+					}
+				}
+			}
+
+			modFile.AddFile(relPath, File.ReadAllBytes(filePath));
 		}
 
 		private static bool exceptionReportingActive;

@@ -58,16 +58,18 @@ namespace Terraria.ModLoader.IO
 
 		public byte[] GetFile(string fileName)
 		{
-			byte[] data;
-			files.TryGetValue(fileName.Replace('\\', '/'), out data);
+			files.TryGetValue(fileName.Replace('\\', '/'), out var data);
 			return data;
 		}
 
+		/// <summary>
+		/// Adds a (fileName -> content) entry to the compressed payload
+		/// </summary>
+		/// <param name="fileName">The internal filepath, will be slash sanitised automatically</param>
+		/// <param name="data">The file content to add. WARNING, data is kept as a shallow copy, so modifications to the passed byte array will affect file content</param>
 		internal void AddFile(string fileName, byte[] data)
 		{
-			byte[] dataCopy = new byte[data.Length];
-			data.CopyTo(dataCopy, 0);
-			files[fileName.Replace('\\', '/')] = dataCopy;
+			files[fileName.Replace('\\', '/')] = data;
 		}
 
 		internal void RemoveFile(string fileName)

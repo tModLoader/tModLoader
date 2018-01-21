@@ -145,12 +145,15 @@ namespace Terraria.ModLoader
 					switch (extension)
 					{
 						case ".png":
+						case ".rawimg":
 							string texturePath = Path.ChangeExtension(path, null);
 							using (MemoryStream buffer = new MemoryStream(data))
 							{
 								try
 								{
-									textures[texturePath] = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+									textures[texturePath] = extension == ".rawimg" ? 
+										ImageIO.RawToTexture2D(Main.instance.GraphicsDevice, buffer) :
+										Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
 									textures[texturePath].Name = Name + "/" + texturePath;
 								}
 								catch (Exception e)
@@ -2220,6 +2223,8 @@ namespace Terraria.ModLoader
 			}
 			sounds.Clear();
 			effects.Clear();
+			foreach (var tex in textures.Values)
+				tex.Dispose();
 			textures.Clear();
 			musics.Clear();
 			fonts.Clear();
