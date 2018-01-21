@@ -17,6 +17,7 @@ var hierarchy =
     [ "Terraria.ModLoader.BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", null ],
     [ "Terraria.ModLoader.CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", null ],
     [ "Terraria.ModLoader.CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", null ],
+    [ "DefaultAssemblyResolver", "class_default_assembly_resolver.html", null ],
     [ "Terraria.ModLoader.DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", null ],
     [ "Terraria.ModLoader.DrawLayer< PlayerDrawInfo >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", [
       [ "Terraria.ModLoader.PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", null ]
