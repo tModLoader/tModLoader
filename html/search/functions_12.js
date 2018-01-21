@@ -13,6 +13,8 @@ var searchData=
   ['tofriendlystring',['ToFriendlyString',['../class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html#ac02f4ec543a08a039f6f46b1103dd008',1,'Terraria::ModLoader::ModSideExtensions']]],
   ['tooltipline',['TooltipLine',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#adb1d300be37fc859dd86e9e8d044ed80',1,'Terraria::ModLoader::TooltipLine']]],
   ['toposort',['TopoSort',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#aa7e8ac5853d1618fe9992093b90b6b7c',1,'Terraria::ModLoader::TopoSort']]],
+  ['toraw',['ToRaw',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a30b2585c00900aaed7dc23ac81cc8b6f',1,'Terraria::ModLoader::IO::ImageIO']]],
+  ['torawbytes',['ToRawBytes',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a10cced885fff6a49a343545198ed362f',1,'Terraria::ModLoader::IO::ImageIO']]],
   ['tostream',['ToStream',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a548368b52deae062f23e0819578c6e46',1,'Terraria::ModLoader::IO::TagIO']]],
   ['tostring',['ToString',['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#a07b956fc2bb3c83b0f815afa3caf8b83',1,'Terraria.ModLoader.ModNet.ModHeader.ToString()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#af590c6c7bdedea389a24b4b9ecf08d92',1,'Terraria.ModLoader.IO.TagCompound.ToString()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#acfec77bae1fb664acadb848a91afaadc',1,'Terraria.ModLoader.IO.TagPrinter.ToString()']]],
   ['totalmeleespeedmultiplier',['TotalMeleeSpeedMultiplier',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a1a227129a4dd20d9076a3f2cef375d5f',1,'Terraria::ModLoader::PlayerHooks']]],

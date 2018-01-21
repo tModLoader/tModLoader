@@ -52,6 +52,7 @@ var hierarchy =
     [ "IEnumerable< KeyValuePair< string, object >>", "class_i_enumerable_3_01_key_value_pair_3_01string_00_01object_01_4_4.html", [
       [ "Terraria.ModLoader.IO.TagCompound", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html", null ]
     ] ],
+    [ "Terraria.ModLoader.IO.ImageIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html", null ],
     [ "IOException", "class_i_o_exception.html", [
       [ "Terraria.ModLoader.Exceptions.CustomModDataException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html", null ]
     ] ],

@@ -8,6 +8,9 @@ var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
       [ "BinaryIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o" ]
     ] ],
     [ "FontCacheIO.cs", "_font_cache_i_o_8cs.html", null ],
+    [ "ImageIO.cs", "_image_i_o_8cs.html", [
+      [ "ImageIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o" ]
+    ] ],
     [ "ItemIO.cs", "_item_i_o_8cs.html", [
       [ "ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o" ]
     ] ],
