@@ -107,7 +107,7 @@ namespace Terraria.ModLoader
 			string[] lines = File.ReadAllLines(propertiesFile);
 			foreach (string line in lines)
 			{
-				if (line.Length == 0)
+				if (String.IsNullOrWhiteSpace(line))
 				{
 					continue;
 				}
