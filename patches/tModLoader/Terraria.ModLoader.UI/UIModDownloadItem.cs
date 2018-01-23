@@ -39,10 +39,12 @@ namespace Terraria.ModLoader.UI
 		private readonly Texture2D innerPanelTexture;
 		private readonly UIText modName;
 		private readonly UITextPanel<string> updateButton;
+		private readonly UITextPanel<string> moreInfoButton;
 		private UIImage modIcon;
 		public bool update = false;
 		public bool updateIsDowngrade = false;
 		public TmodFile installed;
+		private float left;
 
 		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string modIconURL, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, TmodFile installed)
 		{
@@ -67,22 +69,17 @@ namespace Terraria.ModLoader.UI
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
 
-			float left = 0f;
-			if (modIconURL != null)
-			{
-				left += 85;
-			}
-
+			this.left = modIconURL != null ? 85f : 0f;
 			string text = displayname + " " + version;
 			this.modName = new UIText(text, 1f, false);
-			this.modName.Left.Set(left + 5, 0f);
+			this.modName.Left.Set(this.left + 5, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 
-			UITextPanel<string> moreInfoButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
+			moreInfoButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
 			moreInfoButton.Width.Set(100f, 0f);
 			moreInfoButton.Height.Set(30f, 0f);
-			moreInfoButton.Left.Set(left, 0f);
+			moreInfoButton.Left.Set(this.left, 0f);
 			moreInfoButton.Top.Set(40f, 0f);
 			moreInfoButton.PaddingTop -= 2f;
 			moreInfoButton.PaddingBottom -= 2f;
@@ -221,14 +218,26 @@ namespace Terraria.ModLoader.UI
 
 		private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e)
 		{
-			byte[] data = e.Result;
-			using (MemoryStream buffer = new MemoryStream(data))
+			try
 			{
-				var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
-				modIcon = new UIImage(iconTexture);
-				modIcon.Left.Set(0f, 0f);
-				modIcon.Top.Set(0f, 0f);
-				modIconReady = true; // We'd like to avoid collection modified exceptions
+				byte[] data = e.Result;
+				using (MemoryStream buffer = new MemoryStream(data))
+				{
+					var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+					modIcon = new UIImage(iconTexture);
+					modIcon.Left.Set(0f, 0f);
+					modIcon.Top.Set(0f, 0f);
+					modIconReady = true; // We'd like to avoid collection modified exceptions
+				}
+			}
+			catch (Exception exception)
+			{
+				// country- wide imgur blocks, cannot load icon
+				modIconReady = false;
+				modIconWanted = false;
+				this.modName.Left.Set(5f, 0f);
+				this.moreInfoButton.Left.Set(0f, 0f);
+				updateButton.Left.Set(moreInfoButton.Width.Pixels+ 5f, 0f);
 			}
 		}
 
