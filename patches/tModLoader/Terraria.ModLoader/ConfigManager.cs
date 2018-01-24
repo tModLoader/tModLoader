@@ -7,6 +7,7 @@ using System.IO;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ID;
+using System.Reflection;
 
 namespace Terraria.ModLoader
 {
@@ -244,6 +245,21 @@ namespace Terraria.ModLoader
 		// 
 
 		// Save
+		
+		public static IEnumerable<UI.PropertyFieldWrapper> GetFieldsAndProperties(object item)
+		{
+			PropertyInfo[] properties = item.GetType().GetProperties(
+				//BindingFlags.DeclaredOnly |
+				BindingFlags.Public |
+				BindingFlags.Instance);
+
+			FieldInfo[] fields = item.GetType().GetFields(
+				//BindingFlags.DeclaredOnly |
+				BindingFlags.Public |
+				BindingFlags.Instance);
+
+			return fields.Select(x => new UI.PropertyFieldWrapper(x)).Concat(properties.Select(x => new UI.PropertyFieldWrapper(x)));
+		}
 	}
 
 	public class ColorJsonConverter : JsonConverter

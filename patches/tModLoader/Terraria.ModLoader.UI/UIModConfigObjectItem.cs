@@ -60,20 +60,7 @@ namespace Terraria.ModLoader.UI
 				height = 30;
 			}
 
-
-			PropertyInfo[] properties = item.GetType().GetProperties(
-			//	BindingFlags.DeclaredOnly |
-				BindingFlags.Public |
-				BindingFlags.Instance);
-
-			FieldInfo[] fields = item.GetType().GetFields(
-			//	BindingFlags.DeclaredOnly |
-				BindingFlags.Public |
-				BindingFlags.Instance);
-
-			var fieldsAndProperties = fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
-
-			foreach (PropertyFieldWrapper variable in fieldsAndProperties)
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(item))
 			{
 				if (variable.isProperty && variable.Name == "Mode")
 					continue;

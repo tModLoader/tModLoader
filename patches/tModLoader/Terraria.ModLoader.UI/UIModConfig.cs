@@ -357,19 +357,9 @@ namespace Terraria.ModLoader.UI
 			int i = 0;
 			// load all mod config options into UIList
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
-			PropertyInfo[] properties = modConfigClone.GetType().GetProperties(
-				//BindingFlags.DeclaredOnly |
-				BindingFlags.Public |
-				BindingFlags.Instance);
 
-			FieldInfo[] fields = modConfigClone.GetType().GetFields(
-				//BindingFlags.DeclaredOnly |
-				BindingFlags.Public |
-				BindingFlags.Instance);
-
-			var fieldsAndProperties = fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
 			int top = 0;
-			foreach (PropertyFieldWrapper variable in fieldsAndProperties)
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(modConfigClone))
 			{
 				if (variable.isProperty && variable.Name == "Mode")
 					continue;
@@ -390,7 +380,15 @@ namespace Terraria.ModLoader.UI
 			}
 			int original = sliderIDInPage;
 			UIElement e = null;
-			if (type == typeof(bool)) // isassignedfrom?
+
+			// TODO: Modder supplied UIElement
+			// TODO: Vector2, other structs
+			if (type == typeof(Color))
+			{
+				e = new UIModConfigColorItem(memberInfo, item, ref sliderIDInPage, (IList<Color>)array, index);
+				elementHeight = (int)(e as UIModConfigColorItem).GetHeight();
+			}
+			else if (type == typeof(bool)) // isassignedfrom?
 			{
 				e = new UIModConfigBooleanItem(memberInfo, item, (IList<bool>)array, index);
 			}
@@ -480,14 +478,9 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (type.IsValueType && !type.IsPrimitive)
 			{
-				//e = new UIText($"{memberInfo.Name} not handled yet ({type.Name})");
-				//e.Top.Pixels += 6;
-				//e.Left.Pixels += 4;
-
-				// Structs not working, has to do with boxing stuff.
-				object subitem = memberInfo.GetValue(item);
-				e = new UIModConfigObjectItem(memberInfo, subitem, ref sliderIDInPage);
-				elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
+				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}) Structs need special UI.");
+				e.Top.Pixels += 6;
+				e.Left.Pixels += 4;
 			}
 			else
 			{
@@ -529,7 +522,7 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
-	internal class PropertyFieldWrapper
+	public class PropertyFieldWrapper
 	{
 		private FieldInfo fieldInfo;
 		private PropertyInfo propertyInfo;
