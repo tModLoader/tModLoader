@@ -338,10 +338,11 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 602, 1, false, 0, false, false);
-@@ -3363,6 +_,32 @@
+@@ -3363,6 +_,33 @@
  					}
  				}
  			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
 +		}
 +
 +		/// <summary>
@@ -391,8 +392,11 @@
  			if (num15 > 0)
  			{
  				NPC nPC = new NPC();
-@@ -3926,7 +_,7 @@
+@@ -3924,9 +_,10 @@
+ 					}
+ 				}
  			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
  		}
  
 -		private void TryGettingDevArmor()
@@ -412,6 +416,14 @@
  			int num = type - 2334;
  			if (type >= 3203)
  			{
+@@ -5040,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
+ 
+ 		public int CountItem(int type, int stopCountingAt = 0)
 @@ -5087,6 +_,11 @@
  
  		public void openLockBox()
@@ -424,7 +436,12 @@
  			bool flag = true;
  			while (flag)
  			{
-@@ -5221,6 +_,11 @@
+@@ -5217,10 +_,16 @@
+ 					}
+ 				}
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
  
  		public void openHerbBag()
  		{
@@ -436,7 +453,12 @@
  			int num = Main.rand.Next(2, 5);
  			if (Main.rand.Next(3) == 0)
  			{
-@@ -5300,6 +_,11 @@
+@@ -5296,10 +_,16 @@
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
+ 				}
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
  
  		public void openGoodieBag()
  		{
@@ -448,6 +470,14 @@
  			if (Main.rand.Next(150) == 0)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1810, 1, false, 0, false, false);
+@@ -5660,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
+ 
+ 		public void UpdateDyes(int plr)
 @@ -5721,47 +_,47 @@
  				int num = i % 10;
  				if (this.dye[num] != null && this.armor[i].type > 0 && this.armor[i].stack > 0 && (i / 10 >= 1 || !this.hideVisual[num] || this.armor[i].wingSlot > 0 || this.armor[i].type == 934))

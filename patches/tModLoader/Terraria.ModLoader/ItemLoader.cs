@@ -985,6 +985,8 @@ namespace Terraria.ModLoader
 		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
 		//in beginning of Terraria.Player.openBag methods add
 		//  if(!ItemLoader.PreOpenVanillaBag("bagName", this, arg)) { return; }
+		//at the end of the following methods in Player.cs, add: NPCLoader.blockLoot.Clear(); // clear blockloot
+		//methods: OpenBossBag, openCrate, openGoodieBag, openHerbBag, openLockbox, openPresent
 		/// <summary>
 		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
 		/// </summary>
@@ -992,7 +994,10 @@ namespace Terraria.ModLoader
 		{
 			foreach (var g in HookPreOpenVanillaBag.arr)
 				if (!g.PreOpenVanillaBag(context, player, arg))
+				{
+					NPCLoader.blockLoot.Clear(); // clear blockloot
 					return false;
+				}
 
 			return true;
 		}
