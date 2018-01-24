@@ -543,19 +543,14 @@
  			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
  			{
  				int num77 = (int)Player.FindClosest(this.position, this.width, this.height);
-@@ -63380,7 +_,11 @@
+@@ -63380,6 +_,7 @@
  			{
  				itemType = 3860;
  			}
--			this.DropItemInstanced(this.position, base.Size, itemType, 1, true);
 +			NPCLoader.BossBag(this, ref itemType);
-+			if (!NPCLoader.blockLoot.Contains(itemType))
-+			{
-+				this.DropItemInstanced(this.position, base.Size, itemType, 1, true);
-+			}
+ 			this.DropItemInstanced(this.position, base.Size, itemType, 1, true);
  		}
  
- 		public void DropItemInstanced(Vector2 Position, Vector2 HitboxSize, int itemType, int itemStack = 1, bool interactionRequired = true)
 @@ -63558,7 +_,7 @@
  				NetMessage.SendData(71, -1, -1, null, x, (float)y, (float)Type, (float)Style, 0, 0, 0);
  				return;
