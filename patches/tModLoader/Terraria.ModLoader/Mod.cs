@@ -1201,7 +1201,7 @@ namespace Terraria.ModLoader
 			{
 				ModLoader.GetTexture(texture);
 			}
-			else if (Main.dedServ && !ModLoader.FileExists(texture + ".png"))
+			else if (Main.dedServ && !(ModLoader.FileExists(texture + ".png") || ModLoader.FileExists(texture + ".rawimg")))
 			{
 				throw new MissingResourceException(texture);
 			}
