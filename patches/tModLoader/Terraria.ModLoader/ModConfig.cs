@@ -40,6 +40,12 @@ namespace Terraria.ModLoader
 		{
 		}
 
+		// Called on the Server for ServerDictates configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions.
+		public virtual bool AcceptClientChanges(ModConfig currentConfig, int whoAmI, ref string message)
+		{
+			return true;
+		}
+
 		// TODO: Can we get rid of Clone and just load from disk? Don't think so yet.
 		public virtual ModConfig Clone() => (ModConfig)MemberwiseClone();
 
@@ -51,7 +57,7 @@ namespace Terraria.ModLoader
 		public virtual bool NeedsReload(ModConfig old)
 		{
 			PropertyInfo[] props = GetType().GetProperties(
-				BindingFlags.DeclaredOnly |
+			//	BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
 				BindingFlags.Instance);
 
@@ -68,7 +74,7 @@ namespace Terraria.ModLoader
 			}
 
 			FieldInfo[] fields = GetType().GetFields(
-				BindingFlags.DeclaredOnly |
+			//	BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
 				BindingFlags.Instance);
 
@@ -111,6 +117,24 @@ namespace Terraria.ModLoader
 		}
 		public string Label => label;
 	}
+
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class TooltipAttribute : Attribute
+	{
+		public readonly string tooltip;
+		public TooltipAttribute(string tooltip)
+		{
+			this.tooltip = tooltip;
+		}
+	}
+
+	// Hide or Disable this item while in game.
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class HideInGameAttribute : Attribute { }
+
+	// Hide or Disable this item while a client?
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class HideForClientAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 	public class BackgroundColorAttribute : Attribute

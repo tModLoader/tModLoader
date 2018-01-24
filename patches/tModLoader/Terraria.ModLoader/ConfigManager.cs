@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.IO;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -13,6 +14,8 @@ namespace Terraria.ModLoader
 	{
 		// These are THE configs.
 		internal static readonly IDictionary<Mod, List<ModConfig>> Configs = new Dictionary<Mod, List<ModConfig>>();
+		// Configs should never violate reload required.
+		// Menu save should force reload
 
 		// This copy of Configs stores instances present during load. Its only use in detecting if a reload is needed.
 		private static readonly IDictionary<Mod, List<ModConfig>> LoadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
@@ -22,7 +25,8 @@ namespace Terraria.ModLoader
 			Formatting = Formatting.Indented,
 			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 			ObjectCreationHandling = ObjectCreationHandling.Replace,
-			NullValueHandling = NullValueHandling.Ignore
+			NullValueHandling = NullValueHandling.Ignore,
+			Converters = { new Newtonsoft.Json.Converters.VersionConverter() },
 		};
 
 		internal static readonly JsonSerializerSettings serializerSettingsCompact = new JsonSerializerSettings
@@ -30,7 +34,8 @@ namespace Terraria.ModLoader
 			Formatting = Formatting.None,
 			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 			ObjectCreationHandling = ObjectCreationHandling.Replace,
-			NullValueHandling = NullValueHandling.Ignore
+			NullValueHandling = NullValueHandling.Ignore,
+			Converters = { new Newtonsoft.Json.Converters.VersionConverter() },
 		};
 
 		public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "Mod Configs");
@@ -58,7 +63,7 @@ namespace Terraria.ModLoader
 		{
 			string filename = config.mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
-			if(config.Mode == MultiplayerSyncMode.ServerDictates && ModLoader.PostLoad == ModNet.NetReload)
+			if (config.Mode == MultiplayerSyncMode.ServerDictates && ModLoader.PostLoad == ModNet.NetReload)
 			{
 				//path = Path.Combine(ServerModConfigPath, filename);
 				//if (!File.Exists(path))
@@ -146,6 +151,88 @@ namespace Terraria.ModLoader
 				return configs.Single(x => x.Name == config);
 			}
 			throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
+		}
+
+		internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
+		{
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				bool success = reader.ReadBoolean();
+				string message = reader.ReadString();
+				if (success)
+				{
+					string modname = reader.ReadString();
+					string configname = reader.ReadString();
+					string json = reader.ReadString();
+					ModConfig config = GetConfig(ModLoader.GetMod(modname), configname);
+					JsonConvert.PopulateObject(json, config, serializerSettingsCompact);
+					config.PostSave();
+
+					Main.NewText($"Shared config changed: Message: {message}, Mod: {modname}, Config: {configname}");
+					if (Main.InGameUI.CurrentState == Interface.modConfig)
+					{
+						Main.InGameUI.SetState(Interface.modConfig);
+					}
+				}
+				else
+				{
+					// rejection only sent back to requester.
+					// Update UI with message
+
+					Main.NewText("Changes Rejected: " + message);
+					if (Main.InGameUI.CurrentState == Interface.modConfig)
+					{
+						Interface.modConfig.SetMessage("Server rejected changes: " + message, Color.Red);
+						//Main.InGameUI.SetState(Interface.modConfig);
+					}
+
+				}
+			}
+			else
+			{
+				// no bool in request.
+				string modname = reader.ReadString();
+				string configname = reader.ReadString();
+				string json = reader.ReadString();
+				ModConfig config = GetConfig(ModLoader.GetMod(modname), configname);
+				ModConfig pending = config.Clone();
+				JsonConvert.PopulateObject(json, pending, serializerSettingsCompact);
+				bool success = true;
+				string message = "Accepted";
+				if (pending.NeedsReload(config))
+				{
+					success = false;
+					message = "Can't save because changes would require a reload.";
+				}
+				if (!pending.AcceptClientChanges(config, whoAmI, ref message))
+				{
+					success = false;
+				}
+				if (success)
+				{
+					// Apply to Servers Config
+					JsonConvert.PopulateObject(json, config, ConfigManager.serializerSettingsCompact);
+					config.PostSave();
+					// Send new config to all clients
+					var p = new ModPacket(MessageID.InGameChangeConfig);
+					p.Write(true);
+					p.Write(message);
+					p.Write(modname);
+					p.Write(configname);
+					p.Write(json);
+					p.Send();
+				}
+				else
+				{
+					// Send rejections message back to client who requested change
+					var p = new ModPacket(MessageID.InGameChangeConfig);
+					p.Write(false);
+					p.Write(message);
+					p.Send(whoAmI);
+				}
+
+			}
+			return;
 		}
 
 		// ReloadPrep?

@@ -1,0 +1,154 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Threading;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader.IO;
+using Terraria.UI;
+using Terraria.UI.Gamepad;
+using Newtonsoft.Json;
+using System.Reflection;
+using Terraria.Localization;
+
+namespace Terraria.ModLoader.UI
+{
+	internal class UIModConfigList : UIState
+	{
+		private UIElement uIElement;
+		private UIPanel uIPanel;
+		//private bool needToRemoveLoading;
+		private UIList modList;
+		//private readonly List<UIModItem> items = new List<UIModItem>();
+		//private bool updateNeeded;
+		//internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
+		private UITextPanel<string> buttonB;
+		private UITextPanel<string> buttonOMF;
+
+		public override void OnInitialize()
+		{
+			uIElement = new UIElement();
+			uIElement.Width.Set(0f, 0.8f);
+			uIElement.MaxWidth.Set(600f, 0f);
+			uIElement.Top.Set(220f, 0f);
+			uIElement.Height.Set(-220f, 1f);
+			uIElement.HAlign = 0.5f;
+
+			uIPanel = new UIPanel();
+			uIPanel.Width.Set(0f, 1f);
+			uIPanel.Height.Set(-110f, 1f);
+			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			uIPanel.PaddingTop = 0f;
+			uIElement.Append(uIPanel);
+
+			modList = new UIList();
+			modList.Width.Set(-25f, 1f);
+			modList.Height.Set(-50f, 1f);
+			modList.Top.Set(50f, 0f);
+			modList.ListPadding = 5f;
+			uIPanel.Append(modList);
+
+			UIScrollbar uIScrollbar = new UIScrollbar();
+			uIScrollbar.SetView(100f, 1000f);
+			uIScrollbar.Height.Set(-50f, 1f);
+			uIScrollbar.Top.Set(50f, 0f);
+			uIScrollbar.HAlign = 1f;
+			uIPanel.Append(uIScrollbar);
+
+			modList.SetScrollbar(uIScrollbar);
+
+			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true);
+			uIHeaderTexTPanel.HAlign = 0.5f;
+			uIHeaderTexTPanel.Top.Set(-35f, 0f);
+			uIHeaderTexTPanel.SetPadding(15f);
+			uIHeaderTexTPanel.BackgroundColor = new Color(73, 94, 171);
+			uIElement.Append(uIHeaderTexTPanel);
+
+			buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
+			buttonB.Width.Set(-10f, 1f / 3f);
+			buttonB.Height.Set(25f, 0f);
+			buttonB.VAlign = 1f;
+			buttonB.Top.Set(-20f, 0f);
+			buttonB.OnMouseOver += UICommon.FadedMouseOver;
+			buttonB.OnMouseOut += UICommon.FadedMouseOut;
+			buttonB.OnClick += BackClick;
+			uIElement.Append(buttonB);
+
+			buttonOMF = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"), 1f, false);
+			buttonOMF.CopyStyle(buttonB);
+			buttonOMF.HAlign = 0.5f;
+			buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
+			buttonOMF.OnMouseOut += UICommon.FadedMouseOut;
+			buttonOMF.OnClick += OpenModsFolder;
+			uIElement.Append(buttonOMF);
+
+			Append(uIElement);
+		}
+
+		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(11, -1, -1, 1);
+			//Main.menuMode = 0;
+
+			//Main.menuMode = 1127;
+			IngameFancyUI.Close();
+		}
+
+		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(10, -1, -1, 1);
+			Directory.CreateDirectory(ModLoader.ModPath);
+			Process.Start(ModLoader.ModPath);
+		}
+
+		//public override void Draw(SpriteBatch spriteBatch)
+		//{
+		//	base.Draw(spriteBatch);
+		//	UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
+		//}
+
+		public override void OnActivate()
+		{
+			Main.clrInput();
+			modList.Clear();
+			//	items.Clear();
+			Populate();
+		}
+
+		internal void Populate()
+		{
+			foreach (var item in ConfigManager.Configs)
+			{
+				foreach (var config in item.Value)
+				{
+					//if (config.Mode == MultiplayerSyncMode.UniquePerPlayer)
+					{
+						UITextPanel<string> t = new UITextPanel<string>(item.Key.DisplayName + ": " + config.Name);
+						//UIText t = new UIText(item.Key.DisplayName + ": " + item.Value.Count);
+						t.OnClick += (a, b) =>
+						{
+							Interface.modConfig.SetMod(item.Key, config);
+							Main.InGameUI.SetState(Interface.modConfig);
+						};
+						t.OnMouseOver += UICommon.FadedMouseOver;
+						t.OnMouseOut += UICommon.FadedMouseOut;
+						modList.Add(t);
+
+						if (config.Mode == MultiplayerSyncMode.ServerDictates)
+						{
+							t.BackgroundColor = Color.Pink * 0.7f;
+							t.OnMouseOver += (a,b) => t.BackgroundColor = Color.Pink;
+							t.OnMouseOut += (a,b) => t.BackgroundColor = Color.Pink * 0.7f;
+						}
+					}
+				}
+			}
+		}
+	}
+}

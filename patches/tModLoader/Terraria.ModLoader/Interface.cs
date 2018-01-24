@@ -53,6 +53,7 @@ namespace Terraria.ModLoader
 		internal static UIDownloadMods downloadMods = new UIDownloadMods();
 		internal static UIUploadMod uploadMod = new UIUploadMod();
 		internal static UIModConfig modConfig = new UIModConfig();
+		internal static UIModConfigList modConfigList = new UIModConfigList();
 
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);

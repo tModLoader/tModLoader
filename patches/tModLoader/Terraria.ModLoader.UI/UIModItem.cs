@@ -25,6 +25,7 @@ namespace Terraria.ModLoader.UI
 		private UIImage modIcon;
 		readonly UIHoverImage keyImage;
 		private readonly UITextPanel<string> configButton;
+		private bool configChangesRequireReload;
 
 		public UIModItem(TmodFile mod)
 		{
@@ -96,6 +97,11 @@ namespace Terraria.ModLoader.UI
 				configButton.OnMouseOut += UICommon.FadedMouseOut;
 				configButton.OnClick += this.OpenConfig;
 				Append(configButton);
+
+				if (ConfigManager.ModNeedsReload(ModLoader.GetMod(mod.name)))
+				{
+					configChangesRequireReload = true;
+				}
 			}
 			if (properties.modReferences.Length > 0 && !enabled)
 			{
@@ -181,10 +187,10 @@ namespace Terraria.ModLoader.UI
 			drawPos = new Vector2(innerDimensions.X + 10f + modIconAdjust, innerDimensions.Y + 45f);
 			this.DrawPanel(spriteBatch, drawPos, 85f);
 			this.DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
-			if (this.enabled != ModLoader.ModLoaded(mod.name))
+			if (this.enabled != ModLoader.ModLoaded(mod.name) || configChangesRequireReload)
 			{
 				drawPos += new Vector2(90f, 5f);
-				Utils.DrawBorderString(spriteBatch, "Reload Required", drawPos, Color.White, 1f, 0f, 0f, -1);
+				Utils.DrawBorderString(spriteBatch, configChangesRequireReload ? "Reload Forced" : "Reload Required", drawPos, Color.White, 1f, 0f, 0f, -1);
 			}
 			//string text = this.enabled ? "Click to Disable" : "Click to Enable";
 			//drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 150f, innerDimensions.Y + 50f);
@@ -253,7 +259,7 @@ namespace Terraria.ModLoader.UI
 			Interface.modConfig.SetMod(ModLoader.GetMod(mod.name));
 			Main.menuMode = Interface.modConfigID;
 		}
-		
+
 		public override int CompareTo(object obj)
 		{
 			var item = obj as UIModItem;

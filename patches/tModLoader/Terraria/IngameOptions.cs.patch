@@ -1,0 +1,34 @@
+--- src/Terraria\Terraria\IngameOptions.cs
++++ src/tModLoader\Terraria\IngameOptions.cs
+@@ -180,7 +_,7 @@
+ 			IngameOptions.noSound = false;
+ 			bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
+ 			int num7 = flag5 ? 1 : 0;
+-			int num8 = 5 + num7 + 2;
++			int num8 = 5 + num7 + 2 + 1; // Add 1 for ModConfig menu
+ 			Vector2 vector = new Vector2(value3.X + value2.X / 4f, value3.Y + (float)(num3 * 5 / 2));
+ 			Vector2 vector2 = new Vector2(0f, value2.Y - (float)(num3 * 5)) / (float)(num8 + 1);
+ 			if (flag)
+@@ -257,6 +_,21 @@
+ 				{
+ 					IngameOptions.Close();
+ 					IngameFancyUI.OpenKeybinds();
++				}
++			}
++			num10++;
++			if (IngameOptions.DrawLeftSide(sb, "Mod Configuration", num10, vector, vector2, IngameOptions.leftScale, 0.7f, 0.8f, 0.01f))
++			{
++				IngameOptions.leftHover = num10;
++				if (flag4)
++				{
++					IngameOptions.Close();
++					IngameFancyUI.CoverNextFrame();
++					Main.playerInventory = false;
++					Main.editChest = false;
++					Main.npcChatText = "";
++					Main.inFancyUI = true;
++					Main.InGameUI.SetState(ModLoader.Interface.modConfigList);
+ 				}
+ 			}
+ 			num10++;
+

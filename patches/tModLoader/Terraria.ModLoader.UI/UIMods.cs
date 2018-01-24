@@ -209,6 +209,15 @@ namespace Terraria.ModLoader.UI
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(11, -1, -1, 1);
+			// To prevent entering the game with Configs that violate ReloadRequired
+			foreach (var mod in ModLoader.LoadedMods)
+			{
+				if (ConfigManager.ModNeedsReload(mod))
+				{
+					Main.menuMode = Interface.reloadModsID;
+					return;
+				}
+			}
 			Main.menuMode = 0;
 		}
 

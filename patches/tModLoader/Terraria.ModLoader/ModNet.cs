@@ -86,7 +86,7 @@ namespace Terraria.ModLoader
 			p.Write(syncMods.Length);
 			Console.WriteLine($"syncMods {syncMods.Length}");
 
-			foreach (var mod in syncMods)
+			foreach (var mod in syncMods) // We only sync ServerDictates configs for ModSide.Both. ModSide.Server can have 
 			{
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());

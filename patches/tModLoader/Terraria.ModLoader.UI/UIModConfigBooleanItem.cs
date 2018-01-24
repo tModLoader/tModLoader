@@ -13,6 +13,7 @@ namespace Terraria.ModLoader.UI
 	{
 		private Color backgroundColor; // TODO inherit parent object color?
 		protected Func<string> _TextDisplayFunction;
+		protected Func<string> _TooltipFunction;
 		protected PropertyFieldWrapper memberInfo;
 		protected object item;
 		protected bool drawLabel = true;
@@ -29,6 +30,11 @@ namespace Terraria.ModLoader.UI
 			if (att != null)
 			{
 				this._TextDisplayFunction = () => att.Label;
+			}
+			TooltipAttribute tta = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipAttribute));
+			if (tta != null)
+			{
+				this._TooltipFunction = () => tta.tooltip;
 			}
 
 			// Class
@@ -61,6 +67,8 @@ namespace Terraria.ModLoader.UI
 			Vector2 vector = new Vector2(dimensions.X, dimensions.Y);
 			Vector2 baseScale = new Vector2(0.8f);
 			Color color = IsMouseHovering ? Color.White : Color.White;
+			if (!memberInfo.CanWrite)
+				color = Color.Gray;
 			//color = Color.Lerp(color, Color.White, base.IsMouseHovering ? 1f : 0f);
 			Color panelColor = base.IsMouseHovering ? this.backgroundColor : this.backgroundColor.MultiplyRGBA(new Color(180, 180, 180));
 			Vector2 position = vector;
@@ -70,6 +78,21 @@ namespace Terraria.ModLoader.UI
 				position.X += 8f;
 				position.Y += 8f;
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, this._TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
+			}
+			if (IsMouseHovering && _TooltipFunction != null)
+			{
+				string hoverText = _TooltipFunction();
+				float x = Main.fontMouseText.MeasureString(hoverText).X;
+				vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
+				if (vector.Y > (float)(Main.screenHeight - 30))
+				{
+					vector.Y = (float)(Main.screenHeight - 30);
+				}
+				if (vector.X > (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16))
+				{
+					vector.X = (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16);
+				}
+				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, hoverText, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 			}
 		}
 
@@ -115,11 +138,12 @@ namespace Terraria.ModLoader.UI
 			else
 			{
 				this._IsOnFunction = () => (bool)memberInfo.GetValue(modConfig);
-				this.OnClick += (ev, v) =>
-				{
-					memberInfo.SetValue(modConfig, !(bool)memberInfo.GetValue(modConfig));
-					Interface.modConfig.SetPendingChanges();
-				};
+				if(memberInfo.CanWrite)
+					this.OnClick += (ev, v) =>
+					{
+						memberInfo.SetValue(modConfig, !(bool)memberInfo.GetValue(modConfig));
+						Interface.modConfig.SetPendingChanges();
+					};
 			}
 
 		}

@@ -369,10 +369,13 @@
  						{
  							TileEntity.ByID.Remove(num180);
  							TileEntity.ByPosition.Remove(tileEntity2.Position);
-@@ -3489,9 +_,34 @@
+@@ -3489,9 +_,37 @@
  						CombatText.NewText(new Rectangle(x13, y13, 0, 0), color4, networkText.ToString(), false, false);
  						return;
  					}
++				case MessageID.InGameChangeConfig:
++					ConfigManager.HandleInGameChangeConfigPacket(reader, whoAmI);
++					return;
 +				case MessageID.ModPacket:
 +					ModNet.HandleModPacket(reader, whoAmI);
 +					return;

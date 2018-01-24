@@ -64,6 +64,7 @@ namespace Terraria.ModLoader.UI
 
 		void DefaultSetValue(int value)
 		{
+			if (!memberInfo.CanWrite) return;
 			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
 			Interface.modConfig.SetPendingChanges();
 		}

@@ -392,10 +392,14 @@
  		public const byte ShopOverride = 104;
  		public const byte GemLockToggle = 105;
  		public const byte PoofOfSmoke = 106;
-@@ -129,5 +_,24 @@
+@@ -129,5 +_,28 @@
  		public const byte PlayerDeathV2 = 118;
  		public const byte CombatTextString = 119;
  		public const byte Count = 120;
++		// Sent by Clients who wish to change MultiplayerSyncMode.ServerDictates ModConfigs. Clients send Modname, configname, and json string.
++		// Server determines if ModConfig.ReloadRequired and ModConfig.ShouldAcceptClientChanges. Replies with ShouldAcceptClientChanges message if rejected.
++		// Client receives bool success, message, if success, additionally modname, configname, json and applies them locally.
++		public const byte InGameChangeConfig = 249;
 +		//contains a netID followed by custom data sent by mods
 +		//special case netID == -1, is sent by the server in response to SyncMods and contains the netIDs of every non-server only mod
 +		//netIDs will be sent for no-sync mods, and packets will be ignored if the mod is not installed on the client

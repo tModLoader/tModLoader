@@ -62,12 +62,12 @@ namespace Terraria.ModLoader.UI
 
 
 			PropertyInfo[] properties = item.GetType().GetProperties(
-				BindingFlags.DeclaredOnly |
+			//	BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
 				BindingFlags.Instance);
 
 			FieldInfo[] fields = item.GetType().GetFields(
-				BindingFlags.DeclaredOnly |
+			//	BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
 				BindingFlags.Instance);
 

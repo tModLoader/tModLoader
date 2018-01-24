@@ -26,6 +26,7 @@ namespace Terraria.ModLoader.UI
 	{
 		private UIElement uIElement;
 		private UITextPanel<string> headerTextPanel;
+		private UITextPanel<string> message;
 		private UITextPanel<string> previousConfigButton;
 		private UITextPanel<string> nextConfigButton;
 		private UITextPanel<string> saveConfigButton;
@@ -54,9 +55,16 @@ namespace Terraria.ModLoader.UI
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
 
+			message = new UITextPanel<string>("");
+			message.Width.Set(-20f, 1f);
+			message.Height.Set(20f, 0f);
+			//message.Top.Set(15f, 0f);
+			uIPanel.Append(message);
+
 			configList = new UIList();
 			configList.Width.Set(-25f, 1f);
-			configList.Height.Set(0f, 1f);
+			configList.Height.Set(-40f, 1f);
+			configList.Top.Set(40f, 0f);
 			configList.ListPadding = 5f;
 			uIPanel.Append(configList);
 
@@ -132,14 +140,18 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
+
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(ID.SoundID.MenuClose);
 			Main.menuMode = Interface.modsMenuID;
-			if (ConfigManager.ModNeedsReload(mod))
-			{
-				Main.menuMode = Interface.reloadModsID;
-			}
+
+			//Main.menuMode = 1127;
+			IngameFancyUI.Close();
+			//if (ConfigManager.ModNeedsReload(mod))
+			//{
+			//	Main.menuMode = Interface.reloadModsID;
+			//}
 		}
 
 		// TODO: with in-game version, disable MultiplayerSyncMode.ServerDictates configs (View Only maybe?)
@@ -150,7 +162,7 @@ namespace Terraria.ModLoader.UI
 			int index = modConfigs.IndexOf(modConfig);
 			modConfig = modConfigs[index - 1 < 0 ? modConfigs.Count - 1 : index - 1];
 			//modConfigClone = modConfig.Clone();
-			Main.menuMode = Interface.modConfigID;
+			DoMenuModeState();
 		}
 
 		private void NextConfig(UIMouseEvent evt, UIElement listeningElement)
@@ -160,17 +172,64 @@ namespace Terraria.ModLoader.UI
 			int index = modConfigs.IndexOf(modConfig);
 			modConfig = modConfigs[index + 1 > modConfigs.Count ? 0 : index + 1];
 			//modConfigClone = modConfig.Clone();
-			Main.menuMode = Interface.modConfigID;
+			DoMenuModeState();
+		}
+
+		private void DoMenuModeState()
+		{
+			if (Main.gameMenu)
+				Main.menuMode = Interface.modConfigID;
+			else
+				Main.InGameUI.SetState(Interface.modConfig);
 		}
 
 		// TODO: With in-game version prevent save that would cause ReloadRequired to be true?
 		// Applies the changes to 
 		private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(ID.SoundID.MenuOpen);
-			// save takes clone and saves to disk, but how can we know if we need to reload
-			ConfigManager.Save(modConfigClone);
-			ConfigManager.Load(modConfig);
+			if (Main.gameMenu)
+			{
+				Main.PlaySound(ID.SoundID.MenuOpen);
+				// save takes clone and saves to disk, but how can we know if we need to reload
+				ConfigManager.Save(modConfigClone);
+				ConfigManager.Load(modConfig); // Changes not taken effect?
+											   // Reload will be forced by Back Button in UIMods if needed
+			}
+			else
+			{
+				// TODO: Server request.
+				if (modConfigClone.Mode == MultiplayerSyncMode.ServerDictates && Main.netMode == ID.NetmodeID.MultiplayerClient)
+				{
+					SetMessage("Asking server to accept changes...", Color.Yellow);
+
+					var requestChanges = new ModPacket(ID.MessageID.InGameChangeConfig);
+					requestChanges.Write(modConfigClone.mod.Name);
+					requestChanges.Write(modConfigClone.Name);
+					string json = JsonConvert.SerializeObject(modConfigClone, ConfigManager.serializerSettings);
+					requestChanges.Write(json);
+					requestChanges.Send();
+
+					//IngameFancyUI.Close();
+
+					// Make a packet with just this config and send to server.
+					// Server responds. On receive, Save and Load? No. Swap out pendingConfig<NetConfig> and PopulateObject
+					//                      -- if UI is open, update message and reload: DoMenuModeState();
+
+					return;
+				}
+				if (modConfigClone.NeedsReload(modConfig))
+				{
+					Main.PlaySound(ID.SoundID.MenuClose);
+					SetMessage("Can't save because changes would require a reload.", Color.Red);
+				}
+				else
+				{
+					Main.PlaySound(ID.SoundID.MenuOpen);
+					ConfigManager.Save(modConfigClone);
+					ConfigManager.Load(modConfig);
+				}
+			}
+
 
 			//if (ConfigManager.ModNeedsReload(modConfig.mod))
 			//{
@@ -178,7 +237,7 @@ namespace Terraria.ModLoader.UI
 			//}
 			//else
 			//{
-			Main.menuMode = Interface.modConfigID;
+			DoMenuModeState();
 			//}
 
 			// RELOAD HERE!
@@ -187,10 +246,11 @@ namespace Terraria.ModLoader.UI
 		private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(ID.SoundID.MenuOpen);
-			ConfigManager.Reset(modConfigClone);
-			ConfigManager.Save(modConfigClone);
-			ConfigManager.Load(modConfig);
-			Main.menuMode = Interface.modConfigID;
+			//ConfigManager.Reset(modConfigClone);
+			//ConfigManager.Save(modConfigClone);
+			//ConfigManager.Load(modConfig);
+			pendingRevertDefaults = true;
+			DoMenuModeState();
 		}
 
 		private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
@@ -203,7 +263,7 @@ namespace Terraria.ModLoader.UI
 		{
 			// reclone, then reload this UI
 			//modConfigClone = modConfig.Clone();
-			Main.menuMode = Interface.modConfigID;
+			DoMenuModeState();
 		}
 
 		bool pendingChanges;
@@ -212,6 +272,20 @@ namespace Terraria.ModLoader.UI
 			pendingChanges |= changes;
 		}
 
+		public void SetMessage(string text, Color color)
+		{
+			message.TextScale = 1f;
+			message.SetText(text);
+			float width = Main.fontMouseText.MeasureString(text).X;
+			if (width > 525)
+			{
+				message.TextScale = 525 / width;
+				message.Recalculate();
+			}
+			message.TextColor = color;
+		}
+
+		bool netUpdate;
 		public override void Update(GameTime gameTime)
 		{
 			if (pendingChanges)
@@ -220,6 +294,11 @@ namespace Terraria.ModLoader.UI
 				uIElement.Append(revertConfigButton);
 				pendingChanges = false;
 			}
+			if (netUpdate)
+			{
+				DoMenuModeState();
+				netUpdate = false;
+			}
 		}
 
 		// do we need 2 copies? We can discard changes by reloading.
@@ -227,14 +306,22 @@ namespace Terraria.ModLoader.UI
 		// when we get new server configs from server...replace, don't save?
 		// reload manually, reload fresh server config?
 		// need some CopyTo method to preserve references....hmmm
-		internal void SetMod(Mod mod)
+		internal void SetMod(Mod mod, ModConfig config = null)
 		{
 			this.mod = mod;
 			if (ConfigManager.Configs.ContainsKey(mod))
 			{
 				modConfigs = ConfigManager.Configs[mod];
 				modConfig = modConfigs[0];
+				if (config != null)
+				{
+					modConfig = ConfigManager.Configs[mod].First(x => x == config);
+					// TODO, decide which configs to show in game: modConfigs = ConfigManager.Configs[mod].Where(x => x.Mode == MultiplayerSyncMode.UniquePerPlayer).ToList();
+				}
 				//modConfigClone = modConfig.Clone();
+
+				// if in game, maybe have all configs open
+
 			}
 			else
 			{
@@ -242,10 +329,19 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		static bool pendingRevertDefaults;
 		public override void OnActivate()
 		{
+			SetMessage("", Color.White);
 			headerTextPanel.SetText(modConfig.mod.DisplayName + ": " + modConfig.Name);
 			modConfigClone = modConfig.Clone();
+			if (pendingRevertDefaults)
+			{
+				pendingRevertDefaults = false;
+				ConfigManager.Reset(modConfigClone);
+				pendingChanges = true;
+			}
+
 			int index = modConfigs.IndexOf(modConfig);
 			int count = modConfigs.Count;
 			uIElement.RemoveChild(saveConfigButton);
@@ -262,12 +358,12 @@ namespace Terraria.ModLoader.UI
 			// load all mod config options into UIList
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
 			PropertyInfo[] properties = modConfigClone.GetType().GetProperties(
-				BindingFlags.DeclaredOnly |
+				//BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
 				BindingFlags.Instance);
 
 			FieldInfo[] fields = modConfigClone.GetType().GetFields(
-				BindingFlags.DeclaredOnly |
+				//BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
 				BindingFlags.Instance);
 
@@ -277,7 +373,7 @@ namespace Terraria.ModLoader.UI
 			{
 				if (variable.isProperty && variable.Name == "Mode")
 					continue;
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)))
+				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 					continue;
 
 				WrapIt(configList, ref top, variable, modConfigClone, ref i);
@@ -362,11 +458,11 @@ namespace Terraria.ModLoader.UI
 						subitem = Activator.CreateInstance(type);
 						JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
 
-						JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
-						if (jsonDefaultValueAttribute != null)
-						{
-							JsonConvert.PopulateObject(jsonDefaultValueAttribute.json, subitem, ConfigManager.serializerSettings);
-						}
+						//JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
+						//if (jsonDefaultValueAttribute != null)
+						//{
+						//	JsonConvert.PopulateObject(jsonDefaultValueAttribute.json, subitem, ConfigManager.serializerSettings);
+						//}
 
 						memberInfo.SetValue(item, subitem);
 					}
@@ -451,8 +547,13 @@ namespace Terraria.ModLoader.UI
 			if (fieldInfo != null)
 				fieldInfo.SetValue(obj, value);
 			else
-				propertyInfo.SetValue(obj, value, null);
+			{
+				if (propertyInfo.CanWrite) // TODO: Grey out?
+					propertyInfo.SetValue(obj, value, null);
+			}
 		}
+
+		public bool CanWrite => fieldInfo != null ? true : propertyInfo.CanWrite;
 	}
 
 	abstract class UIConfigRangeItem : UIModConfigItem

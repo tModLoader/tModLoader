@@ -37,7 +37,7 @@ namespace ExampleMod
 		// but because tModLoader is overwriting with JSON, that value will be overwritten when the mod loads.
 		// We must use the DefaultValue Attribute instead of setting the value normally:
 		[DefaultValue(true)]
-		public bool BoolExample;
+		public bool UselessBoolExample;
 
 		// This is private. You'll notice that it doesn't show up in the config menu. Don't set something private.
 		private bool PrivateFieldBoolExample;
@@ -49,11 +49,17 @@ namespace ExampleMod
 		// You'll notice this next one is a Property instead of a field. That works too.
 		// Here we see an attribute added by tModLoader: LabelAttribute. This one allows us to add a label so the user knows more about the setting they are changing.
 		[Label("Disable Example Wings Item")]
+		// Similar to Label, this sets the tooltip. Tooltips are useful for slightly longer and more detailed explanations of config options.
+		[Tooltip("Prevents Loading the ExampleWings item. Requires a Reload")]
 		// ReloadRequired hints that if this value is changed, a reload is required for the mod to properly work. 
 		// Here we use it so if we disable ExampleWings from being loaded, we can properly prevent autoload in ExampleWings.cs
 		// Failure to properly use ReloadRequired will cause many, many problems including ID desync.
 		[ReloadRequired]
 		public bool DisableExampleWings { get; set; }
+
+		[Label("Disable Volcanos")]
+		// Our game logic can handle toggling this setting in-game, so you'll notice we do NOT decorate this property with ReloadRequired
+		public bool DisableVolcanos { get; set; }
 
 		// While ReloadRequired is sufficient for most, some may require more logic in deciding if a reload is required. Here is an incomplete example
 		/*public override bool NeedsReload(ModConfig old)
@@ -69,6 +75,17 @@ namespace ExampleMod
 		public override void PostAutoLoad()
 		{
 			ExampleMod.exampleServerConfig = this;
+		}
+
+		// With more effort, a mod could implement more control over changing mod settings.
+		public override bool AcceptClientChanges(ModConfig currentConfig, int whoAmI, ref string message)
+		{
+			if (Main.player[whoAmI].name == "jopojelly")
+			{
+				message = "Sorry, players named jopojelly aren't allowed to change settings.";
+				return false;
+			}
+			return true;
 		}
 	}
 
@@ -92,6 +109,33 @@ namespace ExampleMod
 		[Label("Show mod origin in tooltip")]
 		public bool ShowModOriginTooltip;
 
+		public override void PostAutoLoad()
+		{
+			ExampleMod.exampleClientConfig = this;
+			UI.ExampleUI.visible = ShowCoinUI;
+		}
+
+		public override void PostSave()
+		{
+			// Here we use the PostSave hook to initialize ExampleUI.visible with the new values.
+			// We maintain both ExampleUI.visible and ShowCoinUI as separate values so ShowCoinUI can act as a default while ExampleUI.visible can change within a play session.
+			UI.ExampleUI.visible = ShowCoinUI;
+		}
+	}
+
+	/// <summary>
+	/// This config is just a showcase of various attributes and their effects in the UI window.
+	/// </summary>
+	public class ModConfigShowcase : ModConfig
+	{
+		public override MultiplayerSyncMode Mode
+		{
+			get
+			{
+				return MultiplayerSyncMode.UniquePerPlayer;
+			}
+		}
+
 		[Label("This is a float")]
 		public float SomeFLoat;
 
@@ -99,11 +143,11 @@ namespace ExampleMod
 		[Increment(.25f)]
 		[DrawTicks]
 		[DefaultValue(2f)]
-		public float IncrementalFloat;
+		public float IncrementalRangedFloat;
 
 		[Range(0f, 5f)]
 		[Increment(.11f)]
-		public float IncrementalFloat2;
+		public float IncrementByPoint11;
 
 		[Range(2f, 5f)]
 		[DefaultValue(2f)]
@@ -180,7 +224,7 @@ namespace ExampleMod
 		public override ModConfig Clone()
 		{
 			// Since ListOfInts is a reference type, we need to clone it manually so our config works properly.
-			var clone = (ExampleConfigClient)base.Clone();
+			var clone = (ModConfigShowcase)base.Clone();
 			clone.ListOfInts = new List<int>(ListOfInts);
 			clone.simpleDataExample = simpleDataExample == null ? null : simpleDataExample.Clone();
 			clone.simpleDataExample2 = simpleDataExample2.Clone();
@@ -190,19 +234,7 @@ namespace ExampleMod
 			return clone;
 		}
 
-		public override void PostAutoLoad()
-		{
-			ExampleMod.exampleClientConfig = this;
-			UI.ExampleUI.visible = ShowCoinUI;
-		}
-
-		public override void PostSave()
-		{
-			// Here we use the PostSave hook to initialize ExampleUI.visible with the new values.
-			// I maintain both ExampleUI.visible and ShowCoinUI as separate values so ShowCoinUI can act as a default while ExampleUI.visible can change within a play session.
-			UI.ExampleUI.visible = ShowCoinUI;
-		}
-
+		// ShouldSerialize is useful. Here we use it so ListOfInts doesn't show up as a useless empty entry in the config file. https://www.newtonsoft.com/json/help/html/ConditionalProperties.htm
 		public bool ShouldSerializeListOfInts()
 		{
 			return ListOfInts.Count > 0;
