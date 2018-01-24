@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 		public virtual bool NeedsReload(ModConfig old)
 		{
 			PropertyInfo[] props = GetType().GetProperties(
-			//	BindingFlags.DeclaredOnly |
+				//	BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
 				BindingFlags.Instance);
 
@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 			}
 
 			FieldInfo[] fields = GetType().GetFields(
-			//	BindingFlags.DeclaredOnly |
+				//	BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
 				BindingFlags.Instance);
 
@@ -257,6 +257,14 @@ namespace Terraria.ModLoader
 		{
 			this.increment = increment;
 		}
+		public IncrementAttribute(uint increment)
+		{
+			this.increment = increment;
+		}
+		public IncrementAttribute(byte increment)
+		{
+			this.increment = increment;
+		}
 	}
 
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
@@ -272,6 +280,16 @@ namespace Terraria.ModLoader
 		}
 
 		public RangeAttribute(float min, float max)
+		{
+			this.min = min;
+			this.max = max;
+		}
+		public RangeAttribute(uint min, uint max)
+		{
+			this.min = min;
+			this.max = max;
+		}
+		public RangeAttribute(byte min, byte max)
 		{
 			this.min = min;
 			this.max = max;

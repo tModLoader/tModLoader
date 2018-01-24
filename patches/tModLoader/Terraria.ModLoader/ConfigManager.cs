@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 			ObjectCreationHandling = ObjectCreationHandling.Replace,
 			NullValueHandling = NullValueHandling.Ignore,
-			Converters = { new Newtonsoft.Json.Converters.VersionConverter() },
+			Converters = converters,
 		};
 
 		internal static readonly JsonSerializerSettings serializerSettingsCompact = new JsonSerializerSettings
@@ -35,7 +35,12 @@ namespace Terraria.ModLoader
 			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 			ObjectCreationHandling = ObjectCreationHandling.Replace,
 			NullValueHandling = NullValueHandling.Ignore,
-			Converters = { new Newtonsoft.Json.Converters.VersionConverter() },
+			Converters = converters,
+		};
+
+		private static readonly IList<JsonConverter> converters = new List<JsonConverter>() {
+			new Newtonsoft.Json.Converters.VersionConverter(),
+			new ColorJsonConverter(),
 		};
 
 		public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "Mod Configs");
@@ -239,5 +244,30 @@ namespace Terraria.ModLoader
 		// 
 
 		// Save
+	}
+
+	public class ColorJsonConverter : JsonConverter
+	{
+		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+		{
+			Color c = (Color)value;
+			writer.WriteValue($"{c.R}, {c.G}, {c.B}, {c.A}");
+		}
+
+		public override bool CanConvert(Type objectType)
+		{
+			return objectType == typeof(Color);
+		}
+
+		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		{
+			var colorStr = ((string)reader.Value).Split(',');
+			byte r = 255, g = 255, b = 255, a = 255;
+			if (colorStr.Length >= 1) r = byte.Parse(colorStr[0]);
+			if (colorStr.Length >= 2) g = byte.Parse(colorStr[1]);
+			if (colorStr.Length >= 3) b = byte.Parse(colorStr[2]);
+			if (colorStr.Length >= 4) a = byte.Parse(colorStr[3]);
+			return new Color(r, g, b, a);
+		}
 	}
 }

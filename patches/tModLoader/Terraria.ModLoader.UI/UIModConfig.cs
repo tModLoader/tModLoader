@@ -398,6 +398,14 @@ namespace Terraria.ModLoader.UI
 			{
 				e = new UIModConfigFloatItem(memberInfo, item, sliderIDInPage++, (IList<float>)array, index);
 			}
+			else if (type == typeof(byte))
+			{
+				e = new UIModConfigByteItem(memberInfo, item, sliderIDInPage++, (IList<byte>)array, index);
+			}
+			else if (type == typeof(uint))
+			{
+				e = new UIModConfigUIntItem(memberInfo, item, sliderIDInPage++, (IList<uint>)array, index);
+			}
 			else if (type == typeof(int))
 			{
 				e = new UIModConfigIntItem(memberInfo, item, sliderIDInPage++, (IList<int>)array, index);
@@ -469,6 +477,17 @@ namespace Terraria.ModLoader.UI
 					e = new UIModConfigObjectItem(memberInfo, subitem, ref sliderIDInPage);
 					elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 				}
+			}
+			else if (type.IsValueType && !type.IsPrimitive)
+			{
+				//e = new UIText($"{memberInfo.Name} not handled yet ({type.Name})");
+				//e.Top.Pixels += 6;
+				//e.Left.Pixels += 4;
+
+				// Structs not working, has to do with boxing stuff.
+				object subitem = memberInfo.GetValue(item);
+				e = new UIModConfigObjectItem(memberInfo, subitem, ref sliderIDInPage);
+				elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 			}
 			else
 			{
