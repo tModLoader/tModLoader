@@ -107,17 +107,17 @@ namespace Terraria.ModLoader
 				}
 				else
 				{
-					var disabledVersions = modFiles.Where(m => m.name == header.name).ToArray();
-					var matching = disabledVersions.FirstOrDefault(header.Matches);
+					var disabledVersions = modFiles.Where(m => m.Name == header.name).ToArray();
+					var matching = disabledVersions.FirstOrDefault(mod => header.Matches(mod.modFile));
 					if (matching != null)
 					{
-						ModLoader.EnableMod(matching);
+						matching.Enabled = true;
 						needsReload = true;
 						continue;
 					}
 
 					if (disabledVersions.Length > 0)
-						header.path = disabledVersions[0].path;
+						header.path = disabledVersions[0].modFile.path;
 				}
 
 				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
@@ -129,7 +129,7 @@ namespace Terraria.ModLoader
 			foreach (var mod in clientMods)
 				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name))
 				{
-					ModLoader.DisableMod(mod.File);
+					ModLoader.DisableMod(mod.Name);
 					needsReload = true;
 				}
 
@@ -220,10 +220,7 @@ namespace Terraria.ModLoader
 				{
 					downloadingFile.Close();
 					var mod = new TmodFile(downloadingMod.path);
-					mod.Read();
-					var ex = mod.ValidMod();
-					if (ex != null)
-						throw ex;
+					mod.Read(TmodFile.LoadedState.Integrity);
 
 					if (!downloadingMod.Matches(mod))
 						throw new Exception("Hash mismatch");
@@ -231,7 +228,7 @@ namespace Terraria.ModLoader
 					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
 						throw new Exception("Mod was not signed by the Mod Browser");
 
-					ModLoader.EnableMod(mod);
+					ModLoader.EnableMod(mod.name);
 
 					if (downloadQueue.Count > 0)
 						DownloadNextMod();

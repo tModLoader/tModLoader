@@ -20,12 +20,11 @@ namespace Terraria.ModLoader.UI
 		private string mod;
 		private Texture2D dividerTexture;
 		private UIText modName;
-		private DateTime lastBuildTime;
+		private LocalMod builtMod;
 
-		public UIModSourceItem(string mod, bool publishable, DateTime lastBuildTime)
+		public UIModSourceItem(string mod, LocalMod builtMod)
 		{
 			this.mod = mod;
-			this.lastBuildTime = lastBuildTime;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.Height.Set(90f, 0f);
@@ -55,7 +54,7 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.BuildAndReload;
 			base.Append(button2);
-			if (publishable)
+			if (builtMod != null)
 			{
 				UITextPanel<string> button3 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"), 1f, false);
 				button3.CopyStyle(button2);
@@ -98,7 +97,7 @@ namespace Terraria.ModLoader.UI
 			{
 				return base.CompareTo(obj);
 			}
-			return uIModSourceItem.lastBuildTime.CompareTo(lastBuildTime);
+			return uIModSourceItem.builtMod?.lastModified.CompareTo(builtMod?.lastModified) ?? 0;
 		}
 
 		private void BuildMod(UIMouseEvent evt, UIElement listeningElement)
@@ -130,7 +129,9 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(10);
 			try
 			{
-				TmodFile modFile = ModLoader.FindMods().Single(m => m.name == Path.GetFileName(mod));
+				var modFile = builtMod.modFile;
+				var bp = builtMod.properties;
+
 				var files = new List<UploadFile>();
 				files.Add(new UploadFile {
 					Name = "file",
@@ -141,12 +142,11 @@ namespace Terraria.ModLoader.UI
 				if (modFile.HasFile("icon.png"))
 				{
 					files.Add(new UploadFile {
-							Name = "iconfile",
-							Filename = "icon.png",
-							Content = modFile.GetFile("icon.png")
+						Name = "iconfile",
+						Filename = "icon.png",
+						Content = modFile.GetFile("icon.png")
 					});
 				}
-				BuildProperties bp = BuildProperties.ReadModFile(modFile);
 				var values = new NameValueCollection
 				{
 					{ "displayname", bp.displayName },

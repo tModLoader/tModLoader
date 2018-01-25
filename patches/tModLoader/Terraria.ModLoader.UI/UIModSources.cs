@@ -158,17 +158,22 @@ namespace Terraria.ModLoader.UI
 		{
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-			Task.Factory.StartNew(delegate
-			{
-				var mods = ModLoader.FindModSources();
-				var modFiles = ModLoader.FindMods();
-				foreach (string mod in mods)
-				{
-					TmodFile modFile = modFiles.SingleOrDefault(m => m.name == Path.GetFileName(mod));
-					items.Add(new UIModSourceItem(mod, modFile != null, modFile != null ? File.GetLastWriteTime(modFile.path) : new DateTime()));
-				}
-				updateNeeded = true;
-			});
+			Task.Factory.StartNew(
+				delegate {
+					var modSources = ModLoader.FindModSources();
+					var modFiles = ModLoader.FindMods();
+					return Tuple.Create(modSources, modFiles);
+				})
+				.ContinueWith(task => {
+					var modSources = task.Result.Item1;
+					var modFiles = task.Result.Item2;
+					foreach (string sourcePath in modSources)
+					{
+						var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
+						items.Add(new UIModSourceItem(sourcePath, builtMod));
+					}
+					updateNeeded = true;
+				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		public override void Update(GameTime gameTime)

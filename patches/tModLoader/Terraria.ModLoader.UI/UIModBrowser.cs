@@ -441,7 +441,7 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private void PopulateFromJSON(TmodFile[] installedMods, string json)
+		private void PopulateFromJSON(LocalMod[] installedMods, string json)
 		{
 			try
 			{
@@ -484,14 +484,14 @@ namespace Terraria.ModLoader.UI
 					bool exists = false;
 					bool update = false;
 					bool updateIsDowngrade = false;
-					var installed = installedMods.FirstOrDefault(m => m.name == name);
+					var installed = installedMods.FirstOrDefault(m => m.Name == name);
 					if (installed != null)
 					{
 						exists = true;
 						var cVersion = new Version(version.Substring(1));
-						if (cVersion > installed.version)
+						if (cVersion > installed.modFile.version)
 							update = true;
-						else if (cVersion < installed.version)
+						else if (cVersion < installed.modFile.version)
 							update = updateIsDowngrade = true;
 					}
 					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed);

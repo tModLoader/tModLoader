@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.UI
 		internal UITextPanel<string> extractButton;
 		internal UITextPanel<string> deleteButton;
 		private int gotoMenu = 0;
-		private TmodFile mod;
+		private LocalMod localMod;
 		private string url = "";
 		private string info = "";
 		private string modDisplayName = "";
@@ -127,33 +127,33 @@ namespace Terraria.ModLoader.UI
 			this.url = url;
 		}
 
-		internal void SetMod(TmodFile mod)
+		internal void SetMod(LocalMod mod)
 		{
-			this.mod = mod;
+			localMod = mod;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(11, -1, -1, 1);
-			Main.menuMode = this.gotoMenu;
+			Main.PlaySound(11);
+			Main.menuMode = gotoMenu;
 		}
 
 		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuOpen);
-			Interface.extractMod.SetMod(mod);
+			Interface.extractMod.SetMod(localMod);
 			Interface.extractMod.SetGotoMenu(gotoMenu);
 			Main.menuMode = Interface.extractModID;
 		}
 
 		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuClose);
-			File.Delete(mod.path);
+			File.Delete(localMod.modFile.path);
 			Main.menuMode = this.gotoMenu;
 		}
 
 		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(10);
 			Process.Start(url);
 		}
 
@@ -176,7 +176,7 @@ namespace Terraria.ModLoader.UI
 			{
 				uIElement.Append(modHomepageButton);
 			}
-			if (mod != null)
+			if (localMod != null)
 			{
 				uIElement.Append(deleteButton);
 				uIElement.Append(extractButton);

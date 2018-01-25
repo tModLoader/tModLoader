@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.GameContent.UI.States;
@@ -23,7 +19,7 @@ namespace Terraria.ModLoader.UI
 		private UILoaderAnimatedImage uiLoader;
 		private UIPanel scrollPanel;
 		internal static string ModListSaveDirectory = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModPacks";
-		internal static TmodFile[] mods;
+		internal static string[] mods;
 
 		public override void OnInitialize()
 		{
@@ -95,17 +91,12 @@ namespace Terraria.ModLoader.UI
 			// TODO
 			//Main.menuMode = Interface.modsMenuID;
 
-			string[] enabledMods = ModLoader.FindMods()
-				.Where(ModLoader.IsEnabled)
-				.Select(mod => mod.name)
-				.ToArray();
-
 			//Main.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModListSaveDirectory);
 
 			string path = ModListSaveDirectory + Path.DirectorySeparatorChar + filename + ".json";
 
-			string json = JsonConvert.SerializeObject(enabledMods, Newtonsoft.Json.Formatting.Indented);
+			string json = JsonConvert.SerializeObject(ModLoader.EnabledMods, Formatting.Indented);
 			File.WriteAllText(path, json);
 
 			Main.menuMode = Interface.modPacksMenuID; // should reload
@@ -133,7 +124,7 @@ namespace Terraria.ModLoader.UI
 			Task.Factory
 				.StartNew(delegate
 				{
-					mods = ModLoader.FindMods();
+					mods = ModLoader.FindMods().Select(m => m.Name).ToArray();
 					return FindModLists();
 				})
 				.ContinueWith(task =>

@@ -218,6 +218,7 @@
 +    <Compile Include="Terraria.ModLoader\GlobalWall.cs" />
 +    <Compile Include="Terraria.ModLoader\Interface.cs" />
 +    <Compile Include="Terraria.ModLoader\ItemLoader.cs" />
++    <Compile Include="Terraria.ModLoader\LocalMod.cs" />
 +    <Compile Include="Terraria.ModLoader\MapEntry.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLoader.cs" />

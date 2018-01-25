@@ -240,10 +240,7 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(12, -1, -1, 1);
 			foreach (UIModItem modItem in items)
 			{
-				if (!modItem.enabled)
-				{
-					modItem.ToggleEnabled(evt, listeningElement);
-				}
+				modItem.Enable();
 			}
 		}
 
@@ -252,10 +249,7 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(12, -1, -1, 1);
 			foreach (UIModItem modItem in items)
 			{
-				if (modItem.enabled)
-				{
-					modItem.ToggleEnabled(evt, listeningElement);
-				}
+				modItem.Disable();
 			}
 		}
 
@@ -333,7 +327,7 @@ namespace Terraria.ModLoader.UI
 				.ContinueWith(task =>
 				{
 					var mods = task.Result;
-					foreach (TmodFile mod in mods)
+					foreach (var mod in mods)
 					{
 						UIModItem modItem = new UIModItem(mod);
 						items.Add(modItem);

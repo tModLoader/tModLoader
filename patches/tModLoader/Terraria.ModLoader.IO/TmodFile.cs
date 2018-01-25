@@ -11,8 +11,19 @@ namespace Terraria.ModLoader.IO
 {
 	public class TmodFile : IEnumerable<KeyValuePair<string, byte[]>>
 	{
+		public enum LoadedState
+		{
+			None,
+			Integrity,
+			Info,
+			Code,
+			Assets
+		}
+
 		public readonly string path;
-		private readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
+
+		private LoadedState state;
+		private IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 
 		public Version tModLoaderVersion
 		{
@@ -51,8 +62,6 @@ namespace Terraria.ModLoader.IO
 		{
 			this.path = path;
 		}
-
-		internal DateTime lastModifiedTime;
 
 		public bool HasFile(string fileName) => files.ContainsKey(fileName.Replace('\\', '/'));
 
@@ -115,28 +124,38 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal void Read()
+		internal void Read(LoadedState desiredState)
 		{
-			try
+			if (desiredState <= state)
+				return;
+			
+			using (var fileStream = File.OpenRead(path))
+			using (var hReader = new BinaryReader(fileStream))
 			{
-				byte[] data;
-				using (var fileStream = File.OpenRead(path))
-				using (var reader = new BinaryReader(fileStream))
-				{
-					if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
-						throw new Exception("Magic Header != \"TMOD\"");
+				if (Encoding.ASCII.GetString(hReader.ReadBytes(4)) != "TMOD")
+					throw new Exception("Magic Header != \"TMOD\"");
 
-					tModLoaderVersion = new Version(reader.ReadString());
-					hash = reader.ReadBytes(20);
-					signature = reader.ReadBytes(256);
-					data = reader.ReadBytes(reader.ReadInt32());
-					var verifyHash = SHA1.Create().ComputeHash(data);
+				tModLoaderVersion = new Version(hReader.ReadString());
+				hash = hReader.ReadBytes(20);
+				signature = hReader.ReadBytes(256);
+				//currently unused, included to read the entire data-blob as a byte-array without decompressing or waiting to hit end of stream
+				int datalen = hReader.ReadInt32();
+
+				if (state < LoadedState.Integrity)
+				{
+					long pos = fileStream.Position;
+					var verifyHash = SHA1.Create().ComputeHash(fileStream);
 					if (!verifyHash.SequenceEqual(hash))
 						throw new Exception("Hash mismatch, data blob has been modified or corrupted");
+
+					state = LoadedState.Integrity;
+					if (desiredState == LoadedState.Integrity)
+						return;
+
+					fileStream.Position = pos;
 				}
 
-				using (var memoryStream = new MemoryStream(data))
-				using (var deflateStream = new DeflateStream(memoryStream, CompressionMode.Decompress))
+				using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress))
 				using (var reader = new BinaryReader(deflateStream))
 				{
 					name = reader.ReadString();
@@ -144,27 +163,43 @@ namespace Terraria.ModLoader.IO
 
 					int count = reader.ReadInt32();
 					for (int i = 0; i < count; i++)
-						AddFile(reader.ReadString(), reader.ReadBytes(reader.ReadInt32()));
+					{
+						string name = reader.ReadString();
+						byte[] content = reader.ReadBytes(reader.ReadInt32());
+						LoadedState fileState = GetFileState(name);
+						if (fileState > state && fileState <= desiredState)
+							AddFile(name, content);
+					}
 				}
 			}
-			catch (Exception e)
-			{
-				readException = e;
-			}
+			
+			if (desiredState >= LoadedState.Info && !HasFile("Info"))
+				throw new Exception("Missing Info file");
+
+			if (desiredState >= LoadedState.Code && !HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
+				throw new Exception("Missing All.dll or Windows.dll and Mono.dll");
+
+			state = desiredState;
 		}
 
-		internal Exception ValidMod()
+		private static LoadedState GetFileState(string fileName)
 		{
-			if (readException != null)
-				return readException;
+			if (fileName == "Info" || fileName == "icon.png")
+				return LoadedState.Info;
 
-			if (!HasFile("Info"))
-				return new Exception("Missing Info file");
+			if (fileName.EndsWith(".dll"))
+				return LoadedState.Code;
 
-			if (!HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
-				return new Exception("Missing All.dll or Windows.dll and Mono.dll");
+			return LoadedState.Assets;
+		}
 
-			return null;
+		internal void UnloadAssets()
+		{
+			files = files
+				.Where(file => GetFileState(file.Key) < LoadedState.Assets)
+				.ToDictionary(file => file.Key, file => file.Value);
+
+			state = LoadedState.Code;
 		}
 
 		public byte[] GetMainAssembly(bool? windows = null)

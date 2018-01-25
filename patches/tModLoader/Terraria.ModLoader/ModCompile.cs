@@ -32,7 +32,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private class BuildingMod : LoadingMod
+		private class BuildingMod : LocalMod
 		{
 			public string path;
 
@@ -54,7 +54,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static bool BuildAll(string[] modFolders, IBuildStatus status) {
-			var modList = new List<LoadingMod>();
+			var modList = new List<LocalMod>();
 			//read mod sources folder
 			foreach (var modFolder in modFolders) {
 				var mod = ReadProperties(modFolder, status);
@@ -65,22 +65,21 @@ namespace Terraria.ModLoader
 			}
 
 			//figure out which of the installed mods are required for building
-			var installedMods = FindMods()
-				.Where(mod => !modList.Exists(m => m.Name == mod.name))
-				.Select(mod => new LoadingMod(mod, BuildProperties.ReadModFile(mod)))
-				.ToList();
+			var installedMods = FindMods().Where(mod => !modList.Exists(m => m.Name == mod.Name)).ToList();
 			
-			var requiredFromInstall = new HashSet<LoadingMod>();
-			Action<LoadingMod> require = null;
-			require = (mod) => {
-				foreach (var dep in mod.properties.RefNames(true)) {
+			var requiredFromInstall = new HashSet<LocalMod>();
+			void Require(LocalMod mod)
+			{
+				foreach (var dep in mod.properties.RefNames(true))
+				{
 					var depMod = installedMods.SingleOrDefault(m => m.Name == dep);
 					if (depMod != null && requiredFromInstall.Add(depMod))
-						require(depMod);
+						Require(depMod);
 				}
-			};
+			}
+
 			foreach (var mod in modList)
-				require(mod);
+				Require(mod);
 
 			modList.AddRange(requiredFromInstall);
 
@@ -253,7 +252,7 @@ namespace Terraria.ModLoader
 			WAVCacheIO.ClearCache(mod.Name);
 
 			mod.modFile.Save();
-			EnableMod(mod.modFile);
+			EnableMod(mod.Name);
 			ActivateExceptionReporting();
 			ModLoader.isModder = true;
 			return true;
@@ -338,24 +337,27 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static List<LoadingMod> FindReferencedMods(BuildProperties properties) {
-			var mods = new Dictionary<string, LoadingMod>();
+		internal static List<LocalMod> FindReferencedMods(BuildProperties properties) {
+			var mods = new Dictionary<string, LocalMod>();
 			return FindReferencedMods(properties, mods) ? mods.Values.ToList() : null;
 		}
 
-		private static bool FindReferencedMods(BuildProperties properties, Dictionary<string, LoadingMod> mods) {
+		private static bool FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods) {
 			foreach (var refName in properties.RefNames(true)) {
 				if (mods.ContainsKey(refName))
 					continue;
 
 				var modFile = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
-				modFile.Read();
-				var ex = modFile.ValidMod();
-				if (ex != null) {
+				try
+				{
+					modFile.Read(TmodFile.LoadedState.Code);
+				}
+				catch (Exception ex)
+				{
 					ErrorLogger.LogBuildError("Mod reference " + refName + " " + ex);
 					return false;
 				}
-				var mod = new LoadingMod(modFile, BuildProperties.ReadModFile(modFile));
+				var mod = new LocalMod(modFile);
 				mods[refName] = mod;
 				FindReferencedMods(mod.properties, mods);
 			}
@@ -363,7 +365,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static void CompileMod(BuildingMod mod, List<LoadingMod> refMods, bool forWindows,
+		private static void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows,
 				ref byte[] dll, ref byte[] pdb) {
 			LoadReferences();
 			bool generatePDB = mod.properties.includePDB && forWindows;

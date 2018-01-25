@@ -43,10 +43,10 @@ namespace Terraria.ModLoader.UI
 		private UIImage modIcon;
 		public bool update = false;
 		public bool updateIsDowngrade = false;
-		public TmodFile installed;
+		public LocalMod installed;
 		private float left;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string modIconURL, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, TmodFile installed)
+		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string modIconURL, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, LocalMod installed)
 		{
 			this.displayname = displayname;
 			this.mod = name;
@@ -415,7 +415,7 @@ namespace Terraria.ModLoader.UI
 				homepage = (string)joResponse["homepage"];
 			}
 
-			Interface.modInfo.SetModName(this.displayname);
+			Interface.modInfo.SetModName(displayname);
 			Interface.modInfo.SetModInfo(description);
 			Interface.modInfo.SetMod(installed);
 			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);

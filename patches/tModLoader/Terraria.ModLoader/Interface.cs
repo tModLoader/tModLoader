@@ -100,7 +100,7 @@ namespace Terraria.ModLoader
 				modBrowser._categoryButtons[1].setCurrentState(1);
 			}
 			modBrowser.loading = false;
-			ModLoader.findModsCache.Clear();
+			ModLoader.modsDirCache.Clear();
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 		}
 
@@ -309,11 +309,11 @@ namespace Terraria.ModLoader
 			{
 				Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.versionedName);
 				Console.WriteLine();
-				TmodFile[] mods = ModLoader.FindMods();
+				var mods = ModLoader.FindMods();
 				for (int k = 0; k < mods.Length; k++)
 				{
-					Console.Write((k + 1) + "\t\t" + mods[k].name);
-					Console.WriteLine(" (" + (ModLoader.IsEnabled(mods[k]) ? "enabled" : "disabled") + ")");
+					Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
+					Console.WriteLine(" (" + (ModLoader.IsEnabled(mods[k].Name) ? "enabled" : "disabled") + ")");
 				}
 				if (mods.Length == 0)
 				{
@@ -336,16 +336,16 @@ namespace Terraria.ModLoader
 				Console.Clear();
 				if (command == "e")
 				{
-					foreach (TmodFile mod in mods)
+					foreach (var mod in mods)
 					{
-						ModLoader.EnableMod(mod);
+						mod.Enabled = true;
 					}
 				}
 				else if (command == "d")
 				{
-					foreach (TmodFile mod in mods)
+					foreach (var mod in mods)
 					{
-						ModLoader.DisableMod(mod);
+						mod.Enabled = false;
 					}
 				}
 				else if (command == "r")
@@ -357,7 +357,7 @@ namespace Terraria.ModLoader
 				}
 				else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length)
 				{
-					ModLoader.SetModActive(mods[value-1], !ModLoader.IsEnabled(mods[value-1]));
+					mods[value - 1].Enabled ^= true;
 				}
 			}
 		}

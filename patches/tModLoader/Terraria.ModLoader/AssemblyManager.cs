@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 			private string DllName(string dll) => eacEnabled ? dll : Name + '_' + dll + '_' + loadIndex;
 			private string WeakDepName(string depName) => eacEnabled ? depName : depName + "_0";
 
-			public void SetMod(ModLoader.LoadingMod mod) {
+			public void SetMod(LocalMod mod) {
 				if (modFile == null ||
 					modFile.version != mod.modFile.version ||
 					!modFile.hash.SequenceEqual(mod.modFile.hash))
@@ -101,6 +101,8 @@ namespace Terraria.ModLoader
 			public void LoadAssemblies() {
 				if (!NeedsReload)
 					return;
+
+				modFile.Read(TmodFile.LoadedState.Code);
 
 				foreach (var dll in properties.dllReferences)
 					LoadAssembly(EncapsulateReferences(modFile.GetFile("lib/" + dll + ".dll")));
@@ -187,11 +189,10 @@ namespace Terraria.ModLoader
 			return asm;
 		}
 
-		internal static List<Mod> InstantiateMods(List<ModLoader.LoadingMod> modsToLoad) {
+		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad) {
 			var modList = new List<LoadedMod>();
 			foreach (var loading in modsToLoad) {
-				LoadedMod mod;
-				if (!loadedMods.TryGetValue(loading.Name, out mod))
+				if (!loadedMods.TryGetValue(loading.Name, out LoadedMod mod))
 					mod = loadedMods[loading.Name] = new LoadedMod();
 
 				mod.SetMod(loading);
@@ -235,7 +236,7 @@ namespace Terraria.ModLoader
 					modInstances.Add(m);
 				}
 				catch (Exception e) {
-					ModLoader.DisableMod(mod.modFile);
+					ModLoader.DisableMod(mod.Name);
 					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
 					return null;
 				}
