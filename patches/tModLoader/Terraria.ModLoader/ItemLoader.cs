@@ -197,7 +197,7 @@ namespace Terraria.ModLoader
 		//add to Terraria.Item.Prefix
 		internal static bool RangedPrefix(Item item)
 		{
-			return item.modItem != null && GeneralPrefix(item) && item.ranged;
+			return item.modItem != null && GeneralPrefix(item) && (item.ranged || item.thrown);
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool MagicPrefix(Item item)
