@@ -78,6 +78,7 @@ var searchData=
   ['hookchangewaterfallstyle',['HookChangeWaterfallStyle',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#add5b97b0a9db7b428f5753edda089614',1,'Terraria::ModLoader::TileLoader']]],
   ['hookcheckactive',['HookCheckActive',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a9961afe343b09dce58e7ce93d402bb75',1,'Terraria::ModLoader::NPCLoader']]],
   ['hookcheckdead',['HookCheckDead',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a92ff86c7842a9f79f479a565e25f0d54',1,'Terraria::ModLoader::NPCLoader']]],
+  ['hookchooseprefix',['HookChoosePrefix',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a724d459f92f61043b79816dba4f837c9',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookclientclone',['HookClientClone',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a66ae0edd9bf13f50ed8dcd294f18f32d',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookcolliding',['HookColliding',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#affd20aad7014bdefe7a42e2698e7f00f',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['hookconsumeammo',['HookConsumeAmmo',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#aedf33aca4bac19d9a942f50919d1175e',1,'Terraria.ModLoader.ItemLoader.HookConsumeAmmo()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ae6a4004d57d69a7a6d254998f1069366',1,'Terraria.ModLoader.PlayerHooks.HookConsumeAmmo()']]],
