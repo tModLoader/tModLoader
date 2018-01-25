@@ -478,17 +478,29 @@
  				if (this.townNPC)
  				{
  					Rectangle rectangle = new Rectangle((int)(this.position.X + (float)(this.width / 2) - (float)NPC.townRangeX), (int)(this.position.Y + (float)(this.height / 2) - (float)NPC.townRangeY), NPC.townRangeX * 2, NPC.townRangeY * 2);
-@@ -58729,6 +_,10 @@
- 					this.life = this.lifeMax;
- 					this.dontTakeDamageFromHostiles = true;
+@@ -58731,6 +_,10 @@
  					this.netUpdate = true;
-+					return;
-+				}
-+				if (!NPCLoader.CheckDead(this))
-+				{
  					return;
  				}
++				if (!NPCLoader.CheckDead(this))
++				{
++					return;
++				}
  				NPC.noSpawnCycle = true;
+ 				if (this.townNPC && this.type != 37 && this.type != 453)
+ 				{
+@@ -58767,7 +_,10 @@
+ 				{
+ 					Main.PlaySound(this.DeathSound, this.position);
+ 				}
+-				if (this.type == 13 || this.type == 14 || this.type == 15)
++				if (NPCLoader.SpecialNPCLoot(this))
++				{
++				}
++				else if (this.type == 13 || this.type == 14 || this.type == 15)
+ 				{
+ 					bool flag = true;
+ 					for (int j = 0; j < 200; j++)
 @@ -59471,7 +_,7 @@
  
  		public static void ResetKillCount()

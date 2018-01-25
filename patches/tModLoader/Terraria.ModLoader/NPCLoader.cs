@@ -443,6 +443,24 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		private static HookList HookSpecialNPCLoot = AddHook<Func<NPC, bool>>(g => g.SpecialNPCLoot);
+
+		public static bool SpecialNPCLoot(NPC npc)
+		{
+			foreach (GlobalNPC g in HookSpecialNPCLoot.arr)
+			{
+				if (g.Instance(npc).SpecialNPCLoot(npc))
+				{
+					return true;
+				}
+			}
+			if (npc.modNPC != null)
+			{
+				return npc.modNPC.SpecialNPCLoot();
+			}
+			return false;
+		}
+
 		private static HookList HookPreNPCLoot = AddHook<Func<NPC, bool>>(g => g.PreNPCLoot);
 
 		public static bool PreNPCLoot(NPC npc)
