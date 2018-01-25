@@ -74,6 +74,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "drawOffsetY", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7bc8cbe91923866dd137b7cdfb17caa6", null ],
     [ "HeadTexture", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a4cf713cac49c0896a1ffc943fcdbcbab", null ],
     [ "music", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aab0a42de5692b33351e9e2bbac6cb6d1", null ],
+    [ "musicPriority", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a401aae23aa36d0c2cc9475ac6b3dfe73", null ],
     [ "Texture", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a528e19d143fb36a926e7097809c5681d", null ],
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab3571f511237283f0d54765c5e485448", null ],
     [ "mod", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9ce9cc54ec7752b36975c391eb1ce0d2", null ],

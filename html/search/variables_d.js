@@ -26,5 +26,6 @@ var searchData=
   ['mountfront',['MountFront',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#af75c8f3741bb21d9d64a7e26fd7a784e',1,'Terraria::ModLoader::PlayerLayer']]],
   ['mousecritter',['MouseCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a68a6809bc79f32461616125a4e50cb77',1,'Terraria::ModLoader::SpawnCondition']]],
   ['mummy',['Mummy',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ac024d66b4757d429582138bb41b704af',1,'Terraria::ModLoader::SpawnCondition']]],
-  ['music',['music',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aab0a42de5692b33351e9e2bbac6cb6d1',1,'Terraria::ModLoader::ModNPC']]]
+  ['music',['music',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aab0a42de5692b33351e9e2bbac6cb6d1',1,'Terraria::ModLoader::ModNPC']]],
+  ['musicpriority',['musicPriority',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a401aae23aa36d0c2cc9475ac6b3dfe73',1,'Terraria::ModLoader::ModNPC']]]
 ];

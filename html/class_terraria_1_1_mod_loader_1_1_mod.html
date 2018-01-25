@@ -536,8 +536,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af95f63f91b0a1d257d56ac059bbd7854"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#af95f63f91b0a1d257d56ac059bbd7854">Unload</a> ()</td></tr>
 <tr class="memdesc:af95f63f91b0a1d257d56ac059bbd7854"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called whenever this mod is unloaded from the game. Use it to undo changes that you've made in Load that aren't automatically handled (for example, modifying the texture of a vanilla item). Mods are guaranteed to be unloaded in the reverse order they were loaded in.  <a href="#af95f63f91b0a1d257d56ac059bbd7854">More...</a><br /></td></tr>
 <tr class="separator:af95f63f91b0a1d257d56ac059bbd7854"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9e2d1f3f574493a3929a34c12016070"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ab9e2d1f3f574493a3929a34c12016070">UpdateMusic</a> (ref int music, ref <a class="el" href="namespace_terraria_1_1_mod_loader.html#a2f24335a34de4ae16e51b7a9c8dd0ed9">MusicPriority</a> priority)</td></tr>
+<tr class="memdesc:ab9e2d1f3f574493a3929a34c12016070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what music should currently play.  <a href="#ab9e2d1f3f574493a3929a34c12016070">More...</a><br /></td></tr>
+<tr class="separator:ab9e2d1f3f574493a3929a34c12016070"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad065cd0795e3f1abbb4328bed221508c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ad065cd0795e3f1abbb4328bed221508c">UpdateMusic</a> (ref int music)</td></tr>
-<tr class="memdesc:ad065cd0795e3f1abbb4328bed221508c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what music should currently play.  <a href="#ad065cd0795e3f1abbb4328bed221508c">More...</a><br /></td></tr>
+<tr class="memdesc:ad065cd0795e3f1abbb4328bed221508c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A legacy hook that you should no longer use. Use the version with two parameters instead.  <a href="#ad065cd0795e3f1abbb4328bed221508c">More...</a><br /></td></tr>
 <tr class="separator:ad065cd0795e3f1abbb4328bed221508c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af340bf9dfb387a748ee760e9bccd48dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#af340bf9dfb387a748ee760e9bccd48dc">WallType</a> (string name)</td></tr>
 <tr class="memdesc:af340bf9dfb387a748ee760e9bccd48dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the type of the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html" title="This class represents a type of wall that can be added by a mod. Only one instance of this class will...">ModWall</a> of this mod with the given name. Returns 0 if no <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_wall.html" title="This class represents a type of wall that can be added by a mod. Only one instance of this class will...">ModWall</a> with the given name is found.  <a href="#af340bf9dfb387a748ee760e9bccd48dc">More...</a><br /></td></tr>
@@ -2096,7 +2099,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_8cs_source.html#l02102">2102</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_projectile_8cs_source.html#l00165">Terraria.ModLoader.ModProjectile.AutoStaticDefaults()</a>, <a class="el" href="_mod_item_8cs_source.html#l00175">Terraria.ModLoader.ModItem.AutoStaticDefaults()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00196">Terraria.ModLoader.ModNPC.AutoStaticDefaults()</a>, <a class="el" href="_mod_tile_8cs_source.html#l00091">Terraria.ModLoader.ModTile.chest</a>, <a class="el" href="_mod_loader_8cs_source.html#l00880">Terraria.ModLoader.ModLoader.GetTexture()</a>, <a class="el" href="_mod_item_8cs_source.html#l00026">Terraria.ModLoader.ModItem.item</a>, <a class="el" href="_mod_translation_8cs_source.html#l00010">Terraria.ModLoader.ModTranslation.Key</a>, <a class="el" href="_mod_mount_data_8cs_source.html#l00019">Terraria.ModLoader.ModMountData.mountData</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00022">Terraria.ModLoader.ModNPC.npc</a>, <a class="el" href="_mod_projectile_8cs_source.html#l00025">Terraria.ModLoader.ModProjectile.projectile</a>, <a class="el" href="_global_wall_8cs_source.html#l00040">Terraria.ModLoader.GlobalWall.SetDefaults()</a>, <a class="el" href="_global_tile_8cs_source.html#l00085">Terraria.ModLoader.GlobalTile.SetDefaults()</a>, <a class="el" href="_mod_buff_8cs_source.html#l00085">Terraria.ModLoader.ModBuff.SetDefaults()</a>, <a class="el" href="_mod_dust_8cs_source.html#l00144">Terraria.ModLoader.ModDust.SetDefaults()</a>, <a class="el" href="_mod_wall_8cs_source.html#l00149">Terraria.ModLoader.ModWall.SetDefaults()</a>, <a class="el" href="_mod_projectile_8cs_source.html#l00158">Terraria.ModLoader.ModProjectile.SetStaticDefaults()</a>, <a class="el" href="_mod_item_8cs_source.html#l00168">Terraria.ModLoader.ModItem.SetStaticDefaults()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00189">Terraria.ModLoader.ModNPC.SetStaticDefaults()</a>, <a class="el" href="_mod_water_style_8cs_source.html#l00035">Terraria.ModLoader.ModWaterStyle.Type</a>, <a class="el" href="_mod_wall_8cs_source.html#l00037">Terraria.ModLoader.ModWall.Type</a>, <a class="el" href="_mod_mount_data_8cs_source.html#l00037">Terraria.ModLoader.ModMountData.Type</a>, <a class="el" href="_mod_buff_8cs_source.html#l00037">Terraria.ModLoader.ModBuff.Type</a>, <a class="el" href="_mod_tile_8cs_source.html#l00038">Terraria.ModLoader.ModTile.Type</a>, and <a class="el" href="_mod_water_style_8cs_source.html#l00120">Terraria.ModLoader.ModWaterfallStyle.Type</a>.</p>
+<p>References <a class="el" href="_mod_projectile_8cs_source.html#l00165">Terraria.ModLoader.ModProjectile.AutoStaticDefaults()</a>, <a class="el" href="_mod_item_8cs_source.html#l00175">Terraria.ModLoader.ModItem.AutoStaticDefaults()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00200">Terraria.ModLoader.ModNPC.AutoStaticDefaults()</a>, <a class="el" href="_mod_tile_8cs_source.html#l00091">Terraria.ModLoader.ModTile.chest</a>, <a class="el" href="_mod_loader_8cs_source.html#l00880">Terraria.ModLoader.ModLoader.GetTexture()</a>, <a class="el" href="_mod_item_8cs_source.html#l00026">Terraria.ModLoader.ModItem.item</a>, <a class="el" href="_mod_translation_8cs_source.html#l00010">Terraria.ModLoader.ModTranslation.Key</a>, <a class="el" href="_mod_mount_data_8cs_source.html#l00019">Terraria.ModLoader.ModMountData.mountData</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00022">Terraria.ModLoader.ModNPC.npc</a>, <a class="el" href="_mod_projectile_8cs_source.html#l00025">Terraria.ModLoader.ModProjectile.projectile</a>, <a class="el" href="_global_wall_8cs_source.html#l00040">Terraria.ModLoader.GlobalWall.SetDefaults()</a>, <a class="el" href="_global_tile_8cs_source.html#l00085">Terraria.ModLoader.GlobalTile.SetDefaults()</a>, <a class="el" href="_mod_buff_8cs_source.html#l00085">Terraria.ModLoader.ModBuff.SetDefaults()</a>, <a class="el" href="_mod_dust_8cs_source.html#l00144">Terraria.ModLoader.ModDust.SetDefaults()</a>, <a class="el" href="_mod_wall_8cs_source.html#l00149">Terraria.ModLoader.ModWall.SetDefaults()</a>, <a class="el" href="_mod_projectile_8cs_source.html#l00158">Terraria.ModLoader.ModProjectile.SetStaticDefaults()</a>, <a class="el" href="_mod_item_8cs_source.html#l00168">Terraria.ModLoader.ModItem.SetStaticDefaults()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00193">Terraria.ModLoader.ModNPC.SetStaticDefaults()</a>, <a class="el" href="_mod_water_style_8cs_source.html#l00035">Terraria.ModLoader.ModWaterStyle.Type</a>, <a class="el" href="_mod_wall_8cs_source.html#l00037">Terraria.ModLoader.ModWall.Type</a>, <a class="el" href="_mod_mount_data_8cs_source.html#l00037">Terraria.ModLoader.ModMountData.Type</a>, <a class="el" href="_mod_buff_8cs_source.html#l00037">Terraria.ModLoader.ModBuff.Type</a>, <a class="el" href="_mod_tile_8cs_source.html#l00038">Terraria.ModLoader.ModTile.Type</a>, and <a class="el" href="_mod_water_style_8cs_source.html#l00120">Terraria.ModLoader.ModWaterfallStyle.Type</a>.</p>
 <div class="fragment"><div class="line"><a name="l02103"></a><span class="lineno"> 2103</span>&#160;        {</div><div class="line"><a name="l02104"></a><span class="lineno"> 2104</span>&#160;            translations[translation.Key] = translation;</div><div class="line"><a name="l02105"></a><span class="lineno"> 2105</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
@@ -2939,7 +2942,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_8cs_source.html#l01230">1230</a> of file <a class="el" href="_mod_8cs_source.html">Mod.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_n_p_c_8cs_source.html#l00122">Terraria.ModLoader.ModNPC.Autoload()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00069">Terraria.ModLoader.ModNPC.BossHeadTexture</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00065">Terraria.ModLoader.ModNPC.HeadTexture</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00031">Terraria.ModLoader.ModNPC.mod</a>, <a class="el" href="_mod_8cs_source.html#l00037">Terraria.ModLoader.Mod.Name</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00022">Terraria.ModLoader.ModNPC.npc</a>, and <a class="el" href="_mod_n_p_c_8cs_source.html#l00057">Terraria.ModLoader.ModNPC.Texture</a>.</p>
+<p>References <a class="el" href="_mod_n_p_c_8cs_source.html#l00126">Terraria.ModLoader.ModNPC.Autoload()</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00069">Terraria.ModLoader.ModNPC.BossHeadTexture</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00065">Terraria.ModLoader.ModNPC.HeadTexture</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00031">Terraria.ModLoader.ModNPC.mod</a>, <a class="el" href="_mod_8cs_source.html#l00037">Terraria.ModLoader.Mod.Name</a>, <a class="el" href="_mod_n_p_c_8cs_source.html#l00022">Terraria.ModLoader.ModNPC.npc</a>, and <a class="el" href="_mod_n_p_c_8cs_source.html#l00057">Terraria.ModLoader.ModNPC.Texture</a>.</p>
 <div class="fragment"><div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;        {</div><div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;            ModNPC npc = (ModNPC)Activator.CreateInstance(type);</div><div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;            npc.mod = <span class="keyword">this</span>;</div><div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;            <span class="keywordtype">string</span> name = type.Name;</div><div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;            <span class="keywordflow">if</span> (npc.Autoload(ref name))</div><div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;            {</div><div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a40156ebb40b43a863961582b89b4bab7">AddNPC</a>(name, npc);</div><div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;                <span class="keywordtype">string</span> texture = npc.Texture;</div><div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;                var autoloadHead = type.GetAttribute&lt;AutoloadHead&gt;();</div><div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;                <span class="keywordflow">if</span> (autoloadHead != null)</div><div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;                {</div><div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;                    <span class="keywordtype">string</span> headTexture = npc.HeadTexture;</div><div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;                    <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a1e739bc6de6fac144b8342cfc0370406">AddNPCHeadTexture</a>(npc.npc.type, headTexture);</div><div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;                }</div><div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;                var autoloadBossHead = type.GetAttribute&lt;AutoloadBossHead&gt;();</div><div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;                <span class="keywordflow">if</span> (autoloadBossHead != null)</div><div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;                {</div><div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;                    <span class="keywordtype">string</span> headTexture = npc.BossHeadTexture;</div><div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;                    <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a45e9a26a0b1883168c11b1199c6b542b">AddBossHeadTexture</a>(headTexture, npc.npc.type);</div><div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;                }</div><div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;            }</div><div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a1e739bc6de6fac144b8342cfc0370406"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a1e739bc6de6fac144b8342cfc0370406">Terraria.ModLoader.Mod.AddNPCHeadTexture</a></div><div class="ttdeci">void AddNPCHeadTexture(int npcType, string texture)</div><div class="ttdoc">Assigns a head texture to the given town NPC type. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l01193">Mod.cs:1193</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a40156ebb40b43a863961582b89b4bab7"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a40156ebb40b43a863961582b89b4bab7">Terraria.ModLoader.Mod.AddNPC</a></div><div class="ttdeci">void AddNPC(string name, ModNPC npc)</div><div class="ttdoc">Adds a type of NPC to the game with the specified name and texture. Also allows you to give the NPC a...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l01101">Mod.cs:1101</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a45e9a26a0b1883168c11b1199c6b542b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a45e9a26a0b1883168c11b1199c6b542b">Terraria.ModLoader.Mod.AddBossHeadTexture</a></div><div class="ttdeci">void AddBossHeadTexture(string texture, int npcType=-1)</div><div class="ttdoc">Assigns a head texture that can be used by NPCs on the map. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l01216">Mod.cs:1216</a></div></div>
@@ -5579,8 +5582,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00038">38</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00048">48</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6ce58eb4ee02d58d03d5ad8f4b648d6c"></a>
@@ -5632,8 +5635,8 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00049">49</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00059">59</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9009e3f4273585a05b0cec84682bec5f"></a>
@@ -5730,10 +5733,10 @@ Private Member Functions</h2></td></tr>
 
 <p>Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent. </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00067">67</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_net_8cs_source.html#l00299">Terraria.ModLoader.ModNet.ReadNetIDs()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-38" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-38-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-38-summary" class="dynsummary" style="display:block;">
@@ -5778,8 +5781,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00029">29</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00039">39</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a709d36738b1e8639ea0d9917035cfca2"></a>
@@ -5932,8 +5935,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00073">73</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00083">83</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        {</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7f5438f20657f9c6ef172523b7e33187"></a>
@@ -5966,8 +5969,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00090">90</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00100">100</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a08474926973ce4a555c111fd762d772f"></a>
@@ -6011,8 +6014,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00082">82</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00092">92</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        {</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a8c23cd0bf5d82c15ed3e752e9fb9bf6a"></a>
@@ -6039,8 +6042,8 @@ Private Member Functions</h2></td></tr>
 
 <p>Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.) </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00065">65</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00075">75</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        {</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1ee69039213f922b9514d6f058de4832"></a>
@@ -6277,8 +6280,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00108">108</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        {</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00118">118</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        {</div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9cab728dabe85fe39eccff20b79d86e5"></a>
@@ -6312,8 +6315,8 @@ Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00100">100</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00110">110</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        {</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a026f70f45d29300a148e8257d324ba12"></a>
@@ -6380,8 +6383,8 @@ Private Member Functions</h2></td></tr>
 
 <p>Called after the input keys are polled. Allows for modifying things like scroll wheel if your custom drawing should capture that. </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00115">115</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        {</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00125">125</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        {</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3dc3da5f2b4d76789764639cf5e91c6d"></a>
@@ -6407,8 +6410,8 @@ Private Member Functions</h2></td></tr>
 
 <p>Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player. </p>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00122">122</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        {</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00132">132</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        {</div><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af4f124bac1905b018a8f24ab866c0d5f"></a>
@@ -6773,6 +6776,52 @@ Private Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        {</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="ab9e2d1f3f574493a3929a34c12016070"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.Mod.UpdateMusic </td>
+          <td>(</td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>music</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref <a class="el" href="namespace_terraria_1_1_mod_loader.html#a2f24335a34de4ae16e51b7a9c8dd0ed9">MusicPriority</a>&#160;</td>
+          <td class="paramname"><em>priority</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine what music should currently play. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">music</td><td>The music.</td></tr>
+    <tr><td class="paramname">priority</td><td>The music priority.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00022">22</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#ab9e2d1f3f574493a3929a34c12016070">UpdateMusic</a>(ref music);</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_ab9e2d1f3f574493a3929a34c12016070"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#ab9e2d1f3f574493a3929a34c12016070">Terraria.ModLoader.Mod.UpdateMusic</a></div><div class="ttdeci">virtual void UpdateMusic(ref int music, ref MusicPriority priority)</div><div class="ttdoc">Allows you to determine what music should currently play. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_hooks_8cs_source.html#l00022">ModHooks.cs:22</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="ad065cd0795e3f1abbb4328bed221508c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -6795,16 +6844,16 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine what music should currently play. </p>
+<p>A legacy hook that you should no longer use. Use the version with two parameters instead. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">music</td><td>The music.</td></tr>
+    <tr><td class="paramname">music</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00021">21</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        {</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_hooks_8cs_source.html#l00031">31</a> of file <a class="el" href="_mod_hooks_8cs_source.html">ModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af340bf9dfb387a748ee760e9bccd48dc"></a>

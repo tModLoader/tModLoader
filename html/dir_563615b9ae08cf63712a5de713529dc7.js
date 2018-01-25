@@ -170,6 +170,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "MountLoader", "class_terraria_1_1_mod_loader_1_1_mount_loader.html", "class_terraria_1_1_mod_loader_1_1_mount_loader" ]
     ] ],
     [ "MountTextureType.cs", "_mount_texture_type_8cs.html", "_mount_texture_type_8cs" ],
+    [ "MusicPriority.cs", "_music_priority_8cs.html", "_music_priority_8cs" ],
     [ "NPCHeadLoader.cs", "_n_p_c_head_loader_8cs.html", [
       [ "NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader" ]
     ] ],

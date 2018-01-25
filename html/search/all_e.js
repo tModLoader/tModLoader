@@ -40,6 +40,7 @@ var searchData=
   ['nextwall',['nextWall',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#ab7cc408e65dc7999f965375ab31d5ed5',1,'Terraria::ModLoader::WallLoader']]],
   ['nextwaterfallstyle',['nextWaterfallStyle',['../class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html#a8a2e4e46736ff0e0702a5edff0c2a56d',1,'Terraria::ModLoader::WaterfallStyleLoader']]],
   ['nextwaterstyle',['nextWaterStyle',['../class_terraria_1_1_mod_loader_1_1_water_style_loader.html#a9cc8a1e5ffdf29d8a14b82a080c573fe',1,'Terraria::ModLoader::WaterStyleLoader']]],
+  ['none',['None',['../namespace_terraria_1_1_mod_loader.html#a2f24335a34de4ae16e51b7a9c8dd0ed9a6adf97f83acf6453d4a6a4b1070f3754',1,'Terraria::ModLoader']]],
   ['nosync',['NoSync',['../namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06ae4246767f134af73780a229d9e364a0b',1,'Terraria::ModLoader']]],
   ['npc',['npc',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0',1,'Terraria::ModLoader::ModNPC']]],
   ['npcai',['NPCAI',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a5075fa0ca2bdcf3208edfbcc6c567a74',1,'Terraria::ModLoader::NPCLoader']]],

@@ -167,6 +167,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "TileType", "class_terraria_1_1_mod_loader_1_1_mod.html#a5d371832fbdd332b57deb42f062f7be0", null ],
     [ "TileType< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#a0c887a071d74dc17e2561c0992be07f8", null ],
     [ "Unload", "class_terraria_1_1_mod_loader_1_1_mod.html#af95f63f91b0a1d257d56ac059bbd7854", null ],
+    [ "UpdateMusic", "class_terraria_1_1_mod_loader_1_1_mod.html#ab9e2d1f3f574493a3929a34c12016070", null ],
     [ "UpdateMusic", "class_terraria_1_1_mod_loader_1_1_mod.html#ad065cd0795e3f1abbb4328bed221508c", null ],
     [ "WallType", "class_terraria_1_1_mod_loader_1_1_mod.html#af340bf9dfb387a748ee760e9bccd48dc", null ],
     [ "WallType< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#aebc821e0b8d7140739c3261c23c9e4aa", null ],

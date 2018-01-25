@@ -127,6 +127,8 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountLoader.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountTextureType.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountTextureType.cs...
+Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicPriority.cs...
+Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicPriority.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCHeadLoader.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCHeadLoader.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCLoader.cs...
@@ -347,6 +349,7 @@ Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModWorld.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountLoader.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountTextureType.cs...
+Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicPriority.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCHeadLoader.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCLoader.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCSpawnHelper.cs...
@@ -448,6 +451,7 @@ Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModWorld.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountLoader.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountTextureType.cs...
+Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicPriority.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCHeadLoader.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCLoader.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCSpawnHelper.cs...
@@ -503,15 +507,15 @@ Generating call graph for function Terraria.ModLoader.CommandManager.Matches
 Generating docs for compound Terraria::ModLoader::DrawableTooltipLine...
 Generating docs for compound Terraria::ModLoader::DrawLayer...
 Generating docs for compound Terraria::ModLoader::EquipLoader...
-Generating call graph for function Terraria.ModLoader.EquipLoader.GetEquipTexture
+Generating call graph for function Terraria.ModLoader.EquipLoader.GetEquipTe/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:437: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
+  parameter 'male'
+xture
 Generating caller graph for function Terraria.ModLoader.EquipLoader.GetEquipTexture
 Generating docs for compound Terraria::ModLoader::EquipTexture...
 Generating caller graph for function Terraria.ModLoader.EquipTexture.ArmorArmGlowMask
 Generating caller graph for function Terraria.ModLoader.EquipTexture.ArmorSetShadows
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawArmorColor
-Generating caller graph for function Terraria.ModLoader.EquipTexture.D/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:437: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
-  parameter 'male'
-rawBody
+Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawBody
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawHair
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawHands
 Generating caller graph for function Terraria.ModLoader.EquipTexture.DrawHead
@@ -608,19 +612,19 @@ Generating caller graph for function Terraria.ModLoader.GlobalProjectile.Collidi
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.CutTiles
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.GetAlpha
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.GrapplePullSpeed
-Generating caller graph for function Terraria.ModLoader.GlobalProjectile.GrappleRetreatSpeed
-Generating caller graph for function Terraria.ModLoader.GlobalProjectile.Instance
-Generating caller graph for function Terraria.ModLoader.GlobalProjectile.Kill
-Generating caller graph for function Terraria.ModLoader.GlobalProjectile.MinionContactDamage
-Generating caller graph for function Terraria.ModLoader.GlobalProjectile.ModifyDamageHitbox
-Generating caller graph for function Terraria.ModLoader.GlobalProjectile.ModifyHitNPC
-Generating caller graph for function /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:282: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.Grapple/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:282: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
   parameter 'type'
   parameter 'spriteBatch'
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1024: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
   parameter 'item'
   parameter 'reforgePrice'
-Terraria.ModLoader.GlobalProjectile.ModifyHitPlayer
+RetreatSpeed
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.Instance
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.Kill
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.MinionContactDamage
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.ModifyDamageHitbox
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.ModifyHitNPC
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.ModifyHitPlayer
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.ModifyHitPvp
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.NumGrappleHooks
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.OnHitNPC
@@ -665,13 +669,7 @@ Generating caller graph for function Terraria.ModLoader.ItemLoader.MeleeSpeedMul
 Generating call graph for function Terraria.ModLoader.ItemLoader.NeedsModSaving
 Generating call graph for function Terraria.ModLoader.ItemLoader.OpenBossBag
 Generating call graph for function Terraria.ModLoader.ItemLoader.PreUpdateVanitySet
-Generating call graph for function Terraria.ModLoader.ItemLoader.SetMatch
-Generating call graph for function Terraria.ModLoader.ItemLoader.UpdateArmorSet
-Generating call graph for function Terraria.ModLoader.ItemLoader.UpdateVanity
-Generating call graph for function Terraria.ModLoader.ItemLoader.UpdateVanitySet
-Generating caller graph for function Terraria.ModLoader.ItemLoader.UseTimeMultiplier
-Generating call graph for function Terraria.ModLoader.ItemLoader.VerticalWingSpeeds
-Generating call graph for function Terraria.ModLoa/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1216: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
+Generating call graph for function Terraria.ModLoad/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1216: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
   parameter 'npcType'
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1095: warning: argument 'texture' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1095: warning: argument 'altTextures' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
@@ -679,7 +677,13 @@ Generating call graph for function Terraria.ModLoa/home/travis/build/blushiemagi
   parameter 'type'
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:606: warning: The following parameters of Terraria.ModLoader.Mod.GetEquipSlot(string name, EquipType type) are not documented:
   parameter 'type'
-der.ItemLoader.WingUpdate
+er.ItemLoader.SetMatch
+Generating call graph for function Terraria.ModLoader.ItemLoader.UpdateArmorSet
+Generating call graph for function Terraria.ModLoader.ItemLoader.UpdateVanity
+Generating call graph for function Terraria.ModLoader.ItemLoader.UpdateVanitySet
+Generating caller graph for function Terraria.ModLoader.ItemLoader.UseTimeMultiplier
+Generating call graph for function Terraria.ModLoader.ItemLoader.VerticalWingSpeeds
+Generating call graph for function Terraria.ModLoader.ItemLoader.WingUpdate
 Generating docs for nested compound Terraria::ModLoader::ItemLoader::HookList...
 Generating docs for compound Terraria::ModLoader::MapLegend...
 Generating docs for compound Terraria::ModLoader::Mod...
@@ -728,7 +732,8 @@ Generating call graph for function Terraria.ModLoader.Mod.PostAddRecipes
 Generating caller graph for function Terraria.ModLoader.Mod.PostSetupContent
 Generating call graph for function Terraria.ModLoader.Mod.RegisterHotKey
 Generating caller graph for function Terraria.ModLoader.Mod.SoundExists
-Generating caller graph for function Terraria.ModLoader.Mod.TextureExists
+Generating caller graph for function Terraria.ModLoader.Mod.TextureExists/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:119: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
+
 Generating caller graph for function Terraria.ModLoader.Mod.TileType
 Generating docs for compound Terraria::ModLoader::ModBuff...
 Generating caller graph for function Terraria.ModLoader.ModBuff.Autoload
@@ -736,7 +741,6 @@ Generating caller graph for function Terraria.ModLoader.ModBuff.SetDefaults
 Generating docs for compound Terraria::ModLoader::ModCactus...
 Generating docs for compound Terraria::ModLoader::ModCommand...
 Generating caller graph for function Terraria.ModLoader.ModCommand.Action
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:119: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
 Generating docs for nested compound Terraria::ModLoader::ModCompile::BuildingMod...
 Generating call graph for function Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod
 Generating docs for nested compound Terraria::ModLoader::ModCompile::ConsoleBuildStatus...
@@ -784,14 +788,7 @@ Generating call graph for function Terraria.ModLoader.ModMountData.Autoload
 Generating caller graph for function Terraria.ModLoader.ModMountData.SetDefaults
 Generating docs for compound Terraria::ModLoader::ModNet...
 Generating caller graph for function Terraria.ModLoader.ModNet.GetMod
-Generating call graph for function Terraria.ModLoader.ModNet.OnModsDownloaded
-Generating call graph for function Terraria.ModLoader.ModNet.ReadNetIDs
-Generating docs for nested compound Terraria::ModLoader::ModNet::ModHeader...
-Generating docs for compound Terraria::ModLoader::ModNPC...
-Generating call graph for function Terraria.ModLoader.ModNPC.Autoload
-Generating caller graph for function Terraria.ModLoader.ModNPC.Autoload
-Generating call graph for function Terraria.ModLoader.ModNPC.AutoStaticDefaults
-Generating call/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:528: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
+Generating call graph for function Terraria./home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:528: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
   parameter 'item'
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:310: warning: The following parameters of Terraria.ModLoader.ModTile.CanKillTile(int i, int j, ref bool blockDamaged) are not documented:
   parameter 'blockDamaged'
@@ -837,7 +834,14 @@ Generating call/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Ter
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:481: warning: The following parameters of Terraria.ModLoader.ModTile.TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) are not documented:
   parameter 'resetFrame'
   parameter 'noBreak'
-er graph for function Terraria.ModLoader.ModNPC.AutoStaticDefaults
+ModLoader.ModNet.OnModsDownloaded
+Generating call graph for function Terraria.ModLoader.ModNet.ReadNetIDs
+Generating docs for nested compound Terraria::ModLoader::ModNet::ModHeader...
+Generating docs for compound Terraria::ModLoader::ModNPC...
+Generating call graph for function Terraria.ModLoader.ModNPC.Autoload
+Generating caller graph for function Terraria.ModLoader.ModNPC.Autoload
+Generating call graph for function Terraria.ModLoader.ModNPC.AutoStaticDefaults
+Generating caller graph for function Terraria.ModLoader.ModNPC.AutoStaticDefaults
 Generating caller graph for function Terraria.ModLoader.ModNPC.CanTownNPCSpawn
 Generating caller graph for function Terraria.ModLoader.ModNPC.SetDefaults
 Generating caller graph for function Terraria.ModLoader.ModNPC.SetStaticDefaults
@@ -2004,5 +2008,5 @@ Patching output file 121/124
 Patching output file 122/124
 Patching output file 123/124
 Patching output file 124/124
-lookup cache used 10142/131072 hits=96598 misses=10598
+lookup cache used 10179/131072 hits=96735 misses=10636
 finished...
