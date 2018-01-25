@@ -150,7 +150,7 @@ namespace Terraria.ModLoader
 			{
 				key = Name;
 			}
-			return new ModTranslation(string.Format("MapObject.{0}.{1}", mod.Name, key), true);
+			return new ModTranslation(string.Format("MapObject.{0}.{1}", mod.Name, key));
 		}
 
 		/// <summary>
