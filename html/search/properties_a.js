@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['payloadtype',['PayloadType',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#ad5e031f90059699836617594dba4223f',1,'Terraria::ModLoader::IO::TagIO::PayloadHandler']]],
-  ['player',['player',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#af494d0e0a2690a912ea76732bf19265f',1,'Terraria.ModLoader.ModPlayer.player()'],['../interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897',1,'Terraria.ModLoader.CommandCaller.Player()']]],
-  ['projectile',['projectile',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a54aa9dc3ed825c44b6397211e40d83a0',1,'Terraria::ModLoader::ModProjectile']]],
-  ['properties',['Properties',['../class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea',1,'Terraria::ModLoader::Mod']]]
+  ['originalx',['OriginalX',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a11d4b0a9943ddecedb4cf874c7744ac8',1,'Terraria::ModLoader::DrawableTooltipLine']]],
+  ['originaly',['OriginalY',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#aba2e0f62ff4f151d050e43a7e1057739',1,'Terraria::ModLoader::DrawableTooltipLine']]],
+  ['overridecolor',['overrideColor',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a3c1aa3fc5a7fd81e2a6150a1b1943dfc',1,'Terraria::ModLoader::DrawableTooltipLine']]]
 ];

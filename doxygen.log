@@ -2000,5 +2000,5 @@ Patching output file 121/124
 Patching output file 122/124
 Patching output file 123/124
 Patching output file 124/124
-lookup cache used 10154/131072 hits=96759 misses=10610
+lookup cache used 10135/131072 hits=96502 misses=10591
 finished...
