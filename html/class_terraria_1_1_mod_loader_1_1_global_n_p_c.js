@@ -46,6 +46,7 @@ var class_terraria_1_1_mod_loader_1_1_global_n_p_c =
     [ "SetupShop", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5fd0754440bfc039de5425b200c202a1", null ],
     [ "SetupTravelShop", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5308b71c2f3c6a7bb89235399295ca24", null ],
     [ "SpawnNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a8688307b3c52dfbb5ffd3511502a4eba", null ],
+    [ "SpecialNPCLoot", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af438166b9b820473beb22385ece2588e", null ],
     [ "StrikeNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5a527b7768ad2c08ebd32acfad192a5f", null ],
     [ "TownNPCAttackCooldown", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af76afb7606070f4db75a72fa6b2f4edd", null ],
     [ "TownNPCAttackMagic", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a068df531f0b46bcf56521532277bce2e", null ],

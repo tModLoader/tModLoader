@@ -248,6 +248,7 @@ var searchData=
   ['hookslope',['HookSlope',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a75cd30f69db43f2d50ac7ca54c472cd7',1,'Terraria::ModLoader::TileLoader']]],
   ['hookspawnnpc',['HookSpawnNPC',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a3456e262398521b7d781ea8e6c81712c',1,'Terraria::ModLoader::NPCLoader']]],
   ['hookspecialdraw',['HookSpecialDraw',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a79535c0d7bd736b04cbc7a086829ee29',1,'Terraria::ModLoader::TileLoader']]],
+  ['hookspecialnpcloot',['HookSpecialNPCLoot',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a3c73717c498118115e1848356f3f3c29',1,'Terraria::ModLoader::NPCLoader']]],
   ['hookstrikenpc',['HookStrikeNPC',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a3ea766b2f10665bfcae82483e118ff25',1,'Terraria::ModLoader::NPCLoader']]],
   ['hooksyncplayer',['HookSyncPlayer',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a16c69a5a6498e077b2c7ae050f28c878',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hooktilecollidestyle',['HookTileCollideStyle',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a0f497222e6365be65f2a327a65d74baa',1,'Terraria::ModLoader::ProjectileLoader']]],
