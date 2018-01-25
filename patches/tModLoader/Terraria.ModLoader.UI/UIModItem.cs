@@ -100,7 +100,7 @@ namespace Terraria.ModLoader.UI
 					}
 					Main.menuMode = Interface.modsMenuID;
 					var missingMods = referencedMods.Where(modstring => foundMods.All(modfile => modfile.name != modstring));
-					if (missingMods.Count() > 0)
+					if (missingMods.Any())
 					{
 						Interface.infoMessage.SetMessage("The following mods were not found: " + String.Join(",", missingMods));
 						Interface.infoMessage.SetGotoMenu(Interface.modsMenuID);

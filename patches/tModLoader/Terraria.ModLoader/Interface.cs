@@ -312,12 +312,8 @@ namespace Terraria.ModLoader
 				TmodFile[] mods = ModLoader.FindMods();
 				for (int k = 0; k < mods.Length; k++)
 				{
-					BuildProperties properties = BuildProperties.ReadModFile(mods[k]);
-					string name = properties.displayName;
-					name = mods[k].name;
-					string line = (k + 1) + "\t\t" + name + "(";
-					line += (ModLoader.IsEnabled(mods[k]) ? "enabled" : "disabled") + ")";
-					Console.WriteLine(line);
+					Console.Write((k + 1) + "\t\t" + mods[k].name);
+					Console.WriteLine(" (" + (ModLoader.IsEnabled(mods[k]) ? "enabled" : "disabled") + ")");
 				}
 				if (mods.Length == 0)
 				{
@@ -359,17 +355,9 @@ namespace Terraria.ModLoader
 					ModLoader.do_Load(null);
 					exit = true;
 				}
-				else
+				else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length)
 				{
-					int value;
-					if (Int32.TryParse(command, out value))
-					{
-						value--;
-						if (value >= 0 && value < mods.Length)
-						{
-							ModLoader.SetModActive(mods[value], !ModLoader.IsEnabled(mods[value]));
-						}
-					}
+					ModLoader.SetModActive(mods[value-1], !ModLoader.IsEnabled(mods[value-1]));
 				}
 			}
 		}

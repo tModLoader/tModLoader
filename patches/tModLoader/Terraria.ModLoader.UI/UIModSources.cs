@@ -158,37 +158,17 @@ namespace Terraria.ModLoader.UI
 		{
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-			Task.Factory
-				.StartNew(delegate
+			Task.Factory.StartNew(delegate
+			{
+				var mods = ModLoader.FindModSources();
+				var modFiles = ModLoader.FindMods();
+				foreach (string mod in mods)
 				{
-					var mods = ModLoader.FindModSources();
-					var modFiles = ModLoader.FindMods();
-					return Tuple.Create(mods, modFiles);
-				})
-				.ContinueWith(task =>
-				{
-					string[] mods = task.Result.Item1;
-					TmodFile[] modFiles = task.Result.Item2;
-					foreach (string mod in mods)
-					{
-
-						bool publishable = false;
-						DateTime lastBuildTime = new DateTime();
-
-						foreach (TmodFile file in modFiles)
-						{
-							var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.path);
-							if (fileNameWithoutExtension != null && fileNameWithoutExtension.Equals(Path.GetFileName(mod)))
-							{
-								lastBuildTime = File.GetLastWriteTime(file.path);
-								publishable = true;
-								break;
-							}
-						}
-						items.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
-					}
-					updateNeeded = true;
-				}, TaskScheduler.FromCurrentSynchronizationContext());
+					TmodFile modFile = modFiles.SingleOrDefault(m => m.name == Path.GetFileName(mod));
+					items.Add(new UIModSourceItem(mod, modFile != null, modFile != null ? File.GetLastWriteTime(modFile.path) : new DateTime()));
+				}
+				updateNeeded = true;
+			});
 		}
 
 		public override void Update(GameTime gameTime)

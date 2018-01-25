@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.IO
 
 		public string ContentType { get; set; }
 
-		public Stream Stream { get; set; }
+		public byte[] Content { get; set; }
 
 		public static byte[] UploadFiles(string address, IEnumerable<UploadFile> files, NameValueCollection values)
 		{
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.IO
 					requestStream.Write(buffer, 0, buffer.Length);
 					buffer = Encoding.ASCII.GetBytes(string.Format("Content-Type: {0}{1}{1}", file.ContentType, Environment.NewLine));
 					requestStream.Write(buffer, 0, buffer.Length);
-					file.Stream.CopyTo(requestStream);
+					requestStream.Write(file.Content, 0, file.Content.Length);
 					buffer = Encoding.ASCII.GetBytes(Environment.NewLine);
 					requestStream.Write(buffer, 0, buffer.Length);
 				}
@@ -93,7 +93,7 @@ namespace Terraria.ModLoader.IO
 					requestStream.Write(buffer, 0, buffer.Length);
 					buffer = Encoding.ASCII.GetBytes(string.Format("Content-Type: {0}{1}{1}", file.ContentType, Environment.NewLine));
 					requestStream.Write(buffer, 0, buffer.Length);
-					file.Stream.CopyTo(requestStream);
+					requestStream.Write(file.Content, 0, file.Content.Length);
 					buffer = Encoding.ASCII.GetBytes(Environment.NewLine);
 					requestStream.Write(buffer, 0, buffer.Length);
 				}

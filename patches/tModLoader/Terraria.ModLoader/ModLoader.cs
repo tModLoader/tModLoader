@@ -342,12 +342,11 @@ namespace Terraria.ModLoader
 			foreach (string fileName in Directory.GetFiles(ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
 			{
 				var lastModified = File.GetLastWriteTime(fileName);
-				Tuple<DateTime, TmodFile> cacheMod;
 				TmodFile file = null;
-				if (findModsCache.TryGetValue(fileName, out cacheMod))
+				if (findModsCache.TryGetValue(fileName, out var entry))
 				{
-					if (cacheMod.Item1 == lastModified)
-						file = cacheMod.Item2;
+					if (entry.Item1 == lastModified)
+						file = entry.Item2;
 					else
 						findModsCache.Remove(fileName);
 				}
@@ -419,70 +418,52 @@ namespace Terraria.ModLoader
 
 		private static bool CommandLineModPackOverride()
 		{
-			if (commandLineModPack != "")
+			if (commandLineModPack == "")
+				return true;
+
+			if (!commandLineModPack.EndsWith(".json"))
+				commandLineModPack += ".json";
+
+			string filePath = Path.Combine(UI.UIModPacks.ModListSaveDirectory, commandLineModPack);
+
+			try
 			{
-				try
+				Directory.CreateDirectory(UI.UIModPacks.ModListSaveDirectory);
+				
+				Console.WriteLine($"Loading specified modpack: {commandLineModPack}\n");
+				var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
+				foreach (var mod in FindMods())
 				{
-					string fileName = UI.UIModPacks.ModListSaveDirectory + Path.DirectorySeparatorChar + commandLineModPack + ".json";
-					Directory.CreateDirectory(UI.UIModPacks.ModListSaveDirectory);
-					if (File.Exists(fileName))
-					{
-						using (StreamReader r = new StreamReader(fileName))
-						{
-							Console.WriteLine($"Loading specified modpack: {commandLineModPack}\n");
-							string json = r.ReadToEnd();
-							string[] modsToEnable = JsonConvert.DeserializeObject<string[]>(json);
-							var mods = ModLoader.FindMods();
-							foreach (var item in mods)
-							{
-								DisableMod(item);
-							}
-							foreach (string modname in modsToEnable)
-							{
-								foreach (var item in mods)
-								{
-									if (item.name == modname)
-									{
-										EnableMod(item);
-									}
-								}
-							}
-						}
-					}
-					else
-					{
-						if (Main.dedServ)
-						{
-							Console.ForegroundColor = ConsoleColor.Red;
-							Console.WriteLine($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.\n");
-							Console.ResetColor();
-						}
-						else
-						{
-							Interface.errorMessage.SetMessage($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.");
-						}
-						commandLineModPack = "";
-						return false;
-					}
+					SetModActive(mod, modSet.Contains(mod.name));
 				}
-				catch
-				{
-					if (Main.dedServ)
-					{
-						Console.ForegroundColor = ConsoleColor.Red;
-						Console.WriteLine($"The {commandLineModPack} modpack failed to be read properly, it might be malformed.\n");
-						Console.ResetColor();
-					}
-					else
-					{
-						Interface.errorMessage.SetMessage($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.");
-					}
-					commandLineModPack = "";
-					return false;
-				}
+
+				return true;
 			}
-			commandLineModPack = "";
-			return true;
+			catch (Exception e)
+			{
+				string err;
+				if (e is FileNotFoundException)
+					err = $"Modpack {filePath} does not exist.\n";
+				else
+					err = $"The {commandLineModPack} modpack failed to be read properly, it might be malformed. ({e.Message})\n";
+
+				if (Main.dedServ)
+				{
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine(err);
+					Console.ResetColor();
+				}
+				else
+				{
+					Interface.errorMessage.SetMessage(err);
+				}
+
+				return false;
+			}
+			finally
+			{
+				commandLineModPack = "";
+			}
 		}
 
 		// TODO: This doesn't work on mono for some reason. Investigate.
@@ -773,65 +754,47 @@ namespace Terraria.ModLoader
 		internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
 		/// <summary>A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file.</summary>
-		private static HashSet<string> enabledMods;
-		internal static bool IsEnabled(TmodFile mod)
+		private static HashSet<string> _enabledMods;
+		private static HashSet<string> EnabledMods
 		{
-			if (enabledMods == null)
+			get
 			{
-				LoadEnabledModCache();
-			}
-			return enabledMods.Contains(mod.name);
-		}
-
-		private static void LoadEnabledModCache()
-		{
-			enabledMods = new HashSet<string>();
-			string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
-			if (File.Exists(path))
-			{
-				using (StreamReader r = new StreamReader(path))
+				if (_enabledMods == null)
 				{
-					string json = r.ReadToEnd();
 					try
 					{
-						enabledMods = JsonConvert.DeserializeObject<HashSet<string>>(json);
+						string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
+						_enabledMods = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(path));
 					}
-					catch { }
+					catch
+					{
+						_enabledMods = new HashSet<string>();
+					}
 				}
+				return _enabledMods;
 			}
 		}
+
+		internal static bool IsEnabled(TmodFile mod) => EnabledMods.Contains(mod.name);
+
+		internal static void EnableMod(TmodFile mod) => SetModActive(mod, true);
+		internal static void DisableMod(TmodFile mod) => SetModActive(mod, false);
 
 		internal static void SetModActive(TmodFile mod, bool active)
 		{
 			if (mod == null)
 				return;
-			if (enabledMods == null)
-			{
-				LoadEnabledModCache();
-			}
 
 			if (active)
-			{
-				enabledMods.Add(mod.name);
-			}
+				EnabledMods.Add(mod.name);
 			else
-			{
-				enabledMods.Remove(mod.name);
-			}
+				EnabledMods.Remove(mod.name);
+
+			//save
 			Directory.CreateDirectory(ModPath);
 			string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
-			string json = JsonConvert.SerializeObject(enabledMods, Newtonsoft.Json.Formatting.Indented);
+			string json = JsonConvert.SerializeObject(EnabledMods, Formatting.Indented);
 			File.WriteAllText(path, json);
-		}
-
-		internal static void EnableMod(TmodFile mod)
-		{
-			SetModActive(mod, true);
-		}
-
-		internal static void DisableMod(TmodFile mod)
-		{
-			SetModActive(mod, false);
 		}
 
 		internal static string[] FindModSources()

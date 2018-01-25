@@ -127,84 +127,61 @@ namespace Terraria.ModLoader.UI
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID);
 				return;
 			}
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(10);
 			try
 			{
-				TmodFile[] modFiles = ModLoader.FindMods();
-				bool ok = false;
-				TmodFile theTModFile = null;
-				foreach (TmodFile tModFile in modFiles)
+				TmodFile modFile = ModLoader.FindMods().Single(m => m.name == Path.GetFileName(mod));
+				var files = new List<UploadFile>();
+				files.Add(new UploadFile {
+					Name = "file",
+					Filename = Path.GetFileName(modFile.path),
+					//    ContentType = "text/plain",
+					Content = File.ReadAllBytes(modFile.path)
+				});
+				if (modFile.HasFile("icon.png"))
 				{
-					if (Path.GetFileName(tModFile.path).Equals(@Path.GetFileName(mod) + @".tmod"))
-					{
-						ok = true;
-						theTModFile = tModFile;
-					}
+					files.Add(new UploadFile {
+							Name = "iconfile",
+							Filename = "icon.png",
+							Content = modFile.GetFile("icon.png")
+					});
 				}
-				if (!ok)
+				BuildProperties bp = BuildProperties.ReadModFile(modFile);
+				var values = new NameValueCollection
 				{
-					throw new Exception();
-				}
-				System.Net.ServicePointManager.Expect100Continue = false;
-				string filename = @ModLoader.ModPath + @Path.DirectorySeparatorChar + @Path.GetFileName(mod) + @".tmod";
+					{ "displayname", bp.displayName },
+					{ "name", modFile.name },
+					{ "version", "v"+bp.version },
+					{ "author", bp.author },
+					{ "homepage", bp.homepage },
+					{ "description", bp.description },
+					{ "steamid64", ModLoader.SteamID64 },
+					{ "modloaderversion", "tModLoader v"+modFile.tModLoaderVersion },
+					{ "passphrase", ModLoader.modBrowserPassphrase },
+					{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
+					{ "modside", bp.side.ToFriendlyString() },
+				};
+				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
-				using (var iconStream = theTModFile.HasFile("icon.png") ? new MemoryStream(theTModFile.GetFile("icon.png")) : null)
-				using (var stream = File.Open(filename, FileMode.Open))
+				using (PatientWebClient client = new PatientWebClient())
 				{
-					var files = new List<UploadFile>();
-					files.Add(new IO.UploadFile
-						{
-							Name = "file",
-							Filename = Path.GetFileName(filename),
-							//    ContentType = "text/plain",
-							Stream = stream
-						}
-					);
-					if (iconStream != null)
+					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
+					Interface.uploadMod.SetDownloading(modFile.name);
+					Interface.uploadMod.SetCancel(() =>
 					{
-						files.Add(new IO.UploadFile
-							{
-								Name = "iconfile",
-								Filename = "icon.png",
-								Stream = iconStream
-							}
-						);
-					}
-					BuildProperties bp = BuildProperties.ReadModFile(theTModFile);
-					var values = new NameValueCollection
-					{
-						{ "displayname", bp.displayName },
-						{ "name", Path.GetFileNameWithoutExtension(filename) },
-						{ "version", "v"+bp.version },
-						{ "author", bp.author },
-						{ "homepage", bp.homepage },
-						{ "description", bp.description },
-						{ "steamid64", ModLoader.SteamID64 },
-						{ "modloaderversion", "tModLoader v"+theTModFile.tModLoaderVersion },
-						{ "passphrase", ModLoader.modBrowserPassphrase },
-						{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
-						{ "modside", bp.side.ToFriendlyString() },
-					};
-					using (PatientWebClient client = new PatientWebClient())
-					{
-						ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
-						Interface.uploadMod.SetDownloading(Path.GetFileNameWithoutExtension(filename));
-						Interface.uploadMod.SetCancel(() =>
-						{
-							Main.menuMode = Interface.modSourcesID;
-							client.CancelAsync();
-						});
-						client.UploadProgressChanged += (s, e) => Interface.uploadMod.SetProgress(e);
-						client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, theTModFile);
+						Main.menuMode = Interface.modSourcesID;
+						client.CancelAsync();
+					});
+					client.UploadProgressChanged += (s, e) => Interface.uploadMod.SetProgress(e);
+					client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, modFile);
 
-						var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
-						client.Headers["Content-Type"] = "multipart/form-data; boundary=" + boundary;
-						boundary = "--" + boundary;
-						byte[] data = IO.UploadFile.GetUploadFilesRequestData(files, values);
-						client.UploadDataAsync(new Uri(url), data);
-					}
-					Main.menuMode = Interface.uploadModID;
+					var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
+					client.Headers["Content-Type"] = "multipart/form-data; boundary=" + boundary;
+					//boundary = "--" + boundary;
+					byte[] data = UploadFile.GetUploadFilesRequestData(files, values);
+					client.UploadDataAsync(new Uri(url), data);
 				}
+				Main.menuMode = Interface.uploadModID;
 			}
 			catch (WebException e)
 			{
