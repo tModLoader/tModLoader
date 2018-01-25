@@ -173,6 +173,7 @@ namespace Terraria.ModLoader
 				{
 					mod.SetupContent();
 					mod.PostSetupContent();
+					//mod.File?.UnloadContent();
 				}
 				catch (Exception e)
 				{
