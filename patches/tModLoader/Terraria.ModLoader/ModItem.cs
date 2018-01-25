@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -183,6 +184,15 @@ namespace Terraria.ModLoader
 			}
 
 			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
+		}
+
+		/// <summary>
+		/// Allows you to manually choose what prefix an item will get.
+		/// </summary>
+		/// <returns>The ID of the prefix to give the item, -1 to use default vanilla behavior</returns>
+		public virtual int ChoosePrefix(UnifiedRandom rand)
+		{
+			return -1;
 		}
 
 		/// <summary>

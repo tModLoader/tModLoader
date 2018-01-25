@@ -5,6 +5,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -95,6 +96,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void SetDefaults(Item item)
 		{
+		}
+
+		/// <summary>
+		/// Allows you to manually choose what prefix an item will get.
+		/// </summary>
+		/// <returns>The ID of the prefix to give the item, -1 to use default vanilla behavior</returns>
+		public virtual int ChoosePrefix(Item item, UnifiedRandom rand)
+		{
+			return -1;
 		}
 
 		/// <summary>

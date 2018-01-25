@@ -11,6 +11,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -265,6 +266,25 @@ namespace Terraria.ModLoader
 			int frameCount = Main.itemAnimations[item.type].FrameCount;
 			int frameDuration = Main.itemAnimations[item.type].TicksPerFrame;
 			return Main.itemAnimations[item.type].GetFrame(Main.itemTexture[item.type]);
+		}
+
+		private static HookList HookChoosePrefix = AddHook<Func<Item, UnifiedRandom, int>>(g => g.ChoosePrefix);
+
+		public static int ChoosePrefix(Item item, UnifiedRandom rand)
+		{
+			foreach (var g in HookChoosePrefix.arr)
+			{
+				int pre = g.ChoosePrefix(item, rand);
+				if (pre >= 0)
+				{
+					return pre;
+				}
+			}
+			if (item.modItem != null)
+			{
+				return item.modItem.ChoosePrefix(rand);
+			}
+			return -1;
 		}
 
 		private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
