@@ -84,6 +84,10 @@ namespace Terraria.ModLoader
 		/// The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally.
 		/// </summary>
 		public int music = -1;
+		/// <summary>
+		/// The priority of the music that plays when this NPC is on or near the screen.
+		/// </summary>
+		public MusicPriority musicPriority = MusicPriority.BossLow;
 		//in Terraria.Main.NPCAddHeight at end of else if chain add
 		//  else if(Main.npc[i].modNPC != null) { num = Main.npc[i].modNPC.drawOffsetY; }
 		/// <summary>

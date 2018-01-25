@@ -536,11 +536,12 @@
  			TextureManager.Initialize();
  			this.mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
  			Main.ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
-@@ -8639,6 +_,7 @@
+@@ -8639,6 +_,8 @@
  					bool flag13 = false;
  					Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
  					int num = 5000;
 +					int modMusic = -1;
++					MusicPriority modPriority = MusicPriority.None;
  					for (int l = 0; l < 200; l++)
  					{
  						if (Main.npc[l].active)
@@ -562,47 +563,123 @@
  							{
  								goto IL_5F6;
  							}
-@@ -8861,6 +_,10 @@
+@@ -8861,6 +_,11 @@
  							if (!rectangle.Intersects(value))
  							{
  								goto IL_5F6;
 +							}
-+							if (Main.npc[l].modNPC != null && Main.npc[l].modNPC.music >= 0 && modMusic < 0)
++							if (Main.npc[l].modNPC != null && Main.npc[l].modNPC.music >= 0 && (modMusic < 0 || Main.npc[l].modNPC.musicPriority > modPriority))
 +							{
 +								modMusic = Main.npc[l].modNPC.music;
++								modPriority = Main.npc[l].modNPC.musicPriority;
  							}
  							if (num2 == 1)
  							{
-@@ -8957,6 +_,10 @@
- 						if (flag8)
+@@ -8933,6 +_,7 @@
+ 						IL_5F6:
+ 						;
+ 					}
++					ModHooks.UpdateMusic(ref modMusic, ref modPriority);
+ 					int num3 = (int)((Main.screenPosition.X + (float)(Main.screenWidth / 2)) / 16f);
+ 					if (Main.musicVolume == 0f)
+ 					{
+@@ -8954,10 +_,18 @@
+ 						float num4 = (float)(Main.maxTilesX / 4200);
+ 						num4 *= num4;
+ 						float num5 = (float)((double)((Main.screenPosition.Y + (float)(Main.screenHeight / 2)) / 16f - (65f + 10f * num4)) / (Main.worldSurface / 5.0));
+-						if (flag8)
++						if (modPriority >= MusicPriority.BossHigh)
++						{
++							this.newMusic = modMusic;
++						}
++						else if (flag8)
  						{
  							this.newMusic = 38;
+ 						}
++						else if (modPriority >= MusicPriority.BossMedium)
++						{
++							this.newMusic = modMusic;
 +						}
-+						else if (modMusic >= 0)
+ 						else if (flag10)
+ 						{
+ 							this.newMusic = 37;
+@@ -8970,6 +_,10 @@
+ 						{
+ 							this.newMusic = 24;
+ 						}
++						else if (modPriority >= MusicPriority.BossLow)
++						{
++							this.newMusic = modMusic;
++						}
+ 						else if (flag3)
+ 						{
+ 							this.newMusic = 12;
+@@ -8990,6 +_,10 @@
+ 						{
+ 							this.newMusic = 25;
+ 						}
++						else if (modPriority >= MusicPriority.Event)
++						{
++							this.newMusic = modMusic;
++						}
+ 						else if (flag9)
+ 						{
+ 							this.newMusic = 35;
+@@ -9002,6 +_,10 @@
+ 						{
+ 							this.newMusic = 41;
+ 						}
++						else if (modPriority >= MusicPriority.Environment)
++						{
++							this.newMusic = modMusic;
++						}
+ 						else if (Main.player[Main.myPlayer].ZoneSandstorm)
+ 						{
+ 							this.newMusic = 40;
+@@ -9018,6 +_,10 @@
+ 						{
+ 							this.newMusic = 15;
+ 						}
++						else if (modPriority >= MusicPriority.BiomeHigh)
++						{
++							this.newMusic = modMusic;
++						}
+ 						else if (Main.tile[(int)(Main.player[Main.myPlayer].Center.X / 16f), (int)(Main.player[Main.myPlayer].Center.Y / 16f)].wall == 87)
+ 						{
+ 							this.newMusic = 26;
+@@ -9048,6 +_,10 @@
+ 								this.newMusic = 16;
+ 							}
+ 						}
++						else if (modPriority >= MusicPriority.BiomeMedium)
++						{
++							this.newMusic = modMusic;
++						}
+ 						else if (Main.player[Main.myPlayer].ZoneDungeon)
+ 						{
+ 							this.newMusic = 23;
+@@ -9070,6 +_,10 @@
+ 							{
+ 								this.newMusic = 14;
+ 							}
++						}
++						else if (modPriority >= MusicPriority.BiomeLow)
 +						{
 +							this.newMusic = modMusic;
  						}
- 						else if (flag10)
+ 						else if ((double)Main.player[Main.myPlayer].position.Y > Main.worldSurface * 16.0 + (double)(Main.screenHeight / 2))
  						{
-@@ -9182,6 +_,7 @@
- 							this.newMusic = 32;
- 						}
- 					}
-+					ModHooks.UpdateMusic(ref this.newMusic);
- 					if (Main.gameMenu || Main.musicVolume == 0f)
- 					{
- 						Main.musicBox2 = -1;
-@@ -9352,6 +_,10 @@
- 						if (Main.musicBox == 39)
+@@ -9353,6 +_,10 @@
  						{
  							this.newMusic = 41;
-+						}
+ 						}
 +						if (Main.musicBox >= Main.maxMusic)
 +						{
 +							this.newMusic = Main.musicBox;
- 						}
++						}
  					}
  					Main.curMusic = this.newMusic;
+ 					float num8 = 1f;
 @@ -9369,13 +_,17 @@
  							num8 = 0f;
  							Main.curMusic = 0;
