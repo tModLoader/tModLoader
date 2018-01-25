@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 		{
 			this.Key = key;
 			this.translations = new Dictionary<int, string>();
-			this.translations[fallback] = defaultEmpty ? null : key;
+			this.translations[fallback] = defaultEmpty ? "" : key;
 		}
 
 		public void SetDefault(string value)
