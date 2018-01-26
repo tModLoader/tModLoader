@@ -258,6 +258,24 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.
+		/// </summary>
+		/// <returns></returns>
+		public virtual string HighlightTexture()
+		{
+			return texture + "_Highlight";
+		}
+
+		/// <summary>
+		/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool HasSmartInteract()
+		{
+			return false;
+		}
+
+		/// <summary>
 		/// Allows you to customize which sound you want to play when the tile at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile. Returns true by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>

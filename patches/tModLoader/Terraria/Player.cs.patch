@@ -2903,6 +2903,26 @@
  			if (flag)
  			{
  				return;
+@@ -13480,7 +_,10 @@
+ 							list2.Add(new Tuple<int, int>(j, k));
+ 						}
+ 						IL_5D0:
+-						;
++						if (TileLoader.HasSmartInteract(tile.type))
++						{
++							list2.Add(new Tuple<int, int>(j, k));
++						}
+ 					}
+ 				}
+ 				if (list2.Count > 0)
+@@ -13769,6 +_,7 @@
+ 						num18 = 0;
+ 					}
+ 					IL_9F7:
++					TileLoader.FixSmartInteractCoords(type3, ref num13, ref num14, ref num15, ref num16, ref num17, ref num18);
+ 					if (num13 != 0 && num14 != 0)
+ 					{
+ 						int num19 = item3 - (int)tile2.frameX % (num15 * num13 + num17) / num15;
 @@ -14168,6 +_,7 @@
  			if (this.controlTorch && this.itemAnimation == 0)
  			{

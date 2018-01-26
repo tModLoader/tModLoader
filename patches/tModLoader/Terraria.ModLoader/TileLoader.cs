@@ -546,6 +546,25 @@ namespace Terraria.ModLoader
 			}
 			tile.PostSetDefaults();
 		}
+
+		public static bool HasSmartInteract(int type)
+		{
+			return GetTile(type)?.HasSmartInteract() ?? false;
+		}
+
+		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraX, ref int extraY)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile != null)
+			{
+				TileObjectData data = TileObjectData.GetTileData(type, 0);
+				width = data.Width;
+				height = data.Height;
+				frameWidth = data.CoordinateFullWidth + data.CoordinatePadding;
+				frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
+				extraY = data.CoordinateFullHeight % frameHeight;
+			}
+		}
 		//in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
 		//  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
 		public static bool KillSound(int i, int j, int type)
