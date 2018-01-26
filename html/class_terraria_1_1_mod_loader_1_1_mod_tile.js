@@ -55,6 +55,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_tile =
     [ "chestDrop", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a41cd13516f1d54f9c1d53ab583c76273", null ],
     [ "closeDoorID", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6605bf06cc4adbfaa6a609cce58d7424", null ],
     [ "disableSmartCursor", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a08ffa633e41dff9e482d868dd4886c5d", null ],
+    [ "disableSmartInteract", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#acdf5af4ff68ba6dc38abf06117476a8b", null ],
     [ "dresser", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a125b4cf8b3b5f6df2f741e04c594e056", null ],
     [ "dresserDrop", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6f7bde71246c41e527f49e1bcbf95b0b", null ],
     [ "drop", "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a37295f3be76008d083ffdacebe0fa6a9", null ],

@@ -96,6 +96,7 @@ var searchData=
   ['deserialize_3c_20t_20_3e',['Deserialize&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a508a2a26562b92ef73a16508f031fc74',1,'Terraria::ModLoader::IO::TagIO']]],
   ['deserializelist',['DeserializeList',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#adb861f16c685efe96efdcecd63e03ebb',1,'Terraria.ModLoader.IO.TagSerializer.DeserializeList(IList value)'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a03cdeffc1f3073c859999427da29f346',1,'Terraria.ModLoader.IO.TagSerializer.DeserializeList(IList value)']]],
   ['disablesmartcursor',['DisableSmartCursor',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad646fc6fbf857656987ad7e46608e234',1,'Terraria::ModLoader::TileLoader']]],
+  ['disablesmartinteract',['DisableSmartInteract',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#af83b7649657bbd1a6b80df21cfef0349',1,'Terraria::ModLoader::TileLoader']]],
   ['dispose',['Dispose',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html#a7bb3947ac58d5d5b45657658269ebe66',1,'Terraria::ModLoader::AssemblyManager::SymbolWriterProvider::HeaderCopyWriter']]],
   ['disposemusic',['DisposeMusic',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae60ca1af95d709f45bbc3a849ff0da09',1,'Terraria::ModLoader::ModLoader']]],
   ['dllname',['DllName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ab3abd4e5185e46221525287e41a1f6f8',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],

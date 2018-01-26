@@ -27,6 +27,7 @@ var class_terraria_1_1_mod_loader_1_1_tile_loader =
     [ "DelegateSetSpriteEffects", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a391998c2b6d653f72944c86d4a17cfb4", null ],
     [ "DelegateTileFrame", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#afd1eb30d2618073d0e35b0cf5e23e8f8", null ],
     [ "DisableSmartCursor", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad646fc6fbf857656987ad7e46608e234", null ],
+    [ "DisableSmartInteract", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#af83b7649657bbd1a6b80df21cfef0349", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#af6322d9f2bf8bc28cc8559511a5ffe6b", null ],
     [ "Drop", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a840073ba42a2d7d13c5695efbb6b19d3", null ],
     [ "DropCritterChance", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a7c19d93e07e563e0cfa0caaf0bf73bb7", null ],
