@@ -2887,6 +2887,22 @@
  			int tileBoost = item.tileBoost;
  			int num3 = 0;
  			if (item.type == 1071 || item.type == 1543 || item.type == 1072 || item.type == 1544)
+@@ -13230,6 +_,7 @@
+ 			{
+ 				value.Y = Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY;
+ 			}
++			//patch file: num, num2
+ 			int num = Player.tileTargetX;
+ 			int num2 = Player.tileTargetY;
+ 			if (num < 10)
+@@ -13270,6 +_,7 @@
+ 				flag = true;
+ 			}
+ 			IL_176:
++			TileLoader.DisableSmartInteract(Main.tile[num, num2], ref flag);
+ 			if (flag)
+ 			{
+ 				return;
 @@ -14168,6 +_,7 @@
  			if (this.controlTorch && this.itemAnimation == 0)
  			{

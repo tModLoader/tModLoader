@@ -407,6 +407,18 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		public static void DisableSmartInteract(Tile tile, ref bool disable)
+		{
+			if (tile.active())
+			{
+				ModTile modTile = GetTile(tile.type);
+				if (modTile != null)
+				{
+					disable = modTile.disableSmartInteract;
+				}
+			}
+		}
 		//in Terraria.WorldGen.OpenDoor replace bad type check with TileLoader.OpenDoorID(Main.tile[i, j]) < 0
 		//in Terraria.WorldGen.OpenDoor replace 11 with (ushort)TileLoader.OpenDoorID
 		//replace all type checks before WorldGen.OpenDoor
