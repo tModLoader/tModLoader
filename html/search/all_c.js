@@ -21,7 +21,7 @@ var searchData=
   ['loadassemblies',['LoadAssemblies',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad406f52f32b86d42353ef40f2c4936f7',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['loaded',['loaded',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a25dec7b693a6ac7c8e7690bf9447b179',1,'Terraria.ModLoader.TileLoader.loaded()'],['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a26945400102ee133ead362be72521b85',1,'Terraria.ModLoader.WallLoader.loaded()']]],
   ['loadedmod',['LoadedMod',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html',1,'Terraria::ModLoader::AssemblyManager']]],
-  ['loadedmods',['LoadedMods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f',1,'Terraria.ModLoader.ModLoader.LoadedMods()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a4dba1c360d13f869232c24c5964cec5c',1,'Terraria.ModLoader.ModLoader.loadedMods()']]],
+  ['loadedmods',['loadedMods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a4dba1c360d13f869232c24c5964cec5c',1,'Terraria.ModLoader.ModLoader.loadedMods()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f',1,'Terraria.ModLoader.ModLoader.LoadedMods()']]],
   ['loadedmodsweakreferences',['loadedModsWeakReferences',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a59e0d6a6d0842bf5b4a0236227967d9e',1,'Terraria::ModLoader::ModLoader']]],
   ['loadindex',['loadIndex',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#afc438fe5f44ed3c7c1e4abb10ac36e66',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['loadingmod',['LoadingMod',['../class_loading_mod.html',1,'']]],
