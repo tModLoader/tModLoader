@@ -195,9 +195,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5f9c26b8416bae73b86fabdd0171b3de"><td class="memItemLeft" align="right" valign="top">virtual ushort&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a5f9c26b8416bae73b86fabdd0171b3de">GetMapOption</a> (int i, int j)</td></tr>
 <tr class="memdesc:a5f9c26b8416bae73b86fabdd0171b3de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to choose which minimap entry the tile at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.  <a href="#a5f9c26b8416bae73b86fabdd0171b3de">More...</a><br /></td></tr>
 <tr class="separator:a5f9c26b8416bae73b86fabdd0171b3de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91836ce89331442894f23a27b4eeeab9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a91836ce89331442894f23a27b4eeeab9">HasSmartInteract</a> ()</td></tr>
+<tr class="memdesc:a91836ce89331442894f23a27b4eeeab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.  <a href="#a91836ce89331442894f23a27b4eeeab9">More...</a><br /></td></tr>
+<tr class="separator:a91836ce89331442894f23a27b4eeeab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6954f7f821b89064e2fb3ce3005060b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#ab6954f7f821b89064e2fb3ce3005060b">HasWalkDust</a> ()</td></tr>
 <tr class="memdesc:ab6954f7f821b89064e2fb3ce3005060b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile creates dust when the player walks on it. Returns false by default.  <a href="#ab6954f7f821b89064e2fb3ce3005060b">More...</a><br /></td></tr>
 <tr class="separator:ab6954f7f821b89064e2fb3ce3005060b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95f28105809616112c48b0f515df7160"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a95f28105809616112c48b0f515df7160">HighlightTexture</a> ()</td></tr>
+<tr class="memdesc:a95f28105809616112c48b0f515df7160"><td class="mdescLeft">&#160;</td><td class="mdescRight">The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.  <a href="#a95f28105809616112c48b0f515df7160">More...</a><br /></td></tr>
+<tr class="separator:a95f28105809616112c48b0f515df7160"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48b417a095315611106b7173032ffe82"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a48b417a095315611106b7173032ffe82">HitWire</a> (int i, int j)</td></tr>
 <tr class="memdesc:a48b417a095315611106b7173032ffe82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a wire current passes through this tile.  <a href="#a48b417a095315611106b7173032ffe82">More...</a><br /></td></tr>
 <tr class="separator:a48b417a095315611106b7173032ffe82"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -573,10 +579,10 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00419">419</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00437">437</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00786">Terraria.ModLoader.TileLoader.SetAnimationFrame()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        {</div><div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00805">Terraria.ModLoader.TileLoader.SetAnimationFrame()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        {</div><div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -625,10 +631,10 @@ Properties</h2></td></tr>
 
 <p>Allows you to animate your tile. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame. This is called once an update. Use AnimateIndividualTile to animate specific tile instances directly. </p>
 <div class="fragment"><div class="line"><span class="keywordflow">if</span> (++frameCounter &gt; 8)</div><div class="line">{</div><div class="line">    frameCounter = 0;</div><div class="line">    <span class="keywordflow">if</span> (++frame &gt; 5)</div><div class="line">    {</div><div class="line">        frame = 0;</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><p> or, to mimic another tile, simply: </p><div class="fragment"><div class="line">frame = Main.tileFrame[TileID.FireflyinaBottle];</div></div><!-- fragment -->
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00406">406</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00424">424</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00760">Terraria.ModLoader.TileLoader.AnimateTiles()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        {</div><div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00779">Terraria.ModLoader.TileLoader.AnimateTiles()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        {</div><div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -753,10 +759,10 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00532">532</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00550">550</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00966">Terraria.ModLoader.TileLoader.AutoSelect()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;        {</div><div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00985">Terraria.ModLoader.TileLoader.AutoSelect()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;        {</div><div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
@@ -812,10 +818,10 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00342">342</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00360">360</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00664">Terraria.ModLoader.TileLoader.CanExplode()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        {</div><div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00683">Terraria.ModLoader.TileLoader.CanExplode()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        {</div><div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
@@ -877,8 +883,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00314">314</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        {</div><div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00332">332</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        {</div><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abc83e0e1d482e5896ec62081265fe95e"></a>
@@ -922,8 +928,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00495">495</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        {</div><div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00513">513</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        {</div><div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae0b2d2466cda2371578631957ac615e1"></a>
@@ -956,8 +962,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00586">586</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;        {</div><div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00604">604</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;        {</div><div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aadcda46d984a7190a00cfa7e0d884286"></a>
@@ -1007,8 +1013,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00284">284</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        {</div><div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            type = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#acb29b9805a72524b6de8106705b24cfe">dustType</a>;</div><div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_html_acb29b9805a72524b6de8106705b24cfe"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#acb29b9805a72524b6de8106705b24cfe">Terraria.ModLoader.ModTile.dustType</a></div><div class="ttdeci">int dustType</div><div class="ttdoc">The default type of dust made when this tile is hit. Defaults to 0. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_8cs_source.html#l00055">ModTile.cs:55</a></div></div>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00302">302</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        {</div><div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            type = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#acb29b9805a72524b6de8106705b24cfe">dustType</a>;</div><div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_html_acb29b9805a72524b6de8106705b24cfe"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#acb29b9805a72524b6de8106705b24cfe">Terraria.ModLoader.ModTile.dustType</a></div><div class="ttdeci">int dustType</div><div class="ttdoc">The default type of dust made when this tile is hit. Defaults to 0. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_tile_8cs_source.html#l00055">ModTile.cs:55</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1089,10 +1095,10 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00370">370</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00388">388</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00708">Terraria.ModLoader.TileLoader.Dangersense()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        {</div><div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00727">Terraria.ModLoader.TileLoader.Dangersense()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        {</div><div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -1167,8 +1173,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00439">439</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        {</div><div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00457">457</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        {</div><div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4f20ca4fe1f750102f13679bf7349b81"></a>
@@ -1212,10 +1218,10 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00304">304</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00322">322</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00610">Terraria.ModLoader.TileLoader.Drop()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        {</div><div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00629">Terraria.ModLoader.TileLoader.Drop()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        {</div><div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
@@ -1289,8 +1295,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00295">295</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        {</div><div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00313">313</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        {</div><div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abf16e1a9ae58c5cb4d317761f25f4946"></a>
@@ -1323,8 +1329,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00560">560</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        {</div><div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00578">578</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        {</div><div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5f9c26b8416bae73b86fabdd0171b3de"></a>
@@ -1368,8 +1374,36 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00466">466</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;        {</div><div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;            <span class="keywordflow">return</span> 0;</div><div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00484">484</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;        {</div><div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;            <span class="keywordflow">return</span> 0;</div><div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a91836ce89331442894f23a27b4eeeab9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModTile.HasSmartInteract </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00273">273</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        {</div><div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab6954f7f821b89064e2fb3ce3005060b"></a>
@@ -1395,8 +1429,50 @@ Properties</h2></td></tr>
 
 <p>Whether or not this tile creates dust when the player walks on it. Returns false by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00567">567</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;        {</div><div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00585">585</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        {</div><div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a95f28105809616112c48b0f515df7160"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string Terraria.ModLoader.ModTile.HighlightTexture </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00264">264</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02102">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        {</div><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">return</span> texture + <span class="stringliteral">&quot;_Highlight&quot;</span>;</div><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_a95f28105809616112c48b0f515df7160_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_a95f28105809616112c48b0f515df7160_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_tile_a95f28105809616112c48b0f515df7160_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_a95f28105809616112c48b0f515df7160_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod.html#a6ea0eaab8c94d722396a267e31871a7b" title="Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText. " alt="" coords="243,5,434,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a48b417a095315611106b7173032ffe82"></a>
@@ -1440,8 +1516,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00542">542</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        {</div><div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00560">560</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        {</div><div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a81433b4e5c3a6a72ffeb38dbe49181f8"></a>
@@ -1497,8 +1573,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00333">333</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        {</div><div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00351">351</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        {</div><div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4a7621f2131742715f4e30a9e490b2a2"></a>
@@ -1542,15 +1618,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00265">265</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00283">283</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00551">Terraria.ModLoader.TileLoader.KillSound()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        {</div><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00570">Terraria.ModLoader.TileLoader.KillSound()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        {</div><div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_a4a7621f2131742715f4e30a9e490b2a2_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_a4a7621f2131742715f4e30a9e490b2a2_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_tile_a4a7621f2131742715f4e30a9e490b2a2_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_a4a7621f2131742715f4e30a9e490b2a2_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#abcdd5a864dd8e5d84d229daa7e06445e" title="Terraria.ModLoader.TileLoader.\lKillSound" alt="" coords="243,5,445,46"/>
@@ -1619,8 +1695,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00324">324</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        {</div><div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00342">342</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        {</div><div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a218eedc4580c1bec816bdc74fa02383d"></a>
@@ -1682,8 +1758,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00361">361</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        {</div><div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00379">379</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        {</div><div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0109012239d16ca6ef024fd5889a864b"></a>
@@ -1727,8 +1803,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00514">514</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        {</div><div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00532">532</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;        {</div><div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a01f49534030c2d4c02009e4918c05587"></a>
@@ -1772,8 +1848,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00523">523</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        {</div><div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00541">541</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        {</div><div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a10cca98611fc831d5d06c1f53644996a"></a>
@@ -1823,8 +1899,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00352">352</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        {</div><div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00370">370</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        {</div><div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5627e9c1d5959535a6041c9852fe8604"></a>
@@ -1880,8 +1956,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00275">275</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        {</div><div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00293">293</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        {</div><div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad9ee660958e686bf661360a72878a819"></a>
@@ -1932,8 +2008,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00606">606</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        {</div><div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00624">624</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;        {</div><div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad6f4d05e13dc9098ec6f99c2a81628a7"></a>
@@ -1983,8 +2059,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00448">448</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        {</div><div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00466">466</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;        {</div><div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab0fc8ff564415d20026a14b4975f3efc"></a>
@@ -2014,11 +2090,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00524">Terraria.ModLoader.TileLoader.IsModMusicBox()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        {</div><div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_ab0fc8ff564415d20026a14b4975f3efc_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_ab0fc8ff564415d20026a14b4975f3efc_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_tile_ab0fc8ff564415d20026a14b4975f3efc_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_ab0fc8ff564415d20026a14b4975f3efc_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a62c88b8eb4a959b6120e0da5386ba6f0" title="Terraria.ModLoader.TileLoader.\lIsModMusicBox" alt="" coords="243,5,445,46"/>
@@ -2075,8 +2151,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00428">428</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        {</div><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00446">446</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;        {</div><div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a00d242a9c79b930849943d29bacb650b"></a>
@@ -2120,8 +2196,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00476">476</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        {</div><div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00494">494</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;        {</div><div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa19b9700addc0ff3027e4effbbf9a5fe"></a>
@@ -2165,8 +2241,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00505">505</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        {</div><div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00523">523</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        {</div><div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae02d585c05a868c401fda0924c0e10aa"></a>
@@ -2200,15 +2276,15 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00595">595</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00613">613</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l01063">Terraria.ModLoader.TileLoader.SaplingGrowthType()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;        {</div><div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;            <span class="keywordflow">return</span> -1;</div><div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l01082">Terraria.ModLoader.TileLoader.SaplingGrowthType()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        {</div><div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;            <span class="keywordflow">return</span> -1;</div><div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_ae02d585c05a868c401fda0924c0e10aa_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_ae02d585c05a868c401fda0924c0e10aa_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_tile_ae02d585c05a868c401fda0924c0e10aa_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_ae02d585c05a868c401fda0924c0e10aa_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2cafade783145461772990eecfb3dd39" title="Terraria.ModLoader.TileLoader.\lSaplingGrowthType" alt="" coords="243,5,445,46"/>
@@ -2245,11 +2321,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00524">Terraria.ModLoader.TileLoader.IsModMusicBox()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        {</div><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div id="dynsection-12-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_a01f7bae79dfd53b5c1ed19aeb3cfae61_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_a01f7bae79dfd53b5c1ed19aeb3cfae61_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_tile_a01f7bae79dfd53b5c1ed19aeb3cfae61_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_a01f7bae79dfd53b5c1ed19aeb3cfae61_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a62c88b8eb4a959b6120e0da5386ba6f0" title="Terraria.ModLoader.TileLoader.\lIsModMusicBox" alt="" coords="243,5,445,46"/>
@@ -2318,15 +2394,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00389">389</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00407">407</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00737">Terraria.ModLoader.TileLoader.SetDrawPositions()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        {</div><div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00756">Terraria.ModLoader.TileLoader.SetDrawPositions()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        {</div><div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-12-content" class="dyncontent" style="display:none;">
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_a7aca44c9ddb9a8b8fa0e952390949ee5_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_a7aca44c9ddb9a8b8fa0e952390949ee5_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_tile_a7aca44c9ddb9a8b8fa0e952390949ee5_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_a7aca44c9ddb9a8b8fa0e952390949ee5_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a6470cd76125120b7af5bb68b4a3e6db4" title="Terraria.ModLoader.TileLoader.\lSetDrawPositions" alt="" coords="243,5,445,46"/>
@@ -2464,8 +2540,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00380">380</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        {</div><div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00398">398</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        {</div><div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="adcd811c92fa6d24c34e6633c6a71d468"></a>
@@ -2509,8 +2585,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00551">551</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;        {</div><div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00569">569</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;        {</div><div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abdf7ca5d6ee7408deb454291acd2e984"></a>
@@ -2560,8 +2636,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00457">457</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        {</div><div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00475">475</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        {</div><div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aec237f34a1022d26cae044deccb2abbf"></a>
@@ -2617,15 +2693,15 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00485">485</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00503">503</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00862">Terraria.ModLoader.TileLoader.TileFrame()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        {</div><div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00881">Terraria.ModLoader.TileLoader.TileFrame()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        {</div><div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_tile_aec237f34a1022d26cae044deccb2abbf_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_tile_aec237f34a1022d26cae044deccb2abbf_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_tile_aec237f34a1022d26cae044deccb2abbf_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_tile_aec237f34a1022d26cae044deccb2abbf_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#adc978e3eefdcca3f9346b8ceea23bb40" title="Terraria.ModLoader.TileLoader.\lTileFrame" alt="" coords="243,5,445,46"/>
@@ -2683,8 +2759,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00578">578</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        {</div><div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00596">596</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        {</div><div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -2702,7 +2778,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00083">83</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00911">Terraria.ModLoader.TileLoader.AdjTiles()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00930">Terraria.ModLoader.TileLoader.AdjTiles()</a>.</p>
 
 </div>
 </div>
@@ -2720,7 +2796,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00063">63</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00786">Terraria.ModLoader.TileLoader.SetAnimationFrame()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00805">Terraria.ModLoader.TileLoader.SetAnimationFrame()</a>.</p>
 
 </div>
 </div>
@@ -2878,7 +2954,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00059">59</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00610">Terraria.ModLoader.TileLoader.Drop()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00629">Terraria.ModLoader.TileLoader.Drop()</a>.</p>
 
 </div>
 </div>
@@ -2912,7 +2988,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00067">67</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00880">Terraria.ModLoader.TileLoader.MineDamage()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00899">Terraria.ModLoader.TileLoader.MineDamage()</a>.</p>
 
 </div>
 </div>
@@ -2930,7 +3006,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00071">71</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00888">Terraria.ModLoader.TileLoader.PickPowerCheck()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00907">Terraria.ModLoader.TileLoader.PickPowerCheck()</a>.</p>
 
 </div>
 </div>
@@ -2984,7 +3060,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00051">51</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00551">Terraria.ModLoader.TileLoader.KillSound()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00570">Terraria.ModLoader.TileLoader.KillSound()</a>.</p>
 
 </div>
 </div>
@@ -3002,7 +3078,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00047">47</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00551">Terraria.ModLoader.TileLoader.KillSound()</a>.</p>
+<p>Referenced by <a class="el" href="_tile_loader_8cs_source.html#l00570">Terraria.ModLoader.TileLoader.KillSound()</a>.</p>
 
 </div>
 </div>
@@ -3099,7 +3175,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_tile_8cs_source.html#l00038">38</a> of file <a class="el" href="_mod_tile_8cs_source.html">ModTile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_recipe_8cs_source.html#l00184">Terraria.ModLoader.ModRecipe.AddTile()</a>, <a class="el" href="_mod_8cs_source.html#l00712">Terraria.ModLoader.Mod.AddTile()</a>, <a class="el" href="_mod_8cs_source.html#l02102">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_tile_loader_8cs_source.html#l00760">Terraria.ModLoader.TileLoader.AnimateTiles()</a>, and <a class="el" href="_tile_loader_8cs_source.html#l00524">Terraria.ModLoader.TileLoader.IsModMusicBox()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_recipe_8cs_source.html#l00184">Terraria.ModLoader.ModRecipe.AddTile()</a>, <a class="el" href="_mod_8cs_source.html#l00712">Terraria.ModLoader.Mod.AddTile()</a>, <a class="el" href="_mod_8cs_source.html#l02102">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_tile_loader_8cs_source.html#l00779">Terraria.ModLoader.TileLoader.AnimateTiles()</a>, and <a class="el" href="_tile_loader_8cs_source.html#l00524">Terraria.ModLoader.TileLoader.IsModMusicBox()</a>.</p>
 
 </div>
 </div>
