@@ -80,14 +80,13 @@ namespace Terraria.ModLoader.UI
 			{
 				System.Net.ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/listmymods.php";
-				IO.UploadFile[] files = new IO.UploadFile[0];
 				var values = new NameValueCollection
 				{
 					{ "steamid64", ModLoader.SteamID64 },
 					{ "modloaderversion", ModLoader.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
-				byte[] result = IO.UploadFile.UploadFiles(url, files, values);
+				byte[] result = IO.UploadFile.UploadFiles(url, null, values);
 				response = System.Text.Encoding.UTF8.GetString(result);
 			}
 			catch (WebException e)

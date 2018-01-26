@@ -92,7 +92,6 @@ namespace Terraria.ModLoader.UI
 			{
 				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/unpublishmymod.php";
-				var files = new IO.UploadFile[0];
 				var values = new NameValueCollection
 				{
 					{ "name", this.name },
@@ -100,7 +99,7 @@ namespace Terraria.ModLoader.UI
 					{ "modloaderversion", ModLoader.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
-				byte[] result = UploadFile.UploadFiles(url, files, values);
+				byte[] result = UploadFile.UploadFiles(url, null, values);
 				string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
 				ErrorLogger.LogModUnPublish(s);
 			}
