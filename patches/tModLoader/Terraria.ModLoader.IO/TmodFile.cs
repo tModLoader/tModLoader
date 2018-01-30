@@ -17,7 +17,8 @@ namespace Terraria.ModLoader.IO
 			Integrity,
 			Info,
 			Code,
-			Assets
+			Assets,
+			Streaming
 		}
 
 		public readonly string path;
@@ -124,7 +125,8 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal void Read(LoadedState desiredState)
+		internal delegate void ReadStreamingAsset(string path, int len, BinaryReader reader);
+		internal void Read(LoadedState desiredState, ReadStreamingAsset streamingHandler = null)
 		{
 			if (desiredState <= state)
 				return;
@@ -171,9 +173,23 @@ namespace Terraria.ModLoader.IO
 						if (filesAreLoadOrdered && fileState > desiredState)
 							break;
 
-						byte[] content = reader.ReadBytes(reader.ReadInt32());
-						if (fileState > state && fileState <= desiredState)
-							AddFile(fileName, content);
+						int len = reader.ReadInt32();
+						if (fileState == LoadedState.Streaming && desiredState >= LoadedState.Streaming)
+						{
+							var end = deflateStream.TotalOut + len;
+							streamingHandler(fileName, len, reader);
+							if (deflateStream.TotalOut < end)
+								reader.ReadBytes((int) (end - deflateStream.TotalOut));
+							else if (deflateStream.TotalOut > end)
+								throw new IOException(
+									$"Read too many bytes ({deflateStream.Position - end - len}>{len}) while loading streaming asset: {fileName}");
+						}
+						else
+						{
+							byte[] content = reader.ReadBytes(len);
+							if (fileState > state && fileState <= desiredState)
+								AddFile(fileName, content);
+						}
 					}
 				}
 			}
@@ -185,6 +201,8 @@ namespace Terraria.ModLoader.IO
 				throw new Exception("Missing All.dll or Windows.dll and Mono.dll");
 
 			state = desiredState;
+			if (state > LoadedState.Assets)
+				state = LoadedState.Assets;
 		}
 
 		private static LoadedState GetFileState(string fileName)
@@ -194,6 +212,12 @@ namespace Terraria.ModLoader.IO
 
 			if (fileName.EndsWith(".dll") || fileName.EndsWith(".pdb"))
 				return LoadedState.Code;
+
+			if (fileName.EndsWith(".png") || fileName.EndsWith(".rawimg") ||
+					fileName.EndsWith(".mp3") || fileName.EndsWith(".wav") ||
+					fileName.EndsWith(".xnb") ||
+					fileName.StartsWith("Streaming/"))
+				return LoadedState.Streaming;
 
 			return LoadedState.Assets;
 		}

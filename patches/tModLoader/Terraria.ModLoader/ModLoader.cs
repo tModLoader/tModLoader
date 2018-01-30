@@ -142,7 +142,7 @@ namespace Terraria.ModLoader
 				try
 				{
 					mod.loading = true;
-					mod.File?.Read(TmodFile.LoadedState.Assets);
+					mod.File?.Read(TmodFile.LoadedState.Streaming, mod.LoadResourceFromStream);
 					mod.Autoload();
 					Interface.loadMods.SetSubProgressInit("");
 					mod.Load();

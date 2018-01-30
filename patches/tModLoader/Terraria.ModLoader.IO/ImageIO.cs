@@ -60,9 +60,11 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, Stream src)
+		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, Stream src) => 
+			RawToTexture2D(graphicsDevice, new BinaryReader(src, Encoding.UTF8));
+
+		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, BinaryReader r)
 		{
-			var r = new BinaryReader(src);
 			int v = r.ReadInt32();
 			if (v != VERSION)
 				throw new Exception("Unknown RawImg Format Version: " + v);

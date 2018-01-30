@@ -132,152 +132,166 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		internal void Autoload()
+		public virtual void LoadResourceFromStream(string path, int len, BinaryReader reader)
 		{
-			if (!Main.dedServ && File != null)
+			if (Main.dedServ)
+				return;
+
+			Interface.loadMods.SetSubProgressInit(path);
+
+			string extension = Path.GetExtension(path);
+			path = Path.ChangeExtension(path, null);
+			switch (extension)
 			{
-				foreach (var file in File)
-				{
-					var path = file.Key;
-					var data = file.Value;
-					string extension = Path.GetExtension(path);
-					Interface.loadMods.SetSubProgressInit(path);
-					switch (extension)
+				case ".png":
+				case ".rawimg":
+					//png files need a seekable stream
+					LoadTexture(path, len, reader, extension == ".rawimg");
+					return;
+				case ".wav":
+					LoadWav(path, reader.ReadBytes(len));
+					return;
+				case ".mp3":
+					LoadMP3(path, len, reader);
+					return;
+				case ".xnb":
+					if (path.StartsWith("Fonts/"))
 					{
-						case ".png":
-						case ".rawimg":
-							string texturePath = Path.ChangeExtension(path, null);
-							using (MemoryStream buffer = new MemoryStream(data))
-							{
-								try
-								{
-									textures[texturePath] = extension == ".rawimg" ? 
-										ImageIO.RawToTexture2D(Main.instance.GraphicsDevice, buffer) :
-										Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
-									textures[texturePath].Name = Name + "/" + texturePath;
-								}
-								catch (Exception e)
-								{
-									throw new ResourceLoadException($"The texture file at {path} failed to load", e);
-								}
-							}
-							break;
-						case ".wav":
-							string soundPath = Path.ChangeExtension(path, null);
-							using (MemoryStream buffer = new MemoryStream(data))
-							{
-								try
-								{
-									if (soundPath.StartsWith("Sounds/Music/"))
-									{
-										musics[soundPath] = new MusicData(data, false);
-									}
-									else
-									{
-										sounds[soundPath] = SoundEffect.FromStream(buffer);
-									}
-								}
-								catch (Exception e)
-								{
-									throw new ResourceLoadException($"The wav sound file at {path} failed to load", e);
-								}
-							}
-							break;
-						case ".mp3":
-							string mp3Path = Path.ChangeExtension(path, null);
-							string wavCacheFilename = this.Name + "_" + mp3Path.Replace('/', '_') + "_" + Version + ".wav";
-							WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
-							try
-							{
-								if (mp3Path.StartsWith("Sounds/Music/"))
-								{
-									bool useCache = ModLoader.musicStreamMode == 1;
-									if (useCache)
-									{
-										if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
-										{
-											WAVCacheIO.CacheMP3(wavCacheFilename, data);
-										}
-										musics[mp3Path] = new MusicData(WAVCacheIO.ModCachePath + Path.DirectorySeparatorChar + wavCacheFilename);
-									}
-									else
-									{
-										musics[mp3Path] = new MusicData(data, true);
-									}
-								}
-								else
-								{
-									sounds[mp3Path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename)
-									? SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename))
-									: WAVCacheIO.CacheMP3(wavCacheFilename, data);
-								}
-							}
-							catch (Exception e)
-							{
-								throw new ResourceLoadException($"The mp3 sound file at {path} failed to load", e);
-							}
-							break;
-						case ".xnb":
-							string xnbPath = Path.ChangeExtension(path, null);
-							if (xnbPath.StartsWith("Fonts/"))
-							{
-								string fontFilenameNoExtension = Name + "_" + xnbPath.Replace('/', '_') + "_" + Version;
-								string fontFilename = fontFilenameNoExtension + ".xnb";
-								FontCacheIO.DeleteIfOlder(File.path, fontFilename);
-								if (!FontCacheIO.FontCacheAvailable(fontFilename))
-								{
-									FileUtilities.WriteAllBytes(FontCacheIO.FontCachePath + Path.DirectorySeparatorChar + fontFilename, data, false);
-								}
-								try
-								{
-									fonts[xnbPath] = Main.instance.OurLoad<DynamicSpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
-								}
-								catch (Exception e)
-								{
-									throw new ResourceLoadException($"The font file at {path} failed to load", e);
-								}
-							}
-							else if (xnbPath.StartsWith("Effects/"))
-							{
-								string effectFilenameNoExtension = Name + "_" + xnbPath.Replace('/', '_') + "_" + Version;
-								string effectFilename = effectFilenameNoExtension + ".xnb";
-								try
-								{
-									using (MemoryStream ms = new MemoryStream(data))
-									using (BinaryReader br = new BinaryReader(ms))
-									{
-										char x = (char)br.ReadByte();//x
-										char n = (char)br.ReadByte();//n
-										char b = (char)br.ReadByte();//b
-										char w = (char)br.ReadByte();//w
-										byte xnbFormatVersion = br.ReadByte();//5
-										byte flags = br.ReadByte();//flags
-										UInt32 compressedDataSize = br.ReadUInt32();
-										if ((flags & 0x80) != 0)
-										{
-											throw new Exception($"The effect {effectFilename} can not be loaded because it is compressed."); // TODO: figure out the compression used.
-																																			 //UInt32 decompressedDataSize = br.ReadUInt32();
-										}
-										int typeReaderCount = br.ReadVarInt();
-										string typeReaderName = br.ReadString();
-										int typeReaderVersion = br.ReadInt32();
-										int sharedResourceCount = br.ReadVarInt();
-										int typeid = br.ReadVarInt();
-										UInt32 size = br.ReadUInt32();
-										byte[] effectBytecode = br.ReadBytes((int)size);
-										effects[xnbPath] = new Effect(Main.instance.GraphicsDevice, effectBytecode);
-									}
-								}
-								catch (Exception e)
-								{
-									throw new ResourceLoadException($"The effect file at {path} failed to load", e);
-								}
-							}
-							break;
+						LoadFont(path, reader.ReadBytes(len));
+						return;
 					}
-				}
+					if (path.StartsWith("Effects/"))
+					{
+						LoadEffect(path, reader);
+						return;
+					}
+					throw new ResourceLoadException($"Unknown xnb file {path}. Perhaps it should be in Fonts/ or Effects/");
 			}
 
+			throw new ResourceLoadException($"Unknown streaming asset {path}{extension}. ");
+		}
+
+		private void LoadTexture(string path, int len, BinaryReader reader, bool rawimg)
+		{
+			try
+			{
+				var tex = rawimg ?
+					ImageIO.RawToTexture2D(Main.instance.GraphicsDevice, reader) :
+					Texture2D.FromStream(Main.instance.GraphicsDevice, new MemoryStream(reader.ReadBytes(len)));
+				tex.Name = Name + "/" + path;
+				textures[path] = tex;
+			}
+			catch (Exception e)
+			{
+				throw new ResourceLoadException($"The texture file at {path} failed to load", e);
+			}
+		}
+
+		private void LoadWav(string path, byte[] bytes)
+		{
+			try
+			{
+				if (path.StartsWith("Sounds/Music/"))
+				{
+					musics[path] = new MusicData(bytes, false);
+				}
+				else
+				{
+					//SoundEffect.FromStream needs a stream with a length
+					sounds[path] = SoundEffect.FromStream(new MemoryStream(bytes));
+				}
+			}
+			catch (Exception e)
+			{
+				throw new ResourceLoadException($"The wav sound file at {path} failed to load", e);
+			}
+		}
+
+		private void LoadMP3(string path, int len, BinaryReader reader)
+		{
+			string wavCacheFilename = this.Name + "_" + path.Replace('/', '_') + "_" + Version + ".wav";
+			WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
+			try
+			{
+				if (path.StartsWith("Sounds/Music/"))
+				{
+					if (ModLoader.musicStreamMode != 1) {//no cache
+						musics[path] = new MusicData(reader.ReadBytes(len), true);
+						return;
+					}
+					
+					if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
+					{
+						WAVCacheIO.CacheMP3(wavCacheFilename, reader.BaseStream);
+					}
+
+					musics[path] = new MusicData(Path.Combine(WAVCacheIO.ModCachePath, wavCacheFilename));
+					return;
+				}
+
+				sounds[path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename) ?
+					SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename)) :
+					WAVCacheIO.CacheMP3(wavCacheFilename, reader.BaseStream);
+			}
+			catch (Exception e)
+			{
+				throw new ResourceLoadException($"The mp3 sound file at {path} failed to load", e);
+			}
+		}
+
+		private void LoadFont(string path, byte[] data)
+		{
+			string fontFilenameNoExtension = Name + "_" + path.Replace('/', '_') + "_" + Version;
+			string fontFilename = fontFilenameNoExtension + ".xnb";
+			FontCacheIO.DeleteIfOlder(File.path, fontFilename);
+			if (!FontCacheIO.FontCacheAvailable(fontFilename))
+			{
+				FileUtilities.WriteAllBytes(FontCacheIO.FontCachePath + Path.DirectorySeparatorChar + fontFilename, data, false);
+			}
+			try
+			{
+				fonts[path] = Main.instance.OurLoad<DynamicSpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
+			}
+			catch (Exception e)
+			{
+				throw new ResourceLoadException($"The font file at {path} failed to load", e);
+			}
+		}
+
+		private void LoadEffect(string path, BinaryReader br)
+		{
+			try
+			{
+				char x = (char)br.ReadByte();//x
+				char n = (char)br.ReadByte();//n
+				char b = (char)br.ReadByte();//b
+				char w = (char)br.ReadByte();//w
+				byte xnbFormatVersion = br.ReadByte();//5
+				byte flags = br.ReadByte();//flags
+				UInt32 compressedDataSize = br.ReadUInt32();
+				if ((flags & 0x80) != 0)
+				{
+					// TODO: figure out the compression used.
+					throw new Exception("Cannot load compressed effects.");
+					//UInt32 decompressedDataSize = br.ReadUInt32();
+				}
+				int typeReaderCount = br.ReadVarInt();
+				string typeReaderName = br.ReadString();
+				int typeReaderVersion = br.ReadInt32();
+				int sharedResourceCount = br.ReadVarInt();
+				int typeid = br.ReadVarInt();
+				UInt32 size = br.ReadUInt32();
+				byte[] effectBytecode = br.ReadBytes((int)size);
+				effects[path] = new Effect(Main.instance.GraphicsDevice, effectBytecode);
+			}
+			catch (Exception e)
+			{
+				throw new ResourceLoadException($"The effect file at {path} failed to load", e);
+			}
+		}
+
+		internal void Autoload()
+		{
 			if (Code == null)
 				return;
 
