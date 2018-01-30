@@ -101,7 +101,7 @@ namespace Terraria.ModLoader.IO
 					writer.Write(version.ToString());
 
 					writer.Write(files.Count);
-					foreach (var entry in files)
+					foreach (var entry in files.OrderBy(e => GetFileState(e.Key)))
 					{
 						writer.Write(entry.Key);
 						writer.Write(entry.Value.Length);
@@ -155,6 +155,8 @@ namespace Terraria.ModLoader.IO
 					fileStream.Position = pos;
 				}
 
+				bool filesAreLoadOrdered = tModLoaderVersion >= new Version(0, 10, 1, 2);
+
 				using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress))
 				using (var reader = new BinaryReader(deflateStream))
 				{
@@ -164,11 +166,14 @@ namespace Terraria.ModLoader.IO
 					int count = reader.ReadInt32();
 					for (int i = 0; i < count; i++)
 					{
-						string name = reader.ReadString();
+						string fileName = reader.ReadString();
+						LoadedState fileState = GetFileState(fileName);
+						if (filesAreLoadOrdered && fileState > desiredState)
+							break;
+
 						byte[] content = reader.ReadBytes(reader.ReadInt32());
-						LoadedState fileState = GetFileState(name);
 						if (fileState > state && fileState <= desiredState)
-							AddFile(name, content);
+							AddFile(fileName, content);
 					}
 				}
 			}
@@ -187,7 +192,7 @@ namespace Terraria.ModLoader.IO
 			if (fileName == "Info" || fileName == "icon.png")
 				return LoadedState.Info;
 
-			if (fileName.EndsWith(".dll"))
+			if (fileName.EndsWith(".dll") || fileName.EndsWith(".pdb"))
 				return LoadedState.Code;
 
 			return LoadedState.Assets;
