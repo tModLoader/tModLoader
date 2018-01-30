@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Terraria.ModLoader.IO;
@@ -102,13 +103,21 @@ namespace Terraria.ModLoader
 				if (!NeedsReload)
 					return;
 
-				modFile.Read(TmodFile.LoadedState.Code);
+				try
+				{
+					modFile.Read(TmodFile.LoadedState.Code);
 
-				foreach (var dll in properties.dllReferences)
-					LoadAssembly(EncapsulateReferences(modFile.GetFile("lib/" + dll + ".dll")));
+					foreach (var dll in properties.dllReferences)
+						LoadAssembly(EncapsulateReferences(modFile.GetFile("lib/" + dll + ".dll")));
 
-				assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
-				NeedsReload = false;
+					assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
+					NeedsReload = false;
+				}
+				catch (Exception e)
+				{
+					e.Data["mod"] = Name;
+					throw;
+				}
 			}
 
 			private byte[] EncapsulateReferences(byte[] code) {
@@ -193,15 +202,14 @@ namespace Terraria.ModLoader
 		{
 			try
 			{
-				mod.LoadAssemblies();
-
 				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
 				if (modType == null)
-					throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.") {
+					throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.")
+					{
 						HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
 					};
 
-				var m = (Mod) Activator.CreateInstance(modType);
+				var m = (Mod)Activator.CreateInstance(modType);
 				m.File = mod.modFile;
 				m.Code = mod.assembly;
 				m.Side = mod.properties.side;
@@ -237,21 +245,31 @@ namespace Terraria.ModLoader
 
 			try
 			{
+				//load all the assemblies in parallel.
 				int i = 0;
-				return modList.AsParallel().Select(mod =>
+				Parallel.ForEach(modList, mod =>
 				{
-					var modInst = Instantiate(mod);
 					Interface.loadMods.SetProgressCompatibility(mod.Name, i++, modsToLoad.Count);
-					return modInst;
-				}).ToList();
+					mod.LoadAssemblies();
+				});
+
+				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
+				return modList.Select(Instantiate).ToList();
 			}
-			catch (AggregateException e)
+			catch (AggregateException ae)
 			{
-				ErrorLogger.LogMulti(e.InnerExceptions.Select(e2 => new Action(() => {
-					var mod = modList.Single(m => m.Name == (string) e2.Data["mod"]);
+				ErrorLogger.LogMulti(ae.InnerExceptions.Select(e => new Action(() => {
+					var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
 					ModLoader.DisableMod(mod.Name);
-					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e2);
+					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
 				})));
+				return null;
+			}
+			catch (Exception e)
+			{
+				var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
+				ModLoader.DisableMod(mod.Name);
+				ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
 				return null;
 			}
 		}
