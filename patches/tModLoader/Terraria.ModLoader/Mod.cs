@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Graphics;
@@ -152,7 +153,7 @@ namespace Terraria.ModLoader
 					LoadWav(path, reader.ReadBytes(len));
 					return;
 				case ".mp3":
-					LoadMP3(path, len, reader);
+					LoadMP3(path, reader.ReadBytes(len));
 					return;
 				case ".xnb":
 					if (path.StartsWith("Fonts/"))
@@ -207,7 +208,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private void LoadMP3(string path, int len, BinaryReader reader)
+		private void LoadMP3(string path, byte[] bytes)
 		{
 			string wavCacheFilename = this.Name + "_" + path.Replace('/', '_') + "_" + Version + ".wav";
 			WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
@@ -216,13 +217,13 @@ namespace Terraria.ModLoader
 				if (path.StartsWith("Sounds/Music/"))
 				{
 					if (ModLoader.musicStreamMode != 1) {//no cache
-						musics[path] = new MusicData(reader.ReadBytes(len), true);
+						musics[path] = new MusicData(bytes, true);
 						return;
 					}
 					
 					if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
 					{
-						WAVCacheIO.CacheMP3(wavCacheFilename, reader.BaseStream);
+						WAVCacheIO.CacheMP3(wavCacheFilename, new MemoryStream(bytes));
 					}
 
 					musics[path] = new MusicData(Path.Combine(WAVCacheIO.ModCachePath, wavCacheFilename));
@@ -231,7 +232,7 @@ namespace Terraria.ModLoader
 
 				sounds[path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename) ?
 					SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename)) :
-					WAVCacheIO.CacheMP3(wavCacheFilename, reader.BaseStream);
+					WAVCacheIO.CacheMP3(wavCacheFilename, new MemoryStream(bytes));
 			}
 			catch (Exception e)
 			{
@@ -453,11 +454,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModItem GetItem(string name)
-		{
-			ModItem item;
-			return items.TryGetValue(name, out item) ? item : null;
-		}
+		public ModItem GetItem(string name) => items.TryGetValue(name, out var item) ? item : null;
 
 		/// <summary>
 		/// Same as the other GetItem, but assumes that the class name and internal name are the same.
