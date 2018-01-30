@@ -14,6 +14,7 @@ namespace Terraria.ModLoader.UI
 		private string file;
 		private string webHelpURL;
 		private UITextPanel<string> webHelpButton;
+		private Action continueAction;
 
 		public override void OnInitialize()
 		{
@@ -78,6 +79,13 @@ namespace Terraria.ModLoader.UI
 		internal void SetGotoMenu(int gotoMenu)
 		{
 			this.gotoMenu = gotoMenu;
+			continueAction = null;
+		}
+
+		internal void OverrideContinueAction(Action action)
+		{
+			continueAction = action;
+			gotoMenu = Interface.errorMessageID;
 		}
 
 		internal void SetFile(string file)
@@ -87,13 +95,15 @@ namespace Terraria.ModLoader.UI
 
 		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(10, -1, -1, 1);
-			Main.menuMode = this.gotoMenu;
+			Main.PlaySound(10);
+
+			continueAction?.Invoke();
+			Main.menuMode = gotoMenu;
 		}
 
 		private void OpenFile(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(10);
 			Process.Start(file);
 		}
 

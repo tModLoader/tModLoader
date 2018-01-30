@@ -189,6 +189,32 @@ namespace Terraria.ModLoader
 			return asm;
 		}
 
+		private static Mod Instantiate(LoadedMod mod)
+		{
+			try
+			{
+				mod.LoadAssemblies();
+
+				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
+				if (modType == null)
+					throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.") {
+						HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
+					};
+
+				var m = (Mod) Activator.CreateInstance(modType);
+				m.File = mod.modFile;
+				m.Code = mod.assembly;
+				m.Side = mod.properties.side;
+				m.DisplayName = mod.properties.displayName;
+				return m;
+			}
+			catch (Exception e)
+			{
+				e.Data["mod"] = mod.Name;
+				throw;
+			}
+		}
+
 		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad) {
 			var modList = new List<LoadedMod>();
 			foreach (var loading in modsToLoad) {
@@ -209,40 +235,25 @@ namespace Terraria.ModLoader
 			if (ModLoader.alwaysLogExceptions)
 				ModCompile.ActivateExceptionReporting();
 
-			var modInstances = new List<Mod>();
-
-			int i = 0;
-			foreach (var mod in modList) {
-				Interface.loadMods.SetProgressCompatibility(mod.Name, i++, modsToLoad.Count);
-				try {
-					Interface.loadMods.SetProgressReading(mod.Name, 0, 1);
-					mod.LoadAssemblies();
-
-					Interface.loadMods.SetProgressReading(mod.Name, 1, 2);
-					Type modType;
-					try
-					{
-						modType = mod.assembly.GetTypes().Single(t => t.IsSubclassOf(typeof(Mod)));
-					}
-					catch (Exception e)
-					{
-						throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.", e) { HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error" };
-					}
-					var m = (Mod)Activator.CreateInstance(modType);
-					m.File = mod.modFile;
-					m.Code = mod.assembly;
-					m.Side = mod.properties.side;
-					m.DisplayName = mod.properties.displayName;
-					modInstances.Add(m);
-				}
-				catch (Exception e) {
-					ModLoader.DisableMod(mod.Name);
-					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
-					return null;
-				}
+			try
+			{
+				int i = 0;
+				return modList.AsParallel().Select(mod =>
+				{
+					var modInst = Instantiate(mod);
+					Interface.loadMods.SetProgressCompatibility(mod.Name, i++, modsToLoad.Count);
+					return modInst;
+				}).ToList();
 			}
-
-			return modInstances;
+			catch (AggregateException e)
+			{
+				ErrorLogger.LogMulti(e.InnerExceptions.Select(e2 => new Action(() => {
+					var mod = modList.Single(m => m.Name == (string) e2.Data["mod"]);
+					ModLoader.DisableMod(mod.Name);
+					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e2);
+				})));
+				return null;
+			}
 		}
 
 		internal class TerrariaCecilAssemblyResolver : DefaultAssemblyResolver
