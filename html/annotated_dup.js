@@ -11,6 +11,5 @@ var annotated_dup =
     [ "IOException", "class_i_o_exception.html", null ],
     [ "ISymbolWriter", "class_i_symbol_writer.html", null ],
     [ "ISymbolWriterProvider", "class_i_symbol_writer_provider.html", null ],
-    [ "LoadingMod", "class_loading_mod.html", null ],
     [ "TileEntity", "class_tile_entity.html", null ]
 ];

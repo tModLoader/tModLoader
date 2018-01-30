@@ -15,6 +15,7 @@ var hierarchy =
       [ "Terraria.ModLoader.ModPacket", "class_terraria_1_1_mod_loader_1_1_mod_packet.html", null ]
     ] ],
     [ "Terraria.ModLoader.BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", null ],
+    [ "Terraria.ModLoader.ModCompile.BuildingMod", "class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html", null ],
     [ "Terraria.ModLoader.CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", null ],
     [ "Terraria.ModLoader.CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", null ],
     [ "DefaultAssemblyResolver", "class_default_assembly_resolver.html", null ],
@@ -64,9 +65,6 @@ var hierarchy =
     [ "Terraria.ModLoader.ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", null ],
     [ "Terraria.ModLoader.Exceptions.LevenshteinDistance", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html", null ],
     [ "Terraria.ModLoader.AssemblyManager.LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", null ],
-    [ "LoadingMod", "class_loading_mod.html", [
-      [ "Terraria.ModLoader.ModCompile.BuildingMod", "class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html", null ]
-    ] ],
     [ "Terraria.ModLoader.MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", null ],
     [ "Terraria.ModLoader.Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", null ],
     [ "Terraria.ModLoader.ModBuff", "class_terraria_1_1_mod_loader_1_1_mod_buff.html", null ],

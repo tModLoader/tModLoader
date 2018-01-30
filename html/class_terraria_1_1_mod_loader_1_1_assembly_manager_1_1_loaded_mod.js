@@ -6,7 +6,7 @@ var class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod =
     [ "EncapsulateName", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#acb7a0b19359fe4ce746d033d880a623c", null ],
     [ "EncapsulateReferences", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac5c3718bc5def39e46596eec59f0123c", null ],
     [ "LoadAssemblies", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad406f52f32b86d42353ef40f2c4936f7", null ],
-    [ "SetMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a908ec52fc2db5d7560fbd7fc88569bfa", null ],
+    [ "SetMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a7a2f0cc260bf8329671923f24f415f00", null ],
     [ "SetNeedsReload", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a955a38adca3eb017b94fe7f11de3162a", null ],
     [ "SetNeedsReloadUnlessEaC", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#addc263767f6b814e699a048d425c75b3", null ],
     [ "UpdateWeakRefs", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a60af3f0d047dc1ed3883c4056b6eee1e", null ],

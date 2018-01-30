@@ -109,10 +109,12 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_i_o_
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -140,6 +142,20 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_i_o_
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:add1bbc50f57070839a1403bb1b32317a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">LoadedState</a> { <br />
+&#160;&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317aa6adf97f83acf6453d4a6a4b1070f3754">LoadedState.None</a>, 
+<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317aaf3f97de67c80480904f958df15b8a57b">LoadedState.Integrity</a>, 
+<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317aa4059b0251f66a18cb56f544728796875">LoadedState.Info</a>, 
+<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317aaca0dbad92a874b2f69b549293387925e">LoadedState.Code</a>, 
+<br />
+&#160;&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317aa9aedeaf1f77b8642abe528503b8c5de8">LoadedState.Assets</a>, 
+<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317aaac21d502848247aa2f578d0f718f5d1d">LoadedState.Streaming</a>
+<br />
+ }</td></tr>
+<tr class="separator:add1bbc50f57070839a1403bb1b32317a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0d0b2f0087cb2ef05ac1838ec36098e7"><td class="memItemLeft" align="right" valign="top">IEnumerator&lt; KeyValuePair&lt; string, byte[]&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a0d0b2f0087cb2ef05ac1838ec36098e7">GetEnumerator</a> ()</td></tr>
@@ -176,19 +192,64 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:abe234af339da3cfecb1a8279c504a489"><td class="memItemLeft" align="right" valign="top">IEnumerator IEnumerable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#abe234af339da3cfecb1a8279c504a489">GetEnumerator</a> ()</td></tr>
 <tr class="separator:abe234af339da3cfecb1a8279c504a489"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:ad65ec3d31368bcfd1cc7f508b2667439"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">LoadedState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#ad65ec3d31368bcfd1cc7f508b2667439">GetFileState</a> (string fileName)</td></tr>
+<tr class="separator:ad65ec3d31368bcfd1cc7f508b2667439"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a4641a87ffb93fcd4ad41ab9bd55d3c24"><td class="memItemLeft" align="right" valign="top">readonly IDictionary&lt; string, byte[]&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a4641a87ffb93fcd4ad41ab9bd55d3c24">files</a> = new Dictionary&lt;string, byte[]&gt;()</td></tr>
-<tr class="separator:a4641a87ffb93fcd4ad41ab9bd55d3c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86d1cf057ce830f0add1d384c0134f58"><td class="memItemLeft" align="right" valign="top">IDictionary&lt; string, byte[]&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a86d1cf057ce830f0add1d384c0134f58">files</a> = new Dictionary&lt;string, byte[]&gt;()</td></tr>
+<tr class="separator:a86d1cf057ce830f0add1d384c0134f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53260c2c3a94acf5fc0a0664cd2c4f2a"><td class="memItemLeft" align="right" valign="top">Exception&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a53260c2c3a94acf5fc0a0664cd2c4f2a">readException</a></td></tr>
 <tr class="separator:a53260c2c3a94acf5fc0a0664cd2c4f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a918c18de0adaa40db601e968ab7ef6a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">LoadedState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a918c18de0adaa40db601e968ab7ef6a0">state</a></td></tr>
+<tr class="separator:a918c18de0adaa40db601e968ab7ef6a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba3282c404e65571ebfac1292836ede3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#aba3282c404e65571ebfac1292836ede3">validModBrowserSignature</a> = new byte[256]</td></tr>
 <tr class="separator:aba3282c404e65571ebfac1292836ede3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00012">12</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="add1bbc50f57070839a1403bb1b32317a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">Terraria.ModLoader.IO.TmodFile.LoadedState</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="add1bbc50f57070839a1403bb1b32317aa6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="add1bbc50f57070839a1403bb1b32317aaf3f97de67c80480904f958df15b8a57b"></a>Integrity&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="add1bbc50f57070839a1403bb1b32317aa4059b0251f66a18cb56f544728796875"></a>Info&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="add1bbc50f57070839a1403bb1b32317aaca0dbad92a874b2f69b549293387925e"></a>Code&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="add1bbc50f57070839a1403bb1b32317aa9aedeaf1f77b8642abe528503b8c5de8"></a>Assets&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="add1bbc50f57070839a1403bb1b32317aaac21d502848247aa2f578d0f718f5d1d"></a>Streaming&#160;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00014">14</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a2f24335a34de4ae16e51b7a9c8dd0ed9a6adf97f83acf6453d4a6a4b1070f3754">None</a>,</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            Integrity,</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            Info,</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            Code,</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            Assets,</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            Streaming</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a2f24335a34de4ae16e51b7a9c8dd0ed9a6adf97f83acf6453d4a6a4b1070f3754"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a2f24335a34de4ae16e51b7a9c8dd0ed9a6adf97f83acf6453d4a6a4b1070f3754">Terraria.ModLoader.MusicPriority.None</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a0d0b2f0087cb2ef05ac1838ec36098e7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -241,10 +302,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00059">59</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00069">69</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_assembly_manager_8cs_source.html#l00101">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a4641a87ffb93fcd4ad41ab9bd55d3c24">files</a>.TryGetValue(fileName.Replace(<span class="charliteral">&#39;\\&#39;</span>, <span class="charliteral">&#39;/&#39;</span>), out var data);</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">return</span> data;</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a4641a87ffb93fcd4ad41ab9bd55d3c24"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a4641a87ffb93fcd4ad41ab9bd55d3c24">Terraria.ModLoader.IO.TmodFile.files</a></div><div class="ttdeci">readonly IDictionary&lt; string, byte[]&gt; files</div><div class="ttdef"><b>Definition:</b> <a href="_tmod_file_8cs_source.html#l00015">TmodFile.cs:15</a></div></div>
+<p>Referenced by <a class="el" href="_assembly_manager_8cs_source.html#l00102">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a86d1cf057ce830f0add1d384c0134f58">files</a>.TryGetValue(fileName.Replace(<span class="charliteral">&#39;\\&#39;</span>, <span class="charliteral">&#39;/&#39;</span>), out var data);</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> data;</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a86d1cf057ce830f0add1d384c0134f58"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a86d1cf057ce830f0add1d384c0134f58">Terraria.ModLoader.IO.TmodFile.files</a></div><div class="ttdeci">IDictionary&lt; string, byte[]&gt; files</div><div class="ttdef"><b>Definition:</b> <a href="_tmod_file_8cs_source.html#l00027">TmodFile.cs:27</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -258,6 +319,33 @@ Private Attributes</h2></td></tr>
 </div>
 </p>
 
+</div>
+</div>
+<a class="anchor" id="ad65ec3d31368bcfd1cc7f508b2667439"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">LoadedState</a> Terraria.ModLoader.IO.TmodFile.GetFileState </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>fileName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00208">208</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        {</div><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keywordflow">if</span> (fileName == <span class="stringliteral">&quot;Info&quot;</span> || fileName == <span class="stringliteral">&quot;icon.png&quot;</span>)</div><div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">LoadedState</a>.Info;</div><div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div><div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <span class="keywordflow">if</span> (fileName.EndsWith(<span class="stringliteral">&quot;.dll&quot;</span>) || fileName.EndsWith(<span class="stringliteral">&quot;.pdb&quot;</span>))</div><div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">LoadedState</a>.Code;</div><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            if (fileName.EndsWith(<span class="stringliteral">&quot;.png&quot;</span>) || fileName.EndsWith(<span class="stringliteral">&quot;.rawimg&quot;</span>) ||</div><div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                    fileName.EndsWith(<span class="stringliteral">&quot;.mp3&quot;</span>) || fileName.EndsWith(<span class="stringliteral">&quot;.wav&quot;</span>) ||</div><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                    fileName.EndsWith(<span class="stringliteral">&quot;.xnb&quot;</span>) ||</div><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                    fileName.StartsWith(<span class="stringliteral">&quot;Streaming/&quot;</span>))</div><div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">LoadedState</a>.Streaming;</div><div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div><div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">LoadedState</a>.Assets;</div><div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_add1bbc50f57070839a1403bb1b32317a"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">Terraria.ModLoader.IO.TmodFile.LoadedState</a></div><div class="ttdeci">LoadedState</div><div class="ttdef"><b>Definition:</b> <a href="_tmod_file_8cs_source.html#l00014">TmodFile.cs:14</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="afc2aff08e2c79981564108f6343ceeac"></a>
@@ -274,13 +362,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00170">170</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00234">234</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
 <p>References <a class="el" href="_mod_loader_8cs_source.html#l00035">Terraria.ModLoader.ModLoader.windows</a>.</p>
 
-<p>Referenced by <a class="el" href="_assembly_manager_8cs_source.html#l00101">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        {</div><div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <span class="keywordtype">bool</span> isWindows = windows.GetValueOrDefault(ModLoader.windows);</div><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">HasFile</a>(<span class="stringliteral">&quot;All.dll&quot;</span>) ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;All.dll&quot;</span>) : isWindows ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Windows.dll&quot;</span>) : <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Mono.dll&quot;</span>);</div><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a81dfdaacfd61f0cd14fe9de844d10b78"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">Terraria.ModLoader.IO.TmodFile.HasFile</a></div><div class="ttdeci">bool HasFile(string fileName)</div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a341b95187ce9b1244684a28d367d3490"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">Terraria.ModLoader.IO.TmodFile.GetFile</a></div><div class="ttdeci">byte[] GetFile(string fileName)</div><div class="ttdef"><b>Definition:</b> <a href="_tmod_file_8cs_source.html#l00059">TmodFile.cs:59</a></div></div>
+<p>Referenced by <a class="el" href="_assembly_manager_8cs_source.html#l00102">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        {</div><div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            <span class="keywordtype">bool</span> isWindows = windows.GetValueOrDefault(ModLoader.windows);</div><div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">HasFile</a>(<span class="stringliteral">&quot;All.dll&quot;</span>) ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;All.dll&quot;</span>) : isWindows ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Windows.dll&quot;</span>) : <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Mono.dll&quot;</span>);</div><div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a81dfdaacfd61f0cd14fe9de844d10b78"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">Terraria.ModLoader.IO.TmodFile.HasFile</a></div><div class="ttdeci">bool HasFile(string fileName)</div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a341b95187ce9b1244684a28d367d3490"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">Terraria.ModLoader.IO.TmodFile.GetFile</a></div><div class="ttdeci">byte[] GetFile(string fileName)</div><div class="ttdef"><b>Definition:</b> <a href="_tmod_file_8cs_source.html#l00069">TmodFile.cs:69</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -310,13 +398,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00176">176</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00240">240</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
 <p>References <a class="el" href="_mod_loader_8cs_source.html#l00035">Terraria.ModLoader.ModLoader.windows</a>.</p>
 
-<p>Referenced by <a class="el" href="_assembly_manager_8cs_source.html#l00101">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        {</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="keywordtype">bool</span> isWindows = windows.GetValueOrDefault(ModLoader.windows);</div><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">HasFile</a>(<span class="stringliteral">&quot;All.pdb&quot;</span>) ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;All.pdb&quot;</span>) : isWindows ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Windows.pdb&quot;</span>) : <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Mono.pdb&quot;</span>);</div><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a81dfdaacfd61f0cd14fe9de844d10b78"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">Terraria.ModLoader.IO.TmodFile.HasFile</a></div><div class="ttdeci">bool HasFile(string fileName)</div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a341b95187ce9b1244684a28d367d3490"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">Terraria.ModLoader.IO.TmodFile.GetFile</a></div><div class="ttdeci">byte[] GetFile(string fileName)</div><div class="ttdef"><b>Definition:</b> <a href="_tmod_file_8cs_source.html#l00059">TmodFile.cs:59</a></div></div>
+<p>Referenced by <a class="el" href="_assembly_manager_8cs_source.html#l00102">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        {</div><div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            <span class="keywordtype">bool</span> isWindows = windows.GetValueOrDefault(ModLoader.windows);</div><div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">HasFile</a>(<span class="stringliteral">&quot;All.pdb&quot;</span>) ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;All.pdb&quot;</span>) : isWindows ? <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Windows.pdb&quot;</span>) : <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">GetFile</a>(<span class="stringliteral">&quot;Mono.pdb&quot;</span>);</div><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a81dfdaacfd61f0cd14fe9de844d10b78"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78">Terraria.ModLoader.IO.TmodFile.HasFile</a></div><div class="ttdeci">bool HasFile(string fileName)</div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a341b95187ce9b1244684a28d367d3490"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a341b95187ce9b1244684a28d367d3490">Terraria.ModLoader.IO.TmodFile.GetFile</a></div><div class="ttdeci">byte[] GetFile(string fileName)</div><div class="ttdef"><b>Definition:</b> <a href="_tmod_file_8cs_source.html#l00069">TmodFile.cs:69</a></div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -359,11 +447,11 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00082">82</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00092">92</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a4641a87ffb93fcd4ad41ab9bd55d3c24"></a>
+<a class="anchor" id="a86d1cf057ce830f0add1d384c0134f58"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -371,7 +459,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">readonly IDictionary&lt;string, byte[]&gt; Terraria.ModLoader.IO.TmodFile.files = new Dictionary&lt;string, byte[]&gt;()</td>
+          <td class="memname">IDictionary&lt;string, byte[]&gt; Terraria.ModLoader.IO.TmodFile.files = new Dictionary&lt;string, byte[]&gt;()</td>
         </tr>
       </table>
   </td>
@@ -381,7 +469,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00015">15</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00027">27</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
 </div>
 </div>
@@ -395,7 +483,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00014">14</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00024">24</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
 </div>
 </div>
@@ -417,7 +505,29 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00048">48</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00060">60</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a918c18de0adaa40db601e968ab7ef6a0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a">LoadedState</a> Terraria.ModLoader.IO.TmodFile.state</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00026">26</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
 </div>
 </div>
@@ -439,7 +549,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00034">34</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00046">46</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
 </div>
 </div>
@@ -462,9 +572,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00030">30</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00042">42</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_loader_8cs_source.html#l00470">Terraria.ModLoader.ModLoader.IsSignedBy()</a>, <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>, and <a class="el" href="_assembly_manager_8cs_source.html#l00046">Terraria.ModLoader.AssemblyManager.LoadedMod.SetMod()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_loader_8cs_source.html#l00460">Terraria.ModLoader.ModLoader.IsSignedBy()</a>, <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>, and <a class="el" href="_assembly_manager_8cs_source.html#l00047">Terraria.ModLoader.AssemblyManager.LoadedMod.SetMod()</a>.</p>
 
 </div>
 </div>
@@ -486,9 +596,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00022">22</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00034">34</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00975">Terraria.ModLoader.ModLoader.RegisterHotKey()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>.</p>
 
 </div>
 </div>
@@ -510,7 +620,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00018">18</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00030">30</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
 </div>
 </div>
@@ -532,9 +642,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00025">25</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tmod_file_8cs_source.html#l00037">37</a> of file <a class="el" href="_tmod_file_8cs_source.html">TmodFile.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_compile_8cs_source.html#l00039">Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod()</a>, <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>, and <a class="el" href="_assembly_manager_8cs_source.html#l00046">Terraria.ModLoader.AssemblyManager.LoadedMod.SetMod()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_compile_8cs_source.html#l00039">Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod()</a>, <a class="el" href="_mod_net_8cs_source.html#l00021">Terraria.ModLoader.ModNet.ModHeader.ModHeader()</a>, and <a class="el" href="_assembly_manager_8cs_source.html#l00047">Terraria.ModLoader.AssemblyManager.LoadedMod.SetMod()</a>.</p>
 
 </div>
 </div>

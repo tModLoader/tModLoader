@@ -14,5 +14,5 @@ var searchData=
   ['bufftype_3c_20t_20_3e',['BuffType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a00596eb992453f702a1b7ba59eee2e45',1,'Terraria::ModLoader::Mod']]],
   ['buildingmod',['BuildingMod',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#a50883060a4be6e39c451d379ae58c4b1',1,'Terraria::ModLoader::ModCompile::BuildingMod']]],
   ['buildset',['BuildSet',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#a8fceff4c28a1bc57e154c14aaf4604be',1,'Terraria::ModLoader::TopoSort']]],
-  ['buildsort',['BuildSort',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a8cf1a1359e60d686facab731299c6da4',1,'Terraria::ModLoader::ModLoader']]]
+  ['buildsort',['BuildSort',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#af5706dae1f576268a280451ea97a64ca',1,'Terraria::ModLoader::ModLoader']]]
 ];

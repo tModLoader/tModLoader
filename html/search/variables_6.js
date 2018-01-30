@@ -6,7 +6,7 @@ var searchData=
   ['faceshader',['faceShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a0c3f1e77b79c1bac10a6150b646042f2',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['fallback',['fallback',['../class_terraria_1_1_mod_loader_1_1_mod_translation.html#a64afcfcd8b9bcbaa786351f8267accf0',1,'Terraria::ModLoader::ModTranslation']]],
   ['filecount',['FileCount',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a8be9f26033db1d7bb5940096da368de3',1,'Terraria::ModLoader::IO::TmodFile']]],
-  ['files',['files',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a4641a87ffb93fcd4ad41ab9bd55d3c24',1,'Terraria::ModLoader::IO::TmodFile']]],
+  ['files',['files',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a86d1cf057ce830f0add1d384c0134f58',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['font',['font',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#afa12e9d44d3270f8d219225ebf9acbbb',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['frogcritter',['FrogCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a0576ddf1b86463287a14626af1a375bf',1,'Terraria::ModLoader::SpawnCondition']]],
   ['frontacc',['FrontAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a17de29ed07facba1c0c480182a97970a',1,'Terraria::ModLoader::PlayerLayer']]],
