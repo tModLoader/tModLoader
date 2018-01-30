@@ -3,6 +3,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader.IO
@@ -63,7 +66,7 @@ namespace Terraria.ModLoader.IO
 		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, Stream src) => 
 			RawToTexture2D(graphicsDevice, new BinaryReader(src, Encoding.UTF8));
 
-		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, BinaryReader r)
+		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, BinaryReader r, bool async = false)
 		{
 			int v = r.ReadInt32();
 			if (v != VERSION)
@@ -71,9 +74,32 @@ namespace Terraria.ModLoader.IO
 
 			int width = r.ReadInt32();
 			int height = r.ReadInt32();
+			var rawdata = r.ReadBytes(width * height * 4);
 			var tex = new Texture2D(graphicsDevice, width, height);
-			tex.SetData(r.ReadBytes(width * height * 4));
+			tex.SetData(rawdata);
 			return tex;
+		}
+
+		public static Task<Texture2D> RawToTexture2DAsync(GraphicsDevice graphicsDevice, BinaryReader r)
+		{
+			int v = r.ReadInt32();
+			if (v != VERSION)
+				throw new Exception("Unknown RawImg Format Version: " + v);
+
+			int width = r.ReadInt32();
+			int height = r.ReadInt32();
+			var rawdata = r.ReadBytes(width * height * 4);
+			return Task.Factory.StartNew(() =>
+			{
+				var tex = new Texture2D(graphicsDevice, width, height);
+				tex.SetData(rawdata);
+				return tex;
+			});
+		}
+
+		public static Task<Texture2D> PngToTexture2DAsync(GraphicsDevice graphicsDevice, Stream stream)
+		{
+			return Task.Factory.StartNew(() => Texture2D.FromStream(graphicsDevice, stream));
 		}
 	}
 }

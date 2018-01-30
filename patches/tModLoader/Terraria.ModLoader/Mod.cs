@@ -59,6 +59,7 @@ namespace Terraria.ModLoader
 		public bool IsNetSynced => netID >= 0;
 
 		internal bool loading;
+		private Queue<Task> AsyncLoadQueue = new Queue<Task>();
 		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
 		internal readonly IDictionary<string, MusicData> musics = new Dictionary<string, MusicData>();
@@ -176,11 +177,17 @@ namespace Terraria.ModLoader
 		{
 			try
 			{
-				var tex = rawimg ?
-					ImageIO.RawToTexture2D(Main.instance.GraphicsDevice, reader) :
-					Texture2D.FromStream(Main.instance.GraphicsDevice, new MemoryStream(reader.ReadBytes(len)));
-				tex.Name = Name + "/" + path;
-				textures[path] = tex;
+				var texTask = rawimg
+					? ImageIO.RawToTexture2DAsync(Main.instance.GraphicsDevice, reader)
+					: ImageIO.PngToTexture2DAsync(Main.instance.GraphicsDevice, new MemoryStream(reader.ReadBytes(len)));//needs a seekable stream
+
+				AsyncLoadQueue.Enqueue(texTask.ContinueWith(t =>
+				{
+					var tex = t.Result;
+					tex.Name = Name + "/" + path;
+					lock (textures)
+						textures[path] = tex;
+				}));
 			}
 			catch (Exception e)
 			{
@@ -295,6 +302,11 @@ namespace Terraria.ModLoader
 		{
 			if (Code == null)
 				return;
+
+
+			Interface.loadMods.SetSubProgressInit("Finishing Resource Loading");
+			while (AsyncLoadQueue.Count > 0)
+				AsyncLoadQueue.Dequeue().Wait();
 
 			IList<Type> modGores = new List<Type>();
 			IList<Type> modSounds = new List<Type>();

@@ -59,7 +59,6 @@ namespace Terraria.ModLoader.UI
 				Directory.CreateDirectory(dir);
 
 				log = new StreamWriter(Path.Combine(dir, "tModReader.txt")) {AutoFlush = true};
-				mod.modFile.Read(TmodFile.LoadedState.Assets);
 				
 				if (mod.properties.hideCode)
 					log.WriteLine("The modder has chosen to hide the code from tModReader.");
@@ -69,12 +68,13 @@ namespace Terraria.ModLoader.UI
 					log.WriteLine("The modder has chosen to hide resources (ie. images) from tModReader.");
 
 				log.WriteLine("Files:");
+
 				int i = 0;
-				foreach (var entry in mod.modFile) {
-					var name = entry.Key;
+				void WriteFile(string name, byte[] content)
+				{
 					//this access is not threadsafe, but it should be atomic enough to not cause issues
 					loadProgress.SetText(name);
-					loadProgress.SetProgress(i++/(float)mod.modFile.FileCount);
+					loadProgress.SetProgress(i++ / (float)mod.modFile.FileCount);
 
 					bool hidden = codeExtensions.Contains(Path.GetExtension(name))
 						? mod.properties.hideCode
@@ -84,12 +84,17 @@ namespace Terraria.ModLoader.UI
 						log.Write("[hidden] ");
 					log.WriteLine(name);
 
-					if (!hidden) {
+					if (!hidden)
+					{
 						var path = Path.Combine(dir, name);
 						Directory.CreateDirectory(Path.GetDirectoryName(path));
-						File.WriteAllBytes(path, entry.Value);
+						File.WriteAllBytes(path, content);
 					}
 				}
+
+				mod.modFile.Read(TmodFile.LoadedState.Streaming, (name, len, reader) => WriteFile(name, reader.ReadBytes(len)));
+				foreach (var entry in mod.modFile)
+					WriteFile(entry.Key, entry.Value);
 			}
 			catch (Exception e) {
 				log?.WriteLine(e);
