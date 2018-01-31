@@ -221,7 +221,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void Disable()
 		{
-			if (!mod.Enabled)
+			if (mod.Enabled)
 				ToggleEnabled(null, null);
 		}
 

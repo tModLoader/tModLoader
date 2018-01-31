@@ -2251,7 +2251,7 @@ namespace Terraria.ModLoader
 			sounds.Clear();
 			effects.Clear();
 			foreach (var tex in textures.Values)
-				tex.Dispose();
+				tex?.Dispose();
 			textures.Clear();
 			musics.Clear();
 			fonts.Clear();
