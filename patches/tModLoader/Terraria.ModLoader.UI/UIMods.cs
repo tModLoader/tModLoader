@@ -33,6 +33,7 @@ namespace Terraria.ModLoader.UI
 		public UICycleImage SearchFilterToggle;
 		public ModsMenuSortMode sortMode = ModsMenuSortMode.RecentlyUpdated;
 		public EnabledFilter enabledFilterMode = EnabledFilter.All;
+		public ModSideFilter modSideFilterMode = ModSideFilter.All;
 		public SearchFilter searchFilterMode = SearchFilter.Name;
 		internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		internal string filter;
@@ -128,7 +129,7 @@ namespace Terraria.ModLoader.UI
 			upperMenuContainer.Top.Set(10f, 0f);
 
 			UICycleImage toggleImage;
-			for (int j = 0; j < 2; j++)
+			for (int j = 0; j < 3; j++)
 			{
 				if (j == 0)
 				{
@@ -145,7 +146,7 @@ namespace Terraria.ModLoader.UI
 						updateNeeded = true;
 					};
 				}
-				else
+				else if (j == 1)
 				{
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 4, 0);
 					toggleImage.setCurrentState((int)enabledFilterMode);
@@ -160,6 +161,21 @@ namespace Terraria.ModLoader.UI
 						updateNeeded = true;
 					};
 				}
+				else
+				{
+					toggleImage = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
+					toggleImage.setCurrentState((int)modSideFilterMode);
+					toggleImage.OnClick += (a, b) =>
+					{
+						modSideFilterMode = modSideFilterMode.NextEnum();
+						updateNeeded = true;
+					};
+					toggleImage.OnRightClick += (a, b) =>
+					{
+						modSideFilterMode = modSideFilterMode.PreviousEnum();
+						updateNeeded = true;
+					};
+				}
 				toggleImage.Left.Set((float)(j * 36 + 8), 0f);
 				_categoryButtons.Add(toggleImage);
 				upperMenuContainer.Append(toggleImage);
@@ -170,11 +186,14 @@ namespace Terraria.ModLoader.UI
 			filterTextBoxBackground.Left.Set(-170f, 1f);
 			filterTextBoxBackground.Width.Set(135f, 0f);
 			filterTextBoxBackground.Height.Set(40f, 0f);
+			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.SetText("");
 			upperMenuContainer.Append(filterTextBoxBackground);
 
 			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch"));
 			filterTextBox.Top.Set(5f, 0f);
 			filterTextBox.Left.Set(-160f, 1f);
+			filterTextBox.Width.Set(160f, 0f);
+			filterTextBox.Height.Set(20f, 0f);
 			filterTextBox.OnTextChange += (a, b) => { updateNeeded = true; };
 			upperMenuContainer.Append(filterTextBox);
 
@@ -285,6 +304,9 @@ namespace Terraria.ModLoader.UI
 							text = enabledFilterMode.ToFriendlyString();
 							break;
 						case 2:
+							text = modSideFilterMode.ToFriendlyString();
+							break;
+						case 3:
 							text = searchFilterMode.ToFriendlyString();
 							break;
 						default:

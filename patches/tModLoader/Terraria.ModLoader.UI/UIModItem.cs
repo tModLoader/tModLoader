@@ -273,6 +273,11 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 			}
+			if(Interface.modsMenu.modSideFilterMode != ModSideFilter.All)
+			{
+				if ((int)mod.properties.side != (int)Interface.modsMenu.modSideFilterMode - 1)
+					return false;
+			}
 			switch (Interface.modsMenu.enabledFilterMode)
 			{
 				default:

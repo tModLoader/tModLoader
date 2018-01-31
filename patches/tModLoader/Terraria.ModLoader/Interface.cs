@@ -93,11 +93,13 @@ namespace Terraria.ModLoader
 			modBrowser.sortMode = ModBrowserSortMode.RecentlyUpdated;
 			modBrowser.updateFilterMode = UpdateFilter.Available;
 			modBrowser.searchFilterMode = SearchFilter.Name;
-			modBrowser.SearchFilterToggle?.setCurrentState(0);
-			if (modBrowser._categoryButtons.Count == 2)
+			modBrowser.modSideFilterMode = ModSideFilter.All;
+			modBrowser.SearchFilterToggle?.setCurrentState((int)modBrowser.searchFilterMode);
+			if (modBrowser._categoryButtons.Count == 3)
 			{
-				modBrowser._categoryButtons[0].setCurrentState(4);
-				modBrowser._categoryButtons[1].setCurrentState(1);
+				modBrowser._categoryButtons[0].setCurrentState((int)modBrowser.sortMode);
+				modBrowser._categoryButtons[1].setCurrentState((int)modBrowser.updateFilterMode);
+				modBrowser._categoryButtons[2].setCurrentState((int)modBrowser.modSideFilterMode);
 			}
 			modBrowser.loading = false;
 			ModLoader.modsDirCache.Clear();
