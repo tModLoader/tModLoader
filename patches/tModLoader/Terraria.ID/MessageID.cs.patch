@@ -360,7 +360,7 @@
 +		//currently the only module (id 0) is the NetLiquidModule
  		public const byte NetModules = 82;
 +		//bannerID, killCount
-+		//does not yet have modded banner support as client rejects packets with bannerID > 250
++		//supports modded banners now that check for bannerID > 267 removed
 +		//sent to all clients whenever an npc with a banner is killed
  		public const byte NPCKillCountDeathTally = 83;
  		public const byte PlayerStealth = 84;
