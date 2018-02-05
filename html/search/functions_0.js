@@ -87,6 +87,7 @@ var searchData=
   ['autoloadglobalwall',['AutoloadGlobalWall',['../class_terraria_1_1_mod_loader_1_1_mod.html#ad6c54fee62aed4abe4cf115b70d542b0',1,'Terraria::ModLoader::Mod']]],
   ['autoloadgores',['AutoloadGores',['../class_terraria_1_1_mod_loader_1_1_mod.html#ac9064133215499a971fe5842afaefba8',1,'Terraria::ModLoader::Mod']]],
   ['autoloaditem',['AutoloadItem',['../class_terraria_1_1_mod_loader_1_1_mod.html#abda6b3a9ca7641689fd6e5dbdd954b86',1,'Terraria::ModLoader::Mod']]],
+  ['autoloadlocalization',['AutoloadLocalization',['../class_terraria_1_1_mod_loader_1_1_mod.html#a8840e62fb08821a9d6d8769f0fdbd58a',1,'Terraria::ModLoader::Mod']]],
   ['autoloadmodworld',['AutoloadModWorld',['../class_terraria_1_1_mod_loader_1_1_mod.html#add23821649453480685af3af217c19f0',1,'Terraria::ModLoader::Mod']]],
   ['autoloadmountdata',['AutoloadMountData',['../class_terraria_1_1_mod_loader_1_1_mod.html#ae0d192b40a5334b56f19a64161ac3511',1,'Terraria::ModLoader::Mod']]],
   ['autoloadnpc',['AutoloadNPC',['../class_terraria_1_1_mod_loader_1_1_mod.html#ad77577c0eeaae460a0f0652b70897259',1,'Terraria::ModLoader::Mod']]],
