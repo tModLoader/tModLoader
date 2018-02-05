@@ -20,13 +20,17 @@
  			this.ActiveCulture = culture;
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -140,7 +_,7 @@
+@@ -140,9 +_,9 @@
  			return result;
  		}
  
 -		private void ProcessCopyCommandsInTexts()
+-		{
+-			Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
 +		internal void ProcessCopyCommandsInTexts()
- 		{
- 			Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
++		{
++			Regex regex = new Regex("{\\$(\\w+(\\.\\w+)+)}", RegexOptions.Compiled);
  			foreach (KeyValuePair<string, LocalizedText> current in this._localizedTexts)
+ 			{
+ 				LocalizedText value = current.Value;
 

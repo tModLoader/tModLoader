@@ -1,0 +1,14 @@
+You may find that this approach to translations is easier for your mods.
+
+Common.PaperAirplane=Paper Airplane
+
+ItemName.ExamplePet={$Mods.ExampleMod.Common.PaperAirplane} ~~ Yeah
+ItemTooltip.ExamplePet=Summons a {$Mods.ExampleMod.Common.PaperAirplane} to follow aimlessly behind you\nSecond Line!
+BuffName.ExamplePet={$Mods.ExampleMod.Common.PaperAirplane}
+BuffDescription.ExamplePet="Let this pet be an example to you!"!
+ProjectileName.ExamplePet={$Mods.ExampleMod.Common.PaperAirplane}
+NPCName.FlutterSlime=Flutter Slime! ~~ Yeah
+MapObject.ExampleClock=Example Clock!
+
+ItemTooltip.OctopusBanner={$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}
+ItemTooltip.SarcophagusBanner={$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}

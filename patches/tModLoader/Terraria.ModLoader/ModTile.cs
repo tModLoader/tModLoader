@@ -154,7 +154,7 @@ namespace Terraria.ModLoader
 			{
 				key = Name;
 			}
-			return new ModTranslation(string.Format("MapObject.{0}.{1}", mod.Name, key));
+			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
 		}
 
 		/// <summary>

@@ -7,8 +7,8 @@ namespace ExampleMod.Buffs
 	{
 		public override void SetDefaults()
 		{
-			DisplayName.SetDefault("Paper Airplane");
-			Description.SetDefault("\"Let this pet be an example to you!\"");
+			// DisplayName.SetDefault("Paper Airplane"); See .lang files
+			// Description.SetDefault("\"Let this pet be an example to you!\""); See .lang files
 			Main.buffNoTimeDisplay[Type] = true;
 			Main.vanityPet[Type] = true;
 		}

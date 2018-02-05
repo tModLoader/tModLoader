@@ -15,6 +15,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.Audio;
 using Terraria.ModLoader.Audio;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -308,6 +309,7 @@ namespace Terraria.ModLoader
 			while (AsyncLoadQueue.Count > 0)
 				AsyncLoadQueue.Dequeue().Wait();
 
+			AutoloadLocalization();
 			IList<Type> modGores = new List<Type>();
 			IList<Type> modSounds = new List<Type>();
 			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture))
@@ -451,8 +453,8 @@ namespace Terraria.ModLoader
 
 			item.mod = this;
 			item.Name = name;
-			item.DisplayName = new ModTranslation(string.Format("ItemName.{0}.{1}", Name, name));
-			item.Tooltip = new ModTranslation(string.Format("ItemTooltip.{0}.{1}", Name, name), true);
+			item.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.ItemName.{1}", Name, name));
+			item.Tooltip = GetOrCreateTranslation(string.Format("Mods.{0}.ItemTooltip.{1}", Name, name), true);
 
 			item.item.ResetStats(ItemLoader.ReserveItemID());
 			item.item.modItem = item;
@@ -1016,7 +1018,7 @@ namespace Terraria.ModLoader
 			projectile.mod = this;
 			projectile.Name = name;
 			projectile.projectile.type = ProjectileLoader.ReserveProjectileID();
-			projectile.DisplayName = new ModTranslation(string.Format("ProjectileName.{0}.{1}", Name, name));
+			projectile.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.ProjectileName.{1}", Name, name));
 
 			projectiles[name] = projectile;
 			ProjectileLoader.projectiles.Add(projectile);
@@ -1132,7 +1134,7 @@ namespace Terraria.ModLoader
 			npc.mod = this;
 			npc.Name = name;
 			npc.npc.type = NPCLoader.ReserveNPCID();
-			npc.DisplayName = new ModTranslation(string.Format("NPCName.{0}.{1}", Name, name));
+			npc.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.NPCName.{1}", Name, name));
 
 			npcs[name] = npc;
 			NPCLoader.npcs.Add(npc);
@@ -1331,11 +1333,20 @@ namespace Terraria.ModLoader
 			buff.Name = name;
 			buff.Type = BuffLoader.ReserveBuffID();
 			buff.texture = texture;
-			buff.DisplayName = new ModTranslation(string.Format("BuffName.{0}.{1}", Name, name));
-			buff.Description = new ModTranslation(string.Format("BuffDescription.{0}.{1}", Name, name));
+			buff.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.BuffName.{1}", Name, name));
+			buff.Description = GetOrCreateTranslation(string.Format("Mods.{0}.BuffDescription.{1}", Name, name));
 
 			buffs[name] = buff;
 			BuffLoader.buffs.Add(buff);
+		}
+
+		internal ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false)
+		{
+			if (translations.ContainsKey(key))
+			{
+				return translations[key];
+			}
+			return new ModTranslation(key, defaultEmpty);
 		}
 
 		/// <summary>
@@ -2397,6 +2408,49 @@ namespace Terraria.ModLoader
 				throw new MissingResourceException(name);
 
 			return effect;
+		}
+
+		/// <summary>
+		/// Loads .lang files
+		/// </summary>
+		private void AutoloadLocalization()
+		{
+			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
+			var translationFiles = File.Where(x => Path.GetExtension(x.Key) == ".lang");
+			foreach (var translationFile in translationFiles)
+			{
+				// .lang files need to be UTF8 encoded.
+				string translationFileContents = System.Text.Encoding.UTF8.GetString(translationFile.Value);
+				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Key));
+
+				using (StringReader reader = new StringReader(translationFileContents))
+				{
+					string line;
+					while ((line = reader.ReadLine()) != null)
+					{
+						int split = line.IndexOf('=');
+						if (split < 0)
+							continue; // lines witout a = are ignored
+						string key = line.Substring(0, split).Trim();
+						string value = line.Substring(split + 1).Trim();
+						if (value.Length == 0)
+						{
+							continue;
+						}
+						value = value.Replace("\\n", "\n");
+						// TODO: Maybe prepend key with filename: en.US.ItemName.lang would automatically assume "ItemName." for all entries.
+						//string key = key;
+						if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt))
+							modTranslationDictionary[key] = mt = CreateTranslation(key);
+						mt.AddTranslation(culture, value);
+					}
+				}
+			}
+
+			foreach (var value in modTranslationDictionary.Values)
+			{
+				AddTranslation(value);
+			}
 		}
 
 		/// <summary>

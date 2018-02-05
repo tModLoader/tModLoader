@@ -8,7 +8,7 @@ namespace ExampleMod.Projectiles.Pets
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Paper Airplane");
+			// DisplayName.SetDefault("Paper Airplane"); See .lang files
 			Main.projFrames[projectile.type] = 4;
 			Main.projPet[projectile.type] = true;
 		}

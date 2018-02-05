@@ -8,8 +8,8 @@ namespace ExampleMod.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Paper Airplane");
-			Tooltip.SetDefault("Summons a Paper Airplane to follow aimlessly behind you");
+			//DisplayName.SetDefault("Paper Airplane");
+			//Tooltip.SetDefault("Summons a Paper Airplane to follow aimlessly behind you");
 		}
 
 		public override void SetDefaults()
