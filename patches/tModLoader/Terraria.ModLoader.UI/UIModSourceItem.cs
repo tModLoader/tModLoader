@@ -54,6 +54,7 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.BuildAndReload;
 			base.Append(button2);
+			this.builtMod = builtMod;
 			if (builtMod != null)
 			{
 				UITextPanel<string> button3 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"), 1f, false);
@@ -97,7 +98,13 @@ namespace Terraria.ModLoader.UI
 			{
 				return base.CompareTo(obj);
 			}
-			return uIModSourceItem.builtMod?.lastModified.CompareTo(builtMod?.lastModified) ?? 0;
+			if (uIModSourceItem.builtMod == null && builtMod == null)
+				return modName.Text.CompareTo(uIModSourceItem.modName.Text);
+			if (uIModSourceItem.builtMod == null)
+				return -1;
+			if (builtMod == null)
+				return 1;
+			return uIModSourceItem.builtMod.lastModified.CompareTo(builtMod.lastModified);
 		}
 
 		private void BuildMod(UIMouseEvent evt, UIElement listeningElement)
