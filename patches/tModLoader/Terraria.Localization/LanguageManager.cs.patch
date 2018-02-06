@@ -29,7 +29,7 @@
 -			Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
 +		internal void ProcessCopyCommandsInTexts()
 +		{
-+			Regex regex = new Regex("{\\$(\\w+(\\.\\w+)+)}", RegexOptions.Compiled);
++			Regex regex = new Regex(@"{\$([\w\. ]+)}", RegexOptions.Compiled);
  			foreach (KeyValuePair<string, LocalizedText> current in this._localizedTexts)
  			{
  				LocalizedText value = current.Value;
