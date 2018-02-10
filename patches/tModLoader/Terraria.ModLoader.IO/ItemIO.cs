@@ -37,12 +37,12 @@ namespace Terraria.ModLoader.IO
 			if (item.prefix != 0 && item.prefix < PrefixID.Count)
 				tag.Set("prefix", item.prefix);
 
-            if (item.prefix >= PrefixID.Count)
-            {
-                ModPrefix modPrefix = ModPrefix.GetPrefix(item.prefix);
-                tag.Set("modPrefixMod", modPrefix.mod.Name);
-                tag.Set("modPrefixName", modPrefix.Name);
-            }
+			if (item.prefix >= PrefixID.Count)
+			{
+				ModPrefix modPrefix = ModPrefix.GetPrefix(item.prefix);
+				tag.Set("modPrefixMod", modPrefix.mod.Name);
+				tag.Set("modPrefixName", modPrefix.Name);
+			}
 
 			if (item.stack > 1)
 				tag.Set("stack", item.stack);
@@ -89,12 +89,12 @@ namespace Terraria.ModLoader.IO
 			}
 
 			item.Prefix(tag.GetByte("prefix"));
-            if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName"))
-            {
-                string prefixMod = tag.GetString("modPrefixMod");
-                string prefixName = tag.GetString("modPrefixName");
-                item.Prefix(ModLoader.GetMod(prefixMod)?.PrefixType(prefixName) ?? 0);
-            }
+			if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName"))
+			{
+				string prefixMod = tag.GetString("modPrefixMod");
+				string prefixName = tag.GetString("modPrefixName");
+				item.Prefix(ModLoader.GetMod(prefixMod)?.PrefixType(prefixName) ?? 0);
+			}
 			item.stack = tag.Get<int?>("stack") ?? 1;
 			item.favorited = tag.GetBool("fav");
 
