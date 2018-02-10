@@ -70,6 +70,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
+        internal readonly IDictionary<string, ModPrefix> prefixes = new Dictionary<string, ModPrefix>();
 		internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
 		internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
 		internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
@@ -326,6 +327,10 @@ namespace Terraria.ModLoader
 				{
 					AutoloadGlobalItem(type);
 				}
+                else if (type.IsSubclassOf(typeof(ModPrefix)))
+                {
+                    AutoloadPrefix(type);
+                }
 				else if (type.IsSubclassOf(typeof(ModDust)))
 				{
 					AutoloadDust(type);
@@ -662,15 +667,77 @@ namespace Terraria.ModLoader
 			{
 				AddGlobalItem(name, globalItem);
 			}
-		}
+        }
 
-		/// <summary>
-		/// Adds a type of dust to your mod with the specified name. Create an instance of ModDust normally, preferably through the constructor of an overriding class. Leave the texture as an empty string to use the vanilla dust sprite sheet.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="dust">The dust.</param>
-		/// <param name="texture">The texture.</param>
-		public void AddDust(string name, ModDust dust, string texture = "")
+        /// <summary>
+        /// Adds a prefix to your mod with the specified internal name. This method should be called in Load. You can obtain an instance of ModPrefix by overriding it then creating an instance of the subclass.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="item">The prefix.</param>
+        /// <exception cref="System.Exception">You tried to add 2 ModItems with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.</exception>
+        public void AddPrefix(string name, ModPrefix prefix)
+        {
+            if (!loading)
+                throw new Exception("AddPrefix can only be called from Mod.Load or Mod.Autoload");
+
+            if (prefixes.ContainsKey(name))
+                throw new Exception("You tried to add 2 ModPrefixes with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddPrefix with 2 prefixes of the same name.");
+
+            prefix.mod = this;
+            prefix.Name = name;
+            prefix.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.Prefix.{1}", Name, name));
+            prefix.Type = ModPrefix.ReservePrefixID();
+
+            prefixes[name] = prefix;
+            ModPrefix.prefixes.Add(prefix);
+        }
+
+        /// <summary>
+        /// Gets the ModPrefix instance corresponding to the name. Because this method is in the Mod class, conflicts between mods are avoided. Returns null if no ModPrefix with the given name is found.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public ModPrefix GetPrefix(string name) => prefixes.TryGetValue(name, out var prefix) ? prefix : null;
+
+        /// <summary>
+        /// Same as the other GetPrefix, but assumes that the class name and internal name are the same.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T GetPrefix<T>() where T : ModPrefix => (T)GetPrefix(typeof(T).Name);
+
+        /// <summary>
+        /// Gets the internal ID / type of the ModPrefix corresponding to the name. Returns 0 if no ModPrefix with the given name is found.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public byte PrefixType(string name) => GetPrefix(name)?.Type ?? 0;
+
+        /// <summary>
+        /// Same as the other PrefixType, but assumes that the class name and internal name are the same.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public byte PrefixType<T>() where T : ModPrefix => PrefixType(typeof(T).Name);
+
+        private void AutoloadPrefix(Type type)
+        {
+            ModPrefix prefix = (ModPrefix)Activator.CreateInstance(type);
+            prefix.mod = this;
+            string name = type.Name;
+            if (prefix.Autoload(ref name))
+            {
+                AddPrefix(name, prefix);
+            }
+        }
+
+        /// <summary>
+        /// Adds a type of dust to your mod with the specified name. Create an instance of ModDust normally, preferably through the constructor of an overriding class. Leave the texture as an empty string to use the vanilla dust sprite sheet.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="dust">The dust.</param>
+        /// <param name="texture">The texture.</param>
+        public void AddDust(string name, ModDust dust, string texture = "")
 		{
 			if (!loading)
 				throw new Exception("AddDust can only be called from Mod.Load or Mod.Autoload");
@@ -2146,6 +2213,11 @@ namespace Terraria.ModLoader
 				item.AutoStaticDefaults();
 				item.SetStaticDefaults();
 			}
+            foreach (ModPrefix prefix in prefixes.Values)
+            {
+                prefix.AutoDefaults();
+                prefix.SetDefaults();
+            }
 			foreach (ModDust dust in dusts.Values)
 			{
 				dust.SetDefaults();
@@ -2219,6 +2291,7 @@ namespace Terraria.ModLoader
 			items.Clear();
 			globalItems.Clear();
 			equipTextures.Clear();
+            prefixes.Clear();
 			dusts.Clear();
 			tiles.Clear();
 			globalTiles.Clear();

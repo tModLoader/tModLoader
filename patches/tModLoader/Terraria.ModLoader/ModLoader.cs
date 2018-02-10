@@ -225,6 +225,7 @@ namespace Terraria.ModLoader
 		{
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
+            ModPrefix.ResizeArrays();
 			Main.InitializeItemAnimations();
 			ModDust.ResizeArrays();
 			TileLoader.ResizeArrays(unloading);
@@ -264,6 +265,11 @@ namespace Terraria.ModLoader
 					Lang._itemTooltipCache[item.item.type] = ItemTooltip.FromLanguageKey(text.Key);
 				}
 			}
+            foreach (ModPrefix prefix in ModPrefix.prefixes)
+            {
+                LocalizedText text = new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
+                Lang.prefix[prefix.Type] = SetLocalizedText(dict, text);
+            }
 			foreach (var keyValuePair in MapLoader.tileEntries)
 			{
 				foreach (MapEntry entry in keyValuePair.Value)
@@ -625,6 +631,7 @@ namespace Terraria.ModLoader
 
 			ItemLoader.Unload();
 			EquipLoader.Unload();
+            ModPrefix.Unload();
 			ModDust.Unload();
 			TileLoader.Unload();
 			ModTileEntity.Unload();
