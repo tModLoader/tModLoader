@@ -679,7 +679,8 @@ namespace Terraria.ModLoader
 			{
 				Main.player[i] = new Player();
 			}
-			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
+			// TODO: This breaks net reload. Restore this cleanup step later?
+			// Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 

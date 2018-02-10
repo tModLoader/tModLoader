@@ -1226,10 +1226,10 @@ namespace Terraria.ModLoader
 			{
 				ModLoader.GetTexture(texture);
 			}
-			else if (Main.dedServ && !(ModLoader.FileExists(texture + ".png") || ModLoader.FileExists(texture + ".rawimg")))
+			/*else if (Main.dedServ && !(ModLoader.FileExists(texture + ".png") || ModLoader.FileExists(texture + ".rawimg")))
 			{
 				throw new MissingResourceException(texture);
-			}
+			}*/
 			NPCHeadLoader.npcToHead[npcType] = slot;
 			NPCHeadLoader.headToNPC[slot] = npcType;
 		}

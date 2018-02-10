@@ -40,4 +40,13 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();
+@@ -264,6 +_,8 @@
+ 				}
+ #if CLIENT
+ 				MessageBox.Show(e.ToString(), "Terraria: Error");
++				if (e.Message.Contains("CSteamworks"))
++					Process.Start(@"https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
+ #else
+ 				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
+ #endif
 
