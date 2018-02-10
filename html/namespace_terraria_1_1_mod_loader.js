@@ -39,6 +39,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "ModPacket", "class_terraria_1_1_mod_loader_1_1_mod_packet.html", "class_terraria_1_1_mod_loader_1_1_mod_packet" ],
     [ "ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree" ],
     [ "ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", "class_terraria_1_1_mod_loader_1_1_mod_player" ],
+    [ "ModPrefix", "class_terraria_1_1_mod_loader_1_1_mod_prefix.html", "class_terraria_1_1_mod_loader_1_1_mod_prefix" ],
     [ "ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html", "class_terraria_1_1_mod_loader_1_1_mod_projectile" ],
     [ "ModProperties", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html", "struct_terraria_1_1_mod_loader_1_1_mod_properties" ],
     [ "ModRecipe", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html", "class_terraria_1_1_mod_loader_1_1_mod_recipe" ],

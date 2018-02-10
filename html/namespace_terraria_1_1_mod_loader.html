@@ -251,6 +251,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html">ModPlayer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> instance represents an extension of a Player instance. You can store fields in the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> instance represents. It also contains hooks to insert your code into the Player class.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html">ModPrefix</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html">ModProjectile</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html" title="This class serves as a place for you to place all your properties and hooks for each projectile...">ModProjectile</a> (preferably overriding this class) to pass as parameters to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#aa2df60c138c72148d426806d077bca9c" title="Adds a type of projectile to the game with the specified name. ">Mod.AddProjectile</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -439,6 +441,17 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a2f24335a34de4ae16e51b7a9c8dd0ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e0175fdeec3ed0e547292cea0718e4f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a> { <br />
+&#160;&#160;<a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fafcbd772e48c4b07d7d3be13b37a82f5e">PrefixCategory.Melee</a>, 
+<a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fac2f329a17c18a701dbe1e96e03858728">PrefixCategory.Ranged</a>, 
+<a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa02700e454d679f31f27c6f0768986dd1">PrefixCategory.Magic</a>, 
+<a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa6da6f556bd2c1f3a661ea10c83368a6c">PrefixCategory.AnyWeapon</a>, 
+<br />
+&#160;&#160;<a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4faafdf68e7bb331d324d2135699c3aa39e">PrefixCategory.Accessory</a>, 
+<a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af">PrefixCategory.Custom</a>
+<br />
+ }</td></tr>
+<tr class="separator:a0e0175fdeec3ed0e547292cea0718e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6da2ec2c957a412deb3c606b0f710f06"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06">SoundType</a> { <br />
 &#160;&#160;<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">SoundType.Item</a> = 2, 
 <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794">SoundType.NPCHit</a> = 3, 
@@ -705,6 +718,52 @@ Enumerations</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="a0e0175fdeec3ed0e547292cea0718e4f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">Terraria.ModLoader.PrefixCategory</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a0e0175fdeec3ed0e547292cea0718e4fafcbd772e48c4b07d7d3be13b37a82f5e"></a>Melee&#160;</td><td class="fielddoc">
+<p>Can modify the size of the weapon </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a0e0175fdeec3ed0e547292cea0718e4fac2f329a17c18a701dbe1e96e03858728"></a>Ranged&#160;</td><td class="fielddoc">
+<p>Can modify the shoot speed of the weapon </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a0e0175fdeec3ed0e547292cea0718e4fa02700e454d679f31f27c6f0768986dd1"></a>Magic&#160;</td><td class="fielddoc">
+<p>Can modify the mana usage of the weapon </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a0e0175fdeec3ed0e547292cea0718e4fa6da6f556bd2c1f3a661ea10c83368a6c"></a>AnyWeapon&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a0e0175fdeec3ed0e547292cea0718e4faafdf68e7bb331d324d2135699c3aa39e"></a>Accessory&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af"></a>Custom&#160;</td><td class="fielddoc">
+<p>Will not appear by default. Useful as prefixes for your own damage type. </p>
+</td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00143">143</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    {</div><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fafcbd772e48c4b07d7d3be13b37a82f5e">Melee</a>,</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fac2f329a17c18a701dbe1e96e03858728">Ranged</a>,</div><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa02700e454d679f31f27c6f0768986dd1">Magic</a>,</div><div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa6da6f556bd2c1f3a661ea10c83368a6c">AnyWeapon</a>,</div><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4faafdf68e7bb331d324d2135699c3aa39e">Accessory</a>,</div><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af">Custom</a></div><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4fac2f329a17c18a701dbe1e96e03858728"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fac2f329a17c18a701dbe1e96e03858728">Terraria.ModLoader.PrefixCategory.Ranged</a></div><div class="ttdoc">Can modify the shoot speed of the weapon </div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af">Terraria.ModLoader.PrefixCategory.Custom</a></div><div class="ttdoc">Will not appear by default. Useful as prefixes for your own damage type. </div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4faafdf68e7bb331d324d2135699c3aa39e"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4faafdf68e7bb331d324d2135699c3aa39e">Terraria.ModLoader.PrefixCategory.Accessory</a></div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4fa6da6f556bd2c1f3a661ea10c83368a6c"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa6da6f556bd2c1f3a661ea10c83368a6c">Terraria.ModLoader.PrefixCategory.AnyWeapon</a></div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4fa02700e454d679f31f27c6f0768986dd1"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa02700e454d679f31f27c6f0768986dd1">Terraria.ModLoader.PrefixCategory.Magic</a></div><div class="ttdoc">Can modify the mana usage of the weapon </div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4fafcbd772e48c4b07d7d3be13b37a82f5e"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fafcbd772e48c4b07d7d3be13b37a82f5e">Terraria.ModLoader.PrefixCategory.Melee</a></div><div class="ttdoc">Can modify the size of the weapon </div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="a6da2ec2c957a412deb3c606b0f710f06"></a>
 <div class="memitem">
 <div class="memproto">
@@ -738,11 +797,11 @@ Enumerations</h2></td></tr>
 </table>
 
 <p>Definition at line <a class="el" href="_sound_type_8cs_source.html#l00014">14</a> of file <a class="el" href="_sound_type_8cs_source.html">SoundType.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> = 2,</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794">NPCHit</a> = 3,</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06ad71465dddb92c3fa7565999b6e53f19c">NPCKilled</a> = 4,</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af">Custom</a> = 50,</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217">Music</a> = 51</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217">Terraria.ModLoader.SoundType.Music</a></div></div>
-<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af">Terraria.ModLoader.SoundType.Custom</a></div></div>
+<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> = 2,</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794">NPCHit</a> = 3,</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06ad71465dddb92c3fa7565999b6e53f19c">NPCKilled</a> = 4,</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af">Custom</a> = 50,</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217">Music</a> = 51</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217">Terraria.ModLoader.SoundType.Music</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.SoundType.Item</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a29d1a4424c9983a2f5a54d3c574f8794">Terraria.ModLoader.SoundType.NPCHit</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06ad71465dddb92c3fa7565999b6e53f19c"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06ad71465dddb92c3fa7565999b6e53f19c">Terraria.ModLoader.SoundType.NPCKilled</a></div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af">Terraria.ModLoader.PrefixCategory.Custom</a></div><div class="ttdoc">Will not appear by default. Useful as prefixes for your own damage type. </div></div>
 </div><!-- fragment -->
 </div>
 </div>

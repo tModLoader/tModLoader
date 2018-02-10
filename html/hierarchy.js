@@ -81,6 +81,7 @@ var hierarchy =
     [ "Terraria.ModLoader.ModNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html", null ],
     [ "Terraria.ModLoader.ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", null ],
     [ "Terraria.ModLoader.ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", null ],
+    [ "Terraria.ModLoader.ModPrefix", "class_terraria_1_1_mod_loader_1_1_mod_prefix.html", null ],
     [ "Terraria.ModLoader.ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html", null ],
     [ "Terraria.ModLoader.ModProperties", "struct_terraria_1_1_mod_loader_1_1_mod_properties.html", null ],
     [ "Terraria.ModLoader.ModSideExtensions", "class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html", null ],

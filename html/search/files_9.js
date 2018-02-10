@@ -22,6 +22,7 @@ var searchData=
   ['modnpc_2ecs',['ModNPC.cs',['../_mod_n_p_c_8cs.html',1,'']]],
   ['modpacket_2ecs',['ModPacket.cs',['../_mod_packet_8cs.html',1,'']]],
   ['modplayer_2ecs',['ModPlayer.cs',['../_mod_player_8cs.html',1,'']]],
+  ['modprefix_2ecs',['ModPrefix.cs',['../_mod_prefix_8cs.html',1,'']]],
   ['modprojectile_2ecs',['ModProjectile.cs',['../_mod_projectile_8cs.html',1,'']]],
   ['modproperties_2ecs',['ModProperties.cs',['../_mod_properties_8cs.html',1,'']]],
   ['modrecipe_2ecs',['ModRecipe.cs',['../_mod_recipe_8cs.html',1,'']]],

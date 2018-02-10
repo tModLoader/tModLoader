@@ -18,6 +18,7 @@ var searchData=
   ['nextitem',['nextItem',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#add09eb72f1381a392b453fbe34e56924',1,'Terraria::ModLoader::ItemLoader']]],
   ['nextmount',['nextMount',['../class_terraria_1_1_mod_loader_1_1_mount_loader.html#a53c5e92a42d9c7107de8d55650c1d763',1,'Terraria::ModLoader::MountLoader']]],
   ['nextnpc',['nextNPC',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#affee1a015d6e55f8dd983ab60cb360f5',1,'Terraria::ModLoader::NPCLoader']]],
+  ['nextprefix',['nextPrefix',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a8f577f2e89b2f0219a7d60be1f253faa',1,'Terraria::ModLoader::ModPrefix']]],
   ['nextprojectile',['nextProjectile',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae337d6707120b5430b55c3b537b968da',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['nextsound',['nextSound',['../class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1',1,'Terraria::ModLoader::SoundLoader']]],
   ['nextsurfacebgstyle',['nextSurfaceBgStyle',['../class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html#a3b32e82457e0019a696b22ed28e9f31d',1,'Terraria::ModLoader::SurfaceBgStyleLoader']]],

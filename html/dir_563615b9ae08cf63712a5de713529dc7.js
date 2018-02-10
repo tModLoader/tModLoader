@@ -135,6 +135,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "ModPlayer.cs", "_mod_player_8cs.html", [
       [ "ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", "class_terraria_1_1_mod_loader_1_1_mod_player" ]
     ] ],
+    [ "ModPrefix.cs", "_mod_prefix_8cs.html", "_mod_prefix_8cs" ],
     [ "ModProjectile.cs", "_mod_projectile_8cs.html", [
       [ "ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html", "class_terraria_1_1_mod_loader_1_1_mod_projectile" ]
     ] ],
