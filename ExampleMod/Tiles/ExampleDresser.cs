@@ -20,6 +20,7 @@ namespace ExampleMod.Tiles
 			Main.tileTable[Type] = true;
 			Main.tileContainer[Type] = true;
 			Main.tileLavaDeath[Type] = true;
+			TileID.Sets.HasOutlines[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
 			TileObjectData.newTile.Origin = new Point16(1, 1);
 			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16 };
@@ -39,6 +40,11 @@ namespace ExampleMod.Tiles
 			adjTiles = new int[] { TileID.Dressers };
 			dresser = "Example Dresser";
 			dresserDrop = mod.ItemType("ExampleDresser");
+		}
+
+		public override bool HasSmartInteract()
+		{
+			return true;
 		}
 
 		public override void RightClick(int i, int j)
