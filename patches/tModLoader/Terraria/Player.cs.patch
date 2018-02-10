@@ -2920,7 +2920,7 @@
  						}
  						IL_5D0:
 -						;
-+						if (TileLoader.HasSmartInteract(tile.type))
++						if (tile.active() && TileLoader.HasSmartInteract(tile.type))
 +						{
 +							list2.Add(new Tuple<int, int>(j, k));
 +						}

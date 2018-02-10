@@ -560,7 +560,7 @@ namespace Terraria.ModLoader
 				TileObjectData data = TileObjectData.GetTileData(type, 0);
 				width = data.Width;
 				height = data.Height;
-				frameWidth = data.CoordinateFullWidth + data.CoordinatePadding;
+				frameWidth = data.CoordinateWidth + data.CoordinatePadding;
 				frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
 				extraY = data.CoordinateFullHeight % frameHeight;
 			}
