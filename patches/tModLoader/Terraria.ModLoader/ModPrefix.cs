@@ -102,19 +102,23 @@ namespace Terraria.ModLoader
 			Category = PrefixCategory.Custom;
 			
 			if (DisplayName.GetDefault() == string.Format("Mods.{0}.Prefix.{1}", mod.Name, Name))
-				DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
+				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>
 		/// Allows you to set the prefix's name/translations and to set its category.
 		/// </summary>
-		public abstract void SetDefaults();
+		public virtual void SetDefaults()
+		{
+		}
 
 		/// <summary>
-		/// Sets the stat changes for this prefix. It is best to store custom data changes to some static variables.
+		/// Sets the stat changes for this prefix. If data is not already pre-stored, it is best to store custom data changes to some static variables.
 		/// </summary>
-		public abstract void SetStats(ref float damageMult, ref float knockbackMult, ref float useTimeMult,
-			ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus);
+		public virtual void SetStats(ref float damageMult, ref float knockbackMult, ref float useTimeMult,
+			ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus)
+		{
+		}
 
 		/// <summary>
 		/// Validates whether this prefix with the custom data stats set from SetStats is allowed on the given item.

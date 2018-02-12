@@ -179,7 +179,8 @@
 +		public static int menuMode = Interface.loadModsID;
  		public static int menuSkip = 0;
  		private static bool _needsLanguageSelect = true;
- 		private static Item cpItem = new Item();
+-		private static Item cpItem = new Item();
++		public static Item cpItem = new Item();
  		public int textBlinkerCount;
  		public int textBlinkerState;
  		public static string newWorldName = "";
@@ -3366,7 +3367,7 @@
  						string text3 = "";
  						int num63 = 0;
  						int num64 = 0;
-@@ -36637,14 +_,18 @@
+@@ -36637,14 +_,21 @@
  							}
  							Main.mouseReforge = true;
  							Main.player[Main.myPlayer].mouseInterface = true;
@@ -3378,10 +3379,13 @@
  								bool favorited = Main.reforgeItem.favorited;
 -								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
 -								Main.reforgeItem.Prefix(-2);
-+								Item reforgeItem = new Item();
++                                //messes with prefixes that modify custom data
++                                /*Item reforgeItem = new Item();
 +								reforgeItem.netDefaults(Main.reforgeItem.netID);
 +								reforgeItem.Prefix(-2);
-+								Main.reforgeItem = reforgeItem.CloneWithModdedData(Main.reforgeItem);
++								Main.reforgeItem = reforgeItem.CloneWithModdedData(Main.reforgeItem);*/
++                                Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
++                                Main.reforgeItem.Prefix(-2);
  								Main.reforgeItem.position.X = Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Main.reforgeItem.width / 2);
  								Main.reforgeItem.position.Y = Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Main.reforgeItem.height / 2);
  								Main.reforgeItem.favorited = favorited;
