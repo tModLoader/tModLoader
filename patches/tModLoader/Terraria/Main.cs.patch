@@ -761,6 +761,14 @@
  				}
  				this._isDrawingOrUpdating = false;
  			}
+@@ -11997,6 +_,7 @@
+ 			{
+ 				Main.InGameUI.Update(gameTime);
+ 			}
++			ModHooks.UpdateUI(gameTime);
+ 			PlayerInput.SetZoom_Unscaled();
+ 			Main.MouseOversTryToClear();
+ 			PlayerInput.ResetInputsOnActiveStateChange();
 @@ -12011,6 +_,7 @@
  				Main.netMode = Main._targetNetMode;
  				Main._hasPendingNetmodeChange = false;

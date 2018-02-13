@@ -77,6 +77,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Ran every update and suitable for calling Update for UserInterface classes
+		/// </summary>
+		public virtual void UpdateUI(GameTime gameTime)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to modify the elements of the in-game interface that get drawn. GameInterfaceLayer can be found in the Terraria.UI namespace. Check https://github.com/blushiemagic/tModLoader/wiki/Vanilla-Interface-layers-values for vanilla interface layer names
 		/// </summary>
 		/// <param name="layers">The layers.</param>
@@ -207,6 +214,15 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.PostDrawFullscreenMap(ref mouseText);
+			}
+		}
+
+		internal static void UpdateUI(GameTime gameTime)
+		{
+			if (Main.gameMenu) return;
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.UpdateUI(gameTime);
 			}
 		}
 

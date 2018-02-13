@@ -271,6 +271,12 @@ namespace ExampleMod
 		}
 		*/
 
+		public override void UpdateUI(GameTime gameTime)
+		{
+			if(exampleUserInterface != null)
+				exampleUserInterface.Update(gameTime);
+		}
+
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
@@ -282,7 +288,6 @@ namespace ExampleMod
 					{
 						if (ExampleUI.visible)
 						{
-							exampleUserInterface.Update(Main._drawInterfaceGameTime);
 							exampleUI.Draw(Main.spriteBatch);
 						}
 						return true;
