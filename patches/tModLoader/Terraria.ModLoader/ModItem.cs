@@ -183,8 +183,8 @@ namespace Terraria.ModLoader
 				Main.itemFlameLoaded[item.type] = true;
 			}
 
-			if (DisplayName.GetDefault() == string.Format("Mods.{0}.ItemName.{1}", mod.Name, Name))
-				DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
+			if (DisplayName.IsDefault())
+				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>

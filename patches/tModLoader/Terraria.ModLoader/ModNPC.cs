@@ -234,8 +234,8 @@ namespace Terraria.ModLoader
 				Main.npcAltTextures[npc.type][k] = ModLoader.GetTexture(altTextures[k - 1]);
 			}
 
-			if (DisplayName.GetDefault() == string.Format("Mods.{0}.NPCName.{1}", mod.Name, Name))
-				DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
+			if (DisplayName.IsDefault())
+				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>

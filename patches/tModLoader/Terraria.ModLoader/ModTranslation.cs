@@ -12,6 +12,8 @@ namespace Terraria.ModLoader
 
 		internal ModTranslation(string key, bool defaultEmpty = false)
 		{
+			if (key.Contains(" "))
+				throw new Exception("ModTranslation keys can't contain spaces.");
 			this.Key = key;
 			this.translations = new Dictionary<int, string>();
 			this.translations[fallback] = defaultEmpty ? null : key;
@@ -35,6 +37,11 @@ namespace Terraria.ModLoader
 		public void AddTranslation(GameCulture culture, string value)
 		{
 			AddTranslation(culture.LegacyId, value);
+		}
+
+		public bool IsDefault()
+		{
+			return translations[fallback] == Key;
 		}
 
 		public string GetDefault()

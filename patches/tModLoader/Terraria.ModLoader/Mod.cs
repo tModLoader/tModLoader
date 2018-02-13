@@ -1409,6 +1409,7 @@ namespace Terraria.ModLoader
 
 		internal ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false)
 		{
+			key = key.Replace(" ", "_");
 			if (translations.ContainsKey(key))
 			{
 				return translations[key];
@@ -2504,7 +2505,7 @@ namespace Terraria.ModLoader
 						int split = line.IndexOf('=');
 						if (split < 0)
 							continue; // lines witout a = are ignored
-						string key = line.Substring(0, split).Trim();
+						string key = line.Substring(0, split).Trim().Replace(" ", "_");
 						string value = line.Substring(split + 1).Trim();
 						if (value.Length == 0)
 						{

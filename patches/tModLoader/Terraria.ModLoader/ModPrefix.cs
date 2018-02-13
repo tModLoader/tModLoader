@@ -101,7 +101,7 @@ namespace Terraria.ModLoader
 		{
 			Category = PrefixCategory.Custom;
 			
-			if (DisplayName.GetDefault() == string.Format("Mods.{0}.Prefix.{1}", mod.Name, Name))
+			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 		}
 
