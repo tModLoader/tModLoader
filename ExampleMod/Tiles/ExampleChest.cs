@@ -172,7 +172,7 @@ namespace ExampleMod.Tiles
 			player.showItemIcon2 = -1;
 			if (chest < 0)
 			{
-				player.showItemIconText = Lang.chestType[0].Value;
+				player.showItemIconText = Language.GetTextValue("LegacyChestType.0");
 			}
 			else
 			{
