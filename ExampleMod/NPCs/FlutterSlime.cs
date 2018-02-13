@@ -11,7 +11,7 @@ namespace ExampleMod.NPCs
 	{
 		public override void SetStaticDefaults()
 		{
-			//DisplayName.SetDefault("Flutter Slime");
+			// DisplayName.SetDefault("Flutter Slime"); // Automatic from .lang files
 			Main.npcFrameCount[npc.type] = 6; // make sure to set this for your modnpcs.
 		}
 

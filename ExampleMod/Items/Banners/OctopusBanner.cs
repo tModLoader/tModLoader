@@ -5,6 +5,7 @@ namespace ExampleMod.Items.Banners
 {
 	public class OctopusBanner : ModItem
 	{
+		// The tooltip for this item is automatically assigned from .lang files
 		public override void SetDefaults()
 		{
 			item.width = 10;
