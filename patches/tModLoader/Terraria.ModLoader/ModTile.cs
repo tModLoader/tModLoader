@@ -42,6 +42,10 @@ namespace Terraria.ModLoader
 
 		internal string texture;
 		/// <summary>
+		/// The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.
+		/// </summary>
+		public virtual string HighlightTexture => texture + "_Highlight";
+		/// <summary>
 		/// The default type of sound made when this tile is hit. Defaults to 0.
 		/// </summary>
 		public int soundType = 0;
@@ -255,15 +259,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void PostSetDefaults()
 		{
-		}
-
-		/// <summary>
-		/// The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual string HighlightTexture()
-		{
-			return texture + "_Highlight";
 		}
 
 		/// <summary>

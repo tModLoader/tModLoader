@@ -2228,7 +2228,7 @@ namespace Terraria.ModLoader
 				TileLoader.SetDefaults(tile);
 				if (TileID.Sets.HasOutlines[tile.Type])
 				{
-					Main.highlightMaskTexture[tile.Type] = ModLoader.GetTexture(tile.HighlightTexture());
+					Main.highlightMaskTexture[tile.Type] = ModLoader.GetTexture(tile.HighlightTexture);
 				}
 				if (!string.IsNullOrEmpty(tile.chest))
 				{
