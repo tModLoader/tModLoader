@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a7f59c2ef12dcc98f04552c4abb1b0fea":[1,0,0,0,72,72],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a840073ba42a2d7d13c5695efbb6b19d3":[1,0,0,0,72,29],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a890469c4bfe8e079953ff37b06bc8106":[1,0,0,0,72,43],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a8b122fb6623d253048dcd07499e808df":[1,0,0,0,72,3],
@@ -168,8 +169,8 @@ var NAVTREEINDEX11 =
 "dir_abb04cf70b4f0d2da8c90c1faf70fdc9.html":[2,0,0,0,2],
 "dir_b2dee0249ca1c6e98736e679cc6a5269.html":[2,0,0],
 "files.html":[2,0],
-"functions.html":[1,3,0,0],
 "functions.html":[1,3,0],
+"functions.html":[1,3,0,0],
 "functions_a.html":[1,3,0,1],
 "functions_b.html":[1,3,0,2],
 "functions_c.html":[1,3,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "hierarchy.html":[1,2],
 "index.html":[],
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html":[1,0,0,0,7],
-"interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558":[1,0,0,0,7,1],
-"interface_terraria_1_1_mod_loader_1_1_command_caller.html#a6be9f02c2ce7c0adb64d427c52984527":[1,0,0,0,7,0]
+"interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558":[1,0,0,0,7,1]
 };
