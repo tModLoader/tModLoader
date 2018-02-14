@@ -50,6 +50,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 				npc.buffImmune[k] = true;
 			}
 			music = MusicID.Title;
+			musicPriority = MusicPriority.BossMedium; // By default, musicPriority is BossLow
 			bossBag = mod.ItemType("PuritySpiritBag");
 		}
 

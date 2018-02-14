@@ -178,14 +178,20 @@ namespace ExampleMod
 			RecipeHelper.ExampleRecipeEditing(this);
 		}
 
-		public override void UpdateMusic(ref int music)
+		public override void UpdateMusic(ref int music, ref MusicPriority priority)
 		{
-			if (Main.myPlayer != -1 && !Main.gameMenu)
+			if (Main.myPlayer != -1 && !Main.gameMenu && Main.LocalPlayer.active)
 			{
-				if (Main.LocalPlayer.active
-					&& (Main.LocalPlayer.FindBuffIndex(BuffType("CarMount")) != -1 || Main.LocalPlayer.GetModPlayer<ExamplePlayer>(this).ZoneExample))
+				// Make sure your logic here goes from lowest priority to highest so your intended priority is maintained.
+				if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample)
 				{
 					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+					priority = MusicPriority.BiomeLow;
+				}
+				if (Main.LocalPlayer.HasBuff(BuffType("CarMount")))
+				{
+					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+					priority = MusicPriority.Environment;
 				}
 			}
 		}
@@ -273,7 +279,7 @@ namespace ExampleMod
 
 		public override void UpdateUI(GameTime gameTime)
 		{
-			if(exampleUserInterface != null)
+			if (exampleUserInterface != null)
 				exampleUserInterface.Update(gameTime);
 		}
 
