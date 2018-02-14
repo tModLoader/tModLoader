@@ -27,7 +27,7 @@
  			this.Height.Set(96f, 0f);
  			this.Width.Set(0f, 1f);
  			base.SetPadding(6f);
-@@ -90,6 +_,60 @@
+@@ -90,6 +_,63 @@
  			{
  				base.Append(uIImageButton4);
  			}
@@ -42,48 +42,51 @@
 +				uIImageButton5.OnMouseOut += new UIElement.MouseEvent(this.DeleteMouseOut);
 +				base.Append(uIImageButton5);
 +			}
-+			var missingMods = data.Player.usedMods.Except(ModLoader.ModLoader.GetLoadedMods()).ToList();
-+			var newMods = ModLoader.ModLoader.GetLoadedMods().Except(new string[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
-+			if (missingMods.Count > 0 || newMods.Count > 0)
++			if (data.Player.usedMods != null)
 +			{
-+				UIText warningLabel = new UIText("", 1f, false)
++				var missingMods = data.Player.usedMods.Except(ModLoader.ModLoader.GetLoadedMods()).ToList();
++				var newMods = ModLoader.ModLoader.GetLoadedMods().Except(new string[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
++				if (missingMods.Count > 0 || newMods.Count > 0)
 +				{
-+					VAlign = 0f,
-+					HAlign = 1f
-+				};
-+				warningLabel.Left.Set(-30f, 0f);
-+				warningLabel.Top.Set(3f, 0f);
-+				Append(warningLabel);
++					UIText warningLabel = new UIText("", 1f, false)
++					{
++						VAlign = 0f,
++						HAlign = 1f
++					};
++					warningLabel.Left.Set(-30f, 0f);
++					warningLabel.Top.Set(3f, 0f);
++					Append(warningLabel);
 +
-+				UIImageButton modListWarning = new UIImageButton(this._errorTexture)
-+				{
-+					VAlign = 0f,
-+					HAlign = 1f
-+				};
-+				modListWarning.Top.Set(-2f, 0f);
-+				System.Text.StringBuilder fullSB = new System.Text.StringBuilder("The following mods are different since last time you played: ");
-+				System.Text.StringBuilder shortSB = new System.Text.StringBuilder();
-+				if (missingMods.Count > 0)
-+				{
-+					shortSB.Append("Missing " + missingMods.Count + (missingMods.Count > 1 ? " mods." : " mod."));
-+					fullSB.Append("\nMissing mods:\n" + string.Join("\n", missingMods.Select(x => "- " + x)));
++					UIImageButton modListWarning = new UIImageButton(this._errorTexture)
++					{
++						VAlign = 0f,
++						HAlign = 1f
++					};
++					modListWarning.Top.Set(-2f, 0f);
++					System.Text.StringBuilder fullSB = new System.Text.StringBuilder("The following mods are different since last time you played: ");
++					System.Text.StringBuilder shortSB = new System.Text.StringBuilder();
++					if (missingMods.Count > 0)
++					{
++						shortSB.Append("Missing " + missingMods.Count + (missingMods.Count > 1 ? " mods." : " mod."));
++						fullSB.Append("\nMissing mods:\n" + string.Join("\n", missingMods.Select(x => "- " + x)));
++					}
++					if (newMods.Count > 0)
++					{
++						shortSB.Append($" {newMods.Count} new {(newMods.Count > 1 ? "mods." : "mod.")}");
++						fullSB.Append("\nNew mods:\n" + string.Join("\n", newMods.Select(x => "- " + x)));
++					}
++					string warning = shortSB.ToString();
++					string fullWarning = fullSB.ToString();
++					modListWarning.OnMouseOver += (a, b) => warningLabel.SetText(warning);
++					modListWarning.OnMouseOut += (a, b) => warningLabel.SetText("");
++					modListWarning.OnClick += (a, b) =>
++					{
++						Interface.infoMessage.SetMessage(fullWarning);
++						Interface.infoMessage.SetGotoMenu(888, Main._characterSelectMenu);
++						Main.menuMode = Interface.infoMessageID;
++					};
++					Append(modListWarning);
 +				}
-+				if (newMods.Count > 0)
-+				{
-+					shortSB.Append($" {newMods.Count} new {(newMods.Count > 1 ? "mods." : "mod.")}");
-+					fullSB.Append("\nNew mods:\n" + string.Join("\n", newMods.Select(x => "- " + x)));
-+				}
-+				string warning = shortSB.ToString();
-+				string fullWarning = fullSB.ToString();
-+				modListWarning.OnMouseOver += (a, b) => warningLabel.SetText(warning);
-+				modListWarning.OnMouseOut += (a, b) => warningLabel.SetText("");
-+				modListWarning.OnClick += (a, b) =>
-+				{
-+					Interface.infoMessage.SetMessage(fullWarning);
-+					Interface.infoMessage.SetGotoMenu(888, Main._characterSelectMenu);
-+					Main.menuMode = Interface.infoMessageID;
-+				};
-+				Append(modListWarning);
 +			}
  			this._buttonLabel = new UIText("", 1f, false);
  			this._buttonLabel.VAlign = 1f;
@@ -97,18 +100,18 @@
  			this._deleteButtonLabel.Top.Set(-3f, 0f);
  			base.Append(this._deleteButtonLabel);
  			uIImageButton.SetSnapPoint("Play", snapPointIndex, null, null);
-@@ -136,6 +_,11 @@
+@@ -134,6 +_,11 @@
+ 		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement)
+ 		{
  			this._deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
- 		}
- 
++		}
++
 +		private void ErrorMouseOver(UIMouseEvent evt, UIElement listeningElement)
 +		{
 +			this._deleteButtonLabel.SetText(this._data.customDataFail.modName + " Error");
-+		}
-+
+ 		}
+ 
  		private void DeleteMouseOut(UIMouseEvent evt, UIElement listeningElement)
- 		{
- 			this._deleteButtonLabel.SetText("");
 @@ -211,6 +_,11 @@
  			{
  				uIList.UpdateOrder();
