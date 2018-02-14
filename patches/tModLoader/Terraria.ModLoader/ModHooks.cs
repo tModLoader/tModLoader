@@ -28,6 +28,7 @@ namespace Terraria.ModLoader
 		/// A legacy hook that you should no longer use. Use the version with two parameters instead.
 		/// </summary>
 		/// <param name="music"></param>
+		[Obsolete("This UpdateMusic method now obsolete, use the UpdateMusic with the MusicPriority parameter.")]
 		public virtual void UpdateMusic(ref int music)
 		{
 		}
