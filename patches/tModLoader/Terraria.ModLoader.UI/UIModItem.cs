@@ -135,6 +135,24 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
+		private void GenerateLangTemplate_OnClick(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Mod loadedMod = ModLoader.GetMod(mod.Name);
+			Dictionary<string, ModTranslation> dictionary = (Dictionary<string, ModTranslation>)loadedMod.translations;
+			var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
+				.Concat(loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.Tooltip)).Select(x => x.Value.Tooltip.Key + "="))
+				.Concat(loadedMod.npcs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
+				.Concat(loadedMod.buffs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
+				.Concat(loadedMod.buffs.Where(x => !dictionary.ContainsValue(x.Value.Description)).Select(x => x.Value.Description.Key + "="))
+				.Concat(loadedMod.projectiles.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="));
+				//.Concat(loadedMod.tiles.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="))
+				//.Concat(loadedMod.walls.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="));
+			int index = $"Mods.{mod.Name}.".Length;
+			result = result.Select(x => x.Remove(0, index));
+			ReLogic.OS.Platform.Current.Clipboard = string.Join("\n", result);
+		}
+
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
 		{
 			spriteBatch.Draw(this.innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this.innerPanelTexture.Height)), Color.White);
