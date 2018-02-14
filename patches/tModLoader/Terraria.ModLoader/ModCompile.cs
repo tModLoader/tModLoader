@@ -283,6 +283,7 @@ namespace Terraria.ModLoader
 			AppDomain.CurrentDomain.FirstChanceException += delegate(object sender, FirstChanceExceptionEventArgs exceptionArgs)
 			{
 				if (exceptionArgs.Exception.Source == "MP3Sharp") return;
+				if (exceptionArgs.Exception.TargetSite.Name.StartsWith("doColors_Mode")) return;
 				var stack = new System.Diagnostics.StackTrace(true);
 				float soundVolume = Main.soundVolume;
 				Main.soundVolume = 0f;
