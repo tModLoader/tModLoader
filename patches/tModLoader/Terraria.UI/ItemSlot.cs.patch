@@ -17,6 +17,15 @@
  		private static bool[] canFavoriteAt;
  		private static float[] inventoryGlowHue;
  		private static int[] inventoryGlowTime;
+@@ -227,6 +_,8 @@
+ 				{
+ 					Main.PlaySound(12, -1, -1, 1, 1f, 0f);
+ 				}
++				else // the message wasn't sent, so remove unused entry
++					ItemTagHandler.Items.RemoveAt(ItemTagHandler.Items.Count - 1);
+ 				return true;
+ 			}
+ 			if (Main.cursorOverride == 3)
 @@ -298,8 +_,8 @@
  			}
  			if (player.itemAnimation == 0 && player.itemTime == 0)

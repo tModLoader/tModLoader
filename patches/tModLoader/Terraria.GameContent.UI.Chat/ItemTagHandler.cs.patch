@@ -1,0 +1,142 @@
+--- src/Terraria\Terraria.GameContent.UI.Chat\ItemTagHandler.cs
++++ src/tModLoader\Terraria.GameContent.UI.Chat\ItemTagHandler.cs
+@@ -2,6 +_,10 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Graphics;
+ using System;
++using System.Collections;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text.RegularExpressions;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ 
+@@ -9,7 +_,7 @@
+ {
+ 	public class ItemTagHandler : ITagHandler
+ 	{
+-		private class ItemSnippet : TextSnippet
++		internal class ItemSnippet : TextSnippet
+ 		{
+ 			private Item _item;
+ 
+@@ -22,10 +_,11 @@
+ 
+ 			public override void OnHover()
+ 			{
+-				Main.HoverItem = this._item.Clone();
++				Main.HoverItem = this._item;
+ 				Main.instance.MouseText(this._item.Name, this._item.rare, 0, -1, -1, -1, -1);
+ 			}
+ 
++			//@todo possibly allow modders to custom draw here
+ 			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
+ 			{
+ 				float num = 1f;
+@@ -70,8 +_,50 @@
+ 			}
+ 		}
+ 
++		// stores item instances, used to properly display modded data
++		internal static readonly List<Item> Items = new List<Item>();
++
++		// attempts to remove stored item instances in Items
++		// that got pruned from the chat (i.e. they are no longer needed)
++		// in Main.cs at 60085 in NewText add this
++		// in Main.cs at 60043 in NewText add this
++		internal static bool TryRemoveLastStoredItem()
++		{
++			TextSnippet[] itemSnippets = Main.chatLine[Main.numChatLines - 1].parsedText
++				.Where(x => x.GetType() == typeof(ItemSnippet))
++				.ToArray();
++
++			if (itemSnippets.Any())
++			{
++				foreach (TextSnippet snippet in itemSnippets)
++				{
++					MatchCollection matchCollection = ChatManager.Regexes.Format.Matches(snippet.TextOriginal);
++					foreach (Match match in matchCollection)
++					{
++						string MIDGroup = match.Groups["options"].Value
++							.Split(',')
++							.FirstOrDefault(x => x.StartsWith("d"));
++
++						int MID;
++
++						if (!string.IsNullOrEmpty(MIDGroup)
++							&& int.TryParse(MIDGroup.Substring(1), out MID))
++							if (MID >= 0 && MID < Items.Count)
++							{
++								Items.RemoveAt(MID);
++								return true;
++							}			
++					}
++				}
++			}
++
++			return false;
++		}
++
+ 		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
+ 		{
++			bool overrideEntireItem = false;
++			int overrideMID = 0;
+ 			Item item = new Item();
+ 			int type;
+ 			if (int.TryParse(text, out type))
+@@ -83,6 +_,7 @@
+ 				return new TextSnippet(text);
+ 			}
+ 			item.stack = 1;
++			// options happen here, we add MID (=ModItemData) options
+ 			if (options != null)
+ 			{
+ 				string[] array = options.Split(new char[]
+@@ -95,7 +_,12 @@
+ 					{
+ 						char c = array[i][0];
+ 						int value2;
+-						if (c != 'p')
++						// MID is present, we will override
++						if (c == 'd' && int.TryParse(array[i].Substring(1), out overrideMID))
++						{
++							overrideEntireItem = true;
++						}
++						else if (c != 'p')
+ 						{
+ 							int value;
+ 							if ((c == 's' || c == 'x') && int.TryParse(array[i].Substring(1), out value))
+@@ -115,7 +_,8 @@
+ 			{
+ 				str = " (" + item.stack + ")";
+ 			}
+-			return new ItemTagHandler.ItemSnippet(item)
++			// change passed item to: overrideEntireItem ? Items[overrideMID] : item
++			return new ItemTagHandler.ItemSnippet(overrideEntireItem ? Items[overrideMID] : item)
+ 			{
+ 				Text = "[" + item.AffixName() + str + "]",
+ 				CheckForHover = true,
+@@ -123,6 +_,8 @@
+ 			};
+ 		}
+ 
++		// we do not alter vanilla ways of doing things
++		// this can lead to trouble in future patches
+ 		public static string GenerateTag(Item I)
+ 		{
+ 			string text = "[i";
+@@ -133,6 +_,13 @@
+ 			if (I.stack != 1)
+ 			{
+ 				text = text + "/s" + I.stack;
++			}
++			// assuming we have modded data
++			if (I.globalItemsInstanced.Any())
++			{
++				ushort mid = (ushort) Items.Count;
++				Items.Add(I.CloneWithModdedData(I));
++				text = text + "/d" + mid;
+ 			}
+ 			object obj = text;
+ 			return string.Concat(new object[]
+

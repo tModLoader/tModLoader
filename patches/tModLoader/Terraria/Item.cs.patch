@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Item.cs
 +++ src/tModLoader\Terraria\Item.cs
-@@ -1,16 +_,44 @@
+@@ -1,16 +_,45 @@
  using Microsoft.Xna.Framework;
  using System;
 +using System.Linq;
@@ -24,6 +24,7 @@
 +		}
 +
 +		internal GlobalItem[] globalItems = new GlobalItem[0];
++		internal GlobalItem[] globalItemsInstanced {  get { return globalItems.Where(gI => gI.InstancePerEntity).ToArray(); } }
 +
 +		/// <summary>Gets the global item. Use this overload when you dynamically add GlobalItems manually.</summary>
 +		public GlobalItem GetGlobalItem(Mod mod, string name)
