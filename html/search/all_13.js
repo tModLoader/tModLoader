@@ -47,6 +47,7 @@ var searchData=
   ['tmodfile',['TmodFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html',1,'Terraria::ModLoader::IO']]],
   ['tmodfile_2ecs',['TmodFile.cs',['../_tmod_file_8cs.html',1,'']]],
   ['tmodloaderversion',['tModLoaderVersion',['../class_terraria_1_1_mod_loader_1_1_mod.html#ad6eec5ecd13b9a42378033a8a2a6d608',1,'Terraria.ModLoader.Mod.tModLoaderVersion()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a87adf48bce101e9bd38fd7221e0a3dab',1,'Terraria.ModLoader.IO.TmodFile.tModLoaderVersion()']]],
+  ['tobase64',['ToBase64',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a7c9b5f695fb59d3d21b0e38dcb040328',1,'Terraria::ModLoader::IO::ItemIO']]],
   ['tofile',['ToFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#ae427eeb2be582399fe629d359b36314d',1,'Terraria::ModLoader::IO::TagIO']]],
   ['tofriendlystring',['ToFriendlyString',['../class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html#ac02f4ec543a08a039f6f46b1103dd008',1,'Terraria::ModLoader::ModSideExtensions']]],
   ['tooltip',['Tooltip',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a0fa62e240cf6cb00feb461f9f8dd9eb7',1,'Terraria::ModLoader::ModItem']]],

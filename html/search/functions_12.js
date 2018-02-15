@@ -9,6 +9,7 @@ var searchData=
   ['tileframe',['TileFrame',['../class_terraria_1_1_mod_loader_1_1_global_tile.html#abd7e991de75582c8ac50b8f3a83c52e1',1,'Terraria.ModLoader.GlobalTile.TileFrame()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#aec237f34a1022d26cae044deccb2abbf',1,'Terraria.ModLoader.ModTile.TileFrame()'],['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#adc978e3eefdcca3f9346b8ceea23bb40',1,'Terraria.ModLoader.TileLoader.TileFrame()']]],
   ['tiletype',['TileType',['../class_terraria_1_1_mod_loader_1_1_mod.html#a5d371832fbdd332b57deb42f062f7be0',1,'Terraria::ModLoader::Mod']]],
   ['tiletype_3c_20t_20_3e',['TileType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a0c887a071d74dc17e2561c0992be07f8',1,'Terraria::ModLoader::Mod']]],
+  ['tobase64',['ToBase64',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a7c9b5f695fb59d3d21b0e38dcb040328',1,'Terraria::ModLoader::IO::ItemIO']]],
   ['tofile',['ToFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#ae427eeb2be582399fe629d359b36314d',1,'Terraria::ModLoader::IO::TagIO']]],
   ['tofriendlystring',['ToFriendlyString',['../class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html#ac02f4ec543a08a039f6f46b1103dd008',1,'Terraria::ModLoader::ModSideExtensions']]],
   ['tooltipline',['TooltipLine',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#adb1d300be37fc859dd86e9e8d044ed80',1,'Terraria::ModLoader::TooltipLine']]],

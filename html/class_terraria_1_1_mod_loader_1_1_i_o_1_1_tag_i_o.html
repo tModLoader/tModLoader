@@ -360,8 +360,22 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00292">292</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_item_i_o_8cs_source.html#l00362">Terraria.ModLoader.IO.ItemIO.FromBase64()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        {</div><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            <span class="keywordflow">if</span> (compressed) stream = <span class="keyword">new</span> GZipStream(stream, CompressionMode.Decompress);</div><div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#aa2ba8dfd91448412746f551ff6dea90f">Read</a>(<span class="keyword">new</span> BigEndianReader(stream));</div><div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_html_aa2ba8dfd91448412746f551ff6dea90f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#aa2ba8dfd91448412746f551ff6dea90f">Terraria.ModLoader.IO.TagIO.Read</a></div><div class="ttdeci">static TagCompound Read(BinaryReader reader)</div><div class="ttdef"><b>Definition:</b> <a href="_tag_i_o_8cs_source.html#l00298">TagIO.cs:298</a></div></div>
 </div><!-- fragment -->
+<p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_a5bb8177c2bd4cf1f285823c4a93a3c25_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_a5bb8177c2bd4cf1f285823c4a93a3c25_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_a5bb8177c2bd4cf1f285823c4a93a3c25_icgraph" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_a5bb8177c2bd4cf1f285823c4a93a3c25_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#aabc0f58cfcbca0707a5416cdbe5dffc0" title="Terraria.ModLoader.IO.Item\lIO.FromBase64" alt="" coords="233,5,415,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a84c0b46e3f7d66aa175c7d6f0750b11a"></a>
@@ -514,11 +528,11 @@ Static Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                                                     {</div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            var type = value.GetType();</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            TagSerializer serializer;</div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="keywordflow">if</span> (TagSerializer.TryGetSerializer(type, out serializer))</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                <span class="keywordflow">return</span> serializer.Serialize(value);</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="comment">//does a base level typecheck with throw</span></div><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a41b115306fe2805b6b9cf41f55145c46">GetPayloadId</a>(type) != 9)</div><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                <span class="keywordflow">return</span> value;</div><div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            var elemType = type.GetGenericArguments()[0];</div><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keywordflow">if</span> (TagSerializer.TryGetSerializer(elemType, out serializer))</div><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                <span class="keywordflow">return</span> serializer.SerializeList((IList) value);</div><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            </div><div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a41b115306fe2805b6b9cf41f55145c46">GetPayloadId</a>(elemType) != 9)</div><div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                <span class="keywordflow">return</span> value;<span class="comment">//already a valid NBT list type</span></div><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            <span class="comment">//list of lists conversion</span></div><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            var list = value as IList&lt;IList&gt; ?? ((IList)value).Cast&lt;IList&gt;().ToList();</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; list.Count; i++)</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                list[i] = (IList)<a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#aac8f664a8fac8710d509981fe2a1d6ba">Serialize</a>(list[i]);</div><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div><div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            <span class="keywordflow">return</span> list;</div><div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_html_a41b115306fe2805b6b9cf41f55145c46"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a41b115306fe2805b6b9cf41f55145c46">Terraria.ModLoader.IO.TagIO.GetPayloadId</a></div><div class="ttdeci">static int GetPayloadId(Type t)</div><div class="ttdef"><b>Definition:</b> <a href="_tag_i_o_8cs_source.html#l00171">TagIO.cs:171</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_html_aac8f664a8fac8710d509981fe2a1d6ba"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#aac8f664a8fac8710d509981fe2a1d6ba">Terraria.ModLoader.IO.TagIO.Serialize</a></div><div class="ttdeci">static object Serialize(object value)</div><div class="ttdef"><b>Definition:</b> <a href="_tag_i_o_8cs_source.html#l00182">TagIO.cs:182</a></div></div>
 </div><!-- fragment -->
-<p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_aac8f664a8fac8710d509981fe2a1d6ba_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_aac8f664a8fac8710d509981fe2a1d6ba_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_aac8f664a8fac8710d509981fe2a1d6ba_icgraph" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_aac8f664a8fac8710d509981fe2a1d6ba_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a00abf9ec8a3d61f3d304421cc3f671f1" title="Terraria.ModLoader.IO.Tag\lCompound.Set" alt="" coords="232,5,411,46"/>
@@ -611,8 +625,22 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00317">317</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_item_i_o_8cs_source.html#l00355">Terraria.ModLoader.IO.ItemIO.ToBase64()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                                                                                           {</div><div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            <span class="keywordflow">if</span> (compress) stream = <span class="keyword">new</span> GZipStream(stream, CompressionMode.Compress, <span class="keyword">true</span>);</div><div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a41fb3a97377271c60fa40c799c5d4661">Write</a>(root, <span class="keyword">new</span> BigEndianWriter(stream));</div><div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;            <span class="keywordflow">if</span> (compress) stream.Close();</div><div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_html_a41fb3a97377271c60fa40c799c5d4661"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a41fb3a97377271c60fa40c799c5d4661">Terraria.ModLoader.IO.TagIO.Write</a></div><div class="ttdeci">static void Write(TagCompound root, BinaryWriter writer)</div></div>
 </div><!-- fragment -->
+<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_a548368b52deae062f23e0819578c6e46_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_a548368b52deae062f23e0819578c6e46_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_a548368b52deae062f23e0819578c6e46_icgraph" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_a548368b52deae062f23e0819578c6e46_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a7c9b5f695fb59d3d21b0e38dcb040328" title="Terraria.ModLoader.IO.Item\lIO.ToBase64" alt="" coords="233,5,415,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a41fb3a97377271c60fa40c799c5d4661"></a>
