@@ -11,15 +11,6 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -9,7 +_,7 @@
- {
- 	public class ItemTagHandler : ITagHandler
- 	{
--		private class ItemSnippet : TextSnippet
-+		internal class ItemSnippet : TextSnippet
- 		{
- 			private Item _item;
- 
 @@ -26,6 +_,7 @@
  				Main.instance.MouseText(this._item.Name, this._item.rare, 0, -1, -1, -1, -1);
  			}
@@ -28,7 +19,7 @@
  			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  			{
  				float num = 1f;
-@@ -70,8 +_,49 @@
+@@ -70,6 +_,42 @@
  			}
  		}
  
@@ -45,26 +36,23 @@
 +		{
 +			IEnumerable<ItemSnippet> itemSnippets = Main.chatLine[Main.numChatLines - 1].parsedText
 +				.OfType<ItemSnippet>();
-+
-+			if (itemSnippets.Any())
++		
++			foreach (ItemSnippet snippet in itemSnippets)
 +			{
-+				foreach (ItemSnippet snippet in itemSnippets)
++				MatchCollection matchCollection = ChatManager.Regexes.Format.Matches(snippet.TextOriginal);
++				foreach (Match match in matchCollection)
 +				{
-+					MatchCollection matchCollection = ChatManager.Regexes.Format.Matches(snippet.TextOriginal);
-+					foreach (Match match in matchCollection)
-+					{
-+						string MIDGroup = match.Groups["options"].Value
-+							.Split(',')
-+							.FirstOrDefault(x => x.StartsWith("d"));
++					string MIDGroup = match.Groups["options"].Value
++						.Split(',')
++						.FirstOrDefault(x => x.StartsWith("d"));
 +
-+						if (!string.IsNullOrEmpty(MIDGroup)
-+							&& int.TryParse(MIDGroup.Substring(1), out int MID))
-+							if (MID >= 0 && MID < Items.Count)
-+							{
-+								Items.RemoveAt(MID);
-+								return true;
-+							}			
-+					}
++					if (!string.IsNullOrEmpty(MIDGroup)
++						&& int.TryParse(MIDGroup.Substring(1), out int MID))
++						if (MID >= 0 && MID < Items.Count)
++						{
++							Items.RemoveAt(MID);
++							return true;
++						}			
 +				}
 +			}
 +
@@ -73,11 +61,7 @@
 +
  		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
  		{
-+			bool overrideEntireItem = false;
-+			int overrideMID = 0;
  			Item item = new Item();
- 			int type;
- 			if (int.TryParse(text, out type))
 @@ -83,6 +_,7 @@
  				return new TextSnippet(text);
  			}
@@ -92,24 +76,14 @@
  						int value2;
 -						if (c != 'p')
 +						// MID is present, we will override
-+						if (c == 'd' && int.TryParse(array[i].Substring(1), out overrideMID))
++						if (c == 'd' && int.TryParse(array[i].Substring(1), out int MID))
 +						{
-+							overrideEntireItem = true;
++							item = Items[MID];
 +						}
 +						else if (c != 'p')
  						{
  							int value;
  							if ((c == 's' || c == 'x') && int.TryParse(array[i].Substring(1), out value))
-@@ -115,7 +_,8 @@
- 			{
- 				str = " (" + item.stack + ")";
- 			}
--			return new ItemTagHandler.ItemSnippet(item)
-+			// change passed item to: overrideEntireItem ? Items[overrideMID] : item
-+			return new ItemTagHandler.ItemSnippet(overrideEntireItem ? Items[overrideMID] : item)
- 			{
- 				Text = "[" + item.AffixName() + str + "]",
- 				CheckForHover = true,
 @@ -123,6 +_,8 @@
  			};
  		}
@@ -128,7 +102,7 @@
 +			if (I.modItem != null || I.globalItems.Any())
 +			{
 +				Items.Add(I.Clone());
-+				text = text + "/d" + Items.Count;
++				text = text + "/d" + (Items.Count - 1);
  			}
  			object obj = text;
  			return string.Concat(new object[]
