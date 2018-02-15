@@ -403,7 +403,7 @@
  					if (num3 < (float)NPC.sWidth && num3 < num2)
  					{
  						num2 = num3;
-@@ -43998,7 +_,18 @@
+@@ -43998,7 +_,20 @@
  
  		public Item Clone()
  		{
@@ -414,7 +414,9 @@
 +			return newItem;
 +		}
 +
-+		public Item CloneWithModdedData(Item dataSource)
++		// clones the item, but copies over the data from another data source
++		// specifically needed for reforging
++		public Item CloneWithModdedDataFrom(Item dataSource)
 +		{
 +			Item newItem = (Item)base.MemberwiseClone();
 +			newItem.modItem = modItem?.Clone(newItem);

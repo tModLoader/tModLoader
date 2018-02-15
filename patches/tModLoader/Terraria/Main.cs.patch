@@ -3387,13 +3387,13 @@
  								bool favorited = Main.reforgeItem.favorited;
 -								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
 -								Main.reforgeItem.Prefix(-2);
-+                                //messes with prefixes that modify custom data
-+                                /*Item reforgeItem = new Item();
++                                //vanilla doesnt have a good way of resetting prefix, so it creates a new item entirely
++								//before we roll te prefix, we simply copy over the old mod data before doing so
++                                Item reforgeItem = new Item();
 +								reforgeItem.netDefaults(Main.reforgeItem.netID);
++								reforgeItem = reforgeItem.CloneWithModdedDataFrom(Main.reforgeItem);
 +								reforgeItem.Prefix(-2);
-+								Main.reforgeItem = reforgeItem.CloneWithModdedData(Main.reforgeItem);*/
-+                                Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
-+                                Main.reforgeItem.Prefix(-2);
++								Main.reforgeItem = reforgeItem.Clone();
  								Main.reforgeItem.position.X = Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Main.reforgeItem.width / 2);
  								Main.reforgeItem.position.Y = Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Main.reforgeItem.height / 2);
  								Main.reforgeItem.favorited = favorited;
