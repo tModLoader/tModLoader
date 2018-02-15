@@ -351,5 +351,18 @@ namespace Terraria.ModLoader.IO
 				LoadLegacy(inv[reader.ReadUInt16()], reader, readStack, readFavorite);
 			}
 		}
+
+		public static string ToBase64(Item item)
+		{
+			MemoryStream ms = new MemoryStream();
+			TagIO.ToStream(ItemIO.Save(item), ms, true);
+			return Convert.ToBase64String(ms.ToArray());
+		}
+
+		public static Item FromBase64(string base64)
+		{
+			MemoryStream ms = new MemoryStream(Convert.FromBase64String(base64));
+			return ItemIO.Load(TagIO.FromStream(ms, true));
+		}
 	}
 }
