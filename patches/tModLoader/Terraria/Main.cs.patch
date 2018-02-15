@@ -4199,10 +4199,12 @@
  			if (Main.ignoreErrors)
  			{
  				try
-@@ -58911,6 +_,16 @@
+@@ -58909,6 +_,16 @@
+ 					RemoteClient.CheckSection(k, Main.player[k].position, 1);
+ 				}
  			}
- 		}
- 
++		}
++
 +		public static void NewText(string newText, Microsoft.Xna.Framework.Color color, bool force = false)
 +		{
 +			NewText(newText, color.R, color.G, color.B, force);
@@ -4211,27 +4213,9 @@
 +		public static void NewText(object o, Microsoft.Xna.Framework.Color color = default(Microsoft.Xna.Framework.Color), bool force = false)
 +		{
 +			NewText(o.ToString(), color.R, color.G, color.B, force);
-+		}
-+
- 		public static void NewText(string newText, byte R = 255, byte G = 255, byte B = 255, bool force = false)
- 		{
- 			int num = 80;
-@@ -58965,6 +_,7 @@
- 				}
- 				return;
- 			}
-+			ItemTagHandler.TryRemoveLastStoredItem();
- 			for (int i = Main.numChatLines - 1; i > 0; i--)
- 			{
- 				Main.chatLine[i].text = Main.chatLine[i - 1].text;
-@@ -59009,6 +_,7 @@
+ 		}
  
- 		public static void NewText(List<TextSnippet> snippets)
- 		{
-+			ItemTagHandler.TryRemoveLastStoredItem();
- 			for (int i = Main.numChatLines - 1; i > 0; i--)
- 			{
- 				Main.chatLine[i].text = Main.chatLine[i - 1].text;
+ 		public static void NewText(string newText, byte R = 255, byte G = 255, byte B = 255, bool force = false)
 @@ -59727,7 +_,7 @@
  						num++;
  					}
