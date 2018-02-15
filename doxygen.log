@@ -665,10 +665,10 @@ Generating call graph for function Terraria.ModLoader.ItemLoader.DrawHair
 Generating call graph for function Terraria./home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1044: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
   parameter 'item'
   parameter 'reforgePrice'
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1308: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
+/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1309: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
   parameter 'npcType'
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1187: warning: argument 'texture' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1187: warning: argument 'altTextures' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
+/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1188: warning: argument 'texture' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
+/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1188: warning: argument 'altTextures' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddNPC(string name, ModNPC npc)
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:673: warning: argument 'item' of command @param is not found in the argument list of Terraria.ModLoader.Mod::AddPrefix(string name, ModPrefix prefix)
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:678: warning: The following parameters of Terraria.ModLoader.Mod.AddPrefix(string name, ModPrefix prefix) are not documented:
   parameter 'prefix'
@@ -2050,5 +2050,5 @@ Patching output file 121/124
 Patching output file 122/124
 Patching output file 123/124
 Patching output file 124/124
-lookup cache used 10455/131072 hits=98420 misses=10920
+lookup cache used 10457/131072 hits=98429 misses=10922
 finished...
