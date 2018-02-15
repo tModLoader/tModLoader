@@ -86,11 +86,10 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		public PrefixCategory Category
-		{
-			get;
-			set;
-		}
+		/// <summary>
+		/// The category your prefix belongs to, PrefixCategory.Custom by default
+		/// </summary>
+		public virtual PrefixCategory Category => PrefixCategory.Custom;
 
 		public virtual bool Autoload(ref string name)
 		{
@@ -99,8 +98,6 @@ namespace Terraria.ModLoader
 
 		public virtual void AutoDefaults()
 		{
-			Category = PrefixCategory.Custom;
-			
 			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 		}

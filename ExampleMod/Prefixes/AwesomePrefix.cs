@@ -8,6 +8,9 @@ namespace ExampleMod.Prefixes
 	{
 		private byte power = 0;
 
+		// change your category this way
+		public override PrefixCategory Category { get { return PrefixCategory.Custom; } }
+		
 		public AwesomePrefix()
 		{
 		}
