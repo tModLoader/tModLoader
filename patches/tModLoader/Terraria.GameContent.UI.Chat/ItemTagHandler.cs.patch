@@ -50,7 +50,7 @@
  						else if (int.TryParse(array[i].Substring(1), out value2))
  						{
 -							item.Prefix((int)((byte)Utils.Clamp<int>(value2, 0, 84)));
-+							item.Prefix((int)((byte)Utils.Clamp<int>(value2, 0, ModPrefix.PrefixCount-1)));
++							item.Prefix((int)((byte)Utils.Clamp<int>(value2, 0, ModPrefix.PrefixCount)));
  						}
  					}
  				}

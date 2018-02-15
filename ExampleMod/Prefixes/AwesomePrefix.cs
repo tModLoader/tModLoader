@@ -6,7 +6,7 @@ namespace ExampleMod.Prefixes
 {
 	public class AwesomePrefix : ModPrefix
 	{
-		private byte power = 0;
+		private readonly byte power = 0;
 
 		// change your category this way
 		public override PrefixCategory Category { get { return PrefixCategory.Custom; } }

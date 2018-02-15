@@ -690,6 +690,7 @@ namespace Terraria.ModLoader
 
 			prefixes[name] = prefix;
 			ModPrefix.prefixes.Add(prefix);
+			ModPrefix.categoryPrefixes[prefix.Category].Add(prefix);
 		}
 
 		/// <summary>
