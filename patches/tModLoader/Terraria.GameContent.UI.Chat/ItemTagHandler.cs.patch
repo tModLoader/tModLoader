@@ -49,7 +49,7 @@
  		public static string GenerateTag(Item I)
  		{
  			string text = "[i";
-@@ -133,6 +_,11 @@
+@@ -133,6 +_,15 @@
  			if (I.stack != 1)
  			{
  				text = text + "/s" + I.stack;
@@ -57,7 +57,11 @@
 +			// assuming we have modded data
 +			if (I.modItem != null || I.globalItems.Any())
 +			{
-+				text = text + "/d" + ItemIO.ToBase64(I);
++				if (text.Length == 2)
++					text = text + "/";
++				if (text.Length > 3)
++					text = text + ",";
++				text = text + "d" + ItemIO.ToBase64(I);
  			}
  			object obj = text;
  			return string.Concat(new object[]
