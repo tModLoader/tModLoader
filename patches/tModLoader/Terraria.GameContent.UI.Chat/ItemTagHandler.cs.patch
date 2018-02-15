@@ -1,11 +1,12 @@
 --- src/Terraria\Terraria.GameContent.UI.Chat\ItemTagHandler.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Chat\ItemTagHandler.cs
-@@ -1,7 +_,8 @@
+@@ -1,7 +_,9 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
 -using System;
 +using System.Linq;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
  using Terraria.UI.Chat;
@@ -44,6 +45,15 @@
  						{
  							int value;
  							if ((c == 's' || c == 'x') && int.TryParse(array[i].Substring(1), out value))
+@@ -105,7 +_,7 @@
+ 						}
+ 						else if (int.TryParse(array[i].Substring(1), out value2))
+ 						{
+-							item.Prefix((int)((byte)Utils.Clamp<int>(value2, 0, 84)));
++							item.Prefix((int)((byte)Utils.Clamp<int>(value2, 0, ModPrefix.PrefixCount-1)));
+ 						}
+ 					}
+ 				}
 @@ -123,17 +_,29 @@
  			};
  		}
