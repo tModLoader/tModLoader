@@ -37,17 +37,6 @@ namespace ExampleMod.Items
 			return myClone;
 		}
 
-		public override bool NewPreReforge(Item item)
-		{
-			saveOriginalOwner = originalOwner;
-			return base.NewPreReforge(item);
-		}
-
-		public override void PostReforge(Item item)
-		{
-			originalOwner = saveOriginalOwner;
-		}
-
 		public override int ChoosePrefix(Item item, UnifiedRandom rand)
 		{
 			if (rand.Next(30) == 0)
