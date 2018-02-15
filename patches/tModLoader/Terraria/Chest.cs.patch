@@ -1,13 +1,28 @@
 --- src/Terraria\Terraria\Chest.cs
 +++ src/tModLoader\Terraria\Chest.cs
-@@ -5,6 +_,7 @@
+@@ -4,7 +_,10 @@
+ using Terraria.GameContent.Achievements;
  using Terraria.GameContent.Events;
  using Terraria.ID;
++using Terraria.Localization;
  using Terraria.ObjectData;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  
  namespace Terraria
  {
+@@ -172,8 +_,10 @@
+ 
+ 		public static void ServerPlaceItem(int plr, int slot)
+ 		{
++			//@todo: need to debug server here
+ 			Main.player[plr].inventory[slot] = Chest.PutItemInNearbyChest(Main.player[plr].inventory[slot], Main.player[plr].Center);
+-			NetMessage.SendData(5, -1, -1, null, plr, (float)slot, (float)Main.player[plr].inventory[slot].prefix, 0f, 0, 0, 0);
++			NetworkText txt = NetworkText.FromLiteral(ItemIO.ToBase64(Main.player[plr].inventory[slot]));
++			NetMessage.SendData(5, -1, -1, txt, plr, (float)slot, (float)Main.player[plr].inventory[slot].prefix, 0f, 0, 0, 0);
+ 		}
+ 
+ 		public static Item PutItemInNearbyChest(Item item, Vector2 position)
 @@ -418,17 +_,25 @@
  				}
  				Main.chest[num] = chest;

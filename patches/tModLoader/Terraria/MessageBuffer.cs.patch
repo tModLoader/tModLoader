@@ -80,6 +80,116 @@
  						NetMessage.SendData(6, -1, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
  						if (Netplay.Connection.State == 2)
  						{
+@@ -325,7 +_,9 @@
+ 					}
+ 				case 5:
+ 					{
+-						int num11 = (int)this.reader.ReadByte();
++						// order: player, slot, prefix
++						// if base64: player, -64, slot, mode, text
++						int num11 = (int)this.reader.ReadByte(); // playerid
+ 						if (Main.netMode == 2)
+ 						{
+ 							num11 = this.whoAmI;
+@@ -335,12 +_,21 @@
+ 							return;
+ 						}
+ 						Player player3 = Main.player[num11];
++						int num12 = (int)this.reader.ReadByte(); // index in array (slot)
++						string base64 = "";
++						Item base64Item = null;
++						if (num12 == -64) // slot is -64, we sent base64
++						{
++							num12 = (int) this.reader.ReadByte(); // read actual slot
++							int mode = (int) this.reader.ReadByte(); // unused, but networktext writes it
++							base64 = (string) this.reader.ReadString();
++							base64Item = ItemIO.FromBase64(base64);
++						}
+ 						lock (player3)
+ 						{
+-							int num12 = (int)this.reader.ReadByte();
+-							int stack = (int)this.reader.ReadInt16();
+-							int num13 = (int)this.reader.ReadByte();
+-							int type = (int)this.reader.ReadInt16();
++							int stack = base64Item?.stack ?? (int)this.reader.ReadInt16();
++							int num13 = base64Item?.prefix ?? (int)this.reader.ReadByte(); // prefix
++							int type = base64Item?.type ?? (int)this.reader.ReadInt16(); // netid
+ 							Item[] array = null;
+ 							int num14 = 0;
+ 							bool flag3 = false;
+@@ -390,22 +_,36 @@
+ 							}
+ 							if (flag3)
+ 							{
+-								player3.trashItem = new Item();
+-								player3.trashItem.netDefaults(type);
+-								player3.trashItem.stack = stack;
+-								player3.trashItem.Prefix(num13);
++								if (base64Item != null)
++								{
++									player3.trashItem = base64Item.Clone();
++								}
++								else
++								{
++									player3.trashItem = new Item();
++									player3.trashItem.netDefaults(type);
++									player3.trashItem.stack = stack;
++									player3.trashItem.Prefix(num13);
++								}
+ 							}
+ 							else if (num12 <= 58)
+ 							{
+ 								int type2 = array[num14].type;
+ 								int stack2 = array[num14].stack;
+-								array[num14] = new Item();
+-								array[num14].netDefaults(type);
+-								array[num14].stack = stack;
+-								array[num14].Prefix(num13);
++								if (base64Item != null)
++								{
++									array[num14] = base64Item.Clone();
++								}
++								else
++								{
++									array[num14] = new Item();
++									array[num14].netDefaults(type);
++									array[num14].stack = stack;
++									array[num14].Prefix(num13);
++								}
+ 								if (num11 == Main.myPlayer && num14 == 58)
+ 								{
+-									Main.mouseItem = array[num14].Clone();
++									Main.mouseItem = base64Item?.Clone() ?? array[num14].Clone();
+ 								}
+ 								if (num11 == Main.myPlayer && Main.netMode == 1)
+ 								{
+@@ -419,14 +_,21 @@
+ 							}
+ 							else
+ 							{
+-								array[num14] = new Item();
+-								array[num14].netDefaults(type);
+-								array[num14].stack = stack;
+-								array[num14].Prefix(num13);
++								if (base64Item != null)
++								{
++									array[num14] = base64Item.Clone();
++								}
++								else
++								{
++									array[num14] = new Item();
++									array[num14].netDefaults(type);
++									array[num14].stack = stack;
++									array[num14].Prefix(num13);
++								}
+ 							}
+ 							if (Main.netMode == 2 && num11 == this.whoAmI && num12 <= 58 + player3.armor.Length + player3.dye.Length + player3.miscEquips.Length + player3.miscDyes.Length)
+ 							{
+-								NetMessage.SendData(5, -1, this.whoAmI, null, num11, (float)num12, (float)num13, 0f, 0, 0, 0);
++								NetMessage.SendData(5, -1, this.whoAmI, base64Item!= null ? NetworkText.FromLiteral(base64) : null, num11, (float)num12, (float)num13, 0f, 0, 0, 0);
+ 							}
+ 							return;
+ 						}
 @@ -543,6 +_,10 @@
  							Main.StopSlimeRain(true);
  						}
