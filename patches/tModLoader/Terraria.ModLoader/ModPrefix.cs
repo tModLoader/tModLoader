@@ -89,7 +89,7 @@ namespace Terraria.ModLoader
 		public PrefixCategory Category
 		{
 			get;
-			internal set;
+			private set;
 		}
 
 		public virtual bool Autoload(ref string name)
