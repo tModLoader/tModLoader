@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.UI.Chat\ItemTagHandler.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Chat\ItemTagHandler.cs
-@@ -2,6 +_,10 @@
+@@ -2,6 +_,11 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using System;
@@ -8,6 +8,7 @@
 +using System.Collections.Generic;
 +using System.Linq;
 +using System.Text.RegularExpressions;
++using Terraria.ModLoader.IO;
  using Terraria.UI;
  using Terraria.UI.Chat;
  
@@ -19,49 +20,6 @@
  			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  			{
  				float num = 1f;
-@@ -70,6 +_,42 @@
- 			}
- 		}
- 
-+		//@todo: add MP support (this needs sync across clients)
-+		// stores item instances, used to properly display modded data
-+		internal static readonly List<Item> Items = new List<Item>();
-+
-+		//@todo: question ourself: does this deletion need a sync in MP?
-+		// attempts to remove stored item instances in Items
-+		// that got pruned from the chat (i.e. they are no longer needed)
-+		// in Main.cs at 60085 in NewText add this
-+		// in Main.cs at 60043 in NewText add this
-+		internal static bool TryRemoveLastStoredItem()
-+		{
-+			IEnumerable<ItemSnippet> itemSnippets = Main.chatLine[Main.numChatLines - 1].parsedText
-+				.OfType<ItemSnippet>();
-+		
-+			foreach (ItemSnippet snippet in itemSnippets)
-+			{
-+				MatchCollection matchCollection = ChatManager.Regexes.Format.Matches(snippet.TextOriginal);
-+				foreach (Match match in matchCollection)
-+				{
-+					string MIDGroup = match.Groups["options"].Value
-+						.Split(',')
-+						.FirstOrDefault(x => x.StartsWith("d"));
-+
-+					if (!string.IsNullOrEmpty(MIDGroup)
-+						&& int.TryParse(MIDGroup.Substring(1), out int MID))
-+						if (MID >= 0 && MID < Items.Count)
-+						{
-+							Items.RemoveAt(MID);
-+							return true;
-+						}			
-+				}
-+			}
-+
-+			return false;
-+		}
-+
- 		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
- 		{
- 			Item item = new Item();
 @@ -83,6 +_,7 @@
  				return new TextSnippet(text);
  			}
@@ -76,9 +34,9 @@
  						int value2;
 -						if (c != 'p')
 +						// MID is present, we will override
-+						if (c == 'd' && int.TryParse(array[i].Substring(1), out int MID))
++						if (c == 'd')
 +						{
-+							item = Items[MID];
++							item = ItemIO.FromBase64(array[i].Substring(1));
 +						}
 +						else if (c != 'p')
  						{
@@ -93,7 +51,7 @@
  		public static string GenerateTag(Item I)
  		{
  			string text = "[i";
-@@ -133,6 +_,12 @@
+@@ -133,6 +_,11 @@
  			if (I.stack != 1)
  			{
  				text = text + "/s" + I.stack;
@@ -101,8 +59,7 @@
 +			// assuming we have modded data
 +			if (I.modItem != null || I.globalItems.Any())
 +			{
-+				Items.Add(I.Clone());
-+				text = text + "/d" + (Items.Count - 1);
++				text = text + "/d" + ItemIO.ToBase64(I);
  			}
  			object obj = text;
  			return string.Concat(new object[]
