@@ -3,6 +3,7 @@ var searchData=
   ['canbecleared',['canBeCleared',['../class_terraria_1_1_mod_loader_1_1_mod_buff.html#a06cda96a39a313d877913de116e69362',1,'Terraria::ModLoader::ModBuff']]],
   ['caneac',['CanEaC',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a420c97425854c66a58c03dd6a7a49f16',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['carpetshader',['carpetShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#abc87fa8a99aa707204ad643c64aa818b',1,'Terraria::ModLoader::PlayerDrawInfo']]],
+  ['category',['Category',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ab11eeb2b9bf31754627bfc11d522a6f7',1,'Terraria::ModLoader::ModPrefix']]],
   ['cavejellyfish',['CaveJellyfish',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a61f282fec3732ccc99bd6d82786297e9',1,'Terraria::ModLoader::SpawnCondition']]],
   ['cavepiranha',['CavePiranha',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae5f1f48bc576a9d58575dc3c8f777d83',1,'Terraria::ModLoader::SpawnCondition']]],
   ['cavern',['Cavern',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a83185ce17199d7f97ae0b22bc376fab0',1,'Terraria::ModLoader::SpawnCondition']]],
