@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Item.cs
 +++ src/tModLoader\Terraria\Item.cs
-@@ -1,16 +_,44 @@
+@@ -1,16 +_,45 @@
  using Microsoft.Xna.Framework;
  using System;
 +using System.Linq;
@@ -11,6 +11,7 @@
  using Terraria.UI;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  
  namespace Terraria
  {
