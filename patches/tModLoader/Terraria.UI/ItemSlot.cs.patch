@@ -17,45 +17,11 @@
  		private static bool[] canFavoriteAt;
  		private static float[] inventoryGlowHue;
  		private static int[] inventoryGlowTime;
-@@ -298,8 +_,8 @@
- 			}
- 			if (player.itemAnimation == 0 && player.itemTime == 0)
- 			{
--				int num = ItemSlot.PickItemMovementAction(inv, context, slot, Main.mouseItem);
--				if (num == 0)
-+				int clickAction = ItemSlot.PickItemMovementAction(inv, context, slot, Main.mouseItem);
-+				if (clickAction == 0)
- 				{
- 					if (context == 6 && Main.mouseItem.type != 0)
- 					{
-@@ -364,7 +_,7 @@
- 						NetMessage.SendData(32, -1, -1, null, player.chest, (float)slot, 0f, 0f, 0, 0, 0);
- 					}
+@@ -558,10 +_,12 @@
  				}
--				else if (num == 1)
-+				else if (clickAction == 1)
+ 				else if (num == 3)
  				{
- 					if (Main.mouseItem.stack == 1 && Main.mouseItem.type > 0 && inv[slot].type > 0 && inv[slot].IsNotTheSameAs(Main.mouseItem))
- 					{
-@@ -460,7 +_,7 @@
- 						}
- 					}
- 				}
--				else if (num == 2)
-+				else if (clickAction == 2)
- 				{
- 					if (Main.mouseItem.stack == 1 && Main.mouseItem.dye > 0 && inv[slot].type > 0 && inv[slot].type != Main.mouseItem.type)
- 					{
-@@ -556,12 +_,15 @@
- 						}
- 					}
- 				}
--				else if (num == 3)
--				{
 -					Main.mouseItem.netDefaults(inv[slot].netID);
-+				#region 3 | buy item
-+				else if (clickAction == 3)
-+				{
 +					Main.mouseItem = inv[slot].Clone();
 +					Main.mouseItem.stack = 1;
 +					Main.mouseItem.value *= 5; // preserve item value
@@ -66,16 +32,6 @@
  					}
  					else
  					{
-@@ -582,7 +_,8 @@
- 						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
- 					}
- 				}
--				else if (num == 4)
-+				#endregion
-+				else if (clickAction == 4)
- 				{
- 					Chest chest = Main.instance.shop[Main.npcShop];
- 					if (player.SellItem(Main.mouseItem.value, Main.mouseItem.stack))
 @@ -620,7 +_,10 @@
  			Player player = Main.player[Main.myPlayer];
  			if (inv[slot].type > 0)
@@ -108,7 +64,7 @@
  				}
  				else
  				{
-@@ -1579,11 +_,17 @@
+@@ -1579,11 +_,15 @@
  				num9 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num9 / 2f;
  				Vector2 origin = rectangle2.Size() * (num8 / 2f - 0.5f);
@@ -117,8 +73,7 @@
 -				{
 -					spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetColor(color), 0f, origin, num9 * num8, SpriteEffects.None, 0f);
 -				}
-+				if (ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
-+					item.GetColor(color), origin, num9 * num8))
++				if (ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor), item.GetColor(color), origin, num9 * num8))
 +				{
 +					spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetAlpha(newColor), 0f, origin, num9 * num8, SpriteEffects.None, 0f);
 +					if (item.color != Color.Transparent)
@@ -126,8 +81,7 @@
 +						spriteBatch.Draw(texture2D3, position2, new Rectangle?(rectangle2), item.GetColor(color), 0f, origin, num9 * num8, SpriteEffects.None, 0f);
 +					}
 +				}
-+				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
-+					item.GetColor(color), origin, num9 * num8);
++				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor), item.GetColor(color), origin, num9 * num8);
  				if (ItemID.Sets.TrapSigned[item.type])
  				{
  					spriteBatch.Draw(Main.wireTexture, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle?(new Rectangle(4, 58, 8, 8)), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
