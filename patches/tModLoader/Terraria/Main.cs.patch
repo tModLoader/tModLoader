@@ -3375,7 +3375,7 @@
  						string text3 = "";
  						int num63 = 0;
  						int num64 = 0;
-@@ -36637,14 +_,21 @@
+@@ -36637,14 +_,23 @@
  							}
  							Main.mouseReforge = true;
  							Main.player[Main.myPlayer].mouseInterface = true;
@@ -3387,6 +3387,7 @@
  								bool favorited = Main.reforgeItem.favorited;
 -								Main.reforgeItem.netDefaults(Main.reforgeItem.netID);
 -								Main.reforgeItem.Prefix(-2);
++								int stack = Main.reforgeItem.stack; // keep the stack, stacked weps support (i.e. light discs)
 +                                //vanilla doesnt have a good way of resetting prefix, so it creates a new item entirely
 +								//before we roll te prefix, we simply copy over the old mod data before doing so
 +                                Item reforgeItem = new Item();
@@ -3397,6 +3398,7 @@
  								Main.reforgeItem.position.X = Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Main.reforgeItem.width / 2);
  								Main.reforgeItem.position.Y = Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Main.reforgeItem.height / 2);
  								Main.reforgeItem.favorited = favorited;
++								Main.reforgeItem.stack = stack;
 +								ItemLoader.PostReforge(Main.reforgeItem);
  								ItemText.NewText(Main.reforgeItem, Main.reforgeItem.stack, true, false);
  								Main.PlaySound(SoundID.Item37, -1, -1);
