@@ -80,6 +80,31 @@
  						NetMessage.SendData(6, -1, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
  						if (Netplay.Connection.State == 2)
  						{
+@@ -394,6 +_,7 @@
+ 								player3.trashItem.netDefaults(type);
+ 								player3.trashItem.stack = stack;
+ 								player3.trashItem.Prefix(num13);
++								ItemIO.ReceiveModData(player3.trashItem, reader);
+ 							}
+ 							else if (num12 <= 58)
+ 							{
+@@ -403,6 +_,8 @@
+ 								array[num14].netDefaults(type);
+ 								array[num14].stack = stack;
+ 								array[num14].Prefix(num13);
++								ItemIO.ReceiveModData(array[num14], reader);
++
+ 								if (num11 == Main.myPlayer && num14 == 58)
+ 								{
+ 									Main.mouseItem = array[num14].Clone();
+@@ -423,6 +_,7 @@
+ 								array[num14].netDefaults(type);
+ 								array[num14].stack = stack;
+ 								array[num14].Prefix(num13);
++								ItemIO.ReceiveModData(array[num14], reader);
+ 							}
+ 							if (Main.netMode == 2 && num11 == this.whoAmI && num12 <= 58 + player3.armor.Length + player3.dye.Length + player3.miscEquips.Length + player3.miscDyes.Length)
+ 							{
 @@ -543,6 +_,10 @@
  							Main.StopSlimeRain(true);
  						}

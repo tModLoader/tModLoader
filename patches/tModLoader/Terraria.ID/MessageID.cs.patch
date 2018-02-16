@@ -28,7 +28,7 @@
 +		//kicks if the playername is empty, too long, or the same as another player on the server
 +		//forwarded to other clients
  		public const byte SyncPlayer = 4;
-+		//sends item slot, type, quantity and prefix
++		//sends item slot, type, quantity, prefix, and then mod data with ItemIO.SendModData
 +		//item slot is an index into a contiguous array of the player's (inventory, armor, miscEqups, miscDyes, bank, safe and trash)
 +		//packet will be ignored on the client unless they are quick-stacking to chests because clients have authority over their inventory
 +		//forwarded to other clients if it is not a bank, safe or trash slot
@@ -116,7 +116,7 @@
 +		//forwarded to other clients
 +		public const byte TileSquare = 20;
 +		//sends all info about an item in the world
-+		//ItemIO.SaveCustomData appends data to this packet
++		//ItemIO.SendModData appends data to this packet
 +		//forwarded to other clients
  		public const byte SyncItem = 21;
 -		public const byte Unknown22 = 22;
@@ -165,7 +165,7 @@
 +		//SyncPlayerChest, SyncPlayerChestIndex
  		public const byte RequestChestOpen = 31;
 +		//chestIndex, slot, stack, prefix, itemType
-+		//ItemIO.ReadCustomData appends to this packet
++		//ItemIO.ReceiveModData appends to this packet
  		public const byte SyncChestItem = 32;
 +		//chestIndex, x, y, nameLen, name
 +		//name is only sent if nameLen <= 20

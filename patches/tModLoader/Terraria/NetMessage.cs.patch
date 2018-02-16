@@ -38,6 +38,14 @@
  						break;
  					case 2:
  						text.Serialize(writer);
+@@ -178,6 +_,7 @@
+ 							writer.Write((short)num2);
+ 							writer.Write((byte)number3);
+ 							writer.Write((short)netID);
++							ItemIO.SendModData(item, writer);
+ 							break;
+ 						}
+ 					case 7:
 @@ -284,6 +_,10 @@
  							bb8[7] = DD2Event.DownedInvasionT3;
  							writer.Write(bb8);
