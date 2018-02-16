@@ -28,7 +28,7 @@
 +		//kicks if the playername is empty, too long, or the same as another player on the server
 +		//forwarded to other clients
  		public const byte SyncPlayer = 4;
-+		//sends item slot, type, quantity and prefix
++		//sends item slot, type, quantity, prefix, and then mod data through ItemIO (Send/Receive)
 +		//item slot is an index into a contiguous array of the player's (inventory, armor, miscEqups, miscDyes, bank, safe and trash)
 +		//packet will be ignored on the client unless they are quick-stacking to chests because clients have authority over their inventory
 +		//forwarded to other clients if it is not a bank, safe or trash slot
