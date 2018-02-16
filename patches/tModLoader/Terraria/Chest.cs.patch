@@ -1,13 +1,14 @@
 --- src/Terraria\Terraria\Chest.cs
 +++ src/tModLoader\Terraria\Chest.cs
-@@ -4,7 +_,10 @@
+@@ -1,10 +_,10 @@
+ using Microsoft.Xna.Framework;
+-using System;
+ using Terraria.DataStructures;
  using Terraria.GameContent.Achievements;
  using Terraria.GameContent.Events;
  using Terraria.ID;
-+using Terraria.Localization;
  using Terraria.ObjectData;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.IO;
  
  namespace Terraria
  {
