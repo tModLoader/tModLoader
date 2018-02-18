@@ -16,6 +16,7 @@ namespace Terraria.ModLoader.UI
 	{
 		private readonly LocalMod mod;
 		private readonly Texture2D dividerTexture;
+		private int modIconAdjust;
 		private readonly Texture2D innerPanelTexture;
 		private readonly UIText modName;
 		private readonly UITextPanel<string> button2;
@@ -38,7 +39,7 @@ namespace Terraria.ModLoader.UI
 			{
 				text += " [c/FF0000:(Old mod, enable at own risk)]";
 			}
-			int modIconAdjust = 0;
+			
 			if (mod.modFile.HasFile("icon.png"))
 			{
 				var modIconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, new MemoryStream(mod.modFile.GetFile("icon.png")));
@@ -169,7 +170,6 @@ namespace Terraria.ModLoader.UI
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
-			int modIconAdjust = modIcon != null ? 85 : 0;
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f + modIconAdjust, innerDimensions.Y + 30f);

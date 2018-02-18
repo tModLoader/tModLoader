@@ -29,6 +29,7 @@ namespace Terraria.ModLoader.UI
 		private bool modIconWanted;
 		private bool modIconRequested;
 		private bool modIconReady;
+		private bool modIconAppended; // mod icon was ready, and is now appended
 		public string download;
 		public string timeStamp;
 		public string modreferences;
@@ -45,6 +46,9 @@ namespace Terraria.ModLoader.UI
 		public bool updateIsDowngrade = false;
 		public LocalMod installed;
 		private float left;
+
+		private bool HasModIcon => modIconURL != null;
+		private float ModIconAdjust => modIconAppended ? 85f : 0f;
 
 		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string modIconURL, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, LocalMod installed)
 		{
@@ -69,7 +73,7 @@ namespace Terraria.ModLoader.UI
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
 
-			this.left = modIconURL != null ? 85f : 0f;
+			this.left = HasModIcon ? 85f : 0f;
 			string text = displayname + " " + version;
 			this.modName = new UIText(text, 1f, false);
 			this.modName.Left.Set(this.left + 5, 0f);
@@ -93,7 +97,7 @@ namespace Terraria.ModLoader.UI
 				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? Language.GetTextValue("tModLoader.MBDowngrade") : Language.GetTextValue("tModLoader.MBUpdate")) : Language.GetTextValue("tModLoader.MBDownload"), 1f,
 					false);
 				updateButton.CopyStyle(moreInfoButton);
-				updateButton.Width.Set(modIconURL != null ? 120f : 200f, 0f);
+				updateButton.Width.Set(HasModIcon ? 120f : 200f, 0f);
 				updateButton.Left.Set(moreInfoButton.Width.Pixels + moreInfoButton.Left.Pixels + 5f, 0f);
 				updateButton.OnMouseOver += UICommon.FadedMouseOver;
 				updateButton.OnMouseOut += UICommon.FadedMouseOut;
@@ -187,14 +191,14 @@ namespace Terraria.ModLoader.UI
 		{
 			base.DrawSelf(spriteBatch);
 
-			if (modIconURL != null && !modIconWanted)
+			if (HasModIcon && !modIconWanted)
 			{
 				modIconWanted = true;
 			}
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
-			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 			//draw divider
-			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
+			Vector2 drawPos = new Vector2(innerDimensions.X + 5f + ModIconAdjust, innerDimensions.Y + 30f);
+			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - ModIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
 			// change pos for button
 			const int baseWidth = 125; // something like 1 days ago is ~110px, XX minutes ago is ~120 px (longest)
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - baseWidth, innerDimensions.Y + 45);
@@ -217,6 +221,7 @@ namespace Terraria.ModLoader.UI
 			if (modIconReady)
 			{
 				modIconReady = false;
+				modIconAppended = true;
 				Append(modIcon);
 			}
 		}
@@ -233,9 +238,10 @@ namespace Terraria.ModLoader.UI
 					modIcon.Left.Set(0f, 0f);
 					modIcon.Top.Set(0f, 0f);
 					modIconReady = true; // We'd like to avoid collection modified exceptions
+					modIconWanted = false; // We got the icon, no longer wanted
 				}
 			}
-			catch (Exception exception)
+			catch (Exception)
 			{
 				// country- wide imgur blocks, cannot load icon
 				modIconReady = false;
