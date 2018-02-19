@@ -220,7 +220,7 @@ namespace Terraria.ModLoader
 				{
 					downloadingFile.Close();
 					var mod = new TmodFile(downloadingMod.path);
-					mod.Read(TmodFile.LoadedState.Integrity);
+					mod.Read(TmodFile.LoadedState.Info);
 
 					if (!downloadingMod.Matches(mod))
 						throw new Exception("Hash mismatch");
