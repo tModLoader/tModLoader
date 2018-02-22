@@ -73,8 +73,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns the prefix that should be rolled in specified category or categories
-		/// If PrefixID.Count is returned, a vanilla prefix should be rolled
+		/// Returns the prefix that will be rolled in specified category or categories
+		/// If the last vanilla prefix is returned, a vanilla prefix will be rolled
 		/// </summary>
 		internal static byte Roll(IEnumerable<PrefixCategory> categories, Item item, float? vanillaRollChance = null)
 		{
@@ -147,7 +147,7 @@ namespace Terraria.ModLoader
 		///		<term>19f</term>
 		/// </item>
 		/// </list>
-		/// If you wish to exclude your ModPrefix from rolling, use the <see cref="RollChance(Item)"/> hook
+		/// If you wish to exclude your ModPrefix from rolling, use the <see cref="CanRoll(Item)"/> hook
 		/// </summary>
 		/// <param name="item"></param>
 		/// <returns></returns>		
