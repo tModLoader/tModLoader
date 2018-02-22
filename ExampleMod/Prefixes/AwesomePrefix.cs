@@ -8,8 +8,23 @@ namespace ExampleMod.Prefixes
 	{
 		private readonly byte power = 0;
 
-		// change your category this way
-		public override PrefixCategory Category { get { return PrefixCategory.Custom; } }
+		// see documentation for vanilla weights and more information
+		// note: a weight of 0f can still be rolled. see CanRoll to exclude prefixes.
+		// note: if you use PrefixCategory.Custom, actually use ChoosePrefix instead, see ExampleInstancedGlobalItem
+		public override float RollChance(Item item)
+		{
+			return 5f;
+		} 
+
+		// determines if it can roll at all.
+		// use this to control if a prefixes can be rolled or not
+		public override bool CanRoll(Item item)
+		{
+			return true;
+		}
+
+		// change your category this way, defaults to Custom
+		public override PrefixCategory Category { get { return PrefixCategory.AnyWeapon; } }
 		
 		public AwesomePrefix()
 		{
@@ -20,6 +35,7 @@ namespace ExampleMod.Prefixes
 			this.power = power;
 		}
 
+		// Allow multiple prefix autoloading this way (permutations of the same prefix)
 		public override bool Autoload(ref string name)
 		{
 			if (base.Autoload(ref name))

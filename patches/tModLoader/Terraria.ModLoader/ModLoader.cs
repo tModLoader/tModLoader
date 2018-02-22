@@ -186,7 +186,7 @@ namespace Terraria.ModLoader
 				ModNet.AssignNetIDs();
 				//Main.player[0] = new Player();
 			}
-			Main.player[255] = new Player();
+			Main.player[255] = new Player(false); // setup inventory is unnecessary 
 
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();

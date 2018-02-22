@@ -171,6 +171,15 @@
  		public static Preferences Configuration = new Preferences(Main.SavePath + Path.DirectorySeparatorChar + "config.json", false, false);
  		public static Preferences InputProfiles = new Preferences(Main.SavePath + Path.DirectorySeparatorChar + "input profiles.json", false, false);
  		public static KeyboardState inputText;
+@@ -1947,7 +_,7 @@
+ 		private static float exitScale = 0.8f;
+ 		private static bool mouseReforge = false;
+ 		private static float reforgeScale = 0.8f;
+-		public static Player clientPlayer = new Player();
++		public static Player clientPlayer = new Player(false); // setup inventory is unnecessary 
+ 		public static string getIP = Main.defaultIP;
+ 		public static string getPort = Convert.ToString(Netplay.ListenPort);
+ 		public static bool menuMultiplayer = false;
 @@ -2058,15 +_,15 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
@@ -528,6 +537,15 @@
  #if SERVER
  			Main.netMode = 2;
  #endif
+@@ -7123,7 +_,7 @@
+ 			}
+ 			for (int num12 = 0; num12 < 256; num12++)
+ 			{
+-				Main.player[num12] = new Player();
++				Main.player[num12] = new Player(false); // setup inventory is unnecessary 
+ 			}
+ 			for (int num13 = 0; num13 < 1001; num13++)
+ 			{
 @@ -7490,7 +_,7 @@
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);

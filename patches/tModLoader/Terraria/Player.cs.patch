@@ -5201,6 +5201,15 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
+@@ -38697,7 +_,7 @@
+ 			{
+ 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 			}
+-			Player player = new Player();
++			Player player = new Player(false); // setup inventory is unnecessary 
+ 			try
+ 			{
+ 				RijndaelManaged rijndaelManaged = new RijndaelManaged();
 @@ -38719,7 +_,7 @@
  							{
  								playerFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.Player);

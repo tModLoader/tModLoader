@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Terraria.ID;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
 	public abstract class ModPrefix
 	{
 		private static byte nextPrefix = PrefixID.Count;
+
+		// TODO storing twice? could see a better implementation
 		internal static readonly IList<ModPrefix> prefixes = new List<ModPrefix>();
 		internal static readonly IDictionary<PrefixCategory, IList<ModPrefix>> categoryPrefixes;
 
@@ -30,6 +34,12 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
+		/// <summary>
+		/// Returns the ModPrefix associated with specified type
+		/// If not a ModPrefix, returns null.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
 		public static ModPrefix GetPrefix(byte type)
 		{
 			return type >= PrefixID.Count && type < PrefixCount ? prefixes[type - PrefixID.Count] : null;
@@ -62,6 +72,27 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Returns the prefix that should be rolled in specified category or categories
+		/// If PrefixID.Count is returned, a vanilla prefix should be rolled
+		/// </summary>
+		internal static byte Roll(IEnumerable<PrefixCategory> categories, Item item, float? vanillaRollChance = null)
+		{
+			WeightedRandom<byte> wr = new WeightedRandom<byte>();
+			foreach(PrefixCategory category in categories)
+				foreach(ModPrefix prefix in categoryPrefixes[category].Where(x => x.CanRoll(item)))
+					wr.Add(prefix.Type, prefix.RollChance(item));
+			if (vanillaRollChance.HasValue)
+				wr.Add(PrefixID.Count-1, vanillaRollChance.Value);
+			return wr.Get();
+		}
+
+		// Does the same as Roll, but allows passing a single category
+		internal static byte Roll(PrefixCategory category, Item item, float? vanillaRollChance = null)
+		{
+			return Roll(new[] { category }, item, vanillaRollChance);
+		}
+
 		public Mod mod
 		{
 			get;
@@ -84,6 +115,58 @@ namespace Terraria.ModLoader
 		{
 			get;
 			internal set;
+		}
+
+		/// <summary>
+		/// The roll chance of your prefix, 1f by default. 
+		/// In your category, the total number of possible vanilla prefixes is the roll chance of a vanilla prefix.
+		/// This equals to the following values:
+		/// <list type="table">
+		/// <listheader>
+		///		<term>Category</term>
+		///		<term>Combined weight</term>
+		/// </listheader>
+		/// <item>
+		///		<term>AnyWeapon</term>
+		///		<term>14f</term>
+		/// </item>
+		/// <item>
+		///		<term>Melee</term>
+		///		<term>40f</term>
+		/// </item>
+		/// <item>
+		///		<term>Ranged</term>
+		///		<term>36f</term>
+		/// </item>
+		/// <item>
+		///		<term>Magic</term>
+		///		<term>36f</term>
+		/// </item>
+		/// <item>
+		///		<term>Accessory</term>
+		///		<term>19f</term>
+		/// </item>
+		/// </list>
+		/// If you wish to exclude your ModPrefix from rolling, use the <see cref="RollChance(Item)"/> hook
+		/// </summary>
+		/// <param name="item"></param>
+		/// <returns></returns>		
+		public virtual float RollChance(Item item)
+		{
+			return 1f;
+		}
+
+		/// <summary>
+		/// Returns if your ModPrefix can roll on the given item
+		/// By default returns true
+		/// </summary>
+		/// <param name="item"></param>
+		/// <returns></returns>
+		public virtual bool CanRoll(Item item)
+		{
+			// CanRoll is neccessary because vanilla's WeightedRandom can roll weights of 0
+			// (so exclusion via weight is not possible)
+			return true;
 		}
 
 		/// <summary>
