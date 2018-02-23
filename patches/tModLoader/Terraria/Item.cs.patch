@@ -1257,7 +1257,7 @@
  				}
 +				else if (num >= PrefixID.Count)
 +				{
-+					ModPrefix.GetPrefix((byte)num).SetStats(ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num8);
++					ModPrefix.GetPrefix((byte)num)?.SetStats(ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num8);
 +				}
  				if (num2 != 1f && Math.Round((double)((float)this.damage * num2)) == (double)this.damage)
  				{
@@ -1268,7 +1268,7 @@
  				}
 +				if (num >= PrefixID.Count)
 +				{
-+					ModPrefix.GetPrefix((byte)num).ValidateItem(this, ref flag);
++					ModPrefix.GetPrefix((byte)num)?.ValidateItem(this, ref flag);
 +				}
  				if (pre == -2 && num == 0)
  				{
@@ -1279,7 +1279,7 @@
  			this.crit += num8;
 +			if (num >= PrefixID.Count)
 +			{
-+				ModPrefix.GetPrefix((byte)num).Apply(this);
++				ModPrefix.GetPrefix((byte)num)?.Apply(this);
 +			}
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)this.crit * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
@@ -1291,7 +1291,7 @@
 +			}
 +			if (num >= PrefixID.Count)
 +			{
-+				ModPrefix.GetPrefix((byte)num).ModifyValue(ref num14);
++				ModPrefix.GetPrefix((byte)num)?.ModifyValue(ref num14);
  			}
  			if ((double)num14 >= 1.2)
  			{
