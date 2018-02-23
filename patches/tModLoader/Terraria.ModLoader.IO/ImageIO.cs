@@ -99,7 +99,17 @@ namespace Terraria.ModLoader.IO
 
 		public static Task<Texture2D> PngToTexture2DAsync(GraphicsDevice graphicsDevice, Stream stream)
 		{
+#if WINDOWS
 			return Task.Factory.StartNew(() => Texture2D.FromStream(graphicsDevice, stream));
+#else
+			Texture2D.TextureDataFromStreamEXT(stream, out int width, out int height, out byte[] rawdata, -1, -1, false);
+			return Task.Factory.StartNew(() =>
+			{
+				var tex = new Texture2D(graphicsDevice, width, height);
+				tex.SetData(rawdata);
+				return tex;
+			});
+#endif
 		}
 	}
 }
