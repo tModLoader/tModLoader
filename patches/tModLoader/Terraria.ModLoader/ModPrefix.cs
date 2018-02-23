@@ -113,36 +113,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// The roll chance of your prefix, 1f by default. 
-		/// In your category, the total number of possible vanilla prefixes is the roll chance of a vanilla prefix.
-		/// This equals to the following values:
-		/// <list type="table">
-		/// <listheader>
-		///		<term>Category</term>
-		///		<term>Combined weight</term>
-		/// </listheader>
-		/// <item>
-		///		<term>AnyWeapon</term>
-		///		<term>14f</term>
-		/// </item>
-		/// <item>
-		///		<term>Melee</term>
-		///		<term>40f</term>
-		/// </item>
-		/// <item>
-		///		<term>Ranged</term>
-		///		<term>36f</term>
-		/// </item>
-		/// <item>
-		///		<term>Magic</term>
-		///		<term>36f</term>
-		/// </item>
-		/// <item>
-		///		<term>Accessory</term>
-		///		<term>19f</term>
-		/// </item>
-		/// </list>
-		/// If you wish to exclude your ModPrefix from rolling, use the <see cref="CanRoll(Item)"/> hook
+		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default. 
 		/// </summary>
 		/// <param name="item"></param>
 		/// <returns></returns>		
@@ -153,15 +124,13 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Returns if your ModPrefix can roll on the given item
-		/// By default returns true
+		/// By default returns RollChance(item) > 0
 		/// </summary>
 		/// <param name="item"></param>
 		/// <returns></returns>
 		public virtual bool CanRoll(Item item)
 		{
-			// CanRoll is neccessary because vanilla's WeightedRandom can roll weights of 0
-			// (so exclusion via weight is not possible)
-			return true;
+			return RollChance(item) > 0;
 		}
 
 		/// <summary>
