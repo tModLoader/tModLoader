@@ -73,24 +73,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns the prefix that will be rolled in specified category or categories
-		/// If the last vanilla prefix is returned, a vanilla prefix will be rolled
+		/// Performs a mod prefix roll. If the vanillaWeight wins the roll, then prefix is unchanged.
 		/// </summary>
-		internal static byte Roll(IEnumerable<PrefixCategory> categories, Item item, float? vanillaRollChance = null)
+		internal static void Roll(Item item, ref int prefix, int vanillaWeight, params PrefixCategory[] categories)
 		{
 			WeightedRandom<byte> wr = new WeightedRandom<byte>();
 			foreach(PrefixCategory category in categories)
-				foreach(ModPrefix prefix in categoryPrefixes[category].Where(x => x.CanRoll(item)))
-					wr.Add(prefix.Type, prefix.RollChance(item));
-			if (vanillaRollChance.HasValue)
-				wr.Add(PrefixID.Count-1, vanillaRollChance.Value);
-			return wr.Get();
-		}
+				foreach(ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item)))
+					wr.Add(modPrefix.Type, modPrefix.RollChance(item));
 
-		// Does the same as Roll, but allows passing a single category
-		internal static byte Roll(PrefixCategory category, Item item, float? vanillaRollChance = null)
-		{
-			return Roll(new[] { category }, item, vanillaRollChance);
+			if (vanillaWeight > 0)
+				wr.Add((byte)prefix, vanillaWeight);
+
+			prefix = wr.Get();
 		}
 
 		public Mod mod
