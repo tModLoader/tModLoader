@@ -141,27 +141,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9e463f23a09aecd988ccabdee98f9864"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a9e463f23a09aecd988ccabdee98f9864">Autoload</a> (ref string name)</td></tr>
 <tr class="separator:a9e463f23a09aecd988ccabdee98f9864"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cd220918c0e5eaebc3f06c473efa2d4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a1cd220918c0e5eaebc3f06c473efa2d4">CanRoll</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
-<tr class="memdesc:a1cd220918c0e5eaebc3f06c473efa2d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html">ModPrefix</a> can roll on the given item By default returns true  <a href="#a1cd220918c0e5eaebc3f06c473efa2d4">More...</a><br /></td></tr>
+<tr class="memdesc:a1cd220918c0e5eaebc3f06c473efa2d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html">ModPrefix</a> can roll on the given item By default returns RollChance(item) &gt; 0  <a href="#a1cd220918c0e5eaebc3f06c473efa2d4">More...</a><br /></td></tr>
 <tr class="separator:a1cd220918c0e5eaebc3f06c473efa2d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a894997740c584271b3d305d593005eca"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a894997740c584271b3d305d593005eca">ModifyValue</a> (ref float valueMult)</td></tr>
 <tr class="memdesc:a894997740c584271b3d305d593005eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the sell price of the item based on the prefix or changes in custom data stats. This also influences the item's rarity.  <a href="#a894997740c584271b3d305d593005eca">More...</a><br /></td></tr>
 <tr class="separator:a894997740c584271b3d305d593005eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81746b2b0f4ecf604ff2132f66c88764"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a81746b2b0f4ecf604ff2132f66c88764">RollChance</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
-<tr class="memdesc:a81746b2b0f4ecf604ff2132f66c88764"><td class="mdescLeft">&#160;</td><td class="mdescRight">The roll chance of your prefix, 1f by default. In your category, the total number of possible vanilla prefixes is the roll chance of a vanilla prefix. This equals to the following values: </p><table class="doxtable">
-<tr>
-<th>Category </th><th>Combined weight  </th></tr>
-<tr>
-<td>AnyWeapon </td><td>14f  </td></tr>
-<tr>
-<td>Melee </td><td>40f  </td></tr>
-<tr>
-<td>Ranged </td><td>36f  </td></tr>
-<tr>
-<td>Magic </td><td>36f  </td></tr>
-<tr>
-<td>Accessory </td><td>19f  </td></tr>
-</table>
-<p>If you wish to exclude your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html">ModPrefix</a> from rolling, use the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a1cd220918c0e5eaebc3f06c473efa2d4" title="Returns if your ModPrefix can roll on the given item By default returns true ">CanRoll(Item)</a> hook  <a href="#a81746b2b0f4ecf604ff2132f66c88764">More...</a><br /></td></tr>
+<tr class="memdesc:a81746b2b0f4ecf604ff2132f66c88764"><td class="mdescLeft">&#160;</td><td class="mdescRight">The roll chance of your prefix relative to a vanilla prefix, 1f by default.  <a href="#a81746b2b0f4ecf604ff2132f66c88764">More...</a><br /></td></tr>
 <tr class="separator:a81746b2b0f4ecf604ff2132f66c88764"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae97dd67988efb66bb7b86d48befec39a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ae97dd67988efb66bb7b86d48befec39a">SetDefaults</a> ()</td></tr>
 <tr class="memdesc:ae97dd67988efb66bb7b86d48befec39a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the prefix's name/translations and to set its category.  <a href="#ae97dd67988efb66bb7b86d48befec39a">More...</a><br /></td></tr>
@@ -242,7 +228,7 @@ Static Private Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
 <p>References <a class="el" href="_mod_net_8cs_source.html#l00034">Terraria.ModLoader.ModNet.AllowVanillaClients</a>.</p>
-<div class="fragment"><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            categoryPrefixes = <span class="keyword">new</span> Dictionary&lt;PrefixCategory, IList&lt;ModPrefix&gt;&gt;();</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a> category <span class="keywordflow">in</span> Enum.GetValues(typeof(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a>)))</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            {</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                categoryPrefixes[category] = <span class="keyword">new</span> List&lt;ModPrefix&gt;();</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            }</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4f"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">Terraria.ModLoader.PrefixCategory</a></div><div class="ttdeci">PrefixCategory</div><div class="ttdef"><b>Definition:</b> <a href="_mod_prefix_8cs_source.html#l00222">ModPrefix.cs:222</a></div></div>
+<div class="fragment"><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            categoryPrefixes = <span class="keyword">new</span> Dictionary&lt;PrefixCategory, IList&lt;ModPrefix&gt;&gt;();</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a> category <span class="keywordflow">in</span> Enum.GetValues(typeof(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a>)))</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            {</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                categoryPrefixes[category] = <span class="keyword">new</span> List&lt;ModPrefix&gt;();</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            }</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4f"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">Terraria.ModLoader.PrefixCategory</a></div><div class="ttdeci">PrefixCategory</div><div class="ttdef"><b>Definition:</b> <a href="_mod_prefix_8cs_source.html#l00191">ModPrefix.cs:191</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -277,8 +263,8 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00210">210</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        {</div><div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00179">179</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        {</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab17ffafd13b5784b4202de347fb05324"></a>
@@ -302,10 +288,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00177">177</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00146">146</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l02205">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        {</div><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ad8d4aa1d24d14d509ded984087738a40">DisplayName</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac1fd751f1ed8a9139b64f9d07f2a43d4">IsDefault</a>())</div><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ad8d4aa1d24d14d509ded984087738a40">DisplayName</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#a170d1dcc6361482e8b9874c44a31954b">SetDefault</a>(Regex.Replace(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a73eb50a42eb5a74e9431d16585af23b1">Name</a>, <span class="stringliteral">&quot;([A-Z])&quot;</span>, <span class="stringliteral">&quot; $1&quot;</span>).Trim());</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_prefix_html_a73eb50a42eb5a74e9431d16585af23b1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a73eb50a42eb5a74e9431d16585af23b1">Terraria.ModLoader.ModPrefix.Name</a></div><div class="ttdeci">string Name</div><div class="ttdef"><b>Definition:</b> <a href="_mod_prefix_8cs_source.html#l00098">ModPrefix.cs:98</a></div></div>
+<div class="fragment"><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        {</div><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ad8d4aa1d24d14d509ded984087738a40">DisplayName</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac1fd751f1ed8a9139b64f9d07f2a43d4">IsDefault</a>())</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ad8d4aa1d24d14d509ded984087738a40">DisplayName</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#a170d1dcc6361482e8b9874c44a31954b">SetDefault</a>(Regex.Replace(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a73eb50a42eb5a74e9431d16585af23b1">Name</a>, <span class="stringliteral">&quot;([A-Z])&quot;</span>, <span class="stringliteral">&quot; $1&quot;</span>).Trim());</div><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_prefix_html_a73eb50a42eb5a74e9431d16585af23b1"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a73eb50a42eb5a74e9431d16585af23b1">Terraria.ModLoader.ModPrefix.Name</a></div><div class="ttdeci">string Name</div><div class="ttdef"><b>Definition:</b> <a href="_mod_prefix_8cs_source.html#l00098">ModPrefix.cs:98</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_prefix_html_ad8d4aa1d24d14d509ded984087738a40"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ad8d4aa1d24d14d509ded984087738a40">Terraria.ModLoader.ModPrefix.DisplayName</a></div><div class="ttdeci">ModTranslation DisplayName</div><div class="ttdef"><b>Definition:</b> <a href="_mod_prefix_8cs_source.html#l00110">ModPrefix.cs:110</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_translation_html_ac1fd751f1ed8a9139b64f9d07f2a43d4"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac1fd751f1ed8a9139b64f9d07f2a43d4">Terraria.ModLoader.ModTranslation.IsDefault</a></div><div class="ttdeci">bool IsDefault()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_translation_8cs_source.html#l00042">ModTranslation.cs:42</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_translation_html_a170d1dcc6361482e8b9874c44a31954b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#a170d1dcc6361482e8b9874c44a31954b">Terraria.ModLoader.ModTranslation.SetDefault</a></div><div class="ttdeci">void SetDefault(string value)</div><div class="ttdef"><b>Definition:</b> <a href="_mod_translation_8cs_source.html#l00022">ModTranslation.cs:22</a></div></div>
@@ -346,10 +332,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00172">172</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00141">141</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00724">Terraria.ModLoader.Mod.AutoloadPrefix()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        {</div><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a1f59660002baf9a3d01fccb884675e04">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00049">Mod.cs:49</a></div></div>
+<div class="fragment"><div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        {</div><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a1f59660002baf9a3d01fccb884675e04">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00049">Mod.cs:49</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_prefix_html_a1f59660002baf9a3d01fccb884675e04"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a1f59660002baf9a3d01fccb884675e04">Terraria.ModLoader.ModPrefix.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdef"><b>Definition:</b> <a href="_mod_prefix_8cs_source.html#l00092">ModPrefix.cs:92</a></div></div>
 </div><!-- fragment -->
@@ -389,7 +375,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html">ModPrefix</a> can roll on the given item By default returns true </p>
+<p>Returns if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html">ModPrefix</a> can roll on the given item By default returns RollChance(item) &gt; 0 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td></td></tr>
@@ -398,8 +384,9 @@ Static Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00160">160</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        {</div><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="comment">// CanRoll is neccessary because vanilla&#39;s WeightedRandom can roll weights of 0</span></div><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="comment">// (so exclusion via weight is not possible)</span></div><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00131">131</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        {</div><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a81746b2b0f4ecf604ff2132f66c88764">RollChance</a>(item) &gt; 0;</div><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_prefix_html_a81746b2b0f4ecf604ff2132f66c88764"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a81746b2b0f4ecf604ff2132f66c88764">Terraria.ModLoader.ModPrefix.RollChance</a></div><div class="ttdeci">virtual float RollChance(Item item)</div><div class="ttdoc">The roll chance of your prefix relative to a vanilla prefix, 1f by default. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_prefix_8cs_source.html#l00120">ModPrefix.cs:120</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad12de39d616e3b701c85f970912eb545"></a>
@@ -512,8 +499,8 @@ Static Private Attributes</h2></td></tr>
 
 <p>Allows you to modify the sell price of the item based on the prefix or changes in custom data stats. This also influences the item's rarity. </p>
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00217">217</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        {</div><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00186">186</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        {</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a81746b2b0f4ecf604ff2132f66c88764"></a>
@@ -538,21 +525,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The roll chance of your prefix, 1f by default. In your category, the total number of possible vanilla prefixes is the roll chance of a vanilla prefix. This equals to the following values: </p><table class="doxtable">
-<tr>
-<th>Category </th><th>Combined weight  </th></tr>
-<tr>
-<td>AnyWeapon </td><td>14f  </td></tr>
-<tr>
-<td>Melee </td><td>40f  </td></tr>
-<tr>
-<td>Ranged </td><td>36f  </td></tr>
-<tr>
-<td>Magic </td><td>36f  </td></tr>
-<tr>
-<td>Accessory </td><td>19f  </td></tr>
-</table>
-<p>If you wish to exclude your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html">ModPrefix</a> from rolling, use the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a1cd220918c0e5eaebc3f06c473efa2d4" title="Returns if your ModPrefix can roll on the given item By default returns true ">CanRoll(Item)</a> hook </p>
+<p>The roll chance of your prefix relative to a vanilla prefix, 1f by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td></td></tr>
@@ -561,8 +534,8 @@ Static Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00149">149</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        {</div><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">return</span> 1f;</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00120">120</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        {</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">return</span> 1f;</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae97dd67988efb66bb7b86d48befec39a"></a>
@@ -588,10 +561,10 @@ Static Private Attributes</h2></td></tr>
 
 <p>Allows you to set the prefix's name/translations and to set its category. </p>
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00186">186</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00155">155</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l02205">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        {</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        {</div><div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
@@ -670,8 +643,8 @@ Static Private Attributes</h2></td></tr>
 
 <p>Sets the stat changes for this prefix. If data is not already pre-stored, it is best to store custom data changes to some static variables. </p>
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00193">193</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        {</div><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00162">162</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        {</div><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a24fc4d2c08a22c38dd7738adbbda9ca6"></a>
@@ -708,8 +681,8 @@ Static Private Attributes</h2></td></tr>
 
 <p>Validates whether this prefix with the custom data stats set from SetStats is allowed on the given item. It is not allowed if one of the stat changes do not cause any change (eg. percentage being too small to make a difference). </p>
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00202">202</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        {</div><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00171">171</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        {</div><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -725,7 +698,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>The category your prefix belongs to, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af" title="Will not appear by default. Useful as prefixes for your own damage type. ">PrefixCategory.Custom</a> by default </p>
 
-<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00170">170</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00139">139</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00678">Terraria.ModLoader.Mod.AddPrefix()</a>.</p>
 
