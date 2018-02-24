@@ -140,7 +140,8 @@ namespace Terraria.ModLoader.UI
 				var bp = builtMod.properties;
 
 				var files = new List<UploadFile>();
-				files.Add(new UploadFile {
+				files.Add(new UploadFile
+				{
 					Name = "file",
 					Filename = Path.GetFileName(modFile.path),
 					//    ContentType = "text/plain",
@@ -148,7 +149,8 @@ namespace Terraria.ModLoader.UI
 				});
 				if (modFile.HasFile("icon.png"))
 				{
-					files.Add(new UploadFile {
+					files.Add(new UploadFile
+					{
 						Name = "iconfile",
 						Filename = "icon.png",
 						Content = modFile.GetFile("icon.png")
@@ -212,8 +214,16 @@ namespace Terraria.ModLoader.UI
 			int responseLength = result.Length;
 			if (result.Length > 256 && result[result.Length - 256 - 1] == '~')
 			{
-				Array.Copy(result, result.Length - 256, theTModFile.signature, 0, 256);
-				theTModFile.Save();
+				using (var fileStream = File.Open(theTModFile.path, FileMode.Open, FileAccess.ReadWrite))
+				using (var fileReader = new BinaryReader(fileStream))
+				using (var fileWriter = new BinaryWriter(fileStream))
+				{
+					fileReader.ReadBytes(4); // "TMOD"
+					fileReader.ReadString(); // ModLoader.version.ToString()
+					fileReader.ReadBytes(20); // hash
+					if (fileStream.Length - fileStream.Position > 256) // Extrememly basic check in case ReadString errors?
+						fileWriter.Write(result, result.Length - 256, 256);
+				}
 				responseLength -= 257;
 			}
 			string response = Encoding.UTF8.GetString(result, 0, responseLength);
