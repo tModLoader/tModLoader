@@ -5,12 +5,12 @@
 :: Compile/Build exe 
 IF not "%1"=="beta" (
 	echo "Building Release"
-	set version=v0.10.1.2
+	set version=v0.10.1.3
 	call buildBeta.bat
 ) else (
 	:: call "CompleteRelease.bat beta" to build a beta. Be sure to update version.
 	echo "Building Beta"
-	set version=v0.10.1.2 BetaNameHere Beta 1
+	set version=v0.10.1.3 BetaNameHere Beta 1
 	call buildRelease.bat
 )
 set destinationFolder=.\tModLoader %version% Release
