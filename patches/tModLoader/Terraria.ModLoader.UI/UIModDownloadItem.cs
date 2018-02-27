@@ -322,6 +322,10 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(SoundID.MenuTick);
 			try
 			{
+				if (UIModBrowser.PlatformSupportsTls12) // Needed for downloads from Github
+				{
+					ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; // SecurityProtocolType.Tls12
+				}
 				using (WebClient client = new WebClient())
 				{
 					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });

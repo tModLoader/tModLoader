@@ -463,8 +463,24 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		internal static bool PlatformSupportsTls12
+		{
+			get
+			{
+				foreach (SecurityProtocolType protocol in Enum.GetValues(typeof(SecurityProtocolType)))
+				{
+					if (protocol.GetHashCode() == 3072)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+
 		private void PopulateFromJSON(LocalMod[] installedMods, string json)
 		{
+			string tls = PlatformSupportsTls12 ? "&tls12=y" : "";
 			try
 			{
 				JObject jsonObject;
@@ -491,7 +507,7 @@ namespace Terraria.ModLoader.UI
 					string name = (string)mod["name"];
 					string version = (string)mod["version"];
 					string author = (string)mod["author"];
-					string download = (string)mod["download"];
+					string download = (string)mod["download"] + tls;
 					int downloads = (int)mod["downloads"];
 					int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
 					string timeStamp = (string)mod["updateTimeStamp"];
