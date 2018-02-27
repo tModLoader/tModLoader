@@ -1,15 +1,24 @@
 :: After Pulling, Patching, and making sure the version number is changed in src, this bat will compile and create zips for all release.
 :: It will also create a zip for ExampleMod
 
-set version=v0.10.1.2
-set destinationFolder=.\tModLoader %version% Release
-
+@ECHO off
 :: Compile/Build exe 
-call buildRelease.bat
+IF not "%1"=="beta" (
+	echo "Building Release"
+	set version=v0.10.1.2
+	call buildBeta.bat
+) else (
+	:: call "CompleteRelease.bat beta" to build a beta. Be sure to update version.
+	echo "Building Beta"
+	set version=v0.10.1.2 BetaNameHere Beta 1
+	call buildRelease.bat
+)
+set destinationFolder=.\tModLoader %version% Release
 @IF %ERRORLEVEL% NEQ 0 (
 	pause
 	EXIT /B %ERRORLEVEL%
 )
+@ECHO on
 
 :: Make up-to-date Installers
 cd ..\installer2
@@ -110,8 +119,6 @@ rmdir ..\ExampleMod\bin /S /Q
 rmdir ..\ExampleMod\obj /S /Q
 call zipjs.bat zipItem -source "..\ExampleMod" -destination "%destinationFolder%\ExampleMod %version%.zip" -keep yes -force yes
 ::copy "%destinationFolder%\ExampleMod %version%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\"
-
-:: TODO -- tModReader?
 
 echo(
 echo(

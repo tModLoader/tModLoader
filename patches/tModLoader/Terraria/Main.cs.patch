@@ -176,7 +176,7 @@
  		private static bool mouseReforge = false;
  		private static float reforgeScale = 0.8f;
 -		public static Player clientPlayer = new Player();
-+		public static Player clientPlayer = new Player(false); // setup inventory is unnecessary 
++		public static Player clientPlayer = new Player(false); // setup inventory is unnecessary
  		public static string getIP = Main.defaultIP;
  		public static string getPort = Convert.ToString(Netplay.ListenPort);
  		public static bool menuMultiplayer = false;
@@ -542,7 +542,7 @@
  			for (int num12 = 0; num12 < 256; num12++)
  			{
 -				Main.player[num12] = new Player();
-+				Main.player[num12] = new Player(false); // setup inventory is unnecessary 
++				Main.player[num12] = new Player(false); // setup inventory is unnecessary
  			}
  			for (int num13 = 0; num13 < 1001; num13++)
  			{

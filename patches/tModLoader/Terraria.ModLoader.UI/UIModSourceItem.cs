@@ -156,6 +156,8 @@ namespace Terraria.ModLoader.UI
 						Content = modFile.GetFile("icon.png")
 					});
 				}
+				if (bp.beta)
+					throw new WebException("You cannot publish a Mod built on a Beta version of tModLoader");
 				var values = new NameValueCollection
 				{
 					{ "displayname", bp.displayName },
