@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"functions_y.html":[1,3,0,24],
 "hierarchy.html":[1,2],
 "index.html":[],
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html":[1,0,0,0,7],
@@ -8,14 +9,14 @@ var NAVTREEINDEX12 =
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897":[1,0,0,0,7,2],
 "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html":[1,0,0,0,1,12],
 "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html#a6cd4f6978db224e5870b3c981fe8e379":[1,0,0,0,1,12,0],
-"namespace_terraria.html":[1,0,0],
 "namespace_terraria.html":[0,0,0],
+"namespace_terraria.html":[1,0,0],
 "namespace_terraria_1_1_mod_loader.html":[0,0,0,0],
 "namespace_terraria_1_1_mod_loader.html":[1,0,0,0],
 "namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[0,0,0,0,0],
 "namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[1,0,0,0,0],
-"namespace_terraria_1_1_mod_loader_1_1_i_o.html":[0,0,0,0,1],
 "namespace_terraria_1_1_mod_loader_1_1_i_o.html":[1,0,0,0,1],
+"namespace_terraria_1_1_mod_loader_1_1_i_o.html":[0,0,0,0,1],
 "namespacemembers.html":[0,1,0],
 "namespacemembers_enum.html":[0,1,1],
 "namespaces.html":[0,0],

@@ -10,6 +10,7 @@ var searchData=
   ['basescale',['baseScale',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#acbe56b8589c1a8356fdeefa690680bcd',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['beachangler',['BeachAngler',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae472cd43fc4d9848b595348be7b3804d',1,'Terraria::ModLoader::SpawnCondition']]],
   ['bed',['bed',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a20eb169106fcf5771e14c757c3de2185',1,'Terraria::ModLoader::ModTile']]],
+  ['beta',['beta',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a006f1cb5c37f8099bb089a0a59f39ed5',1,'Terraria::ModLoader::ModLoader']]],
   ['blockloot',['blockLoot',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d7e5eeea530b3e0ae7b47fb5e414bf8',1,'Terraria::ModLoader::NPCLoader']]],
   ['blockweight',['blockWeight',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a6d561cfc71bb2f51c6034d0c9ecd4d96',1,'Terraria::ModLoader::SpawnCondition']]],
   ['body',['Body',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#adc5045a73cc11c77fe6ea20d61d06dab',1,'Terraria::ModLoader::PlayerLayer']]],
