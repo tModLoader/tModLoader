@@ -17,18 +17,17 @@
  		private static bool[] canFavoriteAt;
  		private static float[] inventoryGlowHue;
  		private static int[] inventoryGlowTime;
-@@ -558,10 +_,12 @@
+@@ -558,10 +_,11 @@
  				}
  				else if (num == 3)
  				{
 -					Main.mouseItem.netDefaults(inv[slot].netID);
 +					Main.mouseItem = inv[slot].Clone();
-+					Main.mouseItem.stack = 1;
-+					Main.mouseItem.value *= 5; // preserve item value
  					if (inv[slot].buyOnce)
  					{
 -						Main.mouseItem.Prefix((int)inv[slot].prefix);
-+						//Main.mouseItem.Prefix((int)inv[slot].prefix);
++						Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
++						//Main.mouseItem.Prefix((int)inv[slot].prefix); // no prefix, preserved by cloning
  					}
  					else
  					{
