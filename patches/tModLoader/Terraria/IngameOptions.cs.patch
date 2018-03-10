@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria\IngameOptions.cs
 +++ src/tModLoader\Terraria\IngameOptions.cs
+@@ -16,6 +_,7 @@
+ 		public const int height = 480;
+ 		public static float[] leftScale = new float[]
+ 		{
++			0.7f,
+ 			0.7f,
+ 			0.7f,
+ 			0.7f,
 @@ -180,7 +_,7 @@
  			IngameOptions.noSound = false;
  			bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
