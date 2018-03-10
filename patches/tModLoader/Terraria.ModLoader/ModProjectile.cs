@@ -174,7 +174,8 @@ namespace Terraria.ModLoader
 			{
 				Main.projHook[projectile.type] = true;
 			}
-			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
+			if (DisplayName.IsDefault())
+				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>

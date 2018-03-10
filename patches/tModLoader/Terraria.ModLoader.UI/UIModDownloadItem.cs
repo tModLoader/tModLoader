@@ -29,6 +29,7 @@ namespace Terraria.ModLoader.UI
 		private bool modIconWanted;
 		private bool modIconRequested;
 		private bool modIconReady;
+		private bool modIconAppended; // mod icon was ready, and is now appended
 		public string download;
 		public string timeStamp;
 		public string modreferences;
@@ -39,12 +40,17 @@ namespace Terraria.ModLoader.UI
 		private readonly Texture2D innerPanelTexture;
 		private readonly UIText modName;
 		private readonly UITextPanel<string> updateButton;
+		private readonly UITextPanel<string> moreInfoButton;
 		private UIImage modIcon;
 		public bool update = false;
 		public bool updateIsDowngrade = false;
-		public TmodFile installed;
+		public LocalMod installed;
+		private float left;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string modIconURL, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, TmodFile installed)
+		private bool HasModIcon => modIconURL != null;
+		private float ModIconAdjust => modIconAppended ? 85f : 0f;
+
+		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string modIconURL, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, LocalMod installed)
 		{
 			this.displayname = displayname;
 			this.mod = name;
@@ -67,22 +73,17 @@ namespace Terraria.ModLoader.UI
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
 
-			float left = 0f;
-			if (modIconURL != null)
-			{
-				left += 85;
-			}
-
+			this.left = HasModIcon ? 85f : 0f;
 			string text = displayname + " " + version;
 			this.modName = new UIText(text, 1f, false);
-			this.modName.Left.Set(left + 5, 0f);
+			this.modName.Left.Set(this.left + 5, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 
-			UITextPanel<string> moreInfoButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
+			moreInfoButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
 			moreInfoButton.Width.Set(100f, 0f);
 			moreInfoButton.Height.Set(30f, 0f);
-			moreInfoButton.Left.Set(left, 0f);
+			moreInfoButton.Left.Set(this.left, 0f);
 			moreInfoButton.Top.Set(40f, 0f);
 			moreInfoButton.PaddingTop -= 2f;
 			moreInfoButton.PaddingBottom -= 2f;
@@ -96,7 +97,7 @@ namespace Terraria.ModLoader.UI
 				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? Language.GetTextValue("tModLoader.MBDowngrade") : Language.GetTextValue("tModLoader.MBUpdate")) : Language.GetTextValue("tModLoader.MBDownload"), 1f,
 					false);
 				updateButton.CopyStyle(moreInfoButton);
-				updateButton.Width.Set(modIconURL != null ? 120f : 200f, 0f);
+				updateButton.Width.Set(HasModIcon ? 120f : 200f, 0f);
 				updateButton.Left.Set(moreInfoButton.Width.Pixels + moreInfoButton.Left.Pixels + 5f, 0f);
 				updateButton.OnMouseOver += UICommon.FadedMouseOver;
 				updateButton.OnMouseOut += UICommon.FadedMouseOut;
@@ -169,6 +170,11 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 			}
+			if(Interface.modBrowser.modSideFilterMode != ModSideFilter.All)
+			{
+				if ((int)modside != (int)Interface.modBrowser.modSideFilterMode - 1)
+					return false;
+			}
 			switch (Interface.modBrowser.updateFilterMode)
 			{
 				default:
@@ -185,14 +191,14 @@ namespace Terraria.ModLoader.UI
 		{
 			base.DrawSelf(spriteBatch);
 
-			if (modIconURL != null && !modIconWanted)
+			if (HasModIcon && !modIconWanted)
 			{
 				modIconWanted = true;
 			}
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
-			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 			//draw divider
-			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
+			Vector2 drawPos = new Vector2(innerDimensions.X + 5f + ModIconAdjust, innerDimensions.Y + 30f);
+			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - ModIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
 			// change pos for button
 			const int baseWidth = 125; // something like 1 days ago is ~110px, XX minutes ago is ~120 px (longest)
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - baseWidth, innerDimensions.Y + 45);
@@ -215,20 +221,34 @@ namespace Terraria.ModLoader.UI
 			if (modIconReady)
 			{
 				modIconReady = false;
+				modIconAppended = true;
 				Append(modIcon);
 			}
 		}
 
 		private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e)
 		{
-			byte[] data = e.Result;
-			using (MemoryStream buffer = new MemoryStream(data))
+			try
 			{
-				var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
-				modIcon = new UIImage(iconTexture);
-				modIcon.Left.Set(0f, 0f);
-				modIcon.Top.Set(0f, 0f);
-				modIconReady = true; // We'd like to avoid collection modified exceptions
+				byte[] data = e.Result;
+				using (MemoryStream buffer = new MemoryStream(data))
+				{
+					var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+					modIcon = new UIImage(iconTexture);
+					modIcon.Left.Set(0f, 0f);
+					modIcon.Top.Set(0f, 0f);
+					modIconReady = true; // We'd like to avoid collection modified exceptions
+					modIconWanted = false; // We got the icon, no longer wanted
+				}
+			}
+			catch (Exception)
+			{
+				// country- wide imgur blocks, cannot load icon
+				modIconReady = false;
+				modIconWanted = false;
+				this.modName.Left.Set(5f, 0f);
+				this.moreInfoButton.Left.Set(0f, 0f);
+				updateButton.Left.Set(moreInfoButton.Width.Pixels+ 5f, 0f);
 			}
 		}
 
@@ -302,6 +322,10 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(SoundID.MenuTick);
 			try
 			{
+				if (UIModBrowser.PlatformSupportsTls12) // Needed for downloads from Github
+				{
+					ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; // SecurityProtocolType.Tls12
+				}
 				using (WebClient client = new WebClient())
 				{
 					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
@@ -406,7 +430,7 @@ namespace Terraria.ModLoader.UI
 				homepage = (string)joResponse["homepage"];
 			}
 
-			Interface.modInfo.SetModName(this.displayname);
+			Interface.modInfo.SetModName(displayname);
 			Interface.modInfo.SetModInfo(description);
 			Interface.modInfo.SetMod(installed);
 			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);

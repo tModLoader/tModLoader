@@ -49,25 +49,18 @@ namespace Terraria.ModLoader.UI
 			numModsMissing = 0;
 			for (int i = 0; i < mods.Length; i++)
 			{
-				string modname = mods[i];
-				bool found = false;
-				foreach (var item in UIModPacks.mods)
+				if (UIModPacks.mods.Contains(mods[i]))
 				{
-					if (item.name == modname)
+					if (ModLoader.IsEnabled(mods[i]))
 					{
-						found = true;
-						if (ModLoader.IsEnabled(item))
-						{
-							numModsEnabled++;
-						}
-						else
-						{
-							numModsDisabled++;
-						}
-						break;
+						numModsEnabled++;
+					}
+					else
+					{
+						numModsDisabled++;
 					}
 				}
-				if (!found)
+				else
 				{
 					modMissing[i] = true;
 					numModsMissing++;
@@ -202,16 +195,11 @@ namespace Terraria.ModLoader.UI
 
 		private static void EnableList(UIMouseEvent evt, UIElement listeningElement)
 		{
-			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
+			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
 			foreach (string modname in modListItem.mods)
 			{
-				foreach (var item in UIModPacks.mods)
-				{
-					if (item.name == modname)
-					{
-						ModLoader.EnableMod(item);
-					}
-				}
+				if (UIModPacks.mods.Contains(modname))
+					ModLoader.EnableMod(modname);
 			}
 			Main.menuMode = Interface.modPacksMenuID; // should reload, which should refresh enabled counts
 
@@ -239,7 +227,9 @@ namespace Terraria.ModLoader.UI
 			Interface.modBrowser.SpecialModPackFilter = modListItem.mods.ToList();
 			Interface.modBrowser.SpecialModPackFilterTitle = "Modlist";// Too long: " + modListItem.modName.Text;
 			Interface.modBrowser.updateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
-			Interface.modBrowser.uIToggleImage.setCurrentState((int)Interface.modBrowser.updateFilterMode);
+			Interface.modBrowser.modSideFilterMode = ModSideFilter.All;
+			Interface.modBrowser.UpdateFilterToggle.setCurrentState((int)Interface.modBrowser.updateFilterMode);
+			Interface.modBrowser.ModSideFilterToggle.setCurrentState((int)Interface.modBrowser.modSideFilterMode);
 			Interface.modBrowser.updateNeeded = true;
 			Main.PlaySound(SoundID.MenuOpen);
 			Main.menuMode = Interface.modBrowserID;
@@ -247,20 +237,15 @@ namespace Terraria.ModLoader.UI
 
 		private static void EnableListOnly(UIMouseEvent evt, UIElement listeningElement)
 		{
-			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
+			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
 			foreach (var item in UIModPacks.mods)
 			{
 				ModLoader.DisableMod(item);
 			}
 			foreach (string modname in modListItem.mods)
 			{
-				foreach (var item in UIModPacks.mods)
-				{
-					if (item.name == modname)
-					{
-						ModLoader.EnableMod(item);
-					}
-				}
+				if (UIModPacks.mods.Contains(modname))
+					ModLoader.EnableMod(modname);
 			}
 			Main.menuMode = Interface.reloadModsID; // should reload, which should refresh enabled counts
 

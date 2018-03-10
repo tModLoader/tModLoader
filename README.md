@@ -108,3 +108,13 @@ ___
     * Your workspace is tModLoader 99% of the time. If it isn't, we imply you know what you're doing.
 3. Create a new commit to commit the patches/ folder
     * Before you push your commit, please check our [contribution article](https://github.com/bluemagic123/tModLoader/blob/master/CONTRIBUTING.md). Thanks.
+
+### HELP! I accidentally committed on a wrong branch!
+Simply stash changes and checkout.
+___
+1. Open in git shell/bash or whatever
+2. Run `git stash save` or `git stash` (should default to save)
+3. Run `git checkout -b xxxx`
+    * Replace xxxx by branch name
+    * Omit -b if not creating a new branch
+4. Run `git stash pop`

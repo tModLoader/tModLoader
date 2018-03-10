@@ -1,10 +1,11 @@
 --- src/Terraria\Terraria.GameContent.UI.States\UICharacterSelect.cs
 +++ src/tModLoader\Terraria.GameContent.UI.States\UICharacterSelect.cs
-@@ -9,13 +_,14 @@
+@@ -9,13 +_,15 @@
  using Terraria.Localization;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
 +using Terraria.ModLoader;
++using System.IO;
  
  namespace Terraria.GameContent.UI.States
  {
@@ -30,4 +31,23 @@
  			Main.PendingPlayer = player;
  			Main.menuMode = 2;
  		}
+@@ -142,6 +_,18 @@
+ 			foreach (PlayerFileData current in list)
+ 			{
+ 				this._playerList.Add(new UICharacterListItem(current, num++));
++			}
++			if (list.Count == 0)
++			{
++				var noPlayersMessage = new UIText("You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.");
++				noPlayersMessage.Width.Set(0, 1);
++				noPlayersMessage.Height.Set(200, 0);
++				noPlayersMessage.OnClick += (a, b) =>
++				{
++					System.Diagnostics.Process.Start(Main.PlayerPath);
++					System.Diagnostics.Process.Start(Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players"));
++				};
++				_playerList.Add(noPlayersMessage);
+ 			}
+ 		}
+ 
 

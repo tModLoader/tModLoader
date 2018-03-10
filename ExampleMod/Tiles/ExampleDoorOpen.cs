@@ -57,6 +57,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 			TileID.Sets.HousingWalls[Type] = true; //needed for non-solid blocks to count as walls
+			TileID.Sets.HasOutlines[Type] = true;
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Example Door");
 			AddMapEntry(new Color(200, 200, 200), name);
@@ -64,6 +65,11 @@ namespace ExampleMod.Tiles
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.OpenDoor };
 			closeDoorID = mod.TileType("ExampleDoorClosed");
+		}
+
+		public override bool HasSmartInteract()
+		{
+			return true;
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num)

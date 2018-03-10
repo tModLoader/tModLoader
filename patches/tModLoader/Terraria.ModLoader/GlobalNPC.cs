@@ -185,6 +185,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to call NPCLoot on your own when the NPC dies, rather then letting vanilla call it on its own. Useful for things like dropping loot from the nearest segment of a worm boss. Returns false by default.
+		/// </summary>
+		/// <returns>Return true to stop vanilla from calling NPCLoot on its own. Do this if you call NPCLoot yourself.</returns>
+		public virtual bool SpecialNPCLoot(NPC npc)
+		{
+			return false;
+		}
+
+		/// <summary>
 		/// Allows you to determine whether or not the NPC will drop anything at all. Return false to stop the NPC from dropping anything. Returns true by default.
 		/// </summary>
 		/// <param name="npc"></param>

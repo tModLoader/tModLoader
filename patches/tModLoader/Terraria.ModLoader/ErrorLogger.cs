@@ -2,6 +2,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.ModLoader.IO;
 using System.Reflection;
 
@@ -275,20 +276,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Deletes all text in the Logs.txt file.
-		/// </summary>
-		public static void ClearLog()
-		{
-			lock (logLock)
-			{
-				Directory.CreateDirectory(LogPath);
-				using (StreamWriter writer = File.CreateText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
-				{
-				}
-			}
-		}
-
-		/// <summary>
 		/// Deletes all log files.
 		/// </summary>
 		public static void ClearLogs()
@@ -315,6 +302,22 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+		}
+
+		//this is a terrible hack on an average system
+		public static void LogMulti(IEnumerable<Action> logCalls)
+		{
+			if (Main.dedServ)
+			{
+				foreach (var call in logCalls)
+					call();
+				return;
+			}
+
+			var list = logCalls.ToArray();
+			list[0]();
+			if (list.Length > 1)
+				Interface.errorMessage.OverrideContinueAction(() => LogMulti(list.Skip(1)));
 		}
 	}
 }

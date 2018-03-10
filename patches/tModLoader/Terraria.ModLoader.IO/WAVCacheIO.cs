@@ -61,7 +61,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static SoundEffect CacheMP3(string wavCacheFilename, byte[] data)
+		public static SoundEffect CacheMP3(string wavCacheFilename, Stream stream)
 		{
 			ushort nChannels;
 			uint nSamplesPerSec;
@@ -71,9 +71,8 @@ namespace Terraria.ModLoader.IO
 			const ushort wBitsPerSample = 16;
 			const int headerSize = 44;
 
-			using (MemoryStream output = new MemoryStream(),
-								datastream = new MemoryStream(data))
-			using (var input = new MP3Sharp.MP3Stream(datastream))
+			using (MemoryStream output = new MemoryStream())
+			using (var input = new MP3Sharp.MP3Stream(stream))
 			using (var writer = new BinaryWriter(output, Encoding.UTF8))
 			{
 				output.Position = headerSize;

@@ -37,12 +37,15 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> reloadButton;
 		private UITextPanel<string> clearButton;
 		private UITextPanel<string> downloadAllButton;
-		public UICycleImage uIToggleImage;
+		public UICycleImage UpdateFilterToggle;
+		public UICycleImage SortModeFilterToggle;
+		public UICycleImage ModSideFilterToggle;
 		public UICycleImage SearchFilterToggle;
 		public bool loading;
 		public ModBrowserSortMode sortMode = ModBrowserSortMode.RecentlyUpdated;
 		public UpdateFilter updateFilterMode = UpdateFilter.Available;
 		public SearchFilter searchFilterMode = SearchFilter.Name;
+		public ModSideFilter modSideFilterMode = ModSideFilter.All;
 		internal string filter;
 		private bool updateAvailable;
 		private string updateText;
@@ -177,56 +180,72 @@ namespace Terraria.ModLoader.UI
 			upperMenuContainer.Height.Set(32f, 0f);
 			upperMenuContainer.Top.Set(10f, 0f);
 			Texture2D texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
-			for (int j = 0; j < 2; j++)
+
+			SortModeFilterToggle = new UICycleImage(texture, 6, 32, 32, 0, 0);
+			SortModeFilterToggle.setCurrentState((int)sortMode);
+			SortModeFilterToggle.OnClick += (a, b) =>
 			{
-				if (j == 0)
-				{
-					uIToggleImage = new UICycleImage(texture, 6, 32, 32, 0, 0);
-					uIToggleImage.setCurrentState((int)sortMode);
-					uIToggleImage.OnClick += (a, b) =>
-					{
-						sortMode = sortMode.NextEnum();
-						updateNeeded = true;
-					};
-					uIToggleImage.OnRightClick += (a, b) =>
-					{
-						sortMode = sortMode.PreviousEnum();
-						updateNeeded = true;
-					};
-				}
-				else
-				{
-					uIToggleImage = new UICycleImage(texture, 3, 32, 32, 34, 0);
-					uIToggleImage.setCurrentState((int)updateFilterMode);
-					uIToggleImage.OnClick += (a, b) =>
-					{
-						updateFilterMode = updateFilterMode.NextEnum();
-						updateNeeded = true;
-					};
-					uIToggleImage.OnRightClick += (a, b) =>
-					{
-						updateFilterMode = updateFilterMode.PreviousEnum();
-						updateNeeded = true;
-					};
-				}
-				uIToggleImage.Left.Set((float)(j * 36 + 8), 0f);
-				_categoryButtons.Add(uIToggleImage);
-				upperMenuContainer.Append(uIToggleImage);
-			}
+				sortMode = sortMode.NextEnum();
+				updateNeeded = true;
+			};
+			SortModeFilterToggle.OnRightClick += (a, b) =>
+			{
+				sortMode = sortMode.PreviousEnum();
+				updateNeeded = true;
+			};
+			SortModeFilterToggle.Left.Set((float)(0 * 36 + 8), 0f);
+			_categoryButtons.Add(SortModeFilterToggle);
+			upperMenuContainer.Append(SortModeFilterToggle);
+
+			UpdateFilterToggle = new UICycleImage(texture, 3, 32, 32, 34, 0);
+			UpdateFilterToggle.setCurrentState((int)updateFilterMode);
+			UpdateFilterToggle.OnClick += (a, b) =>
+			{
+				updateFilterMode = updateFilterMode.NextEnum();
+				updateNeeded = true;
+			};
+			UpdateFilterToggle.OnRightClick += (a, b) =>
+			{
+				updateFilterMode = updateFilterMode.PreviousEnum();
+				updateNeeded = true;
+			};
+			UpdateFilterToggle.Left.Set((float)(1 * 36 + 8), 0f);
+			_categoryButtons.Add(UpdateFilterToggle);
+			upperMenuContainer.Append(UpdateFilterToggle);
+
+			ModSideFilterToggle = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
+			ModSideFilterToggle.setCurrentState((int)modSideFilterMode);
+			ModSideFilterToggle.OnClick += (a, b) =>
+			{
+				modSideFilterMode = modSideFilterMode.NextEnum();
+				updateNeeded = true;
+			};
+			ModSideFilterToggle.OnRightClick += (a, b) =>
+			{
+				modSideFilterMode = modSideFilterMode.PreviousEnum();
+				updateNeeded = true;
+			};
+			ModSideFilterToggle.Left.Set((float)(2 * 36 + 8), 0f);
+			_categoryButtons.Add(ModSideFilterToggle);
+			upperMenuContainer.Append(ModSideFilterToggle);
+
 			UIPanel filterTextBoxBackground = new UIPanel();
 			filterTextBoxBackground.Top.Set(0f, 0f);
 			filterTextBoxBackground.Left.Set(-170, 1f);
 			filterTextBoxBackground.Width.Set(135f, 0f);
 			filterTextBoxBackground.Height.Set(40f, 0f);
+			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.SetText("");
 			upperMenuContainer.Append(filterTextBoxBackground);
 
 			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch"));
 			filterTextBox.Top.Set(5, 0f);
 			filterTextBox.Left.Set(-160, 1f);
+			filterTextBox.Width.Set(100f, 0f);
+			filterTextBox.Height.Set(10f, 0f);
 			filterTextBox.OnTextChange += (sender, e) => updateNeeded = true;
 			upperMenuContainer.Append(filterTextBox);
 
-			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 68, 0);
+			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0);
 			SearchFilterToggle.setCurrentState((int)searchFilterMode);
 			SearchFilterToggle.OnClick += (a, b) =>
 			{
@@ -261,6 +280,9 @@ namespace Terraria.ModLoader.UI
 							text = updateFilterMode.ToFriendlyString();
 							break;
 						case 2:
+							text = modSideFilterMode.ToFriendlyString();
+							break;
+						case 3:
 							text = searchFilterMode.ToFriendlyString();
 							break;
 						default:
@@ -441,8 +463,24 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private void PopulateFromJSON(TmodFile[] installedMods, string json)
+		internal static bool PlatformSupportsTls12
 		{
+			get
+			{
+				foreach (SecurityProtocolType protocol in Enum.GetValues(typeof(SecurityProtocolType)))
+				{
+					if (protocol.GetHashCode() == 3072)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+
+		private void PopulateFromJSON(LocalMod[] installedMods, string json)
+		{
+			string tls = PlatformSupportsTls12 ? "&tls12=y" : "";
 			try
 			{
 				JObject jsonObject;
@@ -469,7 +507,7 @@ namespace Terraria.ModLoader.UI
 					string name = (string)mod["name"];
 					string version = (string)mod["version"];
 					string author = (string)mod["author"];
-					string download = (string)mod["download"];
+					string download = (string)mod["download"] + tls;
 					int downloads = (int)mod["downloads"];
 					int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
 					string timeStamp = (string)mod["updateTimeStamp"];
@@ -484,14 +522,14 @@ namespace Terraria.ModLoader.UI
 					bool exists = false;
 					bool update = false;
 					bool updateIsDowngrade = false;
-					var installed = installedMods.FirstOrDefault(m => m.name == name);
+					var installed = installedMods.FirstOrDefault(m => m.Name == name);
 					if (installed != null)
 					{
 						exists = true;
 						var cVersion = new Version(version.Substring(1));
-						if (cVersion > installed.version)
+						if (cVersion > installed.modFile.version)
 							update = true;
-						else if (cVersion < installed.version)
+						else if (cVersion < installed.modFile.version)
 							update = updateIsDowngrade = true;
 					}
 					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed);
@@ -591,6 +629,27 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
+	public static class ModSideFilterModesExtensions
+	{
+		public static string ToFriendlyString(this ModSideFilter modSideFilterMode)
+		{
+			switch (modSideFilterMode)
+			{
+				case ModSideFilter.All:
+					return Language.GetTextValue("tModLoader.MBShowMSAll");
+				case ModSideFilter.Both:
+					return Language.GetTextValue("tModLoader.MBShowMSBoth");
+				case ModSideFilter.Client:
+					return Language.GetTextValue("tModLoader.MBShowMSClient");
+				case ModSideFilter.Server:
+					return Language.GetTextValue("tModLoader.MBShowMSServer");
+				case ModSideFilter.NoSync:
+					return Language.GetTextValue("tModLoader.MBShowMSNoSync");
+			}
+			return "Unknown Sort";
+		}
+	}
+
 	public static class SearchFilterModesExtensions
 	{
 		public static string ToFriendlyString(this SearchFilter searchFilterMode)
@@ -627,5 +686,14 @@ namespace Terraria.ModLoader.UI
 	{
 		Name,
 		Author,
+	}
+
+	public enum ModSideFilter
+	{
+		All,
+		Both,
+		Client,
+		Server,
+		NoSync,
 	}
 }

@@ -87,12 +87,11 @@ namespace Terraria.ModLoader.UI
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
 				return;
 			}
-			Main.PlaySound(12, -1, -1, 1);
+			Main.PlaySound(12);
 			try
 			{
-				System.Net.ServicePointManager.Expect100Continue = false;
+				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/unpublishmymod.php";
-				IO.UploadFile[] files = new IO.UploadFile[0];
 				var values = new NameValueCollection
 				{
 					{ "name", this.name },
@@ -100,7 +99,7 @@ namespace Terraria.ModLoader.UI
 					{ "modloaderversion", ModLoader.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
-				byte[] result = IO.UploadFile.UploadFiles(url, files, values);
+				byte[] result = UploadFile.UploadFiles(url, null, values);
 				string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
 				ErrorLogger.LogModUnPublish(s);
 			}

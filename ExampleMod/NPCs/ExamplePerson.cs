@@ -1,6 +1,7 @@
 using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
@@ -33,7 +34,8 @@ namespace ExampleMod.NPCs
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Person");
+			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
+			// DisplayName.SetDefault("Example Person");
 			Main.npcFrameCount[npc.type] = 25;
 			NPCID.Sets.ExtraFramesCount[npc.type] = 9;
 			NPCID.Sets.AttackFrameCount[npc.type] = 4;
@@ -178,7 +180,7 @@ namespace ExampleMod.NPCs
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
-			button = Lang.inter[28].Value;
+			button = Language.GetTextValue("LegacyInterface.28");
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)

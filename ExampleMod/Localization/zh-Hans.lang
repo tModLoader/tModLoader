@@ -1,0 +1,7 @@
+Here we see that we can simplify some translation work using substitutions. 
+Even though ItemName.ExamplePet isn't defined here, it is defined in en.US.lang as {$Mods.ExampleMod.Common.PaperAirplane}
+Since we define the Chinese for Common.PaperAirplane, ItemName.ExamplePet will take the Chinese value, if available, for its substitutions.
+
+Common.PaperAirplane=纸飞机
+
+NPCName.Octopus=章鱼

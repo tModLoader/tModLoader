@@ -21,6 +21,15 @@ namespace Terraria.ModLoader.UI
 			this.hintText = hintText;
 		}
 
+		public void SetText(string text)
+		{
+			if (currentString != text)
+			{
+				currentString = text;
+				OnTextChange?.Invoke(this, new EventArgs());
+			}
+		}
+
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
 			GameInput.PlayerInput.WritingText = true;

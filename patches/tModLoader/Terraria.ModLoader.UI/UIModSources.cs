@@ -158,34 +158,19 @@ namespace Terraria.ModLoader.UI
 		{
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-			Task.Factory
-				.StartNew(delegate
-				{
-					var mods = ModLoader.FindModSources();
+			Task.Factory.StartNew(
+				delegate {
+					var modSources = ModLoader.FindModSources();
 					var modFiles = ModLoader.FindMods();
-					return Tuple.Create(mods, modFiles);
+					return Tuple.Create(modSources, modFiles);
 				})
-				.ContinueWith(task =>
-				{
-					string[] mods = task.Result.Item1;
-					TmodFile[] modFiles = task.Result.Item2;
-					foreach (string mod in mods)
+				.ContinueWith(task => {
+					var modSources = task.Result.Item1;
+					var modFiles = task.Result.Item2;
+					foreach (string sourcePath in modSources)
 					{
-
-						bool publishable = false;
-						DateTime lastBuildTime = new DateTime();
-
-						foreach (TmodFile file in modFiles)
-						{
-							var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.path);
-							if (fileNameWithoutExtension != null && fileNameWithoutExtension.Equals(Path.GetFileName(mod)))
-							{
-								lastBuildTime = File.GetLastWriteTime(file.path);
-								publishable = true;
-								break;
-							}
-						}
-						items.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
+						var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
+						items.Add(new UIModSourceItem(sourcePath, builtMod));
 					}
 					updateNeeded = true;
 				}, TaskScheduler.FromCurrentSynchronizationContext());

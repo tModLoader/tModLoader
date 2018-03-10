@@ -10,6 +10,7 @@ namespace Terraria.ModLoader.UI
 	{
 		private UIMessageBox message = new UIMessageBox("");
 		private int gotoMenu = 0;
+		private UIState gotoState;
 
 		public override void OnInitialize()
 		{
@@ -57,15 +58,18 @@ namespace Terraria.ModLoader.UI
 			message.SetText(text);
 		}
 
-		internal void SetGotoMenu(int gotoMenu)
+		internal void SetGotoMenu(int gotoMenu, UIState state = null)
 		{
 			this.gotoMenu = gotoMenu;
+			this.gotoState = state;
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10, -1, -1, 1);
 			Main.menuMode = this.gotoMenu;
+			if(gotoState != null)
+				Main.MenuUI.SetState(gotoState);
 		}
 	}
 

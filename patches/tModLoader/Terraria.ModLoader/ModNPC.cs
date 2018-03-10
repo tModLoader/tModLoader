@@ -84,6 +84,10 @@ namespace Terraria.ModLoader
 		/// The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally.
 		/// </summary>
 		public int music = -1;
+		/// <summary>
+		/// The priority of the music that plays when this NPC is on or near the screen.
+		/// </summary>
+		public MusicPriority musicPriority = MusicPriority.BossLow;
 		//in Terraria.Main.NPCAddHeight at end of else if chain add
 		//  else if(Main.npc[i].modNPC != null) { num = Main.npc[i].modNPC.drawOffsetY; }
 		/// <summary>
@@ -230,7 +234,8 @@ namespace Terraria.ModLoader
 				Main.npcAltTextures[npc.type][k] = ModLoader.GetTexture(altTextures[k - 1]);
 			}
 
-			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
+			if (DisplayName.IsDefault())
+				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 		}
 
 		/// <summary>
@@ -327,6 +332,15 @@ namespace Terraria.ModLoader
 		public virtual bool CheckDead()
 		{
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to call NPCLoot on your own when the NPC dies, rather then letting vanilla call it on its own. Useful for things like dropping loot from the nearest segment of a worm boss. Returns false by default.
+		/// </summary>
+		/// <returns>Return true to stop vanilla from calling NPCLoot on its own. Do this if you call NPCLoot yourself.</returns>
+		public virtual bool SpecialNPCLoot()
+		{
+			return false;
 		}
 
 		/// <summary>

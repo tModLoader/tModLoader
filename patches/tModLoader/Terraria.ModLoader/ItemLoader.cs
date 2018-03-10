@@ -11,6 +11,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -197,7 +198,7 @@ namespace Terraria.ModLoader
 		//add to Terraria.Item.Prefix
 		internal static bool RangedPrefix(Item item)
 		{
-			return item.modItem != null && GeneralPrefix(item) && item.ranged;
+			return item.modItem != null && GeneralPrefix(item) && (item.ranged || item.thrown);
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool MagicPrefix(Item item)
@@ -265,6 +266,25 @@ namespace Terraria.ModLoader
 			int frameCount = Main.itemAnimations[item.type].FrameCount;
 			int frameDuration = Main.itemAnimations[item.type].TicksPerFrame;
 			return Main.itemAnimations[item.type].GetFrame(Main.itemTexture[item.type]);
+		}
+
+		private static HookList HookChoosePrefix = AddHook<Func<Item, UnifiedRandom, int>>(g => g.ChoosePrefix);
+
+		public static int ChoosePrefix(Item item, UnifiedRandom rand)
+		{
+			foreach (var g in HookChoosePrefix.arr)
+			{
+				int pre = g.ChoosePrefix(item, rand);
+				if (pre >= 0)
+				{
+					return pre;
+				}
+			}
+			if (item.modItem != null)
+			{
+				return item.modItem.ChoosePrefix(rand);
+			}
+			return -1;
 		}
 
 		private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
@@ -985,6 +1005,8 @@ namespace Terraria.ModLoader
 		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
 		//in beginning of Terraria.Player.openBag methods add
 		//  if(!ItemLoader.PreOpenVanillaBag("bagName", this, arg)) { return; }
+		//at the end of the following methods in Player.cs, add: NPCLoader.blockLoot.Clear(); // clear blockloot
+		//methods: OpenBossBag, openCrate, openGoodieBag, openHerbBag, openLockbox, openPresent
 		/// <summary>
 		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
 		/// </summary>
@@ -992,7 +1014,10 @@ namespace Terraria.ModLoader
 		{
 			foreach (var g in HookPreOpenVanillaBag.arr)
 				if (!g.PreOpenVanillaBag(context, player, arg))
+				{
+					NPCLoader.blockLoot.Clear(); // clear blockloot
 					return false;
+				}
 
 			return true;
 		}
@@ -1679,7 +1704,7 @@ namespace Terraria.ModLoader
 		private static HookList HookNeedsSaving = AddHook<Func<Item, bool>>(g => g.NeedsSaving);
 		public static bool NeedsModSaving(Item item)
 		{
-			return item.type != 0 && (item.modItem != null || HookNeedsSaving.arr.Count(g => g.Instance(item).NeedsSaving(item)) > 0);
+			return item.type != 0 && (item.modItem != null || item.prefix >= PrefixID.Count || HookNeedsSaving.arr.Count(g => g.Instance(item).NeedsSaving(item)) > 0);
 		}
 
 		internal static void WriteNetGlobalOrder(BinaryWriter w)

@@ -55,9 +55,8 @@ namespace Terraria.ModLoader.IO
 			serializers.Add(serializer.Type, serializer);
 		}
 
-		protected static Type GetType(string name) {
-			Type type;
-			if (typeNameCache.TryGetValue(name, out type))
+		public static Type GetType(string name) {
+			if (typeNameCache.TryGetValue(name, out Type type))
 				return type;
 
 			type = Type.GetType(name);

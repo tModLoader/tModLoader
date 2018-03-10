@@ -20,6 +20,7 @@ namespace ExampleMod.Tiles
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.NotReallySolid[Type] = true;
 			TileID.Sets.DrawsWalls[Type] = true;
+			TileID.Sets.HasOutlines[Type] = true;
 			TileObjectData.newTile.Width = 1;
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(0, 0);
@@ -45,6 +46,11 @@ namespace ExampleMod.Tiles
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.ClosedDoor };
 			openDoorID = mod.TileType("ExampleDoorOpen");
+		}
+
+		public override bool HasSmartInteract()
+		{
+			return true;
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num)

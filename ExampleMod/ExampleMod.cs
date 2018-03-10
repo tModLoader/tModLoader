@@ -155,7 +155,7 @@ namespace ExampleMod
 		public override void AddRecipeGroups()
 		{
 			// Creates a new recipe group
-			RecipeGroup group = new RecipeGroup(() => Lang.misc[37] + " " + Lang.GetItemNameValue(ItemType("ExampleItem")), new int[]
+			RecipeGroup group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " " + Lang.GetItemNameValue(ItemType("ExampleItem")), new int[]
 			{
 				ItemType("ExampleItem"),
 				ItemType("EquipMaterial"),
@@ -180,14 +180,20 @@ namespace ExampleMod
 			RecipeHelper.ExampleRecipeEditing(this);
 		}
 
-		public override void UpdateMusic(ref int music)
+		public override void UpdateMusic(ref int music, ref MusicPriority priority)
 		{
-			if (Main.myPlayer != -1 && !Main.gameMenu)
+			if (Main.myPlayer != -1 && !Main.gameMenu && Main.LocalPlayer.active)
 			{
-				if (Main.LocalPlayer.active
-					&& (Main.LocalPlayer.FindBuffIndex(BuffType("CarMount")) != -1 || Main.LocalPlayer.GetModPlayer<ExamplePlayer>(this).ZoneExample))
+				// Make sure your logic here goes from lowest priority to highest so your intended priority is maintained.
+				if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample)
 				{
 					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+					priority = MusicPriority.BiomeLow;
+				}
+				if (Main.LocalPlayer.HasBuff(BuffType("CarMount")))
+				{
+					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+					priority = MusicPriority.Environment;
 				}
 			}
 		}
@@ -273,6 +279,12 @@ namespace ExampleMod
 		}
 		*/
 
+		public override void UpdateUI(GameTime gameTime)
+		{
+			if (exampleUserInterface != null)
+				exampleUserInterface.Update(gameTime);
+		}
+
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
@@ -284,7 +296,6 @@ namespace ExampleMod
 					{
 						if (ExampleUI.visible)
 						{
-							exampleUserInterface.Update(Main._drawInterfaceGameTime);
 							exampleUI.Draw(Main.spriteBatch);
 						}
 						return true;

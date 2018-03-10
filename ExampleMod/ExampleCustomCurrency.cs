@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.UI;
+using Terraria.Localization;
 
 namespace ExampleMod
 {
@@ -20,7 +21,7 @@ namespace ExampleMod
 					color.R,
 					color.G,
 					color.B,
-					Lang.tip[50],
+					Language.GetTextValue("LegacyTooltip.50"),
 					price,
 					"faces"
 				});

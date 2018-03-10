@@ -27,13 +27,13 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		/// <summary>The name and version number of tModLoader.</summary>
-		public static readonly Version version = new Version(0, 10, 2);
+		public static readonly Version version = new Version(0, 10, 3);
 		// Marks this release as a beta release, preventing publishing and marking all built mods as unpublishable.
 #if !BETA
 		public static readonly string versionedName = "tModLoader v" + version;
 		public static readonly bool beta = false;
 #else
-		public static readonly string versionedName = "tModLoader v" + version + " - ModConfig Beta 3";
+		public static readonly string versionedName = "tModLoader v" + version + " - ModConfig Beta 4";
 		public static readonly bool beta = true;
 #endif
 #if WINDOWS
@@ -100,11 +100,6 @@ namespace Terraria.ModLoader
 
 		internal static Action PostLoad;
 
-		internal static bool ModLoaded(string name)
-		{
-			return mods.ContainsKey(name);
-		}
-
 		public static int ModCount => loadedMods.Length;
 
 		/// <summary>
@@ -112,8 +107,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static Mod GetMod(string name)
 		{
-			Mod m;
-			mods.TryGetValue(name, out m);
+			mods.TryGetValue(name, out Mod m);
 			return m;
 		}
 
@@ -156,6 +150,7 @@ namespace Terraria.ModLoader
 				{
 					mod.AutoloadConfig();
 					mod.loading = true;
+					mod.File?.Read(TmodFile.LoadedState.Streaming, mod.LoadResourceFromStream);
 					mod.Autoload();
 					Interface.loadMods.SetSubProgressInit("");
 					mod.Load();
@@ -163,7 +158,7 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					DisableMod(mod.File);
+					DisableMod(mod.Name);
 					ErrorLogger.LogLoadingError(mod.Name, mod.tModLoaderVersion, e);
 					Main.menuMode = Interface.errorMessageID;
 					return;
@@ -181,10 +176,11 @@ namespace Terraria.ModLoader
 				{
 					mod.SetupContent();
 					mod.PostSetupContent();
+					mod.File?.UnloadAssets();
 				}
 				catch (Exception e)
 				{
-					DisableMod(mod.File);
+					DisableMod(mod.Name);
 					ErrorLogger.LogLoadingError(mod.Name, mod.tModLoaderVersion, e);
 					Main.menuMode = Interface.errorMessageID;
 					return;
@@ -198,7 +194,7 @@ namespace Terraria.ModLoader
 				ModNet.AssignNetIDs();
 				//Main.player[0] = new Player();
 			}
-			Main.player[255] = new Player();
+			Main.player[255] = new Player(false); // setup inventory is unnecessary 
 
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
@@ -237,6 +233,7 @@ namespace Terraria.ModLoader
 		{
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
+			ModPrefix.ResizeArrays();
 			Main.InitializeItemAnimations();
 			ModDust.ResizeArrays();
 			TileLoader.ResizeArrays(unloading);
@@ -275,6 +272,11 @@ namespace Terraria.ModLoader
 					text = SetLocalizedText(dict, text);
 					Lang._itemTooltipCache[item.item.type] = ItemTooltip.FromLanguageKey(text.Key);
 				}
+			}
+			foreach (ModPrefix prefix in ModPrefix.prefixes)
+			{
+				LocalizedText text = new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
+				Lang.prefix[prefix.Type] = SetLocalizedText(dict, text);
 			}
 			foreach (var keyValuePair in MapLoader.tileEntries)
 			{
@@ -338,37 +340,35 @@ namespace Terraria.ModLoader
 			}
 			return dict[value.Key];
 		}
-
-		// TODO, investigate if this causes memory errors.
-		internal static Dictionary<string, Tuple<DateTime, TmodFile>> findModsCache = new Dictionary<string, Tuple<DateTime, TmodFile>>();
-		internal static TmodFile[] FindMods()
+		
+		internal static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
+		internal static LocalMod[] FindMods()
 		{
 			Directory.CreateDirectory(ModPath);
-			IList<TmodFile> files = new List<TmodFile>();
+			var mods = new List<LocalMod>();
 
 			foreach (string fileName in Directory.GetFiles(ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
 			{
 				var lastModified = File.GetLastWriteTime(fileName);
-				Tuple<DateTime, TmodFile> cacheMod;
-				TmodFile file = null;
-				if (findModsCache.TryGetValue(fileName, out cacheMod))
+				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified)
 				{
-					if (cacheMod.Item1 == lastModified)
-						file = cacheMod.Item2;
-					else
-						findModsCache.Remove(fileName);
+					var modFile = new TmodFile(fileName);
+					try
+					{
+						modFile.Read(TmodFile.LoadedState.Info);
+					}
+					catch (Exception e) //this will probably spam, given the number of calls to FindMods
+					{
+						ErrorLogger.LogException(e, "Error reading mod file "+modFile.path);
+						continue;
+					}
+
+					mod = new LocalMod(modFile) {lastModified = lastModified};
+					modsDirCache[fileName] = mod;
 				}
-				if (file == null)
-				{
-					file = new TmodFile(fileName);
-					file.lastModifiedTime = lastModified;
-					file.Read();
-					findModsCache.Add(fileName, Tuple.Create(lastModified, file));
-				}
-				if (file.ValidMod() == null)
-					files.Add(file);
+				mods.Add(mod);
 			}
-			return files.OrderBy(x => x.name, StringComparer.InvariantCulture).ToArray();
+			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 		}
 
 		private static bool LoadMods()
@@ -380,11 +380,7 @@ namespace Terraria.ModLoader
 				return false;
 
 			Interface.loadMods.SetProgressFinding();
-			var modsToLoad = FindMods()
-				.Where(IsEnabled)
-				.Select(mod => new LoadingMod(mod, BuildProperties.ReadModFile(mod)))
-				.Where(mod => LoadSide(mod.properties.side))
-				.ToList();
+			var modsToLoad = FindMods().Where(mod => IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
 
 			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
 			if (Main.oldKeyState.PressingShift())
@@ -402,7 +398,7 @@ namespace Terraria.ModLoader
 			catch (ModSortingException e)
 			{
 				foreach (var mod in e.errored)
-					DisableMod(mod.modFile);
+					mod.Enabled = false;
 
 				ErrorLogger.LogDependencyError(e.Message);
 				return false;
@@ -426,70 +422,52 @@ namespace Terraria.ModLoader
 
 		private static bool CommandLineModPackOverride()
 		{
-			if (commandLineModPack != "")
+			if (commandLineModPack == "")
+				return true;
+
+			if (!commandLineModPack.EndsWith(".json"))
+				commandLineModPack += ".json";
+
+			string filePath = Path.Combine(UI.UIModPacks.ModListSaveDirectory, commandLineModPack);
+
+			try
 			{
-				try
+				Directory.CreateDirectory(UI.UIModPacks.ModListSaveDirectory);
+				
+				Console.WriteLine($"Loading specified modpack: {commandLineModPack}\n");
+				var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
+				foreach (var mod in FindMods())
 				{
-					string fileName = UI.UIModPacks.ModListSaveDirectory + Path.DirectorySeparatorChar + commandLineModPack + ".json";
-					Directory.CreateDirectory(UI.UIModPacks.ModListSaveDirectory);
-					if (File.Exists(fileName))
-					{
-						using (StreamReader r = new StreamReader(fileName))
-						{
-							Console.WriteLine($"Loading specified modpack: {commandLineModPack}\n");
-							string json = r.ReadToEnd();
-							string[] modsToEnable = JsonConvert.DeserializeObject<string[]>(json);
-							var mods = ModLoader.FindMods();
-							foreach (var item in mods)
-							{
-								DisableMod(item);
-							}
-							foreach (string modname in modsToEnable)
-							{
-								foreach (var item in mods)
-								{
-									if (item.name == modname)
-									{
-										EnableMod(item);
-									}
-								}
-							}
-						}
-					}
-					else
-					{
-						if (Main.dedServ)
-						{
-							Console.ForegroundColor = ConsoleColor.Red;
-							Console.WriteLine($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.\n");
-							Console.ResetColor();
-						}
-						else
-						{
-							Interface.errorMessage.SetMessage($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.");
-						}
-						commandLineModPack = "";
-						return false;
-					}
+					SetModEnabled(mod.Name, modSet.Contains(mod.Name));
 				}
-				catch
-				{
-					if (Main.dedServ)
-					{
-						Console.ForegroundColor = ConsoleColor.Red;
-						Console.WriteLine($"The {commandLineModPack} modpack failed to be read properly, it might be malformed.\n");
-						Console.ResetColor();
-					}
-					else
-					{
-						Interface.errorMessage.SetMessage($"No modpack named {commandLineModPack} was found in {UI.UIModPacks.ModListSaveDirectory}. Make sure not to include the .json extension.");
-					}
-					commandLineModPack = "";
-					return false;
-				}
+
+				return true;
 			}
-			commandLineModPack = "";
-			return true;
+			catch (Exception e)
+			{
+				string err;
+				if (e is FileNotFoundException)
+					err = $"Modpack {filePath} does not exist.\n";
+				else
+					err = $"The {commandLineModPack} modpack failed to be read properly, it might be malformed. ({e.Message})\n";
+
+				if (Main.dedServ)
+				{
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine(err);
+					Console.ResetColor();
+				}
+				else
+				{
+					Interface.errorMessage.SetMessage(err);
+				}
+
+				return false;
+			}
+			finally
+			{
+				commandLineModPack = "";
+			}
 		}
 
 		// TODO: This doesn't work on mono for some reason. Investigate.
@@ -503,7 +481,7 @@ namespace Terraria.ModLoader
 			return f.VerifySignature(mod.hash, mod.signature);
 		}
 
-		private static bool VerifyNames(List<LoadingMod> mods)
+		private static bool VerifyNames(List<LocalMod> mods)
 		{
 			var names = new HashSet<string>();
 			foreach (var mod in mods)
@@ -526,7 +504,7 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					DisableMod(mod.modFile);
+					mod.Enabled = false;
 					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
 					return false;
 				}
@@ -535,10 +513,10 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void EnsureDependenciesExist(ICollection<LoadingMod> mods, bool includeWeak)
+		internal static void EnsureDependenciesExist(ICollection<LocalMod> mods, bool includeWeak)
 		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
-			var errored = new HashSet<LoadingMod>();
+			var errored = new HashSet<LocalMod>();
 			var errorLog = new StringBuilder();
 
 			foreach (var mod in mods)
@@ -553,38 +531,35 @@ namespace Terraria.ModLoader
 				throw new ModSortingException(errored, errorLog.ToString());
 		}
 
-		internal static void EnsureTargetVersionsMet(ICollection<LoadingMod> mods)
+		internal static void EnsureTargetVersionsMet(ICollection<LocalMod> mods)
 		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
-			var errored = new HashSet<LoadingMod>();
+			var errored = new HashSet<LocalMod>();
 			var errorLog = new StringBuilder();
 
 			foreach (var mod in mods)
 				foreach (var dep in mod.properties.Refs(true))
-				{
-					LoadingMod inst;
-					if (nameMap.TryGetValue(dep.mod, out inst) && inst.properties.version < dep.target)
+					if (nameMap.TryGetValue(dep.mod, out var inst) && inst.properties.version < dep.target)
 					{
 						errored.Add(mod);
 						errorLog.AppendLine(mod + " requires version " + dep.target + "+ of " + dep.mod +
 							" but version " + inst.properties.version + " is installed");
 					}
-				}
 
 			if (errored.Count > 0)
 				throw new ModSortingException(errored, errorLog.ToString());
 		}
 
-		internal static void EnsureSyncedDependencyStability(TopoSort<LoadingMod> synced, TopoSort<LoadingMod> full)
+		internal static void EnsureSyncedDependencyStability(TopoSort<LocalMod> synced, TopoSort<LocalMod> full)
 		{
-			var errored = new HashSet<LoadingMod>();
+			var errored = new HashSet<LocalMod>();
 			var errorLog = new StringBuilder();
 
 			foreach (var mod in synced.list)
 			{
-				var chains = new List<List<LoadingMod>>();
+				var chains = new List<List<LocalMod>>();
 				//define recursive chain finding method
-				Action<LoadingMod, Stack<LoadingMod>> FindChains = null;
+				Action<LocalMod, Stack<LocalMod>> FindChains = null;
 				FindChains = (search, stack) =>
 				{
 					stack.Push(search);
@@ -602,7 +577,7 @@ namespace Terraria.ModLoader
 
 					stack.Pop();
 				};
-				FindChains(mod, new Stack<LoadingMod>());
+				FindChains(mod, new Stack<LocalMod>());
 
 				if (chains.Count == 0)
 					continue;
@@ -623,15 +598,15 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static TopoSort<LoadingMod> BuildSort(ICollection<LoadingMod> mods)
+		private static TopoSort<LocalMod> BuildSort(ICollection<LocalMod> mods)
 		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
-			return new TopoSort<LoadingMod>(mods,
+			return new TopoSort<LocalMod>(mods,
 				mod => mod.properties.sortAfter.Where(nameMap.ContainsKey).Select(name => nameMap[name]),
 				mod => mod.properties.sortBefore.Where(nameMap.ContainsKey).Select(name => nameMap[name]));
 		}
 
-		internal static List<LoadingMod> Sort(ICollection<LoadingMod> mods)
+		internal static List<LocalMod> Sort(ICollection<LocalMod> mods)
 		{
 			var preSorted = mods.OrderBy(mod => mod.Name).ToList();
 			var syncedSort = BuildSort(preSorted.Where(mod => mod.properties.side == ModSide.Both).ToList());
@@ -648,7 +623,7 @@ namespace Terraria.ModLoader
 
 				return fullSort.Sort();
 			}
-			catch (TopoSort<LoadingMod>.SortingException e)
+			catch (TopoSort<LocalMod>.SortingException e)
 			{
 				throw new ModSortingException(e.set, e.Message);
 			}
@@ -664,6 +639,7 @@ namespace Terraria.ModLoader
 
 			ItemLoader.Unload();
 			EquipLoader.Unload();
+			ModPrefix.Unload();
 			ModDust.Unload();
 			TileLoader.Unload();
 			ModTileEntity.Unload();
@@ -719,8 +695,8 @@ namespace Terraria.ModLoader
 			{
 				Main.player[i] = new Player();
 			}
-			// TODO: Restore this cleanup step via saved variable?
-			//Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
+			// TODO: This breaks net reload. Restore this cleanup step later?
+			// Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 
@@ -782,65 +758,45 @@ namespace Terraria.ModLoader
 		internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
 		/// <summary>A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file.</summary>
-		private static HashSet<string> enabledMods;
-		internal static bool IsEnabled(TmodFile mod)
-		{
-			if (enabledMods == null)
-			{
-				LoadEnabledModCache();
-			}
-			return enabledMods.Contains(mod.name);
-		}
+		private static HashSet<string> _enabledMods;
 
-		private static void LoadEnabledModCache()
+		internal static HashSet<string> EnabledMods
 		{
-			enabledMods = new HashSet<string>();
-			string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
-			if (File.Exists(path))
+			get
 			{
-				using (StreamReader r = new StreamReader(path))
+				if (_enabledMods == null)
 				{
-					string json = r.ReadToEnd();
 					try
 					{
-						enabledMods = JsonConvert.DeserializeObject<HashSet<string>>(json);
+						string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
+						_enabledMods = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(path));
 					}
-					catch { }
+					catch
+					{
+						_enabledMods = new HashSet<string>();
+					}
 				}
+				return _enabledMods;
 			}
 		}
 
-		internal static void SetModActive(TmodFile mod, bool active)
-		{
-			if (mod == null)
-				return;
-			if (enabledMods == null)
-			{
-				LoadEnabledModCache();
-			}
+		internal static bool IsEnabled(string modName) => EnabledMods.Contains(modName);
 
+		internal static void EnableMod(string modName) => SetModEnabled(modName, true);
+		internal static void DisableMod(string modName) => SetModEnabled(modName, false);
+
+		internal static void SetModEnabled(string modName, bool active)
+		{
 			if (active)
-			{
-				enabledMods.Add(mod.name);
-			}
+				EnabledMods.Add(modName);
 			else
-			{
-				enabledMods.Remove(mod.name);
-			}
+				EnabledMods.Remove(modName);
+
+			//save
 			Directory.CreateDirectory(ModPath);
 			string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
-			string json = JsonConvert.SerializeObject(enabledMods, Newtonsoft.Json.Formatting.Indented);
+			string json = JsonConvert.SerializeObject(EnabledMods, Formatting.Indented);
 			File.WriteAllText(path, json);
-		}
-
-		internal static void EnableMod(TmodFile mod)
-		{
-			SetModActive(mod, true);
-		}
-
-		internal static void DisableMod(TmodFile mod)
-		{
-			SetModActive(mod, false);
 		}
 
 		internal static string[] FindModSources()
@@ -1085,22 +1041,6 @@ namespace Terraria.ModLoader
 				throw new ArgumentException("Invalid hook expression " + expr, e);
 			}
 			return method;
-		}
-
-		internal class LoadingMod
-		{
-			public readonly TmodFile modFile;
-			public readonly BuildProperties properties;
-
-			public string Name => modFile.name;
-
-			public override string ToString() => Name;
-
-			public LoadingMod(TmodFile modFile, BuildProperties properties)
-			{
-				this.modFile = modFile;
-				this.properties = properties;
-			}
 		}
 	}
 }

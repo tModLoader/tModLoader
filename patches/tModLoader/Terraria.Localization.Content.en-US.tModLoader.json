@@ -14,7 +14,7 @@
 		"ModsOpenModsFolder": "Open Mods Folder",
 		"ModsModPacks": "Mod Packs",
 		"ModsDisable": "Disable",
-		"ModsEnable": "Enable", 
+		"ModsEnable": "Enable",
 		"ModsMoreInfo": "More info",
 		"ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",
 		"ModsTypeToSearch": "Type to search",
@@ -25,7 +25,7 @@
 		"ModsSortNamesReverseAlph": "Sort mod names reverse-alphabetically",
 		"ModsShowAllMods": "Show all mods",
 		"ModsShowEnabledMods": "Show only enabled mods",
-		"ModsShowDisabledMods": "Show only disabled mods",	
+		"ModsShowDisabledMods": "Show only disabled mods",
 
 		// Mod Browser
 		"MBDownload": "Download",
@@ -39,6 +39,11 @@
 		"MBShowAllMods": "Show all mods",
 		"MBShowNotInstalledUpdates": "Show mods not installed and updates",
 		"MBShowUpdates": "Show only updates",
+		"MBShowMSAll": "Show all mods",
+		"MBShowMSBoth": "Show normal side only mods",
+		"MBShowMSClient": "Show client side only mods",
+		"MBShowMSServer": "Show server side only mods",
+		"MBShowMSNoSync": "Show no sync only mods",
 
 		// TML Options
 		"DownloadFromServersYes": "Download Mods From Servers: On",
@@ -77,6 +82,6 @@
 		// Extra mouse buttons
 		"MouseMiddle": "Middle Mouse",
 		"MouseXButton1": "Mouse 4",
-		"MouseXButton2": "Mouse 5",
+		"MouseXButton2": "Mouse 5"
 	}
 }

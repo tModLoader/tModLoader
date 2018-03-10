@@ -80,6 +80,31 @@
  						NetMessage.SendData(6, -1, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
  						if (Netplay.Connection.State == 2)
  						{
+@@ -394,6 +_,7 @@
+ 								player3.trashItem.netDefaults(type);
+ 								player3.trashItem.stack = stack;
+ 								player3.trashItem.Prefix(num13);
++								ItemIO.ReceiveModData(player3.trashItem, reader);
+ 							}
+ 							else if (num12 <= 58)
+ 							{
+@@ -403,6 +_,8 @@
+ 								array[num14].netDefaults(type);
+ 								array[num14].stack = stack;
+ 								array[num14].Prefix(num13);
++								ItemIO.ReceiveModData(array[num14], reader);
++
+ 								if (num11 == Main.myPlayer && num14 == 58)
+ 								{
+ 									Main.mouseItem = array[num14].Clone();
+@@ -423,6 +_,7 @@
+ 								array[num14].netDefaults(type);
+ 								array[num14].stack = stack;
+ 								array[num14].Prefix(num13);
++								ItemIO.ReceiveModData(array[num14], reader);
+ 							}
+ 							if (Main.netMode == 2 && num11 == this.whoAmI && num12 <= 58 + player3.armor.Length + player3.dye.Length + player3.miscEquips.Length + player3.miscDyes.Length)
+ 							{
 @@ -543,6 +_,10 @@
  							Main.StopSlimeRain(true);
  						}
@@ -91,6 +116,15 @@
  						Main.LobbyId = this.reader.ReadUInt64();
  						Sandstorm.IntendedSeverity = this.reader.ReadSingle();
  						if (Netplay.Connection.State == 3)
+@@ -703,6 +_,8 @@
+ 						{
+ 							NetMessage.SendData(83, this.whoAmI, -1, null, num42, 0f, 0f, 0f, 0, 0, 0);
+ 						}
++						for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++)
++							NetMessage.SendData(83, this.whoAmI, -1, null, type, 0f, 0f, 0f, 0, 0, 0);
+ 						NetMessage.SendData(49, this.whoAmI, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
+ 						NetMessage.SendData(57, this.whoAmI, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
+ 						NetMessage.SendData(7, this.whoAmI, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
 @@ -1156,7 +_,7 @@
  								tile.wire4(bitsByte12[7]);
  								if (tile.wall > 0)
@@ -360,6 +394,15 @@
  						int num142 = this.reader.ReadInt32();
  						if (Main.netMode == 2 && num140 != this.whoAmI && !Main.pvpBuff[num141])
  						{
+@@ -2838,7 +_,7 @@
+ 						}
+ 						int num176 = (int)this.reader.ReadInt16();
+ 						int num177 = this.reader.ReadInt32();
+-						if (num176 >= 0 && num176 < 267)
++						if (num176 >= 0)// && num176 < 267) This prevented mod BannerIds from syncing.
+ 						{
+ 							NPC.killCount[num176] = num177;
+ 							return;
 @@ -2889,7 +_,7 @@
  							return;
  						}

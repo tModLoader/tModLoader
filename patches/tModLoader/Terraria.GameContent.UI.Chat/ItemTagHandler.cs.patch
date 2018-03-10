@@ -1,0 +1,91 @@
+--- src/Terraria\Terraria.GameContent.UI.Chat\ItemTagHandler.cs
++++ src/tModLoader\Terraria.GameContent.UI.Chat\ItemTagHandler.cs
+@@ -1,7 +_,9 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Graphics;
+-using System;
++using System.Linq;
++using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ 
+@@ -26,6 +_,7 @@
+ 				Main.instance.MouseText(this._item.Name, this._item.rare, 0, -1, -1, -1, -1);
+ 			}
+ 
++			//@todo possibly allow modders to custom draw here
+ 			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
+ 			{
+ 				float num = 1f;
+@@ -83,8 +_,11 @@
+ 				return new TextSnippet(text);
+ 			}
+ 			item.stack = 1;
++			// options happen here, we add MID (=ModItemData) options
+ 			if (options != null)
+ 			{
++				// don't know why all these options here in vanilla,
++				// since it only assumed one option (stack OR prefix, since prefixed items don't stack)
+ 				string[] array = options.Split(new char[]
+ 					{
+ 						','
+@@ -95,7 +_,12 @@
+ 					{
+ 						char c = array[i][0];
+ 						int value2;
+-						if (c != 'p')
++						// MID is present, we will override
++						if (c == 'd')
++						{
++							item = ItemIO.FromBase64(array[i].Substring(1));
++						}
++						else if (c != 'p')
+ 						{
+ 							int value;
+ 							if ((c == 's' || c == 'x') && int.TryParse(array[i].Substring(1), out value))
+@@ -105,7 +_,7 @@
+ 						}
+ 						else if (int.TryParse(array[i].Substring(1), out value2))
+ 						{
+-							item.Prefix((int)((byte)Utils.Clamp<int>(value2, 0, 84)));
++							item.Prefix((int)((byte)Utils.Clamp<int>(value2, 0, ModPrefix.PrefixCount)));
+ 						}
+ 					}
+ 				}
+@@ -123,17 +_,29 @@
+ 			};
+ 		}
+ 
++		// we do not alter vanilla ways of doing things
++		// this can lead to trouble in future patches
+ 		public static string GenerateTag(Item I)
+ 		{
+ 			string text = "[i";
+-			if (I.prefix != 0)
++			// assuming we have modded data, simply write the item as base64
++			// do not write other option, base64 holds all the info.
++			if (I.modItem != null || I.globalItems.Any())
+ 			{
+-				text = text + "/p" + I.prefix;
++				text = text + "/d" + ItemIO.ToBase64(I);
+ 			}
+-			if (I.stack != 1)
++			else
+ 			{
+-				text = text + "/s" + I.stack;
++				if (I.prefix != 0)
++				{
++					text = text + "/p" + I.prefix;
++				}
++				if (I.stack != 1)
++				{
++					text = text + "/s" + I.stack;
++				}
+ 			}
++
+ 			object obj = text;
+ 			return string.Concat(new object[]
+ 				{
+

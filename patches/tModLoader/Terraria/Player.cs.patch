@@ -98,11 +98,23 @@
  					Main.item[num3].newAndShiny = false;
  					if (Main.netMode == 1)
  					{
-@@ -1760,6 +_,7 @@
+@@ -1758,8 +_,17 @@
+ 					flag2 = true;
+ 				}
  				int num = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, this.inventory[this.selectedItem].type, 1, false, 0, false, false);
- 				if (!flag2 && this.inventory[this.selectedItem].type == 8 && this.inventory[this.selectedItem].stack > 1)
- 				{
-+					Main.item[num] = this.inventory[this.selectedItem].Clone();
+-				if (!flag2 && this.inventory[this.selectedItem].type == 8 && this.inventory[this.selectedItem].stack > 1)
+-				{
++				bool dryTorch = false;
++				bool wetTorch = false;
++				bool glowstick = false;
++				this.inventory[this.selectedItem].modItem?.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
++				int type = this.inventory[this.selectedItem].type;
++				if (!flag2 && this.inventory[this.selectedItem].stack > 1 && (dryTorch || wetTorch || type == 8 || type == 427 || type == 428 || type == 429 || type == 430 || type == 431 || type == 432 || type == 433 || type == 523 || type == 974 || type == 1245 || type == 1333 || type == 2274 || type == 3004 || type == 3045 || type == 3114))
++				{
++					Item torch = this.inventory[this.selectedItem].Clone();
++					torch.stack = 1;
++					torch.position = Main.item[num].position;
++					Main.item[num] = torch;
  					this.inventory[this.selectedItem].stack--;
  				}
  				else
@@ -338,10 +350,11 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 602, 1, false, 0, false, false);
-@@ -3363,6 +_,32 @@
+@@ -3363,6 +_,33 @@
  					}
  				}
  			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
 +		}
 +
 +		/// <summary>
@@ -391,8 +404,11 @@
  			if (num15 > 0)
  			{
  				NPC nPC = new NPC();
-@@ -3926,7 +_,7 @@
+@@ -3924,9 +_,10 @@
+ 					}
+ 				}
  			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
  		}
  
 -		private void TryGettingDevArmor()
@@ -412,6 +428,14 @@
  			int num = type - 2334;
  			if (type >= 3203)
  			{
+@@ -5040,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
+ 
+ 		public int CountItem(int type, int stopCountingAt = 0)
 @@ -5087,6 +_,11 @@
  
  		public void openLockBox()
@@ -424,7 +448,12 @@
  			bool flag = true;
  			while (flag)
  			{
-@@ -5221,6 +_,11 @@
+@@ -5217,10 +_,16 @@
+ 					}
+ 				}
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
  
  		public void openHerbBag()
  		{
@@ -436,7 +465,12 @@
  			int num = Main.rand.Next(2, 5);
  			if (Main.rand.Next(3) == 0)
  			{
-@@ -5300,6 +_,11 @@
+@@ -5296,10 +_,16 @@
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
+ 				}
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
  
  		public void openGoodieBag()
  		{
@@ -448,6 +482,14 @@
  			if (Main.rand.Next(150) == 0)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1810, 1, false, 0, false, false);
+@@ -5660,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
+ 
+ 		public void UpdateDyes(int plr)
 @@ -5721,47 +_,47 @@
  				int num = i % 10;
  				if (this.dye[num] != null && this.armor[i].type > 0 && this.armor[i].stack > 0 && (i / 10 >= 1 || !this.hideVisual[num] || this.armor[i].wingSlot > 0 || this.armor[i].type == 934))
@@ -2857,6 +2899,42 @@
  			int tileBoost = item.tileBoost;
  			int num3 = 0;
  			if (item.type == 1071 || item.type == 1543 || item.type == 1072 || item.type == 1544)
+@@ -13230,6 +_,7 @@
+ 			{
+ 				value.Y = Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY;
+ 			}
++			//patch file: num, num2
+ 			int num = Player.tileTargetX;
+ 			int num2 = Player.tileTargetY;
+ 			if (num < 10)
+@@ -13270,6 +_,7 @@
+ 				flag = true;
+ 			}
+ 			IL_176:
++			TileLoader.DisableSmartInteract(Main.tile[num, num2], ref flag);
+ 			if (flag)
+ 			{
+ 				return;
+@@ -13480,7 +_,10 @@
+ 							list2.Add(new Tuple<int, int>(j, k));
+ 						}
+ 						IL_5D0:
+-						;
++						if (tile.active() && TileLoader.HasSmartInteract(tile.type))
++						{
++							list2.Add(new Tuple<int, int>(j, k));
++						}
+ 					}
+ 				}
+ 				if (list2.Count > 0)
+@@ -13769,6 +_,7 @@
+ 						num18 = 0;
+ 					}
+ 					IL_9F7:
++					TileLoader.FixSmartInteractCoords(type3, ref num13, ref num14, ref num15, ref num16, ref num17, ref num18);
+ 					if (num13 != 0 && num14 != 0)
+ 					{
+ 						int num19 = item3 - (int)tile2.frameX % (num15 * num13 + num17) / num15;
 @@ -14168,6 +_,7 @@
  			if (this.controlTorch && this.itemAnimation == 0)
  			{
@@ -5123,6 +5201,15 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
+@@ -38697,7 +_,7 @@
+ 			{
+ 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 			}
+-			Player player = new Player();
++			Player player = new Player(false); // setup inventory is unnecessary
+ 			try
+ 			{
+ 				RijndaelManaged rijndaelManaged = new RijndaelManaged();
 @@ -38719,7 +_,7 @@
  							{
  								playerFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.Player);
@@ -5178,11 +5265,12 @@
  				}
  				return playerFileData;
  			}
-@@ -39313,13 +_,30 @@
+@@ -39313,13 +_,31 @@
  			return -1;
  		}
  
 -		public Player()
++		internal IList<string> usedMods;
 +		internal ModPlayer[] modPlayers = new ModPlayer[0];
 +
 +		public ModPlayer GetModPlayer(Mod mod, string name)
