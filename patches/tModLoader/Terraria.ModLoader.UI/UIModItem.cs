@@ -81,7 +81,8 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.ToggleEnabled;
 			base.Append(button2);
-			if (ModLoader.ModLoaded(mod.name) && ConfigManager.Configs.ContainsKey(ModLoader.GetMod(mod.name))) // and has config
+			Mod loadedMod = ModLoader.GetMod(mod.Name);
+			if (loadedMod != null && ConfigManager.Configs.ContainsKey(loadedMod)) // and has config
 			{
 				configButton = new UITextPanel<string>("Config", 1f, false);
 				configButton.Width.Set(100f, 0f);
@@ -95,7 +96,7 @@ namespace Terraria.ModLoader.UI
 				configButton.OnClick += this.OpenConfig;
 				Append(configButton);
 
-				if (ConfigManager.ModNeedsReload(ModLoader.GetMod(mod.name)))
+				if (ConfigManager.ModNeedsReload(loadedMod))
 				{
 					configChangesRequireReload = true;
 				}
@@ -142,7 +143,6 @@ namespace Terraria.ModLoader.UI
 				keyImage.Left.Set(-10, 1f);
 				Append(keyImage);
 			}
-			Mod loadedMod = ModLoader.GetMod(mod.Name);
 			if (loadedMod != null)
 			{
 				loaded = true;
@@ -284,7 +284,7 @@ namespace Terraria.ModLoader.UI
 		internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(SoundID.MenuOpen);
-			Interface.modConfig.SetMod(ModLoader.GetMod(mod.name));
+			Interface.modConfig.SetMod(ModLoader.GetMod(mod.Name));
 			Main.menuMode = Interface.modConfigID;
 		}
 
