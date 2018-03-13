@@ -78,6 +78,7 @@ namespace Terraria.ModLoader
 				//}
 				string netJson = ModNet.pendingConfigs.Single(x => x.modname == config.mod.Name && x.configname == config.Name).json;
 				JsonConvert.PopulateObject(netJson, config, serializerSettingsCompact);
+				// TODO: [JsonExtensionData] example/test.
 				return;
 			}
 			string json = "{}";
@@ -259,6 +260,13 @@ namespace Terraria.ModLoader
 				BindingFlags.Instance);
 
 			return fields.Select(x => new UI.PropertyFieldWrapper(x)).Concat(properties.Select(x => new UI.PropertyFieldWrapper(x)));
+		}
+
+		public static object AlternateCreateInstance(Type type)
+		{
+			if (type == typeof(string))
+				return "";
+			return Activator.CreateInstance(type);
 		}
 	}
 

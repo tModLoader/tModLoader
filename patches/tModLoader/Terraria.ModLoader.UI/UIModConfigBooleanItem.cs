@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Terraria.Graphics;
@@ -18,7 +19,7 @@ namespace Terraria.ModLoader.UI
 		protected object item;
 		protected bool drawLabel = true;
 
-		public UIModConfigItem(PropertyFieldWrapper memberInfo, object item)
+		public UIModConfigItem(PropertyFieldWrapper memberInfo, object item, IList array)
 		{
 			Width.Set(0f, 1f);
 			Height.Set(0f, 1f);
@@ -43,14 +44,14 @@ namespace Terraria.ModLoader.UI
 			{
 				backgroundColor = bca.color;
 			}
-			//if (array != null)
-			//{
-			//	bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(item.GetType(), typeof(BackgroundColorAttribute), true);
-			//	if (bca != null)
-			//	{
-			//		backgroundColor = bca.color;
-			//	}
-			//}
+			if (array != null)
+			{
+				bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(item.GetType(), typeof(BackgroundColorAttribute), true);
+				if (bca != null)
+				{
+					backgroundColor = bca.color;
+				}
+			}
 			// Member
 			bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(BackgroundColorAttribute));
 			if (bca != null)
@@ -121,7 +122,7 @@ namespace Terraria.ModLoader.UI
 		private Texture2D _toggleTexture;
 
 		// TODO. Display status string? (right now only on/off texture, but True/False, Yes/No, Enabled/Disabled options)
-		public UIModConfigBooleanItem(PropertyFieldWrapper memberInfo, object modConfig, IList<bool> array = null, int index = -1) : base(memberInfo, modConfig)
+		public UIModConfigBooleanItem(PropertyFieldWrapper memberInfo, object modConfig, IList<bool> array = null, int index = -1) : base(memberInfo, modConfig, (IList)array)
 		{
 			this._toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
 

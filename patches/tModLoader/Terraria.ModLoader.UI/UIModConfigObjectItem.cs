@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.UI
 		// Label:
 		//  Members
 		//  Members
-		public UIModConfigObjectItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList array = null, int index = -1) : base(memberInfo, item)
+		public UIModConfigObjectItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList array = null, int index = -1) : base(memberInfo, item, array)
 		{
 			drawLabel = false;
 			//// Class

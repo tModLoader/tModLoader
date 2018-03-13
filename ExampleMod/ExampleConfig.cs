@@ -1,7 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -170,10 +168,21 @@ namespace ExampleMod
 		[DefaultValue("Bulbasor")]
 		public string FavoritePokemon;
 
+		public string InputString;
+		public string InputString2;
+
+		public List<string> ListOfString;
+
+		[SeparatePage]
+		public SubConfigExample subConfigExample;
+
 		[Range(10, 20)]
 		[Increment(2)]
 		[DrawTicks]
 		public List<int> ListOfInts;
+
+		public Dictionary<int, float> IntFloatDictionary;
+		public Dictionary<string, Pair> StringPairDictionary;
 
 		public List<Pair> ListOfPair;
 
@@ -199,8 +208,14 @@ namespace ExampleMod
 			// We use a method marked OnDeserialized to initialize default values of reference types since we can't do that with the DefaultValue attribute.
 			if (ListOfInts == null)
 				ListOfInts = new List<int>() { };
+			if (ListOfString == null)
+				ListOfString = new List<string>() { };
 			if (ListOfPair == null)
 				ListOfPair = new List<Pair>() { };
+			if (IntFloatDictionary == null)
+				IntFloatDictionary = new Dictionary<int, float>();
+			if (StringPairDictionary == null)
+				StringPairDictionary = new Dictionary<string, Pair>();
 			//if (simpleDataExample == null)
 			//	simpleDataExample = new SimpleData();
 			if (simpleDataExample2 == null)
@@ -226,11 +241,15 @@ namespace ExampleMod
 			// Since ListOfInts is a reference type, we need to clone it manually so our config works properly.
 			var clone = (ModConfigShowcase)base.Clone();
 			clone.ListOfInts = new List<int>(ListOfInts);
+			clone.ListOfString = new List<string>(ListOfString);
+			clone.subConfigExample = subConfigExample == null ? null : subConfigExample.Clone();
 			clone.simpleDataExample = simpleDataExample == null ? null : simpleDataExample.Clone();
 			clone.simpleDataExample2 = simpleDataExample2.Clone();
 			clone.ArrayOfInts = (int[])ArrayOfInts.Clone();
 			clone.ArrayOfString = (string[])ArrayOfString.Clone();
 			clone.ListOfPair = ListOfPair.ConvertAll(pair => pair.Clone());
+			clone.IntFloatDictionary = IntFloatDictionary.ToDictionary(i => i.Key, i => i.Value);
+			clone.StringPairDictionary = StringPairDictionary.ToDictionary(i => i.Key, i => i.Value.Clone());
 			return clone;
 		}
 
@@ -281,6 +300,42 @@ namespace ExampleMod
 		public SimpleData Clone()
 		{
 			return (SimpleData)MemberwiseClone();
+		}
+	}
+
+	public class SubConfigExample
+	{
+		public int boost;
+		public float percent;
+		public bool enabled;
+
+		[SeparatePage]
+		public SubSubConfigExample SubA;
+
+		[SeparatePage]
+		[Label("Even More Sub")]
+		public SubSubConfigExample SubB;
+
+		public SubConfigExample()
+		{
+		}
+
+		public SubConfigExample Clone()
+		{
+			var clone =  (SubConfigExample)MemberwiseClone();
+			clone.SubA = SubA.Clone();
+			clone.SubB = SubB.Clone();
+			return clone;
+		}
+	}
+
+	public class SubSubConfigExample
+	{
+		public int whoa;
+
+		public SubSubConfigExample Clone()
+		{
+			return (SubSubConfigExample)MemberwiseClone();
 		}
 	}
 

@@ -53,6 +53,14 @@
        </PropertyGroup>
      </When>
      <Otherwise>
+@@ -73,6 +_,7 @@
+     </Otherwise>
+   </Choose>
+   <ItemGroup>
++    <Reference Include="Microsoft.CSharp" />
+     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
 @@ -81,19 +_,47 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
@@ -123,7 +131,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,168 @@
+@@ -368,6 +_,170 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -188,12 +196,14 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigArrayItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigBooleanItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigColorItem.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModConfigDictionaryItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigEnumItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigFloatItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigIntItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigList.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigListItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigObjectItem.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIModConfigStringInputItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModConfigStringItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModControls.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModDownloadItem.cs" />
@@ -359,6 +369,7 @@
 +  </ItemGroup>
 +  <ItemGroup />
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -391,5 +402,4 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>

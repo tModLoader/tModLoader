@@ -32,7 +32,11 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> saveConfigButton;
 		private UITextPanel<string> revertConfigButton;
 		private UITextPanel<string> restoreDefaultsConfigButton;
-		private UIList configList;
+		private UIPanel uIPanel;
+		private UIList mainConfigList;
+		private UIScrollbar uIScrollbar;
+		private Stack<UIList> configListStack = new Stack<UIList>();
+		//private UIList currentConfigList;
 		private Mod mod;
 		private List<ModConfig> modConfigs;
 		// This is from ConfigManager.Configs
@@ -49,7 +53,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.Height.Set(-220f, 1f);
 			uIElement.HAlign = 0.5f;
 
-			UIPanel uIPanel = new UIPanel();
+			uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
 			uIPanel.Height.Set(-110f, 1f);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
@@ -61,19 +65,21 @@ namespace Terraria.ModLoader.UI
 			//message.Top.Set(15f, 0f);
 			uIPanel.Append(message);
 
-			configList = new UIList();
-			configList.Width.Set(-25f, 1f);
-			configList.Height.Set(-40f, 1f);
-			configList.Top.Set(40f, 0f);
-			configList.ListPadding = 5f;
-			uIPanel.Append(configList);
+			mainConfigList = new UIList();
+			mainConfigList.Width.Set(-25f, 1f);
+			mainConfigList.Height.Set(-40f, 1f);
+			mainConfigList.Top.Set(40f, 0f);
+			mainConfigList.ListPadding = 5f;
+			uIPanel.Append(mainConfigList);
+			configListStack.Push(mainConfigList);
+			//currentConfigList = mainConfigList;
 
-			UIScrollbar uIScrollbar = new UIScrollbar();
+			uIScrollbar = new UIScrollbar();
 			uIScrollbar.SetView(100f, 1000f);
 			uIScrollbar.Height.Set(0f, 1f);
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
-			configList.SetScrollbar(uIScrollbar);
+			mainConfigList.SetScrollbar(uIScrollbar);
 
 			headerTextPanel = new UITextPanel<string>("Mod Config", 0.8f, true);
 			headerTextPanel.HAlign = 0.5f;
@@ -221,6 +227,7 @@ namespace Terraria.ModLoader.UI
 				{
 					Main.PlaySound(ID.SoundID.MenuClose);
 					SetMessage("Can't save because changes would require a reload.", Color.Red);
+					return;
 				}
 				else
 				{
@@ -288,6 +295,7 @@ namespace Terraria.ModLoader.UI
 		bool netUpdate;
 		public override void Update(GameTime gameTime)
 		{
+			base.Update(gameTime);
 			if (pendingChanges)
 			{
 				uIElement.Append(saveConfigButton);
@@ -353,12 +361,18 @@ namespace Terraria.ModLoader.UI
 			if (index - 1 >= 0)
 				uIElement.Append(previousConfigButton);
 
-			configList.Clear();
+			uIPanel.RemoveChild(configListStack.Peek());
+			uIPanel.Append(mainConfigList);
+			mainConfigList.SetScrollbar(uIScrollbar);
+			mainConfigList.Clear();
+			configListStack.Clear();
+			configListStack.Push(mainConfigList);
+			//currentConfigList = mainConfigList;
 			int i = 0;
+			int top = 0;
 			// load all mod config options into UIList
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
 
-			int top = 0;
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(modConfigClone))
 			{
 				if (variable.isProperty && variable.Name == "Mode")
@@ -366,7 +380,7 @@ namespace Terraria.ModLoader.UI
 				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 					continue;
 
-				WrapIt(configList, ref top, variable, modConfigClone, ref i);
+				WrapIt(mainConfigList, ref top, variable, modConfigClone, ref i);
 			}
 		}
 
@@ -391,6 +405,7 @@ namespace Terraria.ModLoader.UI
 			else if (type == typeof(bool)) // isassignedfrom?
 			{
 				e = new UIModConfigBooleanItem(memberInfo, item, (IList<bool>)array, index);
+				sliderIDInPage++;
 			}
 			else if (type == typeof(float))
 			{
@@ -418,7 +433,9 @@ namespace Terraria.ModLoader.UI
 				else
 				{
 					// TODO: Text input? Necessary?
-					e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}). Missing OptionStringsAttribute.");
+					//e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}). Missing OptionStringsAttribute.");
+					e = new UIModConfigStringInputItem(memberInfo, item, (IList<string>)array, index);
+					sliderIDInPage++;
 				}
 			}
 			else if (type.IsEnum)
@@ -442,8 +459,14 @@ namespace Terraria.ModLoader.UI
 				e = new UIModConfigListItem(memberInfo, item, ref sliderIDInPage);
 				elementHeight = 225;
 			}
+			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+			{
+				e = new UIModConfigDictionaryItem(memberInfo, item, ref sliderIDInPage);
+				elementHeight = 300;
+			}
 			else if (type.IsClass)
 			{
+				sliderIDInPage++;
 				if (array != null)
 				{
 					object listItem = ((IList)array)[index];
@@ -472,8 +495,39 @@ namespace Terraria.ModLoader.UI
 
 						memberInfo.SetValue(item, subitem);
 					}
-					e = new UIModConfigObjectItem(memberInfo, subitem, ref sliderIDInPage);
-					elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
+					SeparatePageAttribute att = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute));
+					if (att != null)
+					{
+						UIList separateList = MakeSeparateList(subitem, memberInfo.Name);
+
+						e = new UITextPanel<string>(memberInfo.Name);
+						e.HAlign = 0.5f;
+						elementHeight = 40;
+						e.OnClick += (a, c) =>
+						{
+							Interface.modConfig.uIPanel.RemoveChild(Interface.modConfig.configListStack.Peek());
+							Interface.modConfig.uIPanel.Append(separateList);
+							Interface.modConfig.configListStack.Push(separateList);
+							separateList.SetScrollbar(Interface.modConfig.uIScrollbar);
+
+							//UIPanel panel = new UIPanel();
+							//panel.Width.Set(200, 0);
+							//panel.Height.Set(200, 0);
+							//panel.Left.Set(200, 0);
+							//panel.Top.Set(200, 0);
+							//Interface.modConfig.Append(panel);
+
+							//Interface.modConfig.subMenu.Enqueue(subitem);
+							//Interface.modConfig.DoMenuModeState();
+						};
+						//e = new UIText($"{memberInfo.Name} click for more ({type.Name}).");
+						//e.OnClick += (a, b) => { };
+					}
+					else
+					{
+						e = new UIModConfigObjectItem(memberInfo, subitem, ref sliderIDInPage);
+						elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
+					}
 				}
 			}
 			else if (type.IsValueType && !type.IsPrimitive)
@@ -509,6 +563,56 @@ namespace Terraria.ModLoader.UI
 				return new Tuple<UIElement, UIElement>(container, e);
 			}
 			return null;
+		}
+
+		private static UIList MakeSeparateList(object subitem, string name)
+		{
+			UIList separateList = new UIList();
+			separateList.CopyStyle(Interface.modConfig.mainConfigList);
+			int i = 0;
+			int top = 0;
+
+			UITextPanel<string> heading = new UITextPanel<string>(name);
+			heading.HAlign = 0.5f;
+			var headingContainer = GetContainer(heading, i++);
+			headingContainer.Height.Pixels = 40;
+			separateList.Add(headingContainer);
+			top += 40;
+
+			UITextPanel<string> back = new UITextPanel<string>("Back");
+			back.HAlign = 0.5f;
+			top += 40;
+			//var capturedCurrent = Interface.modConfig.currentConfigList;
+			back.OnClick += (a, c) =>
+			{
+				Interface.modConfig.uIPanel.RemoveChild(separateList);
+				Interface.modConfig.configListStack.Pop();
+				Interface.modConfig.uIPanel.Append(Interface.modConfig.configListStack.Peek());
+				Interface.modConfig.configListStack.Peek().SetScrollbar(Interface.modConfig.uIScrollbar);
+				//Interface.modConfig.currentConfigList = capturedCurrent;
+			};
+			var backContainer = GetContainer(back, i++);
+			backContainer.Height.Pixels = 40;
+			separateList.Add(backContainer);
+
+			//var b = new UIText("Test");
+			//separateList.Add(b);
+			// Make rest of list
+
+
+			// load all mod config options into UIList
+			// TODO: Inheritance with ModConfig? DeclaredOnly?
+
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem))
+			{
+				if (variable.isProperty && variable.Name == "Mode")
+					continue;
+				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
+					continue;
+
+				WrapIt(separateList, ref top, variable, subitem, ref i);
+			}
+			return separateList;
 		}
 
 		internal static UIElement GetContainer(UIElement containee, int sortid)
@@ -577,7 +681,7 @@ namespace Terraria.ModLoader.UI
 		protected Action<float> _SetProportion;
 		private int _sliderIDInPage;
 
-		public UIConfigRangeItem(int sliderIDInPage, PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item)
+		public UIConfigRangeItem(int sliderIDInPage, PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
 		{
 			this._sliderIDInPage = sliderIDInPage;
 			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));

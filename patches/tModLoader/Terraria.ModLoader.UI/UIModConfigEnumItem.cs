@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameInput;
 using Terraria.Graphics;
@@ -21,7 +22,7 @@ namespace Terraria.ModLoader.UI
 		public override int NumberTicks => valueStrings.Length;
 		public override float TickIncrement => 1f / (valueStrings.Length - 1);
 
-		public UIModConfigEnumItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage) : base(sliderIDInPage, memberInfo, item)
+		public UIModConfigEnumItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage) : base(sliderIDInPage, memberInfo, item, null)
 		{
 
 			valueStrings = Enum.GetNames(memberInfo.Type);

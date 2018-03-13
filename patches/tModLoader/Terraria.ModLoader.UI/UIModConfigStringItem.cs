@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameInput;
 using Terraria.Graphics;
@@ -21,7 +22,7 @@ namespace Terraria.ModLoader.UI
 		public override int NumberTicks => options.Length;
 		public override float TickIncrement => 1f / (options.Length - 1);
 
-		public UIModConfigStringItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<string> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item)
+		public UIModConfigStringItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<string> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
 		{
 			OptionStringsAttribute optionsAttribute = (OptionStringsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(OptionStringsAttribute));
 			options = optionsAttribute.optionLabels;

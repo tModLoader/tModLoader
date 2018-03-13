@@ -300,4 +300,9 @@ namespace Terraria.ModLoader
 	public class DrawTicksAttribute : Attribute
 	{
 	}
+
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class SeparatePageAttribute : Attribute
+	{
+	}
 }

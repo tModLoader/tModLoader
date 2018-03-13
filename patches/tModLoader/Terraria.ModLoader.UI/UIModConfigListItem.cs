@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.UI
 		private int sliderIDStart;
 		private NestedUIList dataList;
 
-		public UIModConfigListItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item)
+		public UIModConfigListItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
 			drawLabel = false;
 
@@ -96,7 +96,7 @@ namespace Terraria.ModLoader.UI
 				}
 				else
 				{
-					((IList)data).Add(Activator.CreateInstance(listType));
+					((IList)data).Add(ConfigManager.AlternateCreateInstance(listType));
 				}
 
 

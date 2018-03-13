@@ -88,7 +88,7 @@ namespace Terraria.ModLoader.UI
 
 		int height;
 		ColorObject c;
-		public UIModConfigColorItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Color> array = null, int index = -1) : base(memberInfo, item)
+		public UIModConfigColorItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Color> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			if (array != null)
 			{

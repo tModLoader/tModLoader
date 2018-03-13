@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameInput;
 using Terraria.Graphics;
@@ -20,7 +21,7 @@ namespace Terraria.ModLoader.UI
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (increment) / (max - min);
 
-		public UIModConfigFloatItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<float> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item)
+		public UIModConfigFloatItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<float> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();

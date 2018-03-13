@@ -9,6 +9,7 @@ using Terraria.UI;
 using Terraria.UI.Chat;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 namespace Terraria.ModLoader.UI
 {
@@ -21,7 +22,7 @@ namespace Terraria.ModLoader.UI
 		//public override int NumberTicks => 0;
 		//public override float TickIncrement => 0;
 
-		public UIModConfigArrayItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item)
+		public UIModConfigArrayItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
 			drawLabel = false;
 			string name = memberInfo.Name;
