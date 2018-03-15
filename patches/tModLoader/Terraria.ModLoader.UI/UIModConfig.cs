@@ -608,7 +608,7 @@ namespace Terraria.ModLoader.UI
 			//UIPanel heading = new UIPanel();
 			//UIText headingText = new UIText(name);
 
-			name = Interface.modConfig.subPageStack.Aggregate((current, next) => current + "/" + next);
+			name = string.Join(" > ", Interface.modConfig.subPageStack.Reverse()); //.Aggregate((current, next) => current + "/" + next);
 
 			UITextPanel<string> heading = new UITextPanel<string>(name);
 			heading.HAlign = 0f;
