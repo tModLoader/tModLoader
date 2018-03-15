@@ -35,7 +35,8 @@ namespace Terraria.ModLoader.UI
 		private UIPanel uIPanel;
 		private UIList mainConfigList;
 		private UIScrollbar uIScrollbar;
-		private Stack<UIList> configListStack = new Stack<UIList>();
+		private Stack<UIPanel> configPanelStack = new Stack<UIPanel>();
+		private Stack<string> subPageStack = new Stack<string>();
 		//private UIList currentConfigList;
 		private Mod mod;
 		private List<ModConfig> modConfigs;
@@ -49,8 +50,8 @@ namespace Terraria.ModLoader.UI
 			uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
 			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
+			uIElement.Top.Set(160f, 0f);
+			uIElement.Height.Set(-180f, 1f);
 			uIElement.HAlign = 0.5f;
 
 			uIPanel = new UIPanel();
@@ -59,19 +60,21 @@ namespace Terraria.ModLoader.UI
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
 			uIElement.Append(uIPanel);
 
-			message = new UITextPanel<string>("");
-			message.Width.Set(-20f, 1f);
+			message = new UITextPanel<string>("Notification: ");
+			message.Width.Set(-80f, 1f);
 			message.Height.Set(20f, 0f);
-			//message.Top.Set(15f, 0f);
-			uIPanel.Append(message);
+			message.HAlign = 0.5f;
+			message.VAlign = 1f;
+			message.Top.Set(-65f, 0f);
+			uIElement.Append(message);
 
 			mainConfigList = new UIList();
 			mainConfigList.Width.Set(-25f, 1f);
-			mainConfigList.Height.Set(-40f, 1f);
-			mainConfigList.Top.Set(40f, 0f);
+			mainConfigList.Height.Set(0f, 1f);
+			//mainConfigList.Top.Set(40f, 0f);
 			mainConfigList.ListPadding = 5f;
 			uIPanel.Append(mainConfigList);
-			configListStack.Push(mainConfigList);
+			configPanelStack.Push(uIPanel);
 			//currentConfigList = mainConfigList;
 
 			uIScrollbar = new UIScrollbar();
@@ -88,8 +91,8 @@ namespace Terraria.ModLoader.UI
 			headerTextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(headerTextPanel);
 
-			previousConfigButton = new UITextPanel<string>("Previous Config", 1f, false);
-			previousConfigButton.Width.Set(-10f, 1f / 3f);
+			previousConfigButton = new UITextPanel<string>("<", 1f, false);
+			previousConfigButton.Width.Set(25f, 0);
 			previousConfigButton.Height.Set(25f, 0f);
 			previousConfigButton.VAlign = 1f;
 			previousConfigButton.Top.Set(-65f, 0f);
@@ -99,7 +102,7 @@ namespace Terraria.ModLoader.UI
 			previousConfigButton.OnClick += PreviousConfig;
 			//uIElement.Append(previousConfigButton);
 
-			nextConfigButton = new UITextPanel<string>("Next Config", 1f, false);
+			nextConfigButton = new UITextPanel<string>(">", 1f, false);
 			nextConfigButton.CopyStyle(previousConfigButton);
 			nextConfigButton.OnMouseOver += UICommon.FadedMouseOver;
 			nextConfigButton.OnMouseOut += UICommon.FadedMouseOut;
@@ -108,33 +111,35 @@ namespace Terraria.ModLoader.UI
 			//uIElement.Append(nextConfigButton);
 
 			saveConfigButton = new UITextPanel<string>("Save Config", 1f, false);
-			saveConfigButton.CopyStyle(previousConfigButton);
+			saveConfigButton.Width.Set(-10f, 1f / 4f);
+			saveConfigButton.Height.Set(25f, 0f);
+			saveConfigButton.Top.Set(-20f, 0f);
 			saveConfigButton.OnMouseOver += UICommon.FadedMouseOver;
 			saveConfigButton.OnMouseOut += UICommon.FadedMouseOut;
-			saveConfigButton.HAlign = 0.5f;
+			saveConfigButton.HAlign = 0.33f;
+			saveConfigButton.VAlign = 1f;
 			saveConfigButton.OnClick += SaveConfig;
 			//uIElement.Append(saveConfigButton);
 
 			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
-			backButton.CopyStyle(previousConfigButton);
-			backButton.Top.Set(-20f, 0f);
+			backButton.CopyStyle(saveConfigButton);
+			backButton.HAlign = 0;
 			backButton.OnMouseOver += UICommon.FadedMouseOver;
 			backButton.OnMouseOut += UICommon.FadedMouseOut;
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
 			revertConfigButton = new UITextPanel<string>("Revert Changes", 1f, false);
-			revertConfigButton.CopyStyle(previousConfigButton);
-			revertConfigButton.Top.Set(-20f, 0f);
+			revertConfigButton.CopyStyle(saveConfigButton);
 			revertConfigButton.OnMouseOver += UICommon.FadedMouseOver;
 			revertConfigButton.OnMouseOut += UICommon.FadedMouseOut;
-			revertConfigButton.HAlign = 0.5f;
+			revertConfigButton.HAlign = 0.66f;
 			revertConfigButton.OnClick += RevertConfig;
 			//uIElement.Append(revertConfigButton);
 
-			restoreDefaultsConfigButton = new UITextPanel<string>("Restore All Defaults", 1f, false);
-			restoreDefaultsConfigButton.CopyStyle(previousConfigButton);
-			restoreDefaultsConfigButton.Top.Set(-20f, 0f);
+			//float scale = Math.Min(1f, 130f/Main.fontMouseText.MeasureString("Restore Defaults").X);
+			restoreDefaultsConfigButton = new UITextPanel<string>("Restore Defaults", 1f, false);
+			restoreDefaultsConfigButton.CopyStyle(saveConfigButton);
 			restoreDefaultsConfigButton.OnMouseOver += UICommon.FadedMouseOver;
 			restoreDefaultsConfigButton.OnMouseOut += UICommon.FadedMouseOut;
 			restoreDefaultsConfigButton.HAlign = 1f;
@@ -282,11 +287,11 @@ namespace Terraria.ModLoader.UI
 		public void SetMessage(string text, Color color)
 		{
 			message.TextScale = 1f;
-			message.SetText(text);
+			message.SetText("Notification: " + text);
 			float width = Main.fontMouseText.MeasureString(text).X;
-			if (width > 525)
+			if (width > 400)
 			{
-				message.TextScale = 525 / width;
+				message.TextScale = 400 / width;
 				message.Recalculate();
 			}
 			message.TextColor = color;
@@ -361,12 +366,12 @@ namespace Terraria.ModLoader.UI
 			if (index - 1 >= 0)
 				uIElement.Append(previousConfigButton);
 
-			uIPanel.RemoveChild(configListStack.Peek());
-			uIPanel.Append(mainConfigList);
-			mainConfigList.SetScrollbar(uIScrollbar);
+			uIElement.RemoveChild(configPanelStack.Peek());
+			uIElement.Append(uIPanel);
 			mainConfigList.Clear();
-			configListStack.Clear();
-			configListStack.Push(mainConfigList);
+			configPanelStack.Clear();
+			configPanelStack.Push(uIPanel);
+			subPageStack.Clear();
 			//currentConfigList = mainConfigList;
 			int i = 0;
 			int top = 0;
@@ -498,17 +503,18 @@ namespace Terraria.ModLoader.UI
 					SeparatePageAttribute att = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute));
 					if (att != null)
 					{
-						UIList separateList = MakeSeparateList(subitem, memberInfo.Name);
+						UIPanel separateListPanel = MakeSeparateListPanel(subitem, memberInfo);
 
-						e = new UITextPanel<string>(memberInfo.Name);
+						string name = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, subitem, null)?.Label ?? memberInfo.Name;
+						e = new UITextPanel<string>(name);
 						e.HAlign = 0.5f;
 						elementHeight = 40;
 						e.OnClick += (a, c) =>
 						{
-							Interface.modConfig.uIPanel.RemoveChild(Interface.modConfig.configListStack.Peek());
-							Interface.modConfig.uIPanel.Append(separateList);
-							Interface.modConfig.configListStack.Push(separateList);
-							separateList.SetScrollbar(Interface.modConfig.uIScrollbar);
+							Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
+							Interface.modConfig.uIElement.Append(separateListPanel);
+							Interface.modConfig.configPanelStack.Push(separateListPanel);
+							//separateListPanel.SetScrollbar(Interface.modConfig.uIScrollbar);
 
 							//UIPanel panel = new UIPanel();
 							//panel.Width.Set(200, 0);
@@ -565,35 +571,79 @@ namespace Terraria.ModLoader.UI
 			return null;
 		}
 
-		private static UIList MakeSeparateList(object subitem, string name)
+		private static UIPanel MakeSeparateListPanel(object subitem, PropertyFieldWrapper memberInfo)
 		{
+			
+
+			UIPanel uIPanel = new UIPanel();
+			uIPanel.CopyStyle(Interface.modConfig.uIPanel);
+			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+
+			BackgroundColorAttribute bca = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, subitem, null);
+			if (bca != null)
+			{
+				uIPanel.BackgroundColor = bca.color;
+			}
+
+			//uIElement.Append(uIPanel);
+
 			UIList separateList = new UIList();
 			separateList.CopyStyle(Interface.modConfig.mainConfigList);
+			separateList.Height.Set(-40f, 1f);
+			separateList.Top.Set(40f, 0f);
+			uIPanel.Append(separateList);
 			int i = 0;
 			int top = 0;
 
+			UIScrollbar uIScrollbar = new UIScrollbar();
+			uIScrollbar.SetView(100f, 1000f);
+			uIScrollbar.Height.Set(-40f, 1f);
+			uIScrollbar.Top.Set(40f, 0f);
+			uIScrollbar.HAlign = 1f;
+			uIPanel.Append(uIScrollbar);
+			separateList.SetScrollbar(uIScrollbar);
+
+			string name = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, subitem, null)?.Label ?? memberInfo.Name;
+			Interface.modConfig.subPageStack.Push(name);
+			//UIPanel heading = new UIPanel();
+			//UIText headingText = new UIText(name);
+
+			name = Interface.modConfig.subPageStack.Aggregate((current, next) => current + "/" + next);
+
 			UITextPanel<string> heading = new UITextPanel<string>(name);
-			heading.HAlign = 0.5f;
-			var headingContainer = GetContainer(heading, i++);
-			headingContainer.Height.Pixels = 40;
-			separateList.Add(headingContainer);
-			top += 40;
+			heading.HAlign = 0f;
+			//heading.Width.Set(-10, 0.5f);
+			//heading.Left.Set(60, 0f);
+			heading.Top.Set(-6, 0);
+			heading.Height.Set(40, 0);
+			//var headingContainer = GetContainer(heading, i++);
+			//headingContainer.Height.Pixels = 40;
+			uIPanel.Append(heading);
+			//headingText.Top.Set(6, 0);
+			//headingText.Left.Set(0, .5f);
+			//headingText.HAlign = .5f;
+			//uIPanel.Append(headingText);
+			//top += 40;
 
 			UITextPanel<string> back = new UITextPanel<string>("Back");
-			back.HAlign = 0.5f;
-			top += 40;
+			back.HAlign = 1f;
+			back.Width.Set(50, 0f);
+			back.Top.Set(-6, 0);
+			//top += 40;
 			//var capturedCurrent = Interface.modConfig.currentConfigList;
 			back.OnClick += (a, c) =>
 			{
-				Interface.modConfig.uIPanel.RemoveChild(separateList);
-				Interface.modConfig.configListStack.Pop();
-				Interface.modConfig.uIPanel.Append(Interface.modConfig.configListStack.Peek());
-				Interface.modConfig.configListStack.Peek().SetScrollbar(Interface.modConfig.uIScrollbar);
+				Interface.modConfig.uIElement.RemoveChild(uIPanel);
+				Interface.modConfig.configPanelStack.Pop();
+				Interface.modConfig.uIElement.Append(Interface.modConfig.configPanelStack.Peek());
+				//Interface.modConfig.configPanelStack.Peek().SetScrollbar(Interface.modConfig.uIScrollbar);
 				//Interface.modConfig.currentConfigList = capturedCurrent;
 			};
-			var backContainer = GetContainer(back, i++);
-			backContainer.Height.Pixels = 40;
-			separateList.Add(backContainer);
+			back.OnMouseOver += UICommon.FadedMouseOver;
+			back.OnMouseOut += UICommon.FadedMouseOut;
+			//var backContainer = GetContainer(back, i++);
+			//backContainer.Height.Pixels = 40;
+			uIPanel.Append(back);
 
 			//var b = new UIText("Test");
 			//separateList.Add(b);
@@ -612,7 +662,8 @@ namespace Terraria.ModLoader.UI
 
 				WrapIt(separateList, ref top, variable, subitem, ref i);
 			}
-			return separateList;
+			Interface.modConfig.subPageStack.Pop();
+			return uIPanel;
 		}
 
 		internal static UIElement GetContainer(UIElement containee, int sortid)

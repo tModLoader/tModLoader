@@ -38,22 +38,7 @@ namespace Terraria.ModLoader.UI
 				this._TooltipFunction = () => tta.tooltip;
 			}
 
-			// Class
-			BackgroundColorAttribute bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(BackgroundColorAttribute), true);
-			if (bca != null)
-			{
-				backgroundColor = bca.color;
-			}
-			if (array != null)
-			{
-				bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(item.GetType(), typeof(BackgroundColorAttribute), true);
-				if (bca != null)
-				{
-					backgroundColor = bca.color;
-				}
-			}
-			// Member
-			bca = (BackgroundColorAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(BackgroundColorAttribute));
+			BackgroundColorAttribute bca = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, item, array);
 			if (bca != null)
 			{
 				backgroundColor = bca.color;
@@ -82,7 +67,7 @@ namespace Terraria.ModLoader.UI
 			}
 			if (IsMouseHovering && _TooltipFunction != null)
 			{
-				string hoverText = _TooltipFunction();
+				string hoverText = _TooltipFunction(); // TODO: Fix, draw order prevents this from working correctly
 				float x = Main.fontMouseText.MeasureString(hoverText).X;
 				vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
 				if (vector.Y > (float)(Main.screenHeight - 30))

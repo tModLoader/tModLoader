@@ -268,6 +268,19 @@ namespace Terraria.ModLoader
 				return "";
 			return Activator.CreateInstance(type);
 		}
+
+		public static T GetCustomAttribute<T>(UI.PropertyFieldWrapper memberInfo, object item, object array) where T : System.Attribute
+		{			
+			// Class
+			T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
+			if (array != null)
+			{
+				attribute = (T)Attribute.GetCustomAttribute(item.GetType(), typeof(T), true) ?? attribute;
+			}
+			// Member
+			attribute = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
+			return attribute;
+		}
 	}
 
 	public class ColorJsonConverter : JsonConverter
