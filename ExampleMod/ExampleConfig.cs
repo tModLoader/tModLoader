@@ -124,6 +124,7 @@ namespace ExampleMod
 	/// <summary>
 	/// This config is just a showcase of various attributes and their effects in the UI window.
 	/// </summary>
+	[Label("ModConfig Showcase")]
 	public class ModConfigShowcase : ModConfig
 	{
 		public override MultiplayerSyncMode Mode
@@ -133,6 +134,9 @@ namespace ExampleMod
 				return MultiplayerSyncMode.UniquePerPlayer;
 			}
 		}
+
+		[Label("$Mods.ExampleMod.Common.LocalizedLabel")]
+		public int LocalizedLabel;
 
 		[Label("This is a float")]
 		public float SomeFLoat;
@@ -184,7 +188,13 @@ namespace ExampleMod
 		public Dictionary<int, float> IntFloatDictionary;
 		public Dictionary<string, Pair> StringPairDictionary;
 
+		[BackgroundColor(255, 0, 0)]
 		public List<Pair> ListOfPair;
+
+		[BackgroundColor(255, 0, 255)]
+		public Pair pairExample;
+
+		public Pair pairExample2;
 
 		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
 		[DefaultValue(new string[] { "Give Up", "Give Up" })]
@@ -244,6 +254,7 @@ namespace ExampleMod
 			clone.ListOfString = new List<string>(ListOfString);
 			clone.subConfigExample = subConfigExample == null ? null : subConfigExample.Clone();
 			clone.simpleDataExample = simpleDataExample == null ? null : simpleDataExample.Clone();
+			clone.pairExample = pairExample == null ? null : pairExample.Clone();
 			clone.simpleDataExample2 = simpleDataExample2.Clone();
 			clone.ArrayOfInts = (int[])ArrayOfInts.Clone();
 			clone.ArrayOfString = (string[])ArrayOfString.Clone();
@@ -310,6 +321,7 @@ namespace ExampleMod
 		public bool enabled;
 
 		[SeparatePage]
+		[BackgroundColor(50, 200, 100)]
 		public SubSubConfigExample SubA;
 
 		[SeparatePage]

@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 		public static readonly string versionedName = "tModLoader v" + version;
 		public static readonly bool beta = false;
 #else
-		public static readonly string versionedName = "tModLoader v" + version + " - ModConfig Beta 4";
+		public static readonly string versionedName = "tModLoader v" + version + " - ModConfig Beta 5";
 		public static readonly bool beta = true;
 #endif
 #if WINDOWS

@@ -107,7 +107,7 @@ namespace Terraria.ModLoader
 	}
 
 	// TODO: Let this be a ModTranslation key?
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 	public class LabelAttribute : Attribute
 	{
 		readonly string label;
@@ -115,7 +115,7 @@ namespace Terraria.ModLoader
 		{
 			this.label = label;
 		}
-		public string Label => label;
+		public string Label => label.StartsWith("$") ? Localization.Language.GetTextValue(label.Substring(1)) : label;
 	}
 
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]

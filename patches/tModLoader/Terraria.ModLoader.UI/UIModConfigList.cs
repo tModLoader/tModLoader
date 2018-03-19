@@ -16,6 +16,7 @@ using Terraria.UI.Gamepad;
 using Newtonsoft.Json;
 using System.Reflection;
 using Terraria.Localization;
+using Terraria.GameContent.UI.States;
 
 namespace Terraria.ModLoader.UI
 {
@@ -29,7 +30,7 @@ namespace Terraria.ModLoader.UI
 		//private bool updateNeeded;
 		//internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		private UITextPanel<string> buttonB;
-		private UITextPanel<string> buttonOMF;
+		//private UITextPanel<string> buttonOMF;
 
 		public override void OnInitialize()
 		{
@@ -80,13 +81,13 @@ namespace Terraria.ModLoader.UI
 			buttonB.OnClick += BackClick;
 			uIElement.Append(buttonB);
 
-			buttonOMF = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"), 1f, false);
-			buttonOMF.CopyStyle(buttonB);
-			buttonOMF.HAlign = 0.5f;
-			buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
-			buttonOMF.OnMouseOut += UICommon.FadedMouseOut;
-			buttonOMF.OnClick += OpenModsFolder;
-			uIElement.Append(buttonOMF);
+			//buttonOMF = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"), 1f, false);
+			//buttonOMF.CopyStyle(buttonB);
+			//buttonOMF.HAlign = 0.5f;
+			//buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
+			//buttonOMF.OnMouseOut += UICommon.FadedMouseOut;
+			//buttonOMF.OnClick += OpenModsFolder;
+			//uIElement.Append(buttonOMF);
 
 			Append(uIElement);
 		}
@@ -100,12 +101,12 @@ namespace Terraria.ModLoader.UI
 			IngameFancyUI.Close();
 		}
 
-		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(10, -1, -1, 1);
-			Directory.CreateDirectory(ModLoader.ModPath);
-			Process.Start(ModLoader.ModPath);
-		}
+		//private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
+		//{
+		//	Main.PlaySound(10, -1, -1, 1);
+		//	Directory.CreateDirectory(ModLoader.ModPath);
+		//	Process.Start(ModLoader.ModPath);
+		//}
 
 		//public override void Draw(SpriteBatch spriteBatch)
 		//{
@@ -123,12 +124,14 @@ namespace Terraria.ModLoader.UI
 
 		internal void Populate()
 		{
+			int i = 0;
 			foreach (var item in ConfigManager.Configs)
 			{
 				foreach (var config in item.Value)
 				{
 					//if (config.Mode == MultiplayerSyncMode.UniquePerPlayer)
 					{
+						string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
 						UITextPanel<string> t = new UITextPanel<string>(item.Key.DisplayName + ": " + config.Name);
 						//UIText t = new UIText(item.Key.DisplayName + ": " + item.Value.Count);
 						t.OnClick += (a, b) =>
@@ -138,7 +141,13 @@ namespace Terraria.ModLoader.UI
 						};
 						t.OnMouseOver += UICommon.FadedMouseOver;
 						t.OnMouseOut += UICommon.FadedMouseOut;
-						modList.Add(t);
+						t.HAlign = 0.5f;
+						UIElement container = new UISortableElement(i++);
+						container.Width.Set(0f, 1f);
+						container.Height.Set(40f, 0f);
+						container.HAlign = 1f;
+						container.Append(t);
+						modList.Add(container);
 
 						if (config.Mode == MultiplayerSyncMode.ServerDictates)
 						{

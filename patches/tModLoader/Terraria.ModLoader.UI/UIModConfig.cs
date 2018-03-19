@@ -13,6 +13,7 @@ using Terraria.GameContent.UI.States;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections;
 using Terraria.GameInput;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.UI
 {
@@ -30,6 +31,7 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> previousConfigButton;
 		private UITextPanel<string> nextConfigButton;
 		private UITextPanel<string> saveConfigButton;
+		private UITextPanel<string> backButton;
 		private UITextPanel<string> revertConfigButton;
 		private UITextPanel<string> restoreDefaultsConfigButton;
 		private UIPanel uIPanel;
@@ -121,11 +123,21 @@ namespace Terraria.ModLoader.UI
 			saveConfigButton.OnClick += SaveConfig;
 			//uIElement.Append(saveConfigButton);
 
-			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
+			backButton = new UITextPanel<string>("Back", 1f, false);
 			backButton.CopyStyle(saveConfigButton);
 			backButton.HAlign = 0;
-			backButton.OnMouseOver += UICommon.FadedMouseOver;
-			backButton.OnMouseOut += UICommon.FadedMouseOut;
+			backButton.OnMouseOver += (a, b) =>
+			{
+				UICommon.FadedMouseOver(a, b);
+				if (pendingChanges)
+					backButton.BackgroundColor = Color.Red;
+			};
+			backButton.OnMouseOut += (a, b) =>
+			{
+				UICommon.FadedMouseOut(a, b);
+				if (pendingChanges)
+					backButton.BackgroundColor = Color.Red * 0.7f;
+			};
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
@@ -158,7 +170,11 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.modsMenuID;
 
 			//Main.menuMode = 1127;
-			IngameFancyUI.Close();
+			if (!Main.gameMenu)
+			{
+				Main.InGameUI.SetState(Interface.modConfigList);
+			}
+			//IngameFancyUI.Close();
 			//if (ConfigManager.ModNeedsReload(mod))
 			//{
 			//	Main.menuMode = Interface.reloadModsID;
@@ -279,8 +295,10 @@ namespace Terraria.ModLoader.UI
 		}
 
 		bool pendingChanges;
+		bool pendingChangesUIUpdate;
 		public void SetPendingChanges(bool changes = true)
 		{
+			pendingChangesUIUpdate |= changes;
 			pendingChanges |= changes;
 		}
 
@@ -301,11 +319,12 @@ namespace Terraria.ModLoader.UI
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
-			if (pendingChanges)
+			if (pendingChangesUIUpdate)
 			{
 				uIElement.Append(saveConfigButton);
 				uIElement.Append(revertConfigButton);
-				pendingChanges = false;
+				backButton.BackgroundColor = Color.Red * 0.7f;
+				pendingChangesUIUpdate = false;
 			}
 			if (netUpdate)
 			{
@@ -346,17 +365,21 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate()
 		{
 			SetMessage("", Color.White);
-			headerTextPanel.SetText(modConfig.mod.DisplayName + ": " + modConfig.Name);
+			string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(modConfig.GetType(), typeof(LabelAttribute)))?.Label ?? modConfig.Name;
+			headerTextPanel.SetText(modConfig.mod.DisplayName + ": " + configDisplayName);
 			modConfigClone = modConfig.Clone();
+			pendingChanges = pendingRevertDefaults;
 			if (pendingRevertDefaults)
 			{
 				pendingRevertDefaults = false;
 				ConfigManager.Reset(modConfigClone);
-				pendingChanges = true;
+				pendingChangesUIUpdate = true;
 			}
 
 			int index = modConfigs.IndexOf(modConfig);
 			int count = modConfigs.Count;
+			//pendingChanges = false;
+			backButton.BackgroundColor = UICommon.defaultUIBlueMouseOver;
 			uIElement.RemoveChild(saveConfigButton);
 			uIElement.RemoveChild(revertConfigButton);
 			uIElement.RemoveChild(previousConfigButton);
@@ -573,7 +596,7 @@ namespace Terraria.ModLoader.UI
 
 		private static UIPanel MakeSeparateListPanel(object subitem, PropertyFieldWrapper memberInfo)
 		{
-			
+
 
 			UIPanel uIPanel = new UIPanel();
 			uIPanel.CopyStyle(Interface.modConfig.uIPanel);

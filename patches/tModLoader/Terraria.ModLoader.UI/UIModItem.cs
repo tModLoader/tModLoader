@@ -87,7 +87,7 @@ namespace Terraria.ModLoader.UI
 				configButton = new UITextPanel<string>("Config", 1f, false);
 				configButton.Width.Set(100f, 0f);
 				configButton.Height.Set(30f, 0f);
-				configButton.Left.Set(170f, 0f);
+				configButton.Left.Set(button2.Left.Pixels - configButton.Width.Pixels - 5f, 0f);
 				configButton.Top.Set(40f, 0f);
 				configButton.PaddingTop -= 2f;
 				configButton.PaddingBottom -= 2f;
@@ -108,7 +108,7 @@ namespace Terraria.ModLoader.UI
 				Texture2D icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
 					Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
 				UIHoverImage modReferenceIcon = new UIHoverImage(icon, "This mod depends on: " + refs + "\n (click to enable)");
-				modReferenceIcon.Left.Set(button2.Left.Pixels - 24f, 0f);
+				modReferenceIcon.Left.Set((configButton?.Left.Pixels ?? button2.Left.Pixels) - 24f, 0f);
 				modReferenceIcon.Top.Set(47f, 0f);
 				modReferenceIcon.OnClick += (a, b) =>
 				{

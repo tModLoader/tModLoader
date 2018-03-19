@@ -10,7 +10,7 @@ IF not "%1"=="beta" (
 ) else (
 	:: call "CompleteRelease.bat beta" to build a beta. Be sure to update version.
 	echo "Building Beta"
-	set version=v0.10.2 ModConfig Beta 4
+	set version=v0.10.2 ModConfig Beta 5
 	call buildBeta.bat
 )
 set destinationFolder=.\tModLoader %version% Release
