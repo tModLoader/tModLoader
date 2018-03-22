@@ -37,6 +37,7 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> reloadButton;
 		private UITextPanel<string> clearButton;
 		private UITextPanel<string> downloadAllButton;
+		private UITextPanel<string> updateAllButton;
 		public UICycleImage UpdateFilterToggle;
 		public UICycleImage SortModeFilterToggle;
 		public UICycleImage ModSideFilterToggle;
@@ -172,6 +173,24 @@ namespace Terraria.ModLoader.UI
 			downloadAllButton.OnMouseOver += (s, e) => UICommon.CustomFadedMouseOver(Color.Azure, s, e);
 			downloadAllButton.OnMouseOut += (s, e) => UICommon.CustomFadedMouseOut(Color.Azure * 0.7f, s, e);
 			downloadAllButton.OnClick += (s, e) => DownloadMods(SpecialModPackFilter, SpecialModPackFilterTitle);
+
+			updateAllButton = new UITextPanel<string>("Update All", 1f, false);
+			updateAllButton.Width.Set(-10f, 0.5f);
+			updateAllButton.Height.Set(25f, 0f);
+			updateAllButton.HAlign = 1f;
+			updateAllButton.VAlign = 1f;
+			updateAllButton.Top.Set(-20f, 0f);
+			updateAllButton.BackgroundColor = Color.Orange * 0.7f;
+			updateAllButton.OnMouseOver += UICommon.FadedMouseOver;
+			updateAllButton.OnMouseOut += UICommon.FadedMouseOut;
+			updateAllButton.OnClick += (s, e) =>
+			{
+				if (!loading)
+				{
+					var updatableMods = items.Where(x => x.update && !x.updateIsDowngrade).Select(x => x.mod).ToList();
+					DownloadMods(updatableMods, "Update All");
+				}
+			};
 
 			Append(uIElement);
 
@@ -356,6 +375,11 @@ namespace Terraria.ModLoader.UI
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
+			uIElement.RemoveChild(updateAllButton);
+			if(SpecialModPackFilter == null && items.Count(x => x.update && !x.updateIsDowngrade) > 0)
+			{
+				uIElement.Append(updateAllButton);
+			}
 		}
 
 		public override void OnActivate()

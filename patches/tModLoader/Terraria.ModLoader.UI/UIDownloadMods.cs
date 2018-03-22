@@ -46,7 +46,10 @@ namespace Terraria.ModLoader.UI
 		{
 			loadProgress.SetText($"Downloading: {name}: ???");
 			loadProgress.SetProgress(0f);
-
+			if (UIModBrowser.PlatformSupportsTls12) // Needed for downloads from Github
+			{
+				ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; // SecurityProtocolType.Tls12
+			}
 			if (modsToDownload != null && modsToDownload.Count > 0)
 			{
 				client = new WebClient();
