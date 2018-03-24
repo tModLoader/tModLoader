@@ -53,17 +53,26 @@
  				{
  					if (Main.mouseRightRelease)
  					{
-@@ -1004,6 +_,10 @@
- 						inv[slot].stack = Main.rand.Next(20, 50);
+@@ -1005,6 +_,10 @@
  					}
  					Recipe.FindRecipes();
-+				}
+ 				}
 +				else if (ItemLoader.CanRightClick(inv[slot]))
 +				{
 +					ItemLoader.RightClick(inv[slot], player);
- 				}
++				}
  				else
  				{
+ 					flag = false;
+@@ -1026,7 +_,7 @@
+ 							}
+ 						}
+ 					}
+-					if (flag2)
++					if (flag2 && ItemLoader.CanEquipAccessory(inv[slot], slot - 10))
+ 					{
+ 						Utils.Swap<Item>(ref inv[slot], ref inv[slot - 10]);
+ 						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
 @@ -1083,10 +_,14 @@
  							}
  							if (Main.mouseItem.type == 0)
