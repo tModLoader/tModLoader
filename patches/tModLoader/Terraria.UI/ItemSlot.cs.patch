@@ -64,6 +64,23 @@
  				}
  				else
  				{
+@@ -1083,10 +_,14 @@
+ 							}
+ 							if (Main.mouseItem.type == 0)
+ 							{
+-								Main.mouseItem.netDefaults(inv[slot].netID);
++								// Main.mouseItem.netDefaults(inv[slot].netID);
++								Main.mouseItem = inv[slot].Clone();
++								Main.mouseItem.stack = 1;
++								if (inv[slot].buyOnce)
++									Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
+ 								if (inv[slot].prefix != 0)
+ 								{
+-									Main.mouseItem.Prefix((int)inv[slot].prefix);
++									// Main.mouseItem.Prefix((int)inv[slot].prefix); // no prefix, preserved by cloning
+ 								}
+ 								Main.mouseItem.stack = 0;
+ 							}
 @@ -1579,11 +_,15 @@
  				num9 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num9 / 2f;
