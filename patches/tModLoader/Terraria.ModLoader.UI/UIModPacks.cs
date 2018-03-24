@@ -95,8 +95,8 @@ namespace Terraria.ModLoader.UI
 			Directory.CreateDirectory(ModListSaveDirectory);
 
 			string path = ModListSaveDirectory + Path.DirectorySeparatorChar + filename + ".json";
-
-			string json = JsonConvert.SerializeObject(ModLoader.EnabledMods, Formatting.Indented);
+			var foundMods = ModLoader.FindMods().Select(x => x.Name).Intersect(ModLoader.EnabledMods).ToList();
+			string json = JsonConvert.SerializeObject(foundMods, Formatting.Indented);
 			File.WriteAllText(path, json);
 
 			Main.menuMode = Interface.modPacksMenuID; // should reload

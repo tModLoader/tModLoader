@@ -793,6 +793,7 @@ namespace Terraria.ModLoader
 			//save
 			Directory.CreateDirectory(ModPath);
 			string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
+			_enabledMods.IntersectWith(ModLoader.FindMods().Select(x => x.Name)); // Clear out mods that no longer exist.
 			string json = JsonConvert.SerializeObject(EnabledMods, Formatting.Indented);
 			File.WriteAllText(path, json);
 		}
