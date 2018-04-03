@@ -10,7 +10,7 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI
 {
-	abstract class UIModConfigItem : UIElement
+	public abstract class UIModConfigItem : UIElement
 	{
 		private Color backgroundColor; // TODO inherit parent object color?
 		protected Func<string> _TextDisplayFunction;
@@ -67,18 +67,19 @@ namespace Terraria.ModLoader.UI
 			}
 			if (IsMouseHovering && _TooltipFunction != null)
 			{
-				string hoverText = _TooltipFunction(); // TODO: Fix, draw order prevents this from working correctly
-				float x = Main.fontMouseText.MeasureString(hoverText).X;
-				vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
-				if (vector.Y > (float)(Main.screenHeight - 30))
-				{
-					vector.Y = (float)(Main.screenHeight - 30);
-				}
-				if (vector.X > (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16))
-				{
-					vector.X = (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16);
-				}
-				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, hoverText, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+				UIModConfig.tooltip = _TooltipFunction();
+				//string hoverText = _TooltipFunction(); // TODO: Fix, draw order prevents this from working correctly
+				//float x = Main.fontMouseText.MeasureString(hoverText).X;
+				//vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
+				//if (vector.Y > (float)(Main.screenHeight - 30))
+				//{
+				//	vector.Y = (float)(Main.screenHeight - 30);
+				//}
+				//if (vector.X > (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16))
+				//{
+				//	vector.X = (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16);
+				//}
+				//Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, hoverText, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 			}
 		}
 

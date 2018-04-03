@@ -146,6 +146,16 @@ namespace Terraria.ModLoader
 		}
 	}
 
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+	public class CustomModConfigItemAttribute : Attribute
+	{
+		public Type t;
+		public CustomModConfigItemAttribute(Type t)
+		{
+			this.t = t;
+		}
+	}
+
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class DefaultListValueAttribute : Attribute
 	{

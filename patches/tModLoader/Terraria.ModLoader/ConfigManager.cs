@@ -8,6 +8,8 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ID;
 using System.Reflection;
+using Terraria.UI;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
 {
@@ -21,7 +23,7 @@ namespace Terraria.ModLoader
 		// This copy of Configs stores instances present during load. Its only use in detecting if a reload is needed.
 		private static readonly IDictionary<Mod, List<ModConfig>> LoadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
 
-		internal static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+		public static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
 		{
 			Formatting = Formatting.Indented,
 			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
@@ -269,8 +271,10 @@ namespace Terraria.ModLoader
 			return Activator.CreateInstance(type);
 		}
 
+		// Gets an Attribute from a property or field. Attribute defined on Member has higest priority, 
+		// followed by the containing data structure, followed by attribute defined on the Class. 
 		public static T GetCustomAttribute<T>(UI.PropertyFieldWrapper memberInfo, object item, object array) where T : System.Attribute
-		{			
+		{	
 			// Class
 			T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
 			if (array != null)
@@ -280,6 +284,11 @@ namespace Terraria.ModLoader
 			// Member
 			attribute = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
 			return attribute;
+		}
+
+		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage, object array = null, Type arrayType = null, int index = -1)
+		{
+			return UIModConfig.WrapIt(parent, ref top, memberInfo, item, ref sliderIDInPage, array, arrayType, index);
 		}
 	}
 

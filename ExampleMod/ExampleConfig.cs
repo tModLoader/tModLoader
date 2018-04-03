@@ -1,11 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.UI;
 
 namespace ExampleMod
 {
@@ -135,6 +140,14 @@ namespace ExampleMod
 			}
 		}
 
+		[DefaultValue(typeof(Color), "73, 94, 171, 255")] // needs 4 comma separated bytes
+		public Color SomeColor;
+
+		[Label("Custom UI Element")]
+		[Tooltip("This UI Element is modder defined")]
+		[CustomModConfigItem(typeof(UIModConfigGradientItem))]
+		public Gradient gradient;
+
 		[Label("$Mods.ExampleMod.Common.LocalizedLabel")]
 		public int LocalizedLabel;
 
@@ -226,6 +239,8 @@ namespace ExampleMod
 				IntFloatDictionary = new Dictionary<int, float>();
 			if (StringPairDictionary == null)
 				StringPairDictionary = new Dictionary<string, Pair>();
+			//if (gradient == null)
+			//	gradient = new Gradient();
 			//if (simpleDataExample == null)
 			//	simpleDataExample = new SimpleData();
 			if (simpleDataExample2 == null)
@@ -254,6 +269,7 @@ namespace ExampleMod
 			clone.ListOfString = new List<string>(ListOfString);
 			clone.subConfigExample = subConfigExample == null ? null : subConfigExample.Clone();
 			clone.simpleDataExample = simpleDataExample == null ? null : simpleDataExample.Clone();
+			clone.gradient = gradient == null ? null : gradient.Clone();
 			clone.pairExample = pairExample == null ? null : pairExample.Clone();
 			clone.simpleDataExample2 = simpleDataExample2.Clone();
 			clone.ArrayOfInts = (int[])ArrayOfInts.Clone();
@@ -277,6 +293,23 @@ namespace ExampleMod
 		Odd,
 		Strange,
 		Peculiar
+	}
+
+	public class Gradient
+	{
+		[DefaultValue(typeof(Color), "0, 0, 255, 255")]
+		public Color start;
+		[DefaultValue(typeof(Color), "255, 0, 0, 255")]
+		public Color end;
+
+		public Gradient()
+		{
+		}
+
+		internal Gradient Clone()
+		{
+			return (Gradient)MemberwiseClone();
+		}
 	}
 
 	[BackgroundColor(0, 255, 255)]
@@ -370,5 +403,59 @@ namespace ExampleMod
 			clone.nestedSimple = nestedSimple.Clone();
 			return clone;
 		}
+	}
+
+	class UIModConfigGradientItem : UIModConfigItem
+	{
+		//public UIModConfigVector2Item(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Vector2> array = null, int index = -1) : base(memberInfo, item, (IList)array)
+		public UIModConfigGradientItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
+		{
+			object subitem = memberInfo.GetValue(item);
+			if (subitem == null)
+			{
+				subitem = Activator.CreateInstance(memberInfo.Type);
+				JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
+				memberInfo.SetValue(item, subitem);
+			}
+
+			// item is the owner object instance, memberinfo is the Info about this field in item
+
+			int height = 30;
+			IList<Vector2> array = (IList<Vector2>)array2;
+			//object subitem = memberInfo.GetValue(item);
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem))
+			{
+				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, ref i);
+
+				if (array != null)
+				{
+					wrapped.Item1.Left.Pixels -= 20;
+					wrapped.Item1.Width.Pixels += 20;
+				}
+			}
+		}
+
+		public override void Draw(SpriteBatch spriteBatch)
+		{
+			base.Draw(spriteBatch);
+			Rectangle hitbox = GetInnerDimensions().ToRectangle();
+			Gradient g = (memberInfo.GetValue(item) as Gradient);
+			if (g != null)
+			{
+				int left = (hitbox.Left + hitbox.Right) / 2;
+				int right = hitbox.Right;
+				int steps = right - left;
+				for (int i = 0; i < steps; i += 1)
+				{
+					float percent = (float)i / steps;
+					spriteBatch.Draw(Main.magicPixel, new Rectangle(left + i, hitbox.Y, 1, 30), Color.Lerp(g.start, g.end, percent));
+				}
+
+
+				//Main.spriteBatch.Draw(Main.magicPixel, new Rectangle(hitbox.X + hitbox.Width / 2, hitbox.Y, hitbox.Width / 4, 30), g.start);
+				//Main.spriteBatch.Draw(Main.magicPixel, new Rectangle(hitbox.X + 3 * hitbox.Width / 4, hitbox.Y, hitbox.Width / 4, 30), g.end);
+			}
+		}
+
 	}
 }

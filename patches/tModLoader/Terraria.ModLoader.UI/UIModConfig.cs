@@ -333,6 +333,27 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		public static string tooltip;
+		public override void Draw(SpriteBatch spriteBatch)
+		{
+			tooltip = null;
+			base.Draw(spriteBatch);
+			if (!string.IsNullOrEmpty(tooltip))
+			{
+				float x = Main.fontMouseText.MeasureString(tooltip).X;
+				Vector2 vector = vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
+				if (vector.Y > (float)(Main.screenHeight - 30))
+				{
+					vector.Y = (float)(Main.screenHeight - 30);
+				}
+				if (vector.X > (float)(GetDimensions().Width + GetDimensions().X - x - 16))
+				{
+					vector.X = (float)(GetDimensions().Width + GetDimensions().X - x - 16);
+				}
+				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, tooltip, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			}
+		}
+
 		// do we need 2 copies? We can discard changes by reloading.
 		// We can save pending changes by saving file then loading/reloading mods.
 		// when we get new server configs from server...replace, don't save?
@@ -425,7 +446,34 @@ namespace Terraria.ModLoader.UI
 
 			// TODO: Modder supplied UIElement
 			// TODO: Vector2, other structs
-			if (type == typeof(Color))
+			CustomModConfigItemAttribute customUI = ConfigManager.GetCustomAttribute<CustomModConfigItemAttribute>(memberInfo, null, null);
+			if (customUI != null)
+			{
+				Type customUIType = customUI.t;
+				ConstructorInfo ctor = customUIType.GetConstructor(new[] { typeof(PropertyFieldWrapper), typeof(object), typeof(int).MakeByRefType(), typeof(IList), typeof(int) });
+				if (ctor != null)
+				{
+					object[] arguments = new object[] { memberInfo, item, sliderIDInPage, array, index };
+					object instance = ctor.Invoke(arguments);
+					sliderIDInPage = (int)arguments[2];
+					e = instance as UIElement;
+					if (e != null)
+					{
+						//e.Recalculate();
+						elementHeight = (int)e.GetOuterDimensions().Height;
+						elementHeight = 400; //e.GetHeight();
+					}
+					else
+					{
+						e = new UIText($"CustomUI for {memberInfo.Name} does not inherit from UIElement.");
+					}
+				}
+				else
+				{
+					e = new UIText($"CustomUI for {memberInfo.Name} does not have the correct constructor.");
+				}
+			}
+			else if (type == typeof(Color))
 			{
 				e = new UIModConfigColorItem(memberInfo, item, ref sliderIDInPage, (IList<Color>)array, index);
 				elementHeight = (int)(e as UIModConfigColorItem).GetHeight();
