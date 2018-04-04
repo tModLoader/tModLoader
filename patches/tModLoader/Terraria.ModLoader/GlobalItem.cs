@@ -212,10 +212,19 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true.
+		/// If false is returned, the OnConsumeAmmo hook is never called.
 		/// </summary>
 		public virtual bool ConsumeAmmo(Item item, Player player)
 		{
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when ammo is consumed. Called both by the gun and by the ammo.
+		/// Called before the ammo stack is reduced.
+		/// </summary>
+		public virtual void OnConsumeAmmo(Item item, Player player)
+		{
 		}
 
 		/// <summary>
@@ -303,10 +312,19 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// If the item is consumable and this returns true, then the item will be consumed upon usage. Returns true by default.
+		/// If false is returned, the OnConsumeItem hook is never called.
 		/// </summary>
 		public virtual bool ConsumeItem(Item item, Player player)
 		{
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this item is consumed.
+		/// Called before the item stack is reduced.
+		/// </summary>
+		public virtual void OnConsumeItem(Item item, Player player)
+		{
 		}
 
 		/// <summary>

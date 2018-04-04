@@ -436,6 +436,18 @@
  		}
  
  		public int CountItem(int type, int stopCountingAt = 0)
+@@ -5074,7 +_,10 @@
+ 			{
+ 				if (this.inventory[num4].stack > 0 && this.inventory[num4].type == type)
+ 				{
+-					this.inventory[num4].stack--;
++					if (ItemLoader.ConsumeItem(this.inventory[num4], this))
++					{
++						this.inventory[num4].stack--;
++					}
+ 					if (this.inventory[num4].stack <= 0)
+ 					{
+ 						this.inventory[num4].SetDefaults(0, false);
 @@ -5087,6 +_,11 @@
  
  		public void openLockBox()
@@ -3348,6 +3360,18 @@
  		}
  
  		private void TileInteractionsUse(int myX, int myY)
+@@ -23929,7 +_,10 @@
+ 					{
+ 						if (this.inventory[i].type == 949 && this.inventory[i].stack > 0)
+ 						{
+-							this.inventory[i].stack--;
++							if (ItemLoader.ConsumeItem(this.inventory[i], this))
++							{
++								this.inventory[i].stack--;
++							}
+ 							if (this.inventory[i].stack <= 0)
+ 							{
+ 								this.inventory[i].SetDefaults(0, false);
 @@ -24003,7 +_,7 @@
  						Wiring.HitSwitch(myX, myY);
  						NetMessage.SendData(59, -1, -1, null, myX, (float)myY, 0f, 0f, 0, 0, 0);
@@ -3366,6 +3390,18 @@
  					{
  						flag2 = true;
  						WorldGen.KillTile(myX, myY, false, false, false);
+@@ -24477,7 +_,10 @@
+ 							{
+ 								if (this.inventory[num42].type == 1293)
+ 								{
+-									this.inventory[num42].stack--;
++									if (ItemLoader.ConsumeItem(this.inventory[num42], this))
++									{
++										this.inventory[num42].stack--;
++									}
+ 									if (this.inventory[num42].stack <= 0)
+ 									{
+ 										this.inventory[num42].SetDefaults(0, false);
 @@ -24500,7 +_,7 @@
  							}
  						}
@@ -3375,6 +3411,26 @@
  					{
  						flag2 = true;
  						if (WorldGen.IsLockedDoor(myX, myY))
+@@ -24510,7 +_,10 @@
+ 							{
+ 								if (this.inventory[num44].type == num43 && this.inventory[num44].stack > 0)
+ 								{
+-									this.inventory[num44].stack--;
++									if (ItemLoader.ConsumeItem(this.inventory[num44], this))
++									{
++										this.inventory[num44].stack--;
++									}
+ 									if (this.inventory[num44].stack <= 0)
+ 									{
+ 										this.inventory[num44] = new Item();
+@@ -24520,6 +_,7 @@
+ 									{
+ 										NetMessage.SendData(52, -1, -1, null, this.whoAmI, 2f, (float)myX, (float)myY, 0, 0, 0);
+ 									}
++									break;
+ 								}
+ 							}
+ 						}
 @@ -24529,7 +_,7 @@
  							NetMessage.SendData(19, -1, -1, null, 0, (float)myX, (float)myY, (float)this.direction, 0, 0, 0);
  						}
@@ -3393,6 +3449,18 @@
  					{
  						flag2 = true;
  						Main.mouseRightRelease = false;
+@@ -24815,7 +_,10 @@
+ 										{
+ 											if (num64 != 329)
+ 											{
+-												this.inventory[num67].stack--;
++												if (ItemLoader.ConsumeItem(this.inventory[num67], this))
++												{
++													this.inventory[num67].stack--;
++												}
+ 												if (this.inventory[num67].stack <= 0)
+ 												{
+ 													this.inventory[num67] = new Item();
 @@ -24895,6 +_,8 @@
  							this.LaunchMinecartHook(myX, myY);
  						}
@@ -3739,7 +3807,16 @@
  			{
  				return true;
  			}
-@@ -29390,7 +_,7 @@
+@@ -29385,12 +_,15 @@
+ 						if (num3 > 0 && (int)Main.tile[num, num2].color() != num3 && WorldGen.paintTile(num, num2, (byte)num3, true))
+ 						{
+ 							int num5 = num4;
+-							this.inventory[num5].stack--;
++							if (ItemLoader.ConsumeItem(this.inventory[num5], this))
++							{
++								this.inventory[num5].stack--;
++							}
+ 							if (this.inventory[num5].stack <= 0)
  							{
  								this.inventory[num5].SetDefaults(0, false);
  							}
@@ -3748,7 +3825,16 @@
  						}
  					}
  				}
-@@ -29423,7 +_,7 @@
+@@ -29418,12 +_,15 @@
+ 						if (num8 > 0 && (int)Main.tile[num6, num7].wallColor() != num8 && WorldGen.paintWall(num6, num7, (byte)num8, true))
+ 						{
+ 							int num10 = num9;
+-							this.inventory[num10].stack--;
++							if (ItemLoader.ConsumeItem(this.inventory[num10], this))
++							{
++								this.inventory[num10].stack--;
++							}
+ 							if (this.inventory[num10].stack <= 0)
  							{
  								this.inventory[num10].SetDefaults(0, false);
  							}
@@ -3860,7 +3946,16 @@
  							if (flag4)
  							{
  								TileObjectData.CallPostPlacementPlayerHook(Player.tileTargetX, Player.tileTargetY, this.inventory[this.selectedItem].createTile, num47, this.direction, tileObject);
-@@ -30408,7 +_,7 @@
+@@ -30403,12 +_,15 @@
+ 												if (num81 > 0 && (int)Main.tile[num79, num80].color() != num81 && WorldGen.paintTile(num79, num80, (byte)num81, true))
+ 												{
+ 													int num84 = num82;
+-													this.inventory[num84].stack--;
++													if (ItemLoader.ConsumeItem(this.inventory[num84], this))
++													{
++														this.inventory[num84].stack--;
++													}
+ 													if (this.inventory[num84].stack <= 0)
  													{
  														this.inventory[num84].SetDefaults(0, false);
  													}
@@ -3869,7 +3964,16 @@
  												}
  											}
  											if (this.autoActuator && this.builderAccStatus[2] == 0)
-@@ -30441,7 +_,7 @@
+@@ -30436,12 +_,15 @@
+ 												if (num85 > -1 && WorldGen.PlaceActuator(num79, num80))
+ 												{
+ 													NetMessage.SendData(17, -1, -1, null, 8, (float)num79, (float)num80, 0f, 0, 0, 0);
+-													this.inventory[num85].stack--;
++													if (ItemLoader.ConsumeItem(this.inventory[num85], this))
++													{
++														this.inventory[num85].stack--;
++													}
+ 													if (this.inventory[num85].stack <= 0)
  													{
  														this.inventory[num85].SetDefaults(0, false);
  													}
@@ -3904,7 +4008,28 @@
  						if (Main.netMode == 1)
  						{
  							NetMessage.SendData(17, -1, -1, null, 3, (float)Player.tileTargetX, (float)Player.tileTargetY, (float)this.inventory[this.selectedItem].createWall, 0, 0, 0);
-@@ -30578,7 +_,7 @@
+@@ -30546,7 +_,10 @@
+ 										WorldGen.PlaceWall(num87, num88, createWall, false);
+ 										if ((int)Main.tile[num87, num88].wall == createWall)
+ 										{
+-											this.inventory[this.selectedItem].stack--;
++											if (ItemLoader.ConsumeItem(this.inventory[this.selectedItem], this))
++											{
++												this.inventory[this.selectedItem].stack--;
++											}
+ 											if (this.inventory[this.selectedItem].stack == 0)
+ 											{
+ 												this.inventory[this.selectedItem].SetDefaults(0, false);
+@@ -30573,12 +_,15 @@
+ 												if (num95 > 0 && (int)Main.tile[num93, num94].wallColor() != num95 && WorldGen.paintWall(num93, num94, (byte)num95, true))
+ 												{
+ 													int num98 = num96;
+-													this.inventory[num98].stack--;
++													if (ItemLoader.ConsumeItem(this.inventory[num98], this))
++													{
++														this.inventory[num98].stack--;
++													}
+ 													if (this.inventory[num98].stack <= 0)
  													{
  														this.inventory[num98].SetDefaults(0, false);
  													}
@@ -3913,7 +4038,16 @@
  												}
  											}
  										}
-@@ -30609,7 +_,7 @@
+@@ -30604,12 +_,15 @@
+ 							if (num101 > 0 && (int)Main.tile[num99, num100].wallColor() != num101 && WorldGen.paintWall(num99, num100, (byte)num101, true))
+ 							{
+ 								int num104 = num102;
+-								this.inventory[num104].stack--;
++								if (ItemLoader.ConsumeItem(this.inventory[num104], this))
++								{
++									this.inventory[num104].stack--;
++								}
+ 								if (this.inventory[num104].stack <= 0)
  								{
  									this.inventory[num104].SetDefaults(0, false);
  								}
@@ -3981,6 +4115,18 @@
  			return num2;
  		}
  
+@@ -31219,7 +_,10 @@
+ 			{
+ 				if (this.inventory[i].type == 2997 && this.inventory[i].stack > 0)
+ 				{
+-					this.inventory[i].stack--;
++					if (ItemLoader.ConsumeItem(this.inventory[i], this))
++					{
++						this.inventory[i].stack--;
++					}
+ 					if (this.inventory[i].stack <= 0)
+ 					{
+ 						this.inventory[i].SetDefaults(0, false);
 @@ -31362,6 +_,10 @@
  
  		public void ItemCheck(int i)
@@ -4028,6 +4174,18 @@
  				if (item.shoot == 0)
  				{
  					this.itemRotation = 0f;
+@@ -31717,7 +_,10 @@
+ 											if (flag5)
+ 											{
+ 												num12 = this.inventory[num13].type;
+-												this.inventory[num13].stack--;
++												if (ItemLoader.ConsumeItem(this.inventory[num13], this))
++												{
++													this.inventory[num13].stack--;
++												}
+ 												if (this.inventory[num13].stack <= 0)
+ 												{
+ 													this.inventory[num13].SetDefaults(0, false);
 @@ -32006,7 +_,7 @@
  						Main.PlaySound(item.UseSound, base.Center);
  					}
@@ -4115,7 +4273,16 @@
  						{
  							int num219 = Projectile.NewProjectile(vector2.X, vector2.Y, num81, num82, num74, num76, num77, i, 0f, 0f);
  							if (item.type == 726)
-@@ -34483,7 +_,7 @@
+@@ -34478,12 +_,15 @@
+ 							}
+ 							if (num222 >= 0 && WorldGen.PlaceWire(num220, num221))
+ 							{
+-								this.inventory[num222].stack--;
++								if (ItemLoader.ConsumeItem(this.inventory[num222], this))
++								{
++									this.inventory[num222].stack--;
++								}
+ 								if (this.inventory[num222].stack <= 0)
  								{
  									this.inventory[num222].SetDefaults(0, false);
  								}
@@ -4124,7 +4291,16 @@
  								NetMessage.SendData(17, -1, -1, null, 5, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
  							}
  						}
-@@ -34505,7 +_,7 @@
+@@ -34500,12 +_,15 @@
+ 							}
+ 							if (num224 >= 0 && WorldGen.PlaceWire2(num220, num221))
+ 							{
+-								this.inventory[num224].stack--;
++								if (ItemLoader.ConsumeItem(this.inventory[num224], this))
++								{
++									this.inventory[num224].stack--;
++								}
+ 								if (this.inventory[num224].stack <= 0)
  								{
  									this.inventory[num224].SetDefaults(0, false);
  								}
@@ -4133,7 +4309,16 @@
  								NetMessage.SendData(17, -1, -1, null, 10, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
  							}
  						}
-@@ -34527,7 +_,7 @@
+@@ -34522,12 +_,15 @@
+ 							}
+ 							if (num226 >= 0 && WorldGen.PlaceWire3(num220, num221))
+ 							{
+-								this.inventory[num226].stack--;
++								if (ItemLoader.ConsumeItem(this.inventory[num226], this))
++								{
++									this.inventory[num226].stack--;
++								}
+ 								if (this.inventory[num226].stack <= 0)
  								{
  									this.inventory[num226].SetDefaults(0, false);
  								}
@@ -4142,7 +4327,16 @@
  								NetMessage.SendData(17, -1, -1, null, 12, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
  							}
  						}
-@@ -34549,7 +_,7 @@
+@@ -34544,12 +_,15 @@
+ 							}
+ 							if (num228 >= 0 && WorldGen.PlaceWire4(num220, num221))
+ 							{
+-								this.inventory[num228].stack--;
++								if (ItemLoader.ConsumeItem(this.inventory[num228], this))
++								{
++									this.inventory[num228].stack--;
++								}
+ 								if (this.inventory[num228].stack <= 0)
  								{
  									this.inventory[num228].SetDefaults(0, false);
  								}
@@ -4151,7 +4345,7 @@
  								NetMessage.SendData(17, -1, -1, null, 16, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
  							}
  						}
-@@ -34557,33 +_,33 @@
+@@ -34557,35 +_,38 @@
  						{
  							if (WorldGen.KillActuator(num220, num221))
  							{
@@ -4189,8 +4383,14 @@
 -							this.itemTime = item.useTime;
 +							this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
  							NetMessage.SendData(17, -1, -1, null, 8, (float)Player.tileTargetX, (float)Player.tileTargetY, 0f, 0, 0, 0);
- 							item.stack--;
+-							item.stack--;
++							if (ItemLoader.ConsumeItem(item, this))
++							{
++								item.stack--;
++							}
  							if (item.stack <= 0)
+ 							{
+ 								item.SetDefaults(0, false);
 @@ -34601,7 +_,7 @@
  								{
  									this.ActuationRodLock = true;
@@ -4774,6 +4974,15 @@
  				}
  				else if (this.itemTime == 2)
  				{
+@@ -36821,7 +_,7 @@
+ 					{
+ 						Main.dust[Dust.NewDust(this.position, this.width, this.height, 15, 0f, 0f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
+ 					}
+-					if (item.stack > 0)
++					if (ItemLoader.ConsumeItem(item, this) && item.stack > 0)
+ 					{
+ 						item.stack--;
+ 					}
 @@ -36831,7 +_,7 @@
  			{
  				if (this.itemTime == 0)
@@ -4783,6 +4992,15 @@
  				}
  				else if (this.itemTime == 2)
  				{
+@@ -36843,7 +_,7 @@
+ 					{
+ 						NetMessage.SendData(73, -1, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
+ 					}
+-					if (item.stack > 0)
++					if (ItemLoader.ConsumeItem(item, this) && item.stack > 0)
+ 					{
+ 						item.stack--;
+ 					}
 @@ -36853,7 +_,7 @@
  			{
  				if (this.itemTime == 0)
@@ -4792,7 +5010,15 @@
  				}
  				else if (this.itemTime == 2)
  				{
-@@ -36872,7 +_,7 @@
+@@ -36865,14 +_,14 @@
+ 							NetMessage.SendData(4, -1, -1, null, this.whoAmI, 0f, 0f, 0f, 0, 0, 0);
+ 						}
+ 					}
+-					if (item.stack > 0)
++					if (ItemLoader.ConsumeItem(item, this) && item.stack > 0)
+ 					{
+ 						item.stack--;
+ 					}
  				}
  				else
  				{
@@ -4810,6 +5036,18 @@
  				{
  					int tileWand2 = item.tileWand;
  					int num358 = 0;
+@@ -36908,7 +_,10 @@
+ 					{
+ 						if (tileWand2 == this.inventory[num358].type && this.inventory[num358].stack > 0)
+ 						{
+-							this.inventory[num358].stack--;
++							if (ItemLoader.ConsumeItem(this.inventory[num358], this))
++							{
++								this.inventory[num358].stack--;
++							}
+ 							if (this.inventory[num358].stack <= 0)
+ 							{
+ 								this.inventory[num358] = new Item();
 @@ -36925,15 +_,15 @@
  				int num359;
  				if (item.createTile >= 0)
@@ -4924,21 +5162,25 @@
  				{
  					flag2 = true;
  				}
-@@ -37645,6 +_,14 @@
+@@ -37648,8 +_,18 @@
+ 				{
  					flag2 = true;
  				}
- 				if ((shoot == 145 || shoot == 146 || shoot == 147 || shoot == 148 || shoot == 149) && this.itemAnimation < this.itemAnimationMax - 5)
-+				{
-+					flag2 = true;
-+				}
 +				if (!PlayerHooks.ConsumeAmmo(this, sItem, item))
 +				{
 +					flag2 = true;
 +				}
 +				if (!ItemLoader.ConsumeAmmo(sItem, item, this))
++				{
++					flag2 = true;
++				}
+ 				if (!flag2 && item.consumable)
  				{
- 					flag2 = true;
- 				}
++					PlayerHooks.OnConsumeAmmo(this, sItem, item);
++					ItemLoader.OnConsumeAmmo(sItem, item, this);
+ 					item.stack--;
+ 					if (item.stack <= 0)
+ 					{
 @@ -37699,7 +_,7 @@
  			}
  			else

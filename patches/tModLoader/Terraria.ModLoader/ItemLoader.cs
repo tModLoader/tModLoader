@@ -467,14 +467,30 @@ namespace Terraria.ModLoader
 					ammo.modItem != null && !ammo.modItem.ConsumeAmmo(player))
 				return false;
 
-			foreach (var g_ in HookConsumeAmmo.arr)
+			foreach (var g in HookConsumeAmmo.arr)
 			{
-				var g = g_.Instance(item);
-				if (!g.ConsumeAmmo(item, player) || !g.ConsumeAmmo(ammo, player))
+				if (!g.Instance(item).ConsumeAmmo(item, player) ||
+					!g.Instance(ammo).ConsumeAmmo(ammo, player))
 					return false;
 			}
 
 			return true;
+		}
+
+		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Player>>(g => g.OnConsumeAmmo);
+		/// <summary>
+		/// Calls ModItem.OnConsumeAmmo for the weapon, ModItem.OnConsumeAmmo for the ammo, then each GlobalItem.OnConsumeAmmo hook for the weapon and ammo.
+		/// </summary>
+		public static void OnConsumeAmmo(Item item, Item ammo, Player player)
+		{
+			item.modItem?.OnConsumeAmmo(player);
+			ammo.modItem?.OnConsumeAmmo(player);
+
+			foreach (var g in HookConsumeAmmo.arr)
+			{
+				g.Instance(item).OnConsumeAmmo(item, player);
+				g.Instance(ammo).OnConsumeAmmo(ammo, player);
+			}
 		}
 
 		private delegate bool DelegateShoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack);
@@ -679,7 +695,23 @@ namespace Terraria.ModLoader
 				if (!g.Instance(item).ConsumeItem(item, player))
 					return false;
 
+			OnConsumeItem(item, player);
 			return true;
+		}
+
+		private static HookList HookOnConsumeItem = AddHook<Action<Item, Player>>(g => g.OnConsumeItem);
+		/// <summary>
+		/// Calls ModItem.OnConsumeItem and all GlobalItem.OnConsumeItem hooks.
+		/// </summary>
+		public static void OnConsumeItem(Item item, Player player)
+		{
+			if (item.IsAir)
+				return;
+
+			item.modItem?.OnConsumeItem(player);
+
+			foreach (var g in HookOnConsumeItem.arr)
+				g.Instance(item).OnConsumeItem(item, player);
 		}
 
 		private static HookList HookUseItemFrame = AddHook<Func<Item, Player, bool>>(g => g.UseItemFrame);
@@ -951,7 +983,7 @@ namespace Terraria.ModLoader
 		/// If Main.mouseRightRelease is true, the following steps are taken:
 		/// 1. Call ModItem.RightClick
 		/// 2. Calls all GlobalItem.RightClick hooks
-		/// 3. Decrements the item's stack
+		/// 3. Call ItemLoader.ConsumeItem, and if it returns true, decrements the item's stack
 		/// 4. Sets the item's type to 0 if the item's stack is 0
 		/// 5. Plays the item-grabbing sound
 		/// 6. Sets Main.stackSplit to 30
@@ -968,7 +1000,8 @@ namespace Terraria.ModLoader
 			foreach (var g in HookRightClick.arr)
 				g.Instance(item).RightClick(item, player);
 
-			item.stack--;
+			if (ConsumeItem(item, player))
+				item.stack--;
 			if (item.stack == 0)
 				item.SetDefaults();
 
