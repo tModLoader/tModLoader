@@ -5162,18 +5162,11 @@
  				{
  					flag2 = true;
  				}
-@@ -37648,8 +_,18 @@
+@@ -37648,8 +_,11 @@
  				{
  					flag2 = true;
  				}
-+				if (!PlayerHooks.ConsumeAmmo(this, sItem, item))
-+				{
-+					flag2 = true;
-+				}
-+				if (!ItemLoader.ConsumeAmmo(sItem, item, this))
-+				{
-+					flag2 = true;
-+				}
++				flag2 |= !PlayerHooks.ConsumeAmmo(this, sItem, item) | !ItemLoader.ConsumeAmmo(sItem, item, this);
  				if (!flag2 && item.consumable)
  				{
 +					PlayerHooks.OnConsumeAmmo(this, sItem, item);

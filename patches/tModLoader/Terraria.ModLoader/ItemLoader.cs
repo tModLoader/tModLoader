@@ -483,6 +483,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void OnConsumeAmmo(Item item, Item ammo, Player player)
 		{
+			if (item.IsAir)
+				return;
+
 			item.modItem?.OnConsumeAmmo(player);
 			ammo.modItem?.OnConsumeAmmo(player);
 
@@ -1000,9 +1003,7 @@ namespace Terraria.ModLoader
 			foreach (var g in HookRightClick.arr)
 				g.Instance(item).RightClick(item, player);
 
-			if (ConsumeItem(item, player))
-				item.stack--;
-			if (item.stack == 0)
+			if (ConsumeItem(item, player) && --item.stack == 0)
 				item.SetDefaults();
 
 			Main.PlaySound(7);
