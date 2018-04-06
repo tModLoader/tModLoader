@@ -41,12 +41,12 @@
 +
 +				if (skipSelectArgs != null)
 +				{
-+					Regex cmdRegEx = new Regex(@"(?<name>.+?):(?<val>.+)");
++					Regex cmdRegEx = new Regex(@"(?<name>.*?):(?<val>.*)");
 +					Match m = cmdRegEx.Match(skipSelectArgs);
 +					if (m.Success)
 +					{
-+						playerName = m.Groups[1].Value;
-+						worldName = m.Groups[2].Value;
++						playerName = m.Groups["name"].Value;
++						worldName = m.Groups["val"].Value;
 +					}
 +				}
 +
