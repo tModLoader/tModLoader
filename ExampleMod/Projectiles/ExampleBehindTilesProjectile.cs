@@ -20,6 +20,7 @@ namespace ExampleMod.Projectiles
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Ghost Shuriken");
+			ProjectileID.Sets.DontAttachHideToAlpha[projectile.type] = true; // projectiles with hide but without this will draw in the lighting values of the owner player.
 		}
 
 		public override void SetDefaults()
