@@ -1,0 +1,33 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
+@@ -5,6 +_,7 @@
+ using Terraria.Graphics;
+ using Terraria.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.UI;
+ 
+@@ -240,8 +_,21 @@
+ 			{
+ 				Main.menuMode = 10;
+ 			}
++
+ 			if (!Main.menuMultiplayer)
+ 			{
++				ConfigManager.LoadAll();
++				if (ConfigManager.AnyModNeedsReload())
++				{
++					ModLoader.ModLoader.PostLoad += () =>
++					{
++						Main.ActivePlayerFileData = Player.GetFileData(Main.ActivePlayerFileData.Path, Main.ActivePlayerFileData.IsCloudSave);
++						Main.ActivePlayerFileData.SetAsActive();
++						WorldGen.playWorld();
++					};
++					ModLoader.ModLoader.Reload();
++					return;
++				}
+ 				WorldGen.playWorld();
+ 			}
+ 		}
+

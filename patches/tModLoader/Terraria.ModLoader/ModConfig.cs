@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using System.Reflection;
 using System.ComponentModel;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
 {
@@ -56,39 +57,51 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public virtual bool NeedsReload(ModConfig old)
 		{
-			PropertyInfo[] props = GetType().GetProperties(
-				//	BindingFlags.DeclaredOnly |
-				BindingFlags.Public |
-				BindingFlags.Instance);
-
-			foreach (PropertyInfo property in props)
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this))
 			{
-				ReloadRequiredAttribute reloadRequired = (ReloadRequiredAttribute)Attribute.GetCustomAttribute(property, typeof(ReloadRequiredAttribute));
+				ReloadRequiredAttribute reloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(variable, this, null);
 				if (reloadRequired != null)
 				{
-					if (!property.GetValue(this, null).Equals(property.GetValue(old, null)))
+					if (!variable.GetValue(this).Equals(variable.GetValue(old)))
 					{
 						return true;
 					}
 				}
 			}
 
-			FieldInfo[] fields = GetType().GetFields(
-				//	BindingFlags.DeclaredOnly |
-				BindingFlags.Public |
-				BindingFlags.Instance);
+			//PropertyInfo[] props = GetType().GetProperties(
+			//	//	BindingFlags.DeclaredOnly |
+			//	BindingFlags.Public |
+			//	BindingFlags.Instance);
 
-			foreach (FieldInfo field in fields)
-			{
-				ReloadRequiredAttribute reloadRequired = (ReloadRequiredAttribute)Attribute.GetCustomAttribute(field, typeof(ReloadRequiredAttribute));
-				if (reloadRequired != null)
-				{
-					if (!field.GetValue(this).Equals(field.GetValue(old)))
-					{
-						return true;
-					}
-				}
-			}
+			//foreach (PropertyInfo property in props)
+			//{
+			//	ReloadRequiredAttribute reloadRequired = (ReloadRequiredAttribute)Attribute.GetCustomAttribute(property, typeof(ReloadRequiredAttribute));
+			//	if (reloadRequired != null)
+			//	{
+			//		if (!property.GetValue(this, null).Equals(property.GetValue(old, null)))
+			//		{
+			//			return true;
+			//		}
+			//	}
+			//}
+
+			//FieldInfo[] fields = GetType().GetFields(
+			//	//	BindingFlags.DeclaredOnly |
+			//	BindingFlags.Public |
+			//	BindingFlags.Instance);
+
+			//foreach (FieldInfo field in fields)
+			//{
+			//	ReloadRequiredAttribute reloadRequired = (ReloadRequiredAttribute)Attribute.GetCustomAttribute(field, typeof(ReloadRequiredAttribute));
+			//	if (reloadRequired != null)
+			//	{
+			//		if (!field.GetValue(this).Equals(field.GetValue(old)))
+			//		{
+			//			return true;
+			//		}
+			//	}
+			//}
 
 			return false;
 		}

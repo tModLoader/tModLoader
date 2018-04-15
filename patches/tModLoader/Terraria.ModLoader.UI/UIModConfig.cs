@@ -216,7 +216,7 @@ namespace Terraria.ModLoader.UI
 		{
 			if (Main.gameMenu)
 			{
-				Main.PlaySound(ID.SoundID.MenuOpen);
+				Main.PlaySound(SoundID.MenuOpen);
 				// save takes clone and saves to disk, but how can we know if we need to reload
 				ConfigManager.Save(modConfigClone);
 				ConfigManager.Load(modConfig); // Changes not taken effect?
@@ -225,11 +225,11 @@ namespace Terraria.ModLoader.UI
 			else
 			{
 				// TODO: Server request.
-				if (modConfigClone.Mode == MultiplayerSyncMode.ServerDictates && Main.netMode == ID.NetmodeID.MultiplayerClient)
+				if (modConfigClone.Mode == MultiplayerSyncMode.ServerDictates && Main.netMode == NetmodeID.MultiplayerClient)
 				{
 					SetMessage("Asking server to accept changes...", Color.Yellow);
 
-					var requestChanges = new ModPacket(ID.MessageID.InGameChangeConfig);
+					var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
 					requestChanges.Write(modConfigClone.mod.Name);
 					requestChanges.Write(modConfigClone.Name);
 					string json = JsonConvert.SerializeObject(modConfigClone, ConfigManager.serializerSettings);
@@ -246,13 +246,13 @@ namespace Terraria.ModLoader.UI
 				}
 				if (modConfigClone.NeedsReload(modConfig))
 				{
-					Main.PlaySound(ID.SoundID.MenuClose);
+					Main.PlaySound(SoundID.MenuClose);
 					SetMessage("Can't save because changes would require a reload.", Color.Red);
 					return;
 				}
 				else
 				{
-					Main.PlaySound(ID.SoundID.MenuOpen);
+					Main.PlaySound(SoundID.MenuOpen);
 					ConfigManager.Save(modConfigClone);
 					ConfigManager.Load(modConfig);
 				}
@@ -612,6 +612,8 @@ namespace Terraria.ModLoader.UI
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}) Structs need special UI.");
 				e.Top.Pixels += 6;
 				e.Left.Pixels += 4;
+
+				object subitem = memberInfo.GetValue(item);
 			}
 			else
 			{
@@ -621,12 +623,17 @@ namespace Terraria.ModLoader.UI
 			}
 			if (e != null)
 			{
+				var bef = e.GetOuterDimensions();
+				e.Recalculate();
+				var aft = e.GetOuterDimensions();
+
 				var container = GetContainer(e, original);
 				container.Height.Pixels = elementHeight;
 				UIList list = parent as UIList;
 				if (list != null)
 				{
 					list.Add(container);
+					float p = list.GetTotalHeight();
 				}
 				else
 				{
@@ -635,6 +642,7 @@ namespace Terraria.ModLoader.UI
 					container.Left.Pixels = 20;
 					top += elementHeight + 4; // or use list and padding?
 					parent.Append(container);
+					parent.Height.Set(top, 0);
 				}
 
 				return new Tuple<UIElement, UIElement>(container, e);

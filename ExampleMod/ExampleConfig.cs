@@ -367,7 +367,7 @@ namespace ExampleMod
 
 		public SubConfigExample Clone()
 		{
-			var clone =  (SubConfigExample)MemberwiseClone();
+			var clone = (SubConfigExample)MemberwiseClone();
 			clone.SubA = SubA.Clone();
 			clone.SubB = SubB.Clone();
 			return clone;

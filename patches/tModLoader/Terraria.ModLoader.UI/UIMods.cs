@@ -229,13 +229,10 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(11, -1, -1, 1);
 			// To prevent entering the game with Configs that violate ReloadRequired
-			foreach (var mod in ModLoader.LoadedMods)
+			if (ConfigManager.AnyModNeedsReload())
 			{
-				if (ConfigManager.ModNeedsReload(mod))
-				{
-					Main.menuMode = Interface.reloadModsID;
-					return;
-				}
+				Main.menuMode = Interface.reloadModsID;
+				return;
 			}
 			Main.menuMode = 0;
 		}
@@ -346,6 +343,7 @@ namespace Terraria.ModLoader.UI
 			items.Clear();
 			loading = true;
 			uIPanel.Append(uiLoader);
+			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
 			Populate();
 		}
 

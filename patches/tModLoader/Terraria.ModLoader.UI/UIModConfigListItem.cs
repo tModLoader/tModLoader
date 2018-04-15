@@ -26,6 +26,8 @@ namespace Terraria.ModLoader.UI
 
 		public UIModConfigListItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
+			Height.Set(0f, 1f);
+
 			drawLabel = false;
 
 			sliderIDStart = sliderIDInPage;

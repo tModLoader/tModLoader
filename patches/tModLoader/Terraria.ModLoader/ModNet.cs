@@ -92,7 +92,7 @@ namespace Terraria.ModLoader
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.hash);
 				p.Write(mod.File.ValidModBrowserSignature);
-				var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x=>x.Mode == MultiplayerSyncMode.ServerDictates);
+				var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x => x.Mode == MultiplayerSyncMode.ServerDictates);
 				if (modConfigs == null)
 				//if (modConfigs.Equals(default(List<ModConfig>)))
 				{
@@ -308,14 +308,11 @@ namespace Terraria.ModLoader
 				var configInstance = ConfigManager.GetConfig(ModLoader.GetMod(config.modname), config.configname);
 				JsonConvert.PopulateObject(config.json, configInstance, ConfigManager.serializerSettingsCompact);
 			}
-			foreach (var mod in ModLoader.LoadedMods)
+			if (ConfigManager.AnyModNeedsReload())
 			{
-				if (ConfigManager.ModNeedsReload(mod))
-				{
-					ModLoader.PostLoad = NetReload;
-					ModLoader.Reload();
-					return;
-				}
+				ModLoader.PostLoad = NetReload;
+				ModLoader.Reload();
+				return;
 			}
 
 			downloadingMod = null;

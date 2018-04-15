@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.UI
 		public UIModConfigItem(PropertyFieldWrapper memberInfo, object item, IList array)
 		{
 			Width.Set(0f, 1f);
-			Height.Set(0f, 1f);
+			Height.Set(30f, 0f);
 			this.memberInfo = memberInfo;
 			this.item = item;
 			this.backgroundColor = UICommon.defaultUIBlue;

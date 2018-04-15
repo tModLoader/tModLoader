@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 
 		private static readonly IList<JsonConverter> converters = new List<JsonConverter>() {
 			new Newtonsoft.Json.Converters.VersionConverter(),
-			new ColorJsonConverter(),
+			//new ColorJsonConverter(),
 		};
 
 		public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "Mod Configs");
@@ -65,6 +65,18 @@ namespace Terraria.ModLoader
 			if (!LoadTimeConfigs.TryGetValue(config.mod, out configList2))
 				LoadTimeConfigs.Add(config.mod, configList2 = new List<ModConfig>());
 			configList2.Add(config.Clone());
+		}
+
+		// This method for refreshing configs (ServerDictates mostly) after events that could change configs: Multiplayer play.
+		internal static void LoadAll()
+		{
+			foreach (var item in ConfigManager.Configs)
+			{
+				foreach (var config in item.Value)
+				{
+					Load(config);
+				}
+			}
 		}
 
 		internal static void Load(ModConfig config)
@@ -132,6 +144,18 @@ namespace Terraria.ModLoader
 		//	}
 		//	return false;
 		//}
+
+		internal static bool AnyModNeedsReload()
+		{
+			foreach (var mod in ModLoader.LoadedMods)
+			{
+				if (ModNeedsReload(mod))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 
 		internal static bool ModNeedsReload(Mod mod)
 		{
@@ -248,8 +272,8 @@ namespace Terraria.ModLoader
 		// 
 
 		// Save
-		
-		public static IEnumerable<UI.PropertyFieldWrapper> GetFieldsAndProperties(object item)
+
+		public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(object item)
 		{
 			PropertyInfo[] properties = item.GetType().GetProperties(
 				//BindingFlags.DeclaredOnly |
@@ -261,7 +285,7 @@ namespace Terraria.ModLoader
 				BindingFlags.Public |
 				BindingFlags.Instance);
 
-			return fields.Select(x => new UI.PropertyFieldWrapper(x)).Concat(properties.Select(x => new UI.PropertyFieldWrapper(x)));
+			return fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
 		}
 
 		public static object AlternateCreateInstance(Type type)
@@ -274,7 +298,7 @@ namespace Terraria.ModLoader
 		// Gets an Attribute from a property or field. Attribute defined on Member has higest priority, 
 		// followed by the containing data structure, followed by attribute defined on the Class. 
 		public static T GetCustomAttribute<T>(UI.PropertyFieldWrapper memberInfo, object item, object array) where T : System.Attribute
-		{	
+		{
 			// Class
 			T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
 			if (array != null)
@@ -292,28 +316,28 @@ namespace Terraria.ModLoader
 		}
 	}
 
-	public class ColorJsonConverter : JsonConverter
-	{
-		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-		{
-			Color c = (Color)value;
-			writer.WriteValue($"{c.R}, {c.G}, {c.B}, {c.A}");
-		}
+	//public class ColorJsonConverter : JsonConverter
+	//{
+	//	public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+	//	{
+	//		Color c = (Color)value;
+	//		writer.WriteValue($"{c.R}, {c.G}, {c.B}, {c.A}");
+	//	}
 
-		public override bool CanConvert(Type objectType)
-		{
-			return objectType == typeof(Color);
-		}
+	//	public override bool CanConvert(Type objectType)
+	//	{
+	//		return objectType == typeof(Color);
+	//	}
 
-		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-		{
-			var colorStr = ((string)reader.Value).Split(',');
-			byte r = 255, g = 255, b = 255, a = 255;
-			if (colorStr.Length >= 1) r = byte.Parse(colorStr[0]);
-			if (colorStr.Length >= 2) g = byte.Parse(colorStr[1]);
-			if (colorStr.Length >= 3) b = byte.Parse(colorStr[2]);
-			if (colorStr.Length >= 4) a = byte.Parse(colorStr[3]);
-			return new Color(r, g, b, a);
-		}
-	}
+	//	public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+	//	{
+	//		var colorStr = ((string)reader.Value).Split(',');
+	//		byte r = 255, g = 255, b = 255, a = 255;
+	//		if (colorStr.Length >= 1) r = byte.Parse(colorStr[0]);
+	//		if (colorStr.Length >= 2) g = byte.Parse(colorStr[1]);
+	//		if (colorStr.Length >= 3) b = byte.Parse(colorStr[2]);
+	//		if (colorStr.Length >= 4) a = byte.Parse(colorStr[3]);
+	//		return new Color(r, g, b, a);
+	//	}
+	//}
 }
