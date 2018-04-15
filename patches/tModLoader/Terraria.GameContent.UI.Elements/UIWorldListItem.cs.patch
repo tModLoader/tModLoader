@@ -8,11 +8,55 @@
  using Terraria.Social;
  using Terraria.UI;
  
-@@ -240,8 +_,21 @@
- 			{
- 				Main.menuMode = 10;
+@@ -25,6 +_,7 @@
+ 		private Texture2D _buttonPlayTexture;
+ 		private Texture2D _buttonSeedTexture;
+ 		private Texture2D _buttonDeleteTexture;
++		private Texture2D _configTexture;
+ 		private UIImageButton _deleteButton;
+ 
+ 		public bool IsFavorite
+@@ -87,6 +_,17 @@
+ 				base.Append(uIImageButton4);
+ 				num += 24f;
  			}
++			//if (ConfigManager.Configs.Count > 0)
++			//{
++			//	UIImageButton configButton = new UIImageButton(this._configTexture);
++			//	configButton.VAlign = 1f;
++			//	configButton.Left.Set(num, 0f);
++			//	configButton.OnClick += new UIElement.MouseEvent(this.ConfigButtonClick);
++			//	configButton.OnMouseOver += new UIElement.MouseEvent(this.ConfigMouseOver);
++			//	configButton.OnMouseOut += new UIElement.MouseEvent(this.ButtonMouseOut);
++			//	Append(configButton);
++			//	num += 24f;
++			//}
+ 			UIImageButton uIImageButton5 = new UIImageButton(this._buttonDeleteTexture);
+ 			uIImageButton5.VAlign = 1f;
+ 			uIImageButton5.HAlign = 1f;
+@@ -126,6 +_,8 @@
+ 			this._buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
+ 			this._buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
+ 			this._buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
++			this._configTexture = Texture2D.FromStream(Main.instance.GraphicsDevice,
++				System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonConfig.png"));
+ 		}
+ 
+ 		private void InitializeAppearance()
+@@ -169,6 +_,11 @@
+ 		private void SeedMouseOver(UIMouseEvent evt, UIElement listeningElement)
+ 		{
+ 			this._buttonLabel.SetText(Language.GetTextValue("UI.CopySeed", this._data.SeedText));
++		}
 +
++		private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement)
++		{
++			this._buttonLabel.SetText("Edit World Config");
+ 		}
+ 
+ 		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement)
+@@ -242,6 +_,18 @@
+ 			}
  			if (!Main.menuMultiplayer)
  			{
 +				ConfigManager.LoadAll();
@@ -30,4 +74,15 @@
  				WorldGen.playWorld();
  			}
  		}
+@@ -272,6 +_,10 @@
+ 		{
+ 			Platform.Current.Clipboard = this._data.SeedText;
+ 			this._buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
++		}
++
++		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)
++		{
+ 		}
+ 
+ 		public override int CompareTo(object obj)
 

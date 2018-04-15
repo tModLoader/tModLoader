@@ -125,7 +125,7 @@ namespace Terraria.ModLoader.UI
 			else
 			{
 				this._IsOnFunction = () => (bool)memberInfo.GetValue(modConfig);
-				if(memberInfo.CanWrite)
+				if (memberInfo.CanWrite)
 					this.OnClick += (ev, v) =>
 					{
 						memberInfo.SetValue(modConfig, !(bool)memberInfo.GetValue(modConfig));
