@@ -34,15 +34,11 @@ namespace Terraria.ModLoader.UI
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => att.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
 			}
 
-			drawTicks = (DrawTicksAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(DrawTicksAttribute)) != null;
-			RangeAttribute rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(RangeAttribute));
-			IncrementAttribute incrementAttribute = (IncrementAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(IncrementAttribute));
 			if (rangeAttribute != null && rangeAttribute.min is float && rangeAttribute.max is float)
 			{
 				max = (float)rangeAttribute.max;

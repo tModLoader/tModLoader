@@ -24,12 +24,14 @@ namespace Terraria.ModLoader.UI
 
 		public UIModConfigArrayItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
+			MaxHeight.Set(300, 0f);
+
 			drawLabel = false;
 			string name = memberInfo.Name;
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			
+			if (labelAttribute != null)
 			{
-				name = att.Label;
+				name = labelAttribute.Label;
 			}
 
 			UISortableElement sortedContainer = new UISortableElement(-1);
@@ -81,6 +83,14 @@ namespace Terraria.ModLoader.UI
 			{
 				int index = i;
 				UIModConfig.WrapIt(dataList, ref top, memberInfo, item, ref sliderIDInPage, data, itemType, index);
+			}
+			dataList.RecalculateChildren();
+			float h = dataList.GetTotalHeight();
+			MinHeight.Set(Math.Min(Math.Max(h + 54, 100), 300), 0f);
+			this.Recalculate();
+			if (Parent != null && Parent is UISortableElement)
+			{
+				Parent.Height.Pixels = GetOuterDimensions().Height;
 			}
 		}
 

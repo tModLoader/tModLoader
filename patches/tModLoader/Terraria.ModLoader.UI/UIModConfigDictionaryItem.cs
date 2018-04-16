@@ -14,7 +14,7 @@ using System.Dynamic;
 
 namespace Terraria.ModLoader.UI
 {
-	internal abstract class  IUIModConfigDictionaryElementWrapper
+	internal abstract class IUIModConfigDictionaryElementWrapper
 	{
 		//public UIModConfigDictionaryElementWrapper() { }
 		internal virtual object Key => null;
@@ -46,7 +46,8 @@ namespace Terraria.ModLoader.UI
 		public K key
 		{
 			get { return _key; }
-			set {
+			set
+			{
 				if (dictionary.Contains(value))
 				{
 
@@ -64,7 +65,8 @@ namespace Terraria.ModLoader.UI
 		public V value
 		{
 			get { return _value; }
-			set {
+			set
+			{
 				dictionary[key] = value;
 				_value = value;
 			}
@@ -114,10 +116,9 @@ namespace Terraria.ModLoader.UI
 			sliderIDInPage += 10000;
 
 			string name = memberInfo.Name;
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			if (labelAttribute != null)
 			{
-				name = att.Label;
+				name = labelAttribute.Label;
 			}
 
 			UISortableElement sortedContainer = new UISortableElement(-1);
@@ -259,7 +260,7 @@ namespace Terraria.ModLoader.UI
 
 			//Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
 			Type genericType = typeof(UIModConfigDictionaryElementWrapper<,>).MakeGenericType(keyType, valueType);
-			
+
 
 			var keys = ((IDictionary)data).Keys;
 			var values = ((IDictionary)data).Values;
@@ -268,7 +269,7 @@ namespace Terraria.ModLoader.UI
 			int i = 0;
 			while (keysEnumerator.MoveNext())
 			{
-				
+
 				valuesEnumerator.MoveNext();
 				//var wrapper = new UIModConfigDictionaryElementWrapper<typeof(keysEnumerator.Current), typeof(keysEnumerator.Current)>(keysEnumerator.Current, valuesEnumerator.Current, this);
 				//dynamic sampleObject = new ExpandoObject();
@@ -276,8 +277,8 @@ namespace Terraria.ModLoader.UI
 				//sampleObject.value = valuesEnumerator.Current;
 				//var wrapperwrapper = new UIModConfigDictionaryElementWrapperWrapper(sampleObject);
 
-				IUIModConfigDictionaryElementWrapper proxy = (IUIModConfigDictionaryElementWrapper)Activator.CreateInstance(genericType, 
-					new object[] {keysEnumerator.Current, valuesEnumerator.Current, (IDictionary)data });
+				IUIModConfigDictionaryElementWrapper proxy = (IUIModConfigDictionaryElementWrapper)Activator.CreateInstance(genericType,
+					new object[] { keysEnumerator.Current, valuesEnumerator.Current, (IDictionary)data });
 				dataWrapperList.Add(proxy);
 				//var v = new { Key = keysEnumerator.Current, Value = valuesEnumerator.Current };  
 
@@ -319,6 +320,14 @@ namespace Terraria.ModLoader.UI
 				wrapped.Item1.Append(deleteButton);
 
 				i++;
+			}
+			dataList.RecalculateChildren();
+			float h = dataList.GetTotalHeight();
+			MinHeight.Set(Math.Min(Math.Max(h + 84, 100), 300), 0f);
+			this.Recalculate();
+			if (Parent != null && Parent is UISortableElement)
+			{
+				Parent.Height.Pixels = GetOuterDimensions().Height;
 			}
 		}
 	}

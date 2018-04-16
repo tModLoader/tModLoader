@@ -18,6 +18,9 @@ namespace Terraria.ModLoader.UI
 		protected PropertyFieldWrapper memberInfo;
 		protected object item;
 		protected bool drawLabel = true;
+		protected LabelAttribute labelAttribute;
+		protected TooltipAttribute tooltipAttribute;
+		protected BackgroundColorAttribute backgroundColorAttribute;
 
 		public UIModConfigItem(PropertyFieldWrapper memberInfo, object item, IList array)
 		{
@@ -27,21 +30,20 @@ namespace Terraria.ModLoader.UI
 			this.item = item;
 			this.backgroundColor = UICommon.defaultUIBlue;
 			this._TextDisplayFunction = () => memberInfo.Name;
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			labelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, item, array);
+			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => att.Label;
+				this._TextDisplayFunction = () => labelAttribute.Label;
 			}
-			TooltipAttribute tta = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipAttribute));
-			if (tta != null)
+			tooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(memberInfo, item, array);
+			if (tooltipAttribute != null)
 			{
-				this._TooltipFunction = () => tta.tooltip;
+				this._TooltipFunction = () => tooltipAttribute.Tooltip;
 			}
-
-			BackgroundColorAttribute bca = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, item, array);
-			if (bca != null)
+			backgroundColorAttribute = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, item, array);
+			if (backgroundColorAttribute != null)
 			{
-				backgroundColor = bca.color;
+				backgroundColor = backgroundColorAttribute.color;
 			}
 		}
 

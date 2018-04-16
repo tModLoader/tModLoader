@@ -435,7 +435,7 @@ namespace Terraria.ModLoader.UI
 
 		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage, object array = null, Type arrayType = null, int index = -1)
 		{
-			int elementHeight = 30;
+			int elementHeight = 0;
 			Type type = memberInfo.Type;
 			if (arrayType != null)
 			{
@@ -444,8 +444,7 @@ namespace Terraria.ModLoader.UI
 			int original = sliderIDInPage;
 			UIElement e = null;
 
-			// TODO: Modder supplied UIElement
-			// TODO: Vector2, other structs
+			// TODO: Vector2, other common structs?
 			CustomModConfigItemAttribute customUI = ConfigManager.GetCustomAttribute<CustomModConfigItemAttribute>(memberInfo, null, null);
 			if (customUI != null)
 			{
@@ -460,8 +459,8 @@ namespace Terraria.ModLoader.UI
 					if (e != null)
 					{
 						//e.Recalculate();
-						elementHeight = (int)e.GetOuterDimensions().Height;
-						elementHeight = 400; //e.GetHeight();
+						//elementHeight = (int)e.GetOuterDimensions().Height;
+						//elementHeight = 400; //e.GetHeight();
 					}
 					else
 					{
@@ -476,7 +475,7 @@ namespace Terraria.ModLoader.UI
 			else if (type == typeof(Color))
 			{
 				e = new UIModConfigColorItem(memberInfo, item, ref sliderIDInPage, (IList<Color>)array, index);
-				elementHeight = (int)(e as UIModConfigColorItem).GetHeight();
+				//elementHeight = (int)(e as UIModConfigColorItem).GetHeight();
 			}
 			else if (type == typeof(bool)) // isassignedfrom?
 			{
@@ -501,15 +500,13 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (type == typeof(string))
 			{
-				OptionStringsAttribute ost = (OptionStringsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(OptionStringsAttribute));
+				OptionStringsAttribute ost = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, array);
 				if (ost != null)
 				{
 					e = new UIModConfigStringItem(memberInfo, item, sliderIDInPage++, (IList<string>)array, index);
 				}
 				else
 				{
-					// TODO: Text input? Necessary?
-					//e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}). Missing OptionStringsAttribute.");
 					e = new UIModConfigStringInputItem(memberInfo, item, (IList<string>)array, index);
 					sliderIDInPage++;
 				}
@@ -528,17 +525,17 @@ namespace Terraria.ModLoader.UI
 			else if (type.IsArray)
 			{
 				e = new UIModConfigArrayItem(memberInfo, item, ref sliderIDInPage);
-				elementHeight = 225;
+				//elementHeight = 225;
 			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
 			{
 				e = new UIModConfigListItem(memberInfo, item, ref sliderIDInPage);
-				elementHeight = 225;
+				//elementHeight = 225;
 			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
 				e = new UIModConfigDictionaryItem(memberInfo, item, ref sliderIDInPage);
-				elementHeight = 300;
+				//elementHeight = 300;
 			}
 			else if (type.IsClass)
 			{
@@ -553,7 +550,7 @@ namespace Terraria.ModLoader.UI
 						((IList)array)[index] = listItem;
 					}
 					e = new UIModConfigObjectItem(memberInfo, listItem, ref sliderIDInPage, (IList)array, index);
-					elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
+					//elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 				}
 				else
 				{
@@ -579,7 +576,8 @@ namespace Terraria.ModLoader.UI
 						string name = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, subitem, null)?.Label ?? memberInfo.Name;
 						e = new UITextPanel<string>(name);
 						e.HAlign = 0.5f;
-						elementHeight = 40;
+						//e.Recalculate();
+						//elementHeight = (int)e.GetOuterDimensions().Height;
 						e.OnClick += (a, c) =>
 						{
 							Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
@@ -603,14 +601,15 @@ namespace Terraria.ModLoader.UI
 					else
 					{
 						e = new UIModConfigObjectItem(memberInfo, subitem, ref sliderIDInPage);
-						elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
+						//elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 					}
 				}
 			}
 			else if (type.IsValueType && !type.IsPrimitive)
 			{
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}) Structs need special UI.");
-				e.Top.Pixels += 6;
+				//e.Top.Pixels += 6;
+				e.Height.Pixels += 6;
 				e.Left.Pixels += 4;
 
 				object subitem = memberInfo.GetValue(item);
@@ -623,9 +622,8 @@ namespace Terraria.ModLoader.UI
 			}
 			if (e != null)
 			{
-				var bef = e.GetOuterDimensions();
 				e.Recalculate();
-				var aft = e.GetOuterDimensions();
+				elementHeight = (int)e.GetOuterDimensions().Height;
 
 				var container = GetContainer(e, original);
 				container.Height.Pixels = elementHeight;
@@ -652,8 +650,6 @@ namespace Terraria.ModLoader.UI
 
 		private static UIPanel MakeSeparateListPanel(object subitem, PropertyFieldWrapper memberInfo)
 		{
-
-
 			UIPanel uIPanel = new UIPanel();
 			uIPanel.CopyStyle(Interface.modConfig.uIPanel);
 			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
@@ -754,6 +750,12 @@ namespace Terraria.ModLoader.UI
 			container.Append(containee);
 			return container;
 		}
+
+		//public override void Recalculate()
+		//{
+		//	base.Recalculate();
+		//	mainConfigList?.Recalculate();
+		//}
 	}
 
 	public class PropertyFieldWrapper
@@ -810,11 +812,15 @@ namespace Terraria.ModLoader.UI
 		protected Func<float> _GetProportion;
 		protected Action<float> _SetProportion;
 		private int _sliderIDInPage;
+		protected RangeAttribute rangeAttribute;
+		protected IncrementAttribute incrementAttribute;
 
 		public UIConfigRangeItem(int sliderIDInPage, PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
 		{
 			this._sliderIDInPage = sliderIDInPage;
 			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
+			rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, array);
+			incrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(memberInfo, item, array);
 		}
 
 		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)

@@ -24,9 +24,10 @@ namespace Terraria.ModLoader.UI
 		private int sliderIDStart;
 		private NestedUIList dataList;
 
+
 		public UIModConfigListItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
-			Height.Set(0f, 1f);
+			MaxHeight.Set(300, 0f);
 
 			drawLabel = false;
 
@@ -34,10 +35,9 @@ namespace Terraria.ModLoader.UI
 			sliderIDInPage += 10000;
 
 			string name = memberInfo.Name;
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			if (labelAttribute != null)
 			{
-				name = att.Label;
+				name = labelAttribute.Label;
 			}
 
 			UISortableElement sortedContainer = new UISortableElement(-1);
@@ -91,7 +91,7 @@ namespace Terraria.ModLoader.UI
 			{
 				Main.PlaySound(21);
 
-				DefaultListValueAttribute defaultListValueAttribute = (DefaultListValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(DefaultListValueAttribute));
+				DefaultListValueAttribute defaultListValueAttribute = ConfigManager.GetCustomAttribute<DefaultListValueAttribute>(memberInfo, null, null);
 				if (defaultListValueAttribute != null)
 				{
 					((IList)data).Add(defaultListValueAttribute.defaultValue);
@@ -101,8 +101,8 @@ namespace Terraria.ModLoader.UI
 					((IList)data).Add(ConfigManager.AlternateCreateInstance(listType));
 				}
 
-
 				SetupList();
+				Interface.modConfig.RecalculateChildren();
 				Interface.modConfig.SetPendingChanges();
 			};
 			sortedContainer.Append(text);
@@ -129,7 +129,6 @@ namespace Terraria.ModLoader.UI
 				deleteButton.VAlign = 0.5f;
 				deleteButton.OnClick += (a, b) => { ((IList)data).RemoveAt(index); SetupList(); Interface.modConfig.SetPendingChanges(); };
 				wrapped.Item1.Append(deleteButton);
-
 
 				/*var sortedContainer = new UISortableElement(i);
 				sortedContainer.Width.Set(0f, 1f);
@@ -164,6 +163,21 @@ namespace Terraria.ModLoader.UI
 				}
 				dataList.Add(sortedContainer);*/
 			}
+			dataList.RecalculateChildren();
+			float h = dataList.GetTotalHeight();
+			MinHeight.Set(Math.Min(Math.Max(h + 84, 100), 300), 0f);
+			Recalculate();
+			if (Parent != null && Parent is UISortableElement)
+			{
+				Parent.Height.Pixels = GetOuterDimensions().Height;
+			}
+		}
+
+		public override void Recalculate()
+		{
+			base.Recalculate();
+			float h = dataList.GetTotalHeight();
+			Height.Set(h, 0f);
 		}
 
 		//protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -191,6 +205,10 @@ namespace Terraria.ModLoader.UI
 				{
 					base.ScrollWheel(evt);
 				}
+			}
+			else
+			{
+				base.ScrollWheel(evt);
 			}
 		}
 	}

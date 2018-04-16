@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.UI
 
 		public UIModConfigStringItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<string> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
 		{
-			OptionStringsAttribute optionsAttribute = (OptionStringsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(OptionStringsAttribute));
+			OptionStringsAttribute optionsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, array);
 			options = optionsAttribute.optionLabels;
 
 			_TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
@@ -39,10 +39,9 @@ namespace Terraria.ModLoader.UI
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => att.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
 			}
 
 			_GetProportion = () => DefaultGetProportion();

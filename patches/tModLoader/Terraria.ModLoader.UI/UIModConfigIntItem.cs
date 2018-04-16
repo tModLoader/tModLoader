@@ -35,14 +35,11 @@ namespace Terraria.ModLoader.UI
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => att.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
 			}
 
-			RangeAttribute rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(RangeAttribute));
-			IncrementAttribute incrementAttribute = (IncrementAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(IncrementAttribute));
 			if (rangeAttribute != null && rangeAttribute.min is int && rangeAttribute.max is int)
 			{
 				min = (int)rangeAttribute.min;
@@ -84,12 +81,6 @@ namespace Terraria.ModLoader.UI
 		{
 			_SetValue((int)Math.Round((proportion * (max - min) + min) * (1f / increment)) * increment);
 		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			base.DrawSelf(spriteBatch);
-
-		}
 	}
 
 	internal class UIModConfigUIntItem : UIConfigRangeItem
@@ -117,14 +108,11 @@ namespace Terraria.ModLoader.UI
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => att.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
 			}
 
-			RangeAttribute rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(RangeAttribute));
-			IncrementAttribute incrementAttribute = (IncrementAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(IncrementAttribute));
 			if (rangeAttribute != null && rangeAttribute.min is uint && rangeAttribute.max is uint)
 			{
 				min = (uint)rangeAttribute.min;
@@ -166,11 +154,6 @@ namespace Terraria.ModLoader.UI
 		{
 			_SetValue((uint)Math.Round((proportion * (max - min) + min) * (1f / increment)) * increment);
 		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			base.DrawSelf(spriteBatch);
-		}
 	}
 
 	internal class UIModConfigByteItem : UIConfigRangeItem
@@ -198,14 +181,11 @@ namespace Terraria.ModLoader.UI
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => att.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
 			}
 
-			RangeAttribute rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(RangeAttribute));
-			IncrementAttribute incrementAttribute = (IncrementAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(IncrementAttribute));
 			if (rangeAttribute != null && rangeAttribute.min is byte && rangeAttribute.max is byte)
 			{
 				min = (byte)rangeAttribute.min;
@@ -246,11 +226,6 @@ namespace Terraria.ModLoader.UI
 		void DefaultSetProportion(float proportion)
 		{
 			_SetValue(Convert.ToByte((int)Math.Round((proportion * (max - min) + min) * (1f / increment)) * increment));
-		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			base.DrawSelf(spriteBatch);
 		}
 	}
 }

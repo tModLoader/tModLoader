@@ -43,10 +43,9 @@ namespace Terraria.ModLoader.UI
 			//	_TextDisplayFunction = () => index + 1 + ": " + _GetValueString();
 			//}
 
-			LabelAttribute att = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-			if (att != null)
+			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => att.Label + ": " + _GetValueString();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValueString();
 			}
 
 			this._GetProportion = () => DefaultGetProportion();

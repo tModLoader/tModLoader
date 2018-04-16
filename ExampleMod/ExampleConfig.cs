@@ -149,6 +149,7 @@ namespace ExampleMod
 		public Gradient gradient;
 
 		[Label("$Mods.ExampleMod.Common.LocalizedLabel")]
+		[Tooltip("$Mods.ExampleMod.Common.LocalizedTooltip")]
 		public int LocalizedLabel;
 
 		[Label("This is a float")]
@@ -297,8 +298,10 @@ namespace ExampleMod
 
 	public class Gradient
 	{
+		[Tooltip("The color the gradient starts at")]
 		[DefaultValue(typeof(Color), "0, 0, 255, 255")]
 		public Color start;
+		[Tooltip("The color the gradient ends at")]
 		[DefaultValue(typeof(Color), "255, 0, 0, 255")]
 		public Color end;
 
