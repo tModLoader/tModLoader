@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader.Default.Patreon;
 
 namespace Terraria.ModLoader.Default
 {
@@ -40,6 +41,36 @@ namespace Terraria.ModLoader.Default
 			AddModWorld("MysteryTilesWorld", new MysteryTilesWorld());
 			AddCommand("HelpCommand", new HelpCommand());
 			AddCommand("ModlistCommand", new ModlistCommand());
+			AddPatreon();
+		}
+
+		private void AddPatreon()
+		{
+			AddItemAndEquipType(new toplayz_Head(), "toplayz", EquipType.Head);
+			AddItemAndEquipType(new toplayz_Body(), "toplayz", EquipType.Body);
+			AddItemAndEquipType(new toplayz_Legs(), "toplayz", EquipType.Legs);
+			AddItemAndEquipType(new KittyKitCatCat_Head(), "KittyKitCatCat", EquipType.Head);
+			AddItemAndEquipType(new KittyKitCatCat_Body(), "KittyKitCatCat", EquipType.Body);
+			AddItemAndEquipType(new KittyKitCatCat_Legs(), "KittyKitCatCat", EquipType.Legs);
+			AddItemAndEquipType(new litcherally_Head(), "litcherally", EquipType.Head);
+			AddItemAndEquipType(new litcherally_Body(), "litcherally", EquipType.Body);
+			AddItemAndEquipType(new litcherally_Legs(), "litcherally", EquipType.Legs);
+			AddItemAndEquipType(new PotyBlank_Head(), "PotyBlank", EquipType.Head);
+			AddItemAndEquipType(new PotyBlank_Body(), "PotyBlank", EquipType.Body);
+			AddItemAndEquipType(new PotyBlank_Legs(), "PotyBlank", EquipType.Legs);
+		}
+
+		private void AddItemAndEquipType(ModItem item, string name, EquipType equipType)
+		{
+			if (!Main.dedServ)
+			{
+				AddTexture($"Patreon.{name}_{equipType}", ReadTexture($"Patreon.{name}_{equipType}"));
+				AddTexture($"Patreon.{name}_{equipType}_{equipType}", ReadTexture($"Patreon.{name}_{equipType}_{equipType}"));
+				if (equipType == EquipType.Body)
+					AddTexture($"Patreon.{name}_{equipType}_Arms", ReadTexture($"Patreon.{name}_{equipType}_Arms"));
+			}
+			AddItem($"{name}_{equipType}", item);
+			AddEquipTexture(item, equipType, item.Name, item.Texture + '_' + equipType, item.Texture + "_Arms", item.Texture + "_FemaleBody");
 		}
 
 		private static void LoadTextures()

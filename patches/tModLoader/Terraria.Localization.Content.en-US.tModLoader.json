@@ -82,6 +82,9 @@
 		// Extra mouse buttons
 		"MouseMiddle": "Middle Mouse",
 		"MouseXButton1": "Mouse 4",
-		"MouseXButton2": "Mouse 5"
+		"MouseXButton2": "Mouse 5",
+		
+		// Misc
+		"PatreonSetTooltip": "Thank you for your support!"
 	}
 }

@@ -404,7 +404,7 @@
  			if (num15 > 0)
  			{
  				NPC nPC = new NPC();
-@@ -3924,9 +_,10 @@
+@@ -3924,10 +_,13 @@
  					}
  				}
  			}
@@ -414,8 +414,11 @@
 -		private void TryGettingDevArmor()
 +		public void TryGettingDevArmor()
  		{
++			if (ModLoader.Default.Patreon.PatreonItem.TryGettingPatreonArmor(this))
++				return;
  			if (Main.rand.Next(20) != 0)
  			{
+ 				return;
 @@ -4028,6 +_,11 @@
  
  		public void openCrate(int type)
