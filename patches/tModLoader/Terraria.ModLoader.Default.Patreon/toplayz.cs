@@ -2,37 +2,40 @@
 {
 	class toplayz_Head : PatreonItem
 	{
-		public override string Texture => "ModLoader/Patreon.toplayz_Head";
+		public override string PatreonName => "toplayz";
+		public override PatreonItemType PatreonEquipType => PatreonItemType.Head;
+
 		public override void SetDefaults()
 		{
+			base.SetDefaults();
 			item.width = 28;
-			item.height = 20;
-			item.rare = 9;
-			item.vanity = true;
+			item.height = 26;
 		}
 	}
 
 	class toplayz_Body : PatreonItem
 	{
-		public override string Texture => "ModLoader/Patreon.toplayz_Body";
+		public override string PatreonName => "toplayz";
+		public override PatreonItemType PatreonEquipType => PatreonItemType.Body;
+
 		public override void SetDefaults()
 		{
-			item.width = 28;
+			base.SetDefaults();
+			item.width = 30;
 			item.height = 20;
-			item.rare = 9;
-			item.vanity = true;
 		}
 	}
 
 	class toplayz_Legs : PatreonItem
 	{
-		public override string Texture => "ModLoader/Patreon.toplayz_Legs";
+		public override string PatreonName => "toplayz";
+		public override PatreonItemType PatreonEquipType => PatreonItemType.Legs;
+
 		public override void SetDefaults()
 		{
-			item.width = 18;
-			item.height = 14;
-			item.rare = 9;
-			item.vanity = true;
+			base.SetDefaults();
+			item.width = 22;
+			item.height = 18;
 		}
 	}
 }

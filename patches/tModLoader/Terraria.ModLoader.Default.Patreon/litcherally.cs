@@ -2,37 +2,40 @@
 {
 	class litcherally_Head : PatreonItem
 	{
-		public override string Texture => "ModLoader/Patreon.litcherally_Head";
+		public override string PatreonName => "litcherally";
+		public override PatreonItemType PatreonEquipType => PatreonItemType.Head;
+
 		public override void SetDefaults()
 		{
-			item.width = 28;
-			item.height = 20;
-			item.rare = 9;
-			item.vanity = true;
+			base.SetDefaults();
+			item.width = 22;
+			item.height = 22;
 		}
 	}
 
 	class litcherally_Body : PatreonItem
 	{
-		public override string Texture => "ModLoader/Patreon.litcherally_Body";
+		public override string PatreonName => "litcherally";
+		public override PatreonItemType PatreonEquipType => PatreonItemType.Body;
+
 		public override void SetDefaults()
 		{
-			item.width = 28;
+			base.SetDefaults();
+			item.width = 30;
 			item.height = 20;
-			item.rare = 9;
-			item.vanity = true;
 		}
 	}
 
 	class litcherally_Legs : PatreonItem
 	{
-		public override string Texture => "ModLoader/Patreon.litcherally_Legs";
+		public override string PatreonName => "litcherally";
+		public override PatreonItemType PatreonEquipType => PatreonItemType.Legs;
+
 		public override void SetDefaults()
 		{
-			item.width = 18;
-			item.height = 14;
-			item.rare = 9;
-			item.vanity = true;
+			base.SetDefaults();
+			item.width = 22;
+			item.height = 18;
 		}
 	}
 }

@@ -46,21 +46,24 @@ namespace Terraria.ModLoader.Default
 
 		private void AddPatreon()
 		{
-			AddItemAndEquipType(new toplayz_Head(), "toplayz", EquipType.Head);
-			AddItemAndEquipType(new toplayz_Body(), "toplayz", EquipType.Body);
-			AddItemAndEquipType(new toplayz_Legs(), "toplayz", EquipType.Legs);
-			AddItemAndEquipType(new KittyKitCatCat_Head(), "KittyKitCatCat", EquipType.Head);
-			AddItemAndEquipType(new KittyKitCatCat_Body(), "KittyKitCatCat", EquipType.Body);
-			AddItemAndEquipType(new KittyKitCatCat_Legs(), "KittyKitCatCat", EquipType.Legs);
-			AddItemAndEquipType(new litcherally_Head(), "litcherally", EquipType.Head);
-			AddItemAndEquipType(new litcherally_Body(), "litcherally", EquipType.Body);
-			AddItemAndEquipType(new litcherally_Legs(), "litcherally", EquipType.Legs);
-			AddItemAndEquipType(new PotyBlank_Head(), "PotyBlank", EquipType.Head);
-			AddItemAndEquipType(new PotyBlank_Body(), "PotyBlank", EquipType.Body);
-			AddItemAndEquipType(new PotyBlank_Legs(), "PotyBlank", EquipType.Legs);
+			AddPatreonItemAndEquipType(new toplayz_Head(), "toplayz", EquipType.Head);
+			AddPatreonItemAndEquipType(new toplayz_Body(), "toplayz", EquipType.Body);
+			AddPatreonItemAndEquipType(new toplayz_Legs(), "toplayz", EquipType.Legs);
+			AddPatreonItemAndEquipType(new KittyKitCatCat_Head(), "KittyKitCatCat", EquipType.Head);
+			AddPatreonItemAndEquipType(new KittyKitCatCat_Body(), "KittyKitCatCat", EquipType.Body);
+			AddPatreonItemAndEquipType(new KittyKitCatCat_Legs(), "KittyKitCatCat", EquipType.Legs);
+			AddPatreonItemAndEquipType(new litcherally_Head(), "litcherally", EquipType.Head);
+			AddPatreonItemAndEquipType(new litcherally_Body(), "litcherally", EquipType.Body);
+			AddPatreonItemAndEquipType(new litcherally_Legs(), "litcherally", EquipType.Legs);
+			AddPatreonItemAndEquipType(new PotyBlank_Head(), "PotyBlank", EquipType.Head);
+			AddPatreonItemAndEquipType(new PotyBlank_Body(), "PotyBlank", EquipType.Body);
+			AddPatreonItemAndEquipType(new PotyBlank_Legs(), "PotyBlank", EquipType.Legs);
+			AddPatreonItemAndEquipType(new Dinidini_Head(), "dinidini", EquipType.Head);
+			AddPatreonItemAndEquipType(new Dinidini_Body(), "dinidini", EquipType.Body);
+			AddPatreonItemAndEquipType(new Dinidini_Legs(), "dinidini", EquipType.Legs);
 		}
 
-		private void AddItemAndEquipType(ModItem item, string name, EquipType equipType)
+		private void AddPatreonItemAndEquipType(ModItem item, string name, EquipType equipType)
 		{
 			if (!Main.dedServ)
 			{

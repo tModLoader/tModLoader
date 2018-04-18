@@ -1,14 +1,49 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
 	abstract class PatreonItem : ModItem
 	{
+		public enum PatreonItemType
+		{
+			Head,
+			Body,
+			Legs
+		}
+
+		public abstract string PatreonName { get; }
+		public abstract PatreonItemType PatreonEquipType { get; }
+
+		private string GetEquipTypeSuffix()
+		{
+			switch (PatreonEquipType)
+			{
+				case PatreonItemType.Head:
+					return "Head";
+				case PatreonItemType.Body:
+					return "Body";
+				case PatreonItemType.Legs:
+					return "Legs";
+			}
+
+			return "Unknown";
+		}
+
+		public override string Texture => $"ModLoader/Patreon.{PatreonName}_{GetEquipTypeSuffix()}";
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault($"{PatreonName}'s {GetEquipTypeSuffix()}");
+		}
+
+		public override void SetDefaults()
+		{
+			item.rare = 9;
+			item.vanity = true;
+		}
+
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			var line = new TooltipLine(mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip"));
@@ -42,6 +77,11 @@ namespace Terraria.ModLoader.Default.Patreon
 						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Head>());
 						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Body>());
 						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Legs>());
+						return true;
+					case 4:
+						player.QuickSpawnItem(mod.ItemType<Dinidini_Head>());
+						player.QuickSpawnItem(mod.ItemType<Dinidini_Body>());
+						player.QuickSpawnItem(mod.ItemType<Dinidini_Legs>());
 						return true;
 				}
 			}
