@@ -39,6 +39,11 @@
 		"MBShowAllMods": "Tout Montrer",
 		"MBShowNotInstalledUpdates": "Montrer Uniquement les Modules Non-Installés ou à Mettre à Jour",
 		"MBShowUpdates": "Montrer Uniquement les Modules à Mettre à Jour",
+		// "MBShowMSAll": "Show all mods",
+		// "MBShowMSBoth": "Show normal side only mods",
+		// "MBShowMSClient": "Show client side only mods",
+		// "MBShowMSServer": "Show server side only mods",
+		// "MBShowMSNoSync": "Show no sync only mods",
 
 		// TML Options
 		"DownloadFromServersYes": "Télécharger les Modules du Serveur: Oui",
@@ -78,5 +83,8 @@
 		// "MouseMiddle": "Middle Mouse",
 		// "MouseXButton1": "Mouse 4",
 		// "MouseXButton2": "Mouse 5",
+		
+		// Misc
+		// "PatreonSetTooltip": "Thank you for your support!"
 	}
 }

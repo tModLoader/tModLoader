@@ -39,6 +39,11 @@
 		"MBShowAllMods": "Mostrar todos los mods",
 		"MBShowNotInstalledUpdates": "Mostrar mods sin instalar y actualizaciones",
 		"MBShowUpdates": "Mostrar sólo actualizaciones",
+		// "MBShowMSAll": "Show all mods",
+		// "MBShowMSBoth": "Show normal side only mods",
+		// "MBShowMSClient": "Show client side only mods",
+		// "MBShowMSServer": "Show server side only mods",
+		// "MBShowMSNoSync": "Show no sync only mods",
 
 		// TML Options
 		"DownloadFromServersYes": "Descargar mods de los servidores: Activado",
@@ -78,5 +83,8 @@
 		"MouseMiddle": "Click del medio",
 		"MouseXButton1": "Click 4",
 		"MouseXButton2": "Click 5",
+		
+		// Misc
+		// "PatreonSetTooltip": "Thank you for your support!"
 	}
 }

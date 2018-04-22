@@ -1,4 +1,4 @@
-﻿{
+{
 	"tModLoader": {
 		// Main Menu
 		// "PatreonSupport": "Please show your support: ",
@@ -39,6 +39,11 @@
 		"MBShowAllMods": "Zeige alle Mods",
 		"MBShowNotInstalledUpdates": "Zeige mods nicht installiert sind und aktualisierungen haben",
 		"MBShowUpdates": "Zeige nur aktualisierungen",
+		// "MBShowMSAll": "Show all mods",
+		// "MBShowMSBoth": "Show normal side only mods",
+		// "MBShowMSClient": "Show client side only mods",
+		// "MBShowMSServer": "Show server side only mods",
+		// "MBShowMSNoSync": "Show no sync only mods",
 
 		// TML Options
 		"DownloadFromServersYes": "Lade mods vom Server herunter: An",
@@ -78,5 +83,8 @@
 		// "MouseMiddle": "Middle Mouse",
 		// "MouseXButton1": "Mouse 4",
 		// "MouseXButton2": "Mouse 5",
+		
+		// Misc
+		// "PatreonSetTooltip": "Thank you for your support!"
 	}
 }

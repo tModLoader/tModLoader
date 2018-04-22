@@ -39,6 +39,11 @@
 		"MBShowAllMods": "显示所有模组",
 		"MBShowNotInstalledUpdates": "显示未安装或有更新的模组",
 		"MBShowUpdates": "只显示有更新的模组",
+		// "MBShowMSAll": "Show all mods",
+		// "MBShowMSBoth": "Show normal side only mods",
+		// "MBShowMSClient": "Show client side only mods",
+		// "MBShowMSServer": "Show server side only mods",
+		// "MBShowMSNoSync": "Show no sync only mods",
 
 		// TML Options
 		"DownloadFromServersYes": "从服务器下载模组：开",
@@ -78,5 +83,8 @@
 		// "MouseMiddle": "Middle Mouse",
 		// "MouseXButton1": "Mouse 4",
 		// "MouseXButton2": "Mouse 5",
+		
+		// Misc
+		// "PatreonSetTooltip": "Thank you for your support!"
 	}
 }
