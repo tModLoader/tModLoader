@@ -117,16 +117,16 @@
 		"MSManagePublished": "Verwalte veröffentlichung",
 		"MSPublish": "Veröffentlichen",
 
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSReadingProperties": "Lese Eigenschaften: ",
 		"MSCompilingWindows": "Stelle zusammen {0} für Windows...",
 		"MSCompilingMono": "Stelle zusammen {0} für Mono...",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSBuilding": "Erstelle ",
 		"MSFinding": "Suche mods... ",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSIntializing": "Initialisiere: ",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSLoading": "Lade Mod: ",
 
 		// Extra mouse buttons

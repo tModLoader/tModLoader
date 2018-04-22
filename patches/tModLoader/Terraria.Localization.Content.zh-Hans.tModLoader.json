@@ -117,16 +117,16 @@
 		"MSManagePublished": "管理已发布项目",
 		"MSPublish": "发布项目",
 
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSReadingProperties": "正在读取相关属性：",
 		"MSCompilingWindows": "正在编译Windows版{0}...",
 		"MSCompilingMono": "正在编译Mono版{0}...",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSBuilding": "正在构建：",
 		"MSFinding": "正在寻找模组...",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSIntializing": "正在初始化：",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSLoading": "正在载入模组：",
 
 		// Extra mouse buttons

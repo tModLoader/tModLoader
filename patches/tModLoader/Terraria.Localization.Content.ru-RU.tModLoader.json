@@ -117,16 +117,16 @@
 		"MSManagePublished": "Опубликованное",
 		"MSPublish": "Опубликовать",
 
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSReadingProperties": "Чтение настроек мода:",
 		"MSCompilingWindows": "Компиляция мода {0} для Windows",
 		"MSCompilingMono": "Компиляция мода {0} для Mono",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSBuilding": "Сборка мода: ",
 		"MSFinding": "Поиск файлов",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSIntializing": "Инициализация мода: ",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSLoading": "Загрузка мода: ",
 
 		// Extra mouse buttons
