@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Terraria.ModLoader.IO;
 using System.Reflection;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -110,18 +111,17 @@ namespace Terraria.ModLoader
 			string message;
 			if (recipes)
 			{
-				message = "An error occurred while adding recipes for " + modFile;
+				message = Language.GetTextValue("tModLoader.LoadErrorRecipes", modFile);
 			}
 			else
 			{
-				message = "An error occurred while loading " + modFile;
+				message = Language.GetTextValue("tModLoader.LoadError", modFile);
 			}
 			if (modBuildVersion != ModLoader.version)
 			{
-				message += "\nIt has been detected that this mod was built for tModLoader v" + modBuildVersion;
-				message += "\nHowever, you are using " + ModLoader.versionedName;
+				message += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", modBuildVersion, ModLoader.versionedName);
 			}
-			message += "\nThis mod has automatically been disabled. See below for actual error:";
+			message += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabledSeeBelowForError");
 			message += "\n\n" + e.Message + "\n" + e.StackTrace;
 			if (Main.dedServ)
 			{

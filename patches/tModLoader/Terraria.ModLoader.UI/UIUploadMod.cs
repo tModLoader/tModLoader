@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -22,7 +23,7 @@ namespace Terraria.ModLoader.UI
 			loadProgress.Top.Set(10f, 0f);
 			base.Append(loadProgress);
 			
-			var cancel = new UITextPanel<string>("Cancel", 0.75f, true);
+			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true);
 			cancel.VAlign = 0.5f;
 			cancel.HAlign = 0.5f;
 			cancel.Top.Set(170f, 0f);

@@ -108,7 +108,7 @@ namespace Terraria.ModLoader.UI
 			{
 				Texture2D icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
 				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
-				UIHoverImage modReferenceIcon = new UIHoverImage(icon, "Click to view dependency mods:\n" + string.Join("\n", modreferences.Split(',').Select(x=>x.Trim())));
+				UIHoverImage modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", modreferences.Split(',').Select(x=>x.Trim()))));
 				modReferenceIcon.Left.Set(-149f, 1f);
 				modReferenceIcon.Top.Set(48f, 0f);
 				modReferenceIcon.OnClick += (s, e) =>
@@ -260,7 +260,7 @@ namespace Terraria.ModLoader.UI
 			// main.hoverItemName isn't drawn in UI
 			if (this.modName.IsMouseHovering)
 			{
-				string text = "By: " + author;
+				string text = Language.GetTextValue("tModLoader.ModsByline", author);
 				float x = Main.fontMouseText.MeasureString(text).X;
 				Vector2 vector = Main.MouseScreen + new Vector2(16f);
 				if (vector.Y > (float)(Main.screenHeight - 30))

@@ -8,6 +8,7 @@ using System.Linq;
 using Terraria.ID;
 using System.IO;
 using System.Net.Security;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -32,7 +33,7 @@ namespace Terraria.ModLoader.UI
 			loadProgress.Top.Set(10f, 0f);
 			base.Append(loadProgress);
 
-			var cancel = new UITextPanel<string>("Cancel", 0.75f, true);
+			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true);
 			cancel.VAlign = 0.5f;
 			cancel.HAlign = 0.5f;
 			cancel.Top.Set(170f, 0f);
@@ -44,7 +45,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			loadProgress.SetText($"Downloading: {name}: ???");
+			loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", name + ": ???"));
 			loadProgress.SetProgress(0f);
 			if (UIModBrowser.PlatformSupportsTls12) // Needed for downloads from Github
 			{
@@ -58,7 +59,7 @@ namespace Terraria.ModLoader.UI
 				client.DownloadProgressChanged += Client_DownloadProgressChanged;
 				client.DownloadFileCompleted += Client_DownloadFileCompleted;
 				currentDownload = modsToDownload.Dequeue();
-				loadProgress.SetText($"Downloading: {name}: {currentDownload.displayname}");
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", $"{name}: {currentDownload.displayname}"));
 				client.DownloadFileAsync(new Uri(currentDownload.download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
 			}
 			else

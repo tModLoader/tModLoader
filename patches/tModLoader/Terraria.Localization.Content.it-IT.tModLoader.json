@@ -15,6 +15,12 @@
 		"ModsModPacks": "Pacchetti di Mod",
 		"ModsDisable": "Disabilita",
 		"ModsEnable": "Abilita",
+		// "ModOldWarning": "Old mod, enable at own risk",
+		// "ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
+		// "ModDependencyModsNotFound": "The following mods were not found: {0}",
+		// "BetaModCantPublish": "This mod was built on beta version and can't be published",
+		// "ModReloadRequired": "Reload Required",
+		// "ModsByline": "By: {0}",
 		"ModsMoreInfo": "Altre Informazioni",
 		"ModsOriginatedFromModBrowser": "Questa mod è originata dal Browser delle Mod",
 		"ModsTypeToSearch": "Scrivi per cercare",
@@ -27,11 +33,42 @@
 		"ModsShowEnabledMods": "Mostra solo le Mod abilitate",
 		"ModsShowDisabledMods": "Mostra solo le Mod disabilitate",
 
+		// Mod Loading Errors
+		// "LoadError": "An error occurred while loading {0}",
+		// "LoadErrorRecipes": "An error occurred while adding recipes for {0}",
+		// "LoadErrorDisabledSeeBelowForError": "This mod has automatically been disabled. See below for actual error:",
+		// "LoadErrorVersionMessage": "It has been detected that this mod was built for tModLoader v{0}\nHowever, you are using {1}",
+		// "OpenLogs": "Open Logs",
+		// "OpenWebHelp": "Open Web Help",
+
+		// Mod Info
+		// "ModInfoHeader": "Mod Info: ",
+		// "ModInfoVisitHomepage": "Visit the Mod's Homepage for even more info",
+		// "ModInfoExtract": "Extract",
+		// "ModInfoNoDescriptionAvailable": "No description available",
+
+		// Mod Packs
+		// "ModPacksHeader": "Mod Packs",
+		// "ModPacksSaveEnabledAsNewPack": "Save Enabled as New Mod Pack",
+		// "ModPacksEnterModPackName": "Enter Mod Pack name",
+		// "ModPackViewList": "View List",
+		// "ModPackEnableThisList": "Enable this List",
+		// "ModPackEnableOnlyThisList": "Enable only this List",
+		// "ModPackViewModsInModBrowser": "View Mods in Mod Browser",
+		// "ModPackModsAvailableStatus": "{0} Total, {1} Enabled, {2} Disabled, {3} Missing",
+		// "ModPackModsMissing": "The following mods were not found:\n{0}",
+		// "ModPackModsContained": "This list contains the following mods:\n{0}",
+		// "ModPackMissing": " - Missing",
+
 		// Mod Browser
 		"MBDownload": "Scarica",
+		// "MBDownloadingMod": "Downloading: {0}",
+		// "MBUploadingMod": "Uploading: {0}",
 		"MBDowngrade": "Retrocedi",
 		"MBUpdate": "Aggiorna",
 		"MBReloadBrowser": "Ricarica browser",
+		// "MBGettingData": "Getting data...",
+		// "MBPopulatingBrowser": "Populating browser...",
 		"MBSortByRecentlyUpdated": "Ordina per recentemente scaricate",
 		"MBSortByPopularity": "Ordina per popolarità",
 		"MBSortDownloadDesc": "Ordina per Download discendenti",
@@ -44,6 +81,16 @@
 		// "MBShowMSClient": "Show client side only mods",
 		// "MBShowMSServer": "Show server side only mods",
 		// "MBShowMSNoSync": "Show no sync only mods",
+		// "MBClearSpecialFilter": "Clear Special Filter: {0}",
+		// "MBOfflineWithReason": "OFFLINE ({0})",
+		// "MBBusy": "Busy",
+		// "MBUnknown": "Unknown",
+		// "MBClickToViewDependencyMods": "Click to view dependency mods:\n{0}",
+
+		// Mod Publishing
+		// "MBPublishEnterPassphrase": "Please Enter Your Passcode",
+		// "MBPublishVisitWebsiteForPassphrase": "Visit Website to Generate Passphrase",
+		// "MBPublishPastePassphrase": "Paste Passphrase (ctrl-v)",
 
 		// TML Options
 		"DownloadFromServersYes": "Scarica Mod Dai Server: Attivato",
@@ -57,6 +104,9 @@
 		"ExperimentalFeaturesYes": "Feature Sperimentali: Attivato",
 		"ExperimentalFeaturesNo": "Feature Sperimentali: Disattivato",
 		"ClearMBCredentials": "Ripulisci credenziali del Mod Browser",
+		// "ReloadModsReminder": "You have updated a mod. Remember to reload mods for it to take effect.",
+		// "EnableModsReminder": "Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.",
+		// "DontShowAgain": "Don't show again",
 
 		// Mod Sources
 		"MSBuild": "Costruisci",
@@ -85,6 +135,8 @@
 		"MouseXButton2": "Mouse 5"
 		
 		// Misc
+		// "OK": "OK",
+		// "Continue": "Continue",
 		// "PatreonSetTooltip": "Thank you for your support!"
 	}
 }

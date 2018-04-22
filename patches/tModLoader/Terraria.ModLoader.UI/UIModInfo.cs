@@ -6,6 +6,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.ModLoader.IO;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -51,14 +52,14 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Append(uIScrollbar);
 
 			modInfo.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel<string>("Mod Info", 0.8f, true);
+			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
 
-			modHomepageButton = new UITextPanel<string>("Visit the Mod's Homepage for even more info", 1f, false);
+			modHomepageButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage"), 1f, false);
 			modHomepageButton.Width.Set(-10f, 1f);
 			modHomepageButton.Height.Set(25f, 0f);
 			modHomepageButton.VAlign = 1f;
@@ -68,7 +69,7 @@ namespace Terraria.ModLoader.UI
 			modHomepageButton.OnClick += VisitModHomePage;
 			uIElement.Append(modHomepageButton);
 
-			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			backButton.Width.Set(-10f, 0.333f);
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;
@@ -78,7 +79,7 @@ namespace Terraria.ModLoader.UI
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			extractButton = new UITextPanel<string>("Extract", 1f, false);
+			extractButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract"), 1f, false);
 			extractButton.Width.Set(-10f, 0.333f);
 			extractButton.Height.Set(25f, 0f);
 			extractButton.VAlign = 1f;
@@ -89,7 +90,7 @@ namespace Terraria.ModLoader.UI
 			extractButton.OnClick += ExtractClick;
 			uIElement.Append(extractButton);
 
-			deleteButton = new UITextPanel<string>("Delete", 1f, false);
+			deleteButton = new UITextPanel<string>(Language.GetTextValue("UI.Delete"), 1f, false);
 			deleteButton.Width.Set(-10f, 0.333f);
 			deleteButton.Height.Set(25f, 0f);
 			deleteButton.VAlign = 1f;
@@ -108,7 +109,7 @@ namespace Terraria.ModLoader.UI
 			info = text;
 			if (info.Equals(""))
 			{
-				info = "No description available";
+				info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 			}
 		}
 

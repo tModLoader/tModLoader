@@ -59,7 +59,7 @@ namespace Terraria.ModLoader.UI
 			get { return _specialModPackFilterTitle; }
 			set
 			{
-				clearButton.SetText("Clear Special Filter: " + value);
+				clearButton.SetText(Language.GetTextValue("tModLoader.MBClearSpecialFilter", value));
 				_specialModPackFilterTitle = value;
 			}
 		}
@@ -84,7 +84,6 @@ namespace Terraria.ModLoader.UI
 				_specialModPackFilter = value;
 			}
 		}
-
 
 		public override void OnInitialize()
 		{
@@ -126,7 +125,7 @@ namespace Terraria.ModLoader.UI
 			uIHeaderTextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uIHeaderTextPanel);
 
-			reloadButton = new UITextPanel<string>("Getting data...", 1f, false);
+			reloadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBGettingData"), 1f, false);
 			reloadButton.Width.Set(-10f, 0.5f);
 			reloadButton.Height.Set(25f, 0f);
 			reloadButton.VAlign = 1f;
@@ -146,7 +145,7 @@ namespace Terraria.ModLoader.UI
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			clearButton = new UITextPanel<string>("Clear Special Filter: ??", 1f, false);
+			clearButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBClearSpecialFilter", "??"), 1f, false);
 			clearButton.Width.Set(-10f, 0.5f);
 			clearButton.Height.Set(25f, 0f);
 			clearButton.HAlign = 1f;
@@ -339,17 +338,17 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = 0;
 			if (Interface.modBrowser.aModUpdated && !ModLoader.dontRemindModBrowserUpdateReload)
 			{
-				Interface.advancedInfoMessage.SetMessage("You have updated a mod. Remember to reload mods for it to take effect.");
+				Interface.advancedInfoMessage.SetMessage(Language.GetTextValue("tModLoader.ReloadModsReminder"));
 				Interface.advancedInfoMessage.SetGotoMenu(0);
-				Interface.advancedInfoMessage.SetAltMessage("Don't show again");
+				Interface.advancedInfoMessage.SetAltMessage(Language.GetTextValue("tModLoader.DontShowAgain"));
 				Interface.advancedInfoMessage.SetAltAction(() => { ModLoader.dontRemindModBrowserUpdateReload = true; Main.SaveSettings(); });
 				Main.menuMode = Interface.advancedInfoMessageID;
 			}
 			else if (Interface.modBrowser.aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable)
 			{
-				Interface.advancedInfoMessage.SetMessage("Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.");
+				Interface.advancedInfoMessage.SetMessage(Language.GetTextValue("tModLoader.EnableModsReminder"));
 				Interface.advancedInfoMessage.SetGotoMenu(0);
-				Interface.advancedInfoMessage.SetAltMessage("Don't show again");
+				Interface.advancedInfoMessage.SetAltMessage(Language.GetTextValue("tModLoader.DontShowAgain"));
 				Interface.advancedInfoMessage.SetAltAction(() => { ModLoader.dontRemindModBrowserDownloadEnable = true; Main.SaveSettings(); });
 				Main.menuMode = Interface.advancedInfoMessageID;
 			}
@@ -425,7 +424,7 @@ namespace Terraria.ModLoader.UI
 			{
 				if (e.Status == WebExceptionStatus.Timeout)
 				{
-					SetHeading("Mod Browser OFFLINE (Busy)");
+					SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")));
 					return;
 				}
 				if (e.Status == WebExceptionStatus.ProtocolError)
@@ -433,10 +432,10 @@ namespace Terraria.ModLoader.UI
 					var resp = (HttpWebResponse)e.Response;
 					if (resp.StatusCode == HttpStatusCode.NotFound)
 					{
-						SetHeading("Mod Browser OFFLINE (404)");
+						SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", resp.StatusCode));
 						return;
 					}
-					SetHeading("Mod Browser OFFLINE..");
+					SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", resp.StatusCode));
 					return;
 				}
 			}
@@ -459,11 +458,11 @@ namespace Terraria.ModLoader.UI
 					HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
 					if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
 					{
-						SetHeading("Mod Browser OFFLINE (Busy)");
+						SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")));
 					}
 					else
 					{
-						SetHeading("Mod Browser OFFLINE (Unknown)");
+						SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBUnknown")));
 					}
 				}
 				loading = false;
@@ -471,7 +470,7 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (!e.Cancelled)
 			{
-				reloadButton.SetText("Populating browser...");
+				reloadButton.SetText(Language.GetTextValue("tModLoader.MBPopulatingBrowser"));
 				byte[] result = e.Result;
 				string response = Encoding.UTF8.GetString(result);
 				if (SynchronizationContext.Current == null)
