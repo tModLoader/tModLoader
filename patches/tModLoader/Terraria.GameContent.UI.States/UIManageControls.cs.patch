@@ -97,7 +97,7 @@
  					text = Lang.menu[198];
  					break;
 +				case 5:
-+					text = new LocalizedText("ModLoader.ModControls", "Mod Controls");
++					text = Language.GetText("tModLoader.ModControls");
 +					break;
  			}
  			UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f, false)

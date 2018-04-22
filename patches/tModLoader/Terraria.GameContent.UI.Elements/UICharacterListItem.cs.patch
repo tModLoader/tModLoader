@@ -63,17 +63,17 @@
 +						HAlign = 1f
 +					};
 +					modListWarning.Top.Set(-2f, 0f);
-+					System.Text.StringBuilder fullSB = new System.Text.StringBuilder("The following mods are different since last time you played: ");
++					System.Text.StringBuilder fullSB = new System.Text.StringBuilder(Language.GetTextValue("tModLoader.ModsDifferentSinceLastPlay"));
 +					System.Text.StringBuilder shortSB = new System.Text.StringBuilder();
 +					if (missingMods.Count > 0)
 +					{
-+						shortSB.Append("Missing " + missingMods.Count + (missingMods.Count > 1 ? " mods." : " mod."));
-+						fullSB.Append("\nMissing mods:\n" + string.Join("\n", missingMods.Select(x => "- " + x)));
++						shortSB.Append((missingMods.Count > 1 ? Language.GetTextValue("tModLoader.MissingXMods", missingMods.Count) : Language.GetTextValue("tModLoader.Missing1Mod")));
++						fullSB.Append("\n" + Language.GetTextValue("tModLoader.MissingModsListing", string.Join("\n", missingMods.Select(x => "- " + x))));
 +					}
 +					if (newMods.Count > 0)
 +					{
-+						shortSB.Append($" {newMods.Count} new {(newMods.Count > 1 ? "mods." : "mod.")}");
-+						fullSB.Append("\nNew mods:\n" + string.Join("\n", newMods.Select(x => "- " + x)));
++						shortSB.Append(" " + (newMods.Count > 1 ? Language.GetTextValue("tModLoader.NewXMods", newMods.Count) : Language.GetTextValue("tModLoader.New1Mod")));
++						fullSB.Append("\n" + Language.GetTextValue("tModLoader.NewModsListing", string.Join("\n", newMods.Select(x => "- " + x))));
 +					}
 +					string warning = shortSB.ToString();
 +					string fullWarning = fullSB.ToString();

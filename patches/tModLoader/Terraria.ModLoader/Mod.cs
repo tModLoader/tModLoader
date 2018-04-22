@@ -306,7 +306,7 @@ namespace Terraria.ModLoader
 				return;
 
 
-			Interface.loadMods.SetSubProgressInit("Finishing Resource Loading");
+			Interface.loadMods.SetSubProgressInit(Language.GetTextValue("tModLoader.MSFinishingResourceLoading"));
 			while (AsyncLoadQueue.Count > 0)
 				AsyncLoadQueue.Dequeue().Wait();
 

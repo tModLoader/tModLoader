@@ -41,7 +41,7 @@
 +				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players");
 +				if (Directory.Exists(vanillaPlayersPath))
 +				{
-+					var noPlayersMessage = new UIText("You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.");
++					var noPlayersMessage = new UIText(Language.GetText("tModLoader.MigratePlayersMessage"));
 +					noPlayersMessage.Width.Set(0, 1);
 +					noPlayersMessage.Height.Set(200, 0);
 +					noPlayersMessage.OnClick += (a, b) =>

@@ -38,6 +38,14 @@
 		"LoadErrorRecipes": "Произошла ошибка при добавлении рецептов для {0}",
 		"LoadErrorDisabledSeeBelowForError": "Этот мод был автоматически отключен. Смотрите ниже для самой ошибки:",
 		"LoadErrorVersionMessage": "Было обнаружено, что этот мод был собран для tModLoader версии v{0}\nОднако, Вы используете версию v{1}",
+		// "LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
+		// "LoadErrorErrorReadingModFile": "Error reading mod file {0}",
+		// "LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
+		// "LoadErrorDependencyVersionTooLow": "{0} requires version {1} of {2} but version {3} is installed",
+		// "BuildErrorModNameEmpty": "Mods must actually have stuff in their names",
+		// "BuildErrorModNamedTerraria": "Mods names cannot be named Terraria",
+		// "BuildErrorModNameHasPeriod": "A mod's internal name cannot contain a period",
+		// "BuildErrorTwoModsSameName": "Two mods share the internal name {0}",
 		"OpenLogs": "Открыть логи",
 		"OpenWebHelp": "Открыть веб помощь",
 
@@ -107,6 +115,18 @@
 		"ReloadModsReminder": "Вы обновили мод. Не забудьте перезагрузить моды, чтобы изменения вступили в силу.",
 		"EnableModsReminder": "Ваши недавно скачанные моды в данный момент выключены. Не забудьте включить их и выполнить перезагрузку, если вы планируете использовать их.",
 		"DontShowAgain": "Не показывать это снова",
+		// "ModControls": "Mod Controls",
+		
+		// Player and World Select
+		// "MigratePlayersMessage": "You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.",
+		// "MigrateWorldsMessage": "You have no worlds.\nIf you'd like to migrate your worlds from vanilla to tModLoader,\nplease copy them from /Terraria/Worlds to /Terraria/ModLoader/Worlds.\nCopy the .wld file over.\nClick me to open those folders.\nAfter copying over the worlds you want, press back.",
+		// "ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
+		// "Missing1Mod": "Missing 1 mod.",
+		// "MissingXMods": "Missing {0} mods.",
+		// "MissingModsListing": "Missing mods:\n{0}",
+		// "New1Mod": "1 new mod.",
+		// "NewXMods": "{0} new mods.",
+		// "NewModsListing": "New mods:\n{0}",
 
 		// Mod Sources
 		"MSBuild": "Скомпилировать",
@@ -128,6 +148,16 @@
 		"MSIntializing": "Инициализация мода: ",
 		// There should be ModName after ':'
 		"MSLoading": "Загрузка мода: ",
+		// "MSFinishingResourceLoading": "Finishing Resource Loading",
+		// "MSCompatibilizing": "Compatibilizing: {0}",
+		// "MSReading": "Reading: {0}",
+		// "MSSettingUp": "Setting up...",
+		// "MSAddingRecipes": "Adding Recipes...",
+		
+		// Mod Loader Mod
+		// "StartBagTooltip": "Some starting items couldn't fit in your inventory",
+		// "StartBagItemName": "Starting Bag",
+		// "UnloadedItemItemName": "Unloaded Item",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Средняя кнопка мыши",

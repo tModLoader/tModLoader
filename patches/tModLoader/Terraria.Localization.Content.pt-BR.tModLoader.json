@@ -38,6 +38,14 @@
 		// "LoadErrorRecipes": "An error occurred while adding recipes for {0}",
 		// "LoadErrorDisabledSeeBelowForError": "This mod has automatically been disabled. See below for actual error:",
 		// "LoadErrorVersionMessage": "It has been detected that this mod was built for tModLoader v{0}\nHowever, you are using {1}",
+		// "LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
+		// "LoadErrorErrorReadingModFile": "Error reading mod file {0}",
+		// "LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
+		// "LoadErrorDependencyVersionTooLow": "{0} requires version {1} of {2} but version {3} is installed",
+		// "BuildErrorModNameEmpty": "Mods must actually have stuff in their names",
+		// "BuildErrorModNamedTerraria": "Mods names cannot be named Terraria",
+		// "BuildErrorModNameHasPeriod": "A mod's internal name cannot contain a period",
+		// "BuildErrorTwoModsSameName": "Two mods share the internal name {0}",
 		// "OpenLogs": "Open Logs",
 		// "OpenWebHelp": "Open Web Help",
 
@@ -107,6 +115,18 @@
 		// "ReloadModsReminder": "You have updated a mod. Remember to reload mods for it to take effect.",
 		// "EnableModsReminder": "Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.",
 		// "DontShowAgain": "Don't show again",
+		// "ModControls": "Mod Controls",
+		
+		// Player and World Select
+		// "MigratePlayersMessage": "You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.",
+		// "MigrateWorldsMessage": "You have no worlds.\nIf you'd like to migrate your worlds from vanilla to tModLoader,\nplease copy them from /Terraria/Worlds to /Terraria/ModLoader/Worlds.\nCopy the .wld file over.\nClick me to open those folders.\nAfter copying over the worlds you want, press back.",
+		// "ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
+		// "Missing1Mod": "Missing 1 mod.",
+		// "MissingXMods": "Missing {0} mods.",
+		// "MissingModsListing": "Missing mods:\n{0}",
+		// "New1Mod": "1 new mod.",
+		// "NewXMods": "{0} new mods.",
+		// "NewModsListing": "New mods:\n{0}",
 
 		// Mod Sources
 		// "MSBuild": "Build",
@@ -128,6 +148,16 @@
 		// "MSIntializing": "Initializing: ",
 		// There should be ModName after ':'
 		// "MSLoading": "Loading Mod: ",
+		// "MSFinishingResourceLoading": "Finishing Resource Loading",
+		// "MSCompatibilizing": "Compatibilizing: {0}",
+		// "MSReading": "Reading: {0}",
+		// "MSSettingUp": "Setting up...",
+		// "MSAddingRecipes": "Adding Recipes...",
+		
+		// Mod Loader Mod
+		// "StartBagTooltip": "Some starting items couldn't fit in your inventory",
+		// "StartBagItemName": "Starting Bag",
+		// "UnloadedItemItemName": "Unloaded Item",
 
 		// Extra mouse buttons
 		// "MouseMiddle": "Middle Mouse",
