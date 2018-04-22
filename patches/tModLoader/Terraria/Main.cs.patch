@@ -4144,6 +4144,15 @@
  			bool flag = !Main.drawToScreen && Main.netMode != 2 && !Main.gameMenu && !Main.mapFullscreen && Lighting.NotRetro && Filters.Scene.CanCapture();
  			if (flag)
  			{
+@@ -57497,7 +_,7 @@
+ 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, this.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+ 			this.DrawBackgroundBlackFill();
+ 			Main.spriteBatch.End();
+-			Overlays.Scene.Draw(Main.spriteBatch, RenderLayers.Landscape);
++			Overlays.Scene.Draw(Main.spriteBatch, RenderLayers.Landscape, true);
+ 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, this.Rasterizer, null, Main.UIScaleMatrix);
+ 			if (Main.gameMenu || Main.netMode == 2)
+ 			{
 @@ -57717,6 +_,7 @@
  				IL_4196:
  				TimeLogger.DetailedDrawReset();
@@ -4152,6 +4161,15 @@
  				TimeLogger.DetailedDrawTime(35);
  				this.SortDrawCacheWorms();
  				this.DrawCachedProjs(this.DrawCacheProjsBehindProjectiles, true);
+@@ -57785,7 +_,7 @@
+ 				ScreenObstruction.Draw(Main.spriteBatch);
+ 				TimeLogger.DetailedDrawReset();
+ 				Main.spriteBatch.End();
+-				Overlays.Scene.Draw(Main.spriteBatch, RenderLayers.All);
++				Overlays.Scene.Draw(Main.spriteBatch, RenderLayers.All, true);
+ 				if (flag)
+ 				{
+ 					Filters.Scene.EndCapture();
 @@ -58021,6 +_,30 @@
  				else
  				{
