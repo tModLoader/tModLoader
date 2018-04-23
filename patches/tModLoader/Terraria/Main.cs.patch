@@ -877,6 +877,26 @@
  		}
  
  		private void DoUpdate_AnimateWaterfalls()
+@@ -14484,6 +_,7 @@
+ 				num2 += 6;
+ 			}
+ 			new Microsoft.Xna.Framework.Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor);
++			Vector2 vector = Main.fontMouseText.MeasureString(cursorText);
+ 			if (Main.HoverItem.type > 0)
+ 			{
+ 				this.MouseText_DrawItemTooltip(rare, diff, num, num2);
+@@ -14491,9 +_,8 @@
+ 			}
+ 			if (Main.buffString != "" && Main.buffString != null)
+ 			{
+-				this.MouseText_DrawBuffString(ref num, ref num2);
+-			}
+-			Vector2 vector = Main.fontMouseText.MeasureString(cursorText);
++				this.MouseText_DrawBuffString(ref num, ref num2, (int)vector.Y);
++			}
+ 			if (hackedScreenHeight != -1 && hackedScreenWidth != -1)
+ 			{
+ 				if ((float)num + vector.X + 4f > (float)hackedScreenWidth)
 @@ -14617,22 +_,28 @@
  			string[] array = new string[num3];
  			bool[] array2 = new bool[num3];
@@ -1560,7 +1580,7 @@
  				}
  				else
  				{
-@@ -15515,10 +_,22 @@
+@@ -15515,13 +_,25 @@
  					{
  						baseColor = color;
  					}
@@ -1586,7 +1606,11 @@
 +			ItemLoader.PostDrawTooltip(Main.HoverItem, drawableLines.AsReadOnly());
  		}
  
- 		private void MouseText_DrawBuffString(ref int X, ref int Y)
+-		private void MouseText_DrawBuffString(ref int X, ref int Y)
++		private void MouseText_DrawBuffString(ref int X, ref int Y, int buffNameHeight)
+ 		{
+ 			Microsoft.Xna.Framework.Point p = new Microsoft.Xna.Framework.Point(X, Y);
+ 			int num = 220;
 @@ -15538,7 +_,7 @@
  			if (Main.bannerMouseOver)
  			{
@@ -1604,6 +1628,15 @@
  			Vector2 zero = Vector2.Zero;
  			foreach (Vector2 current in list)
  			{
+@@ -15590,7 +_,7 @@
+ 			for (int k = 0; k < 5; k++)
+ 			{
+ 				int num10 = X;
+-				int num11 = Y + (int)Main.fontMouseText.MeasureString(Main.buffString).Y;
++				int num11 = Y + buffNameHeight;
+ 				Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
+ 				if (k == 0)
+ 				{
 @@ -15617,7 +_,7 @@
  			if (Main.bannerMouseOver)
  			{
