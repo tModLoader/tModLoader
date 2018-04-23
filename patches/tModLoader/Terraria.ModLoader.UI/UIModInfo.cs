@@ -167,7 +167,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			uITextPanel.SetText("Mod Info: " + modDisplayName, 0.8f, true);
+			uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + modDisplayName, 0.8f, true);
 			modInfo.SetText(info);
 			if (url.Equals(""))
 			{

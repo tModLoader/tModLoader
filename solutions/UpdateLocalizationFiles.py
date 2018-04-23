@@ -8,12 +8,21 @@ languages = ['zh-Hans', 'ru-RU', 'pt-BR', 'pl-PL', 'it-IT', 'fr-FR', 'es-ES', 'd
 for language in languages:
     #language = 'zh-Hans'
     otherLanguage = ''
+    missing = 0
     print("Updating:",language)
     with open(filename.format('en-US'), 'r', encoding='utf-8') as english, open(filename.format(language), 'r', encoding='utf-8') as other:
         enLines = english.readlines()
         
+        # Preserve Credits (comment lines on first few lines)
+        otherLinesAll = other.readlines()
+        for otherLine in otherLinesAll:
+            if otherLine.startswith('//'):
+                otherLanguage += otherLine
+            else:
+                break
+                
         # Skip empty whitespace and comment lines to end up with only json lines.
-        otherLines = [x for x in other.readlines() if not (x.strip().startswith("//") or len(x.strip()) == 0)]
+        otherLines = [x for x in otherLinesAll if not (x.strip().startswith("//") or len(x.strip()) == 0)]
 
         otherIndex = 0
         for englishIndex, englishLine in enumerate(enLines):
@@ -24,6 +33,7 @@ for language in languages:
                     otherIndex += 1
                 else:
                     otherLanguage += "\t\t// " + englishLine.strip() + '\n'
+                    missing += 1
             # Add English Comments back in
             elif englishLine.strip().startswith('//'):
                 otherLanguage += englishLine
@@ -34,6 +44,8 @@ for language in languages:
                     otherIndex += 1
             #print(otherLanguage)
     # Save changes.
+    if missing > 0:
+        print("Missing:",missing)
     with open(filename.format(language), 'w', encoding='utf-8') as output:
         output.write(otherLanguage)
 

@@ -398,7 +398,7 @@ namespace Terraria.ModLoader.UI
 			loading = true;
 			SpecialModPackFilter = null;
 			SpecialModPackFilterTitle = null;
-			reloadButton.SetText("Getting data...");
+			reloadButton.SetText(Language.GetTextValue("tModLoader.MBGettingData"));
 			SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
 			uIPanel.Append(uILoader);
 			modList.Clear();
