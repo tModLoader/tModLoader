@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.Default
 
 		public override void Load(Item item, TagCompound tag)
 		{
-			ItemIO.LoadGlobals(item, tag.GetList<TagCompound>("list"));
+			ItemIO.LoadGlobals(item, tag.GetList<TagCompound>("modData"));
 		}
 	}
 }
