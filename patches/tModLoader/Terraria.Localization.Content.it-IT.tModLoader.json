@@ -34,6 +34,12 @@
 		"ModsShowAllMods": "Mostra tutte le Mod",
 		"ModsShowEnabledMods": "Mostra solo le Mod abilitate",
 		"ModsShowDisabledMods": "Mostra solo le Mod disabilitate",
+		// "ModsXItems": "{0} items",
+		// "ModsXNPCs": "{0} NPCs",
+		// "ModsXTiles": "{0} tiles",
+		// "ModsXWalls": "{0} walls",
+		// "ModsXBuffs": "{0} buffs",
+		// "ModsXMounts": "{0} mounts",
 
 		// Mod Loading Errors
 		// "LoadError": "An error occurred while loading {0}",
@@ -48,6 +54,19 @@
 		// "BuildErrorModNamedTerraria": "Mods names cannot be named Terraria",
 		// "BuildErrorModNameHasPeriod": "A mod's internal name cannot contain a period",
 		// "BuildErrorTwoModsSameName": "Two mods share the internal name {0}",
+		// "BuildErrorCompilingError": "An error ocurred while compiling a mod.",
+		// "BuildErrorModCompileFolderHint": "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well.",
+		// "BuildErrorMissingDllFilesFor": "Missing dll files for {0}",
+		// "LoadErrorTextureFailedToLoad": "The texture file at {0} failed to load",
+		// "LoadErrorWavSoundFailedToLoad": "The wav sound file at {0} failed to load",
+		// "LoadErrorMP3SoundFailedToLoad": "The mp3 sound file at {0} failed to load",
+		// "LoadErrorFontFailedToLoad": "The font file at {0} failed to load",
+		// "LoadErrorEffectFailedToLoad": "The effect file at {0} failed to load",
+		// "LoadErrorUnknownXNBFileHint": "Unknown xnb file {path}. Perhaps it should be in Fonts/ or Effects/",
+		// "LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
+		// "LoadErrorAddItemOnlyInLoad": "AddItem can only be called from Mod.Load or Mod.Autoload",
+		// "LoadError2ModItemSameName": "You tried to add 2 ModItems with the same name: {0}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.",
+		// "LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
 		// "OpenLogs": "Open Logs",
 		// "OpenWebHelp": "Open Web Help",
 
@@ -56,6 +75,7 @@
 		// "ModInfoVisitHomepage": "Visit the Mod's Homepage for even more info",
 		// "ModInfoExtract": "Extract",
 		// "ModInfoNoDescriptionAvailable": "No description available",
+		// "ModInfoProblemTryAgain": "There was a problem, try again",
 
 		// Mod Packs
 		// "ModPacksHeader": "Mod Packs",
@@ -72,10 +92,12 @@
 
 		// Mod Browser
 		"MBDownload": "Scarica",
+		// "MBDownloadAll": "Download All",
 		// "MBDownloadingMod": "Downloading: {0}",
 		// "MBUploadingMod": "Uploading: {0}",
 		"MBDowngrade": "Retrocedi",
 		"MBUpdate": "Aggiorna",
+		// "MBUpdateAll": "Update All",
 		"MBReloadBrowser": "Ricarica browser",
 		// "MBGettingData": "Getting data...",
 		// "MBPopulatingBrowser": "Populating browser...",
@@ -96,11 +118,31 @@
 		// "MBBusy": "Busy",
 		// "MBUnknown": "Unknown",
 		// "MBClickToViewDependencyMods": "Click to view dependency mods:\n{0}",
+		// "MBModsNotFoundOnline": "The following mods were not found on the Mod Browser: {0}",
+		// "MBFilterDependencies": "Dependencies",
+		// "MBFilterModlist": "Modlist",
+		// "MBExceededBandwidth": "The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.",
+		// "MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
+		// "1SecondAgo": "1 second ago",
+		// "XSecondsAgo": "{0} seconds ago",
+		// "1MinuteAgo": "1 minute ago",
+		// "XMinutesAgo": "{0} minutes ago",
+		// "1HourAgo": "1 hour ago",
+		// "XHoursAgo": "{0} hours ago",
+		// "1DayAgo": "1 day ago",
+		// "XDaysAgo": "{0} days ago",
+		// "1MonthAgo": "1 month ago",
+		// "XMonthsAgo": "{0} months ago",
+		// "1YearAgo": "1 year ago",
+		// "XYearsAgo": "{0} years ago",
 
 		// Mod Publishing
 		// "MBPublishEnterPassphrase": "Please Enter Your Passcode",
 		// "MBPublishVisitWebsiteForPassphrase": "Visit Website to Generate Passphrase",
 		// "MBPublishPastePassphrase": "Paste Passphrase (ctrl-v)",
+		// "MBMyPublishedMods": "My Published Mods",
+		// "MBUnpublish": "My Published Mods",
+		// "MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
 
 		// TML Options
 		"DownloadFromServersYes": "Scarica Mod Dai Server: Attivato",
@@ -118,7 +160,7 @@
 		// "EnableModsReminder": "Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.",
 		// "DontShowAgain": "Don't show again",
 		// "ModControls": "Mod Controls",
-		
+
 		// Player and World Select
 		// "MigratePlayersMessage": "You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.",
 		// "MigrateWorldsMessage": "You have no worlds.\nIf you'd like to migrate your worlds from vanilla to tModLoader,\nplease copy them from /Terraria/Worlds to /Terraria/ModLoader/Worlds.\nCopy the .wld file over.\nClick me to open those folders.\nAfter copying over the worlds you want, press back.",
@@ -139,6 +181,20 @@
 		"MSManagePublished": "Gestisci Pubblicate",
 		"MSPublish": "Pubblica",
 
+		// Extract Mod
+		// "ExtractErrorWhileExtractingMod": "An error occured while extracting {0}",
+		// "ExtractHideCodeMessage": "The modder has chosen to hide the code from tModReader.",
+		// "ExtractNoSourceCodeMessage": "The modder has not chosen to include their source code.",
+		// "ExtractHideResourcesMessage": "The modder has chosen to hide resources (ie. images) from tModReader.",
+		// "ExtractFileListing": "Files:",
+
+		// Mod Commands
+		// "CommandModListDescription": "Displays a list of loaded mods.",
+		// "CommandModListServerMods": "Server Mods:",
+		// "CommandModListSyncedMods": "Synced Mods:",
+		// "CommandModListClientMods": "Client Mods:",
+		// "CommandModListModlist": "Modlist:",
+
 		// There should be ModName after ':'
 		"MSReadingProperties": "Leggendo Proprietà: ",
 		"MSCompilingWindows": "Compilando {0} per Windows...",
@@ -155,17 +211,20 @@
 		// "MSReading": "Reading: {0}",
 		// "MSSettingUp": "Setting up...",
 		// "MSAddingRecipes": "Adding Recipes...",
-		
+
 		// Mod Loader Mod
 		// "StartBagTooltip": "Some starting items couldn't fit in your inventory",
 		// "StartBagItemName": "Starting Bag",
 		// "UnloadedItemItemName": "Unloaded Item",
+		// "UnloadedItemModTooltip": "Mod: {0}",
+		// "UnloadedItemItemNameTooltip": "Item: {0}",
+		// "AprilFoolsJoke": "April Fools Joke",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Mouse Centrale",
 		"MouseXButton1": "Mouse 4",
 		"MouseXButton2": "Mouse 5"
-		
+
 		// Misc
 		// "OK": "OK",
 		// "Continue": "Continue",

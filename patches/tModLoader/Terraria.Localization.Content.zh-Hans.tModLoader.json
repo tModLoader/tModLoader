@@ -33,6 +33,12 @@
 		"ModsShowAllMods": "显示全部模组",
 		"ModsShowEnabledMods": "只显示已启用的模组",
 		"ModsShowDisabledMods": "只显示已禁用的模组",
+		// "ModsXItems": "{0} items",
+		// "ModsXNPCs": "{0} NPCs",
+		// "ModsXTiles": "{0} tiles",
+		// "ModsXWalls": "{0} walls",
+		// "ModsXBuffs": "{0} buffs",
+		// "ModsXMounts": "{0} mounts",
 
 		// Mod Loading Errors
 		"LoadError": "该模组加载时发生错误 {0}",
@@ -47,6 +53,19 @@
 		"BuildErrorModNamedTerraria": "模组不能被命名为[Terraria]",
 		"BuildErrorModNameHasPeriod": "模组的内部名称不能含有句号",
 		"BuildErrorTwoModsSameName": "两个模组共享相同的内部名称 {0}",
+		// "BuildErrorCompilingError": "An error ocurred while compiling a mod.",
+		// "BuildErrorModCompileFolderHint": "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well.",
+		// "BuildErrorMissingDllFilesFor": "Missing dll files for {0}",
+		// "LoadErrorTextureFailedToLoad": "The texture file at {0} failed to load",
+		// "LoadErrorWavSoundFailedToLoad": "The wav sound file at {0} failed to load",
+		// "LoadErrorMP3SoundFailedToLoad": "The mp3 sound file at {0} failed to load",
+		// "LoadErrorFontFailedToLoad": "The font file at {0} failed to load",
+		// "LoadErrorEffectFailedToLoad": "The effect file at {0} failed to load",
+		// "LoadErrorUnknownXNBFileHint": "Unknown xnb file {path}. Perhaps it should be in Fonts/ or Effects/",
+		// "LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
+		// "LoadErrorAddItemOnlyInLoad": "AddItem can only be called from Mod.Load or Mod.Autoload",
+		// "LoadError2ModItemSameName": "You tried to add 2 ModItems with the same name: {0}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.",
+		// "LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
 		"OpenLogs": "打开日志",
 		"OpenWebHelp": "打开网页帮助",
 
@@ -55,6 +74,7 @@
 		"ModInfoVisitHomepage": "访问模组主页查看更多信息",
 		"ModInfoExtract": "提取",
 		"ModInfoNoDescriptionAvailable": "无可用描述",
+		// "ModInfoProblemTryAgain": "There was a problem, try again",
 
 		// Mod Packs
 		"ModPacksHeader": "模组整合包",
@@ -71,10 +91,12 @@
 
 		// Mod Browser
 		"MBDownload": "下载",
+		// "MBDownloadAll": "Download All",
 		"MBDownloadingMod": "下载中: {0}",
 		"MBUploadingMod": "上传中: {0}",
 		"MBDowngrade": "降级",
 		"MBUpdate": "更新",
+		// "MBUpdateAll": "Update All",
 		"MBReloadBrowser": "重新加载浏览器",
 		"MBGettingData": "获取数据中...",
 		"MBPopulatingBrowser": "填充浏览器中...",
@@ -95,11 +117,31 @@
 		"MBBusy": "繁忙",
 		"MBUnknown": "未知",
 		"MBClickToViewDependencyMods": "点击查看依赖模组:\n{0}",
+		// "MBModsNotFoundOnline": "The following mods were not found on the Mod Browser: {0}",
+		// "MBFilterDependencies": "Dependencies",
+		// "MBFilterModlist": "Modlist",
+		// "MBExceededBandwidth": "The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.",
+		// "MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
+		// "1SecondAgo": "1 second ago",
+		// "XSecondsAgo": "{0} seconds ago",
+		// "1MinuteAgo": "1 minute ago",
+		// "XMinutesAgo": "{0} minutes ago",
+		// "1HourAgo": "1 hour ago",
+		// "XHoursAgo": "{0} hours ago",
+		// "1DayAgo": "1 day ago",
+		// "XDaysAgo": "{0} days ago",
+		// "1MonthAgo": "1 month ago",
+		// "XMonthsAgo": "{0} months ago",
+		// "1YearAgo": "1 year ago",
+		// "XYearsAgo": "{0} years ago",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "请输入你的密码",
 		"MBPublishVisitWebsiteForPassphrase": "访问网站以生成密码",
 		"MBPublishPastePassphrase": "粘贴密码 (ctrl-v)",
+		// "MBMyPublishedMods": "My Published Mods",
+		// "MBUnpublish": "My Published Mods",
+		// "MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
 
 		// TML Options
 		"DownloadFromServersYes": "从服务器下载模组：开启",
@@ -117,7 +159,7 @@
 		"EnableModsReminder": "你最近下载的模组目前已被禁用,如果需要使用它们,记得启用并重新加载.",
 		"DontShowAgain": "不再提示",
 		"ModControls": "模组按键",
-		
+
 		// Player and World Select
 		"MigratePlayersMessage": "你没有人物存档.\n如果你想将你的人物存档从原版转移到tModLoader,\n请将它们从“/Terraria/Players”复制到“/Terraria/ModLoader/Players”.\n复制[.plr]文件及同名文件夹.\n点击[这里]打开这些文件夹.\n复制完你所需的人物存档后,按[返回].",
 		"MigrateWorldsMessage": "你没有地图存档.\n如果你想将你的地图存档从原版转移到tModLoader,\n请将它们从“/Terraria/Worlds”复制到“/Terraria/ModLoader/Worlds”.\n复制[.wld]文件.\n点击[这里]打开这些文件夹.\n复制完你所需的地图存档后,按[返回].",
@@ -138,6 +180,20 @@
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",
 
+		// Extract Mod
+		// "ExtractErrorWhileExtractingMod": "An error occured while extracting {0}",
+		// "ExtractHideCodeMessage": "The modder has chosen to hide the code from tModReader.",
+		// "ExtractNoSourceCodeMessage": "The modder has not chosen to include their source code.",
+		// "ExtractHideResourcesMessage": "The modder has chosen to hide resources (ie. images) from tModReader.",
+		// "ExtractFileListing": "Files:",
+
+		// Mod Commands
+		// "CommandModListDescription": "Displays a list of loaded mods.",
+		// "CommandModListServerMods": "Server Mods:",
+		// "CommandModListSyncedMods": "Synced Mods:",
+		// "CommandModListClientMods": "Client Mods:",
+		// "CommandModListModlist": "Modlist:",
+
 		// There should be ModName after ':'
 		"MSReadingProperties": "读取中：",
 		"MSCompilingWindows": "编译Windows版 {0}...",
@@ -154,17 +210,20 @@
 		"MSReading": "读取中: {0}",
 		"MSSettingUp": "安装中...",
 		"MSAddingRecipes": "添加合成配方...",
-		
+
 		// Mod Loader Mod
 		"StartBagTooltip": "部分起始物品无法正常放入背包",
 		"StartBagItemName": "起始包",
 		"UnloadedItemItemName": "卸载物品",
+		// "UnloadedItemModTooltip": "Mod: {0}",
+		// "UnloadedItemItemNameTooltip": "Item: {0}",
+		// "AprilFoolsJoke": "April Fools Joke",
 
 		// Extra mouse buttons
 		"MouseMiddle": "鼠标中键",
 		"MouseXButton1": "鼠标#4",
 		"MouseXButton2": "鼠标#5",
-		
+
 		// Misc
 		"OK": "好的",
 		"Continue": "继续",

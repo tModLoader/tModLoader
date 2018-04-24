@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 
@@ -34,7 +35,7 @@ namespace Terraria.ModLoader.UI
 				.ContinueWith(t => {
 					var e = t.Result;
 					if (e != null)
-						ErrorLogger.LogException(e, "An error occured while extracting " + mod.Name);
+						ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name));
 					else
 						Main.menuMode = gotoMenu;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
@@ -61,13 +62,13 @@ namespace Terraria.ModLoader.UI
 				log = new StreamWriter(Path.Combine(dir, "tModReader.txt")) {AutoFlush = true};
 				
 				if (mod.properties.hideCode)
-					log.WriteLine("The modder has chosen to hide the code from tModReader.");
+					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideCodeMessage"));
 				else if (!mod.properties.includeSource)
-					log.WriteLine("The modder has not chosen to include their source code.");
+					log.WriteLine(Language.GetTextValue("tModLoader.ExtractNoSourceCodeMessage"));
 				if (mod.properties.hideResources)
-					log.WriteLine("The modder has chosen to hide resources (ie. images) from tModReader.");
+					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideResourcesMessage"));
 
-				log.WriteLine("Files:");
+				log.WriteLine(Language.GetTextValue("tModLoader.ExtractFileListing"));
 
 				int i = 0;
 				void WriteFile(string name, byte[] content)

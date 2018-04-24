@@ -41,7 +41,7 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			myPublishedMods.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel<string>("My Published Mods", 0.8f, true);
+			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
@@ -75,7 +75,7 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate()
 		{
 			myPublishedMods.Clear();
-			uITextPanel.SetText("My Published Mods", 0.8f, true);
+			uITextPanel.SetText(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
 			string response = "";
 			try
 			{
@@ -94,10 +94,10 @@ namespace Terraria.ModLoader.UI
 			{
 				if (e.Status == WebExceptionStatus.Timeout)
 				{
-					uITextPanel.SetText("Mod Browser OFFLINE (Busy)", 0.8f, true);
+					uITextPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")), 0.8f, true);
 					return;
 				}
-				uITextPanel.SetText("Mod Browser OFFLINE.", 0.8f, true);
+				uITextPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", ""), 0.8f, true);
 				return;
 			}
 			catch (Exception e)

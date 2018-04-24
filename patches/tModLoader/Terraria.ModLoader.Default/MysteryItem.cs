@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -38,11 +39,11 @@ namespace Terraria.ModLoader.Default
 			{
 				if (tooltips[k].Name == "Tooltip0")
 				{
-					tooltips[k].text = "Mod: " + modName;
+					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", modName);
 				}
 				else if (tooltips[k].Name == "Tooltip1")
 				{
-					tooltips[k].text = "Item: " + itemName;
+					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemItemNameTooltip", itemName);
 				}
 			}
 		}

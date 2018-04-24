@@ -126,14 +126,14 @@ namespace Terraria.ModLoader.UI
 			{
 				loaded = true;
 				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count };
-				string[] strings = { " items", " NPCs", " tiles", " walls", " buffs", " mounts" }; // TODO: Localize these
+				string[] localizationKeys = { "ModsXItems", "ModsXNPCs", "ModsXTiles", "ModsXWalls", "ModsXBuffs", "ModsXMounts" };
 				int xOffset = -40;
 				for (int i = 0; i < values.Length; i++)
 				{
 					if (values[i] > 0)
 					{
 						Texture2D iconTexture = Main.instance.infoIconTexture[i];
-						keyImage = new UIHoverImage(iconTexture, values[i] + strings[i]);
+						keyImage = new UIHoverImage(iconTexture, Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i]));
 						keyImage.Left.Set(xOffset, 1f);
 						base.Append(keyImage);
 						xOffset -= 18;
