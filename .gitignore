@@ -2,14 +2,14 @@
 /logs
 **/bin/
 **/obj/
+**/packages/
+.vs
 *.user
 *.suo
 *.cache
 *.force
-solutions/**/*.zip
 installer2/*.class
 installer2/*.jar
-/solutions/packages
 solutions/documentation/html
 solutions/documentation/*.tmp
-solutions/*.zip
+solutions/**.zip

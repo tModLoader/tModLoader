@@ -5,15 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 using ICSharpCode.NRefactory.CSharp;
 using Terraria.ModLoader.Properties;
+using DiffPatch;
+using PatchReviewer;
 
 namespace Terraria.ModLoader.Setup
 {
 	public class PatchTask : Task
 	{
-		private const bool NewEngine = true;
-
 		public readonly string baseDir;
 		public readonly string srcDir;
 		public readonly string patchDir;
@@ -25,90 +26,7 @@ namespace Terraria.ModLoader.Setup
 		private int fuzzy;
 		private StreamWriter logFile;
 
-		public class PatchResults
-		{
-			public readonly string relPath;
-			public readonly string patchPath;
-			public readonly string srcPath;
-			public readonly string basePath;
-			public readonly string[] beforeLines;
-			public readonly string[] afterLines;
-			public List<Patcher.Result> results;
-
-			public int exact, offset, fuzzy, failures, warnings;
-
-			public PatchResults(string relPath, string patchPath, string srcPath, string basePath, 
-				string[] beforeLines, string[] afterLines, IEnumerable<Patcher.Result> results) {
-				this.relPath = relPath;
-				this.patchPath = patchPath;
-				this.srcPath = srcPath;
-				this.basePath = basePath;
-				this.beforeLines = beforeLines;
-				this.afterLines = afterLines;
-				this.results = results.ToList();
-
-				foreach (var result in this.results) {
-					if (!result.success) {
-						failures++;
-						continue;
-					}
-
-					if (ErrorLevel(result) > 0)
-						warnings++;
-
-					if (result.mode == Patcher.Mode.EXACT) exact++;
-					else if (result.mode == Patcher.Mode.OFFSET) offset++;
-					else if(result.mode == Patcher.Mode.FUZZY) fuzzy++;
-				}
-			}
-
-			public string Log() {
-				var log = new StringBuilder();
-				log.AppendLine($"exact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}\t{relPath}");
-
-				foreach (var res in results)
-					log.AppendLine(Summary(res));
-
-				return log.ToString();
-			}
-
-			public string Summary(Patcher.Result r) {
-				if (!r.success)
-					return $"FAILURE: {r.patch.Header}";
-
-				if (r.mode == Patcher.Mode.OFFSET)
-					return (r.offsetWarning ? "WARNING" : "OFFSET") + $": {r.patch.Header} offset {r.offset} lines";
-
-				if (r.mode == Patcher.Mode.FUZZY) {
-					int q = (int)(r.fuzzyQuality * 100);
-					return $"FUZZY: {r.patch.Header} quality {q}%" +
-						(r.offset > 0 ? $" offset {r.offset} lines" : "");
-				}
-
-				return $"EXACT: {r.patch.Header}";
-			}
-
-			// 0 = exact/offset
-			// 1 = good quality fuzzy
-			// 2 = warning
-			// 3 = bad quality fuzzy
-			// 4 = failure
-			public int ErrorLevel(Patcher.Result result) {
-				if (!result.success)
-					return 4;
-				if (result.mode == Patcher.Mode.FUZZY && result.fuzzyQuality < 0.5f)
-					return 3;
-				if (result.offsetWarning || result.mode == Patcher.Mode.FUZZY && result.fuzzyQuality < 0.85f)
-					return 2;
-				if (result.mode == Patcher.Mode.FUZZY)
-					return 1;
-				return 0;
-			}
-
-			public int ErrorLevel() => results.Select(ErrorLevel).Max();
-		}
-
-		private ConcurrentBag<PatchResults> results = new ConcurrentBag<PatchResults>();
+		private readonly ConcurrentBag<PatchedFile> results = new ConcurrentBag<PatchedFile>();
 
 		public string FullBaseDir => Path.Combine(Program.baseDir, baseDir);
 		public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
@@ -164,11 +82,10 @@ namespace Terraria.ModLoader.Setup
 						() => FormatTask.Format(srcPath, format, taskInterface.CancellationToken())));
 			}
 
-			foreach (var file in patchFiles)
-			{
+			foreach (var file in patchFiles) {
 				var relPath = RelPath(FullPatchDir, file);
 				if (relPath.EndsWith(".patch"))
-					patchItems.Add(new WorkItem("Patching: " + relPath, () => Patch(relPath)));
+					patchItems.Add(new WorkItem("Patching: " + relPath, () => Patch(file)));
 				else if (relPath != DiffTask.RemovedFileList)
 					copyItems.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(FullSrcDir, relPath))));
 			}
@@ -190,7 +107,11 @@ namespace Terraria.ModLoader.Setup
 			cutoff.Set(DateTime.Now);
 
 			if (fuzzy > 0)
-				taskInterface.Invoke(new Action(() => new PatchResultsForm(results).ShowDialog()));
+				taskInterface.Invoke(new Action(() => {
+					var w = new ReviewWindow(results);
+					ElementHost.EnableModelessKeyboardInterop(w);
+					w.ShowDialog();
+				}));
 		}
 
 		public override bool Failed() => failures > 0;
@@ -204,110 +125,63 @@ namespace Terraria.ModLoader.Setup
 				$"Patches applied with {failures} failures and {warnings} warnings.\nSee /logs/patch.log for details",
 				"Patch Results", MessageBoxButtons.OK, Failed() ? MessageBoxIcon.Error : MessageBoxIcon.Warning);
 		}
-		private void Patch(string relPatchPath)
+
+		private void Patch(string patchPath)
 		{
-			var relPath = relPatchPath.Remove(relPatchPath.Length - 6);
-			if (!File.Exists(Path.Combine(FullSrcDir, relPath)))
+			var patchFile = PatchFile.FromText(File.ReadAllText(patchPath));
+			//use srcFile because the base file is already copied and there may have been formatting applied
+			var srcFile = Path.Combine(Program.baseDir, patchFile.patchedPath);
+			var name = RelPath(FullSrcDir, srcFile);
+
+			if (!File.Exists(srcFile))
 			{
-				Log("MISSING file " + Path.Combine(srcDir, relPath) + Environment.NewLine);
+				Log("MISSING file " + patchFile.patchedPath + Environment.NewLine);
 				failures++;
 				return;
 			}
 
-			if (NewEngine) {
-				NewPatch(relPath);
-				return;
-			}
+			var unpatchedLines = File.ReadAllLines(srcFile);
+			var patcher = new Patcher(patchFile.patches, unpatchedLines);
+			patcher.Patch(mode);
 
-			var patchText = File.ReadAllText(Path.Combine(FullPatchDir, relPatchPath));
-			patchText = PreparePatch(patchText);
-
-			CallPatch(patchText, Path.Combine(srcDir, relPath));
-
-			//just a copy of the original if the patch wasn't perfect, delete it, we still have it
-			var fileName = Path.GetFileName(relPath);
-			var fuzzFile = Path.Combine(FullSrcDir, Path.GetDirectoryName(relPath),
-				fileName.Substring(0, Math.Min(fileName.Length, 13)) + "~");
-			if (File.Exists(fuzzFile))
-				File.Delete(fuzzFile);
-		}
-
-		//generates destination hunk offsets and enforces windows line endings
-		private static string PreparePatch(string patchText) {
-			var lines = patchText.Split('\n');
-			int delta = 0;
-			for (int i = 0; i < lines.Length; i++) {
-				var line = lines[i].TrimEnd();
-				if (line.StartsWith("@@")) {
-					var m = DiffTask.HunkOffsetRegex.Match(lines[i]);
-					var hunkOffset = int.Parse(m.Groups[1].Value) + delta;
-					delta += int.Parse(m.Groups[4].Value) - int.Parse(m.Groups[2].Value);
-					line = m.Result($"@@ -$1,$2 +{hunkOffset},$4 @@");
+			int exact = 0, offset = 0;
+			foreach (var result in patcher.Results) {
+				if (!result.success) {
+					failures++;
+					continue;
 				}
-				lines[i] = line;
+
+				if (result.mode == Patcher.Mode.FUZZY || result.offsetWarning) warnings++;
+				if (result.mode == Patcher.Mode.EXACT) exact++;
+				else if (result.mode == Patcher.Mode.OFFSET) offset++;
+				else if (result.mode == Patcher.Mode.FUZZY) fuzzy++;
 			}
 			
-			return string.Join(Environment.NewLine, lines);
+			var log = new StringBuilder();
+			log.AppendLine($"exact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}\t{name}");
+
+			foreach (var res in patcher.Results)
+				log.AppendLine(res.Summary());
+
+			Log(log.ToString());
+
+			var patchedFile = new PatchedFile {
+				title = name,
+				rootDir = Program.baseDir,
+				patchFile = patchFile,
+				patchFilePath = patchPath,
+				original = unpatchedLines,
+				patched = patcher.ResultLines,
+				results = patcher.Results.ToList(),
+			};
+			
+			results.Add(patchedFile);
 		}
 
 		private void Log(string text)
 		{
 			lock (logFile)
-			{
 				logFile.Write(text);
-			}
-		}
-
-		private void CallPatch(string patchText, string srcFile)
-		{
-			var output = new StringBuilder();
-			var error = new StringBuilder();
-			var log = new StringBuilder();
-			Program.RunCmd(Program.toolsDir, Path.Combine(Program.toolsDir, "applydiff.exe"),
-				$"-u -N -p0 -d {Program.baseDir} {srcFile}",
-				s => { output.Append(s); lock(log) log.Append(s); },
-				s => { error.Append(s); lock(log) log.Append(s); },
-				patchText
-			);
-
-			Log(log.ToString());
-
-			if (error.Length > 0)
-				throw new Exception(error.ToString());
-
-			foreach (var line in output.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None))
-			{
-				if (line.StartsWith("Hunk"))
-				{
-					if (line.Contains("FAILED")) failures++;
-					else if (line.Contains("fuzz")) warnings++;
-				}
-			}
-		}
-
-		public static PatchResults NewPatch(string relPath, string basePath, string srcPath, string patchPath, Patcher.Mode mode) {
-			var baseLines = File.ReadAllText(basePath).Split('\n').Select(l => l.TrimEnd('\r')).ToArray();
-			var patcher = new Patcher(File.ReadAllText(patchPath), baseLines);
-			patcher.Apply(mode);
-			var resultLines = patcher.ResultLines();
-			File.WriteAllText(srcPath, string.Join(Environment.NewLine, resultLines));
-
-			return new PatchResults(relPath, patchPath, srcPath, basePath, baseLines, resultLines, patcher.Results());
-		}
-
-		private void NewPatch(string relPath) {
-			var r = NewPatch(relPath, 
-				Path.Combine(FullBaseDir, relPath), 
-				Path.Combine(FullSrcDir, relPath), 
-				Path.Combine(FullPatchDir, relPath + ".patch"), 
-				mode);
-
-			results.Add(r);
-			Log(r.Log());
-
-			fuzzy += r.fuzzy;
-			warnings += r.warnings;
-			failures += r.failures;
 		}
 	}
 }
