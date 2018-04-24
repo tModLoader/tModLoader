@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\NPC.cs
 +++ src/tModLoader\Terraria\NPC.cs
-@@ -16,11 +_,30 @@
+@@ -16,11 +_,38 @@
  using Terraria.Localization;
  using Terraria.Utilities;
  using Terraria.World.Generation;
@@ -16,16 +16,24 @@
 +			internal set;
 +		}
 +
-+		internal NPCInfo[] npcInfo = new NPCInfo[0];
++		internal GlobalNPC[] globalNPCs = new GlobalNPC[0];
 +
-+		public NPCInfo GetModInfo(Mod mod, string name)
++		/// <summary>Gets the global NPC. Use this overload when you dynamically add GlobalNPC manually.</summary>
++		public GlobalNPC GetGlobalNPC(Mod mod, string name)
 +		{
-+			return NPCLoader.GetNPCInfo(this, mod, name);
++			return NPCLoader.GetGlobalNPC(this, mod, name);
 +		}
 +
-+		public T GetModInfo<T>(Mod mod) where T : NPCInfo
++		/// <summary>Gets the global NPC. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
++		public T GetGlobalNPC<T>(Mod mod) where T : GlobalNPC
 +		{
-+			return (T)GetModInfo(mod, typeof(T).Name);
++			return (T)GetGlobalNPC(mod, typeof(T).Name);
++		}
++
++		/// <summary>Gets the global NPC. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
++		public T GetGlobalNPC<T>() where T : GlobalNPC
++		{
++			return (T)NPCLoader.GetGlobalNPC(this, typeof(T));
 +		}
 +
  		private const int NPC_TARGETS_START = 300;
@@ -152,11 +160,12 @@
  		public void SetDefaultsKeepPlayerInteraction(int Type)
  		{
  			bool[] array = new bool[this.playerInteraction.Length];
-@@ -2812,6 +_,7 @@
+@@ -2812,6 +_,8 @@
  				this.SetDefaultsFromNetId(Type);
  				return;
  			}
 +			this.modNPC = null;
++			this.globalNPCs = new GlobalNPC[0];
  			this.waterMovementSpeed = (this.lavaMovementSpeed = 0.5f);
  			this.honeyMovementSpeed = 0.25f;
  			this.altTexture = 0;
@@ -177,7 +186,7 @@
  				this.scale = 1f;
  				this.rarity = 1;
  			}
-+			NPCLoader.SetupNPC(this);
++			NPCLoader.SetDefaults(this);
  			if (flag)
  			{
 -				for (int num2 = 0; num2 < 206; num2++)
@@ -238,11 +247,12 @@
  			{
  				this.TargetClosest(true);
  				if (this.position.X < Main.player[this.target].position.X)
-@@ -38404,7 +_,13 @@
+@@ -38404,7 +_,14 @@
  			{
  				for (int m = 0; m < 200; m++)
  				{
 -					if (Main.npc[m].active && !Main.npc[m].friendly && Main.npc[m].damage > 0 && Main.npc[m].Distance(base.Center) < num6 && (this.type != 453 || !NPCID.Sets.Skeletons.Contains(Main.npc[m].netID)))
++					if (!Main.npc[m].active) continue;
 +					bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[m], this);
 +					if (modCanHit.HasValue && !modCanHit.Value)
 +					{
@@ -379,6 +389,15 @@
  				if (Main.expertMode)
  				{
  					num58 = (int)((float)num58 * Main.expertNPCDamage);
+@@ -43916,7 +_,7 @@
+ 					Main.tile[num177 - this.direction, num178 + 1] = new Tile();
+ 				}
+ 				Main.tile[num177, num178 + 1].halfBrick();
+-				if (Main.tile[num177, num178 - 1].nactive() && (Main.tile[num177, num178 - 1].type == 10 || Main.tile[num177, num178 - 1].type == 388) && flag6)
++				if (Main.tile[num177, num178 - 1].nactive() && (TileLoader.IsClosedDoor(Main.tile[num177, num178 - 1]) || Main.tile[num177, num178 - 1].type == 388) && flag6)
+ 				{
+ 					this.ai[2] += 1f;
+ 					this.ai[3] = 0f;
 @@ -43965,7 +_,7 @@
  							}
  							else
@@ -397,14 +416,24 @@
  									for (int k = 0; k < num38; k++)
  									{
  										Dust dust = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
-@@ -46830,6 +_,7 @@
+@@ -46790,7 +_,7 @@
+ 				Tile tileSafely4 = Framing.GetTileSafely(num54, num55 - 1);
+ 				Tile tileSafely5 = Framing.GetTileSafely(num54, num55 - 2);
+ 				Tile tileSafely6 = Framing.GetTileSafely(num54, num55 - 3);
+-				if (flag8 && tileSafely4.nactive() && (tileSafely4.type == 10 || tileSafely4.type == 388))
++				if (flag8 && tileSafely4.nactive() && (TileLoader.IsClosedDoor(tileSafely4) || tileSafely4.type == 388))
+ 				{
+ 					this.ai[0] += 1f;
+ 					this.ai[3] = 0f;
+@@ -46830,7 +_,7 @@
  							}
  							else
  							{
-+								// TODO something like: if (TileLoader.OpenDoorID(Main.tile[num210, num211 - 1]) >= 0)
- 								if (tileSafely4.type == 10)
+-								if (tileSafely4.type == 10)
++								if (TileLoader.IsClosedDoor(tileSafely4))
  								{
  									bool flag40 = WorldGen.OpenDoor(num54, num55 - 1, this.direction);
+ 									if (!flag40)
 @@ -49239,7 +_,7 @@
  
  		public bool UsesPartyHat()
@@ -450,17 +479,29 @@
  				if (this.townNPC)
  				{
  					Rectangle rectangle = new Rectangle((int)(this.position.X + (float)(this.width / 2) - (float)NPC.townRangeX), (int)(this.position.Y + (float)(this.height / 2) - (float)NPC.townRangeY), NPC.townRangeX * 2, NPC.townRangeY * 2);
-@@ -58729,6 +_,10 @@
- 					this.life = this.lifeMax;
- 					this.dontTakeDamageFromHostiles = true;
+@@ -58731,6 +_,10 @@
  					this.netUpdate = true;
-+					return;
-+				}
-+				if (!NPCLoader.CheckDead(this))
-+				{
  					return;
  				}
++				if (!NPCLoader.CheckDead(this))
++				{
++					return;
++				}
  				NPC.noSpawnCycle = true;
+ 				if (this.townNPC && this.type != 37 && this.type != 453)
+ 				{
+@@ -58767,7 +_,10 @@
+ 				{
+ 					Main.PlaySound(this.DeathSound, this.position);
+ 				}
+-				if (this.type == 13 || this.type == 14 || this.type == 15)
++				if (NPCLoader.SpecialNPCLoot(this))
++				{
++				}
++				else if (this.type == 13 || this.type == 14 || this.type == 15)
+ 				{
+ 					bool flag = true;
+ 					for (int j = 0; j < 200; j++)
 @@ -59471,7 +_,7 @@
  
  		public static void ResetKillCount()
@@ -479,17 +520,6 @@
  			{
  				return;
  			}
-@@ -59600,6 +_,10 @@
- 							NetMessage.BroadcastChatMessage(networkText, new Color(250, 250, 0), -1);
- 						}
- 						int num7 = Item.BannerToItem(num3);
-+						if (num3 >= NPCID.Count)
-+						{
-+							num7 = NPCLoader.bannerToItem[NPCLoader.GetNPC(num3).banner];
-+						}
- 						Vector2 position = this.position;
- 						if (num6 >= 0 && num6 < 255)
- 						{
 @@ -59621,6 +_,10 @@
  			{
  				return;
@@ -534,6 +564,15 @@
  			this.DropItemInstanced(this.position, base.Size, itemType, 1, true);
  		}
  
+@@ -63558,7 +_,7 @@
+ 				NetMessage.SendData(71, -1, -1, null, x, (float)y, (float)Type, (float)Style, 0, 0, 0);
+ 				return;
+ 			}
+-			if (Type >= 0 && Type < 580 && Main.npcCatchable[Type] && NPC.CanReleaseNPCs(who))
++			if (Type >= 0 && Type < NPCLoader.NPCCount && Main.npcCatchable[Type] && NPC.CanReleaseNPCs(who))
+ 			{
+ 				if (Type == 148)
+ 				{
 @@ -63731,12 +_,13 @@
  					bool flag9 = false;
  					bool flag10 = false;
@@ -728,6 +767,18 @@
  		{
  			if (!this.active)
  			{
+@@ -76284,6 +_,11 @@
+ 			return false;
+ 		}
+ 
++		public bool HasBuff(int type)
++		{
++			return FindBuffIndex(type) != -1;
++		}
++
+ 		public int FindBuffIndex(int type)
+ 		{
+ 			if (this.buffImmune[type])
 @@ -76322,7 +_,10 @@
  			{
  				if (this.buffType[i] == type)

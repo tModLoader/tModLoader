@@ -29,6 +29,9 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal int index;
+		internal int instanceIndex;
+
 		/// <summary>
 		/// Allows you to automatically load a GlobalProjectile instead of using Mod.AddGlobalProjectile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
 		/// </summary>
@@ -37,6 +40,48 @@ namespace Terraria.ModLoader
 		public virtual bool Autoload(ref string name)
 		{
 			return mod.Properties.Autoload;
+		}
+
+		/// <summary>
+		/// Whether to create a new GlobalProjectile instance for every Projectile that exists. 
+		/// Useful for storing information on a projectile. Defaults to false. 
+		/// Return true if you need to store information (have non-static fields).
+		/// </summary>
+		public virtual bool InstancePerEntity => false;
+
+		public GlobalProjectile Instance(Projectile projectile) => InstancePerEntity ? projectile.globalProjectiles[instanceIndex] : this;
+
+		/// <summary>
+		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
+		/// Defaults to false (using default constructor).
+		/// </summary>
+		public virtual bool CloneNewInstances => false;
+
+		/// <summary>
+		/// Returns a clone of this GlobalProjectile. 
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
+		/// Only called if CloneNewInstances && InstancePerEntity
+		/// </summary>
+		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
+
+		/// <summary>
+		/// Create a new instance of this GlobalProjectile for a Projectile instance. 
+		/// Called at the end of Projectile.SetDefaults.
+		/// If CloneNewInstances is true, just calls Clone()
+		/// Otherwise calls the default constructor and copies fields
+		/// </summary>
+		public virtual GlobalProjectile NewInstance(Projectile projectile)
+		{
+			if (CloneNewInstances)
+			{
+				return Clone();
+			}
+			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
+			copy.mod = mod;
+			copy.Name = Name;
+			copy.index = index;
+			copy.instanceIndex = instanceIndex;
+			return copy;
 		}
 
 		/// <summary>
@@ -163,6 +208,15 @@ namespace Terraria.ModLoader
 		public virtual bool MinionContactDamage(Projectile projectile)
 		{
 			return false;
+		}
+
+		/// <summary>
+		/// Allows you to change the hitbox used by a projectile for damaging players and NPCs.
+		/// </summary>
+		/// <param name="projectile"></param>
+		/// <param name="hitbox"></param>
+		public virtual void ModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox)
+		{
 		}
 
 		/// <summary>

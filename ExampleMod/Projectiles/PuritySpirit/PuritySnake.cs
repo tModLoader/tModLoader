@@ -8,10 +8,12 @@ namespace ExampleMod.Projectiles.PuritySpirit
 {
 	public class PuritySnake : ModProjectile
 	{
-		public override bool Autoload(ref string name, ref string texture)
+		public override string Texture
 		{
-			texture = "ExampleMod/Projectiles/ShadowArm";
-			return base.Autoload(ref name, ref texture);
+			get
+			{
+				return "ExampleMod/Projectiles/ShadowArm";
+			}
 		}
 
 		public override void SetStaticDefaults()

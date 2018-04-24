@@ -2,6 +2,7 @@
 
 namespace Terraria.ModLoader
 {
+	[AttributeUsage(AttributeTargets.Class)]
 	public class AutoloadEquip : Attribute
 	{
 		public readonly EquipType[] equipTypes;

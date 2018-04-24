@@ -9,16 +9,18 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleBehindTilesProjectile : ModProjectile
 	{
-		public override bool Autoload(ref string name, ref string texture)
+		public override string Texture
 		{
-			// Use this to use Vanilla textures. The number corresponds to the ProjectileID of hte vanilla projectile.
-			texture = "Terraria/Projectile_3";
-			return true;
+			get
+			{
+				return "Terraria/Projectile_3";
+			}
 		}
 
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Ghost Shuriken");
+			ProjectileID.Sets.DontAttachHideToAlpha[projectile.type] = true; // projectiles with hide but without this will draw in the lighting values of the owner player.
 		}
 
 		public override void SetDefaults()

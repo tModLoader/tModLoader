@@ -61,6 +61,8 @@ namespace Terraria.ModLoader
 		internal bool includeSource = false;
 		internal bool includePDB = false;
 		internal bool editAndContinue = false;
+		// This .tmod was built against a beta release, preventing publishing.
+		internal bool beta = false;
 		internal int languageVersion = 4;
 		internal string homepage = "";
 		internal string description = "";
@@ -107,7 +109,7 @@ namespace Terraria.ModLoader
 			string[] lines = File.ReadAllLines(propertiesFile);
 			foreach (string line in lines)
 			{
-				if (line.Length == 0)
+				if (String.IsNullOrWhiteSpace(line))
 				{
 					continue;
 				}
@@ -273,6 +275,8 @@ namespace Terraria.ModLoader
 						writer.Write("side");
 						writer.Write((byte)side);
 					}
+					if(ModLoader.beta)
+						writer.Write("beta");
 					writer.Write("");
 				}
 				data = memoryStream.ToArray();
@@ -283,6 +287,8 @@ namespace Terraria.ModLoader
 		internal static BuildProperties ReadModFile(TmodFile modFile)
 		{
 			BuildProperties properties = new BuildProperties();
+			properties.hideCode = true;
+			properties.hideResources = true;
 			byte[] data = modFile.GetFile("Info");
 
 			if (data.Length == 0)
@@ -359,6 +365,10 @@ namespace Terraria.ModLoader
 					if (tag == "side")
 					{
 						properties.side = (ModSide)reader.ReadByte();
+					}
+					if (tag == "beta")
+					{
+						properties.beta = true;
 					}
 				}
 			}

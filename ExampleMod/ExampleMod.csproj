@@ -56,8 +56,10 @@
     <Compile Include="Angle.cs" />
     <Compile Include="Backgrounds\ExampleSurfaceBgStyle.cs" />
     <Compile Include="Backgrounds\ExampleUgBgStyle.cs" />
+    <Compile Include="Buffs\Blocky.cs" />
     <Compile Include="Buffs\CarMount.cs" />
     <Compile Include="Buffs\EtherealFlames.cs" />
+    <Compile Include="Buffs\ExampleJavelin.cs" />
     <Compile Include="Buffs\ExampleLightPet.cs" />
     <Compile Include="Buffs\ExamplePet.cs" />
     <Compile Include="Buffs\HeroOne.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Items\Armor\AbominationMask.cs" />
     <Compile Include="Items\Armor\BunnyMask.cs" />
     <Compile Include="Items\Armor\ExampleBreastplate.cs" />
+    <Compile Include="Items\Armor\ExampleCostume.cs" />
     <Compile Include="Items\Armor\ExampleHelmet.cs" />
     <Compile Include="Items\Armor\ExampleHood.cs" />
     <Compile Include="Items\Armor\ExampleLeggings.cs" />
@@ -116,11 +119,15 @@
     <Compile Include="Items\CarKey.cs" />
     <Compile Include="Items\CopperShortsword.cs" />
     <Compile Include="Items\EquipMaterial.cs" />
+    <Compile Include="Items\ExampleDrawTooltips.cs" />
     <Compile Include="Items\ExampleDye.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleHook.cs" />
+    <Compile Include="Items\ExampleInstancedGlobalItem.cs" />
     <Compile Include="Items\ExampleItem.cs" />
+    <Compile Include="Items\ExampleLifeFruit.cs" />
+    <Compile Include="Items\ExampleMagicMirror.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
@@ -179,7 +186,6 @@
     <Compile Include="NPCs\Abomination\FreedElement.cs" />
     <Compile Include="NPCs\ExampleChestSummon.cs" />
     <Compile Include="NPCs\ExampleGlobalNPC.cs" />
-    <Compile Include="NPCs\ExampleNPCInfo.cs" />
     <Compile Include="NPCs\ExamplePerson.cs" />
     <Compile Include="NPCs\Fish.cs" />
     <Compile Include="NPCs\FlutterSlime.cs" />
@@ -195,6 +201,7 @@
     <Compile Include="Projectiles\ElementBall.cs" />
     <Compile Include="Projectiles\ElementLaser.cs" />
     <Compile Include="Projectiles\ElementShield.cs" />
+    <Compile Include="Projectiles\ExampleAnimatedPierce.cs" />
     <Compile Include="Projectiles\ExampleBehindTilesProjectile.cs" />
     <Compile Include="Projectiles\ExampleBullet.cs" />
     <Compile Include="Projectiles\ExampleCloneProjectile.cs" />
@@ -203,7 +210,7 @@
     <Compile Include="Projectiles\ExampleLaser.cs" />
     <Compile Include="Projectiles\ExampleSolution.cs" />
     <Compile Include="Projectiles\ExampleSpearProjectile.cs" />
-    <Compile Include="Projectiles\ExampleYoyo.cs" />
+    <Compile Include="Projectiles\ExampleYoyoProjectile.cs" />
     <Compile Include="Projectiles\HealProj.cs" />
     <Compile Include="Projectiles\Minions\HoverShooter.cs" />
     <Compile Include="Projectiles\Minions\Minion.cs" />

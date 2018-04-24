@@ -42,6 +42,10 @@ namespace Terraria.ModLoader
 
 		internal string texture;
 		/// <summary>
+		/// The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.
+		/// </summary>
+		public virtual string HighlightTexture => texture + "_Highlight";
+		/// <summary>
 		/// The default type of sound made when this tile is hit. Defaults to 0.
 		/// </summary>
 		public int soundType = 0;
@@ -73,6 +77,10 @@ namespace Terraria.ModLoader
 		/// Whether or not the smart cursor function is disabled when the cursor hovers above this tile. Defaults to false.
 		/// </summary>
 		public bool disableSmartCursor = false;
+		/// <summary>
+		/// Whether or not the smart tile interaction function is disabled when the cursor hovers above this tile. Defaults to false.
+		/// </summary>
+		public bool disableSmartInteract = false;
 		/// <summary>
 		/// An array of the IDs of tiles that this tile can be considered as when looking for crafting stations.
 		/// </summary>
@@ -150,7 +158,7 @@ namespace Terraria.ModLoader
 			{
 				key = Name;
 			}
-			return new ModTranslation(string.Format("MapObject.{0}.{1}", mod.Name, key), true);
+			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
 		}
 
 		/// <summary>
@@ -251,6 +259,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void PostSetDefaults()
 		{
+		}
+
+		/// <summary>
+		/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool HasSmartInteract()
+		{
+			return false;
 		}
 
 		/// <summary>

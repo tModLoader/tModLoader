@@ -1,0 +1,34 @@
+--- src/Terraria\Terraria.GameContent.UI.States\UIWorldSelect.cs
++++ src/tModLoader\Terraria.GameContent.UI.States\UIWorldSelect.cs
+@@ -2,6 +_,7 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
+ using System.Collections.Generic;
++using System.IO;
+ using System.Linq;
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.GameInput;
+@@ -132,6 +_,22 @@
+ 			{
+ 				this._worldList.Add(new UIWorldListItem(current, num++));
+ 			}
++			if (list.Count == 0)
++			{
++				string vanillaWorldsPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Worlds");
++				if (Directory.Exists(vanillaWorldsPath))
++				{
++					var noWorldsMessage = new UIText(Language.GetText("tModLoader.MigrateWorldsMessage"));
++					noWorldsMessage.Width.Set(0, 1);
++					noWorldsMessage.Height.Set(200, 0);
++					noWorldsMessage.OnClick += (a, b) =>
++					{
++						System.Diagnostics.Process.Start(Main.WorldPath);
++						System.Diagnostics.Process.Start(vanillaWorldsPath);
++					};
++					_worldList.Add(noWorldsMessage);
++				}
++			}
+ 		}
+ 
+ 		public override void Draw(SpriteBatch spriteBatch)
+

@@ -35,6 +35,15 @@
  			return MapTile.Create((ushort)num16, (byte)num2, (byte)num);
  		}
  
+@@ -2060,7 +_,7 @@
+ 							{
+ 								int num = 0;
+ 								byte[] array = new byte[16384];
+-								binaryWriter.Write(193);
++								binaryWriter.Write(194);
+ 								Main.MapFileMetadata.IncrementAndWrite(binaryWriter);
+ 								binaryWriter.Write(Main.worldName);
+ 								binaryWriter.Write(Main.worldID);
 @@ -2162,7 +_,7 @@
  										int num5;
  										ushort num6;

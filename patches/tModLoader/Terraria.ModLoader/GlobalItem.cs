@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -97,6 +99,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to manually choose what prefix an item will get.
+		/// </summary>
+		/// <returns>The ID of the prefix to give the item, -1 to use default vanilla behavior</returns>
+		public virtual int ChoosePrefix(Item item, UnifiedRandom rand)
+		{
+			return -1;
+		}
+
+		/// <summary>
 		/// Returns whether or not any item can be used. Returns true by default. The inability to use a specific item overrides this, so use this to stop an item from being used.
 		/// </summary>
 		public virtual bool CanUseItem(Item item, Player player)
@@ -144,16 +155,45 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
+		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
+		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
+		/// So if you set both melee class and another class to true, only the melee damage will actually be used.
 		/// </summary>
+		/// <param name="item">The item being used</param>
+		/// <param name="player">The player using the item</param>
+		/// <param name="damage">The damage</param>
 		public virtual void GetWeaponDamage(Item item, Player player, ref int damage)
 		{
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
+		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
+		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
+		/// So if you set both melee class and another class to true, only the melee knockback will actually be used.
 		/// </summary>
+		/// <param name="item">The item being used</param>
+		/// <param name="player">The player using the item</param>
+		/// <param name="knockback">The knockback</param>
 		public virtual void GetWeaponKnockback(Item item, Player player, ref float knockback)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
+		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
+		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
+		/// If you use a custom damage class, the crit value will equal item.crit
+		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, and summon cannot crit.
+		/// So if you set both melee class and another class to true, only the melee crit will actually be used.
+		/// </summary>
+		/// <param name="item">The item being used</param>
+		/// <param name="player">The player using the item</param>
+		/// <param name="crit">The critical strike chance</param>
+		public virtual void GetWeaponCrit(Item item, Player player, ref int crit)
 		{
 		}
 
@@ -186,7 +226,7 @@ namespace Terraria.ModLoader
 		/// <param name="position">The shoot spawn position.</param>
 		/// <param name="speedX">The speed x calculated from shootSpeed and mouse position.</param>
 		/// <param name="speedY">The speed y calculated from shootSpeed and mouse position.</param>
-		/// <param name="type">The projectile type choosen by ammo and weapon.</param>
+		/// <param name="type">The projectile type chosen by ammo and weapon.</param>
 		/// <param name="damage">The projectile damage.</param>
 		/// <param name="knockBack">The projectile knock back.</param>
 		/// <returns></returns>
@@ -218,7 +258,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the damage, knockbac, etc., that a melee weapon does to an NPC.
+		/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
 		/// </summary>
 		public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
 		{
@@ -449,14 +489,35 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This hooks gets called immediately before an item gets reforged by the Goblin Tinkerer. Useful for storing custom data, since reforging erases custom data.
+		/// Returns if the normal reforge pricing is applied. 
+		/// If true or false is returned and the price is altered, the price will equal the altered price.
+		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 		/// </summary>
-		public virtual void PreReforge(Item item)
+		public virtual bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount)
 		{
+			return true;
 		}
 
 		/// <summary>
-		/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer. Useful for restoring custom data that you saved in PreReforge.
+		/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
+		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
+		/// Reforging preserves modded data on the item. 
+		/// </summary>
+		public virtual bool NewPreReforge(Item item)
+		{
+			return true;
+		}
+
+		// @todo: PreReforge marked obsolete until v0.11
+		[method: Obsolete("PreReforge now returns a bool to control whether the reforge takes place. For now, use NewPreReforge")]
+		public virtual void PreReforge(Item item)
+		{
+			NewPreReforge(item);
+		}
+
+		/// <summary>
+		/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer.
+		/// Useful for modifying modded data based on the reforge result.
 		/// </summary>
 		public virtual void PostReforge(Item item)
 		{
@@ -679,6 +740,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to disallow the player from equipping an accessory. Return false to disallow equipping the accessory. Returns true by default.
 		/// </summary>
+		/// <param name="item">The item that is attepting to equip.</param>
+		/// <param name="player">The player.</param>
+		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
 		public virtual bool CanEquipAccessory(Item item, Player player, int slot)
 		{
 			return true;
@@ -727,6 +791,49 @@ namespace Terraria.ModLoader
 		/// Allows you to make anything happen when the player crafts the given item using the given recipe.
 		/// </summary>
 		public virtual void OnCraft(Item item, Recipe recipe)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to do things before this item's tooltip is drawn.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="lines">The tooltip lines for this item</param>
+		/// <param name="x">The top X position for this tooltip. It is where the first line starts drawing</param>
+		/// <param name="y">The top Y position for this tooltip. It is where the first line starts drawing</param>
+		/// <returns>Whether or not to draw this tooltip</returns>
+		public virtual bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to do things after this item's tooltip is drawn. The lines contain draw information as this is ran after drawing the tooltip.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="lines">The tooltip lines for this item</param>
+		public virtual void PostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to do things before a tooltip line of this item is drawn. The line contains draw info.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="line">The line that would be drawn</param>
+		/// <param name="yOffset">The Y offset added for next tooltip lines</param>
+		/// <returns>Whether or not to draw this tooltip line</returns>
+		public virtual bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to do things after a tooltip line of this item is drawn. The line contains draw info.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="line">The line that was drawn</param>
+		public virtual void PostDrawTooltipLine(Item item, DrawableTooltipLine line)
 		{
 		}
 

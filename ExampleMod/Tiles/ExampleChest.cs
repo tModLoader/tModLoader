@@ -21,6 +21,7 @@ namespace ExampleMod.Tiles
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileValue[Type] = 500;
+			TileID.Sets.HasOutlines[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 18 };
@@ -39,6 +40,11 @@ namespace ExampleMod.Tiles
 			adjTiles = new int[] { TileID.Containers };
 			chest = "Example Chest";
 			chestDrop = mod.ItemType("ExampleChest");
+		}
+
+		public override bool HasSmartInteract()
+		{
+			return true;
 		}
 
 		public string MapChestName(string name, int i, int j)
@@ -166,7 +172,7 @@ namespace ExampleMod.Tiles
 			player.showItemIcon2 = -1;
 			if (chest < 0)
 			{
-				player.showItemIconText = Lang.chestType[0].Value;
+				player.showItemIconText = Language.GetTextValue("LegacyChestType.0");
 			}
 			else
 			{

@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.NPCs.Abomination
 {
 	//ported from my tAPI mod because I'm lazy
+	[AutoloadBossHead]
 	public class CaptiveElement2 : ModNPC
 	{
 		private static int hellLayer
@@ -459,7 +460,12 @@ namespace ExampleMod.NPCs.Abomination
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ElementResidue"));
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityTotem"));
 			}
-			ExampleWorld.downedAbomination = true;
+			if (!ExampleWorld.downedAbomination)
+			{
+				ExampleWorld.downedAbomination = true;
+				if (Main.netMode == NetmodeID.Server)
+					NetMessage.SendData(MessageID.WorldData); // Immediately inform clients of new world state.
+			}
 		}
 
 		public override void BossLoot(ref string name, ref int potionType)

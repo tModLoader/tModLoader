@@ -1,0 +1,39 @@
+--- src/Terraria\Terraria.ID\SoundID.cs
++++ src/tModLoader\Terraria.ID\SoundID.cs
+@@ -6,7 +_,7 @@
+ {
+ 	public static class SoundID
+ 	{
+-		private struct SoundStyleDefaults
++		public struct SoundStyleDefaults
+ 		{
+ 			public readonly float PitchVariance;
+ 			public readonly float Volume;
+@@ -414,22 +_,22 @@
+ 			return SoundID._trackableLegacySoundPathList[id];
+ 		}
+ 
+-		private static LegacySoundStyle CreateTrackable(string name, SoundID.SoundStyleDefaults defaults)
++		public static LegacySoundStyle CreateTrackable(string name, SoundID.SoundStyleDefaults defaults)
+ 		{
+ 			return SoundID.CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
+ 		}
+ 
+-		private static LegacySoundStyle CreateTrackable(string name, int variations, SoundID.SoundStyleDefaults defaults)
++		public static LegacySoundStyle CreateTrackable(string name, int variations, SoundID.SoundStyleDefaults defaults)
+ 		{
+ 			return SoundID.CreateTrackable(name, variations, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
+ 		}
+ 
+-		private static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound)
++		public static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound)
+ 		{
+ 			return SoundID.CreateTrackable(name, 1, type);
+ 		}
+ 
+-		private static LegacySoundStyle CreateTrackable(string name, int variations, SoundType type = SoundType.Sound)
++		public static LegacySoundStyle CreateTrackable(string name, int variations, SoundType type = SoundType.Sound)
+ 		{
+ 			if (SoundID._trackableLegacySoundPathList == null)
+ 			{
+

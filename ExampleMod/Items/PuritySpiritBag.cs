@@ -9,7 +9,7 @@ namespace ExampleMod.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Treasure Bag");
-			Tooltip.SetDefault("${CommonItemTooltip.RightClickToOpen}");
+			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
 		}
 
 		public override void SetDefaults()

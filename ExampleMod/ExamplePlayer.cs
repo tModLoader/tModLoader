@@ -37,6 +37,15 @@ namespace ExampleMod
 		public bool examplePet = false;
 		public bool exampleLightPet = false;
 		public bool exampleShield = false;
+		// These 5 relate to ExampleCostume.
+		public bool blockyAccessoryPrevious;
+		public bool blockyAccessory;
+		public bool blockyHideVanity;
+		public bool blockyForceVanity;
+		public bool blockyPower;
+
+		private const int maxExampleLifeFruits = 10;
+		public int exampleLifeFruits = 0;
 
 		public bool ZoneExample = false;
 
@@ -54,6 +63,44 @@ namespace ExampleMod
 			examplePet = false;
 			exampleLightPet = false;
 			exampleShield = false;
+			blockyAccessoryPrevious = blockyAccessory;
+			blockyAccessory = blockyHideVanity = blockyForceVanity = blockyPower = false;
+
+			player.statLifeMax2 += exampleLifeFruits * 2;
+		}
+
+		// In MP, other clients need accurate information about your player or else bugs happen.
+		// clientClone, SyncPlayer, and SendClientChanges, ensure that information is correct.
+		// We only need to do this for data that is changed by code not executed by all clients, 
+		// or data that needs to be shared while joining a world.
+		// For example, examplePet doesn't need to be synced because all clients know that the player is wearing the ExamplePet item in an equipment slot. 
+		// The examplePet bool is set for that player on every clients computer independently (via the Buff.Update), keeping that data in sync.
+		// ExampleLifeFruits, however might be out of sync. For example, when joining a server, we need to share the exampleLifeFruits variable with all other clients.
+		public override void clientClone(ModPlayer clientClone)
+		{
+			ExamplePlayer clone = clientClone as ExamplePlayer;
+			// Here we would make a backup clone of values that are only correct on the local players Player instance.
+			// Some examples would be RPG stats from a GUI, Hotkey states, and Extra Item Slots
+			// clone.someLocalVariable = someLocalVariable;
+		}
+
+		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+		{
+			ModPacket packet = mod.GetPacket();
+			packet.Write((byte)ExampleModMessageType.ExampleLifeFruits);
+			packet.Write((byte)player.whoAmI);
+			packet.Write(exampleLifeFruits);
+			packet.Send(toWho, fromWho);
+		}
+
+		public override void SendClientChanges(ModPlayer clientPlayer)
+		{
+			// Here we would sync something like an RPG stat whenever the player changes it.
+			// So far, ExampleMod has nothing that needs this.
+			// if (clientPlayer.someLocalVariable != someLocalVariable)
+			// {
+			//    Send a Mod Packet with the changes.
+			// }
 		}
 
 		public override void UpdateDead()
@@ -65,9 +112,11 @@ namespace ExampleMod
 		public override TagCompound Save()
 		{
 			return new TagCompound {
-				{"score", score}
+				// {"somethingelse", somethingelse}, // To save more data, add additional lines
+				{"score", score},
+				{"exampleLifeFruits", exampleLifeFruits},
 			};
-			//note that C# 6.0 supports indexer initialisers
+			//note that C# 6.0 supports indexer initializers
 			//return new TagCompound {
 			//	["score"] = score
 			//};
@@ -76,6 +125,7 @@ namespace ExampleMod
 		public override void Load(TagCompound tag)
 		{
 			score = tag.GetInt("score");
+			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
 		}
 
 		public override void LoadLegacy(BinaryReader reader)
@@ -311,6 +361,28 @@ namespace ExampleMod
 			}
 		}
 
+		public override void UpdateVanityAccessories()
+		{
+			for (int n = 13; n < 18 + player.extraAccessorySlots; n++)
+			{
+				Item item = player.armor[n];
+				if (item.type == mod.ItemType<Items.Armor.ExampleCostume>())
+				{
+					blockyHideVanity = false;
+					blockyForceVanity = true;
+				}
+			}
+		}
+
+		public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
+		{
+			// Make sure this condition is the same as the condition in the Buff to remove itself. We do this here instead of in ModItem.UpdateAccessory in case we want future upgraded items to set blockyAccessory
+			if (player.townNPCs >= 1 && blockyAccessory)
+			{
+				player.AddBuff(mod.BuffType<Buffs.Blocky>(), 60, true);
+			}
+		}
+
 		public override void PostUpdateEquips()
 		{
 			if (nullified)
@@ -352,6 +424,12 @@ namespace ExampleMod
 
 		public override void FrameEffects()
 		{
+			if ((blockyPower || blockyForceVanity) && !blockyHideVanity)
+			{
+				player.legs = mod.GetEquipSlot("BlockyLeg", EquipType.Legs);
+				player.body = mod.GetEquipSlot("BlockyBody", EquipType.Body);
+				player.head = mod.GetEquipSlot("BlockyHead", EquipType.Head);
+			}
 			if (nullified)
 			{
 				Nullify();
@@ -552,6 +630,19 @@ namespace ExampleMod
 			{
 				dyeItemIDsPool.Clear();
 				dyeItemIDsPool.Add(ItemID.MartianArmorDye);
+			}
+		}
+
+		public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo)
+		{
+			if ((blockyPower || blockyForceVanity) && !blockyHideVanity)
+			{
+				player.headRotation = player.velocity.Y * (float)player.direction * 0.1f;
+				player.headRotation = Utils.Clamp(player.headRotation, -0.3f, 0.3f);
+				if (ZoneExample)
+				{
+					player.headRotation = (float)Main.time * 0.1f * player.direction;
+				}
 			}
 		}
 

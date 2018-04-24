@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Item.cs
 +++ src/tModLoader\Terraria\Item.cs
-@@ -1,16 +_,36 @@
+@@ -1,16 +_,44 @@
  using Microsoft.Xna.Framework;
  using System;
 +using System.Linq;
@@ -25,79 +25,182 @@
 +
 +		internal GlobalItem[] globalItems = new GlobalItem[0];
 +
++		/// <summary>Gets the global item. Use this overload when you dynamically add GlobalItems manually.</summary>
 +		public GlobalItem GetGlobalItem(Mod mod, string name)
 +		{
 +			return ItemLoader.GetGlobalItem(this, mod, name).Instance(this);
 +		}
 +
++		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
 +		public T GetGlobalItem<T>(Mod mod) where T : GlobalItem
 +		{
 +			return (T)GetGlobalItem(mod, typeof(T).Name);
 +		}
 +
++		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
++		public T GetGlobalItem<T>() where T : GlobalItem
++		{
++			return (T)ItemLoader.GetGlobalItem(this, typeof(T));
++		}
++
  		public const int flaskTime = 72000;
  		public const int copper = 1;
  		public const int silver = 100;
-@@ -247,7 +_,7 @@
+@@ -247,9 +_,15 @@
  				}
  				if (num == -1 || num == -2 || num == -3)
  				{
 -					if (this.type == 1 || this.type == 4 || this.type == 6 || this.type == 7 || this.type == 10 || this.type == 24 || this.type == 45 || this.type == 46 || this.type == 65 || this.type == 103 || this.type == 104 || this.type == 121 || this.type == 122 || this.type == 155 || this.type == 190 || this.type == 196 || this.type == 198 || this.type == 199 || this.type == 200 || this.type == 201 || this.type == 202 || this.type == 203 || this.type == 204 || this.type == 213 || this.type == 217 || this.type == 273 || this.type == 367 || this.type == 368 || this.type == 426 || this.type == 482 || this.type == 483 || this.type == 484 || this.type == 653 || this.type == 654 || this.type == 656 || this.type == 657 || this.type == 659 || this.type == 660 || this.type == 671 || this.type == 672 || this.type == 674 || this.type == 675 || this.type == 676 || this.type == 723 || this.type == 724 || this.type == 757 || this.type == 776 || this.type == 777 || this.type == 778 || this.type == 787 || this.type == 795 || this.type == 797 || this.type == 798 || this.type == 799 || this.type == 881 || this.type == 882 || this.type == 921 || this.type == 922 || this.type == 989 || this.type == 990 || this.type == 991 || this.type == 992 || this.type == 993 || this.type == 1123 || this.type == 1166 || this.type == 1185 || this.type == 1188 || this.type == 1192 || this.type == 1195 || this.type == 1199 || this.type == 1202 || this.type == 1222 || this.type == 1223 || this.type == 1224 || this.type == 1226 || this.type == 1227 || this.type == 1230 || this.type == 1233 || this.type == 1234 || this.type == 1294 || this.type == 1304 || this.type == 1305 || this.type == 1306 || this.type == 1320 || this.type == 1327 || this.type == 1506 || this.type == 1507 || this.type == 1786 || this.type == 1826 || this.type == 1827 || this.type == 1909 || this.type == 1917 || this.type == 1928 || this.type == 2176 || this.type == 2273 || this.type == 2608 || this.type == 2341 || this.type == 2330 || this.type == 2320 || this.type == 2516 || this.type == 2517 || this.type == 2746 || this.type == 2745 || this.type == 3063 || this.type == 3018 || this.type == 3211 || this.type == 3013 || this.type == 3258 || this.type == 3106 || this.type == 3065 || this.type == 2880 || this.type == 3481 || this.type == 3482 || this.type == 3483 || this.type == 3484 || this.type == 3485 || this.type == 3487 || this.type == 3488 || this.type == 3489 || this.type == 3490 || this.type == 3491 || this.type == 3493 || this.type == 3494 || this.type == 3495 || this.type == 3496 || this.type == 3497 || this.type == 3498 || this.type == 3500 || this.type == 3501 || this.type == 3502 || this.type == 3503 || this.type == 3504 || this.type == 3505 || this.type == 3506 || this.type == 3507 || this.type == 3508 || this.type == 3509 || this.type == 3511 || this.type == 3512 || this.type == 3513 || this.type == 3514 || this.type == 3515 || this.type == 3517 || this.type == 3518 || this.type == 3519 || this.type == 3520 || this.type == 3521 || this.type == 3522 || this.type == 3523 || this.type == 3524 || this.type == 3525 || (this.type >= 3462 && this.type <= 3466) || (this.type >= 2772 && this.type <= 2786) || (this.type == 3349 || this.type == 3352 || this.type == 3351 || (this.type >= 3764 && this.type <= 3769)) || this.type == 3772 || this.type == 3823 || this.type == 3827)
-+					if (this.type == 1 || this.type == 4 || this.type == 6 || this.type == 7 || this.type == 10 || this.type == 24 || this.type == 45 || this.type == 46 || this.type == 65 || this.type == 103 || this.type == 104 || this.type == 121 || this.type == 122 || this.type == 155 || this.type == 190 || this.type == 196 || this.type == 198 || this.type == 199 || this.type == 200 || this.type == 201 || this.type == 202 || this.type == 203 || this.type == 204 || this.type == 213 || this.type == 217 || this.type == 273 || this.type == 367 || this.type == 368 || this.type == 426 || this.type == 482 || this.type == 483 || this.type == 484 || this.type == 653 || this.type == 654 || this.type == 656 || this.type == 657 || this.type == 659 || this.type == 660 || this.type == 671 || this.type == 672 || this.type == 674 || this.type == 675 || this.type == 676 || this.type == 723 || this.type == 724 || this.type == 757 || this.type == 776 || this.type == 777 || this.type == 778 || this.type == 787 || this.type == 795 || this.type == 797 || this.type == 798 || this.type == 799 || this.type == 881 || this.type == 882 || this.type == 921 || this.type == 922 || this.type == 989 || this.type == 990 || this.type == 991 || this.type == 992 || this.type == 993 || this.type == 1123 || this.type == 1166 || this.type == 1185 || this.type == 1188 || this.type == 1192 || this.type == 1195 || this.type == 1199 || this.type == 1202 || this.type == 1222 || this.type == 1223 || this.type == 1224 || this.type == 1226 || this.type == 1227 || this.type == 1230 || this.type == 1233 || this.type == 1234 || this.type == 1294 || this.type == 1304 || this.type == 1305 || this.type == 1306 || this.type == 1320 || this.type == 1327 || this.type == 1506 || this.type == 1507 || this.type == 1786 || this.type == 1826 || this.type == 1827 || this.type == 1909 || this.type == 1917 || this.type == 1928 || this.type == 2176 || this.type == 2273 || this.type == 2608 || this.type == 2341 || this.type == 2330 || this.type == 2320 || this.type == 2516 || this.type == 2517 || this.type == 2746 || this.type == 2745 || this.type == 3063 || this.type == 3018 || this.type == 3211 || this.type == 3013 || this.type == 3258 || this.type == 3106 || this.type == 3065 || this.type == 2880 || this.type == 3481 || this.type == 3482 || this.type == 3483 || this.type == 3484 || this.type == 3485 || this.type == 3487 || this.type == 3488 || this.type == 3489 || this.type == 3490 || this.type == 3491 || this.type == 3493 || this.type == 3494 || this.type == 3495 || this.type == 3496 || this.type == 3497 || this.type == 3498 || this.type == 3500 || this.type == 3501 || this.type == 3502 || this.type == 3503 || this.type == 3504 || this.type == 3505 || this.type == 3506 || this.type == 3507 || this.type == 3508 || this.type == 3509 || this.type == 3511 || this.type == 3512 || this.type == 3513 || this.type == 3514 || this.type == 3515 || this.type == 3517 || this.type == 3518 || this.type == 3519 || this.type == 3520 || this.type == 3521 || this.type == 3522 || this.type == 3523 || this.type == 3524 || this.type == 3525 || (this.type >= 3462 && this.type <= 3466) || (this.type >= 2772 && this.type <= 2786) || (this.type == 3349 || this.type == 3352 || this.type == 3351 || (this.type >= 3764 && this.type <= 3769)) || this.type == 3772 || this.type == 3823 || this.type == 3827 || ItemLoader.MeleePrefix(this))
++					int modPrefix = ItemLoader.ChoosePrefix(this, unifiedRandom);
++					if (modPrefix >= 0)
  					{
- 						int num9 = unifiedRandom.Next(40);
+-						int num9 = unifiedRandom.Next(40);
++						num = modPrefix;
++					}
++					else if (this.type == 1 || this.type == 4 || this.type == 6 || this.type == 7 || this.type == 10 || this.type == 24 || this.type == 45 || this.type == 46 || this.type == 65 || this.type == 103 || this.type == 104 || this.type == 121 || this.type == 122 || this.type == 155 || this.type == 190 || this.type == 196 || this.type == 198 || this.type == 199 || this.type == 200 || this.type == 201 || this.type == 202 || this.type == 203 || this.type == 204 || this.type == 213 || this.type == 217 || this.type == 273 || this.type == 367 || this.type == 368 || this.type == 426 || this.type == 482 || this.type == 483 || this.type == 484 || this.type == 653 || this.type == 654 || this.type == 656 || this.type == 657 || this.type == 659 || this.type == 660 || this.type == 671 || this.type == 672 || this.type == 674 || this.type == 675 || this.type == 676 || this.type == 723 || this.type == 724 || this.type == 757 || this.type == 776 || this.type == 777 || this.type == 778 || this.type == 787 || this.type == 795 || this.type == 797 || this.type == 798 || this.type == 799 || this.type == 881 || this.type == 882 || this.type == 921 || this.type == 922 || this.type == 989 || this.type == 990 || this.type == 991 || this.type == 992 || this.type == 993 || this.type == 1123 || this.type == 1166 || this.type == 1185 || this.type == 1188 || this.type == 1192 || this.type == 1195 || this.type == 1199 || this.type == 1202 || this.type == 1222 || this.type == 1223 || this.type == 1224 || this.type == 1226 || this.type == 1227 || this.type == 1230 || this.type == 1233 || this.type == 1234 || this.type == 1294 || this.type == 1304 || this.type == 1305 || this.type == 1306 || this.type == 1320 || this.type == 1327 || this.type == 1506 || this.type == 1507 || this.type == 1786 || this.type == 1826 || this.type == 1827 || this.type == 1909 || this.type == 1917 || this.type == 1928 || this.type == 2176 || this.type == 2273 || this.type == 2608 || this.type == 2341 || this.type == 2330 || this.type == 2320 || this.type == 2516 || this.type == 2517 || this.type == 2746 || this.type == 2745 || this.type == 3063 || this.type == 3018 || this.type == 3211 || this.type == 3013 || this.type == 3258 || this.type == 3106 || this.type == 3065 || this.type == 2880 || this.type == 3481 || this.type == 3482 || this.type == 3483 || this.type == 3484 || this.type == 3485 || this.type == 3487 || this.type == 3488 || this.type == 3489 || this.type == 3490 || this.type == 3491 || this.type == 3493 || this.type == 3494 || this.type == 3495 || this.type == 3496 || this.type == 3497 || this.type == 3498 || this.type == 3500 || this.type == 3501 || this.type == 3502 || this.type == 3503 || this.type == 3504 || this.type == 3505 || this.type == 3506 || this.type == 3507 || this.type == 3508 || this.type == 3509 || this.type == 3511 || this.type == 3512 || this.type == 3513 || this.type == 3514 || this.type == 3515 || this.type == 3517 || this.type == 3518 || this.type == 3519 || this.type == 3520 || this.type == 3521 || this.type == 3522 || this.type == 3523 || this.type == 3524 || this.type == 3525 || (this.type >= 3462 && this.type <= 3466) || (this.type >= 2772 && this.type <= 2786) || (this.type == 3349 || this.type == 3352 || this.type == 3351 || (this.type >= 3764 && this.type <= 3769)) || this.type == 3772 || this.type == 3823 || this.type == 3827 || ItemLoader.MeleePrefix(this))
++					{
++						const int numVanilla = 40;
++						int num9 = unifiedRandom.Next(numVanilla);
  						if (num9 == 0)
-@@ -411,7 +_,7 @@
+ 						{
+ 							num = 1;
+@@ -410,10 +_,12 @@
+ 						{
  							num = 81;
  						}
++						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Melee);
  					}
 -					else if (this.type == 162 || this.type == 160 || this.type == 163 || this.type == 220 || this.type == 274 || this.type == 277 || this.type == 280 || this.type == 383 || this.type == 384 || this.type == 385 || this.type == 386 || this.type == 387 || this.type == 388 || this.type == 389 || this.type == 390 || this.type == 406 || this.type == 537 || this.type == 550 || this.type == 579 || this.type == 756 || this.type == 759 || this.type == 801 || this.type == 802 || this.type == 1186 || this.type == 1189 || this.type == 1190 || this.type == 1193 || this.type == 1196 || this.type == 1197 || this.type == 1200 || this.type == 1203 || this.type == 1204 || this.type == 1228 || this.type == 1231 || this.type == 1232 || this.type == 1259 || this.type == 1262 || this.type == 1297 || this.type == 1314 || this.type == 1325 || this.type == 1947 || this.type == 2332 || this.type == 2331 || this.type == 2342 || this.type == 2424 || this.type == 2611 || this.type == 2798 || this.type == 3012 || this.type == 3473 || this.type == 3098 || this.type == 3368 || this.type == 3835 || this.type == 3836 || this.type == 3858)
 +					else if (this.type == 162 || this.type == 160 || this.type == 163 || this.type == 220 || this.type == 274 || this.type == 277 || this.type == 280 || this.type == 383 || this.type == 384 || this.type == 385 || this.type == 386 || this.type == 387 || this.type == 388 || this.type == 389 || this.type == 390 || this.type == 406 || this.type == 537 || this.type == 550 || this.type == 579 || this.type == 756 || this.type == 759 || this.type == 801 || this.type == 802 || this.type == 1186 || this.type == 1189 || this.type == 1190 || this.type == 1193 || this.type == 1196 || this.type == 1197 || this.type == 1200 || this.type == 1203 || this.type == 1204 || this.type == 1228 || this.type == 1231 || this.type == 1232 || this.type == 1259 || this.type == 1262 || this.type == 1297 || this.type == 1314 || this.type == 1325 || this.type == 1947 || this.type == 2332 || this.type == 2331 || this.type == 2342 || this.type == 2424 || this.type == 2611 || this.type == 2798 || this.type == 3012 || this.type == 3473 || this.type == 3098 || this.type == 3368 || this.type == 3835 || this.type == 3836 || this.type == 3858 || ItemLoader.WeaponPrefix(this))
  					{
- 						int num10 = unifiedRandom.Next(14);
+-						int num10 = unifiedRandom.Next(14);
++						const int numVanilla = 14;
++						int num10 = unifiedRandom.Next(numVanilla);
  						if (num10 == 0)
-@@ -471,7 +_,7 @@
+ 						{
+ 							num = 36;
+@@ -470,10 +_,12 @@
+ 						{
  							num = 61;
  						}
++						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon);
  					}
 -					else if (this.type == 39 || this.type == 44 || this.type == 95 || this.type == 96 || this.type == 98 || this.type == 99 || this.type == 120 || this.type == 164 || this.type == 197 || this.type == 219 || this.type == 266 || this.type == 281 || this.type == 434 || this.type == 435 || this.type == 436 || this.type == 481 || this.type == 506 || this.type == 533 || this.type == 534 || this.type == 578 || this.type == 655 || this.type == 658 || this.type == 661 || this.type == 679 || this.type == 682 || this.type == 725 || this.type == 758 || this.type == 759 || this.type == 760 || this.type == 796 || this.type == 800 || this.type == 905 || this.type == 923 || this.type == 964 || this.type == 986 || this.type == 1156 || this.type == 1187 || this.type == 1194 || this.type == 1201 || this.type == 1229 || this.type == 1254 || this.type == 1255 || this.type == 1258 || this.type == 1265 || this.type == 1319 || this.type == 1553 || this.type == 1782 || this.type == 1784 || this.type == 1835 || this.type == 1870 || this.type == 1910 || this.type == 1929 || this.type == 1946 || this.type == 2223 || this.type == 2269 || this.type == 2270 || this.type == 2624 || this.type == 2515 || this.type == 2747 || this.type == 2796 || this.type == 2797 || this.type == 3052 || this.type == 2888 || this.type == 3019 || this.type == 3029 || this.type == 3007 || this.type == 3008 || this.type == 3210 || this.type == 3107 || this.type == 3245 || this.type == 3475 || this.type == 3540 || this.type == 3854 || this.type == 3859 || this.type == 3821 || this.type == 3480 || this.type == 3486 || this.type == 3492 || this.type == 3498 || this.type == 3504 || this.type == 3510 || this.type == 3516 || this.type == 3350 || this.type == 3546 || this.type == 3788)
 +					else if (this.type == 39 || this.type == 44 || this.type == 95 || this.type == 96 || this.type == 98 || this.type == 99 || this.type == 120 || this.type == 164 || this.type == 197 || this.type == 219 || this.type == 266 || this.type == 281 || this.type == 434 || this.type == 435 || this.type == 436 || this.type == 481 || this.type == 506 || this.type == 533 || this.type == 534 || this.type == 578 || this.type == 655 || this.type == 658 || this.type == 661 || this.type == 679 || this.type == 682 || this.type == 725 || this.type == 758 || this.type == 759 || this.type == 760 || this.type == 796 || this.type == 800 || this.type == 905 || this.type == 923 || this.type == 964 || this.type == 986 || this.type == 1156 || this.type == 1187 || this.type == 1194 || this.type == 1201 || this.type == 1229 || this.type == 1254 || this.type == 1255 || this.type == 1258 || this.type == 1265 || this.type == 1319 || this.type == 1553 || this.type == 1782 || this.type == 1784 || this.type == 1835 || this.type == 1870 || this.type == 1910 || this.type == 1929 || this.type == 1946 || this.type == 2223 || this.type == 2269 || this.type == 2270 || this.type == 2624 || this.type == 2515 || this.type == 2747 || this.type == 2796 || this.type == 2797 || this.type == 3052 || this.type == 2888 || this.type == 3019 || this.type == 3029 || this.type == 3007 || this.type == 3008 || this.type == 3210 || this.type == 3107 || this.type == 3245 || this.type == 3475 || this.type == 3540 || this.type == 3854 || this.type == 3859 || this.type == 3821 || this.type == 3480 || this.type == 3486 || this.type == 3492 || this.type == 3498 || this.type == 3504 || this.type == 3510 || this.type == 3516 || this.type == 3350 || this.type == 3546 || this.type == 3788 || ItemLoader.RangedPrefix(this))
  					{
- 						int num11 = unifiedRandom.Next(36);
+-						int num11 = unifiedRandom.Next(36);
++						const int numVanilla = 36;
++						int num11 = unifiedRandom.Next(numVanilla);
  						if (num11 == 0)
-@@ -619,7 +_,7 @@
+ 						{
+ 							num = 16;
+@@ -618,10 +_,12 @@
+ 						{
  							num = 82;
  						}
++						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Ranged);
  					}
 -					else if (this.type == 64 || this.type == 112 || this.type == 113 || this.type == 127 || this.type == 157 || this.type == 165 || this.type == 218 || this.type == 272 || this.type == 494 || this.type == 495 || this.type == 496 || this.type == 514 || this.type == 517 || this.type == 518 || this.type == 519 || this.type == 683 || this.type == 726 || this.type == 739 || this.type == 740 || this.type == 741 || this.type == 742 || this.type == 743 || this.type == 744 || this.type == 788 || this.type == 1121 || this.type == 1155 || this.type == 1157 || this.type == 1178 || this.type == 1244 || this.type == 1256 || this.type == 1260 || this.type == 1264 || this.type == 1266 || this.type == 1295 || this.type == 1296 || this.type == 1308 || this.type == 1309 || this.type == 1313 || this.type == 1336 || this.type == 1444 || this.type == 1445 || this.type == 1446 || this.type == 1572 || this.type == 1801 || this.type == 1802 || this.type == 1930 || this.type == 1931 || this.type == 2188 || this.type == 2622 || this.type == 2621 || this.type == 2584 || this.type == 2551 || this.type == 2366 || this.type == 2535 || this.type == 2365 || this.type == 2364 || this.type == 2623 || this.type == 2750 || this.type == 2795 || this.type == 3053 || this.type == 3051 || this.type == 3209 || this.type == 3014 || this.type == 3105 || this.type == 2882 || this.type == 3269 || this.type == 3006 || this.type == 3377 || this.type == 3069 || this.type == 2749 || this.type == 3249 || this.type == 3476 || this.type == 3474 || this.type == 3531 || this.type == 3541 || this.type == 3542 || this.type == 3569 || this.type == 3570 || this.type == 3571 || this.type == 3779 || this.type == 3787 || this.type == 3531 || this.type == 3852 || this.type == 3870 || this.type == 3824 || this.type == 3818 || this.type == 3829 || this.type == 3832 || this.type == 3825 || this.type == 3819 || this.type == 3830 || this.type == 3833 || this.type == 3826 || this.type == 3820 || this.type == 3831 || this.type == 3834)
 +					else if (this.type == 64 || this.type == 112 || this.type == 113 || this.type == 127 || this.type == 157 || this.type == 165 || this.type == 218 || this.type == 272 || this.type == 494 || this.type == 495 || this.type == 496 || this.type == 514 || this.type == 517 || this.type == 518 || this.type == 519 || this.type == 683 || this.type == 726 || this.type == 739 || this.type == 740 || this.type == 741 || this.type == 742 || this.type == 743 || this.type == 744 || this.type == 788 || this.type == 1121 || this.type == 1155 || this.type == 1157 || this.type == 1178 || this.type == 1244 || this.type == 1256 || this.type == 1260 || this.type == 1264 || this.type == 1266 || this.type == 1295 || this.type == 1296 || this.type == 1308 || this.type == 1309 || this.type == 1313 || this.type == 1336 || this.type == 1444 || this.type == 1445 || this.type == 1446 || this.type == 1572 || this.type == 1801 || this.type == 1802 || this.type == 1930 || this.type == 1931 || this.type == 2188 || this.type == 2622 || this.type == 2621 || this.type == 2584 || this.type == 2551 || this.type == 2366 || this.type == 2535 || this.type == 2365 || this.type == 2364 || this.type == 2623 || this.type == 2750 || this.type == 2795 || this.type == 3053 || this.type == 3051 || this.type == 3209 || this.type == 3014 || this.type == 3105 || this.type == 2882 || this.type == 3269 || this.type == 3006 || this.type == 3377 || this.type == 3069 || this.type == 2749 || this.type == 3249 || this.type == 3476 || this.type == 3474 || this.type == 3531 || this.type == 3541 || this.type == 3542 || this.type == 3569 || this.type == 3570 || this.type == 3571 || this.type == 3779 || this.type == 3787 || this.type == 3531 || this.type == 3852 || this.type == 3870 || this.type == 3824 || this.type == 3818 || this.type == 3829 || this.type == 3832 || this.type == 3825 || this.type == 3819 || this.type == 3830 || this.type == 3833 || this.type == 3826 || this.type == 3820 || this.type == 3831 || this.type == 3834 || ItemLoader.MagicPrefix(this))
  					{
- 						int num12 = unifiedRandom.Next(36);
+-						int num12 = unifiedRandom.Next(36);
++						const int numVanilla = 36;
++						int num12 = unifiedRandom.Next(numVanilla);
  						if (num12 == 0)
-@@ -767,7 +_,7 @@
+ 						{
+ 							num = 26;
+@@ -766,10 +_,12 @@
+ 						{
  							num = 83;
  						}
++						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Magic);
  					}
 -					else if (this.type == 55 || this.type == 119 || this.type == 191 || this.type == 284 || this.type == 670 || this.type == 1122 || this.type == 1513 || this.type == 1569 || this.type == 1571 || this.type == 1825 || this.type == 1918 || this.type == 3054 || this.type == 3262 || (this.type >= 3278 && this.type <= 3292) || (this.type >= 3315 && this.type <= 3317) || this.type == 3389 || this.type == 3030 || this.type == 3543)
 +					else if (this.type == 55 || this.type == 119 || this.type == 191 || this.type == 284 || this.type == 670 || this.type == 1122 || this.type == 1513 || this.type == 1569 || this.type == 1571 || this.type == 1825 || this.type == 1918 || this.type == 3054 || this.type == 3262 || (this.type >= 3278 && this.type <= 3292) || (this.type >= 3315 && this.type <= 3317) || this.type == 3389 || this.type == 3030 || this.type == 3543 || ItemLoader.WeaponPrefix(this))
  					{
- 						int num13 = unifiedRandom.Next(14);
+-						int num13 = unifiedRandom.Next(14);
++						const int numVanilla = 14;
++						int num13 = unifiedRandom.Next(numVanilla);
  						if (num13 == 0)
-@@ -1308,6 +_,14 @@
- 					num++;
+ 						{
+ 							num = 36;
+@@ -826,6 +_,7 @@
+ 						{
+ 							num = 61;
+ 						}
++						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon);
+ 					}
+ 					else
+ 					{
+@@ -833,7 +_,9 @@
+ 						{
+ 							return false;
+ 						}
++
+ 						num = unifiedRandom.Next(62, 81);
++						ModPrefix.Roll(this, ref num, 81-62, PrefixCategory.Accessory);
+ 					}
  				}
+ 				if (pre == -3)
+@@ -1175,6 +_,10 @@
+ 					num2 = 1.05f;
+ 					num8 = 2;
+ 				}
++				else if (num >= PrefixID.Count)
++				{
++					ModPrefix.GetPrefix((byte)num)?.SetStats(ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num8);
++				}
+ 				if (num2 != 1f && Math.Round((double)((float)this.damage * num2)) == (double)this.damage)
+ 				{
+ 					flag = true;
+@@ -1195,6 +_,10 @@
+ 					flag = true;
+ 					num = -1;
+ 				}
++				if (num >= PrefixID.Count)
++				{
++					ModPrefix.GetPrefix((byte)num)?.ValidateItem(this, ref flag);
++				}
+ 				if (pre == -2 && num == 0)
+ 				{
+ 					num = -1;
+@@ -1210,6 +_,10 @@
+ 			this.scale *= num5;
+ 			this.shootSpeed *= num6;
+ 			this.crit += num8;
++			if (num >= PrefixID.Count)
++			{
++				ModPrefix.GetPrefix((byte)num)?.Apply(this);
++			}
+ 			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)this.crit * 0.02f);
+ 			if (num == 62 || num == 69 || num == 73 || num == 77)
+ 			{
+@@ -1226,6 +_,10 @@
+ 			if (num == 65 || num == 72 || num == 76 || num == 80 || num == 68)
+ 			{
+ 				num14 *= 1.2f;
++			}
++			if (num >= PrefixID.Count)
++			{
++				ModPrefix.GetPrefix((byte)num)?.ModifyValue(ref num14);
  			}
+ 			if ((double)num14 >= 1.2)
+ 			{
+@@ -1306,6 +_,14 @@
+ 						return true;
+ 					}
+ 					num++;
++				}
++			}
 +			foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values)
 +			{
 +				if (recipeGroup.ContainsItem(this.type))
 +				{
 +					this.material = true;
 +					return true;
-+				}
-+			}
+ 				}
+ 			}
  			int num2 = this.type;
- 			if (num2 <= 543)
- 			{
 @@ -1627,6 +_,10 @@
  			else
  			{
@@ -255,7 +358,7 @@
  					if (num3 < (float)NPC.sWidth && num3 < num2)
  					{
  						num2 = num3;
-@@ -43998,7 +_,10 @@
+@@ -43998,7 +_,20 @@
  
  		public Item Clone()
  		{
@@ -263,6 +366,16 @@
 +			Item newItem = (Item)base.MemberwiseClone();
 +			newItem.modItem = modItem?.Clone(newItem);
 +			newItem.globalItems = globalItems.Select(g => g.Clone(this, newItem)).ToArray();
++			return newItem;
++		}
++
++		// clones the item, but copies over the data from another data source
++		// specifically needed for reforging
++		public Item CloneWithModdedDataFrom(Item dataSource)
++		{
++			Item newItem = (Item)base.MemberwiseClone();
++			newItem.modItem = modItem?.Clone(newItem);
++			newItem.globalItems = dataSource.globalItems.Select(g => g.Clone(dataSource, newItem)).ToArray();
 +			return newItem;
  		}
  

@@ -11,11 +11,6 @@ namespace ExampleMod.Projectiles
 	// to investigate: Projectile.Damage, (8843)
 	class ExampleExplosive : ModProjectile
 	{
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Example Explosive");
-		}
-
 		public override void SetDefaults()
 		{
 			// while the sprite is actually bigger than 15x15, we use 15x15 since it lets the projectile clip into tiles as it bounces. It looks better.
@@ -34,7 +29,7 @@ namespace ExampleMod.Projectiles
 
 		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 		{
-			// Vanilla explisions do less damage to Eater of Worlds in expert mode, so we will too.
+			// Vanilla explosions do less damage to Eater of Worlds in expert mode, so we will too.
 			if (Main.expertMode)
 			{
 				if (target.type >= NPCID.EaterofWorldsHead && target.type <= NPCID.EaterofWorldsTail)
@@ -76,7 +71,7 @@ namespace ExampleMod.Projectiles
 			if (projectile.owner == Main.myPlayer && projectile.timeLeft <= 3)
 			{
 				projectile.tileCollide = false;
-				// Set to transparant. This projectile technically lives as  transparant for about 3 frames
+				// Set to transparent. This projectile technically lives as  transparent for about 3 frames
 				projectile.alpha = 255;
 				// change the hitbox size, centered about the original projectile center. This makes the projectile damage enemies during the explosion.
 				projectile.position.X = projectile.position.X + (float)(projectile.width / 2);

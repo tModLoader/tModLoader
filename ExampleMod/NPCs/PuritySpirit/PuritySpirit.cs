@@ -12,6 +12,7 @@ using ExampleMod.Projectiles.PuritySpirit;
 
 namespace ExampleMod.NPCs.PuritySpirit
 {
+	[AutoloadBossHead]
 	public class PuritySpirit : ModNPC
 	{
 		private const int size = 120;
@@ -49,6 +50,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 				npc.buffImmune[k] = true;
 			}
 			music = MusicID.Title;
+			musicPriority = MusicPriority.BossMedium; // By default, musicPriority is BossLow
 			bossBag = mod.ItemType("PuritySpiritBag");
 		}
 
@@ -740,7 +742,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 			else
 			{
-				//This is an alrenate syntax you can use
+				//This is an alternate syntax you can use
 				//var maskChooser = new WeightedRandom<int>();
 				//maskChooser.Add(mod.ItemType<Items.Armor.PuritySpiritMask>());
 				//maskChooser.Add(mod.ItemType<Items.Armor.BunnyMask>());
@@ -796,7 +798,12 @@ namespace ExampleMod.NPCs.PuritySpirit
 				}
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityShield"));
 			}
-			ExampleWorld.downedPuritySpirit = true;
+			if (!ExampleWorld.downedPuritySpirit)
+			{
+				ExampleWorld.downedPuritySpirit = true;
+				if (Main.netMode == NetmodeID.Server)
+					NetMessage.SendData(MessageID.WorldData); // Immediately inform clients of new world state.
+			}
 		}
 
 		public override void BossLoot(ref string name, ref int potionType)

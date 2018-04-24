@@ -56,6 +56,11 @@ namespace Terraria.ModLoader
 				netMods[i].netID = i;
 		}
 
+		internal static void Unload()
+		{
+			netMods = null;
+		}
+
 		internal static void SyncMods(int clientIndex)
 		{
 			var p = new ModPacket(MessageID.SyncMods);
@@ -102,17 +107,17 @@ namespace Terraria.ModLoader
 				}
 				else
 				{
-					var disabledVersions = modFiles.Where(m => m.name == header.name).ToArray();
-					var matching = disabledVersions.FirstOrDefault(header.Matches);
+					var disabledVersions = modFiles.Where(m => m.Name == header.name).ToArray();
+					var matching = disabledVersions.FirstOrDefault(mod => header.Matches(mod.modFile));
 					if (matching != null)
 					{
-						ModLoader.EnableMod(matching);
+						matching.Enabled = true;
 						needsReload = true;
 						continue;
 					}
 
 					if (disabledVersions.Length > 0)
-						header.path = disabledVersions[0].path;
+						header.path = disabledVersions[0].modFile.path;
 				}
 
 				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
@@ -124,7 +129,7 @@ namespace Terraria.ModLoader
 			foreach (var mod in clientMods)
 				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name))
 				{
-					ModLoader.DisableMod(mod.File);
+					ModLoader.DisableMod(mod.Name);
 					needsReload = true;
 				}
 
@@ -215,10 +220,7 @@ namespace Terraria.ModLoader
 				{
 					downloadingFile.Close();
 					var mod = new TmodFile(downloadingMod.path);
-					mod.Read();
-					var ex = mod.ValidMod();
-					if (ex != null)
-						throw ex;
+					mod.Read(TmodFile.LoadedState.Info);
 
 					if (!downloadingMod.Matches(mod))
 						throw new Exception("Hash mismatch");
@@ -226,7 +228,7 @@ namespace Terraria.ModLoader
 					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
 						throw new Exception("Mod was not signed by the Mod Browser");
 
-					ModLoader.EnableMod(mod);
+					ModLoader.EnableMod(mod.name);
 
 					if (downloadQueue.Count > 0)
 						DownloadNextMod();
@@ -329,7 +331,7 @@ namespace Terraria.ModLoader
 			bool hijacked = false;
 			long readerPos = reader.BaseStream.Position;
 			long biggestReaderPos = readerPos;
-			foreach (var mod in netMods)
+			foreach (var mod in ModLoader.LoadedMods)
 			{
 				if (mod.HijackGetData(ref messageType, ref reader, playerNumber))
 				{
@@ -348,7 +350,7 @@ namespace Terraria.ModLoader
 		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
 		{
 			bool hijacked = false;
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModLoader.LoadedMods)
 			{
 				hijacked |= mod.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 			}

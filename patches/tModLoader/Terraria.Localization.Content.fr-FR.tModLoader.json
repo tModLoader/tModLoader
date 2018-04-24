@@ -1,0 +1,172 @@
+{
+	"tModLoader": {
+		// Main Menu
+		// "PatreonSupport": "Please show your support: ",
+		"MenuModBrowser": "Navigateur",
+		"MenuMods": "Modules",
+		"MenuModSources": "Modules Source",
+
+		// Mods Menu
+		"ModsModsList": "Liste des Modules",
+		"ModsEnableAll": "Tout Activer",
+		"ModsDisableAll": "Tout Desactiver",
+		"ModsReloadMods": "Relancer les Modules",
+		"ModsOpenModsFolder": "Dossier des Modules",
+		"ModsModPacks": "Compile de Modules",
+		"ModsDisable": "Desactiver",
+		"ModsEnable": "Activer", 
+		// "ModOldWarning": "Old mod, enable at own risk",
+		// "ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
+		// "ModDependencyModsNotFound": "The following mods were not found: {0}",
+		// "BetaModCantPublish": "This mod was built on beta version and can't be published",
+		// "ModReloadRequired": "Reload Required",
+		// "ModsByline": "By: {0}",
+		"ModsMoreInfo": "Details",
+		"ModsOriginatedFromModBrowser": "Ce Module est Originaire du Navigateur",
+		"ModsTypeToSearch": "Recherche écrite",
+		"ModsSearchByModName": "Trier par Nom de Module",
+		"ModsSearchByAuthor": "Trier par Nom d'Auteur",
+		"ModsSortRecently": "Trier par Date de Modification",
+		"ModsSortNamesAlph": "Trier par Ordre Alphabétique",
+		"ModsSortNamesReverseAlph": "Trier par Ordre Alphabétique Inversé",
+		"ModsShowAllMods": "Tout Montrer",
+		"ModsShowEnabledMods": "Montrer Uniquement les Modules Actifs",
+		"ModsShowDisabledMods": "Montrer Uniquement les Modules Inactifs",	
+
+		// Mod Loading Errors
+		// "LoadError": "An error occurred while loading {0}",
+		// "LoadErrorRecipes": "An error occurred while adding recipes for {0}",
+		// "LoadErrorDisabledSeeBelowForError": "This mod has automatically been disabled. See below for actual error:",
+		// "LoadErrorVersionMessage": "It has been detected that this mod was built for tModLoader v{0}\nHowever, you are using {1}",
+		// "LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
+		// "LoadErrorErrorReadingModFile": "Error reading mod file {0}",
+		// "LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
+		// "LoadErrorDependencyVersionTooLow": "{0} requires version {1} of {2} but version {3} is installed",
+		// "BuildErrorModNameEmpty": "Mods must actually have stuff in their names",
+		// "BuildErrorModNamedTerraria": "Mods names cannot be named Terraria",
+		// "BuildErrorModNameHasPeriod": "A mod's internal name cannot contain a period",
+		// "BuildErrorTwoModsSameName": "Two mods share the internal name {0}",
+		// "OpenLogs": "Open Logs",
+		// "OpenWebHelp": "Open Web Help",
+
+		// Mod Info
+		// "ModInfoHeader": "Mod Info: ",
+		// "ModInfoVisitHomepage": "Visit the Mod's Homepage for even more info",
+		// "ModInfoExtract": "Extract",
+		// "ModInfoNoDescriptionAvailable": "No description available",
+
+		// Mod Packs
+		// "ModPacksHeader": "Mod Packs",
+		// "ModPacksSaveEnabledAsNewPack": "Save Enabled as New Mod Pack",
+		// "ModPacksEnterModPackName": "Enter Mod Pack name",
+		// "ModPackViewList": "View List",
+		// "ModPackEnableThisList": "Enable this List",
+		// "ModPackEnableOnlyThisList": "Enable only this List",
+		// "ModPackViewModsInModBrowser": "View Mods in Mod Browser",
+		// "ModPackModsAvailableStatus": "{0} Total, {1} Enabled, {2} Disabled, {3} Missing",
+		// "ModPackModsMissing": "The following mods were not found:\n{0}",
+		// "ModPackModsContained": "This list contains the following mods:\n{0}",
+		// "ModPackMissing": " - Missing",
+
+		// Mod Browser
+		"MBDownload": "Télécharger",
+		// "MBDownloadingMod": "Downloading: {0}",
+		// "MBUploadingMod": "Uploading: {0}",
+		"MBDowngrade": "Régresser",
+		"MBUpdate": "Mettre à Jour",
+		"MBReloadBrowser": "Relancer le Navigateur",
+		// "MBGettingData": "Getting data...",
+		// "MBPopulatingBrowser": "Populating browser...",
+		"MBSortByRecentlyUpdated": "Trier par Date de Mise à Jour",
+		"MBSortByPopularity": "Trier par Popularité",
+		"MBSortDownloadDesc": "Trier par Ordre Décroissant de Téléchargements",
+		"MBSortDownloadAsc": "Trier par Ordre Croissant de Téléchargements",
+		"MBShowAllMods": "Tout Montrer",
+		"MBShowNotInstalledUpdates": "Montrer Uniquement les Modules Non-Installés ou à Mettre à Jour",
+		"MBShowUpdates": "Montrer Uniquement les Modules à Mettre à Jour",
+		// "MBShowMSAll": "Show all mods",
+		// "MBShowMSBoth": "Show normal side only mods",
+		// "MBShowMSClient": "Show client side only mods",
+		// "MBShowMSServer": "Show server side only mods",
+		// "MBShowMSNoSync": "Show no sync only mods",
+		// "MBClearSpecialFilter": "Clear Special Filter: {0}",
+		// "MBOfflineWithReason": "OFFLINE ({0})",
+		// "MBBusy": "Busy",
+		// "MBUnknown": "Unknown",
+		// "MBClickToViewDependencyMods": "Click to view dependency mods:\n{0}",
+
+		// Mod Publishing
+		// "MBPublishEnterPassphrase": "Please Enter Your Passcode",
+		// "MBPublishVisitWebsiteForPassphrase": "Visit Website to Generate Passphrase",
+		// "MBPublishPastePassphrase": "Paste Passphrase (ctrl-v)",
+
+		// TML Options
+		"DownloadFromServersYes": "Télécharger les Modules du Serveur: Oui",
+		"DownloadFromServersNo": "Télécharger les Modules du Serveur: Non",
+		"DownloadSignedYes": "Uniquement Télécharger les Modules Signés du Serveur: Oui",
+		"DownloadSignedNo": "Uniquement Télécharger les Modules Signés du Serveur: Non",
+		"MusicStreamModeConvert": "Mode d'émission de la Musique: Changer par Demande",
+		"MusicStreamModeStream": "Mode d'émission de la Musique: Emettre du Cache",
+		"AlwaysLogExceptionsYes": "Créer un rapport pour les erreurs : Oui",
+		"AlwaysLogExceptionsNo": "Créer un rapport pour les erreurs : Non",		
+		"ExperimentalFeaturesYes": "Mode Expérimental: Oui",
+		"ExperimentalFeaturesNo": "Mode Expérimental: Non",
+		"ClearMBCredentials": "Réinitialiser les Références du Navigateur",
+		// "ReloadModsReminder": "You have updated a mod. Remember to reload mods for it to take effect.",
+		// "EnableModsReminder": "Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.",
+		// "DontShowAgain": "Don't show again",
+		// "ModControls": "Mod Controls",
+		
+		// Player and World Select
+		// "MigratePlayersMessage": "You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.",
+		// "MigrateWorldsMessage": "You have no worlds.\nIf you'd like to migrate your worlds from vanilla to tModLoader,\nplease copy them from /Terraria/Worlds to /Terraria/ModLoader/Worlds.\nCopy the .wld file over.\nClick me to open those folders.\nAfter copying over the worlds you want, press back.",
+		// "ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
+		// "Missing1Mod": "Missing 1 mod.",
+		// "MissingXMods": "Missing {0} mods.",
+		// "MissingModsListing": "Missing mods:\n{0}",
+		// "New1Mod": "1 new mod.",
+		// "NewXMods": "{0} new mods.",
+		// "NewModsListing": "New mods:\n{0}",
+
+		// Mod Sources
+		"MSBuild": "Compiler",
+		"MSBuildReload": "Compiler + Relancer",
+		"MSBuildAll": "Tout Compiler",
+		"MSBuildReloadAll": "Tout Compiler + Tout Relancer",
+		"MSOpenSources": "Dossier des Sources",
+		"MSManagePublished": "Gérer les Publications",
+		"MSPublish": "Publier",
+
+		// There should be ModName after ':'
+		"MSReadingProperties": "Analyse des Propriétés: ",
+		"MSCompilingWindows": "Précompilation de {0} pour Windows...",
+		"MSCompilingMono": "Précompilation de {0} pour Mono...",
+		// There should be ModName after ':'
+		"MSBuilding": "Compilation de ",
+		"MSFinding": "Listage des Modules...",
+		// There should be ModName after ':'
+		"MSIntializing": "Initialisation: ",
+		// There should be ModName after ':'
+		"MSLoading": "Lancement du Module: ",
+		// "MSFinishingResourceLoading": "Finishing Resource Loading",
+		// "MSCompatibilizing": "Compatibilizing: {0}",
+		// "MSReading": "Reading: {0}",
+		// "MSSettingUp": "Setting up...",
+		// "MSAddingRecipes": "Adding Recipes...",
+		
+		// Mod Loader Mod
+		// "StartBagTooltip": "Some starting items couldn't fit in your inventory",
+		// "StartBagItemName": "Starting Bag",
+		// "UnloadedItemItemName": "Unloaded Item",
+
+		// Extra mouse buttons
+		// "MouseMiddle": "Middle Mouse",
+		// "MouseXButton1": "Mouse 4",
+		// "MouseXButton2": "Mouse 5",
+		
+		// Misc
+		// "OK": "OK",
+		// "Continue": "Continue",
+		// "PatreonSetTooltip": "Thank you for your support!"
+	}
+}

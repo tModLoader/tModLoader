@@ -22,6 +22,26 @@
  		private bool OnKeyboard = true;
  		private bool OnGameplay = true;
  		private List<UIElement> _bindsKeyboard = new List<UIElement>();
+@@ -207,6 +_,9 @@
+ 			{
+ 				"MouseLeft",
+ 				"MouseRight",
++				"MouseMiddle",
++				"MouseXButton1",
++				"MouseXButton2",
+ 				"Up",
+ 				"Down",
+ 				"Left",
+@@ -229,6 +_,9 @@
+ 			{
+ 				"MouseLeft",
+ 				"MouseRight",
++				"MouseMiddle",
++				"MouseXButton1",
++				"MouseXButton2",
+ 				"Up",
+ 				"Down",
+ 				"Left",
 @@ -296,26 +_,39 @@
  				"sp19",
  				"sp13"
@@ -77,7 +97,7 @@
  					text = Lang.menu[198];
  					break;
 +				case 5:
-+					text = new LocalizedText("ModLoader.ModControls", "Mod Controls");
++					text = Language.GetText("tModLoader.ModControls");
 +					break;
  			}
  			UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f, false)

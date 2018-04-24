@@ -8,7 +8,7 @@
  using Terraria.Utilities;
  using Terraria.World.Generation;
  
-@@ -21,6 +_,23 @@
+@@ -21,6 +_,32 @@
  {
  	public class Projectile : Entity
  	{
@@ -17,16 +17,25 @@
 +			get;
 +			internal set;
 +		}
-+		internal ProjectileInfo[] projectileInfo = new ProjectileInfo[0];
 +
-+		public ProjectileInfo GetModInfo(Mod mod, string name)
++		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
++
++		/// <summary>Gets the global projectile. Use this overload when you dynamically add GlobalProjectile manually.</summary>
++		public GlobalProjectile GetGlobalProjectile(Mod mod, string name)
 +		{
-+			return ProjectileLoader.GetProjectileInfo(this, mod, name);
++			return ProjectileLoader.GetGlobalProjectile(this, mod, name).Instance(this);
 +		}
 +
-+		public T GetModInfo<T>(Mod mod) where T : ProjectileInfo
++		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
++		public T GetGlobalProjectile<T>(Mod mod) where T : GlobalProjectile
 +		{
-+			return (T)GetModInfo(mod, typeof(T).Name);
++			return (T)GetGlobalProjectile(mod, typeof(T).Name);
++		}
++
++		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
++		public T GetGlobalProjectile<T>() where T : GlobalProjectile
++		{
++			return (T)ProjectileLoader.GetGlobalProjectile(this, typeof(T));
 +		}
 +
  		public static uint[][] perIDStaticNPCImmunity = new uint[714][];
@@ -45,6 +54,24 @@
  		public int maxPenetrate = 1;
  		public int identity;
  		public float light;
+@@ -91,11 +_,16 @@
+ 		public int idStaticNPCHitCooldown = -1;
+ 		private static float[] _CompanionCubeScreamCooldown = new float[255];
+ 
++		private string nameOverride = null;
+ 		public string Name
+ 		{
+ 			get
+ 			{
+-				return Lang.GetProjectileName(this.type).Value;
++				return nameOverride ?? Lang.GetProjectileName(this.type).Value;
++			}
++			set
++			{
++				nameOverride = value;
+ 			}
+ 		}
+ 
 @@ -155,7 +_,7 @@
  
  		public static void ResetImmunity()
@@ -54,7 +81,7 @@
  			{
  				for (int j = 0; j < 200; j++)
  				{
-@@ -211,8 +_,32 @@
+@@ -211,8 +_,34 @@
  			return DD2Event.Ongoing;
  		}
  
@@ -84,6 +111,8 @@
  		public void SetDefaults(int Type)
  		{
 +			this.modProjectile = null;
++			this.globalProjectiles = new GlobalProjectile[0];
++			this.nameOverride = null;
  			this.ownerHitCheckDistance = 1000f;
  			this.counterweight = false;
  			this.sentry = false;
@@ -97,10 +126,22 @@
 -				}
  			}
  			IL_C73D:
-+			ProjectileLoader.SetupProjectile(this);
++			ProjectileLoader.SetDefaults(this);
  			this.width = (int)((float)this.width * this.scale);
  			this.height = (int)((float)this.height * this.scale);
  			this.maxPenetrate = this.penetrate;
+@@ -7074,6 +_,11 @@
+ 				}
+ 			}
+ 			return result;
++		}
++
++		public static Projectile NewProjectileDirect(Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f)
++		{
++			return Main.projectile[Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1)];
+ 		}
+ 
+ 		public static int NewProjectile(Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f)
 @@ -7155,7 +_,7 @@
  				projectile.ai[0] = projectile.position.X;
  				projectile.ai[1] = projectile.position.Y;
@@ -123,6 +164,14 @@
  			{
  				return;
  			}
+@@ -8185,6 +_,7 @@
+ 				myRect.Width += num3 * 2;
+ 				myRect.Height += num3 * 2;
+ 			}
++			ProjectileLoader.ModifyDamageHitbox(this, ref myRect);
+ 			if (this.friendly && this.owner == Main.myPlayer && !this.npcProj)
+ 			{
+ 				if ((this.aiStyle == 16 && this.type != 338 && this.type != 339 && this.type != 340 && this.type != 341 && (this.timeLeft <= 1 || this.type == 108 || this.type == 164)) || (this.type == 286 && this.localAI[1] == -1f))
 @@ -8225,8 +_,32 @@
  				{
  					for (int i = 0; i < 200; i++)
@@ -203,7 +252,7 @@
  									this.StatusNPC(i);
  									if (flag4 && this.type != 221 && this.type != 227 && this.type != 614)
  									{
-@@ -8648,11 +_,6 @@
+@@ -8648,23 +_,18 @@
  										this.ai[1] = -1f;
  										this.netUpdate = true;
  									}
@@ -215,20 +264,38 @@
  									if (flag4 && !this.hostile && Main.player[this.owner].armorPenetration > 0)
  									{
  										num8 += Main.npc[i].checkArmorPenetration(Main.player[this.owner].armorPenetration);
-@@ -8660,11 +_,11 @@
+ 									}
  									int num21;
- 									if (flag4)
+-									if (flag4)
++									if (flag4) // patch note: use local variable 'knockback', not knockBack
  									{
 -										num21 = (int)Main.npc[i].StrikeNPC(num8, this.knockBack, hitDirection, flag5, false, false);
-+										num21 = (int)Main.npc[i].StrikeNPC(num8, knockBack, hitDirection, flag5, false, false);
++										num21 = (int)Main.npc[i].StrikeNPC(num8, knockback, hitDirection, flag5, false, false);
  									}
  									else
  									{
 -										num21 = (int)Main.npc[i].StrikeNPCNoInteraction(num8, this.knockBack, hitDirection, flag5, false, false);
-+										num21 = (int)Main.npc[i].StrikeNPCNoInteraction(num8, knockBack, hitDirection, flag5, false, false);
++										num21 = (int)Main.npc[i].StrikeNPCNoInteraction(num8, knockback, hitDirection, flag5, false, false);
  									}
  									if (flag4 && Main.player[this.owner].accDreamCatcher)
  									{
+@@ -8759,13 +_,13 @@
+ 									}
+ 									if (Main.netMode != 0)
+ 									{
+-										if (flag5)
++										if (flag5) // patch note: use local variable 'knockback', not knockBack
+ 										{
+-											NetMessage.SendData(28, -1, -1, null, i, (float)num8, this.knockBack, (float)this.direction, 1, 0, 0);
++											NetMessage.SendData(28, -1, -1, null, i, (float)num8, knockback, (float)this.direction, 1, 0, 0);
+ 										}
+ 										else
+ 										{
+-											NetMessage.SendData(28, -1, -1, null, i, (float)num8, this.knockBack, (float)this.direction, 0, 0, 0);
++											NetMessage.SendData(28, -1, -1, null, i, (float)num8, knockback, (float)this.direction, 0, 0, 0);
+ 										}
+ 									}
+ 									if (this.type >= 390 && this.type <= 392)
 @@ -8935,6 +_,9 @@
  									{
  										this.BetsySharpnel(i);
@@ -523,6 +590,14 @@
  						{
  							int num8 = (int)this.ai[1];
  							Item item = new Item();
+@@ -28286,6 +_,7 @@
+ 								int stack2 = Main.rand.Next(minValue2, num12 + 1);
+ 								item.stack = stack2;
+ 							}
++							ItemLoader.CaughtFishStack(item);
+ 							item.newAndShiny = true;
+ 							Item item2 = Main.player[this.owner].GetItem(this.owner, item, false, false);
+ 							if (item2.stack > 0)
 @@ -38602,7 +_,7 @@
  								Tile tileSafely2 = Framing.GetTileSafely(i, j - 1);
  								if (!tileSafely2.active() || !Main.tileSolid[(int)tileSafely2.type] || Main.tileSolidTop[(int)tileSafely2.type])

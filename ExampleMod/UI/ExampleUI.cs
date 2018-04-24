@@ -133,7 +133,7 @@ namespace ExampleMod.UI
 
 		// Array of ints 60 long.
 		// "length" = seconds since reset
-		// reset on button or 20 seconds of inactibvity?
+		// reset on button or 20 seconds of inactivity?
 		// pointer to index so on new you can clear previous
 		int[] coinBins = new int[60];
 		int coinBinsIndex;
@@ -190,7 +190,7 @@ namespace ExampleMod.UI
 				spriteBatch.Draw(Main.itemTexture[74 - j], new Vector2(shopx + 11f + (float)(24 * j), shopy + 25f), null, Color.White, 0f, Main.itemTexture[74 - j].Size() / 2f, 1f, SpriteEffects.None, 0f);
 				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontItemStack, coinsArray[3 - j].ToString(), shopx + (float)(24 * j) + (float)num, shopy + 25f, Color.White, Color.Black, new Vector2(0.3f), 0.75f);
 			}
-			Utils.DrawBorderStringFourWay(spriteBatch, ExampleMod.exampleFont /*Main.fontItemStack*/, "CPM", shopx + (float)(24 * 4), shopy + 25f, Color.White, Color.Black, new Vector2(0.3f), 0.75f);
+			Utils.DrawBorderStringFourWay(spriteBatch, /*ExampleMod.exampleFont*/ Main.fontItemStack, "CPM", shopx + (float)(24 * 4), shopy + 25f, Color.White, Color.Black, new Vector2(0.3f), 0.75f);
 		}
 
 		internal void ResetCoins()

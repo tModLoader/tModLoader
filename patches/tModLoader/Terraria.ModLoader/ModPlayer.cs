@@ -41,12 +41,15 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		internal int index;
+
 		internal ModPlayer CreateFor(Player newPlayer)
 		{
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			modPlayer.Name = Name;
 			modPlayer.mod = mod;
 			modPlayer.player = newPlayer;
+			modPlayer.index = index;
 			modPlayer.Initialize();
 			return modPlayer;
 		}
@@ -133,6 +136,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// </summary>
+		public virtual void PreSavePlayer()
+		{
+		}
+
+		/// <summary>
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// </summary>
+		public virtual void PostSavePlayer()
+		{
+		}
+
+		/// <summary>
 		/// Allows you to set biome variables in your ModPlayer class based on tile counts.
 		/// </summary>
 		public virtual void UpdateBiomes()
@@ -189,7 +206,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to sync information about this player between server and client. The toWho and fromWho parameters correspond to the remoteClient/toClient and ignoreClient arguments, respectively, of NetMessage.SendData/ModPacket.Send. The newPlayer parameter is whether or not the player is joining the server.
+		/// Allows you to sync information about this player between server and client. The toWho and fromWho parameters correspond to the remoteClient/toClient and ignoreClient arguments, respectively, of NetMessage.SendData/ModPacket.Send. The newPlayer parameter is whether or not the player is joining the server (it is true on the joining client).
 		/// </summary>
 		/// <param name="toWho"></param>
 		/// <param name="fromWho"></param>
@@ -301,6 +318,13 @@ namespace Terraria.ModLoader
 		/// This is called after the player's horizontal speeds are modified, which is sometime after PostUpdateMiscEffects is called, and right before the player's horizontal position is updated. Use this to modify maxRunSpeed, accRunSpeed, runAcceleration, and similar variables before the player moves forwards/backwards.
 		/// </summary>
 		public virtual void PostUpdateRunSpeeds()
+		{
+		}
+
+		/// <summary>
+		/// This is called right before modifying the player's position based on velocity. Use this to make direct changes to the velocity.
+		/// </summary>
+		public virtual void PreUpdateMovement()
 		{
 		}
 
@@ -446,6 +470,15 @@ namespace Terraria.ModLoader
 		/// <param name="item"></param>
 		/// <param name="knockback"></param>
 		public virtual void GetWeaponKnockback(Item item, ref float knockback)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// </summary>
+		/// <param name="item">The item</param>
+		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
+		public virtual void GetWeaponCrit(Item item, ref int crit)
 		{
 		}
 
@@ -737,7 +770,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the idnexes of any gore you create to Main.playerDrawGore.
+		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the indexes of any gore you create to Main.playerDrawGore.
 		/// </summary>
 		/// <param name="drawInfo"></param>
 		/// <param name="r"></param>

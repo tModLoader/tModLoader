@@ -1,0 +1,28 @@
+--- src/Terraria\Terraria.Graphics.Effects\OverlayManager.cs
++++ src/tModLoader\Terraria.Graphics.Effects\OverlayManager.cs
+@@ -84,13 +_,13 @@
+ 			}
+ 		}
+ 
+-		public void Draw(SpriteBatch spriteBatch, RenderLayers layer)
++		public void Draw(SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch = false)
+ 		{
+ 			if (this._overlayCount == 0)
+ 			{
+ 				return;
+ 			}
+-			bool flag = false;
++			bool flag = !beginSpriteBatch;
+ 			for (int i = 0; i < this._activeOverlays.Length; i++)
+ 			{
+ 				for (LinkedListNode<Overlay> linkedListNode = this._activeOverlays[i].First; linkedListNode != null; linkedListNode = linkedListNode.Next)
+@@ -107,7 +_,7 @@
+ 					}
+ 				}
+ 			}
+-			if (flag)
++			if (flag && beginSpriteBatch)
+ 			{
+ 				spriteBatch.End();
+ 			}
+

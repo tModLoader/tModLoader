@@ -2,8 +2,10 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.ModLoader.IO;
 using System.Reflection;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -109,18 +111,17 @@ namespace Terraria.ModLoader
 			string message;
 			if (recipes)
 			{
-				message = "An error occurred while adding recipes for " + modFile;
+				message = Language.GetTextValue("tModLoader.LoadErrorRecipes", modFile);
 			}
 			else
 			{
-				message = "An error occurred while loading " + modFile;
+				message = Language.GetTextValue("tModLoader.LoadError", modFile);
 			}
 			if (modBuildVersion != ModLoader.version)
 			{
-				message += "\nIt has been detected that this mod was built for tModLoader v" + modBuildVersion;
-				message += "\nHowever, you are using " + ModLoader.versionedName;
+				message += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", modBuildVersion, ModLoader.versionedName);
 			}
-			message += "\nThis mod has automatically been disabled.";
+			message += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabledSeeBelowForError");
 			message += "\n\n" + e.Message + "\n" + e.StackTrace;
 			if (Main.dedServ)
 			{
@@ -129,34 +130,43 @@ namespace Terraria.ModLoader
 			Interface.errorMessage.SetMessage(message);
 			Interface.errorMessage.SetGotoMenu(Interface.reloadModsID);
 			Interface.errorMessage.SetFile(file);
+			if (!string.IsNullOrEmpty(e.HelpLink))
+			{
+				Interface.errorMessage.SetWebHelpURL(e.HelpLink);
+			}
 		}
+
+		private static Object logExceptionLock = new Object();
 		//add try catch to Terraria.WorldGen.worldGenCallBack
 		//add try catch to Terraria.WorldGen.playWorldCallBack
 		//add try catch to Terraria.Main.Update
 		//add try catch to Terraria.Main.Draw
 		internal static void LogException(Exception e, string msg = "The game has crashed!")
 		{
-			Directory.CreateDirectory(LogPath);
-			string file = LogPath + Path.DirectorySeparatorChar + "Runtime Error.txt";
-			using (StreamWriter writer = File.CreateText(file))
+			lock (logExceptionLock)
 			{
-				writer.WriteLine(e.Message);
-				writer.WriteLine(e.StackTrace);
-				Exception inner = e.InnerException;
-				while (inner != null)
+				Directory.CreateDirectory(LogPath);
+				string file = LogPath + Path.DirectorySeparatorChar + "Runtime Error.txt";
+				using (StreamWriter writer = File.CreateText(file))
 				{
-					writer.WriteLine();
-					writer.WriteLine("Inner Exception:");
-					writer.WriteLine(inner.Message);
-					writer.WriteLine(inner.StackTrace);
-					inner = inner.InnerException;
+					writer.WriteLine(e.Message);
+					writer.WriteLine(e.StackTrace);
+					Exception inner = e.InnerException;
+					while (inner != null)
+					{
+						writer.WriteLine();
+						writer.WriteLine("Inner Exception:");
+						writer.WriteLine(inner.Message);
+						writer.WriteLine(inner.StackTrace);
+						inner = inner.InnerException;
+					}
 				}
+				Interface.errorMessage.SetMessage(msg + "\n\n" + e.Message + "\n" + e.StackTrace);
+				Interface.errorMessage.SetGotoMenu(0);
+				Interface.errorMessage.SetFile(file);
+				Main.gameMenu = true;
+				Main.menuMode = Interface.errorMessageID;
 			}
-			Interface.errorMessage.SetMessage(msg + "\n\n" + e.Message + "\n" + e.StackTrace);
-			Interface.errorMessage.SetGotoMenu(0);
-			Interface.errorMessage.SetFile(file);
-			Main.gameMenu = true;
-			Main.menuMode = Interface.errorMessageID;
 		}
 
 		internal static void LogModBrowserException(Exception e) => LogException(e, "The game has crashed accessing Web Resources!");
@@ -203,15 +213,19 @@ namespace Terraria.ModLoader
 			Main.menuMode = Interface.errorMessageID;
 		}
 
+		private static Object logLock = new Object();
 		/// <summary>
 		/// You can use this method for your own testing purposes. The message will be added to the Logs.txt file in the Logs folder.
 		/// </summary>
 		public static void Log(string message)
 		{
-			Directory.CreateDirectory(LogPath);
-			using (StreamWriter writer = File.AppendText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
+			lock (logLock)
 			{
-				writer.WriteLine(message);
+				Directory.CreateDirectory(LogPath);
+				using (StreamWriter writer = File.AppendText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
+				{
+					writer.WriteLine(message);
+				}
 			}
 		}
 
@@ -222,51 +236,88 @@ namespace Terraria.ModLoader
 		/// <param name="alternateOutput">If true, the object's data will be manually retrieved and logged. If false, the object's ToString method is logged.</param>
 		public static void Log(object param, bool alternateOutput = false)
 		{
-			Directory.CreateDirectory(LogPath);
-			using (StreamWriter writer = File.AppendText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
+			lock (logLock)
 			{
-				if (!alternateOutput)
+				Directory.CreateDirectory(LogPath);
+				using (StreamWriter writer = File.AppendText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
 				{
-					writer.WriteLine(param.ToString());
-				}
-				else
-				{
-					writer.WriteLine("Object type: " + param.GetType());
-					foreach (PropertyInfo property in param.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+					if (!alternateOutput)
 					{
-						writer.Write("PROPERTY " + property.Name + " = " + property.GetValue(param, null) + "\n");
+						writer.WriteLine(param.ToString());
 					}
-
-					foreach (FieldInfo field in param.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+					else
 					{
-						writer.Write("FIELD " + field.Name + " = " + (field.GetValue(param).ToString() != "" ? field.GetValue(param) : "(Field value not found)") + "\n");
-					}
+						writer.WriteLine("Object type: " + param.GetType());
+						foreach (PropertyInfo property in param.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+						{
+							writer.Write("PROPERTY " + property.Name + " = " + property.GetValue(param, null) + "\n");
+						}
 
-					foreach (MethodInfo method in param.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
-					{
-						writer.Write("METHOD " + method.Name + "\n");
-					}
+						foreach (FieldInfo field in param.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+						{
+							writer.Write("FIELD " + field.Name + " = " + (field.GetValue(param).ToString() != "" ? field.GetValue(param) : "(Field value not found)") + "\n");
+						}
 
-					int temp = 0;
+						foreach (MethodInfo method in param.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+						{
+							writer.Write("METHOD " + method.Name + "\n");
+						}
 
-					foreach (ConstructorInfo constructor in param.GetType().GetConstructors(BindingFlags.Public | BindingFlags.NonPublic))
-					{
-						temp++;
-						writer.Write("CONSTRUCTOR " + temp + " : " + constructor.Name + "\n");
+						int temp = 0;
+
+						foreach (ConstructorInfo constructor in param.GetType().GetConstructors(BindingFlags.Public | BindingFlags.NonPublic))
+						{
+							temp++;
+							writer.Write("CONSTRUCTOR " + temp + " : " + constructor.Name + "\n");
+						}
 					}
 				}
 			}
 		}
 
 		/// <summary>
-		/// Deletes all text in the Logs.txt file.
+		/// Deletes all log files.
 		/// </summary>
-		public static void ClearLog()
+		public static void ClearLogs()
 		{
-			Directory.CreateDirectory(LogPath);
-			using (StreamWriter writer = File.CreateText(LogPath + Path.DirectorySeparatorChar + "Logs.txt"))
+			lock (logLock)
 			{
+				Directory.CreateDirectory(LogPath);
+				string[] files = new string[] {
+					LogPath + Path.DirectorySeparatorChar + "Logs.txt",
+					LogPath + Path.DirectorySeparatorChar + "Network Error.txt",
+					LogPath + Path.DirectorySeparatorChar + "Runtime Error.txt",
+					LogPath + Path.DirectorySeparatorChar + "Loading Errors.txt",
+					CompileErrorPath,
+				};
+				foreach (var file in files)
+				{
+					try
+					{
+						File.Delete(file);
+					}
+					catch (Exception)
+					{
+						// Don't worry about it, modder or player might have the file open in tail or notepad.
+					}
+				}
 			}
+		}
+
+		//this is a terrible hack on an average system
+		public static void LogMulti(IEnumerable<Action> logCalls)
+		{
+			if (Main.dedServ)
+			{
+				foreach (var call in logCalls)
+					call();
+				return;
+			}
+
+			var list = logCalls.ToArray();
+			list[0]();
+			if (list.Length > 1)
+				Interface.errorMessage.OverrideContinueAction(() => LogMulti(list.Skip(1)));
 		}
 	}
 }

@@ -85,6 +85,24 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the mount's jump height based on its state.
+		/// </summary>
+		/// <param name="jumpHeight"></param>
+		/// <param name="xVelocity"></param>
+		public virtual void JumpHeight(ref int jumpHeight, float xVelocity)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to modify the mount's jump speed based on its state.
+		/// </summary>
+		/// <param name="jumpSeed"></param>
+		/// <param name="xVelocity"></param>
+		public virtual void JumpSpeed(ref float jumpSeed, float xVelocity)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to make things happen when mount is used (creating dust etc.) Can also be used for mount special abilities.
 		/// </summary>
 		/// <param name="player"></param>
@@ -111,11 +129,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when the mouse is clicked while the mount is active.
+		/// Allows you to make things happen while the mouse is pressed while the mount is active. Called each tick the mouse is pressed.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="mousePosition"></param>
-		/// <param name="toggleOn"></param>
+		/// <param name="toggleOn">Does nothing yet</param>
 		public virtual void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
 		{
 		}

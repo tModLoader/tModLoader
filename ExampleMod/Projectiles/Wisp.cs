@@ -11,7 +11,6 @@ namespace ExampleMod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Wisp");
 			ProjectileID.Sets.Homing[projectile.type] = true;
 		}
 

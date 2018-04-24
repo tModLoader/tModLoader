@@ -38,9 +38,9 @@ namespace ExampleMod.Tiles
 					{
 						Player scoringPlayer = Main.player[npc.lastInteraction];
 						int score = 0;
-						// Using HalfVector2 and Utils.ReadUIntAsFloat is a way to pack a Vector2 into a single float variable.
+						// Using HalfVector2 and ReinterpretCast.UIntAsFloat is a way to pack a Vector2 into a single float variable.
 						HalfVector2 halfVector = new HalfVector2((current.Position.X + 1) * 16, (current.Position.Y + 1) * 16);
-						Projectile.NewProjectile(npc.Center, Vector2.Zero, mod.ProjectileType<Projectiles.ScorePoint>(), 0, 0, Main.myPlayer, halfVector.PackedValue, npc.lastInteraction);
+						Projectile.NewProjectile(npc.Center, Vector2.Zero, mod.ProjectileType<Projectiles.ScorePoint>(), 0, 0, Main.myPlayer, ReLogic.Utilities.ReinterpretCast.UIntAsFloat(halfVector.PackedValue), npc.lastInteraction);
 						scoreboard.scores.TryGetValue(scoringPlayer.name, out score);
 						scoreboard.scores[scoringPlayer.name] = score + 1;
 						if (Main.dedServ)

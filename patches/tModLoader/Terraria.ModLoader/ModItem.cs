@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -66,6 +68,9 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		/// <summary>
+		/// The file name of this item's texture file in the mod loader's file space.
+		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
 		/// <summary>
@@ -104,7 +109,11 @@ namespace Terraria.ModLoader
 		/// Allows you to decide which fields of your ModItem class are copied over when an item stack is split or something similar happens. 
 		/// By default this will return a memberwise clone; you will want to override this if your GlobalItem contains object references. 
 		/// Only called if CloneNewInstances is set to true.
+		/// Since several ModItem class fields are also set by the default implementation of this method, you'll most likely want to call base.Clone() as the first statement of your override.
 		/// </summary>
+		/// <example><code>var clone = (ExampleHookItem)base.Clone();
+		/// clone.targets = (int[])this.targets.Clone(); // Or whatever deep copy operations are relevant.
+		/// return clone;</code></example>
 		public virtual ModItem Clone() => (ModItem)MemberwiseClone();
 
 		/// <summary>
@@ -146,9 +155,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// tModLoader's SetDefaults, because we don't want to break everything by making people call base.SetDefaults
+		/// Automatically sets certain defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
-		public virtual void SetDefaults0()
+		public virtual void AutoDefaults()
 		{
 			EquipLoader.SetSlot(item);
 		}
@@ -162,16 +171,29 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// tModLoader's SetStaticDefaults, because we don't want to break everything by making people call base.SetDefaults
+		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
-		public virtual void SetStaticDefaults0() {
+		public virtual void AutoStaticDefaults() {
 			Main.itemTexture[item.type] = ModLoader.GetTexture(Texture);
 
 			var flameTexture = Texture + "_Flame";
 			if (ModLoader.TextureExists(flameTexture))
+			{
 				Main.itemFlameTexture[item.type] = ModLoader.GetTexture(flameTexture);
+				Main.itemFlameLoaded[item.type] = true;
+			}
 
-			DisplayName.SetDefault(Regex.Replace(GetType().Name, "([A-Z])", " $1").Trim());
+			if (DisplayName.IsDefault())
+				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
+		}
+
+		/// <summary>
+		/// Allows you to manually choose what prefix an item will get.
+		/// </summary>
+		/// <returns>The ID of the prefix to give the item, -1 to use default vanilla behavior</returns>
+		public virtual int ChoosePrefix(UnifiedRandom rand)
+		{
+			return -1;
 		}
 
 		/// <summary>
@@ -229,8 +251,12 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
+		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
+		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
+		/// So if you set both melee class and another class to true, only the melee damage will actually be used.
 		/// </summary>
-		/// <param name="player">The player.</param>
+		/// <param name="player">The player using the item</param>
 		/// <param name="damage">The damage.</param>
 		public virtual void GetWeaponDamage(Player player, ref int damage)
 		{
@@ -238,10 +264,28 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
+		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
+		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
+		/// So if you set both melee class and another class to true, only the melee knockback will actually be used.
 		/// </summary>
-		/// <param name="player">The player.</param>
-		/// <param name="knockback">The knockback.</param>
+		/// <param name="player">The player using the item</param>
+		/// <param name="knockback">The knockback</param>
 		public virtual void GetWeaponKnockback(Player player, ref float knockback)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
+		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
+		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
+		/// If you use a custom damage class, the crit value will equal item.crit
+		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, and summon cannot crit.
+		/// So if you set both melee class and another class to true, only the melee crit will actually be used.
+		/// </summary>
+		/// <param name="player">The player using this item</param>
+		/// <param name="crit">The critical strike chance, at 0 it will never trigger a crit and at 100 or above it will always trigger a crit</param>
+		public virtual void GetWeaponCrit(Player player, ref int crit)
 		{
 		}
 
@@ -374,6 +418,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to make things happen when this item is used. Return true if using this item actually does stuff. Returns false by default.
+		/// Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
@@ -563,14 +608,35 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This hooks gets called immediately before an item gets reforged by the Goblin Tinkerer. Useful for storing custom data, since reforging erases custom data. Note that, because the ModItem instance will change, the data must be backed up elsewhere, such as in static fields.
+		/// Returns if the normal reforge pricing is applied. 
+		/// If true or false is returned and the price is altered, the price will equal the altered price.
+		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 		/// </summary>
-		public virtual void PreReforge()
+		public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount)
 		{
+			return true;
 		}
 
 		/// <summary>
-		/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer. Useful for restoring custom data that you saved in PreReforge.
+		/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
+		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
+		/// Reforging preserves modded data on the item. 
+		/// </summary
+		public virtual bool NewPreReforge()
+		{
+			return true;
+		}
+
+		// @todo: PreReforge marked obsolete until v0.11
+		[method: Obsolete("PreReforge now returns a bool to control whether the reforge takes place. For now, use NewPreReforge")]
+		public virtual void PreReforge()
+		{
+			item.modItem?.NewPreReforge();
+		}
+
+		/// <summary>
+		/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer.
+		/// Useful for modifying modded data based on the reforge result.
 		/// </summary>
 		public virtual void PostReforge()
 		{
@@ -835,7 +901,7 @@ namespace Terraria.ModLoader
 		/// Allows you to disallow the player from equipping this accessory. Return false to disallow equipping this accessory. Returns true by default.
 		/// </summary>
 		/// <param name="player">The player.</param>
-		/// <param name="slot">The slot.</param>
+		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
 		public virtual bool CanEquipAccessory(Player player, int slot)
 		{
 			return true;
@@ -946,6 +1012,45 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="recipe">The recipe that was used to craft this item.</param>
 		public virtual void OnCraft(Recipe recipe)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to do things before this item's tooltip is drawn.
+		/// </summary>
+		/// <param name="lines">The tooltip lines for this item</param>
+		/// <param name="x">The top X position for this tooltip. It is where the first line starts drawing</param>
+		/// <param name="y">The top Y position for this tooltip. It is where the first line starts drawing</param>
+		/// <returns>Whether or not to draw this tooltip</returns>
+		public virtual bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to do things after this item's tooltip is drawn. The lines contain draw information as this is ran after drawing the tooltip.
+		/// </summary>
+		/// <param name="lines">The tooltip lines for this item</param>
+		public virtual void PostDrawTooltip(ReadOnlyCollection<DrawableTooltipLine> lines)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to do things before a tooltip line of this item is drawn. The line contains draw info.
+		/// </summary>
+		/// <param name="line">The line that would be drawn</param>
+		/// <param name="yOffset">The Y offset added for next tooltip lines</param>
+		/// <returns>Whether or not to draw this tooltip line</returns>
+		public virtual bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to do things after a tooltip line of this item is drawn. The line contains draw info.
+		/// </summary>
+		/// <param name="line">The line that was drawn</param>
+		public virtual void PostDrawTooltipLine(DrawableTooltipLine line)
 		{
 		}
 

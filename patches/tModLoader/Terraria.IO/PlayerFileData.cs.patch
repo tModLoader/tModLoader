@@ -17,15 +17,19 @@
  
  		public Player Player
  		{
-@@ -96,6 +_,7 @@
- 				this._isCloudSave = true;
- 				this._path = playerPathFromName;
- 				Main.CloudFavoritesData.SaveFavorite(this);
+@@ -68,6 +_,7 @@
+ 			string playerPathFromName = Main.GetPlayerPathFromName(this.Name, true);
+ 			if (FileUtilities.MoveToCloud(base.Path, playerPathFromName))
+ 			{
 +				PlayerIO.MoveToCloud(base.Path, playerPathFromName);
- 			}
- 		}
- 
-@@ -111,7 +_,8 @@
+ 				string fileName = base.GetFileName(false);
+ 				string path = string.Concat(new object[]
+ 					{
+@@ -108,10 +_,12 @@
+ 			string playerPathFromName = Main.GetPlayerPathFromName(this.Name, false);
+ 			if (FileUtilities.MoveToLocal(base.Path, playerPathFromName))
+ 			{
++				PlayerIO.MoveToLocal(base.Path, playerPathFromName);
  				string fileName = base.GetFileName(false);
  				string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
  				IEnumerable<string> enumerable = from path in SocialAPI.Cloud.GetFiles()
@@ -35,12 +39,4 @@
  				                                 select path;
  				foreach (string current in enumerable)
  				{
-@@ -122,6 +_,7 @@
- 				this._isCloudSave = false;
- 				this._path = playerPathFromName;
- 				Main.LocalFavoriteData.SaveFavorite(this);
-+				PlayerIO.MoveToLocal(base.Path, playerPathFromName);
- 			}
- 		}
- 
 

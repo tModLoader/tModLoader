@@ -9,6 +9,7 @@ namespace ExampleMod.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("This is a modded magic weapon.");
+			Item.staff[item.type] = true; //this makes the useStyle animate as a staff instead of as a gun
 		}
 
 		public override void SetDefaults()
@@ -21,7 +22,6 @@ namespace ExampleMod.Items.Weapons
 			item.useTime = 25;
 			item.useAnimation = 25;
 			item.useStyle = 5;
-			Item.staff[item.type] = true; //this makes the useStyle animate as a staff instead of as a gun
 			item.noMelee = true; //so the item's animation doesn't do damage
 			item.knockBack = 5;
 			item.value = 10000;

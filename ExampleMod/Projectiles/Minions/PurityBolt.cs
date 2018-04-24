@@ -9,7 +9,6 @@ namespace ExampleMod.Projectiles.Minions
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Purity Bolt");
 			ProjectileID.Sets.Homing[projectile.type] = true;
 			ProjectileID.Sets.MinionShot[projectile.type] = true;
 		}

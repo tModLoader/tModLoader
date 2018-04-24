@@ -9,6 +9,9 @@ using Mono.Cecil;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using static Terraria.ModLoader.ModLoader;
+using System.Runtime.ExceptionServices;
+using Terraria.Localization;
+
 namespace Terraria.ModLoader
 {
 	//todo: further documentation
@@ -29,7 +32,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private class BuildingMod : LoadingMod
+		private class BuildingMod : LocalMod
 		{
 			public string path;
 
@@ -51,7 +54,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static bool BuildAll(string[] modFolders, IBuildStatus status) {
-			var modList = new List<LoadingMod>();
+			var modList = new List<LocalMod>();
 			//read mod sources folder
 			foreach (var modFolder in modFolders) {
 				var mod = ReadProperties(modFolder, status);
@@ -62,22 +65,21 @@ namespace Terraria.ModLoader
 			}
 
 			//figure out which of the installed mods are required for building
-			var installedMods = FindMods()
-				.Where(mod => !modList.Exists(m => m.Name == mod.name))
-				.Select(mod => new LoadingMod(mod, BuildProperties.ReadModFile(mod)))
-				.ToList();
+			var installedMods = FindMods().Where(mod => !modList.Exists(m => m.Name == mod.Name)).ToList();
 			
-			var requiredFromInstall = new HashSet<LoadingMod>();
-			Action<LoadingMod> require = null;
-			require = (mod) => {
-				foreach (var dep in mod.properties.RefNames(true)) {
+			var requiredFromInstall = new HashSet<LocalMod>();
+			void Require(LocalMod mod)
+			{
+				foreach (var dep in mod.properties.RefNames(true))
+				{
 					var depMod = installedMods.SingleOrDefault(m => m.Name == dep);
 					if (depMod != null && requiredFromInstall.Add(depMod))
-						require(depMod);
+						Require(depMod);
 				}
-			};
+			}
+
 			foreach (var mod in modList)
-				require(mod);
+				Require(mod);
 
 			modList.AddRange(requiredFromInstall);
 
@@ -131,7 +133,7 @@ namespace Terraria.ModLoader
 		private static BuildingMod ReadProperties(string modFolder, IBuildStatus status) {
 			if (modFolder.EndsWith("\\") || modFolder.EndsWith("/")) modFolder = modFolder.Substring(0, modFolder.Length - 1);
 			var modName = Path.GetFileName(modFolder);
-			status.SetStatus("Reading Properties: " + modName);
+			status.SetStatus(Language.GetTextValue("tModLoader.MSReadingProperties") + modName);
 
 			BuildProperties properties;
 			try {
@@ -198,14 +200,14 @@ namespace Terraria.ModLoader
 					}
 				}
 				else {
-					status.SetStatus("Compiling " + mod + " for Windows...");
+					status.SetStatus(Language.GetTextValue("tModLoader.MSCompilingWindows", mod));
 					status.SetProgress(0, 2);
 					CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
 				}
 				if (winDLL == null)
 					return false;
 
-				status.SetStatus("Compiling " + mod + " for Mono...");
+				status.SetStatus(Language.GetTextValue("tModLoader.MSCompilingMono", mod));
 				status.SetProgress(1, 2);
 				CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
 				if (monoDLL == null)
@@ -215,7 +217,7 @@ namespace Terraria.ModLoader
 			if (!VerifyName(mod.Name, winDLL) || !VerifyName(mod.Name, monoDLL))
 				return false;
 
-			status.SetStatus("Building "+mod+"...");
+			status.SetStatus(Language.GetTextValue("tModLoader.MSBuilding") + mod + "...");
 			status.SetProgress(0, 1);
 
 			mod.modFile.AddFile("Info", mod.properties.ToBytes());
@@ -234,29 +236,91 @@ namespace Terraria.ModLoader
 				var relPath = resource.Substring(mod.path.Length + 1);
 				if (mod.properties.ignoreFile(relPath) || 
 						relPath == "build.txt" ||
+						relPath == ".gitattributes" ||
+						relPath == ".gitignore" ||
+						relPath.StartsWith(".git" + Path.DirectorySeparatorChar) ||
+						relPath.StartsWith(".vs" + Path.DirectorySeparatorChar) ||
+						relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
+						relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
 						!mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
 						Path.GetFileName(resource) == "Thumbs.db")
 					continue;
 
-				mod.modFile.AddFile(relPath, File.ReadAllBytes(resource));
+				AddResource(mod.modFile, relPath, resource);
 			}
 
 			WAVCacheIO.ClearCache(mod.Name);
 
 			mod.modFile.Save();
-			EnableMod(mod.modFile);
+			EnableMod(mod.Name);
+			ActivateExceptionReporting();
+			ModLoader.isModder = true;
 			return true;
 		}
 
+		private static void AddResource(TmodFile modFile, string relPath, string filePath)
+		{
+			if (relPath.EndsWith(".png") && relPath != "icon.png")
+			{
+				using (var fs = File.OpenRead(filePath))
+				{
+					var rawimg = ImageIO.ToRawBytes(fs);
+					if (rawimg != null) {//some pngs can't be converted to rawimg
+						modFile.AddFile(Path.ChangeExtension(relPath, "rawimg"), rawimg);
+						return;
+					}
+				}
+			}
+
+			modFile.AddFile(relPath, File.ReadAllBytes(filePath));
+		}
+
+		private static bool exceptionReportingActive;
+		internal static void ActivateExceptionReporting()
+		{
+			if (exceptionReportingActive) return;
+			exceptionReportingActive = true;
+			AppDomain.CurrentDomain.FirstChanceException += delegate(object sender, FirstChanceExceptionEventArgs exceptionArgs)
+			{
+				if (exceptionArgs.Exception.Source == "MP3Sharp") return;
+				if (exceptionArgs.Exception.TargetSite.Name.StartsWith("doColors_Mode")) return;
+				var stack = new System.Diagnostics.StackTrace(true);
+				float soundVolume = Main.soundVolume;
+				Main.soundVolume = 0f;
+				Main.NewText(exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace + " (see Logs.txt for full trace)", Microsoft.Xna.Framework.Color.OrangeRed);
+				ErrorLogger.Log("Silently Caught Exception: " + exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace + stack.ToString());
+				Main.soundVolume = soundVolume;
+			};
+		}
+
 		private static bool VerifyName(string modName, byte[] dll) {
-			var asmName = AssemblyDefinition.ReadAssembly(new MemoryStream(dll)).Name.Name;
+			var asmDef = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
+			var asmName = asmDef.Name.Name;
 			if (asmName != modName) {
 				ErrorLogger.LogBuildError("Mod name \""+ modName+ "\" does not match assembly name \""+asmName+"\"");
 				return false;
 			}
 
-			if (modName.Equals("Terraria",  StringComparison.InvariantCultureIgnoreCase)) {
+			if (modName.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
+			{
 				ErrorLogger.LogBuildError("Mods cannot be named Terraria");
+				return false;
+			}
+
+			// Verify that folder and namespace match up
+			try
+			{
+				var modClassType = asmDef.MainModule.Types.Single(x => x.BaseType?.FullName == "Terraria.ModLoader.Mod");
+				string topNamespace = modClassType.Namespace.Split('.')[0];
+				if (topNamespace != modName)
+				{
+					ErrorLogger.LogBuildError("Namespace and Folder name do not match. The top level namespace must match the folder name.");
+					return false;
+				}
+			}
+			catch
+			{
+				ErrorLogger.LogBuildError("Make sure you have exactly one class extending Mod.");
 				return false;
 			}
 
@@ -274,24 +338,27 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static List<LoadingMod> FindReferencedMods(BuildProperties properties) {
-			var mods = new Dictionary<string, LoadingMod>();
+		internal static List<LocalMod> FindReferencedMods(BuildProperties properties) {
+			var mods = new Dictionary<string, LocalMod>();
 			return FindReferencedMods(properties, mods) ? mods.Values.ToList() : null;
 		}
 
-		private static bool FindReferencedMods(BuildProperties properties, Dictionary<string, LoadingMod> mods) {
+		private static bool FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods) {
 			foreach (var refName in properties.RefNames(true)) {
 				if (mods.ContainsKey(refName))
 					continue;
 
 				var modFile = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
-				modFile.Read();
-				var ex = modFile.ValidMod();
-				if (ex != null) {
+				try
+				{
+					modFile.Read(TmodFile.LoadedState.Code);
+				}
+				catch (Exception ex)
+				{
 					ErrorLogger.LogBuildError("Mod reference " + refName + " " + ex);
 					return false;
 				}
-				var mod = new LoadingMod(modFile, BuildProperties.ReadModFile(modFile));
+				var mod = new LocalMod(modFile);
 				mods[refName] = mod;
 				FindReferencedMods(mod.properties, mods);
 			}
@@ -299,7 +366,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static void CompileMod(BuildingMod mod, List<LoadingMod> refMods, bool forWindows,
+		private static void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows,
 				ref byte[] dll, ref byte[] pdb) {
 			LoadReferences();
 			bool generatePDB = mod.properties.includePDB && forWindows;
@@ -475,17 +542,39 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static AssemblyNameReference GetOrAddSystemCore(ModuleDefinition module)
+		{
+			var assemblyRef = module.AssemblyReferences.SingleOrDefault(r => r.Name == "System.Core");
+			if (assemblyRef == null)
+			{
+				//System.Linq.Enumerable is in System.Core
+				var name = Assembly.GetAssembly(typeof(Enumerable)).GetName();
+				assemblyRef = new AssemblyNameReference(name.Name, name.Version)
+				{
+					Culture = name.CultureInfo.Name,
+					PublicKeyToken = name.GetPublicKeyToken(),
+					HashAlgorithm = (AssemblyHashAlgorithm)name.HashAlgorithm
+				};
+				module.AssemblyReferences.Add(assemblyRef);
+			}
+			return assemblyRef;
+		}
+
 		private static byte[] PostProcess(byte[] dll, bool forWindows) {
 			if (forWindows)
 				return dll;
 
 			var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
+
+			// Extension methods are marked with an attribute which is located in mscorlib on .NET but in System.Core on Mono
+			// Find all extension attributes and change their assembly references
+			AssemblyNameReference SystemCoreRef = null;
 			foreach (var module in asm.Modules)
 				foreach (var type in module.Types)
 					foreach (var met in type.Methods)
 						foreach (var attr in met.CustomAttributes)
 							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
-								attr.AttributeType.Scope = module.AssemblyReferences.Single(r => r.Name == "System.Core");
+								attr.AttributeType.Scope = SystemCoreRef ?? (SystemCoreRef = GetOrAddSystemCore(module));
 
 			var ret = new MemoryStream();
 			asm.Write(ret, new WriterParameters { SymbolWriterProvider = AssemblyManager.SymbolWriterProvider.instance });

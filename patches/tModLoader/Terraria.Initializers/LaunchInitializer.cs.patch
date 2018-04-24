@@ -1,5 +1,16 @@
 --- src/Terraria\Terraria.Initializers\LaunchInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\LaunchInitializer.cs
+@@ -1,6 +_,9 @@
+-using System;
++using System.Collections.Generic;
+ using System.Diagnostics;
++using System.Linq;
++using System.Text.RegularExpressions;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ 
+ namespace Terraria.Initializers
 @@ -37,6 +_,14 @@
  			{
  				Netplay.ListenPort = listenPort;
@@ -15,6 +26,43 @@
  		}
  
  		private static void LoadClientParameters(Main game)
+@@ -66,6 +_,36 @@
+ 				}))
+ 			{
+ 				game.AutoHost();
++			}
++
++			if (LaunchInitializer.HasParameter("-skipselect"))
++			{
++				string skipSelectArgs = LaunchInitializer.TryParameter(new string[] { "-skipselect" });
++
++				string playerName = null;
++				string worldName = null;
++
++				if (skipSelectArgs != null)
++				{
++					Regex cmdRegEx = new Regex(@"(?<name>.*?):(?<val>.*)");
++					Match m = cmdRegEx.Match(skipSelectArgs);
++					if (m.Success)
++					{
++						playerName = m.Groups["name"].Value;
++						worldName = m.Groups["val"].Value;
++					}
++				}
++
++				Main.showSplash = false;
++				ModLoader.ModLoader.PostLoad += () =>
++				{
++					WorldGen.clearWorld();
++					Main.LoadPlayers();
++					(Main.PlayerList.FirstOrDefault(x => x.Name == playerName) ?? Main.PlayerList[0]).SetAsActive();
++					Main.LoadWorlds();
++					(Main.WorldList.FirstOrDefault(x => x.Name == worldName) ?? Main.WorldList[0]).SetAsActive();
++					WorldGen.playWorld();
++				};
+ 			}
+ 		}
+ 
 @@ -172,6 +_,14 @@
  			{
  				game.NewMOTD(newMOTD);

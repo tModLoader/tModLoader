@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Terraria.ModLoader.IO;
@@ -43,7 +44,7 @@ namespace Terraria.ModLoader
 			private string DllName(string dll) => eacEnabled ? dll : Name + '_' + dll + '_' + loadIndex;
 			private string WeakDepName(string depName) => eacEnabled ? depName : depName + "_0";
 
-			public void SetMod(ModLoader.LoadingMod mod) {
+			public void SetMod(LocalMod mod) {
 				if (modFile == null ||
 					modFile.version != mod.modFile.version ||
 					!modFile.hash.SequenceEqual(mod.modFile.hash))
@@ -102,21 +103,31 @@ namespace Terraria.ModLoader
 				if (!NeedsReload)
 					return;
 
-				foreach (var dll in properties.dllReferences)
-					LoadAssembly(EncapsulateReferences(modFile.GetFile("lib/" + dll + ".dll")));
+				try
+				{
+					modFile.Read(TmodFile.LoadedState.Code);
 
-				assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
-				NeedsReload = false;
+					foreach (var dll in properties.dllReferences)
+						LoadAssembly(EncapsulateReferences(modFile.GetFile("lib/" + dll + ".dll")));
+
+					assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
+					NeedsReload = false;
+				}
+				catch (Exception e)
+				{
+					e.Data["mod"] = Name;
+					throw;
+				}
 			}
 
 			private byte[] EncapsulateReferences(byte[] code) {
 				if (eacEnabled)
 					return code;
 
-				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code));
+				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code), new ReaderParameters { AssemblyResolver = TerrariaCecilAssemblyResolver.instance });
 				asm.Name.Name = EncapsulateName(asm.Name.Name);
 
-				//randomise the module version id so that the debugger can detect it as a different module (even if it has the same content)
+				//randomize the module version id so that the debugger can detect it as a different module (even if it has the same content)
 				asm.MainModule.Mvid = Guid.NewGuid();
 
 				foreach (var mod in asm.Modules)
@@ -187,11 +198,35 @@ namespace Terraria.ModLoader
 			return asm;
 		}
 
-		internal static List<Mod> InstantiateMods(List<ModLoader.LoadingMod> modsToLoad) {
+		private static Mod Instantiate(LoadedMod mod)
+		{
+			try
+			{
+				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
+				if (modType == null)
+					throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.")
+					{
+						HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
+					};
+
+				var m = (Mod)Activator.CreateInstance(modType);
+				m.File = mod.modFile;
+				m.Code = mod.assembly;
+				m.Side = mod.properties.side;
+				m.DisplayName = mod.properties.displayName;
+				return m;
+			}
+			catch (Exception e)
+			{
+				e.Data["mod"] = mod.Name;
+				throw;
+			}
+		}
+
+		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad) {
 			var modList = new List<LoadedMod>();
 			foreach (var loading in modsToLoad) {
-				LoadedMod mod;
-				if (!loadedMods.TryGetValue(loading.Name, out mod))
+				if (!loadedMods.TryGetValue(loading.Name, out LoadedMod mod))
 					mod = loadedMods[loading.Name] = new LoadedMod();
 
 				mod.SetMod(loading);
@@ -201,44 +236,52 @@ namespace Terraria.ModLoader
 			RecalculateReferences();
 
 			if (Debugger.IsAttached) {
+				ModLoader.isModder = true;
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
 			}
+			if (ModLoader.alwaysLogExceptions)
+				ModCompile.ActivateExceptionReporting();
 
-			var modInstances = new List<Mod>();
-
-			int i = 0;
-			foreach (var mod in modList) {
-				Interface.loadMods.SetProgressCompatibility(mod.Name, i++, modsToLoad.Count);
-				try {
-					Interface.loadMods.SetProgressReading(mod.Name, 0, 1);
+			try
+			{
+				//load all the assemblies in parallel.
+				int i = 0;
+				Parallel.ForEach(modList, mod =>
+				{
+					Interface.loadMods.SetProgressCompatibility(mod.Name, i++, modsToLoad.Count);
 					mod.LoadAssemblies();
+				});
 
-					Interface.loadMods.SetProgressReading(mod.Name, 1, 2);
-					Type modType;
-					try
-					{
-						modType = mod.assembly.GetTypes().Single(t => t.IsSubclassOf(typeof(Mod)));
-					}
-					catch (Exception e)
-					{
-						throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.", e);
-					}
-					var m = (Mod)Activator.CreateInstance(modType);
-					m.File = mod.modFile;
-					m.Code = mod.assembly;
-					m.Side = mod.properties.side;
-					m.DisplayName = mod.properties.displayName;
-					modInstances.Add(m);
-				}
-				catch (Exception e) {
-					ModLoader.DisableMod(mod.modFile);
-					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
-					return null;
-				}
+				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
+				return modList.Select(Instantiate).ToList();
 			}
+			catch (AggregateException ae)
+			{
+				ErrorLogger.LogMulti(ae.InnerExceptions.Select(e => new Action(() => {
+					var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
+					ModLoader.DisableMod(mod.Name);
+					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
+				})));
+				return null;
+			}
+			catch (Exception e)
+			{
+				var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
+				ModLoader.DisableMod(mod.Name);
+				ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
+				return null;
+			}
+		}
 
-			return modInstances;
+		internal class TerrariaCecilAssemblyResolver : DefaultAssemblyResolver
+		{
+			public static readonly TerrariaCecilAssemblyResolver instance = new TerrariaCecilAssemblyResolver();
+
+			private TerrariaCecilAssemblyResolver()
+			{
+				RegisterAssembly(ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly);
+			}
 		}
 
 		internal class SymbolWriterProvider : ISymbolWriterProvider

@@ -393,6 +393,7 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+			TileObject.objectPreview.Active = false;
 		}
 
 		public static void DisableSmartCursor(Tile tile, ref bool disable)
@@ -403,6 +404,18 @@ namespace Terraria.ModLoader
 				if (modTile != null)
 				{
 					disable = modTile.disableSmartCursor;
+				}
+			}
+		}
+
+		public static void DisableSmartInteract(Tile tile, ref bool disable)
+		{
+			if (tile.active())
+			{
+				ModTile modTile = GetTile(tile.type);
+				if (modTile != null)
+				{
+					disable = modTile.disableSmartInteract;
 				}
 			}
 		}
@@ -438,6 +451,15 @@ namespace Terraria.ModLoader
 				return TileID.ClosedDoor;
 			}
 			return -1;
+		}
+		public static bool IsClosedDoor(Tile tile)
+		{
+			ModTile modTile = GetTile(tile.type);
+			if (modTile != null)
+			{
+				return modTile.openDoorID > -1;
+			}
+			return tile.type == TileID.ClosedDoor;
 		}
 		//in Terraria.UI.ChestUI add this to Lang lookups
 		public static string ModChestName(int type)
@@ -509,6 +531,11 @@ namespace Terraria.ModLoader
 		internal static void SetDefaults(ModTile tile)
 		{
 			tile.SetDefaults();
+			if (TileObjectData.newTile.Width > 1 || TileObjectData.newTile.Height > 1)
+			{
+				TileObjectData.FixNewTile();
+				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + tile.GetType().FullName) { HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
+			}
 			if (Main.tileLavaDeath[tile.Type])
 			{
 				Main.tileObsidianKill[tile.Type] = true;
@@ -518,6 +545,25 @@ namespace Terraria.ModLoader
 				Main.tileNoSunLight[tile.Type] = true;
 			}
 			tile.PostSetDefaults();
+		}
+
+		public static bool HasSmartInteract(int type)
+		{
+			return GetTile(type)?.HasSmartInteract() ?? false;
+		}
+
+		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraX, ref int extraY)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile != null)
+			{
+				TileObjectData data = TileObjectData.GetTileData(type, 0);
+				width = data.Width;
+				height = data.Height;
+				frameWidth = data.CoordinateWidth + data.CoordinatePadding;
+				frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
+				extraY = data.CoordinateFullHeight % frameHeight;
+			}
 		}
 		//in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
 		//  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if

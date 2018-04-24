@@ -62,6 +62,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void JumpHeight(Mount.MountData mount, ref int jumpHeight, float xVelocity)
+		{
+			if (IsModMountData(mount))
+			{
+				mount.modMountData.JumpHeight(ref jumpHeight, xVelocity);
+			}
+		}
+
+		public static void JumpSpeed(Mount.MountData mount, ref float jumpSpeed, float xVelocity)
+		{
+			if (IsModMountData(mount))
+			{
+				mount.modMountData.JumpSpeed(ref jumpSpeed, xVelocity);
+			}
+		}
+
 		internal static void UpdateEffects(Player mountedPlayer)
 		{
 			if (IsModMountData(Mount.mounts[mountedPlayer.mount.Type]))
@@ -89,11 +105,11 @@ namespace Terraria.ModLoader
 			return false;
 		}
 		/// <summary>
-		/// Allows you to make things happen when the mouse is clicked while the mount is active.
+		/// Allows you to make things happen while the mouse is pressed while the mount is active. Called each tick the mouse is pressed.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="mousePosition"></param>
-		/// <param name="toggleOn"></param>
+		/// <param name="toggleOn">Does nothing yet</param>
 		public static void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
 		{
 			if (IsModMountData(player.mount._data))

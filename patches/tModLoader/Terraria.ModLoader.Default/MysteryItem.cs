@@ -14,7 +14,7 @@ namespace Terraria.ModLoader.Default
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Unloaded Item");
+			DisplayName.SetDefault("{$tModLoader.UnloadedItemItemName}");
 			Tooltip.SetDefault("\n");
 		}
 
@@ -73,7 +73,8 @@ namespace Terraria.ModLoader.Default
 				hasGlobal = true;
 				modName = reader.ReadString();
 			}
-			Load(new TagCompound {
+			Load(new TagCompound
+			{
 				["mod"] = modName,
 				["name"] = reader.ReadString(),
 				["hasGlobalSaving"] = hasGlobal,
@@ -81,12 +82,24 @@ namespace Terraria.ModLoader.Default
 			});
 		}
 
+		public override void NetSend(BinaryWriter writer)
+		{
+			TagIO.Write(data ?? new TagCompound(), writer);
+		}
+
+		public override void NetRecieve(BinaryReader reader)
+		{
+			data = TagIO.Read(reader);
+			modName = data.GetString("mod");
+			itemName = data.GetString("name");
+		}
+
 		public override bool CloneNewInstances => true;
 
 		public override ModItem Clone()
 		{
 			var clone = (MysteryItem)base.Clone();
-			clone.data = (TagCompound) data?.Clone();
+			clone.data = (TagCompound)data?.Clone();
 			return clone;
 		}
 	}

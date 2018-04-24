@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
 using System.Collections.Specialized;
 using System.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -38,14 +39,14 @@ namespace Terraria.ModLoader.UI
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
 
-			uITextPanel = new UITextPanel<string>("Please Enter Your Passcode", 0.8f, true);
+			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishEnterPassphrase"), 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
 
-			UITextPanel<string> button = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			button.Width.Set(-10f, 0.5f);
 			button.Height.Set(25f, 0f);
 			button.VAlign = 1f;
@@ -55,7 +56,7 @@ namespace Terraria.ModLoader.UI
 			button.OnClick += BackClick;
 			uIElement.Append(button);
 
-			UITextPanel<string> button2 = new UITextPanel<string>("Submit", 1f, false);
+			UITextPanel<string> button2 = new UITextPanel<string>(Language.GetTextValue("UI.Submit"), 1f, false);
 			button2.CopyStyle(button);
 			button2.HAlign = 1f;
 			button2.OnMouseOver += UICommon.FadedMouseOver;
@@ -63,7 +64,7 @@ namespace Terraria.ModLoader.UI
 			button2.OnClick += OKClick;
 			uIElement.Append(button2);
 
-			UITextPanel<string> button3 = new UITextPanel<string>("Visit Website to Generate Passphrase", 1f, false);
+			UITextPanel<string> button3 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishVisitWebsiteForPassphrase"), 1f, false);
 			button3.CopyStyle(button);
 			button3.Width.Set(0f, 1f);
 			button3.Top.Set(-20f, 0f);
@@ -72,7 +73,7 @@ namespace Terraria.ModLoader.UI
 			button3.OnClick += VisitRegisterWebpage;
 			uIElement.Append(button3);
 
-			passcodeTextField = new UIInputTextField("Paste Passphrase (ctrl-v)");
+			passcodeTextField = new UIInputTextField(Language.GetTextValue("tModLoader.MBPublishPastePassphrase"));
 			passcodeTextField.HAlign = 0.5f;
 			passcodeTextField.VAlign = 0.5f;
 			passcodeTextField.Left.Set(-100, 0);

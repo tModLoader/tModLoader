@@ -1,23 +1,41 @@
 using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
 namespace ExampleMod.NPCs
 {
+	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
-		public override bool Autoload(ref string name, ref string texture, ref string[] altTextures)
+		public override string Texture
+		{
+			get
+			{
+				return "ExampleMod/NPCs/ExamplePerson";
+			}
+		}
+
+		public override string[] AltTextures
+		{
+			get
+			{
+				return new string[] { "ExampleMod/NPCs/ExamplePerson_Alt_1" };
+			}
+		}
+
+		public override bool Autoload(ref string name)
 		{
 			name = "Example Person";
-			altTextures = new string[] { "ExampleMod/NPCs/ExamplePerson_Alt_1" };
 			return mod.Properties.Autoload;
 		}
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Person");
+			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
+			// DisplayName.SetDefault("Example Person");
 			Main.npcFrameCount[npc.type] = 25;
 			NPCID.Sets.ExtraFramesCount[npc.type] = 9;
 			NPCID.Sets.AttackFrameCount[npc.type] = 4;
@@ -26,7 +44,6 @@ namespace ExampleMod.NPCs
 			NPCID.Sets.AttackTime[npc.type] = 90;
 			NPCID.Sets.AttackAverageChance[npc.type] = 30;
 			NPCID.Sets.HatOffsetY[npc.type] = 4;
-			NPCID.Sets.ExtraTextureCount[npc.type] = 1;
 		}
 
 		public override void SetDefaults()
@@ -163,7 +180,7 @@ namespace ExampleMod.NPCs
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
-			button = Lang.inter[28].Value;
+			button = Language.GetTextValue("LegacyInterface.28");
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
@@ -227,6 +244,11 @@ namespace ExampleMod.NPCs
 				shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SummonersAssociation").ItemType("BloodTalisman"));
 				nextSlot++;
 			}
+		}
+
+		public override void NPCLoot()
+		{
+			Item.NewItem(npc.getRect(), mod.ItemType<Items.Armor.ExampleCostume>());
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback)

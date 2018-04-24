@@ -22,7 +22,7 @@ namespace ExampleMod.Tiles
 			name.SetDefault("Red Firefly in a Bottle");
 			AddMapEntry(new Color(238, 145, 105), name);
 
-			//Can't use this since texture is virtical.
+			//Can't use this since texture is vertical.
 			//animationFrameHeight = 56;
 		}
 		// Our textures animation frames are arranged horizontally, which isn't typical, so here we specify animationFrameWidth which we use later in AnimateIndividualTile
@@ -129,7 +129,7 @@ namespace ExampleMod.Tiles
 					frame = 0;
 				}
 			}*/
-			// Above code works, but since we are just mimicing another tile, we can just use the same value.
+			// Above code works, but since we are just mimicking another tile, we can just use the same value.
 			frame = Main.tileFrame[TileID.FireflyinaBottle];
 		}
 

@@ -23,7 +23,7 @@ namespace ExampleMod
 		public const float VolcanoAngleSpread = 170;
 		public const int DefaultVolcanoTremorTime = 200; // ~ 3 seconds
 		public const int DefaultVolcanoCountdown = 300; // 5 seconds
-		public const int DefaultVolcanoCooldown = 10000; // At least 3 min of daytime between volcanos
+		public const int DefaultVolcanoCooldown = 10000; // At least 3 min of daytime between volcanoes
 		public const int VolcanoChance = 10000; // Chance each tick of Volcano if cooldown exhausted.
 		public int VolcanoCountdown;
 		public int VolcanoCooldown = DefaultVolcanoCooldown;
@@ -128,7 +128,7 @@ namespace ExampleMod
 				{
 					progress.Message = "Example Mod Traps";
 					// Computers are fast, so WorldGen code sometimes looks stupid.
-					// Here, we want to place a bunch of tiles in the world, so we just repeat until success. It might be useful to keep track of attempts and check for attemps > maxattempts so you don't have infinite loops. 
+					// Here, we want to place a bunch of tiles in the world, so we just repeat until success. It might be useful to keep track of attempts and check for attempts > maxattempts so you don't have infinite loops. 
 					// The WorldGen.PlaceTile method returns a bool, but it is useless. Instead, we check the tile after calling it and if it is the desired tile, we know we succeeded.
 					for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
 					{
@@ -367,6 +367,7 @@ namespace ExampleMod
 			for (int chestIndex = 0; chestIndex < 1000; chestIndex++)
 			{
 				Chest chest = Main.chest[chestIndex];
+				// If you look at the sprite for Chests by extracting Tiles_21.xnb, you'll see that the 12th chest is the Ice Chest. Since we are counting from 0, this is where 11 comes from. 36 comes from the width of each tile including padding. 
 				if (chest != null && Main.tile[chest.x, chest.y].type == TileID.Containers && Main.tile[chest.x, chest.y].frameX == 11 * 36)
 				{
 					for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
@@ -454,7 +455,7 @@ namespace ExampleMod
 								velocity.X = velocity.X + 3 * Main.rand.NextFloat() - 1.5f;
 								int projectile = Projectile.NewProjectile(spawn.X, spawn.Y, velocity.X, velocity.Y, Main.rand.Next(ProjectileID.MolotovFire, ProjectileID.MolotovFire3 + 1), 10, 10f, Main.myPlayer, 0f, 0f);
 								Main.projectile[projectile].hostile = true;
-								//Main.projectile[projectile].name = "Volcanic Rubble";
+								Main.projectile[projectile].Name = "Volcanic Rubble";
 								identities.Add(Main.projectile[projectile].identity);
 							}
 							if (Main.netMode == 2)

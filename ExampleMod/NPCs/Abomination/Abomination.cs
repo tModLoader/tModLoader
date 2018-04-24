@@ -10,6 +10,7 @@ namespace ExampleMod.NPCs.Abomination
 {
 	//ported from my tAPI mod because I'm lazy
 	// Abomination is a multi-stage boss.
+	[AutoloadBossHead]
 	public class Abomination : ModNPC
 	{
 		private static int hellLayer

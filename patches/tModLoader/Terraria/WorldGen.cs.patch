@@ -196,6 +196,15 @@
  									{
  										flag3 = true;
  									}
+@@ -10250,7 +_,7 @@
+ 									Main.tile[num22, l + 2].halfBrick(false);
+ 								}
+ 							}
+-							if (TileID.Sets.BasicChest[(int)Main.tile[k, l].type])
++							if (TileID.Sets.BasicChest[(int)Main.tile[k, l].type] && Main.tile[k, l].type < TileID.Count)
+ 							{
+ 								int num26 = (int)(Main.tile[k, l].frameX / 18);
+ 								int num27 = 0;
 @@ -10448,7 +_,7 @@
  				});
  			WorldGen.AddGenerationPass("Micro Biomes", delegate(GenerationProgress progress)
@@ -386,6 +395,54 @@
  									{
  										goto IL_159;
  									}
+@@ -13392,6 +_,7 @@
+ 
+ 		public static void smCallBack(object threadContext)
+ 		{
++			List<GenPass> hardmodetasks = new List<GenPass>();
+ 			WorldGen.IsGeneratingHardMode = true;
+ 			if (Main.rand == null)
+ 			{
+@@ -13432,8 +_,16 @@
+ 			{
+ 				num3 = (int)((float)Main.maxTilesX * (1f - num2));
+ 			}
++			hardmodetasks.Add(new PassLegacy("Hardmode Good", delegate (GenerationProgress progress)
++			{
+ 			WorldGen.GERunner(num3, 0, (float)(3 * num5), 5f, true);
++			}));
++			hardmodetasks.Add(new PassLegacy("Hardmode Evil", delegate (GenerationProgress progress)
++			{
+ 			WorldGen.GERunner(num4, 0, (float)(3 * -(float)num5), 5f, false);
++			}));
++			hardmodetasks.Add(new PassLegacy("Hardmode Walls", delegate (GenerationProgress progress)
++			{
+ 			float num7 = (float)Main.maxTilesX / 4200f;
+ 			int i = (int)(25f * num7);
+ 			ShapeData shapeData = new ShapeData();
+@@ -13508,6 +_,9 @@
+ 					shapeData.Clear();
+ 				}
+ 			}
++			}));
++			hardmodetasks.Add(new PassLegacy("Hardmode Announcment", delegate (GenerationProgress progress)
++			{
+ 			if (Main.netMode == 0)
+ 			{
+ 				Main.NewText(Lang.misc[15].Value, 50, 255, 130, false);
+@@ -13517,6 +_,12 @@
+ 				NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[15].Key, new object[0]), new Color(50, 255, 130), -1);
+ 			}
+ 			AchievementsHelper.NotifyProgressionEvent(9);
++			}));
++			WorldHooks.ModifyHardmodeTasks(hardmodetasks);
++			foreach (GenPass task in hardmodetasks)
++			{
++				task.Apply(null);
++			}
+ 			if (Main.netMode == 2)
+ 			{
+ 				Netplay.ResetSections();
 @@ -13568,7 +_,7 @@
  			}
  			int frameX = (int)Main.tile[i, j].frameX;
@@ -1021,7 +1078,7 @@
  				}
  			}
 -			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234))
-+			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234 && !TileLoader.CanGrowModCactus(Main.tile[num2, num2].type)))
++			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234 && !TileLoader.CanGrowModCactus(Main.tile[num2, num].type)))
  			{
  				WorldGen.KillTile(i, j, false, false, false);
  				return true;
@@ -1637,6 +1694,15 @@
 +							else if (num == 15 || TileLoader.IsSapling(num) || num == 216 || num == 338 || num == 390)
  							{
  								WorldGen.Check1x2(i, j, (ushort)num);
+ 							}
+@@ -48944,7 +_,7 @@
+ 							{
+ 								WorldGen.CheckOnTable1x1(i, j, (int)((byte)num));
+ 							}
+-							else if (TileID.Sets.BasicChest[num])
++							else if (TileID.Sets.BasicChest[num] && num < TileID.Count)
+ 							{
+ 								WorldGen.CheckChest(i, j, num);
  							}
 @@ -49110,6 +_,10 @@
  							else if (num == 323)

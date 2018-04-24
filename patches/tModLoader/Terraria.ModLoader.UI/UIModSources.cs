@@ -9,13 +9,17 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.ModLoader.IO;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIModSources : UIState
 	{
-		public bool loading;
 		private UIList modList;
+		private readonly List<UIModSourceItem> items = new List<UIModSourceItem>();
+		private bool updateNeeded;
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
@@ -48,13 +52,13 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			modList.SetScrollbar(uIScrollbar);
-			UITextPanel<string> uIHeaderTextPanel = new UITextPanel<string>("Mod Sources", 0.8f, true);
+			UITextPanel<string> uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModSources"), 0.8f, true);
 			uIHeaderTextPanel.HAlign = 0.5f;
 			uIHeaderTextPanel.Top.Set(-35f, 0f);
 			uIHeaderTextPanel.SetPadding(15f);
 			uIHeaderTextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uIHeaderTextPanel);
-			UITextPanel<string> buttonBA = new UITextPanel<string>("Build All", 1f, false);
+			UITextPanel<string> buttonBA = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSBuildAll"), 1f, false);
 			buttonBA.Width.Set(-10f, 0.5f);
 			buttonBA.Height.Set(25f, 0f);
 			buttonBA.VAlign = 1f;
@@ -63,14 +67,14 @@ namespace Terraria.ModLoader.UI
 			buttonBA.OnMouseOut += UICommon.FadedMouseOut;
 			buttonBA.OnClick += BuildMods;
 			uIElement.Append(buttonBA);
-			UITextPanel<string> buttonBRA = new UITextPanel<string>("Build + Reload All", 1f, false);
+			UITextPanel<string> buttonBRA = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"), 1f, false);
 			buttonBRA.CopyStyle(buttonBA);
 			buttonBRA.HAlign = 1f;
 			buttonBRA.OnMouseOver += UICommon.FadedMouseOver;
 			buttonBRA.OnMouseOut += UICommon.FadedMouseOut;
 			buttonBRA.OnClick += BuildAndReload;
 			uIElement.Append(buttonBRA);
-			UITextPanel<string> buttonB = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			buttonB.CopyStyle(buttonBA);
 			buttonB.Width.Set(-10f, 1f / 3f);
 			buttonB.Top.Set(-20f, 0f);
@@ -78,14 +82,14 @@ namespace Terraria.ModLoader.UI
 			buttonB.OnMouseOut += UICommon.FadedMouseOut;
 			buttonB.OnClick += BackClick;
 			uIElement.Append(buttonB);
-			UITextPanel<string> buttonOS = new UITextPanel<string>("Open Sources", 1f, false);
+			UITextPanel<string> buttonOS = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSOpenSources"), 1f, false);
 			buttonOS.CopyStyle(buttonB);
 			buttonOS.HAlign = .5f;
 			buttonOS.OnMouseOver += UICommon.FadedMouseOver;
 			buttonOS.OnMouseOut += UICommon.FadedMouseOut;
 			buttonOS.OnClick += OpenSources;
 			uIElement.Append(buttonOS);
-			UITextPanel<string> buttonMP = new UITextPanel<string>("Manage Published", 1f, false);
+			UITextPanel<string> buttonMP = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSManagePublished"), 1f, false);
 			buttonMP.CopyStyle(buttonB);
 			buttonMP.HAlign = 1f;
 			buttonMP.OnMouseOver += UICommon.FadedMouseOver;
@@ -144,48 +148,42 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			if (!uIPanel.HasChild(uiLoader)) uIPanel.Append(uiLoader);
+			uIPanel.Append(uiLoader);
 			modList.Clear();
+			items.Clear();
 			Populate();
 		}
 
 		internal void Populate()
 		{
-			loading = true;
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-			Task.Factory
-				.StartNew(delegate
-				{
-					var mods = ModLoader.FindModSources();
+			Task.Factory.StartNew(
+				delegate {
+					var modSources = ModLoader.FindModSources();
 					var modFiles = ModLoader.FindMods();
-					return Tuple.Create(mods, modFiles);
+					return Tuple.Create(modSources, modFiles);
 				})
-				.ContinueWith(task =>
-				{
-					string[] mods = task.Result.Item1;
-					TmodFile[] modFiles = task.Result.Item2;
-					foreach (string mod in mods)
+				.ContinueWith(task => {
+					var modSources = task.Result.Item1;
+					var modFiles = task.Result.Item2;
+					foreach (string sourcePath in modSources)
 					{
-
-						bool publishable = false;
-						DateTime lastBuildTime = new DateTime();
-
-						foreach (TmodFile file in modFiles)
-						{
-							var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.path);
-							if (fileNameWithoutExtension != null && fileNameWithoutExtension.Equals(Path.GetFileName(mod)))
-							{
-								lastBuildTime = File.GetLastWriteTime(file.path);
-								publishable = true;
-								break;
-							}
-						}
-						modList.Add(new UIModSourceItem(mod, publishable, lastBuildTime));
+						var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
+						items.Add(new UIModSourceItem(sourcePath, builtMod));
 					}
-					if (uIPanel.HasChild(uiLoader)) uIPanel.RemoveChild(uiLoader);
-					loading = false;
+					updateNeeded = true;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			base.Update(gameTime);
+			if (!updateNeeded) return;
+			updateNeeded = false;
+			uIPanel.RemoveChild(uiLoader);
+			modList.Clear();
+			modList.AddRange(items);
 		}
 	}
 }

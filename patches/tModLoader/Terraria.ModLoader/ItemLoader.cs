@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,6 +11,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -24,6 +26,7 @@ namespace Terraria.ModLoader
 		internal static GlobalItem[] InstancedGlobals = new GlobalItem[0];
 		internal static GlobalItem[] NetGlobals;
 		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
+		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 		internal static readonly ISet<int> animations = new HashSet<int>();
 		internal static readonly int vanillaQuestFishCount = Main.anglerQuestItemNetIDs.Length;
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
@@ -33,7 +36,8 @@ namespace Terraria.ModLoader
 			public GlobalItem[] arr = new GlobalItem[0];
 			public readonly MethodInfo method;
 
-			public HookList(MethodInfo method) {
+			public HookList(MethodInfo method)
+			{
 				this.method = method;
 			}
 		}
@@ -153,6 +157,10 @@ namespace Terraria.ModLoader
 			FindVanillaWings();
 
 			InstancedGlobals = globalItems.Where(g => g.InstancePerEntity).ToArray();
+			for (int i = 0; i < InstancedGlobals.Length; i++)
+			{
+				InstancedGlobals[i].instanceIndex = i;
+			}
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
 			foreach (var hook in hooks)
 				hook.arr = ModLoader.BuildGlobalHook(globalItems, hook.method);
@@ -164,6 +172,7 @@ namespace Terraria.ModLoader
 			nextItem = ItemID.Count;
 			globalItems.Clear();
 			globalIndexes.Clear();
+			globalIndexesByType.Clear();
 			animations.Clear();
 		}
 
@@ -189,18 +198,16 @@ namespace Terraria.ModLoader
 		//add to Terraria.Item.Prefix
 		internal static bool RangedPrefix(Item item)
 		{
-			return item.modItem != null && GeneralPrefix(item) && item.ranged;
+			return item.modItem != null && GeneralPrefix(item) && (item.ranged || item.thrown);
 		}
 		//add to Terraria.Item.Prefix
 		internal static bool MagicPrefix(Item item)
 		{
 			return item.modItem != null && GeneralPrefix(item) && (item.magic || item.summon);
 		}
-		
+
 		private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
-		//in Terraria.Item.SetDefaults get rid of type-too-high check
-		//add near end of Terraria.Item.SetDefaults after setting netID
-		//in Terraria.Item.SetDefaults move Lang stuff before SetupItem
+
 		internal static void SetDefaults(Item item, bool createModItem = true)
 		{
 			if (IsModItem(item.type) && createModItem)
@@ -208,7 +215,7 @@ namespace Terraria.ModLoader
 
 			item.globalItems = InstancedGlobals.Select(g => g.NewInstance(item)).ToArray();
 
-			item.modItem?.SetDefaults0();
+			item.modItem?.AutoDefaults();
 			item.modItem?.SetDefaults();
 
 			foreach (var g in HookSetDefaults.arr)
@@ -218,8 +225,15 @@ namespace Terraria.ModLoader
 		internal static GlobalItem GetGlobalItem(Item item, Mod mod, string name)
 		{
 			int index;
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? item.globalItems[index] : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? globalItems[index].Instance(item) : null;
 		}
+
+		internal static GlobalItem GetGlobalItem(Item item, Type type)
+		{
+			int index;
+			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? globalItems[index].Instance(item) : null) : null;
+		}
+
 		//near end of Terraria.Main.DrawItem before default drawing call
 		//  if(ItemLoader.animations.Contains(item.type))
 		//  { ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale); return; }
@@ -254,6 +268,25 @@ namespace Terraria.ModLoader
 			return Main.itemAnimations[item.type].GetFrame(Main.itemTexture[item.type]);
 		}
 
+		private static HookList HookChoosePrefix = AddHook<Func<Item, UnifiedRandom, int>>(g => g.ChoosePrefix);
+
+		public static int ChoosePrefix(Item item, UnifiedRandom rand)
+		{
+			foreach (var g in HookChoosePrefix.arr)
+			{
+				int pre = g.ChoosePrefix(item, rand);
+				if (pre >= 0)
+				{
+					return pre;
+				}
+			}
+			if (item.modItem != null)
+			{
+				return item.modItem.ChoosePrefix(rand);
+			}
+			return -1;
+		}
+
 		private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
 		//in Terraria.Player.ItemCheck
 		//  inside block if (this.controlUseItem && this.itemAnimation == 0 && this.releaseUseItem && item.useStyle > 0)
@@ -264,14 +297,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="player">The player holding the item.</param>
-		public static bool CanUseItem(Item item, Player player) {
+		public static bool CanUseItem(Item item, Player player)
+		{
 			bool flag = true;
 			if (item.modItem != null)
 				flag &= item.modItem.CanUseItem(player);
-			
+
 			foreach (var g in HookCanUseItem.arr)
 				flag &= g.Instance(item).CanUseItem(item, player);
-			
+
 			return flag;
 		}
 
@@ -333,7 +367,7 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookUseTimeMultiplier.arr)
 				multiplier *= g.Instance(item).UseTimeMultiplier(item, player);
-			
+
 			return multiplier;
 		}
 
@@ -347,7 +381,7 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookMeleeSpeedMultiplier.arr)
 				multiplier *= g.Instance(item).MeleeSpeedMultiplier(item, player);
-			
+
 			return multiplier;
 		}
 
@@ -374,10 +408,30 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void GetWeaponKnockback(Item item, Player player, ref float knockback)
 		{
+			if (item.IsAir)
+				return;
+
 			item.modItem?.GetWeaponKnockback(player, ref knockback);
 
 			foreach (var g in HookGetWeaponKnockback.arr)
 				g.Instance(item).GetWeaponKnockback(item, player, ref knockback);
+		}
+
+
+		private delegate void DelegateGetWeaponCrit(Item item, Player player, ref int crit);
+		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(g => g.GetWeaponCrit);
+		/// <summary>
+		/// Calls ModItem.GetWeaponCrit, then all GlobalItem.GetWeaponCrit hooks.
+		/// </summary>
+		public static void GetWeaponCrit(Item item, Player player, ref int crit)
+		{
+			if (item.IsAir)
+				return;
+
+			item.modItem?.GetWeaponCrit(player, ref crit);
+
+			foreach (var g in HookGetWeaponCrit.arr)
+				g.Instance(item).GetWeaponCrit(item, player, ref crit);
 		}
 
 		/// <summary>
@@ -413,7 +467,8 @@ namespace Terraria.ModLoader
 					ammo.modItem != null && !ammo.modItem.ConsumeAmmo(player))
 				return false;
 
-			foreach (var g_ in HookConsumeAmmo.arr) {
+			foreach (var g_ in HookConsumeAmmo.arr)
+			{
 				var g = g_.Instance(item);
 				if (!g.ConsumeAmmo(item, player) || !g.ConsumeAmmo(ammo, player))
 					return false;
@@ -601,7 +656,7 @@ namespace Terraria.ModLoader
 			bool flag = false;
 			if (item.modItem != null)
 				flag |= item.modItem.UseItem(player);
-			
+
 			foreach (var g in HookUseItem.arr)
 				flag |= g.Instance(item).UseItem(item, player);
 
@@ -950,6 +1005,8 @@ namespace Terraria.ModLoader
 		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
 		//in beginning of Terraria.Player.openBag methods add
 		//  if(!ItemLoader.PreOpenVanillaBag("bagName", this, arg)) { return; }
+		//at the end of the following methods in Player.cs, add: NPCLoader.blockLoot.Clear(); // clear blockloot
+		//methods: OpenBossBag, openCrate, openGoodieBag, openHerbBag, openLockbox, openPresent
 		/// <summary>
 		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
 		/// </summary>
@@ -957,7 +1014,10 @@ namespace Terraria.ModLoader
 		{
 			foreach (var g in HookPreOpenVanillaBag.arr)
 				if (!g.PreOpenVanillaBag(context, player, arg))
+				{
+					NPCLoader.blockLoot.Clear(); // clear blockloot
 					return false;
+				}
 
 			return true;
 		}
@@ -974,15 +1034,32 @@ namespace Terraria.ModLoader
 				g.OpenVanillaBag(context, player, arg);
 		}
 
-		private static HookList HookPreReforge = AddHook<Action<Item>>(g => g.PreReforge);
+		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
+		private static HookList HookReforgePrice = AddHook<DelegateReforgePrice>(g => g.ReforgePrice);
+		/// <summary>
+		/// Call all ModItem.ReforgePrice, then GlobalItem.ReforgePrice hooks.
+		/// </summary>
+		/// <param name="canApplyDiscount"></param>
+		/// <returns></returns>
+		public static bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount)
+		{
+			bool b = item.modItem?.ReforgePrice(ref reforgePrice, ref canApplyDiscount) ?? true;
+			foreach (var g in HookReforgePrice.arr)
+				b &= g.Instance(item).ReforgePrice(item, ref reforgePrice, ref canApplyDiscount);
+			return b;
+		}
+
+		// @todo: PreReforge marked obsolete until v0.11
+		private static HookList HookPreReforge = AddHook<Func<Item, bool>>(g => g.NewPreReforge);
 		/// <summary>
 		/// Calls ModItem.PreReforge, then all GlobalItem.PreReforge hooks.
 		/// </summary>
-		public static void PreReforge(Item item)
+		public static bool PreReforge(Item item)
 		{
-			item.modItem?.PreReforge();
+			bool b = item.modItem?.NewPreReforge() ?? true;
 			foreach (var g in HookPreReforge.arr)
-				g.Instance(item).PreReforge(item);
+				b &= g.Instance(item).NewPreReforge(item);
+			return b;
 		}
 
 		private static HookList HookPostReforge = AddHook<Action<Item>>(g => g.PostReforge);
@@ -1212,7 +1289,7 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookWingUpdate.arr)
 				retVal |= g.WingUpdate(player.wings, player, inUse);
-			
+
 			return retVal ?? false;
 		}
 
@@ -1384,7 +1461,7 @@ namespace Terraria.ModLoader
 
 			if (item.modItem != null)
 				flag &= item.modItem.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-			
+
 			return flag;
 		}
 
@@ -1543,8 +1620,48 @@ namespace Terraria.ModLoader
 				g.Instance(item).OnCraft(item, recipe);
 		}
 
+		private delegate bool DelegatePreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y);
+		private static HookList HookPreDrawTooltip = AddHook<DelegatePreDrawTooltip>(g => g.PreDrawTooltip);
+		public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+		{
+			bool modItemPreDraw = item.modItem?.PreDrawTooltip(lines, ref x, ref y) ?? true;
+			List<bool> globalItemPreDraw = new List<bool>();
+			foreach (var g in HookPreDrawTooltip.arr)
+				globalItemPreDraw.Add(g.PreDrawTooltip(item, lines, ref x, ref y));
+			return modItemPreDraw && globalItemPreDraw.All(z => z);
+		}
+
+		private delegate void DelegatePostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines);
+		private static HookList HookPostDrawTooltip = AddHook<DelegatePostDrawTooltip>(g => g.PostDrawTooltip);
+		public static void PostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines)
+		{
+			item.modItem?.PostDrawTooltip(lines);
+			foreach (var g in HookPostDrawTooltip.arr)
+				g.PostDrawTooltip(item, lines);
+		}
+
+		private delegate bool DelegatePreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset);
+		private static HookList HookPreDrawTooltipLine = AddHook<DelegatePreDrawTooltipLine>(g => g.PreDrawTooltipLine);
+		public static bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
+		{
+			bool modItemPreDrawLine = item.modItem?.PreDrawTooltipLine(line, ref yOffset) ?? true;
+			List<bool> globalItemPreDrawLine = new List<bool>();
+			foreach (var g in HookPreDrawTooltipLine.arr)
+				globalItemPreDrawLine.Add(g.PreDrawTooltipLine(item, line, ref yOffset));
+			return modItemPreDrawLine && globalItemPreDrawLine.All(x => x);
+		}
+
+		private delegate void DelegatePostDrawTooltipLine(Item item, DrawableTooltipLine line);
+		private static HookList HookPostDrawTooltipLine = AddHook<DelegatePostDrawTooltipLine>(g => g.PostDrawTooltipLine);
+		public static void PostDrawTooltipLine(Item item, DrawableTooltipLine line)
+		{
+			item.modItem?.PostDrawTooltipLine(line);
+			foreach (var g in HookPostDrawTooltipLine.arr)
+				g.PostDrawTooltipLine(item, line);
+		}
+
 		private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
-		public static void ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text,
+		public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text,
 			ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor)
 		{
 			List<TooltipLine> tooltips = new List<TooltipLine>();
@@ -1580,12 +1697,14 @@ namespace Terraria.ModLoader
 				}
 				overrideColor[k] = tooltips[k].overrideColor;
 			}
+
+			return tooltips;
 		}
 
 		private static HookList HookNeedsSaving = AddHook<Func<Item, bool>>(g => g.NeedsSaving);
 		public static bool NeedsModSaving(Item item)
 		{
-			return item.type != 0 && (item.modItem != null || HookNeedsSaving.arr.Count(g => g.Instance(item).NeedsSaving(item)) > 0);
+			return item.type != 0 && (item.modItem != null || item.prefix >= PrefixID.Count || HookNeedsSaving.arr.Count(g => g.Instance(item).NeedsSaving(item)) > 0);
 		}
 
 		internal static void WriteNetGlobalOrder(BinaryWriter w)
@@ -1627,17 +1746,18 @@ namespace Terraria.ModLoader
 			if (netMethods == 1)
 				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
 
-			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.NonPublic)
+			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
 				.Any(f => f.DeclaringType != typeof(GlobalItem));
 
-			if (hasInstanceFields) {
+			if (hasInstanceFields)
+			{
 				if (!item.InstancePerEntity)
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
 
 				if (!item.CloneNewInstances &&
 						!HasMethod(type, "NewInstance", typeof(Item)) &&
-						!HasMethod(type, "Clone", typeof(Item)))
-					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or orverride NewInstance(Item) or Clone(Item)");
+						!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
+					throw new Exception(type + " has InstancePerEntity but must either set CloneNewInstances to true, or override NewInstance(Item) or Clone(Item, Item)");
 			}
 		}
 	}
