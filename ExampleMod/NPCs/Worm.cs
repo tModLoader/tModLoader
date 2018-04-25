@@ -1,12 +1,113 @@
-using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+using System.IO;
 
 namespace ExampleMod.NPCs
 {
+	class ExampleWormHead : ExampleWorm
+	{
+		public override string Texture { get { return "Terraria/NPC_" + NPCID.DiggerHead; } }
+
+		public override void SetDefaults()
+		{
+			// Head is 10 defence, body 20, tail 30.
+			npc.CloneDefaults(NPCID.DiggerHead);
+			npc.aiStyle = -1;
+			npc.color = Color.Aqua;
+		}
+
+		public override void Init()
+		{
+			base.Init();
+			head = true;
+		}
+
+		int attackCounter = 0;
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(attackCounter);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			attackCounter = reader.ReadInt32();
+		}
+
+		public override void CustomBehavior()
+		{
+			if (Main.netMode != 1)
+			{
+				if (attackCounter > 0)
+					attackCounter--;
+				Player target = Main.player[npc.target];
+				if (attackCounter <= 0 && Vector2.Distance(npc.Center, target.Center) < 200 && Collision.CanHit(npc.Center, 1, 1, target.Center, 1, 1))
+				{
+					Vector2 direction = (target.Center - npc.Center).SafeNormalize(Vector2.UnitX);
+					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
+
+					int projectile = Projectile.NewProjectile(npc.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
+					Main.projectile[projectile].timeLeft = 300;
+					attackCounter = 500;
+					npc.netUpdate = true;
+				}
+			}
+		}
+	}
+
+	class ExampleWormBody : ExampleWorm
+	{
+		public override string Texture { get { return "Terraria/NPC_" + NPCID.DiggerBody; } }
+
+		public override void SetDefaults()
+		{
+			npc.CloneDefaults(NPCID.DiggerBody);
+			npc.aiStyle = -1;
+			npc.color = Color.Aqua;
+		}
+	}
+
+	class ExampleWormTail : ExampleWorm
+	{
+		public override string Texture { get { return "Terraria/NPC_" + NPCID.DiggerTail; } }
+
+		public override void SetDefaults()
+		{
+			npc.CloneDefaults(NPCID.DiggerTail);
+			npc.aiStyle = -1;
+			npc.color = Color.Aqua;
+		}
+
+		public override void Init()
+		{
+			base.Init();
+			tail = true;
+		}
+	}
+
+	// I made this 2nd base class to limit code repetition.
+	public abstract class ExampleWorm : Worm
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Worm");
+		}
+
+		public override void Init()
+		{
+			minLength = 6;
+			maxLength = 12;
+			tailType = mod.NPCType<ExampleWormTail>();
+			bodyType = mod.NPCType<ExampleWormBody>();
+			headType = mod.NPCType<ExampleWormHead>();
+			speed = 5.5f;
+			turnSpeed = 0.045f;
+		}
+	}
+
 	//ported from my tAPI mod because I'm lazy
+	// This abstract class can be used for non splitting worm type NPC.
 	public abstract class Worm : ModNPC
 	{
 		/* ai[0] = follower
@@ -487,6 +588,11 @@ namespace ExampleMod.NPCs
 
 		public virtual void CustomBehavior()
 		{
+		}
+
+		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+		{
+			return head ? (bool?)null : false;
 		}
 	}
 }
