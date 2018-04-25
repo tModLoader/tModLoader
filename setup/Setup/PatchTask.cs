@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using ICSharpCode.NRefactory.CSharp;
 using Terraria.ModLoader.Properties;
 using DiffPatch;
 using PatchReviewer;
@@ -19,7 +18,6 @@ namespace Terraria.ModLoader.Setup
 		public readonly string srcDir;
 		public readonly string patchDir;
 		public readonly ProgramSetting<DateTime> cutoff;
-		public readonly CSharpFormattingOptions format;
 		public readonly Patcher.Mode mode;
 		private int warnings;
 		private int failures;
@@ -32,13 +30,11 @@ namespace Terraria.ModLoader.Setup
 		public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
 		public string FullPatchDir => Path.Combine(Program.baseDir, patchDir);
 
-		public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir,
-			ProgramSetting<DateTime> cutoff, CSharpFormattingOptions format = null) : base(taskInterface)
+		public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, ProgramSetting<DateTime> cutoff) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
 			this.srcDir = srcDir;
 			this.patchDir = patchDir;
-			this.format = format;
 			this.cutoff = cutoff;
 			this.mode = (Patcher.Mode) Settings.Default.PatchMode;
 		}
@@ -77,9 +73,9 @@ namespace Terraria.ModLoader.Setup
 				var srcPath = Path.Combine(FullSrcDir, relPath);
 				copyItems.Add(new WorkItem("Copying: " + relPath, () => Copy(file, srcPath)));
 
-				if (format != null && file.EndsWith(".cs"))
+				/*if (format != null && file.EndsWith(".cs"))
 					formatItems.Add(new WorkItem("Formatting: " + relPath,
-						() => FormatTask.Format(srcPath, format, taskInterface.CancellationToken())));
+						() => FormatTask.Format(srcPath, format, taskInterface.CancellationToken())));*/
 			}
 
 			foreach (var file in patchFiles) {

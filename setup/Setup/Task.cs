@@ -28,21 +28,21 @@ namespace Terraria.ModLoader.Setup
 				}
 
 				var working = new List<string>();
-				Action updateStatus = () => taskInterface.SetStatus(string.Join("\r\n", working));
+				void UpdateStatus() => taskInterface.SetStatus(string.Join("\r\n", working));
 
 				Parallel.ForEach(Partitioner.Create(items, EnumerablePartitionerOptions.NoBuffering),
 					new ParallelOptions { MaxDegreeOfParallelism = maxDegree > 0 ? maxDegree : Environment.ProcessorCount },
 					item => {
-						taskInterface.CancellationToken().ThrowIfCancellationRequested();
+						taskInterface.CancellationToken.ThrowIfCancellationRequested();
 						lock (working) {
 							working.Add(item.status);
-							updateStatus();
+							UpdateStatus();
 						}
 						item.action();
 						lock (working) {
 							working.Remove(item.status);
 							taskInterface.SetProgress(++progress);
-							updateStatus();
+							UpdateStatus();
 						}
 					});
 			} catch (AggregateException ex) {
@@ -104,33 +104,25 @@ namespace Terraria.ModLoader.Setup
 		/// <summary>
 		/// Display a configuration dialog. Return false if the operation should be cancelled.
 		/// </summary>
-		public virtual bool ConfigurationDialog() {
-			return true;
-		}
+		public virtual bool ConfigurationDialog() => true;
 
 		/// <summary>
 		/// Display a startup warning dialog
 		/// </summary>
 		/// <returns>true if the task should continue</returns>
-		public virtual bool StartupWarning() {
-			return true;
-		}
+		public virtual bool StartupWarning() => true;
 
 		/// <summary>
 		/// Will prevent successive tasks from executing and cause FinishedDialog to be called
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool Failed() {
-			return false;
-		}
+		public virtual bool Failed() => false;
 
 		/// <summary>
 		/// Will cause FinishedDialog to be called if warnings are not supressed
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool Warnings() {
-			return false;
-		}
+		public virtual bool Warnings() => false;
 
 		/// <summary>
 		/// Called to display a finished dialog if Failures() || warnings are not supressed and Warnings()

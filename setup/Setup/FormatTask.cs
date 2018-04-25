@@ -4,14 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using ICSharpCode.NRefactory.CSharp;
-using ICSharpCode.NRefactory.Editor;
 
 namespace Terraria.ModLoader.Setup
 {
 	public class FormatTask : Task
 	{
-		public static CSharpFormattingOptions tModLoaderFormat = FormattingOptionsFactory.CreateAllman();
+		/*public static CSharpFormattingOptions tModLoaderFormat = FormattingOptionsFactory.CreateAllman();
 
 		public static string FormatCode(string text, CSharpFormattingOptions options, CancellationToken ct) {
 			var formatter = new CSharpFormatter(options) { FormattingMode = FormattingMode.Intrusive };
@@ -31,13 +29,12 @@ namespace Terraria.ModLoader.Setup
 		private static string directory = "";
 
 		public readonly CSharpFormattingOptions format;
-		private List<string> files = new List<string>(); 
+		private List<string> files = new List<string>(); */
 
-		public FormatTask(ITaskInterface taskInterface, CSharpFormattingOptions format) : base(taskInterface) {
-			this.format = format;
+		public FormatTask(ITaskInterface taskInterface) : base(taskInterface) {
 		}
 
-		public override bool ConfigurationDialog() {
+		/*public override bool ConfigurationDialog() {
 			var form = new SelectFilesForm(directory, "C# Source Files (*.cs)|*.cs");
 			var res = (DialogResult)taskInterface.Invoke(new Func<DialogResult>(() => form.ShowDialog(taskInterface)));
 
@@ -54,14 +51,14 @@ namespace Terraria.ModLoader.Setup
 			}
 
 			return true;
-		}
+		}*/
 
 		public override void Run() {
-			var items = files.Select(file => new WorkItem(
+			/*var items = files.Select(file => new WorkItem(
 				"Formatting: " + Path.GetFileName(file),
 				() => Format(file, format, taskInterface.CancellationToken()))).ToList();
 
-			ExecuteParallel(items);
+			ExecuteParallel(items);*/
 		}
 	}
 }

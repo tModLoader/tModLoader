@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using ICSharpCode.NRefactory.CSharp;
 
 namespace Terraria.ModLoader.Setup
 {
@@ -20,19 +19,17 @@ namespace Terraria.ModLoader.Setup
 		public readonly string srcDir;
 		public readonly string patchDir;
 		public readonly ProgramSetting<DateTime> cutoff;
-		public readonly CSharpFormattingOptions format;
 
 		public string FullBaseDir => Path.Combine(Program.baseDir, baseDir);
 		public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
 		public string FullPatchDir => Path.Combine(Program.baseDir, patchDir);
 
 		public DiffTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, 
-			ProgramSetting<DateTime> cutoff, CSharpFormattingOptions format = null) : base(taskInterface)
+			ProgramSetting<DateTime> cutoff) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
 			this.srcDir = srcDir;
 			this.patchDir = patchDir;
-			this.format = format;
 			this.cutoff = cutoff;
 		}
 
@@ -87,18 +84,18 @@ namespace Terraria.ModLoader.Setup
 			var srcFile = Path.Combine(FullSrcDir, relPath);
 			var baseFile = Path.Combine(FullBaseDir, relPath);
 
-			string temp = null;
+			/*string temp = null;
 			if (srcFile.EndsWith(".cs") && format != null)
 			{
 				temp = Path.GetTempPath() + Guid.NewGuid() + ".cs";
 				File.WriteAllText(temp, FormatTask.FormatCode(File.ReadAllText(baseFile), format, taskInterface.CancellationToken()));
 				baseFile = temp;
-			}
+			}*/
 
 			var patch = CallDiff(baseFile, srcFile, Path.Combine(baseDir, relPath), Path.Combine(srcDir, relPath));
 
-			if (temp != null)
-				File.Delete(temp);
+			/*if (temp != null)
+				File.Delete(temp);*/
 
 			var patchFile = Path.Combine(FullPatchDir, relPath + ".patch");
 			if (patch.Trim() != "") {

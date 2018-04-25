@@ -25,8 +25,8 @@ namespace Terraria.ModLoader.Setup
 			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
 			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
-			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
-			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
+			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
+			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
 			taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
 
 			taskButtons[buttonRegenSource] = () =>
@@ -76,10 +76,7 @@ namespace Terraria.ModLoader.Setup
 			}));
 		}
 
-		public CancellationToken CancellationToken()
-		{
-			return cancelSource.Token;
-		}
+		public CancellationToken CancellationToken => cancelSource.Token;
 
 		private void buttonCancel_Click(object sender, EventArgs e)
 		{
@@ -116,7 +113,7 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		private void menuItemFormatCode_Click(object sender, EventArgs e) {
-			RunTask(new FormatTask(this, FormatTask.tModLoaderFormat));
+			RunTask(new FormatTask(this));
 		}
 
 		private void buttonTask_Click(object sender, EventArgs e)
