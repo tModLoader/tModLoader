@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -42,7 +43,7 @@ namespace Terraria.ModLoader
 				return;
 
 			if (OutStream.Position > ushort.MaxValue)
-				throw new Exception("Packet too large " + OutStream.Position + " > " + ushort.MaxValue);
+				throw new Exception(Language.GetTextValue("tModLoader.MPPacketTooLarge", OutStream.Position, ushort.MaxValue));
 
 			len = (ushort)OutStream.Position;
 			Seek(0, SeekOrigin.Begin);

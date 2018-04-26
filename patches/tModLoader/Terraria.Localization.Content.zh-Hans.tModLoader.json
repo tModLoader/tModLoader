@@ -49,6 +49,7 @@
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "散列不匹配,数据[blob]已被修改或损坏",
 		"LoadErrorDependencyVersionTooLow": "{0} 需要 v{1}+ 版本的 {2} ,但你已安装 v{3} 版本",
+		// "LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
 		"BuildErrorModNameEmpty": "模组必须填写模组名称",
 		"BuildErrorModNamedTerraria": "模组不能被命名为[Terraria]",
 		"BuildErrorModNameHasPeriod": "模组的内部名称不能含有句号",
@@ -96,6 +97,17 @@
 		"ModPackModsMissing": "未找到下列模组:\n{0}",
 		"ModPackModsContained": "该列表包含下列模组:\n{0}",
 		"ModPackMissing": " - 缺少",
+
+		// ModNet/Multiplayer
+		// "MPSyncingMods": "Syncing Mods",
+		// "MPServerModsCantDownload": "The following mods are installed on the server but cannot be downloaded",
+		// "MPServerModsCantDownloadReasonSigned": "because you only accept mods signed by the mod browser",
+		// "MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "because you have disabled automatic mod downloading",
+		// "MPServerModsCantDownloadChangeSettingsHint": "You will need to change your settings or acquire the mods from the server owner.",
+		// "MPErrorModHashMismatch": "Hash mismatch",
+		// "MPErrorModNotSigned": "Mod was not signed by the Mod Browser",
+		// "MPErrorModDownloadError": "An error occured while downloading {0}",
+		// "MPPacketTooLarge": "Packet too large {0} > {1}",
 
 		// Mod Browser
 		"MBDownload": "下载",
@@ -226,6 +238,8 @@
 		"UnloadedItemModTooltip": "模组: {0}",
 		"UnloadedItemItemNameTooltip": "物品: {0}",
 		"AprilFoolsJoke": "愚人节玩笑",
+		// "DefaultTownNPCName": "No-Name",
+		// "DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "鼠标中键",

@@ -48,6 +48,7 @@
 		// "LoadErrorErrorReadingModFile": "Error reading mod file {0}",
 		// "LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
 		// "LoadErrorDependencyVersionTooLow": "{0} requires version {1} of {2} but version {3} is installed",
+		// "LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
 		// "BuildErrorModNameEmpty": "Mods must actually have stuff in their names",
 		// "BuildErrorModNamedTerraria": "Mods names cannot be named Terraria",
 		// "BuildErrorModNameHasPeriod": "A mod's internal name cannot contain a period",
@@ -95,6 +96,17 @@
 		// "ModPackModsMissing": "The following mods were not found:\n{0}",
 		// "ModPackModsContained": "This list contains the following mods:\n{0}",
 		// "ModPackMissing": " - Missing",
+
+		// ModNet/Multiplayer
+		// "MPSyncingMods": "Syncing Mods",
+		// "MPServerModsCantDownload": "The following mods are installed on the server but cannot be downloaded",
+		// "MPServerModsCantDownloadReasonSigned": "because you only accept mods signed by the mod browser",
+		// "MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "because you have disabled automatic mod downloading",
+		// "MPServerModsCantDownloadChangeSettingsHint": "You will need to change your settings or acquire the mods from the server owner.",
+		// "MPErrorModHashMismatch": "Hash mismatch",
+		// "MPErrorModNotSigned": "Mod was not signed by the Mod Browser",
+		// "MPErrorModDownloadError": "An error occured while downloading {0}",
+		// "MPPacketTooLarge": "Packet too large {0} > {1}",
 
 		// Mod Browser
 		"MBDownload": "Télécharger",
@@ -225,6 +237,8 @@
 		// "UnloadedItemModTooltip": "Mod: {0}",
 		// "UnloadedItemItemNameTooltip": "Item: {0}",
 		// "AprilFoolsJoke": "April Fools Joke",
+		// "DefaultTownNPCName": "No-Name",
+		// "DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		// "MouseMiddle": "Middle Mouse",

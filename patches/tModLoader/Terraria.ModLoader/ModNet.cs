@@ -83,7 +83,7 @@ namespace Terraria.ModLoader
 		{
 			AllowVanillaClients = reader.ReadBoolean();
 
-			Main.statusText = "Syncing Mods";
+			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 			var clientMods = ModLoader.LoadedMods;
 			var modFiles = ModLoader.FindMods();
 			var needsReload = false;
@@ -135,11 +135,11 @@ namespace Terraria.ModLoader
 
 			if (blockedList.Count > 0)
 			{
-				var msg = "The following mods are installed on the server but cannot be downloaded ";
+				var msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");
 				msg += downloadModsFromServers
-					? "because you only accept mods signed by the mod browser"
-					: "because you have disabled automatic mod downloading";
-				msg += ".\nYou will need to change your settings or acquire the mods from the server owner.\n";
+					? Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonSigned")
+					: Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonAutomaticDownloadDisabled");
+				msg += ".\n" + Language.GetTextValue("tModLoader.MPServerModsCantDownloadChangeSettingsHint") + "\n";
 				foreach (var mod in blockedList)
 					msg += "\n    " + mod;
 
@@ -223,10 +223,10 @@ namespace Terraria.ModLoader
 					mod.Read(TmodFile.LoadedState.Info);
 
 					if (!downloadingMod.Matches(mod))
-						throw new Exception("Hash mismatch");
+						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
 
 					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
-						throw new Exception("Mod was not signed by the Mod Browser");
+						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
 					ModLoader.EnableMod(mod.name);
 
@@ -245,7 +245,7 @@ namespace Terraria.ModLoader
 				catch { }
 
 				File.Delete(downloadingMod.path);
-				ErrorLogger.LogException(e, "An error occured while downloading " + downloadingMod.name);
+				ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name));
 				downloadingMod = null;
 			}
 		}
