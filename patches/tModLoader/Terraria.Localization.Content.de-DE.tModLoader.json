@@ -19,6 +19,7 @@
 		// "ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
 		// "ModDependencyModsNotFound": "The following mods were not found: {0}",
 		// "BetaModCantPublish": "This mod was built on beta version and can't be published",
+		// "BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
 		// "ModReloadRequired": "Reload Required",
 		// "ModsByline": "By: {0}",
 		"ModsMoreInfo": "Mehr info",
@@ -161,6 +162,8 @@
 		// "MBMyPublishedMods": "My Published Mods",
 		// "MBUnpublish": "My Published Mods",
 		// "MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
+		// "EnterSteamID": "Please Enter Your SteamID",
+		// "PasteSteamID": "Paste SteamID (ctrl-v)",
 
 		// TML Options
 		"DownloadFromServersYes": "Lade mods vom Server herunter: An",
@@ -198,6 +201,7 @@
 		"MSOpenSources": "Offene Quelle",
 		"MSManagePublished": "Verwalte veröffentlichung",
 		"MSPublish": "Veröffentlichen",
+		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 
 		// Extract Mod
 		// "ExtractErrorWhileExtractingMod": "An error occured while extracting {0}",

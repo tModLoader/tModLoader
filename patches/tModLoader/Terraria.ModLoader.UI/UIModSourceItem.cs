@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.UI
 			this.Height.Set(90f, 0f);
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
-			string addendum = Path.GetFileName(mod).Contains(" ") ? "  [c/FF0000:(Mod Sources folders can't have spaces)]" : "";
+			string addendum = Path.GetFileName(mod).Contains(" ") ? $"  [c/FF0000:{Language.GetTextValue("tModLoader.MSModSourcesCantHaveSpaces")}]" : "";
 			this.modName = new UIText(Path.GetFileName(mod) + addendum, 1f, false);
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
@@ -157,7 +157,7 @@ namespace Terraria.ModLoader.UI
 					});
 				}
 				if (bp.beta)
-					throw new WebException("You cannot publish a Mod built on a Beta version of tModLoader");
+					throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
 				var values = new NameValueCollection
 				{
 					{ "displayname", bp.displayName },

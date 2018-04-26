@@ -19,6 +19,7 @@
 		"ModDependencyClickTooltip": "Этот мод зависит от: {0}\n (нажмите чтобы включить)",
 		"ModDependencyModsNotFound": "Следующие моды не были обнаружены: {0}",
 		"BetaModCantPublish": "Этот мод был собран на бета версии и не может быть опубликован",
+		// "BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
 		"ModReloadRequired": "Требуется перезагрузка",
 		"ModsByline": "От: {0}",
 		"ModsMoreInfo": "Подробнее",
@@ -161,6 +162,8 @@
 		// "MBMyPublishedMods": "My Published Mods",
 		// "MBUnpublish": "My Published Mods",
 		// "MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
+		// "EnterSteamID": "Please Enter Your SteamID",
+		// "PasteSteamID": "Paste SteamID (ctrl-v)",
 
 		// TML Options
 		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
@@ -198,6 +201,7 @@
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
 		"MSPublish": "Опубликовать",
+		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 
 		// Extract Mod
 		// "ExtractErrorWhileExtractingMod": "An error occured while extracting {0}",

@@ -39,7 +39,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
 
-			uITextPanel = new UITextPanel<string>("Please Enter Your SteamID", 0.8f, true);
+			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.EnterSteamID"), 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
@@ -73,7 +73,7 @@ namespace Terraria.ModLoader.UI
 			//button3.OnClick += VisitRegisterWebpage;
 			//uIElement.Append(button3);
 
-			steamIDTextField = new UIInputTextField("Paste SteamID (ctrl-v)");
+			steamIDTextField = new UIInputTextField(Language.GetTextValue("tModLoader.PasteSteamID"));
 			steamIDTextField.HAlign = 0.5f;
 			steamIDTextField.VAlign = 0.5f;
 			steamIDTextField.Left.Set(-100, 0);
