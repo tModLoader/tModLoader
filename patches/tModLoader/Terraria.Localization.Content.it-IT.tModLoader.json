@@ -162,7 +162,7 @@
 		// "MBPublishVisitWebsiteForPassphrase": "Visit Website to Generate Passphrase",
 		// "MBPublishPastePassphrase": "Paste Passphrase (ctrl-v)",
 		// "MBMyPublishedMods": "My Published Mods",
-		// "MBUnpublish": "My Published Mods",
+		// "MBUnpublish": "Unpublish",
 		// "MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
 		// "EnterSteamID": "Please Enter Your SteamID",
 		// "PasteSteamID": "Paste SteamID (ctrl-v)",

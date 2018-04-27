@@ -160,7 +160,7 @@
 		"MBPublishVisitWebsiteForPassphrase": "Посетите сайт чтобы сгенерировать код доступа",
 		"MBPublishPastePassphrase": "Вставить код доступа (ctrl-v)",
 		// "MBMyPublishedMods": "My Published Mods",
-		// "MBUnpublish": "My Published Mods",
+		// "MBUnpublish": "Unpublish",
 		// "MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
 		// "EnterSteamID": "Please Enter Your SteamID",
 		// "PasteSteamID": "Paste SteamID (ctrl-v)",
