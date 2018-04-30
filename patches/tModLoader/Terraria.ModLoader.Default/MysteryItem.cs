@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -14,7 +15,7 @@ namespace Terraria.ModLoader.Default
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Unloaded Item");
+			DisplayName.SetDefault("{$tModLoader.UnloadedItemItemName}");
 			Tooltip.SetDefault("\n");
 		}
 
@@ -38,11 +39,11 @@ namespace Terraria.ModLoader.Default
 			{
 				if (tooltips[k].Name == "Tooltip0")
 				{
-					tooltips[k].text = "Mod: " + modName;
+					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", modName);
 				}
 				else if (tooltips[k].Name == "Tooltip1")
 				{
-					tooltips[k].text = "Item: " + itemName;
+					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemItemNameTooltip", itemName);
 				}
 			}
 		}
@@ -73,7 +74,8 @@ namespace Terraria.ModLoader.Default
 				hasGlobal = true;
 				modName = reader.ReadString();
 			}
-			Load(new TagCompound {
+			Load(new TagCompound
+			{
 				["mod"] = modName,
 				["name"] = reader.ReadString(),
 				["hasGlobalSaving"] = hasGlobal,
@@ -98,7 +100,7 @@ namespace Terraria.ModLoader.Default
 		public override ModItem Clone()
 		{
 			var clone = (MysteryItem)base.Clone();
-			clone.data = (TagCompound) data?.Clone();
+			clone.data = (TagCompound)data?.Clone();
 			return clone;
 		}
 	}

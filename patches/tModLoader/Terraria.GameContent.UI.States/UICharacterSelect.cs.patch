@@ -31,22 +31,26 @@
  			Main.PendingPlayer = player;
  			Main.menuMode = 2;
  		}
-@@ -142,6 +_,18 @@
+@@ -142,6 +_,22 @@
  			foreach (PlayerFileData current in list)
  			{
  				this._playerList.Add(new UICharacterListItem(current, num++));
 +			}
 +			if (list.Count == 0)
 +			{
-+				var noPlayersMessage = new UIText("You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.");
-+				noPlayersMessage.Width.Set(0, 1);
-+				noPlayersMessage.Height.Set(200, 0);
-+				noPlayersMessage.OnClick += (a, b) =>
++				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players");
++				if (Directory.Exists(vanillaPlayersPath))
 +				{
-+					System.Diagnostics.Process.Start(Main.PlayerPath);
-+					System.Diagnostics.Process.Start(Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players"));
-+				};
-+				_playerList.Add(noPlayersMessage);
++					var noPlayersMessage = new UIText(Language.GetText("tModLoader.MigratePlayersMessage"));
++					noPlayersMessage.Width.Set(0, 1);
++					noPlayersMessage.Height.Set(200, 0);
++					noPlayersMessage.OnClick += (a, b) =>
++					{
++						System.Diagnostics.Process.Start(Main.PlayerPath);
++						System.Diagnostics.Process.Start(vanillaPlayersPath);
++					};
++					_playerList.Add(noPlayersMessage);
++				}
  			}
  		}
  

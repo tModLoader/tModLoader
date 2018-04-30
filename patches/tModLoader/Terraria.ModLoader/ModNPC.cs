@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -206,7 +207,7 @@ namespace Terraria.ModLoader
 			}
 			else if (banner != 0 || bannerItem != 0)
 			{
-				ErrorLogger.Log($"{mod.DisplayName}: {Name}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {mod.DisplayName} developers.");
+				ErrorLogger.Log(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", mod.DisplayName, Name));
 			}
 			if (npc.lifeMax > 32767 || npc.boss)
 			{
@@ -638,7 +639,7 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public virtual string TownNPCName()
 		{
-			return "No-Name";
+			return Language.GetTextValue("tModLoader.DefaultTownNPCName");
 		}
 
 		/// <summary>
@@ -656,7 +657,7 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public virtual string GetChat()
 		{
-			return "My modder forgot to give me a chat message.";
+			return Language.GetTextValue("tModLoader.DefaultTownNPCChat");
 		}
 
 		/// <summary>

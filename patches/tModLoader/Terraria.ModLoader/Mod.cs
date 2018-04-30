@@ -169,7 +169,7 @@ namespace Terraria.ModLoader
 						LoadEffect(path, reader);
 						return;
 					}
-					throw new ResourceLoadException($"Unknown xnb file {path}. Perhaps it should be in Fonts/ or Effects/");
+					throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorUnknownXNBFileHint", path));
 			}
 
 			throw new ResourceLoadException($"Unknown streaming asset {path}{extension}. ");
@@ -193,7 +193,7 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e)
 			{
-				throw new ResourceLoadException($"The texture file at {path} failed to load", e);
+				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorTextureFailedToLoad", path), e);
 			}
 		}
 
@@ -213,7 +213,7 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e)
 			{
-				throw new ResourceLoadException($"The wav sound file at {path} failed to load", e);
+				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorWavSoundFailedToLoad", path), e);
 			}
 		}
 
@@ -245,7 +245,7 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e)
 			{
-				throw new ResourceLoadException($"The mp3 sound file at {path} failed to load", e);
+				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorMP3SoundFailedToLoad", path), e);
 			}
 		}
 
@@ -264,7 +264,7 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e)
 			{
-				throw new ResourceLoadException($"The font file at {path} failed to load", e);
+				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorFontFailedToLoad", path), e);
 			}
 		}
 
@@ -282,7 +282,7 @@ namespace Terraria.ModLoader
 				if ((flags & 0x80) != 0)
 				{
 					// TODO: figure out the compression used.
-					throw new Exception("Cannot load compressed effects.");
+					throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCannotLoadCompressedEffects"));
 					//UInt32 decompressedDataSize = br.ReadUInt32();
 				}
 				int typeReaderCount = br.ReadVarInt();
@@ -296,7 +296,7 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e)
 			{
-				throw new ResourceLoadException($"The effect file at {path} failed to load", e);
+				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorEffectFailedToLoad", path), e);
 			}
 		}
 
@@ -306,7 +306,7 @@ namespace Terraria.ModLoader
 				return;
 
 
-			Interface.loadMods.SetSubProgressInit("Finishing Resource Loading");
+			Interface.loadMods.SetSubProgressInit(Language.GetTextValue("tModLoader.MSFinishingResourceLoading"));
 			while (AsyncLoadQueue.Count > 0)
 				AsyncLoadQueue.Dequeue().Wait();
 
@@ -486,10 +486,10 @@ namespace Terraria.ModLoader
 		public void AddItem(string name, ModItem item)
 		{
 			if (!loading)
-				throw new Exception("AddItem can only be called from Mod.Load or Mod.Autoload");
+				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorAddItemOnlyInLoad"));
 
 			if (items.ContainsKey(name))
-				throw new Exception("You tried to add 2 ModItems with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.");
+				throw new Exception(Language.GetTextValue("tModLoader.LoadError2ModItemSameName", name));
 
 			item.mod = this;
 			item.Name = name;

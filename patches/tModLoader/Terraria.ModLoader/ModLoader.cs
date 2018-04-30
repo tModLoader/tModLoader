@@ -340,7 +340,7 @@ namespace Terraria.ModLoader
 			}
 			return dict[value.Key];
 		}
-		
+
 		internal static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
 		internal static LocalMod[] FindMods()
 		{
@@ -359,11 +359,11 @@ namespace Terraria.ModLoader
 					}
 					catch (Exception e) //this will probably spam, given the number of calls to FindMods
 					{
-						ErrorLogger.LogException(e, "Error reading mod file "+modFile.path);
+						ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.LoadErrorErrorReadingModFile", modFile.path));
 						continue;
 					}
 
-					mod = new LocalMod(modFile) {lastModified = lastModified};
+					mod = new LocalMod(modFile) { lastModified = lastModified };
 					modsDirCache[fileName] = mod;
 				}
 				mods.Add(mod);
@@ -433,7 +433,7 @@ namespace Terraria.ModLoader
 			try
 			{
 				Directory.CreateDirectory(UI.UIModPacks.ModListSaveDirectory);
-				
+
 				Console.WriteLine($"Loading specified modpack: {commandLineModPack}\n");
 				var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
 				foreach (var mod in FindMods())
@@ -489,16 +489,16 @@ namespace Terraria.ModLoader
 				try
 				{
 					if (mod.Name.Length == 0)
-						throw new ModNameException("Mods must actually have stuff in their names");
+						throw new ModNameException(Language.GetTextValue("tModLoader.BuildErrorModNameEmpty"));
 
 					if (mod.Name.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
-						throw new ModNameException("Mods names cannot be named Terraria");
+						throw new ModNameException(Language.GetTextValue("tModLoader.BuildErrorModNamedTerraria"));
 
 					if (names.Contains(mod.Name))
-						throw new ModNameException("Two mods share the internal name " + mod.Name);
+						throw new ModNameException(Language.GetTextValue("tModLoader.BuildErrorTwoModsSameName", mod.Name));
 
 					if (mod.Name.IndexOf('.') >= 0)
-						throw new ModNameException("A mod's internal name cannot contain a period");
+						throw new ModNameException(Language.GetTextValue("tModLoader.BuildErrorModNameHasPeriod"));
 
 					names.Add(mod.Name);
 				}
@@ -524,7 +524,7 @@ namespace Terraria.ModLoader
 					if (!nameMap.ContainsKey(depName))
 					{
 						errored.Add(mod);
-						errorLog.AppendLine("Missing mod: " + depName + " required by " + mod);
+						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyMissing", depName, mod));
 					}
 
 			if (errored.Count > 0)
@@ -542,8 +542,7 @@ namespace Terraria.ModLoader
 					if (nameMap.TryGetValue(dep.mod, out var inst) && inst.properties.version < dep.target)
 					{
 						errored.Add(mod);
-						errorLog.AppendLine(mod + " requires version " + dep.target + "+ of " + dep.mod +
-							" but version " + inst.properties.version + " is installed");
+						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.properties.version));
 					}
 
 			if (errored.Count > 0)
@@ -795,6 +794,7 @@ namespace Terraria.ModLoader
 			//save
 			Directory.CreateDirectory(ModPath);
 			string path = ModPath + Path.DirectorySeparatorChar + "enabled.json";
+			_enabledMods.IntersectWith(ModLoader.FindMods().Select(x => x.Name)); // Clear out mods that no longer exist.
 			string json = JsonConvert.SerializeObject(EnabledMods, Formatting.Indented);
 			File.WriteAllText(path, json);
 		}

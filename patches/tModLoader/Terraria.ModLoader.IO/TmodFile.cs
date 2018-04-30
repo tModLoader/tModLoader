@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Ionic.Zlib;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.IO
 {
@@ -148,7 +149,7 @@ namespace Terraria.ModLoader.IO
 					long pos = fileStream.Position;
 					var verifyHash = SHA1.Create().ComputeHash(fileStream);
 					if (!verifyHash.SequenceEqual(hash))
-						throw new Exception("Hash mismatch, data blob has been modified or corrupted");
+						throw new Exception(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorrupted"));
 
 					state = LoadedState.Integrity;
 					if (desiredState == LoadedState.Integrity)

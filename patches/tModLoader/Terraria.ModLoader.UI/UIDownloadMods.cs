@@ -8,6 +8,7 @@ using System.Linq;
 using Terraria.ID;
 using System.IO;
 using System.Net.Security;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -32,7 +33,7 @@ namespace Terraria.ModLoader.UI
 			loadProgress.Top.Set(10f, 0f);
 			base.Append(loadProgress);
 
-			var cancel = new UITextPanel<string>("Cancel", 0.75f, true);
+			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true);
 			cancel.VAlign = 0.5f;
 			cancel.HAlign = 0.5f;
 			cancel.Top.Set(170f, 0f);
@@ -44,9 +45,12 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			loadProgress.SetText($"Downloading: {name}: ???");
+			loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", name + ": ???"));
 			loadProgress.SetProgress(0f);
-
+			if (UIModBrowser.PlatformSupportsTls12) // Needed for downloads from Github
+			{
+				ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; // SecurityProtocolType.Tls12
+			}
 			if (modsToDownload != null && modsToDownload.Count > 0)
 			{
 				client = new WebClient();
@@ -55,7 +59,7 @@ namespace Terraria.ModLoader.UI
 				client.DownloadProgressChanged += Client_DownloadProgressChanged;
 				client.DownloadFileCompleted += Client_DownloadFileCompleted;
 				currentDownload = modsToDownload.Dequeue();
-				loadProgress.SetText($"Downloading: {name}: {currentDownload.displayname}");
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", $"{name}: {currentDownload.displayname}"));
 				client.DownloadFileAsync(new Uri(currentDownload.download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
 			}
 			else
@@ -64,7 +68,7 @@ namespace Terraria.ModLoader.UI
 				Main.menuMode = Interface.modBrowserID;
 				if (missingMods.Count > 0)
 				{
-					Interface.infoMessage.SetMessage("The following mods were not found on the Mod Browser: " + String.Join(",", missingMods));
+					Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", String.Join(",", missingMods)));
 					Interface.infoMessage.SetGotoMenu(Interface.modBrowserID);
 					Main.menuMode = Interface.infoMessageID;
 				}
@@ -92,7 +96,7 @@ namespace Terraria.ModLoader.UI
 					HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
 					if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
 					{
-						Interface.errorMessage.SetMessage("The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.");
+						Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBExceededBandwidth"));
 						Interface.errorMessage.SetGotoMenu(0);
 						Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 						Main.gameMenu = true;
@@ -100,7 +104,7 @@ namespace Terraria.ModLoader.UI
 					}
 					else
 					{
-						Interface.errorMessage.SetMessage("Unknown Mod Browser Error. Try again later.");
+						Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBUnknownMBError"));
 						Interface.errorMessage.SetGotoMenu(0);
 						Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 						Main.gameMenu = true;
@@ -127,7 +131,7 @@ namespace Terraria.ModLoader.UI
 				if (modsToDownload.Count != 0)
 				{
 					currentDownload = modsToDownload.Dequeue();
-					loadProgress.SetText($"Downloading: {name}: {currentDownload.displayname}");
+					loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", $"{name}: {currentDownload.displayname}"));
 					loadProgress.SetProgress(0f);
 					client.DownloadFileAsync(new Uri(currentDownload.download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
 				}
@@ -139,7 +143,7 @@ namespace Terraria.ModLoader.UI
 					Main.menuMode = Interface.modBrowserID;
 					if (missingMods.Count > 0)
 					{
-						Interface.infoMessage.SetMessage("The following mods were not found on the Mod Browser: " + String.Join(",", missingMods));
+						Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", String.Join(",", missingMods)));
 						Interface.infoMessage.SetGotoMenu(Interface.modsMenuID);
 						Main.menuMode = Interface.infoMessageID;
 					}

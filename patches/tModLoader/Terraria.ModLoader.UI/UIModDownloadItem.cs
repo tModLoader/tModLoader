@@ -108,14 +108,14 @@ namespace Terraria.ModLoader.UI
 			{
 				Texture2D icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
 				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
-				UIHoverImage modReferenceIcon = new UIHoverImage(icon, "Click to view dependency mods:\n" + string.Join("\n", modreferences.Split(',').Select(x=>x.Trim())));
+				UIHoverImage modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", modreferences.Split(',').Select(x => x.Trim()))));
 				modReferenceIcon.Left.Set(-149f, 1f);
 				modReferenceIcon.Top.Set(48f, 0f);
 				modReferenceIcon.OnClick += (s, e) =>
 				{
 					UIModDownloadItem modListItem = (UIModDownloadItem)e.Parent;
-					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').Select(x=>x.Trim()).ToList();
-					Interface.modBrowser.SpecialModPackFilterTitle = "Dependencies"; // Toolong of \n" + modListItem.modName.Text;
+					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').Select(x => x.Trim()).ToList();
+					Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
 					Interface.modBrowser.filterTextBox.currentString = "";
 					Interface.modBrowser.updateNeeded = true;
 					Main.PlaySound(SoundID.MenuOpen);
@@ -170,7 +170,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 			}
-			if(Interface.modBrowser.modSideFilterMode != ModSideFilter.All)
+			if (Interface.modBrowser.modSideFilterMode != ModSideFilter.All)
 			{
 				if ((int)modside != (int)Interface.modBrowser.modSideFilterMode - 1)
 					return false;
@@ -248,7 +248,7 @@ namespace Terraria.ModLoader.UI
 				modIconWanted = false;
 				this.modName.Left.Set(5f, 0f);
 				this.moreInfoButton.Left.Set(0f, 0f);
-				updateButton.Left.Set(moreInfoButton.Width.Pixels+ 5f, 0f);
+				updateButton.Left.Set(moreInfoButton.Width.Pixels + 5f, 0f);
 			}
 		}
 
@@ -260,7 +260,7 @@ namespace Terraria.ModLoader.UI
 			// main.hoverItemName isn't drawn in UI
 			if (this.modName.IsMouseHovering)
 			{
-				string text = "By: " + author;
+				string text = Language.GetTextValue("tModLoader.ModsByline", author);
 				float x = Main.fontMouseText.MeasureString(text).X;
 				Vector2 vector = Main.MouseScreen + new Vector2(16f);
 				if (vector.Y > (float)(Main.screenHeight - 30))
@@ -349,7 +349,7 @@ namespace Terraria.ModLoader.UI
 								HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
 								if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
 								{
-									Interface.errorMessage.SetMessage("The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.");
+									Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBExceededBandwidth"));
 									Interface.errorMessage.SetGotoMenu(0);
 									Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 									Main.gameMenu = true;
@@ -357,7 +357,7 @@ namespace Terraria.ModLoader.UI
 								}
 								else
 								{
-									Interface.errorMessage.SetMessage("Unknown Mod Browser Error. Try again later.");
+									Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBUnknownMBError"));
 									Interface.errorMessage.SetGotoMenu(0);
 									Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 									Main.gameMenu = true;
@@ -420,7 +420,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void Moreinfo(object sender, UploadValuesCompletedEventArgs e)
 		{
-			string description = "There was a problem, try again";
+			string description = Language.GetTextValue("tModLoader.ModInfoProblemTryAgain");
 			string homepage = "";
 			if (!e.Cancelled)
 			{
@@ -461,41 +461,42 @@ namespace Terraria.ModLoader.UI
 		private const int DAY = 24 * HOUR;
 		private const int MONTH = 30 * DAY;
 
+		// Note: Polish has different plural for numbers ending in 2,3,4. Too complicated to do though.
 		public static string HumanTimeSpanString(DateTime yourDate)
 		{
 			var ts = new TimeSpan(DateTime.UtcNow.Ticks - yourDate.Ticks);
 			double delta = Math.Abs(ts.TotalSeconds);
 
 			if (delta < 1 * MINUTE)
-				return ts.Seconds == 1 ? "1 second ago" : ts.Seconds + " seconds ago";
+				return ts.Seconds == 1 ? Language.GetTextValue("tModLoader.1SecondAgo") : Language.GetTextValue("tModLoader.XSecondsAgo", ts.Seconds);
 
 			if (delta < 2 * MINUTE)
-				return "1 minute ago";
+				return Language.GetTextValue("tModLoader.1MinuteAgo");
 
 			if (delta < 45 * MINUTE)
-				return ts.Minutes + " minutes ago";
+				return Language.GetTextValue("tModLoader.XMinutesAgo", ts.Minutes);
 
 			if (delta < 90 * MINUTE)
-				return "1 hour ago";
+				return Language.GetTextValue("tModLoader.1HourAgo");
 
 			if (delta < 24 * HOUR)
-				return ts.Hours + " hours ago";
+				return Language.GetTextValue("tModLoader.XHoursAgo", ts.Hours);
 
 			if (delta < 48 * HOUR)
-				return "1 day ago";
+				return Language.GetTextValue("tModLoader.1DayAgo");
 
 			if (delta < 30 * DAY)
-				return ts.Days + " days ago";
+				return Language.GetTextValue("tModLoader.XDaysAgo", ts.Days);
 
 			if (delta < 12 * MONTH)
 			{
 				int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
-				return months <= 1 ? "1 month ago" : months + " months ago";
+				return months <= 1 ? Language.GetTextValue("tModLoader.1MonthAgo") : Language.GetTextValue("tModLoader.XMonthsAgo", months);
 			}
 			else
 			{
 				int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
-				return years <= 1 ? "1 year ago" : years + " years ago";
+				return years <= 1 ? Language.GetTextValue("tModLoader.1YearAgo") : Language.GetTextValue("tModLoader.XYearsAgo", years);
 			}
 		}
 	}

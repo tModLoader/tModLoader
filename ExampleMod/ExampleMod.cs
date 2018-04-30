@@ -35,13 +35,14 @@ namespace ExampleMod
 
 		public ExampleMod()
 		{
-			Properties = new ModProperties()
-			{
-				Autoload = true,
-				AutoloadGores = true,
-				AutoloadSounds = true,
-				AutoloadBackgrounds = true
-			};
+			// By default, all Autoload properties are True. You only need to change this if you know what you are doing.
+			//Properties = new ModProperties()
+			//{
+			//	Autoload = true,
+			//	AutoloadGores = true,
+			//	AutoloadSounds = true,
+			//	AutoloadBackgrounds = true
+			//};
 		}
 
 		public override void Load()

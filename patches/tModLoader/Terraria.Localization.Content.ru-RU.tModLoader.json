@@ -1,7 +1,7 @@
-﻿{
+{
 	"tModLoader": {
 		// Main Menu
-		// "PatreonSupport": "Please show your support: ",
+		"PatreonSupport": "Пожалуйста, проявите поддержку: ",
 		"MenuModBrowser": "Браузер модов",
 		"MenuMods": "Моды",
 		"MenuModSources": "Исходники модов",
@@ -15,6 +15,13 @@
 		"ModsModPacks": "Сборки модов",
 		"ModsDisable": "Выключить",
 		"ModsEnable": "Включить", 
+		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
+		"ModDependencyClickTooltip": "Этот мод зависит от: {0}\n (нажмите чтобы включить)",
+		"ModDependencyModsNotFound": "Следующие моды не были обнаружены: {0}",
+		"BetaModCantPublish": "Этот мод был собран на бета версии и не может быть опубликован",
+		// "BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
+		"ModReloadRequired": "Требуется перезагрузка",
+		"ModsByline": "От: {0}",
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из Браузера модов",
 		"ModsTypeToSearch": "Поиск",
@@ -26,12 +33,93 @@
 		"ModsShowAllMods": "Показать все моды",
 		"ModsShowEnabledMods": "Показать включённые моды",
 		"ModsShowDisabledMods": "Показать отключённые моды",
+		// "ModsXItems": "{0} items",
+		// "ModsXNPCs": "{0} NPCs",
+		// "ModsXTiles": "{0} tiles",
+		// "ModsXWalls": "{0} walls",
+		// "ModsXBuffs": "{0} buffs",
+		// "ModsXMounts": "{0} mounts",
+
+		// Mod Loading Errors
+		"LoadError": "Произошла ошибка при загрузке {0}",
+		"LoadErrorRecipes": "Произошла ошибка при добавлении рецептов для {0}",
+		"LoadErrorDisabledSeeBelowForError": "Этот мод был автоматически отключен. Смотрите ниже для самой ошибки:",
+		"LoadErrorVersionMessage": "Было обнаружено, что этот мод был собран для tModLoader версии v{0}\nОднако, Вы используете версию v{1}",
+		// "LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
+		// "LoadErrorErrorReadingModFile": "Error reading mod file {0}",
+		// "LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
+		// "LoadErrorDependencyVersionTooLow": "{0} requires version {1} of {2} but version {3} is installed",
+		// "LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
+		// "BuildErrorModNameEmpty": "Mods must actually have stuff in their names",
+		// "BuildErrorModNamedTerraria": "Mods names cannot be named Terraria",
+		// "BuildErrorModNameHasPeriod": "A mod's internal name cannot contain a period",
+		// "BuildErrorTwoModsSameName": "Two mods share the internal name {0}",
+		// "BuildErrorCompilingError": "An error ocurred while compiling a mod.",
+		// "BuildErrorModCompileFolderHint": "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well.",
+		// "BuildErrorMissingDllFilesFor": "Missing dll files for {0}",
+		// "BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
+		// "BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
+		// "BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
+		// "BuildErrorDotNet45forCS6": ".NET Framework 4.5 must be installed to compile C# 6.0",
+		// "BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
+		// "BuildErrorFailedLoadBuildTxt": "Failed to load {0}",
+		// "LoadErrorTextureFailedToLoad": "The texture file at {0} failed to load",
+		// "LoadErrorWavSoundFailedToLoad": "The wav sound file at {0} failed to load",
+		// "LoadErrorMP3SoundFailedToLoad": "The mp3 sound file at {0} failed to load",
+		// "LoadErrorFontFailedToLoad": "The font file at {0} failed to load",
+		// "LoadErrorEffectFailedToLoad": "The effect file at {0} failed to load",
+		// "LoadErrorUnknownXNBFileHint": "Unknown xnb file {path}. Perhaps it should be in Fonts/ or Effects/",
+		// "LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
+		// "LoadErrorAddItemOnlyInLoad": "AddItem can only be called from Mod.Load or Mod.Autoload",
+		// "LoadError2ModItemSameName": "You tried to add 2 ModItems with the same name: {0}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.",
+		// "LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
+		// "RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
+		// "RuntimeErrorSeeLogsTxtForFullTrace": "(see Logs.txt for full trace)",
+		"OpenLogs": "Открыть логи",
+		"OpenWebHelp": "Открыть веб помощь",
+
+		// Mod Info
+		"ModInfoHeader": "Описание мода: ",
+		"ModInfoVisitHomepage": "Посетите домашнюю страницу мода для более подробной информации",
+		"ModInfoExtract": "Извлечь",
+		"ModInfoNoDescriptionAvailable": "Нет описания",
+		// "ModInfoProblemTryAgain": "There was a problem, try again",
+
+		// Mod Packs
+		"ModPacksHeader": "Сборки модов",
+		"ModPacksSaveEnabledAsNewPack": "Сохранить включенные моды в новую сборку",
+		"ModPacksEnterModPackName": "Введите название сборки",
+		"ModPackViewList": "Показать список",
+		"ModPackEnableThisList": "Включить этот список",
+		"ModPackEnableOnlyThisList": "Включить только этот список",
+		"ModPackViewModsInModBrowser": "Просмотреть моды в браузере модов",
+		"ModPackModsAvailableStatus": "{0} Всего, {1} Включено, {2} Выключено, {3} Отсутствует",
+		"ModPackModsMissing": "Следующие моды не были найдены:\n{0}",
+		"ModPackModsContained": "Эта сборка содержит следующие моды:\n{0}",
+		"ModPackMissing": " - Отсутствует",
+
+		// ModNet/Multiplayer
+		// "MPSyncingMods": "Syncing Mods",
+		// "MPServerModsCantDownload": "The following mods are installed on the server but cannot be downloaded",
+		// "MPServerModsCantDownloadReasonSigned": "because you only accept mods signed by the mod browser",
+		// "MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "because you have disabled automatic mod downloading",
+		// "MPServerModsCantDownloadChangeSettingsHint": "You will need to change your settings or acquire the mods from the server owner.",
+		// "MPErrorModHashMismatch": "Hash mismatch",
+		// "MPErrorModNotSigned": "Mod was not signed by the Mod Browser",
+		// "MPErrorModDownloadError": "An error occured while downloading {0}",
+		// "MPPacketTooLarge": "Packet too large {0} > {1}",
 
 		// Mod Browser
 		"MBDownload": "Скачать",
+		// "MBDownloadAll": "Download All",
+		"MBDownloadingMod": "Скачивание: {0}",
+		"MBUploadingMod": "Загрузка: {0}",
 		"MBDowngrade": "Предыдущая версия",
 		"MBUpdate": "Обновить",
+		// "MBUpdateAll": "Update All",
 		"MBReloadBrowser": "Перезагрузить список модов",
+		"MBGettingData": "Получение данных...",
+		"MBPopulatingBrowser": "Заполнение браузера...",
 		"MBSortByRecentlyUpdated": "Упорядочить по последнему обновлению",
 		"MBSortByPopularity": "Упорядочить по популярности",
 		"MBSortDownloadDesc": "Упорядочить по убыванию скачиваний",
@@ -39,6 +127,43 @@
 		"MBShowAllMods": "Показать все моды",
 		"MBShowNotInstalledUpdates": "Показать неустановленные или необновлённые моды",
 		"MBShowUpdates": "Показать необновлённые моды",
+		"MBShowMSAll": "Показать все моды",
+		"MBShowMSBoth": "Показывать только моды для обеих сторон",
+		"MBShowMSClient": "Показывать только клиентосторонние моды",
+		"MBShowMSServer": "Показывать только серверосторонние моды",
+		"MBShowMSNoSync": "Показывать только моды не требующие синхронизации",
+		"MBClearSpecialFilter": "Очистить особый фильтр: {0}",
+		"MBOfflineWithReason": "ОФФЛАЙН ({0})",
+		"MBBusy": "Занят",
+		"MBUnknown": "Неизвестно",
+		"MBClickToViewDependencyMods": "Нажмите чтобы увидеть требуемые моды:\n{0}",
+		// "MBModsNotFoundOnline": "The following mods were not found on the Mod Browser: {0}",
+		// "MBFilterDependencies": "Dependencies",
+		// "MBFilterModlist": "Modlist",
+		// "MBExceededBandwidth": "The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.",
+		// "MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
+		// "1SecondAgo": "1 second ago",
+		// "XSecondsAgo": "{0} seconds ago",
+		// "1MinuteAgo": "1 minute ago",
+		// "XMinutesAgo": "{0} minutes ago",
+		// "1HourAgo": "1 hour ago",
+		// "XHoursAgo": "{0} hours ago",
+		// "1DayAgo": "1 day ago",
+		// "XDaysAgo": "{0} days ago",
+		// "1MonthAgo": "1 month ago",
+		// "XMonthsAgo": "{0} months ago",
+		// "1YearAgo": "1 year ago",
+		// "XYearsAgo": "{0} years ago",
+
+		// Mod Publishing
+		"MBPublishEnterPassphrase": "Пожалуйста введите свой код доступа",
+		"MBPublishVisitWebsiteForPassphrase": "Посетите сайт чтобы сгенерировать код доступа",
+		"MBPublishPastePassphrase": "Вставить код доступа (ctrl-v)",
+		// "MBMyPublishedMods": "My Published Mods",
+		// "MBUnpublish": "Unpublish",
+		// "MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
+		// "EnterSteamID": "Please Enter Your SteamID",
+		// "PasteSteamID": "Paste SteamID (ctrl-v)",
 
 		// TML Options
 		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
@@ -52,6 +177,21 @@
 		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
+		"ReloadModsReminder": "Вы обновили мод. Не забудьте перезагрузить моды, чтобы изменения вступили в силу.",
+		"EnableModsReminder": "Ваши недавно скачанные моды в данный момент выключены. Не забудьте включить их и выполнить перезагрузку, если вы планируете использовать их.",
+		"DontShowAgain": "Не показывать это снова",
+		// "ModControls": "Mod Controls",
+
+		// Player and World Select
+		// "MigratePlayersMessage": "You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.",
+		// "MigrateWorldsMessage": "You have no worlds.\nIf you'd like to migrate your worlds from vanilla to tModLoader,\nplease copy them from /Terraria/Worlds to /Terraria/ModLoader/Worlds.\nCopy the .wld file over.\nClick me to open those folders.\nAfter copying over the worlds you want, press back.",
+		// "ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
+		// "Missing1Mod": "Missing 1 mod.",
+		// "MissingXMods": "Missing {0} mods.",
+		// "MissingModsListing": "Missing mods:\n{0}",
+		// "New1Mod": "1 new mod.",
+		// "NewXMods": "{0} new mods.",
+		// "NewModsListing": "New mods:\n{0}",
 
 		// Mod Sources
 		"MSBuild": "Скомпилировать",
@@ -61,22 +201,57 @@
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
 		"MSPublish": "Опубликовать",
+		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 
-		//There should be ModName after ':'
+		// Extract Mod
+		// "ExtractErrorWhileExtractingMod": "An error occured while extracting {0}",
+		// "ExtractHideCodeMessage": "The modder has chosen to hide the code from tModReader.",
+		// "ExtractNoSourceCodeMessage": "The modder has not chosen to include their source code.",
+		// "ExtractHideResourcesMessage": "The modder has chosen to hide resources (ie. images) from tModReader.",
+		// "ExtractFileListing": "Files:",
+
+		// Mod Commands
+		// "CommandModListDescription": "Displays a list of loaded mods.",
+		// "CommandModListServerMods": "Server Mods:",
+		// "CommandModListSyncedMods": "Synced Mods:",
+		// "CommandModListClientMods": "Client Mods:",
+		// "CommandModListModlist": "Modlist:",
+
+		// There should be ModName after ':'
 		"MSReadingProperties": "Чтение настроек мода:",
 		"MSCompilingWindows": "Компиляция мода {0} для Windows",
 		"MSCompilingMono": "Компиляция мода {0} для Mono",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSBuilding": "Сборка мода: ",
 		"MSFinding": "Поиск файлов",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSIntializing": "Инициализация мода: ",
-		//There should be ModName after ':'
+		// There should be ModName after ':'
 		"MSLoading": "Загрузка мода: ",
+		// "MSFinishingResourceLoading": "Finishing Resource Loading",
+		// "MSCompatibilizing": "Compatibilizing: {0}",
+		// "MSReading": "Reading: {0}",
+		// "MSSettingUp": "Setting up...",
+		// "MSAddingRecipes": "Adding Recipes...",
+
+		// Mod Loader Mod
+		// "StartBagTooltip": "Some starting items couldn't fit in your inventory",
+		// "StartBagItemName": "Starting Bag",
+		// "UnloadedItemItemName": "Unloaded Item",
+		// "UnloadedItemModTooltip": "Mod: {0}",
+		// "UnloadedItemItemNameTooltip": "Item: {0}",
+		// "AprilFoolsJoke": "April Fools Joke",
+		// "DefaultTownNPCName": "No-Name",
+		// "DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
-		// "MouseMiddle": "Middle Mouse",
-		// "MouseXButton1": "Mouse 4",
-		// "MouseXButton2": "Mouse 5",
+		"MouseMiddle": "Средняя кнопка мыши",
+		"MouseXButton1": "Кнопка мыши 4",
+		"MouseXButton2": "Кнопка мыши 5",
+
+		// Misc
+		"OK": "ОК",
+		"Continue": "Продолжить",
+		"PatreonSetTooltip": "Спасибо за вашу поддержку!"
 	}
 }

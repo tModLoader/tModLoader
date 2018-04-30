@@ -15,14 +15,14 @@ namespace Terraria.ModLoader.Default
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("April Fools Joke");
+			DisplayName.SetDefault("{$tModLoader.AprilFoolsJoke}");
 		}
 
 		public override void SetDefaults()
 		{
 			if (CheckAprilFools())
 			{
-				item.SetNameOverride("Terrarian...?");
+				item.SetNameOverride(Lang.GetItemNameValue(ItemID.Terrarian) + "...?");
 			}
 			item.useStyle = 4;
 			item.width = 24;

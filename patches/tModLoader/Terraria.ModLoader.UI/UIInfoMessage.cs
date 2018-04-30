@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -39,7 +40,7 @@ namespace Terraria.ModLoader.UI
 
 			message.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> button = new UITextPanel<string>("OK", 0.7f, true);
+			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.OK"), 0.7f, true);
 			button.Width.Set(-10f, 0.5f);
 			button.Height.Set(50f, 0f);
 			button.Left.Set(0, .25f);
@@ -108,7 +109,7 @@ namespace Terraria.ModLoader.UI
 
 			message.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> button1 = new UITextPanel<string>("OK", 0.7f, true);
+			UITextPanel<string> button1 = new UITextPanel<string>(Language.GetTextValue("tModLoader.OK"), 0.7f, true);
 			button1.Width.Set(-10f, 0.5f);
 			button1.Height.Set(50f, 0f);
 			button1.Left.Set(0, 0f);

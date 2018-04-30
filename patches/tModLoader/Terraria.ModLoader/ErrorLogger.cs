@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Terraria.ModLoader.IO;
 using System.Reflection;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -40,11 +41,11 @@ namespace Terraria.ModLoader
 
 		internal static void LogCompileErrors(CompilerErrorCollection errors, bool forWindows)
 		{
-			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
+			string errorHeader = Language.GetTextValue("tModLoader.BuildErrorCompilingError") + Environment.NewLine + Environment.NewLine;
 			string badInstallHint = "";
 			if (!forWindows && ModLoader.windows)
 			{
-				badInstallHint = "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well." + Environment.NewLine + Environment.NewLine;
+				badInstallHint = Language.GetTextValue("tModLoader.BuildErrorModCompileFolderHint") + Environment.NewLine + Environment.NewLine;
 			}
 			Console.WriteLine(errorHeader + badInstallHint);
 			Directory.CreateDirectory(LogPath);
@@ -67,7 +68,7 @@ namespace Terraria.ModLoader
 		internal static void LogDllBuildError(string modDir)
 		{
 			Directory.CreateDirectory(LogPath);
-			var errorText = "Missing dll files for " + Path.GetFileName(modDir) + Environment.NewLine + Environment.NewLine +
+			var errorText = Language.GetTextValue("tModLoader.BuildErrorMissingDllFilesFor", Path.GetFileName(modDir)) + Environment.NewLine + Environment.NewLine +
 							string.Join(Environment.NewLine, buildDllLines);
 			File.WriteAllText(CompileErrorPath, errorText);
 			Console.WriteLine(errorText);
@@ -110,18 +111,17 @@ namespace Terraria.ModLoader
 			string message;
 			if (recipes)
 			{
-				message = "An error occurred while adding recipes for " + modFile;
+				message = Language.GetTextValue("tModLoader.LoadErrorRecipes", modFile);
 			}
 			else
 			{
-				message = "An error occurred while loading " + modFile;
+				message = Language.GetTextValue("tModLoader.LoadError", modFile);
 			}
 			if (modBuildVersion != ModLoader.version)
 			{
-				message += "\nIt has been detected that this mod was built for tModLoader v" + modBuildVersion;
-				message += "\nHowever, you are using " + ModLoader.versionedName;
+				message += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", modBuildVersion, ModLoader.versionedName);
 			}
-			message += "\nThis mod has automatically been disabled. See below for actual error:";
+			message += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabledSeeBelowForError");
 			message += "\n\n" + e.Message + "\n" + e.StackTrace;
 			if (Main.dedServ)
 			{

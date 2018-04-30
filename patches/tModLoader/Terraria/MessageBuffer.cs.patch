@@ -50,17 +50,23 @@
  			switch (b)
  			{
  				case 1:
-@@ -139,7 +_,8 @@
+@@ -139,14 +_,24 @@
  							return;
  						}
  						string a = this.reader.ReadString();
 -						if (!(a == "Terraria" + 193))
+-						{
+-							NetMessage.SendData(2, this.whoAmI, -1, Lang.mp[4].ToNetworkText(), 0, 0f, 0f, 0f, 0, 0, 0);
 +						ModNet.isModdedClient[whoAmI] = a == ModLoader.ModLoader.versionedName;
 +						if (!ModNet.isModdedClient[whoAmI] && !(a == "Terraria" + 194 && ModNet.AllowVanillaClients))
- 						{
- 							NetMessage.SendData(2, this.whoAmI, -1, Lang.mp[4].ToNetworkText(), 0, 0f, 0f, 0f, 0, 0, 0);
++						{
++							if (a.StartsWith("tModLoader"))
++								NetMessage.SendData(2, this.whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + $"\n(You are on {a}, server is on {ModLoader.ModLoader.versionedName})"), 0, 0f, 0f, 0f, 0, 0, 0);
++							else
++								NetMessage.SendData(2, this.whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + "\n(You cannot connect to a tModLoader Server with an unmodded client.)"), 0, 0f, 0f, 0f, 0, 0, 0);
++							// NetMessage.SendData(2, this.whoAmI, -1, Lang.mp[4].ToNetworkText(), 0, 0f, 0f, 0f, 0, 0, 0);
  							return;
-@@ -147,6 +_,11 @@
+ 						}
  						if (string.IsNullOrEmpty(Netplay.ServerPassword))
  						{
  							Netplay.Clients[this.whoAmI].State = 1;

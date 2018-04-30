@@ -40,7 +40,7 @@ namespace Terraria.ModLoader.UI
 			string text = mod.DisplayName + " v" + mod.modFile.version;
 			if (mod.modFile.tModLoaderVersion < new Version(0, 10))
 			{
-				text += " [c/FF0000:(Old mod, enable at own risk)]";
+				text += $" [c/FF0000:({Language.GetTextValue("tModLoader.ModOldWarning")})]";
 			}
 			
 			if (mod.modFile.HasFile("icon.png"))
@@ -107,7 +107,7 @@ namespace Terraria.ModLoader.UI
 				string refs = String.Join(", ", mod.properties.modReferences);
 				Texture2D icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
 					Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
-				UIHoverImage modReferenceIcon = new UIHoverImage(icon, "This mod depends on: " + refs + "\n (click to enable)");
+				UIHoverImage modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs));
 				modReferenceIcon.Left.Set((configButton?.Left.Pixels ?? button2.Left.Pixels) - 24f, 0f);
 				modReferenceIcon.Top.Set(47f, 0f);
 				modReferenceIcon.OnClick += (a, b) =>
@@ -124,7 +124,7 @@ namespace Terraria.ModLoader.UI
 					Main.menuMode = Interface.modsMenuID;
 					if (missing.Any())
 					{
-						Interface.infoMessage.SetMessage("The following mods were not found: " + String.Join(",", missing));
+						Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", String.Join(",", missing)));
 						Interface.infoMessage.SetGotoMenu(Interface.modsMenuID);
 						Main.menuMode = Interface.infoMessageID;
 					}
@@ -139,7 +139,7 @@ namespace Terraria.ModLoader.UI
 			}
 			if (mod.properties.beta)
 			{
-				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.ShadowKey], "This mod was built on beta version and can't be published");
+				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.ShadowKey], Language.GetTextValue("tModLoader.BetaModCantPublish"));
 				keyImage.Left.Set(-10, 1f);
 				Append(keyImage);
 			}
@@ -147,14 +147,14 @@ namespace Terraria.ModLoader.UI
 			{
 				loaded = true;
 				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count };
-				string[] strings = { " items", " NPCs", " tiles", " walls", " buffs", " mounts" };
+				string[] localizationKeys = { "ModsXItems", "ModsXNPCs", "ModsXTiles", "ModsXWalls", "ModsXBuffs", "ModsXMounts" };
 				int xOffset = -40;
 				for (int i = 0; i < values.Length; i++)
 				{
 					if (values[i] > 0)
 					{
 						Texture2D iconTexture = Main.instance.infoIconTexture[i];
-						keyImage = new UIHoverImage(iconTexture, values[i] + strings[i]);
+						keyImage = new UIHoverImage(iconTexture, Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i]));
 						keyImage.Left.Set(xOffset, 1f);
 						base.Append(keyImage);
 						xOffset -= 18;
@@ -190,7 +190,7 @@ namespace Terraria.ModLoader.UI
 
 		private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos)
 		{
-			string text = mod.Enabled ? "Enabled" : "Disabled";
+			string text = mod.Enabled ? Language.GetTextValue("GameUI.Enabled") : Language.GetTextValue("GameUI.Disabled");
 			Color color = mod.Enabled ? Color.Green : Color.Red;
 			Utils.DrawBorderString(spriteBatch, text, drawPos, color, 1f, 0f, 0f, -1);
 		}
@@ -207,7 +207,7 @@ namespace Terraria.ModLoader.UI
 			if (mod.Enabled != loaded)
 			{
 				drawPos += new Vector2(90f, 5f);
-				Utils.DrawBorderString(spriteBatch, configChangesRequireReload ? "Reload Forced" : "Reload Required", drawPos, Color.White, 1f, 0f, 0f, -1);
+				Utils.DrawBorderString(spriteBatch, configChangesRequireReload ? "Reload Forced" : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
 			}
 			//string text = this.enabled ? "Click to Disable" : "Click to Enable";
 			//drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 150f, innerDimensions.Y + 50f);
@@ -222,7 +222,7 @@ namespace Terraria.ModLoader.UI
 			// main.hoverItemName isn't drawn in UI
 			if (this.modName.IsMouseHovering && mod.properties.author.Length > 0)
 			{
-				string text = "By: " + mod.properties.author;
+				string text = Language.GetTextValue("tModLoader.ModsByline", mod.properties.author);
 				float x = Main.fontMouseText.MeasureString(text).X;
 				Vector2 vector = Main.MouseScreen + new Vector2(16f);
 				if (vector.Y > (float)(Main.screenHeight - 30))

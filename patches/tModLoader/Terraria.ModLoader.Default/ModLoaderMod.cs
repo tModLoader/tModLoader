@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader.Default.Patreon;
 
 namespace Terraria.ModLoader.Default
 {
@@ -40,6 +41,39 @@ namespace Terraria.ModLoader.Default
 			AddModWorld("MysteryTilesWorld", new MysteryTilesWorld());
 			AddCommand("HelpCommand", new HelpCommand());
 			AddCommand("ModlistCommand", new ModlistCommand());
+			AddPatreon();
+		}
+
+		private void AddPatreon()
+		{
+			AddPatreonItemAndEquipType(new toplayz_Head(), "toplayz", EquipType.Head);
+			AddPatreonItemAndEquipType(new toplayz_Body(), "toplayz", EquipType.Body);
+			AddPatreonItemAndEquipType(new toplayz_Legs(), "toplayz", EquipType.Legs);
+			AddPatreonItemAndEquipType(new KittyKitCatCat_Head(), "KittyKitCatCat", EquipType.Head);
+			AddPatreonItemAndEquipType(new KittyKitCatCat_Body(), "KittyKitCatCat", EquipType.Body);
+			AddPatreonItemAndEquipType(new KittyKitCatCat_Legs(), "KittyKitCatCat", EquipType.Legs);
+			AddPatreonItemAndEquipType(new litcherally_Head(), "litcherally", EquipType.Head);
+			AddPatreonItemAndEquipType(new litcherally_Body(), "litcherally", EquipType.Body);
+			AddPatreonItemAndEquipType(new litcherally_Legs(), "litcherally", EquipType.Legs);
+			AddPatreonItemAndEquipType(new PotyBlank_Head(), "PotyBlank", EquipType.Head);
+			AddPatreonItemAndEquipType(new PotyBlank_Body(), "PotyBlank", EquipType.Body);
+			AddPatreonItemAndEquipType(new PotyBlank_Legs(), "PotyBlank", EquipType.Legs);
+			AddPatreonItemAndEquipType(new Dinidini_Head(), "dinidini", EquipType.Head);
+			AddPatreonItemAndEquipType(new Dinidini_Body(), "dinidini", EquipType.Body);
+			AddPatreonItemAndEquipType(new Dinidini_Legs(), "dinidini", EquipType.Legs);
+		}
+
+		private void AddPatreonItemAndEquipType(ModItem item, string name, EquipType equipType)
+		{
+			if (!Main.dedServ)
+			{
+				AddTexture($"Patreon.{name}_{equipType}", ReadTexture($"Patreon.{name}_{equipType}"));
+				AddTexture($"Patreon.{name}_{equipType}_{equipType}", ReadTexture($"Patreon.{name}_{equipType}_{equipType}"));
+				if (equipType == EquipType.Body)
+					AddTexture($"Patreon.{name}_{equipType}_Arms", ReadTexture($"Patreon.{name}_{equipType}_Arms"));
+			}
+			AddItem($"{name}_{equipType}", item);
+			AddEquipTexture(item, equipType, item.Name, item.Texture + '_' + equipType, item.Texture + "_Arms", item.Texture + "_FemaleBody");
 		}
 
 		private static void LoadTextures()

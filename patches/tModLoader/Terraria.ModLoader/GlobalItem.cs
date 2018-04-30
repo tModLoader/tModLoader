@@ -740,6 +740,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to disallow the player from equipping an accessory. Return false to disallow equipping the accessory. Returns true by default.
 		/// </summary>
+		/// <param name="item">The item that is attepting to equip.</param>
+		/// <param name="player">The player.</param>
+		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
 		public virtual bool CanEquipAccessory(Item item, Player player, int slot)
 		{
 			return true;

@@ -140,7 +140,7 @@ namespace Terraria.ModLoader
 				properties = BuildProperties.ReadBuildFile(modFolder);
 			}
 			catch (Exception e) {
-				ErrorLogger.LogBuildError("Failed to load " + Path.Combine(modFolder, "build.txt") + Environment.NewLine + e);
+				ErrorLogger.LogBuildError(Language.GetTextValue("tModLoader.BuildErrorFailedLoadBuildTxt", Path.Combine(modFolder, "build.txt")) + Environment.NewLine + e);
 				return null;
 			}
 			
@@ -287,8 +287,8 @@ namespace Terraria.ModLoader
 				var stack = new System.Diagnostics.StackTrace(true);
 				float soundVolume = Main.soundVolume;
 				Main.soundVolume = 0f;
-				Main.NewText(exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace + " (see Logs.txt for full trace)", Microsoft.Xna.Framework.Color.OrangeRed);
-				ErrorLogger.Log("Silently Caught Exception: " + exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace + stack.ToString());
+				Main.NewText(exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsTxtForFullTrace"), Microsoft.Xna.Framework.Color.OrangeRed);
+				ErrorLogger.Log(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + exceptionArgs.Exception.Message + exceptionArgs.Exception.StackTrace + stack.ToString());
 				Main.soundVolume = soundVolume;
 			};
 		}
@@ -297,13 +297,13 @@ namespace Terraria.ModLoader
 			var asmDef = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
 			var asmName = asmDef.Name.Name;
 			if (asmName != modName) {
-				ErrorLogger.LogBuildError("Mod name \""+ modName+ "\" does not match assembly name \""+asmName+"\"");
+				ErrorLogger.LogBuildError(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
 				return false;
 			}
 
 			if (modName.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
 			{
-				ErrorLogger.LogBuildError("Mods cannot be named Terraria");
+				ErrorLogger.LogBuildError(Language.GetTextValue("tModLoader.BuildErrorModNamedTerraria"));
 				return false;
 			}
 
@@ -314,13 +314,13 @@ namespace Terraria.ModLoader
 				string topNamespace = modClassType.Namespace.Split('.')[0];
 				if (topNamespace != modName)
 				{
-					ErrorLogger.LogBuildError("Namespace and Folder name do not match. The top level namespace must match the folder name.");
+					ErrorLogger.LogBuildError(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
 					return false;
 				}
 			}
 			catch
 			{
-				ErrorLogger.LogBuildError("Make sure you have exactly one class extending Mod.");
+				ErrorLogger.LogBuildError(Language.GetTextValue("tModLoader.BuildErrorNoModClass"));
 				return false;
 			}
 
@@ -371,7 +371,7 @@ namespace Terraria.ModLoader
 			LoadReferences();
 			bool generatePDB = mod.properties.includePDB && forWindows;
 			if (generatePDB && !windows) {
-				Console.WriteLine("PDB files can only be generated for windows, on windows.");
+				Console.WriteLine(Language.GetTextValue("tModLoader.BuildErrorPDBWindowsOnly"));
 				generatePDB = false;
 			}
 
@@ -414,7 +414,7 @@ namespace Terraria.ModLoader
 				CompilerResults results;
 				if (mod.properties.languageVersion == 6) {
 					if (Environment.Version.Revision < 10000) {
-						ErrorLogger.LogBuildError(".NET Framework 4.5 must be installed to compile C# 6.0");
+						ErrorLogger.LogBuildError(Language.GetTextValue("tModLoader.BuildErrorDotNet45forCS6"));
 						return;
 					}
 

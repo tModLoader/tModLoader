@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -28,7 +29,7 @@ namespace Terraria.ModLoader.UI
 			message.HAlign = 0.5f;
 			area.Append(message);
 
-			UITextPanel<string> button = new UITextPanel<string>("Continue", 0.7f, true);
+			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.Continue"), 0.7f, true);
 			button.Width.Set(-10f, 0.5f);
 			button.Height.Set(50f, 0f);
 			button.Top.Set(-108f, 1f);
@@ -37,7 +38,7 @@ namespace Terraria.ModLoader.UI
 			button.OnClick += ContinueClick;
 			area.Append(button);
 
-			UITextPanel<string> button2 = new UITextPanel<string>("Open Logs", 0.7f, true);
+			UITextPanel<string> button2 = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
 			button2.CopyStyle(button);
 			button2.HAlign = 1f;
 			button2.OnMouseOver += UICommon.FadedMouseOver;
@@ -45,7 +46,7 @@ namespace Terraria.ModLoader.UI
 			button2.OnClick += OpenFile;
 			area.Append(button2);
 
-			webHelpButton = new UITextPanel<string>("Open Web Help", 0.7f, true);
+			webHelpButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenWebHelp"), 0.7f, true);
 			webHelpButton.CopyStyle(button2);
 			webHelpButton.Top.Set(-55f, 1f);
 			webHelpButton.OnMouseOver += UICommon.FadedMouseOver;
