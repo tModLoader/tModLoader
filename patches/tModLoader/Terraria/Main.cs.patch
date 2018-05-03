@@ -60,6 +60,15 @@
  		public static bool[] hairLoaded = new bool[134];
  		public static bool[] wingsLoaded = new bool[40];
  		public static bool[] goreLoaded = new bool[1087];
+@@ -324,7 +_,7 @@
+ 		public static float sunCircle;
+ 		public static int BlackFadeIn = 0;
+ 		public static bool noWindowBorder = false;
+-		private RasterizerState Rasterizer = RasterizerState.CullCounterClockwise;
++		public RasterizerState Rasterizer = RasterizerState.CullCounterClockwise;
+ 		private static string _cachedTitle;
+ 		public static int ugBack = 0;
+ 		public static int oldUgBack = 0;
 @@ -358,6 +_,9 @@
  		public static int lastMouseY;
  		public static bool mouseLeft;
