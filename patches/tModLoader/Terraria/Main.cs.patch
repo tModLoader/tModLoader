@@ -3284,6 +3284,14 @@
  				return;
  			}
  			if (item.type == 3858)
+@@ -33483,6 +_,7 @@
+ 				num6 -= 2f;
+ 				num5 -= 2f;
+ 				Main.spriteBatch.Draw(texture2D, new Vector2(item.position.X - Main.screenPosition.X + (float)(rectangle3.Width / 2) + num6, item.position.Y - Main.screenPosition.Y + (float)(rectangle3.Height / 2) + num5), new Microsoft.Xna.Framework.Rectangle?(rectangle3), new Microsoft.Xna.Framework.Color(255, 255, 255, 63) * 0.75f, num4, rectangle3.Size() / 2f, scale, SpriteEffects.None, 0f);
++				ItemLoader.PostDrawInWorld(item, Main.spriteBatch, color, alpha, num4, scale, whoami);
+ 				return;
+ 			}
+ 			if (ItemID.Sets.TrapSigned[item.type])
 @@ -33497,16 +_,25 @@
  					Main.spriteBatch.Draw(Main.glowMaskTexture[(int)item.glowMask], new Vector2(item.position.X - Main.screenPosition.X + (float)(Main.itemTexture[item.type].Width / 2) + num6, item.position.Y - Main.screenPosition.Y + (float)(Main.itemTexture[item.type].Height / 2) + num5 + 2f), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.itemTexture[item.type].Width, Main.itemTexture[item.type].Height)), new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), num4, new Vector2((float)(Main.itemTexture[item.type].Width / 2), (float)(Main.itemTexture[item.type].Height / 2)), scale, SpriteEffects.None, 0f);
  				}
