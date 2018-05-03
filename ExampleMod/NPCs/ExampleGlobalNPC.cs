@@ -196,6 +196,11 @@ namespace ExampleMod.NPCs
 				shop.item[nextSlot].shopSpecialCurrency = ExampleMod.FaceCustomCurrencyID;
 				nextSlot++;
 			}
+            else if (type == NPCID.Wizard && Main.expertMode)
+            {
+                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Infinity>());
+                nextSlot++;
+            }
 		}
 	}
 }
