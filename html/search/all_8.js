@@ -172,6 +172,8 @@ var searchData=
   ['hooknpcloot',['HookNPCLoot',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a6c5bdb77f3129e6e162002b42fc24616',1,'Terraria::ModLoader::NPCLoader']]],
   ['hooknumdust',['HookNumDust',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a45e2167b10a301e23c5b3329f525c318',1,'Terraria.ModLoader.TileLoader.HookNumDust()'],['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#aa7a5b9dc93e92b11816ee05bf00f840c',1,'Terraria.ModLoader.WallLoader.HookNumDust()']]],
   ['hooknumgrapplehooks',['HookNumGrappleHooks',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a79f48bdf6caa31f0b190ddb1e074f179',1,'Terraria::ModLoader::ProjectileLoader']]],
+  ['hookonconsumeammo',['HookOnConsumeAmmo',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#acf2a186d1125700806fbe47f9083adaf',1,'Terraria.ModLoader.ItemLoader.HookOnConsumeAmmo()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a99e7986e0a5d78f8f582217e88c54b52',1,'Terraria.ModLoader.PlayerHooks.HookOnConsumeAmmo()']]],
+  ['hookonconsumeitem',['HookOnConsumeItem',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a0b8247d5e52d1e38f7b2019fc7a24f1a',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookoncraft',['HookOnCraft',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ae29eaaaf026b187bbefa625658e2f278',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookonenterworld',['HookOnEnterWorld',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#affc7f6aa0e4f6074a9b627dde9c3ae09',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookonhitanything',['HookOnHitAnything',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a7b0496a0c20f364088002f30b2b35073',1,'Terraria::ModLoader::PlayerHooks']]],

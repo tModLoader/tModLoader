@@ -503,7 +503,7 @@ Generating docs for nested compound Terraria::ModLoader::AssemblyManager::Symbol
 Generating docs for compound Terraria::ModLoader::AutoloadBossHead...
 Generating docs for compound Terraria::ModLoader::AutoloadEquip...
 Generating docs for compound Terraria::ModLoader::AutoloadHead...
-Generating docs f/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:447: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
+Generating docs f/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:465: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
   parameter 'male'
 or compound Terraria::ModLoader::BackgroundTextureLoader...
 Generating call graph for function Terraria.ModLoader.BackgroundTextureLoader.GetBackgroundSlot
@@ -662,7 +662,7 @@ Generating call graph for function Terraria.ModLoader.ItemLoader.ArmorSetShadows
 Generating call graph for function Terraria.ModLoader.ItemLoader.DrawArmorColor
 Generating call graph for function Terraria.ModLoader.ItemLoader.DrawBody
 Generating call graph for function Terraria.ModLoader.ItemLoader.DrawHair
-Generating call graph for function Terraria./home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1044: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
+Generating call graph for function Terraria./home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1078: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
   parameter 'item'
   parameter 'reforgePrice'
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1309: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
@@ -2050,5 +2050,5 @@ Patching output file 121/124
 Patching output file 122/124
 Patching output file 123/124
 Patching output file 124/124
-lookup cache used 10468/131072 hits=98579 misses=10933
+lookup cache used 10490/131072 hits=99102 misses=10955
 finished...

@@ -40,6 +40,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "ModifyScreenPosition", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ab90eb3f01a1df40684e1afdc6e5b9cbc", null ],
     [ "ModifyZoom", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ac6927f61bbe5edbb9437117a94fc2c64", null ],
     [ "NaturalLifeRegen", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ae8dbfbc03aeba36009cca97321fb8754", null ],
+    [ "OnConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a6bb0584ad6810e06dbad60b0bdca5818", null ],
     [ "OnEnterWorld", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a6c573a92f3a8df8f393ca26492d7eb3b", null ],
     [ "OnHitAnything", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a84506b45ac50a3c509f28617f57aa6af", null ],
     [ "OnHitByNPC", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a9a527fd0a56cab1b9ba7770d6df47f8a", null ],

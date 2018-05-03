@@ -57,6 +57,8 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "NetSend", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a5f7a03b9388a7610935e6f628b257dfe", null ],
     [ "NewInstance", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a5954012f872a84362f335c55905ade15", null ],
     [ "NewPreReforge", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a530972cbf42dfc6c93ee65904aa433f4", null ],
+    [ "OnConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a37428a76cceee9aa18d7dc23294a2689", null ],
+    [ "OnConsumeItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ab34acf5234d176f4e43cc6b6075fbfe7", null ],
     [ "OnCraft", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a7531a27b227757d9bc54400dcd6e9877", null ],
     [ "OnHitNPC", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a63c7985c667874242863473945097423", null ],
     [ "OnHitPvp", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a63802f959b06e51f33c304f6843ea452", null ],
