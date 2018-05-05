@@ -201,6 +201,9 @@ namespace ExampleMod
 
 		public Dictionary<int, float> IntFloatDictionary;
 		public Dictionary<string, Pair> StringPairDictionary;
+		public Dictionary<JSONItem, float> JsonItemFloatDictionary;
+
+		public JSONItem specialItem;
 
 		[BackgroundColor(255, 0, 0)]
 		public List<Pair> ListOfPair;
@@ -240,6 +243,8 @@ namespace ExampleMod
 				IntFloatDictionary = new Dictionary<int, float>();
 			if (StringPairDictionary == null)
 				StringPairDictionary = new Dictionary<string, Pair>();
+			if (JsonItemFloatDictionary == null)
+				JsonItemFloatDictionary = new Dictionary<JSONItem, float>();
 			//if (gradient == null)
 			//	gradient = new Gradient();
 			//if (simpleDataExample == null)
@@ -272,12 +277,14 @@ namespace ExampleMod
 			clone.simpleDataExample = simpleDataExample == null ? null : simpleDataExample.Clone();
 			clone.gradient = gradient == null ? null : gradient.Clone();
 			clone.pairExample = pairExample == null ? null : pairExample.Clone();
+			clone.specialItem = specialItem == null ? null : new JSONItem(specialItem.mod, specialItem.name);
 			clone.simpleDataExample2 = simpleDataExample2.Clone();
 			clone.ArrayOfInts = (int[])ArrayOfInts.Clone();
 			clone.ArrayOfString = (string[])ArrayOfString.Clone();
 			clone.ListOfPair = ListOfPair.ConvertAll(pair => pair.Clone());
 			clone.IntFloatDictionary = IntFloatDictionary.ToDictionary(i => i.Key, i => i.Value);
 			clone.StringPairDictionary = StringPairDictionary.ToDictionary(i => i.Key, i => i.Value.Clone());
+			clone.JsonItemFloatDictionary = JsonItemFloatDictionary.ToDictionary(i => new JSONItem(i.Key.mod, i.Key.name), i => i.Value);
 			return clone;
 		}
 

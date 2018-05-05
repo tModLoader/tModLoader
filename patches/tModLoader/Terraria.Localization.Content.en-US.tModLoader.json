@@ -21,6 +21,7 @@
 		"BetaModCantPublish": "This mod was built on beta version and can't be published",
 		"BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
 		"ModReloadRequired": "Reload Required",
+		"ModReloadForced": "Reload Forced",
 		"ModsByline": "By: {0}",
 		"ModsMoreInfo": "More info",
 		"ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",

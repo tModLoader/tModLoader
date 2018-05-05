@@ -21,6 +21,8 @@ namespace Terraria.ModLoader.UI
 		protected LabelAttribute labelAttribute;
 		protected TooltipAttribute tooltipAttribute;
 		protected BackgroundColorAttribute backgroundColorAttribute;
+		protected RangeAttribute rangeAttribute;
+		protected IncrementAttribute incrementAttribute;
 
 		public UIModConfigItem(PropertyFieldWrapper memberInfo, object item, IList array)
 		{
@@ -45,6 +47,8 @@ namespace Terraria.ModLoader.UI
 			{
 				backgroundColor = backgroundColorAttribute.color;
 			}
+			rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, array);
+			incrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(memberInfo, item, array);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)

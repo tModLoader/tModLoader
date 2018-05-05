@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.UI
 				max = (float)rangeAttribute.max;
 				min = (float)rangeAttribute.min;
 			}
-			if (incrementAttribute != null && rangeAttribute.min is float)
+			if (incrementAttribute != null && incrementAttribute.increment is float)
 			{
 				increment = (float)incrementAttribute.increment;
 			}

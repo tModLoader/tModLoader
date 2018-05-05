@@ -9,6 +9,7 @@ using Terraria.UI;
 using Terraria.UI.Chat;
 using System.Collections.Generic;
 using System.Collections;
+using System.Reflection;
 
 namespace Terraria.ModLoader.UI
 {
@@ -24,6 +25,7 @@ namespace Terraria.ModLoader.UI
 		private int sliderIDStart;
 		private NestedUIList dataList;
 
+		float scale = 1f;
 
 		public UIModConfigListItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
@@ -107,6 +109,40 @@ namespace Terraria.ModLoader.UI
 			};
 			sortedContainer.Append(text);
 			Append(sortedContainer);
+
+			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonIncrement.png")));
+			upButton.Top.Set(40, 0f);
+			upButton.Left.Set(0, 0f);
+			upButton.OnClick += (a, b) =>
+			{
+				scale = Math.Min(2f, scale + 0.5f);
+				dataList.RecalculateChildren();
+				float h = dataList.GetTotalHeight();
+				MinHeight.Set(Math.Min(Math.Max(h + 84, 100), 300) * scale, 0f);
+				Recalculate();
+				if (Parent != null && Parent is UISortableElement)
+				{
+					Parent.Height.Pixels = GetOuterDimensions().Height;
+				}
+			};
+			Append(upButton);
+
+			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonDecrement.png")));
+			downButton.Top.Set(52, 0f);
+			downButton.Left.Set(0, 0f);
+			downButton.OnClick += (a, b) =>
+			{
+				scale = Math.Max(1f, scale - 0.5f);
+				dataList.RecalculateChildren();
+				float h = dataList.GetTotalHeight();
+				MinHeight.Set(Math.Min(Math.Max(h + 84, 100), 300) * scale, 0f);
+				Recalculate();
+				if (Parent != null && Parent is UISortableElement)
+				{
+					Parent.Height.Pixels = GetOuterDimensions().Height;
+				}
+			};
+			Append(downButton);
 		}
 
 		private void SetupList()
@@ -165,7 +201,7 @@ namespace Terraria.ModLoader.UI
 			}
 			dataList.RecalculateChildren();
 			float h = dataList.GetTotalHeight();
-			MinHeight.Set(Math.Min(Math.Max(h + 84, 100), 300), 0f);
+			MinHeight.Set(Math.Min(Math.Max(h + 84, 100), 300) * scale, 0f);
 			Recalculate();
 			if (Parent != null && Parent is UISortableElement)
 			{
@@ -176,7 +212,7 @@ namespace Terraria.ModLoader.UI
 		public override void Recalculate()
 		{
 			base.Recalculate();
-			float h = dataList.GetTotalHeight();
+			float h = dataList.GetTotalHeight() * scale;
 			Height.Set(h, 0f);
 		}
 

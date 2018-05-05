@@ -77,6 +77,7 @@ namespace Terraria.ModLoader.UI
 		public delegate void EventHandler(Object sender, EventArgs e);
 
 		public event EventHandler OnTextChange;
+		public event EventHandler OnUnfocus;
 
 		public UIFocusInputTextField(string hintText)
 		{
@@ -106,6 +107,7 @@ namespace Terraria.ModLoader.UI
 			if (!ContainsPoint(MousePosition) && Main.mouseLeft)
 			{
 				focused = false;
+				OnUnfocus?.Invoke(this, new EventArgs());
 			}
 			base.Update(gameTime);
 		}

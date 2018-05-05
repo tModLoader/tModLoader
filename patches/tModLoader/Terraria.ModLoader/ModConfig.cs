@@ -104,6 +104,10 @@ namespace Terraria.ModLoader
 		public string Label => label.StartsWith("$") ? Localization.Language.GetTextValue(label.Substring(1)) : label;
 	}
 
+	// [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	// public class StringRepresentationAttribute : Attribute
+	// TODO
+
 	/// <summary>
 	/// This attibute sets a hover tooltip for the annotated property or field to be shown in the ModConfig UI. This can be longer and more descriptive than Label.
 	/// Starting the tooltip with $ means the tooltip should be interpreted as a Localization key.

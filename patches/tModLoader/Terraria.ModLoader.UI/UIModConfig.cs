@@ -472,6 +472,10 @@ namespace Terraria.ModLoader.UI
 					e = new UIText($"CustomUI for {memberInfo.Name} does not have the correct constructor.");
 				}
 			}
+			else if (type == typeof(JSONItem))
+			{
+				e = new UIModConfigItemDefinitionItem(memberInfo, item, ref sliderIDInPage, (IList<JSONItem>)array, index);
+			}
 			else if (type == typeof(Color))
 			{
 				e = new UIModConfigColorItem(memberInfo, item, ref sliderIDInPage, (IList<Color>)array, index);
@@ -496,7 +500,11 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (type == typeof(int))
 			{
-				e = new UIModConfigIntItem(memberInfo, item, sliderIDInPage++, (IList<int>)array, index);
+				RangeAttribute rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, array);
+				if (rangeAttribute != null)
+					e = new UIModConfigIntRangeItem(memberInfo, item, sliderIDInPage++, (IList<int>)array, index);
+				else
+					e = new UIModConfigIntInputItem(memberInfo, item, (IList<int>)array, index);
 			}
 			else if (type == typeof(string))
 			{
@@ -558,6 +566,7 @@ namespace Terraria.ModLoader.UI
 					if (subitem == null)
 					{
 						subitem = Activator.CreateInstance(type);
+						// Crashes JSONItem
 						JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
 
 						//JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
@@ -812,15 +821,11 @@ namespace Terraria.ModLoader.UI
 		protected Func<float> _GetProportion;
 		protected Action<float> _SetProportion;
 		private int _sliderIDInPage;
-		protected RangeAttribute rangeAttribute;
-		protected IncrementAttribute incrementAttribute;
 
 		public UIConfigRangeItem(int sliderIDInPage, PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
 		{
 			this._sliderIDInPage = sliderIDInPage;
 			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
-			rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, array);
-			incrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(memberInfo, item, array);
 		}
 
 		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)

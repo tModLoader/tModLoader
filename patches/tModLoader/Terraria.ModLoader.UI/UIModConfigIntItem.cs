@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.UI;
@@ -10,7 +12,102 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModConfigIntItem : UIConfigRangeItem
+	internal class UIModConfigIntInputItem : UIModConfigItem
+	{
+		private Func<int> _GetValue;
+		private Action<int> _SetValue;
+		int min = 0;
+		int max = 100;
+		int increment = 1;
+
+		public UIModConfigIntInputItem(PropertyFieldWrapper memberInfo, object item, IList<int> array, int index) : base(memberInfo, item, (IList)array)
+		{
+			_GetValue = () => DefaultGetValue();
+			_SetValue = (int value) => DefaultSetValue(value);
+
+			if (array != null)
+			{
+				_GetValue = () => array[index];
+				_SetValue = (int value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
+				_TextDisplayFunction = () => index + 1 + ": " + array[index];
+			}
+
+			if (rangeAttribute != null && rangeAttribute.min is int && rangeAttribute.max is int)
+			{
+				min = (int)rangeAttribute.min;
+				max = (int)rangeAttribute.max;
+			}
+			if (incrementAttribute != null && incrementAttribute.increment is int)
+			{
+				this.increment = (int)incrementAttribute.increment;
+			}
+
+			UIPanel textBoxBackground = new UIPanel();
+			textBoxBackground.SetPadding(0);
+			UIFocusInputTextField uIInputTextField = new UIFocusInputTextField("Type here");
+			textBoxBackground.Top.Set(0f, 0f);
+			textBoxBackground.Left.Set(-190, 1f);
+			textBoxBackground.Width.Set(180, 0f);
+			textBoxBackground.Height.Set(30, 0f);
+			textBoxBackground.OnRightClick += (a, b) => uIInputTextField.SetText("");
+			textBoxBackground.OnClick += (a, b) => uIInputTextField.Click(a);
+			Append(textBoxBackground);
+
+			uIInputTextField.SetText(_GetValue().ToString());
+			uIInputTextField.Top.Set(6, 0f);
+			uIInputTextField.Left.Set(-180, 1f);
+			uIInputTextField.Width.Set(160, 0);
+			uIInputTextField.Height.Set(20, 0);
+			uIInputTextField.OnTextChange += (a, b) =>
+			{
+				if (Int32.TryParse(uIInputTextField.currentString, out int val))
+				{
+					_SetValue(val);
+				}
+				//else
+				//{
+				//	Interface.modConfig.SetMessage($"{uIInputTextField.currentString} isn't a valid value.", Color.Green);
+				//}
+			};
+			uIInputTextField.OnUnfocus += (a, b) => uIInputTextField.SetText(_GetValue().ToString());
+			Append(uIInputTextField);
+
+			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonIncrement.png")));
+			upButton.Recalculate();
+			upButton.Top.Set(4f, 0f);
+			upButton.Left.Set(-30, 1f);
+			upButton.OnClick += (a, b) =>
+			{
+				_SetValue(Math.Min(_GetValue() + increment, max));
+				uIInputTextField.SetText(_GetValue().ToString());
+			};
+			textBoxBackground.Append(upButton);
+			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonDecrement.png")));
+			downButton.Top.Set(16, 0f);
+			downButton.Left.Set(-30, 1f);
+			downButton.OnClick += (a, b) =>
+			{
+				_SetValue(Math.Max(_GetValue() - increment, min));
+				uIInputTextField.SetText(_GetValue().ToString());
+			};
+			textBoxBackground.Append(downButton);
+			Recalculate();
+		}
+
+		void DefaultSetValue(int text)
+		{
+			if (!memberInfo.CanWrite) return;
+			memberInfo.SetValue(item, text);
+			Interface.modConfig.SetPendingChanges();
+		}
+
+		int DefaultGetValue()
+		{
+			return (int)memberInfo.GetValue(item);
+		}
+	}
+
+	internal class UIModConfigIntRangeItem : UIConfigRangeItem
 	{
 		private Func<int> _GetValue;
 		private Action<int> _SetValue;
@@ -22,7 +119,7 @@ namespace Terraria.ModLoader.UI
 		public override int NumberTicks => ((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
-		public UIModConfigIntItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<int> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public UIModConfigIntRangeItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<int> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();

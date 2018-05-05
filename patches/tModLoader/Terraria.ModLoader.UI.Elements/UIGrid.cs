@@ -200,4 +200,28 @@ namespace Terraria.ModLoader.UI.Elements
 			this.Recalculate();
 		}
 	}
+
+	class NestedUIGrid : UIGrid
+	{
+		public NestedUIGrid()
+		{
+		}
+
+		public override void ScrollWheel(UIScrollWheelEvent evt)
+		{
+			if (this._scrollbar != null)
+			{
+				float oldpos = this._scrollbar.ViewPosition;
+				this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
+				if (oldpos == _scrollbar.ViewPosition)
+				{
+					base.ScrollWheel(evt);
+				}
+			}
+			else
+			{
+				base.ScrollWheel(evt);
+			}
+		}
+	}
 }

@@ -207,7 +207,7 @@ namespace Terraria.ModLoader.UI
 			if (mod.Enabled != loaded)
 			{
 				drawPos += new Vector2(90f, 5f);
-				Utils.DrawBorderString(spriteBatch, configChangesRequireReload ? "Reload Forced" : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
+				Utils.DrawBorderString(spriteBatch, configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
 			}
 			//string text = this.enabled ? "Click to Disable" : "Click to Enable";
 			//drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 150f, innerDimensions.Y + 50f);
