@@ -320,12 +320,14 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,91 @@
+@@ -606,5 +_,93 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Wings.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Wings_Wings.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Body.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Body_Arms.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Body_Body.png" />

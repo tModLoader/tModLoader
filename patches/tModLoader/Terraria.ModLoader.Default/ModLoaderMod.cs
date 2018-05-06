@@ -58,6 +58,7 @@ namespace Terraria.ModLoader.Default
 			AddPatreonItemAndEquipType(new Dinidini_Head(), "dinidini", EquipType.Head);
 			AddPatreonItemAndEquipType(new Dinidini_Body(), "dinidini", EquipType.Body);
 			AddPatreonItemAndEquipType(new Dinidini_Legs(), "dinidini", EquipType.Legs);
+			AddPatreonItemAndEquipType(new Dinidini_Wings(), "dinidini", EquipType.Wings);
 		}
 
 		private void AddPatreonItemAndEquipType(ModItem item, string name, EquipType equipType)

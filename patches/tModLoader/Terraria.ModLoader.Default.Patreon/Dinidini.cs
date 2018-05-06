@@ -38,4 +38,24 @@
 			item.height = 18;
 		}
 	}
+
+	class Dinidini_Wings : PatreonItem
+	{
+		public override string PatreonName => "dinidini";
+		public override PatreonItemType PatreonEquipType => PatreonItemType.Wings;
+
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			item.vanity = false;
+			item.width = 24;
+			item.height = 8;
+			item.accessory = true;
+		}
+
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.wingTimeMax = 150;
+		}
+	}
 }

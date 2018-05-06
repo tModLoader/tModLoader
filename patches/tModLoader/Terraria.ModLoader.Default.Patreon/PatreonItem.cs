@@ -10,7 +10,8 @@ namespace Terraria.ModLoader.Default.Patreon
 		{
 			Head,
 			Body,
-			Legs
+			Legs,
+			Wings
 		}
 
 		public abstract string PatreonName { get; }
@@ -26,6 +27,8 @@ namespace Terraria.ModLoader.Default.Patreon
 					return "Body";
 				case PatreonItemType.Legs:
 					return "Legs";
+				case PatreonItemType.Wings:
+					return "Wings";
 			}
 
 			return "Unknown";
@@ -77,6 +80,7 @@ namespace Terraria.ModLoader.Default.Patreon
 						player.QuickSpawnItem(mod.ItemType<Dinidini_Head>());
 						player.QuickSpawnItem(mod.ItemType<Dinidini_Body>());
 						player.QuickSpawnItem(mod.ItemType<Dinidini_Legs>());
+						player.QuickSpawnItem(mod.ItemType<Dinidini_Wings>());
 						return true;
 				}
 			}
