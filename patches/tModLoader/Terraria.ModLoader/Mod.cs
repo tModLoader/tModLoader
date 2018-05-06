@@ -213,7 +213,7 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e)
 			{
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorWavSoundFailedToLoad", path), e);
+				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorWavSoundFailedToLoad", path) + (Main.engine == null ? "\n" + Language.GetTextValue("tModLoader.LoadErrorSoundFailedToLoadAudioDeviceHint") : "" ), e);
 			}
 		}
 
@@ -245,7 +245,7 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e)
 			{
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorMP3SoundFailedToLoad", path), e);
+				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorMP3SoundFailedToLoad", path) + (Main.engine == null ? "\n" + Language.GetTextValue("tModLoader.LoadErrorSoundFailedToLoadAudioDeviceHint") : ""), e);
 			}
 		}
 

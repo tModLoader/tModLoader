@@ -24,22 +24,22 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
      <OutputPath>bin\x86\MacRelease\</OutputPath>
      <DefineConstants>CLIENT; MAC</DefineConstants>
-+    <PlatformTarget>x64</PlatformTarget>
++    <PlatformTarget>AnyCPU</PlatformTarget>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacServerRelease|x86'">
      <OutputPath>bin\x86\MacServerRelease\</OutputPath>
      <DefineConstants>SERVER; MAC</DefineConstants>
-+    <PlatformTarget>x64</PlatformTarget>
++    <PlatformTarget>AnyCPU</PlatformTarget>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxRelease|x86'">
      <OutputPath>bin\x86\LinuxRelease\</OutputPath>
      <DefineConstants>CLIENT; LINUX</DefineConstants>
-+    <PlatformTarget>x64</PlatformTarget>
++    <PlatformTarget>AnyCPU</PlatformTarget>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxServerRelease|x86'">
      <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
      <DefineConstants>SERVER; LINUX</DefineConstants>
-+    <PlatformTarget>x64</PlatformTarget>
++    <PlatformTarget>AnyCPU</PlatformTarget>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>

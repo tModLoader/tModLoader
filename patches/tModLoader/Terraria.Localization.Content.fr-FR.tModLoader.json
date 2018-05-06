@@ -66,6 +66,7 @@
 		"LoadErrorTextureFailedToLoad": "La texture située en {0} n'a pas chargé correctement",
 		"LoadErrorWavSoundFailedToLoad": "Le dossier de son .wav situé en {0} n'a pas chargé correctement",
 		"LoadErrorMP3SoundFailedToLoad": "Le dossier de son .mp3 situé en {0} n'a pas chargé correctement",
+		// "LoadErrorSoundFailedToLoadAudioDeviceHint": "(Try making sure your computer has speakers attached and audio devices enabled)",
 		"LoadErrorFontFailedToLoad": "Le dossier de police situé en {0} n'a pas chargé correctement",
 		"LoadErrorEffectFailedToLoad": "Le dossier d'effets situé en {0} n'a pas chargé correctement",
 		"LoadErrorUnknownXNBFileHint": "Dossier xnb inconnu: {path}. Possiblement devrait être en Fonts/ ou Effects/",

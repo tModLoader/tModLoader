@@ -66,6 +66,7 @@
 		"LoadErrorTextureFailedToLoad": "The texture file at {0} failed to load",
 		"LoadErrorWavSoundFailedToLoad": "The wav sound file at {0} failed to load",
 		"LoadErrorMP3SoundFailedToLoad": "The mp3 sound file at {0} failed to load",
+		"LoadErrorSoundFailedToLoadAudioDeviceHint": "(Try making sure your computer has speakers attached and audio devices enabled)",
 		"LoadErrorFontFailedToLoad": "The font file at {0} failed to load",
 		"LoadErrorEffectFailedToLoad": "The effect file at {0} failed to load",
 		"LoadErrorUnknownXNBFileHint": "Unknown xnb file {path}. Perhaps it should be in Fonts/ or Effects/",
