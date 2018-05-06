@@ -98,6 +98,9 @@
 		"ModPackModsMissing": "未找到下列模组:\n{0}",
 		"ModPackModsContained": "该列表包含下列模组:\n{0}",
 		"ModPackMissing": " - 缺少",
+		"ModPackLoadingSpecifiedModPack": "加载指定模组整合包: {0}",
+		"ModPackDoesNotExist": "模组整合包 {0} 不存在.",
+		"ModPackMalformed": "模组整合包 {0} 正常读取失败,它可能已损坏. ({1})",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "同步模组",
@@ -234,6 +237,7 @@
 		"MSReading": "读取中: {0}",
 		"MSSettingUp": "安装中...",
 		"MSAddingRecipes": "添加合成配方...",
+		"AddingModContent": "添加模组内容...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "部分起始物品无法正常放入背包",

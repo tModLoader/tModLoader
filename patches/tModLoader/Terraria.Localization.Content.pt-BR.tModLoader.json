@@ -97,6 +97,9 @@
 		// "ModPackModsMissing": "The following mods were not found:\n{0}",
 		// "ModPackModsContained": "This list contains the following mods:\n{0}",
 		// "ModPackMissing": " - Missing",
+		// "ModPackLoadingSpecifiedModPack": "Loading specified modpack: {0}",
+		// "ModPackDoesNotExist": "Modpack {0} does not exist.",
+		// "ModPackMalformed": "The {0} modpack failed to be read properly, it might be malformed. ({1})",
 
 		// ModNet/Multiplayer
 		// "MPSyncingMods": "Syncing Mods",
@@ -233,6 +236,7 @@
 		// "MSReading": "Reading: {0}",
 		// "MSSettingUp": "Setting up...",
 		// "MSAddingRecipes": "Adding Recipes...",
+		// "AddingModContent": "Adding mod content...",
 
 		// Mod Loader Mod
 		// "StartBagTooltip": "Some starting items couldn't fit in your inventory",

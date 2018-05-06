@@ -97,6 +97,9 @@
 		"ModPackModsMissing": "Les Mods suivants n'ont pas été trouvés:\n{0}",
 		"ModPackModsContained": "Cette liste contient les Mods suivants:\n{0}",
 		"ModPackMissing": " - Manquant",
+		// "ModPackLoadingSpecifiedModPack": "Loading specified modpack: {0}",
+		// "ModPackDoesNotExist": "Modpack {0} does not exist.",
+		// "ModPackMalformed": "The {0} modpack failed to be read properly, it might be malformed. ({1})",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronisation des Mods",
@@ -233,6 +236,7 @@
 		"MSReading": "En lecture de: {0}",
 		"MSSettingUp": "Installation...",
 		"MSAddingRecipes": "Ajout des recettes d'artisanat...",
+		// "AddingModContent": "Adding mod content...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",

@@ -140,7 +140,7 @@ namespace Terraria.ModLoader
 			}
 			if (Main.dedServ)
 			{
-				Console.WriteLine("Adding mod content...");
+				Console.WriteLine(Language.GetTextValue("tModLoader.AddingModContent"));
 			}
 			int num = 0;
 			foreach (Mod mod in mods.Values)
@@ -436,7 +436,7 @@ namespace Terraria.ModLoader
 			{
 				Directory.CreateDirectory(UI.UIModPacks.ModListSaveDirectory);
 
-				Console.WriteLine($"Loading specified modpack: {commandLineModPack}\n");
+				Console.WriteLine(Language.GetTextValue("tModLoader.LoadingSpecifiedModPack", commandLineModPack) + "\n");
 				var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
 				foreach (var mod in FindMods())
 				{
@@ -449,9 +449,9 @@ namespace Terraria.ModLoader
 			{
 				string err;
 				if (e is FileNotFoundException)
-					err = $"Modpack {filePath} does not exist.\n";
+					err = Language.GetTextValue("tModLoader.ModPackDoesNotExist", filePath) + "\n";
 				else
-					err = $"The {commandLineModPack} modpack failed to be read properly, it might be malformed. ({e.Message})\n";
+					err = Language.GetTextValue("tModLoader.ModPackDoesNotExist", commandLineModPack, e.Message) + "\n";
 
 				if (Main.dedServ)
 				{
