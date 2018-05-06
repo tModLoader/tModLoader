@@ -280,7 +280,7 @@ namespace ExampleMod
 
 		public override void UpdateUI(GameTime gameTime)
 		{
-			if (exampleUserInterface != null)
+			if (exampleUserInterface != null && ExampleUI.visible)
 				exampleUserInterface.Update(gameTime);
 		}
 
