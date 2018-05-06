@@ -52,9 +52,6 @@ namespace Terraria.ModLoader.Default
 			AddPatreonItemAndEquipType(new KittyKitCatCat_Head(), "KittyKitCatCat", EquipType.Head);
 			AddPatreonItemAndEquipType(new KittyKitCatCat_Body(), "KittyKitCatCat", EquipType.Body);
 			AddPatreonItemAndEquipType(new KittyKitCatCat_Legs(), "KittyKitCatCat", EquipType.Legs);
-			AddPatreonItemAndEquipType(new litcherally_Head(), "litcherally", EquipType.Head);
-			AddPatreonItemAndEquipType(new litcherally_Body(), "litcherally", EquipType.Body);
-			AddPatreonItemAndEquipType(new litcherally_Legs(), "litcherally", EquipType.Legs);
 			AddPatreonItemAndEquipType(new PotyBlank_Head(), "PotyBlank", EquipType.Head);
 			AddPatreonItemAndEquipType(new PotyBlank_Body(), "PotyBlank", EquipType.Body);
 			AddPatreonItemAndEquipType(new PotyBlank_Legs(), "PotyBlank", EquipType.Legs);

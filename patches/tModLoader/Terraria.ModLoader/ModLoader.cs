@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		/// <summary>The name and version number of tModLoader.</summary>
-		public static readonly Version version = new Version(0, 10, 1, 3);
+		public static readonly Version version = new Version(0, 10, 1, 4);
 		// Marks this release as a beta release, preventing publishing and marking all built mods as unpublishable.
 #if !BETA
 		public static readonly string versionedName = "tModLoader v" + version;
@@ -348,6 +348,8 @@ namespace Terraria.ModLoader
 
 			foreach (string fileName in Directory.GetFiles(ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
 			{
+				if (Path.GetFileName(fileName) == "temporaryDownload.tmod")
+					continue;
 				var lastModified = File.GetLastWriteTime(fileName);
 				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified)
 				{
@@ -358,7 +360,8 @@ namespace Terraria.ModLoader
 					}
 					catch (Exception e) //this will probably spam, given the number of calls to FindMods
 					{
-						ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.LoadErrorErrorReadingModFile", modFile.path));
+						// TODO: Reflect these skipped Mods in the UI somehow.
+						//ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.LoadErrorErrorReadingModFile", modFile.path));
 						continue;
 					}
 

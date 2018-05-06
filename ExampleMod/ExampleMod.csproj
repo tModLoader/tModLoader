@@ -128,6 +128,7 @@
     <Compile Include="Items\ExampleItem.cs" />
     <Compile Include="Items\ExampleLifeFruit.cs" />
     <Compile Include="Items\ExampleMagicMirror.cs" />
+    <Compile Include="Items\Infinity.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
