@@ -788,6 +788,14 @@
  				}
  				this._isDrawingOrUpdating = false;
  			}
+@@ -11968,6 +_,7 @@
+ 			}
+ 		}
+ 
++		internal static bool syncingWorld = false;
+ 		protected void DoUpdate(GameTime gameTime)
+ 		{
+ 			Main.ignoreErrors = true;
 @@ -11997,6 +_,7 @@
  			{
  				Main.InGameUI.Update(gameTime);
@@ -842,6 +850,15 @@
 +				PlayerHooks.SendClientChanges(Main.player[Main.myPlayer], Main.clientPlayer);
  			}
  			if (Main.netMode == 1)
+ 			{
+@@ -12624,6 +_,8 @@
+ 			PortalHelper.UpdatePortalPoints();
+ 			Main.tileSolid[379] = false;
+ 			Main.ActivePlayersCount = 0;
++			if (Main.syncingWorld)
++				goto IL_1B52;
+ 			int num12 = 0;
+ 			while (num12 < 255)
  			{
 @@ -12982,7 +_,7 @@
  
