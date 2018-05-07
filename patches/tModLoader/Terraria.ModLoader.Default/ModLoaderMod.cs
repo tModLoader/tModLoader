@@ -46,6 +46,7 @@ namespace Terraria.ModLoader.Default
 
 		private void AddPatreon()
 		{
+			// Make sure the name and classname prefix match exactly.
 			AddPatreonItemAndEquipType(new toplayz_Head(), "toplayz", EquipType.Head);
 			AddPatreonItemAndEquipType(new toplayz_Body(), "toplayz", EquipType.Body);
 			AddPatreonItemAndEquipType(new toplayz_Legs(), "toplayz", EquipType.Legs);
@@ -55,10 +56,10 @@ namespace Terraria.ModLoader.Default
 			AddPatreonItemAndEquipType(new PotyBlank_Head(), "PotyBlank", EquipType.Head);
 			AddPatreonItemAndEquipType(new PotyBlank_Body(), "PotyBlank", EquipType.Body);
 			AddPatreonItemAndEquipType(new PotyBlank_Legs(), "PotyBlank", EquipType.Legs);
-			AddPatreonItemAndEquipType(new Dinidini_Head(), "dinidini", EquipType.Head);
-			AddPatreonItemAndEquipType(new Dinidini_Body(), "dinidini", EquipType.Body);
-			AddPatreonItemAndEquipType(new Dinidini_Legs(), "dinidini", EquipType.Legs);
-			AddPatreonItemAndEquipType(new Dinidini_Wings(), "dinidini", EquipType.Wings);
+			AddPatreonItemAndEquipType(new dinidini_Head(), "dinidini", EquipType.Head);
+			AddPatreonItemAndEquipType(new dinidini_Body(), "dinidini", EquipType.Body);
+			AddPatreonItemAndEquipType(new dinidini_Legs(), "dinidini", EquipType.Legs);
+			AddPatreonItemAndEquipType(new dinidini_Wings(), "dinidini", EquipType.Wings);
 		}
 
 		private void AddPatreonItemAndEquipType(ModItem item, string name, EquipType equipType)

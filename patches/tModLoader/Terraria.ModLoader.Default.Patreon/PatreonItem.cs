@@ -77,10 +77,10 @@ namespace Terraria.ModLoader.Default.Patreon
 						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Legs>());
 						return true;
 					case 3:
-						player.QuickSpawnItem(mod.ItemType<Dinidini_Head>());
-						player.QuickSpawnItem(mod.ItemType<Dinidini_Body>());
-						player.QuickSpawnItem(mod.ItemType<Dinidini_Legs>());
-						player.QuickSpawnItem(mod.ItemType<Dinidini_Wings>());
+						player.QuickSpawnItem(mod.ItemType<dinidini_Head>());
+						player.QuickSpawnItem(mod.ItemType<dinidini_Body>());
+						player.QuickSpawnItem(mod.ItemType<dinidini_Legs>());
+						player.QuickSpawnItem(mod.ItemType<dinidini_Wings>());
 						return true;
 				}
 			}
