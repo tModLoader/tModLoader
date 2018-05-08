@@ -404,7 +404,7 @@
  					{
  						return;
  					}
-+					Main.syncingWorld = false;
++					Netplay.syncingWorld = false;
  					Main.anglerQuest = (int)this.reader.ReadByte();
  					Main.anglerQuestFinished = this.reader.ReadBoolean();
  					return;

@@ -788,14 +788,6 @@
  				}
  				this._isDrawingOrUpdating = false;
  			}
-@@ -11968,6 +_,7 @@
- 			}
- 		}
- 
-+		internal static bool syncingWorld = false;
- 		protected void DoUpdate(GameTime gameTime)
- 		{
- 			Main.ignoreErrors = true;
 @@ -11997,6 +_,7 @@
  			{
  				Main.InGameUI.Update(gameTime);
@@ -855,7 +847,7 @@
  			PortalHelper.UpdatePortalPoints();
  			Main.tileSolid[379] = false;
  			Main.ActivePlayersCount = 0;
-+			if (Main.netMode == 1 && Main.syncingWorld)
++			if (Main.netMode == 1 && Netplay.syncingWorld)
 +				goto IL_1B52;
  			int num12 = 0;
  			while (num12 < 255)
