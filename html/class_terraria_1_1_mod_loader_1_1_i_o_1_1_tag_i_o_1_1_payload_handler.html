@@ -214,7 +214,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00030">30</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                                                                                                {</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                this.reader = reader;</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                this.writer = writer;</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            {</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                this.reader = reader;</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                this.writer = writer;</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -458,8 +458,8 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00039">39</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                                                                     {</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                var list = <span class="keyword">new</span> List&lt;T&gt;(size);</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; size; i++)</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                    list.Add(reader(r));</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="keywordflow">return</span> list;</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00040">40</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            {</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                var list = <span class="keyword">new</span> List&lt;T&gt;(size);</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; size; i++)</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    list.Add(reader(r));</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordflow">return</span> list;</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a54027bd85318aa0e4241197fb1467767"></a>
@@ -606,8 +606,8 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00048">48</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                                                                 {</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="keywordflow">foreach</span> (T t <span class="keywordflow">in</span> list)</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    writer(w, t);</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00050">50</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            {</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keywordflow">foreach</span> (T t <span class="keywordflow">in</span> list)</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                    writer(w, t);</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -621,7 +621,7 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00035">35</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tag_i_o_8cs_source.html#l00036">36</a> of file <a class="el" href="_tag_i_o_8cs_source.html">TagIO.cs</a>.</p>
 
 </div>
 </div>
