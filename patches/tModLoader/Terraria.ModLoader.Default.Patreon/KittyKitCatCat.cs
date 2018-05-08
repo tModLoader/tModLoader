@@ -1,9 +1,9 @@
 ﻿namespace Terraria.ModLoader.Default.Patreon
 {
-	class KittyKitCatCat_Head : PatreonItem
+	internal class KittyKitCatCat_Head : PatreonItem
 	{
 		public override string PatreonName => "KittyKitCatCat";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Head;
+		public override EquipType PatreonEquipType => EquipType.Head;
 
 		public override void SetDefaults()
 		{
@@ -13,10 +13,10 @@
 		}
 	}
 
-	class KittyKitCatCat_Body : PatreonItem
+	internal class KittyKitCatCat_Body : PatreonItem
 	{
 		public override string PatreonName => "KittyKitCatCat";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Body;
+		public override EquipType PatreonEquipType => EquipType.Body;
 
 		public override void SetDefaults()
 		{
@@ -26,10 +26,10 @@
 		}
 	}
 
-	class KittyKitCatCat_Legs : PatreonItem
+	internal class KittyKitCatCat_Legs : PatreonItem
 	{
 		public override string PatreonName => "KittyKitCatCat";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Legs;
+		public override EquipType PatreonEquipType => EquipType.Legs;
 
 		public override void SetDefaults()
 		{

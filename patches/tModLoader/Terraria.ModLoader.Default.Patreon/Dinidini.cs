@@ -1,9 +1,9 @@
 ﻿namespace Terraria.ModLoader.Default.Patreon
 {
-	class dinidini_Head : PatreonItem
+	internal class dinidini_Head : PatreonItem
 	{
 		public override string PatreonName => "dinidini";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Head;
+		public override EquipType PatreonEquipType => EquipType.Head;
 
 		public override void SetDefaults()
 		{
@@ -13,10 +13,10 @@
 		}
 	}
 
-	class dinidini_Body : PatreonItem
+	internal class dinidini_Body : PatreonItem
 	{
 		public override string PatreonName => "dinidini";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Body;
+		public override EquipType PatreonEquipType => EquipType.Body;
 
 		public override void SetDefaults()
 		{
@@ -26,10 +26,10 @@
 		}
 	}
 
-	class dinidini_Legs : PatreonItem
+	internal class dinidini_Legs : PatreonItem
 	{
 		public override string PatreonName => "dinidini";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Legs;
+		public override EquipType PatreonEquipType => EquipType.Legs;
 
 		public override void SetDefaults()
 		{
@@ -39,10 +39,10 @@
 		}
 	}
 
-	class dinidini_Wings : PatreonItem
+	internal class dinidini_Wings : PatreonItem
 	{
 		public override string PatreonName => "dinidini";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Wings;
+		public override EquipType PatreonEquipType => EquipType.Wings;
 
 		public override void SetDefaults()
 		{
