@@ -29,7 +29,8 @@ namespace Terraria.ModLoader.IO
 				w.Write(VERSION);
 				w.Write(img.Width);
 				w.Write(img.Height);
-				foreach (int c in rawdata) {
+				foreach (int c in rawdata)
+				{
 					//Bitmap is in ABGR
 					int a = c >> 24 & 0xFF;
 					int b = c >> 16 & 0xFF;
@@ -63,7 +64,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, Stream src) => 
+		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, Stream src) =>
 			RawToTexture2D(graphicsDevice, new BinaryReader(src, Encoding.UTF8));
 
 		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, BinaryReader r, bool async = false)

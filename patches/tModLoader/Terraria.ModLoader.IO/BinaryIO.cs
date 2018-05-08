@@ -10,15 +10,16 @@ namespace Terraria.ModLoader.IO
 
 		public static Item ReadItem(this BinaryReader reader, bool readStack = false, bool readFavorite = false) =>
 			ItemIO.Receive(reader, readStack, readFavorite);
-		
+
 		//copied from BinaryWriter.Read7BitEncodedInt
 		public static void WriteVarInt(this BinaryWriter writer, int value)
 		{
 			// Write out an int 7 bits at a time.  The high bit of the byte,
 			// when on, tells reader to continue reading more bytes.
-			uint v = (uint) value;   // support negative numbers
-			while (v >= 0x80) {
-				writer.Write((byte) (v | 0x80));
+			uint v = (uint)value;   // support negative numbers
+			while (v >= 0x80)
+			{
+				writer.Write((byte)(v | 0x80));
 				v >>= 7;
 			}
 			writer.Write((byte)v);
@@ -32,7 +33,8 @@ namespace Terraria.ModLoader.IO
 			int count = 0;
 			int shift = 0;
 			byte b;
-			do {
+			do
+			{
 				// Check for a corrupted stream.  Read a max of 5 bytes.
 				if (shift == 5 * 7)  // 5 bytes max per Int32, shift += 7
 					throw new FormatException("variable length int with more than 32 bits");
@@ -49,7 +51,7 @@ namespace Terraria.ModLoader.IO
 		{
 			var ms = new MemoryStream();//memory thrash should be fine here
 			write(new BinaryWriter(ms));
-			writer.WriteVarInt((int) ms.Length);
+			writer.WriteVarInt((int)ms.Length);
 			ms.Position = 0;
 			ms.CopyTo(writer.BaseStream);
 		}
@@ -60,7 +62,7 @@ namespace Terraria.ModLoader.IO
 			var ms = new MemoryStream(reader.ReadBytes(length));
 			read(new BinaryReader(ms));
 			if (ms.Position != length)
-				throw new IOException("Read underflow "+ms.Position+" of "+length+" bytes");
+				throw new IOException("Read underflow " + ms.Position + " of " + length + " bytes");
 		}
 	}
 }

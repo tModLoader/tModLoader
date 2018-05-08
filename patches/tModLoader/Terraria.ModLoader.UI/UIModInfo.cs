@@ -139,14 +139,16 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = gotoMenu;
 		}
 
-		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement) {
+		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement)
+		{
 			Main.PlaySound(ID.SoundID.MenuOpen);
 			Interface.extractMod.SetMod(localMod);
 			Interface.extractMod.SetGotoMenu(gotoMenu);
 			Main.menuMode = Interface.extractModID;
 		}
 
-		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement) {
+		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement)
+		{
 			Main.PlaySound(ID.SoundID.MenuClose);
 			File.Delete(localMod.modFile.path);
 			Main.menuMode = this.gotoMenu;

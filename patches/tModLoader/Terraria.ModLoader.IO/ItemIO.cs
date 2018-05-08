@@ -121,7 +121,8 @@ namespace Terraria.ModLoader.IO
 				if (!globalItemInstance.NeedsSaving(item))
 					continue;
 
-				list.Add(new TagCompound {
+				list.Add(new TagCompound
+				{
 					["mod"] = globalItemInstance.mod.Name,
 					["name"] = globalItemInstance.Name,
 					["data"] = globalItemInstance.Save(item)
@@ -241,7 +242,8 @@ namespace Terraria.ModLoader.IO
 				else
 				{
 					item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
-					var tag = new TagCompound {
+					var tag = new TagCompound
+					{
 						["mod"] = modName,
 						["name"] = itemName,
 						["hasGlobalSaving"] = hasGlobalSaving,

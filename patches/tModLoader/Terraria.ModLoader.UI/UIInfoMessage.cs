@@ -69,7 +69,7 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(10, -1, -1, 1);
 			Main.menuMode = this.gotoMenu;
-			if(gotoState != null)
+			if (gotoState != null)
 				Main.MenuUI.SetState(gotoState);
 		}
 	}

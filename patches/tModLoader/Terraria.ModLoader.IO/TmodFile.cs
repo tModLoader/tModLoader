@@ -131,7 +131,7 @@ namespace Terraria.ModLoader.IO
 		{
 			if (desiredState <= state)
 				return;
-			
+
 			using (var fileStream = File.OpenRead(path))
 			using (var hReader = new BinaryReader(fileStream))
 			{
@@ -180,7 +180,7 @@ namespace Terraria.ModLoader.IO
 							var end = deflateStream.TotalOut + len;
 							streamingHandler(fileName, len, reader);
 							if (deflateStream.TotalOut < end)
-								reader.ReadBytes((int) (end - deflateStream.TotalOut));
+								reader.ReadBytes((int)(end - deflateStream.TotalOut));
 							else if (deflateStream.TotalOut > end)
 								throw new IOException(
 									$"Read too many bytes ({deflateStream.Position - end - len}>{len}) while loading streaming asset: {fileName}");
@@ -194,7 +194,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 			}
-			
+
 			if (desiredState >= LoadedState.Info && !HasFile("Info"))
 				throw new Exception("Missing Info file");
 

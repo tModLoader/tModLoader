@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Default
 
 		public override TagCompound Save(Item item)
 		{
-			return new TagCompound {["modData"] = data};
+			return new TagCompound { ["modData"] = data };
 		}
 
 		public override void Load(Item item, TagCompound tag)

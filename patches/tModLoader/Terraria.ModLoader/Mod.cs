@@ -213,7 +213,7 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e)
 			{
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorWavSoundFailedToLoad", path) + (Main.engine == null ? "\n" + Language.GetTextValue("tModLoader.LoadErrorSoundFailedToLoadAudioDeviceHint") : "" ), e);
+				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorWavSoundFailedToLoad", path) + (Main.engine == null ? "\n" + Language.GetTextValue("tModLoader.LoadErrorSoundFailedToLoadAudioDeviceHint") : ""), e);
 			}
 		}
 
@@ -225,11 +225,12 @@ namespace Terraria.ModLoader
 			{
 				if (path.StartsWith("Sounds/Music/"))
 				{
-					if (ModLoader.musicStreamMode != 1) {//no cache
+					if (ModLoader.musicStreamMode != 1)
+					{//no cache
 						musics[path] = new MusicData(bytes, true);
 						return;
 					}
-					
+
 					if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
 					{
 						WAVCacheIO.CacheMP3(wavCacheFilename, new MemoryStream(bytes));

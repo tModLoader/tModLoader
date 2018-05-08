@@ -14,9 +14,10 @@ namespace Terraria.ModLoader.UI
 		private int gotoMenu;
 		private LocalMod mod;
 
-		private static IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) {".dll", ".pdb"};
+		private static IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) { ".dll", ".pdb" };
 
-		public override void OnInitialize() {
+		public override void OnInitialize()
+		{
 			loadProgress = new UILoadProgress();
 			loadProgress.Width.Set(0f, 0.8f);
 			loadProgress.MaxWidth.Set(600f, 0f);
@@ -32,7 +33,8 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.extractModID;
 			Task.Factory
 				.StartNew(() => Interface.extractMod._Extract())
-				.ContinueWith(t => {
+				.ContinueWith(t =>
+				{
 					var e = t.Result;
 					if (e != null)
 						ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name));
@@ -51,16 +53,18 @@ namespace Terraria.ModLoader.UI
 			this.gotoMenu = gotoMenu;
 		}
 
-		private Exception _Extract() {
+		private Exception _Extract()
+		{
 			StreamWriter log = null;
-			try {
+			try
+			{
 				var dir = Path.Combine(Main.SavePath, "Mod Reader", mod.Name);
 				if (Directory.Exists(dir))
 					Directory.Delete(dir, true);
 				Directory.CreateDirectory(dir);
 
-				log = new StreamWriter(Path.Combine(dir, "tModReader.txt")) {AutoFlush = true};
-				
+				log = new StreamWriter(Path.Combine(dir, "tModReader.txt")) { AutoFlush = true };
+
 				if (mod.properties.hideCode)
 					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideCodeMessage"));
 				else if (!mod.properties.includeSource)
@@ -97,11 +101,13 @@ namespace Terraria.ModLoader.UI
 				foreach (var entry in mod.modFile)
 					WriteFile(entry.Key, entry.Value);
 			}
-			catch (Exception e) {
+			catch (Exception e)
+			{
 				log?.WriteLine(e);
 				return e;
 			}
-			finally {
+			finally
+			{
 				log?.Close();
 				mod?.modFile.UnloadAssets();
 			}

@@ -19,7 +19,8 @@ namespace Terraria.ModLoader.Default
 
 		public override TagCompound Save()
 		{
-			return new TagCompound {
+			return new TagCompound
+			{
 				["list"] = data,
 				["mysteryNPCs"] = mysteryNPCs,
 				["mysteryKillCounts"] = mysteryKillCounts
@@ -39,13 +40,14 @@ namespace Terraria.ModLoader.Default
 			int count = reader.ReadUInt16();
 			for (int k = 0; k < count; k++)
 			{
-				list.Add(new TagCompound {
+				list.Add(new TagCompound
+				{
 					["mod"] = reader.ReadString(),
 					["name"] = reader.ReadString(),
 					["legacyData"] = reader.ReadBytes(reader.ReadUInt16())
 				});
 			}
-			Load(new TagCompound {["list"] = list});
+			Load(new TagCompound { ["list"] = list });
 		}
 	}
 }

@@ -498,7 +498,7 @@ namespace Terraria.ModLoader
 		{
 			npc.modNPC?.BossLoot(ref name, ref potionType);
 		}
-		
+
 		public static void BossBag(NPC npc, ref int bagType)
 		{
 			if (npc.modNPC != null)
@@ -955,8 +955,8 @@ namespace Terraria.ModLoader
 
 		public static int SpawnNPC(int type, int tileX, int tileY)
 		{
-			var npc = type >= NPCID.Count ? 
-				GetNPC(type).SpawnNPC(tileX, tileY) : 
+			var npc = type >= NPCID.Count ?
+				GetNPC(type).SpawnNPC(tileX, tileY) :
 				NPC.NewNPC(tileX * 16 + 8, tileY * 16, type);
 
 			foreach (GlobalNPC g in HookSpawnNPC.arr)
@@ -966,7 +966,7 @@ namespace Terraria.ModLoader
 
 			return npc;
 		}
-		
+
 		public static void CanTownNPCSpawn(int numTownNPCs, int money)
 		{
 			foreach (ModNPC npc in npcs)
@@ -982,12 +982,12 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
-		
+
 		public static bool CheckConditions(int type)
 		{
 			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
 		}
-		
+
 		public static string TownNPCName(int type)
 		{
 			return GetNPC(type)?.TownNPCName() ?? "";
@@ -1012,7 +1012,7 @@ namespace Terraria.ModLoader
 				g.Instance(npc).GetChat(npc, ref chat);
 			}
 		}
-		
+
 		public static void SetChatButtons(ref string button, ref string button2)
 		{
 			if (Main.player[Main.myPlayer].talkNPC >= 0)
@@ -1021,7 +1021,7 @@ namespace Terraria.ModLoader
 				npc.modNPC?.SetChatButtons(ref button, ref button2);
 			}
 		}
-		
+
 		public static void OnChatButtonClicked(bool firstButton)
 		{
 			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
@@ -1098,7 +1098,7 @@ namespace Terraria.ModLoader
 		//check patch files for town NPC attacks
 		private delegate void DelegateTownNPCAttackStrength(NPC npc, ref int damage, ref float knockback);
 		private static HookList HookTownNPCAttackStrength = AddHook<DelegateTownNPCAttackStrength>(g => g.TownNPCAttackStrength);
-		
+
 		public static void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
 		{
 			npc.modNPC?.TownNPCAttackStrength(ref damage, ref knockback);

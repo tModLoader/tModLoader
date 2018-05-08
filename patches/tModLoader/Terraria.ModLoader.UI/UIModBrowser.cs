@@ -375,7 +375,7 @@ namespace Terraria.ModLoader.UI
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
 			uIElement.RemoveChild(updateAllButton);
-			if(SpecialModPackFilter == null && items.Count(x => x.update && !x.updateIsDowngrade) > 0)
+			if (SpecialModPackFilter == null && items.Count(x => x.update && !x.updateIsDowngrade) > 0)
 			{
 				uIElement.Append(updateAllButton);
 			}

@@ -15,7 +15,8 @@ namespace Terraria.ModLoader
 		private byte[] buf;
 		private ushort len;
 
-		internal ModPacket(byte messageID, int capacity = 256) : base(new MemoryStream(capacity)) {
+		internal ModPacket(byte messageID, int capacity = 256) : base(new MemoryStream(capacity))
+		{
 			Write((ushort)0);
 			Write(messageID);
 		}
@@ -23,7 +24,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Sends all the information you've written between client and server. If the toClient parameter is non-negative, this packet will only be sent to the specified client. If the ignoreClient parameter is non-negative, this packet will not be sent to the specified client.
 		/// </summary>
-		public void Send(int toClient = -1, int ignoreClient = -1) {
+		public void Send(int toClient = -1, int ignoreClient = -1)
+		{
 			Finish();
 
 			if (Main.netMode == 1)
@@ -36,9 +38,10 @@ namespace Terraria.ModLoader
 						Netplay.Clients[i].Socket.AsyncSend(buf, 0, len, SendCallback);
 		}
 
-		private void SendCallback(object state) {}
+		private void SendCallback(object state) { }
 
-		private void Finish() {
+		private void Finish()
+		{
 			if (buf != null)
 				return;
 
@@ -49,7 +52,7 @@ namespace Terraria.ModLoader
 			Seek(0, SeekOrigin.Begin);
 			Write(len);
 			Close();
-			buf = ((MemoryStream) OutStream).GetBuffer();
+			buf = ((MemoryStream)OutStream).GetBuffer();
 		}
 	}
 }

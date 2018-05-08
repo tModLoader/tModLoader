@@ -84,7 +84,7 @@ namespace Terraria.ModLoader
 
 		public ModItem()
 		{
-			item = new Item {modItem = this};
+			item = new Item { modItem = this };
 		}
 
 		/// <summary>
@@ -130,8 +130,10 @@ namespace Terraria.ModLoader
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
 		/// </summary>
-		public virtual ModItem NewInstance(Item itemClone) {
-			if (CloneNewInstances) {
+		public virtual ModItem NewInstance(Item itemClone)
+		{
+			if (CloneNewInstances)
+			{
 				var clone = Clone();
 				clone.item = itemClone;
 				return clone;
@@ -150,7 +152,7 @@ namespace Terraria.ModLoader
 		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. 
 		/// For those that are familiar with tAPI, this has the same function as .json files.
 		/// </summary>
-		public virtual void SetDefaults() 
+		public virtual void SetDefaults()
 		{
 		}
 
@@ -173,7 +175,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
-		public virtual void AutoStaticDefaults() {
+		public virtual void AutoStaticDefaults()
+		{
 			Main.itemTexture[item.type] = ModLoader.GetTexture(Texture);
 
 			var flameTexture = Texture + "_Flame";

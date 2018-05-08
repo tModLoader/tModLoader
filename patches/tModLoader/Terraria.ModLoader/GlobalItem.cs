@@ -79,7 +79,8 @@ namespace Terraria.ModLoader
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
 		/// </summary>
-		public virtual GlobalItem NewInstance(Item item) {
+		public virtual GlobalItem NewInstance(Item item)
+		{
 			if (CloneNewInstances)
 				return Clone();
 
