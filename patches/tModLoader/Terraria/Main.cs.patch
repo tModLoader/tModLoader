@@ -843,6 +843,15 @@
  			}
  			if (Main.netMode == 1)
  			{
+@@ -12624,6 +_,8 @@
+ 			PortalHelper.UpdatePortalPoints();
+ 			Main.tileSolid[379] = false;
+ 			Main.ActivePlayersCount = 0;
++			if (Main.netMode == 1 && Netplay.syncingWorld)
++				goto IL_1B52;
+ 			int num12 = 0;
+ 			while (num12 < 255)
+ 			{
 @@ -12982,7 +_,7 @@
  
  		private static void DoUpdate_Enter_ToggleChat()

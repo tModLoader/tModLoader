@@ -72,15 +72,21 @@
  			if (Netplay.portForwardOpen)
  			{
  				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
-@@ -264,7 +_,7 @@
+@@ -264,9 +_,11 @@
  			}
  			Netplay.disconnect = false;
  			Netplay.Connection = new RemoteServer();
 -			Netplay.Connection.ReadBuffer = new byte[1024];
+-		}
+-
 +			Netplay.Connection.ReadBuffer = new byte[ushort.MaxValue];
- 		}
- 
++		}
++
++
++		internal static bool syncingWorld = false;
  		private static void InnerClientLoop()
+ 		{
+ 			try
 @@ -279,7 +_,7 @@
  					{
  						if (NetMessage.buffer[256].checkBytes)
@@ -90,6 +96,14 @@
  						}
  						Netplay.Connection.IsActive = true;
  						if (Netplay.Connection.State == 0)
+@@ -332,6 +_,7 @@
+ 						{
+ 							Netplay.Connection.State = 6;
+ 							Main.player[Main.myPlayer].FindSpawn();
++							Netplay.syncingWorld = true;
+ 							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, (float)Main.player[Main.myPlayer].SpawnY, 0f, 0f, 0, 0, 0);
+ 						}
+ 						if (Netplay.Connection.State == 6 && num != Netplay.Connection.State)
 @@ -363,7 +_,6 @@
  									});
  							}
@@ -98,6 +112,14 @@
  					}
  					else if (Netplay.Connection.IsActive)
  					{
+@@ -372,6 +_,7 @@
+ 					}
+ 					num = Netplay.Connection.State;
+ 				}
++				Netplay.syncingWorld = false;
+ 				try
+ 				{
+ 					Netplay.Connection.Socket.Close();
 @@ -443,7 +_,7 @@
  			{
  				Netplay.Clients[num].Reset();
