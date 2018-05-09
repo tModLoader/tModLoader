@@ -146,6 +146,7 @@
 		"MBFilterModlist": "Liste des Mods",
 		"MBExceededBandwidth": "Le serveur du navigateur a dépassé la limite journalière allouée de bande passante. Merci de consulter la page d'accueil du Mod pour un téléchargement alternatif ou de réessayer plus tard.",
 		"MBUnknownMBError": "Erreur inconnue du navigateur. Réessayer plus tard.",
+		// "MBNoModsFound": "No mods found",
 		"1SecondAgo": "1 seconde avant",
 		"XSecondsAgo": "{0} secondes avant",
 		"1MinuteAgo": "1 minute avant",

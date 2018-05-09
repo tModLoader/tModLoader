@@ -146,6 +146,7 @@
 		// "MBFilterModlist": "Modlist",
 		// "MBExceededBandwidth": "The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.",
 		// "MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
+		// "MBNoModsFound": "No mods found",
 		// "1SecondAgo": "1 second ago",
 		// "XSecondsAgo": "{0} seconds ago",
 		// "1MinuteAgo": "1 minute ago",

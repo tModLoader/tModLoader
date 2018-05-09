@@ -32,6 +32,7 @@ namespace Terraria.ModLoader.UI
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uILoader;
 		public UITextPanel<string> uIHeaderTextPanel;
+		public UIText uINoModsFoundText;
 		internal UIInputTextField filterTextBox;
 		internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		private UITextPanel<string> reloadButton;
@@ -116,6 +117,10 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.Top.Set(50f, 0f);
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
+
+			uINoModsFoundText = new UIText(Language.GetTextValue("tModLoader.MBNoModsFound"), 1f, false);
+			uINoModsFoundText.HAlign = 0.5f;
+			uINoModsFoundText.SetPadding(15f);
 
 			modList.SetScrollbar(uIScrollbar);
 			uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModBrowser"), 0.8f, true);
@@ -374,11 +379,17 @@ namespace Terraria.ModLoader.UI
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
+			bool hasNoModsFoundNotif = modList.HasChild(uINoModsFoundText);
+			if (modList.Count <= 0 && !hasNoModsFoundNotif)
+				modList.Add(uINoModsFoundText);
+			else if (hasNoModsFoundNotif)
+				modList.RemoveChild(uINoModsFoundText);
 			uIElement.RemoveChild(updateAllButton);
 			if (SpecialModPackFilter == null && items.Count(x => x.update && !x.updateIsDowngrade) > 0)
 			{
 				uIElement.Append(updateAllButton);
 			}
+
 		}
 
 		public override void OnActivate()
@@ -542,13 +553,13 @@ namespace Terraria.ModLoader.UI
 					if (modsideString == "Client") modside = ModSide.Client;
 					if (modsideString == "Server") modside = ModSide.Server;
 					if (modsideString == "NoSync") modside = ModSide.NoSync;
-					bool exists = false;
+					//bool exists = false; // unused?
 					bool update = false;
 					bool updateIsDowngrade = false;
 					var installed = installedMods.FirstOrDefault(m => m.Name == name);
 					if (installed != null)
 					{
-						exists = true;
+						//exists = true;
 						var cVersion = new Version(version.Substring(1));
 						if (cVersion > installed.modFile.version)
 							update = true;

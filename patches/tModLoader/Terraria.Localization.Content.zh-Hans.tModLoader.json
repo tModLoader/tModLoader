@@ -147,6 +147,7 @@
 		"MBFilterModlist": "模组列表",
 		"MBExceededBandwidth": "模组浏览器的服务器已超过每日的带宽分配,请前往该模组的主页进行备用下载,或稍后重试.",
 		"MBUnknownMBError": "未知模组浏览器错误.请稍后重试",
+		// "MBNoModsFound": "No mods found",
 		"1SecondAgo": "1秒前",
 		"XSecondsAgo": "{0}秒前",
 		"1MinuteAgo": "1分钟前",
