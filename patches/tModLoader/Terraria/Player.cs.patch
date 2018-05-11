@@ -3355,6 +3355,15 @@
  			while (Offset > 9)
  			{
  				Offset -= 10;
+@@ -23839,6 +_,8 @@
+ 			{
+ 				Main.tile[myX, myY] = new Tile();
+ 			}
++			if (!Main.tile[myX, myY].active())
++				return;
+ 			if (Main.tile[myX, myY].type == 21)
+ 			{
+ 				this.TileInteractionsMouseOver_Containers(myX, myY);
 @@ -23906,6 +_,7 @@
  					this.showItemIcon2 = -1;
  				}

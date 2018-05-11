@@ -593,6 +593,18 @@ namespace Terraria.ModLoader
 			return projectile.modProjectile?.Colliding(projHitbox, targetHitbox);
 		}
 
+		private static HookList HookPostDamage = AddHook<Action<Projectile, Rectangle>>(g => g.PostDamage);
+
+		public static void PostDamage(Projectile projectile, Rectangle projHitbox)
+		{
+			projectile.modProjectile?.PostDamage(projHitbox);
+
+			foreach (GlobalProjectile g in HookPostDamage.arr)
+			{
+				g.Instance(projectile).PostDamage(projectile, projHitbox);
+			}
+		}
+
 		public static void DrawHeldProjInFrontOfHeldItemAndArms(Projectile projectile, ref bool flag)
 		{
 			if (projectile.modProjectile != null)

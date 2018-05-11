@@ -494,7 +494,27 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the chat message of any town NPC that the player talks to.
+		/// Allows you to determine whether hovering over this NPC will show its name and health. Returns true by default.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <returns></returns>
+		public virtual bool ShowHoverInfo(NPC npc)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to determine whether this NPC can talk with the player. Return true to allow talking with the player, return false to block this NPC from talking with the player, and return null to use the vanilla code for whether the NPC can talk. Returns null by default.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <returns></returns>
+		public virtual bool? CanChat(NPC npc)
+		{
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to modify the chat message of any NPC that the player can talk to.
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="chat"></param>
@@ -503,7 +523,39 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add items to a town NPC's shop. The type parameter is the type of the NPC that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.
+		/// Allows you to set the text for the buttons that appear on this NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="button"></param>
+		/// <param name="button2"></param>
+		public virtual void SetChatButtons(NPC npc, ref string button, ref string button2)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to change what happens whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Return false to prevent the normal code for this button from running. Returns true by default.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="firstButton"></param>
+		/// <returns></returns>
+		public virtual bool PreChatButtonClicked(NPC npc, bool firstButton)
+		{
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
+		/// Does not run for buttons with a vanilla function.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="firstButton"></param>
+		/// <param name="shop"></param>
+		public virtual void OnChatButtonClicked(NPC npc, bool firstButton, ref bool shop)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to add items to an NPC's shop. The type parameter is the type of the NPC that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.
 		/// </summary>
 		/// <param name="type"></param>
 		/// <param name="shop"></param>

@@ -852,6 +852,14 @@
  			int num12 = 0;
  			while (num12 < 255)
  			{
+@@ -12612,6 +_,7 @@
+ 				{
+ 					Main.player[Main.myPlayer].AdjTiles();
+ 				}
++				PlayerHooks.UpdateAutopause(Main.player[Main.myPlayer]);
+ 				Main.gamePaused = true;
+ 				return;
+ 			}
 @@ -12982,7 +_,7 @@
  
  		private static void DoUpdate_Enter_ToggleChat()
@@ -3389,6 +3397,15 @@
  			if (!flag)
  			{
  				Main.DrawNPCChatButtons(num, color2, num2, focusText, focusText2);
+@@ -34616,6 +_,8 @@
+ 							IngameFancyUI.OpenVirtualKeyboard(1);
+ 							return;
+ 						}
++						else if (!NPCLoader.PreChatButtonClicked(true))
++							return;
+ 						else if (Main.npc[Main.player[Main.myPlayer].talkNPC].type == 369)
+ 						{
+ 							Main.npcChatCornerItem = 0;
 @@ -34943,7 +_,7 @@
  										for (int l = 0; l < 22; l++)
  										{
@@ -3398,7 +3415,7 @@
  											{
  												Main.player[Main.myPlayer].DelBuff(l);
  												l = -1;
-@@ -34999,6 +_,7 @@
+@@ -34999,10 +_,13 @@
  								Main.PlaySound(12, -1, -1, 1, 1f, 0f);
  								return;
  							}
@@ -3406,10 +3423,19 @@
  						}
  					}
  					else if (Main.npcChatFocus3 && Main.player[Main.myPlayer].talkNPC >= 0)
-@@ -35058,6 +_,7 @@
+ 					{
++						if (!NPCLoader.PreChatButtonClicked(false))
++							return;
+ 						if (Main.npc[Main.player[Main.myPlayer].talkNPC].type == 20)
+ 						{
+ 							Main.PlaySound(12, -1, -1, 1, 1f, 0f);
+@@ -35057,7 +_,9 @@
+ 							Main.PlaySound(12, -1, -1, 1, 1f, 0f);
  							Main.HelpText();
  							Main.npcChatText = Lang.BartenderHelpText(Main.npc[Main.player[Main.myPlayer].talkNPC]);
- 						}
+-						}
++							return;
++						}
 +						NPCLoader.OnChatButtonClicked(false);
  					}
  				}
@@ -3503,6 +3529,16 @@
  				Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  			}
  		}
+@@ -37616,7 +_,8 @@
+ 						if (flag2 && ((Main.npc[k].type != 85 && Main.npc[k].type != 341 && Main.npc[k].aiStyle != 87) || Main.npc[k].ai[0] != 0f) && Main.npc[k].type != 488)
+ 						{
+ 							bool flag3 = Main.SmartInteractShowingGenuine && Main.SmartInteractNPC == k;
+-							if (Main.npc[k].townNPC || Main.npc[k].type == 105 || Main.npc[k].type == 106 || Main.npc[k].type == 123 || Main.npc[k].type == 354 || Main.npc[k].type == 376 || Main.npc[k].type == 579 || Main.npc[k].type == 453)
++							flag &= NPCLoader.ShowHoverInfo(Main.npc[k]);
++							if (NPCLoader.CanChat(Main.npc[k]))
+ 							{
+ 								Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int)(Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Player.tileRangeX * 16)), (int)(Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
+ 								Microsoft.Xna.Framework.Rectangle value4 = new Microsoft.Xna.Framework.Rectangle((int)Main.npc[k].position.X, (int)Main.npc[k].position.Y, Main.npc[k].width, Main.npc[k].height);
 @@ -38028,6 +_,7 @@
  				if (num4 > 0)
  				{
