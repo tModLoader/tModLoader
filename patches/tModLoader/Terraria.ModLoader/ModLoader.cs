@@ -80,6 +80,8 @@ namespace Terraria.ModLoader
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static byte musicStreamMode;
+		internal static bool removeForcedMinimumZoom;
+		internal static bool allowGreaterResolutions;
 		internal static string commandLineModPack = "";
 		private static string steamID64 = "";
 		internal static string SteamID64
@@ -992,6 +994,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", ModLoader.dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("MusicStreamMode", ModLoader.musicStreamMode);
 			Main.Configuration.Put("AlwaysLogExceptions", ModLoader.alwaysLogExceptions);
+			Main.Configuration.Put("RemoveForcedMinimumZoom", ModLoader.removeForcedMinimumZoom);
+			Main.Configuration.Put("AllowGreaterResolutions", ModLoader.allowGreaterResolutions);
 		}
 
 		internal static void LoadConfiguration()
@@ -1004,6 +1008,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get<bool>("DontRemindModBrowserDownloadEnable", ref ModLoader.dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get<byte>("MusicStreamMode", ref ModLoader.musicStreamMode);
 			Main.Configuration.Get<bool>("AlwaysLogExceptions", ref ModLoader.alwaysLogExceptions);
+			Main.Configuration.Get<bool>("RemoveForcedMinimumZoom", ref ModLoader.removeForcedMinimumZoom);
+			Main.Configuration.Get<bool>("AllowGreaterResolutions", ref ModLoader.removeForcedMinimumZoom);
 		}
 
 		/// <summary>
