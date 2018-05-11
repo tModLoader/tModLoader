@@ -843,6 +843,14 @@
  			}
  			if (Main.netMode == 1)
  			{
+@@ -12612,6 +_,7 @@
+ 				{
+ 					Main.player[Main.myPlayer].AdjTiles();
+ 				}
++				PlayerHooks.UpdateAutopause(Main.player[Main.myPlayer]);
+ 				Main.gamePaused = true;
+ 				return;
+ 			}
 @@ -12624,6 +_,8 @@
  			PortalHelper.UpdatePortalPoints();
  			Main.tileSolid[379] = false;
@@ -852,14 +860,6 @@
  			int num12 = 0;
  			while (num12 < 255)
  			{
-@@ -12612,6 +_,7 @@
- 				{
- 					Main.player[Main.myPlayer].AdjTiles();
- 				}
-+				PlayerHooks.UpdateAutopause(Main.player[Main.myPlayer]);
- 				Main.gamePaused = true;
- 				return;
- 			}
 @@ -12982,7 +_,7 @@
  
  		private static void DoUpdate_Enter_ToggleChat()
