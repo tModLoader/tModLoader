@@ -102,10 +102,19 @@ namespace Terraria.ModLoader.UI
 				{
 					byte[] data = reader.ReadBytes(len);
 
-					// check if subject is rawimg, then read it as rawimg and convert back to texture2D
+					// check if subject is rawimg, then read it as rawimg and convert back to png
 					if (name.EndsWith(".rawimg"))
 					{
-						data = ImageIO.ReadRaw(new MemoryStream(data)).bytes;
+						using (var ms = new MemoryStream(data))
+						{
+							var img = ImageIO.RawToTexture2D(Main.instance.GraphicsDevice, ms);
+							using (var pngstream = new MemoryStream())
+							{
+								img.SaveAsPng(pngstream, img.Width, img.Height);
+								data = pngstream.ToArray();
+							}
+						}
+
 						name = Path.ChangeExtension(name, "png");
 					}
 
