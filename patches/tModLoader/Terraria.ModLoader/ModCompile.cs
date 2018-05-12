@@ -270,6 +270,7 @@ namespace Terraria.ModLoader
 						relPath == ".gitignore" ||
 						relPath.StartsWith(".git" + Path.DirectorySeparatorChar) ||
 						relPath.StartsWith(".vs" + Path.DirectorySeparatorChar) ||
+						relPath.StartsWith(".idea" + Path.DirectorySeparatorChar) ||
 						relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
 						relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
 						!mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
@@ -446,7 +447,8 @@ namespace Terraria.ModLoader
 				GenerateExecutable = false,
 				GenerateInMemory = false,
 				TempFiles = new TempFileCollection(tempDir, true),
-				IncludeDebugInformation = generatePDB
+				IncludeDebugInformation = generatePDB,
+				CompilerOptions = "/optimize"
 			};
 
 			compileOptions.ReferencedAssemblies.AddRange(refs.ToArray());
