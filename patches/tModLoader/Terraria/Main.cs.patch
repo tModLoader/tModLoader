@@ -264,6 +264,20 @@
  		}
  
  		public static void InitializeItemAnimations()
+@@ -2566,9 +_,10 @@
+ 					Main._renderTargetMaxSize = 2048;
+ 					break;
+ 				case GraphicsProfile.HiDef:
+-					Main.maxScreenW = 4096;
+-					Main.maxScreenH = 4096;
+-					Main._renderTargetMaxSize = 4096;
++					int hiRes = ModLoader.ModLoader.allowGreaterResolutions ? 8192 : 4096;
++					Main.maxScreenW = hiRes;
++					Main.maxScreenH = hiRes;
++					Main._renderTargetMaxSize = hiRes;
+ 					Main.TrySupporting8K();
+ 					break;
+ 			}
 @@ -2622,6 +_,7 @@
  				flag2 = false;
  				Main.anglerQuest = Main.rand.Next(Main.anglerQuestItemNetIDs.Length);
@@ -4241,6 +4255,17 @@
  			float num55 = (float)(Main.maxTilesX / 4200);
  			num55 *= num55;
  			Main.atmo = (float)((double)((Main.screenPosition.Y + (float)(Main.screenHeight / 2)) / 16f - (65f + 10f * num55)) / (Main.worldSurface / 5.0));
+@@ -57292,8 +_,8 @@
+ 			}
+ 			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
+ 			base.Draw(gameTime);
+-			float val = (float)Main.screenWidth / 1920f;
+-			float val2 = (float)Main.screenHeight / 1200f;
++			float val = (float)Main.screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? 1920f : 8192f);
++			float val2 = (float)Main.screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? 1200f : 8192f);
+ 			Main.GameViewMatrix.Effects = ((Main.gameMenu || Main.player[Main.myPlayer].gravDir == 1f) ? SpriteEffects.None : SpriteEffects.FlipVertically);
+ 			Main.BackgroundViewMatrix.Effects = Main.GameViewMatrix.Effects;
+ 			Main.ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
 @@ -57307,6 +_,7 @@
  			{
  				this.Rasterizer = RasterizerState.CullClockwise;

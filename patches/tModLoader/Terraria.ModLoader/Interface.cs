@@ -238,7 +238,7 @@ namespace Terraria.ModLoader
 			{
 				offY = 210;
 				spacing = 42;
-				numButtons = 7;
+				numButtons = 9;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++)
 				{
@@ -282,6 +282,22 @@ namespace Terraria.ModLoader
 				{
 					Main.PlaySound(SoundID.MenuTick);
 					Main.UseExperimentalFeatures = !Main.UseExperimentalFeatures;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.RemoveForcedMinimumZoom{(ModLoader.removeForcedMinimumZoom ? "Yes" : "No")}");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(SoundID.MenuTick);
+					ModLoader.removeForcedMinimumZoom = !ModLoader.removeForcedMinimumZoom;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.AllowGreaterResolutions{(ModLoader.allowGreaterResolutions ? "Yes" : "No")}");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(SoundID.MenuTick);
+					ModLoader.allowGreaterResolutions = !ModLoader.allowGreaterResolutions;
 				}
 
 				buttonIndex++;
