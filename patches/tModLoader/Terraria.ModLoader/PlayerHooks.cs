@@ -418,6 +418,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookUpdateAutopause = AddHook<Action>(p => p.UpdateAutopause);
+
+		public static void UpdateAutopause(Player player)
+		{
+			foreach (int index in HookUpdateAutopause.arr)
+			{
+				player.modPlayers[index].UpdateAutopause();
+			}
+		}
+
 		private static HookList HookPreUpdate = AddHook<Action>(p => p.PreUpdate);
 
 		public static void PreUpdate(Player player)

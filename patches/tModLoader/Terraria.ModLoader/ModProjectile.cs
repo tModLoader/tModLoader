@@ -399,6 +399,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to make things happen after this projectile finishes killing tiles and damaging NPCs/players. This is called for all projectiles, even those with no damage value, but only if CanDamage() returns true.
+		/// </summary>
+		/// <param name="projHitbox">The hitbox of the projectile</param>
+		public virtual void PostDamage(Rectangle projHitbox)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
 		/// </summary>
 		public virtual Color? GetAlpha(Color lightColor)

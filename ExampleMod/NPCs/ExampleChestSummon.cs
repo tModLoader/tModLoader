@@ -24,9 +24,15 @@ namespace ExampleMod.NPCs
 			}
 		}
 
+		// Allows mimic spawning in single player with autopause on
+		public override void UpdateAutopause()
+		{
+			LastChest = player.chest;
+		}
+
 		public static bool ChestItemSummonCheck(int x, int y, Mod mod)
 		{
-			if (Main.netMode == 1)
+			if (Main.netMode == 1 || !Main.hardMode)
 			{
 				return false;
 			}
@@ -73,7 +79,7 @@ namespace ExampleMod.NPCs
 					{
 						for (int k = y; k <= y + 1; k++)
 						{
-							if (Main.tile[j, k].type == 21)
+							if (TileID.Sets.BasicChest[Main.tile[j, k].type])
 							{
 								Main.tile[j, k].active(false);
 							}

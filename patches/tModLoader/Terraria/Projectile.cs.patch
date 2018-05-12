@@ -386,6 +386,14 @@
  						}
  						bool flag9 = true;
  						if (flag9)
+@@ -9298,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			ProjectileLoader.PostDamage(this, myRect);
+ 		}
+ 
+ 		private void SummonMonkGhast()
 @@ -9391,12 +_,18 @@
  					DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
  					Utils.PlotTileLine(base.Center + f.ToRotationVector2() * -num5, base.Center + f.ToRotationVector2() * num5, (float)this.width * this.scale, new Utils.PerLinePoint(DelegateMethods.CutTiles));

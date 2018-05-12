@@ -998,6 +998,65 @@ namespace Terraria.ModLoader
 			return npc.modNPC?.UsesPartyHat() ?? true;
 		}
 
+		private static HookList HookShowHoverInfo = AddHook<Func<NPC, bool>>(g => g.ShowHoverInfo);
+
+		public static bool ShowHoverInfo(NPC npc)
+		{
+			foreach (GlobalNPC g in HookShowHoverInfo.arr)
+			{
+				if (!g.Instance(npc).ShowHoverInfo(npc))
+				{
+					return false;
+				}
+			}
+
+			return npc.modNPC?.ShowHoverInfo() ?? true;
+		}
+
+		public static bool VanillaCanChat(NPC npc)
+		{
+			switch (npc.type)
+			{
+				case NPCID.BoundGoblin:
+				case NPCID.BoundWizard:
+				case NPCID.BoundMechanic:
+				case NPCID.WebbedStylist:
+				case NPCID.SleepingAngler:
+				case NPCID.BartenderUnconscious:
+				case NPCID.SkeletonMerchant:
+					return true;
+				default:
+					return npc.townNPC;
+			}
+		}
+
+		private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
+
+		public static bool CanChat(NPC npc)
+		{
+			bool defaultCanChat = VanillaCanChat(npc);
+
+			foreach (GlobalNPC g in HookCanChat.arr)
+			{
+				bool? canChat = g.Instance(npc).CanChat(npc);
+				if (canChat.HasValue && canChat.Value != defaultCanChat) // Prioritizes the opposite value from vanilla
+				{
+					return canChat.Value;
+				}
+			}
+
+			if (npc.modNPC != null)
+			{
+				bool? canChat = npc.modNPC.CanChat();
+				if (canChat.HasValue && canChat.Value != defaultCanChat)
+				{
+					return canChat.Value;
+				}
+			}
+
+			return defaultCanChat;
+		}
+
 		private delegate void DelegateGetChat(NPC npc, ref string chat);
 		private static HookList HookGetChat = AddHook<DelegateGetChat>(g => g.GetChat);
 
@@ -1007,37 +1066,70 @@ namespace Terraria.ModLoader
 			{
 				chat = npc.modNPC.GetChat();
 			}
+			else if (!VanillaCanChat(npc))
+			{
+				chat = Language.GetTextValue("tModLoader.DefaultTownNPCChat");
+			}
 			foreach (GlobalNPC g in HookGetChat.arr)
 			{
 				g.Instance(npc).GetChat(npc, ref chat);
 			}
 		}
 
+		private delegate void DelegateSetChatButtons(NPC npc, ref string button, ref string button2);
+		private static HookList HookSetChatButtons = AddHook<DelegateSetChatButtons>(g => g.SetChatButtons);
+
 		public static void SetChatButtons(ref string button, ref string button2)
 		{
-			if (Main.player[Main.myPlayer].talkNPC >= 0)
+			if (Main.LocalPlayer.talkNPC < 0)
+				return;
+
+			NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+			npc.modNPC?.SetChatButtons(ref button, ref button2);
+
+			foreach (GlobalNPC g in HookSetChatButtons.arr)
 			{
-				NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-				npc.modNPC?.SetChatButtons(ref button, ref button2);
+				g.Instance(npc).SetChatButtons(npc, ref button, ref button2);
 			}
 		}
 
-		public static void OnChatButtonClicked(bool firstButton)
+		private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
+
+		public static bool PreChatButtonClicked(bool firstButton)
 		{
-			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-			if (npc.modNPC != null)
+			NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+
+			foreach (GlobalNPC g in HookPreChatButtonClicked.arr)
 			{
-				bool shop = false;
-				npc.modNPC.OnChatButtonClicked(firstButton, ref shop);
-				Main.PlaySound(12, -1, -1, 1);
-				if (shop)
+				if (!g.Instance(npc).PreChatButtonClicked(npc, firstButton))
 				{
-					Main.playerInventory = true;
-					Main.npcChatText = "";
-					Main.npcShop = Main.MaxShopIDs - 1;
-					Main.instance.shop[Main.npcShop].SetupShop(npc.type);
+					Main.PlaySound(SoundID.MenuTick);
+					return false;
 				}
 			}
+			return true;
+		}
+
+		private delegate void DelegateOnChatButtonClicked(NPC npc, bool firstButton, ref bool shop);
+		private static HookList HookOnChatButtonClicked = AddHook<DelegateOnChatButtonClicked>(g => g.OnChatButtonClicked);
+
+		public static void OnChatButtonClicked(bool firstButton)
+		{
+			NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+			bool shop = false;
+
+			npc.modNPC?.OnChatButtonClicked(firstButton, ref shop);
+			foreach (GlobalNPC g in HookOnChatButtonClicked.arr)
+			{
+				g.Instance(npc).OnChatButtonClicked(npc, firstButton, ref shop);
+			}
+			Main.PlaySound(SoundID.MenuTick);
+			if (!shop) return;
+
+			Main.playerInventory = true;
+			Main.npcChatText = "";
+			Main.npcShop = Main.MaxShopIDs - 1;
+			Main.instance.shop[Main.npcShop].SetupShop(npc.type);
 		}
 
 		private delegate void DelegateSetupShop(int type, Chest shop, ref int nextSlot);
