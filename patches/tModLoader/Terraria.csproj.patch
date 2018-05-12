@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -17,40 +_,52 @@
+@@ -17,40 +_,53 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
      <OutputPath>bin\x86\WindowsRelease\</OutputPath>
      <DefineConstants>CLIENT; WINDOWS</DefineConstants>
@@ -15,6 +15,7 @@
      <OutputPath>bin\x86\WindowsDebug\</OutputPath>
      <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
 +    <PlatformTarget>x86</PlatformTarget>
++    <LangVersion>default</LangVersion>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
      <DefineConstants>DEBUG;SERVER; WINDOWS</DefineConstants>
@@ -53,11 +54,14 @@
        </PropertyGroup>
      </When>
      <Otherwise>
-@@ -81,19 +_,47 @@
+@@ -81,19 +_,50 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System" />
 -    <Reference Include="Steamworks.NET">
++    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
++      <HintPath>..\..\solutions\packages\System.ValueTuple.4.5.0-rc1\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
++    </Reference>
 +    <Reference Include="System.XML" />
 +    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('WINDOWS'))">
 +      <SpecificVersion>False</SpecificVersion>
@@ -320,7 +324,7 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,93 @@
+@@ -606,5 +_,94 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -378,6 +382,7 @@
 +    <EmbeddedResource Include="Terraria.Localization.Content.de-DE.tModLoader.json" />
 +    <EmbeddedResource Include="Terraria.Localization.Content.it-IT.tModLoader.json" />
 +    <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.tModLoader.json" />
++    <None Include="packages.config" />
 +  </ItemGroup>
 +  <ItemGroup />
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -75,6 +75,7 @@ namespace Terraria.ModLoader.UI
 				log.WriteLine(Language.GetTextValue("tModLoader.ExtractFileListing"));
 
 				int i = 0;
+
 				void WriteFile(string name, byte[] content)
 				{
 					//this access is not threadsafe, but it should be atomic enough to not cause issues
@@ -97,7 +98,19 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 
-				mod.modFile.Read(TmodFile.LoadedState.Streaming, (name, len, reader) => WriteFile(name, reader.ReadBytes(len)));
+				mod.modFile.Read(TmodFile.LoadedState.Streaming, (name, len, reader) =>
+				{
+					byte[] data = reader.ReadBytes(len);
+
+					// check if subject is rawimg, then read it as rawimg and convert back to texture2D
+					if (name.EndsWith(".rawimg"))
+					{
+						data = ImageIO.ReadRaw(new MemoryStream(data)).bytes;
+						name = Path.ChangeExtension(name, "png");
+					}
+
+					WriteFile(name, data);
+				});
 				foreach (var entry in mod.modFile)
 					WriteFile(entry.Key, entry.Value);
 			}

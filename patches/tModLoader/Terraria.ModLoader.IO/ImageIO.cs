@@ -4,7 +4,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -52,6 +51,7 @@ namespace Terraria.ModLoader.IO
 					w.Write((byte)r);
 					w.Write((byte)a);
 				}
+
 				return true;
 			}
 		}
@@ -67,7 +67,10 @@ namespace Terraria.ModLoader.IO
 		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, Stream src) =>
 			RawToTexture2D(graphicsDevice, new BinaryReader(src, Encoding.UTF8));
 
-		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, BinaryReader r, bool async = false)
+		public static (int width, int height, byte[] bytes) ReadRaw(Stream src) =>
+			ReadRaw(new BinaryReader(src, Encoding.UTF8));
+
+		public static (int width, int height, byte[] bytes) ReadRaw(BinaryReader r)
 		{
 			int v = r.ReadInt32();
 			if (v != VERSION)
@@ -76,24 +79,24 @@ namespace Terraria.ModLoader.IO
 			int width = r.ReadInt32();
 			int height = r.ReadInt32();
 			var rawdata = r.ReadBytes(width * height * 4);
-			var tex = new Texture2D(graphicsDevice, width, height);
-			tex.SetData(rawdata);
+			return (width, height, rawdata);
+		}
+
+		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, BinaryReader r)
+		{
+			var rawData = ReadRaw(r);
+			var tex = new Texture2D(graphicsDevice, rawData.width, rawData.height);
+			tex.SetData(rawData.bytes);
 			return tex;
 		}
 
 		public static Task<Texture2D> RawToTexture2DAsync(GraphicsDevice graphicsDevice, BinaryReader r)
 		{
-			int v = r.ReadInt32();
-			if (v != VERSION)
-				throw new Exception("Unknown RawImg Format Version: " + v);
-
-			int width = r.ReadInt32();
-			int height = r.ReadInt32();
-			var rawdata = r.ReadBytes(width * height * 4);
+			var rawData = ReadRaw(r);
 			return Task.Factory.StartNew(() =>
 			{
-				var tex = new Texture2D(graphicsDevice, width, height);
-				tex.SetData(rawdata);
+				var tex = new Texture2D(graphicsDevice, rawData.width, rawData.height);
+				tex.SetData(rawData.bytes);
 				return tex;
 			});
 		}
