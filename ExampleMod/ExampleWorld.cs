@@ -115,7 +115,7 @@ namespace ExampleMod
 			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Shinies"));
 			if (ShiniesIndex != -1)
 			{
-				// Next, we insert out step directly after the original "Shinies" step. 
+				// Next, we insert our step directly after the original "Shinies" step. 
 				// ExampleModOres is a method seen below.
 				tasks.Insert(ShiniesIndex + 1, new PassLegacy("Example Mod Ores", ExampleModOres));
 			}
