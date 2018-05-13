@@ -105,6 +105,7 @@ namespace Terraria.ModLoader.Setup
 			if (fuzzy > 0)
 				taskInterface.Invoke(new Action(() => {
 					var w = new ReviewWindow(results);
+					w.AutoHeaders = true;
 					ElementHost.EnableModelessKeyboardInterop(w);
 					w.ShowDialog();
 				}));
