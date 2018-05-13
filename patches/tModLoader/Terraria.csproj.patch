@@ -60,7 +60,7 @@
      <Reference Include="System" />
 -    <Reference Include="Steamworks.NET">
 +    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-+      <HintPath>..\..\solutions\packages\System.ValueTuple.4.5.0-rc1\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
++      <HintPath>..\..\references\System.ValueTuple.dll</HintPath>
 +    </Reference>
 +    <Reference Include="System.XML" />
 +    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('WINDOWS'))">
@@ -386,7 +386,6 @@
 +  </ItemGroup>
 +  <ItemGroup />
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -419,4 +418,5 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
+
