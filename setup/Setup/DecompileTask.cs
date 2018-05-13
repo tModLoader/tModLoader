@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -42,9 +43,7 @@ namespace Terraria.ModLoader.Setup
 					if (baseModule != null)
 					{
 						var resName = name.Name + ".dll";
-						var res =
-							baseModule.Resources.OfType<EmbeddedResource>()
-								.SingleOrDefault(r => r.Name.EndsWith(resName));
+						var res = baseModule.Resources.OfType<EmbeddedResource>().SingleOrDefault(r => r.Name.EndsWith(resName));
 						if (res != null)
 							assemblyDefinition = AssemblyDefinition.ReadAssembly(res.GetResourceStream(), parameters);
 					}
@@ -168,12 +167,32 @@ namespace Terraria.ModLoader.Setup
 				{
 					var asmRef = module.AssemblyReferences.SingleOrDefault(r => path.EndsWith(r.Name + ".dll"));
 					if (asmRef != null)
-						path = path.Substring(0, path.Length - asmRef.Name.Length - 5) +
-						       Path.DirectorySeparatorChar + asmRef.Name + ".dll";
+						path = Path.Combine(path.Substring(0, path.Length - asmRef.Name.Length - 5), asmRef.Name + ".dll");
 				}
+				
+				if (IsCultureFile(path))
+					path = path.Insert(path.LastIndexOf('.'), ".Main");
 
 				return (path, res);
 			});
+		}
+
+		private static bool IsCultureFile(string path)
+		{
+			var fname = Path.GetFileNameWithoutExtension(path);
+			var subext = Path.GetExtension(fname);
+			if (!string.IsNullOrEmpty(subext))
+			{
+				try
+				{
+					CultureInfo.GetCultureInfo(subext.Substring(1));
+					return true;
+				}
+				catch (CultureNotFoundException)
+				{ }
+			}
+
+			return false;
 		}
 
 		private DecompilerTypeSystem AddModule(List<WorkItem> items, ISet<string> fileList, string path, Version version, Guid guid)
