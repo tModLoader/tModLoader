@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 using System.Xml;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;
@@ -16,22 +15,6 @@ using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup
 {
-	internal static class DecompileReflections
-	{
-		private static readonly MethodInfo _IncludeTypeWhenDecompilingProject = typeof(WholeProjectDecompiler)
-			.GetMethod("IncludeTypeWhenDecompilingProject", BindingFlags.NonPublic | BindingFlags.Instance);
-
-		public static bool IncludeTypeWhenDecompilingProject(this WholeProjectDecompiler decompiler, TypeDefinition type) =>
-			(bool) _IncludeTypeWhenDecompilingProject.Invoke(decompiler, new object[] {type});
-
-		private static readonly MethodInfo _WriteProjectFile = typeof(WholeProjectDecompiler)
-			.GetMethod("WriteProjectFile", BindingFlags.NonPublic | BindingFlags.Instance);
-
-		public static void WriteProjectFile(this WholeProjectDecompiler decompiler, TextWriter writer,
-			IEnumerable<Tuple<string, string>> files, ModuleDefinition module) =>
-			_WriteProjectFile.Invoke(decompiler, new object[] {writer, files, module});
-	}
-
 	public class DecompileTask : Task
 	{
 		private class EmbeddedAssemblyResolver : BaseAssemblyResolver
@@ -76,6 +59,21 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
+		private class ExtendedProjectDecompiler : WholeProjectDecompiler
+		{
+			public new bool IncludeTypeWhenDecompilingProject(TypeDefinition type) => base.IncludeTypeWhenDecompilingProject(type);
+
+			protected override bool IsGacAssembly(AssemblyNameReference r, AssemblyDefinition asm) => 
+				asm.MainModule.FileName.Contains("\\Microsoft.NET\\assembly\\");
+
+			private static readonly MethodInfo _WriteProjectFile = typeof(WholeProjectDecompiler)
+				.GetMethod("WriteProjectFile", BindingFlags.NonPublic | BindingFlags.Instance);
+
+			public void WriteProjectFile(TextWriter writer, IEnumerable<Tuple<string, string>> files, ModuleDefinition module) =>
+				_WriteProjectFile.Invoke(this, new object[] {writer, files, module});
+
+		}
+
 		private static readonly Guid clientGuid = new Guid("3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5");
 		private static readonly Guid serverGuid = new Guid("85BF1171-A0DC-4696-BFA4-D6E9DC4E0830");
 		public static readonly Version clientVersion = new Version(Settings.Default.ClientVersion);
@@ -84,7 +82,7 @@ namespace Terraria.ModLoader.Setup
 		private readonly string srcDir;
 		private readonly bool serverOnly;
 
-		private WholeProjectDecompiler projectDecompiler;
+		private ExtendedProjectDecompiler projectDecompiler;
 
 		public string FullSrcDir => Path.Combine(baseDir, srcDir);
 
@@ -112,7 +110,7 @@ namespace Terraria.ModLoader.Setup
 			//var format = FormattingOptionsFactory.CreateKRStyle();
 			var format = FormattingOptionsFactory.CreateAllman();
 
-			projectDecompiler = new WholeProjectDecompiler
+			projectDecompiler = new ExtendedProjectDecompiler
 			{
 				Settings = new DecompilerSettings(LanguageVersion.Latest)
 				{
@@ -125,9 +123,9 @@ namespace Terraria.ModLoader.Setup
 			var files = new HashSet<string>();
 			DecompilerTypeSystem cts = null;
 			if (!serverOnly)
-				cts = AddModule(items, files, clientVersion, clientGuid);
+				cts = AddModule(items, files, TerrariaPath, clientVersion, clientGuid);
 
-			var sts = AddModule(items, files, serverVersion, serverGuid);
+			var sts = AddModule(items, files, TerrariaServerPath, serverVersion, serverGuid);
 
 			items.Add(WriteAssemblyInfo(serverOnly ? sts : cts));
 
@@ -178,9 +176,9 @@ namespace Terraria.ModLoader.Setup
 			});
 		}
 
-		private DecompilerTypeSystem AddModule(List<WorkItem> items, ISet<string> fileList, Version version, Guid guid)
+		private DecompilerTypeSystem AddModule(List<WorkItem> items, ISet<string> fileList, string path, Version version, Guid guid)
 		{
-			var module = ReadModule(TerrariaPath, version);
+			var module = ReadModule(path, version);
 			var sources = GetCodeFiles(module).ToList();
 			var resources = GetResourceFiles(module).ToList();
 
