@@ -118,22 +118,25 @@ namespace Terraria.ModLoader
 
 		internal static void BuildModCommandLine(string modFolder)
 		{
+			// Once we get to this point, the application is guaranteed to exit
 			var lockFile = AcquireConsoleBuildLock();
 			try
 			{
 				if (!Build(modFolder, new ConsoleBuildStatus()))
-					Environment.ExitCode = 1;
+					Environment.Exit(1);
 
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine(e);
-				Environment.ExitCode = 1;
+				Environment.Exit(1);
 			}
 			finally
 			{
 				lockFile.Close();
 			}
+			// Mod was built with success, exit code 0 indicates success.
+			Environment.Exit(0);
 		}
 
 		internal static bool Build(string modFolder, IBuildStatus status)
