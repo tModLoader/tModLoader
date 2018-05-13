@@ -255,6 +255,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the player's stats while the game is paused due to the autopause setting being on.
+		/// This is called in single player only, some time before the player's tick update would happen when the game isn't paused.
+		/// </summary>
+		public virtual void UpdateAutopause()
+		{
+		}
+
+		/// <summary>
 		/// This is called at the beginning of every tick update for this player, after checking whether the player exists.
 		/// </summary>
 		public virtual void PreUpdate()
