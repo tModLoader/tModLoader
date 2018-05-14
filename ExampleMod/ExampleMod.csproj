@@ -192,6 +192,7 @@
     <Compile Include="NPCs\FlutterSlime.cs" />
     <Compile Include="NPCs\Hover.cs" />
     <Compile Include="NPCs\Octopus.cs" />
+    <Compile Include="NPCs\FallenSoul.cs" />
     <Compile Include="NPCs\PartyZombie.cs" />
     <Compile Include="NPCs\PuritySpirit\PurityShield.cs" />
     <Compile Include="NPCs\PuritySpirit\PuritySpirit.cs" />
