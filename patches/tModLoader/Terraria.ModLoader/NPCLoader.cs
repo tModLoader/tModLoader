@@ -1024,9 +1024,13 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookCanChat.arr)
 			{
 				bool? canChat = g.Instance(npc).CanChat(npc);
-				if (canChat.HasValue && canChat.Value != defaultCanChat) // Prioritizes the opposite value from vanilla
+				if (canChat.HasValue)
 				{
-					return canChat.Value;
+					if (!canChat.Value)
+					{
+						return false;
+					}
+					defaultCanChat = true;
 				}
 			}
 
