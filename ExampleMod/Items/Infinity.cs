@@ -32,7 +32,7 @@ namespace ExampleMod.Items
 
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return Color.White; // So the item's sprite isn't effected by light
+			return Color.White; // So the item's sprite isn't affected by light
 		}
 
         // This gives the item an outline that constantly changes color
@@ -50,6 +50,7 @@ namespace ExampleMod.Items
 			return true;
 		}
 
+		// Same as above but for drawing inside the player's inventory
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
 			Texture2D texture = Main.itemTexture[item.type];
