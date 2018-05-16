@@ -268,6 +268,7 @@ var searchData=
   ['hookupdate',['HookUpdate',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#aa7c7ebfdcf38b3f6ce890526ec49d6d4',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookupdateaccessory',['HookUpdateAccessory',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a2e9337ca0ef10baf5cd39c81e71aa53e',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookupdatearmorset',['HookUpdateArmorSet',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a0d8ac9b2971a420c94658103c8227842',1,'Terraria::ModLoader::ItemLoader']]],
+  ['hookupdateautopause',['HookUpdateAutopause',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad0029fbcfcf49c9a8665c2757cbb7f7d',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookupdatebadliferegen',['HookUpdateBadLifeRegen',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a94b61e2a941fb78ded3f0e3eb6f5d707',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookupdatebiomes',['HookUpdateBiomes',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a21bde6009ef44ccddf32bd1ad497f11a',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookupdatebiomevisuals',['HookUpdateBiomeVisuals',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#af2bd5b128f68be74984c4ce79eee8fff',1,'Terraria::ModLoader::PlayerHooks']]],

@@ -80,6 +80,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "Shoot", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a3f06ebdab0af3b5f825c6a706599a38b", null ],
     [ "SyncPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a3905e96a9c70d498528df9121380fb1c", null ],
     [ "TypeEquals", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aa828f70b3df43d4c6def055d2455238e", null ],
+    [ "UpdateAutopause", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ae6c6092775f1ae08e6afad833da166eb", null ],
     [ "UpdateBadLifeRegen", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ad4ada9b7e09919a8dbfea901c8e509c0", null ],
     [ "UpdateBiomes", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a612c77b1a0b516f5579b4305dc95084a", null ],
     [ "UpdateBiomeVisuals", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a0866e599583b3d4e57c0b74457911d63", null ],
