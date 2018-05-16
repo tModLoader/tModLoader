@@ -10,6 +10,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "BossLoot", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae83d78d0f7d05c322616d0d776f50bf6", null ],
     [ "CanBeHitByItem", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9349cfc963db994ebafb27c6bda76601", null ],
     [ "CanBeHitByProjectile", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa01845e782e137b6ce35498ba9fca200", null ],
+    [ "CanChat", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7ca3d3bdc8f0f1deb33e3723b773f3fc", null ],
     [ "CanHitNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1a95612d7298ad2fc45117b67a7769e8", null ],
     [ "CanHitPlayer", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2fe5d7593041428499b764a70d0b2489", null ],
     [ "CanTownNPCSpawn", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a78b4fdd2fb59c1812e03568478be3757", null ],

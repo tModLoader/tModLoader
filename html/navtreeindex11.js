@@ -1,5 +1,16 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a391998c2b6d653f72944c86d4a17cfb4":[1,0,0,0,72,24],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a398102e5d586ccc51bf7dbac4c7bef87":[1,0,0,0,72,118],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a43eb43bc54c0bb461127544ff446dc32":[1,0,0,0,72,58],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a45e2167b10a301e23c5b3329f525c318":[1,0,0,0,72,103],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a48fe19a6acc7c25dedd482eb6a743684":[1,0,0,0,72,41],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a4986970a2eaf50fc3a2a4974c7609b38":[1,0,0,0,72,61],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a4d0c6dff9d1fa78c183d3fe532922580":[1,0,0,0,72,63],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a53ab56e71c6a15026b74d3aea0c23da0":[1,0,0,0,72,109],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a542d5e06383e28a236b4b5f962c8e34f":[1,0,0,0,72,55],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a54b460def2aa9a7659cb50e52794d2f6":[1,0,0,0,72,94],
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a55eb953fc2613988bbaae58b4ea1c2f9":[1,0,0,0,72,51],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a59edaea554777eed675478a963731b01":[1,0,0,0,72,56],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a5a159cdf3419b43403a5f1aa4d6624b2":[1,0,0,0,72,50],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a5c90725d01e5b2030ae9ad98243c1018":[1,0,0,0,72,34],
@@ -238,16 +249,5 @@ var NAVTREEINDEX11 =
 "functions_t.html":[1,3,0,19],
 "functions_u.html":[1,3,0,20],
 "functions_v.html":[1,3,0,21],
-"functions_vars.html":[1,3,2],
-"functions_vars.html":[1,3,2,0],
-"functions_vars_a.html":[1,3,2,1],
-"functions_vars_b.html":[1,3,2,2],
-"functions_vars_c.html":[1,3,2,3],
-"functions_vars_d.html":[1,3,2,4],
-"functions_vars_e.html":[1,3,2,5],
-"functions_vars_f.html":[1,3,2,6],
-"functions_vars_g.html":[1,3,2,7],
-"functions_vars_h.html":[1,3,2,8],
-"functions_vars_i.html":[1,3,2,9],
-"functions_vars_j.html":[1,3,2,10]
+"functions_vars.html":[1,3,2,0]
 };

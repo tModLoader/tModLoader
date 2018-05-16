@@ -54,6 +54,7 @@ var searchData=
   ['delegatenaturalliferegen',['DelegateNaturalLifeRegen',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a5fa6010dbdcf96d45bfa33841f82a26f',1,'Terraria::ModLoader::PlayerHooks']]],
   ['delegatenumdust',['DelegateNumDust',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#aceb95de196efc099c9d457863e8e9aed',1,'Terraria.ModLoader.TileLoader.DelegateNumDust()'],['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a92eb47307610d6295ad358e3f7b6ccc0',1,'Terraria.ModLoader.WallLoader.DelegateNumDust()']]],
   ['delegatenumgrapplehooks',['DelegateNumGrappleHooks',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#afeb8be48d8dadeb6f0bbc15e899e0c83',1,'Terraria::ModLoader::ProjectileLoader']]],
+  ['delegateonchatbuttonclicked',['DelegateOnChatButtonClicked',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a9cc0b918cb2f50adbd2aa45101eceac3',1,'Terraria::ModLoader::NPCLoader']]],
   ['delegatepickammo',['DelegatePickAmmo',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ad01202b55dbc3a2be8f23d090821d473',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegatepostdrawtooltip',['DelegatePostDrawTooltip',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ab83fc1f559c301199d866a6b12282cb3',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegatepostdrawtooltipline',['DelegatePostDrawTooltipLine',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#adb1c36d80c5b2c381ac16153a8cf37e4',1,'Terraria::ModLoader::ItemLoader']]],

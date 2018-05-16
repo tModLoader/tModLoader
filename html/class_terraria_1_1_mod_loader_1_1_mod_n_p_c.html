@@ -162,6 +162,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa01845e782e137b6ce35498ba9fca200"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa01845e782e137b6ce35498ba9fca200">CanBeHitByProjectile</a> (Projectile projectile)</td></tr>
 <tr class="memdesc:aa01845e782e137b6ce35498ba9fca200"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this NPC can be hit by the given projectile. Return true to allow hitting the NPC, return false to block hitting the NPC, and return null to use the vanilla code for whether the NPC can be hit. Returns null by default.  <a href="#aa01845e782e137b6ce35498ba9fca200">More...</a><br /></td></tr>
 <tr class="separator:aa01845e782e137b6ce35498ba9fca200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ca3d3bdc8f0f1deb33e3723b773f3fc"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7ca3d3bdc8f0f1deb33e3723b773f3fc">CanChat</a> ()</td></tr>
+<tr class="memdesc:a7ca3d3bdc8f0f1deb33e3723b773f3fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is a town NPC.  <a href="#a7ca3d3bdc8f0f1deb33e3723b773f3fc">More...</a><br /></td></tr>
+<tr class="separator:a7ca3d3bdc8f0f1deb33e3723b773f3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a95612d7298ad2fc45117b67a7769e8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1a95612d7298ad2fc45117b67a7769e8">CanHitNPC</a> (NPC target)</td></tr>
 <tr class="memdesc:a1a95612d7298ad2fc45117b67a7769e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this NPC can hit the given friendly NPC. Return true to allow hitting the target, return false to block this NPC from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.  <a href="#a1a95612d7298ad2fc45117b67a7769e8">More...</a><br /></td></tr>
 <tr class="separator:a1a95612d7298ad2fc45117b67a7769e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,7 +205,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2a35ae24ca39e3ece8625e4048f37161"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which this NPC is drawn. Return null to use the default color (normally light and buff color). Returns null by default.  <a href="#a2a35ae24ca39e3ece8625e4048f37161">More...</a><br /></td></tr>
 <tr class="separator:a2a35ae24ca39e3ece8625e4048f37161"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa63ef2a98431cd3ffe9f74e198141a28"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa63ef2a98431cd3ffe9f74e198141a28">GetChat</a> ()</td></tr>
-<tr class="memdesc:aa63ef2a98431cd3ffe9f74e198141a28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give this town NPC a chat message when a player talks to it. By default returns something embarrassing.  <a href="#aa63ef2a98431cd3ffe9f74e198141a28">More...</a><br /></td></tr>
+<tr class="memdesc:aa63ef2a98431cd3ffe9f74e198141a28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give this NPC a chat message when a player talks to it. By default returns something embarrassing.  <a href="#aa63ef2a98431cd3ffe9f74e198141a28">More...</a><br /></td></tr>
 <tr class="separator:aa63ef2a98431cd3ffe9f74e198141a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22d1c3de35a14161c20c5544a35b5420"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a22d1c3de35a14161c20c5544a35b5420">HitEffect</a> (int hitDirection, double damage)</td></tr>
 <tr class="memdesc:a22d1c3de35a14161c20c5544a35b5420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.  <a href="#a22d1c3de35a14161c20c5544a35b5420">More...</a><br /></td></tr>
@@ -226,7 +229,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0bba358ea97af556da502009e6a8388c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this NPC dies (for example, dropping items).  <a href="#a0bba358ea97af556da502009e6a8388c">More...</a><br /></td></tr>
 <tr class="separator:a0bba358ea97af556da502009e6a8388c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ee36b9bb95769ce0c242ee45fdf73d2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1ee36b9bb95769ce0c242ee45fdf73d2">OnChatButtonClicked</a> (bool firstButton, ref bool shop)</td></tr>
-<tr class="memdesc:a1ee36b9bb95769ce0c242ee45fdf73d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen whenever a button is clicked on this town NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.  <a href="#a1ee36b9bb95769ce0c242ee45fdf73d2">More...</a><br /></td></tr>
+<tr class="memdesc:a1ee36b9bb95769ce0c242ee45fdf73d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.  <a href="#a1ee36b9bb95769ce0c242ee45fdf73d2">More...</a><br /></td></tr>
 <tr class="separator:a1ee36b9bb95769ce0c242ee45fdf73d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0133b98a2324f41df2a0e7766bb4c54"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af0133b98a2324f41df2a0e7766bb4c54">OnHitByItem</a> (Player player, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, int damage, float knockback, bool crit)</td></tr>
 <tr class="memdesc:af0133b98a2324f41df2a0e7766bb4c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this NPC is hit by a melee weapon.  <a href="#af0133b98a2324f41df2a0e7766bb4c54">More...</a><br /></td></tr>
@@ -267,7 +270,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad091edf8203519c61a7f7c903880dd60"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you are storing AI information outside of the npc.ai array, use this to send that AI information between clients and servers.  <a href="#ad091edf8203519c61a7f7c903880dd60">More...</a><br /></td></tr>
 <tr class="separator:ad091edf8203519c61a7f7c903880dd60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8668dfc55443c75e42eca56b9fd6fea"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa8668dfc55443c75e42eca56b9fd6fea">SetChatButtons</a> (ref string button, ref string button2)</td></tr>
-<tr class="memdesc:aa8668dfc55443c75e42eca56b9fd6fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the text for the buttons that appear on this town NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.  <a href="#aa8668dfc55443c75e42eca56b9fd6fea">More...</a><br /></td></tr>
+<tr class="memdesc:aa8668dfc55443c75e42eca56b9fd6fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the text for the buttons that appear on this NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.  <a href="#aa8668dfc55443c75e42eca56b9fd6fea">More...</a><br /></td></tr>
 <tr class="separator:aa8668dfc55443c75e42eca56b9fd6fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90c57527bfca0ed7f14d88e09f3e498a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a">SetDefaults</a> ()</td></tr>
 <tr class="memdesc:a90c57527bfca0ed7f14d88e09f3e498a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set all your NPC's properties, such as width, damage, aiStyle, lifeMax, etc.  <a href="#a90c57527bfca0ed7f14d88e09f3e498a">More...</a><br /></td></tr>
@@ -276,7 +279,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af7933d98714543ab0f484b252b14c238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set all your NPC's static properties, such as names/translations and the arrays in NPCID.Sets.  <a href="#af7933d98714543ab0f484b252b14c238">More...</a><br /></td></tr>
 <tr class="separator:af7933d98714543ab0f484b252b14c238"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78c975ddfdf04b1148729710da206573"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a78c975ddfdf04b1148729710da206573">SetupShop</a> (Chest shop, ref int nextSlot)</td></tr>
-<tr class="memdesc:a78c975ddfdf04b1148729710da206573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to this town NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.  <a href="#a78c975ddfdf04b1148729710da206573">More...</a><br /></td></tr>
+<tr class="memdesc:a78c975ddfdf04b1148729710da206573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to this NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.  <a href="#a78c975ddfdf04b1148729710da206573">More...</a><br /></td></tr>
 <tr class="separator:a78c975ddfdf04b1148729710da206573"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7713bbbd313012944b958e8eafc35e0"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae7713bbbd313012944b958e8eafc35e0">SpawnChance</a> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html">NPCSpawnInfo</a> spawnInfo)</td></tr>
 <tr class="memdesc:ae7713bbbd313012944b958e8eafc35e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning.  <a href="#ae7713bbbd313012944b958e8eafc35e0">More...</a><br /></td></tr>
@@ -792,6 +795,35 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        {</div><div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="a7ca3d3bdc8f0f1deb33e3723b773f3fc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModNPC.CanChat </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is a town NPC. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00658">658</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        {</div><div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0">npc</a>.townNPC;</div><div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_n_p_c_html_a2b1a5b77ebd59ee8ca84f96505f6e2b0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2b1a5b77ebd59ee8ca84f96505f6e2b0">Terraria.ModLoader.ModNPC.npc</a></div><div class="ttdeci">NPC npc</div><div class="ttdoc">The NPC object that this ModNPC controls. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_n_p_c_8cs_source.html#l00023">ModNPC.cs:23</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="a1a95612d7298ad2fc45117b67a7769e8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1209,8 +1241,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00758">758</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;        {</div><div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00767">767</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;        {</div><div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0be4253832f342ed238d29f2575f2166"></a>
@@ -1268,8 +1300,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00769">769</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;        {</div><div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00778">778</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;        {</div><div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2d3686f29c6f2e2955ac19a462d702a6"></a>
@@ -1362,11 +1394,11 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to give this town NPC a chat message when a player talks to it. By default returns something embarrassing. </p>
+<p>Allows you to give this NPC a chat message when a player talks to it. By default returns something embarrassing. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00658">658</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        {</div><div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;            <span class="keywordflow">return</span> Language.GetTextValue(<span class="stringliteral">&quot;tModLoader.DefaultTownNPCChat&quot;</span>);</div><div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00667">667</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;        {</div><div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;            <span class="keywordflow">return</span> Language.GetTextValue(<span class="stringliteral">&quot;tModLoader.DefaultTownNPCChat&quot;</span>);</div><div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a22d1c3de35a14161c20c5544a35b5420"></a>
@@ -1759,7 +1791,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make something happen whenever a button is clicked on this town NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop. </p>
+<p>Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">firstButton</td><td></td></tr>
@@ -1768,8 +1800,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00677">677</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;        {</div><div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00686">686</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;        {</div><div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af0133b98a2324f41df2a0e7766bb4c54"></a>
@@ -2352,7 +2384,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to set the text for the buttons that appear on this town NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window. </p>
+<p>Allows you to set the text for the buttons that appear on this NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">button</td><td></td></tr>
@@ -2361,8 +2393,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00668">668</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        {</div><div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00677">677</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;        {</div><div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a90c57527bfca0ed7f14d88e09f3e498a"></a>
@@ -2480,7 +2512,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to add items to this town NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. </p>
+<p>Allows you to add items to this NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">shop</td><td></td></tr>
@@ -2489,8 +2521,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00686">686</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;        {</div><div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00695">695</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;        {</div><div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae7713bbbd313012944b958e8eafc35e0"></a>
@@ -2739,8 +2771,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00704">704</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;        {</div><div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00713">713</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;        {</div><div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac4e3086dee973bf1a5ea266e2307f633"></a>
@@ -2773,8 +2805,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00739">739</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;        {</div><div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00748">748</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;        {</div><div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac35dcebf6a982b6ea4fc98fae8387a84"></a>
@@ -2818,8 +2850,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00713">713</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;        {</div><div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00722">722</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;        {</div><div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3abff473a965503e4e34de6d4d864903"></a>
@@ -2870,8 +2902,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00723">723</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;        {</div><div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00732">732</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        {</div><div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6f5aeec1d141380d6135c775b466a774"></a>
@@ -2904,8 +2936,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00731">731</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        {</div><div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00740">740</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;        {</div><div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a21859f42dc5177e7f92094fca7af2c57"></a>
@@ -2949,8 +2981,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00695">695</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;        {</div><div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00704">704</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;        {</div><div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5ab2125c0d53ccf0c98a39e6c1ced2c0"></a>
@@ -2994,8 +3026,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00748">748</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;        {</div><div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00757">757</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;        {</div><div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a14ca9115ed296de1799aa67efd0df6c1"></a>
