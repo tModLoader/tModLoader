@@ -67,10 +67,10 @@ namespace Terraria.ModLoader.IO
 		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, Stream src) =>
 			RawToTexture2D(graphicsDevice, new BinaryReader(src, Encoding.UTF8));
 
-		public static (int width, int height, byte[] bytes) ReadRaw(Stream src) =>
+		public static Tuple<int, int, byte[]> ReadRaw(Stream src) =>
 			ReadRaw(new BinaryReader(src, Encoding.UTF8));
 
-		public static (int width, int height, byte[] bytes) ReadRaw(BinaryReader r)
+		public static Tuple<int, int, byte[]> ReadRaw(BinaryReader r)
 		{
 			int v = r.ReadInt32();
 			if (v != VERSION)
@@ -79,14 +79,14 @@ namespace Terraria.ModLoader.IO
 			int width = r.ReadInt32();
 			int height = r.ReadInt32();
 			var rawdata = r.ReadBytes(width * height * 4);
-			return (width, height, rawdata);
+			return new Tuple< int, int, byte[]> (width, height, rawdata);
 		}
 
 		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, BinaryReader r)
 		{
 			var rawData = ReadRaw(r);
-			var tex = new Texture2D(graphicsDevice, rawData.width, rawData.height);
-			tex.SetData(rawData.bytes);
+			var tex = new Texture2D(graphicsDevice, rawData.Item1, rawData.Item2);
+			tex.SetData(rawData.Item3);
 			return tex;
 		}
 
@@ -95,8 +95,8 @@ namespace Terraria.ModLoader.IO
 			var rawData = ReadRaw(r);
 			return Task.Factory.StartNew(() =>
 			{
-				var tex = new Texture2D(graphicsDevice, rawData.width, rawData.height);
-				tex.SetData(rawData.bytes);
+				var tex = new Texture2D(graphicsDevice, rawData.Item1, rawData.Item2);
+				tex.SetData(rawData.Item3);
 				return tex;
 			});
 		}
