@@ -96,8 +96,6 @@ namespace ExampleMod.NPCs
 			{
 				// Hit the NPC for about 500 damage
 				Main.LocalPlayer.ApplyDamageToNPC(npc, Main.DamageVar(500), 5f, Main.LocalPlayer.direction, true);
-				// Close the chat window
-				Main.CloseNPCChatOrSign();
 			}
 		}
 
