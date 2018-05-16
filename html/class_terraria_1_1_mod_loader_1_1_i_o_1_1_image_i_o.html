@@ -111,9 +111,6 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_i_o_
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.ModLoader.IO.ImageIO Class Reference</div>  </div>
@@ -139,6 +136,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:aefa2c9787fafe8d2e98fa231ef876e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8697e6299da726bc81891da83695898"><td class="memItemLeft" align="right" valign="top">static Task&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#ae8697e6299da726bc81891da83695898">RawToTexture2DAsync</a> (GraphicsDevice graphicsDevice, <a class="el" href="class_binary_reader.html">BinaryReader</a> r)</td></tr>
 <tr class="separator:ae8697e6299da726bc81891da83695898"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1140a7a24bb49b14a0059536f4a48f7a"><td class="memItemLeft" align="right" valign="top">static Tuple&lt; int, int, byte[]&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a1140a7a24bb49b14a0059536f4a48f7a">ReadRaw</a> (Stream src)</td></tr>
+<tr class="separator:a1140a7a24bb49b14a0059536f4a48f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20325d6829f884c739f364faefc8a517"><td class="memItemLeft" align="right" valign="top">static Tuple&lt; int, int, byte[]&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a20325d6829f884c739f364faefc8a517">ReadRaw</a> (<a class="el" href="class_binary_reader.html">BinaryReader</a> r)</td></tr>
+<tr class="separator:a20325d6829f884c739f364faefc8a517"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30b2585c00900aaed7dc23ac81cc8b6f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a30b2585c00900aaed7dc23ac81cc8b6f">ToRaw</a> (Stream src, Stream dst)</td></tr>
 <tr class="separator:a30b2585c00900aaed7dc23ac81cc8b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10cced885fff6a49a343545198ed362f"><td class="memItemLeft" align="right" valign="top">static byte[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a10cced885fff6a49a343545198ed362f">ToRawBytes</a> (Stream src)</td></tr>
@@ -148,23 +149,6 @@ Static Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:acfb3b03bd9d41323d2dfcd93e1de2776"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#acfb3b03bd9d41323d2dfcd93e1de2776">VERSION</a> = 1</td></tr>
 <tr class="separator:acfb3b03bd9d41323d2dfcd93e1de2776"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:ac8734939ecb43e211e86cdb20b66c7cb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#ac8734939ecb43e211e86cdb20b66c7cb">width</a></td></tr>
-<tr class="separator:ac8734939ecb43e211e86cdb20b66c7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a49a6c1785e196764955cce58252ae017"><td class="memItemLeft" align="right" valign="top">static int int byte[] bytes&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a49a6c1785e196764955cce58252ae017">ReadRaw</a> (Stream src)</td></tr>
-<tr class="separator:a49a6c1785e196764955cce58252ae017"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac48a6ba4bd4330db8352b52c13e7d045"><td class="memItemLeft" align="right" valign="top">static int int byte[] bytes&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#ac48a6ba4bd4330db8352b52c13e7d045">ReadRaw</a> (<a class="el" href="class_binary_reader.html">BinaryReader</a> r)</td></tr>
-<tr class="separator:ac48a6ba4bd4330db8352b52c13e7d045"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a57b5fd2173a63825dbaa4bb07ddf9a8b"><td class="memItemLeft" align="right" valign="top">static int int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a57b5fd2173a63825dbaa4bb07ddf9a8b">height</a></td></tr>
-<tr class="separator:a57b5fd2173a63825dbaa4bb07ddf9a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -205,9 +189,7 @@ Static Private Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="_image_i_o_8cs_source.html#l00104">104</a> of file <a class="el" href="_image_i_o_8cs_source.html">ImageIO.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00178">Terraria.ModLoader.Mod.LoadTexture()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#if WINDOWS</span></div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">return</span> Task.Factory.StartNew(() =&gt; Texture2D.FromStream(graphicsDevice, stream));</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#else</span></div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            Texture2D.TextureDataFromStreamEXT(stream, out <span class="keywordtype">int</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#ac8734939ecb43e211e86cdb20b66c7cb">width</a>, out <span class="keywordtype">int</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a57b5fd2173a63825dbaa4bb07ddf9a8b">height</a>, out byte[] rawdata, -1, -1, <span class="keyword">false</span>);</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">return</span> Task.Factory.StartNew(() =&gt;</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            {</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                var tex = <span class="keyword">new</span> Texture2D(graphicsDevice, width, height);</div><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                tex.SetData(rawdata);</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <span class="keywordflow">return</span> tex;</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            });</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_a57b5fd2173a63825dbaa4bb07ddf9a8b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a57b5fd2173a63825dbaa4bb07ddf9a8b">Terraria.ModLoader.IO.ImageIO.height</a></div><div class="ttdeci">static int int height</div><div class="ttdef"><b>Definition:</b> <a href="_image_i_o_8cs_source.html#l00070">ImageIO.cs:70</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_ac8734939ecb43e211e86cdb20b66c7cb"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#ac8734939ecb43e211e86cdb20b66c7cb">Terraria.ModLoader.IO.ImageIO.width</a></div><div class="ttdeci">static int width</div><div class="ttdef"><b>Definition:</b> <a href="_image_i_o_8cs_source.html#l00070">ImageIO.cs:70</a></div></div>
-</div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#if WINDOWS</span></div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">return</span> Task.Factory.StartNew(() =&gt; Texture2D.FromStream(graphicsDevice, stream));</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#else</span></div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            Texture2D.TextureDataFromStreamEXT(stream, out <span class="keywordtype">int</span> width, out <span class="keywordtype">int</span> height, out byte[] rawdata, -1, -1, <span class="keyword">false</span>);</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">return</span> Task.Factory.StartNew(() =&gt;</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            {</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                var tex = <span class="keyword">new</span> Texture2D(graphicsDevice, width, height);</div><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                tex.SetData(rawdata);</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <span class="keywordflow">return</span> tex;</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            });</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -289,7 +271,7 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_image_i_o_8cs_source.html#l00085">85</a> of file <a class="el" href="_image_i_o_8cs_source.html">ImageIO.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        {</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            var rawData = <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a49a6c1785e196764955cce58252ae017">ReadRaw</a>(r);</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            var tex = <span class="keyword">new</span> Texture2D(graphicsDevice, rawData.width, rawData.height);</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            tex.SetData(rawData.bytes);</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">return</span> tex;</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_a49a6c1785e196764955cce58252ae017"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a49a6c1785e196764955cce58252ae017">Terraria.ModLoader.IO.ImageIO.ReadRaw</a></div><div class="ttdeci">static int int byte[] bytes ReadRaw(Stream src)</div></div>
+<div class="fragment"><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        {</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            var rawData = <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a1140a7a24bb49b14a0059536f4a48f7a">ReadRaw</a>(r);</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            var tex = <span class="keyword">new</span> Texture2D(graphicsDevice, rawData.Item1, rawData.Item2);</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            tex.SetData(rawData.Item3);</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">return</span> tex;</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_a1140a7a24bb49b14a0059536f4a48f7a"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a1140a7a24bb49b14a0059536f4a48f7a">Terraria.ModLoader.IO.ImageIO.ReadRaw</a></div><div class="ttdeci">static Tuple&lt; int, int, byte[]&gt; ReadRaw(Stream src)</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -328,7 +310,7 @@ Static Private Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="_image_i_o_8cs_source.html#l00093">93</a> of file <a class="el" href="_image_i_o_8cs_source.html">ImageIO.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00178">Terraria.ModLoader.Mod.LoadTexture()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        {</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            var rawData = <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a49a6c1785e196764955cce58252ae017">ReadRaw</a>(r);</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">return</span> Task.Factory.StartNew(() =&gt;</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            {</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                var tex = <span class="keyword">new</span> Texture2D(graphicsDevice, rawData.width, rawData.height);</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                tex.SetData(rawData.bytes);</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                <span class="keywordflow">return</span> tex;</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            });</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_a49a6c1785e196764955cce58252ae017"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a49a6c1785e196764955cce58252ae017">Terraria.ModLoader.IO.ImageIO.ReadRaw</a></div><div class="ttdeci">static int int byte[] bytes ReadRaw(Stream src)</div></div>
+<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        {</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            var rawData = <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a1140a7a24bb49b14a0059536f4a48f7a">ReadRaw</a>(r);</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">return</span> Task.Factory.StartNew(() =&gt;</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            {</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                var tex = <span class="keyword">new</span> Texture2D(graphicsDevice, rawData.Item1, rawData.Item2);</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                tex.SetData(rawData.Item3);</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                <span class="keywordflow">return</span> tex;</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            });</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_a1140a7a24bb49b14a0059536f4a48f7a"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a1140a7a24bb49b14a0059536f4a48f7a">Terraria.ModLoader.IO.ImageIO.ReadRaw</a></div><div class="ttdeci">static Tuple&lt; int, int, byte[]&gt; ReadRaw(Stream src)</div></div>
 </div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -344,7 +326,7 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a49a6c1785e196764955cce58252ae017"></a>
+<a class="anchor" id="a1140a7a24bb49b14a0059536f4a48f7a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -352,7 +334,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static int int byte [] bytes Terraria.ModLoader.IO.ImageIO.ReadRaw </td>
+          <td class="memname">static Tuple&lt;int, int, byte[]&gt; Terraria.ModLoader.IO.ImageIO.ReadRaw </td>
           <td>(</td>
           <td class="paramtype">Stream&#160;</td>
           <td class="paramname"><em>src</em></td><td>)</td>
@@ -361,14 +343,14 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="ac48a6ba4bd4330db8352b52c13e7d045"></a>
+<a class="anchor" id="a20325d6829f884c739f364faefc8a517"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -376,7 +358,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static int int byte [] bytes Terraria.ModLoader.IO.ImageIO.ReadRaw </td>
+          <td class="memname">static Tuple&lt;int, int, byte[]&gt; Terraria.ModLoader.IO.ImageIO.ReadRaw </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_binary_reader.html">BinaryReader</a>&#160;</td>
           <td class="paramname"><em>r</em></td><td>)</td>
@@ -385,15 +367,13 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_image_i_o_8cs_source.html#l00073">73</a> of file <a class="el" href="_image_i_o_8cs_source.html">ImageIO.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordtype">int</span> v = r.ReadInt32();</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">if</span> (v != <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#acfb3b03bd9d41323d2dfcd93e1de2776">VERSION</a>)</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(<span class="stringliteral">&quot;Unknown RawImg Format Version: &quot;</span> + v);</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordtype">int</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#ac8734939ecb43e211e86cdb20b66c7cb">width</a> = r.ReadInt32();</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordtype">int</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a57b5fd2173a63825dbaa4bb07ddf9a8b">height</a> = r.ReadInt32();</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            var rawdata = r.ReadBytes(width * height * 4);</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">return</span> (width, height, rawdata);</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_acfb3b03bd9d41323d2dfcd93e1de2776"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#acfb3b03bd9d41323d2dfcd93e1de2776">Terraria.ModLoader.IO.ImageIO.VERSION</a></div><div class="ttdeci">const int VERSION</div><div class="ttdef"><b>Definition:</b> <a href="_image_i_o_8cs_source.html#l00014">ImageIO.cs:14</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_a57b5fd2173a63825dbaa4bb07ddf9a8b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a57b5fd2173a63825dbaa4bb07ddf9a8b">Terraria.ModLoader.IO.ImageIO.height</a></div><div class="ttdeci">static int int height</div><div class="ttdef"><b>Definition:</b> <a href="_image_i_o_8cs_source.html#l00070">ImageIO.cs:70</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_ac8734939ecb43e211e86cdb20b66c7cb"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#ac8734939ecb43e211e86cdb20b66c7cb">Terraria.ModLoader.IO.ImageIO.width</a></div><div class="ttdeci">static int width</div><div class="ttdef"><b>Definition:</b> <a href="_image_i_o_8cs_source.html#l00070">ImageIO.cs:70</a></div></div>
+<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordtype">int</span> v = r.ReadInt32();</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">if</span> (v != <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#acfb3b03bd9d41323d2dfcd93e1de2776">VERSION</a>)</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(<span class="stringliteral">&quot;Unknown RawImg Format Version: &quot;</span> + v);</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordtype">int</span> width = r.ReadInt32();</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordtype">int</span> height = r.ReadInt32();</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            var rawdata = r.ReadBytes(width * height * 4);</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> Tuple&lt; int, int, byte[]&gt; (width, height, rawdata);</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o_html_acfb3b03bd9d41323d2dfcd93e1de2776"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#acfb3b03bd9d41323d2dfcd93e1de2776">Terraria.ModLoader.IO.ImageIO.VERSION</a></div><div class="ttdeci">const int VERSION</div><div class="ttdef"><b>Definition:</b> <a href="_image_i_o_8cs_source.html#l00014">ImageIO.cs:14</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -477,28 +457,6 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a57b5fd2173a63825dbaa4bb07ddf9a8b"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static int int Terraria.ModLoader.IO.ImageIO.height</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_image_i_o_8cs_source.html#l00070">70</a> of file <a class="el" href="_image_i_o_8cs_source.html">ImageIO.cs</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="acfb3b03bd9d41323d2dfcd93e1de2776"></a>
 <div class="memitem">
 <div class="memproto">
@@ -510,28 +468,6 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_image_i_o_8cs_source.html#l00014">14</a> of file <a class="el" href="_image_i_o_8cs_source.html">ImageIO.cs</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac8734939ecb43e211e86cdb20b66c7cb"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static int Terraria.ModLoader.IO.ImageIO.width</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_image_i_o_8cs_source.html#l00070">70</a> of file <a class="el" href="_image_i_o_8cs_source.html">ImageIO.cs</a>.</p>
 
 </div>
 </div>
