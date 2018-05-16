@@ -202,5 +202,31 @@ namespace ExampleMod.NPCs
                 nextSlot++;
             }
 		}
+
+		// Make any NPC with a chat complain to the player if they have the stinky debuff.
+		public override void GetChat(NPC npc, ref string chat)
+		{
+			if (Main.LocalPlayer.HasBuff(BuffID.Stinky))
+			{
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						chat = "Eugh, you smell of rancid fish!";
+						break;
+					case 1:
+						chat = "What's that horrid smell?!";
+						break;
+					default:
+						chat = "Get away from me, i'm not doing any business with you.";
+						break;
+				}
+			}
+		}
+
+		// If the player clicks any chat button and has the stinky debuff, prevent the button from working.
+		public override bool PreChatButtonClicked(NPC npc, bool firstButton)
+		{
+			return !Main.LocalPlayer.HasBuff(BuffID.Stinky);
+		}
 	}
 }

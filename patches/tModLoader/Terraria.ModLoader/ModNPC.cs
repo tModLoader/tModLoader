@@ -652,7 +652,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give this town NPC a chat message when a player talks to it. By default returns something embarrassing.
+		/// Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is a town NPC.
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool CanChat()
+		{
+			return npc.townNPC;
+		}
+
+		/// <summary>
+		/// Allows you to give this NPC a chat message when a player talks to it. By default returns something embarrassing.
 		/// </summary>
 		/// <returns></returns>
 		public virtual string GetChat()
@@ -661,7 +670,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set the text for the buttons that appear on this town NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.
+		/// Allows you to set the text for the buttons that appear on this NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.
 		/// </summary>
 		/// <param name="button"></param>
 		/// <param name="button2"></param>
@@ -670,7 +679,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make something happen whenever a button is clicked on this town NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
+		/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
 		/// </summary>
 		/// <param name="firstButton"></param>
 		/// <param name="shop"></param>
@@ -679,7 +688,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add items to this town NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.
+		/// Allows you to add items to this NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.
 		/// </summary>
 		/// <param name="shop"></param>
 		/// <param name="nextSlot"></param>
