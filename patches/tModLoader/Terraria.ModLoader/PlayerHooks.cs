@@ -112,7 +112,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookSetupStartInventory = AddHook<Action<List<Item>>>(p => p.SetupStartInventory);
 
-		public static IList<Item> SetupStartInventory(Player player)
+		public static IList<Item> SetupStartInventory(Player player, bool newPlayer = true)
 		{
 			IList<Item> items = new List<Item>();
 			Item item = new Item();
@@ -127,6 +127,12 @@ namespace Terraria.ModLoader
 			item.SetDefaults(3506);
 			item.Prefix(-1);
 			items.Add(item);
+			if (Main.cEd && newPlayer)
+			{
+				item = new Item();
+				item.SetDefaults(603);
+				items.Add(item);
+			}
 			foreach (int index in HookSetupStartInventory.arr)
 			{
 				player.modPlayers[index].SetupStartInventory(items);
