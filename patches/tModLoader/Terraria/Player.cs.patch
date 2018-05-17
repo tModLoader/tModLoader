@@ -5229,7 +5229,7 @@
  
  		public void DropItems()
  		{
-+			IList<Item> startInventory = PlayerHooks.SetupStartInventory(this, false);
++			IList<Item> startInventory = PlayerHooks.SetupStartInventory(this, true);
 +			IDictionary<int, int> startCounts = new Dictionary<int, int>();
 +			foreach (Item item in startInventory)
 +			{
