@@ -178,7 +178,7 @@ namespace Terraria.ModLoader
 			{
 				writer.WriteLine(message);
 			}
-			Interface.errorMessage.SetMessage("The Mod Browser server response:\n\n" + message);
+			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResonponse", message));
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 			Interface.errorMessage.SetFile(file);
 			Main.gameMenu = true;
@@ -192,7 +192,7 @@ namespace Terraria.ModLoader
 			{
 				writer.WriteLine(message);
 			}
-			Interface.errorMessage.SetMessage("The Mod Browser server response:\n\n" + message);
+			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResonponse", message));
 			Interface.errorMessage.SetGotoMenu(Interface.managePublishedID);
 			Interface.errorMessage.SetFile(file);
 			Main.gameMenu = true;

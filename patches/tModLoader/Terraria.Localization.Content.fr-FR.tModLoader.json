@@ -169,6 +169,7 @@
 		"MBMyPublishedModsStats": "{0} téléchargements totaux ({1} pour la dernière version version)",
 		"EnterSteamID": "Merci d'entrer votre ID Steam",
 		"PasteSteamID": "Copier votre ID Steam (ctrl-v)",
+		// "MBServerResonponse": "The Mod Browser server response:\n\n{0}",
 
 		// TML Options
 		"DownloadFromServersYes": "Télécharger les Mods du serveur: Oui",

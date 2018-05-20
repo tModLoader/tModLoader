@@ -170,6 +170,7 @@
 		// "MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
 		// "EnterSteamID": "Please Enter Your SteamID",
 		// "PasteSteamID": "Paste SteamID (ctrl-v)",
+		// "MBServerResonponse": "The Mod Browser server response:\n\n{0}",
 
 		// TML Options
 		"DownloadFromServersYes": "Pobieraj mody z serwerów: Tak",

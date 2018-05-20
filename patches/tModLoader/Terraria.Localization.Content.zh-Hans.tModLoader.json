@@ -170,6 +170,7 @@
 		"MBMyPublishedModsStats": "{0}次下载({1}次为最新版本)",
 		"EnterSteamID": "请输入你的SteamID",
 		"PasteSteamID": "粘贴SteamID (ctrl-v)",
+		"MBServerResonponse": "模组浏览器服务器响应:\n\n{0}",
 
 		// TML Options
 		"DownloadFromServersYes": "从服务器下载模组：开启",
