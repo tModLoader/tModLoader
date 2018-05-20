@@ -59,7 +59,7 @@
  		public static int[,] cavernMonsterType = new int[2, 3];
  		private static int ignorePlayerInteractions = 0;
  
-+		private static LuckBasedRandom rand = new LuckBasedRandom();
++		public static readonly LuckBasedRandom rand = new LuckBasedRandom();
 +
 +		public static int Luck
 +		{
