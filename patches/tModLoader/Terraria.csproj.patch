@@ -288,6 +288,14 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
+@@ -450,6 +_,7 @@
+     <Compile Include="Terraria.Utilities\CrashDump.cs" />
+     <Compile Include="Terraria.Utilities\FileOperationAPIWrapper.cs" Condition="$(DefineConstants.Contains('WINDOWS'))" />
+     <Compile Include="Terraria.Utilities\FileUtilities.cs" />
++    <Compile Include="Terraria.Utilities\LuckBasedRandom.cs" />
+     <Compile Include="Terraria.Utilities\NPCUtils.cs" />
+     <Compile Include="Terraria.Utilities\PlatformUtilities.cs" />
+     <Compile Include="Terraria.Utilities\UnifiedRandom.cs" />
 @@ -495,6 +_,7 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />

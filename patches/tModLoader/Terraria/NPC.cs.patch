@@ -55,6 +55,21 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
+@@ -241,6 +_,14 @@
+ 		public static int[,] cavernMonsterType = new int[2, 3];
+ 		private static int ignorePlayerInteractions = 0;
+ 
++		private static LuckBasedRandom rand = new LuckBasedRandom();
++
++		public static int Luck
++		{
++			get { return rand.Luck; }
++			set { rand.Luck = value; }
++		}
++
+ 		public bool CanTalk
+ 		{
+ 			get
 @@ -583,7 +_,7 @@
  			for (int i = 0; i < 200; i++)
  			{
@@ -520,18 +535,65 @@
  			{
  				return;
  			}
-@@ -59621,6 +_,10 @@
+@@ -59579,16 +_,16 @@
+ 						}
+ 						NetworkText networkText = NetworkText.FromKey("Game.EnemiesDefeatedAnnouncement", new object[]
+ 							{
+-								NPC.killCount[num3],
+-								NetworkText.FromKey(Lang.GetNPCName(num5).Key, new object[0])
++						NPC.killCount[num3],
++						NetworkText.FromKey(Lang.GetNPCName(num5).Key, new object[0])
+ 							});
+ 						if (num6 >= 0 && num6 < 255)
+ 						{
+ 							networkText = NetworkText.FromKey("Game.EnemiesDefeatedByAnnouncement", new object[]
+ 								{
+-									Main.player[num6].name,
+-									NPC.killCount[num3],
+-									NetworkText.FromKey(Lang.GetNPCName(num5).Key, new object[0])
++							Main.player[num6].name,
++							NPC.killCount[num3],
++							NetworkText.FromKey(Lang.GetNPCName(num5).Key, new object[0])
+ 								});
+ 						}
+ 						if (Main.netMode == 0)
+@@ -59621,7 +_,11 @@
  			{
  				return;
  			}
+-			if ((this.type == 170 || this.type == 180 || this.type == 171) && Main.rand.Next(3) == 0)
 +			if (!NPCLoader.PreNPCLoot(this))
-+  			{
-+  				return;
-+  			}
- 			if ((this.type == 170 || this.type == 180 || this.type == 171) && Main.rand.Next(3) == 0)
++			{
++				return;
++			}
++			if ((this.type == 170 || this.type == 180 || this.type == 171) && rand.NextBool(3))
  			{
  				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3532, 1, false, 0, false, false);
-@@ -59737,7 +_,7 @@
+ 			}
+@@ -59679,7 +_,7 @@
+ 				goto IL_4B1;
+ 			}
+ 			int maxValue = Main.expertMode ? 150 : 200;
+-			if (Main.rand.Next(maxValue) == 0)
++			if (rand.NextBool(maxValue))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3260, 1, false, 0, false, false);
+ 			}
+@@ -59702,11 +_,11 @@
+ 			if (!Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneDungeon)
+ 			{
+ 				bool flag3 = false;
+-				if (Main.expertMode && Main.rand.Next(5) == 0)
++				if (Main.expertMode && rand.NextBool(5))
+ 				{
+ 					flag3 = true;
+ 				}
+-				else if (Main.rand.Next(5) == 0)
++				else if (rand.NextBool(5))
+ 				{
+ 					flag3 = true;
+ 				}
+@@ -59737,40 +_,40 @@
  			if (this.type == 1 && this.ai[1] > 0f)
  			{
  				int num9 = (int)this.ai[1];
@@ -540,22 +602,2895 @@
  				{
  					int num10 = 1;
  					if (num9 == 8)
-@@ -63095,6 +_,7 @@
+ 					{
+-						num10 = Main.rand.Next(5, 11);
++						num10 = rand.NextInt(5, 11);
+ 					}
+ 					else if (num9 == 166)
+ 					{
+-						num10 = Main.rand.Next(2, 7);
++						num10 = rand.NextInt(2, 7);
+ 					}
+ 					else if (num9 == 965)
+ 					{
+-						num10 = Main.rand.Next(20, 46);
++						num10 = rand.NextInt(20, 46);
+ 					}
+ 					else if ((num9 >= 11 && num9 <= 14) || (num9 >= 699 && num9 <= 702))
+ 					{
+-						num10 = Main.rand.Next(3, 9);
+-						if (Main.rand.Next(2) == 0)
++						num10 = rand.NextInt(3, 9);
++						if (rand.NextBool(2))
+ 						{
+ 							num10 += 5;
+ 						}
+ 					}
+ 					else if (num9 == 71)
+ 					{
+-						num10 = Main.rand.Next(50, 100);
++						num10 = rand.NextInt(50, 100);
+ 					}
+ 					else if (num9 == 72)
+ 					{
+-						num10 = Main.rand.Next(20, 100);
++						num10 = rand.NextInt(20, 100);
+ 					}
+ 					else if (num9 == 73)
+ 					{
+-						num10 = Main.rand.Next(1, 3);
++						num10 = rand.NextInt(1, 3);
+ 					}
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, num9, num10, false, 0, false, false);
+ 				}
+@@ -59779,75 +_,75 @@
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 867, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 353 && Main.rand.Next(8) == 0)
++			if (this.type == 353 && rand.NextBool(8))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3352, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 441 && Main.rand.Next(8) == 0)
++			if (this.type == 441 && rand.NextBool(8))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3351, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 227 && Main.rand.Next(10) == 0)
++			if (this.type == 227 && rand.NextBool(10))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3350, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 550 && Main.rand.Next(6) == 0)
++			if (this.type == 550 && rand.NextBool(6))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3821, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 208 && Main.rand.Next(4) == 0)
+-			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3548, Main.rand.Next(30, 61), false, 0, false, false);
+-			}
+-			if (this.type == 207 && Main.rand.Next(8) == 0)
++			if (this.type == 208 && rand.NextBool(4))
++			{
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3548, rand.NextInt(30, 61), false, 0, false, false);
++			}
++			if (this.type == 207 && rand.NextBool(8))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3349, 1, false, 0, false, false);
+ 			}
+ 			if (Main.hardMode && this.value > 0f)
+ 			{
+-				if (!NPC.downedMechBoss1 && Main.rand.Next(2500) == 0)
++				if (!NPC.downedMechBoss1 && rand.NextBool(2500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 556, 1, false, 0, false, false);
+ 				}
+-				else if (!NPC.downedMechBoss2 && Main.rand.Next(2500) == 0)
++				else if (!NPC.downedMechBoss2 && rand.NextBool(2500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 544, 1, false, 0, false, false);
+ 				}
+-				else if (!NPC.downedMechBoss3 && Main.rand.Next(2500) == 0)
++				else if (!NPC.downedMechBoss3 && rand.NextBool(2500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 557, 1, false, 0, false, false);
+ 				}
+ 			}
+ 			if (Main.halloween && this.value > 0f && this.value < 500f && this.damage < 40 && this.defense < 20)
+ 			{
+-				if (Main.rand.Next(2000) == 0)
++				if (rand.NextBool(2000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1825, 1, false, 0, false, false);
+ 				}
+-				else if (Main.rand.Next(2000) == 0)
++				else if (rand.NextBool(2000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1827, 1, false, 0, false, false);
+ 				}
+ 			}
+ 			if (Main.hardMode && this.value > 0f)
+ 			{
+-				if (Main.rand.Next(2500) == 0 && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneJungle)
++				if (rand.NextBool(2500) && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneJungle)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1533, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(2500) == 0 && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneCorrupt)
++				if (rand.NextBool(2500) && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneCorrupt)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1534, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(2500) == 0 && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneCrimson)
++				if (rand.NextBool(2500) && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneCrimson)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1535, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(2500) == 0 && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneHoly)
++				if (rand.NextBool(2500) && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneHoly)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1536, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(2500) == 0 && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneSnow)
++				if (rand.NextBool(2500) && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].ZoneSnow)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1537, 1, false, 0, false, false);
+ 				}
+@@ -59891,13 +_,13 @@
+ 						}
+ 						break;
+ 					case 564:
+-						if (Main.rand.Next(7) == 0)
++						if (rand.NextBool(7))
+ 						{
+ 							Item.NewItem(this.position, base.Size, 3864, 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(5) == 0)
+-						{
+-							if (Main.rand.Next(2) == 0)
++						if (rand.NextBool(5))
++						{
++							if (rand.NextBool(2))
+ 							{
+ 								Item.NewItem(this.position, base.Size, 3815, 4, false, 0, false, false);
+ 							}
+@@ -59906,12 +_,12 @@
+ 								Item.NewItem(this.position, base.Size, 3814, 1, false, 0, false, false);
+ 							}
+ 						}
+-						if (Main.rand.Next(Main.expertMode ? 2 : 3) == 0)
++						if (rand.NextBool(Main.expertMode ? 2 : 3))
+ 						{
+ 							Item.NewItem(this.position, base.Size, (int)Utils.SelectRandom<short>(Main.rand, new short[]
+ 									{
+-										3857,
+-										3855
++								3857,
++								3855
+ 									}), 1, false, 0, false, false);
+ 						}
+ 						if (DD2Event.ShouldDropCrystals())
+@@ -59920,13 +_,13 @@
+ 						}
+ 						break;
+ 					case 565:
+-						if (Main.rand.Next(14) == 0)
++						if (rand.NextBool(14))
+ 						{
+ 							Item.NewItem(this.position, base.Size, 3864, 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(10) == 0)
+-						{
+-							if (Main.rand.Next(2) == 0)
++						if (rand.NextBool(10))
++						{
++							if (rand.NextBool(2))
+ 							{
+ 								Item.NewItem(this.position, base.Size, 3815, 4, false, 0, false, false);
+ 							}
+@@ -59935,12 +_,12 @@
+ 								Item.NewItem(this.position, base.Size, 3814, 1, false, 0, false, false);
+ 							}
+ 						}
+-						if (Main.rand.Next(6) == 0)
++						if (rand.NextBool(6))
+ 						{
+ 							Item.NewItem(this.position, base.Size, (int)Utils.SelectRandom<short>(Main.rand, new short[]
+ 									{
+-										3857,
+-										3855
++								3857,
++								3855
+ 									}), 1, false, 0, false, false);
+ 						}
+ 						if (DD2Event.ShouldDropCrystals())
+@@ -59957,32 +_,32 @@
+ 						}
+ 						break;
+ 					case 576:
+-						if (Main.rand.Next(7) == 0)
++						if (rand.NextBool(7))
+ 						{
+ 							Item.NewItem(this.position, base.Size, 3865, 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(Main.expertMode ? 2 : 3) == 0)
++						if (rand.NextBool(Main.expertMode ? 2 : 3))
+ 						{
+ 							Item.NewItem(this.position, base.Size, (int)Utils.SelectRandom<short>(Main.rand, new short[]
+ 									{
+-										3809,
+-										3811,
+-										3810,
+-										3812
++								3809,
++								3811,
++								3810,
++								3812
+ 									}), 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(Main.expertMode ? 2 : 3) == 0)
++						if (rand.NextBool(Main.expertMode ? 2 : 3))
+ 						{
+ 							Item.NewItem(this.position, base.Size, (int)Utils.SelectRandom<short>(Main.rand, new short[]
+ 									{
+-										3852,
+-										3854,
+-										3823,
+-										3835,
+-										3836
++								3852,
++								3854,
++								3823,
++								3835,
++								3836
+ 									}), 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(Main.expertMode ? 4 : 5) == 0)
++						if (rand.NextBool(Main.expertMode ? 4 : 5))
+ 						{
+ 							Item.NewItem(this.position, base.Size, 3856, 1, false, 0, false, false);
+ 						}
+@@ -59992,32 +_,32 @@
+ 						}
+ 						break;
+ 					case 577:
+-						if (Main.rand.Next(14) == 0)
++						if (rand.NextBool(14))
+ 						{
+ 							Item.NewItem(this.position, base.Size, 3865, 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(6) == 0)
++						if (rand.NextBool(6))
+ 						{
+ 							Item.NewItem(this.position, base.Size, (int)Utils.SelectRandom<short>(Main.rand, new short[]
+ 									{
+-										3809,
+-										3811,
+-										3810,
+-										3812
++								3809,
++								3811,
++								3810,
++								3812
+ 									}), 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(6) == 0)
++						if (rand.NextBool(6))
+ 						{
+ 							Item.NewItem(this.position, base.Size, (int)Utils.SelectRandom<short>(Main.rand, new short[]
+ 									{
+-										3852,
+-										3854,
+-										3823,
+-										3835,
+-										3836
++								3852,
++								3854,
++								3823,
++								3835,
++								3836
+ 									}), 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(10) == 0)
++						if (rand.NextBool(10))
+ 						{
+ 							Item.NewItem(this.position, base.Size, 3856, 1, false, 0, false, false);
+ 						}
+@@ -60060,7 +_,7 @@
+ 				{
+ 					NPC.downedChristmasSantank = true;
+ 				}
+-				if ((this.type == 344 || this.type == 345 || this.type == 346) && Main.rand.Next(num12) == 0 && num11 >= 15)
++				if ((this.type == 344 || this.type == 345 || this.type == 346) && rand.NextBool(num12) && num11 >= 15)
+ 				{
+ 					int num13 = 4;
+ 					if (num11 == 16)
+@@ -60083,11 +_,11 @@
+ 					{
+ 						num13 = 2;
+ 					}
+-					if (Main.expertMode && Main.rand.Next(3) == 0)
++					if (Main.expertMode && rand.NextBool(3))
+ 					{
+ 						num13--;
+ 					}
+-					if (Main.rand.Next(num13) == 0)
++					if (rand.NextBool(num13))
+ 					{
+ 						if (this.type == 344)
+ 						{
+@@ -60103,12 +_,12 @@
+ 						}
+ 					}
+ 				}
+-				if (Main.rand.Next(num12) == 0)
++				if (rand.NextBool(num12))
+ 				{
+ 					if (this.type == 344)
+ 					{
+ 						int num14 = Main.rand.Next(3);
+-						if (Main.rand.Next(15) == 0)
++						if (rand.NextBool(15))
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1871, 1, false, -1, false, false);
+ 						}
+@@ -60142,11 +_,11 @@
+ 					}
+ 					if (this.type == 345)
+ 					{
+-						if (NPC.waveNumber >= 15 && Main.rand.Next(30) == 0)
++						if (NPC.waveNumber >= 15 && rand.NextBool(30))
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1914, 1, false, 0, false, false);
+ 						}
+-						else if (Main.rand.Next(15) == 0)
++						else if (rand.NextBool(15))
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1959, 1, false, 0, false, false);
+ 						}
+@@ -60171,7 +_,7 @@
+ 			}
+ 			if (this.type == 341)
+ 			{
+-				int num17 = Main.rand.Next(5, 11);
++				int num17 = rand.NextInt(5, 11);
+ 				for (int i = 0; i < num17; i++)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+@@ -60181,15 +_,15 @@
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1869, 1, false, 0, false, false);
+ 				}
+ 			}
+-			if (this.type >= 338 && this.type <= 340 && Main.rand.Next(5) == 0)
++			if (this.type >= 338 && this.type <= 340 && rand.NextBool(5))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 			}
+-			if (this.type >= 338 && this.type <= 340 && Main.rand.Next(200) == 0)
++			if (this.type >= 338 && this.type <= 340 && rand.NextBool(200))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1943 + Main.rand.Next(3), 1, false, 0, false, false);
+ 			}
+-			if (this.type == 342 && Main.rand.Next(3) != 0)
++			if (this.type == 342 && rand.NextBoolInverted(3))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 			}
+@@ -60228,13 +_,13 @@
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1856, 1, false, 0, false, false);
+ 					}
+ 				}
+-				if (Main.rand.Next(num19) == 0)
+-				{
+-					if (this.type == 315 && Main.rand.Next(20) == 0)
++				if (rand.NextBool(num19))
++				{
++					if (this.type == 315 && rand.NextBool(20))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1857, 1, false, 0, false, false);
+ 					}
+-					if (this.type >= 305 && this.type <= 314 && Main.rand.Next(10) == 0)
++					if (this.type >= 305 && this.type <= 314 && rand.NextBool(10))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, Main.rand.Next(1788, 1791), 1, false, 0, false, false);
+ 					}
+@@ -60255,7 +_,7 @@
+ 						}
+ 						if (num20 == 2)
+ 						{
+-							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1836, Main.rand.Next(30, 61), false, 0, false, false);
++							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1836, rand.NextInt(30, 61), false, 0, false, false);
+ 						}
+ 						if (num20 == 3)
+ 						{
+@@ -60275,7 +_,7 @@
+ 						}
+ 						if (num21 == 0)
+ 						{
+-							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1783, Main.rand.Next(50, 101), false, 0, false, false);
++							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1783, rand.NextInt(50, 101), false, 0, false, false);
+ 						}
+ 						if (num21 == 1)
+ 						{
+@@ -60283,7 +_,7 @@
+ 						}
+ 						if (num21 == 1)
+ 						{
+-							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1785, Main.rand.Next(25, 51), false, 0, false, false);
++							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1785, rand.NextInt(25, 51), false, 0, false, false);
+ 						}
+ 						if (num21 == 2)
+ 						{
+@@ -60310,25 +_,25 @@
+ 			}
+ 			if (this.type == 325)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1729, Main.rand.Next(30, 51), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1729, rand.NextInt(30, 51), false, 0, false, false);
+ 			}
+ 			if (this.type == 326)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1729, Main.rand.Next(1, 5), false, 0, false, false);
+-			}
+-			if (this.type >= 305 && this.type <= 314 && Main.rand.Next(4) == 0)
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1729, rand.NextInt(1, 5), false, 0, false, false);
++			}
++			if (this.type >= 305 && this.type <= 314 && rand.NextBool(4))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 326 && Main.rand.Next(6) == 0)
++			if (this.type == 326 && rand.NextBool(6))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 329 && Main.rand.Next(4) == 0)
++			if (this.type == 329 && rand.NextBool(4))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 330 && Main.rand.Next(4) == 0)
++			if (this.type == 330 && rand.NextBool(4))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 			}
+@@ -60336,97 +_,97 @@
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 			}
+-			if (Main.halloween && this.lifeMax > 1 && this.damage > 0 && !this.friendly && this.type != 121 && this.type != 23 && this.value > 0f && Main.rand.Next(80) == 0)
++			if (Main.halloween && this.lifeMax > 1 && this.damage > 0 && !this.friendly && this.type != 121 && this.type != 23 && this.value > 0f && rand.NextBool(80))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1774, 1, false, 0, false, false);
+ 			}
+-			if (Main.xMas && this.lifeMax > 1 && this.damage > 0 && !this.friendly && this.type != 121 && this.value > 0f && Main.rand.Next(13) == 0)
++			if (Main.xMas && this.lifeMax > 1 && this.damage > 0 && !this.friendly && this.type != 121 && this.value > 0f && rand.NextBool(13))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1869, 1, false, 0, false, false);
+ 			}
+-			if (this.lifeMax > 5 && this.value > 0f && !this.friendly && Main.hardMode && this.position.Y / 16f > (float)(Main.maxTilesY - 200) && Main.rand.Next(50) == 0)
+-			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2701, Main.rand.Next(20, 51), false, 0, false, false);
++			if (this.lifeMax > 5 && this.value > 0f && !this.friendly && Main.hardMode && this.position.Y / 16f > (float)(Main.maxTilesY - 200) && rand.NextBool(50))
++			{
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2701, rand.NextInt(20, 51), false, 0, false, false);
+ 			}
+ 			if (this.type == 325 || this.type == 327 || this.type == 344 || this.type == 345 || this.type == 346)
+ 			{
+-				int num22 = Main.rand.Next(6) + 6;
++				int num22 = rand.NextInt(6) + 6;
+ 				for (int j = 0; j < num22; j++)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 				}
+ 			}
+-			if (this.type == 156 && Main.rand.Next(75) == 0)
++			if (this.type == 156 && rand.NextBool(75))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1518, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 243 && Main.rand.Next(3) == 0)
++			if (this.type == 243 && rand.NextBool(3))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1519, 1, false, 0, false, false);
+ 			}
+-			if (this.type >= 269 && this.type <= 280 && Main.rand.Next(450) == 0)
++			if (this.type >= 269 && this.type <= 280 && rand.NextBool(450))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1517, 1, false, 0, false, false);
+ 			}
+-			if ((this.type == 158 || this.type == 159) && Main.rand.Next(40) == 0)
++			if ((this.type == 158 || this.type == 159) && rand.NextBool(40))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1520, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 176 && Main.rand.Next(150) == 0)
++			if (this.type == 176 && rand.NextBool(150))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1521, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 48 && Main.rand.Next(200) == 0)
++			if (this.type == 48 && rand.NextBool(200))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1516, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 205 && Main.rand.Next(2) == 0)
++			if (this.type == 205 && rand.NextBool(2))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1611, 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 483 || this.type == 482)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3086, Main.rand.Next(5, 11), false, -1, false, false);
+-			}
+-			if (!Main.hardMode && Main.rand.Next(100) == 0 && this.HasPlayerTarget && this.lifeMax > 5 && !this.friendly && Main.rand.Next(4) == 0 && this.position.Y / 16f > (float)(Main.maxTilesY - 350) && NPC.downedBoss3)
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3086, rand.NextInt(5, 11), false, -1, false, false);
++			}
++			if (!Main.hardMode && rand.NextBool(100) && this.HasPlayerTarget && this.lifeMax > 5 && !this.friendly && rand.NextBool(4) && this.position.Y / 16f > (float)(Main.maxTilesY - 350) && NPC.downedBoss3)
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3282, 1, false, -1, false, false);
+ 			}
+-			if (Main.hardMode && this.HasPlayerTarget && Main.player[this.target].ZoneSnow && Main.rand.Next(300) == 0 && this.HasPlayerTarget && this.lifeMax > 5 && !this.friendly && this.value > 0f)
++			if (Main.hardMode && this.HasPlayerTarget && Main.player[this.target].ZoneSnow && rand.NextBool(300) && this.HasPlayerTarget && this.lifeMax > 5 && !this.friendly && this.value > 0f)
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3289, 1, false, -1, false, false);
+ 			}
+-			else if (Main.hardMode && Main.rand.Next(200) == 0 && this.HasPlayerTarget && this.lifeMax > 5 && !this.friendly && this.value > 0f)
++			else if (Main.hardMode && rand.NextBool(200) && this.HasPlayerTarget && this.lifeMax > 5 && !this.friendly && this.value > 0f)
+ 			{
+ 				if (Main.player[this.target].ZoneJungle && NPC.downedMechBossAny)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3286, 1, false, -1, false, false);
+ 				}
+-				else if (Main.player[this.target].ZoneDungeon && NPC.downedPlantBoss && Main.rand.Next(2) == 0)
++				else if (Main.player[this.target].ZoneDungeon && NPC.downedPlantBoss && rand.NextBool(2))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3291, 1, false, -1, false, false);
+ 				}
+-				else if ((double)(this.position.Y / 16f) > (Main.rockLayer + (double)Main.maxTilesY) / 2.0 && !Main.player[this.target].ZoneDungeon && Main.rand.Next(2) == 0)
++				else if ((double)(this.position.Y / 16f) > (Main.rockLayer + (double)Main.maxTilesY) / 2.0 && !Main.player[this.target].ZoneDungeon && rand.NextBool(2))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3290, 1, false, -1, false, false);
+ 				}
+ 			}
+ 			int num23 = 1;
+-			if (Main.expertMode && Main.rand.Next(2) == 0)
++			if (Main.expertMode && rand.NextBool(2))
+ 			{
+ 				num23 = 2;
+ 			}
+ 			for (int k = 0; k < num23; k++)
+ 			{
+-				if (this.type == 461 && Main.rand.Next(50) == 0)
++				if (this.type == 461 && rand.NextBool(50))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 497, 1, false, -1, false, false);
+ 				}
+-				if ((this.type == 159 || this.type == 158) && Main.rand.Next(35) == 0)
++				if ((this.type == 159 || this.type == 158) && rand.NextBool(35))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 900, 1, false, -1, false, false);
+ 				}
+-				if (this.type == 251 && Main.rand.Next(15) == 0)
++				if (this.type == 251 && rand.NextBool(15))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1311, 1, false, -1, false, false);
+ 				}
+@@ -60434,61 +_,61 @@
+ 				{
+ 					if (this.type == 477)
+ 					{
+-						if (Main.rand.Next(20) == 0 && NPC.downedPlantBoss)
++						if (rand.NextBool(20) && NPC.downedPlantBoss)
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2770, 1, false, -1, false, false);
+ 							k++;
+ 						}
+-						if (Main.rand.Next(4) == 0)
++						if (rand.NextBool(4))
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1570, 1, false, -1, false, false);
+ 							k++;
+ 						}
+-						else if (Main.rand.Next(3) == 0 && NPC.downedPlantBoss)
++						else if (rand.NextBool(3) && NPC.downedPlantBoss)
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3292, 1, false, -1, false, false);
+ 							k++;
+ 						}
+ 					}
+-					if (this.type == 253 && Main.rand.Next(40) == 0)
++					if (this.type == 253 && rand.NextBool(40))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1327, 1, false, -1, false, false);
+ 					}
+ 				}
+ 				if (NPC.downedPlantBoss)
+ 				{
+-					if (this.type == 460 && Main.rand.Next(40) == 0)
++					if (this.type == 460 && rand.NextBool(40))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3098, 1, false, -1, false, false);
+ 					}
+-					if (this.type == 468 && Main.rand.Next(40) == 0)
++					if (this.type == 468 && rand.NextBool(40))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3105, 1, false, -1, false, false);
+ 					}
+-					if (this.type == 466 && Main.rand.Next(40) == 0)
++					if (this.type == 466 && rand.NextBool(40))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3106, 1, false, -1, false, false);
+ 					}
+-					if (this.type == 467 && Main.rand.Next(40) == 0)
++					if (this.type == 467 && rand.NextBool(40))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3249, 1, false, -1, false, false);
+ 					}
+-					if (this.type == 463 && Main.rand.Next(25) == 0)
++					if (this.type == 463 && rand.NextBool(25))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3107, 1, false, -1, false, false);
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3108, Main.rand.Next(100, 201), false, -1, false, false);
+-					}
+-				}
+-			}
+-			if (Main.bloodMoon && Main.hardMode && Main.rand.Next(1000) == 0 && this.value > 0f)
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3108, rand.NextInt(100, 201), false, -1, false, false);
++					}
++				}
++			}
++			if (Main.bloodMoon && Main.hardMode && rand.NextBool(1000) && this.value > 0f)
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1314, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 77 && Main.rand.Next(150) == 0)
++			if (this.type == 77 && rand.NextBool(150))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 723, 1, false, -1, false, false);
+ 			}
+-			if (Main.rand.Next(100) == 0 || (Main.expertMode && Main.rand.Next(100) == 0))
++			if (rand.NextBool(100) || (Main.expertMode && rand.NextBool(100)))
+ 			{
+ 				int num24 = -1;
+ 				int num25 = -1;
+@@ -60508,7 +_,7 @@
+ 						switch (num)
+ 						{
+ 							case 75:
+-								if (Main.rand.Next(2) == 0)
++								if (rand.NextBool(2))
+ 								{
+ 									num24 = 889;
+ 								}
+@@ -60516,7 +_,7 @@
+ 								{
+ 									num24 = 890;
+ 								}
+-								if (Main.rand.Next(100) != 0)
++								if (rand.NextBoolInverted(100))
+ 								{
+ 									goto IL_3174;
+ 								}
+@@ -60544,7 +_,7 @@
+ 								num24 = 889;
+ 								goto IL_3174;
+ 							case 79:
+-								if (Main.rand.Next(2) == 0)
++								if (rand.NextBool(2))
+ 								{
+ 									num24 = 888;
+ 								}
+@@ -60552,7 +_,7 @@
+ 								{
+ 									num24 = 890;
+ 								}
+-								if (Main.rand.Next(100) != 0)
++								if (rand.NextBoolInverted(100))
+ 								{
+ 									goto IL_3174;
+ 								}
+@@ -60678,7 +_,7 @@
+ 				}
+ 			}
+ 			int num26 = 1;
+-			if (Main.expertMode && Main.rand.Next(2) == 0)
++			if (Main.expertMode && rand.NextBool(2))
+ 			{
+ 				num26 = 2;
+ 			}
+@@ -60686,18 +_,18 @@
+ 			{
+ 				if (this.type == 290)
+ 				{
+-					if (Main.rand.Next(15) == 0)
++					if (rand.NextBool(15))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1513, 1, false, -1, false, false);
+ 					}
+-					else if (Main.rand.Next(10) == 0)
++					else if (rand.NextBool(10))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 938, 1, false, -1, false, false);
+ 					}
+ 				}
+-				if (this.type == 287 && Main.rand.Next(6) == 0)
+-				{
+-					if (Main.rand.Next(2) == 0)
++				if (this.type == 287 && rand.NextBool(6))
++				{
++					if (rand.NextBool(2))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 963, 1, false, -1, false, false);
+ 					}
+@@ -60708,53 +_,53 @@
+ 				}
+ 				if (this.type == 291)
+ 				{
+-					if (Main.rand.Next(12) == 0)
++					if (rand.NextBool(12))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1300, 1, false, -1, false, false);
+ 					}
+-					else if (Main.rand.Next(12) == 0)
++					else if (rand.NextBool(12))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1254, 1, false, -1, false, false);
+ 					}
+ 				}
+ 				if (this.type == 292)
+ 				{
+-					if (Main.rand.Next(12) == 0)
++					if (rand.NextBool(12))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1514, 1, false, -1, false, false);
+ 					}
+-					else if (Main.rand.Next(12) == 0)
++					else if (rand.NextBool(12))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 679, 1, false, -1, false, false);
+ 					}
+ 				}
+-				if (this.type == 293 && Main.rand.Next(18) == 0)
++				if (this.type == 293 && rand.NextBool(18))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 759, 1, false, -1, false, false);
+ 				}
+-				if ((this.type == 281 || this.type == 282) && Main.rand.Next(20) == 0)
++				if ((this.type == 281 || this.type == 282) && rand.NextBool(20))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1446, 1, false, -1, false, false);
+ 				}
+-				if ((this.type == 283 || this.type == 284) && Main.rand.Next(20) == 0)
++				if ((this.type == 283 || this.type == 284) && rand.NextBool(20))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1444, 1, false, -1, false, false);
+ 				}
+-				if ((this.type == 285 || this.type == 286) && Main.rand.Next(20) == 0)
++				if ((this.type == 285 || this.type == 286) && rand.NextBool(20))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1445, 1, false, -1, false, false);
+ 				}
+ 				if (this.type >= 269 && this.type <= 280)
+ 				{
+-					if (Main.rand.Next(400) == 0)
++					if (rand.NextBool(400))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1183, 1, false, -1, false, false);
+ 					}
+-					else if (Main.rand.Next(300) == 0)
++					else if (rand.NextBool(300))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1266, 1, false, -1, false, false);
+ 					}
+-					else if (Main.rand.Next(200) == 0)
++					else if (rand.NextBool(200))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 671, 1, false, -1, false, false);
+ 					}
+@@ -60767,20 +_,20 @@
+ 				{
+ 					maxValue2 = 9;
+ 				}
+-				if (Main.rand.Next(maxValue2) == 0 && Main.wallDungeon[(int)Main.tile[(int)base.Center.X / 16, (int)base.Center.Y / 16].wall])
++				if (rand.NextBool(maxValue2) && Main.wallDungeon[(int)Main.tile[(int)base.Center.X / 16, (int)base.Center.Y / 16].wall])
+ 				{
+ 					NPC.NewNPC((int)base.Center.X, (int)base.Center.Y, 288, 0, 0f, 0f, 0f, 0f, 255);
+ 				}
+ 			}
+ 			if (this.type == 288)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1508, Main.rand.Next(1, 3), false, -1, false, false);
+-			}
+-			if (this.type == 156 && Main.rand.Next(30) == 0)
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1508, rand.NextInt(1, 3), false, -1, false, false);
++			}
++			if (this.type == 156 && rand.NextBool(30))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 683, 1, false, -1, false, false);
+ 			}
+-			if ((this.type == 195 || this.type == 196) && (Main.expertMode || Main.rand.Next(2) == 0))
++			if ((this.type == 195 || this.type == 196) && (Main.expertMode || rand.NextBool(2)))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3102, 1, false, -1, false, false);
+ 			}
+@@ -60792,7 +_,7 @@
+ 				}
+ 				else
+ 				{
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2110, 1, false, -1, false, false);
+ 					}
+@@ -60800,7 +_,7 @@
+ 					if (num27 == 0)
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1258, 1, false, -1, false, false);
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1261, Main.rand.Next(60, 100), false, 0, false, false);
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1261, rand.NextInt(60, 100), false, 0, false, false);
+ 					}
+ 					else if (num27 == 1)
+ 					{
+@@ -60830,17 +_,17 @@
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1297, 1, false, -1, false, false);
+ 					}
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2218, Main.rand.Next(4, 9), false, -1, false, false);
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2218, rand.NextInt(4, 9), false, -1, false, false);
+ 				}
+ 				NPC.downedGolemBoss = true;
+ 			}
+-			if (this.type == 471 && (Main.expertMode || Main.rand.Next(2) == 0))
+-			{
+-				if (Main.rand.Next(3) == 0)
++			if (this.type == 471 && (Main.expertMode || rand.NextBool(2)))
++			{
++				if (rand.NextBool(3))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3052, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(2) == 0)
++				else if (rand.NextBool(2))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3053, 1, false, -1, false, false);
+ 				}
+@@ -60851,7 +_,7 @@
+ 			}
+ 			if (this.type == 268)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1332, Main.rand.Next(2, 6), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1332, rand.NextInt(2, 6), false, 0, false, false);
+ 			}
+ 			if (this.type == 370)
+ 			{
+@@ -60862,11 +_,11 @@
+ 				}
+ 				else
+ 				{
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2588, 1, false, -1, false, false);
+ 					}
+-					if (Main.rand.Next(15) == 0)
++					if (rand.NextBool(15))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2609, 1, false, -1, false, false);
+ 					}
+@@ -60901,80 +_,80 @@
+ 					NetMessage.SendData(7, -1, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
+ 				}
+ 			}
+-			if (this.type == 153 && Main.rand.Next(17) == 0)
++			if (this.type == 153 && rand.NextBool(17))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1328, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 120 && Main.rand.Next(500) == 0)
++			if (this.type == 120 && rand.NextBool(500))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1326, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 49 && Main.rand.Next(250) == 0)
++			if (this.type == 49 && rand.NextBool(250))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1325, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 185 && Main.rand.Next(150) == 0)
++			if (this.type == 185 && rand.NextBool(150))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 951, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 44 && Main.rand.Next(50) == 0)
++			if (this.type == 44 && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1320, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 44 && Main.rand.Next(20) == 0)
++			if (this.type == 44 && rand.NextBool(20))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 88, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 110 && Main.rand.Next(80) == 0)
++			if (this.type == 110 && rand.NextBool(80))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1321, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 60 && Main.rand.Next(150) == 0)
++			if (this.type == 60 && rand.NextBool(150))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1322, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 151 && Main.rand.Next(50) == 0)
++			if (this.type == 151 && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1322, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 24 && Main.rand.Next(50) == 0)
++			if (this.type == 24 && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1323, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 109 && Main.rand.Next(30) == 0)
+-			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1324, Main.rand.Next(1, 5), false, -1, false, false);
++			if (this.type == 109 && rand.NextBool(30))
++			{
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1324, rand.NextInt(1, 5), false, -1, false, false);
+ 			}
+ 			if (this.type == 163 || this.type == 238)
+ 			{
+-				if (Main.rand.Next(40) == 0)
++				if (rand.NextBool(40))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1308, 1, false, -1, false, false);
+ 				}
+ 				if (Main.expertMode)
+ 				{
+-					if (Main.rand.Next(3) == 0)
+-					{
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2607, Main.rand.Next(2, 4), false, 0, false, false);
+-					}
+-					else if (Main.rand.Next(2) == 0)
+-					{
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2607, Main.rand.Next(1, 4), false, 0, false, false);
++					if (rand.NextBool(3))
++					{
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2607, rand.NextInt(2, 4), false, 0, false, false);
++					}
++					else if (rand.NextBool(2))
++					{
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2607, rand.NextInt(1, 4), false, 0, false, false);
+ 					}
+ 					else
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2607, 1, false, 0, false, false);
+ 					}
+ 				}
+-				else if (Main.rand.Next(4) != 0)
+-				{
+-					if (Main.rand.Next(3) == 0)
+-					{
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2607, Main.rand.Next(1, 4), false, 0, false, false);
+-					}
+-					else if (Main.rand.Next(2) == 0)
+-					{
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2607, Main.rand.Next(1, 3), false, 0, false, false);
++				else if (rand.NextBoolInverted(4))
++				{
++					if (rand.NextBool(3))
++					{
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2607, rand.NextInt(1, 4), false, 0, false, false);
++					}
++					else if (rand.NextBool(2))
++					{
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2607, rand.NextInt(1, 3), false, 0, false, false);
+ 					}
+ 					else
+ 					{
+@@ -60982,28 +_,28 @@
+ 					}
+ 				}
+ 			}
+-			if (Main.hardMode && (this.type == 197 || this.type == 206 || this.type == 169 || this.type == 154) && Main.rand.Next(180) == 0)
++			if (Main.hardMode && (this.type == 197 || this.type == 206 || this.type == 169 || this.type == 154) && rand.NextBool(180))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1306, 1, false, -1, false, false);
+ 			}
+ 			if (this.type == 244)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, Main.rand.Next(1, 6), false, 0, false, false);
+-				if (Main.rand.Next(2) == 0)
+-				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, Main.rand.Next(1, 6), false, 0, false, false);
+-				}
+-				if (Main.rand.Next(2) == 0)
+-				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, Main.rand.Next(1, 6), false, 0, false, false);
+-				}
+-				if (Main.rand.Next(2) == 0)
+-				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, Main.rand.Next(1, 6), false, 0, false, false);
+-				}
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 662, Main.rand.Next(30, 60), false, 0, false, false);
+-			}
+-			if (this.type == 250 && Main.rand.Next(15) == 0)
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, rand.NextInt(1, 6), false, 0, false, false);
++				if (rand.NextBool(2))
++				{
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, rand.NextInt(1, 6), false, 0, false, false);
++				}
++				if (rand.NextBool(2))
++				{
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, rand.NextInt(1, 6), false, 0, false, false);
++				}
++				if (rand.NextBool(2))
++				{
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, rand.NextInt(1, 6), false, 0, false, false);
++				}
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 662, rand.NextInt(30, 60), false, 0, false, false);
++			}
++			if (this.type == 250 && rand.NextBool(15))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1244, 1, false, -1, false, false);
+ 			}
+@@ -61012,15 +_,15 @@
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 754, 1, false, -1, false, false);
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 755, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 110 && Main.rand.Next(200) == 0)
++			if (this.type == 110 && rand.NextBool(200))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 682, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 154 && Main.rand.Next(100) == 0)
++			if (this.type == 154 && rand.NextBool(100))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1253, 1, false, -1, false, false);
+ 			}
+-			if ((this.type == 169 || this.type == 206) && Main.rand.Next(50) == 0)
++			if ((this.type == 169 || this.type == 206) && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 726, 1, false, -1, false, false);
+ 			}
+@@ -61028,36 +_,36 @@
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2161, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 480 && Main.rand.Next(50) == 0)
++			if (this.type == 480 && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3269, 1, false, -1, false, false);
+ 			}
+ 			if (this.type == 198 || this.type == 199 || this.type == 226)
+ 			{
+-				if (Main.rand.Next(1000) == 0)
++				if (rand.NextBool(1000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1172, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(50) == 0)
++				if (rand.NextBool(50))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1293, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(7) == 0)
+-				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2766, Main.rand.Next(1, 3), false, -1, false, false);
++				if (rand.NextBool(7))
++				{
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2766, rand.NextInt(1, 3), false, -1, false, false);
+ 				}
+ 			}
+ 			if (this.type == 78 || this.type == 79 || this.type == 80)
+ 			{
+-				if (Main.rand.Next(75) == 0)
++				if (rand.NextBool(75))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 870, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(75) == 0)
++				if (rand.NextBool(75))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 871, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(75) == 0)
++				if (rand.NextBool(75))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 872, 1, false, -1, false, false);
+ 				}
+@@ -61136,14 +_,14 @@
+ 			}
+ 			if (this.type == 473 || this.type == 474 || this.type == 475 || this.type == 476)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 499, Main.rand.Next(5, 11), false, -1, false, false);
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 500, Main.rand.Next(5, 16), false, -1, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 499, rand.NextInt(5, 11), false, -1, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 500, rand.NextInt(5, 16), false, -1, false, false);
+ 			}
+ 			if (this.type == 85 && this.value > 0f)
+ 			{
+ 				if (this.ai[3] == 4f)
+ 				{
+-					if (Main.rand.Next(20) == 0)
++					if (rand.NextBool(20))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1312, 1, false, -1, false, false);
+ 					}
+@@ -61197,203 +_,203 @@
+ 			{
+ 				if (Main.expertMode)
+ 				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 575, Main.rand.Next(5, 11) * 2, false, 0, false, false);
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 575, rand.NextInt(5, 11) * 2, false, 0, false, false);
+ 				}
+ 				else
+ 				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 575, Main.rand.Next(5, 11), false, 0, false, false);
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 575, rand.NextInt(5, 11), false, 0, false, false);
+ 				}
+ 			}
+ 			if (this.type >= 212 && this.type <= 215)
+ 			{
+-				if (Main.rand.Next(8000) == 0)
++				if (rand.NextBool(8000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 905, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(4000) == 0)
++				if (rand.NextBool(4000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 855, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(2000) == 0)
++				if (rand.NextBool(2000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 854, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(2000) == 0)
++				if (rand.NextBool(2000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2584, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(1000) == 0)
++				if (rand.NextBool(1000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3033, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(200) == 0)
++				if (rand.NextBool(200))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 672, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(500) == 0)
++				if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1277, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(500) == 0)
++				if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1278, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(500) == 0)
++				if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1279, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(500) == 0)
++				if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1280, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1704, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1705, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1710, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1716, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1720, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2379, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2389, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2405, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2843, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3885, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2663, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(150) == 0)
+-				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3904, Main.rand.Next(6, 11) * 5, false, 0, false, false);
+-				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(150))
++				{
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3904, rand.NextInt(6, 11) * 5, false, 0, false, false);
++				}
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3910, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2238, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2133, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2137, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2143, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2147, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2151, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2155, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(500) == 0)
++				if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3263, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(500) == 0)
++				if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3264, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(500) == 0)
++				if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3265, 1, false, 0, false, false);
+ 				}
+ 			}
+ 			else if (this.type == 216)
+ 			{
+-				if (Main.rand.Next(2000) == 0)
++				if (rand.NextBool(2000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 905, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(1000) == 0)
++				if (rand.NextBool(1000))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 855, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(500) == 0)
++				if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 854, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(500) == 0)
++				if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2584, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(250) == 0)
++				if (rand.NextBool(250))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3033, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(50) == 0)
++				if (rand.NextBool(50))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 672, 1, false, -1, false, false);
+ 				}
+ 			}
+ 			else if (this.type == 491)
+ 			{
+-				if (Main.rand.Next(400) == 0)
++				if (rand.NextBool(400))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 905, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(200) == 0)
++				else if (rand.NextBool(200))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 855, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(100) == 0)
++				else if (rand.NextBool(100))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 854, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(100) == 0)
++				else if (rand.NextBool(100))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2584, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(50) == 0)
++				else if (rand.NextBool(50))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3033, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(10) == 0)
++				else if (rand.NextBool(10))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 672, 1, false, -1, false, false);
+ 				}
+ 			}
+-			if ((this.type == 161 || this.type == 431) && Main.rand.Next(50) == 0)
++			if ((this.type == 161 || this.type == 431) && rand.NextBool(50))
+ 			{
+ 				int num34 = Main.rand.Next(3);
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 803 + num34, 1, false, 0, false, false);
+@@ -61418,152 +_,152 @@
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1119, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 167 && Main.rand.Next(50) == 0)
++			if (this.type == 167 && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 879, 1, false, -1, false, false);
+ 			}
+ 			if (this.type == 143 || this.type == 144 || this.type == 145)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 593, Main.rand.Next(5, 11), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 593, rand.NextInt(5, 11), false, 0, false, false);
+ 			}
+ 			if (this.type == 79)
+ 			{
+-				if (Main.rand.Next(10) == 0)
++				if (rand.NextBool(10))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 527, 1, false, 0, false, false);
+ 				}
+ 			}
+-			else if (this.type == 80 && Main.rand.Next(10) == 0)
++			else if (this.type == 80 && rand.NextBool(10))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 528, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 524 && Main.rand.Next(10) == 0)
+-			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3794, Main.rand.Next(1, 4), false, 0, false, false);
++			if (this.type == 524 && rand.NextBool(10))
++			{
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3794, rand.NextInt(1, 4), false, 0, false, false);
+ 			}
+ 			if (this.type == 525)
+ 			{
+-				if (Main.rand.Next(10) == 0)
++				if (rand.NextBool(10))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3794, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(3) == 0)
+-				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 522, Main.rand.Next(1, 4), false, 0, false, false);
+-				}
+-				if (Main.rand.Next(15) == 0)
++				if (rand.NextBool(3))
++				{
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 522, rand.NextInt(1, 4), false, 0, false, false);
++				}
++				if (rand.NextBool(15))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 527, 1, false, 0, false, false);
+ 				}
+ 			}
+ 			if (this.type == 526)
+ 			{
+-				if (Main.rand.Next(10) == 0)
++				if (rand.NextBool(10))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3794, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(3) == 0)
+-				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1332, Main.rand.Next(1, 4), false, 0, false, false);
+-				}
+-				if (Main.rand.Next(15) == 0)
++				if (rand.NextBool(3))
++				{
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1332, rand.NextInt(1, 4), false, 0, false, false);
++				}
++				if (rand.NextBool(15))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 527, 1, false, 0, false, false);
+ 				}
+ 			}
+ 			if (this.type == 527)
+ 			{
+-				if (Main.rand.Next(10) == 0)
++				if (rand.NextBool(10))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3794, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(15) == 0)
++				if (rand.NextBool(15))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 528, 1, false, 0, false, false);
+ 				}
+ 			}
+ 			if (this.type == 532)
+ 			{
+-				if (Main.rand.Next(3) == 0)
++				if (rand.NextBool(3))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3380, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(50) == 0)
++				if (rand.NextBool(50))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3771, 1, false, 0, false, false);
+ 				}
+ 			}
+ 			if (this.type == 528)
+ 			{
+-				if (Main.rand.Next(25) == 0)
++				if (rand.NextBool(25))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2802, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(60) == 0)
++				if (rand.NextBool(60))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3784 + Main.rand.Next(3), 1, false, 0, false, false);
+ 				}
+ 			}
+ 			else if (this.type == 529)
+ 			{
+-				if (Main.rand.Next(25) == 0)
++				if (rand.NextBool(25))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2801, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(40) == 0)
++				if (rand.NextBool(40))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3784 + Main.rand.Next(3), 1, false, 0, false, false);
+ 				}
+ 			}
+-			if ((this.type == 49 || this.type == 51 || this.type == 150 || this.type == 93) && Main.rand.Next(100) == 0)
++			if ((this.type == 49 || this.type == 51 || this.type == 150 || this.type == 93) && rand.NextBool(100))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 18, 1, false, -1, false, false);
+ 			}
+-			if ((this.type == 16 || this.type == 185 || this.type == 167 || this.type == 197) && Main.rand.Next(50) == 0)
++			if ((this.type == 16 || this.type == 185 || this.type == 167 || this.type == 197) && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 393, 1, false, -1, false, false);
+ 			}
+-			if (this.type == 58 && Main.rand.Next(75) == 0)
++			if (this.type == 58 && rand.NextBool(75))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 393, 1, false, -1, false, false);
+ 			}
+ 			if (this.type >= 494 && this.type <= 506)
+ 			{
+-				if (Main.rand.Next(80) == 0)
++				if (rand.NextBool(80))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 18, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(80) == 0)
++				else if (rand.NextBool(80))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 393, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(25) == 0)
++				else if (rand.NextBool(25))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3285, 1, false, -1, false, false);
+ 				}
+ 			}
+ 			if (this.type == 21 || this.type == 201 || this.type == 202 || this.type == 203 || this.type == 322 || this.type == 323 || this.type == 324 || (this.type >= 449 && this.type <= 452))
+ 			{
+-				if (Main.rand.Next(100) == 0)
++				if (rand.NextBool(100))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 954, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(200) == 0)
++				else if (rand.NextBool(200))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 955, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(200) == 0)
++				else if (rand.NextBool(200))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1166, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(500) == 0)
++				else if (rand.NextBool(500))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1274, 1, false, -1, false, false);
+ 				}
+ 			}
+ 			else if (this.type == 6)
+ 			{
+-				if (Main.rand.Next(175) == 0)
++				if (rand.NextBool(175))
+ 				{
+ 					int num35 = Main.rand.Next(3);
+ 					if (num35 == 0)
+@@ -61582,7 +_,7 @@
+ 			}
+ 			else if (this.type == 42 || this.type == 43 || (this.type >= 231 && this.type <= 235))
+ 			{
+-				if (Main.rand.Next(100) == 0)
++				if (rand.NextBool(100))
+ 				{
+ 					int num36 = Main.rand.Next(3);
+ 					if (num36 == 0)
+@@ -61601,49 +_,49 @@
+ 			}
+ 			else if (this.type == 31 || this.type == 32 || this.type == 294 || this.type == 295 || this.type == 296)
+ 			{
+-				if (Main.rand.Next(450) == 0)
++				if (rand.NextBool(450))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 959, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(300) == 0)
++				if (rand.NextBool(300))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1307, 1, false, -1, false, false);
+ 				}
+ 			}
+-			if ((this.type == 174 || this.type == 179 || this.type == 182 || this.type == 183) && Main.rand.Next(200) == 0)
++			if ((this.type == 174 || this.type == 179 || this.type == 182 || this.type == 183) && rand.NextBool(200))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 996, 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 101 || this.type == 98)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 522, Main.rand.Next(2, 6), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 522, rand.NextInt(2, 6), false, 0, false, false);
+ 			}
+ 			if (this.type == 86)
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 526, 1, false, 0, false, false);
+-				if (Main.rand.Next(100) == 0)
++				if (rand.NextBool(100))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 856, 1, false, 0, false, false);
+ 				}
+ 			}
+ 			if (this.type == 186 || this.type == 432)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 40, Main.rand.Next(1, 10), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 40, rand.NextInt(1, 10), false, 0, false, false);
+ 			}
+ 			if (this.type == 225)
+ 			{
+-				if (Main.rand.Next(45) == 0)
++				if (rand.NextBool(45))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1243, 1, false, 0, false, false);
+ 				}
+ 				else
+ 				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, Main.rand.Next(2, 7), false, 0, false, false);
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, rand.NextInt(2, 7), false, 0, false, false);
+ 				}
+ 			}
+ 			if (this.type == 537)
+ 			{
+-				int num37 = Main.rand.Next(1, 3);
++				int num37 = rand.NextInt(1, 3);
+ 				if (Main.expertMode)
+ 				{
+ 					if (this.netID == -7)
+@@ -61652,7 +_,7 @@
+ 					}
+ 					if (this.netID == -8 || this.netID == -9)
+ 					{
+-						num37 += Main.rand.Next(2);
++						num37 += rand.NextInt(2);
+ 					}
+ 				}
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, num37, false, 0, false, false);
+@@ -61661,31 +_,31 @@
+ 				{
+ 					num38 = (int)((double)num38 * 0.7);
+ 				}
+-				if (Main.rand.Next(num38) == 0)
++				if (rand.NextBool(num38))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1309, 1, false, -1, false, false);
+ 				}
+ 			}
+-			if (this.type >= 333 && this.type <= 336 && Main.rand.Next(20) == 0)
++			if (this.type >= 333 && this.type <= 336 && rand.NextBool(20))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1906, 1, false, 0, false, false);
+ 			}
+ 			if (this.netID == -4)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3111, Main.rand.Next(25, 51), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3111, rand.NextInt(25, 51), false, 0, false, false);
+ 				int num39 = 100;
+ 				if (Main.expertMode)
+ 				{
+ 					num39 = (int)((double)num39 * 0.7);
+ 				}
+-				if (Main.rand.Next(num39) == 0)
++				if (rand.NextBool(num39))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1309, 1, false, -1, false, false);
+ 				}
+ 			}
+ 			else if (this.type == 1 || this.type == 16 || this.type == 138 || this.type == 141 || this.type == 147 || this.type == 184 || this.type == 187 || this.type == 204 || this.type == 302 || (this.type >= 333 && this.type <= 336) || this.type == 535)
+ 			{
+-				int num40 = Main.rand.Next(1, 3);
++				int num40 = rand.NextInt(1, 3);
+ 				if (Main.expertMode)
+ 				{
+ 					if (this.netID == -7)
+@@ -61694,7 +_,7 @@
+ 					}
+ 					if (this.netID == -8 || this.netID == -9)
+ 					{
+-						num40 += Main.rand.Next(2);
++						num40 += rand.NextInt(2);
+ 					}
+ 				}
+ 				int num41 = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, num40, false, 0, false, false);
+@@ -61708,22 +_,22 @@
+ 				{
+ 					num42 = (int)((double)num42 * 0.7);
+ 				}
+-				if (Main.rand.Next(num42) == 0)
++				if (rand.NextBool(num42))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1309, 1, false, -1, false, false);
+ 				}
+ 			}
+ 			if (this.type == 75)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 501, Main.rand.Next(1, 4), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 501, rand.NextInt(1, 4), false, 0, false, false);
+ 			}
+ 			if (this.type == 81 || this.type == 183)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, Main.rand.Next(2, 5), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, rand.NextInt(2, 5), false, 0, false, false);
+ 			}
+ 			if (this.type == 122)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, Main.rand.Next(5, 11), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 23, rand.NextInt(5, 11), false, 0, false, false);
+ 			}
+ 			if (this.type == 71)
+ 			{
+@@ -61731,59 +_,59 @@
+ 			}
+ 			if (this.type == 2 || this.type == 317 || this.type == 318 || this.type == 190 || this.type == 191 || this.type == 192 || this.type == 193 || this.type == 194 || this.type == 133)
+ 			{
+-				if (Main.rand.Next(3) == 0)
++				if (rand.NextBool(3))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 38, 1, false, 0, false, false);
+ 				}
+-				else if (Main.rand.Next(100) == 0)
++				else if (rand.NextBool(100))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 236, 1, false, 0, false, false);
+ 				}
+ 			}
+-			if (this.type == 104 && Main.rand.Next(60) == 0)
++			if (this.type == 104 && rand.NextBool(60))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 485, 1, false, -1, false, false);
+ 			}
+ 			if (this.type == 58)
+ 			{
+-				if (Main.rand.Next(250) == 0)
++				if (rand.NextBool(250))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 263, 1, false, 0, false, false);
+ 				}
+-				else if (Main.rand.Next(30) == 0)
++				else if (rand.NextBool(30))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 118, 1, false, 0, false, false);
+ 				}
+ 			}
+-			if (this.type == 102 && Main.rand.Next(250) == 0)
++			if (this.type == 102 && rand.NextBool(250))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 263, 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 3 || this.type == 331 || this.type == 332 || this.type == 132 || this.type == 161 || this.type == 186 || this.type == 187 || this.type == 188 || this.type == 189 || this.type == 200 || this.type == 223 || this.type == 319 || this.type == 320 || this.type == 321 || (this.type >= 430 && this.type <= 436))
+ 			{
+-				if (Main.rand.Next(50) == 0)
++				if (rand.NextBool(50))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 216, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(250) == 0)
++				if (rand.NextBool(250))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1304, 1, false, -1, false, false);
+ 				}
+ 			}
+-			if ((this.type == 489 || this.type == 490) && (Main.expertMode || Main.rand.Next(2) == 0))
+-			{
+-				if (Main.rand.Next(75) == 0)
++			if ((this.type == 489 || this.type == 490) && (Main.expertMode || rand.NextBool(2)))
++			{
++				if (rand.NextBool(75))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3212, 1, false, -1, false, false);
+ 				}
+-				if (Main.rand.Next(100) == 0)
++				if (rand.NextBool(100))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3213, 1, false, -1, false, false);
+ 				}
+ 			}
+-			if (this.type == 223 && Main.rand.Next(20) == 0)
+-			{
+-				if (Main.rand.Next(2) == 0)
++			if (this.type == 223 && rand.NextBool(20))
++			{
++				if (rand.NextBool(2))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1135, 1, false, -1, false, false);
+ 				}
+@@ -61796,11 +_,11 @@
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 267, 1, false, 0, false, false);
+ 			}
+-			if ((this.type == 62 || this.type == 66) && Main.rand.Next(35) == 0)
++			if ((this.type == 62 || this.type == 66) && rand.NextBool(35))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 272, 1, false, -1, false, false);
+ 			}
+-			if (this.value > 0f && Main.hardMode && (double)(this.position.Y / 16f) < Main.worldSurface + 10.0 && (base.Center.X / 16f < 380f || base.Center.X / 16f > (float)(Main.maxTilesX - 380)) && Main.rand.Next(100) == 0)
++			if (this.value > 0f && Main.hardMode && (double)(this.position.Y / 16f) < Main.worldSurface + 10.0 && (base.Center.X / 16f < 380f || base.Center.X / 16f > (float)(Main.maxTilesX - 380)) && rand.NextBool(100))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1315, 1, false, 0, false, false);
+ 			}
+@@ -61825,62 +_,62 @@
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2222, 1, false, 0, false, false);
+ 			}
+-			if ((this.type == 69 || this.type == 509 || this.type == 508) && Main.rand.Next(3) == 0)
+-			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 323, Main.rand.Next(1, 3), false, 0, false, false);
+-			}
+-			if (this.type == 508 && Main.rand.Next(50) == 0)
++			if ((this.type == 69 || this.type == 509 || this.type == 508) && rand.NextBool(3))
++			{
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 323, rand.NextInt(1, 3), false, 0, false, false);
++			}
++			if (this.type == 508 && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3772, 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 73)
+ 			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 362, Main.rand.Next(1, 3), false, 0, false, false);
+-			}
+-			if ((this.type == 483 || this.type == 482) && Main.rand.Next(30) == 0)
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 362, rand.NextInt(1, 3), false, 0, false, false);
++			}
++			if ((this.type == 483 || this.type == 482) && rand.NextBool(30))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3109, 1, false, 0, false, false);
+ 			}
+-			if ((this.type == 6 || this.type == 94) && Main.rand.Next(3) == 0)
++			if ((this.type == 6 || this.type == 94) && rand.NextBool(3))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 68, 1, false, 0, false, false);
+ 			}
+-			if ((this.type == 181 || this.type == 173 || this.type == 239 || this.type == 182 || this.type == 240) && Main.rand.Next(3) == 0)
++			if ((this.type == 181 || this.type == 173 || this.type == 239 || this.type == 182 || this.type == 240) && rand.NextBool(3))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1330, 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 7 || this.type == 8 || this.type == 9)
+ 			{
+-				if (Main.rand.Next(3) == 0)
+-				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 68, Main.rand.Next(1, 3), false, 0, false, false);
+-				}
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 69, Main.rand.Next(3, 9), false, 0, false, false);
+-			}
+-			if ((this.type == 10 || this.type == 11 || this.type == 12 || this.type == 95 || this.type == 96 || this.type == 97) && (Main.rand.Next(50) == 0 || (Main.expertMode && Main.rand.Next(50) == 0)))
++				if (rand.NextBool(3))
++				{
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 68, rand.NextInt(1, 3), false, 0, false, false);
++				}
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 69, rand.NextInt(3, 9), false, 0, false, false);
++			}
++			if ((this.type == 10 || this.type == 11 || this.type == 12 || this.type == 95 || this.type == 96 || this.type == 97) && (rand.NextBool(50) || (Main.expertMode && rand.NextBool(50))))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 215, 1, false, 0, false, false);
+ 			}
+-			if ((this.type == 47 || this.type == 464) && Main.rand.Next(75) == 0)
++			if ((this.type == 47 || this.type == 464) && rand.NextBool(75))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 243, 1, false, 0, false, false);
+ 			}
+-			if ((this.type == 168 || this.type == 470) && Main.rand.Next(50) == 0)
++			if ((this.type == 168 || this.type == 470) && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, (int)Utils.SelectRandom<short>(Main.rand, new short[]
+ 						{
+-							3757,
+-							3758,
+-							3759
++					3757,
++					3758,
++					3759
+ 						}), 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 533)
+ 			{
+-				if (Main.rand.Next(40) == 0)
++				if (rand.NextBool(40))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3795, 1, false, 0, false, false);
+ 				}
+-				else if (Main.rand.Next(30) == 0)
++				else if (rand.NextBool(30))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3770, 1, false, 0, false, false);
+ 				}
+@@ -61910,11 +_,11 @@
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3858, 1, false, -1, false, false);
+ 					}
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3863, 1, false, -1, false, false);
+ 					}
+-					if (Main.rand.Next(4) == 0)
++					if (rand.NextBool(4))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3883, 1, false, -1, false, false);
+ 					}
+@@ -61928,11 +_,11 @@
+ 				}
+ 				else
+ 				{
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2112, 1, false, -1, false, false);
+ 					}
+-					if (Main.rand.Next(40) == 0 || (Main.expertMode && Main.rand.Next(20) == 0))
++					if (rand.NextBool(40) || (Main.expertMode && rand.NextBool(20)))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1299, 1, false, 0, false, false);
+ 					}
+@@ -61949,26 +_,26 @@
+ 					{
+ 						if (WorldGen.crimson)
+ 						{
+-							int stack = Main.rand.Next(20) + 10;
++							int stack = rand.NextInt(20) + 10;
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 880, stack, false, 0, false, false);
+-							stack = Main.rand.Next(20) + 10;
++							stack = rand.NextInt(20) + 10;
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 880, stack, false, 0, false, false);
+-							stack = Main.rand.Next(20) + 10;
++							stack = rand.NextInt(20) + 10;
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 880, stack, false, 0, false, false);
+-							stack = Main.rand.Next(3) + 1;
++							stack = rand.NextInt(3) + 1;
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2171, stack, false, 0, false, false);
+ 						}
+ 						else
+ 						{
+-							int stack2 = Main.rand.Next(30) + 20;
++							int stack2 = rand.NextInt(30) + 20;
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 47, stack2, false, 0, false, false);
+-							stack2 = Main.rand.Next(20) + 10;
++							stack2 = rand.NextInt(20) + 10;
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 56, stack2, false, 0, false, false);
+-							stack2 = Main.rand.Next(20) + 10;
++							stack2 = rand.NextInt(20) + 10;
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 56, stack2, false, 0, false, false);
+-							stack2 = Main.rand.Next(20) + 10;
++							stack2 = rand.NextInt(20) + 10;
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 56, stack2, false, 0, false, false);
+-							stack2 = Main.rand.Next(3) + 1;
++							stack2 = rand.NextInt(3) + 1;
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 59, stack2, false, 0, false, false);
+ 						}
+ 					}
+@@ -61982,22 +_,22 @@
+ 				}
+ 				else
+ 				{
+-					int stack3 = Main.rand.Next(20, 46);
++					int stack3 = rand.NextInt(20, 46);
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 880, stack3, false, 0, false, false);
+-					stack3 = Main.rand.Next(20, 46);
++					stack3 = rand.NextInt(20, 46);
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 880, stack3, false, 0, false, false);
+ 					if (Main.expertMode)
+ 					{
+-						stack3 = Main.rand.Next(30, 51);
++						stack3 = rand.NextInt(30, 51);
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 880, stack3, false, 0, false, false);
+-						stack3 = Main.rand.Next(30, 51);
++						stack3 = rand.NextInt(30, 51);
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 880, stack3, false, 0, false, false);
+ 					}
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2104, 1, false, -1, false, false);
+ 					}
+-					if (Main.rand.Next(20) == 0)
++					if (rand.NextBool(20))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3060, 1, false, 0, false, false);
+ 					}
+@@ -62009,33 +_,33 @@
+ 			}
+ 			if (this.type == 267 && NPC.AnyNPCs(266))
+ 			{
+-				int num45 = Main.rand.Next(2, 6);
+-				if (Main.rand.Next(3) != 0)
++				int num45 = rand.NextInt(2, 6);
++				if (rand.NextBoolInverted(3))
+ 				{
+ 					if (Main.expertMode)
+ 					{
+-						num45 += Main.rand.Next(2, 6);
++						num45 += rand.NextInt(2, 6);
+ 					}
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1329, num45, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(3) != 0)
+-				{
+-					num45 = Main.rand.Next(5, 13);
++				if (rand.NextBoolInverted(3))
++				{
++					num45 = rand.NextInt(5, 13);
+ 					if (Main.expertMode)
+ 					{
+-						num45 += Main.rand.Next(6, 14);
++						num45 += rand.NextInt(6, 14);
+ 					}
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 880, num45, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(2) == 0 && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].statLife < Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].statLifeMax2)
++				if (rand.NextBool(2) && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].statLife < Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].statLifeMax2)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 				}
+ 			}
+ 			if (this.type == 13 || this.type == 14 || this.type == 15)
+ 			{
+-				int num46 = Main.rand.Next(1, 3);
+-				if (Main.rand.Next(2) == 0)
++				int num46 = rand.NextInt(1, 3);
++				if (rand.NextBool(2))
+ 				{
+ 					if (Main.expertMode)
+ 					{
+@@ -62043,9 +_,9 @@
+ 					}
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 86, num46, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(2) == 0)
+-				{
+-					num46 = Main.rand.Next(2, 6);
++				if (rand.NextBool(2))
++				{
++					num46 = rand.NextInt(2, 6);
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 56, num46, false, 0, false, false);
+ 				}
+ 				if (this.boss)
+@@ -62056,32 +_,32 @@
+ 					}
+ 					else
+ 					{
+-						num46 = Main.rand.Next(10, 30);
++						num46 = rand.NextInt(10, 30);
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 56, num46, false, 0, false, false);
+-						num46 = Main.rand.Next(10, 31);
++						num46 = rand.NextInt(10, 31);
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 56, num46, false, 0, false, false);
+ 						if (Main.expertMode)
+ 						{
+-							num46 = Main.rand.Next(10, 30);
++							num46 = rand.NextInt(10, 30);
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 56, num46, false, 0, false, false);
+-							num46 = Main.rand.Next(10, 31);
++							num46 = rand.NextInt(10, 31);
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 56, num46, false, 0, false, false);
+ 						}
+ 						if (Main.expertMode)
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3224, 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(20) == 0)
++						if (rand.NextBool(20))
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 994, 1, false, 0, false, false);
+ 						}
+-						if (Main.rand.Next(7) == 0)
++						if (rand.NextBool(7))
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2111, 1, false, -1, false, false);
+ 						}
+ 					}
+ 				}
+-				if (Main.rand.Next(4) == 0 && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].statLife < Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].statLifeMax2)
++				if (rand.NextBool(4) && Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].statLife < Main.player[(int)Player.FindClosest(this.position, this.width, this.height)].statLifeMax2)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 				}
+@@ -62094,7 +_,7 @@
+ 				}
+ 				else
+ 				{
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2108, 1, false, -1, false, false);
+ 					}
+@@ -62146,15 +_,15 @@
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, num48, 1, false, -1, false, false);
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1132, 1, false, -1, false, false);
+ 					}
+-					else if (Main.rand.Next(3) == 0)
++					else if (rand.NextBool(3))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1132, 1, false, -1, false, false);
+ 					}
+-					if ((Main.expertMode && Main.rand.Next(15) == 0) || Main.rand.Next(15) == 0)
++					if ((Main.expertMode && rand.NextBool(15)) || rand.NextBool(15))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1170, 1, false, 0, false, false);
+ 					}
+-					if ((Main.expertMode && Main.rand.Next(20) == 0) || Main.rand.Next(20) == 0)
++					if ((Main.expertMode && rand.NextBool(20)) || rand.NextBool(20))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2502, 1, false, 0, false, false);
+ 					}
+@@ -62163,29 +_,29 @@
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1129, 1, false, 0, false, false);
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, Main.rand.Next(842, 845), 1, false, 0, false, false);
+ 					}
+-					else if (Main.rand.Next(3) == 0)
++					else if (rand.NextBool(3))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1129, 1, false, 0, false, false);
+ 					}
+-					else if (Main.rand.Next(2) == 0)
++					else if (rand.NextBool(2))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, Main.rand.Next(842, 845), 1, false, 0, false, false);
+ 					}
+-					if (Main.rand.Next(4) != 0 || Main.expertMode)
+-					{
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1130, Main.rand.Next(10, 30), false, 0, false, false);
++					if (rand.NextBoolInverted(4) || Main.expertMode)
++					{
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1130, rand.NextInt(10, 30), false, 0, false, false);
+ 						if (Main.expertMode)
+ 						{
+-							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1130, Main.rand.Next(10, 30), false, 0, false, false);
++							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1130, rand.NextInt(10, 30), false, 0, false, false);
+ 						}
+ 					}
+ 					if (Main.expertMode)
+ 					{
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2431, Main.rand.Next(44, 67), false, 0, false, false);
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2431, rand.NextInt(44, 67), false, 0, false, false);
+ 					}
+ 					else
+ 					{
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2431, Main.rand.Next(16, 27), false, 0, false, false);
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2431, rand.NextInt(16, 27), false, 0, false, false);
+ 					}
+ 				}
+ 				NPC.downedQueenBee = true;
+@@ -62200,15 +_,15 @@
+ 				{
+ 					this.DropBossBags();
+ 				}
+-				else if (Main.rand.Next(7) == 0)
++				else if (rand.NextBool(7))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1281, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(7) == 0)
++				else if (rand.NextBool(7))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1273, 1, false, -1, false, false);
+ 				}
+-				else if (Main.rand.Next(7) == 0)
++				else if (rand.NextBool(7))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1313, 1, false, -1, false, false);
+ 				}
+@@ -62221,7 +_,7 @@
+ 				}
+ 				else
+ 				{
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2105, 1, false, -1, false, false);
+ 					}
+@@ -62252,7 +_,7 @@
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 434, 1, false, -1, false, false);
+ 						}
+ 					}
+-					else if (Main.rand.Next(2) == 0)
++					else if (rand.NextBool(2))
+ 					{
+ 						int num51 = Main.rand.Next(4);
+ 						if (num51 == 3)
+@@ -62313,7 +_,7 @@
+ 			if (this.type == 439)
+ 			{
+ 				NPC.downedAncientCultist = true;
+-				if (Main.rand.Next(7) == 0)
++				if (rand.NextBool(7))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3372, 1, false, -1, false, false);
+ 				}
+@@ -62330,23 +_,23 @@
+ 				}
+ 				else
+ 				{
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3373, 1, false, -1, false, false);
+ 					}
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3384, 1, false, -1, false, false);
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3460, Main.rand.Next(70, 91), false, -1, false, false);
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3460, rand.NextInt(70, 91), false, -1, false, false);
+ 					int num57 = Utils.SelectRandom<int>(Main.rand, new int[]
+ 						{
+-							3063,
+-							3389,
+-							3065,
+-							1553,
+-							3546,
+-							3541,
+-							3570,
+-							3571,
+-							3569
++					3063,
++					3389,
++					3065,
++					1553,
++					3546,
++					3541,
++					3570,
++					3571,
++					3569
+ 						});
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, num57, 1, false, -1, false, false);
+ 				}
+@@ -62361,7 +_,7 @@
+ 					case 407:
+ 					case 409:
+ 					case 411:
+-						if ((this.type != 406 || Main.rand.Next(3) == 0) && NPC.ShieldStrengthTowerStardust > 0)
++						if ((this.type != 406 || rand.NextBool(3)) && NPC.ShieldStrengthTowerStardust > 0)
+ 						{
+ 							Projectile.NewProjectile(base.Center.X, base.Center.Y, 0f, 0f, 629, 0, 0f, Main.myPlayer, (float)NPC.FindFirstNPC(493), 0f);
+ 							goto IL_9D13;
+@@ -62395,14 +_,14 @@
+ 						goto IL_9D13;
+ 					case 422:
+ 						{
+-							int num58 = Main.rand.Next(25, 41) / 2;
++							int num58 = rand.NextInt(25, 41) / 2;
+ 							if (Main.expertMode)
+ 							{
+ 								num58 = (int)((float)num58 * 1.5f);
+ 							}
+ 							for (int num59 = 0; num59 < num58; num59++)
+ 							{
+-								Item.NewItem((int)this.position.X + Main.rand.Next(this.width), (int)this.position.Y + Main.rand.Next(this.height), 2, 2, 3456, Main.rand.Next(1, 4), false, 0, false, false);
++								Item.NewItem((int)this.position.X + Main.rand.Next(this.width), (int)this.position.Y + Main.rand.Next(this.height), 2, 2, 3456, rand.NextInt(1, 4), false, 0, false, false);
+ 							}
+ 							NPC.downedTowerVortex = true;
+ 							NPC.TowerActiveVortex = false;
+@@ -62426,14 +_,14 @@
+ 							{
+ 								goto IL_9D13;
+ 							}
+-							int num60 = Main.rand.Next(25, 41) / 2;
++							int num60 = rand.NextInt(25, 41) / 2;
+ 							if (Main.expertMode)
+ 							{
+ 								num60 = (int)((float)num60 * 1.5f);
+ 							}
+ 							for (int num61 = 0; num61 < num60; num61++)
+ 							{
+-								Item.NewItem((int)this.position.X + Main.rand.Next(this.width), (int)this.position.Y + Main.rand.Next(this.height), 2, 2, 3459, Main.rand.Next(1, 4), false, 0, false, false);
++								Item.NewItem((int)this.position.X + Main.rand.Next(this.width), (int)this.position.Y + Main.rand.Next(this.height), 2, 2, 3459, rand.NextInt(1, 4), false, 0, false, false);
+ 							}
+ 							NPC.downedTowerStardust = true;
+ 							NPC.TowerActiveStardust = false;
+@@ -62447,14 +_,14 @@
+ 			{
+ 				if (num == 507)
+ 				{
+-					int num62 = Main.rand.Next(25, 41) / 2;
++					int num62 = rand.NextInt(25, 41) / 2;
+ 					if (Main.expertMode)
+ 					{
+ 						num62 = (int)((float)num62 * 1.5f);
+ 					}
+ 					for (int num63 = 0; num63 < num62; num63++)
+ 					{
+-						Item.NewItem((int)this.position.X + Main.rand.Next(this.width), (int)this.position.Y + Main.rand.Next(this.height), 2, 2, 3457, Main.rand.Next(1, 4), false, 0, false, false);
++						Item.NewItem((int)this.position.X + Main.rand.Next(this.width), (int)this.position.Y + Main.rand.Next(this.height), 2, 2, 3457, rand.NextInt(1, 4), false, 0, false, false);
+ 					}
+ 					NPC.downedTowerNebula = true;
+ 					NPC.TowerActiveNebula = false;
+@@ -62466,14 +_,14 @@
+ 				{
+ 					case 517:
+ 						{
+-							int num64 = Main.rand.Next(25, 41) / 2;
++							int num64 = rand.NextInt(25, 41) / 2;
+ 							if (Main.expertMode)
+ 							{
+ 								num64 = (int)((float)num64 * 1.5f);
+ 							}
+ 							for (int num65 = 0; num65 < num64; num65++)
+ 							{
+-								Item.NewItem((int)this.position.X + Main.rand.Next(this.width), (int)this.position.Y + Main.rand.Next(this.height), 2, 2, 3458, Main.rand.Next(1, 4), false, 0, false, false);
++								Item.NewItem((int)this.position.X + Main.rand.Next(this.width), (int)this.position.Y + Main.rand.Next(this.height), 2, 2, 3458, rand.NextInt(1, 4), false, 0, false, false);
+ 							}
+ 							NPC.downedTowerSolar = true;
+ 							NPC.TowerActiveSolar = false;
+@@ -62514,23 +_,23 @@
+ 					}
+ 					break;
+ 			}
+-			if (Main.rand.Next(8) == 0)
+-			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2860, Main.rand.Next(8, 21), false, 0, false, false);
++			if (rand.NextBool(8))
++			{
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2860, rand.NextInt(8, 21), false, 0, false, false);
+ 			}
+ 			IL_9DA6:
+ 			num = this.type;
+ 			if (num == 383 || num == 386 || num == 389)
+ 			{
+-				if (Main.rand.Next(200) == 0)
++				if (rand.NextBool(200))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2806, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(200) == 0)
++				if (rand.NextBool(200))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2807, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(200) == 0)
++				if (rand.NextBool(200))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2808, 1, false, 0, false, false);
+ 				}
+@@ -62552,15 +_,15 @@
+ 					}
+ 					break;
+ 			}
+-			if (Main.rand.Next(200) == 0)
++			if (rand.NextBool(200))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2803, 1, false, 0, false, false);
+ 			}
+-			if (Main.rand.Next(200) == 0)
++			if (rand.NextBool(200))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2804, 1, false, 0, false, false);
+ 			}
+-			if (Main.rand.Next(200) == 0)
++			if (rand.NextBool(200))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2805, 1, false, 0, false, false);
+ 			}
+@@ -62569,60 +_,60 @@
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, Utils.SelectRandom<int>(Main.rand, new int[]
+ 						{
+-							2797,
+-							2749,
+-							2795,
+-							2798,
+-							2796,
+-							2882,
+-							2880,
+-							2769,
+-							2800
++					2797,
++					2749,
++					2795,
++					2798,
++					2796,
++					2882,
++					2880,
++					2769,
++					2800
+ 						}), 1, false, 0, false, false);
+ 			}
+-			if (this.type == 390 && Main.rand.Next(100) == 0)
++			if (this.type == 390 && rand.NextBool(100))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2771, 1, false, 0, false, false);
+ 			}
+-			if ((this.type == 116 || this.type == 117 || this.type == 118 || this.type == 119) && (!Main.expertMode || Main.rand.Next(5) == 0))
++			if ((this.type == 116 || this.type == 117 || this.type == 118 || this.type == 119) && (!Main.expertMode || rand.NextBool(5)))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 139 && Main.rand.Next(2) == 0)
++			if (this.type == 139 && rand.NextBool(2))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 63 || this.type == 64 || this.type == 103)
+ 			{
+-				if (Main.rand.Next(100) == 0)
++				if (rand.NextBool(100))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1303, 1, false, -1, false, false);
+ 				}
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 282, Main.rand.Next(1, 5), false, 0, false, false);
+-			}
+-			if (this.type == 481 && Main.rand.Next(2) == 0)
+-			{
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3094, Main.rand.Next(40, 81), false, 0, false, false);
+-			}
+-			if (this.type == 481 && Main.rand.Next(20) == 0)
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 282, rand.NextInt(1, 5), false, 0, false, false);
++			}
++			if (this.type == 481 && rand.NextBool(2))
++			{
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3094, rand.NextInt(40, 81), false, 0, false, false);
++			}
++			if (this.type == 481 && rand.NextBool(20))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3187 + Main.rand.Next(3), 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 21 || this.type == 44 || this.type == 167 || this.type == 201 || this.type == 202 || this.type == 481 || this.type == 203 || this.type == 322 || this.type == 323 || this.type == 324 || (this.type >= 449 && this.type <= 452))
+ 			{
+-				if (Main.rand.Next(25) == 0)
++				if (rand.NextBool(25))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 118, 1, false, 0, false, false);
+ 				}
+ 				else if (this.type == 44)
+ 				{
+-					if (Main.rand.Next(20) == 0)
++					if (rand.NextBool(20))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, Main.rand.Next(410, 412), 1, false, 0, false, false);
+ 					}
+ 					else
+ 					{
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 166, Main.rand.Next(1, 4), false, 0, false, false);
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 166, rand.NextInt(1, 4), false, 0, false, false);
+ 					}
+ 				}
+ 			}
+@@ -62643,17 +_,17 @@
+ 				}
+ 				else
+ 				{
+-					if (Main.rand.Next(4) == 0)
++					if (rand.NextBool(4))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2430, 1, false, 0, false, false);
+ 					}
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2493, 1, false, -1, false, false);
+ 					}
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, Main.rand.Next(256, 259), 1, false, 0, false, false);
+-					Main.rand.Next(2);
+-					if (Main.rand.Next(3) == 0)
++					Main.rand.Next(2); // Why is this here?
++					if (rand.NextBool(3))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2585, 1, false, 0, false, false);
+ 					}
+@@ -62669,68 +_,68 @@
+ 					NetMessage.SendData(7, -1, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
+ 				}
+ 			}
+-			if (this.type == 23 && Main.rand.Next(50) == 0)
++			if (this.type == 23 && rand.NextBool(50))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 116, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 24 && Main.rand.Next(250) == 0)
++			if (this.type == 24 && rand.NextBool(250))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 244, 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 31 || this.type == 32 || this.type == 34)
+ 			{
+-				if (Main.rand.Next(250) == 0)
++				if (rand.NextBool(250))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 932, 1, false, 0, false, false);
+ 				}
+-				else if (Main.rand.Next(100) == 0)
++				else if (rand.NextBool(100))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3095, 1, false, 0, false, false);
+ 				}
+-				else if (Main.rand.Next(65) == 0)
++				else if (rand.NextBool(65))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 327, 1, false, 0, false, false);
+ 				}
+ 				else if (!Main.expertMode)
+ 				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 154, Main.rand.Next(1, 4), false, 0, false, false);
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 154, rand.NextInt(1, 4), false, 0, false, false);
+ 				}
+ 				if (Main.expertMode)
+ 				{
+-					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 154, Main.rand.Next(2, 7), false, 0, false, false);
++					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 154, rand.NextInt(2, 7), false, 0, false, false);
+ 				}
+ 			}
+ 			if (this.type == 26 || this.type == 27 || this.type == 28 || this.type == 29 || this.type == 111)
+ 			{
+-				if (Main.rand.Next(200) == 0)
++				if (rand.NextBool(200))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 160, 1, false, 0, false, false);
+ 				}
+-				else if (Main.rand.Next(2) == 0)
+-				{
+-					int stack4 = Main.rand.Next(1, 6);
++				else if (rand.NextBool(2))
++				{
++					int stack4 = rand.NextInt(1, 6);
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 161, stack4, false, 0, false, false);
+ 				}
+ 			}
+-			if (this.type == 175 && Main.rand.Next(100) == 0)
++			if (this.type == 175 && rand.NextBool(100))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1265, 1, false, -1, false, false);
+ 			}
+-			if ((this.type == 42 || (this.type >= 231 && this.type <= 235)) && (Main.expertMode || Main.rand.Next(3) != 0))
++			if ((this.type == 42 || (this.type >= 231 && this.type <= 235)) && (Main.expertMode || rand.NextBoolInverted(3)))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 209, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 204 && (Main.expertMode || Main.rand.Next(2) == 0))
++			if (this.type == 204 && (Main.expertMode || rand.NextBool(2)))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 209, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 43 && (Main.expertMode || Main.rand.Next(2) == 0))
++			if (this.type == 43 && (Main.expertMode || rand.NextBool(2)))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 210, 1, false, 0, false, false);
+ 			}
+ 			if (this.type == 65)
+ 			{
+-				if (Main.rand.Next(50) == 0)
++				if (rand.NextBool(50))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 268, 1, false, 0, false, false);
+ 				}
+@@ -62739,7 +_,7 @@
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 319, 1, false, 0, false, false);
+ 				}
+ 			}
+-			if (this.type == 48 && Main.rand.Next(2) == 0)
++			if (this.type == 48 && rand.NextBool(2))
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 320, 1, false, 0, false, false);
+ 			}
+@@ -62747,7 +_,7 @@
+ 			{
+ 				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3783, 1, false, 0, false, false);
+ 			}
+-			if (this.type == 542 && Main.rand.Next(8) == 0)
++			if (this.type == 542 && rand.NextBool(8))
+ 			{
+ 				int num66 = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 319, 1, false, 0, false, false);
+ 				Main.item[num66].color = new Color(189, 148, 96, 255);
+@@ -62755,11 +_,11 @@
+ 			}
+ 			if (this.type == 543 || this.type == 544)
+ 			{
+-				if (Main.rand.Next(25) == 0)
++				if (rand.NextBool(25))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 527, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(8) == 0)
++				if (rand.NextBool(8))
+ 				{
+ 					int num67 = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 319, 1, false, 0, false, false);
+ 					if (this.type == 544)
+@@ -62775,11 +_,11 @@
+ 			}
+ 			if (this.type == 545)
+ 			{
+-				if (Main.rand.Next(25) == 0)
++				if (rand.NextBool(25))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 528, 1, false, 0, false, false);
+ 				}
+-				if (Main.rand.Next(8) == 0)
++				if (rand.NextBool(8))
+ 				{
+ 					int num68 = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 319, 1, false, 0, false, false);
+ 					Main.item[num68].color = new Color(158, 113, 164, 255);
+@@ -62801,12 +_,12 @@
+ 					}
+ 					else
+ 					{
+-						if (Main.rand.Next(7) == 0)
++						if (rand.NextBool(7))
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2106, 1, false, -1, false, false);
+ 						}
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 549, Main.rand.Next(25, 41), false, 0, false, false);
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1225, Main.rand.Next(15, 31), false, 0, false, false);
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 549, rand.NextInt(25, 41), false, 0, false, false);
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1225, rand.NextInt(15, 31), false, 0, false, false);
+ 					}
+ 				}
+ 				else
+@@ -62824,21 +_,21 @@
+ 			}
+ 			else if (this.type == 127)
+ 			{
+-				if (Main.rand.Next(7) == 0)
++				if (rand.NextBool(7))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2107, 1, false, -1, false, false);
+ 				}
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 547, Main.rand.Next(25, 41), false, 0, false, false);
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1225, Main.rand.Next(15, 31), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 547, rand.NextInt(25, 41), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1225, rand.NextInt(15, 31), false, 0, false, false);
+ 			}
+ 			else if (this.type == 134)
+ 			{
+-				if (Main.rand.Next(7) == 0)
++				if (rand.NextBool(7))
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2113, 1, false, -1, false, false);
+ 				}
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 548, Main.rand.Next(25, 41), false, 0, false, false);
+-				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1225, Main.rand.Next(15, 31), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 548, rand.NextInt(25, 41), false, 0, false, false);
++				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1225, rand.NextInt(15, 31), false, 0, false, false);
+ 			}
+ 			if (this.type == 262)
+ 			{
+@@ -62848,31 +_,31 @@
+ 				}
+ 				else
+ 				{
+-					if (Main.rand.Next(7) == 0)
++					if (rand.NextBool(7))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 2109, 1, false, -1, false, false);
+ 					}
+ 					if (Main.expertMode)
+ 					{
+-						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1141, Main.rand.Next(2, 4), false, -1, false, false);
++						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1141, rand.NextInt(2, 4), false, -1, false, false);
+ 					}
+ 					else
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1141, 1, false, -1, false, false);
+ 					}
+-					if (Main.rand.Next(20) == 0)
++					if (rand.NextBool(20))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1182, 1, false, -1, false, false);
+ 					}
+-					if (Main.rand.Next(50) == 0 || (Main.expertMode && Main.rand.Next(50) == 0))
++					if (rand.NextBool(50) || (Main.expertMode && rand.NextBool(50)))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1305, 1, false, -1, false, false);
+ 					}
+-					if (Main.rand.Next(4) == 0 || Main.expertMode)
++					if (rand.NextBool(4) || Main.expertMode)
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 1157, 1, false, -1, false, false);
+ 					}
+-					if (Main.rand.Next(10) == 0)
++					if (rand.NextBool(10))
+ 					{
+ 						Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 3021, 1, false, -1, false, false);
+ 					}
+@@ -62903,7 +_,7 @@
+ 						if (num73 == 0)
+ 						{
+ 							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 758, 1, false, -1, false, false);
+-							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 771, Main.rand.Next(50, 150), false, 0, false, false);
++							Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 771, rand.NextInt(50, 150), false, 0, false, false);
+ 						}
+ 						else if (num73 == 1)
+ 						{
+@@ -62945,7 +_,7 @@
+ 					}
+ 				}
+ 			}
+-			if ((this.boss || this.type == 125 || this.type == 126 || this.type == 491 || this.type == 551 || this.type == 576 || this.type == 577 || this.type == 564 || this.type == 565) && Main.rand.Next(10) == 0)
++			if ((this.boss || this.type == 125 || this.type == 126 || this.type == 491 || this.type == 551 || this.type == 576 || this.type == 577 || this.type == 564 || this.type == 565) && rand.NextBool(10))
+ 			{
+ 				if (this.type == 4)
+ 				{
+@@ -63061,7 +_,7 @@
+ 					NPC.downedMechBossAny = true;
+ 				}
+ 				string typeName = this.TypeName;
+-				int stack5 = Main.rand.Next(5, 16);
++				int stack5 = rand.NextInt(5, 16);
+ 				int num74 = 28;
+ 				if (this.type == 113)
+ 				{
+@@ -63095,8 +_,9 @@
  				{
  					num74 = 499;
  				}
 +				NPCLoader.BossLoot(this, ref typeName, ref num74);
  				Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, num74, stack5, false, 0, false, false);
- 				int num75 = Main.rand.Next(5) + 5;
+-				int num75 = Main.rand.Next(5) + 5;
++				int num75 = rand.NextInt(5) + 5;
  				for (int num76 = 0; num76 < num75; num76++)
-@@ -63174,6 +_,7 @@
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+@@ -63113,7 +_,7 @@
+ 					{
+ 						NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Plural", new object[]
+ 								{
+-									NetworkText.FromKey("Enemies.TheTwins", new object[0])
++							NetworkText.FromKey("Enemies.TheTwins", new object[0])
+ 								}), new Color(175, 75, 255), -1);
+ 					}
+ 				}
+@@ -63127,7 +_,7 @@
+ 					{
+ 						NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", new object[]
+ 								{
+-									NetworkText.FromKey("Enemies.MoonLord", new object[0])
++							NetworkText.FromKey("Enemies.MoonLord", new object[0])
+ 								}), new Color(175, 75, 255), -1);
+ 					}
+ 				}
+@@ -63139,7 +_,7 @@
+ 				{
+ 					NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", new object[]
+ 							{
+-								this.GetTypeNetName()
++						this.GetTypeNetName()
+ 							}), new Color(175, 75, 255), -1);
+ 				}
+ 				if (this.type == 113 && Main.netMode != 1)
+@@ -63174,19 +_,20 @@
  					NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[32].Key, new object[0]), new Color(50, 255, 130), -1);
  				}
  			}
+-			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
 +			NPCLoader.NPCLoot(this);
- 			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
++			if (this.type != 16 && this.type != 81 && this.type != 121 && rand.NextBool(6) && this.lifeMax > 1 && this.damage > 0)
  			{
  				int num77 = (int)Player.FindClosest(this.position, this.width, this.height);
+-				if (Main.rand.Next(2) == 0 && Main.player[num77].statMana < Main.player[num77].statManaMax2)
++				if (rand.NextBool(2) && Main.player[num77].statMana < Main.player[num77].statManaMax2)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 184, 1, false, 0, false, false);
+ 				}
+-				else if (Main.rand.Next(2) == 0 && Main.player[num77].statLife < Main.player[num77].statLifeMax2)
++				else if (rand.NextBool(2) && Main.player[num77].statLife < Main.player[num77].statLifeMax2)
+ 				{
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 58, 1, false, 0, false, false);
+ 				}
+ 			}
+-			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(2) == 0 && this.lifeMax > 1 && this.damage > 0)
++			if (this.type != 16 && this.type != 81 && this.type != 121 && rand.NextBool(2) && this.lifeMax > 1 && this.damage > 0)
+ 			{
+ 				int num78 = (int)Player.FindClosest(this.position, this.width, this.height);
+ 				if (Main.player[num78].statMana < Main.player[num78].statManaMax2)
+@@ -63197,24 +_,24 @@
+ 			float num79 = this.value;
+ 			if (this.midas)
+ 			{
+-				num79 *= 1f + (float)Main.rand.Next(10, 50) * 0.01f;
+-			}
+-			num79 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
+-			if (Main.rand.Next(5) == 0)
+-			{
+-				num79 *= 1f + (float)Main.rand.Next(5, 11) * 0.01f;
+-			}
+-			if (Main.rand.Next(10) == 0)
+-			{
+-				num79 *= 1f + (float)Main.rand.Next(10, 21) * 0.01f;
+-			}
+-			if (Main.rand.Next(15) == 0)
+-			{
+-				num79 *= 1f + (float)Main.rand.Next(15, 31) * 0.01f;
+-			}
+-			if (Main.rand.Next(20) == 0)
+-			{
+-				num79 *= 1f + (float)Main.rand.Next(20, 41) * 0.01f;
++				num79 *= 1f + (float)rand.NextInt(10, 50) * 0.01f;
++			}
++			num79 *= 1f + (float)rand.NextInt(-20, 21) * 0.01f;
++			if (rand.NextBool(5))
++			{
++				num79 *= 1f + (float)rand.NextInt(5, 11) * 0.01f;
++			}
++			if (rand.NextBool(10))
++			{
++				num79 *= 1f + (float)rand.NextInt(10, 21) * 0.01f;
++			}
++			if (rand.NextBool(15))
++			{
++				num79 *= 1f + (float)rand.NextInt(15, 31) * 0.01f;
++			}
++			if (rand.NextBool(20))
++			{
++				num79 *= 1f + (float)rand.NextInt(20, 41) * 0.01f;
+ 			}
+ 			num79 += this.extraValue;
+ 			while ((int)num79 > 0)
+@@ -63222,13 +_,13 @@
+ 				if (num79 > 1000000f)
+ 				{
+ 					int num80 = (int)(num79 / 1000000f);
+-					if (num80 > 50 && Main.rand.Next(5) == 0)
+-					{
+-						num80 /= Main.rand.Next(3) + 1;
+-					}
+-					if (Main.rand.Next(5) == 0)
+-					{
+-						num80 /= Main.rand.Next(3) + 1;
++					if (num80 > 50 && rand.NextBool(5))
++					{
++						num80 /= rand.NextInt(3) + 1;
++					}
++					if (rand.NextBool(5))
++					{
++						num80 /= rand.NextInt(3) + 1;
+ 					}
+ 					num79 -= (float)(1000000 * num80);
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 74, num80, false, 0, false, false);
+@@ -63236,13 +_,13 @@
+ 				else if (num79 > 10000f)
+ 				{
+ 					int num81 = (int)(num79 / 10000f);
+-					if (num81 > 50 && Main.rand.Next(5) == 0)
+-					{
+-						num81 /= Main.rand.Next(3) + 1;
+-					}
+-					if (Main.rand.Next(5) == 0)
+-					{
+-						num81 /= Main.rand.Next(3) + 1;
++					if (num81 > 50 && rand.NextBool(5))
++					{
++						num81 /= rand.NextInt(3) + 1;
++					}
++					if (rand.NextBool(5))
++					{
++						num81 /= rand.NextInt(3) + 1;
+ 					}
+ 					num79 -= (float)(10000 * num81);
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 73, num81, false, 0, false, false);
+@@ -63250,13 +_,13 @@
+ 				else if (num79 > 100f)
+ 				{
+ 					int num82 = (int)(num79 / 100f);
+-					if (num82 > 50 && Main.rand.Next(5) == 0)
+-					{
+-						num82 /= Main.rand.Next(3) + 1;
+-					}
+-					if (Main.rand.Next(5) == 0)
+-					{
+-						num82 /= Main.rand.Next(3) + 1;
++					if (num82 > 50 && rand.NextBool(5))
++					{
++						num82 /= rand.NextInt(3) + 1;
++					}
++					if (rand.NextBool(5))
++					{
++						num82 /= rand.NextInt(3) + 1;
+ 					}
+ 					num79 -= (float)(100 * num82);
+ 					Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 72, num82, false, 0, false, false);
+@@ -63264,13 +_,13 @@
+ 				else
+ 				{
+ 					int num83 = (int)num79;
+-					if (num83 > 50 && Main.rand.Next(5) == 0)
+-					{
+-						num83 /= Main.rand.Next(3) + 1;
+-					}
+-					if (Main.rand.Next(5) == 0)
+-					{
+-						num83 /= Main.rand.Next(4) + 1;
++					if (num83 > 50 && rand.NextBool(5))
++					{
++						num83 /= rand.NextInt(3) + 1;
++					}
++					if (rand.NextBool(5))
++					{
++						num83 /= rand.NextInt(4) + 1;
+ 					}
+ 					if (num83 < 1)
+ 					{
 @@ -63380,6 +_,7 @@
  			{
  				itemType = 3860;
