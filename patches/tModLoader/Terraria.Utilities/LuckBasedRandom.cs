@@ -90,8 +90,8 @@ namespace Terraria.Utilities
 		/// <returns>A random integer between the specified minimum and maximum values</returns>
 		public int NextInt(int minValue, int maxValue)
 		{
-			minValue = (int)Math.Round((double)minValue * (Math.Abs((double)Luck / 500)));
-			maxValue = (int)Math.Round((double)maxValue * (Math.Abs((double)Luck / 500)));
+			minValue = (int)Math.Round((double)minValue + ((double)minValue * 0.4) * (Math.Abs(luck / 100)));
+			maxValue = (int)Math.Round((double)maxValue + ((double)maxValue * 0.4) * (Math.Abs(luck / 100)));
 
 			if (minValue == maxValue)
 				return minValue;
