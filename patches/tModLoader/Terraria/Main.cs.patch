@@ -3531,12 +3531,13 @@
  				Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  			}
  		}
-@@ -37535,7 +_,7 @@
+@@ -37535,7 +_,8 @@
  				{
  					if (Main.item[i].active)
  					{
 -						Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)((double)Main.item[i].position.X + (double)Main.item[i].width * 0.5 - (double)Main.itemTexture[Main.item[i].type].Width * 0.5), (int)(Main.item[i].position.Y + (float)Main.item[i].height - (float)Main.itemTexture[Main.item[i].type].Height), Main.itemTexture[Main.item[i].type].Width, Main.itemTexture[Main.item[i].type].Height);
-+						Microsoft.Xna.Framework.Rectangle value = ItemLoader.ItemHoverHitbox(Main.item[i]);
++						Microsoft.Xna.Framework.Rectangle value = Main.itemAnimations[Main.item[i].type]?.GetFrame(Main.itemTexture[Main.item[i].type]) ?? Main.itemTexture[Main.item[i].type].Bounds;
++						value.Location = new Point((int)(Main.item[i].position.X + Main.item[i].width * 0.5 - value.Width * 0.5), (int)(Main.item[i].position.Y + Main.item[i].height - value.Height));
  						if (rectangle.Intersects(value))
  						{
  							Main.player[Main.myPlayer].showItemIcon = false;

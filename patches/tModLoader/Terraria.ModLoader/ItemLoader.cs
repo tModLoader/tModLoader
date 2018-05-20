@@ -261,10 +261,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static Rectangle ItemHoverHitbox(Item item)
+		private static Rectangle AnimatedItemFrame(Item item)
 		{
-			Rectangle frame = Main.itemAnimations[item.type]?.GetFrame(Main.itemTexture[item.type]) ?? Main.itemTexture[item.type].Bounds;
-			return new Rectangle((int)(item.position.X + item.width * 0.5f - frame.Width * 0.5f), (int)(item.position.Y + item.height - frame.Height), frame.Width, frame.Height);
+			int frameCount = Main.itemAnimations[item.type].FrameCount;
+			int frameDuration = Main.itemAnimations[item.type].TicksPerFrame;
+			return Main.itemAnimations[item.type].GetFrame(Main.itemTexture[item.type]);
 		}
 
 		private static HookList HookChoosePrefix = AddHook<Func<Item, UnifiedRandom, int>>(g => g.ChoosePrefix);
