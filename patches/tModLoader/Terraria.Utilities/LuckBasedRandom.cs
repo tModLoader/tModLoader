@@ -52,7 +52,8 @@ namespace Terraria.Utilities
 			if (Luck == 0)
 				return false;
 			// Calculate new chance based on luck modifier
-			chance = (int)Math.Round((double)chance / (Math.Abs((double)Luck / 100)));
+			if (Luck != 100)
+				chance = (int)Math.Round((double)chance / (Math.Abs((double)Luck / 100)));
 
 			// Chance can't be less than 1 or it will thow an exception
 			if (chance < 1)
@@ -72,8 +73,9 @@ namespace Terraria.Utilities
 			if (Luck == 0)
 				return false;
 			// Calculate new chance based on luck modifier
-			chance = (int)Math.Round((double)chance / (Math.Abs((double)Luck / 100)));
-
+			if (Luck != 100)
+				chance = (int)Math.Round((double)chance / (Math.Abs((double)Luck / 100)));
+			
 			// Chance can't be less than 1 or it will thow an exception
 			if (chance < 1)
 				chance = 1;
@@ -90,9 +92,12 @@ namespace Terraria.Utilities
 		/// <returns>A random integer between the specified minimum and maximum values</returns>
 		public int NextInt(int minValue, int maxValue)
 		{
-			minValue = (int)Math.Round((double)minValue + ((double)minValue * 0.4) * (Math.Abs(Luck / 100)));
-			maxValue = (int)Math.Round((double)maxValue + ((double)maxValue * 0.4) * (Math.Abs(Luck / 100)));
-
+			if (Luck != 100)
+			{
+				minValue = (int) Math.Round((double) minValue + ((double) minValue * 0.4) * (Math.Abs(Luck / 100))) - 1;
+				maxValue = (int) Math.Round((double) maxValue + ((double) maxValue * 0.4) * (Math.Abs(Luck / 100))) - 1;
+			}
+			
 			if (minValue == maxValue)
 				return minValue;
 
