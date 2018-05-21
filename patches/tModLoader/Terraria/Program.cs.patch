@@ -23,20 +23,11 @@
  			}
  			catch
  			{
-@@ -227,6 +_,16 @@
+@@ -227,6 +_,7 @@
  				};
  			}
  			Program.LaunchParameters = Utils.ParseArguements(args);
-+			if (Program.LaunchParameters.ContainsKey("-savedirectory"))
-+			{
-+				Program.LaunchParameters["-savedirectory"] = Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader");
-+			}
 +			ErrorLogger.ClearLogs();
-+			if (LaunchParameters.ContainsKey("-build"))
-+			{
-+				ModCompile.BuildModCommandLine(LaunchParameters["-build"]);
-+				return;
-+			}
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();

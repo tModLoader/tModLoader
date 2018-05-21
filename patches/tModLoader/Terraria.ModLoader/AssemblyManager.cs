@@ -32,9 +32,11 @@ namespace Terraria.ModLoader
 			private bool eacEnabled;
 
 			private bool _needsReload = true;
-			private bool NeedsReload {
+			private bool NeedsReload
+			{
 				get { return _needsReload; }
-				set {
+				set
+				{
 					if (value && !_needsReload) loadIndex++;
 					_needsReload = value;
 				}
@@ -44,7 +46,8 @@ namespace Terraria.ModLoader
 			private string DllName(string dll) => eacEnabled ? dll : Name + '_' + dll + '_' + loadIndex;
 			private string WeakDepName(string depName) => eacEnabled ? depName : depName + "_0";
 
-			public void SetMod(LocalMod mod) {
+			public void SetMod(LocalMod mod)
+			{
 				if (modFile == null ||
 					modFile.version != mod.modFile.version ||
 					!modFile.hash.SequenceEqual(mod.modFile.hash))
@@ -54,7 +57,8 @@ namespace Terraria.ModLoader
 				properties = mod.properties;
 			}
 
-			private void SetNeedsReload() {
+			private void SetNeedsReload()
+			{
 				NeedsReload = true;
 				eacEnabled = false;
 
@@ -62,15 +66,17 @@ namespace Terraria.ModLoader
 					dep.SetNeedsReload();
 			}
 
-			public void AddDependency(LoadedMod dep) {
+			public void AddDependency(LoadedMod dep)
+			{
 				dependencies.Add(dep);
 				dep.dependents.Add(this);
 			}
 
-			public bool CanEaC => eacEnabled || 
+			public bool CanEaC => eacEnabled ||
 				!loadedAssemblies.ContainsKey(modFile.name) && dependencies.All(dep => dep.CanEaC);
 
-			public void EnableEaC() {
+			public void EnableEaC()
+			{
 				if (eacEnabled)
 					return;
 
@@ -82,7 +88,8 @@ namespace Terraria.ModLoader
 					dep.EnableEaC();
 			}
 
-			private void SetNeedsReloadUnlessEaC() {
+			private void SetNeedsReloadUnlessEaC()
+			{
 				if (!eacEnabled)
 					NeedsReload = true;
 
@@ -90,8 +97,10 @@ namespace Terraria.ModLoader
 					dep.SetNeedsReloadUnlessEaC();
 			}
 
-			public void UpdateWeakRefs() {
-				foreach (var loaded in dependencies.Where(dep => weakDependencies.Remove(dep.Name))) {
+			public void UpdateWeakRefs()
+			{
+				foreach (var loaded in dependencies.Where(dep => weakDependencies.Remove(dep.Name)))
+				{
 					if (eacEnabled && !loaded.eacEnabled)
 						loaded.EnableEaC();
 					else if (loaded.AssemblyName != WeakDepName(loaded.Name))
@@ -99,7 +108,8 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			public void LoadAssemblies() {
+			public void LoadAssemblies()
+			{
 				if (!NeedsReload)
 					return;
 
@@ -120,7 +130,8 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			private byte[] EncapsulateReferences(byte[] code) {
+			private byte[] EncapsulateReferences(byte[] code)
+			{
 				if (eacEnabled)
 					return code;
 
@@ -139,7 +150,8 @@ namespace Terraria.ModLoader
 				return ret.ToArray();
 			}
 
-			private string EncapsulateName(string name) {
+			private string EncapsulateName(string name)
+			{
 				if (name == Name)
 					return AssemblyName;
 
@@ -149,7 +161,8 @@ namespace Terraria.ModLoader
 				if (weakDependencies.Contains(name))
 					return WeakDepName(name);
 
-				foreach (var dep in dependencies) {
+				foreach (var dep in dependencies)
+				{
 					var _name = dep.EncapsulateName(name);
 					if (_name != name)
 						return _name;
@@ -159,11 +172,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static readonly IDictionary<string, LoadedMod> loadedMods = new Dictionary<string, LoadedMod>();  
+		private static readonly IDictionary<string, LoadedMod> loadedMods = new Dictionary<string, LoadedMod>();
 		private static readonly IDictionary<string, Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
 
-		static AssemblyManager() {
-			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
+		static AssemblyManager()
+		{
+			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+			{
 				string name = new AssemblyName(args.Name).Name;
 
 				if (name == "Terraria")
@@ -175,8 +190,10 @@ namespace Terraria.ModLoader
 			};
 		}
 
-		private static void RecalculateReferences() {
-			foreach (var mod in loadedMods.Values) {
+		private static void RecalculateReferences()
+		{
+			foreach (var mod in loadedMods.Values)
+			{
 				mod.dependencies.Clear();
 				mod.dependents.Clear();
 			}
@@ -192,7 +209,8 @@ namespace Terraria.ModLoader
 				mod.UpdateWeakRefs();
 		}
 
-		private static Assembly LoadAssembly(byte[] code, byte[] pdb = null) {
+		private static Assembly LoadAssembly(byte[] code, byte[] pdb = null)
+		{
 			var asm = Assembly.Load(code, pdb);
 			loadedAssemblies[asm.GetName().Name] = asm;
 			return asm;
@@ -223,9 +241,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad) {
+		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad)
+		{
 			var modList = new List<LoadedMod>();
-			foreach (var loading in modsToLoad) {
+			foreach (var loading in modsToLoad)
+			{
 				if (!loadedMods.TryGetValue(loading.Name, out LoadedMod mod))
 					mod = loadedMods[loading.Name] = new LoadedMod();
 
@@ -235,7 +255,8 @@ namespace Terraria.ModLoader
 
 			RecalculateReferences();
 
-			if (Debugger.IsAttached) {
+			if (Debugger.IsAttached)
+			{
 				ModLoader.isModder = true;
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
@@ -258,7 +279,8 @@ namespace Terraria.ModLoader
 			}
 			catch (AggregateException ae)
 			{
-				ErrorLogger.LogMulti(ae.InnerExceptions.Select(e => new Action(() => {
+				ErrorLogger.LogMulti(ae.InnerExceptions.Select(e => new Action(() =>
+				{
 					var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
 					ModLoader.DisableMod(mod.Name);
 					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
@@ -292,12 +314,15 @@ namespace Terraria.ModLoader
 			{
 				private ModuleDefinition module;
 
-				public HeaderCopyWriter(ModuleDefinition module) {
+				public HeaderCopyWriter(ModuleDefinition module)
+				{
 					this.module = module;
 				}
 
-				public bool GetDebugHeader(out ImageDebugDirectory directory, out byte[] header) {
-					if (!module.HasDebugHeader) {
+				public bool GetDebugHeader(out ImageDebugDirectory directory, out byte[] header)
+				{
+					if (!module.HasDebugHeader)
+					{
 						directory = new ImageDebugDirectory();
 						header = null;
 						return false;

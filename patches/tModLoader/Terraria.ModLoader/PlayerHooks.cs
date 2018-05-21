@@ -418,6 +418,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookUpdateAutopause = AddHook<Action>(p => p.UpdateAutopause);
+
+		public static void UpdateAutopause(Player player)
+		{
+			foreach (int index in HookUpdateAutopause.arr)
+			{
+				player.modPlayers[index].UpdateAutopause();
+			}
+		}
+
 		private static HookList HookPreUpdate = AddHook<Action>(p => p.PreUpdate);
 
 		public static void PreUpdate(Player player)
@@ -729,6 +739,14 @@ namespace Terraria.ModLoader
 				}
 			}
 			return true;
+		}
+
+		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Item>>(p => p.OnConsumeAmmo);
+
+		public static void OnConsumeAmmo(Player player, Item weapon, Item ammo)
+		{
+			foreach (int index in HookOnConsumeAmmo.arr)
+				player.modPlayers[index].OnConsumeAmmo(weapon, ammo);
 		}
 
 		private delegate bool DelegateShoot(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack);

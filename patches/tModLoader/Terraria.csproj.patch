@@ -24,22 +24,22 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
      <OutputPath>bin\x86\MacRelease\</OutputPath>
      <DefineConstants>CLIENT; MAC</DefineConstants>
-+    <PlatformTarget>x64</PlatformTarget>
++    <PlatformTarget>AnyCPU</PlatformTarget>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacServerRelease|x86'">
      <OutputPath>bin\x86\MacServerRelease\</OutputPath>
      <DefineConstants>SERVER; MAC</DefineConstants>
-+    <PlatformTarget>x64</PlatformTarget>
++    <PlatformTarget>AnyCPU</PlatformTarget>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxRelease|x86'">
      <OutputPath>bin\x86\LinuxRelease\</OutputPath>
      <DefineConstants>CLIENT; LINUX</DefineConstants>
-+    <PlatformTarget>x64</PlatformTarget>
++    <PlatformTarget>AnyCPU</PlatformTarget>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxServerRelease|x86'">
      <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
      <DefineConstants>SERVER; LINUX</DefineConstants>
-+    <PlatformTarget>x64</PlatformTarget>
++    <PlatformTarget>AnyCPU</PlatformTarget>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
@@ -131,15 +131,14 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,177 @@
+@@ -368,6 +_,176 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Dinidini.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\KittyKitCatCat.cs" />
-+    <Compile Include="Terraria.ModLoader.Default.Patreon\litcherally.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\PatreonItem.cs" />
-+    <Compile Include="Terraria.ModLoader.Default.Patreon\PotyBlank.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Patreon\Polyblank.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\toplayz.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\AprilFools.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\HelpCommand.cs" />
@@ -345,7 +344,7 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,101 @@
+@@ -606,5 +_,96 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -353,6 +352,15 @@
 +    <Content Include="Icon.ico" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonDecrement.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonIncrement.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Body_Arms.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Body_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Head_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Legs_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Wings.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Wings_Wings.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Body.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Body_Arms.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\dinidini_Body_Body.png" />
@@ -367,20 +375,6 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\KittyKitCatCat_Head_Head.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\KittyKitCatCat_Legs.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\KittyKitCatCat_Legs_Legs.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\litcherally_Body.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\litcherally_Body_Arms.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\litcherally_Body_Body.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\litcherally_Head.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\litcherally_Head_Head.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\litcherally_Legs.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\litcherally_Legs_Legs.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\PotyBlank_Body.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\PotyBlank_Body_Arms.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\PotyBlank_Body_Body.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\PotyBlank_Head.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\PotyBlank_Head_Head.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\PotyBlank_Legs.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\PotyBlank_Legs_Legs.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\toplayz_Body.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\toplayz_Body_Arms.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\toplayz_Body_Body.png" />

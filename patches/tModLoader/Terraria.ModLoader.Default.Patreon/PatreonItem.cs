@@ -1,41 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
-	abstract class PatreonItem : ModItem
+	internal abstract class PatreonItem : ModItem
 	{
-		public enum PatreonItemType
-		{
-			Head,
-			Body,
-			Legs
-		}
-
+		// Make sure the name and classname prefix match exactly.
 		public abstract string PatreonName { get; }
-		public abstract PatreonItemType PatreonEquipType { get; }
+		public abstract EquipType PatreonEquipType { get; }
 
+		// Returns the appropriate suffix for the item, by EquipType
 		private string GetEquipTypeSuffix()
 		{
 			switch (PatreonEquipType)
 			{
-				case PatreonItemType.Head:
+				case EquipType.Head:
 					return "Head";
-				case PatreonItemType.Body:
+				case EquipType.Body:
 					return "Body";
-				case PatreonItemType.Legs:
+				case EquipType.Legs:
 					return "Legs";
+				case EquipType.Wings:
+					return "Wings";
 			}
 
-			return "Unknown";
+			return null;
 		}
 
 		public override string Texture => $"ModLoader/Patreon.{PatreonName}_{GetEquipTypeSuffix()}";
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault($"{PatreonName}'s {GetEquipTypeSuffix()}");
+			string suffix = GetEquipTypeSuffix();
+			string displayName =
+				suffix != null
+					? $"{PatreonName}'s {suffix}"
+					: "ITEM NAME ERROR"; // Should never happen, but who knows
+			DisplayName.SetDefault(displayName);
 		}
 
 		public override void SetDefaults()
@@ -64,24 +67,20 @@ namespace Terraria.ModLoader.Default.Patreon
 						player.QuickSpawnItem(mod.ItemType<toplayz_Legs>());
 						return true;
 					case 1:
-						player.QuickSpawnItem(mod.ItemType<PotyBlank_Head>());
-						player.QuickSpawnItem(mod.ItemType<PotyBlank_Body>());
-						player.QuickSpawnItem(mod.ItemType<PotyBlank_Legs>());
+						player.QuickSpawnItem(mod.ItemType<Polyblank_Head>());
+						player.QuickSpawnItem(mod.ItemType<Polyblank_Body>());
+						player.QuickSpawnItem(mod.ItemType<Polyblank_Legs>());
 						return true;
 					case 2:
-						player.QuickSpawnItem(mod.ItemType<litcherally_Head>());
-						player.QuickSpawnItem(mod.ItemType<litcherally_Body>());
-						player.QuickSpawnItem(mod.ItemType<litcherally_Legs>());
-						return true;
-					case 3:
 						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Head>());
 						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Body>());
 						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Legs>());
 						return true;
-					case 4:
-						player.QuickSpawnItem(mod.ItemType<Dinidini_Head>());
-						player.QuickSpawnItem(mod.ItemType<Dinidini_Body>());
-						player.QuickSpawnItem(mod.ItemType<Dinidini_Legs>());
+					case 3:
+						player.QuickSpawnItem(mod.ItemType<dinidini_Head>());
+						player.QuickSpawnItem(mod.ItemType<dinidini_Body>());
+						player.QuickSpawnItem(mod.ItemType<dinidini_Legs>());
+						player.QuickSpawnItem(mod.ItemType<dinidini_Wings>());
 						return true;
 				}
 			}

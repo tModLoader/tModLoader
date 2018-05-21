@@ -14,3 +14,4 @@ solutions/documentation/html
 solutions/documentation/*.tmp
 solutions/*.zip
 solutions/.vs/**/*
+solutions/.idea/**/*

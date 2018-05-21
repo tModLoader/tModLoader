@@ -47,7 +47,7 @@ namespace Terraria.ModLoader
 			get;
 			internal set;
 		}
-		
+
 		/// <summary>
 		/// Constructor
 		/// </summary>

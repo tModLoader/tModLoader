@@ -7,3 +7,7 @@ If the installer for some reason does not work, or if you do not want to install
 1.  Go to your Terraria's Steam folder (the one containing Terraria.exe).  For older installations of Steam, this will be "~/.local/share/Steam/steamapps/common/Terraria".  For newer installations of Steam, this will be "~/.steam/steam/steamapps/common/Terraria".
 
 2.  Copy all of these files into that folder.
+
+If you want to run a tModLoader server, this isn't necessary. However, you will need to download the free server software for terraria and copy the contents into that folder.
+
+Also note that the server can be started by running the "tModLoaderServer" script, in this case you need to give execute permission to both the script and the binary executable it wants to run e.g. "tModLoaderServer.x86_64" 

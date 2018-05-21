@@ -6,7 +6,7 @@ namespace Terraria.ModLoader
 	public class AutoloadHead : Attribute
 	{
 	}
-	
+
 	[AttributeUsage(AttributeTargets.Class)]
 	public class AutoloadBossHead : Attribute
 	{

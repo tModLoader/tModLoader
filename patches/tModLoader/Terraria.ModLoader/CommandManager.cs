@@ -13,7 +13,8 @@ namespace Terraria.ModLoader
 	{
 		internal static readonly IDictionary<string, List<ModCommand>> Commands = new Dictionary<string, List<ModCommand>>(StringComparer.OrdinalIgnoreCase);
 
-		public static bool Matches(CommandType commandType, CommandType callerType) {
+		public static bool Matches(CommandType commandType, CommandType callerType)
+		{
 			if ((commandType & CommandType.World) != 0)
 				if (Main.netMode == 2)
 					commandType |= CommandType.Server;
@@ -119,7 +120,7 @@ namespace Terraria.ModLoader
 				if (ue?.msg != null)
 					caller.Reply(ue.msg, ue.color);
 				else
-					caller.Reply("Usage: "+mc.Usage, Color.Red);
+					caller.Reply("Usage: " + mc.Usage, Color.Red);
 			}
 			return true;
 		}

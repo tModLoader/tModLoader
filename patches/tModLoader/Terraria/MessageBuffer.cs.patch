@@ -400,6 +400,14 @@
  						int num142 = this.reader.ReadInt32();
  						if (Main.netMode == 2 && num140 != this.whoAmI && !Main.pvpBuff[num141])
  						{
+@@ -2712,6 +_,7 @@
+ 					{
+ 						return;
+ 					}
++					Netplay.syncingWorld = false;
+ 					Main.anglerQuest = (int)this.reader.ReadByte();
+ 					Main.anglerQuestFinished = this.reader.ReadBoolean();
+ 					return;
 @@ -2838,7 +_,7 @@
  						}
  						int num176 = (int)this.reader.ReadInt16();

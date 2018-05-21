@@ -118,7 +118,7 @@ namespace Terraria.ModLoader
 				modWorld.ChooseWaterStyle(ref style);
 			}
 		}
-		
+
 		public static void ModifyHardmodeTasks(List<GenPass> passes)
 		{
 			foreach (ModWorld modWorld in worlds)

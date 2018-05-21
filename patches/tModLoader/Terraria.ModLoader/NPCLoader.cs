@@ -498,7 +498,7 @@ namespace Terraria.ModLoader
 		{
 			npc.modNPC?.BossLoot(ref name, ref potionType);
 		}
-		
+
 		public static void BossBag(NPC npc, ref int bagType)
 		{
 			if (npc.modNPC != null)
@@ -955,8 +955,8 @@ namespace Terraria.ModLoader
 
 		public static int SpawnNPC(int type, int tileX, int tileY)
 		{
-			var npc = type >= NPCID.Count ? 
-				GetNPC(type).SpawnNPC(tileX, tileY) : 
+			var npc = type >= NPCID.Count ?
+				GetNPC(type).SpawnNPC(tileX, tileY) :
 				NPC.NewNPC(tileX * 16 + 8, tileY * 16, type);
 
 			foreach (GlobalNPC g in HookSpawnNPC.arr)
@@ -966,7 +966,7 @@ namespace Terraria.ModLoader
 
 			return npc;
 		}
-		
+
 		public static void CanTownNPCSpawn(int numTownNPCs, int money)
 		{
 			foreach (ModNPC npc in npcs)
@@ -982,12 +982,12 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
-		
+
 		public static bool CheckConditions(int type)
 		{
 			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
 		}
-		
+
 		public static string TownNPCName(int type)
 		{
 			return GetNPC(type)?.TownNPCName() ?? "";
@@ -996,6 +996,45 @@ namespace Terraria.ModLoader
 		public static bool UsesPartyHat(NPC npc)
 		{
 			return npc.modNPC?.UsesPartyHat() ?? true;
+		}
+
+		public static bool VanillaCanChat(NPC npc)
+		{
+			switch (npc.type)
+			{
+				case NPCID.BoundGoblin:
+				case NPCID.BoundWizard:
+				case NPCID.BoundMechanic:
+				case NPCID.WebbedStylist:
+				case NPCID.SleepingAngler:
+				case NPCID.BartenderUnconscious:
+				case NPCID.SkeletonMerchant:
+					return true;
+				default:
+					return npc.townNPC;
+			}
+		}
+
+		private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
+
+		public static bool CanChat(NPC npc)
+		{
+			bool defaultCanChat = npc.modNPC?.CanChat() ?? VanillaCanChat(npc);
+			
+			foreach (GlobalNPC g in HookCanChat.arr)
+			{
+				bool? canChat = g.Instance(npc).CanChat(npc);
+				if (canChat.HasValue)
+				{
+					if (!canChat.Value)
+					{
+						return false;
+					}
+					defaultCanChat = true;
+				}
+			}
+
+			return defaultCanChat;
 		}
 
 		private delegate void DelegateGetChat(NPC npc, ref string chat);
@@ -1007,12 +1046,16 @@ namespace Terraria.ModLoader
 			{
 				chat = npc.modNPC.GetChat();
 			}
+			else if (chat.Equals(""))
+			{
+				chat = Language.GetTextValue("tModLoader.DefaultTownNPCChat");
+			}
 			foreach (GlobalNPC g in HookGetChat.arr)
 			{
 				g.Instance(npc).GetChat(npc, ref chat);
 			}
 		}
-		
+
 		public static void SetChatButtons(ref string button, ref string button2)
 		{
 			if (Main.player[Main.myPlayer].talkNPC >= 0)
@@ -1021,15 +1064,36 @@ namespace Terraria.ModLoader
 				npc.modNPC?.SetChatButtons(ref button, ref button2);
 			}
 		}
-		
+
+		private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
+
+		public static bool PreChatButtonClicked(bool firstButton)
+		{
+			NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+
+			foreach (GlobalNPC g in HookPreChatButtonClicked.arr)
+			{
+				if (!g.Instance(npc).PreChatButtonClicked(npc, firstButton))
+				{
+					Main.PlaySound(SoundID.MenuTick);
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private delegate void DelegateOnChatButtonClicked(NPC npc, bool firstButton);
+		private static HookList HookOnChatButtonClicked = AddHook<DelegateOnChatButtonClicked>(g => g.OnChatButtonClicked);
+
 		public static void OnChatButtonClicked(bool firstButton)
 		{
-			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
+			NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+			bool shop = false;
+
 			if (npc.modNPC != null)
 			{
-				bool shop = false;
 				npc.modNPC.OnChatButtonClicked(firstButton, ref shop);
-				Main.PlaySound(12, -1, -1, 1);
+				Main.PlaySound(SoundID.MenuTick);
 				if (shop)
 				{
 					Main.playerInventory = true;
@@ -1037,6 +1101,10 @@ namespace Terraria.ModLoader
 					Main.npcShop = Main.MaxShopIDs - 1;
 					Main.instance.shop[Main.npcShop].SetupShop(npc.type);
 				}
+			}
+			foreach (GlobalNPC g in HookOnChatButtonClicked.arr)
+			{
+				g.Instance(npc).OnChatButtonClicked(npc, firstButton);
 			}
 		}
 
@@ -1098,7 +1166,7 @@ namespace Terraria.ModLoader
 		//check patch files for town NPC attacks
 		private delegate void DelegateTownNPCAttackStrength(NPC npc, ref int damage, ref float knockback);
 		private static HookList HookTownNPCAttackStrength = AddHook<DelegateTownNPCAttackStrength>(g => g.TownNPCAttackStrength);
-		
+
 		public static void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
 		{
 			npc.modNPC?.TownNPCAttackStrength(ref damage, ref knockback);

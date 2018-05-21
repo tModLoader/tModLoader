@@ -6,8 +6,8 @@ namespace Terraria.ModLoader.IO
 {
 	public class BigEndianWriter : BinaryWriter
 	{
-		public BigEndianWriter(Stream output) : base(output) 
-		{}
+		public BigEndianWriter(Stream output) : base(output)
+		{ }
 
 		private void WriteBigEndian(byte[] bytes)
 		{
@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.IO
 
 			Write(bytes);
 		}
-		
+
 		public override void Write(short value) { WriteBigEndian(BitConverter.GetBytes(value)); }
 		public override void Write(ushort value) { WriteBigEndian(BitConverter.GetBytes(value)); }
 		public override void Write(int value) { WriteBigEndian(BitConverter.GetBytes(value)); }
@@ -30,11 +30,11 @@ namespace Terraria.ModLoader.IO
 	public class BigEndianReader : BinaryReader
 	{
 		public BigEndianReader(Stream input) : base(input)
-		{}
+		{ }
 
-		private byte[] ReadBigEndian(int len) => 
+		private byte[] ReadBigEndian(int len) =>
 			BitConverter.IsLittleEndian ? ReadBytes(len).Reverse().ToArray() : ReadBytes(len);
-		
+
 		public override short ReadInt16() => BitConverter.ToInt16(ReadBigEndian(2), 0);
 		public override ushort ReadUInt16() => BitConverter.ToUInt16(ReadBigEndian(2), 0);
 		public override int ReadInt32() => BitConverter.ToInt32(ReadBigEndian(4), 0);

@@ -44,7 +44,7 @@
  				{
  					Chest chest = Main.instance.shop[Main.npcShop];
  					if (inv[slot].type >= 71 && inv[slot].type <= 74)
-@@ -887,7 +_,7 @@
+@@ -887,12 +_,15 @@
  			if (context == 0)
  			{
  				flag = true;
@@ -53,6 +53,75 @@
  				{
  					if (Main.mouseRightRelease)
  					{
+ 						player.OpenBossBag(inv[slot].type);
+-						inv[slot].stack--;
++						if (ItemLoader.ConsumeItem(inv[slot], player))
++						{
++							inv[slot].stack--;
++						}
+ 						if (inv[slot].stack == 0)
+ 						{
+ 							inv[slot].SetDefaults(0, false);
+@@ -908,7 +_,10 @@
+ 					if (Main.mouseRightRelease)
+ 					{
+ 						player.openCrate(inv[slot].type);
+-						inv[slot].stack--;
++						if (ItemLoader.ConsumeItem(inv[slot], player))
++						{
++							inv[slot].stack--;
++						}
+ 						if (inv[slot].stack == 0)
+ 						{
+ 							inv[slot].SetDefaults(0, false);
+@@ -924,7 +_,10 @@
+ 					if (Main.mouseRightRelease)
+ 					{
+ 						player.openHerbBag();
+-						inv[slot].stack--;
++						if (ItemLoader.ConsumeItem(inv[slot], player))
++						{
++							inv[slot].stack--;
++						}
+ 						if (inv[slot].stack == 0)
+ 						{
+ 							inv[slot].SetDefaults(0, false);
+@@ -939,7 +_,10 @@
+ 				{
+ 					if (Main.mouseRightRelease)
+ 					{
+-						inv[slot].stack--;
++						if (ItemLoader.ConsumeItem(inv[slot], player))
++						{
++							inv[slot].stack--;
++						}
+ 						if (inv[slot].stack == 0)
+ 						{
+ 							inv[slot].SetDefaults(0, false);
+@@ -955,7 +_,10 @@
+ 				{
+ 					if (Main.mouseRightRelease && player.ConsumeItem(327, false))
+ 					{
+-						inv[slot].stack--;
++						if (ItemLoader.ConsumeItem(inv[slot], player))
++						{
++							inv[slot].stack--;
++						}
+ 						if (inv[slot].stack == 0)
+ 						{
+ 							inv[slot].SetDefaults(0, false);
+@@ -971,7 +_,10 @@
+ 				{
+ 					if (Main.mouseRightRelease)
+ 					{
+-						inv[slot].stack--;
++						if (ItemLoader.ConsumeItem(inv[slot], player))
++						{
++							inv[slot].stack--;
++						}
+ 						if (inv[slot].stack == 0)
+ 						{
+ 							inv[slot].SetDefaults(0, false);
 @@ -1005,6 +_,10 @@
  					}
  					Recipe.FindRecipes();

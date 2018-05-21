@@ -25,9 +25,11 @@ namespace Terraria.ModLoader
 
 		private class ConsoleBuildStatus : IBuildStatus
 		{
-			public void SetProgress(int i, int n) {
+			public void SetProgress(int i, int n)
+			{
 			}
-			public void SetStatus(string msg) {
+			public void SetStatus(string msg)
+			{
 				Console.WriteLine(msg);
 			}
 		}
@@ -36,16 +38,18 @@ namespace Terraria.ModLoader
 		{
 			public string path;
 
-			public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(modFile, properties) {
+			public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(modFile, properties)
+			{
 				this.path = path;
 			}
 		}
 
 		private static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
-		internal static IList<string> sourceExtensions = new List<string>{".csproj", ".cs", ".sln"};
+		internal static IList<string> sourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
 		private static IList<string> moduleReferences;
 
-		internal static void LoadReferences() {
+		internal static void LoadReferences()
+		{
 			if (moduleReferences != null)
 				return;
 			moduleReferences = Assembly.GetExecutingAssembly().GetReferencedAssemblies()
@@ -53,10 +57,12 @@ namespace Terraria.ModLoader
 				.Where(loc => loc != "").ToList();
 		}
 
-		internal static bool BuildAll(string[] modFolders, IBuildStatus status) {
+		internal static bool BuildAll(string[] modFolders, IBuildStatus status)
+		{
 			var modList = new List<LocalMod>();
 			//read mod sources folder
-			foreach (var modFolder in modFolders) {
+			foreach (var modFolder in modFolders)
+			{
 				var mod = ReadProperties(modFolder, status);
 				if (mod == null)
 					return false;
@@ -66,7 +72,7 @@ namespace Terraria.ModLoader
 
 			//figure out which of the installed mods are required for building
 			var installedMods = FindMods().Where(mod => !modList.Exists(m => m.Name == mod.Name)).ToList();
-			
+
 			var requiredFromInstall = new HashSet<LocalMod>();
 			void Require(LocalMod mod)
 			{
@@ -85,20 +91,23 @@ namespace Terraria.ModLoader
 
 			//sort and version check
 			List<BuildingMod> modsToBuild;
-			try {
+			try
+			{
 				EnsureDependenciesExist(modList, true);
 				EnsureTargetVersionsMet(modList);
 				var sortedModList = Sort(modList);
 				modsToBuild = sortedModList.OfType<BuildingMod>().ToList();
 			}
-			catch (ModSortingException e) {
+			catch (ModSortingException e)
+			{
 				ErrorLogger.LogDependencyError(e.Message);
 				return false;
 			}
 
 			//build
 			int num = 0;
-			foreach (var mod in modsToBuild) {
+			foreach (var mod in modsToBuild)
+			{
 				status.SetProgress(num++, modsToBuild.Count);
 				if (!Build(mod, status))
 					return false;
@@ -107,86 +116,105 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static void BuildModCommandLine(string modFolder) {
+		internal static void BuildModCommandLine(string modFolder)
+		{
+			// Once we get to this point, the application is guaranteed to exit
 			var lockFile = AcquireConsoleBuildLock();
 			try
 			{
 				if (!Build(modFolder, new ConsoleBuildStatus()))
-					Environment.ExitCode = 1;
+					Environment.Exit(1);
 
 			}
-			catch (Exception e) {
+			catch (Exception e)
+			{
 				Console.WriteLine(e);
-				Environment.ExitCode = 1;
+				Environment.Exit(1);
 			}
 			finally
 			{
 				lockFile.Close();
 			}
+			// Mod was built with success, exit code 0 indicates success.
+			Environment.Exit(0);
 		}
 
-		internal static bool Build(string modFolder, IBuildStatus status) {
+		internal static bool Build(string modFolder, IBuildStatus status)
+		{
 			var mod = ReadProperties(modFolder, status);
 			return mod != null && Build(mod, status);
 		}
 
-		private static BuildingMod ReadProperties(string modFolder, IBuildStatus status) {
+		private static BuildingMod ReadProperties(string modFolder, IBuildStatus status)
+		{
 			if (modFolder.EndsWith("\\") || modFolder.EndsWith("/")) modFolder = modFolder.Substring(0, modFolder.Length - 1);
 			var modName = Path.GetFileName(modFolder);
 			status.SetStatus(Language.GetTextValue("tModLoader.MSReadingProperties") + modName);
 
 			BuildProperties properties;
-			try {
+			try
+			{
 				properties = BuildProperties.ReadBuildFile(modFolder);
 			}
-			catch (Exception e) {
+			catch (Exception e)
+			{
 				ErrorLogger.LogBuildError(Language.GetTextValue("tModLoader.BuildErrorFailedLoadBuildTxt", Path.Combine(modFolder, "build.txt")) + Environment.NewLine + e);
 				return null;
 			}
-			
+
 			var file = Path.Combine(ModPath, modName + ".tmod");
-			var modFile = new TmodFile(file) {
+			var modFile = new TmodFile(file)
+			{
 				name = modName,
 				version = properties.version
 			};
 			return new BuildingMod(modFile, properties, modFolder);
 		}
 
-		private static byte[] ReadIfExists(string path) {
+		private static byte[] ReadIfExists(string path)
+		{
 			return File.Exists(path) ? File.ReadAllBytes(path) : null;
 		}
 
-		private static bool Build(BuildingMod mod, IBuildStatus status) {
+		private static bool Build(BuildingMod mod, IBuildStatus status)
+		{
 			byte[] winDLL = null;
 			byte[] monoDLL = null;
 			byte[] winPDB = null;
-			if (mod.properties.noCompile) {
+			if (mod.properties.noCompile)
+			{
 				winDLL = monoDLL = ReadIfExists(Path.Combine(mod.path, "All.dll"));
 				winPDB = ReadIfExists(Path.Combine(mod.path, "All.pdb"));
 
-				if (winDLL == null) {
+				if (winDLL == null)
+				{
 					winDLL = ReadIfExists(Path.Combine(mod.path, "Windows.dll"));
 					monoDLL = ReadIfExists(Path.Combine(mod.path, "Mono.dll"));
 					winPDB = ReadIfExists(Path.Combine(mod.path, "Windows.pdb"));
 				}
 
-				if (winDLL == null || monoDLL == null) {
+				if (winDLL == null || monoDLL == null)
+				{
 					ErrorLogger.LogDllBuildError(mod.path);
 					return false;
 				}
 			}
-			else {
+			else
+			{
 				var refMods = FindReferencedMods(mod.properties);
 				if (refMods == null)
 					return false;
 
-				if (Program.LaunchParameters.ContainsKey("-eac")) {
-					if (!windows) {
+				if (Program.LaunchParameters.ContainsKey("-eac"))
+				{
+					if (!windows)
+					{
 						ErrorLogger.LogBuildError("Edit and continue is only supported on windows");
 						return false;
 					}
 
-					try {
+					try
+					{
 						status.SetStatus("Loading pre-compiled Windows.dll with edit and continue support");
 						var winPath = Program.LaunchParameters["-eac"];
 						var pdbPath = Path.ChangeExtension(winPath, "pdb");
@@ -194,12 +222,14 @@ namespace Terraria.ModLoader
 						winPDB = File.ReadAllBytes(pdbPath);
 						mod.properties.editAndContinue = true;
 					}
-					catch (Exception e) {
-						ErrorLogger.LogBuildError("Failed to load pre-compiled edit and continue dll "+e);
+					catch (Exception e)
+					{
+						ErrorLogger.LogBuildError("Failed to load pre-compiled edit and continue dll " + e);
 						return false;
 					}
 				}
-				else {
+				else
+				{
 					status.SetStatus(Language.GetTextValue("tModLoader.MSCompilingWindows", mod));
 					status.SetProgress(0, 2);
 					CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
@@ -222,24 +252,28 @@ namespace Terraria.ModLoader
 
 			mod.modFile.AddFile("Info", mod.properties.ToBytes());
 
-			if (Equal(winDLL, monoDLL)) {
+			if (Equal(winDLL, monoDLL))
+			{
 				mod.modFile.AddFile("All.dll", winDLL);
 				if (winPDB != null) mod.modFile.AddFile("All.pdb", winPDB);
 			}
-			else {
+			else
+			{
 				mod.modFile.AddFile("Windows.dll", winDLL);
 				mod.modFile.AddFile("Mono.dll", monoDLL);
 				if (winPDB != null) mod.modFile.AddFile("Windows.pdb", winPDB);
 			}
 
-			foreach (var resource in Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)) {
+			foreach (var resource in Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories))
+			{
 				var relPath = resource.Substring(mod.path.Length + 1);
-				if (mod.properties.ignoreFile(relPath) || 
+				if (mod.properties.ignoreFile(relPath) ||
 						relPath == "build.txt" ||
 						relPath == ".gitattributes" ||
 						relPath == ".gitignore" ||
 						relPath.StartsWith(".git" + Path.DirectorySeparatorChar) ||
 						relPath.StartsWith(".vs" + Path.DirectorySeparatorChar) ||
+						relPath.StartsWith(".idea" + Path.DirectorySeparatorChar) ||
 						relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
 						relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
 						!mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
@@ -265,7 +299,8 @@ namespace Terraria.ModLoader
 				using (var fs = File.OpenRead(filePath))
 				{
 					var rawimg = ImageIO.ToRawBytes(fs);
-					if (rawimg != null) {//some pngs can't be converted to rawimg
+					if (rawimg != null)
+					{//some pngs can't be converted to rawimg
 						modFile.AddFile(Path.ChangeExtension(relPath, "rawimg"), rawimg);
 						return;
 					}
@@ -280,7 +315,7 @@ namespace Terraria.ModLoader
 		{
 			if (exceptionReportingActive) return;
 			exceptionReportingActive = true;
-			AppDomain.CurrentDomain.FirstChanceException += delegate(object sender, FirstChanceExceptionEventArgs exceptionArgs)
+			AppDomain.CurrentDomain.FirstChanceException += delegate (object sender, FirstChanceExceptionEventArgs exceptionArgs)
 			{
 				if (exceptionArgs.Exception.Source == "MP3Sharp") return;
 				if (exceptionArgs.Exception.TargetSite.Name.StartsWith("doColors_Mode")) return;
@@ -293,10 +328,12 @@ namespace Terraria.ModLoader
 			};
 		}
 
-		private static bool VerifyName(string modName, byte[] dll) {
+		private static bool VerifyName(string modName, byte[] dll)
+		{
 			var asmDef = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
 			var asmName = asmDef.Name.Name;
-			if (asmName != modName) {
+			if (asmName != modName)
+			{
 				ErrorLogger.LogBuildError(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
 				return false;
 			}
@@ -327,7 +364,8 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static bool Equal(byte[] a, byte[] b) {
+		private static bool Equal(byte[] a, byte[] b)
+		{
 			if (a.Length != b.Length)
 				return false;
 
@@ -338,13 +376,16 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		internal static List<LocalMod> FindReferencedMods(BuildProperties properties) {
+		internal static List<LocalMod> FindReferencedMods(BuildProperties properties)
+		{
 			var mods = new Dictionary<string, LocalMod>();
 			return FindReferencedMods(properties, mods) ? mods.Values.ToList() : null;
 		}
 
-		private static bool FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods) {
-			foreach (var refName in properties.RefNames(true)) {
+		private static bool FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods)
+		{
+			foreach (var refName in properties.RefNames(true))
+			{
 				if (mods.ContainsKey(refName))
 					continue;
 
@@ -367,10 +408,12 @@ namespace Terraria.ModLoader
 		}
 
 		private static void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows,
-				ref byte[] dll, ref byte[] pdb) {
+				ref byte[] dll, ref byte[] pdb)
+		{
 			LoadReferences();
 			bool generatePDB = mod.properties.includePDB && forWindows;
-			if (generatePDB && !windows) {
+			if (generatePDB && !windows)
+			{
 				Console.WriteLine(Language.GetTextValue("tModLoader.BuildErrorPDBWindowsOnly"));
 				generatePDB = false;
 			}
@@ -382,50 +425,59 @@ namespace Terraria.ModLoader
 
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences(tempDir, forWindows));
-			
+
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(refDll => Path.Combine(mod.path, "lib/" + refDll + ".dll")));
 
 			//all dlls included in all referenced mods
-			foreach (var refMod in refMods) {
+			foreach (var refMod in refMods)
+			{
 				var path = Path.Combine(tempDir, refMod + ".dll");
 				File.WriteAllBytes(path, refMod.modFile.GetMainAssembly(forWindows));
 				refs.Add(path);
 
-				foreach (var refDll in refMod.properties.dllReferences) {
+				foreach (var refDll in refMod.properties.dllReferences)
+				{
 					path = Path.Combine(tempDir, refDll + ".dll");
-					File.WriteAllBytes(path, refMod.modFile.GetFile("lib/"+refDll+".dll"));
+					File.WriteAllBytes(path, refMod.modFile.GetFile("lib/" + refDll + ".dll"));
 					refs.Add(path);
 				}
 			}
 
-			var compileOptions = new CompilerParameters {
+			var compileOptions = new CompilerParameters
+			{
 				OutputAssembly = Path.Combine(tempDir, mod + ".dll"),
 				GenerateExecutable = false,
 				GenerateInMemory = false,
 				TempFiles = new TempFileCollection(tempDir, true),
-				IncludeDebugInformation = generatePDB
+				IncludeDebugInformation = generatePDB,
+				CompilerOptions = "/optimize"
 			};
 
 			compileOptions.ReferencedAssemblies.AddRange(refs.ToArray());
 			var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories).Where(file => !mod.properties.ignoreFile(file.Substring(mod.path.Length + 1))).ToArray();
 
-			try {
+			try
+			{
 				CompilerResults results;
-				if (mod.properties.languageVersion == 6) {
-					if (Environment.Version.Revision < 10000) {
+				if (mod.properties.languageVersion == 6)
+				{
+					if (Environment.Version.Revision < 10000)
+					{
 						ErrorLogger.LogBuildError(Language.GetTextValue("tModLoader.BuildErrorDotNet45forCS6"));
 						return;
 					}
 
 					results = RoslynCompile(compileOptions, files);
 				}
-				else {
+				else
+				{
 					var options = new Dictionary<string, string> { { "CompilerVersion", "v" + mod.properties.languageVersion + ".0" } };
 					results = new CSharpCodeProvider(options).CompileAssemblyFromFile(compileOptions, files);
 				}
 
-				if (results.Errors.HasErrors) {
+				if (results.Errors.HasErrors)
+				{
 					ErrorLogger.LogCompileErrors(results.Errors, forWindows);
 					return;
 				}
@@ -435,14 +487,18 @@ namespace Terraria.ModLoader
 				if (generatePDB)
 					pdb = File.ReadAllBytes(Path.Combine(tempDir, mod + ".pdb"));
 			}
-			finally {
+			finally
+			{
 				int numTries = 10;
-				while (numTries > 0) {
-					try {
+				while (numTries > 0)
+				{
+					try
+					{
 						Directory.Delete(tempDir, true);
 						numTries = 0;
 					}
-					catch {
+					catch
+					{
 						System.Threading.Thread.Sleep(1);
 						numTries--;
 					}
@@ -450,16 +506,19 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool forWindows) {
+		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool forWindows)
+		{
 			LoadReferences();
 			var refs = new List<string>(moduleReferences);
 
-			if (forWindows == windows) {
+			if (forWindows == windows)
+			{
 				var terrariaModule = Assembly.GetExecutingAssembly();
 				refs.Add(terrariaModule.Location);
 
 				//extract embedded resource dlls
-				foreach (var resName in terrariaModule.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
+				foreach (var resName in terrariaModule.GetManifestResourceNames().Where(n => n.EndsWith(".dll")))
+				{
 					var path = Path.Combine(tempDir, Path.GetFileName(resName));
 					using (Stream res = terrariaModule.GetManifestResourceStream(resName), file = File.Create(path))
 						res.CopyTo(file);
@@ -467,9 +526,12 @@ namespace Terraria.ModLoader
 					refs.Add(path);
 				}
 
-			} else {
+			}
+			else
+			{
 				//remove framework references
-				refs.RemoveAll(path => {
+				refs.RemoveAll(path =>
+				{
 					var name = Path.GetFileName(path);
 					return name == "FNA.dll" || name.StartsWith("Microsoft.Xna.Framework");
 				});
@@ -489,7 +551,8 @@ namespace Terraria.ModLoader
 
 				//extract embedded resource dlls
 				var asm = AssemblyDefinition.ReadAssembly(mainModulePath);
-				foreach (var res in asm.MainModule.Resources.OfType<EmbeddedResource>().Where(res => res.Name.EndsWith(".dll"))) {
+				foreach (var res in asm.MainModule.Resources.OfType<EmbeddedResource>().Where(res => res.Name.EndsWith(".dll")))
+				{
 					var path = Path.Combine(tempDir, Path.GetFileName(res.Name));
 					using (Stream s = res.GetResourceStream(), file = File.Create(path))
 						s.CopyTo(file);
@@ -504,37 +567,43 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.5 dependency
 		/// </summary>
-		private static CompilerResults RoslynCompile(CompilerParameters compileOptions, string[] files) {
+		private static CompilerResults RoslynCompile(CompilerParameters compileOptions, string[] files)
+		{
 			var terrariaDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			var modCompileDir = Path.Combine(terrariaDir, "ModCompile");
 			var asm = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll"));
 
-			AppDomain.CurrentDomain.AssemblyResolve += (o, args) => {
+			AppDomain.CurrentDomain.AssemblyResolve += (o, args) =>
+			{
 				var name = new AssemblyName(args.Name).Name;
 				var f = Path.Combine(modCompileDir, name + ".dll");
 				return File.Exists(f) ? Assembly.LoadFile(f) : null;
 			};
 
-			var res = (CompilerResults) asm.GetType("Terraria.ModLoader.RoslynWrapper").GetMethod("Compile")
-				.Invoke(null, new object[] {compileOptions, files});
+			var res = (CompilerResults)asm.GetType("Terraria.ModLoader.RoslynWrapper").GetMethod("Compile")
+				.Invoke(null, new object[] { compileOptions, files });
 
 			if (!res.Errors.HasErrors && compileOptions.IncludeDebugInformation)
 				asm.GetType("Terraria.ModLoader.RoslynPdbFixer").GetMethod("Fix")
 					.Invoke(null, new object[] { compileOptions.OutputAssembly });
-			
+
 			return res;
 		}
 
-		private static FileStream AcquireConsoleBuildLock() {
+		private static FileStream AcquireConsoleBuildLock()
+		{
 			var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/ModCompile/buildlock";
 			bool first = true;
-			while (true) {
+			while (true)
+			{
 				try
 				{
 					return new FileStream(path, FileMode.OpenOrCreate);
 				}
-				catch (IOException) {
-					if (first) {
+				catch (IOException)
+				{
+					if (first)
+					{
 						Console.WriteLine("Waiting for other builds to complete");
 						first = false;
 					}
@@ -560,7 +629,8 @@ namespace Terraria.ModLoader
 			return assemblyRef;
 		}
 
-		private static byte[] PostProcess(byte[] dll, bool forWindows) {
+		private static byte[] PostProcess(byte[] dll, bool forWindows)
+		{
 			if (forWindows)
 				return dll;
 

@@ -78,8 +78,8 @@ namespace Terraria.ModLoader
 		internal static void Roll(Item item, ref int prefix, int vanillaWeight, params PrefixCategory[] categories)
 		{
 			WeightedRandom<byte> wr = new WeightedRandom<byte>();
-			foreach(PrefixCategory category in categories)
-				foreach(ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item)))
+			foreach (PrefixCategory category in categories)
+				foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item)))
 					wr.Add(modPrefix.Type, modPrefix.RollChance(item));
 
 			if (vanillaWeight > 0)

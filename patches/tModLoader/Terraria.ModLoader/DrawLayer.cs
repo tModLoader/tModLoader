@@ -232,7 +232,7 @@ namespace Terraria.ModLoader
 
 		private static PlayerLayer CreateVanillaLayer(string name)
 		{
-			return new PlayerLayer("Terraria", name, _ => {});
+			return new PlayerLayer("Terraria", name, _ => { });
 		}
 	}
 
@@ -287,7 +287,7 @@ namespace Terraria.ModLoader
 
 		private static PlayerHeadLayer CreateVanillaLayer(string name)
 		{
-			return new PlayerHeadLayer("Terraria", name, _ => {});
+			return new PlayerHeadLayer("Terraria", name, _ => { });
 		}
 	}
 }

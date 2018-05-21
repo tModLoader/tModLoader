@@ -255,6 +255,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the player's stats while the game is paused due to the autopause setting being on.
+		/// This is called in single player only, some time before the player's tick update would happen when the game isn't paused.
+		/// </summary>
+		public virtual void UpdateAutopause()
+		{
+		}
+
+		/// <summary>
 		/// This is called at the beginning of every tick update for this player, after checking whether the player exists.
 		/// </summary>
 		public virtual void PreUpdate()
@@ -484,6 +492,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
+		/// If false is returned, the OnConsumeAmmo hook is never called.
 		/// </summary>
 		/// <param name="weapon"></param>
 		/// <param name="ammo"></param>
@@ -491,6 +500,17 @@ namespace Terraria.ModLoader
 		public virtual bool ConsumeAmmo(Item weapon, Item ammo)
 		{
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when ammo is consumed.
+		/// Called before the ammo stack is reduced.
+		/// </summary>
+		/// <param name="weapon"></param>
+		/// <param name="ammo"></param>
+		/// <returns></returns>
+		public virtual void OnConsumeAmmo(Item weapon, Item ammo)
+		{
 		}
 
 		/// <summary>

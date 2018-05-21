@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.UI
 			loadProgress.VAlign = 0.5f;
 			loadProgress.Top.Set(10f, 0f);
 			base.Append(loadProgress);
-			
+
 			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true);
 			cancel.VAlign = 0.5f;
 			cancel.HAlign = 0.5f;
@@ -48,7 +48,7 @@ namespace Terraria.ModLoader.UI
 		{
 			this.cancelAction = cancelAction;
 		}
-		
+
 		internal void SetProgress(UploadProgressChangedEventArgs e) => SetProgress(e.BytesSent, e.TotalBytesToSend);
 		internal void SetProgress(long count, long len)
 		{

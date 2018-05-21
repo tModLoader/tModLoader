@@ -80,6 +80,7 @@
     <Compile Include="Commands\ScoreCommand.cs" />
     <Compile Include="Commands\SoundCommand.cs" />
     <Compile Include="Commands\VolcanoCommand.cs" />
+    <Compile Include="Dusts\AdvancedDust.cs" />
     <Compile Include="Dusts\Bubble.cs" />
     <Compile Include="Dusts\EtherealFlame.cs" />
     <Compile Include="Dusts\ExampleSolution.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Items\ExampleItem.cs" />
     <Compile Include="Items\ExampleLifeFruit.cs" />
     <Compile Include="Items\ExampleMagicMirror.cs" />
+    <Compile Include="Items\Infinity.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
@@ -195,6 +197,7 @@
     <Compile Include="NPCs\FlutterSlime.cs" />
     <Compile Include="NPCs\Hover.cs" />
     <Compile Include="NPCs\Octopus.cs" />
+    <Compile Include="NPCs\FallenSoul.cs" />
     <Compile Include="NPCs\PartyZombie.cs" />
     <Compile Include="NPCs\PuritySpirit\PurityShield.cs" />
     <Compile Include="NPCs\PuritySpirit\PuritySpirit.cs" />

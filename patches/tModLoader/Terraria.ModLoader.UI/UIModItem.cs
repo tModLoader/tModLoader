@@ -42,7 +42,7 @@ namespace Terraria.ModLoader.UI
 			{
 				text += $" [c/FF0000:({Language.GetTextValue("tModLoader.ModOldWarning")})]";
 			}
-			
+
 			if (mod.modFile.HasFile("icon.png"))
 			{
 				var modIconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, new MemoryStream(mod.modFile.GetFile("icon.png")));
@@ -120,7 +120,7 @@ namespace Terraria.ModLoader.UI
 						if (!modList.Any(m => m.Name == modRef))
 							missing.Add(modRef);
 					}
-					
+
 					Main.menuMode = Interface.modsMenuID;
 					if (missing.Any())
 					{
@@ -174,8 +174,8 @@ namespace Terraria.ModLoader.UI
 				.Concat(loadedMod.buffs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
 				.Concat(loadedMod.buffs.Where(x => !dictionary.ContainsValue(x.Value.Description)).Select(x => x.Value.Description.Key + "="))
 				.Concat(loadedMod.projectiles.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="));
-				//.Concat(loadedMod.tiles.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="))
-				//.Concat(loadedMod.walls.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="));
+			//.Concat(loadedMod.tiles.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="))
+			//.Concat(loadedMod.walls.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="));
 			int index = $"Mods.{mod.Name}.".Length;
 			result = result.Select(x => x.Remove(0, index));
 			ReLogic.OS.Platform.Current.Clipboard = string.Join("\n", result);
@@ -325,7 +325,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 			}
-			if(Interface.modsMenu.modSideFilterMode != ModSideFilter.All)
+			if (Interface.modsMenu.modSideFilterMode != ModSideFilter.All)
 			{
 				if ((int)mod.properties.side != (int)Interface.modsMenu.modSideFilterMode - 1)
 					return false;

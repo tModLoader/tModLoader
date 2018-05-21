@@ -62,15 +62,18 @@ namespace ExampleMod.Items.Abomination
 	{
 		public override bool CanEquipAccessory(Item item, Player player, int slot)
 		{
-			if (slot < 10) // This allows the accessory to equip in Vanity slots with no reservations.
+			if (item.type == ItemID.AnkhShield)
 			{
-				int maxAccessoryIndex = 5 + player.extraAccessorySlots;
-				for (int i = 3; i < 3 + maxAccessoryIndex; i++)
+				if (slot < 10) // This allows the accessory to equip in Vanity slots with no reservations.
 				{
-					// We need "slot != i" because we don't care what is currently in the slot we will be replacing.
-					if (slot != i && player.armor[i].type == mod.ItemType<SixColorShield>())
+					int maxAccessoryIndex = 5 + player.extraAccessorySlots;
+					for (int i = 3; i < 3 + maxAccessoryIndex; i++)
 					{
-						return false;
+						// We need "slot != i" because we don't care what is currently in the slot we will be replacing.
+						if (slot != i && player.armor[i].type == mod.ItemType<SixColorShield>())
+						{
+							return false;
+						}
 					}
 				}
 			}

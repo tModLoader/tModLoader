@@ -66,6 +66,7 @@
 		// "LoadErrorTextureFailedToLoad": "The texture file at {0} failed to load",
 		// "LoadErrorWavSoundFailedToLoad": "The wav sound file at {0} failed to load",
 		// "LoadErrorMP3SoundFailedToLoad": "The mp3 sound file at {0} failed to load",
+		// "LoadErrorSoundFailedToLoadAudioDeviceHint": "(Try making sure your computer has speakers attached and audio devices enabled)",
 		// "LoadErrorFontFailedToLoad": "The font file at {0} failed to load",
 		// "LoadErrorEffectFailedToLoad": "The effect file at {0} failed to load",
 		// "LoadErrorUnknownXNBFileHint": "Unknown xnb file {path}. Perhaps it should be in Fonts/ or Effects/",
@@ -97,6 +98,9 @@
 		"ModPackModsMissing": "Следующие моды не были найдены:\n{0}",
 		"ModPackModsContained": "Эта сборка содержит следующие моды:\n{0}",
 		"ModPackMissing": " - Отсутствует",
+		// "ModPackLoadingSpecifiedModPack": "Loading specified modpack: {0}",
+		// "ModPackDoesNotExist": "Modpack {0} does not exist.",
+		// "ModPackMalformed": "The {0} modpack failed to be read properly, it might be malformed. ({1})",
 
 		// ModNet/Multiplayer
 		// "MPSyncingMods": "Syncing Mods",
@@ -142,6 +146,7 @@
 		// "MBFilterModlist": "Modlist",
 		// "MBExceededBandwidth": "The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.",
 		// "MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
+		// "MBNoModsFound": "No mods found",
 		// "1SecondAgo": "1 second ago",
 		// "XSecondsAgo": "{0} seconds ago",
 		// "1MinuteAgo": "1 minute ago",
@@ -164,6 +169,7 @@
 		// "MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
 		// "EnterSteamID": "Please Enter Your SteamID",
 		// "PasteSteamID": "Paste SteamID (ctrl-v)",
+		// "MBServerResonponse": "The Mod Browser server response:\n\n{0}",
 
 		// TML Options
 		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
@@ -176,6 +182,10 @@
 		"AlwaysLogExceptionsNo": "Всегда отображать исключения: Нет",
 		"ExperimentalFeaturesYes": "Экспериментальные функции: Да",
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
+		// "RemoveForcedMinimumZoomYes": "Remove Forced Minimum Zoom: On",
+		// "RemoveForcedMinimumZoomNo": "Remove Forced Minimum Zoom: Off",
+		// "AllowGreaterResolutionsYes": "Allow Greater Resolutions: On",
+		// "AllowGreaterResolutionsNo": "Allow Greater Resolutions: Off",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
 		"ReloadModsReminder": "Вы обновили мод. Не забудьте перезагрузить моды, чтобы изменения вступили в силу.",
 		"EnableModsReminder": "Ваши недавно скачанные моды в данный момент выключены. Не забудьте включить их и выполнить перезагрузку, если вы планируете использовать их.",
@@ -233,6 +243,7 @@
 		// "MSReading": "Reading: {0}",
 		// "MSSettingUp": "Setting up...",
 		// "MSAddingRecipes": "Adding Recipes...",
+		// "AddingModContent": "Adding mod content...",
 
 		// Mod Loader Mod
 		// "StartBagTooltip": "Some starting items couldn't fit in your inventory",
