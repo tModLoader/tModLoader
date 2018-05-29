@@ -93,7 +93,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.itemFlameTexture, nextItem);
 			Array.Resize(ref Main.itemAnimations, nextItem);
 			Array.Resize(ref Item.itemCaches, nextItem);
-			Item.materialCache = new bool[nextItem]; // clears it, which is desired.
 			Array.Resize(ref Item.staff, nextItem);
 			Array.Resize(ref Item.claw, nextItem);
 			Array.Resize(ref Lang._itemNameCache, nextItem);
@@ -129,6 +128,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ItemID.Sets.LockOnAimAbove, nextItem);
 			Array.Resize(ref ItemID.Sets.LockOnAimCompensation, nextItem);
 			Array.Resize(ref ItemID.Sets.SingleUseInGamepad, nextItem);
+			ItemID.Sets.IsAMaterial = new bool[nextItem]; // clears it, which is desired.
 			for (int k = ItemID.Count; k < nextItem; k++)
 			{
 				Lang._itemNameCache[k] = LocalizedText.Empty;

@@ -9,4 +9,12 @@
  				});
  			public static int[] StaffMinionSlotsRequired = ItemID.Sets.Factory.CreateIntSet(1, new int[0]);
  			public static bool[] ExoticPlantsForDyeTrade = ItemID.Sets.Factory.CreateBoolSet(new int[]
+@@ -889,6 +_,7 @@
+ 					431,
+ 					432
+ 				});
++			public static bool[] IsAMaterial = ItemID.Sets.Factory.CreateBoolSet();
+ 		}
+ 
+ 		public const short YellowPhasesaberOld = -24;
 

@@ -190,8 +190,8 @@
  
  		public bool checkMat()
  		{
-+			material = materialCache[type];
-+			return materialCache[type]; // bypass performance issue.
++			material = ItemID.Sets.IsAMaterial[type];
++			return ItemID.Sets.IsAMaterial[type]; // bypass performance issue.
  			if (this.type >= 71 && this.type <= 74)
  			{
  				this.material = false;

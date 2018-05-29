@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria
@@ -7,8 +8,6 @@ namespace Terraria
 	public partial class Item : TagSerializable
 	{
 		public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
-
-		public static bool[] materialCache = new bool[3930];
 
 		public TagCompound SerializeData()
 		{
@@ -22,7 +21,7 @@ namespace Terraria
 				int num = 0;
 				while (Main.recipe[i].requiredItem[num].type > 0)
 				{
-					materialCache[Main.recipe[i].requiredItem[num].type] = true;
+					ItemID.Sets.IsAMaterial[Main.recipe[i].requiredItem[num].type] = true;
 					num++;
 				}
 			}
@@ -30,13 +29,13 @@ namespace Terraria
 			{
 				foreach (var item in recipeGroup.ValidItems)
 				{
-					materialCache[item] = true;
+					ItemID.Sets.IsAMaterial[item] = true;
 				}
 			}
-			materialCache[71] = false;
-			materialCache[72] = false;
-			materialCache[73] = false;
-			materialCache[74] = false;
+			ItemID.Sets.IsAMaterial[71] = false;
+			ItemID.Sets.IsAMaterial[72] = false;
+			ItemID.Sets.IsAMaterial[73] = false;
+			ItemID.Sets.IsAMaterial[74] = false;
 		}
 
 		public static int NewItem(Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
