@@ -190,6 +190,18 @@
  						writer.Write((int)number3);
  						break;
  					case 56:
+@@ -1184,7 +_,10 @@
+ 				}
+ 				int num20 = (int)writer.BaseStream.Position;
+ 				writer.BaseStream.Position = position;
+-				writer.Write((short)num20);
++				// TODO: Make this int or some other solution. This used to be cast to short. NetMessage.CheckBytes reads ushort though, so changing this is fine. We want to allow for more data primarily because writing tile 
++				// chunks can go more than 32767 (and even 65535) bytes. This is because ModTileEntities can have large amounts of data especially when they sync Items and instanced GlobalItem classes are in play.
++				// Complications include AllowVanillaClients, message length byte length negotiation, and MessageBuffer.readBuffer having a fixed size. 
++				writer.Write((ushort)num20); 
+ 				writer.BaseStream.Position = (long)num20;
+ 				if (Main.netMode == 1)
+ 				{
 @@ -1537,7 +_,7 @@
  			int num5 = 0;
  			int num6 = 0;
