@@ -1,3 +1,12 @@
 <map id="Terraria.ModLoader.IO.TagSerializer" name="Terraria.ModLoader.IO.TagSerializer">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html" title="Terraria.ModLoader.IO.Tag\lSerializer\&lt; T, S \&gt;" alt="" coords="5,97,184,138"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer_3_01_t_00_01_s_01_4.html" title="Terraria.ModLoader.IO.Tag\lSerializer\&lt; T, S \&gt;" alt="" coords="232,299,411,341"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html" title="Terraria.ModLoader.IO.Bool\lTagSerializer" alt="" coords="475,5,658,46"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html" title="Terraria.ModLoader.IO.Color\lSerializer" alt="" coords="473,70,660,111"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html" title="Terraria.ModLoader.IO.Point16\lSerializer" alt="" coords="467,135,667,177"/>
+<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer.html" title="Terraria.ModLoader.IO.Rectangle\lSerializer" alt="" coords="459,201,674,242"/>
+<area shape="rect" id="node8" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer.html" title="Terraria.ModLoader.IO.UInt\lTagSerializer" alt="" coords="476,331,657,373"/>
+<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer.html" title="Terraria.ModLoader.IO.ULong\lTagSerializer" alt="" coords="469,397,664,438"/>
+<area shape="rect" id="node10" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_short_tag_serializer.html" title="Terraria.ModLoader.IO.UShort\lTagSerializer" alt="" coords="468,462,665,503"/>
+<area shape="rect" id="node11" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector2_tag_serializer.html" title="Terraria.ModLoader.IO.Vector2\lTagSerializer" alt="" coords="466,527,667,569"/>
+<area shape="rect" id="node12" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector3_tag_serializer.html" title="Terraria.ModLoader.IO.Vector3\lTagSerializer" alt="" coords="466,593,667,634"/>
 </map>

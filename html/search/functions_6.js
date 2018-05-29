@@ -110,7 +110,7 @@ var searchData=
   ['gettreebranchtextures',['GetTreeBranchTextures',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a609e22b4344fdc7d463e61ddda935197',1,'Terraria::ModLoader::TileLoader']]],
   ['gettreetexture',['GetTreeTexture',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a7c46317fa3e2872724728809499ffab5',1,'Terraria::ModLoader::TileLoader']]],
   ['gettreetoptextures',['GetTreeTopTextures',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a48fe19a6acc7c25dedd482eb6a743684',1,'Terraria::ModLoader::TileLoader']]],
-  ['gettype',['GetType',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a8acaff6f06b4de77d42d1eb8aa635ca0',1,'Terraria::ModLoader::IO::TagSerializer']]],
+  ['gettype',['GetType',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#ad2790ccda2281f1d463f5fd5a6b17c44',1,'Terraria::ModLoader::IO::TagSerializer']]],
   ['getugbgstyle',['GetUgBgStyle',['../class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a1920e2529e358ed593853378a0e6079a',1,'Terraria.ModLoader.UgBgStyleLoader.GetUgBgStyle()'],['../class_terraria_1_1_mod_loader_1_1_mod.html#a98ea2b8b11559647dbd4056bb96d0dab',1,'Terraria.ModLoader.Mod.GetUgBgStyle()']]],
   ['getugbgstyle_3c_20t_20_3e',['GetUgBgStyle&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a78665005a57991aa80d43515b4d77d1f',1,'Terraria::ModLoader::Mod']]],
   ['getuploadfilesrequestdata',['GetUploadFilesRequestData',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html#a2a07ce5748dae6c46f2c3aae7e6a87ab',1,'Terraria::ModLoader::IO::UploadFile']]],

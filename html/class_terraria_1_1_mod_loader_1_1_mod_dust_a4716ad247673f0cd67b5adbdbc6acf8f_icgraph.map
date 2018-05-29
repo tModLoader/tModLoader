@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.ModDust.OnSpawn" name="Terraria.ModLoader.ModDust.OnSpawn">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_dust.html#afe80059dd56be18b6eb1fd9ef940cb29" title="Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists..." alt="" coords="248,5,443,46"/>
-</map>

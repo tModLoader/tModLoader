@@ -1,4 +1,3 @@
 <map id="Terraria.ModLoader.NPCLoader.PreDraw" name="Terraria.ModLoader.NPCLoader.PreDraw">
 <area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="265,5,439,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a618307b1f63fbfbfb1c5d7f6978837ac" title="Allows you to draw things behind an NPC, or to modify the way the NPC is drawn. Return false to stop ..." alt="" coords="265,70,439,111"/>
 </map>

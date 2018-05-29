@@ -20,9 +20,9 @@ var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
       [ "TagCompound", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound" ]
     ] ],
     [ "TagIO.cs", "_tag_i_o_8cs.html", [
-      [ "ClassPayloadHandler", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler" ],
+      [ "ClassPayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler_3_01_t_01_4.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler_3_01_t_01_4" ],
       [ "PayloadHandler", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler" ],
-      [ "PayloadHandler", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", null ],
+      [ "PayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler_3_01_t_01_4.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler_3_01_t_01_4" ],
       [ "TagIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o" ]
     ] ],
     [ "TagPrinter.cs", "_tag_printer_8cs.html", [
@@ -37,7 +37,7 @@ var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
       [ "Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer" ],
       [ "RectangleSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer" ],
       [ "TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer" ],
-      [ "TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
+      [ "TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer_3_01_t_00_01_s_01_4.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer_3_01_t_00_01_s_01_4" ],
       [ "UIntTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer" ],
       [ "ULongTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer" ],
       [ "UShortTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_short_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_short_tag_serializer" ],

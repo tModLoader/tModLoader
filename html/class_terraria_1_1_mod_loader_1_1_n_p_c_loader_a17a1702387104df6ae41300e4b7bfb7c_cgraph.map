@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.NPCLoader.GetChat" name="Terraria.ModLoader.NPCLoader.GetChat">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6c91f67acd9fa2ca3438c641da5e0875" title="Allows you to modify the chat message of any NPC that the player can talk to. " alt="" coords="265,5,439,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="265,70,439,111"/>
-</map>

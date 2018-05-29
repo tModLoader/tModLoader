@@ -1,6 +1,0 @@
-<map id="Terraria.ModLoader.IO.ItemIO.LoadLegacy" name="Terraria.ModLoader.IO.ItemIO.LoadLegacy">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a59dd05f9c1bce1091d727a4e2157f2df" title="Gets the GlobalItem instance with the given name from this mod. " alt="" coords="255,5,443,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="246,70,453,111"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2" title="Gets the internal ID / type of the ModItem corresponding to the name. Returns 0 if no ModItem with th..." alt="" coords="238,136,461,163"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#a6c7c3fba18af6c5dbd2d37c33a2934d3" title="Allows you to load pre&#45;v0.9 custom data that you have saved for the given item. " alt="" coords="262,187,437,229"/>
-</map>

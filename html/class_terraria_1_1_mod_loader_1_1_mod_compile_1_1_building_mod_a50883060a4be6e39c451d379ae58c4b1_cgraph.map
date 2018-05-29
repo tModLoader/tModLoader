@@ -1,6 +1,0 @@
-<map id="Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod" name="Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_error_logger.html#a389b47286140d38044d0f0470a556225" title="You can use this method for your own testing purposes. The message will be added to the Logs..." alt="" coords="294,5,461,46"/>
-<area shape="rect" id="node3" href="$interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html#ae708473db380ff76e8fc864d0a22d99b" title="Terraria.ModLoader.ModCompile.\lIBuildStatus.SetProgress" alt="" coords="270,70,485,111"/>
-<area shape="rect" id="node4" href="$interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html#a7837ec3bc02a184da8f1e15e10b94fce" title="Terraria.ModLoader.ModCompile.\lIBuildStatus.SetStatus" alt="" coords="270,135,485,177"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a10cced885fff6a49a343545198ed362f" title="Terraria.ModLoader.IO.Image\lIO.ToRawBytes" alt="" coords="281,201,473,242"/>
-</map>

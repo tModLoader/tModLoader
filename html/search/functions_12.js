@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tagserializer',['TagSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a909b0d054a2e5c7b520c3146d58ce728',1,'Terraria::ModLoader::IO::TagSerializer']]],
+  ['tagserializer',['TagSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a5404534b107d236a97355224fadbee19',1,'Terraria::ModLoader::IO::TagSerializer']]],
   ['textureexists',['TextureExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6',1,'Terraria.ModLoader.Mod.TextureExists()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a',1,'Terraria.ModLoader.ModLoader.TextureExists()']]],
   ['tilecollidestyle',['TileCollideStyle',['../class_terraria_1_1_mod_loader_1_1_global_projectile.html#aeb112ef058769cf219ea82ef62e49a73',1,'Terraria.ModLoader.GlobalProjectile.TileCollideStyle()'],['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5d00676978839be6a8b92f2d0b957b9a',1,'Terraria.ModLoader.ModProjectile.TileCollideStyle()'],['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a1ab64a3527b2ffd6d8fb7e4c48b37001',1,'Terraria.ModLoader.ProjectileLoader.TileCollideStyle()']]],
   ['tilecountsavailable',['TileCountsAvailable',['../class_terraria_1_1_mod_loader_1_1_mod_world.html#a60089c548af2378c1baec051cb7a86bb',1,'Terraria.ModLoader.ModWorld.TileCountsAvailable()'],['../class_terraria_1_1_mod_loader_1_1_world_hooks.html#afac834cbc27b096e172caec25c45fff0',1,'Terraria.ModLoader.WorldHooks.TileCountsAvailable()']]],
@@ -13,7 +13,7 @@ var searchData=
   ['tofile',['ToFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#ae427eeb2be582399fe629d359b36314d',1,'Terraria::ModLoader::IO::TagIO']]],
   ['tofriendlystring',['ToFriendlyString',['../class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html#ac02f4ec543a08a039f6f46b1103dd008',1,'Terraria::ModLoader::ModSideExtensions']]],
   ['tooltipline',['TooltipLine',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#adb1d300be37fc859dd86e9e8d044ed80',1,'Terraria::ModLoader::TooltipLine']]],
-  ['toposort',['TopoSort',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#aa7e8ac5853d1618fe9992093b90b6b7c',1,'Terraria::ModLoader::TopoSort']]],
+  ['toposort',['TopoSort',['../class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4.html#aa7e8ac5853d1618fe9992093b90b6b7c',1,'Terraria::ModLoader::TopoSort&lt; T &gt;']]],
   ['toraw',['ToRaw',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a30b2585c00900aaed7dc23ac81cc8b6f',1,'Terraria::ModLoader::IO::ImageIO']]],
   ['torawbytes',['ToRawBytes',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a10cced885fff6a49a343545198ed362f',1,'Terraria::ModLoader::IO::ImageIO']]],
   ['tostream',['ToStream',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a548368b52deae062f23e0819578c6e46',1,'Terraria::ModLoader::IO::TagIO']]],
@@ -30,7 +30,7 @@ var searchData=
   ['townnpcname',['TownNPCName',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a14ca9115ed296de1799aa67efd0df6c1',1,'Terraria.ModLoader.ModNPC.TownNPCName()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1622b410cb65da245e1d090d00615398',1,'Terraria.ModLoader.NPCLoader.TownNPCName()']]],
   ['treedust',['TreeDust',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2aece9441db7b674f14908b63307fe93',1,'Terraria::ModLoader::TileLoader']]],
   ['treegrowthfxgore',['TreeGrowthFXGore',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0b6f41e241e1de3aeb410d858c7cba4c',1,'Terraria::ModLoader::TileLoader']]],
-  ['trygetserializer',['TryGetSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a56151c1d5fdbcae7737a30943eb1afad',1,'Terraria::ModLoader::IO::TagSerializer']]],
+  ['trygetserializer',['TryGetSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#aa699b4cdcc7bb66b0183170e3c069570',1,'Terraria::ModLoader::IO::TagSerializer']]],
   ['typeequals',['TypeEquals',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#aa828f70b3df43d4c6def055d2455238e',1,'Terraria::ModLoader::ModPlayer']]],
   ['typestring',['TypeString',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#a33373cb4d0d2b5713beccfdcfd5f1fe3',1,'Terraria::ModLoader::IO::TagPrinter']]]
 ];

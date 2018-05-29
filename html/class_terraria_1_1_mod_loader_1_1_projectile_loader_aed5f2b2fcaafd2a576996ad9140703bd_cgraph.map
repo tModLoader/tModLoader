@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.ProjectileLoader.NumGrappleHooks" name="Terraria.ModLoader.ProjectileLoader.NumGrappleHooks">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="254,5,429,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab01ffa6483a27d73051ca9b30f249184" title="How many of this type of grappling hook the given player can latch onto blocks before the hooks start..." alt="" coords="246,70,437,111"/>
-</map>

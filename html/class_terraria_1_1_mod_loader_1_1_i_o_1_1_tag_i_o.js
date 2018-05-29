@@ -1,8 +1,8 @@
 var class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o =
 [
-    [ "ClassPayloadHandler", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler" ],
-    [ "PayloadHandler", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", null ],
+    [ "ClassPayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler_3_01_t_01_4.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler_3_01_t_01_4" ],
     [ "PayloadHandler", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler" ],
+    [ "PayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler_3_01_t_01_4.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler_3_01_t_01_4" ],
     [ "Clone< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a7be68f2968714e7d4bdf286e420261c9", null ],
     [ "Deserialize", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a534d3a7f132fa015ca3509ce06861b92", null ],
     [ "Deserialize< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a508a2a26562b92ef73a16508f031fc74", null ],

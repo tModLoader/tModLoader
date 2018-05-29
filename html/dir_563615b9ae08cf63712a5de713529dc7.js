@@ -38,7 +38,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "PlayerHeadDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info" ]
     ] ],
     [ "DrawLayer.cs", "_draw_layer_8cs.html", [
-      [ "DrawLayer", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", "class_terraria_1_1_mod_loader_1_1_draw_layer" ],
+      [ "DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html", "class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4" ],
       [ "PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", "class_terraria_1_1_mod_loader_1_1_player_head_layer" ],
       [ "PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", "class_terraria_1_1_mod_loader_1_1_player_layer" ]
     ] ],
@@ -216,8 +216,8 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_tooltip_line" ]
     ] ],
     [ "TopoSort.cs", "_topo_sort_8cs.html", [
-      [ "SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception" ],
-      [ "TopoSort", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", "class_terraria_1_1_mod_loader_1_1_topo_sort" ]
+      [ "SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4_1_1_sorting_exception.html", "class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4_1_1_sorting_exception" ],
+      [ "TopoSort< T >", "class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4.html", "class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4" ]
     ] ],
     [ "WallLoader.cs", "_wall_loader_8cs.html", [
       [ "WallLoader", "class_terraria_1_1_mod_loader_1_1_wall_loader.html", "class_terraria_1_1_mod_loader_1_1_wall_loader" ]

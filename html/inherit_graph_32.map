@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html" title="Terraria.ModLoader.IO.ItemIO" alt="" coords="6,5,202,32"/>
+<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html" title="Terraria.ModLoader.IO.Tag\lIO.PayloadHandler" alt="" coords="5,5,184,46"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler_3_01_t_01_4.html" title="Terraria.ModLoader.IO.Tag\lIO.PayloadHandler\&lt; T \&gt;" alt="" coords="232,5,411,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler_3_01_t_01_4.html" title="Terraria.ModLoader.IO.Tag\lIO.ClassPayloadHandler\&lt; T \&gt;" alt="" coords="459,5,658,46"/>
 </map>

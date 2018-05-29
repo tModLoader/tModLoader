@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['classpayloadhandler',['ClassPayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html',1,'Terraria::ModLoader::IO::TagIO']]],
+  ['classpayloadhandler_3c_20t_20_3e',['ClassPayloadHandler&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler_3_01_t_01_4.html',1,'Terraria::ModLoader::IO::TagIO']]],
   ['colorserializer',['ColorSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html',1,'Terraria::ModLoader::IO']]],
   ['commandcaller',['CommandCaller',['../interface_terraria_1_1_mod_loader_1_1_command_caller.html',1,'Terraria::ModLoader']]],
   ['commandmanager',['CommandManager',['../class_terraria_1_1_mod_loader_1_1_command_manager.html',1,'Terraria::ModLoader']]],

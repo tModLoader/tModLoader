@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.EquipTexture.DrawArmorColor" name="Terraria.ModLoader.EquipTexture.DrawArmorColor">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a8bcdd0626e0786d5f6b12ea3feeb3e27" title="Calls the item&#39;s equipment texture&#39;s DrawArmorColor hook, then all GlobalItem.DrawArmorColor hooks..." alt="" coords="225,5,431,46"/>
-</map>
