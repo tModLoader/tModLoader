@@ -662,7 +662,7 @@ Generating caller graph for function Terraria.ModLoader.GlobalWall.SetDefaults
 Generating docs for compound Terraria::ModLoader::ItemLoader...
 Generating call graph for function Terraria.ModLoader.ItemLoader.ArmorArmGlowMask
 Generating call graph for function Terraria.ModLoader.ItemLoader.ArmorSetShadows
-Generating call graph for/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1078: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
+Generating call graph for/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1079: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
   parameter 'item'
   parameter 'reforgePrice'
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1310: warning: The following parameters of Terraria.ModLoader.Mod.AddBossHeadTexture(string texture, int npcType=-1) are not documented:
@@ -2062,5 +2062,5 @@ Patching output file 121/124
 Patching output file 122/124
 Patching output file 123/124
 Patching output file 124/124
-lookup cache used 10521/131072 hits=99581 misses=10986
+lookup cache used 10521/131072 hits=99585 misses=10986
 finished...
