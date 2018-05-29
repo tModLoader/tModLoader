@@ -8,9 +8,35 @@ namespace Terraria
 	{
 		public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
+		public static bool[] materialCache = new bool[3930];
+
 		public TagCompound SerializeData()
 		{
 			return ItemIO.Save(this);
+		}
+
+		internal static void PopulateMaterialCache()
+		{
+			for (int i = 0; i < Recipe.numRecipes; i++)
+			{
+				int num = 0;
+				while (Main.recipe[i].requiredItem[num].type > 0)
+				{
+					materialCache[Main.recipe[i].requiredItem[num].type] = true;
+					num++;
+				}
+			}
+			foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values)
+			{
+				foreach (var item in recipeGroup.ValidItems)
+				{
+					materialCache[item] = true;
+				}
+			}
+			materialCache[71] = false;
+			materialCache[72] = false;
+			materialCache[73] = false;
+			materialCache[74] = false;
 		}
 
 		public static int NewItem(Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)

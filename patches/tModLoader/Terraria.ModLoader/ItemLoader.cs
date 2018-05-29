@@ -93,6 +93,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.itemFlameTexture, nextItem);
 			Array.Resize(ref Main.itemAnimations, nextItem);
 			Array.Resize(ref Item.itemCaches, nextItem);
+			Item.materialCache = new bool[nextItem]; // clears it, which is desired.
 			Array.Resize(ref Item.staff, nextItem);
 			Array.Resize(ref Item.claw, nextItem);
 			Array.Resize(ref Lang._itemNameCache, nextItem);

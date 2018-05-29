@@ -186,6 +186,15 @@
  			}
  			if ((double)num14 >= 1.2)
  			{
+@@ -1290,6 +_,8 @@
+ 
+ 		public bool checkMat()
+ 		{
++			material = materialCache[type];
++			return materialCache[type]; // bypass performance issue.
+ 			if (this.type >= 71 && this.type <= 74)
+ 			{
+ 				this.material = false;
 @@ -1306,6 +_,14 @@
  						return true;
  					}
