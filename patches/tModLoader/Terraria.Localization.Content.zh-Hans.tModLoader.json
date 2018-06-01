@@ -50,7 +50,7 @@
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "散列不匹配,数据[blob]已被修改或损坏",
 		"LoadErrorDependencyVersionTooLow": "{0} 需要 v{1}+ 版本的 {2} ,但你已安装 v{3} 版本",
-		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}.你已设置[ModNPC.banner]或[ModNPC.bannerItem],而不是其他.请确保两者都已设置,检查你的拼写,如果你正在使用[mod.ItemType()],则该项目存在.将此错误报告发送给 {2} 开发者.",
+		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}.你已设置[ModNPC.banner]或[ModNPC.bannerItem],而不是其他.请确保两者都已设置,检查你的拼写,如果你正在使用[mod.ItemType()],则该项目存在.将此错误报告发送给 {0} 开发者.",
 		"BuildErrorModNameEmpty": "模组必须填写模组名称",
 		"BuildErrorModNamedTerraria": "模组不能被命名为[Terraria]",
 		"BuildErrorModNameHasPeriod": "模组的内部名称不能含有句号",
