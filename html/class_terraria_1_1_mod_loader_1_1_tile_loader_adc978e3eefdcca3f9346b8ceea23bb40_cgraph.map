@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.TileLoader.TileFrame" name="Terraria.ModLoader.TileLoader.TileFrame">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#aec237f34a1022d26cae044deccb2abbf" title="Called whenever this tile updates due to being placed or being next to a tile that is changed..." alt="" coords="257,5,445,46"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.NPCLoader.GetAlpha" name="Terraria.ModLoader.NPCLoader.GetAlpha">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aba82de7c491099bc5dfb1f2cc07d53f1" title="Allows you to determine the color and transparency in which an NPC is drawn. Return null to use the d..." alt="" coords="265,5,439,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="265,70,439,111"/>
+</map>

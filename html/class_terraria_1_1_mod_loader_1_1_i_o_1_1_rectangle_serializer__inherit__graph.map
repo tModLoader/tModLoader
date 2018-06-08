@@ -1,4 +1,3 @@
 <map id="Terraria.ModLoader.IO.RectangleSerializer" name="Terraria.ModLoader.IO.RectangleSerializer">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer_3_01_t_00_01_s_01_4.html" title="TagSerializer\&lt; Rectangle,\l TagCompound \&gt;" alt="" coords="25,81,199,122"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html" title="TagSerializer" alt="" coords="63,5,161,32"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html" title="TagSerializer\&lt; Rectangle,\l TagCompound \&gt;" alt="" coords="25,6,199,47"/>
 </map>

@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.PlayerHeadLayer" name="Terraria.ModLoader.PlayerHeadLayer">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html" title="This class represents a layer of the drawing of an object, using a certain type of InfoType to help w..." alt="" coords="5,6,200,47"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_draw_layer.html" title="DrawLayer\&lt; PlayerHeadDraw\lInfo \&gt;" alt="" coords="5,6,200,47"/>
 </map>

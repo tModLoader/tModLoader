@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.Mod.GetGlobalItem" name="Terraria.ModLoader.Mod.GetGlobalItem">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a6e07a04a50ec3c449e1f4f64bdfa30ad" title="Terraria.ModLoader.IO.Item\lIO.Load" alt="" coords="243,5,426,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a0fc1412d46dee67b9a2031f05e5d0560" title="Terraria.ModLoader.IO.Item\lIO.LoadLegacy" alt="" coords="243,70,426,111"/>
+</map>

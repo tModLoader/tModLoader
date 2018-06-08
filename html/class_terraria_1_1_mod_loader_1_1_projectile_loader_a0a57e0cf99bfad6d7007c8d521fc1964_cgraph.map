@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ProjectileLoader.GrappleRetreatSpeed" name="Terraria.ModLoader.ProjectileLoader.GrappleRetreatSpeed">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#af3cebf7f17f07bd9f39e2a75fd6af915" title="The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24. " alt="" coords="245,5,451,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="261,70,435,111"/>
+</map>

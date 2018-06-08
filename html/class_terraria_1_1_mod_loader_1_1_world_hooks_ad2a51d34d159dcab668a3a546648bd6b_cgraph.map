@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.WorldHooks.PostDrawTiles" name="Terraria.ModLoader.WorldHooks.PostDrawTiles">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_world.html#ab3310e15636ae38f138979d54dbe4b35" title="Called after drawing Tiles. Can be used for drawing a tile overlay akin to wires. Note that spritebat..." alt="" coords="227,5,429,46"/>
+</map>

@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.ModRecipe.AddTile" name="Terraria.ModLoader.ModRecipe.AddTile">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a5d371832fbdd332b57deb42f062f7be0" title="Gets the type of the ModTile of this mod with the given name. Returns 0 if no ModTile with the given ..." alt="" coords="262,12,479,39"/>
+</map>

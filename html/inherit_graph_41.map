@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_mod_buff.html" title="This class serves as a place for you to define a new buff and how that buff behaves. " alt="" coords="5,5,192,32"/>
+<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html" title="Terraria.ModLoader.IO.Tag\lSerializer\&lt; Point16, TagCompound \&gt;" alt="" coords="5,5,243,46"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html" title="Terraria.ModLoader.IO.Point16\lSerializer" alt="" coords="291,5,491,46"/>
 </map>

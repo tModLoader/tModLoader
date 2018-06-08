@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ProjectileLoader.Colliding" name="Terraria.ModLoader.ProjectileLoader.Colliding">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a4c7c6c662699eafe4d58015891f2fbbb" title="Allows you to use custom collision detection between a projectile and a player or NPC that the projec..." alt="" coords="246,5,421,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="246,70,421,111"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ProjectileLoader.GrapplePullSpeed" name="Terraria.ModLoader.ProjectileLoader.GrapplePullSpeed">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a13d107cf7fb3ee9bc26eb2b2750994ea" title="The speed at which the grapple pulls the player after hitting something. Defaults to 11..." alt="" coords="245,5,429,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="250,70,425,111"/>
+</map>

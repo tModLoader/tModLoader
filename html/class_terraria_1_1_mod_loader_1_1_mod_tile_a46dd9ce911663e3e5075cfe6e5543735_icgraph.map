@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.ModTile.AnimateIndividualTile" name="Terraria.ModLoader.ModTile.AnimateIndividualTile">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_tile_loader.html#aa79d0c5dd4df116f4f3bde7ec8c91bc5" title="Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type]; and then calls ModTile.AnimateIndividualTile " alt="" coords="243,5,445,46"/>
+</map>
