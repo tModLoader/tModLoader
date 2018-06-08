@@ -186,6 +186,7 @@
     <Compile Include="NPCs\Abomination\CaptiveElement.cs" />
     <Compile Include="NPCs\Abomination\CaptiveElement2.cs" />
     <Compile Include="NPCs\Abomination\FreedElement.cs" />
+    <Compile Include="NPCs\DeathAnimation.cs" />
     <Compile Include="NPCs\ExampleChestSummon.cs" />
     <Compile Include="NPCs\ExampleGlobalNPC.cs" />
     <Compile Include="NPCs\ExamplePerson.cs" />

@@ -75,7 +75,7 @@ namespace ExampleMod
 				// Register a new music box
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 
-				// Change the vailla loom texture
+				// Change the vanilla loom texture
 				Main.instance.LoadTiles(TileID.Loom); // First load the tile texture
 				Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom"); // Now we change it
 
@@ -97,6 +97,8 @@ namespace ExampleMod
 				exampleEffectRef.Value = exampleEffect;
 				GameShaders.Armor.BindShader<ArmorShaderData>(ItemType<Items.ExampleDye>(), new ArmorShaderData(exampleEffectRef, "ExampleDyePass"));
 
+				GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
+
 				// Custom UI
 				exampleUI = new ExampleUI();
 				exampleUI.Activate();
@@ -115,7 +117,7 @@ namespace ExampleMod
 			text.SetDefault("<{0}> {1}");
 			AddTranslation(text);
 
-			// Volcano warning is for the random vulcano tremor
+			// Volcano warning is for the random volcano tremor
 			text = CreateTranslation("VolcanoWarning");
 			text.SetDefault("Did you hear something....A Volcano! Find Cover!");
 			AddTranslation(text);
@@ -129,6 +131,7 @@ namespace ExampleMod
 				// Main.music[MusicID.Dungeon] = Main.soundBank.GetCue("Music_" + MusicID.Dungeon);
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
+				GameShaders.Misc.Remove("ExampleMod:DeathAnimation");
 			}
 
 			// Unload static references
