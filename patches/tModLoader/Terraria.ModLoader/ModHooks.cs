@@ -78,6 +78,42 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify what a menu text button does when pressed. See <see cref="Main.menuMode"/> for the current menu mode ID.
+		/// </summary>
+		/// <param name="selectedMenu">The currently selected (clicked) menu text button.</param>
+		public virtual void PreMenuPress(int selectedMenu)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to modify the text, scale, and position for menu text buttons, as well as add new ones. See <see cref="Main.menuMode"/> for the current menu mode ID. <para/>
+		/// This cannot be used to modify what a pre-existing menu text button does when pressed. To do this, override <see cref="PreMenuPress(int)"/>.
+		/// </summary>
+		/// <param name="focusMenu">The currently focused (hovered) menu text button.</param>
+		/// <param name="selectedMenu">The currently selected (clicked) menu text button.</param>
+		/// <param name="buttonNames">An array of the button names for the current menuMode ID.</param>
+		/// <param name="buttonScales">An array of the button scales for the current menuMode ID.</param>
+		/// <param name="buttonVerticalSpacing">An array of the spacings for the current menuMode ID.</param>
+		/// <param name="offY"></param>
+		/// <param name="spacing"></param>
+		/// <param name="numButtons">The total number of buttons. Be sure to increase this number if new text buttons were added.</param>
+		/// <param name="backButtonDown"></param>
+		public virtual void ModifyMenus(int focusMenu, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to modify the colors of a menu text button. See <see cref="Main.menuMode"/> for the current menu mode ID. <para/>
+		/// This is called in a for loop 5 times for each existing menu text button; the first 4 being the outline draw pass, and the last being the inner draw pass.
+		/// </summary>
+		/// <param name="currentTextIndex">The current index of the menu text button.</param>
+		/// <param name="isOutlineColor">Whether or not this is running in an outline color draw pass.</param>
+		/// <param name="oldColor">The current color before modification.</param>
+		public virtual void ModifyMenuTextsColors(int currentTextIndex, bool isOutlineColor, ref Color oldColor)
+		{
+		}
+
+		/// <summary>
 		/// Ran every update and suitable for calling Update for UserInterface classes
 		/// </summary>
 		public virtual void UpdateUI(GameTime gameTime)
@@ -224,6 +260,33 @@ namespace Terraria.ModLoader
 			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				mod.UpdateUI(gameTime);
+			}
+		}
+
+		internal static void PreMenuPress(int selectedMenu)
+		{
+			if (!Main.gameMenu || selectedMenu == -1) return;
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.PreMenuPress(selectedMenu);
+			}
+		}
+
+		internal static void ModifyMenus(int focusMenu, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown)
+		{
+			if (!Main.gameMenu) return;
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.ModifyMenus(focusMenu, selectedMenu, buttonNames, buttonScales, buttonVerticalSpacing, ref offY, ref spacing, ref numButtons, ref backButtonDown);
+			}
+		}
+
+		internal static void ModifyMenuTextsColors(int currentTextIndex, bool isOutlineColor, ref Color oldColor)
+		{
+			if (!Main.gameMenu) return;
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				mod.ModifyMenuTextsColors(currentTextIndex, isOutlineColor, ref oldColor);
 			}
 		}
 

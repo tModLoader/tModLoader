@@ -3623,12 +3623,20 @@
  						}
  						flag10 = true;
  					}
+@@ -43049,6 +_,7 @@
+ 			if (loadedEverything)
+ 			{
+ 				GamepadMainMenuHandler.CanRun = true;
++				ModHooks.PreMenuPress(selectedMenu);
+ 			}
+ 			if (!loadedEverything)
+ 			{
 @@ -43092,7 +_,7 @@
  				if (this.selectedMenu >= 1)
  				{
  					LanguageManager.Instance.SetLanguage(this.selectedMenu);
 -					Main.menuMode = 0;
-+					Main.menuMode = ModLoader.Interface.loadModsID;;
++					Main.menuMode = ModLoader.Interface.loadModsID; ;
  					Main.PlaySound(10, -1, -1, 1, 1f, 0f);
  					Main.SaveSettings();
  				}
@@ -3770,17 +3778,23 @@
  						}
  						num21++;
  						array9[num21] = Lang.menu[5].Value;
-@@ -45616,6 +_,10 @@
+@@ -45616,8 +_,14 @@
  							WorldGen.setWorldSize();
  						}
  					}
+-				}
+-			}
 +					else
 +					{
 +						Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
 +					}
- 				}
- 			}
++				}
++
++			}
++			ModHooks.ModifyMenus(this.focusMenu, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
  			IL_5597:
+ 			if (Main.menuMode == 888)
+ 			{
 @@ -46217,6 +_,7 @@
  			bool flag11 = false;
  			for (int num94 = 0; num94 < num5; num94++)
@@ -3789,8 +3803,11 @@
  				if (array9[num94] != null)
  				{
  					Vector2 origin = Main.fontDeathText.MeasureString(array9[num94]);
-@@ -46326,6 +_,7 @@
+@@ -46324,8 +_,10 @@
+ 							num103 *= 0.5f;
+ 						}
  						num103 *= array7[num94];
++						ModHooks.ModifyMenuTextsColors(num94, num95 != 4, ref color10);
  						if (!array8[num94])
  						{
 +							//patch file: array9, array7, array4, num2, num4
