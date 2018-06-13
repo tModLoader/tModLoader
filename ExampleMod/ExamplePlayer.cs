@@ -153,6 +153,13 @@ namespace ExampleMod
 		{
 			ExamplePlayer modOther = other.GetModPlayer<ExamplePlayer>(mod);
 			return ZoneExample == modOther.ZoneExample;
+			// If you have several Zones, you might find the &= operator or other logic operators useful:
+			// bool allMatch = true;
+			// allMatch &= ZoneExample == modOther.ZoneExample;
+			// allMatch &= ZoneModel == modOther.ZoneModel;
+			// return allMatch;
+			// Here is an example just using && chained together in one statemeny 
+			// return ZoneExample == modOther.ZoneExample && ZoneModel == modOther.ZoneModel;
 		}
 
 		public override void CopyCustomBiomesTo(Player other)
