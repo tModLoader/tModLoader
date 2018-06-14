@@ -69,7 +69,7 @@
 		// "LoadErrorSoundFailedToLoadAudioDeviceHint": "(Try making sure your computer has speakers attached and audio devices enabled)",
 		"LoadErrorFontFailedToLoad": "Le dossier de police situé en {0} n'a pas chargé correctement",
 		"LoadErrorEffectFailedToLoad": "Le dossier d'effets situé en {0} n'a pas chargé correctement",
-		"LoadErrorUnknownXNBFileHint": "Dossier xnb inconnu: {path}. Possiblement devrait être en Fonts/ ou Effects/",
+		"LoadErrorUnknownXNBFileHint": "Dossier xnb inconnu: {0}. Possiblement devrait être en Fonts/ ou Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Impossible de charger des effets compressés.",
 		"LoadErrorAddItemOnlyInLoad": "AddItem peut uniquement être appelé de Mod.Load ou Mod.Autoload",
 		"LoadError2ModItemSameName": "Vous avez essayé d'ajouter 2 ModItems avec le même nom: {0}. 2 classes possiblement partagent un même nom de classe mais dans des Espaces de Noms différents pendant l'autochargement ou vous avez manuellement appelé AddItem avec 2 objets possédant le même nom.",
