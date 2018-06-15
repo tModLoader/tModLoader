@@ -69,7 +69,7 @@
 		"LoadErrorSoundFailedToLoadAudioDeviceHint": "(Try making sure your computer has speakers attached and audio devices enabled)",
 		"LoadErrorFontFailedToLoad": "The font file at {0} failed to load",
 		"LoadErrorEffectFailedToLoad": "The effect file at {0} failed to load",
-		"LoadErrorUnknownXNBFileHint": "Unknown xnb file {path}. Perhaps it should be in Fonts/ or Effects/",
+		"LoadErrorUnknownXNBFileHint": "Unknown xnb file {0}. Perhaps it should be in Fonts/ or Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
 		"LoadErrorAddItemOnlyInLoad": "AddItem can only be called from Mod.Load or Mod.Autoload",
 		"LoadError2ModItemSameName": "You tried to add 2 ModItems with the same name: {0}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.",
