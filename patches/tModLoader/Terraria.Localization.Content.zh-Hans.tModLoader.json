@@ -133,7 +133,7 @@
 		"MBShowNotInstalledUpdates": "显示未安装及可更新的模组",
 		"MBShowUpdates": "只显示可更新的模组",
 		"MBShowMSAll": "显示全部模组",
-		"MBShowMSBoth": "只显示标准端的模组",
+		"MBShowMSBoth": "只显示所有端的模组",
 		"MBShowMSClient": "只显示客户端的模组",
 		"MBShowMSServer": "只显示服务器的模组",
 		"MBShowMSNoSync": "只显示不同步的模组",
@@ -183,8 +183,8 @@
 		"AlwaysLogExceptionsNo": "始终记录异常：关闭",
 		"ExperimentalFeaturesYes": "实验功能：开启",
 		"ExperimentalFeaturesNo": "实验功能：关闭",
-		"RemoveForcedMinimumZoomYes": "删除强制最小缩放：开启",
-		"RemoveForcedMinimumZoomNo": "删除强制最小缩放：关闭",
+		"RemoveForcedMinimumZoomYes": "禁用强制最小缩放：开启",
+		"RemoveForcedMinimumZoomNo": "禁用强制最小缩放：关闭",
 		"AllowGreaterResolutionsYes": "允许更高分辨率：开启",
 		"AllowGreaterResolutionsNo": "允许更高分辨率：关闭",
 		"ClearMBCredentials": "清空模组浏览器证书",
@@ -212,11 +212,11 @@
 		"MSOpenSources": "打开源码文件夹",
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",
-		"MSModSourcesCantHaveSpaces": "([Mod Sources]文件夹不能含有空格)",
+		"MSModSourcesCantHaveSpaces": "(Mod Sources文件夹不能含有空格)",
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "提取时发生错误 {0}",
-		"ExtractHideCodeMessage": "该模组的作者选择将代码隐藏在[tModReader]中.",
+		"ExtractHideCodeMessage": "该模组的作者选择将源码隐藏在[tModReader]中.",
 		"ExtractNoSourceCodeMessage": "该模组的作者没有选择列入模组源码.",
 		"ExtractHideResourcesMessage": "该模组的作者选择将资源(如图像)隐藏在[tModReader]中.",
 		"ExtractFileListing": "文件:",
@@ -254,7 +254,7 @@
 		"UnloadedItemItemNameTooltip": "物品: {0}",
 		"AprilFoolsJoke": "愚人节玩笑",
 		"DefaultTownNPCName": "无名氏",
-		"DefaultTownNPCChat": "我的作者忘记给我一个聊天信息了.",
+		"DefaultTownNPCChat": "我的作者忘了给我一个聊天信息.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "鼠标中键",

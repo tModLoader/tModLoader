@@ -8,7 +8,7 @@ namespace ExampleMod.Buffs
 		public override void SetDefaults()
 		{
 			DisplayName.SetDefault("Car");
-			Description.SetDefault("Leather seats, 4 cupholders");
+			Description.SetDefault("Leather seats, 4 cup holders");
 			Main.buffNoTimeDisplay[Type] = true;
 			Main.buffNoSave[Type] = true;
 		}
