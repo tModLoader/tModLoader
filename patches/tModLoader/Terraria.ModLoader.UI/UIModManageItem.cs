@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Net;
 using System.Collections.Specialized;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -37,7 +38,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel<string> button = new UITextPanel<string>(downloads + " downloads (" + downloadsversion + " latest version)", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBMyPublishedModsStats", downloads, downloadsversion), 1f, false);
 			button.Width.Set(260f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(10f, 0f);
@@ -47,7 +48,7 @@ namespace Terraria.ModLoader.UI
 			//	button.OnMouseOver += UICommon.FadedMouseOver;
 			//	button.OnMouseOut += UICommon.FadedMouseOut;
 			base.Append(button);
-			button2 = new UITextPanel<string>("Unpublish", 1f, false);
+			button2 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBUnpublish"), 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(150f, 0f);
 			button2.Left.Set(360f, 0f);
@@ -87,12 +88,11 @@ namespace Terraria.ModLoader.UI
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
 				return;
 			}
-			Main.PlaySound(12, -1, -1, 1);
+			Main.PlaySound(12);
 			try
 			{
-				System.Net.ServicePointManager.Expect100Continue = false;
+				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/unpublishmymod.php";
-				IO.UploadFile[] files = new IO.UploadFile[0];
 				var values = new NameValueCollection
 				{
 					{ "name", this.name },
@@ -100,7 +100,7 @@ namespace Terraria.ModLoader.UI
 					{ "modloaderversion", ModLoader.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
-				byte[] result = IO.UploadFile.UploadFiles(url, files, values);
+				byte[] result = UploadFile.UploadFiles(url, null, values);
 				string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
 				ErrorLogger.LogModUnPublish(s);
 			}

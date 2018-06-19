@@ -1,0 +1,20 @@
+--- src/Terraria\Terraria.Chat\ChatCommandProcessor.cs
++++ src/tModLoader\Terraria.Chat\ChatCommandProcessor.cs
+@@ -4,6 +_,7 @@
+ using System.Linq;
+ using Terraria.Chat.Commands;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.Chat
+ {
+@@ -85,6 +_,8 @@
+ 
+ 		public bool ProcessReceivedMessage(ChatMessage message, int clientId)
+ 		{
++			if (CommandManager.HandleCommand(message.Text, new PlayerCommandCaller(Main.player[clientId])))
++				return true;
+ 			IChatCommand chatCommand;
+ 			if (this._commands.TryGetValue(message.CommandId, out chatCommand))
+ 			{
+

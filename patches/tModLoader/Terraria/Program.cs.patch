@@ -1,27 +1,48 @@
 --- src/Terraria\Terraria\Program.cs
 +++ src/tModLoader\Terraria\Program.cs
-@@ -11,6 +_,7 @@
+@@ -18,6 +_,7 @@
+ #endif
  using Terraria.Initializers;
  using Terraria.Localization;
- using Terraria.Social;
 +using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.Utilities;
  
- namespace Terraria
- {
-@@ -131,6 +_,15 @@
- 		public static void LaunchGame(string[] args)
- 		{
+@@ -205,8 +_,12 @@
+ #endif
+ 			try
+ 			{
+-				Console.OutputEncoding = Encoding.Unicode;
+-				Console.InputEncoding = Encoding.Unicode;
++				Console.OutputEncoding = Encoding.UTF8;
++
++				if (Platform.IsWindows)
++					Console.InputEncoding = Encoding.Unicode;
++				else
++					Console.InputEncoding = Encoding.UTF8;
+ 			}
+ 			catch
+ 			{
+@@ -227,6 +_,7 @@
+ 				};
+ 			}
  			Program.LaunchParameters = Utils.ParseArguements(args);
-+			if (Program.LaunchParameters.ContainsKey("-savedirectory"))
-+			{
-+				Program.LaunchParameters["-savedirectory"] = Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader");
-+			}
-+			if (LaunchParameters.ContainsKey("-build"))
-+			{
-+				ModCompile.BuildModCommandLine(LaunchParameters["-build"]);
-+				return;
-+			}
++			ErrorLogger.ClearLogs();
  			ThreadPool.SetMinThreads(8, 8);
- 			LanguageManager.Instance.SetLanguage("English");
- 			using (Main main = new Main())
+ 			LanguageManager.Instance.SetLanguage(GameCulture.English);
+ 			Program.SetupLogging();
+@@ -264,6 +_,13 @@
+ 				}
+ #if CLIENT
+ 				MessageBox.Show(e.ToString(), "Terraria: Error");
++				if (e.Message.Contains("CSteamworks"))
++					Process.Start(@"https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
++				if (e.StackTrace.Contains("LaunchLocalServer"))
++				{
++					MessageBox.Show("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.", "Terraria: Error");
++					Process.Start(@"https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
++				}
+ #else
+ 				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
+ #endif
 

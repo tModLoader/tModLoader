@@ -1,0 +1,16 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIKeybindingListItem.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIKeybindingListItem.cs
+@@ -115,6 +_,12 @@
+ 					return Lang.menu[162].Value;
+ 				case "MouseRight":
+ 					return Lang.menu[163].Value;
++				case "MouseMiddle":
++					return Language.GetTextValue("tModLoader.MouseMiddle");
++				case "MouseXButton1":
++					return Language.GetTextValue("tModLoader.MouseXButton1");
++				case "MouseXButton2":
++					return Language.GetTextValue("tModLoader.MouseXButton2");
+ 				case "Up":
+ 					return Lang.menu[148].Value;
+ 				case "Down":
+

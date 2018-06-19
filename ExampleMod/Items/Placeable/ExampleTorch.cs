@@ -7,13 +7,16 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleTorch : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("This is a modded torch.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Torch";
 			item.width = 10;
 			item.height = 12;
 			item.maxStack = 99;
-			AddTooltip("This is a modded torch.");
 			item.holdStyle = 1;
 			item.noWet = true;
 			item.useTurn = true;

@@ -1,0 +1,12 @@
+--- src/merged\Terraria.Net\NetPacket.cs
++++ src/Terraria\Terraria.Net\NetPacket.cs
+@@ -41,7 +_,7 @@
+ 			this.Buffer = BufferPool.Request(size + 5);
+ 			this.Length = size + 5;
+ 			this.Writer.Write((ushort)(size + 5));
+-			this.Writer.Write(82);
++			this.Writer.Write((byte)82);
+ 			this.Writer.Write(id);
+ 		}
+ 
+

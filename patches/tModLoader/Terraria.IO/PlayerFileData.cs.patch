@@ -3,7 +3,7 @@
 @@ -3,6 +_,8 @@
  using System.Diagnostics;
  using System.IO;
- using System.Text.RegularExpressions;
+ using System.Linq;
 +using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
  using Terraria.Social;
@@ -17,29 +17,26 @@
  
  		public Player Player
  		{
-@@ -96,6 +_,7 @@
- 				this._isCloudSave = true;
- 				this._path = playerPathFromName;
- 				Main.CloudFavoritesData.SaveFavorite(this);
+@@ -68,6 +_,7 @@
+ 			string playerPathFromName = Main.GetPlayerPathFromName(this.Name, true);
+ 			if (FileUtilities.MoveToCloud(base.Path, playerPathFromName))
+ 			{
 +				PlayerIO.MoveToCloud(base.Path, playerPathFromName);
- 			}
- 		}
- 
-@@ -112,6 +_,8 @@
- 				char directorySeparatorChar = System.IO.Path.DirectorySeparatorChar;
- 				string matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.map";
- 				List<string> files = SocialAPI.Cloud.GetFiles(matchPattern);
-+				matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.tmap";
-+				files.AddRange(SocialAPI.Cloud.GetFiles(matchPattern));
- 				for (int i = 0; i < files.Count; i++)
- 				{
- 					string localPath = string.Concat(new object[]
-@@ -128,6 +_,7 @@
- 				this._isCloudSave = false;
- 				this._path = playerPathFromName;
- 				Main.LocalFavoriteData.SaveFavorite(this);
+ 				string fileName = base.GetFileName(false);
+ 				string path = string.Concat(new object[]
+ 					{
+@@ -108,10 +_,12 @@
+ 			string playerPathFromName = Main.GetPlayerPathFromName(this.Name, false);
+ 			if (FileUtilities.MoveToLocal(base.Path, playerPathFromName))
+ 			{
 +				PlayerIO.MoveToLocal(base.Path, playerPathFromName);
- 			}
- 		}
- 
+ 				string fileName = base.GetFileName(false);
+ 				string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
+ 				IEnumerable<string> enumerable = from path in SocialAPI.Cloud.GetFiles()
+-				                                 where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase) && path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase)
++				                                 where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase)
++													&& (path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase) || path.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase))
+ 				                                 select path;
+ 				foreach (string current in enumerable)
+ 				{
 

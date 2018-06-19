@@ -5,7 +5,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UICycleImage : UIElement
+	public class UICycleImage : UIElement
 	{
 		private Texture2D texture;
 		private int _drawWidth;
@@ -13,8 +13,23 @@ namespace Terraria.ModLoader.UI
 		private int padding;
 		private int textureOffsetX;
 		private int textureOffsetY;
-		private int currentState = 0;
 		private int states;
+
+		public event EventHandler OnStateChanged;
+
+		private int currentState = 0;
+		public int CurrentState
+		{
+			get { return currentState; }
+			set
+			{
+				if (value != currentState)
+				{
+					currentState = value;
+					OnStateChanged?.Invoke(this, EventArgs.Empty);
+				}
+			}
+		}
 
 		public UICycleImage(Texture2D texture, int states, int width, int height, int textureOffsetX, int textureOffsetY, int padding = 2)
 		{
@@ -39,19 +54,19 @@ namespace Terraria.ModLoader.UI
 
 		public override void Click(UIMouseEvent evt)
 		{
-			currentState = (currentState + 1) % states;
+			CurrentState = (currentState + 1) % states;
 			base.Click(evt);
 		}
 
 		public override void RightClick(UIMouseEvent evt)
 		{
-			currentState = (currentState + states - 1) % states;
+			CurrentState = (currentState + states - 1) % states;
 			base.RightClick(evt);
 		}
 
 		internal void setCurrentState(int sortMode)
 		{
-			currentState = sortMode;
+			CurrentState = sortMode;
 		}
 	}
 }

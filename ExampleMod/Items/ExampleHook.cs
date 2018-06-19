@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,6 +8,11 @@ namespace ExampleMod.Items
 {
 	class ExampleHookItem : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Hook");
+		}
+
 		public override void SetDefaults()
 		{
 			/*
@@ -30,13 +34,17 @@ namespace ExampleMod.Items
 			*/
 			// Instead of copying these values, we can clone and modify the ones we want to copy
 			item.CloneDefaults(ItemID.AmethystHook);
-			item.name = "Example Hook";
 			item.shootSpeed = 18f; // how quickly the hook is shot.
 			item.shoot = mod.ProjectileType("ExampleHookProjectile");
 		}
 	}
 	class ExampleHookProjectile : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("${ProjectileName.GemHookAmethyst}");
+		}
+
 		public override void SetDefaults()
 		{
 			/*	this.netImportant = true;
@@ -52,7 +60,7 @@ namespace ExampleMod.Items
 			projectile.CloneDefaults(ProjectileID.GemHookAmethyst);
 		}
 
-		// Use this hook for hooks that can have multiple hooks midflight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook
+		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook
 		public override bool? CanUseGrapple(Player player)
 		{
 			int hooksOut = 0;
@@ -77,7 +85,7 @@ namespace ExampleMod.Items
 		//}
 
 		// Use this to kill oldest hook. For hooks that kill the oldest when shot, not when the newest latches on: Like SkeletronHand
-		// You can also change the projectile likr: Dual Hook, Lunar Hook
+		// You can also change the projectile like: Dual Hook, Lunar Hook
 		//public override void UseGrapple(Player player, ref int type)
 		//{
 		//	int hooksOut = 0;

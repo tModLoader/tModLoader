@@ -1,14 +1,12 @@
-using System;
 using System.Diagnostics;
 using System.IO;
-using System.Xml;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.ModLoader.IO;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -18,7 +16,10 @@ namespace Terraria.ModLoader.UI
 		public UIMessageBox modInfo;
 		public UITextPanel<string> uITextPanel;
 		internal UITextPanel<string> modHomepageButton;
+		internal UITextPanel<string> extractButton;
+		internal UITextPanel<string> deleteButton;
 		private int gotoMenu = 0;
+		private LocalMod localMod;
 		private string url = "";
 		private string info = "";
 		private string modDisplayName = "";
@@ -51,14 +52,14 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Append(uIScrollbar);
 
 			modInfo.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel<string>("Mod Info", 0.8f, true);
+			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
 
-			modHomepageButton = new UITextPanel<string>("Visit the Mod's Homepage for even more info", 1f, false);
+			modHomepageButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage"), 1f, false);
 			modHomepageButton.Width.Set(-10f, 1f);
 			modHomepageButton.Height.Set(25f, 0f);
 			modHomepageButton.VAlign = 1f;
@@ -68,8 +69,8 @@ namespace Terraria.ModLoader.UI
 			modHomepageButton.OnClick += VisitModHomePage;
 			uIElement.Append(modHomepageButton);
 
-			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
-			backButton.Width.Set(-10f, 0.5f);
+			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
+			backButton.Width.Set(-10f, 0.333f);
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;
 			backButton.Top.Set(-20f, 0f);
@@ -77,6 +78,28 @@ namespace Terraria.ModLoader.UI
 			backButton.OnMouseOut += UICommon.FadedMouseOut;
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
+
+			extractButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract"), 1f, false);
+			extractButton.Width.Set(-10f, 0.333f);
+			extractButton.Height.Set(25f, 0f);
+			extractButton.VAlign = 1f;
+			extractButton.HAlign = 0.5f;
+			extractButton.Top.Set(-20f, 0f);
+			extractButton.OnMouseOver += UICommon.FadedMouseOver;
+			extractButton.OnMouseOut += UICommon.FadedMouseOut;
+			extractButton.OnClick += ExtractClick;
+			uIElement.Append(extractButton);
+
+			deleteButton = new UITextPanel<string>(Language.GetTextValue("UI.Delete"), 1f, false);
+			deleteButton.Width.Set(-10f, 0.333f);
+			deleteButton.Height.Set(25f, 0f);
+			deleteButton.VAlign = 1f;
+			deleteButton.HAlign = 1f;
+			deleteButton.Top.Set(-20f, 0f);
+			deleteButton.OnMouseOver += UICommon.FadedMouseOver;
+			deleteButton.OnMouseOut += UICommon.FadedMouseOut;
+			deleteButton.OnClick += DeleteClick;
+			uIElement.Append(deleteButton);
 
 			Append(uIElement);
 		}
@@ -86,7 +109,7 @@ namespace Terraria.ModLoader.UI
 			info = text;
 			if (info.Equals(""))
 			{
-				info = "No description available";
+				info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 			}
 		}
 
@@ -105,15 +128,35 @@ namespace Terraria.ModLoader.UI
 			this.url = url;
 		}
 
+		internal void SetMod(LocalMod mod)
+		{
+			localMod = mod;
+		}
+
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(11, -1, -1, 1);
+			Main.PlaySound(11);
+			Main.menuMode = gotoMenu;
+		}
+
+		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(ID.SoundID.MenuOpen);
+			Interface.extractMod.SetMod(localMod);
+			Interface.extractMod.SetGotoMenu(gotoMenu);
+			Main.menuMode = Interface.extractModID;
+		}
+
+		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(ID.SoundID.MenuClose);
+			File.Delete(localMod.modFile.path);
 			Main.menuMode = this.gotoMenu;
 		}
 
 		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(10);
 			Process.Start(url);
 		}
 
@@ -126,7 +169,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			uITextPanel.SetText("Mod Info: " + modDisplayName, 0.8f, true);
+			uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + modDisplayName, 0.8f, true);
 			modInfo.SetText(info);
 			if (url.Equals(""))
 			{
@@ -135,6 +178,16 @@ namespace Terraria.ModLoader.UI
 			else
 			{
 				uIElement.Append(modHomepageButton);
+			}
+			if (localMod != null)
+			{
+				uIElement.Append(deleteButton);
+				uIElement.Append(extractButton);
+			}
+			else
+			{
+				deleteButton.Remove();
+				extractButton.Remove();
 			}
 		}
 	}

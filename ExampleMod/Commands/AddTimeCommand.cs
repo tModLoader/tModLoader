@@ -43,7 +43,7 @@ namespace ExampleMod.Commands
 				Main.time -= 54000;
 
 			if (Main.netMode == 2)
-				NetMessage.SendData(MessageID.WorldInfo);
+				NetMessage.SendData(MessageID.WorldData);
 		}
 	}
 }

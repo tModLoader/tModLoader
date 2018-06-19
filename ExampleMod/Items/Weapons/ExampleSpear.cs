@@ -1,8 +1,5 @@
-﻿using ExampleMod.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using ExampleMod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,10 +8,13 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleSpear : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("An example spear");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Spear";
-			item.toolTip = "An example spear";
 			item.damage = 40;
 			item.useStyle = 5;
 			item.useAnimation = 18;
@@ -25,18 +25,21 @@ namespace ExampleMod.Items.Weapons
 			item.height = 32;
 			item.scale = 1f;
 			item.rare = 5;
+			item.value = Item.sellPrice(silver: 10);
+
+			item.melee = true;
+			item.noMelee = true; // Important because the spear is actually a projectile instead of an item. This prevents the melee hitbox of this item.
+			item.noUseGraphic = true; // Important, it's kind of wired if people see two spears at one time. This prevents the melee animation of this item.
+			item.autoReuse = true; // Most spears don't autoReuse, but it's possible when used in conjunction with CanUseItem()
+
 			item.UseSound = SoundID.Item1;
 			item.shoot = mod.ProjectileType<ExampleSpearProjectile>();
-			item.value = 1000;
-			item.noMelee = true; // Important because the spear is acutally a projectile instead of an item. This prevents the melee hitbox of this item.
-			item.noUseGraphic = true; // Important, it's kind of wired if people see two spears at one time. This prevents the melee animation of this item.
-			item.melee = true;
-			item.autoReuse = true; // Most spears dont autoReuse, but it's possible
 		}
 
 		public override bool CanUseItem(Player player)
 		{
-			return player.ownedProjectileCounts[item.shoot] < 1; // This is to ensure the spear doesn't bug out when using autoReuse = true
+			// Ensures no more than one spear can be thrown out, use this when using autoReuse
+			return player.ownedProjectileCounts[item.shoot] < 1; 
 		}
 	}
 }

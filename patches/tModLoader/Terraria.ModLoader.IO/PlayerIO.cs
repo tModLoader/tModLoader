@@ -20,7 +20,8 @@ namespace Terraria.ModLoader.IO
 			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-			var tag = new TagCompound {
+			var tag = new TagCompound
+			{
 				["armor"] = SaveInventory(player.armor),
 				["dye"] = SaveInventory(player.dye),
 				["inventory"] = SaveInventory(player.inventory),
@@ -30,7 +31,8 @@ namespace Terraria.ModLoader.IO
 				["bank2"] = SaveInventory(player.bank2.item),
 				["bank3"] = SaveInventory(player.bank3.item),
 				["modData"] = SaveModData(player),
-				["modBuffs"] = SaveModBuffs(player)
+				["modBuffs"] = SaveModBuffs(player),
+				["usedMods"] = SaveUsedMods(player)
 			};
 
 			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create))
@@ -65,6 +67,7 @@ namespace Terraria.ModLoader.IO
 			LoadInventory(player.bank3.item, tag.GetList<TagCompound>("bank3"));
 			LoadModData(player, tag.GetList<TagCompound>("modData"));
 			LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
+			LoadUsedMods(player, tag.GetList<string>("usedMods"));
 		}
 
 		public static List<TagCompound> SaveInventory(Item[] inv)
@@ -75,7 +78,7 @@ namespace Terraria.ModLoader.IO
 				if (ItemLoader.NeedsModSaving(inv[k]))
 				{
 					var tag = ItemIO.Save(inv[k]);
-					tag.Set("slot", (short) k);
+					tag.Set("slot", (short)k);
 					list.Add(tag);
 				}
 			}
@@ -97,7 +100,8 @@ namespace Terraria.ModLoader.IO
 				if (data == null)
 					continue;
 
-				list.Add(new TagCompound {
+				list.Add(new TagCompound
+				{
 					["mod"] = modPlayer.mod.Name,
 					["name"] = modPlayer.Name,
 					["data"] = data
@@ -147,7 +151,8 @@ namespace Terraria.ModLoader.IO
 				if (BuffLoader.IsModBuff(buff))
 				{
 					var modBuff = BuffLoader.GetBuff(buff);
-					list.Add(new TagCompound {
+					list.Add(new TagCompound
+					{
 						["index"] = vanillaIndex, //position of the loaded buff if there were no modBuffs before it
 						["mod"] = modBuff.mod.Name,
 						["name"] = modBuff.Name,
@@ -170,15 +175,16 @@ namespace Terraria.ModLoader.IO
 				buffCount--;
 
 			//iterate the list in reverse, insert each buff at its index and push the buffs after it up a slot
-			foreach (var tag in list.Reverse()) {
+			foreach (var tag in list.Reverse())
+			{
 				var mod = ModLoader.GetMod(tag.GetString("mod"));
 				int type = mod?.BuffType(tag.GetString("name")) ?? 0;
 				if (type == 0)
 					continue;
 
 				int index = Math.Min(tag.GetByte("index"), buffCount);
-				Array.Copy(player.buffType, index, player.buffType, index+1, Player.maxBuffs-index-1);
-				Array.Copy(player.buffTime, index, player.buffTime, index+1, Player.maxBuffs-index-1);
+				Array.Copy(player.buffType, index, player.buffType, index + 1, Player.maxBuffs - index - 1);
+				Array.Copy(player.buffTime, index, player.buffTime, index + 1, Player.maxBuffs - index - 1);
 				player.buffType[index] = type;
 				player.buffTime[index] = tag.GetInt("time");
 			}
@@ -281,7 +287,8 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					var tag = new TagCompound {
+					var tag = new TagCompound
+					{
 						["mod"] = modName,
 						["name"] = name,
 						["legacyData"] = data
@@ -333,6 +340,16 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 			}
+		}
+
+		internal static void LoadUsedMods(Player player, IList<string> usedMods)
+		{
+			player.usedMods = usedMods;
+		}
+
+		internal static List<string> SaveUsedMods(Player player)
+		{
+			return ModLoader.GetLoadedMods().Except(new string[] { "ModLoader" }).ToList();
 		}
 
 		//add to end of Terraria.IO.PlayerFileData.MoveToCloud

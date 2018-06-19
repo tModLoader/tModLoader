@@ -8,15 +8,23 @@ namespace ExampleMod.Projectiles.PuritySpirit
 {
 	public class PuritySnake : ModProjectile
 	{
-		public override bool Autoload(ref string name, ref string texture)
+		public override string Texture
 		{
-			texture = "ExampleMod/Projectiles/ShadowArm";
-			return base.Autoload(ref name, ref texture);
+			get
+			{
+				return "ExampleMod/Projectiles/ShadowArm";
+			}
+		}
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Void Trail");
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 180;
 		}
 
 		public override void SetDefaults()
 		{
-			projectile.name = "Void Trail";
 			projectile.width = 80;
 			projectile.height = 80;
 			projectile.hide = true;
@@ -25,8 +33,6 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.hostile = true;
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
-			ProjectileID.Sets.TrailingMode[projectile.type] = 0;
-			ProjectileID.Sets.TrailCacheLength[projectile.type] = 180;
 			cooldownSlot = 1;
 		}
 

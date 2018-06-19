@@ -148,21 +148,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// A convenience method for setting the result of the recipe. This uses the vanilla item name instead of the item ID. Can also throw a RecipeException.
-		/// </summary>
-		/// <param name="itemName">The name of the item to set as result.</param>
-		/// <param name="stack">The stack of the item to set as result.</param>
-		public void SetResult(string itemName, int stack = 1)
-		{
-			recipe.createItem.SetDefaults(itemName);
-			if (recipe.createItem.type == 0)
-			{
-				throw new RecipeException("No item is named " + itemName);
-			}
-			recipe.createItem.stack = stack;
-		}
-
-		/// <summary>
 		/// Adds the crafting station with the given tile ID to the recipe. Returns true if the operation was successful. Returns false if the recipe already requires the given tile. Can also throw a RecipeException.
 		/// </summary>
 		/// <param name="tileID">The tile ID to add.</param>

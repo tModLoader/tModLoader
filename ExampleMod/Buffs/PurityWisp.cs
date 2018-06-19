@@ -7,8 +7,8 @@ namespace ExampleMod.Buffs
 	{
 		public override void SetDefaults()
 		{
-			Main.buffName[Type] = "Purity Wisp";
-			Main.buffTip[Type] = "The purity wisp will fight for you";
+			DisplayName.SetDefault("Purity Wisp");
+			Description.SetDefault("The purity wisp will fight for you");
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
 		}

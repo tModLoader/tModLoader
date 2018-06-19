@@ -7,14 +7,17 @@ namespace ExampleMod.Items
 {
 	public class ExamplePickaxe : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("This is a modded pickaxe.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Pickaxe";
 			item.damage = 20;
 			item.melee = true;
 			item.width = 40;
 			item.height = 40;
-			item.toolTip = "This is a modded pickaxe.";
 			item.useTime = 10;
 			item.useAnimation = 10;
 			item.pick = 220;

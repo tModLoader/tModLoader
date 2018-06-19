@@ -18,7 +18,8 @@ namespace Terraria.ModLoader.Default
 
 		public override TagCompound Save()
 		{
-			return new TagCompound {
+			return new TagCompound
+			{
 				["list"] = infos.Select(info => info?.Save() ?? new TagCompound()).ToList()
 			};
 		}
@@ -39,13 +40,13 @@ namespace Terraria.ModLoader.Default
 				string modName = infoTag.GetString("mod");
 				string name = infoTag.GetString("name");
 				bool frameImportant = infoTag.ContainsKey("frameX");
-				var info = frameImportant ? 
-					new MysteryTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY")) : 
+				var info = frameImportant ?
+					new MysteryTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY")) :
 					new MysteryTileInfo(modName, name);
 				infos.Add(info);
 
 				int type = ModLoader.GetMod(modName)?.TileType(name) ?? 0;
-				canRestore.Add((ushort) type);
+				canRestore.Add((ushort)type);
 				if (type != 0)
 					canRestoreFlag = true;
 			}
@@ -79,7 +80,8 @@ namespace Terraria.ModLoader.Default
 				}
 				else
 				{
-					var tag = new TagCompound {
+					var tag = new TagCompound
+					{
 						["mod"] = modName,
 						["name"] = reader.ReadString(),
 					};
@@ -91,7 +93,7 @@ namespace Terraria.ModLoader.Default
 					list.Add(tag);
 				}
 			}
-			Load(new TagCompound {["list"] = list});
+			Load(new TagCompound { ["list"] = list });
 		}
 
 		private void RestoreTiles(List<ushort> canRestore)
@@ -210,7 +212,8 @@ namespace Terraria.ModLoader.Default
 
 		public TagCompound Save()
 		{
-			var tag = new TagCompound {
+			var tag = new TagCompound
+			{
 				["mod"] = modName,
 				["name"] = name,
 			};

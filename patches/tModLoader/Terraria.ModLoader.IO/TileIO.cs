@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.IO
 					var modTile = TileLoader.GetTile(type);
 					tileList.Add(new TagCompound
 					{
-						["value"] = (short) type,
+						["value"] = (short)type,
 						["mod"] = modTile.mod.Name,
 						["name"] = modTile.Name,
 						["framed"] = Main.tileFrameImportant[type],
@@ -67,7 +67,7 @@ namespace Terraria.ModLoader.IO
 					var modWall = WallLoader.GetWall(wall);
 					wallList.Add(new TagCompound
 					{
-						["value"] = (short) wall,
+						["value"] = (short)wall,
 						["mod"] = modWall.mod.Name,
 						["name"] = modWall.Name,
 					});
@@ -518,7 +518,7 @@ namespace Terraria.ModLoader.IO
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Head][slot]);
 					writer.Write(item.mod.Name);
-					writer.Write(Main.itemName[item.item.type]);
+					writer.Write(item.Name);
 				}
 				writer.Write((ushort)bodySlots.Count);
 				foreach (int slot in bodySlots)
@@ -526,7 +526,7 @@ namespace Terraria.ModLoader.IO
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Body][slot]);
 					writer.Write(item.mod.Name);
-					writer.Write(Main.itemName[item.item.type]);
+					writer.Write(item.Name);
 				}
 				writer.Write((ushort)legSlots.Count);
 				foreach (int slot in legSlots)
@@ -534,7 +534,7 @@ namespace Terraria.ModLoader.IO
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Legs][slot]);
 					writer.Write(item.mod.Name);
-					writer.Write(Main.itemName[item.item.type]);
+					writer.Write(item.Name);
 				}
 				WriteContainerData(writer);
 			}
@@ -544,7 +544,8 @@ namespace Terraria.ModLoader.IO
 			if (itemFrames.Count > 0)
 			{
 				tag.Set("itemFrames", itemFrames.Select(entry =>
-					new TagCompound {
+					new TagCompound
+					{
 						["id"] = entry.Value,
 						["item"] = ItemIO.Save(((TEItemFrame)TileEntity.ByID[entry.Key]).item)
 					}
@@ -650,8 +651,8 @@ namespace Terraria.ModLoader.IO
 				Tile left = Main.tile[i, j];
 				Tile right = Main.tile[i + 1, j];
 				if (left.active() && right.active() && (left.type == TileID.Mannequin || left.type == TileID.Womannequin)
-				    && left.type == right.type && (left.frameX == 0 || left.frameX == 36) && right.frameX == left.frameX + 18
-				    && left.frameY / 18 == position && left.frameY == right.frameY)
+					&& left.type == right.type && (left.frameX == 0 || left.frameX == 36) && right.frameX == left.frameX + 18
+					&& left.frameY / 18 == position && left.frameY == right.frameY)
 				{
 					if (position == 0)
 					{

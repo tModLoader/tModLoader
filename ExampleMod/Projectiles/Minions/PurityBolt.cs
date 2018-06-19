@@ -7,6 +7,12 @@ namespace ExampleMod.Projectiles.Minions
 {
 	public class PurityBolt : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			ProjectileID.Sets.Homing[projectile.type] = true;
+			ProjectileID.Sets.MinionShot[projectile.type] = true;
+		}
+
 		public override void SetDefaults()
 		{
 			projectile.width = 16;
@@ -15,8 +21,6 @@ namespace ExampleMod.Projectiles.Minions
 			projectile.penetrate = 1;
 			projectile.friendly = true;
 			projectile.ignoreWater = true;
-			ProjectileID.Sets.Homing[projectile.type] = true;
-			ProjectileID.Sets.MinionShot[projectile.type] = true;
 		}
 
 		public override void AI()

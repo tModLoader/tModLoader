@@ -25,30 +25,30 @@
  using NATUPNPLib;
  #endif
  namespace Terraria
-@@ -40,8 +_,9 @@
- 		public static bool disconnect = false;
+@@ -41,7 +_,7 @@
  		public static bool spamCheck = false;
  		public static bool anyClients = false;
+ 		private static Thread ServerThread;
 -		#if SERVER
 +#if SERVER && WINDOWS
- 		public static UPnPNAT upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
-+		//public static NATUPNPLib.UPnPNAT upnpnat = new NATUPNPLib.UPnPNAT();
- 		public static IStaticPortMappingCollection mappings = Netplay.upnpnat.StaticPortMappingCollection;
+ 		public static UPnPNAT upnpnat;
+ 		public static IStaticPortMappingCollection mappings;
  #endif
- 		public static string portForwardIP;
-@@ -50,11 +_,25 @@
+@@ -51,11 +_,27 @@
  
  		public static event Action OnDisconnect;
  
 +		private static readonly ConcurrentQueue<Task> mainThreadTasks = new ConcurrentQueue<Task>();
 +
-+		internal static void OnUpdate() {
++		internal static void OnUpdate()
++		{
 +			Task t;
 +			while (mainThreadTasks.TryDequeue(out t))
 +				t.RunSynchronously();
 +		}
 +
-+		private static void InvokeOnMainThread(Action action) {
++		private static void InvokeOnMainThread(Action action)
++		{
 +			var t = new Task(action);
 +			mainThreadTasks.Enqueue(t);
 +			t.Wait();
@@ -60,10 +60,10 @@
  			Netplay.portForwardPort = Netplay.ListenPort;
 -#if SERVER
 +#if SERVER && WINDOWS
- 			if (Netplay.mappings != null)
+ 			if (Netplay.upnpnat == null)
  			{
- 				foreach (IStaticPortMapping staticPortMapping in Netplay.mappings)
-@@ -75,7 +_,7 @@
+ 				Netplay.upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
+@@ -81,7 +_,7 @@
  
  		public static void closePort()
  		{
@@ -72,16 +72,22 @@
  			if (Netplay.portForwardOpen)
  			{
  				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
-@@ -258,7 +_,7 @@
+@@ -264,9 +_,11 @@
  			}
  			Netplay.disconnect = false;
  			Netplay.Connection = new RemoteServer();
 -			Netplay.Connection.ReadBuffer = new byte[1024];
+-		}
+-
 +			Netplay.Connection.ReadBuffer = new byte[ushort.MaxValue];
- 		}
- 
++		}
++
++
++		internal static bool syncingWorld = false;
  		private static void InnerClientLoop()
-@@ -273,7 +_,7 @@
+ 		{
+ 			try
+@@ -279,7 +_,7 @@
  					{
  						if (NetMessage.buffer[256].checkBytes)
  						{
@@ -90,7 +96,15 @@
  						}
  						Netplay.Connection.IsActive = true;
  						if (Netplay.Connection.State == 0)
-@@ -357,7 +_,6 @@
+@@ -332,6 +_,7 @@
+ 						{
+ 							Netplay.Connection.State = 6;
+ 							Main.player[Main.myPlayer].FindSpawn();
++							Netplay.syncingWorld = true;
+ 							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, (float)Main.player[Main.myPlayer].SpawnY, 0f, 0f, 0, 0, 0);
+ 						}
+ 						if (Netplay.Connection.State == 6 && num != Netplay.Connection.State)
+@@ -363,7 +_,6 @@
  									});
  							}
  						}
@@ -98,7 +112,15 @@
  					}
  					else if (Netplay.Connection.IsActive)
  					{
-@@ -437,7 +_,7 @@
+@@ -372,6 +_,7 @@
+ 					}
+ 					num = Netplay.Connection.State;
+ 				}
++				Netplay.syncingWorld = false;
+ 				try
+ 				{
+ 					Netplay.Connection.Socket.Close();
+@@ -443,7 +_,7 @@
  			{
  				Netplay.Clients[num].Reset();
  				Netplay.Clients[num].Socket = client;
@@ -107,10 +129,10 @@
  			}
  			if (Netplay.FindNextOpenClientSlot() == -1)
  			{
-@@ -543,19 +_,27 @@
- 					}
+@@ -550,18 +_,26 @@
  				}
- 				IL_151:
+ 				IL_156:
+ 				int num3 = 0;
 +				if (NetMessage.buffer.Any(b => b.checkBytes) || Clients.Any(c => c.PendingTermination))
 +				{
 +					InvokeOnMainThread(() =>
@@ -129,7 +151,6 @@
 +						}
 +					});
 +				}
- 				int num3 = 0;
  				for (int k = 0; k < 256; k++)
  				{
 -					if (NetMessage.buffer[k].checkBytes)

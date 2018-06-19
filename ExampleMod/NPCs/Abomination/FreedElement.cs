@@ -56,16 +56,22 @@ namespace ExampleMod.NPCs.Abomination
 			}
 		}
 
-		public override bool Autoload(ref string name, ref string texture, ref string[] altTextures)
+		public override string Texture
 		{
-			texture = "ExampleMod/NPCs/Abomination/CaptiveElement2";
-			return mod.Properties.Autoload;
+			get
+			{
+				return "ExampleMod/NPCs/Abomination/CaptiveElement2";
+			}
+		}
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Freed Element");
+			Main.npcFrameCount[npc.type] = 5;
 		}
 
 		public override void SetDefaults()
 		{
-			npc.name = "Freed Element";
-			npc.displayName = "Freed Element";
 			npc.aiStyle = -1;
 			npc.lifeMax = 15000;
 			npc.damage = 100;
@@ -75,7 +81,6 @@ namespace ExampleMod.NPCs.Abomination
 			npc.alpha = 255;
 			npc.width = 50;
 			npc.height = 50;
-			Main.npcFrameCount[npc.type] = 5;
 			npc.value = Item.buyPrice(0, 20, 0, 0);
 			npc.npcSlots = 5f;
 			npc.boss = true;

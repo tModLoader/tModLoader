@@ -13,7 +13,8 @@ namespace Terraria.ModLoader
 	{
 		internal static readonly IDictionary<string, List<ModCommand>> Commands = new Dictionary<string, List<ModCommand>>(StringComparer.OrdinalIgnoreCase);
 
-		public static bool Matches(CommandType commandType, CommandType callerType) {
+		public static bool Matches(CommandType commandType, CommandType callerType)
+		{
 			if ((commandType & CommandType.World) != 0)
 				if (Main.netMode == 2)
 					commandType |= CommandType.Server;
@@ -40,7 +41,7 @@ namespace Terraria.ModLoader
 		/// Finds a command by name. Handles mod prefixing. Replies with error messages.
 		/// </summary>
 		/// <param name="mc">The found command, or null if an error was encountered.</param>
-		/// <returns>True if a ModCommand was found, or an error message was replied. False if the command is unrecognised.</returns>
+		/// <returns>True if a ModCommand was found, or an error message was replied. False if the command is unrecognized.</returns>
 		internal static bool GetCommand(CommandCaller caller, string name, out ModCommand mc)
 		{
 			string modName = null;
@@ -119,7 +120,7 @@ namespace Terraria.ModLoader
 				if (ue?.msg != null)
 					caller.Reply(ue.msg, ue.color);
 				else
-					caller.Reply("Usage: "+mc.Usage, Color.Red);
+					caller.Reply("Usage: " + mc.Usage, Color.Red);
 			}
 			return true;
 		}
@@ -136,7 +137,7 @@ namespace Terraria.ModLoader
 					if (cmdList.Count > 1)
 						cmd = mc.mod.Name + ":" + cmd;
 
-					list.Add(new Tuple<string, string>(cmd, mc.Description));
+					list.Add(Tuple.Create(cmd, mc.Description));
 				}
 			}
 			return list;

@@ -5,13 +5,16 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleWorkbench : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("This is a modded workbench.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Workbench";
 			item.width = 28;
 			item.height = 14;
 			item.maxStack = 99;
-			AddTooltip("This is a modded workbench.");
 			item.useTurn = true;
 			item.autoReuse = true;
 			item.useAnimation = 15;

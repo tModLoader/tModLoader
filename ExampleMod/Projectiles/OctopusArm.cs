@@ -70,7 +70,6 @@ namespace ExampleMod.Projectiles
 
 		public override void SetDefaults()
 		{
-			projectile.name = "Octopus Arm";
 			projectile.width = 1;
 			projectile.height = 1;
 			projectile.hostile = true;

@@ -35,8 +35,24 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					ModLoader.DisableMod(mod.File);
+					ModLoader.DisableMod(mod.Name);
 					throw new AddRecipesException(mod, "An error occured in adding recipes for " + mod.Name, e);
+				}
+			}
+		}
+
+		internal static void PostAddRecipes()
+		{
+			foreach (Mod mod in ModLoader.mods.Values)
+			{
+				try
+				{
+					mod.PostAddRecipes();
+				}
+				catch (Exception e)
+				{
+					ModLoader.DisableMod(mod.Name);
+					throw new AddRecipesException(mod, "An error occured after adding recipes for " + mod.Name, e);
 				}
 			}
 		}

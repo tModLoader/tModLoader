@@ -119,6 +119,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void ModifyHardmodeTasks(List<GenPass> passes)
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.ModifyHardmodeTasks(passes);
+			}
+		}
+
 		public static void PostDrawTiles()
 		{
 			foreach (ModWorld modWorld in worlds)

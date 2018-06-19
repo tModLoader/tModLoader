@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
@@ -21,13 +22,16 @@ namespace Terraria.ModLoader.IO
 			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-			var tag = new TagCompound {
+			var tag = new TagCompound
+			{
 				["chests"] = SaveChests(),
-				["tiles"] =  TileIO.SaveTiles(),
+				["tiles"] = TileIO.SaveTiles(),
 				["containers"] = TileIO.SaveContainers(),
+				["npcs"] = SaveNPCs(),
 				["tileEntities"] = TileIO.SaveTileEntities(),
 				["killCounts"] = SaveNPCKillCounts(),
 				["anglerQuest"] = SaveAnglerQuest(),
+				["townManager"] = SaveTownManager(),
 				["modData"] = SaveModData()
 			};
 
@@ -43,7 +47,7 @@ namespace Terraria.ModLoader.IO
 			path = Path.ChangeExtension(path, ".twld");
 			if (!FileUtilities.Exists(path, isCloudSave))
 				return;
-			
+
 			var buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 			if (buf[0] != 0x1F || buf[1] != 0x8B)
 			{
@@ -55,6 +59,7 @@ namespace Terraria.ModLoader.IO
 			LoadChests(tag.GetList<TagCompound>("chests"));
 			TileIO.LoadTiles(tag.GetCompound("tiles"));
 			TileIO.LoadContainers(tag.GetCompound("containers"));
+			LoadNPCs(tag.GetList<TagCompound>("npcs"));
 			try
 			{
 				TileIO.LoadTileEntities(tag.GetList<TagCompound>("tileEntities"));
@@ -66,6 +71,7 @@ namespace Terraria.ModLoader.IO
 			}
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
+			LoadTownManager(tag.GetList<TagCompound>("townManager"));
 			try
 			{
 				LoadModData(tag.GetList<TagCompound>("modData"));
@@ -90,7 +96,8 @@ namespace Terraria.ModLoader.IO
 				if (itemTagList == null) //doesn't need mod saving
 					continue;
 
-				list.Add(new TagCompound {
+				list.Add(new TagCompound
+				{
 					["items"] = itemTagList,
 					["x"] = chest.x,
 					["y"] = chest.y
@@ -113,6 +120,85 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
+		internal static List<TagCompound> SaveNPCs()
+		{
+			var list = new List<TagCompound>();
+			for (int k = 0; k < Main.npc.Length; k++)
+			{
+				NPC npc = Main.npc[k];
+				if (npc.active && NPCLoader.IsModNPC(npc))
+				{
+					if (npc.townNPC)
+					{
+						TagCompound tag = new TagCompound
+						{
+							["mod"] = npc.modNPC.mod.Name,
+							["name"] = npc.modNPC.Name,
+							["displayName"] = npc.GivenName,
+							["x"] = npc.position.X,
+							["y"] = npc.position.Y,
+							["homeless"] = npc.homeless,
+							["homeTileX"] = npc.homeTileX,
+							["homeTileY"] = npc.homeTileY
+						};
+						list.Add(tag);
+					}
+					else if (NPCID.Sets.SavesAndLoads[npc.type])
+					{
+						TagCompound tag = new TagCompound
+						{
+							["mod"] = npc.modNPC.mod.Name,
+							["name"] = npc.modNPC.Name,
+							["x"] = npc.position.X,
+							["y"] = npc.position.Y
+						};
+						list.Add(tag);
+					}
+				}
+			}
+			return list;
+		}
+
+		internal static void LoadNPCs(IList<TagCompound> list)
+		{
+			if (list == null)
+			{
+				return;
+			}
+			int nextFreeNPC = 0;
+			foreach (TagCompound tag in list)
+			{
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
+				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
+				if (type > 0)
+				{
+					while (nextFreeNPC < 200 && Main.npc[nextFreeNPC].active)
+					{
+						nextFreeNPC++;
+					}
+					if (nextFreeNPC >= 200)
+					{
+						break;
+					}
+					NPC npc = Main.npc[nextFreeNPC];
+					npc.SetDefaults(type);
+					npc.position.X = tag.GetFloat("x");
+					npc.position.Y = tag.GetFloat("y");
+					if (npc.townNPC)
+					{
+						npc.GivenName = tag.GetString("displayName");
+						npc.homeless = tag.GetBool("homeless");
+						npc.homeTileX = tag.GetInt("homeTileX");
+						npc.homeTileY = tag.GetInt("homeTileY");
+					}
+				}
+				else
+				{
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryNPCs.Add(tag);
+				}
+			}
+		}
+
 		internal static List<TagCompound> SaveNPCKillCounts()
 		{
 			var list = new List<TagCompound>();
@@ -121,9 +207,10 @@ namespace Terraria.ModLoader.IO
 				if (NPC.killCount[type] <= 0)
 					continue;
 
-				list.Add(new TagCompound {
+				list.Add(new TagCompound
+				{
 					["mod"] = NPCLoader.GetNPC(type).mod.Name,
-					["name"] = Main.npcName[type],
+					["name"] = NPCLoader.GetNPC(type).Name,
 					["count"] = NPC.killCount[type]
 				});
 			}
@@ -137,7 +224,13 @@ namespace Terraria.ModLoader.IO
 				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
 				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
 				if (type > 0)
+				{
 					NPC.killCount[type] = tag.GetInt("count");
+				}
+				else
+				{
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryKillCounts.Add(tag);
+				}
 			}
 		}
 
@@ -149,9 +242,10 @@ namespace Terraria.ModLoader.IO
 			int type = Main.anglerQuestItemNetIDs[Main.anglerQuest];
 			var modItem = ItemLoader.GetItem(type);
 
-			return new TagCompound {
+			return new TagCompound
+			{
 				["mod"] = modItem.mod.Name,
-				["itemName"] = Main.itemName[type]
+				["itemName"] = modItem.Name
 			};
 		}
 
@@ -173,6 +267,46 @@ namespace Terraria.ModLoader.IO
 			Main.AnglerQuestSwap();
 		}
 
+		internal static List<TagCompound> SaveTownManager()
+		{
+			var list = new List<TagCompound>();
+			foreach (Tuple<int, Point> pair in WorldGen.TownManager._roomLocationPairs)
+			{
+				if (pair.Item1 >= NPCID.Count)
+				{
+					ModNPC npc = NPCLoader.GetNPC(pair.Item1);
+					TagCompound tag = new TagCompound
+					{
+						["mod"] = npc.mod.Name,
+						["name"] = npc.Name,
+						["x"] = pair.Item2.X,
+						["y"] = pair.Item2.Y
+					};
+					list.Add(tag);
+				}
+			}
+			return list;
+		}
+
+		internal static void LoadTownManager(IList<TagCompound> list)
+		{
+			if (list == null)
+			{
+				return;
+			}
+			foreach (TagCompound tag in list)
+			{
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
+				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
+				if (type > 0)
+				{
+					Point location = new Point(tag.GetInt("x"), tag.GetInt("y"));
+					WorldGen.TownManager._roomLocationPairs.Add(Tuple.Create(type, location));
+					WorldGen.TownManager._hasRoom[type] = true;
+				}
+			}
+		}
+
 		internal static List<TagCompound> SaveModData()
 		{
 			var list = new List<TagCompound>();
@@ -182,7 +316,8 @@ namespace Terraria.ModLoader.IO
 				if (data == null)
 					continue;
 
-				list.Add(new TagCompound {
+				list.Add(new TagCompound
+				{
 					["mod"] = modWorld.mod.Name,
 					["name"] = modWorld.Name,
 					["data"] = data
@@ -406,7 +541,8 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					var tag = new TagCompound {
+					var tag = new TagCompound
+					{
 						["mod"] = modName,
 						["name"] = name,
 						["legacyData"] = data

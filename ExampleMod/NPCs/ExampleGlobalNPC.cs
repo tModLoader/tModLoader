@@ -8,14 +8,53 @@ namespace ExampleMod.NPCs
 {
 	public class ExampleGlobalNPC : GlobalNPC
 	{
+		public override bool InstancePerEntity
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		public bool eFlames = false;
+		public bool exampleJavelin = false;
+
 		public override void ResetEffects(NPC npc)
 		{
-			npc.GetModInfo<ExampleNPCInfo>(mod).eFlames = false;
+			eFlames = false;
+			exampleJavelin = false;
+		}
+
+		public override void SetDefaults(NPC npc)
+		{
+			// We want our ExampleJavelin buff to follow the same immunities as BoneJavelin
+			npc.buffImmune[mod.BuffType<Buffs.ExampleJavelin>()] = npc.buffImmune[BuffID.BoneJavelin];
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
-			if (npc.GetModInfo<ExampleNPCInfo>(mod).eFlames)
+			if (exampleJavelin)
+			{
+				if (npc.lifeRegen > 0)
+				{
+					npc.lifeRegen = 0;
+				}
+				int exampleJavelinCount = 0;
+				for (int i = 0; i < 1000; i++)
+				{
+					Projectile p = Main.projectile[i];
+					if (p.active && p.type == mod.ProjectileType<Projectiles.ExampleJavelinProjectile>() && p.ai[0] == 1f && p.ai[1] == npc.whoAmI)
+					{
+						exampleJavelinCount++;
+					}
+				}
+				npc.lifeRegen -= exampleJavelinCount * 2 * 3;
+				if (damage < exampleJavelinCount * 3)
+				{
+					damage = exampleJavelinCount * 3;
+				}
+			}
+			if (eFlames)
 			{
 				if (npc.lifeRegen > 0)
 				{
@@ -113,7 +152,7 @@ namespace ExampleMod.NPCs
 
 		public override void DrawEffects(NPC npc, ref Color drawColor)
 		{
-			if (npc.GetModInfo<ExampleNPCInfo>(mod).eFlames)
+			if (eFlames)
 			{
 				if (Main.rand.Next(4) < 3)
 				{
@@ -157,6 +196,37 @@ namespace ExampleMod.NPCs
 				shop.item[nextSlot].shopSpecialCurrency = ExampleMod.FaceCustomCurrencyID;
 				nextSlot++;
 			}
+            else if (type == NPCID.Wizard && Main.expertMode)
+            {
+                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Infinity>());
+                nextSlot++;
+            }
+		}
+
+		// Make any NPC with a chat complain to the player if they have the stinky debuff.
+		public override void GetChat(NPC npc, ref string chat)
+		{
+			if (Main.LocalPlayer.HasBuff(BuffID.Stinky))
+			{
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						chat = "Eugh, you smell of rancid fish!";
+						break;
+					case 1:
+						chat = "What's that horrid smell?!";
+						break;
+					default:
+						chat = "Get away from me, i'm not doing any business with you.";
+						break;
+				}
+			}
+		}
+
+		// If the player clicks any chat button and has the stinky debuff, prevent the button from working.
+		public override bool PreChatButtonClicked(NPC npc, bool firstButton)
+		{
+			return !Main.LocalPlayer.HasBuff(BuffID.Stinky);
 		}
 	}
 }

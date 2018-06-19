@@ -9,9 +9,14 @@ namespace ExampleMod.NPCs
 	// This ModNPC serves as an example of a complete AI example.
 	public class FlutterSlime : ModNPC
 	{
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Flutter Slime"); // Automatic from .lang files
+			Main.npcFrameCount[npc.type] = 6; // make sure to set this for your modnpcs.
+		}
+
 		public override void SetDefaults()
 		{
-			npc.name = "Flutter Slime";
 			npc.width = 32;
 			npc.height = 32;
 			npc.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1.
@@ -25,10 +30,9 @@ namespace ExampleMod.NPCs
 			npc.value = 25f;
 			npc.buffImmune[BuffID.Poisoned] = true;
 			npc.buffImmune[BuffID.Confused] = false; // npc default to being immune to the Confused debuff. Allowing confused could be a little more work depending on the AI. npc.confused is true while the npc is confused.
-			Main.npcFrameCount[npc.type] = 6; // make sure to set this for your modnpcs.
 		}
 
-		public override float CanSpawn(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			// we would like this npc to spawn in the overworld.
 			return SpawnCondition.OverworldDaySlime.Chance * 0.1f;
@@ -84,7 +88,7 @@ namespace ExampleMod.NPCs
 			// The npc starts in the asleep state, waiting for a player to enter range
 			if (AI_State == State_Asleep)
 			{
-				// TargetClosest sets npc.target to the player.whoAmI of the closest player. the faceTarget parameter means that npc.direction will automatically be 1 or -1 if the targetted player is to the right or left. This is also automatically flipped if npc.confused
+				// TargetClosest sets npc.target to the player.whoAmI of the closest player. the faceTarget parameter means that npc.direction will automatically be 1 or -1 if the targeted player is to the right or left. This is also automatically flipped if npc.confused
 				npc.TargetClosest(true);
 				// Now we check the make sure the target is still valid and within our specified notice range (500)
 				if (npc.HasValidTarget && Main.player[npc.target].Distance(npc.Center) < 500f)
@@ -113,7 +117,7 @@ namespace ExampleMod.NPCs
 					npc.TargetClosest(true);
 					if (!npc.HasValidTarget || Main.player[npc.target].Distance(npc.Center) > 500f)
 					{
-						// Out targetted player seems to have left our range, so we'll go back to sleep.
+						// Out targeted player seems to have left our range, so we'll go back to sleep.
 						AI_State = State_Asleep;
 						AI_Timer = 0;
 					}
@@ -139,7 +143,7 @@ namespace ExampleMod.NPCs
 			else if (AI_State == State_Hover)
 			{
 				AI_Timer += 1;
-				// Here we make a decision on how long this flutter will last. We check netmode != 1 to prevent Multiplayer Clients from running this code. (similiarly, spawning projectiles should also be wrapped like this)
+				// Here we make a decision on how long this flutter will last. We check netmode != 1 to prevent Multiplayer Clients from running this code. (similarly, spawning projectiles should also be wrapped like this)
 				// netmode == 0 is SP, netmode == 1 is MP Client, netmode == 2 is MP Server. 
 				// Typically in MP, Client and Server maintain the same state by running deterministic code individually. When we want to do something random, we must do that on the server and then inform MP Clients.
 				// Informing MP Clients is done automatically by syncing the npc.ai array over the network whenever npc.netUpdate is set. Don't set netUpdate unless you do something non-deterministic ("random")
@@ -184,7 +188,7 @@ namespace ExampleMod.NPCs
 		const int Frame_Flutter_3 = 5;
 
 		// Here in FindFrame, we want to set the animation frame our npc will use depending on what it is doing.
-		// We set npc.frame.Y to x * frameHeight where x is the xth frame in our spritesheet, counting from 0. For convinience, I have defined some consts above.
+		// We set npc.frame.Y to x * frameHeight where x is the xth frame in our spritesheet, counting from 0. For convenience, I have defined some consts above.
 		public override void FindFrame(int frameHeight)
 		{
 			// This makes the sprite flip horizontally in conjunction with the npc.direction.

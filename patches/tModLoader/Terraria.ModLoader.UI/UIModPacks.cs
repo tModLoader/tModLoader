@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.GameContent.UI.States;
 using Newtonsoft.Json;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -21,7 +19,7 @@ namespace Terraria.ModLoader.UI
 		private UILoaderAnimatedImage uiLoader;
 		private UIPanel scrollPanel;
 		internal static string ModListSaveDirectory = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModPacks";
-		internal static TmodFile[] mods;
+		internal static string[] mods;
 
 		public override void OnInitialize()
 		{
@@ -32,7 +30,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.Height.Set(-220f, 1f);
 			uIElement.HAlign = 0.5f;
 
-			uiLoader = new UILoaderAnimatedImage(0.5f,0.5f,1f);
+			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
 			scrollPanel = new UIPanel();
 			scrollPanel.Width.Set(0f, 1f);
@@ -53,14 +51,14 @@ namespace Terraria.ModLoader.UI
 			scrollPanel.Append(uIScrollbar);
 			modListList.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> titleTextPanel = new UITextPanel<string>("Mod Packs", 0.8f, true);
+			UITextPanel<string> titleTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPacksHeader"), 0.8f, true);
 			titleTextPanel.HAlign = 0.5f;
 			titleTextPanel.Top.Set(-35f, 0f);
 			titleTextPanel.SetPadding(15f);
 			titleTextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(titleTextPanel);
 
-			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			backButton.Width.Set(-10f, 1f / 2f);
 			backButton.Height.Set(25f, 0f);
 			backButton.VAlign = 1f;
@@ -70,7 +68,7 @@ namespace Terraria.ModLoader.UI
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			UIColorTextPanel saveNewButton = new UIColorTextPanel("Save Enabled as New Mod Pack", Color.Green, 1f, false);
+			UIColorTextPanel saveNewButton = new UIColorTextPanel(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"), Color.Green, 1f, false);
 			saveNewButton.CopyStyle(backButton);
 			saveNewButton.HAlign = 1f;
 			saveNewButton.OnMouseOver += UICommon.FadedMouseOver;
@@ -84,7 +82,7 @@ namespace Terraria.ModLoader.UI
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(11, -1, -1, 1);
-			Main.MenuUI.SetState(new UIVirtualKeyboard("Enter Mod Pack name", "", new UIVirtualKeyboard.KeyboardSubmitEvent(SaveModList), () => Main.menuMode = Interface.modPacksMenuID, 0));
+			Main.MenuUI.SetState(new UIVirtualKeyboard(Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", new UIVirtualKeyboard.KeyboardSubmitEvent(SaveModList), () => Main.menuMode = Interface.modPacksMenuID, 0));
 			Main.menuMode = 888;
 		}
 
@@ -93,17 +91,12 @@ namespace Terraria.ModLoader.UI
 			// TODO
 			//Main.menuMode = Interface.modsMenuID;
 
-			string[] enabledMods = ModLoader.FindMods()
-				.Where(ModLoader.IsEnabled)
-				.Select(mod => mod.name)
-				.ToArray();
-
 			//Main.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModListSaveDirectory);
 
 			string path = ModListSaveDirectory + Path.DirectorySeparatorChar + filename + ".json";
-
-			string json = JsonConvert.SerializeObject(enabledMods, Newtonsoft.Json.Formatting.Indented);
+			var foundMods = ModLoader.FindMods().Select(x => x.Name).Intersect(ModLoader.EnabledMods).ToList();
+			string json = JsonConvert.SerializeObject(foundMods, Formatting.Indented);
 			File.WriteAllText(path, json);
 
 			Main.menuMode = Interface.modPacksMenuID; // should reload
@@ -124,13 +117,14 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate()
 		{
-			if(!scrollPanel.HasChild(uiLoader)) scrollPanel.Append(uiLoader);
+			scrollPanel.Append(uiLoader);
 			modListList.Clear();
-
+			if (SynchronizationContext.Current == null)
+				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory
 				.StartNew(delegate
 				{
-					mods = ModLoader.FindMods();
+					mods = ModLoader.FindMods().Select(m => m.Name).ToArray();
 					return FindModLists();
 				})
 				.ContinueWith(task =>
@@ -138,7 +132,7 @@ namespace Terraria.ModLoader.UI
 					string[] modListsFullPath = task.Result;
 					foreach (string modListFilePath in modListsFullPath)
 					{
-						string[] mods = {};
+						string[] mods = { };
 						//string path = ModListSaveDirectory + Path.DirectorySeparatorChar + modListFilePath + ".json";
 
 						if (File.Exists(modListFilePath))
@@ -153,7 +147,7 @@ namespace Terraria.ModLoader.UI
 						UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
 						modListList.Add(modItem);
 					}
-					if(scrollPanel.HasChild(uiLoader)) scrollPanel.RemoveChild(uiLoader);
+					scrollPanel.RemoveChild(uiLoader);
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 

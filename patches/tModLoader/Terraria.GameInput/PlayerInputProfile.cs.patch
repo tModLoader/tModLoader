@@ -8,13 +8,38 @@
  
  namespace Terraria.GameInput
  {
-@@ -282,6 +_,12 @@
+@@ -158,7 +_,7 @@
+ 		{
+ 			Dictionary<string, object> dictionary = new Dictionary<string, object>();
+ 			Dictionary<string, object> dictionary2 = new Dictionary<string, object>();
+-			dictionary.Add("Last Launched Version", 193);
++			dictionary.Add("Last Launched Version", 194);
+ 			dictionary2.Add("Edittable", this.AllowEditting);
+ 			dictionary2.Add("Gamepad - HotbarRadialHoldTime", this.HotbarRadialHoldTimeRequired);
+ 			dictionary2.Add("Gamepad - LeftThumbstickDeadzoneX", this.LeftThumbstickDeadzoneX);
+@@ -238,6 +_,9 @@
+ 			{
+ 				"MouseLeft",
+ 				"MouseRight",
++				"MouseMiddle",
++				"MouseXButton1",
++				"MouseXButton2",
+ 				"Up",
+ 				"Down",
+ 				"Left",
+@@ -292,6 +_,18 @@
  			this.CopyKeysFrom(profile, mode, keysToCopy);
  		}
  
 +		public void CopyModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode)
 +		{
 +			string[] keysToCopy = ModLoader.ModLoader.modHotKeys.Select(x=>x.Value.displayName).ToArray();
++			this.CopyKeysFrom(profile, mode, keysToCopy);
++		}
++
++		public void CopyIndividualModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode, string displayname)
++		{
++			string[] keysToCopy = new string[] { displayname };
 +			this.CopyKeysFrom(profile, mode, keysToCopy);
 +		}
 +

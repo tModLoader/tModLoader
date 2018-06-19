@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using System.IO;
@@ -37,14 +38,15 @@ namespace ExampleMod.Tiles
 					{
 						Player scoringPlayer = Main.player[npc.lastInteraction];
 						int score = 0;
-						// Using HalfVector2 and Utils.ReadUIntAsFloat is a way to pack a Vector2 into a single float variable.
+						// Using HalfVector2 and ReinterpretCast.UIntAsFloat is a way to pack a Vector2 into a single float variable.
 						HalfVector2 halfVector = new HalfVector2((current.Position.X + 1) * 16, (current.Position.Y + 1) * 16);
-						Projectile.NewProjectile(npc.Center, Vector2.Zero, mod.ProjectileType<Projectiles.ScorePoint>(), 0, 0, Main.myPlayer, Utils.ReadUIntAsFloat(halfVector.PackedValue), npc.lastInteraction);
+						Projectile.NewProjectile(npc.Center, Vector2.Zero, mod.ProjectileType<Projectiles.ScorePoint>(), 0, 0, Main.myPlayer, ReLogic.Utilities.ReinterpretCast.UIntAsFloat(halfVector.PackedValue), npc.lastInteraction);
 						scoreboard.scores.TryGetValue(scoringPlayer.name, out score);
 						scoreboard.scores[scoringPlayer.name] = score + 1;
 						if (Main.dedServ)
 						{
-							NetMessage.SendData(25, -1, -1, scoringPlayer.name + ": " + scoreboard.scores[scoringPlayer.name], 255, 255, 255, 255, 0);
+							NetworkText text = NetworkText.FromFormattable("{0}: {1}", scoringPlayer.name, scoreboard.scores[scoringPlayer.name]);
+							NetMessage.BroadcastChatMessage(text, Color.White);
 						}
 						else
 						{
@@ -80,7 +82,7 @@ namespace ExampleMod.Tiles
 			if (scoresChanged)
 			{
 				// Sending 86 aka, TileEntitySharing, triggers NetSend. Think of it like manually calling sync.
-				NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, "", ID, Position.X, Position.Y);
+				NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, Position.X, Position.Y);
 				scoresChanged = false;
 			}
 		}
@@ -135,7 +137,7 @@ namespace ExampleMod.Tiles
 			if (Main.netMode == 1)
 			{
 				NetMessage.SendTileSquare(Main.myPlayer, i, j, 3);
-				NetMessage.SendData(87, -1, -1, "", i, j, Type, 0f, 0, 0, 0);
+				NetMessage.SendData(87, -1, -1, null, i, j, Type, 0f, 0, 0, 0);
 				return -1;
 			}
 			return Place(i, j);
@@ -179,7 +181,9 @@ namespace ExampleMod.Tiles
 			TileObjectData.newAlternate.AnchorBottom = AnchorData.Empty;
 			TileObjectData.addAlternate(4);
 			TileObjectData.addTile(Type);
-			AddMapEntry(new Color(26, 127, 206), "ScoreBoard");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("ScoreBoard");
+			AddMapEntry(new Color(26, 127, 206), name);
 			disableSmartCursor = true; //?
 									   //TODO	Main.highlightMaskTexture[Type] = mod.GetTexture("Tiles/ScoreBoard_Outline");
 		}

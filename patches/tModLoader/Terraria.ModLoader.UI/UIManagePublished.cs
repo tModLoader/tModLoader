@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.UI.Gamepad;
 using Newtonsoft.Json.Linq;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -40,13 +41,13 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			myPublishedMods.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel<string>("My Published Mods", 0.8f, true);
+			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
-			UITextPanel<string> backButton = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			backButton.VAlign = 1f;
 			backButton.Height.Set(25f, 0f);
 			backButton.Width.Set(-10f, 1f / 2f);
@@ -74,30 +75,29 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate()
 		{
 			myPublishedMods.Clear();
-			uITextPanel.SetText("My Published Mods", 0.8f, true);
+			uITextPanel.SetText(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
 			string response = "";
 			try
 			{
 				System.Net.ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/listmymods.php";
-				IO.UploadFile[] files = new IO.UploadFile[0];
 				var values = new NameValueCollection
 				{
 					{ "steamid64", ModLoader.SteamID64 },
 					{ "modloaderversion", ModLoader.versionedName },
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
-				byte[] result = IO.UploadFile.UploadFiles(url, files, values);
+				byte[] result = IO.UploadFile.UploadFiles(url, null, values);
 				response = System.Text.Encoding.UTF8.GetString(result);
 			}
 			catch (WebException e)
 			{
 				if (e.Status == WebExceptionStatus.Timeout)
 				{
-					uITextPanel.SetText("Mod Browser OFFLINE (Busy)", 0.8f, true);
+					uITextPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")), 0.8f, true);
 					return;
 				}
-				uITextPanel.SetText("Mod Browser OFFLINE.", 0.8f, true);
+				uITextPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", ""), 0.8f, true);
 				return;
 			}
 			catch (Exception e)

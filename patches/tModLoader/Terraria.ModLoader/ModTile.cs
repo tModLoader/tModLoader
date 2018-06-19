@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -41,6 +42,10 @@ namespace Terraria.ModLoader
 
 		internal string texture;
 		/// <summary>
+		/// The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.
+		/// </summary>
+		public virtual string HighlightTexture => texture + "_Highlight";
+		/// <summary>
 		/// The default type of sound made when this tile is hit. Defaults to 0.
 		/// </summary>
 		public int soundType = 0;
@@ -72,6 +77,10 @@ namespace Terraria.ModLoader
 		/// Whether or not the smart cursor function is disabled when the cursor hovers above this tile. Defaults to false.
 		/// </summary>
 		public bool disableSmartCursor = false;
+		/// <summary>
+		/// Whether or not the smart tile interaction function is disabled when the cursor hovers above this tile. Defaults to false.
+		/// </summary>
+		public bool disableSmartInteract = false;
 		/// <summary>
 		/// An array of the IDs of tiles that this tile can be considered as when looking for crafting stations.
 		/// </summary>
@@ -125,7 +134,37 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
 		/// </summary>
-		public void AddMapEntry(Color color, string name = "")
+		public void AddMapEntry(Color color, LocalizedText name = null)
+		{
+			if (!MapLoader.initialized)
+			{
+				MapEntry entry = new MapEntry(color, name);
+				if (!MapLoader.tileEntries.Keys.Contains(Type))
+				{
+					MapLoader.tileEntries[Type] = new List<MapEntry>();
+				}
+				MapLoader.tileEntries[Type].Add(entry);
+			}
+		}
+
+		/// <summary>
+		/// Creates a ModTranslation object that you can use in AddMapEntry.
+		/// </summary>
+		/// <param name="key">The key for the ModTranslation. The full key will be MapObject.ModName.key</param>
+		/// <returns></returns>
+		public ModTranslation CreateMapEntryName(string key = null)
+		{
+			if (string.IsNullOrEmpty(key))
+			{
+				key = Name;
+			}
+			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
+		}
+
+		/// <summary>
+		/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
+		/// </summary>
+		public void AddMapEntry(Color color, ModTranslation name)
 		{
 			if (!MapLoader.initialized)
 			{
@@ -141,7 +180,23 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
 		/// </summary>
-		public void AddMapEntry(Color color, string name, Func<string, int, int, string> nameFunc)
+		public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
+		{
+			if (!MapLoader.initialized)
+			{
+				MapEntry entry = new MapEntry(color, name, nameFunc);
+				if (!MapLoader.tileEntries.Keys.Contains(Type))
+				{
+					MapLoader.tileEntries[Type] = new List<MapEntry>();
+				}
+				MapLoader.tileEntries[Type].Add(entry);
+			}
+		}
+
+		/// <summary>
+		/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
+		/// </summary>
+		public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
 		{
 			if (!MapLoader.initialized)
 			{
@@ -204,6 +259,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void PostSetDefaults()
 		{
+		}
+
+		/// <summary>
+		/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool HasSmartInteract()
+		{
+			return false;
 		}
 
 		/// <summary>
@@ -380,14 +444,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Obsolete: Use the overloaded method with the ref int parameter.
-		/// </summary>
-		[method: Obsolete("Use the overloaded method with the ref int parameter.")]
-		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor)
-		{
-		}
-
-		/// <summary>
 		/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
@@ -395,7 +451,6 @@ namespace Terraria.ModLoader
 		/// <param name="nextSpecialDrawIndex">The special draw count. Use with Main.specX and Main.specY and then increment to draw special things after the main tile drawing loop is complete via DrawSpecial.</param>
 		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
-			DrawEffects(i, j, spriteBatch, ref drawColor);
 		}
 
 		/// <summary>

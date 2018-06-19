@@ -1,6 +1,5 @@
-﻿using System.Linq;
-using Microsoft.Xna.Framework;
-using Terraria.ID;
+﻿using Microsoft.Xna.Framework;
+using Terraria.Chat;
 
 namespace Terraria.ModLoader.Default
 {
@@ -16,7 +15,7 @@ namespace Terraria.ModLoader.Default
 				ModCommand mc;
 				if (!CommandManager.GetCommand(caller, args[0], out mc))
 				{
-					throw new UsageException("Unknown command: "+args[0], Color.Red);
+					throw new UsageException("Unknown command: " + args[0], Color.Red);
 				}
 				if (mc != null)
 				{
@@ -28,7 +27,7 @@ namespace Terraria.ModLoader.Default
 			}
 
 			var help = CommandManager.GetHelp(caller.CommandType);
-			caller.Reply(caller.CommandType+" Commands:", Color.Yellow);
+			caller.Reply(caller.CommandType + " Commands:", Color.Yellow);
 
 			foreach (var entry in help)
 				caller.Reply(entry.Item1 + "   " + entry.Item2);
@@ -36,7 +35,7 @@ namespace Terraria.ModLoader.Default
 			if (Main.netMode == 1)
 			{
 				//send the command to the server
-				NetMessage.SendData(MessageID.ChatText, -1, -1, input);
+				NetMessage.SendChatMessageFromClient(new ChatMessage(input));
 			}
 		}
 	}

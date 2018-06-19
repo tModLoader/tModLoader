@@ -88,7 +88,7 @@
  		{
  			get
  			{
-@@ -1498,7 +_,7 @@
+@@ -1531,7 +_,7 @@
  			}
  		}
  
@@ -97,7 +97,7 @@
  		{
  			if (checkTile == null)
  			{
-@@ -1510,6 +_,10 @@
+@@ -1543,6 +_,10 @@
  				{
  					case 0:
  					case 2:
@@ -108,7 +108,7 @@
  						if (this.WaterPlacement == LiquidPlacement.NotAllowed)
  						{
  							return false;
-@@ -1520,6 +_,10 @@
+@@ -1553,6 +_,10 @@
  						}
  						break;
  					case 1:
@@ -119,7 +119,7 @@
  						if (this.LavaPlacement == LiquidPlacement.NotAllowed)
  						{
  							return false;
-@@ -1656,14 +_,14 @@
+@@ -1689,14 +_,19 @@
  			TileObjectData.newTile = new TileObjectData(TileObjectData._baseObject);
  		}
  
@@ -132,11 +132,16 @@
  		}
  
 -		private static void addSubTile(int style)
++		public static void FixNewTile()
++		{
++			TileObjectData.newTile = new TileObjectData(TileObjectData._baseObject);
++		}
++
 +		public static void addSubTile(int style)
  		{
  			TileObjectData.newSubTile.Calculate();
  			List<TileObjectData> list;
-@@ -1688,7 +_,7 @@
+@@ -1721,7 +_,7 @@
  			TileObjectData.newSubTile = new TileObjectData(TileObjectData._baseObject);
  		}
  
@@ -145,7 +150,7 @@
  		{
  			TileObjectData.newAlternate.Calculate();
  			if (!TileObjectData.newTile._hasOwnAlternates)
-@@ -3544,7 +_,6 @@
+@@ -3622,7 +_,6 @@
  			};
  			TileObjectData.addAlternate(27);
  			TileObjectData.addTile(20);
@@ -153,7 +158,7 @@
  		}
  
  		public static bool CustomPlace(int type, int style)
-@@ -3785,5 +_,84 @@
+@@ -3863,5 +_,84 @@
  			}
  			baseCoords = new Point16((int)(baseCoords.X - tileData.Origin.X), (int)(baseCoords.Y - tileData.Origin.Y));
  		}

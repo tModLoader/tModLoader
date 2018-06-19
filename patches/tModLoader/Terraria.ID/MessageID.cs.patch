@@ -1,12 +1,10 @@
 --- src/Terraria\Terraria.ID\MessageID.cs
 +++ src/tModLoader\Terraria.ID\MessageID.cs
-@@ -5,74 +_,290 @@
+@@ -5,78 +_,293 @@
  	public class MessageID
  	{
  		public const byte NeverCalled = 0;
 -		public const byte Unknown1 = 1;
--		public const byte Unknown2 = 2;
--		public const byte Unknown3 = 3;
 +		//set by the client when the socket connects, client connection state 0->1
 +		//sends a string "Terraria{Main.curRelease}"
 +		//checks if a client is banned, and kicks if so
@@ -17,7 +15,8 @@
 +		//otherwise sends SyncMods instead of LoadPlayer
 +		public const byte ClientHello = 1;
 +		//kick with reason, displays the text "{ip} was booted: {reason}" in the server console
-+		public const byte KickClient = 2;
+ 		public const byte Kick = 2;
+-		public const byte Unknown3 = 3;
 +		//sent once the server has accepted the player and assigned an id
 +		//client connection state 1->2
 +		//client sends SyncPlayer, ClientUUID, PlayerHealth, PlayerMana, PlayerBuffs and SyncEquipment
@@ -29,15 +28,12 @@
 +		//kicks if the playername is empty, too long, or the same as another player on the server
 +		//forwarded to other clients
  		public const byte SyncPlayer = 4;
-+		//sends item slot, type, quantity and prefix
++		//sends item slot, type, quantity, prefix, and then mod data with ItemIO.SendModData
 +		//item slot is an index into a contiguous array of the player's (inventory, armor, miscEqups, miscDyes, bank, safe and trash)
 +		//packet will be ignored on the client unless they are quick-stacking to chests because clients have authority over their inventory
 +		//forwarded to other clients if it is not a bank, safe or trash slot
  		public const byte SyncEquipment = 5;
 -		public const byte Unknown6 = 6;
--		public const byte Unknown7 = 7;
--		public const byte Unknown8 = 8;
--		public const byte Unknown9 = 9;
 +		//sent by the client in response to LoadPlayer, after all player data has been sent, and the client state is transitioning from 2->3
 +		//server calls RemoteClient.ResetSections and state 1->2
 +		//server responds with WorldInfo and InvasionProgressReport
@@ -45,7 +41,9 @@
 +		//time of day, weather, events, world size and name, biome info, killed bosses, etc
 +		//sent whenever any of the properties in the packet change (except time of day, which gets synced whenever other properties change anyway)
 +		//client connection state 3->4
-+		public const byte WorldInfo = 7;
+ 		public const byte WorldData = 7;
+-		public const byte Unknown8 = 8;
+-		public const byte Unknown9 = 9;
 +		//client state 5->6
 +		//client sends requested spawn location
 +		//server sends RequestTileData, TileSection, FrameSection for 5x3 section blocks around the requested and default spawns,
@@ -118,18 +116,12 @@
 +		//forwarded to other clients
 +		public const byte TileSquare = 20;
 +		//sends all info about an item in the world
-+		//ItemIO.SaveCustomData appends data to this packet
++		//ItemIO.SendModData appends data to this packet
 +		//forwarded to other clients
  		public const byte SyncItem = 21;
 -		public const byte Unknown22 = 22;
 -		public const byte Unknown23 = 23;
 -		public const byte Unknown24 = 24;
--		public const byte Unknown25 = 25;
--		public const byte Unknown26 = 26;
--		public const byte Unknown27 = 27;
--		public const byte Unknown28 = 28;
--		public const byte Unknown29 = 29;
--		public const byte Unknown30 = 30;
 +		//sets the owner of an item
 +		//if set to a player, sets Item.keepTime to 15
 +		//server rejects packets that don't try and set owner to the sender's playerID
@@ -143,9 +135,17 @@
 +		//hit an NPC, presumably unused because it uses the item damage/knockback directly without the random variance
 +		public const byte UnusedStrikeNPC = 24;
 +		//a line of chat text, with sender and colour information
+ 		[Obsolete("Deprecated. Use NetTextModule instead.")]
+-		public const byte Unknown25 = 25;
 +		public const byte ChatText = 25;
 +		//damage, direction, pvp, deathText, crit, cooldown
 +		//forwarded to other clients
+ 		[Obsolete("Deprecated.")]
+-		public const byte Unknown26 = 26;
+-		public const byte Unknown27 = 27;
+-		public const byte Unknown28 = 28;
+-		public const byte Unknown29 = 29;
+-		public const byte Unknown30 = 30;
 +		public const byte HurtPlayer = 26;
 +		//sends all info about a projectile, position, velocity, and AI
 +		//ProjectileLoader.SendExtraAI appends data to this packet
@@ -165,48 +165,13 @@
 +		//SyncPlayerChest, SyncPlayerChestIndex
  		public const byte RequestChestOpen = 31;
 +		//chestIndex, slot, stack, prefix, itemType
-+		//ItemIO.ReadCustomData appends to this packet
++		//ItemIO.ReceiveModData appends to this packet
  		public const byte SyncChestItem = 32;
 +		//chestIndex, x, y, nameLen, name
 +		//name is only sent if nameLen <= 20
 +		//on client, does the open and close sounds (if changed)
 +		//on server, sends ChestName and SyncPlayerChestIndex to other clients
  		public const byte SyncPlayerChest = 33;
--		public const byte ChestUpdates = 34;
--		public const byte Unknown35 = 35;
--		public const byte Unknown36 = 36;
--		public const byte Unknown37 = 37;
--		public const byte Unknown38 = 38;
--		public const byte Unknown39 = 39;
--		public const byte Unknown40 = 40;
--		public const byte Unknown41 = 41;
--		public const byte Unknown42 = 42;
--		public const byte Unknown43 = 43;
--		public const byte Unknown44 = 44;
--		public const byte Unknown45 = 45;
--		public const byte Unknown46 = 46;
--		public const byte Unknown47 = 47;
--		public const byte Unknown48 = 48;
--		public const byte Unknown49 = 49;
--		public const byte Unknown50 = 50;
--		public const byte Unknown51 = 51;
--		public const byte Unknown52 = 52;
--		public const byte Unknown53 = 53;
--		public const byte Unknown54 = 54;
--		public const byte Unknown55 = 55;
--		public const byte Unknown56 = 56;
--		public const byte Unknown57 = 57;
--		public const byte Unknown58 = 58;
--		public const byte Unknown59 = 59;
--		public const byte Unknown60 = 60;
--		public const byte Unknown61 = 61;
--		public const byte Unknown62 = 62;
--		public const byte Unknown63 = 63;
--		public const byte Unknown64 = 64;
--		public const byte Unknown65 = 65;
--		public const byte Unknown66 = 66;
--		public const byte Unknown67 = 67;
--		public const byte Unknown68 = 68;
 +		//changeType, x, y, chestType, [chestIndex]
 +		//changeType { PlaceChest, KillChest, PlaceDresser, KillDresser }
 +		//on server {
@@ -219,7 +184,16 @@
 +		//    a place with valid chestIndex calles WorldGen.PlaceChestDirect or PlaceDresserDirect
 +		//    a destroy calls Chest.DestroyChestDirect and WorldGen.KillTile
 +		//}
-+		public const byte ChestChange = 34;
+ 		public const byte ChestUpdates = 34;
+-		public const byte Unknown35 = 35;
+-		public const byte Unknown36 = 36;
+-		public const byte Unknown37 = 37;
+-		public const byte Unknown38 = 38;
+-		public const byte Unknown39 = 39;
+-		public const byte Unknown40 = 40;
+-		public const byte Unknown41 = 41;
+-		public const byte Unknown42 = 42;
+-		public const byte Unknown43 = 43;
 +		//restores health
 +		//forwarded to other clients
 +		public const byte HealEffect = 35;
@@ -238,7 +212,7 @@
 +		public const byte ResetItemOwner = 39;
 +		//Player.talkNPC, sent on change
 +		//forwarded to other clients
-+		public const byte PlayerTalkNPC = 40;
++		public const byte PlayerTalkingNPC = 40;
 +		//Player.itemRotation, itemAnimation and channel
 +		//forwarded to other clients
 +		public const byte ItemAnimation = 41;
@@ -250,6 +224,11 @@
 +		public const byte ManaEffect = 43;
 +		//Player.KillMe
 +		//forwarded to other clients
+ 		[Obsolete("Deprecated.")]
+-		public const byte Unknown44 = 44;
+-		public const byte Unknown45 = 45;
+-		public const byte Unknown46 = 46;
+-		public const byte Unknown47 = 47;
 +		public const byte KillPlayer = 44;
 +		//forwarded to clients
 +		//forwarding includes the chat message "{player} has joined the {team} party"
@@ -262,7 +241,15 @@
 +		public const byte ReadSign = 47;
 +		//x, y, liquid, liquidType
 +		//if NetPlayer.spamCheck will kick the player if the placement position is more than 10 tiles from the player
-+		public const byte LiquidUpdate = 48;
+ 		[Obsolete("Deprecated. Use NetLiquidModule instead.")]
+ 		public const byte LiquidUpdate = 48;
+-		public const byte Unknown49 = 49;
+-		public const byte Unknown50 = 50;
+-		public const byte Unknown51 = 51;
+-		public const byte Unknown52 = 52;
+-		public const byte Unknown53 = 53;
+-		public const byte Unknown54 = 54;
+-		public const byte Unknown55 = 55;
 +		//spawns a newly joined player
 +		//client state 6->10
 +		//calls Player.Spawn which sends SpawnPlayer to the server
@@ -292,15 +279,26 @@
 +		//SyncNPCBuff is sent to all clients
 +		public const byte AddNPCBuff = 53;
 +		//sends all buffs on an npc
-+		public const byte NPCBuffs = 54;
-+		//playerID, buffType, duration
++		public const byte SendNPCBuffs = 54;
 +		//server does nothing except forward the packet to the buffed player IF the buff is a pvpBuff
 +		//client rejects packets for other players
 +		public const byte AddPlayerBuff = 55;
 +		//NPC.displayName for town NPCs and Skeleton Merchant
 +		//client sends this after SetDefaults (npcNameLookup = 0) 'help I don't know what their name is'
 +		//server replies with name
-+		public const byte NPCName = 56;
+ 		public const byte SyncNPCName = 56;
+-		public const byte Unknown57 = 57;
+-		public const byte Unknown58 = 58;
+-		public const byte Unknown59 = 59;
+-		public const byte Unknown60 = 60;
+-		public const byte Unknown61 = 61;
+-		public const byte Unknown62 = 62;
+-		public const byte Unknown63 = 63;
+-		public const byte Unknown64 = 64;
+-		public const byte Unknown65 = 65;
+-		public const byte Unknown66 = 66;
+-		public const byte Unknown67 = 67;
+-		public const byte Unknown68 = 68;
 +		//hallowed/corrupted/crimson tile counts (out of 100)
 +		public const byte TileCounts = 57;
 +		//Main.harpNote = pitch
@@ -352,20 +350,17 @@
  		public const byte ChestName = 69;
  		public const byte BugCatching = 70;
  		public const byte BugReleasing = 71;
-@@ -84,21 +_,33 @@
- 		public const byte TemporaryAnimation = 77;
- 		public const byte InvasionProgressReport = 78;
+@@ -90,19 +_,31 @@
  		public const byte PlaceObject = 79;
--		public const byte SyncPLayerChestIndex = 80;
-+		public const byte SyncPlayerChestIndex = 80;
- 		public const byte ServerCombatText = 81;
+ 		public const byte SyncPlayerChestIndex = 80;
+ 		public const byte CombatTextInt = 81;
 +		//used by NetModule, NetMaager and NetPacket for a more extensible packet system.
 +		//sent by NetManager.SendData
 +		//handled by NetManager.Read
 +		//currently the only module (id 0) is the NetLiquidModule
  		public const byte NetModules = 82;
 +		//bannerID, killCount
-+		//does not yet have modded banner support as client rejects packets with bannerID > 250
++		//supports modded banners now that check for bannerID > 267 removed
 +		//sent to all clients whenever an npc with a banner is killed
  		public const byte NPCKillCountDeathTally = 83;
  		public const byte PlayerStealth = 84;
@@ -388,7 +383,7 @@
  		public const byte MurderSomeoneElsesProjectile = 95;
  		public const byte TeleportPlayerThroughPortal = 96;
  		public const byte AchievementMessageNPCKilled = 97;
-@@ -107,7 +_,7 @@
+@@ -111,7 +_,7 @@
  		public const byte TeleportNPCThroughPortal = 100;
  		public const byte UpdateTowerShieldStrengths = 101;
  		public const byte NebulaLevelupRequest = 102;
@@ -397,10 +392,10 @@
  		public const byte ShopOverride = 104;
  		public const byte GemLockToggle = 105;
  		public const byte PoofOfSmoke = 106;
-@@ -124,5 +_,24 @@
- 		public const byte PlayerHurtV2 = 117;
+@@ -129,5 +_,24 @@
  		public const byte PlayerDeathV2 = 118;
- 		public const byte Count = 119;
+ 		public const byte CombatTextString = 119;
+ 		public const byte Count = 120;
 +		//contains a netID followed by custom data sent by mods
 +		//special case netID == -1, is sent by the server in response to SyncMods and contains the netIDs of every non-server only mod
 +		//netIDs will be sent for no-sync mods, and packets will be ignored if the mod is not installed on the client

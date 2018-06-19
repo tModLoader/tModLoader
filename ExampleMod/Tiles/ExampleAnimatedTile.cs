@@ -18,9 +18,11 @@ namespace ExampleMod.Tiles
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2Top);
 			TileObjectData.addTile(Type);
-			AddMapEntry(new Color(238, 145, 105), "Red Firefly in a Bottle");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Red Firefly in a Bottle");
+			AddMapEntry(new Color(238, 145, 105), name);
 
-			//Can't use this since texture is virtical.
+			//Can't use this since texture is vertical.
 			//animationFrameHeight = 56;
 		}
 		// Our textures animation frames are arranged horizontally, which isn't typical, so here we specify animationFrameWidth which we use later in AnimateIndividualTile
@@ -127,23 +129,27 @@ namespace ExampleMod.Tiles
 					frame = 0;
 				}
 			}*/
-			// Above code works, but since we are just mimicing another tile, we can just use the same value.
+			// Above code works, but since we are just mimicking another tile, we can just use the same value.
 			frame = Main.tileFrame[TileID.FireflyinaBottle];
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(i * 16, j * 16, 16, 32, mod.ItemType("ExampleAnimatedTileItem"));
+			Item.NewItem(i * 16, j * 16, 16, 32, mod.ItemType<ExampleAnimatedTileItem>());
 		}
 	}
 
 	class ExampleAnimatedTileItem : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Red Firefly in a Bottle");
+		}
+
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.FireflyinaBottle);
-			item.name = "Red Firefly in a Bottle";
-			item.createTile = mod.TileType("ExampleAnimatedTileTile");
+			item.createTile = mod.TileType<ExampleAnimatedTileTile>();
 		}
 	}
 }

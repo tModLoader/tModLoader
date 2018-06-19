@@ -6,15 +6,18 @@ namespace ExampleMod.Items.Weapons
 {
 	public class Wisp : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("Chases enemies through walls");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Wisp";
 			item.damage = 1;
 			item.ranged = true;
 			item.width = 14;
 			item.height = 14;
 			item.maxStack = 999;
-			item.toolTip = "Chases enemies through walls";
 			item.consumable = true;
 			item.knockBack = 1f;
 			item.value = Item.sellPrice(0, 0, 1, 0);

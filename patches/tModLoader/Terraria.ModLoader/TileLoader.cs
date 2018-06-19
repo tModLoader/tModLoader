@@ -48,8 +48,7 @@ namespace Terraria.ModLoader
 		private static DelegateCreateDust[] HookCreateDust;
 		private delegate void DelegateDropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance);
 		private static DelegateDropCritterChance[] HookDropCritterChance;
-		private static Func<int, int, int, TileStyle, bool>[] HookDrop;
-		private static Func<int, int, int, bool>[] HookDropLegacy;
+		private static Func<int, int, int, bool>[] HookDrop;
 		private delegate bool DelegateCanKillTile(int i, int j, int type, ref bool blockDamaged);
 		private static DelegateCanKillTile[] HookCanKillTile;
 		private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
@@ -65,8 +64,6 @@ namespace Terraria.ModLoader
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 		private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex);
 		private static DelegateDrawEffects[] HookDrawEffects;
-		private delegate void DelegateLegacyDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor);
-		private static DelegateLegacyDrawEffects[] LegacyHookDrawEffects;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
 		private static Action<int, int, int>[] HookRandomUpdate;
@@ -97,7 +94,7 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int TileCount => nextTile;
+		public static int TileCount => nextTile;
 
 		/// <summary>
 		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
@@ -213,6 +210,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.HellSpecial, nextTile);
 			Array.Resize(ref TileID.Sets.Leaves, nextTile);
 			Array.Resize(ref TileID.Sets.GeneralPlacementTiles, nextTile);
+			Array.Resize(ref TileID.Sets.BasicChest, nextTile);
+			Array.Resize(ref TileID.Sets.BasicChestFake, nextTile);
 			Array.Resize(ref TileID.Sets.CanBeClearedDuringGeneration, nextTile);
 			Array.Resize(ref TileID.Sets.CanBeClearedDuringOreRunner, nextTile);
 			Array.Resize(ref TileID.Sets.Corrupt, nextTile);
@@ -221,6 +220,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.BlocksStairs, nextTile);
 			Array.Resize(ref TileID.Sets.BlocksStairsAbove, nextTile);
 			Array.Resize(ref TileID.Sets.NotReallySolid, nextTile);
+			Array.Resize(ref TileID.Sets.NeedsGrassFraming, nextTile);
+			Array.Resize(ref TileID.Sets.NeedsGrassFramingDirt, nextTile);
 			Array.Resize(ref TileID.Sets.ChecksForMerge, nextTile);
 			Array.Resize(ref TileID.Sets.FramesOnKillWall, nextTile);
 			Array.Resize(ref TileID.Sets.AvoidedByNPCs, nextTile);
@@ -250,7 +251,6 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookCreateDust, globalTiles, g => g.CreateDust);
 			ModLoader.BuildGlobalHook(ref HookDropCritterChance, globalTiles, g => g.DropCritterChance);
 			ModLoader.BuildGlobalHook(ref HookDrop, globalTiles, g => g.Drop);
-			ModLoader.BuildGlobalHook(ref HookDropLegacy, globalTiles, g => g.Drop);
 			ModLoader.BuildGlobalHook(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
 			ModLoader.BuildGlobalHook(ref HookKillTile, globalTiles, g => g.KillTile);
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalTiles, g => g.CanExplode);
@@ -261,7 +261,6 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
 			ModLoader.BuildGlobalHook(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
-			ModLoader.BuildGlobalHook(ref LegacyHookDrawEffects, globalTiles, g => g.DrawEffects);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalTiles, g => g.PostDraw);
 			ModLoader.BuildGlobalHook(ref HookSpecialDraw, globalTiles, g => g.SpecialDraw);
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
@@ -394,6 +393,7 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
+			TileObject.objectPreview.Active = false;
 		}
 
 		public static void DisableSmartCursor(Tile tile, ref bool disable)
@@ -407,6 +407,18 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		public static void DisableSmartInteract(Tile tile, ref bool disable)
+		{
+			if (tile.active())
+			{
+				ModTile modTile = GetTile(tile.type);
+				if (modTile != null)
+				{
+					disable = modTile.disableSmartInteract;
+				}
+			}
+		}
 		//in Terraria.WorldGen.OpenDoor replace bad type check with TileLoader.OpenDoorID(Main.tile[i, j]) < 0
 		//in Terraria.WorldGen.OpenDoor replace 11 with (ushort)TileLoader.OpenDoorID
 		//replace all type checks before WorldGen.OpenDoor
@@ -417,7 +429,7 @@ namespace Terraria.ModLoader
 			{
 				return modTile.openDoorID;
 			}
-			if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646))
+			if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646 || tile.frameX >= 54))
 			{
 				return TileID.OpenDoor;
 			}
@@ -440,14 +452,14 @@ namespace Terraria.ModLoader
 			}
 			return -1;
 		}
-		//replace chest checks (type == 21) with this
-		public static bool IsChest(int type)
+		public static bool IsClosedDoor(Tile tile)
 		{
-			if (type == TileID.Containers)
+			ModTile modTile = GetTile(tile.type);
+			if (modTile != null)
 			{
-				return true;
+				return modTile.openDoorID > -1;
 			}
-			return ModChestName(type).Length > 0;
+			return tile.type == TileID.ClosedDoor;
 		}
 		//in Terraria.UI.ChestUI add this to Lang lookups
 		public static string ModChestName(int type)
@@ -519,6 +531,11 @@ namespace Terraria.ModLoader
 		internal static void SetDefaults(ModTile tile)
 		{
 			tile.SetDefaults();
+			if (TileObjectData.newTile.Width > 1 || TileObjectData.newTile.Height > 1)
+			{
+				TileObjectData.FixNewTile();
+				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + tile.GetType().FullName) { HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
+			}
 			if (Main.tileLavaDeath[tile.Type])
 			{
 				Main.tileObsidianKill[tile.Type] = true;
@@ -528,6 +545,25 @@ namespace Terraria.ModLoader
 				Main.tileNoSunLight[tile.Type] = true;
 			}
 			tile.PostSetDefaults();
+		}
+
+		public static bool HasSmartInteract(int type)
+		{
+			return GetTile(type)?.HasSmartInteract() ?? false;
+		}
+
+		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraX, ref int extraY)
+		{
+			ModTile modTile = GetTile(type);
+			if (modTile != null)
+			{
+				TileObjectData data = TileObjectData.GetTileData(type, 0);
+				width = data.Width;
+				height = data.Height;
+				frameWidth = data.CoordinateWidth + data.CoordinatePadding;
+				frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
+				extraY = data.CoordinateFullHeight % frameHeight;
+			}
 		}
 		//in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
 		//  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
@@ -590,16 +626,9 @@ namespace Terraria.ModLoader
 		//in Terraria.WorldGen.KillTile before if statements checking num49 and num50
 		//  add bool vanillaDrop = TileLoader.Drop(i, j, tile.type);
 		//  add "vanillaDrop && " to beginning of these if statements
-		public static bool Drop(int i, int j, int type, TileStyle tileStyle)
+		public static bool Drop(int i, int j, int type)
 		{
 			foreach (var hook in HookDrop)
-			{
-				if (!hook(i, j, type, tileStyle))
-				{
-					return false;
-				}
-			}
-			foreach (var hook in HookDropLegacy)
 			{
 				if (!hook(i, j, type))
 				{
@@ -805,10 +834,6 @@ namespace Terraria.ModLoader
 			{
 				hook(i, j, type, spriteBatch, ref drawColor, ref nextSpecialDrawIndex);
 			}
-			foreach (var hook in LegacyHookDrawEffects)
-			{
-				hook(i, j, type, spriteBatch, ref drawColor);
-			}
 		}
 		//in Terraria.Main.Draw after if statement checking whether texture2D is null call
 		//  TileLoader.PostDraw(j, i, type, Main.spriteBatch);
@@ -889,9 +914,8 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.PlaceThing after tileObject is initalized add else to if statement and before add
 		//  if(!TileLoader.CanPlace(Player.tileTargetX, Player.tileTargetY)) { }
-		public static bool CanPlace(int i, int j)
+		public static bool CanPlace(int i, int j, int type)
 		{
-			int type = Main.tile[i, j].type;
 			foreach (var hook in HookCanPlace)
 			{
 				if (!hook(i, j, type))

@@ -1,21 +1,20 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Armor
 {
+	[AutoloadEquip(EquipType.Head)]
 	public class PuritySpiritMask : ModItem
 	{
-		public override bool Autoload(ref string name, ref string texture, IList<EquipType> equips)
+		public override void SetStaticDefaults()
 		{
-			equips.Add(EquipType.Head);
-			return true;
+			base.SetStaticDefaults();
+			DisplayName.SetDefault("Spirit of Purity Mask");
 		}
 
 		public override void SetDefaults()
 		{
-			item.name = "Spirit of Purity Mask";
 			item.width = 18;
 			item.height = 18;
 			item.rare = 1;

@@ -1,4 +1,6 @@
 using System;
+using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -6,6 +8,7 @@ namespace Terraria.ModLoader.UI
 	internal class UILoadMods : UIState
 	{
 		private UILoadProgress loadProgress;
+		private UIText subProgress;
 
 		public override void OnInitialize()
 		{
@@ -17,13 +20,19 @@ namespace Terraria.ModLoader.UI
 			loadProgress.VAlign = 0.5f;
 			loadProgress.Top.Set(10f, 0f);
 			base.Append(loadProgress);
+
+			subProgress = new UIText("", 0.5f, true);
+			subProgress.Top.Set(65f, 0f);
+			subProgress.HAlign = 0.5f;
+			subProgress.VAlign = 0.5f;
+			Append(subProgress);
 		}
 
 		internal void SetProgressFinding()
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Finding Mods...");
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSFinding"));
 				loadProgress.SetProgress(0f);
 			}
 		}
@@ -32,7 +41,7 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Compatibilizing: " + mod);
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSCompatibilizing", mod));
 				loadProgress.SetProgress((float)num / (float)max);
 			}
 		}
@@ -41,12 +50,12 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Reading: " + mod);
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSReading", mod));
 				loadProgress.SetProgress((float)num / (float)max);
 			}
 			else if (num == 0)
 			{
-				Console.WriteLine("Reading: " + mod);
+				Console.WriteLine(Language.GetTextValue("tModLoader.MSReading", mod));
 			}
 		}
 
@@ -54,12 +63,20 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Initializing: " + mod);
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSIntializing") + mod);
 				loadProgress.SetProgress((float)num / (float)max);
 			}
 			else
 			{
-				Console.WriteLine("Initializing: " + mod);
+				Console.WriteLine(Language.GetTextValue("tModLoader.MSIntializing") + mod);
+			}
+		}
+
+		internal void SetSubProgressInit(string message)
+		{
+			if (!Main.dedServ)
+			{
+				subProgress.SetText(message);
 			}
 		}
 
@@ -67,7 +84,7 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Setting up...");
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSSettingUp"));
 				loadProgress.SetProgress(progress);
 			}
 		}
@@ -76,12 +93,12 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Loading Mod: " + mod);
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSLoading") + mod);
 				loadProgress.SetProgress((float)num / (float)max);
 			}
 			else
 			{
-				Console.WriteLine("Loading Mod: " + mod);
+				Console.WriteLine(Language.GetTextValue("tModLoader.MSLoading") + mod);
 			}
 		}
 
@@ -89,7 +106,7 @@ namespace Terraria.ModLoader.UI
 		{
 			if (!Main.dedServ)
 			{
-				loadProgress.SetText("Adding Recipes...");
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MSAddingRecipes"));
 				loadProgress.SetProgress(0f);
 			}
 		}

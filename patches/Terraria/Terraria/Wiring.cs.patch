@@ -1,6 +1,6 @@
 --- src/merged\Terraria\Wiring.cs
 +++ src/Terraria\Terraria\Wiring.cs
-@@ -718,7 +_,7 @@
+@@ -719,7 +_,7 @@
  					}
  					if (flag5 != flag2 || flag6 || flag7)
  					{
@@ -9,7 +9,7 @@
  						tile.frameX = (short)(18 * flag5.ToInt());
  						if (flag4)
  						{
-@@ -867,11 +_,11 @@
+@@ -868,11 +_,11 @@
  									{
  										Dictionary<Point16, byte> pixelBoxTriggers;
  										Point16 key;

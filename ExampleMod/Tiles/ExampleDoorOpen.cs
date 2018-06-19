@@ -23,7 +23,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, 1, 0);
 			TileObjectData.newTile.UsesCustomCanPlace = true;
 			TileObjectData.newTile.LavaDeath = true;
-			TileObjectData.newTile.CoordinateHeights = new int[]{ 16, 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
 			TileObjectData.newTile.StyleHorizontal = true;
@@ -57,11 +57,19 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 			TileID.Sets.HousingWalls[Type] = true; //needed for non-solid blocks to count as walls
-			AddMapEntry(new Color(200, 200, 200), "Example Door");
+			TileID.Sets.HasOutlines[Type] = true;
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Door");
+			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
-			adjTiles = new int[]{ TileID.OpenDoor };
+			adjTiles = new int[] { TileID.OpenDoor };
 			closeDoorID = mod.TileType("ExampleDoorClosed");
+		}
+
+		public override bool HasSmartInteract()
+		{
+			return true;
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
@@ -72,6 +80,14 @@ namespace ExampleMod.Tiles
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
 			Item.NewItem(i * 16, j * 16, 32, 48, mod.ItemType("ExampleDoor"));
+		}
+
+		public override void MouseOver(int i, int j)
+		{
+			Player player = Main.LocalPlayer;
+			player.noThrow = 2;
+			player.showItemIcon = true;
+			player.showItemIcon2 = mod.ItemType("ExampleDoor");
 		}
 	}
 }

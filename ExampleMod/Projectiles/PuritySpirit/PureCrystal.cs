@@ -11,9 +11,13 @@ namespace ExampleMod.Projectiles.PuritySpirit
 	{
 		private int timer = 0;
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Crystal of Cleansing");
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Crystal of Cleansing";
 			projectile.width = 48;
 			projectile.height = 48;
 			projectile.penetrate = -1;

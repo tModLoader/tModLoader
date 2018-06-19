@@ -1,0 +1,12 @@
+--- src/Terraria\Terraria\LinuxLaunch.cs
++++ src/tModLoader\Terraria\LinuxLaunch.cs
+@@ -27,7 +_,7 @@
+ 				return result;
+ 			};
+ 			Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
+-			Program.LaunchGame(Utils.FixArgs(args));
++			Program.LaunchGame(args, true);
+ 		}
+ 	}
+ }
+

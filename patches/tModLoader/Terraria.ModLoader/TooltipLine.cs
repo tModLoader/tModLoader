@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using ReLogic.Graphics;
 
 namespace Terraria.ModLoader
 {
@@ -67,8 +68,7 @@ namespace Terraria.ModLoader
 		/// <item><description>"Ammo" - Tells if the item is ammo.</description></item>
 		/// <item><description>"Consumable" - Tells if the item is consumable.</description></item>
 		/// <item><description>"Material" - Tells if the item can be used to craft something.</description></item>
-		/// <item><description>"Tooltip" - The tooltip field of the item.</description></item>
-		/// <item><description>"Tooltip2" - The tooltip2 field of the item.</description></item>
+		/// <item><description>"Tooltip#" - A tooltip line of the item. # will be 0 for the first line, 1 for the second, etc.</description></item>
 		/// <item><description>"EtherianManaWarning" - Warning about how the item can't be used without Etherian Mana until the Eternia Crystal has been defeated.</description></item>
 		/// <item><description>"WellFedExpert" - In expert mode, tells that food increases life renegeration.</description></item>
 		/// <item><description>"BuffTime" - Tells how long the item's buff lasts.</description></item>
@@ -98,6 +98,13 @@ namespace Terraria.ModLoader
 		public TooltipLine(Mod mod, string name, string text)
 		{
 			this.mod = mod.Name;
+			this.Name = name;
+			this.text = text;
+		}
+
+		internal TooltipLine(string mod, string name, string text)
+		{
+			this.mod = mod;
 			this.Name = name;
 			this.text = text;
 		}

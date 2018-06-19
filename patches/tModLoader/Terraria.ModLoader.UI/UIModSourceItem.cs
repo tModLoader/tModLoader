@@ -11,6 +11,7 @@ using System.Text;
 using System.Collections.Specialized;
 using Terraria.ModLoader.IO;
 using System.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -19,22 +20,22 @@ namespace Terraria.ModLoader.UI
 		private string mod;
 		private Texture2D dividerTexture;
 		private UIText modName;
-		private DateTime lastBuildTime;
+		private LocalMod builtMod;
 
-		public UIModSourceItem(string mod, bool publishable, DateTime lastBuildTime)
+		public UIModSourceItem(string mod, LocalMod builtMod)
 		{
 			this.mod = mod;
-			this.lastBuildTime = lastBuildTime;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
 			this.Height.Set(90f, 0f);
 			this.Width.Set(0f, 1f);
 			base.SetPadding(6f);
-			this.modName = new UIText(Path.GetFileName(mod), 1f, false);
+			string addendum = Path.GetFileName(mod).Contains(" ") ? $"  [c/FF0000:{Language.GetTextValue("tModLoader.MSModSourcesCantHaveSpaces")}]" : "";
+			this.modName = new UIText(Path.GetFileName(mod) + addendum, 1f, false);
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel<string> button = new UITextPanel<string>("Build", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSBuild"), 1f, false);
 			button.Width.Set(100f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(10f, 0f);
@@ -45,7 +46,7 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += this.BuildMod;
 			base.Append(button);
-			UITextPanel<string> button2 = new UITextPanel<string>("Build + Reload", 1f, false);
+			UITextPanel<string> button2 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReload"), 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(200f, 0f);
 			button2.Left.Set(150f, 0f);
@@ -53,9 +54,10 @@ namespace Terraria.ModLoader.UI
 			button2.OnMouseOut += UICommon.FadedMouseOut;
 			button2.OnClick += this.BuildAndReload;
 			base.Append(button2);
-			if (publishable)
+			this.builtMod = builtMod;
+			if (builtMod != null)
 			{
-				UITextPanel<string> button3 = new UITextPanel<string>("Publish", 1f, false);
+				UITextPanel<string> button3 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"), 1f, false);
 				button3.CopyStyle(button2);
 				button3.Width.Set(100f, 0f);
 				button3.Left.Set(390f, 0f);
@@ -96,7 +98,13 @@ namespace Terraria.ModLoader.UI
 			{
 				return base.CompareTo(obj);
 			}
-			return uIModSourceItem.lastBuildTime.CompareTo(lastBuildTime);
+			if (uIModSourceItem.builtMod == null && builtMod == null)
+				return modName.Text.CompareTo(uIModSourceItem.modName.Text);
+			if (uIModSourceItem.builtMod == null)
+				return -1;
+			if (builtMod == null)
+				return 1;
+			return uIModSourceItem.builtMod.lastModified.CompareTo(builtMod.lastModified);
 		}
 
 		private void BuildMod(UIMouseEvent evt, UIElement listeningElement)
@@ -125,70 +133,113 @@ namespace Terraria.ModLoader.UI
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID);
 				return;
 			}
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(10);
 			try
 			{
-				TmodFile[] modFiles = ModLoader.FindMods();
-				bool ok = false;
-				TmodFile theTModFile = null;
-				foreach (TmodFile tModFile in modFiles)
+				var modFile = builtMod.modFile;
+				var bp = builtMod.properties;
+
+				var files = new List<UploadFile>();
+				files.Add(new UploadFile
 				{
-					if (Path.GetFileName(tModFile.path).Equals(@Path.GetFileName(mod) + @".tmod"))
+					Name = "file",
+					Filename = Path.GetFileName(modFile.path),
+					//    ContentType = "text/plain",
+					Content = File.ReadAllBytes(modFile.path)
+				});
+				if (modFile.HasFile("icon.png"))
+				{
+					files.Add(new UploadFile
 					{
-						ok = true;
-						theTModFile = tModFile;
-					}
+						Name = "iconfile",
+						Filename = "icon.png",
+						Content = modFile.GetFile("icon.png")
+					});
 				}
-				if (!ok)
+				if (bp.beta)
+					throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
+				var values = new NameValueCollection
 				{
-					throw new Exception();
-				}
-				System.Net.ServicePointManager.Expect100Continue = false;
-				string filename = @ModLoader.ModPath + @Path.DirectorySeparatorChar + @Path.GetFileName(mod) + @".tmod";
+					{ "displayname", bp.displayName },
+					{ "name", modFile.name },
+					{ "version", "v"+bp.version },
+					{ "author", bp.author },
+					{ "homepage", bp.homepage },
+					{ "description", bp.description },
+					{ "steamid64", ModLoader.SteamID64 },
+					{ "modloaderversion", "tModLoader v"+modFile.tModLoaderVersion },
+					{ "passphrase", ModLoader.modBrowserPassphrase },
+					{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
+					{ "modside", bp.side.ToFriendlyString() },
+				};
+				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
-				byte[] result;
-				using (var stream = File.Open(filename, FileMode.Open))
+				using (PatientWebClient client = new PatientWebClient())
 				{
-					var files = new[]
+					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
+					Interface.uploadMod.SetDownloading(modFile.name);
+					Interface.uploadMod.SetCancel(() =>
 					{
-						new IO.UploadFile
-						{
-							Name = "file",
-							Filename = Path.GetFileName(filename),
-							//    ContentType = "text/plain",
-							Stream = stream
-						}
-					};
-					BuildProperties bp = BuildProperties.ReadModFile(theTModFile);
-					var values = new NameValueCollection
-					{
-						{ "displayname", bp.displayName },
-						{ "name", Path.GetFileNameWithoutExtension(filename) },
-						{ "version", "v"+bp.version },
-						{ "author", bp.author },
-						{ "homepage", bp.homepage },
-						{ "description", bp.description },
-						{ "steamid64", ModLoader.SteamID64 },
-						{ "modloaderversion", "tModLoader v"+theTModFile.tModLoaderVersion },
-						{ "passphrase", ModLoader.modBrowserPassphrase },
-						{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
-						{ "modside", bp.side.ToFriendlyString() },
-					};
-					result = IO.UploadFile.UploadFiles(url, files, values);
+						Main.menuMode = Interface.modSourcesID;
+						client.CancelAsync();
+					});
+					client.UploadProgressChanged += (s, e) => Interface.uploadMod.SetProgress(e);
+					client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, modFile);
+
+					var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
+					client.Headers["Content-Type"] = "multipart/form-data; boundary=" + boundary;
+					//boundary = "--" + boundary;
+					byte[] data = UploadFile.GetUploadFilesRequestData(files, values);
+					client.UploadDataAsync(new Uri(url), data);
 				}
-				int responseLength = result.Length;
-				if (result.Length > 256 && result[result.Length - 256 - 1] == '~')
-				{
-					Array.Copy(result, result.Length - 256, theTModFile.signature, 0, 256);
-					theTModFile.Save();
-					responseLength -= 257;
-				}
-				string s = System.Text.Encoding.UTF8.GetString(result, 0, responseLength);
-				ErrorLogger.LogModPublish(s);
+				Main.menuMode = Interface.uploadModID;
 			}
 			catch (WebException e)
 			{
 				ErrorLogger.LogModBrowserException(e);
+			}
+		}
+
+		private void PublishUploadDataComplete(object s, UploadDataCompletedEventArgs e, TmodFile theTModFile)
+		{
+			if (e.Error != null)
+			{
+				if (e.Cancelled)
+				{
+					Main.menuMode = Interface.modSourcesID;
+					return;
+				}
+				ErrorLogger.LogModBrowserException(e.Error);
+				return;
+			}
+			var result = e.Result;
+			int responseLength = result.Length;
+			if (result.Length > 256 && result[result.Length - 256 - 1] == '~')
+			{
+				using (var fileStream = File.Open(theTModFile.path, FileMode.Open, FileAccess.ReadWrite))
+				using (var fileReader = new BinaryReader(fileStream))
+				using (var fileWriter = new BinaryWriter(fileStream))
+				{
+					fileReader.ReadBytes(4); // "TMOD"
+					fileReader.ReadString(); // ModLoader.version.ToString()
+					fileReader.ReadBytes(20); // hash
+					if (fileStream.Length - fileStream.Position > 256) // Extrememly basic check in case ReadString errors?
+						fileWriter.Write(result, result.Length - 256, 256);
+				}
+				responseLength -= 257;
+			}
+			string response = Encoding.UTF8.GetString(result, 0, responseLength);
+			ErrorLogger.LogModPublish(response);
+		}
+
+		private class PatientWebClient : WebClient
+		{
+			protected override WebRequest GetWebRequest(Uri uri)
+			{
+				HttpWebRequest w = (HttpWebRequest)base.GetWebRequest(uri);
+				w.Timeout = System.Threading.Timeout.Infinite;
+				w.AllowWriteStreamBuffering = false; // Should use less ram.
+				return w;
 			}
 		}
 	}

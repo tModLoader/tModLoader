@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
 using System.Collections.Specialized;
 using System.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -38,14 +39,14 @@ namespace Terraria.ModLoader.UI
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
 
-			uITextPanel = new UITextPanel<string>("Please Enter Your SteamID", 0.8f, true);
+			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.EnterSteamID"), 0.8f, true);
 			uITextPanel.HAlign = 0.5f;
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
 
-			UITextPanel<string> button = new UITextPanel<string>("Back", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			button.Width.Set(-10f, 0.5f);
 			button.Height.Set(25f, 0f);
 			button.VAlign = 1f;
@@ -55,7 +56,7 @@ namespace Terraria.ModLoader.UI
 			button.OnClick += BackClick;
 			uIElement.Append(button);
 
-			UITextPanel<string> button2 = new UITextPanel<string>("Submit", 1f, false);
+			UITextPanel<string> button2 = new UITextPanel<string>(Language.GetTextValue("UI.Submit"), 1f, false);
 			button2.CopyStyle(button);
 			button2.HAlign = 1f;
 			button2.OnMouseOver += UICommon.FadedMouseOver;
@@ -72,7 +73,7 @@ namespace Terraria.ModLoader.UI
 			//button3.OnClick += VisitRegisterWebpage;
 			//uIElement.Append(button3);
 
-			steamIDTextField = new UIInputTextField("Paste SteamID (ctrl-v)");
+			steamIDTextField = new UIInputTextField(Language.GetTextValue("tModLoader.PasteSteamID"));
 			steamIDTextField.HAlign = 0.5f;
 			steamIDTextField.VAlign = 0.5f;
 			steamIDTextField.Left.Set(-100, 0);

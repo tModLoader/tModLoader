@@ -1,6 +1,49 @@
 --- src/Terraria\Terraria.GameInput\TriggersSet.cs
 +++ src/tModLoader\Terraria.GameInput\TriggersSet.cs
-@@ -636,6 +_,10 @@
+@@ -36,6 +_,42 @@
+ 			}
+ 		}
+ 
++		public bool MouseMiddle
++		{
++			get
++			{
++				return this.KeyStatus["MouseMiddle"];
++			}
++			set
++			{
++				this.KeyStatus["MouseMiddle"] = value;
++			}
++		}
++
++		public bool MouseXButton1
++		{
++			get
++			{
++				return this.KeyStatus["MouseXButton1"];
++			}
++			set
++			{
++				this.KeyStatus["MouseXButton1"] = value;
++			}
++		}
++
++		public bool MouseXButton2
++		{
++			get
++			{
++				return this.KeyStatus["MouseXButton2"];
++			}
++			set
++			{
++				this.KeyStatus["MouseXButton2"] = value;
++			}
++		}
++
+ 		public bool Up
+ 		{
+ 			get
+@@ -660,6 +_,10 @@
  			foreach (string current in PlayerInput.KnownTriggers)
  			{
  				this.KeyStatus.Add(current, false);
@@ -11,7 +54,7 @@
  			}
  		}
  
-@@ -713,6 +_,8 @@
+@@ -737,6 +_,8 @@
  			{
  				this.HotbarScrollCD--;
  			}

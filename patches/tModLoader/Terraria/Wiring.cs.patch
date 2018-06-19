@@ -1,14 +1,14 @@
 --- src/Terraria\Terraria\Wiring.cs
 +++ src/tModLoader\Terraria\Wiring.cs
-@@ -5,6 +_,7 @@
- using Terraria.GameContent.Events;
+@@ -6,6 +_,7 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;
+ using Terraria.Localization;
 +using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -15,26 +_,26 @@
+@@ -16,26 +_,26 @@
  		public static bool blockPlayerTeleportationForOneIteration;
  		public static bool running;
  		private static Dictionary<Point16, bool> _wireSkip;
@@ -48,7 +48,7 @@
  		private static int CurrentUser = 254;
  
  		public static void SetCurrentUser(int plr = -1)
-@@ -338,7 +_,7 @@
+@@ -339,7 +_,7 @@
  			}
  		}
  
@@ -57,7 +57,7 @@
  		{
  			for (int k = 0; k < Wiring._numMechs; k++)
  			{
-@@ -412,7 +_,7 @@
+@@ -413,7 +_,7 @@
  			}
  		}
  
@@ -66,7 +66,7 @@
  		{
  			if (Main.netMode == 1)
  			{
-@@ -916,6 +_,10 @@
+@@ -917,6 +_,10 @@
  			}
  			if (tile.active())
  			{
@@ -77,8 +77,8 @@
  				if (type == 144)
  				{
  					Wiring.HitSwitch(i, j);
-@@ -1340,7 +_,7 @@
- 									NetMessage.SendData(19, -1, -1, "", 4 + flag4.ToInt(), (float)i, (float)j, 0f, 0, 0, 0);
+@@ -1341,7 +_,7 @@
+ 									NetMessage.SendData(19, -1, -1, null, 4 + flag4.ToInt(), (float)i, (float)j, 0f, 0, 0, 0);
  									return;
  								}
 -								if (type == 11)
@@ -86,7 +86,7 @@
  								{
  									if (WorldGen.CloseDoor(i, j, true))
  									{
-@@ -1348,7 +_,7 @@
+@@ -1349,7 +_,7 @@
  										return;
  									}
  								}
@@ -95,7 +95,7 @@
  								{
  									int num69 = 1;
  									if (Main.rand.Next(2) == 0)
-@@ -1446,7 +_,7 @@
+@@ -1447,7 +_,7 @@
  									}
  									else
  									{
@@ -104,7 +104,7 @@
  										{
  											if (tile.frameX < 66)
  											{
-@@ -2009,7 +_,7 @@
+@@ -2010,7 +_,7 @@
  											}
  											else
  											{
@@ -113,7 +113,7 @@
  												{
  													WorldGen.SwitchMB(i, j);
  													return;
-@@ -2514,6 +_,7 @@
+@@ -2515,6 +_,7 @@
  						}
  					}
  				}
@@ -121,7 +121,7 @@
  			}
  		}
  
-@@ -2582,7 +_,7 @@
+@@ -2583,7 +_,7 @@
  			}
  		}
  
@@ -130,7 +130,7 @@
  		{
  			if (!Main.tile[i, j].active())
  			{
-@@ -2621,7 +_,7 @@
+@@ -2622,7 +_,7 @@
  			}
  		}
  

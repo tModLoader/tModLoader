@@ -136,11 +136,12 @@ namespace Terraria.ModLoader
 		{
 		}
 
-		//TODO - New Hook - WorldGenModifyHardmodeTaskList
-		//Called after queuing world generation tasks when switching the world to hardmode, can be used to modify which tasks should be done and/or add custom tasks.
-		//public virtual void WorldGenModifyHardmodeTaskList(List<GenPass> list)
-		//{
-		//}
+		/// <summary>
+		/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcment"
+		/// </summary>
+		public virtual void ModifyHardmodeTasks(List<GenPass> list)
+		{
+		}
 
 		/// <summary>
 		/// Called after drawing Tiles. Can be used for drawing a tile overlay akin to wires. Note that spritebatch should be begun and ended within this method.

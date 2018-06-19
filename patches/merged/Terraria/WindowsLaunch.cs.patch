@@ -5,7 +5,7 @@
  using System;
  using System.IO;
  using System.Reflection;
-@@ -69,7 +_,12 @@
+@@ -70,7 +_,12 @@
  				}
  				return result;
  			};
@@ -13,7 +13,7 @@
 +			WindowsLaunch._handleRoutine = new WindowsLaunch.HandlerRoutine(WindowsLaunch.ConsoleCtrlCheck);
 +			WindowsLaunch.SetConsoleCtrlHandler(WindowsLaunch._handleRoutine, true);
 +#endif
- 			Program.LaunchGame(args);
+ 			Program.LaunchGame(args, false);
  		}
  	}
  }

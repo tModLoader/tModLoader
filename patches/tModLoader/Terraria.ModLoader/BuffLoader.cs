@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -16,12 +17,12 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalBuff> globalBuffs = new List<GlobalBuff>();
 		private static readonly bool[] vanillaLongerExpertDebuff = new bool[BuffID.Count];
 		private static readonly bool[] vanillaCanBeCleared = new bool[BuffID.Count];
-		
+
 		private delegate void DelegateUpdatePlayer(int type, Player player, ref int buffIndex);
-		private static DelegateUpdatePlayer[] HookUpdatePlayer; 
+		private static DelegateUpdatePlayer[] HookUpdatePlayer;
 		private delegate void DelegateUpdateNPC(int type, NPC npc, ref int buffIndex);
-		private static DelegateUpdateNPC[] HookUpdateNPC; 
-		private static Func<int, Player, int, int, bool>[] HookReApplyPlayer; 
+		private static DelegateUpdateNPC[] HookUpdateNPC;
+		private static Func<int, Player, int, int, bool>[] HookReApplyPlayer;
 		private static Func<int, NPC, int, int, bool>[] HookReApplyNPC;
 		private delegate void DelegateModifyBuffTip(int type, ref string tip, ref int rare);
 		private static DelegateModifyBuffTip[] HookModifyBuffTip;
@@ -62,14 +63,14 @@ namespace Terraria.ModLoader
 
 		internal static int ReserveBuffID()
 		{
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatibility");
 
 			int reserveID = nextBuff;
 			nextBuff++;
 			return reserveID;
 		}
 
-		internal static int BuffCount => nextBuff;
+		public static int BuffCount => nextBuff;
 
 		/// <summary>
 		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
@@ -87,14 +88,19 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.lightPet, nextBuff);
 			Array.Resize(ref Main.meleeBuff, nextBuff);
 			Array.Resize(ref Main.debuff, nextBuff);
-			Array.Resize(ref Main.buffName, nextBuff);
-			Array.Resize(ref Main.buffTip, nextBuff);
 			Array.Resize(ref Main.buffNoSave, nextBuff);
 			Array.Resize(ref Main.buffNoTimeDisplay, nextBuff);
 			Array.Resize(ref Main.buffDoubleApply, nextBuff);
 			Array.Resize(ref Main.buffAlpha, nextBuff);
 			Array.Resize(ref Main.buffTexture, nextBuff);
-			
+			Array.Resize(ref Lang._buffNameCache, nextBuff);
+			Array.Resize(ref Lang._buffDescriptionCache, nextBuff);
+			for (int k = BuffID.Count; k < nextBuff; k++)
+			{
+				Lang._buffNameCache[k] = LocalizedText.Empty;
+				Lang._buffDescriptionCache[k] = LocalizedText.Empty;
+			}
+
 			ModLoader.BuildGlobalHook(ref HookUpdatePlayer, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookReApplyPlayer, globalBuffs, g => g.ReApply);

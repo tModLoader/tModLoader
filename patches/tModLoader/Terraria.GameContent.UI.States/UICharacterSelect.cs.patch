@@ -1,25 +1,57 @@
 --- src/Terraria\Terraria.GameContent.UI.States\UICharacterSelect.cs
 +++ src/tModLoader\Terraria.GameContent.UI.States\UICharacterSelect.cs
-@@ -9,6 +_,7 @@
+@@ -9,13 +_,15 @@
  using Terraria.Localization;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
 +using Terraria.ModLoader;
++using System.IO;
  
  namespace Terraria.GameContent.UI.States
  {
+ 	public class UICharacterSelect : UIState
+ 	{
+ 		private static string noteToEveryone = "This code is terrible and you will risk cancer reading it --Yoraiz0r";
+-		private UIList _playerList;
++		internal UIList _playerList;
+ 		private UITextPanel<LocalizedText> _backPanel;
+ 		private UITextPanel<LocalizedText> _newPanel;
+ 		private UIPanel _containerPanel;
 @@ -80,12 +_,7 @@
  		{
  			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
  			Player player = new Player();
--			player.inventory[0].SetDefaults("Copper Shortsword");
+-			player.inventory[0].SetDefaults(3507, false);
 -			player.inventory[0].Prefix(-1);
--			player.inventory[1].SetDefaults("Copper Pickaxe");
+-			player.inventory[1].SetDefaults(3509, false);
 -			player.inventory[1].Prefix(-1);
--			player.inventory[2].SetDefaults("Copper Axe");
+-			player.inventory[2].SetDefaults(3506, false);
 -			player.inventory[2].Prefix(-1);
-+			PlayerHooks.SetStartInventory(player);
++			PlayerHooks.SetupStartInventory(player);
  			Main.PendingPlayer = player;
  			Main.menuMode = 2;
  		}
+@@ -142,6 +_,22 @@
+ 			foreach (PlayerFileData current in list)
+ 			{
+ 				this._playerList.Add(new UICharacterListItem(current, num++));
++			}
++			if (list.Count == 0)
++			{
++				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players");
++				if (Directory.Exists(vanillaPlayersPath))
++				{
++					var noPlayersMessage = new UIText(Language.GetText("tModLoader.MigratePlayersMessage"));
++					noPlayersMessage.Width.Set(0, 1);
++					noPlayersMessage.Height.Set(200, 0);
++					noPlayersMessage.OnClick += (a, b) =>
++					{
++						System.Diagnostics.Process.Start(Main.PlayerPath);
++						System.Diagnostics.Process.Start(vanillaPlayersPath);
++					};
++					_playerList.Add(noPlayersMessage);
++				}
+ 			}
+ 		}
+ 
 

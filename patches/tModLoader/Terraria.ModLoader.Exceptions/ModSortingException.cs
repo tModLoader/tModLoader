@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace Terraria.ModLoader.Exceptions
 {
-    internal class ModSortingException : Exception
-    {
-        public ICollection<ModLoader.LoadingMod> errored;
+	internal class ModSortingException : Exception
+	{
+		public ICollection<LocalMod> errored;
 
-        public ModSortingException(ICollection<ModLoader.LoadingMod> errored, string message) : base(message) {
-            this.errored = errored;
-        }
-    }
+		public ModSortingException(ICollection<LocalMod> errored, string message) : base(message)
+		{
+			this.errored = errored;
+		}
+	}
 }

@@ -1,0 +1,41 @@
+--- src/Terraria\Terraria.Localization\LanguageManager.cs
++++ src/tModLoader\Terraria.Localization\LanguageManager.cs
+@@ -15,7 +_,7 @@
+ 	public class LanguageManager
+ 	{
+ 		public static LanguageManager Instance = new LanguageManager();
+-		private Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
++		internal Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
+ 		private Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
+ 		private GameCulture _fallbackCulture = GameCulture.English;
+ 
+@@ -80,6 +_,10 @@
+ 				this.LoadLanguage(this._fallbackCulture);
+ 			}
+ 			this.LoadLanguage(culture);
++			if (this.ActiveCulture != null)
++			{
++				ModLoader.ModLoader.RefreshModLanguage(culture);
++			}
+ 			this.ActiveCulture = culture;
+ 			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
+ 			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
+@@ -140,12 +_,14 @@
+ 			return result;
+ 		}
+ 
+-		private void ProcessCopyCommandsInTexts()
+-		{
+-			Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
++		internal void ProcessCopyCommandsInTexts()
++		{
++			Regex regex = new Regex(@"{\$([\w\.]+)}", RegexOptions.Compiled);
+ 			foreach (KeyValuePair<string, LocalizedText> current in this._localizedTexts)
+ 			{
+ 				LocalizedText value = current.Value;
++				if (value.Value == null)
++					continue;
+ 				for (int i = 0; i < 100; i++)
+ 				{
+ 					string text = regex.Replace(value.Value, (Match match) => this.GetTextValue(match.Groups[1].ToString()));
+

@@ -8,15 +8,15 @@ namespace ExampleMod.Buffs
 	{
 		public override void SetDefaults()
 		{
-			Main.buffName[Type] = "Annoying Light";
-			Main.buffTip[Type] = "Ugh, soooo annoying";
+			DisplayName.SetDefault("Annoying Light");
+			Description.SetDefault("Ugh, soooo annoying");
 			Main.buffNoTimeDisplay[Type] = true;
 			Main.lightPet[Type] = true;
 		}
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-            player.GetModPlayer<ExamplePlayer>(mod).exampleLightPet = true;
+			player.GetModPlayer<ExamplePlayer>(mod).exampleLightPet = true;
 			player.buffTime[buffIndex] = 18000;
 			bool petProjectileNotSpawned = player.ownedProjectileCounts[mod.ProjectileType("ExampleLightPet")] <= 0;
 			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)

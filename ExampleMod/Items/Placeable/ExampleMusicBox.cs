@@ -4,9 +4,13 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleMusicBox : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Music Box (Example)");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Music Box (Example)";
 			item.useStyle = 1;
 			item.useTurn = true;
 			item.useAnimation = 15;

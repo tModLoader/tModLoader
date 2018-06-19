@@ -44,7 +44,7 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static int WallCount => nextWall;
+		public static int WallCount => nextWall;
 
 		/// <summary>
 		/// Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null.
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref WallID.Sets.Corrupt, nextWall);
 			Array.Resize(ref WallID.Sets.Crimson, nextWall);
 			Array.Resize(ref WallID.Sets.Hallow, nextWall);
-			
+
 			ModLoader.BuildGlobalHook(ref HookKillSound, globalWalls, g => g.KillSound);
 			ModLoader.BuildGlobalHook(ref HookNumDust, globalWalls, g => g.NumDust);
 			ModLoader.BuildGlobalHook(ref HookCreateDust, globalWalls, g => g.CreateDust);
@@ -121,7 +121,7 @@ namespace Terraria.ModLoader
 			nextWall = WallID.Count;
 			globalWalls.Clear();
 		}
-	
+
 		//change type of Terraria.Tile.wall to ushort and fix associated compile errors
 		//in Terraria.IO.WorldFile.SaveWorldTiles increase length of array by 1 from 13 to 14
 		//in Terraria.IO.WorldFile.SaveWorldTiles inside block if (tile.wall != 0) after incrementing num2
@@ -298,7 +298,7 @@ namespace Terraria.ModLoader
 		public static void PlaceInWorld(int i, int j, Item item)
 		{
 			int type = item.createWall;
-			if(type < 0)
+			if (type < 0)
 				return;
 
 			foreach (var hook in HookPlaceInWorld)

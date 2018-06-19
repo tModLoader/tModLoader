@@ -15,9 +15,16 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		private int timer = -60;
 		public int maxTimer;
 
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Purity Eye");
+			Main.projFrames[projectile.type] = 4;
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 20;
+		}
+
 		public override void SetDefaults()
 		{
-			projectile.name = "Purity Eye";
 			projectile.width = 40;
 			projectile.height = 40;
 			projectile.penetrate = -1;
@@ -25,10 +32,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
 			projectile.alpha = 120;
-			Main.projFrames[projectile.type] = 4;
 			cooldownSlot = 1;
-			ProjectileID.Sets.TrailingMode[projectile.type] = 0;
-			ProjectileID.Sets.TrailCacheLength[projectile.type] = 20;
 		}
 
 		public override void SendExtraAI(BinaryWriter writer)

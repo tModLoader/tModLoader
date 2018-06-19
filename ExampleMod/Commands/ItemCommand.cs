@@ -32,10 +32,10 @@ namespace ExampleMod.Commands
 			{
 				var name = args[0].Replace("_", " ");
 				var item = new Item();
-				for (var k = 0; k < Main.itemName.Length; k++)
+				for (var k = 0; k < ItemLoader.ItemCount; k++)
 				{
 					item.SetDefaults(k, true);
-					if (name == Main.itemName[k] || name == item.name)
+					if (name == Lang.GetItemNameValue(k))
 					{
 						type = k;
 						break;

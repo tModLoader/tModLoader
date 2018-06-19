@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -55,6 +56,11 @@ namespace Terraria.ModLoader
 				netMods[i].netID = i;
 		}
 
+		internal static void Unload()
+		{
+			netMods = null;
+		}
+
 		internal static void SyncMods(int clientIndex)
 		{
 			var p = new ModPacket(MessageID.SyncMods);
@@ -77,7 +83,7 @@ namespace Terraria.ModLoader
 		{
 			AllowVanillaClients = reader.ReadBoolean();
 
-			Main.statusText = "Syncing Mods";
+			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 			var clientMods = ModLoader.LoadedMods;
 			var modFiles = ModLoader.FindMods();
 			var needsReload = false;
@@ -101,17 +107,17 @@ namespace Terraria.ModLoader
 				}
 				else
 				{
-					var disabledVersions = modFiles.Where(m => m.name == header.name).ToArray();
-					var matching = disabledVersions.FirstOrDefault(header.Matches);
+					var disabledVersions = modFiles.Where(m => m.Name == header.name).ToArray();
+					var matching = disabledVersions.FirstOrDefault(mod => header.Matches(mod.modFile));
 					if (matching != null)
 					{
-						ModLoader.EnableMod(matching);
+						matching.Enabled = true;
 						needsReload = true;
 						continue;
 					}
 
 					if (disabledVersions.Length > 0)
-						header.path = disabledVersions[0].path;
+						header.path = disabledVersions[0].modFile.path;
 				}
 
 				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
@@ -123,17 +129,17 @@ namespace Terraria.ModLoader
 			foreach (var mod in clientMods)
 				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name))
 				{
-					ModLoader.DisableMod(mod.File);
+					ModLoader.DisableMod(mod.Name);
 					needsReload = true;
 				}
 
 			if (blockedList.Count > 0)
 			{
-				var msg = "The following mods are installed on the server but cannot be downloaded ";
+				var msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");
 				msg += downloadModsFromServers
-					? "because you only accept mods signed by the mod browser"
-					: "because you have disabled automatic mod downloading";
-				msg += ".\nYou will need to change your settings or acquire the mods from the server owner.\n";
+					? Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonSigned")
+					: Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonAutomaticDownloadDisabled");
+				msg += ".\n" + Language.GetTextValue("tModLoader.MPServerModsCantDownloadChangeSettingsHint") + "\n";
 				foreach (var mod in blockedList)
 					msg += "\n    " + mod;
 
@@ -214,18 +220,15 @@ namespace Terraria.ModLoader
 				{
 					downloadingFile.Close();
 					var mod = new TmodFile(downloadingMod.path);
-					mod.Read();
-					var ex = mod.ValidMod();
-					if (ex != null)
-						throw ex;
+					mod.Read(TmodFile.LoadedState.Info);
 
 					if (!downloadingMod.Matches(mod))
-						throw new Exception("Hash mismatch");
+						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
 
 					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
-						throw new Exception("Mod was not signed by the Mod Browser");
+						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
-					ModLoader.EnableMod(mod);
+					ModLoader.EnableMod(mod.name);
 
 					if (downloadQueue.Count > 0)
 						DownloadNextMod();
@@ -242,7 +245,7 @@ namespace Terraria.ModLoader
 				catch { }
 
 				File.Delete(downloadingMod.path);
-				ErrorLogger.LogException(e, "An error occured while downloading " + downloadingMod.name);
+				ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name));
 				downloadingMod = null;
 			}
 		}
@@ -328,7 +331,7 @@ namespace Terraria.ModLoader
 			bool hijacked = false;
 			long readerPos = reader.BaseStream.Position;
 			long biggestReaderPos = readerPos;
-			foreach (var mod in netMods)
+			foreach (var mod in ModLoader.LoadedMods)
 			{
 				if (mod.HijackGetData(ref messageType, ref reader, playerNumber))
 				{
@@ -344,10 +347,10 @@ namespace Terraria.ModLoader
 			return hijacked;
 		}
 
-		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, string text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
+		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
 		{
 			bool hijacked = false;
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModLoader.LoadedMods)
 			{
 				hijacked |= mod.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 			}

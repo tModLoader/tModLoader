@@ -1,5 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Terraria.Chat;
+using Terraria.GameContent.NetModules;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -77,7 +80,7 @@ namespace Terraria.ModLoader
 				color = Color.White;
 			foreach (var line in text.Split('\n'))
 				Main.NewText(line, color.R, color.G, color.B);
-		} 
+		}
 	}
 
 	internal class PlayerCommandCaller : CommandCaller
@@ -95,7 +98,7 @@ namespace Terraria.ModLoader
 			if (color == default(Color))
 				color = Color.White;
 			foreach (var line in text.Split('\n'))
-				NetMessage.SendData(25, Player.whoAmI, -1, line, 255, color.R, color.G, color.B);
+				NetMessage.SendChatMessageToClient(NetworkText.FromLiteral(line), color, Player.whoAmI);
 		}
 	}
 

@@ -6,13 +6,26 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Ionic.Zlib;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.IO
 {
 	public class TmodFile : IEnumerable<KeyValuePair<string, byte[]>>
 	{
+		public enum LoadedState
+		{
+			None,
+			Integrity,
+			Info,
+			Code,
+			Assets,
+			Streaming
+		}
+
 		public readonly string path;
-		private readonly IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
+
+		private LoadedState state;
+		private IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 
 		public Version tModLoaderVersion
 		{
@@ -52,23 +65,22 @@ namespace Terraria.ModLoader.IO
 			this.path = path;
 		}
 
-		public bool HasFile(string fileName)
-		{
-			return files.ContainsKey(fileName.Replace('\\', '/'));
-		}
+		public bool HasFile(string fileName) => files.ContainsKey(fileName.Replace('\\', '/'));
 
 		public byte[] GetFile(string fileName)
 		{
-			byte[] data;
-			files.TryGetValue(fileName.Replace('\\', '/'), out data);
+			files.TryGetValue(fileName.Replace('\\', '/'), out var data);
 			return data;
 		}
 
+		/// <summary>
+		/// Adds a (fileName -> content) entry to the compressed payload
+		/// </summary>
+		/// <param name="fileName">The internal filepath, will be slash sanitised automatically</param>
+		/// <param name="data">The file content to add. WARNING, data is kept as a shallow copy, so modifications to the passed byte array will affect file content</param>
 		internal void AddFile(string fileName, byte[] data)
 		{
-			byte[] dataCopy = new byte[data.Length];
-			data.CopyTo(dataCopy, 0);
-			files[fileName.Replace('\\', '/')] = dataCopy;
+			files[fileName.Replace('\\', '/')] = data;
 		}
 
 		internal void RemoveFile(string fileName)
@@ -76,15 +88,9 @@ namespace Terraria.ModLoader.IO
 			files.Remove(fileName.Replace('\\', '/'));
 		}
 
-		public IEnumerator<KeyValuePair<string, byte[]>> GetEnumerator()
-		{
-			return files.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		public IEnumerator<KeyValuePair<string, byte[]>> GetEnumerator() => files.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		public int FileCount => files.Count;
 
 		internal void Save()
 		{
@@ -97,7 +103,7 @@ namespace Terraria.ModLoader.IO
 					writer.Write(version.ToString());
 
 					writer.Write(files.Count);
-					foreach (var entry in files)
+					foreach (var entry in files.OrderBy(e => GetFileState(e.Key)))
 					{
 						writer.Write(entry.Key);
 						writer.Write(entry.Value.Length);
@@ -120,28 +126,41 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		internal void Read()
+		internal delegate void ReadStreamingAsset(string path, int len, BinaryReader reader);
+		internal void Read(LoadedState desiredState, ReadStreamingAsset streamingHandler = null)
 		{
-			try
-			{
-				byte[] data;
-				using (var fileStream = File.OpenRead(path))
-				using (var reader = new BinaryReader(fileStream))
-				{
-					if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
-						throw new Exception("Magic Header != \"TMOD\"");
+			if (desiredState <= state)
+				return;
 
-					tModLoaderVersion = new Version(reader.ReadString());
-					hash = reader.ReadBytes(20);
-					signature = reader.ReadBytes(256);
-					data = reader.ReadBytes(reader.ReadInt32());
-					var verifyHash = SHA1.Create().ComputeHash(data);
+			using (var fileStream = File.OpenRead(path))
+			using (var hReader = new BinaryReader(fileStream))
+			{
+				if (Encoding.ASCII.GetString(hReader.ReadBytes(4)) != "TMOD")
+					throw new Exception("Magic Header != \"TMOD\"");
+
+				tModLoaderVersion = new Version(hReader.ReadString());
+				hash = hReader.ReadBytes(20);
+				signature = hReader.ReadBytes(256);
+				//currently unused, included to read the entire data-blob as a byte-array without decompressing or waiting to hit end of stream
+				int datalen = hReader.ReadInt32();
+
+				if (state < LoadedState.Integrity)
+				{
+					long pos = fileStream.Position;
+					var verifyHash = SHA1.Create().ComputeHash(fileStream);
 					if (!verifyHash.SequenceEqual(hash))
-						throw new Exception("Hash mismatch, data blob has been modified or corrupted");
+						throw new Exception(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorrupted"));
+
+					state = LoadedState.Integrity;
+					if (desiredState == LoadedState.Integrity)
+						return;
+
+					fileStream.Position = pos;
 				}
 
-				using (var memoryStream = new MemoryStream(data))
-				using (var deflateStream = new DeflateStream(memoryStream, CompressionMode.Decompress))
+				bool filesAreLoadOrdered = tModLoaderVersion >= new Version(0, 10, 1, 2);
+
+				using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress))
 				using (var reader = new BinaryReader(deflateStream))
 				{
 					name = reader.ReadString();
@@ -149,27 +168,68 @@ namespace Terraria.ModLoader.IO
 
 					int count = reader.ReadInt32();
 					for (int i = 0; i < count; i++)
-						AddFile(reader.ReadString(), reader.ReadBytes(reader.ReadInt32()));
+					{
+						string fileName = reader.ReadString();
+						LoadedState fileState = GetFileState(fileName);
+						if (filesAreLoadOrdered && fileState > desiredState)
+							break;
+
+						int len = reader.ReadInt32();
+						if (fileState == LoadedState.Streaming && desiredState >= LoadedState.Streaming)
+						{
+							var end = deflateStream.TotalOut + len;
+							streamingHandler(fileName, len, reader);
+							if (deflateStream.TotalOut < end)
+								reader.ReadBytes((int)(end - deflateStream.TotalOut));
+							else if (deflateStream.TotalOut > end)
+								throw new IOException(
+									$"Read too many bytes ({deflateStream.Position - end - len}>{len}) while loading streaming asset: {fileName}");
+						}
+						else
+						{
+							byte[] content = reader.ReadBytes(len);
+							if (fileState > state && fileState <= desiredState)
+								AddFile(fileName, content);
+						}
+					}
 				}
 			}
-			catch (Exception e)
-			{
-				readException = e;
-			}
+
+			if (desiredState >= LoadedState.Info && !HasFile("Info"))
+				throw new Exception("Missing Info file");
+
+			if (desiredState >= LoadedState.Code && !HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
+				throw new Exception("Missing All.dll or Windows.dll and Mono.dll");
+
+			state = desiredState;
+			if (state > LoadedState.Assets)
+				state = LoadedState.Assets;
 		}
 
-		internal Exception ValidMod()
+		private static LoadedState GetFileState(string fileName)
 		{
-			if (readException != null)
-				return readException;
+			if (fileName == "Info" || fileName == "icon.png")
+				return LoadedState.Info;
 
-			if (!HasFile("Info"))
-				return new Exception("Missing Info file");
+			if (fileName.EndsWith(".dll") || fileName.EndsWith(".pdb"))
+				return LoadedState.Code;
 
-			if (!HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
-				return new Exception("Missing All.dll or Windows.dll and Mono.dll");
+			if (fileName.EndsWith(".png") || fileName.EndsWith(".rawimg") ||
+					fileName.EndsWith(".mp3") || fileName.EndsWith(".wav") ||
+					fileName.EndsWith(".xnb") ||
+					fileName.StartsWith("Streaming/"))
+				return LoadedState.Streaming;
 
-			return null;
+			return LoadedState.Assets;
+		}
+
+		internal void UnloadAssets()
+		{
+			files = files
+				.Where(file => GetFileState(file.Key) < LoadedState.Assets)
+				.ToDictionary(file => file.Key, file => file.Value);
+
+			state = LoadedState.Code;
 		}
 
 		public byte[] GetMainAssembly(bool? windows = null)

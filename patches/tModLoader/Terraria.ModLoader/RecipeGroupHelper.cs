@@ -16,7 +16,7 @@ namespace Terraria.ModLoader
 
 		internal static void AddOldVanillaGroups()
 		{
-			RecipeGroup rec = new RecipeGroup(() => Lang.misc[37] + " " + Main.itemName[9], new int[]
+			RecipeGroup rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.Wood), new int[]
 				{
 					ItemID.Wood,
 					ItemID.Ebonwood,
@@ -28,13 +28,13 @@ namespace Terraria.ModLoader
 					ItemID.PalmWood
 				});
 			RecipeGroupID.Wood = RecipeGroup.RegisterGroup("Wood", rec);
-			rec = new RecipeGroup(() => Lang.misc[37] + " " + Main.itemName[22], new int[]
+			rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.IronBar), new int[]
 				{
 					ItemID.IronBar,
 					ItemID.LeadBar
 				});
 			RecipeGroupID.IronBar = RecipeGroup.RegisterGroup("IronBar", rec);
-			rec = new RecipeGroup(() => Lang.misc[37] + " " + Lang.misc[38], new int[]
+			rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.misc[38].Value, new int[]
 				{
 					ItemID.RedPressurePlate,
 					ItemID.GreenPressurePlate,
@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 					ItemID.LihzahrdPressurePlate
 				});
 			RecipeGroupID.PressurePlate = RecipeGroup.RegisterGroup("PresurePlate", rec);
-			rec = new RecipeGroup(() => Lang.misc[37] + " " + Main.itemName[169], new int[]
+			rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.SandBlock), new int[]
 				{
 					ItemID.SandBlock,
 					ItemID.PearlsandBlock,
@@ -54,7 +54,7 @@ namespace Terraria.ModLoader
 					ItemID.HardenedSand
 				});
 			RecipeGroupID.Sand = RecipeGroup.RegisterGroup("Sand", rec);
-			rec = new RecipeGroup(() => Lang.misc[37] + " " + Lang.misc[51], new int[]
+			rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.misc[51].Value, new int[]
 				{
 					ItemID.FragmentSolar,
 					ItemID.FragmentVortex,
@@ -74,8 +74,22 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					ModLoader.DisableMod(mod.File);
+					ModLoader.DisableMod(mod.Name);
 					throw new AddRecipesException(mod, "An error occured in adding recipe groups for " + mod.Name, e);
+				}
+			}
+			FixRecipeGroupLookups();
+		}
+
+		internal static void FixRecipeGroupLookups()
+		{
+			for (int k = 0; k < RecipeGroup.nextRecipeGroupIndex; k++)
+			{
+				RecipeGroup rec = RecipeGroup.recipeGroups[k];
+				rec.ValidItemsLookup = new bool[ItemLoader.ItemCount];
+				foreach (int type in rec.ValidItems)
+				{
+					rec.ValidItemsLookup[type] = true;
 				}
 			}
 		}

@@ -12,14 +12,22 @@ namespace ExampleMod.Tiles
 		{
 			Main.tileFrameImportant[Type] = true;
 			Main.tileLavaDeath[Type] = true;
+			TileID.Sets.HasOutlines[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style4x2); //this style already takes care of direction for us
 			TileObjectData.newTile.CoordinateHeights = new int[]{ 16, 18 };
 			TileObjectData.addTile(Type);
-			AddMapEntry(new Color(200, 200, 200), "Example Bed");
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Bed");
+			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
 			adjTiles = new int[]{ TileID.Beds };
 			bed = true;
+		}
+
+		public override bool HasSmartInteract()
+		{
+			return true;
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num)

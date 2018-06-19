@@ -4,28 +4,27 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.UI.Chat;
 
 namespace ExampleMod.Items
 {
 	public class Face : ModItem
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
-			item.name = "Face";
-			item.width = 20;
-			item.height = 20;
-			item.toolTip = "How are you feeling today?";
 			// See here for help on using Tags: http://terraria.gamepedia.com/Chat#Tags
-			item.toolTip2 = "[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:" + item.type + "][i:" + mod.ItemType<CarKey>() + "][i/s123:" + ItemID.Ectoplasm + "]";
-			item.value = 100;
-			item.rare = 1;
+			Tooltip.SetDefault("How are you feeling today?"
+				+ string.Format("\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{0}][i:{1}][i/s123:{2}]", item.type, mod.ItemType<CarKey>(), ItemID.Ectoplasm));
+
+			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(30, 4));
 			ItemID.Sets.ItemNoGravity[item.type] = true;
 		}
 
-		public override DrawAnimation GetAnimation()
+		public override void SetDefaults()
 		{
-			return new DrawAnimationVertical(30, 4);
+			item.width = 20;
+			item.height = 20;
+			item.value = 100;
+			item.rare = 1;
 		}
 
 		public override Color? GetAlpha(Color lightColor)

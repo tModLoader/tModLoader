@@ -23,24 +23,29 @@
  
  namespace Terraria
  {
-@@ -45,7 +_,11 @@
- 		public static bool spamCheck = false;
- 
+@@ -47,7 +_,11 @@
  		public static bool anyClients = false;
+ 
+ 		private static Thread ServerThread;
 -
 +#if SERVER
-+		public static UPnPNAT upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
++		public static UPnPNAT upnpnat;
 +
-+		public static IStaticPortMappingCollection mappings = Netplay.upnpnat.StaticPortMappingCollection;
++		public static IStaticPortMappingCollection mappings;
 +#endif
  		public static string portForwardIP;
  
  		public static int portForwardPort;
-@@ -58,10 +_,33 @@
+@@ -60,10 +_,38 @@
  		{
  			Netplay.portForwardIP = Netplay.GetLocalIPAddress();
  			Netplay.portForwardPort = Netplay.ListenPort;
 +#if SERVER
++			if (Netplay.upnpnat == null)
++			{
++				Netplay.upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
++				Netplay.mappings = Netplay.upnpnat.StaticPortMappingCollection;
++			}
 +			if (Netplay.mappings != null)
 +			{
 +				foreach (IStaticPortMapping staticPortMapping in Netplay.mappings)
@@ -70,7 +75,7 @@
  		}
  
  		public static string GetLocalIPAddress()
-@@ -200,6 +_,11 @@
+@@ -202,6 +_,11 @@
  				}
  				catch
  				{
@@ -82,7 +87,7 @@
  					if (!Netplay.disconnect && Main.gameMenu)
  					{
  						flag = true;
-@@ -741,8 +_,20 @@
+@@ -744,8 +_,20 @@
  
  		public static void Initialize()
  		{

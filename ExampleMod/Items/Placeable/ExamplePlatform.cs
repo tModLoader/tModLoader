@@ -4,13 +4,16 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExamplePlatform : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("This is a modded platform.");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Example Platform";
 			item.width = 8;
 			item.height = 10;
 			item.maxStack = 999;
-			AddTooltip("This is a modded platform.");
 			item.useTurn = true;
 			item.autoReuse = true;
 			item.useAnimation = 15;

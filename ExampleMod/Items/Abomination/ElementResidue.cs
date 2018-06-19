@@ -5,9 +5,13 @@ namespace ExampleMod.Items.Abomination
 {
 	public class ElementResidue : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Residual Elements");
+		}
+
 		public override void SetDefaults()
 		{
-			item.name = "Residual Elements";
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 99;

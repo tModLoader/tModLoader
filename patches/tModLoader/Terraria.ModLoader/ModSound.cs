@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
+using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader
 {
