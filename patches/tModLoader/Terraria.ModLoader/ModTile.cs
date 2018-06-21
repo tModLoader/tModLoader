@@ -422,7 +422,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and frameYOffset should be used to specify an offset from the tiles frameX and frameY. "frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];" will already be set before this hook is called, taking into account the TileID-wide animation set via AnimateTile. 
-		/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to acheive unique animation behaviors without having to manually draw the tile via PreDraw. 
+		/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via PreDraw. 
 		/// </summary>
 		/// <param name="type">The tile type.</param>
 		/// <param name="i">The x position in tile coordinates.</param>
