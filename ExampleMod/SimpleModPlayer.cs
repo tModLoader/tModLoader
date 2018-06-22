@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 namespace ExampleMod
 {
 	// This file shows the very basics of using ModPlayer classes since ExamplePlayer can be a bit overwhelming.
+	// ModPlayer classes provide a way to attach data to Players and act on that data. 
 	// This example will hopefully provide you with an understanding of the basic building blocks of how ModPlayer works. 
 	// This example will teach the most commonly sought after effect: "How to do X if the player has Y?"
 	// X in this example will be "Apply a debuff to enemies."
