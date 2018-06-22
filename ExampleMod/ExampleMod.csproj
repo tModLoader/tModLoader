@@ -237,6 +237,7 @@
     <Compile Include="Projectiles\SparklingBall.cs" />
     <Compile Include="Projectiles\Wisp.cs" />
     <Compile Include="RecipeHelper.cs" />
+    <Compile Include="SimpleModPlayer.cs" />
     <Compile Include="Sounds\Custom\WatchOut.cs" />
     <Compile Include="Sounds\Item\Wooo.cs" />
     <Compile Include="Tiles\AnimatedLoom.cs" />
