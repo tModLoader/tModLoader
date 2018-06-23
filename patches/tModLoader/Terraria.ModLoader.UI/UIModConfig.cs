@@ -540,6 +540,10 @@ namespace Terraria.ModLoader.UI
 				e = new UIModConfigListItem(memberInfo, item, ref sliderIDInPage);
 				//elementHeight = 225;
 			}
+			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(HashSet<>))
+			{
+				e = new UIModConfigSetItem(memberInfo, item, ref sliderIDInPage);
+			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
 				e = new UIModConfigDictionaryItem(memberInfo, item, ref sliderIDInPage);
@@ -567,7 +571,7 @@ namespace Terraria.ModLoader.UI
 					{
 						subitem = Activator.CreateInstance(type);
 						// Crashes JSONItem
-						JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
+						JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings); // Seems to fail on all data structures?
 
 						//JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
 						//if (jsonDefaultValueAttribute != null)

@@ -203,6 +203,8 @@ namespace ExampleMod
 		public Dictionary<string, Pair> StringPairDictionary;
 		public Dictionary<JSONItem, float> JsonItemFloatDictionary;
 
+		public HashSet<JSONItem> itemSet;
+
 		public JSONItem specialItem;
 
 		[BackgroundColor(255, 0, 0)]
@@ -245,6 +247,8 @@ namespace ExampleMod
 				StringPairDictionary = new Dictionary<string, Pair>();
 			if (JsonItemFloatDictionary == null)
 				JsonItemFloatDictionary = new Dictionary<JSONItem, float>();
+			stringSet = stringSet ?? new HashSet<int>();
+			itemSet = itemSet ?? new HashSet<JSONItem>();
 			//if (gradient == null)
 			//	gradient = new Gradient();
 			//if (simpleDataExample == null)
@@ -285,6 +289,7 @@ namespace ExampleMod
 			clone.IntFloatDictionary = IntFloatDictionary.ToDictionary(i => i.Key, i => i.Value);
 			clone.StringPairDictionary = StringPairDictionary.ToDictionary(i => i.Key, i => i.Value.Clone());
 			clone.JsonItemFloatDictionary = JsonItemFloatDictionary.ToDictionary(i => new JSONItem(i.Key.mod, i.Key.name), i => i.Value);
+			clone.itemSet = new HashSet<JSONItem>(itemSet);
 			return clone;
 		}
 
