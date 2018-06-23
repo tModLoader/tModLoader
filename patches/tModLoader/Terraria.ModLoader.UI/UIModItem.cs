@@ -45,15 +45,19 @@ namespace Terraria.ModLoader.UI
 
 			if (mod.modFile.HasFile("icon.png"))
 			{
-				var modIconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, new MemoryStream(mod.modFile.GetFile("icon.png")));
-				if (modIconTexture.Width == 80 && modIconTexture.Height == 80)
+				try
 				{
-					modIcon = new UIImage(modIconTexture);
-					modIcon.Left.Set(0f, 0f);
-					modIcon.Top.Set(0f, 0f);
-					Append(modIcon);
-					modIconAdjust += 85;
+					var modIconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, new MemoryStream(mod.modFile.GetFile("icon.png")));
+					if (modIconTexture.Width == 80 && modIconTexture.Height == 80)
+					{
+						modIcon = new UIImage(modIconTexture);
+						modIcon.Left.Set(0f, 0f);
+						modIcon.Top.Set(0f, 0f);
+						Append(modIcon);
+						modIconAdjust += 85;
+					}
 				}
+				catch { }
 			}
 			this.modName = new UIText(text, 1f, false);
 			this.modName.Left.Set(modIconAdjust + 10f, 0f);

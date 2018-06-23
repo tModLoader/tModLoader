@@ -9,10 +9,10 @@ namespace ExampleMod.Projectiles
 {
 	// This file showcases the concept of piercing.
 	// This file also shows an animated projectile
-	// This file also shows advanaced drawing to center the drawn projectile correctly
+	// This file also shows advanced drawing to center the drawn projectile correctly
 	/*
 	
-	NPC.immune determines if an npc can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to differnt players (whoAmI))
+	NPC.immune determines if an npc can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI))
 	NPC.immune is decremented towards 0 every update
 	Melee items set NPC.immune to player.itemAnimation, which starts at item.useAnimation and decrements towards 0
 

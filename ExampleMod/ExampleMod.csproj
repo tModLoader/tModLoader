@@ -190,6 +190,7 @@
     <Compile Include="NPCs\Abomination\CaptiveElement.cs" />
     <Compile Include="NPCs\Abomination\CaptiveElement2.cs" />
     <Compile Include="NPCs\Abomination\FreedElement.cs" />
+    <Compile Include="NPCs\DeathAnimation.cs" />
     <Compile Include="NPCs\ExampleChestSummon.cs" />
     <Compile Include="NPCs\ExampleGlobalNPC.cs" />
     <Compile Include="NPCs\ExamplePerson.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Projectiles\SparklingBall.cs" />
     <Compile Include="Projectiles\Wisp.cs" />
     <Compile Include="RecipeHelper.cs" />
+    <Compile Include="SimpleModPlayer.cs" />
     <Compile Include="Sounds\Custom\WatchOut.cs" />
     <Compile Include="Sounds\Item\Wooo.cs" />
     <Compile Include="Tiles\AnimatedLoom.cs" />

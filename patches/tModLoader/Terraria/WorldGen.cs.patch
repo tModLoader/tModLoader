@@ -1627,7 +1627,7 @@
  				}
  				num6++;
  			}
-@@ -43374,6 +_,8 @@
+@@ -43374,12 +_,14 @@
  						}
  					}
  					WorldGen.SpreadDesertWalls(num, num64, num65);
@@ -1636,6 +1636,13 @@
  				}
  				num63++;
  			}
+ 			if (!Main.dayTime)
+ 			{
+-				float num143 = (float)(Main.maxTilesX / 4200);
++				float num143 = (float)(Main.maxTilesX / 4200f); // Selfish fix for falling stars on extra small worlds
+ 				if ((float)Main.rand.Next(8000) < 10f * num143)
+ 				{
+ 					int num144 = 12;
 @@ -43397,6 +_,7 @@
  					Projectile.NewProjectile(vector.X, vector.Y, num147, num148, 12, 1000, 10f, Main.myPlayer, 0f, 0f);
  				}

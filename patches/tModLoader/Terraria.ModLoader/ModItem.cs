@@ -536,7 +536,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give set bonuses to the armor set that this armor is in.
+		/// Allows you to give set bonuses to the armor set that this armor is in. Set player.setBonus to a string for the bonus description.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		public virtual void UpdateArmorSet(Player player)

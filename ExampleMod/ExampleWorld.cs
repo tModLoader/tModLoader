@@ -78,6 +78,21 @@ namespace ExampleMod
 			flags[1] = downedPuritySpirit;
 			writer.Write(flags);
 
+			/*
+			Remember that Bytes/BitsByte only have 8 entries. If you have more than 8 flags you want to sync, use multiple BitsByte:
+
+				This is wrong:
+			flags[8] = downed9thBoss; // an index of 8 is nonsense. 
+
+				This is correct:
+			flags[7] = downed8thBoss;
+			writer.Write(flags);
+			BitsByte flags2 = new BitsByte(); // create another BitsByte
+			flags2[0] = downed9thBoss; // start again from 0
+			// up to 7 more flags here
+			writer.Write(flags2); // write this byte
+			*/
+
 			//If you prefer, you can use the BitsByte constructor approach as well.
 			//writer.Write(saveVersion);
 			//BitsByte flags = new BitsByte(downedAbomination, downedPuritySpirit);
@@ -103,6 +118,9 @@ namespace ExampleMod
 			BitsByte flags = reader.ReadByte();
 			downedAbomination = flags[0];
 			downedPuritySpirit = flags[1];
+			// As mentioned in NetSend, BitBytes can contain 8 values. If you have more, be sure to read the additional data:
+			// BitsByte flags2 = reader.ReadByte();
+			// downed9thBoss = flags[0];
 		}
 
 		// We use this hook to add 3 steps to world generation at various points. 
@@ -398,8 +416,8 @@ namespace ExampleMod
 			Main.npc[num].homeless = true;
 
 			// Place some items in Ice Chests
-			int[] itemsToPlaceInWaterChests = new int[] { mod.ItemType("CarKey"), mod.ItemType("ExampleLightPet"), ItemID.PinkJellyfishJar };
-			int itemsToPlaceInWaterChestsChoice = 0;
+			int[] itemsToPlaceInIceChests = new int[] { mod.ItemType("CarKey"), mod.ItemType("ExampleLightPet"), ItemID.PinkJellyfishJar };
+			int itemsToPlaceInIceChestsChoice = 0;
 			for (int chestIndex = 0; chestIndex < 1000; chestIndex++)
 			{
 				Chest chest = Main.chest[chestIndex];
@@ -410,8 +428,9 @@ namespace ExampleMod
 					{
 						if (chest.item[inventoryIndex].type == 0)
 						{
-							chest.item[inventoryIndex].SetDefaults(itemsToPlaceInWaterChests[itemsToPlaceInWaterChestsChoice]);
-							itemsToPlaceInWaterChestsChoice = (itemsToPlaceInWaterChestsChoice + 1) % itemsToPlaceInWaterChests.Length;
+							chest.item[inventoryIndex].SetDefaults(itemsToPlaceInIceChests[itemsToPlaceInIceChestsChoice]);
+							itemsToPlaceInIceChestsChoice = (itemsToPlaceInIceChestsChoice + 1) % itemsToPlaceInIceChests.Length;
+							// Alternate approach: Random instead of cyclical: chest.item[inventoryIndex].SetDefaults(Main.rand.Next(itemsToPlaceInIceChests));
 							break;
 						}
 					}
