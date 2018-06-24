@@ -231,9 +231,8 @@ namespace ExampleMod
 		float targetOffsetX = 0;
 		float targetOffsetY = 0;
 
-		// Volcano Tremor
-		/* To be fixed later.
-		public override Matrix ModifyTransformMatrix(Matrix Transform)
+		// Volcano Tremor (Fixed!)
+		public override void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
 		{
 			if (!Main.gameMenu)
 			{
@@ -266,20 +265,31 @@ namespace ExampleMod
 
 					world.VolcanoTremorTime--;
 					ShakeCount++;
-
-
-					return Transform
-						* Matrix.CreateTranslation(-transX, -transY, 0f)
+					
+					Matrix shakeMatrix = new Matrix(
+						Matrix.CreateTranslation(-transX, -transY, 0f)
 						* Matrix.CreateRotationZ(rotation)
 						* Matrix.CreateTranslation(transX, transY, 0f)
-						* Matrix.CreateTranslation(offsetX, offsetY, 0f);
-					//Matrix.CreateFromAxisAngle(new Vector3(Main.screenWidth / 2, Main.screenHeight / 2, 0f), .2f);
-					//Matrix.CreateRotationZ(MathHelper.ToRadians(30));
+						* Matrix.CreateTranslation(offsetX, offsetY, 0f)
+						//Matrix.CreateFromAxisAngle(new Vector3(Main.screenWidth / 2, Main.screenHeight / 2, 0f), .2f);
+						//Matrix.CreateRotationZ(MathHelper.ToRadians(30));
+					);
+					
+					Transform.TransformationMatrix = shakeMatrix;
+					
+		/*
+			A few of the other things you can do with ModifyTransformMatrix include:
+			-Zooming/Stretching the screen.
+			Example: Transform.Zoom = new Vector2(1.7777f, 1f);
+			Result: Scales pixels by a factor of 1.7777 on the X axis, making the screen appear stretched.
+			
+			-Flipping the screen.
+			Example: Effects = SpriteEffects.FlipVertically;
+			Result: Screen is flipped upside-down.
+		*/
 				}
 			}
-			return Transform;
 		}
-		*/
 
 		public override void UpdateUI(GameTime gameTime)
 		{
