@@ -66,7 +66,7 @@
 		"LoadErrorTextureFailedToLoad": "La texture située en {0} n'a pas chargé correctement",
 		"LoadErrorWavSoundFailedToLoad": "Le dossier de son .wav situé en {0} n'a pas chargé correctement",
 		"LoadErrorMP3SoundFailedToLoad": "Le dossier de son .mp3 situé en {0} n'a pas chargé correctement",
-		// "LoadErrorSoundFailedToLoadAudioDeviceHint": "(Vérifiez que votre ordinateur possède des haut-parleurs et l'équipement audio activé)",
+		"LoadErrorSoundFailedToLoadAudioDeviceHint": "(Vérifiez que votre ordinateur possède des haut-parleurs et l'équipement audio activé)",
 		"LoadErrorFontFailedToLoad": "Le dossier de police situé en {0} n'a pas chargé correctement",
 		"LoadErrorEffectFailedToLoad": "Le dossier d'effets situé en {0} n'a pas chargé correctement",
 		"LoadErrorUnknownXNBFileHint": "Dossier xnb inconnu: {0}. Possiblement devrait être en Fonts/ ou Effects/",
@@ -98,9 +98,9 @@
 		"ModPackModsMissing": "Les Mods suivants n'ont pas été trouvés:\n{0}",
 		"ModPackModsContained": "Cette liste contient les Mods suivants:\n{0}",
 		"ModPackMissing": " - Manquant",
-		// "ModPackLoadingSpecifiedModPack": "Chargement du Modpack spécifié: {0}",
-		// "ModPackDoesNotExist": "Le Modpack {0} n'existe pas.",
-		// "ModPackMalformed": "Le Modpack {0} n'a pas été lu correctement, il pourrait être mal formé. ({1})",
+		"ModPackLoadingSpecifiedModPack": "Chargement du Modpack spécifié: {0}",
+		"ModPackDoesNotExist": "Le Modpack {0} n'existe pas.",
+		"ModPackMalformed": "Le Modpack {0} n'a pas été lu correctement, il pourrait être mal formé. ({1})",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronisation des Mods",
@@ -146,7 +146,7 @@
 		"MBFilterModlist": "Liste des Mods",
 		"MBExceededBandwidth": "Le serveur du navigateur a dépassé la limite journalière allouée de bande passante. Merci de consulter la page d'accueil du Mod pour un téléchargement alternatif ou de réessayer plus tard.",
 		"MBUnknownMBError": "Erreur inconnue du navigateur. Réessayer plus tard.",
-		// "MBNoModsFound": "Pas de Mods trouvés",
+		"MBNoModsFound": "Pas de Mods trouvés",
 		"1SecondAgo": "1 seconde avant",
 		"XSecondsAgo": "{0} secondes avant",
 		"1MinuteAgo": "1 minute avant",
@@ -169,7 +169,7 @@
 		"MBMyPublishedModsStats": "{0} téléchargements totaux ({1} pour la dernière version version)",
 		"EnterSteamID": "Merci d'entrer votre ID Steam",
 		"PasteSteamID": "Copier votre ID Steam (ctrl-v)",
-		// "MBServerResonponse": "La réponse du serveur du Navigateur:\n\n{0}",
+		"MBServerResonponse": "La réponse du serveur du Navigateur:\n\n{0}",
 
 		// TML Options
 		"DownloadFromServersYes": "Télécharger les Mods du serveur: Oui",
@@ -182,10 +182,10 @@
 		"AlwaysLogExceptionsNo": "Créer un rapport pour les erreurs : Non",		
 		"ExperimentalFeaturesYes": "Mode expérimental: Oui",
 		"ExperimentalFeaturesNo": "Mode expérimental: Non",
-		// "RemoveForcedMinimumZoomYes": "Enlever la limité forcée de Zoom Minimum: Oui",
-		// "RemoveForcedMinimumZoomNo": "Enlever la limité forcée de Zoom Minimum: Non",
-		// "AllowGreaterResolutionsYes": "Autoriser de plus grandes Résolutions: Oui",
-		// "AllowGreaterResolutionsNo": "Autoriser de plus grandes Résolutions: Non",
+		"RemoveForcedMinimumZoomYes": "Enlever la limité forcée de Zoom Minimum: Oui",
+		"RemoveForcedMinimumZoomNo": "Enlever la limité forcée de Zoom Minimum: Non",
+		"AllowGreaterResolutionsYes": "Autoriser de plus grandes Résolutions: Oui",
+		"AllowGreaterResolutionsNo": "Autoriser de plus grandes Résolutions: Non",
 		"ClearMBCredentials": "Réinitialiser les références du navigateur",
 		"ReloadModsReminder": "Vous avez mis à jour un Mod. N'oubliez pas de relancer les Mods pour que cela prenne effet.",
 		"EnableModsReminder": "Vos Mods téléchargés récemment sont actuallement désactivés. N'oubliez pas de les activer et de les relancer si vous comptez les utiliser.",
@@ -243,7 +243,7 @@
 		"MSReading": "En lecture de: {0}",
 		"MSSettingUp": "Installation...",
 		"MSAddingRecipes": "Ajout des recettes d'artisanat...",
-		// "AddingModContent": "Ajout de contenu de mod...",
+		"AddingModContent": "Ajout de contenu de mod...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",
