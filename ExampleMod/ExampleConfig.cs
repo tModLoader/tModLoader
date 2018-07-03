@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -232,6 +233,9 @@ namespace ExampleMod
 		[Label("Really Complex Data")]
 		public ComplexData complexData;
 
+		[JsonExtensionData]
+		private IDictionary<string, JToken> _additionalData;
+
 		[OnDeserialized]
 		internal void OnDeserializedMethod(StreamingContext context)
 		{
@@ -270,6 +274,8 @@ namespace ExampleMod
 
 			// RangeAttribute is just a suggestion to the UI. If we want to enforce constraints, we need to validate the data here.
 			RangedFloat = Utils.Clamp(RangedFloat, 2f, 5f);
+
+			string missingFieldExample = (string)_additionalData["missingFieldExample"];
 		}
 
 		public override ModConfig Clone()
