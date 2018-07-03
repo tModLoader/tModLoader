@@ -33,7 +33,7 @@
  
 +		public void CopyModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode)
 +		{
-+			string[] keysToCopy = ModLoader.ModLoader.modHotKeys.Select(x=>x.Value.displayName).ToArray();
++			string[] keysToCopy = ModLoader.ModContent.modHotKeys.Select(x=>x.Value.displayName).ToArray();
 +			this.CopyKeysFrom(profile, mode, keysToCopy);
 +		}
 +

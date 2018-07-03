@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.UI
 			{
 				if (UIModPacks.mods.Contains(mods[i]))
 				{
-					if (ModLoader.IsEnabled(mods[i]))
+					if (ModOrganiser.IsEnabled(mods[i]))
 					{
 						numModsEnabled++;
 					}
@@ -201,7 +201,7 @@ namespace Terraria.ModLoader.UI
 			foreach (string modname in modListItem.mods)
 			{
 				if (UIModPacks.mods.Contains(modname))
-					ModLoader.EnableMod(modname);
+					ModOrganiser.EnableMod(modname);
 			}
 			Main.menuMode = Interface.modPacksMenuID; // should reload, which should refresh enabled counts
 
@@ -242,12 +242,12 @@ namespace Terraria.ModLoader.UI
 			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
 			foreach (var item in UIModPacks.mods)
 			{
-				ModLoader.DisableMod(item);
+				ModOrganiser.DisableMod(item);
 			}
 			foreach (string modname in modListItem.mods)
 			{
 				if (UIModPacks.mods.Contains(modname))
-					ModLoader.EnableMod(modname);
+					ModOrganiser.EnableMod(modname);
 			}
 			Main.menuMode = Interface.reloadModsID; // should reload, which should refresh enabled counts
 

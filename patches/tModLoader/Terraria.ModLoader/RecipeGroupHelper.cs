@@ -66,7 +66,7 @@ namespace Terraria.ModLoader
 
 		internal static void AddRecipeGroups()
 		{
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				try
 				{
@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					ModLoader.DisableMod(mod.Name);
+					ModOrganiser.DisableMod(mod.Name);
 					throw new AddRecipesException(mod, "An error occured in adding recipe groups for " + mod.Name, e);
 				}
 			}

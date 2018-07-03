@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.Default
 					new MysteryTileInfo(modName, name);
 				infos.Add(info);
 
-				int type = ModLoader.GetMod(modName)?.TileType(name) ?? 0;
+				int type = ModOrganiser.GetMod(modName)?.TileType(name) ?? 0;
 				canRestore.Add((ushort)type);
 				if (type != 0)
 					canRestoreFlag = true;
@@ -98,7 +98,7 @@ namespace Terraria.ModLoader.Default
 
 		private void RestoreTiles(List<ushort> canRestore)
 		{
-			ushort mysteryType = (ushort)ModLoader.GetMod("ModLoader").TileType("MysteryTile");
+			ushort mysteryType = (ushort)ModOrganiser.GetMod("ModLoader").TileType("MysteryTile");
 			for (int x = 0; x < Main.maxTilesX; x++)
 			{
 				for (int y = 0; y < Main.maxTilesY; y++)
@@ -140,8 +140,8 @@ namespace Terraria.ModLoader.Default
 				}
 				truePendingID.Add(nextID);
 			}
-			ushort pendingType = (ushort)ModLoader.GetMod("ModLoader").TileType("PendingMysteryTile");
-			ushort mysteryType = (ushort)ModLoader.GetMod("ModLoader").TileType("MysteryTile");
+			ushort pendingType = (ushort)ModOrganiser.GetMod("ModLoader").TileType("PendingMysteryTile");
+			ushort mysteryType = (ushort)ModOrganiser.GetMod("ModLoader").TileType("MysteryTile");
 			for (int x = 0; x < Main.maxTilesX; x++)
 			{
 				for (int y = 0; y < Main.maxTilesY; y++)

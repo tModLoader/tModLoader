@@ -487,7 +487,7 @@ namespace Terraria.ModLoader.UI
 				if (SynchronizationContext.Current == null)
 					SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 				Task.Factory
-					.StartNew(ModLoader.FindMods)
+					.StartNew(ModOrganiser.FindMods)
 					.ContinueWith(task =>
 					{
 						PopulateFromJSON(task.Result, response);

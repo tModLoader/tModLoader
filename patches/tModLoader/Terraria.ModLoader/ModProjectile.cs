@@ -164,7 +164,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void AutoStaticDefaults()
 		{
-			Main.projectileTexture[projectile.type] = ModLoader.GetTexture(Texture);
+			Main.projectileTexture[projectile.type] = ModContent.GetTexture(Texture);
 			Main.projFrames[projectile.type] = 1;
 			if (projectile.hostile)
 			{

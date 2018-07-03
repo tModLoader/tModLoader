@@ -368,7 +368,7 @@
 +							}
 +							if (text.Length >= 8 && text.Substring(0, 8).ToLower() == "modpack=")
 +							{
-+								ModLoader.ModLoader.commandLineModPack = text.Substring(8);
++								ModLoader.ModOrganiser.commandLineModPack = text.Substring(8);
  							}
  							if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							{
@@ -382,7 +382,7 @@
  			Main.dedServ = true;
  			Main.showSplash = false;
  			this.Initialize();
-+			ModLoader.ModLoader.do_Load(null);
++			ModLoader.ModLoader.LoadMods(null);
  			while (Main.worldPathName == null || Main.worldPathName == "")
  			{
  				bool flag = true;

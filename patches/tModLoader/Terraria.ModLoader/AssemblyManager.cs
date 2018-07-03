@@ -283,7 +283,7 @@ namespace Terraria.ModLoader
 				ErrorLogger.LogMulti(ae.InnerExceptions.Select(e => new Action(() =>
 				{
 					var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
-					ModLoader.DisableMod(mod.Name);
+					ModOrganiser.DisableMod(mod.Name);
 					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
 				})));
 				return null;
@@ -291,7 +291,7 @@ namespace Terraria.ModLoader
 			catch (Exception e)
 			{
 				var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
-				ModLoader.DisableMod(mod.Name);
+				ModOrganiser.DisableMod(mod.Name);
 				ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
 				return null;
 			}

@@ -121,7 +121,7 @@ namespace Terraria.ModLoader.IO
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				ushort option = reader.ReadUInt16();
-				Mod mod = ModLoader.GetMod(modName);
+				Mod mod = ModOrganiser.GetMod(modName);
 				ushort newType = 0;
 				if (mod != null)
 				{

@@ -84,11 +84,11 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.npcHeadBossTexture, nextBossHead);
 			foreach (string texture in heads.Keys)
 			{
-				Main.npcHeadTexture[heads[texture]] = ModLoader.GetTexture(texture);
+				Main.npcHeadTexture[heads[texture]] = ModContent.GetTexture(texture);
 			}
 			foreach (string texture in bossHeads.Keys)
 			{
-				Main.npcHeadBossTexture[bossHeads[texture]] = ModLoader.GetTexture(texture);
+				Main.npcHeadBossTexture[bossHeads[texture]] = ModContent.GetTexture(texture);
 			}
 			foreach (int npc in npcToBossHead.Keys)
 			{

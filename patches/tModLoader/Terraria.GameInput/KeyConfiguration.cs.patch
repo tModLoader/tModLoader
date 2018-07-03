@@ -13,7 +13,7 @@
  			{
  				this.KeyStatus.Add(current, new List<string>());
 +			}
-+			foreach (var current in ModLoader.ModLoader.modHotKeys)
++			foreach (var current in ModLoader.ModContent.modHotKeys)
 +			{
 +				this.KeyStatus.Add(current.Value.displayName, new List<string>());
  			}

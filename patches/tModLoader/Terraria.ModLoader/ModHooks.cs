@@ -147,7 +147,7 @@ namespace Terraria.ModLoader
 		//in Terraria.Main.UpdateMusic before updating music boxes call ModHooks.UpdateMusic(ref this.newMusic);
 		internal static void UpdateMusic(ref int music, ref MusicPriority priority)
 		{
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				int modMusic = -1;
 				MusicPriority modPriority = MusicPriority.BiomeLow;
@@ -163,7 +163,7 @@ namespace Terraria.ModLoader
 		// Pretty much deprecated. 
 		internal static void HotKeyPressed()
 		{
-			foreach (var modHotkey in ModLoader.modHotKeys)
+			foreach (var modHotkey in ModContent.modHotKeys)
 			{
 				if (PlayerInput.Triggers.Current.KeyStatus[modHotkey.Value.displayName])
 				{
@@ -174,7 +174,7 @@ namespace Terraria.ModLoader
 
 		internal static void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
 		{
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				mod.ModifyTransformMatrix(ref Transform);
 			}
@@ -183,7 +183,7 @@ namespace Terraria.ModLoader
 		internal static void ModifySunLight(ref Color tileColor, ref Color backgroundColor)
 		{
 			if (Main.gameMenu) return;
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				mod.ModifySunLightColor(ref tileColor, ref backgroundColor);
 			}
@@ -192,7 +192,7 @@ namespace Terraria.ModLoader
 		internal static void ModifyLightingBrightness(ref float negLight, ref float negLight2)
 		{
 			float scale = 1f;
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				mod.ModifyLightingBrightness(ref scale);
 			}
@@ -212,7 +212,7 @@ namespace Terraria.ModLoader
 
 		internal static void PostDrawFullscreenMap(ref string mouseText)
 		{
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				mod.PostDrawFullscreenMap(ref mouseText);
 			}
@@ -221,7 +221,7 @@ namespace Terraria.ModLoader
 		internal static void UpdateUI(GameTime gameTime)
 		{
 			if (Main.gameMenu) return;
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				mod.UpdateUI(gameTime);
 			}
@@ -233,7 +233,7 @@ namespace Terraria.ModLoader
 			{
 				layer.Active = true;
 			}
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				mod.ModifyInterfaceLayers(layers);
 			}
@@ -241,7 +241,7 @@ namespace Terraria.ModLoader
 
 		internal static void PostDrawInterface(SpriteBatch spriteBatch)
 		{
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				mod.PostDrawInterface(spriteBatch);
 			}
@@ -249,7 +249,7 @@ namespace Terraria.ModLoader
 
 		internal static void PostUpdateInput()
 		{
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				mod.PostUpdateInput();
 			}
@@ -257,7 +257,7 @@ namespace Terraria.ModLoader
 
 		internal static void PreSaveAndQuit()
 		{
-			foreach (Mod mod in ModLoader.mods.Values)
+			foreach (Mod mod in ModOrganiser.mods.Values)
 			{
 				mod.PreSaveAndQuit();
 			}

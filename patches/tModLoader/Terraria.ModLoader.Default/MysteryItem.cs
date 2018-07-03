@@ -56,7 +56,7 @@ namespace Terraria.ModLoader.Default
 		public override void Load(TagCompound tag)
 		{
 			Setup(tag);
-			int type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
+			int type = ModOrganiser.GetMod(modName)?.ItemType(itemName) ?? 0;
 			if (type > 0)
 			{
 				item.netDefaults(type);

@@ -48,7 +48,7 @@
  			{
  				this.KeyStatus.Add(current, false);
 +			}
-+			foreach (var current in ModLoader.ModLoader.modHotKeys)
++			foreach (var current in ModLoader.ModContent.modHotKeys)
 +			{
 +				this.KeyStatus.Add(current.Value.displayName, false);
  			}

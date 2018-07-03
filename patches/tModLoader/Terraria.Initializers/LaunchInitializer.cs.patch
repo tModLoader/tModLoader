@@ -26,7 +26,7 @@
 +			{
 +				Program.LaunchParameters["-savedirectory"] = Path.Combine(savedirectory, "ModLoader");
 +			}
-+			
++
 +			// Vanilla below here
  			string path;
  			if ((path = LaunchInitializer.TryParameter(new string[]
@@ -41,7 +41,7 @@
 +					"-modpack"
 +				})) != null)
 +			{
-+				ModLoader.ModLoader.commandLineModPack = modPack;
++				ModLoader.ModOrganiser.commandLineModPack = modPack;
 +			}
  		}
  
@@ -71,7 +71,7 @@
 +				}
 +
 +				Main.showSplash = false;
-+				ModLoader.ModLoader.PostLoad += () =>
++				ModContent.PostLoad += () =>
 +				{
 +					WorldGen.clearWorld();
 +					Main.LoadPlayers();
@@ -87,7 +87,7 @@
  			{
  				LanguageManager.Instance.SetLanguage(text);
  			}
-+			
++
 +			// We handle the build parameter this far in
 +			// so vanilla can take care of loading the appropriate localization keys beforehand
 +			if ((text = LaunchInitializer.TryParameter(new string[]
@@ -99,7 +99,7 @@
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(text);
 +			}
-+			
++
  			string worldName;
  			if ((worldName = LaunchInitializer.TryParameter(new string[]
  				{

@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Default
 		public override string Description => Language.GetTextValue("tModLoader.CommandModListDescription");
 		public override void Action(CommandCaller caller, string input, string[] args)
 		{
-			var mods = ModLoader.LoadedMods.Skip(1);//ignore the built in Modloader mod
+			var mods = ModOrganiser.LoadedMods.Skip(1);//ignore the built in Modloader mod
 
 			if (Main.netMode == 1) //multiplayer client
 			{
