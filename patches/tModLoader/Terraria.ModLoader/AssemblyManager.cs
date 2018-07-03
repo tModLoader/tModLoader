@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -173,7 +174,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static readonly IDictionary<string, LoadedMod> loadedMods = new Dictionary<string, LoadedMod>();
-		private static readonly IDictionary<string, Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
+		private static readonly IDictionary<string, Assembly> loadedAssemblies = new ConcurrentDictionary<string, Assembly>();
 
 		static AssemblyManager()
 		{
