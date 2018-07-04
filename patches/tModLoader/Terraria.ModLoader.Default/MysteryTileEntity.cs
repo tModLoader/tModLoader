@@ -41,7 +41,7 @@ namespace Terraria.ModLoader.Default
 
 		internal void TryRestore(ref ModTileEntity newEntity)
 		{
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			ModTileEntity tileEntity = mod?.GetTileEntity(tileEntityName);
 			if (tileEntity != null)
 			{

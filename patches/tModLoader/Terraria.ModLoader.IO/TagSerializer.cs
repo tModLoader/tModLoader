@@ -69,7 +69,7 @@ namespace Terraria.ModLoader.IO
 			if (type != null)
 				return typeNameCache[name] = type;
 
-			foreach (var mod in ModOrganiser.LoadedMods)
+			foreach (var mod in ModLoader.LoadedMods)
 			{
 				type = mod.Code?.GetType(name);
 				if (type != null)

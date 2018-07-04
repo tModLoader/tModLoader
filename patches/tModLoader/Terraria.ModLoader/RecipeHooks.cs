@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 
 		internal static void AddRecipes()
 		{
-			foreach (Mod mod in ModOrganiser.mods.Values)
+			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				try
 				{
@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 
 		internal static void PostAddRecipes()
 		{
-			foreach (Mod mod in ModOrganiser.mods.Values)
+			foreach (Mod mod in ModLoader.mods.Values)
 			{
 				try
 				{

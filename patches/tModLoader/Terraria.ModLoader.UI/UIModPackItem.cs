@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.UI
 			{
 				if (UIModPacks.mods.Contains(mods[i]))
 				{
-					if (ModOrganiser.IsEnabled(mods[i]))
+					if (ModOrganiser.IsModEnabled(mods[i]))
 					{
 						numModsEnabled++;
 					}

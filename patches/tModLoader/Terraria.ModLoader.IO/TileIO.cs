@@ -95,11 +95,11 @@ namespace Terraria.ModLoader.IO
 				ushort type = (ushort)tileTag.GetShort("value");
 				string modName = tileTag.GetString("mod");
 				string name = tileTag.GetString("name");
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				tables.tiles[type] = mod == null ? (ushort)0 : (ushort)mod.TileType(name);
 				if (tables.tiles[type] == 0)
 				{
-					tables.tiles[type] = (ushort)ModOrganiser.GetMod("ModLoader").TileType("PendingMysteryTile");
+					tables.tiles[type] = (ushort)ModLoader.GetMod("ModLoader").TileType("PendingMysteryTile");
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
 				}
@@ -110,7 +110,7 @@ namespace Terraria.ModLoader.IO
 				ushort wall = (ushort)wallTag.GetShort("value");
 				string modName = wallTag.GetString("mod");
 				string name = wallTag.GetString("name");
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				tables.walls[wall] = mod == null ? (ushort)0 : (ushort)mod.WallType(name);
 			}
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
@@ -127,11 +127,11 @@ namespace Terraria.ModLoader.IO
 				ushort type = reader.ReadUInt16();
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				tables.tiles[type] = mod == null ? (ushort)0 : (ushort)mod.TileType(name);
 				if (tables.tiles[type] == 0)
 				{
-					tables.tiles[type] = (ushort)ModOrganiser.GetMod("ModLoader").TileType("PendingMysteryTile");
+					tables.tiles[type] = (ushort)ModLoader.GetMod("ModLoader").TileType("PendingMysteryTile");
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
 				}
@@ -143,7 +143,7 @@ namespace Terraria.ModLoader.IO
 				ushort wall = reader.ReadUInt16();
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				tables.walls[wall] = mod == null ? (ushort)0 : (ushort)mod.WallType(name);
 			}
 			ReadTileData(reader, tables);
@@ -347,7 +347,7 @@ namespace Terraria.ModLoader.IO
 					tile.frameX = -1;
 					tile.frameY = -1;
 				}
-				if (tile.type == ModOrganiser.GetMod("ModLoader").TileType("PendingMysteryTile")
+				if (tile.type == ModLoader.GetMod("ModLoader").TileType("PendingMysteryTile")
 					&& tables.tileNames.ContainsKey(saveType))
 				{
 					MysteryTileInfo info;
@@ -360,7 +360,7 @@ namespace Terraria.ModLoader.IO
 					{
 						info = new MysteryTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
 					}
-					MysteryTilesWorld modWorld = (MysteryTilesWorld)ModOrganiser.GetMod("ModLoader").GetModWorld("MysteryTilesWorld");
+					MysteryTilesWorld modWorld = (MysteryTilesWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryTilesWorld");
 					int pendingFrameID = modWorld.pendingInfos.IndexOf(info);
 					if (pendingFrameID < 0)
 					{
@@ -579,7 +579,7 @@ namespace Terraria.ModLoader.IO
 					int slot = reader.ReadUInt16();
 					string modName = reader.ReadString();
 					string name = reader.ReadString();
-					Mod mod = ModOrganiser.GetMod(modName);
+					Mod mod = ModLoader.GetMod(modName);
 					tables.headSlots[slot] = mod?.GetItem(name).item.headSlot ?? 0;
 				}
 				count = reader.ReadUInt16();
@@ -588,7 +588,7 @@ namespace Terraria.ModLoader.IO
 					int slot = reader.ReadUInt16();
 					string modName = reader.ReadString();
 					string name = reader.ReadString();
-					Mod mod = ModOrganiser.GetMod(modName);
+					Mod mod = ModLoader.GetMod(modName);
 					tables.bodySlots[slot] = mod?.GetItem(name).item.bodySlot ?? 0;
 				}
 				count = reader.ReadUInt16();
@@ -597,7 +597,7 @@ namespace Terraria.ModLoader.IO
 					int slot = reader.ReadUInt16();
 					string modName = reader.ReadString();
 					string name = reader.ReadString();
-					Mod mod = ModOrganiser.GetMod(modName);
+					Mod mod = ModLoader.GetMod(modName);
 					tables.legSlots[slot] = mod?.GetItem(name).item.legSlot ?? 0;
 				}
 				ReadContainerData(reader, tables);
@@ -714,7 +714,7 @@ namespace Terraria.ModLoader.IO
 		{
 			foreach (TagCompound tag in list)
 			{
-				Mod mod = ModOrganiser.GetMod(tag.GetString("mod"));
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
 				ModTileEntity tileEntity = mod?.GetTileEntity(tag.GetString("name"));
 				ModTileEntity newEntity;
 				if (tileEntity != null)
@@ -741,7 +741,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					tileEntity = ModOrganiser.GetMod("ModLoader").GetTileEntity("MysteryTileEntity");
+					tileEntity = ModLoader.GetMod("ModLoader").GetTileEntity("MysteryTileEntity");
 					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));

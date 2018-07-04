@@ -186,7 +186,7 @@ namespace Terraria.ModLoader
 					player.inventory[k] = items[k];
 				}
 				Item bag = new Item();
-				bag.SetDefaults(ModOrganiser.GetMod("ModLoader").ItemType("StartBag"));
+				bag.SetDefaults(ModLoader.GetMod("ModLoader").ItemType("StartBag"));
 				for (int k = 49; k < items.Count; k++)
 				{
 					((StartBag)bag.modItem).AddItem(items[k]);
@@ -310,7 +310,7 @@ namespace Terraria.ModLoader
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				byte[] data = reader.ReadBytes(reader.ReadByte());
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				ModPlayer modPlayer = mod == null ? null : player.GetModPlayer(mod, name);
 				if (modPlayer != null)
 				{

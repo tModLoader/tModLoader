@@ -13,45 +13,37 @@ using Terraria.UI;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class serves as a central place for the sorting and handling dependencies of mods
+	/// This class serves as a central place for the sorting and handling dependencies of mods, basically everything in regards to organisation of mods
 	/// </summary>
 	public static class ModOrganiser
 	{
-		private static readonly Stack<string> loadOrder = new Stack<string>();
-		private static WeakReference[] loadedModsWeakReferences = new WeakReference[0];
-		private static Mod[] loadedMods = new Mod[0];
-		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
+		internal static WeakReference[] loadedModsWeakReferences = new WeakReference[0];
 		internal static string commandLineModPack = "";
-		
-		public static int ModCount => loadedMods.Length;
-
-		/// <summary>
-		/// Gets the instance of the Mod with the specified name.
-		/// </summary>
-		public static Mod GetMod(string name)
-		{
-			mods.TryGetValue(name, out Mod m);
-			return m;
-		}
-
-		public static Mod GetMod(int index)
-		{
-			return index >= 0 && index < loadedMods.Length ? loadedMods[index] : null;
-		}
-
-		public static Mod[] LoadedMods => (Mod[])loadedMods.Clone();
-		public static string[] LoadedModsNames => (string[]) loadedMods.Select(x => x.Name).ToArray().Clone();
-
-		internal static void UnloadMods()
-		{
-			while (loadOrder.Count > 0)
-				GetMod(loadOrder.Pop()).UnloadContent();
-
-			loadOrder.Clear();
-			loadedMods = new Mod[0];
-		}
-		
 		internal static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
+		
+		/// <summary>A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file.</summary>
+		private static HashSet<string> _enabledMods;
+		internal static HashSet<string> EnabledMods
+		{
+			get
+			{
+				if (_enabledMods == null)
+				{
+					try
+					{
+						string path = ModLoader.ModPath + Path.DirectorySeparatorChar + "enabled.json";
+						_enabledMods = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(path));
+					}
+					catch
+					{
+						_enabledMods = new HashSet<string>();
+					}
+				}
+				return _enabledMods;
+			}
+		}
+		
+		// TODO needs description
 		internal static LocalMod[] FindMods()
 		{
 			Directory.CreateDirectory(ModLoader.ModPath);
@@ -84,6 +76,7 @@ namespace Terraria.ModLoader
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 		}
 		
+		// TODO needs description
 		private static bool CommandLineModPackOverride()
 		{
 			if (commandLineModPack == "")
@@ -134,7 +127,8 @@ namespace Terraria.ModLoader
 			}
 		}
 		
-		internal static IDictionary<string, Mod> LoadInstances()
+		// TODO needs description
+		internal static IList<Mod> LoadInstances()
 		{
 			//load all referenced assemblies before mods for compiling
 			ModCompile.LoadReferences();
@@ -143,7 +137,7 @@ namespace Terraria.ModLoader
 				return null;
 
 			Interface.loadMods.SetProgressFinding();
-			var modsToLoad = FindMods().Where(mod => IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
+			var modsToLoad = FindMods().Where(mod => IsModEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
 
 			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
 			if (Main.oldKeyState.PressingShift())
@@ -172,18 +166,11 @@ namespace Terraria.ModLoader
 				return null;
 
 			modInstances.Insert(0, new ModLoaderMod());
-			loadedMods = modInstances.ToArray();
-			loadedModsWeakReferences = loadedMods.Skip(1).Select(x => new WeakReference(x)).ToArray();
-			foreach (var mod in modInstances)
-			{
-				loadOrder.Push(mod.Name);
-				mods[mod.Name] = mod;
-			}
-
-			return new Dictionary<string, Mod>(mods);
+			return modInstances;
 		}
 		
-		private static bool VerifyNames(List<LocalMod> mods)
+		// TODO needs description
+		private static bool VerifyNames(IEnumerable<LocalMod> mods)
 		{
 			var names = new HashSet<string>();
 			foreach (var mod in mods)
@@ -215,6 +202,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		// TODO needs description
 		internal static void EnsureDependenciesExist(ICollection<LocalMod> mods, bool includeWeak)
 		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
@@ -233,6 +221,7 @@ namespace Terraria.ModLoader
 				throw new ModSortingException(errored, errorLog.ToString());
 		}
 
+		// TODO needs description
 		internal static void EnsureTargetVersionsMet(ICollection<LocalMod> mods)
 		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
@@ -251,6 +240,7 @@ namespace Terraria.ModLoader
 				throw new ModSortingException(errored, errorLog.ToString());
 		}
 
+		// TODO needs description
 		internal static void EnsureSyncedDependencyStability(TopoSort<LocalMod> synced, TopoSort<LocalMod> full)
 		{
 			var errored = new HashSet<LocalMod>();
@@ -299,6 +289,7 @@ namespace Terraria.ModLoader
 			}
 		}
 		
+		// TODO needs description
 		private static TopoSort<LocalMod> BuildSort(ICollection<LocalMod> mods)
 		{
 			var nameMap = mods.ToDictionary(mod => mod.Name);
@@ -307,6 +298,7 @@ namespace Terraria.ModLoader
 				mod => mod.properties.sortBefore.Where(nameMap.ContainsKey).Select(name => nameMap[name]));
 		}
 
+		// TODO needs description
 		internal static List<LocalMod> Sort(ICollection<LocalMod> mods)
 		{
 			var preSorted = mods.OrderBy(mod => mod.Name).ToList();
@@ -331,49 +323,6 @@ namespace Terraria.ModLoader
 		}
 		
 		internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
-
-		/// <summary>A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file.</summary>
-		private static HashSet<string> _enabledMods;
-
-		internal static HashSet<string> EnabledMods
-		{
-			get
-			{
-				if (_enabledMods == null)
-				{
-					try
-					{
-						string path = ModLoader.ModPath + Path.DirectorySeparatorChar + "enabled.json";
-						_enabledMods = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(path));
-					}
-					catch
-					{
-						_enabledMods = new HashSet<string>();
-					}
-				}
-				return _enabledMods;
-			}
-		}
-
-		internal static bool IsEnabled(string modName) => EnabledMods.Contains(modName);
-
-		internal static void EnableMod(string modName) => SetModEnabled(modName, true);
-		internal static void DisableMod(string modName) => SetModEnabled(modName, false);
-
-		internal static void SetModEnabled(string modName, bool active)
-		{
-			if (active)
-				EnabledMods.Add(modName);
-			else
-				EnabledMods.Remove(modName);
-
-			//save
-			Directory.CreateDirectory(ModLoader.ModPath);
-			string path = ModLoader.ModPath + Path.DirectorySeparatorChar + "enabled.json";
-			_enabledMods.IntersectWith(FindMods().Select(x => x.Name)); // Clear out mods that no longer exist.
-			string json = JsonConvert.SerializeObject(EnabledMods, Formatting.Indented);
-			File.WriteAllText(path, json);
-		}
 		
 		/// <summary>
 		/// Several arrays and other fields hold references to various classes from mods, we need to clean them up to give properly coded mods a chance to be completely free of references so that they can be collected by the garbage collection. For most things eventually they will be replaced during gameplay, but we want the old instance completely gone quickly.
@@ -416,6 +365,25 @@ namespace Terraria.ModLoader
 						ErrorLogger.Log((weakReference.Target as Mod)?.Name ?? "null" + " not fully unloaded during unload.");
 				}
 			}
+		}
+
+		internal static bool IsModEnabled(string modName) => EnabledMods.Contains(modName);
+		internal static void EnableMod(string modName) => SetModEnabled(modName, true);
+		internal static void DisableMod(string modName) => SetModEnabled(modName, false);
+
+		internal static void SetModEnabled(string modName, bool active)
+		{
+			if (active)
+				EnabledMods.Add(modName);
+			else
+				EnabledMods.Remove(modName);
+
+			//save
+			Directory.CreateDirectory(ModLoader.ModPath);
+			string path = ModLoader.ModPath + Path.DirectorySeparatorChar + "enabled.json";
+			_enabledMods.IntersectWith(ModOrganiser.FindMods().Select(x => x.Name)); // Clear out mods that no longer exist.
+			string json = JsonConvert.SerializeObject(EnabledMods, Formatting.Indented);
+			File.WriteAllText(path, json);
 		}
 	}
 }

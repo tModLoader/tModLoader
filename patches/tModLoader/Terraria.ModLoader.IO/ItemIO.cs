@@ -72,7 +72,7 @@ namespace Terraria.ModLoader.IO
 			}
 			else
 			{
-				int type = ModOrganiser.GetMod(modName)?.ItemType(tag.GetString("name")) ?? 0;
+				int type = ModLoader.GetMod(modName)?.ItemType(tag.GetString("name")) ?? 0;
 				if (type > 0)
 				{
 					item.netDefaults(type);
@@ -83,7 +83,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					item.netDefaults(ModOrganiser.GetMod("ModLoader").ItemType("MysteryItem"));
+					item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
 					((MysteryItem)item.modItem).Setup(tag);
 				}
 			}
@@ -93,7 +93,7 @@ namespace Terraria.ModLoader.IO
 			{
 				string prefixMod = tag.GetString("modPrefixMod");
 				string prefixName = tag.GetString("modPrefixName");
-				item.Prefix(ModOrganiser.GetMod(prefixMod)?.PrefixType(prefixName) ?? 0);
+				item.Prefix(ModLoader.GetMod(prefixMod)?.PrefixType(prefixName) ?? 0);
 			}
 			item.stack = tag.Get<int?>("stack") ?? 1;
 			item.favorited = tag.GetBool("fav");
@@ -135,7 +135,7 @@ namespace Terraria.ModLoader.IO
 		{
 			foreach (var tag in list)
 			{
-				var mod = ModOrganiser.GetMod(tag.GetString("mod"));
+				var mod = ModLoader.GetMod(tag.GetString("mod"));
 				var globalItem = mod?.GetGlobalItem(tag.GetString("name"));
 				if (globalItem != null)
 				{
@@ -152,7 +152,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					item.GetGlobalItem<MysteryGlobalItem>(ModOrganiser.GetMod("ModLoader")).data.Add(tag);
+					item.GetGlobalItem<MysteryGlobalItem>(ModLoader.GetMod("ModLoader")).data.Add(tag);
 				}
 			}
 		}
@@ -232,7 +232,7 @@ namespace Terraria.ModLoader.IO
 			else
 			{
 				string itemName = reader.ReadString();
-				int type = ModOrganiser.GetMod(modName)?.ItemType(itemName) ?? 0;
+				int type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
 				byte[] data = LegacyModData(type == 0 ? int.MaxValue : type, reader, hasGlobalSaving);
 				if (type != 0)
 				{
@@ -241,7 +241,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					item.netDefaults(ModOrganiser.GetMod("ModLoader").ItemType("MysteryItem"));
+					item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
 					var tag = new TagCompound
 					{
 						["mod"] = modName,
@@ -323,7 +323,7 @@ namespace Terraria.ModLoader.IO
 						string modName = reader.ReadString();
 						string globalName = reader.ReadString();
 						byte[] globalData = reader.ReadBytes(reader.ReadUInt16());
-						GlobalItem globalItem = ModOrganiser.GetMod(modName)?.GetGlobalItem(globalName);
+						GlobalItem globalItem = ModLoader.GetMod(modName)?.GetGlobalItem(globalName);
 						//could support legacy global data in mystery globals but eh...
 						if (globalItem != null && globalData.Length > 0)
 						{

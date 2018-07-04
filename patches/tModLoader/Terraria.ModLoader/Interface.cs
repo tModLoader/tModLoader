@@ -331,7 +331,7 @@ namespace Terraria.ModLoader
 				for (int k = 0; k < mods.Length; k++)
 				{
 					Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
-					Console.WriteLine(" (" + (ModOrganiser.IsEnabled(mods[k].Name) ? "enabled" : "disabled") + ")");
+					Console.WriteLine(" (" + (ModOrganiser.IsModEnabled(mods[k].Name) ? "enabled" : "disabled") + ")");
 				}
 				if (mods.Length == 0)
 				{

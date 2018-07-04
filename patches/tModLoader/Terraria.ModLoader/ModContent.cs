@@ -19,10 +19,13 @@ namespace Terraria.ModLoader
 	{
 		internal static readonly IDictionary<string, ModHotKey> modHotKeys = new Dictionary<string, ModHotKey>();
 
-		// TODO is this ever even used?
+		// An action performed after content loading
 		internal static Action PostLoad;
 
-		// Responsible for loading all content by loaded mod instances
+		/// <summary>
+		/// Responsible for loading all content by loaded mod instances
+		/// </summary>
+		/// <param name="modInstances">The mods' instances loaded by ModOrganiser</param>
 		internal static void LoadContent(IDictionary<string, Mod> modInstances)
 		{
 			if (Main.dedServ)
@@ -176,8 +179,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload()
 		{
-			ModOrganiser.UnloadMods();
-
+			ModLoader.UnloadMods();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
@@ -200,14 +202,13 @@ namespace Terraria.ModLoader
 			GlobalBgStyleLoader.Unload();
 			WaterStyleLoader.Unload();
 			WaterfallStyleLoader.Unload();
-			ModOrganiser.mods.Clear();
+			ModLoader.mods.Clear();
 			WorldHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++)
 			{
 				Main.recipe[k] = new Recipe();
 			}
-
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
 			Recipe.SetupRecipes();
@@ -297,7 +298,7 @@ namespace Terraria.ModLoader
 				Lang._buffDescriptionCache[buff.Type] = SetLocalizedText(dict, text);
 			}
 
-			foreach (Mod mod in ModOrganiser.LoadedMods)
+			foreach (Mod mod in ModLoader.LoadedMods)
 			{
 				foreach (ModTranslation translation in mod.translations.Values)
 				{
@@ -342,7 +343,7 @@ namespace Terraria.ModLoader
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			if (mod == null)
 				throw new MissingResourceException("Missing mod: " + name);
 
@@ -360,7 +361,7 @@ namespace Terraria.ModLoader
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.FileExists(subName);
 		}
 
@@ -378,7 +379,7 @@ namespace Terraria.ModLoader
 			if (modName == "Terraria")
 				return Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
 
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			if (mod == null)
 				throw new MissingResourceException("Missing mod: " + name);
 
@@ -399,7 +400,7 @@ namespace Terraria.ModLoader
 			if (modName == "Terraria")
 				return File.Exists(ModLoader.ImagePath + Path.DirectorySeparatorChar + name + ".xnb");
 
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.TextureExists(subName);
 		}
 
@@ -415,7 +416,7 @@ namespace Terraria.ModLoader
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			if (mod == null)
 				throw new MissingResourceException("Missing mod: " + name);
 
@@ -433,7 +434,7 @@ namespace Terraria.ModLoader
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.SoundExists(subName);
 		}
 
@@ -450,7 +451,7 @@ namespace Terraria.ModLoader
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			if (mod == null)
 			{
 				throw new MissingResourceException("Missing mod: " + name);
@@ -471,7 +472,7 @@ namespace Terraria.ModLoader
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.MusicExists(subName);
 		}
 	}

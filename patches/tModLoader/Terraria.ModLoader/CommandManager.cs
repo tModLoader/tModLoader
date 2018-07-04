@@ -64,7 +64,7 @@ namespace Terraria.ModLoader
 
 			if (modName != null)
 			{
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				if (mod == null)
 				{
 					caller.Reply("Unknown Mod: " + modName, Color.Red);

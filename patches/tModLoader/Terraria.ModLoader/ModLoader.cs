@@ -73,6 +73,12 @@ namespace Terraria.ModLoader
 		internal static bool reloadAfterBuild = false;
 		internal static bool buildAll = false;
 
+		// TODO cb suggested loadOrder may not be needed as mods are already in load order
+		private static readonly Stack<string> loadOrder = new Stack<string>();
+		internal static Mod[] loadedMods = new Mod[0];
+		internal static readonly IDictionary<string, Mod> mods = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
+		public static int ModCount => loadedMods.Length;
+		
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
 		internal static bool isModder;
@@ -97,7 +103,32 @@ namespace Terraria.ModLoader
 			set { steamID64 = value; }
 		}
 
+		/// <summary>
+		/// Gets the instance of the Mod with the specified name.
+		/// </summary>
+		public static Mod GetMod(string name)
+		{
+			mods.TryGetValue(name, out Mod m);
+			return m;
+		}
 
+		public static Mod GetMod(int index)
+		{
+			return index >= 0 && index < loadedMods.Length ? loadedMods[index] : null;
+		}
+
+		public static Mod[] LoadedMods => (Mod[])loadedMods.Clone();
+		public static string[] LoadedModsNames => (string[]) loadedMods.Select(x => x.Name).ToArray().Clone();
+
+		internal static void UnloadMods()
+		{
+			while (loadOrder.Count > 0)
+				GetMod(loadOrder.Pop()).UnloadContent();
+
+			loadOrder.Clear();
+			loadedMods = new Mod[0];
+		}
+		
 		internal static void LoadAsync()
 		{
 			ThreadPool.QueueUserWorkItem(new WaitCallback(LoadMods), 1);
@@ -105,16 +136,26 @@ namespace Terraria.ModLoader
 
 		internal static void LoadMods(object threadContext)
 		{
-			// TODO: how/when is threadContent used? See Interface.cs line 373
+			// TODO: how/when is threadContext used? See Interface.cs line 373
 
+			// Attempt loading mod instances from the organiser
 			var instances = ModOrganiser.LoadInstances();
 			if (instances == null)
 			{
+				// No instances found
 				Main.menuMode = Interface.errorMessageID;
 				return;
 			}
 			
-			ModContent.LoadContent(instances);
+			// Instances found, update loadedMods/loadOrder/mods arrays and load the content
+			loadedMods = instances.ToArray();
+			ModOrganiser.loadedModsWeakReferences = loadedMods.Skip(1).Select(x => new WeakReference(x)).ToArray();
+			foreach (var mod in instances)
+			{
+				loadOrder.Push(mod.Name);
+				mods[mod.Name] = mod;
+			}
+			ModContent.LoadContent(new Dictionary<string, Mod>(mods));
 		}
 
 
@@ -169,30 +210,30 @@ namespace Terraria.ModLoader
 
 		internal static void SaveConfiguration()
 		{
-			Main.Configuration.Put("ModBrowserPassphrase", ModLoader.modBrowserPassphrase);
-			Main.Configuration.Put("SteamID64", ModLoader.steamID64);
+			Main.Configuration.Put("ModBrowserPassphrase", modBrowserPassphrase);
+			Main.Configuration.Put("SteamID64", steamID64);
 			Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
 			Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
-			Main.Configuration.Put("DontRemindModBrowserUpdateReload", ModLoader.dontRemindModBrowserUpdateReload);
-			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", ModLoader.dontRemindModBrowserDownloadEnable);
-			Main.Configuration.Put("MusicStreamMode", ModLoader.musicStreamMode);
-			Main.Configuration.Put("AlwaysLogExceptions", ModLoader.alwaysLogExceptions);
-			Main.Configuration.Put("RemoveForcedMinimumZoom", ModLoader.removeForcedMinimumZoom);
-			Main.Configuration.Put("AllowGreaterResolutions", ModLoader.allowGreaterResolutions);
+			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
+			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
+			Main.Configuration.Put("MusicStreamMode", musicStreamMode);
+			Main.Configuration.Put("AlwaysLogExceptions", alwaysLogExceptions);
+			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
+			Main.Configuration.Put("AllowGreaterResolutions", allowGreaterResolutions);
 		}
 
 		internal static void LoadConfiguration()
 		{
-			Main.Configuration.Get<string>("ModBrowserPassphrase", ref ModLoader.modBrowserPassphrase);
-			Main.Configuration.Get<string>("SteamID64", ref ModLoader.steamID64);
+			Main.Configuration.Get<string>("ModBrowserPassphrase", ref modBrowserPassphrase);
+			Main.Configuration.Get<string>("SteamID64", ref steamID64);
 			Main.Configuration.Get<bool>("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
 			Main.Configuration.Get<bool>("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
-			Main.Configuration.Get<bool>("DontRemindModBrowserUpdateReload", ref ModLoader.dontRemindModBrowserUpdateReload);
-			Main.Configuration.Get<bool>("DontRemindModBrowserDownloadEnable", ref ModLoader.dontRemindModBrowserDownloadEnable);
-			Main.Configuration.Get<byte>("MusicStreamMode", ref ModLoader.musicStreamMode);
-			Main.Configuration.Get<bool>("AlwaysLogExceptions", ref ModLoader.alwaysLogExceptions);
-			Main.Configuration.Get<bool>("RemoveForcedMinimumZoom", ref ModLoader.removeForcedMinimumZoom);
-			Main.Configuration.Get<bool>("AllowGreaterResolutions", ref ModLoader.removeForcedMinimumZoom);
+			Main.Configuration.Get<bool>("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
+			Main.Configuration.Get<bool>("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
+			Main.Configuration.Get<byte>("MusicStreamMode", ref musicStreamMode);
+			Main.Configuration.Get<bool>("AlwaysLogExceptions", ref alwaysLogExceptions);
+			Main.Configuration.Get<bool>("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
+			Main.Configuration.Get<bool>("AllowGreaterResolutions", ref removeForcedMinimumZoom);
 		}
 
 		/// <summary>

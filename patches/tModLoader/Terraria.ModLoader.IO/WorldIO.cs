@@ -168,7 +168,7 @@ namespace Terraria.ModLoader.IO
 			int nextFreeNPC = 0;
 			foreach (TagCompound tag in list)
 			{
-				Mod mod = ModOrganiser.GetMod(tag.GetString("mod"));
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
 				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
 				if (type > 0)
 				{
@@ -194,7 +194,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					((MysteryWorld)ModOrganiser.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryNPCs.Add(tag);
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryNPCs.Add(tag);
 				}
 			}
 		}
@@ -221,7 +221,7 @@ namespace Terraria.ModLoader.IO
 		{
 			foreach (var tag in list)
 			{
-				Mod mod = ModOrganiser.GetMod(tag.GetString("mod"));
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
 				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
 				if (type > 0)
 				{
@@ -229,7 +229,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					((MysteryWorld)ModOrganiser.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryKillCounts.Add(tag);
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryKillCounts.Add(tag);
 				}
 			}
 		}
@@ -251,7 +251,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadAnglerQuest(TagCompound tag)
 		{
-			var mod = ModOrganiser.GetMod(tag.GetString("mod"));
+			var mod = ModLoader.GetMod(tag.GetString("mod"));
 			int type = mod?.ItemType(tag.GetString("itemName")) ?? 0;
 			if (type > 0)
 			{
@@ -296,7 +296,7 @@ namespace Terraria.ModLoader.IO
 			}
 			foreach (TagCompound tag in list)
 			{
-				Mod mod = ModOrganiser.GetMod(tag.GetString("mod"));
+				Mod mod = ModLoader.GetMod(tag.GetString("mod"));
 				int type = mod?.NPCType(tag.GetString("name")) ?? 0;
 				if (type > 0)
 				{
@@ -330,7 +330,7 @@ namespace Terraria.ModLoader.IO
 		{
 			foreach (var tag in list)
 			{
-				var mod = ModOrganiser.GetMod(tag.GetString("mod"));
+				var mod = ModLoader.GetMod(tag.GetString("mod"));
 				var modWorld = mod?.GetModWorld(tag.GetString("name"));
 				if (modWorld != null)
 				{
@@ -349,7 +349,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					((MysteryWorld)ModOrganiser.GetMod("ModLoader").GetModWorld("MysteryWorld")).data.Add(tag);
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).data.Add(tag);
 				}
 			}
 		}
@@ -473,7 +473,7 @@ namespace Terraria.ModLoader.IO
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				int count = reader.ReadInt32();
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				int type = mod == null ? 0 : mod.NPCType(name);
 				if (type > 0)
 				{
@@ -486,7 +486,7 @@ namespace Terraria.ModLoader.IO
 		{
 			string modName = reader.ReadString();
 			string name = reader.ReadString();
-			Mod mod = ModOrganiser.GetMod(modName);
+			Mod mod = ModLoader.GetMod(modName);
 			int type = 0;
 			if (mod != null)
 			{
@@ -519,7 +519,7 @@ namespace Terraria.ModLoader.IO
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				byte[] data = reader.ReadBytes(reader.ReadUInt16());
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				ModWorld modWorld = mod == null ? null : mod.GetModWorld(name);
 				if (modWorld != null)
 				{
@@ -547,7 +547,7 @@ namespace Terraria.ModLoader.IO
 						["name"] = name,
 						["legacyData"] = data
 					};
-					((MysteryWorld)ModOrganiser.GetMod("ModLoader").GetModWorld("MysteryWorld")).data.Add(tag);
+					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).data.Add(tag);
 				}
 			}
 		}

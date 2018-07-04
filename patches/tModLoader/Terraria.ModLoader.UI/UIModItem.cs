@@ -125,7 +125,7 @@ namespace Terraria.ModLoader.UI
 				keyImage.Left.Set(-10, 1f);
 				Append(keyImage);
 			}
-			Mod loadedMod = ModOrganiser.GetMod(mod.Name);
+			Mod loadedMod = ModLoader.GetMod(mod.Name);
 			if (loadedMod != null)
 			{
 				loaded = true;
@@ -149,7 +149,7 @@ namespace Terraria.ModLoader.UI
 		// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
 		private void GenerateLangTemplate_OnClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Mod loadedMod = ModOrganiser.GetMod(mod.Name);
+			Mod loadedMod = ModLoader.GetMod(mod.Name);
 			Dictionary<string, ModTranslation> dictionary = (Dictionary<string, ModTranslation>)loadedMod.translations;
 			var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
 				.Concat(loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.Tooltip)).Select(x => x.Value.Tooltip.Key + "="))

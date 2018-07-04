@@ -114,7 +114,7 @@ namespace Terraria.ModLoader.IO
 		{
 			foreach (var tag in list)
 			{
-				var mod = ModOrganiser.GetMod(tag.GetString("mod"));
+				var mod = ModLoader.GetMod(tag.GetString("mod"));
 				var modPlayer = mod == null ? null : player.GetModPlayer(mod, tag.GetString("name"));
 				if (modPlayer != null)
 				{
@@ -133,7 +133,7 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					player.GetModPlayer<MysteryPlayer>(ModOrganiser.GetMod("ModLoader")).data.Add(tag);
+					player.GetModPlayer<MysteryPlayer>(ModLoader.GetMod("ModLoader")).data.Add(tag);
 				}
 			}
 		}
@@ -177,7 +177,7 @@ namespace Terraria.ModLoader.IO
 			//iterate the list in reverse, insert each buff at its index and push the buffs after it up a slot
 			foreach (var tag in list.Reverse())
 			{
-				var mod = ModOrganiser.GetMod(tag.GetString("mod"));
+				var mod = ModLoader.GetMod(tag.GetString("mod"));
 				int type = mod?.BuffType(tag.GetString("name")) ?? 0;
 				if (type == 0)
 					continue;
@@ -265,7 +265,7 @@ namespace Terraria.ModLoader.IO
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				byte[] data = reader.ReadBytes(reader.ReadUInt16());
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				ModPlayer modPlayer = mod == null ? null : player.GetModPlayer(mod, name);
 				if (modPlayer != null)
 				{
@@ -293,7 +293,7 @@ namespace Terraria.ModLoader.IO
 						["name"] = name,
 						["legacyData"] = data
 					};
-					player.GetModPlayer<MysteryPlayer>(ModOrganiser.GetMod("ModLoader")).data.Add(tag);
+					player.GetModPlayer<MysteryPlayer>(ModLoader.GetMod("ModLoader")).data.Add(tag);
 				}
 			}
 		}
@@ -308,7 +308,7 @@ namespace Terraria.ModLoader.IO
 				string modName = reader.ReadString();
 				string name = reader.ReadString();
 				int time = reader.ReadInt32();
-				Mod mod = ModOrganiser.GetMod(modName);
+				Mod mod = ModLoader.GetMod(modName);
 				int type = mod == null ? 0 : mod.BuffType(name);
 				if (type > 0)
 				{
@@ -349,7 +349,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<string> SaveUsedMods(Player player)
 		{
-			return ModOrganiser.LoadedModsNames.Except(new string[] { "ModLoader" }).ToList();
+			return ModLoader.LoadedModsNames.Except(new string[] { "ModLoader" }).ToList();
 		}
 
 		//add to end of Terraria.IO.PlayerFileData.MoveToCloud

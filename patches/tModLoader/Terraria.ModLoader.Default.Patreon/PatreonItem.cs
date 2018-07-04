@@ -58,7 +58,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		{
 			if (Main.rand.NextBool(20))
 			{
-				Mod mod = ModOrganiser.GetMod("ModLoader");
+				Mod mod = ModLoader.GetMod("ModLoader");
 				switch (Main.rand.Next(4))
 				{
 					case 0:

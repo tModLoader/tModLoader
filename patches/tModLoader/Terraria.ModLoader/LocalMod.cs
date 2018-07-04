@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 
 		public bool Enabled
 		{
-			get => ModOrganiser.IsEnabled(Name);
+			get => ModOrganiser.IsModEnabled(Name);
 			set => ModOrganiser.SetModEnabled(Name, value);
 		}
 
