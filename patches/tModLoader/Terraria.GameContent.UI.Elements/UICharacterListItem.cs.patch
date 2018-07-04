@@ -44,8 +44,8 @@
 +			}
 +			if (data.Player.usedMods != null)
 +			{
-+				var missingMods = data.Player.usedMods.Except(ModLoader.ModLoader.GetLoadedMods()).ToList();
-+				var newMods = ModLoader.ModLoader.GetLoadedMods().Except(new string[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
++				var missingMods = data.Player.usedMods.Except(ModLoader.ModLoader.LoadedModsNames).ToList();
++				var newMods = ModLoader.ModLoader.LoadedModsNames.Except(new string[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
 +				if (missingMods.Count > 0 || newMods.Count > 0)
 +				{
 +					UIText warningLabel = new UIText("", 1f, false)

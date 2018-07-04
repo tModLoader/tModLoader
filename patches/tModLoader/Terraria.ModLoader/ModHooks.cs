@@ -163,7 +163,7 @@ namespace Terraria.ModLoader
 		// Pretty much deprecated. 
 		internal static void HotKeyPressed()
 		{
-			foreach (var modHotkey in ModLoader.modHotKeys)
+			foreach (var modHotkey in ModContent.modHotKeys)
 			{
 				if (PlayerInput.Triggers.Current.KeyStatus[modHotkey.Value.displayName])
 				{

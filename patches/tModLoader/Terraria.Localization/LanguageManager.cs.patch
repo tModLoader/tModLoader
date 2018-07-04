@@ -15,7 +15,7 @@
  			this.LoadLanguage(culture);
 +			if (this.ActiveCulture != null)
 +			{
-+				ModLoader.ModLoader.RefreshModLanguage(culture);
++				ModLoader.ModContent.RefreshModLanguage(culture);
 +			}
  			this.ActiveCulture = culture;
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;

@@ -102,7 +102,7 @@ namespace Terraria.ModLoader
 				modBrowser._categoryButtons[3].setCurrentState((int)modBrowser.searchFilterMode);
 			}
 			modBrowser.loading = false;
-			ModLoader.modsDirCache.Clear();
+			ModOrganiser.modsDirCache.Clear();
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 		}
 
@@ -142,7 +142,7 @@ namespace Terraria.ModLoader
 			{
 				Main.MenuUI.SetState(loadMods);
 				Main.menuMode = 888;
-				ModLoader.Load();
+				ModLoader.LoadAsync();
 			}
 			else if (Main.menuMode == buildModID)
 			{
@@ -327,11 +327,11 @@ namespace Terraria.ModLoader
 			{
 				Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.versionedName);
 				Console.WriteLine();
-				var mods = ModLoader.FindMods();
+				var mods = ModOrganiser.FindMods();
 				for (int k = 0; k < mods.Length; k++)
 				{
 					Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
-					Console.WriteLine(" (" + (ModLoader.IsEnabled(mods[k].Name) ? "enabled" : "disabled") + ")");
+					Console.WriteLine(" (" + (ModOrganiser.IsModEnabled(mods[k].Name) ? "enabled" : "disabled") + ")");
 				}
 				if (mods.Length == 0)
 				{
@@ -369,8 +369,8 @@ namespace Terraria.ModLoader
 				else if (command == "r")
 				{
 					Console.WriteLine("Unloading mods...");
-					ModLoader.Unload();
-					ModLoader.do_Load(null);
+					ModContent.Unload();
+					ModLoader.LoadMods(null);
 					exit = true;
 				}
 				else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length)

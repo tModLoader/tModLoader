@@ -200,7 +200,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void AutoStaticDefaults()
 		{
-			Main.npcTexture[npc.type] = ModLoader.GetTexture(Texture);
+			Main.npcTexture[npc.type] = ModContent.GetTexture(Texture);
 			if (banner != 0 && bannerItem != 0)
 			{
 				NPCLoader.bannerToItem[banner] = bannerItem;
@@ -232,7 +232,7 @@ namespace Terraria.ModLoader
 			}
 			for (int k = 1; k <= altTextureCount; k++)
 			{
-				Main.npcAltTextures[npc.type][k] = ModLoader.GetTexture(altTextures[k - 1]);
+				Main.npcAltTextures[npc.type][k] = ModContent.GetTexture(altTextures[k - 1]);
 			}
 
 			if (DisplayName.IsDefault())

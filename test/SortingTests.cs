@@ -74,8 +74,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static List<LocalMod> AssertSortSatisfied(List<LocalMod> list) {
-			var sorted = ModLoader.Sort(list);
+		private static List<LocalMod> AssertSortSatisfied(ICollection<LocalMod> list) {
+			var sorted = ModOrganiser.Sort(list);
 			var indexMap = sorted.ToDictionary(m => m.Name, sorted.IndexOf);
 			foreach (var mod in list) {
 				int index = indexMap[mod.Name];
@@ -112,14 +112,14 @@ namespace Terraria.ModLoader
 				Make("A", refs: new[] {"B"}),
 				Make("B"),
 			};
-			ModLoader.EnsureDependenciesExist(list1, false);
+			ModOrganiser.EnsureDependenciesExist(list1, false);
 
 			//test A -> B (missing)
 			var list2 = new List<LocalMod> {
 				Make("A", refs: new[] {"B"})
 			};
 			AssertModException(
-				() => ModLoader.EnsureDependenciesExist(list2, false),
+				() => ModOrganiser.EnsureDependenciesExist(list2, false),
 				new[] {"A"},
 				"Missing mod: B required by A");
 
@@ -129,7 +129,7 @@ namespace Terraria.ModLoader
 				Make("B"),
 				Make("C", refs: new[] {"A"})
 			};
-			ModLoader.EnsureDependenciesExist(list3, false);
+			ModOrganiser.EnsureDependenciesExist(list3, false);
 
 			//test one missing reference
 			var list4 = new List<LocalMod> {
@@ -137,7 +137,7 @@ namespace Terraria.ModLoader
 				Make("B", refs: new[] {"C"})
 			};
 			AssertModException(
-				() => ModLoader.EnsureDependenciesExist(list4, false),
+				() => ModOrganiser.EnsureDependenciesExist(list4, false),
 				new[] {"B"},
 				"Missing mod: C required by B");
 
@@ -145,9 +145,9 @@ namespace Terraria.ModLoader
 			var list5 = new List<LocalMod> {
 				Make("A", weakRefs: new[] {"B"})
 			};
-			ModLoader.EnsureDependenciesExist(list5, false);
+			ModOrganiser.EnsureDependenciesExist(list5, false);
 			AssertModException(
-				() => ModLoader.EnsureDependenciesExist(list5, true),
+				() => ModOrganiser.EnsureDependenciesExist(list5, true),
 				new[] {"A"},
 				"Missing mod: B required by A");
 
@@ -156,16 +156,16 @@ namespace Terraria.ModLoader
 				Make("A", weakRefs: new[] {"B"}),
 				Make("B")
 			};
-			ModLoader.EnsureDependenciesExist(list6, true);
+			ModOrganiser.EnsureDependenciesExist(list6, true);
 
 			//test strong (found) and weak (missing)
 			var list7 = new List<LocalMod> {
 				Make("A", refs: new[] {"B"}),
 				Make("B", weakRefs: new[] {"C"})
 			};
-			ModLoader.EnsureDependenciesExist(list7, false);
+			ModOrganiser.EnsureDependenciesExist(list7, false);
 			AssertModException(
-				() => ModLoader.EnsureDependenciesExist(list7, true),
+				() => ModOrganiser.EnsureDependenciesExist(list7, true),
 				new[] {"B"},
 				"Missing mod: C required by B");
 
@@ -179,12 +179,12 @@ namespace Terraria.ModLoader
 				Make("F", weakRefs: new[] {"Z"})
 			};
 			AssertModException(
-				() => ModLoader.EnsureDependenciesExist(list8, false),
+				() => ModOrganiser.EnsureDependenciesExist(list8, false),
 				new[] {"A", "B"},
 				"Missing mod: X required by A\r\n" +
 				"Missing mod: Y required by B");
 			AssertModException(
-				() => ModLoader.EnsureDependenciesExist(list8, true),
+				() => ModOrganiser.EnsureDependenciesExist(list8, true),
 				new[] {"A", "B", "E", "F"},
 				"Missing mod: X required by A\r\n" +
 				"Missing mod: Y required by B\r\n" +
@@ -200,8 +200,8 @@ namespace Terraria.ModLoader
 				Make("E", weakRefs: new[] {"F"}),
 				Make("F")
 			};
-			ModLoader.EnsureDependenciesExist(list9, false);
-			ModLoader.EnsureDependenciesExist(list9, true);
+			ModOrganiser.EnsureDependenciesExist(list9, false);
+			ModOrganiser.EnsureDependenciesExist(list9, true);
 		}
 
 		//test missing dependencies
@@ -211,14 +211,14 @@ namespace Terraria.ModLoader
 			var list1 = new List<LocalMod> {
 				Make("A", refs: new[] {"B@1.2"})
 			};
-			ModLoader.EnsureTargetVersionsMet(list1);
+			ModOrganiser.EnsureTargetVersionsMet(list1);
 
 			//test passed version check
 			var list2 = new List<LocalMod> {
 				Make("A", refs: new[] {"B@1.2"}),
 				Make("B", version: "1.2")
 			};
-			ModLoader.EnsureTargetVersionsMet(list2);
+			ModOrganiser.EnsureTargetVersionsMet(list2);
 
 			//test failed version check
 			var list3 = new List<LocalMod> {
@@ -226,7 +226,7 @@ namespace Terraria.ModLoader
 				Make("B")
 			};
 			AssertModException(
-				() => ModLoader.EnsureTargetVersionsMet(list3),
+				() => ModOrganiser.EnsureTargetVersionsMet(list3),
 				new[] { "A" },
 				"A requires version 1.2+ of B but version 1.0.0.0 is installed");
 
@@ -238,7 +238,7 @@ namespace Terraria.ModLoader
 				Make("D", refs: new[] {"A@1.0.0.1"})
 			};
 			AssertModException(
-				() => ModLoader.EnsureTargetVersionsMet(list4),
+				() => ModOrganiser.EnsureTargetVersionsMet(list4),
 				new[] { "C", "D" },
 				"C requires version 1.1+ of A but version 1.0.0.0 is installed\r\n" +
 				"D requires version 1.0.0.1+ of A but version 1.0.0.0 is installed");
@@ -247,8 +247,8 @@ namespace Terraria.ModLoader
 			var list5 = new List<LocalMod> {
 				Make("A", weakRefs: new[] {"B@1.1"})
 			};
-			ModLoader.EnsureDependenciesExist(list5, false);
-			ModLoader.EnsureTargetVersionsMet(list5);
+			ModOrganiser.EnsureDependenciesExist(list5, false);
+			ModOrganiser.EnsureTargetVersionsMet(list5);
 
 			//test weak version check (too low)
 			var list6 = new List<LocalMod> {
@@ -256,7 +256,7 @@ namespace Terraria.ModLoader
 				Make("B")
 			};
 			AssertModException(
-				() => ModLoader.EnsureTargetVersionsMet(list6),
+				() => ModOrganiser.EnsureTargetVersionsMet(list6),
 				new[] { "A" },
 				"A requires version 1.1+ of B but version 1.0.0.0 is installed");
 		}

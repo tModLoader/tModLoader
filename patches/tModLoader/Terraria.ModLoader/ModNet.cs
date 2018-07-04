@@ -85,7 +85,7 @@ namespace Terraria.ModLoader
 
 			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 			var clientMods = ModLoader.LoadedMods;
-			var modFiles = ModLoader.FindMods();
+			var modFiles = ModOrganiser.FindMods();
 			var needsReload = false;
 			downloadQueue.Clear();
 			var syncSet = new HashSet<string>();
@@ -129,7 +129,7 @@ namespace Terraria.ModLoader
 			foreach (var mod in clientMods)
 				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name))
 				{
-					ModLoader.DisableMod(mod.Name);
+					ModOrganiser.DisableMod(mod.Name);
 					needsReload = true;
 				}
 
@@ -228,7 +228,7 @@ namespace Terraria.ModLoader
 					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
-					ModLoader.EnableMod(mod.name);
+					ModOrganiser.EnableMod(mod.name);
 
 					if (downloadQueue.Count > 0)
 						DownloadNextMod();
@@ -254,7 +254,7 @@ namespace Terraria.ModLoader
 		{
 			if (needsReload)
 			{
-				ModLoader.PostLoad = NetReload;
+				ModContent.PostLoad = NetReload;
 				ModLoader.Reload();
 				return;
 			}

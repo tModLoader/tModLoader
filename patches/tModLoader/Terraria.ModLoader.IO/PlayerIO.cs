@@ -349,7 +349,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<string> SaveUsedMods(Player player)
 		{
-			return ModLoader.GetLoadedMods().Except(new string[] { "ModLoader" }).ToList();
+			return ModLoader.LoadedModsNames.Except(new string[] { "ModLoader" }).ToList();
 		}
 
 		//add to end of Terraria.IO.PlayerFileData.MoveToCloud
