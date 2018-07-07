@@ -691,7 +691,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool ConsumeItem(Item item, Player player)
 		{
-			//if (item.IsAir) return true;
+			if (item.IsAir) return true;
 			if (item.modItem != null && !item.modItem.ConsumeItem(player))
 				return false;
 
