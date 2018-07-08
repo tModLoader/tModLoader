@@ -84,17 +84,21 @@ namespace ExampleMod.Projectiles
 				usePos -= rotVector * 8f;
 			}
 
-			// Drop a javelin item, 1 in 18 chance (~5.5% chance)
-			int item =
+			// Make sure to only spawn items if you are the projectile owner.
+			if (projectile.owner == Main.myPlayer)
+			{
+				// Drop a javelin item, 1 in 18 chance (~5.5% chance)
+				int item =
 				Main.rand.Next(18) == 0
 					? Item.NewItem((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height, mod.ItemType<ExampleJavelin>())
 					: 0;
 
-			// Sync the drop for multiplayer
-			// Note the usage of Terraria.ID.MessageID, please use this!
-			if (Main.netMode == 1 && item >= 0)
-			{
-				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, item, 1f);
+				// Sync the drop for multiplayer
+				// Note the usage of Terraria.ID.MessageID, please use this!
+				if (Main.netMode == 1 && item >= 0)
+				{
+					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, item, 1f);
+				}
 			}
 		}
 
