@@ -414,7 +414,7 @@
 -		private void TryGettingDevArmor()
 +		public void TryGettingDevArmor()
  		{
-+			if (ModLoader.Default.Patreon.PatreonItem.TryGettingPatreonArmor(this))
++			if (Terraria.ModLoader.Default.ModLoaderMod.TryGettingPatreonArmor(this))
 +				return;
  			if (Main.rand.Next(20) != 0)
  			{

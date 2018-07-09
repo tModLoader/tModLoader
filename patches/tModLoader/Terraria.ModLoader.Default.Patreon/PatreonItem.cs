@@ -53,38 +53,5 @@ namespace Terraria.ModLoader.Default.Patreon
 			line.overrideColor = Color.Aquamarine;
 			tooltips.Add(line);
 		}
-
-		internal static bool TryGettingPatreonArmor(Player player)
-		{
-			if (Main.rand.NextBool(20))
-			{
-				Mod mod = ModLoader.GetMod("ModLoader");
-				switch (Main.rand.Next(4))
-				{
-					case 0:
-						player.QuickSpawnItem(mod.ItemType<toplayz_Head>());
-						player.QuickSpawnItem(mod.ItemType<toplayz_Body>());
-						player.QuickSpawnItem(mod.ItemType<toplayz_Legs>());
-						return true;
-					case 1:
-						player.QuickSpawnItem(mod.ItemType<Polyblank_Head>());
-						player.QuickSpawnItem(mod.ItemType<Polyblank_Body>());
-						player.QuickSpawnItem(mod.ItemType<Polyblank_Legs>());
-						return true;
-					case 2:
-						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Head>());
-						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Body>());
-						player.QuickSpawnItem(mod.ItemType<KittyKitCatCat_Legs>());
-						return true;
-					case 3:
-						player.QuickSpawnItem(mod.ItemType<dinidini_Head>());
-						player.QuickSpawnItem(mod.ItemType<dinidini_Body>());
-						player.QuickSpawnItem(mod.ItemType<dinidini_Legs>());
-						player.QuickSpawnItem(mod.ItemType<dinidini_Wings>());
-						return true;
-				}
-			}
-			return false;
-		}
 	}
 }

@@ -47,20 +47,19 @@ namespace Terraria.ModLoader.Default
 
 		// If new types arrise (probably not), change the format:
 		// head, body, legs, wings, <new>
-		// Patrons not having a given type will have null in the array
-		private readonly PatreonItem[][] _patronSets =
+		private static readonly PatreonItem[][] PatronSets =
 		{
-			new PatreonItem[] { new toplayz_Head(), new toplayz_Body(), new toplayz_Legs(), null },
-			new PatreonItem[] { new KittyKitCatCat_Head(), new KittyKitCatCat_Body(), new KittyKitCatCat_Legs(), null },
-			new PatreonItem[] { new Polyblank_Head(), new Polyblank_Body(), new Polyblank_Legs(), null},
-			new PatreonItem[] { new dinidini_Head(), new dinidini_Body(), new dinidini_Legs(), new dinidini_Wings() }
+			new PatreonItem[] { new toplayz_Head(), new toplayz_Body(), new toplayz_Legs() },
+			new PatreonItem[] { new KittyKitCatCat_Head(), new KittyKitCatCat_Body(), new KittyKitCatCat_Legs() },
+			new PatreonItem[] { new Polyblank_Head(), new Polyblank_Body(), new Polyblank_Legs() },
+			new PatreonItem[] { new dinidini_Head(), new dinidini_Body(), new dinidini_Legs(), new dinidini_Wings() },
+			new PatreonItem[] { new Remeus_Head(), new Remeus_Body(), new Remeus_Legs() },
 		};
-
 
 		private void AddPatronSets()
 		{
 			// Flatten, and select items not null
-			foreach (var patronItem in _patronSets.SelectMany(x => x).Where(x => x != null))
+			foreach (var patronItem in PatronSets.SelectMany(x => x))
 			{
 				AddPatreonItemAndEquipType(patronItem, patronItem.PatreonName, patronItem.PatreonEquipType);
 			}
@@ -104,5 +103,24 @@ namespace Terraria.ModLoader.Default
 				throw new ArgumentException("Given EquipType for PatreonItem or name is not valid. It is possible either does not match up with the classname. If you added a new EquipType, modify GetEquipTypeSuffix() and AddPatreonItemAndEquipType() first.");
 			return Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
 		}
-	}
+
+
+		private const int ChanceToGetArmor = 20;
+		
+		internal static bool TryGettingPatreonArmor(Player player)
+     		{
+     			if (Main.rand.NextBool(ChanceToGetArmor))
+     			{
+     				int randomIndex = Main.rand.Next(PatronSets.Length);
+     				
+     				foreach (var patreonItem in PatronSets[randomIndex])
+     				{
+     					player.QuickSpawnItem(patreonItem.item.type);
+     				}
+     
+     				return true;
+     			}
+     			return false;
+     		}
+     	}
 }

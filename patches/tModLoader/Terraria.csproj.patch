@@ -127,7 +127,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,160 @@
+@@ -368,6 +_,161 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -135,6 +135,7 @@
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\KittyKitCatCat.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\PatreonItem.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Polyblank.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Patreon\Remeus.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\toplayz.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\AprilFools.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\HelpCommand.cs" />
@@ -324,12 +325,19 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,94 @@
+@@ -606,5 +_,101 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Body_Arms.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Body_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Head_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Legs_Legs.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Body.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Body_Arms.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Body_Body.png" />
