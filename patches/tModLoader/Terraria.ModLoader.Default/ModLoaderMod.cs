@@ -9,6 +9,7 @@ namespace Terraria.ModLoader.Default
 {
 	internal class ModLoaderMod : Mod
 	{
+		
 		private static bool texturesLoaded;
 		private static Texture2D mysteryItemTexture;
 		private static Texture2D startBagTexture;
@@ -18,6 +19,8 @@ namespace Terraria.ModLoader.Default
 		public override Version Version => ModLoader.version;
 		public override Version tModLoaderVersion => ModLoader.version;
 
+		internal static ModLoaderMod Instance;
+
 		internal ModLoaderMod()
 		{
 			Side = ModSide.NoSync;
@@ -26,6 +29,7 @@ namespace Terraria.ModLoader.Default
 
 		public override void Load()
 		{
+			Instance = this;
 			LoadTextures();
 			AddTexture("MysteryItem", mysteryItemTexture);
 			AddTexture("StartBag", startBagTexture);
@@ -43,6 +47,7 @@ namespace Terraria.ModLoader.Default
 			AddCommand("HelpCommand", new HelpCommand());
 			AddCommand("ModlistCommand", new ModlistCommand());
 			AddPatronSets();
+			AddPlayer("PatronModPlayer", new PatronModPlayer());
 		}
 
 		// If new types arrise (probably not), change the format:
@@ -54,6 +59,7 @@ namespace Terraria.ModLoader.Default
 			new PatreonItem[] { new Polyblank_Head(), new Polyblank_Body(), new Polyblank_Legs() },
 			new PatreonItem[] { new dinidini_Head(), new dinidini_Body(), new dinidini_Legs(), new dinidini_Wings() },
 			new PatreonItem[] { new Remeus_Head(), new Remeus_Body(), new Remeus_Legs() },
+			new PatreonItem[] { new Orian_Head(), new Orian_Body(), new Orian_Legs()  }
 		};
 
 		private void AddPatronSets()
