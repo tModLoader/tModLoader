@@ -8,8 +8,7 @@ using Terraria.ModLoader.Default.Patreon;
 namespace Terraria.ModLoader.Default
 {
 	internal class ModLoaderMod : Mod
-	{
-		
+	{	
 		private static bool texturesLoaded;
 		private static Texture2D mysteryItemTexture;
 		private static Texture2D startBagTexture;
@@ -19,8 +18,6 @@ namespace Terraria.ModLoader.Default
 		public override Version Version => ModLoader.version;
 		public override Version tModLoaderVersion => ModLoader.version;
 
-		internal static ModLoaderMod Instance;
-
 		internal ModLoaderMod()
 		{
 			Side = ModSide.NoSync;
@@ -29,7 +26,6 @@ namespace Terraria.ModLoader.Default
 
 		public override void Load()
 		{
-			Instance = this;
 			LoadTextures();
 			AddTexture("MysteryItem", mysteryItemTexture);
 			AddTexture("StartBag", startBagTexture);
