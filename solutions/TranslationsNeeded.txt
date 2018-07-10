@@ -1,0 +1,8 @@
+zh-Hans 2
+ru-RU 118
+pt-BR 188
+pl-PL 92
+it-IT 168
+fr-FR 2
+es-ES 168
+de-DE 173
