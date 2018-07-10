@@ -487,6 +487,7 @@ namespace Terraria.ModLoader
 		/// Return false to stop the default items from being dropped; returns true by default. 
 		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag". 
 		/// For boss bags and crates, arg will be set to the type of the item being opened.
+		/// This method is also called for modded bossBags that are properly implemented.
 		/// 
 		/// This method is not instanced.
 		/// </summary>
@@ -500,6 +501,7 @@ namespace Terraria.ModLoader
 		/// This method will not be called if any other GlobalItem returns false for PreOpenVanillaBag.
 		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag".
 		/// For boss bags and crates, arg will be set to the type of the item being opened.
+		/// This method is also called for modded bossBags that are properly implemented.
 		/// 
 		/// This method is not instanced.
 		/// </summary>
