@@ -145,7 +145,6 @@ namespace Terraria.ModLoader.UI.Elements
 				item.Left.Set(left, 0f);
 				left += outerDimensions.Width + this.ListPadding;
 				item.Top.Set(top, 0f);
-				item.Recalculate();
 			}
 			this._innerListHeight = top + maxRowHeight;
 		}
@@ -197,7 +196,6 @@ namespace Terraria.ModLoader.UI.Elements
 			{
 				this._innerList.Top.Set(-this._scrollbar.GetValue(), 0f);
 			}
-			this.Recalculate();
 		}
 	}
 
