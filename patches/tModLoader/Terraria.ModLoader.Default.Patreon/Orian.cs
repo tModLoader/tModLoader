@@ -8,16 +8,11 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override string PatreonName => "Orian";
 		public override EquipType PatreonEquipType => EquipType.Head;
 
-		public override bool IsArmorSet(Item head, Item body, Item legs)
+		public override bool IsVanitySet(int head, int body, int legs)
 		{
-			return head.modItem?.GetType() == typeof(Orian_Head)
-			       && body.modItem?.GetType() == typeof(Orian_Body)
-			       && legs.modItem?.GetType() == typeof(Orian_Legs);
-		}
-
-		public override void UpdateArmorSet(Player player)
-		{
-			PatronModPlayer.Player(player).OrianSet = true;
+			return head == mod.GetEquipSlot($"{PatreonName}_{EquipType.Head}", EquipType.Head)
+				   && body == mod.GetEquipSlot($"{PatreonName}_{EquipType.Body}", EquipType.Body)
+				   && legs == mod.GetEquipSlot($"{PatreonName}_{EquipType.Legs}", EquipType.Legs);
 		}
 
 		public override void UpdateVanitySet(Player player)

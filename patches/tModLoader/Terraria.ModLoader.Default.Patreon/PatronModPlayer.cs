@@ -22,18 +22,14 @@ namespace Terraria.ModLoader.Default.Patreon
 		{
 			if (OrianSet)
 			{
-				var close = Main.npc
-					.Where(x => x.active && !x.friendly && !NPCID.Sets.TownCritter[x.type] && x.type != NPCID.TargetDummy)
-					.FirstOrDefault(x => x.Distance(player.position) <= Main.screenWidth / 4f);
-
-				if (close != null) Lighting.AddLight(player.Center, Color.DeepSkyBlue.ToVector3() * 1.5f);
+				var close = Main.npc.Any(x => x.active && !x.friendly && !NPCID.Sets.TownCritter[x.type] && x.type != NPCID.TargetDummy && x.Distance(player.position) <= 300);
+				if (close) Lighting.AddLight(player.Center, Color.DeepSkyBlue.ToVector3() * 1.5f);
 			}
 		}
 		
 		public override void ModifyDrawLayers(List<PlayerLayer> layers)
 		{
-			if (player.armor[0].modItem?.GetType() == typeof(toplayz_Head)
-			    || player.armor[10].modItem?.GetType() == typeof(toplayz_Head))
+			if (player.head == mod.GetEquipSlot("toplayz_Head", EquipType.Head))
 			{
 				var headLayer = layers.FirstOrDefault(x => x.Name.Equals("Head"));
 				var armsLayer = layers.FirstOrDefault(x => x.Name.Equals("Arms"));
