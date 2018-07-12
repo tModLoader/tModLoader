@@ -223,6 +223,7 @@ var searchData=
   ['hooksetspriteeffects',['HookSetSpriteEffects',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad10b753b4791dd0b86269b3640984cb5',1,'Terraria::ModLoader::TileLoader']]],
   ['hooksetupshop',['HookSetupShop',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a240b2e8a6539b603a4bee5d945e5c721',1,'Terraria::ModLoader::NPCLoader']]],
   ['hooksetupstartinventory',['HookSetupStartInventory',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ab87e8d7eef67ce1b8951b21efe24086c',1,'Terraria::ModLoader::PlayerHooks']]],
+  ['hooksetupstartinventoryold',['HookSetupStartInventoryOld',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a132d9baa620b8614c679667726f02d58',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hooksetuptravelshop',['HookSetupTravelShop',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#acef6d2086f906439e7a29d0c399c65f4',1,'Terraria::ModLoader::NPCLoader']]],
   ['hookshiftclickslot',['HookShiftClickSlot',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a825a1f077c533a69aac8cbc42cdb91d4',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookshoot',['HookShoot',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a5367084859760c6c8a2642ba26f5f211',1,'Terraria.ModLoader.ItemLoader.HookShoot()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a71772b2f5705587901cabc0886f3c1ab',1,'Terraria.ModLoader.PlayerHooks.HookShoot()']]],

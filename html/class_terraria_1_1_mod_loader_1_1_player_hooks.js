@@ -180,6 +180,7 @@ var class_terraria_1_1_mod_loader_1_1_player_hooks =
     [ "HookSendCustomBiomes", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a70a42938727fc803af2fa65d46d328ef", null ],
     [ "HookSetControls", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a1f27d00ca52ae1010079f327e66af7ef", null ],
     [ "HookSetupStartInventory", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ab87e8d7eef67ce1b8951b21efe24086c", null ],
+    [ "HookSetupStartInventoryOld", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a132d9baa620b8614c679667726f02d58", null ],
     [ "HookShiftClickSlot", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a825a1f077c533a69aac8cbc42cdb91d4", null ],
     [ "HookShoot", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a71772b2f5705587901cabc0886f3c1ab", null ],
     [ "HookSyncPlayer", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a16c69a5a6498e077b2c7ae050f28c878", null ],
