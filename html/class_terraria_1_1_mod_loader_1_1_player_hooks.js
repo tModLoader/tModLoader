@@ -95,7 +95,7 @@ var class_terraria_1_1_mod_loader_1_1_player_hooks =
     [ "SetControls", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a755f5ba13d8cc84e8c89eac124b08d74", null ],
     [ "SetStartInventory", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad7fe8c60e3c3ff813a4cedc4ecfe1545", null ],
     [ "SetStartInventory", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ae1fcfd5c2f7ec055af735ac6a4a674c9", null ],
-    [ "SetupStartInventory", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad6fcad8c4122b40c73f155475e4c683d", null ],
+    [ "SetupStartInventory", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a95f86d42e5fa03364dca33f83e50faed", null ],
     [ "ShiftClickSlot", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a151a4f667ba2f54414017b92c0de74a5", null ],
     [ "Shoot", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad70a5b0269638efade6ed3f34f26aa27", null ],
     [ "SyncPlayer", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a3c4bfe3ab9439bc79fccd1c43cbbb233", null ],
