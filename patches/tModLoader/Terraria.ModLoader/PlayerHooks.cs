@@ -110,7 +110,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookSetupStartInventory = AddHook<Action<List<Item>>>(p => p.SetupStartInventory);
+		private static HookList HookSetupStartInventory = AddHook<Action<List<Item>, bool>>(p => p.SetupStartInventory);
+		private static HookList HookSetupStartInventoryOld = AddHook<Action<List<Item>>>(p => p.SetupStartInventory);
 
 		public static IList<Item> SetupStartInventory(Player player, bool mediumcoreDeath = false)
 		{
@@ -134,6 +135,10 @@ namespace Terraria.ModLoader
 				items.Add(item);
 			}
 			foreach (int index in HookSetupStartInventory.arr)
+			{
+				player.modPlayers[index].SetupStartInventory(items, mediumcoreDeath);
+			}
+			foreach (int index in HookSetupStartInventoryOld.arr)
 			{
 				player.modPlayers[index].SetupStartInventory(items);
 			}

@@ -131,6 +131,13 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the inventory newly created players or killed mediumcore players will start with. To add items to the player's inventory, create a new Item, call its SetDefaults method for whatever ID you want, call its Prefix method with a parameter of -1 if you want to give it a random prefix, then add it to the items list parameter.
 		/// </summary>
 		/// <param name="items"></param>
+		/// <param name="mediumcoreDeath">If true, the inventory is being setup for a character that dies in mediumcore rather than a newly created player.</param>
+		public virtual void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
+		{
+		}
+
+		// @todo: SetupStartInventory marked obsolete until v0.11
+		[method: Obsolete("SetupStartInventory now has an overload with a mediumcoreDeath bool argument, please use that.")]
 		public virtual void SetupStartInventory(IList<Item> items)
 		{
 		}

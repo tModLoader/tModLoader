@@ -39,7 +39,7 @@ namespace Terraria.ModLoader.Default
 			Load(new TagCompound { ["list"] = list });
 		}
 
-		public override void SetupStartInventory(IList<Item> items)
+		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
 		{
 			if (AprilFools.CheckAprilFools())
 			{
