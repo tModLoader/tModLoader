@@ -5238,7 +5238,7 @@
  
  		public void DropItems()
  		{
-+			IList<Item> startInventory = PlayerHooks.SetupStartInventory(this);
++			IList<Item> startInventory = PlayerHooks.SetupStartInventory(this, true);
 +			IDictionary<int, int> startCounts = new Dictionary<int, int>();
 +			foreach (Item item in startInventory)
 +			{
@@ -5572,7 +5572,7 @@
  			int[] array2 = new int[2];
  			this.hurtCooldowns = array2;
  			this.width = 20;
-@@ -39486,16 +_,17 @@
+@@ -39486,16 +_,13 @@
  			}
  			this.trashItem = new Item();
  			this.grappling[0] = -1;
@@ -5585,10 +5585,10 @@
 +			}
  			this.statManaMax = 20;
  			this.extraAccessory = false;
- 			if (Main.cEd)
- 			{
- 				this.inventory[3].SetDefaults(603, false);
- 			}
+-			if (Main.cEd)
+-			{
+-				this.inventory[3].SetDefaults(603, false);
+-			}
 -			for (int n = 0; n < 470; n++)
 +			for (int n = 0; n < this.adjTile.Length; n++)
  			{
