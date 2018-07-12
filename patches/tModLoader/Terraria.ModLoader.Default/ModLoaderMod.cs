@@ -55,7 +55,7 @@ namespace Terraria.ModLoader.Default
 			new PatreonItem[] { new Polyblank_Head(), new Polyblank_Body(), new Polyblank_Legs() },
 			new PatreonItem[] { new dinidini_Head(), new dinidini_Body(), new dinidini_Legs(), new dinidini_Wings() },
 			new PatreonItem[] { new Remeus_Head(), new Remeus_Body(), new Remeus_Legs() },
-			new PatreonItem[] { new Saether_Head(), new Saether_Body(), new Saether_Legs(), new Saether_Wings(),  },
+			new PatreonItem[] { new Saethar_Head(), new Saethar_Body(), new Saethar_Legs(), new Saethar_Wings(),  },
 			new PatreonItem[] { new Orian_Head(), new Orian_Body(), new Orian_Legs()  }
 		};
 

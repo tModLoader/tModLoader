@@ -2,9 +2,9 @@ using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
-	internal class Saether_Head : PatreonItem
+	internal class Saethar_Head : PatreonItem
 	{
-		public override string PatreonName => "Saether";
+		public override string PatreonName => "Saethar";
 		public override EquipType PatreonEquipType => EquipType.Head;
 
 		public override void SetDefaults()
@@ -14,9 +14,9 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 	}
 	
-	internal class Saether_Body : PatreonItem
+	internal class Saethar_Body : PatreonItem
 	{
-		public override string PatreonName => "Saether";
+		public override string PatreonName => "Saethar";
 		public override EquipType PatreonEquipType => EquipType.Body;
 
 		public override void SetDefaults()
@@ -26,9 +26,9 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 	}
 	
-	internal class Saether_Legs : PatreonItem
+	internal class Saethar_Legs : PatreonItem
 	{
-		public override string PatreonName => "Saether";
+		public override string PatreonName => "Saethar";
 		public override EquipType PatreonEquipType => EquipType.Legs;
 		
 		public override void SetDefaults()
@@ -38,9 +38,9 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 	}
 	
-	internal class Saether_Wings : PatreonItem
+	internal class Saethar_Wings : PatreonItem
 	{
-		public override string PatreonName => "Saether";
+		public override string PatreonName => "Saethar";
 		public override EquipType PatreonEquipType => EquipType.Wings;
 		
 		public override void SetDefaults()
