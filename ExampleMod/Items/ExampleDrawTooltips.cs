@@ -42,10 +42,8 @@ namespace ExampleMod.Items
 			// Draw a magic box for this tooltip
 			// From all tooltips we select their texts
 			var texts = lines.Select(z => z.text);
-			// Get the longest text, we do this by ordering by length (descending), and then grab the first one
-			string longestText = texts.ToList().OrderByDescending(z => z.Length).First();
-			// Calculate our widh for the box, which will be the width of the longest text, plus some padding
-			int widthForBox = (int)Main.fontMouseText.MeasureString(longestText).X + paddingForBox * 2;
+			// Calculate our width for the box, which will be the width of the longest text, plus some padding. This code takes into account Snippets and character widths.
+			int widthForBox = texts.Max(t => (int)ChatManager.GetStringSize(Main.fontMouseText, t, Vector2.One).X) + paddingForBox * 2;
 			// Calculate our height for the box, which will be the sum of the text heights, plus some padding
 			int heightForBox = (int)texts.ToList().Sum(z => Main.fontMouseText.MeasureString(z).Y) + paddingForBox * 2;
 			// Set our boxSize to our calculated size, now we can use this elsewhere too
