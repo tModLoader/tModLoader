@@ -688,6 +688,34 @@ namespace Terraria.ModLoader
 				* ItemLoader.MeleeSpeedMultiplier(item, player);
 		}
 
+		private delegate void DelegateGetHealLife(Item item, bool quickHeal, ref int healValue);
+		private static HookList HookGetHealLife = AddHook<DelegateGetHealLife>(p => p.GetHealLife);
+
+		public static void GetHealLife(Player player, Item item, bool quickHeal, ref int healValue)
+		{
+			if (item.IsAir)
+				return;
+
+			foreach (int index in HookGetHealLife.arr)
+			{
+				player.modPlayers[index].GetHealLife(item, quickHeal, ref healValue);
+			}
+		}
+
+		private delegate void DelegateGetHealMana(Item item, bool quickHeal, ref int healValue);
+		private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(p => p.GetHealMana);
+
+		public static void GetHealMana(Player player, Item item, bool quickHeal, ref int healValue)
+		{
+			if (item.IsAir)
+				return;
+
+			foreach (int index in HookGetHealMana.arr)
+			{
+				player.modPlayers[index].GetHealMana(item, quickHeal, ref healValue);
+			}
+		}
+
 		private delegate void DelegateGetWeaponDamage(Item item, ref int damage);
 		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(p => p.GetWeaponDamage);
 

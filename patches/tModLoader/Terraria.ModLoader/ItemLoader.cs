@@ -386,6 +386,38 @@ namespace Terraria.ModLoader
 			return multiplier;
 		}
 
+		private delegate void DelegateGetHealLife(Item item, Player player, bool quickHeal, ref int healValue);
+		private static HookList HookGetHealLife = AddHook<DelegateGetHealLife>(g => g.GetHealLife);
+		/// <summary>
+		/// Calls ModItem.GetHealLife, then all GlobalItem.GetHealLife hooks.
+		/// </summary>
+		public static void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue)
+		{
+			if (item.IsAir)
+				return;
+
+			item.modItem?.GetHealLife(player, quickHeal, ref healValue);
+
+			foreach (var g in HookGetHealLife.arr)
+				g.Instance(item).GetHealLife(item, player, quickHeal, ref healValue);
+		}
+
+		private delegate void DelegateGetHealMana(Item item, Player player, bool quickHeal, ref int healValue);
+		private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(g => g.GetHealMana);
+		/// <summary>
+		/// Calls ModItem.GetHealMana, then all GlobalItem.GetHealMana hooks.
+		/// </summary>
+		public static void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue)
+		{
+			if (item.IsAir)
+				return;
+
+			item.modItem?.GetHealMana(player, quickHeal, ref healValue);
+
+			foreach (var g in HookGetHealMana.arr)
+				g.Instance(item).GetHealMana(item, player, quickHeal, ref healValue);
+		}
+
 		private delegate void DelegateGetWeaponDamage(Item item, Player player, ref int damage);
 		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(g => g.GetWeaponDamage);
 		/// <summary>

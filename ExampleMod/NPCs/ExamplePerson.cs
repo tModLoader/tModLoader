@@ -213,6 +213,11 @@ namespace ExampleMod.NPCs
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHamaxe"));
 			nextSlot++;
+			if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce))
+			{
+				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHealingPotion"));
+				nextSlot++;
+			}
 			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod).ZoneExample)
 			{
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleWings"));
