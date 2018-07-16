@@ -124,6 +124,7 @@
     <Compile Include="Items\ExampleDye.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
+    <Compile Include="Items\ExampleHealingPotion.cs" />
     <Compile Include="Items\ExampleHook.cs" />
     <Compile Include="Items\ExampleInstancedGlobalItem.cs" />
     <Compile Include="Items\ExampleItem.cs" />

@@ -156,6 +156,28 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of life being healed.</param>
+		public virtual void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of mana being healed.</param>
+		public virtual void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
 		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.

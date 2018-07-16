@@ -1195,13 +1195,15 @@
  				}
  				if (Main.HoverItem.healLife > 0)
  				{
- 					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresLife", Main.HoverItem.healLife);
+-					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresLife", Main.HoverItem.healLife);
++					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresLife", Main.player[Main.myPlayer].GetHealLife(Main.HoverItem));
 +					tooltipNames[num4] = "HealLife";
  					num4++;
  				}
  				if (Main.HoverItem.healMana > 0)
  				{
- 					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresMana", Main.HoverItem.healMana);
+-					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresMana", Main.HoverItem.healMana);
++					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresMana", Main.player[Main.myPlayer].GetHealMana(Main.HoverItem));
 +					tooltipNames[num4] = "HealMana";
  					num4++;
  				}

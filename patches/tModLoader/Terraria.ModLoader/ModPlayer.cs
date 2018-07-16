@@ -471,6 +471,26 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of life being healed.</param>
+		public virtual void GetHealLife(Item item, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of mana being healed.</param>
+		public virtual void GetHealMana(Item item, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify a weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="item"></param>
